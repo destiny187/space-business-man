@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2",
+  "platform": "macOS / Apple M2 / Metal Forward+",
+  "model_source_commit": "893175d1",
+  "rules_sha256": "aeaa12b1eb854d6b183ece22ffd8d4f7e39709119e8b0a5408c99fe860a09835",
+  "scope": "single-player expedition, existing 600 authored forms, 209 current ground/cave eligible forms; no internet or shared surface claim",
+  "checks": {
+    "ecology_domain": 59,
+    "invalid_save_recovery": 7,
+    "actual_scene_ui": 30,
+    "no_grant_workflow": 20
+  },
+  "total_checks": 116,
+  "failures": 0,
+  "workflow": {
+    "galaxy_seed": 71491,
+    "source_planet_number": 16,
+    "destination_planet_number": 22,
+    "excavated_units": 9,
+    "granted_units": 0,
+    "research_consumption": 3,
+    "plot_consumption": 6,
+    "physical_courier": true,
+    "flight_scene_transitions": true,
+    "positioning": "controlled test player positions and stepped flight time"
+  },
+  "render_probe": {
+    "visible_actors": 9,
+    "max_actor_construction_ms": 11.443,
+    "max_ecology_refresh_ms": 9.267,
+    "note": "short diagnostic timings, not full-frame percentile or worst case on all 600 assets; repeated runs vary with local load"
+  },
+  "regressions": [
+    "tools/test_expansion.sh --with-ui (before support-refill addition; refill and final UI rerun separately)",
+    "tools/test_game.sh (20749 assertions, including 20010 catalogue contract checks)"
+  ],
+  "commands": [
+    "tools/godot.sh --headless --script res://tests/test_ecology.gd",
+    "tools/godot.sh --headless --script res://tests/test_ecology_recovery.gd -- --exploration-test",
+    "tools/godot.sh --script res://tests/test_ecology_ui.gd -- --exploration-test",
+    "tools/godot.sh --script res://tests/test_ecology_workflow.gd -- --exploration-test"
+  ],
+  "images": [
+    {
+      "path": "docs/production/media/ecology/native-scan.png",
+      "sha256": "b270ee20d40974b8c97ca0ba0584c936f32c7a2ebd5401bbe90132a0cc76e39d"
+    },
+    {
+      "path": "docs/production/media/ecology/research-cargo.png",
+      "sha256": "97e26485eafcf79f4925eb695ac6af81231cf3d0d2ed6219875b2a9386b30e29"
+    },
+    {
+      "path": "docs/production/media/ecology/transplanted.png",
+      "sha256": "b8fb1e87a9043e7b8e878ea7e0a5c459063e3e020be5d99869159029197f56c6"
+    },
+    {
+      "path": "docs/production/media/ecology/journal-small.png",
+      "sha256": "3a0d34e61bfe7ade281e5c0cc6e78e92df8c2e0b654764db21f168d4d4cea666"
+    }
+  ],
+  "remaining": [
+    "391 forms need implemented water/air/other biome media",
+    "wandering/feeding/combat AI and per-leg IK",
+    "mass, gases, power and thermal cargo circuits",
+    "full planetary visual/economic change",
+    "shared six-player surface ecology and actual internet/Windows verification"
+  ]
+}

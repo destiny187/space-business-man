@@ -24,9 +24,13 @@ run_expansion_check --headless --script res://tests/test_terrain_navigation.gd
 run_expansion_check --headless --script res://tests/test_surface_logistics.gd
 run_expansion_check --headless --script res://tests/test_crew_authority.gd
 run_expansion_check --headless --script res://tests/test_crew_navigation.gd
+run_expansion_check --headless --script res://tests/test_ecology.gd
+run_expansion_check --headless --script res://tests/test_ecology_recovery.gd -- --exploration-test
 if [[ "${1:-}" == "--with-ui" ]]; then
   run_expansion_check --script res://tests/test_exploration_ui.gd -- --exploration-test
   run_expansion_check --script res://tests/test_surface_ui.gd -- --exploration-test
   run_expansion_check --script res://tests/test_courier_ui.gd -- --exploration-test
   run_expansion_check --script res://tests/test_ink_local_light.gd
+  run_expansion_check --script res://tests/test_ecology_ui.gd -- --exploration-test
+  run_expansion_check --script res://tests/test_ecology_workflow.gd -- --exploration-test
 fi

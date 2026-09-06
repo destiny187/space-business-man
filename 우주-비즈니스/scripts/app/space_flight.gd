@@ -28,6 +28,9 @@ func _ready() -> void:
 	test_mode = "--exploration-test" in OS.get_cmdline_user_args()
 	if test_mode: store = FrontierWorldStore.new("user://test_exploration_ui.json")
 	state = store.read_state()
+	if state.is_empty() and store.has_history():
+		FrontierWorldLoadError.show_error(self,store.last_error)
+		return
 	if state.is_empty(): state = FrontierUniverse.new_world(int(FrontierUniverse.config().starting_seed))
 	if state.get("mode","space")=="surface":
 		set_physics_process(false)
@@ -173,9 +176,13 @@ func _build_ui() -> void:
 	for side in ["left","right","top","bottom"]: style.set("content_margin_"+side,14)
 	panel.add_theme_stylebox_override("panel",style)
 	ui_root.add_child(panel)
+	panel.anchor_bottom=1
+	panel.offset_bottom=-54
+	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;panel.add_child(scroll)
 	var column := VBoxContainer.new()
+	column.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override("separation",10)
-	panel.add_child(column)
+	scroll.add_child(column)
 	_label(column,"원정 항법",22,Color("a0dfc5"))
 	_label(column,"한 은하 · 시드 %d\n100만 개의 행성 주소" % int(state.manifest.seed),14)
 	address = LineEdit.new()
@@ -234,7 +241,9 @@ func _select(ordinal: int) -> void:
 	target_ordinal = ordinal
 	autopilot = false
 	address.text = str(ordinal+1)
+	var habitat: Dictionary=FrontierEcology.profile(body)
 	destination.text = "%s · T%d\n%s · 가상 시드 천체" % [body.name,int(body.planet_tier),FrontierCatalog.entry("planets",body.kind).name]
+	destination.text+="\n궤도 추정 %.1f°C · %.0f kPa\n%s · 착륙 후 생명 신호 조사"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.config().habitats[habitat.environment].label]
 
 func _address_target() -> void:
 	if not address.text.is_valid_int() or int(address.text)<1 or int(address.text)>int(state.manifest.settings.planet_count):

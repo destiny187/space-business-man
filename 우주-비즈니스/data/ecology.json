@@ -1,0 +1,273 @@
+{
+  "version": "ecology-v1",
+  "cell_span": 30.0,
+  "active_radius": 55.0,
+  "max_actors": 12,
+  "load_per_frame": 1,
+  "scan_range": 18.0,
+  "scan_seconds": 1.5,
+  "sample_range": 4.0,
+  "cargo_capacity": 4,
+  "lab_range": 24.0,
+  "analysis_rock_cost": 3,
+  "plot_rock_cost": 6,
+  "plot_radius": 18.0,
+  "surface_environments": {
+    "basalt": "basalt",
+    "glacial": "cold",
+    "sulfur": "arid"
+  },
+  "world_climate": {
+    "basalt": {
+      "temperature": [
+        -18,
+        18
+      ],
+      "pressure": [
+        45,
+        95
+      ],
+      "moisture": 0.24
+    },
+    "glacial": {
+      "temperature": [
+        -65,
+        -18
+      ],
+      "pressure": [
+        30,
+        85
+      ],
+      "moisture": 0.18
+    },
+    "sulfur": {
+      "temperature": [
+        28,
+        68
+      ],
+      "pressure": [
+        55,
+        130
+      ],
+      "moisture": 0.08
+    }
+  },
+  "habitats": {
+    "basalt": {
+      "temperature": [
+        -12,
+        38
+      ],
+      "pressure": [
+        25,
+        160
+      ],
+      "moisture": [
+        0.12,
+        0.7
+      ],
+      "label": "암반 공생",
+      "principle": "광물 대사와 토양 형성"
+    },
+    "arid": {
+      "temperature": [
+        4,
+        58
+      ],
+      "pressure": [
+        25,
+        160
+      ],
+      "moisture": [
+        0.04,
+        0.4
+      ],
+      "label": "건조지 생태",
+      "principle": "수분 보존 외피"
+    },
+    "cold": {
+      "temperature": [
+        -42,
+        4
+      ],
+      "pressure": [
+        20,
+        140
+      ],
+      "moisture": [
+        0.08,
+        0.7
+      ],
+      "label": "한랭 생태",
+      "principle": "단열과 동결 저항"
+    },
+    "cave": {
+      "temperature": [
+        2,
+        32
+      ],
+      "pressure": [
+        25,
+        160
+      ],
+      "moisture": [
+        0.25,
+        0.9
+      ],
+      "label": "지하 공생",
+      "principle": "암중 화학 대사"
+    },
+    "thermal": {
+      "temperature": [
+        35,
+        90
+      ],
+      "pressure": [
+        40,
+        200
+      ],
+      "moisture": [
+        0.2,
+        0.9
+      ],
+      "label": "열수 생태",
+      "principle": "열 회피와 대사 제어"
+    },
+    "temperate": {
+      "temperature": [
+        4,
+        32
+      ],
+      "pressure": [
+        65,
+        120
+      ],
+      "moisture": [
+        0.3,
+        0.8
+      ],
+      "label": "온대 생태",
+      "principle": "식생 천이"
+    },
+    "wetland": {
+      "temperature": [
+        0,
+        38
+      ],
+      "pressure": [
+        50,
+        150
+      ],
+      "moisture": [
+        0.7,
+        1.0
+      ],
+      "label": "습지 생태",
+      "principle": "수질 정화"
+    },
+    "canopy": {
+      "temperature": [
+        8,
+        38
+      ],
+      "pressure": [
+        60,
+        140
+      ],
+      "moisture": [
+        0.4,
+        0.9
+      ],
+      "label": "수관 생태",
+      "principle": "빛 분배"
+    },
+    "marine": {
+      "temperature": [
+        -2,
+        42
+      ],
+      "pressure": [
+        50,
+        300
+      ],
+      "moisture": [
+        0.95,
+        1.0
+      ],
+      "label": "해양 생태",
+      "principle": "염분 조절"
+    },
+    "acid": {
+      "temperature": [
+        8,
+        68
+      ],
+      "pressure": [
+        40,
+        180
+      ],
+      "moisture": [
+        0.3,
+        1.0
+      ],
+      "label": "산성 생태",
+      "principle": "산성 부산물 격리"
+    },
+    "crystal": {
+      "temperature": [
+        -18,
+        48
+      ],
+      "pressure": [
+        25,
+        160
+      ],
+      "moisture": [
+        0.1,
+        0.6
+      ],
+      "label": "결정 생태",
+      "principle": "광물 선택 흡수"
+    }
+  },
+  "ground_families": [
+    "lithic",
+    "grazer",
+    "runner",
+    "stalker",
+    "burrower",
+    "carapace",
+    "mantid",
+    "coil",
+    "slug",
+    "mist_leaf",
+    "crystal_fan",
+    "canopy_tree",
+    "spore_fungus",
+    "acid_mat",
+    "thermal_colony",
+    "oxygen_reef",
+    "blind_harp",
+    "spiral_maw",
+    "tripod_bell",
+    "eye_orchard",
+    "asym_pincer",
+    "ribbon_colony",
+    "window_sac",
+    "crown_stalker",
+    "manymouth"
+  ],
+  "native_origin_weights": {
+    "sterile": 15,
+    "dormant": 30,
+    "established": 55
+  },
+  "notes": "수치와 외계 생리는 게임 밸런스 초안이다. 수중·공중·수관·열수 등 실제 서식 매질을 구현하기 전에는 해당 생물을 지표에 출현시키지 않는다. 연구는 지식, 표본은 고유 물체다.",
+  "succession_seconds": {
+    "microbe": 3,
+    "plant": 10,
+    "animal": 30
+  },
+  "plot_support_seconds": 3600.0,
+  "plot_resupply_rock_cost": 3
+}

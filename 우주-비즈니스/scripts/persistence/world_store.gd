@@ -38,11 +38,18 @@ func read_state() -> Dictionary:
 		if not state.is_empty():
 			if candidate != path: last_error = "탐험 백업에서 복구했습니다."
 			return state
-	last_error = "유효한 탐험 저장이 없습니다. 기존 사업 저장은 별도로 보존됩니다."
+	if last_error.is_empty():last_error = "유효한 탐험 저장이 없습니다. 기존 사업 저장은 별도로 보존됩니다."
 	return {}
 
 func _read(candidate: String) -> Dictionary:
 	if not FileAccess.file_exists(candidate): return {}
 	var parser := JSON.new()
 	if parser.parse(FileAccess.get_file_as_string(candidate)) != OK: return {}
-	return parser.data if FrontierUniverse.validate_world(parser.data).is_empty() else {}
+	var error: String=FrontierUniverse.validate_world(parser.data)
+	if not error.is_empty():
+		if last_error.is_empty():last_error=error
+		return {}
+	return parser.data
+
+func has_history() -> bool:
+	return FileAccess.file_exists(path) or FileAccess.file_exists(path+".bak")

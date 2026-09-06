@@ -28,14 +28,30 @@ var logistics: Dictionary
 var render_settings: Dictionary
 var headlamp: SpotLight3D
 var lamp_timer:=0.0
-var lamp_target:=24.0
+var lamp_target:=0.0
+var lamp_mode: String="auto"
+var ecology_view: FrontierSurfaceEcology
+var journal: FrontierEcologyJournal
+var ecology_hud: Label
+var scan_progress:=0.0
+var scan_id: String=""
+var scan_held:=false
+var ecology_tick:=0.0
+var current_encounter: Dictionary={}
+var autosave_timer:=0.0
+var plot_marker: MeshInstance3D
+
 
 func _ready() -> void:
 	render_settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/surface_render.json"))
 	test_mode="--exploration-test" in OS.get_cmdline_user_args()
 	if test_mode:store=FrontierWorldStore.new("user://test_exploration_ui.json")
 	state=store.read_state()
+	if state.is_empty() and store.has_history():
+		FrontierWorldLoadError.show_error(self,store.last_error)
+		return
 	if state.is_empty():state=FrontierUniverse.new_world(71491)
+	get_tree().auto_accept_quit=false
 	body_id=state.location
 	body=FrontierUniverse.body_from_id(state.manifest,body_id)
 	if not state.has("terrain_settings"):
@@ -63,6 +79,7 @@ func _ready() -> void:
 	_setup_ship()
 	_setup_ui()
 	_setup_logistics()
+	_setup_ecology()
 	terrain.geometry_changed.connect(func():message.text="굴착을 완료했습니다.";_refresh_distant())
 	_update_interest()
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE if test_mode else Input.MOUSE_MODE_CAPTURED
@@ -118,7 +135,7 @@ func _setup_player() -> void:
 	headlamp=lamp
 	lamp.position=Vector3(.15,-.1,0)
 	lamp.light_color=Color("d5f0eb")
-	lamp.light_energy=float(render_settings.lamp_energy)
+	lamp.light_energy=0.0
 	lamp.spot_range=60
 	lamp.spot_angle=48
 	lamp.shadow_enabled=true
@@ -151,12 +168,14 @@ func _setup_ui() -> void:
 	hud=Label.new();hud.position=Vector2(24,22);root.add_child(hud)
 	message=Label.new();message.position=Vector2(24,140);message.text="착륙 지점을 확인하고 있습니다.";root.add_child(message)
 	var cross:=Label.new();cross.text="+";cross.add_theme_font_size_override("font_size",26);cross.set_anchors_and_offsets_preset(Control.PRESET_CENTER);cross.position=Vector2(-8,-18);root.add_child(cross)
-	var footer:=Label.new();footer.text="WASD 이동 · Shift 달리기 · Space 점프 · 클릭 굴착 · R 로봇 호출 · F5 저장 · Esc 항해 메뉴 · F3 계측";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
+	var footer:=Label.new();footer.text="WASD 이동 · Shift 달리기 · Space 점프 · 클릭 굴착 · R 로봇 · E 스캔 · Q 표본 · J 생태 · L 조명 · F5 저장 · Esc 메뉴";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
 	menu=PanelContainer.new();menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER);menu.position=Vector2(-180,-120);menu.custom_minimum_size=Vector2(360,220);root.add_child(menu)
 	var column:=VBoxContainer.new();menu.add_child(column)
 	for entry in [["현장 복귀",_resume],["탐사 기록 저장",save_surface],["우주선 출항",return_to_orbit],["착륙 지점으로 구조 요청",rescue]]:
 		var button:=Button.new();button.text=entry[0];button.custom_minimum_size.y=45;button.pressed.connect(entry[1]);column.add_child(button)
 	menu.hide()
+	ecology_hud=Label.new();ecology_hud.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT);ecology_hud.position=Vector2(-390,28);ecology_hud.custom_minimum_size=Vector2(365,110);ecology_hud.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;root.add_child(ecology_hud)
+	journal=FrontierEcologyJournal.new();root.add_child(journal);journal.configure(self)
 
 func _resume() -> void:
 	menu.hide();Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
@@ -173,6 +192,11 @@ func _refresh_distant() -> void:
 
 func _process(delta: float) -> void:
 	cooldown=maxf(0,cooldown-delta)
+	_process_ecology(delta)
+	autosave_timer+=delta
+	if autosave_timer>=30.0:
+		autosave_timer=0
+		save_surface()
 	headlamp.light_energy=lerpf(headlamp.light_energy,lamp_target,minf(1,delta*float(render_settings.lamp_response)))
 	_update_interest()
 	if not moving_enabled and terrain.ready_at(player.position):moving_enabled=true;message.text="착륙 완료 · 전방의 지하 신호를 조사하세요."
@@ -193,9 +217,10 @@ func _physics_process(delta: float) -> void:
 		query.exclude=[player.get_rid()]
 		var hit: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
 		var distance: float=60.0 if hit.is_empty() else camera.global_position.distance_to(hit.position)
-		lamp_target=clampf(float(render_settings.lamp_energy)*pow(distance/float(render_settings.lamp_exposure_distance),2),float(render_settings.lamp_minimum_energy),float(render_settings.lamp_energy))
+		var covered: bool=terrain.field.density(camera.global_position+Vector3.UP*8)>0
+		lamp_target=clampf(float(render_settings.lamp_energy)*pow(distance/float(render_settings.lamp_exposure_distance),2),float(render_settings.lamp_minimum_energy),float(render_settings.lamp_energy)) if lamp_mode=="on" or (lamp_mode=="auto" and covered) else 0.0
 	var direction:=Vector3.ZERO
-	if not menu.visible:
+	if not menu.visible and not journal.visible:
 		var input: Vector2=movement_input if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))).normalized()
 		direction=player.basis*Vector3(input.x,0,input.y)
 		if player.is_on_floor() and Input.is_physical_key_pressed(KEY_SPACE):player.velocity.y=float(config.jump_speed)
@@ -208,13 +233,22 @@ func _physics_process(delta: float) -> void:
 	if player.position.y<float(config.minimum_depth)+2 or maxf(absf(player.position.x),absf(player.position.z))>float(config.region_half_extent):rescue()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.physical_keycode==KEY_E:
+		scan_held=event.pressed
 	if event is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
 		player.rotate_y(-event.relative.x*.0025);head.rotation.x=clampf(head.rotation.x-event.relative.y*.0025,-1.5,1.5)
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:dig()
-		elif not menu.visible:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
+		elif not menu.visible and not journal.visible:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 	elif event is InputEventKey and event.pressed and not event.echo:
-		if event.physical_keycode==KEY_ESCAPE:menu.visible=not menu.visible;Input.mouse_mode=Input.MOUSE_MODE_VISIBLE if menu.visible else Input.MOUSE_MODE_CAPTURED
+		if event.physical_keycode==KEY_ESCAPE:
+			if journal.visible:toggle_journal()
+			else:menu.visible=not menu.visible;Input.mouse_mode=Input.MOUSE_MODE_VISIBLE if menu.visible else Input.MOUSE_MODE_CAPTURED
+		elif event.physical_keycode==KEY_J:toggle_journal()
+		elif event.physical_keycode==KEY_L:
+			lamp_mode={"auto":"on","on":"off","off":"auto"}[lamp_mode]
+			message.text="손전등 · "+{"auto":"자동","on":"켜짐","off":"꺼짐"}[lamp_mode]
+		elif event.physical_keycode==KEY_Q:ecology_action("collect")
 		elif event.physical_keycode==KEY_R:courier.request_pickup()
 		elif event.physical_keycode==KEY_F5:save_surface()
 		elif event.physical_keycode==KEY_F3:debug_visible=not debug_visible
@@ -236,10 +270,12 @@ func dig() -> bool:
 	message.text="굴착 중…"
 	return true
 
-func save_surface() -> void:
+func save_surface() -> bool:
 	state.mode="surface"
 	state.surface_positions[body_id]=[player.position.x,player.position.y,player.position.z]
-	message.text="지형 변화와 탐사 위치를 저장했습니다." if store.write(state) else store.last_error
+	var saved: bool=store.write(state)
+	message.text="지형·생태 기록과 탐사 위치를 저장했습니다." if saved else store.last_error
+	return saved
 
 func rescue() -> void:
 	player.position=Vector3(0,4,0);player.velocity=Vector3.ZERO;moving_enabled=false
@@ -254,4 +290,91 @@ func return_to_orbit() -> void:
 	get_tree().change_scene_to_file("res://scenes/app/exploration.tscn")
 
 func _exit_tree() -> void:
+	get_tree().auto_accept_quit=true
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+
+func _setup_ecology() -> void:
+	if not state.has("ecology"):state.ecology=FrontierEcology.create()
+	FrontierEcology.ensure_planet(state.ecology,body)
+	ecology_view=FrontierSurfaceEcology.new()
+	ecology_view.configure(state.ecology,body,terrain,player)
+	add_child(ecology_view)
+	plot_marker=MeshInstance3D.new()
+	var ring:=TorusMesh.new();ring.inner_radius=float(FrontierEcologyCatalog.config().plot_radius)-.08;ring.outer_radius=float(FrontierEcologyCatalog.config().plot_radius)+.08;ring.rings=64;ring.ring_segments=6
+	plot_marker.mesh=ring
+	var mat:=StandardMaterial3D.new();mat.albedo_color=Color("80c7b2");mat.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
+	plot_marker.material_override=mat;plot_marker.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(plot_marker)
+	_update_plot_marker()
+
+func _update_plot_marker() -> void:
+	var plot: Dictionary=state.ecology.planets[body_id].plot
+	plot_marker.visible=not plot.is_empty()
+	if plot_marker.visible:plot_marker.position=Vector3(plot.center[0],plot.center[1]-.75,plot.center[2])
+
+func _process_ecology(delta: float) -> void:
+	if not is_instance_valid(ecology_view):return
+	current_encounter=ecology_view.target(camera) if not menu.visible and not journal.visible and moving_enabled else {}
+	var id: String=current_encounter.get("id","")
+	if id!=scan_id or not scan_held or id.is_empty():scan_progress=0;scan_id=id
+	if not id.is_empty():
+		var form:=FrontierEcologyCatalog.form(current_encounter.form_id)
+		var known: bool=state.ecology.observations.has(body_id+":"+form.id)
+		ecology_hud.text="%s\n%s · %s\n%s"%[form.name,form.environment_label,"휴면" if current_encounter.status=="dormant" else "활성","Q 표본 확보 · J 연구 기록" if known else "E 길게 누르기 · 생태 스캔"]
+		if scan_held and not known:
+			scan_progress+=minf(delta,.1)
+			ecology_hud.text+=" · %d%%"%mini(100,int(scan_progress/float(FrontierEcologyCatalog.config().scan_seconds)*100))
+			if scan_progress>=float(FrontierEcologyCatalog.config().scan_seconds):ecology_action("scan");scan_progress=0;scan_held=false
+	else:
+		var record: Dictionary=state.ecology.planets[body_id]
+		ecology_hud.text="생태 탐사 · J\n활성 신호 %d · 휴면 군체 %d"%[ecology_view.active_count,ecology_view.dormant_count]
+		if record.profile.origin=="sterile":ecology_hud.text+="\n고유 생명 신호 없음 · 외부 표본 도입 가능"
+	ecology_tick+=delta
+	if ecology_tick>=1.0:
+		FrontierEcology.advance(state.ecology,body_id,1.0)
+		ecology_tick=0
+
+func toggle_journal() -> void:
+	journal.visible=not journal.visible
+	ecology_hud.visible=not journal.visible
+	if journal.visible:menu.hide();journal.refresh()
+	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE if journal.visible else Input.MOUSE_MODE_CAPTURED
+	scan_held=false
+
+func ecology_action(action: String,selection: String="") -> bool:
+	var encounter: Dictionary=ecology_view.target(camera)
+	if action in ["scan","collect"]:
+		if encounter.is_empty():message.text="생명체가 시야 안에 보이도록 가까이 접근하세요.";return false
+		if action=="collect" and player.position.distance_to(encounter.point)>float(FrontierEcologyCatalog.config().sample_range):message.text="생체 표본 확보는 4m 이내에서 가능합니다.";return false
+	elif player.position.distance_to(ship_position)>float(FrontierEcologyCatalog.config().lab_range):message.text="우주선 가까이에서 연구·격리 시험을 진행하세요.";return false
+	var draft: Dictionary=state.duplicate(true)
+	var result: String=""
+	var layer: String="cave" if terrain.field.height(player.position.x,player.position.z)-player.position.y>6 else "surface"
+	var supplies: Dictionary=draft.surface_logistics[body_id]
+	match action:
+		"scan":result=FrontierEcology.scan(draft.ecology,body_id,encounter)
+		"collect":result=FrontierEcology.collect(draft.ecology,body_id,encounter)
+		"analyze":result=FrontierEcology.analyze(draft.ecology,selection,supplies)
+		"restore":result=FrontierEcology.restore_plot(draft.ecology,body_id,selection,player.position,layer,supplies)
+		"resupply":result=FrontierEcology.resupply_plot(draft.ecology,body_id,supplies)
+		"introduce":
+			if not draft.ecology.specimens.has(selection):message.text="운송 표본을 선택하세요.";return false
+			var sample: Dictionary=draft.ecology.specimens[selection]
+			var candidate: Dictionary={"form_id":sample.form_id,"look_id":sample.look_id,"point":player.position-player.basis.z*3,"layer":layer,"yaw":0.0}
+			var point:=FrontierEcologyPlacement.ground(terrain.field,candidate)
+			if not point.is_finite():message.text="표본이 안정적으로 설 수 있는 평탄하고 넓은 장소가 필요합니다.";return false
+			result=FrontierEcology.introduce(draft.ecology,body_id,selection,point,layer)
+		_:return false
+	if draft.ecology==state.ecology and supplies==logistics:message.text=result;return false
+	draft.surface_positions[body_id]=[player.position.x,player.position.y,player.position.z]
+	if not store.write(draft):message.text=store.last_error;return false
+	state.ecology=draft.ecology
+	logistics.depot_rock=supplies.depot_rock
+	ecology_view.ecology=state.ecology;ecology_view.invalidate()
+	_update_plot_marker()
+	message.text=result
+	return true
+
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_WM_CLOSE_REQUEST:
+		if state.is_empty() or not is_instance_valid(player) or save_surface():get_tree().quit()
