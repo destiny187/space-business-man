@@ -234,7 +234,7 @@ func _publish_surface() -> void:
 		if peer==1:surface=value;surface_received.emit(value)
 		else:
 			var encoded:=FrontierCrewSurfaceReplica.encode(value)
-			if encoded.size()>int(FrontierCrewSurface.config().maximum_compressed_bytes):notice.emit("지표 기록 전송 한도를 확인해야 합니다.");continue
+			if encoded.is_empty():notice.emit("지표 기록 전송 한도를 확인해야 합니다.");continue
 			surface_bytes_sent+=encoded.size()
 			_surface_state.rpc_id(peer,session_id,surface_serial,encoded)
 		surface_digests[peer]=digest

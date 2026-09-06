@@ -33,6 +33,6 @@
 
 `res://tests/test_field_engineering.gd`는 서로 다른 환경의 실제 시드 행성 탐색·항해·착륙·스캔 유지·기초 분석·채광 재료로 세 과제를 실행한다. 저장 실패 롤백, 같은 요청 재전송, 정지 중 진행 금지, 중복 개조 금지, 환경 처리량 차이, 저장 재개를 포함한다. 최종 규칙 검사 120개가 통과했다. 처리량 비교에는 통제된 기후 상태를 사용하며 재료 지급 없는 실제 게임 경로와 구분한다. 확장 회귀 전체와 960×640 레이아웃 12개도 통과했다.
 
-실제 네트워크/버튼 경로는 `python3 tools/test_business_play.py --players 6 --engineering`로 실행한다. 같은 Mac의 Metal 호스트 1개와 headless 게스트 5개에서 사업·실제 생물 스캔·기초 분석·연구 버튼·현장 시험·개조·정산·호스트 재시작 280개 검사가 통과했다. 위치 제어와 산업 시간 가속을 사용했고 원정 산업 자원을 무상 지급하지 않았다. [실제 연구 화면](media/field-engineering/engineering-certified.png)과 [검증 범위](media/field-engineering/verification.json)를 보존한다. 서로 다른 인터넷 회선과 6개 GPU의 성능을 검증한 결과는 아니다.
+실제 네트워크/버튼 경로는 `python3 tools/test_business_play.py --players 6 --engineering`로 실행한다. 같은 Mac의 Metal 호스트 1개와 headless 게스트 5개에서 사업·실제 생물 스캔·기초 분석·연구 버튼·현장 시험·개조·정산·호스트 재시작 280개 검사가 통과했다. 위치 제어와 산업 시간 가속을 사용했고 원정 산업 자원을 무상 지급하지 않았다. [실제 연구 화면](media/field-engineering/engineering-certified.png)과 [검증 범위](media/field-engineering/verification.json)를 보존한다. 이후 모델 분산 로딩·패킷 한도 개선까지 포함한 두 Metal 창 동시 실행 260개도 통과했다. [최신 연구 화면](media/field-engineering/engineering-metal-pair.png)과 [2인 동시 렌더 기록](media/field-engineering/metal-pair-verification.json)을 추가로 보존한다. 서로 다른 인터넷 회선과 6개 GPU의 성능을 검증한 결과는 아니다.
 
 남은 범위는 광물·유적·경관·우주 사건·문명의 별도 발견 원형과 가설 분기, 개체별 생리 측정·대사, 반출 권리, 표본 기반 다세대 배양, 입출력 회로, 행성 규모 생태 및 이동 연구실이다.

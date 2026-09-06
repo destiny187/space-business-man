@@ -1,0 +1,26 @@
+{
+  "after_raw_bytes": 326168,
+  "before_raw_bytes": 1453046,
+  "checks": 26,
+  "compressed_bytes": [
+    116211,
+    116211,
+    116211,
+    116211,
+    116211,
+    116211
+  ],
+  "failures": 0,
+  "fixture": "4096 terrain edits, four local robots, two transported robots, 3500 waypoints per robot",
+  "gpu_performance": false,
+  "packet_encode_decode_milliseconds": [
+    53.976,
+    55.059,
+    54.89,
+    54.957,
+    54.848,
+    55.234
+  ],
+  "real_network": false,
+  "recipients": 6
+}

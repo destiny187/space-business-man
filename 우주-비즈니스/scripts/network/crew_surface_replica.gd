@@ -80,9 +80,12 @@ static func validate(value: Variant,manifest: Dictionary) -> bool:
 	return true
 
 static func encode(value: Dictionary) -> PackedByteArray:
-	return JSON.stringify(value).to_utf8_buffer().compress(FileAccess.COMPRESSION_DEFLATE)
+	var raw:=JSON.stringify(value).to_utf8_buffer()
+	if raw.size()>int(FrontierCrewSurface.config().maximum_packet_bytes):return PackedByteArray()
+	var encoded:=raw.compress(FileAccess.COMPRESSION_DEFLATE)
+	return encoded if encoded.size()<=int(FrontierCrewSurface.config().maximum_compressed_bytes) else PackedByteArray()
 static func decode(data: PackedByteArray,manifest: Dictionary) -> Dictionary:
-	if data.size()>int(FrontierCrewSurface.config().maximum_compressed_bytes):return {}
+	if data.is_empty() or data.size()>int(FrontierCrewSurface.config().maximum_compressed_bytes):return {}
 	var raw:=data.decompress_dynamic(int(FrontierCrewSurface.config().maximum_packet_bytes),FileAccess.COMPRESSION_DEFLATE)
 	if raw.is_empty():return {}
 	var value: Variant=JSON.parse_string(raw.get_string_from_utf8())

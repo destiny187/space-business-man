@@ -1,0 +1,14 @@
+{
+  "players": 2,
+  "renderer": "both processes Metal Forward+",
+  "checks": 260,
+  "failures": 0,
+  "runtime_errors": 0,
+  "scenario": "full industry and field engineering after staggered asynchronous model creation and route-free replication",
+  "internet_tested": false,
+  "controlled_test_conditions": [
+    "host fixture positions",
+    "accelerated industry ticks"
+  ],
+  "image_sha256": "1ffe88d6f930cfe8179697b28123e29631210801b7bc2e8ab975fcb8ff0c19b3"
+}

@@ -209,12 +209,27 @@ static func release_carrier(world: Dictionary,actor: String) -> void:
 static func public_view(world: Dictionary,actor: String) -> Dictionary:
 	if not world.has("business"):return {}
 	var ledger: Dictionary=world.business
-	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":ledger.hangar.duplicate(true),"bags":{},"crates":{}}
-	if ledger.sites.has(world.location):view.sites[world.location]=ledger.sites[world.location].duplicate(true)
+	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":{},"bags":{},"crates":{}}
+	# Copy render state directly; do not first duplicate thousands of private waypoints.
+	for id in ledger.hangar:view.hangar[id]=visible_robot(ledger.hangar[id])
+	if ledger.sites.has(world.location):
+		var source: Dictionary=ledger.sites[world.location]
+		var current: Dictionary={}
+		for key in source:
+			if key=="robots":continue
+			current[key]=source[key].duplicate(true) if source[key] is Dictionary or source[key] is Array else source[key]
+		current.robots={}
+		for id in source.robots:current.robots[id]=visible_robot(source.robots[id])
+		view.sites[world.location]=current
 	if ledger.bags.has(actor):view.bags[actor]=ledger.bags[actor].duplicate(true)
 	for id in ledger.crates:
 		if ledger.crates[id].body_id==world.location:view.crates[id]=ledger.crates[id].duplicate(true)
 	return view
+static func visible_robot(source: Dictionary) -> Dictionary:
+	var result: Dictionary={"path":[]}
+	for key in ["id","grade","battery","phase","target","status","work","charging"]:result[key]=source[key]
+	result.position=source.position.duplicate();result.cargo=source.cargo.duplicate()
+	return result
 static func valid_inventory(value: Variant,maximum: int=100000000) -> bool:
 	if not value is Dictionary or value.size()!=5:return false
 	for key in inventory():
