@@ -15,6 +15,10 @@ var lamp: SpotLight3D
 var environment: Environment
 var last_anchor:=Vector3i(99999,99999,99999)
 var tick:=0.0
+var fallback_tick:=0.0
+var fallback_jobs:=-1
+var preferences: FrontierClientSettings
+var rendered_distance:=0.0
 var refits: FrontierVesselVisuals
 var business_view: FrontierBusinessSiteView
 
@@ -35,6 +39,9 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	lamp=SpotLight3D.new();lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():_refresh_distant();ecology.invalidate())
 	business_view=FrontierBusinessSiteView.new();add_child(business_view);business_view.configure(terrain,body);business_view.accept(packet.get("business",{}))
+	preferences=FrontierClientSettings.ensure(get_tree())
+	preferences.changed.connect(func():
+		if not is_equal_approx(rendered_distance,float(preferences.values.view_distance)):_refresh_distant())
 	_update_interest()
 
 func _ecology(packet: Dictionary) -> Dictionary:
@@ -72,18 +79,25 @@ func _update_interest() -> void:
 	if anchor!=last_anchor:last_anchor=anchor;_refresh_distant()
 
 func _refresh_distant() -> void:
-	distant.rebuild(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.material)
+	rendered_distance=float(preferences.values.view_distance)
+	distant.rebuild(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.material,float(preferences.values.view_distance))
+	distant.rebuild_fallback(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.chunks)
+	fallback_jobs=terrain.completed_jobs
 
 func _process(delta: float) -> void:
 	if session==null or terrain==null:return
 	if session.hosting and session.authority.world.has("ecology"):ecology.ecology=session.authority.world.ecology
 	refits.update_loadout(session.latest.get("vessel",{}))
 	_update_interest()
+	fallback_tick-=delta
+	if fallback_tick<=0 and fallback_jobs!=terrain.completed_jobs:
+		fallback_tick=.5;fallback_jobs=terrain.completed_jobs
+		distant.rebuild_fallback(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.chunks)
 	if applied_edits<incoming.size() and terrain.batch.is_empty():
 		var edit: Dictionary=incoming[applied_edits]
 		terrain.dig(FrontierCrewWorld.vector(edit.center),float(edit.radius));applied_edits+=1
 	var underground: float=clampf(-viewer.position.y/10.0,0,1)
-	environment.ambient_light_energy=lerpf(.28,.035,underground);environment.fog_density=lerpf(.0007,.002,underground)
+	environment.ambient_light_energy=lerpf(.28,.035,underground);environment.fog_density=lerpf(.0007,.002,underground)*float(preferences.values.fog)
 	tick-=delta
 	if tick<=0:
 		tick=.15

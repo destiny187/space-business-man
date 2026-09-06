@@ -69,3 +69,5 @@
 - [원정선 모듈 성장과 이동 실험실](production/16-vessel-refits-and-progression.md): E3 첫 범위, 실제 장착·제작·추첨·개량·수송 용량·검증과 후속 제한.
 
 - [혼자 시작·착륙 UI 수정](production/17-solo-entry-and-surface-ui.md): 현재 시작 경로, 오프라인 원정, 착륙 시 패널 숨김과 직접 조작 검증.
+
+- [개인 설정·그래픽·시야거리 및 원경 누락 수정](production/18-client-settings-and-view-distance.md)

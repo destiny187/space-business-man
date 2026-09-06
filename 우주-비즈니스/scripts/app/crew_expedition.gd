@@ -72,6 +72,7 @@ func _ready() -> void:
 		if not value.get("ok",false):status.value=value.get("error","작업 실패")
 		else:status.value="원정 기록을 저장했습니다.")
 	_build_cabin();_build_ui()
+	FrontierClientSettings.ensure(get_tree()).apply_all()
 	if FileAccess.file_exists(profile.path) and profile.ensure():
 		name_input.text=profile.data.character.name;name_input.editable=false
 	get_tree().auto_accept_quit=false
@@ -163,6 +164,7 @@ func _build_ui() -> void:
 	var dock:=HBoxContainer.new();ui.add_child(dock);dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62);dock.add_theme_constant_override("separation",8)
 	get_viewport().size_changed.connect(func():dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62))
 	navigation_toggle=_button(dock,"항해 · 승무원 [Tab]",toggle_navigation);navigation_toggle.hide()
+	_button(dock,"설정 [F10]",func():FrontierClientSettings.ensure(get_tree()).open()).name="Settings"
 	surface_tools=HBoxContainer.new();dock.add_child(surface_tools);surface_tools.hide()
 	_button(surface_tools,"개발 · 건설 [B]",toggle_business)
 	_button(surface_tools,"생태 연구 [J]",toggle_research)
@@ -265,6 +267,7 @@ func _physics_process(delta: float) -> void:
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
+		if FrontierClientSettings.ensure(get_tree()).is_open():direction=Vector2.ZERO;scanning=false
 		session.send_input(direction,-camera.global_basis.z,scanning)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
@@ -300,10 +303,13 @@ func _process(delta: float) -> void:
 	_update_surface_hud()
 	_update_business_placement()
 func _input(event: InputEvent) -> void:
+	if FrontierClientSettings.ensure(get_tree()).is_open():return
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_TAB and not get_viewport().gui_get_focus_owner() is LineEdit:
 		toggle_navigation();get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*.0025;pitch=clampf(pitch-event.relative.y*.0025,-1.3,1.3)
+	var preferences:=FrontierClientSettings.ensure(get_tree())
+	if preferences.is_open():return
+	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*float(preferences.values.sensitivity);pitch=clampf(pitch-event.relative.y*float(preferences.values.sensitivity)*(-1 if preferences.values.invert_y else 1),-1.3,1.3)
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
 		if event.physical_keycode==KEY_J:toggle_research()

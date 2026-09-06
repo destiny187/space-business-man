@@ -60,6 +60,7 @@ func _ready() -> void:
 		if value.contains("제작 완료"): audio.play("sfx_factory_complete"))
 	world.rebuild({})
 	_show_menu("title")
+	FrontierClientSettings.ensure(get_tree()).apply_all()
 	if "--smoke" in OS.get_cmdline_user_args():
 		smoke_mode = true
 		_smoke_setup()
@@ -285,6 +286,7 @@ func _title_menu(column: VBoxContainer) -> void:
 	var solo_label: String="혼자 이어하기  →" if FileAccess.file_exists("user://solo_world.json") or FileAccess.file_exists("user://solo_world.json.bak") else "혼자 게임 시작  →"
 	_primary(_button(column,solo_label,func(): _start_expedition("solo"))).name="SoloStart"
 	_button(column,"함께 플레이 · 최대 6명",func(): _start_expedition("multiplayer")).name="MultiplayerStart"
+	_button(column,"설정 · 그래픽 / 시야거리 [F10]",func():FrontierClientSettings.ensure(get_tree()).open()).name="Settings"
 	_button(column,"종료",_quit_game)
 	_label(column,"혼자 플레이는 연결 설정 없이 바로 시작합니다.",12,MUTED)
 
