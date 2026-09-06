@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "manual_tool": {"mine_amount": 16, "mine_interval": 0.35, "pulse_amount": 8, "pulse_damage": 5, "pulse_range": 25, "pulse_interval": 0.6, "pulse_heat": 32, "cooling_per_second": 20, "restart_heat": 25},
+  "resources": {
+    "iron": {"name": "철", "color": "93b7ce", "value": 2},
+    "copper": {"name": "구리", "color": "ed985d", "value": 3},
+    "stone": {"name": "암석", "color": "a899b0", "value": 1},
+    "ice": {"name": "얼음", "color": "8bf2ef", "value": 2},
+    "crystal": {"name": "희귀 결정", "color": "c89bff", "value": 12}
+  },
+  "technologies": {
+    "robotics": {"name": "입문 로봇공학", "price": 300, "requires": "", "description": "mine사의 채광로봇 제작. 광맥 채굴과 자원 운반을 자동화합니다.", "rare": false},
+    "atmosphere": {"name": "대기 공학", "price": 600, "requires": "robotics", "description": "대기 처리기를 건설하여 기압·산소·독성을 조절합니다.", "rare": false},
+    "thermal": {"name": "열 제어", "price": 500, "requires": "atmosphere", "description": "기후 조절탑이 온도를 18°C로 안정화합니다.", "rare": false},
+    "water": {"name": "수자원 순환", "price": 400, "requires": "atmosphere", "description": "얼음을 물로 바꾸는 수자원 설비를 해금합니다.", "rare": false},
+    "biotech": {"name": "생태 정착", "price": 500, "requires": "water", "description": "생태 배양기로 미생물을 정착시키고 식생을 복원합니다.", "rare": false},
+    "recovery": {"name": "궤도 회수", "price": 700, "requires": "robotics", "description": "우주선의 화물 슬롯만큼 로봇을 지구로 회수합니다.", "rare": false},
+    "analysis": {"name": "고대 기술 분석", "price": 500, "requires": "robotics", "description": "유적에서 고대 설계도를 분석할 수 있습니다.", "rare": false},
+    "combat": {"name": "방위 로봇공학", "price": 1600, "requires": "robotics", "description": "전투 AI를 가진 경비로봇을 제작합니다.", "rare": false},
+    "advanced": {"name": "정밀 자율 공정", "price": 1800, "requires": "robotics", "description": "작업 속도가 빠르고 화물 용량이 큰 탐광로봇을 제작합니다.", "rare": true},
+    "ancient": {"name": "고대 에너지 코어", "price": 2600, "requires": "atmosphere", "description": "연료 없이 높은 출력을 내는 고대 발전기를 건설합니다.", "rare": true}
+  },
+  "buildings": {
+    "storage": {"name": "물류 보관함", "description": "기지 공유 재고 용량 +600. 운반 로봇이 자원을 반납합니다.", "cost": {"iron": 20, "stone": 20}, "tech": "", "power": 0, "radius": 1.5, "model": "storage"},
+    "solar": {"name": "태양광 발전기", "description": "전력 +16 kW. 기지 내 시설과 충전기에 전력을 공급합니다.", "cost": {"iron": 20, "copper": 10, "stone": 10}, "tech": "", "power": -16, "radius": 2.2, "model": "solar"},
+    "charger": {"name": "로봇 충전 패드", "description": "전력 2 kW. 배터리가 낮은 로봇이 자동으로 귀환합니다.", "cost": {"iron": 15, "copper": 10}, "tech": "", "power": 2, "radius": 1.4, "model": "charger"},
+    "factory": {"name": "자율장비 제작기", "description": "전력 4 kW. 구매한 기술과 현지 자원으로 로봇을 제작합니다.", "cost": {"iron": 40, "copper": 15, "stone": 20}, "tech": "robotics", "power": 4, "radius": 2.4, "model": "factory"},
+    "atmosphere": {"name": "대기 처리기", "description": "전력 6 kW. 독성을 제거하고 산소·기압을 거주 목표로 조절합니다.", "cost": {"iron": 70, "copper": 25, "stone": 30}, "tech": "atmosphere", "power": 6, "radius": 2.2, "model": "atmosphere"},
+    "thermal": {"name": "기후 조절탑", "description": "전력 6 kW. 혹한과 고온을 완화합니다.", "cost": {"iron": 60, "copper": 20, "stone": 30}, "tech": "thermal", "power": 6, "radius": 1.8, "model": "thermal"},
+    "water": {"name": "수자원 순환기", "description": "전력 4 kW. 얼음 1개를 4초마다 소비해 물을 확보합니다.", "cost": {"iron": 40, "copper": 15, "stone": 30}, "tech": "water", "power": 4, "radius": 2.0, "model": "water"},
+    "biolab": {"name": "생태 배양기", "description": "전력 4 kW. 적절한 대기·온도·물 조건에서 생태를 정착시킵니다.", "cost": {"iron": 40, "copper": 20, "ice": 30}, "tech": "biotech", "power": 4, "radius": 2.0, "model": "biolab"},
+    "reactor": {"name": "고대 에너지 코어", "description": "전력 +60 kW. 고대 기술을 복원한 고성능 발전 설비입니다.", "cost": {"iron": 80, "copper": 40, "crystal": 15}, "tech": "ancient", "power": -60, "radius": 2.2, "model": "reactor"}
+  },
+  "robots": {
+    "miner": {"name": "mine / M-01 채광로봇", "role": "miner", "tech": "robotics", "cost": {"iron": 100, "copper": 10}, "seconds": 18, "speed": 3.2, "cargo": 60, "mining": 6, "model": "miner"},
+    "surveyor": {"name": "mine / X-04 탐광로봇", "role": "miner", "tech": "advanced", "cost": {"iron": 160, "copper": 35, "crystal": 10}, "seconds": 25, "speed": 4.5, "cargo": 100, "mining": 10, "model": "surveyor"},
+    "guardian": {"name": "WARD / G-02 경비로봇", "role": "combat", "tech": "combat", "cost": {"iron": 140, "copper": 35}, "seconds": 22, "speed": 3.5, "cargo": 0, "mining": 0, "model": "guardian"}
+  },
+  "grades": {
+    "standard": {"name": "보급", "weight": 70, "multiplier": 1.0, "traits": 1, "color": "a8b9bf"},
+    "improved": {"name": "개량", "weight": 25, "multiplier": 1.15, "traits": 1, "color": "78dfc3"},
+    "rare": {"name": "희귀", "weight": 5, "multiplier": 1.3, "traits": 2, "color": "c79af3"}
+  },
+  "traits": {
+    "efficient": {"name": "절전", "description": "배터리 소모 15% 감소"},
+    "cargo": {"name": "대용량", "description": "화물 용량 25% 증가"},
+    "fast": {"name": "채광 최적화", "description": "채광 속도 10% 증가"},
+    "sturdy": {"name": "견고함", "description": "물리적 충격 피해 20% 감소"}
+  },
+  "planets": {
+    "basalt": {"name": "모래빛 위성", "prefix": "KEPLER", "price": 2400, "temperature": -36, "toxicity": 65, "pressure": 0.18, "oxygen": 0.025, "water": 3, "color": "95746f", "description": "작고 척박한 입문 위성. 풍부한 기초 광물과 안정적인 일조량."},
+    "glacial": {"name": "빙하 위성", "prefix": "BOREAL", "price": 6000, "temperature": -84, "toxicity": 25, "pressure": 0.35, "oxygen": 0.05, "water": 12, "color": "71869d", "description": "얼음이 풍부한 혹한의 위성. 온도 제어에 더 큰 투자가 필요합니다."},
+    "sulfur": {"name": "황산 행성", "prefix": "VESPER", "price": 9500, "temperature": 78, "toxicity": 95, "pressure": 2.2, "oxygen": 0.01, "water": 0, "color": "ad985c", "description": "독성 대기와 희귀 결정. 적응 미생물과 고급 설비에 유리합니다."}
+  },
+  "ships": [
+    {"name": "기본 수송 계약", "slots": 0, "price": 0},
+    {"name": "SPARROW 소형선", "slots": 1, "price": 1200},
+    {"name": "HERON 중형선", "slots": 3, "price": 4000},
+    {"name": "ALBATROSS 대형선", "slots": 6, "price": 9500}
+  ]
+}

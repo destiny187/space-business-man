@@ -1,0 +1,222 @@
+{
+  "before": {
+    "ecology": 100,
+    "frozen_simulation": true,
+    "gpu": "Apple M2 (Apple8)",
+    "label": "before",
+    "resolution": [
+      1280,
+      800
+    ],
+    "robots": 30,
+    "samples_per_view": 240,
+    "views": [
+      {
+        "draw_calls": 1052.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4280916666667,
+        "p95_ms": 17.239,
+        "primitives": 1288352.0,
+        "render_cpu_mean_ms": 1.66950833648443,
+        "view": "settlement"
+      },
+      {
+        "draw_calls": 661.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4701166666667,
+        "p95_ms": 17.073,
+        "primitives": 438944.0,
+        "render_cpu_mean_ms": 0.587575000276168,
+        "view": "materials"
+      },
+      {
+        "draw_calls": 99.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4408125,
+        "p95_ms": 17.083,
+        "primitives": 162364.0,
+        "render_cpu_mean_ms": 0.279045832964281,
+        "view": "water"
+      },
+      {
+        "draw_calls": 477.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4241375,
+        "p95_ms": 17.17,
+        "primitives": 358892.0,
+        "render_cpu_mean_ms": 0.585383333762487,
+        "view": "landscape"
+      }
+    ],
+    "vsync": false
+  },
+  "performance": {
+    "ecology": 100,
+    "frozen_simulation": true,
+    "gpu": "Apple M2 (Apple8)",
+    "label": "performance",
+    "resolution": [
+      1280,
+      800
+    ],
+    "robots": 30,
+    "samples_per_view": 240,
+    "views": [
+      {
+        "draw_calls": 843.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4216958333333,
+        "p95_ms": 17.7,
+        "primitives": 702222.0,
+        "render_cpu_mean_ms": 1.75688333436847,
+        "view": "settlement"
+      },
+      {
+        "draw_calls": 537.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.299475,
+        "p95_ms": 19.038,
+        "primitives": 352376.0,
+        "render_cpu_mean_ms": 0.947537501280506,
+        "view": "materials"
+      },
+      {
+        "draw_calls": 38.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.8626166666667,
+        "p95_ms": 18.656,
+        "primitives": 160984.0,
+        "render_cpu_mean_ms": 0.454258333612233,
+        "view": "water"
+      },
+      {
+        "draw_calls": 367.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4307958333333,
+        "p95_ms": 17.844,
+        "primitives": 306988.0,
+        "render_cpu_mean_ms": 0.994062497590979,
+        "view": "landscape"
+      }
+    ],
+    "vsync": false
+  },
+  "balanced": {
+    "ecology": 100,
+    "frozen_simulation": true,
+    "gpu": "Apple M2 (Apple8)",
+    "label": "balanced",
+    "resolution": [
+      1280,
+      800
+    ],
+    "robots": 30,
+    "samples_per_view": 240,
+    "views": [
+      {
+        "draw_calls": 826.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4365166666667,
+        "p95_ms": 17.567,
+        "primitives": 854838.0,
+        "render_cpu_mean_ms": 1.65127916658918,
+        "view": "settlement"
+      },
+      {
+        "draw_calls": 560.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4423166666667,
+        "p95_ms": 17.66,
+        "primitives": 368814.0,
+        "render_cpu_mean_ms": 1.30414999909699,
+        "view": "materials"
+      },
+      {
+        "draw_calls": 35.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.4495375,
+        "p95_ms": 17.491,
+        "primitives": 160460.0,
+        "render_cpu_mean_ms": 0.586558331611256,
+        "view": "water"
+      },
+      {
+        "draw_calls": 369.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 16.410825,
+        "p95_ms": 17.712,
+        "primitives": 329798.0,
+        "render_cpu_mean_ms": 1.12866249953707,
+        "view": "landscape"
+      }
+    ],
+    "vsync": false
+  },
+  "high": {
+    "ecology": 100,
+    "frozen_simulation": true,
+    "gpu": "Apple M2 (Apple8)",
+    "label": "high",
+    "resolution": [
+      1280,
+      800
+    ],
+    "robots": 30,
+    "samples_per_view": 240,
+    "views": [
+      {
+        "draw_calls": 844.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 25.2359166666667,
+        "p95_ms": 30.339,
+        "primitives": 1276058.0,
+        "render_cpu_mean_ms": 2.36878750448426,
+        "view": "settlement"
+      },
+      {
+        "draw_calls": 548.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 21.7118875,
+        "p95_ms": 26.395,
+        "primitives": 435412.0,
+        "render_cpu_mean_ms": 1.56741250207027,
+        "view": "materials"
+      },
+      {
+        "draw_calls": 36.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 20.5349625,
+        "p95_ms": 27.474,
+        "primitives": 161280.0,
+        "render_cpu_mean_ms": 0.866137498927613,
+        "view": "water"
+      },
+      {
+        "draw_calls": 375.0,
+        "gpu_mean_ms": null,
+        "gpu_p95_ms": null,
+        "mean_ms": 19.9223458333333,
+        "p95_ms": 23.732,
+        "primitives": 364386.0,
+        "render_cpu_mean_ms": 1.36910416757067,
+        "view": "landscape"
+      }
+    ],
+    "vsync": false
+  }
+}

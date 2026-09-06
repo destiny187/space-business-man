@@ -1,0 +1,36 @@
+{
+  "engine": "4.7.2-stable (official)",
+  "gpu": "Apple M2 (Apple8)",
+  "resolution": [
+    2560,
+    1440
+  ],
+  "samples_per_shot": 120,
+  "scope": "standalone art study; no campaign simulation",
+  "sdfgi": false,
+  "views": [
+    {
+      "draw_calls": 309.0,
+      "mean_frame_ms": 181.398308333333,
+      "p95_frame_ms": 207.524,
+      "rendered_primitives": 3080338.0,
+      "shot": 0
+    },
+    {
+      "draw_calls": 306.0,
+      "mean_frame_ms": 201.409816666667,
+      "p95_frame_ms": 231.71,
+      "rendered_primitives": 3211604.0,
+      "shot": 1
+    },
+    {
+      "draw_calls": 268.0,
+      "mean_frame_ms": 196.068333333333,
+      "p95_frame_ms": 226.446,
+      "rendered_primitives": 2846406.0,
+      "shot": 2
+    }
+  ],
+  "volumetric_fog": false,
+  "vsync": "default enabled; displayed frame interval, not GPU time"
+}

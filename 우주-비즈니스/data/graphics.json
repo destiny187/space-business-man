@@ -1,0 +1,47 @@
+{
+  "default": "balanced",
+  "profiles": {
+    "performance": {
+      "name": "성능 우선",
+      "description": "금속·지형·물 표현 유지 / 접지 음영·간접광·화면 반사 생략",
+      "msaa": 1,
+      "shadow_size": 2048,
+      "shadow_distance": 80,
+      "soft_sun": 0.0,
+      "ssao": false,
+      "ssil": false,
+      "ssr": false,
+      "glow": false,
+      "local_lights": 2,
+      "lod_pixels": 4
+    },
+    "balanced": {
+      "name": "균형 · 권장",
+      "description": "2× 안티앨리어싱 / 접지 음영 / 발광 / 부드러운 그림자",
+      "msaa": 1,
+      "shadow_size": 2048,
+      "shadow_distance": 90,
+      "soft_sun": 0.0,
+      "ssao": true,
+      "ssil": false,
+      "ssr": false,
+      "glow": true,
+      "local_lights": 4,
+      "lod_pixels": 3
+    },
+    "high": {
+      "name": "높음",
+      "description": "균형 + 화면 간접광·반사 / 거리별로 퍼지는 태양 그림자 · GPU 부하 증가",
+      "msaa": 2,
+      "shadow_size": 4096,
+      "shadow_distance": 115,
+      "soft_sun": 0.8,
+      "ssao": true,
+      "ssil": true,
+      "ssr": true,
+      "glow": true,
+      "local_lights": 6,
+      "lod_pixels": 1
+    }
+  }
+}
