@@ -134,4 +134,10 @@ static func _validate_terrain(value: Dictionary) -> String:
 		var span: float=float(cfg.cell_size)*int(cfg.chunk_cells)
 		for point in value.get("surface_positions",{}).values():
 			if absf(point[0])>float(cfg.region_half_extent) or absf(point[2])>float(cfg.region_half_extent) or point[1]<float(cfg.minimum_depth)+2 or point[1]>float(cfg.maximum_height)+span-2:return "저장된 지표 위치가 탐사 영역 밖입니다."
+	if value.has("surface_logistics"):
+		if not value.surface_logistics is Dictionary:return "행성별 물류 기록 오류"
+		for id in value.surface_logistics:
+			if not id is String or ordinal_of(value.manifest,id)<0:return "물류 행성 주소 오류"
+			var error: String=FrontierSurfaceLogistics.validate(value.surface_logistics[id],value.get("terrain_settings",{}))
+			if not error.is_empty():return error
 	return ""

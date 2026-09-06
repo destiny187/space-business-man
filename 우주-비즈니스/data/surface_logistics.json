@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "robot_id": "locus-courier-01",
+  "speed": 4.2,
+  "cargo_capacity": 8,
+  "rock_per_excavation": 1,
+  "transfer_distance": 2.4,
+  "transfer_seconds": 1.4,
+  "navigation": {
+    "step": 2.0,
+    "step_height": 1.65,
+    "max_slope": 0.65,
+    "radius": 0.72,
+    "height": 1.35,
+    "search_limit": 3500,
+    "search_radius": 220.0
+  }
+}

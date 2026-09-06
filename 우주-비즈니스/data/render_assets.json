@@ -323,5 +323,20 @@
       0.84,
       -1.7
     ]
+  },
+  {
+    "id": "locus_courier",
+    "title": "원정 장비 / 지하 운반",
+    "name": "M–07 운반 로봇",
+    "group": "장비",
+    "model": "res://assets/models/robots/locus_courier.glb",
+    "source": "art/blender/robots/locus_courier.blend",
+    "geometry": "reference-derived-articulated",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.8,
+      1.7
+    ]
   }
 ]

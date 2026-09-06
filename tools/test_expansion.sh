@@ -20,8 +20,11 @@ python3 "$EXPANSION_ROOT/tools/verify_astronomy.py"
 run_expansion_check --headless --editor --quit
 run_expansion_check --headless --script res://tests/test_universe.gd
 run_expansion_check --headless --script res://tests/test_terrain.gd
+run_expansion_check --headless --script res://tests/test_terrain_navigation.gd
+run_expansion_check --headless --script res://tests/test_surface_logistics.gd
 if [[ "${1:-}" == "--with-ui" ]]; then
   run_expansion_check --script res://tests/test_exploration_ui.gd -- --exploration-test
   run_expansion_check --script res://tests/test_surface_ui.gd -- --exploration-test
+  run_expansion_check --script res://tests/test_courier_ui.gd -- --exploration-test
   run_expansion_check --script res://tests/test_ink_local_light.gd
 fi

@@ -46,6 +46,8 @@
 | [1.1 인터페이스·연출·입문 경험](planning/05-interface-and-feedback.md) | 사용자 피드백 반영, 실제 동작 효과, 단계별 시작 |
 | [탐험 중심 고도화 계획](planning/06-exploration-expansion-roadmap.md) | 요청 대응·추가 재미·첫 실증·E0~E5·협동 기반 실증·X-01~X-16 미완료 인수 |
 | [탐험 확장 개발 기록](planning/07-expansion-development-log.md) | E0부터의 실제 구현·검증·부분 완료·후속 순서 |
+| [최종 설계 개발 대조표](planning/08-expansion-execution-matrix.md) | X-01~X-16·제작/운영 조건·의존성·미완료 연결 |
+| [지하 운반 로봇과 실제 물류](production/09-courier-and-surface-logistics.md) | 실제 지형 경로·물리 운반·재로드·Blender 바퀴·성능 |
 | [실행·운영 안내](release/01-playing-and-building.md) | 실행·조작·저장·문제 해결·빌드·라이선스 |
 
 ## 문서 유지 규칙

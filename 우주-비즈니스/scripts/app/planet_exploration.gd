@@ -23,6 +23,8 @@ var last_anchor:=Vector3i(99999,99999,99999)
 var debug_visible:=false
 var movement_input:=Vector2.ZERO
 var material_cache: Dictionary={}
+var courier: FrontierSurfaceCourier
+var logistics: Dictionary
 
 func _ready() -> void:
 	test_mode="--exploration-test" in OS.get_cmdline_user_args()
@@ -55,6 +57,7 @@ func _ready() -> void:
 	_setup_player()
 	_setup_ship()
 	_setup_ui()
+	_setup_logistics()
 	terrain.geometry_changed.connect(func():message.text="굴착을 완료했습니다.";_refresh_distant())
 	_update_interest()
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE if test_mode else Input.MOUSE_MODE_CAPTURED
@@ -122,6 +125,15 @@ func _setup_ship() -> void:
 	FrontierInkStyle.apply(ship,material_cache)
 	add_child(ship)
 
+func _setup_logistics() -> void:
+	if not state.has("surface_logistics"):state.surface_logistics={}
+	if not state.surface_logistics.has(body_id):state.surface_logistics[body_id]=FrontierSurfaceLogistics.create()
+	logistics=state.surface_logistics[body_id]
+	courier=FrontierSurfaceCourier.new()
+	courier.configure(logistics,terrain,player)
+	add_child(courier)
+	courier.status_changed.connect(func(text: String):message.text=text)
+
 func _setup_ui() -> void:
 	var layer:=CanvasLayer.new();add_child(layer)
 	var font:=FontVariation.new();font.base_font=load("res://assets/fonts/NotoSansKR.ttf")
@@ -131,7 +143,7 @@ func _setup_ui() -> void:
 	hud=Label.new();hud.position=Vector2(24,22);root.add_child(hud)
 	message=Label.new();message.position=Vector2(24,104);message.text="착륙 지점을 확인하고 있습니다.";root.add_child(message)
 	var cross:=Label.new();cross.text="+";cross.add_theme_font_size_override("font_size",26);cross.set_anchors_and_offsets_preset(Control.PRESET_CENTER);cross.position=Vector2(-8,-18);root.add_child(cross)
-	var footer:=Label.new();footer.text="WASD 이동 · Shift 달리기 · Space 점프 · 클릭 굴착 · F5 저장 · Esc 항해 메뉴 · F3 계측";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
+	var footer:=Label.new();footer.text="WASD 이동 · Shift 달리기 · Space 점프 · 클릭 굴착 · R 로봇 호출 · F5 저장 · Esc 항해 메뉴 · F3 계측";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
 	menu=PanelContainer.new();menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER);menu.position=Vector2(-180,-120);menu.custom_minimum_size=Vector2(360,220);root.add_child(menu)
 	var column:=VBoxContainer.new();menu.add_child(column)
 	for entry in [["현장 복귀",_resume],["탐사 기록 저장",save_surface],["우주선 출항",return_to_orbit],["착륙 지점으로 구조 요청",rescue]]:
@@ -142,7 +154,9 @@ func _resume() -> void:
 	menu.hide();Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 
 func _update_interest() -> void:
-	terrain.update_interests([player.position])
+	var interests: Array[Vector3]=[player.position]
+	if is_instance_valid(courier):interests.append(courier.position)
+	terrain.update_interests(interests)
 	var anchor:=terrain.field.key_at(player.position)
 	if anchor!=last_anchor:last_anchor=anchor;_refresh_distant()
 
@@ -157,6 +171,7 @@ func _process(delta: float) -> void:
 	environment.ambient_light_energy=lerpf(.28,.035,underground)
 	environment.fog_density=lerpf(.0007,.002,underground)
 	hud.text="%s  /  T%d\n좌표 %.0f, %.0f  ·  깊이 %.1f m\n우주선까지 %.0f m" % [body.name,int(body.planet_tier),player.position.x,player.position.z,maxf(0,-player.position.y),player.position.distance_to(ship_position)]
+	if not logistics.is_empty():hud.text+="\n휴대 암석 %d · 운반 중 %d · 창고 %d" % [int(logistics.hand_rock),int(logistics.robot.cargo),int(logistics.depot_rock)]
 	if debug_visible:hud.text+="\n활성 청크 %d · 작업 %d · 최대 생성 %.1fms · 최근 설치 %.1fms" % [terrain.chunks.size(),terrain.jobs.size(),terrain.max_build_ms,terrain.last_install_ms]
 
 func _physics_process(delta: float) -> void:
@@ -182,6 +197,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif not menu.visible:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 	elif event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode==KEY_ESCAPE:menu.visible=not menu.visible;Input.mouse_mode=Input.MOUSE_MODE_VISIBLE if menu.visible else Input.MOUSE_MODE_CAPTURED
+		elif event.physical_keycode==KEY_R:courier.request_pickup()
 		elif event.physical_keycode==KEY_F5:save_surface()
 		elif event.physical_keycode==KEY_F3:debug_visible=not debug_visible
 
@@ -197,6 +213,7 @@ func dig() -> bool:
 	if edit.is_empty():return false
 	if not state.terrain_edits.has(body_id):state.terrain_edits[body_id]=[]
 	state.terrain_edits[body_id].append(edit)
+	logistics.hand_rock+=int(FrontierSurfaceLogistics.config().rock_per_excavation)
 	cooldown=float(config.dig_interval)
 	message.text="굴착 중…"
 	return true
