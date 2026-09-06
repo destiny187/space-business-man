@@ -6,3 +6,8 @@ test-results/
 *.log
 .env
 __pycache__/
+
+# Reproducible per-variant/lighting/LOD captures; source and review boards stay versioned.
+/docs/production/media/bestiary/variants/
+/docs/production/media/bestiary/lighting/
+/docs/production/media/bestiary/lod/

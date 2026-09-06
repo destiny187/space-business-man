@@ -1,2 +1,2 @@
-# Normalize EOL for all files that Git considers text files.
-* text=auto eol=lf
+# Text normalization and Git LFS rules are inherited from ../.gitattributes.
+# Do not override binary -text rules with a directory-wide text=auto rule here.
