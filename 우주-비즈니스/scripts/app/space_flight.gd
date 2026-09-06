@@ -299,7 +299,7 @@ func step_flight(delta: float) -> void:
 			var direction: Vector3 = (center-ship.position).normalized()
 			ship.quaternion = ship.quaternion.slerp(_flight_basis(direction).get_rotation_quaternion(),minf(delta*2,1))
 			speed = move_toward(speed,minf(float(flight_config.cruise_speed),maxf(12,separation-float(flight_config.arrival_clearance))),float(flight_config.acceleration)*delta)
-			ship.position += direction*speed*delta
+			ship.position += direction*minf(speed*delta,maxf(0,separation-float(flight_config.arrival_clearance)))
 	else:
 		var focused: bool = get_viewport().gui_get_focus_owner() is LineEdit
 		if not focused and not test_mode:

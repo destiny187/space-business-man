@@ -281,6 +281,7 @@ func _title_menu(column: VBoxContainer) -> void:
 	_paragraph(column,"직접 채집하고, 로봇에게 맡기고,\n황무지에 새로운 내일을 만드세요.")
 	var spacer := Control.new(); spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL; column.add_child(spacer)
 	_button(column,"우주 탐험  →",func(): get_tree().change_scene_to_file("res://scenes/app/exploration.tscn"))
+	_button(column,"함께하는 원정 · 최대 6명",func(): get_tree().change_scene_to_file("res://scenes/app/crew_expedition.tscn"))
 	_button(column,"사업 이어하기",_continue_game,not FileAccess.file_exists("user://campaign.json") and not FileAccess.file_exists("user://campaign.json.bak"))
 	_primary(_button(column,"새로운 사업  →",func():
 		if FileAccess.file_exists("user://campaign.json"): _confirm("기존 사업 기록을 새 사업으로 교체합니다.",_new_game)

@@ -1,0 +1,19 @@
+{
+  "protocol": 1,
+  "maximum_players": 6,
+  "port": 24560,
+  "handshake_seconds": 8.0,
+  "reconnect_seconds": 30.0,
+  "snapshot_hz": 10,
+  "maximum_message_bytes": 16384,
+  "starting_rock": 24,
+  "backpack_capacity": 12,
+  "movement_speed": 4.0,
+  "cabin_bounds": [-3.4, 3.4, -7.0, 7.0],
+  "locker_position": [0.0, 0.0, 4.0],
+  "interaction_distance": 2.8,
+  "equipment": ["pressure_suit", "survey_scanner", "rock_tool"],
+  "grades": ["standard", "improved", "rare"],
+  "traits": ["efficient", "sturdy", "expanded_cargo"],
+  "spawn_positions": [[-1.5, 0.0, 4.0], [0.0, 0.0, 4.5], [1.5, 0.0, 4.0], [-1.5, 0.0, 6.0], [0.0, 0.0, 6.0], [1.5, 0.0, 6.0]]
+}

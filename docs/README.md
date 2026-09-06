@@ -48,6 +48,7 @@
 | [탐험 확장 개발 기록](planning/07-expansion-development-log.md) | E0부터의 실제 구현·검증·부분 완료·후속 순서 |
 | [최종 설계 개발 대조표](planning/08-expansion-execution-matrix.md) | X-01~X-16·제작/운영 조건·의존성·미완료 연결 |
 | [지하 운반 로봇과 실제 물류](production/09-courier-and-surface-logistics.md) | 실제 지형 경로·물리 운반·재로드·Blender 바퀴·성능 |
+| [공동 원정선과 6인 플레이](production/10-crew-cabin-and-playtest.md) | 실제 ENet·개인 장비·3D 선내/선체·재접속/화물·검증 범위 |
 | [실행·운영 안내](release/01-playing-and-building.md) | 실행·조작·저장·문제 해결·빌드·라이선스 |
 
 ## 문서 유지 규칙

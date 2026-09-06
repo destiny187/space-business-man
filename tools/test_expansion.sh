@@ -22,6 +22,8 @@ run_expansion_check --headless --script res://tests/test_universe.gd
 run_expansion_check --headless --script res://tests/test_terrain.gd
 run_expansion_check --headless --script res://tests/test_terrain_navigation.gd
 run_expansion_check --headless --script res://tests/test_surface_logistics.gd
+run_expansion_check --headless --script res://tests/test_crew_authority.gd
+run_expansion_check --headless --script res://tests/test_crew_navigation.gd
 if [[ "${1:-}" == "--with-ui" ]]; then
   run_expansion_check --script res://tests/test_exploration_ui.gd -- --exploration-test
   run_expansion_check --script res://tests/test_surface_ui.gd -- --exploration-test

@@ -95,6 +95,9 @@ static func validate_world(value: Variant) -> String:
 	if not position_value is Array or position_value.size() != 3: return "항해 위치 형식 오류"
 	for axis in position_value:
 		if not (axis is int or axis is float) or not is_finite(axis) or absf(axis) > 100000: return "항해 위치 범위 오류"
+	if value.has("crew"):
+		var crew_error: String=FrontierCrewWorld.validate(value.crew)
+		if not crew_error.is_empty():return crew_error
 	return _validate_terrain(value)
 
 static func _finite(value: Variant,low: float,high: float) -> bool:

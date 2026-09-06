@@ -79,3 +79,8 @@ NASA PS의 TRAPPIST-1 d/e/f 기본 문헌 해 3개를 실제 취득했다. [카�
 E0-B와 E0-C가 통과하기 전 E1 완료를 선언하지 않는다. Windows 실기와 서로 다른 인터넷 회선의 6인 검증은 해당 환경에서 측정한 근거가 필요하다.
 
 실제 실행 화면: [항해 출발](../production/media/space-flight/departure.png) · [궤도 접근](../production/media/space-flight/orbit.png) · [측정 원본](../production/media/space-flight/benchmark.json).
+
+
+## E0-C 실제 6인 접속·선내·항해
+
+[공동 원정 실증](../production/10-crew-cabin-and-playtest.md)에 ENet·별도 개인 장비 프로필·호스트 거래·재접속 자리·3D 선내·승무원 이동·전원 준비·조종 권한·100만 번째 행성 공동 도착을 연결했다. 호스트 규칙 45개, 항해/프로필 23개, 실제 접속 26개, 실제 게임 장면 33개, 작은 화면 6개를 통과했다. Blender 원본과 게임 캡처를 남겼다. 기존 사업·단독 탐험 저장과 분리한다. 공동 지표 분업과 실제 인터넷/Windows 실기는 미완료이며 E0-C 전체 통과로 표시하지 않는다.

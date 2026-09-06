@@ -1,0 +1,83 @@
+class_name FrontierCrewWorld
+extends RefCounted
+static var _config: Dictionary={}
+static func config() -> Dictionary:
+	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/crew.json"))
+	return _config
+static func content_hash() -> String:
+	return (FileAccess.get_file_as_string("res://data/crew.json")+FileAccess.get_file_as_string("res://data/galaxy.json")+FileAccess.get_file_as_string("res://data/terrain.json")).sha256_text()
+static func create(owner: Dictionary) -> Dictionary:
+	return {"version":1,"world_id":FrontierPlayerProfile.token(),"owner_id":owner.character_id,"revision":0,"pilot_id":owner.character_id,"members":{owner.character_id:member(owner,"",0)},"rock":int(config().starting_rock),"recovery":{},"receipts":{}}
+static func member(profile: Dictionary,hash_value: String,index: int) -> Dictionary:
+	return {"profile":profile.duplicate(true),"capability_hash":hash_value,"position":config().spawn_positions[index%6].duplicate(),"area":"cabin","aboard":true,"ready":false,"carried":0,"last_sequence":0}
+static func vector(value: Array) -> Vector3:return Vector3(value[0],value[1],value[2])
+static func validate(value: Variant) -> String:
+	if not value is Dictionary or value.get("version")!=1 or not FrontierPlayerProfile.identifier(value.get("world_id")):return "협동 세계 버전·ID 오류"
+	if not value.get("members") is Dictionary or not value.members.has(value.get("owner_id")) or not value.members.has(value.get("pilot_id")):return "승무원 소유·조종 기록 오류"
+	if not FrontierUniverse._finite(value.get("revision"),0,9007199254740000) or value.revision!=floorf(value.revision):return "협동 변경 순번 오류"
+	if not FrontierUniverse._finite(value.get("rock"),0,100000000) or value.rock!=floorf(value.rock):return "공동 창고 수량 오류"
+	if not value.get("receipts") is Dictionary or value.receipts.size()>128 or not value.get("recovery") is Dictionary:return "공동 거래 기록 오류"
+	if value.has("navigation"):
+		var navigation_error:=FrontierCrewNavigation.validate(value.navigation)
+		if not navigation_error.is_empty():return navigation_error
+	for id in value.members:
+		var record: Variant=value.members[id]
+		if not record is Dictionary:return "승무원 형식 오류"
+		var error:=FrontierPlayerProfile.validate_character(record.get("profile"))
+		if not error.is_empty() or id!=record.profile.character_id:return "승무원 캐릭터·장비 오류"
+		if not record.get("capability_hash") is String or (id!=value.owner_id and not FrontierPlayerProfile.identifier(record.capability_hash,64)):return "재접속 자격 오류"
+		if not FrontierUniverse._vector3_array(record.get("position")) or record.get("area") not in ["cabin","surface"]:return "승무원 위치 오류"
+		if not record.get("ready") is bool or not record.get("aboard") is bool:return "탑승 준비 기록 오류"
+		if not FrontierUniverse._finite(record.get("carried"),0,int(config().backpack_capacity)) or record.carried!=floorf(record.carried):return "운반 화물 오류"
+		if not FrontierUniverse._finite(record.get("last_sequence"),0,9007199254740000) or record.last_sequence!=floorf(record.last_sequence):return "개인 요청 순번 오류"
+	for id in value.recovery:
+		var crate: Variant=value.recovery[id]
+		if not id is String or not crate is Dictionary or not FrontierUniverse._vector3_array(crate.get("position")) or crate.get("area") not in ["cabin","surface"]:return "회수 보관 위치 오류"
+		if not FrontierUniverse._finite(crate.get("rock"),1,int(config().backpack_capacity)) or crate.rock!=floorf(crate.rock):return "회수 화물 수량 오류"
+	for id in value.receipts:
+		var receipt: Variant=value.receipts[id]
+		if not id is String or not receipt is Dictionary or not receipt.get("result") is Dictionary or not FrontierPlayerProfile.identifier(receipt.get("digest"),64):return "거래 수령 기록 오류"
+	return ""
+static func public_snapshot(value: Dictionary,active: Dictionary) -> Dictionary:
+	var result:=value.duplicate(true)
+	result.erase("receipts")
+	for id in result.members:
+		result.members[id].erase("capability_hash")
+		result.members[id].connected=id in active.values()
+	return result
+static func apply(value: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
+	var member: Dictionary=value.members[actor]
+	match kind:
+		"ready":
+			if not args.get("value") is bool or not member.aboard:return "승선 후 준비 상태를 선택하세요."
+			member.ready=args.value
+		"pilot":
+			if actor!=value.owner_id:return "호스트만 조종 권한을 넘길 수 있습니다."
+			if not args.get("character_id") is String or args.character_id not in active.values():return "연결된 승무원을 선택하세요."
+			value.pilot_id=args.character_id
+		"withdraw", "deposit":
+			if member.area!="cabin" or vector(member.position).distance_to(vector(config().locker_position))>float(config().interaction_distance):return "공동 보관함에 가까이 이동하세요."
+			if not FrontierUniverse._finite(args.get("amount"),1,int(config().backpack_capacity)) or args.amount!=floorf(args.amount):return "옮길 수량이 올바르지 않습니다."
+			var amount:=int(args.amount)
+			if kind=="withdraw":
+				if int(value.rock)<amount or int(member.carried)+amount>int(config().backpack_capacity):return "창고 잔량 또는 배낭 공간이 부족합니다."
+				value.rock-=amount;member.carried+=amount
+			else:
+				if int(member.carried)<amount:return "운반 중인 화물이 부족합니다."
+				member.carried-=amount;value.rock+=amount
+		"recover":
+			if not args.get("crate_id") is String or not value.recovery.has(args.crate_id):return "이미 회수된 화물입니다."
+			var crate: Dictionary=value.recovery[args.crate_id]
+			if member.area!=crate.area or vector(member.position).distance_to(vector(crate.position))>float(config().interaction_distance):return "화물 위치에 가까이 이동하세요."
+			if int(member.carried)+int(crate.rock)>int(config().backpack_capacity):return "배낭 공간이 부족합니다."
+			member.carried+=crate.rock;value.recovery.erase(args.crate_id)
+		_:return "지원하지 않는 협동 작업입니다."
+	return ""
+static func disconnect_member(value: Dictionary,actor: String) -> void:
+	var member: Dictionary=value.members[actor]
+	member.ready=false
+	if int(member.carried)>0:
+		var id: String=actor+":"+str(int(value.revision))
+		value.recovery[id]={"position":member.position.duplicate(),"area":member.area,"rock":int(member.carried)}
+		member.carried=0
+	if value.pilot_id==actor:value.pilot_id=value.owner_id

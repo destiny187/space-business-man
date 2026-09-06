@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-09-06T07:19:57.081747+00:00",
+  "engine": "Godot 4.7.2 / Metal Forward+",
+  "host": "Apple M2",
+  "render_resolution": [
+    1280,
+    800
+  ],
+  "scope": "one graphical host and five separate headless clients on one Mac, loopback ENet",
+  "checks": {
+    "authority": 45,
+    "navigation_and_profile": 23,
+    "enet_processes": 26,
+    "actual_play": 33,
+    "small_viewport": 6
+  },
+  "images": {
+    "recovery.png": "ebe0f0be27d578a074e06655470e0aac1a46e3851bce6a14f502d87da026f325",
+    "exterior.png": "1d94dd996d3f67a4f159ce02974cf1df59e09d5f729180d89f4f6c53269d480e",
+    "cabin.png": "efc67085a5307851fe509467a427df3b804b198b25ed5813030d441dc3471af0"
+  },
+  "not_verified": [
+    "separate Internet connections",
+    "Windows hardware",
+    "six graphical clients performance",
+    "shared surface exploration",
+    "final art approval"
+  ]
+}
