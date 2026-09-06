@@ -44,3 +44,7 @@
 - 기존 730개 확인과 합쳐 **783개 확인 항목**이다. 테스트 실행 도구는 엔진이 종료 코드 0을 반환하더라도 오류 로그가 있으면 실패한다.
 
 [`게임 플레이 영상`](../../builds/media/gameplay-1.1.mp4)은 게임 엔진의 실제 렌더링·입력을 녹화한 것이다. 후반 경비로봇 장면은 제작 완료·작전 상황을 준비한 연출 확인용 상태이며, 초반 자원 획득 속도를 나타내지 않는다. [`capture_showcase.gd`](../../우주-비즈니스/tests/capture_showcase.gd)와 Blender의 [`encode_preview.py`](../../tools/encode_preview.py)로 재현한다.
+
+### 2026-09-06 지상 아이템창·장비 슬롯
+
+현재 원정은 I 아이템/제작, 1~5 장비 교체, E 내장 스캐너로 변경했다. [규칙](../game/13-inventory-and-equipment.md) · [실제 화면과 검증](../production/21-ground-equipment.md). 위 1.1 전용 만능 도구 조작과 구분한다.

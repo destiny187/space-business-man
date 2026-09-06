@@ -81,7 +81,7 @@ func _process(delta: float) -> void:
 		node.set_instance_shader_parameter("effect_color",color)
 		match e.kind:
 			"suction":
-				if is_instance_valid(e.get("intake")): e.end = e.intake.to_global(e.intake.get_meta("intake_offset",Vector3(0,1.2,0)))
+				if is_instance_valid(e.get("intake")) and e.intake.is_inside_tree(): e.end = e.intake.to_global(e.intake.get_meta("intake_offset",Vector3(0,1.2,0)))
 				var direction: Vector3 = (e.end-e.start).normalized()
 				var side: Vector3 = direction.cross(Vector3.UP).normalized()
 				var spiral: Vector3 = (side*cos(t*TAU*1.6+e.seed)+Vector3.UP*sin(t*TAU*1.6+e.seed))*sin(t*PI)*0.32

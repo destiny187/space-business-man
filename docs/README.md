@@ -75,3 +75,7 @@
 - [원정 기본 플레이 품질 복구](production/19-play-quality-restoration.md): 첫 커밋 대비 장비·시청각 피드백·건설 카드 연결과 검증.
 
 - [에셋 버전 관리](technical/05-asset-version-control.md): Git LFS, 생성 캡처 제외, 새 환경 설치와 이력 보존.
+
+## 지상 장비 구조 갱신
+
+[아이템·제작·장착 규칙](game/13-inventory-and-equipment.md) · [구현·Blender/INK 렌더·검증](production/21-ground-equipment.md). 현재 원정의 만능 도구 경로를 대체한다.

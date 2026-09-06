@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2 Metal Forward+ / Apple M2",
+  "checks": 17,
+  "failures": 0,
+  "script": "우주-비즈니스/tests/test_equipment_play.gd",
+  "world_seed": 112052220,
+  "fixture": "Isolated save; crafting material and vein approach position fixtures",
+  "log_sha256": "55d28539603479a73618925acb4700e1c45ae0a0eb33d691ab33bbc170f1cb02",
+  "render_assets": [
+    "pulse_carbine",
+    "terrain_shaper"
+  ],
+  "not_verified": [
+    "multi-client equipment sync",
+    "animal hit in rendered scene",
+    "full regression",
+    "long play balance"
+  ]
+}

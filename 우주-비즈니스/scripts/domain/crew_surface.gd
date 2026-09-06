@@ -126,7 +126,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			member.carried+=amount;crew.rock-=amount
 		return ""
 	if kind=="surface_dig":
-		if not owns(member,"rock_tool"):return "소유 굴착 도구가 필요합니다."
+		if FrontierEquipment.active(member).get("kind")!="terrain":return "지형 변환기를 제작한 뒤 번호 슬롯에 장착하세요."
 		if int(member.carried)>=int(FrontierCrewWorld.config().backpack_capacity):return "배낭을 비운 뒤 굴착하세요."
 		if world.terrain_edits.get(body_id,[]).size()>=int(config().maximum_edits_per_planet):return "이 실증 행성의 굴착 기록 한도에 도달했습니다."
 		var aim:=direction(args.get("aim"))
@@ -140,8 +140,20 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			if terrain.density(point)>=0:hit=point;break
 		if not hit.is_finite() or hit.y<float(world.terrain_settings.minimum_depth)+5:return "사거리와 굴착 가능한 지층을 확인하세요."
 		if not world.terrain_edits.has(body_id):world.terrain_edits[body_id]=[]
-		world.terrain_edits[body_id].append({"center":[hit.x,hit.y,hit.z],"radius":world.terrain_settings.dig_radius})
+		world.terrain_edits[body_id].append({"center":[hit.x,hit.y,hit.z],"radius":FrontierEquipment.active(member).radius})
 		member.carried+=1
+		return ""
+	if kind=="surface_attack":
+		var weapon:=FrontierEquipment.active(member)
+		if weapon.get("kind")!="pulse":return "공격무기를 장착하세요."
+		var row:=target(world,actor,direction(args.get("aim")))
+		if direction(args.get("aim"))==Vector3.ZERO:return "조준 방향 오류"
+		if row.is_empty() or FrontierEcologyCatalog.form(row.form_id).category!="animal":return ""
+		if not crew.has("combat"):crew.combat={}
+		var key: String=body_id+"/"+str(row.id)
+		var hp: int=int(crew.combat.get(key,FrontierEquipment.config().animal_health))
+		if hp<=0:return "이미 무력화된 개체입니다."
+		crew.combat[key]=maxi(0,hp-int(weapon.damage))
 		return ""
 	if kind=="surface_collect":
 		var row:=target(world,actor,direction(args.get("aim")))

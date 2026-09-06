@@ -37,3 +37,7 @@
 - 로그와 캡처는 `test-results/play-quality/` 및 `tools/test_play_quality.sh`가 출력하는 임시 폴더에 있다. 대표 화면은 아래에 보존한다. 소리 파일의 실제 재생 상태·거리/높이/루프 전환을 검사했으며 사람의 주관적 청감 승인을 뜻하지 않는다.
 
 [건설 카드](media/play-quality/building-cards.png) · [장비 사용](media/play-quality/tool-action.png) · [배치 미리보기](media/play-quality/placement.png) · [실제 공동 산업](media/play-quality/industry.png)
+
+## 후속 장비 분리
+
+현재 지상 클릭의 채광/굴착 자동 분기는 [제작·장착 장비](../game/13-inventory-and-equipment.md)로 대체했다. 기존 음원·모션·효과·건설 카드/고스트는 같은 경로를 사용한다. 새 검사 범위는 [장비 제작 기록](21-ground-equipment.md)이며 위 과거 전체 통과 수량을 새 규칙 검증으로 재사용하지 않는다.

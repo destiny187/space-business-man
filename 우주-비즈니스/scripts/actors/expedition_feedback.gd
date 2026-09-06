@@ -5,6 +5,7 @@ extends Node3D
 var app: FrontierCrewExpedition
 var audio: FrontierAudio
 var effects: FrontierEffects
+var equipped_model: String="manual_tool"
 var handheld: Node3D
 var muzzle: OmniLight3D
 var parts: Array[Node]=[]
@@ -44,7 +45,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.surface_received.connect(_surface)
 
 func blocked() -> bool:
-	return app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
+	return app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
 	if app.surface_world==null:return
@@ -71,6 +72,10 @@ func _response(sequence: int,value: Dictionary) -> void:
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
 	match request.kind:
+		"surface_attack":
+			recoil=1;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);effects.burst(point,Color("ffb578"),10);audio.play("sfx_combat_pulse");show_cue("펄스 발사")
+		"equipment_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
+		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3
 		"surface_dig":
 			recoil=1;work_left=.25;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point)
 			effects.suction(point,handheld,"stone",4);audio.play("sfx_combat_pulse");show_cue("+1 암석")
@@ -122,7 +127,10 @@ func _process(delta: float) -> void:
 	elapsed+=delta;work_left=maxf(0,work_left-delta);cue_left=maxf(0,cue_left-delta)
 	var active: bool=app.session.active and app.surface_world!=null
 	var enabled: bool=active and not blocked() and app.placement_kind.is_empty()
-	handheld.visible=enabled
+	var tool: Dictionary={}
+	if active:tool=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
+	if not tool.is_empty() and tool.model!=equipped_model:_replace_tool(tool.model)
+	handheld.visible=enabled and not tool.is_empty()
 	effects.running=active
 	if not active:
 		effects.clear();observed_body="";pending.clear()
@@ -193,3 +201,12 @@ func _industry_effects() -> void:
 		if actor.global_position.distance_to(app.camera.global_position)>25:continue
 		var color: Color={"atmosphere":Color("c4e8e2"),"thermal":Color("ffc487"),"water":Color("71caf4"),"biolab":Color("8bdd82")}[building.type]
 		effects.burst(actor.global_position+Vector3.UP*2,color,2)
+
+func _replace_tool(model: String) -> void:
+	handheld.get_parent().remove_child(handheld);handheld.queue_free()
+	equipped_model=model;handheld=load("res://assets/models/"+model+".glb").instantiate()
+	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model=="manual_tool" else .5)
+	handheld.set_meta("intake_offset",Vector3(0,0,-.78))
+	parts=handheld.find_children("Anim_*","Node3D",true,false)
+	for part in parts:part.set_meta("rest",part.position)
+	muzzle=OmniLight3D.new();muzzle.position=Vector3(0,0,-.78);muzzle.omni_range=4;muzzle.light_color=Color("ffc07c");muzzle.light_energy=0;handheld.add_child(muzzle)

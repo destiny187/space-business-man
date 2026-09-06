@@ -5,11 +5,11 @@ static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/crew.json"))
 	return _config
 static func content_hash() -> String:
-	return (FileAccess.get_file_as_string("res://data/crew.json")+FileAccess.get_file_as_string("res://data/galaxy.json")+FileAccess.get_file_as_string("res://data/terrain.json")+FileAccess.get_file_as_string("res://data/crew_surface.json")+FileAccess.get_file_as_string("res://data/ecology.json")+FrontierEcologyCatalog.signature()+FrontierExpeditionBusiness.signature()+FrontierFieldEngineering.signature()+FrontierVesselRefit.signature()).sha256_text()
+	return (FileAccess.get_file_as_string("res://data/crew.json")+FileAccess.get_file_as_string("res://data/galaxy.json")+FileAccess.get_file_as_string("res://data/terrain.json")+FileAccess.get_file_as_string("res://data/crew_surface.json")+FileAccess.get_file_as_string("res://data/ecology.json")+FrontierEcologyCatalog.signature()+FrontierExpeditionBusiness.signature()+FrontierFieldEngineering.signature()+FrontierVesselRefit.signature()+FileAccess.get_file_as_string("res://data/equipment.json")).sha256_text()
 static func create(owner: Dictionary) -> Dictionary:
 	return {"version":1,"world_id":FrontierPlayerProfile.token(),"owner_id":owner.character_id,"revision":0,"pilot_id":owner.character_id,"members":{owner.character_id:member(owner,"",0)},"rock":int(config().starting_rock),"recovery":{},"receipts":{}}
 static func member(profile: Dictionary,hash_value: String,index: int) -> Dictionary:
-	return {"profile":profile.duplicate(true),"capability_hash":hash_value,"position":config().spawn_positions[index%6].duplicate(),"area":"cabin","aboard":true,"ready":false,"carried":0,"last_sequence":0}
+	return {"loadout":FrontierEquipment.create(profile),"profile":profile.duplicate(true),"capability_hash":hash_value,"position":config().spawn_positions[index%6].duplicate(),"area":"cabin","aboard":true,"ready":false,"carried":0,"last_sequence":0}
 static func vector(value: Array) -> Vector3:return Vector3(value[0],value[1],value[2])
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.get("version")!=1 or not FrontierPlayerProfile.identifier(value.get("world_id")):return "협동 세계 버전·ID 오류"
@@ -23,11 +23,16 @@ static func validate(value: Variant) -> String:
 	if value.has("navigation"):
 		var navigation_error:=FrontierCrewNavigation.validate(value.navigation)
 		if not navigation_error.is_empty():return navigation_error
+	if value.has("combat"):
+		if not value.combat is Dictionary:return "전투 기록 형식 오류"
+		for target_id in value.combat:
+			if not target_id is String or not FrontierUniverse._finite(value.combat[target_id],0,int(FrontierEquipment.config().animal_health)):return "개체 체력 기록 오류"
 	for id in value.members:
 		var record: Variant=value.members[id]
 		if not record is Dictionary:return "승무원 형식 오류"
 		var error:=FrontierPlayerProfile.validate_character(record.get("profile"))
 		if not error.is_empty() or id!=record.profile.character_id:return "승무원 캐릭터·장비 오류"
+		if record.has("loadout") and not FrontierEquipment.validate(record.loadout).is_empty():return "아이템·장착 기록 오류"
 		if not record.get("capability_hash") is String or (id!=value.owner_id and not FrontierPlayerProfile.identifier(record.capability_hash,64)):return "재접속 자격 오류"
 		if not FrontierUniverse._vector3_array(record.get("position")) or record.get("area") not in ["cabin","surface"]:return "승무원 위치 오류"
 		if not record.get("ready") is bool or not record.get("aboard") is bool:return "탑승 준비 기록 오류"

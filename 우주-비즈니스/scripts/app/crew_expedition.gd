@@ -1,5 +1,6 @@
 class_name FrontierCrewExpedition
 extends Node3D
+var inventory_panel: FrontierEquipmentPanel
 var feedback: FrontierExpeditionFeedback
 var session: FrontierCrewSession
 var profile:=FrontierPlayerProfile.new()
@@ -170,7 +171,7 @@ func _build_ui() -> void:
 	surface_tools=HBoxContainer.new();dock.add_child(surface_tools);surface_tools.hide()
 	_button(surface_tools,"개발 · 건설 [B]",toggle_business)
 	_button(surface_tools,"생태 연구 [J]",toggle_research)
-	_button(surface_tools,"선박 정비",toggle_shipyard)
+	_button(surface_tools,"아이템 [I]",toggle_inventory)
 	_button(panel,"우주선 정비 · 모듈",toggle_shipyard)
 	_button(panel,"내 소유 장비",show_equipment)
 	_button(panel,"원정 나가기",leave_world)
@@ -180,6 +181,7 @@ func _build_ui() -> void:
 	business_panel.place_building.connect(begin_placement)
 	shipyard_panel=FrontierShipyardPanel.new();ui.add_child(shipyard_panel)
 	shipyard_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
+	inventory_panel=FrontierEquipmentPanel.new();ui.add_child(inventory_panel);inventory_panel.configure(self,ui)
 func _label(parent: Node,value: String,size: int=15) -> Label:
 	var label:=Label.new();label.text=value;label.add_theme_font_size_override("font_size",size);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.custom_minimum_size.x=265;parent.add_child(label);return label
 func _resource_label(parent: Node,value: String,size: int=15) -> FrontierResourceReadout:
@@ -229,7 +231,7 @@ func _snapshot(value: Dictionary) -> void:
 	if on_surface!=surface_transition:
 		surface_transition=on_surface;navigation_frame.visible=not on_surface;research_frame.hide();shipyard_panel.hide()
 	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
-	help_text.text="WASD 이동 · 우클릭 시선 · 클릭 채광/굴착 · E 스캔 · F 상호작용 · B 건설" if on_surface else "WASD 이동 · 우클릭 시선 · C 외부 시점 · Tab 항해"
+	help_text.text="WASD 이동 · 우클릭 시선 · 클릭 장비 사용 · 1–5 전환 · I 아이템 · E 스캔" if on_surface else "WASD 이동 · 우클릭 시선 · C 외부 시점 · Tab 항해"
 	roster.visible=not session.offline;ready_button.visible=not session.offline;pilot_choices.visible=not session.offline
 	panel.get_node("TransferPilot").visible=not session.offline;panel.get_node("Kick").visible=not session.offline
 	if not destination_initialized:
@@ -261,14 +263,17 @@ func _snapshot(value: Dictionary) -> void:
 func _physics_process(delta: float) -> void:
 	if not session.active or session.latest.is_empty():return
 	dig_timer=maxf(0,dig_timer-delta)
+	if surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
+		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
+		if tool.get("kind")=="miner":use_equipped()
 	movement_timer-=delta
 	if movement_timer<=0:
 		movement_timer=.05
 		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
-		if outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
+		if inventory_panel.visible or outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
-		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
+		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if FrontierClientSettings.ensure(get_tree()).is_open():direction=Vector2.ZERO;scanning=false
 		session.send_input(direction,-camera.global_basis.z,scanning)
 	if session.hosting and not session.authority.stopped:
@@ -311,26 +316,26 @@ func _input(event: InputEvent) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	var preferences:=FrontierClientSettings.ensure(get_tree())
 	if preferences.is_open():return
-	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*float(preferences.values.sensitivity);pitch=clampf(pitch-event.relative.y*float(preferences.values.sensitivity)*(-1 if preferences.values.invert_y else 1),-1.3,1.3)
+	if event is InputEventMouseMotion and not feedback.blocked() and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*float(preferences.values.sensitivity);pitch=clampf(pitch-event.relative.y*float(preferences.values.sensitivity)*(-1 if preferences.values.invert_y else 1),-1.3,1.3)
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
+		if event.physical_keycode==KEY_I:toggle_inventory()
+		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
+			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
 		if event.physical_keycode==KEY_J:toggle_research()
 		if event.physical_keycode==KEY_C and surface_world==null:outside=not outside;exterior_view.visible=outside;if_flight_view()
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if event.physical_keycode==KEY_B:toggle_business()
 		if event.physical_keycode==KEY_F:interact_business()
-		if event.physical_keycode==KEY_ESCAPE:cancel_placement();business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.hide()
+		if event.physical_keycode==KEY_ESCAPE:inventory_panel.hide();cancel_placement();business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.hide()
 		if event.physical_keycode==KEY_ESCAPE:Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;get_viewport().gui_release_focus()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
 			else:feedback.reject()
 			return
-		if business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
-		dig_timer=.35
-		var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
-		if target.get("kind","")=="vein":session.send_request("business_mine",{"vein_id":target.id})
-		else:surface_action("surface_dig")
+		if inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
+		use_equipped()
 func if_flight_view() -> void:
 	if flight!=null:flight.exterior=outside
 func toggle_ready() -> void:
@@ -369,6 +374,7 @@ func kick_selected() -> void:
 	if not crew_ids.is_empty():
 		if not session.kick(crew_ids[pilot_choices.selected]):status.value="다른 승무원을 선택하세요."
 func show_equipment() -> void:
+	if surface_world!=null:toggle_inventory();return
 	if profile.data.is_empty():return
 	var dialog:=AcceptDialog.new();dialog.theme=ui_theme;dialog.title="내 캐릭터 · 소유 장비"
 	var lines: PackedStringArray=[profile.data.character.name]
@@ -418,6 +424,12 @@ func _sync_surface_view() -> void:
 
 func _update_surface_hud() -> void:
 	if surface_world==null:return
+	for id in surface_world.ecology.actors:
+		var creature: Node3D=surface_world.ecology.actors[id]
+		var hp: int=int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(id),FrontierEquipment.config().animal_health))
+		if creature.get_meta("combat_hp",-1)!=hp:
+			creature.set_meta("combat_hp",hp)
+			if hp<int(FrontierEquipment.config().animal_health):creature.set_state("dormant" if hp==0 else "stressed")
 	surface_target=surface_world.ecology.target(camera)
 	var position: Vector3=actors[session.latest.self_id].position
 	var text: String="%s · 깊이 %.1fm"%[surface_world.body.name,maxf(0,-position.y)]
@@ -427,15 +439,20 @@ func _update_surface_hud() -> void:
 	if not surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(surface_target.form_id)
 		text+="\n"+str(form.name)
+		if form.category=="animal":text+=" · 체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierEquipment.config().animal_health)),int(FrontierEquipment.config().animal_health)]
 		var progress: Dictionary=session.latest.get("scan",{})
 		var known: bool=session.surface.ecology.observations.has(surface_world.body.id+":"+form.id)
 		text+="\nQ 생체 표본" if known else "\nE 유지 · 스캔 %d%%"%int(float(progress.get("progress",0))*100)
-	else:text+="\nB로 개발 등록 · F로 광맥 채광 · E로 생명체 스캔"
+	else:text+="\nI 아이템·제작  ·  1–5 장비 전환  ·  E 내장 스캐너"
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
 	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
-	if not business_target.is_empty():text+="\nF 현장 작업 · B 개발/건설"
+	if not business_target.is_empty():
+		text+="\nF 현장 작업 · B 개발/건설"
+		if business_target.get("kind")=="vein":
+			var vein:=FrontierExpeditionBusiness.find_vein(surface_world.body,business_target.id)
+			text+=" · 채집기 %d등급 필요"%int(vein.get("required_tier",1))
 	surface_status.value=text
-	surface_status.visible=not business_panel.visible and not research_frame.visible and not shipyard_panel.visible
+	surface_status.visible=not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible
 
 func _refresh_surface_options() -> void:
 	if session.surface.is_empty():return
@@ -460,7 +477,7 @@ func _refresh_surface_options() -> void:
 
 func surface_action(kind: String) -> void:
 	if not session.active or surface_world==null:return
-	if kind in ["surface_dig","surface_collect"] and (business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible):return
+	if kind in ["surface_dig","surface_attack","surface_collect"] and (inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible):return
 	var aim: Vector3=-camera.global_basis.z
 	var args: Dictionary={"aim":[aim.x,aim.y,aim.z]}
 	if kind=="surface_collect":
@@ -478,18 +495,20 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func toggle_shipyard() -> void:
+	if inventory_panel!=null:inventory_panel.hide()
 	research_frame.hide();navigation_frame.hide()
 	if not session.active:return
 	cancel_placement();business_panel.hide();shipyard_panel.visible=not shipyard_panel.visible
 	shipyard_panel.update_snapshot(session.latest,session.surface.get("business",{}))
 func toggle_business() -> void:
+	if inventory_panel!=null:inventory_panel.hide()
 	research_frame.hide();navigation_frame.hide()
 	shipyard_panel.hide()
 	if not session.active or surface_world==null:status.value="착륙 후 개발 사업을 시작하세요.";return
 	cancel_placement();business_panel.visible=not business_panel.visible
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
 func interact_business() -> void:
-	if not session.active or surface_world==null or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
+	if not session.active or surface_world==null or inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
 	match target.get("kind",""):
 		"vein":session.send_request("business_mine",{"vein_id":target.id})
@@ -549,10 +568,29 @@ func travel_action(action: String) -> void:
 	session.send_request(action,{})
 	get_viewport().gui_release_focus()
 func toggle_navigation() -> void:
+	if inventory_panel!=null:inventory_panel.hide()
 	if not session.active:return
 	var opening:=not navigation_frame.visible
 	business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.visible=opening
 func toggle_research() -> void:
+	if inventory_panel!=null:inventory_panel.hide()
 	if surface_world==null:return
 	var opening:=not research_frame.visible
 	business_panel.hide();shipyard_panel.hide();navigation_frame.hide();research_frame.visible=opening
+
+func toggle_inventory() -> void:
+	if not session.active or surface_world==null:return
+	cancel_placement();business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.hide()
+	inventory_panel.visible=not inventory_panel.visible
+	get_viewport().gui_release_focus()
+func use_equipped() -> void:
+	var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
+	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 제작한 장비를 장착하세요.");return
+	dig_timer=float(tool.interval)
+	match tool.kind:
+		"miner":
+			var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
+			if target.get("kind")=="vein":session.send_request("business_mine",{"vein_id":target.id})
+			else:feedback.reject("자원 광맥을 조준하세요.")
+		"terrain":surface_action("surface_dig")
+		"pulse":surface_action("surface_attack")

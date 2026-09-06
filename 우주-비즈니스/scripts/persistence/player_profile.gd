@@ -12,7 +12,7 @@ static func identifier(value: Variant,length: int=32) -> bool:
 	return true
 static func new_character(name: String,tint: int=0) -> Dictionary:
 	var equipment: Array=[]
-	for definition in ["pressure_suit","survey_scanner","rock_tool"]:
+	for definition in ["pressure_suit","survey_scanner"]:
 		equipment.append({"id":token(),"definition":definition,"grade":"standard","traits":[]})
 	return {"character_id":token(),"name":name,"tint":tint,"equipment":equipment}
 static func validate_character(value: Variant) -> String:
@@ -21,7 +21,7 @@ static func validate_character(value: Variant) -> String:
 	for index in value.name.length():
 		if value.name.unicode_at(index)<32 or value.name.unicode_at(index)==127:return "캐릭터 이름에 제어 문자를 사용할 수 없습니다."
 	if not FrontierUniverse._finite(value.get("tint"),0,5) or value.tint!=floorf(value.tint):return "캐릭터 외형 오류"
-	if not value.get("equipment") is Array or value.equipment.size()!=3:return "반입 장비 목록 오류"
+	if not value.get("equipment") is Array or value.equipment.size()<2 or value.equipment.size()>3:return "반입 장비 목록 오류"
 	var cfg: Dictionary=FrontierCrewWorld.config()
 	var ids: Dictionary={};var definitions: Dictionary={}
 	for item in value.equipment:

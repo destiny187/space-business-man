@@ -34,7 +34,7 @@ static func veins(body: Dictionary) -> Array:
 		var radius: float=config().vein_radius[i%3]
 		var p: Array=[sin(angle)*radius,0,cos(angle)*radius]
 		if i<config().starter_vein_positions.size():p=[config().starter_vein_positions[i][0]+float(seed_value%11)*.05,0,config().starter_vein_positions[i][1]]
-		values.append({"id":"vein:"+str(i),"resource":types[i],"capacity":int(config().vein_capacity[types[i]])+int(body.planet_tier-1)*20,"position":p})
+		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":int(FrontierEquipment.config().resource_tiers[types[i]]),"capacity":int(config().vein_capacity[types[i]])+int(body.planet_tier-1)*20,"position":p})
 	return values
 static func find_vein(body: Dictionary,id: String) -> Dictionary:
 	for row in veins(body):
@@ -98,9 +98,11 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if row.is_empty():return "광맥을 선택하세요."
 		var floor:=ground(FrontierCrewSurface.field(world),row.position[0],row.position[2])
 		if not floor.is_finite() or floor.distance_to(position)>float(config().interaction_range) or not FrontierCrewSurface.visible_in_field(FrontierCrewSurface.field(world),position+Vector3.UP*1.72,floor+Vector3.UP):return "보이는 광맥 8m 안에서 채광하세요."
-		if not FrontierCrewSurface.owns(world.crew.members[actor],"rock_tool"):return "굴착 도구가 필요합니다."
+		var tool:=FrontierEquipment.active(world.crew.members[actor])
+		if tool.get("kind")!="miner":return "아이템창에서 자원채집기를 제작·장착하세요."
+		if int(tool.tier)<int(row.required_tier):return "이 광물은 %d등급 이상의 자원채집기가 필요합니다."%int(row.required_tier)
 		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
-		var amount: int=mini(int(current.remaining[row.id]),mini(int(config().mine_amount),int(config().bag_capacity)-total(ledger.bags[actor])))
+		var amount: int=mini(int(current.remaining[row.id]),mini(int(tool.amount),int(config().bag_capacity)-total(ledger.bags[actor])))
 		if amount<=0:return "광맥이 고갈됐거나 배낭이 가득 찼습니다."
 		current.remaining[row.id]-=amount;ledger.bags[actor][row.resource]+=amount;return ""
 	if kind=="business_deposit":

@@ -8178,5 +8178,25 @@
     "source": "art/blender/ships/modules/robot_pod.blend",
     "geometry": "visual-prototype",
     "foliage": false
+  },
+  {
+    "id": "pulse_carbine",
+    "title": "휴대 장비",
+    "name": "펄스 카빈",
+    "group": "장비",
+    "model": "res://assets/models/equipment/pulse_carbine.glb",
+    "source": "art/blender/equipment/pulse_carbine.blend",
+    "geometry": "visual-prototype",
+    "foliage": false
+  },
+  {
+    "id": "terrain_shaper",
+    "title": "휴대 장비",
+    "name": "지형 변환기",
+    "group": "장비",
+    "model": "res://assets/models/equipment/terrain_shaper.glb",
+    "source": "art/blender/equipment/terrain_shaper.blend",
+    "geometry": "visual-prototype",
+    "foliage": false
   }
 ]

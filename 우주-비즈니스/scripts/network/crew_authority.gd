@@ -108,17 +108,18 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("vessel_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	var draft:=world.duplicate(true)
 	var reason: String=""
-	if envelope.kind.begins_with("vessel_"):reason=FrontierVesselRefit.apply(draft,actor,envelope.kind,envelope.args)
+	if envelope.kind.begins_with("equipment_"):reason=FrontierEquipment.apply(draft,actor,envelope.kind,envelope.args)
+	elif envelope.kind.begins_with("vessel_"):reason=FrontierVesselRefit.apply(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("business_"):
-		if envelope.kind=="business_mine" and now<float(last_mine.get(actor,-100))+float(FrontierExpeditionBusiness.config().mine_cooldown):return failure("채광 도구가 준비 중입니다.")
+		if envelope.kind=="business_mine" and now<float(last_mine.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.6)):return failure("채광 도구가 준비 중입니다.")
 		reason=FrontierExpeditionBusiness.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind in ["navigate","depart"]:reason=FrontierCrewNavigation.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind in ["land","launch"] or envelope.kind.begins_with("surface_") or (envelope.kind in ["withdraw","deposit"] and FrontierCrewSurface.landed(draft)):
 		if envelope.kind=="surface_scan":return failure("스캔은 장비 입력을 유지해 완료하세요.")
-		if envelope.kind=="surface_dig" and now<float(last_dig.get(actor,-100))+float(draft.get("terrain_settings",{}).get("dig_interval",.35)):return failure("굴착 도구가 준비 중입니다.")
+		if envelope.kind in ["surface_dig","surface_attack"] and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("굴착 도구가 준비 중입니다.")
 		reason=FrontierCrewSurface.apply(draft,actor,envelope.kind,envelope.args,peers)
 	else:reason=FrontierCrewWorld.apply(draft.crew,actor,envelope.kind,envelope.args,peers)
 	if not reason.is_empty():return failure(reason)
@@ -132,7 +133,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		draft.crew.receipts.erase(oldest)
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
 	world=draft
-	if envelope.kind=="surface_dig":last_dig[actor]=now
+	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
 func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false) -> bool:
