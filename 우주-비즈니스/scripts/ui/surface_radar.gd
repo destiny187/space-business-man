@@ -10,7 +10,7 @@ var map_center:=Vector3.INF
 var body_id:=""
 var range_m:=80.0
 func configure(owner_app: FrontierCrewExpedition) -> void:
-	app=owner_app;mouse_filter=Control.MOUSE_FILTER_IGNORE;custom_minimum_size=Vector2(180,204);size=custom_minimum_size
+	app=owner_app;mouse_filter=Control.MOUSE_FILTER_IGNORE;custom_minimum_size=Vector2(180,164);size=custom_minimum_size
 	range_m=float(FrontierCrewSurface.config().radar.range)
 func _process(delta: float) -> void:
 	if not is_visible_in_tree() or app.surface_world==null:return
@@ -33,7 +33,7 @@ func refresh_contacts() -> void:
 		contacts.append({"point":row.point,"kind":"life","color":FrontierInterfaceStyle.ACCENT})
 	if not map_center.is_finite() or map_center.distance_to(p)>8:
 		map_center=p
-		var bitmap:=Image.create(32,32,false,Image.FORMAT_RGB8)
+		var bitmap:=Image.create(32,32,false,Image.FORMAT_RGBA8)
 		for y in range(32):
 			for x in range(32):
 				var wx: float=p.x+(float(x)/31*2-1)*range_m
@@ -41,6 +41,7 @@ func refresh_contacts() -> void:
 				var h: float=app.surface_world.terrain.field.height(wx,wz)
 				var level:=clampf((h+12)/45,0,1)
 				var shade:=Color("1c3038").lerp(Color("55716c"),floorf(level*6)/6)
+				if Vector2(float(x)-15.5,float(y)-15.5).length()>15.5:shade.a=0
 				bitmap.set_pixel(x,y,shade)
 		relief=ImageTexture.create_from_image(bitmap)
 func mapped(point: Vector3,p: Vector3) -> Vector2:
@@ -60,8 +61,7 @@ func _draw() -> void:
 	if app==null or app.surface_world==null:return
 	var p: Vector3=app.actors[app.session.latest.self_id].position
 	var font:=get_theme_font("font","Label")
-	draw_style_box(FrontierInterfaceStyle.box(Color("10191fee"),FrontierInterfaceStyle.LINE,0),Rect2(Vector2.ZERO,size))
-	if relief!=null:draw_texture_rect(relief,Rect2(18,20,144,144),false,Color(1,1,1,.65))
+	if relief!=null:draw_texture_rect(relief,Rect2(18,20,144,144),false,Color(1,1,1,.9))
 	for radius in [24,48,72]:draw_arc(Vector2(90,92),radius,0,TAU,64,Color("83d9c530"),1,true)
 	draw_arc(Vector2(90,92),fmod(elapsed/float(FrontierCrewSurface.config().radar.sweep_seconds),1)*72,0,TAU,64,Color("83d9c550"),1,true)
 	for row in contacts:marker(row.point,p,row.kind,row.color)
@@ -73,6 +73,3 @@ func _draw() -> void:
 	var facing:=Vector2(-sin(app.yaw),-cos(app.yaw));var center:=Vector2(90,92)
 	draw_colored_polygon(PackedVector2Array([center+facing*8,center+facing.rotated(2.4)*6,center+facing.rotated(-2.4)*6]),Color.WHITE)
 	draw_string(font,Vector2(85,15),"N",HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color.WHITE)
-	var underground: bool=app.surface_world.terrain.field.height(p.x,p.z)-p.y>6
-	draw_string(font,Vector2(12,181),"지표 투영 · 지하" if underground else "주변 탐색 · %.0f m"%range_m,HORIZONTAL_ALIGNMENT_LEFT,-1,12,FrontierInterfaceStyle.TEXT)
-	draw_string(font,Vector2(12,197),"◇ 광맥  ○ 생물  ◎ 동료",HORIZONTAL_ALIGNMENT_LEFT,-1,10,FrontierInterfaceStyle.MUTED)

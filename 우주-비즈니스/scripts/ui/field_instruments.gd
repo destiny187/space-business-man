@@ -27,7 +27,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		else:stamina=bar;stamina_text=label
 	FrontierInterfaceStyle.label(vitals_box,"Shift  달리기",10,FrontierInterfaceStyle.MUTED)
 	radar=FrontierSurfaceRadar.new();radar.configure(app);add_child(radar)
-	pickups=VBoxContainer.new();pickups.mouse_filter=Control.MOUSE_FILTER_IGNORE;pickups.add_theme_constant_override("separation",6);add_child(pickups)
+	pickups=VBoxContainer.new();pickups.custom_minimum_size.x=216;pickups.size.x=216;pickups.mouse_filter=Control.MOUSE_FILTER_IGNORE;pickups.add_theme_constant_override("separation",6);add_child(pickups)
 	notice=FrontierInterfaceStyle.label(self,"",14,FrontierInterfaceStyle.WARNING)
 	notice.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,8))
 	app.session.response_received.connect(_response)
@@ -41,13 +41,15 @@ func _response(sequence: int,result: Dictionary) -> void:
 		var amount: int=int(result.gains[resource])
 		if amount<=0:continue
 		if not gains.has(resource):
-			var panel:=PanelContainer.new();panel.mouse_filter=Control.MOUSE_FILTER_IGNORE;panel.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color("10191fe8"),FrontierInterfaceStyle.LINE,8));pickups.add_child(panel)
-			var row:=HBoxContainer.new();row.mouse_filter=Control.MOUSE_FILTER_IGNORE;panel.add_child(row)
+			var row:=HBoxContainer.new();row.alignment=BoxContainer.ALIGNMENT_CENTER;row.mouse_filter=Control.MOUSE_FILTER_IGNORE;pickups.add_child(row)
 			var icon:=FrontierResourceIcons.view(resource,28);icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;row.add_child(icon)
-			var label:=FrontierInterfaceStyle.label(row,"",14);label.clip_text=true;label.custom_minimum_size.x=160
-			gains[resource]={"row":panel,"label":label,"amount":0,"left":0.0}
+			var label:=FrontierInterfaceStyle.label(row,"",14);label.clip_text=true;label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;label.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
+			label.add_theme_color_override("font_shadow_color",Color("081218e0"));label.add_theme_constant_override("shadow_offset_x",1);label.add_theme_constant_override("shadow_offset_y",1)
+			gains[resource]={"row":row,"label":label,"amount":0,"left":0.0}
 		gains[resource].amount+=amount;gains[resource].left=3.5
 		gains[resource].label.text="%s  +%d"%[FrontierResourceIcons.names().get(FrontierResourceIcons.canonical(resource),resource),gains[resource].amount]
+		var caption: Label=gains[resource].label
+		caption.custom_minimum_size.x=minf(160,caption.get_theme_font("font").get_string_size(caption.text,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x+2)
 func _process(delta: float) -> void:
 	var displayed:=0
 	for resource in gains.keys():
@@ -70,7 +72,7 @@ func _process(delta: float) -> void:
 	damage_flash=maxf(0,damage_flash-delta);notice_left=maxf(0,notice_left-delta);notice.visible=notice_left>0
 	var viewport_size:=get_viewport().get_visible_rect().size
 	vitals_box.position=Vector2(28,viewport_size.y-150);radar.position=Vector2(viewport_size.x-208,26)
-	pickups.position=Vector2(viewport_size.x-245,248);notice.position=Vector2(viewport_size.x/2-135,80)
+	pickups.position=Vector2(viewport_size.x-226,248);notice.position=Vector2(viewport_size.x/2-135,80)
 	queue_redraw()
 func _draw() -> void:
 	if damage_flash<=0:return
