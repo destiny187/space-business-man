@@ -156,6 +156,8 @@ func _process(delta: float) -> void:
 		if app.surface_world.ecology.actors.has(encounter):
 			var subject: Node3D=app.surface_world.ecology.actors[encounter]
 			effects.burst(subject.global_position+Vector3.UP*.5,Color("64dce6"),3)
+		elif app.session.latest.get("scan",{}).has("point"):
+			effects.burst(FrontierCrewWorld.vector(app.session.latest.scan.point)+Vector3.UP,Color("64dce6"),3)
 	industry_tick-=delta
 	if enabled and industry_tick<=0:
 		industry_tick=.65;_industry_effects()

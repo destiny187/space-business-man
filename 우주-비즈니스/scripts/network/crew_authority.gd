@@ -225,16 +225,17 @@ func step_surface(delta: float) -> void:
 	for peer in peers:
 		if not inputs.has(peer) or inputs[peer].expires<now or not inputs[peer].scanning:scans.erase(peer);continue
 		var actor: String=peers[peer]
-		var target:=FrontierCrewSurface.target(world,actor,inputs[peer].aim)
+		var target:=FrontierSurfaceSurvey.target(world,actor,inputs[peer].aim)
 		if target.is_empty():scans.erase(peer);continue
-		var key: String=world.crew.landing.body_id+":"+target.form_id
-		if world.ecology.observations.has(key):scans[peer]={"id":target.id,"progress":1.0,"known":true};continue
+		if FrontierSurfaceSurvey.known(world,target):
+			scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(world,target,actor)};continue
 		var progress: float=float(scans.get(peer,{}).get("progress",0)) if scans.get(peer,{}).get("id","")==target.id else 0.0
 		progress=minf(1.0,progress+duration/float(FrontierCrewSurface.config().scan_seconds))
-		scans[peer]={"id":target.id,"progress":progress,"known":false}
+		scans[peer]={"id":target.id,"progress":progress,"known":false,"point":[target.point.x,target.point.y,target.point.z]}
 		if progress<1.0:continue
 		var draft:=world.duplicate(true)
-		FrontierEcology.scan(draft.ecology,draft.crew.landing.body_id,target)
+		FrontierSurfaceSurvey.record(draft,target)
 		draft.crew.revision+=1
 		if not save_world.call(draft):stopped=true;error="스캔 저장 실패로 공동 세계를 정지했습니다.";return
 		world=draft
+		scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(world,target,actor)}

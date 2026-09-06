@@ -1,5 +1,7 @@
 # 구현 현황과 검증
 
+2026-09-06 조사 확장: [광물 스캔·공통 결과 카드·조사 기록·생물 활용 안내](../production/25-universal-survey-and-living-settlement.md). 생물의 자유 배양/정원 배치는 목표 설계이며 기존 시험 구획 이식과 구분한다.
+
 2026-09-06 지상 기본 정보 보완: [체력·Shift 달리기/스태미나·실제 획득량·주변 레이더](../production/24-field-vitals-and-radar.md). 낙하/회복/긴급 구조와 세계 저장에 연결했으며 모든 전투·환경 피해 구현을 뜻하지 않는다.
 
 2026-09-06 UI/UX: [지상 HUD·아이템/제작/화물·실제 3D·시각 슬롯](../production/23-uiux-implementation.md)을 개편했다. 공통 기준은 [FIELD v1](../production/22-uiux-guide.md)이며 나머지 화면의 전체 재구성과 구분한다.

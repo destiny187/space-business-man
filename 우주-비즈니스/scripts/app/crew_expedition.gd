@@ -57,6 +57,7 @@ var surface_status: FrontierResourceReadout
 var form_options: OptionButton
 var sample_options: OptionButton
 var surface_target: Dictionary={}
+var survey_journal: FrontierSurveyJournal
 var dig_timer:=0.0
 var test_scan:=false
 var test_sprint:=false
@@ -185,11 +186,12 @@ func _build_ui() -> void:
 	_button(row,"암석 1 꺼내기",func():session.send_request("withdraw",{"amount":1}))
 	_button(row,"1 넣기",func():session.send_request("deposit",{"amount":1}))
 	_button(panel,"주변 회수 화물 줍기",recover_nearby)
-	research_frame=PanelContainer.new();ui.add_child(research_frame);research_frame.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);research_frame.offset_left=24;research_frame.offset_right=470;research_frame.offset_top=150;research_frame.offset_bottom=-84;research_frame.add_theme_stylebox_override("panel",style.duplicate());research_frame.hide()
+	research_frame=PanelContainer.new();ui.add_child(research_frame);research_frame.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);research_frame.offset_left=24;research_frame.offset_right=470;research_frame.offset_top=26;research_frame.offset_bottom=-108;research_frame.add_theme_stylebox_override("panel",style.duplicate());research_frame.hide()
 	var research_scroll:=ScrollContainer.new();research_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.add_child(research_scroll)
 	surface_panel=VBoxContainer.new();surface_panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL;surface_panel.add_theme_constant_override("separation",7);research_scroll.add_child(surface_panel)
-	_label(surface_panel,"생태 연구 · 표본",22)
+	_label(surface_panel,"조사 기록 · 생태 연구",22)
 	_button(surface_panel,"닫기 · J",func():research_frame.hide())
+	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);surface_panel.add_child(survey_journal)
 	surface_status=_resource_label(header,"지표를 준비 중입니다.",14);surface_status.hide()
 	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options)
 	_button(surface_panel,"선택한 생명체 기초 분석 · 광물 3",func():surface_action("surface_analyze"))
@@ -328,7 +330,7 @@ func _physics_process(delta: float) -> void:
 		if inventory_panel.visible or outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
-		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
+		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if FrontierClientSettings.ensure(get_tree()).is_open():direction=Vector2.ZERO;scanning=false
 		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning)
 	if session.hosting and not session.authority.stopped:

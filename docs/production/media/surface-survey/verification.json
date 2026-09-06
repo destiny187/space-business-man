@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "result": "SURVEY_CHECKS 18 FAILURES 0",
+  "additional_checks": [
+    "SURVEY_SAVE_FAILURE_OK",
+    "SURVEY_RENDER_OK"
+  ],
+  "fixture": "임시 세계·프로필과 접근 위치 사용. 현재 작업 트리에서 확인했으며 같은 저장소의 별도 광물 확장 변경도 존재한다. 사용자 저장은 변경하지 않았다.",
+  "limits": [
+    "실제 다중 클라이언트·전체 회귀·장시간 성능 미검증",
+    "자유 배양·정원 배치·새로운 종별 정량 효과는 목표 설계",
+    "18개 흐름 확인 후 결과 안내/선택 연결/화면 간격을 수정하고 좁은 규칙·렌더 확인을 수행했다"
+  ],
+  "screenshots": {
+    "mineral-scan.png": {
+      "width": 1280,
+      "height": 800,
+      "sha256": "d3d7dfc22cc10350e4704afe418917191bda64e55666e75e14a6cb49132efc0f"
+    },
+    "journal-960.png": {
+      "width": 960,
+      "height": 640,
+      "sha256": "e68b5a6a1ed85f9491e95c50bfa843cd723e295e0dc1ae1ee8a5b84221e43e7e"
+    },
+    "biology-scan.png": {
+      "width": 1280,
+      "height": 800,
+      "sha256": "d3a8b7db8b048e496d7fcb3334dd960ec5bdfe48a0ed55e10631e4d9c10d3d12"
+    }
+  },
+  "logs": {
+    "survey-play.log": "19a2cf0dc476f6e182a252032033f6f0618994cbbb2a3ce63bf52d4d518b1b8b",
+    "survey-rules-final.log": "2b035394332b5bdb752e77dbd6065df6bd84936effa1c61b7e6bcf9a6cd350ef",
+    "survey-render-final.log": "44bf31fb38a7ddf40e11245dc361326872139fffaa0a2bd4a40181c7dea205d7"
+  }
+}

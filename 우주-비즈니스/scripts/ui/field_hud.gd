@@ -1,5 +1,6 @@
 class_name FrontierFieldHud
 extends Control
+var scan_card: FrontierSurveyCard
 var instruments: FrontierFieldInstruments
 var app: FrontierCrewExpedition
 var place: Label
@@ -22,6 +23,7 @@ var save_left:=0.0
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;theme=FrontierInterfaceStyle.theme();mouse_filter=Control.MOUSE_FILTER_IGNORE;set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	instruments=FrontierFieldInstruments.new();add_child(instruments);instruments.configure(app)
+	scan_card=FrontierSurveyCard.new();scan_card.configure(app);add_child(scan_card)
 	var heading:=VBoxContainer.new();heading.position=Vector2(32,28);heading.add_theme_constant_override("separation",4);heading.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(heading)
 	place=FrontierInterfaceStyle.label(heading,"",24);location=FrontierInterfaceStyle.label(heading,"",12,Color("d0d6ce"))
 	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=TextureRect.new();ship_direction.texture=load("res://assets/ui/interface/ship.svg");ship_direction.custom_minimum_size=Vector2(22,22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
@@ -82,12 +84,13 @@ func _process(delta: float) -> void:
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		if site.is_empty():target_action.text="B  개발 등록"
 		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
+		target_action.text+=" · E 유지  조사"
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)
 		target_name.text=form.name;target_icon.texture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(form))
 		var known: bool=app.session.surface.ecology.observations.has(app.surface_world.body.id+":"+form.id)
-		target_action.text="Q  표본 채집" if known else "E 유지  스캔";target_action.modulate=Color.WHITE;context.show()
+		target_action.text="Q  표본 채집 · E  활용 정보" if known else "E 유지  스캔";target_action.modulate=Color.WHITE;context.show()
 		if form.category=="animal" and tool.get("kind")=="pulse":
 			target_bar.show();target_bar.max_value=FrontierEquipment.config().animal_health;target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
 			target_action.text="클릭  발사" if target_bar.value>0 else "무력화"
@@ -96,3 +99,5 @@ func _process(delta: float) -> void:
 		target_icon.texture=load("res://assets/ui/interface/build.svg");target_action.text="F  상호작용";target_action.modulate=Color.WHITE;context.show()
 	var size:=get_viewport().get_visible_rect().size
 	context.position=Vector2(size.x/2+24,size.y/2+36)
+
+	if scan_card.visible:context.hide()

@@ -23,6 +23,7 @@ static func validate(value: Variant) -> String:
 	if value.has("navigation"):
 		var navigation_error:=FrontierCrewNavigation.validate(value.navigation)
 		if not navigation_error.is_empty():return navigation_error
+	if value.has("survey") and not FrontierSurfaceSurvey.valid(value.survey):return "광물 조사 기록 오류"
 	if value.has("combat"):
 		if not value.combat is Dictionary:return "전투 기록 형식 오류"
 		for target_id in value.combat:
