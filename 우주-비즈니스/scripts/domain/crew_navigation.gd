@@ -37,6 +37,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 	var nav: Dictionary=world.crew.navigation
 	if nav.mode=="idle":return false
 	var cfg: Dictionary=world.manifest.settings.flight
+	var propulsion: float=FrontierVesselRefit.stats(world).speed
 	var position:=FrontierCrewWorld.vector(nav.position)
 	var direction:=FrontierCrewWorld.vector(nav.direction)
 	if nav.mode=="jump":
@@ -54,7 +55,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 			for id in world.crew.members:world.crew.members[id].ready=false
 		else:
 			direction=(target-position).normalized()
-			nav.speed=move_toward(float(nav.speed),minf(float(cfg.cruise_speed),maxf(12,separation-float(cfg.arrival_clearance))),float(cfg.acceleration)*delta)
+			nav.speed=move_toward(float(nav.speed),minf(float(cfg.cruise_speed)*propulsion,maxf(12,separation-float(cfg.arrival_clearance))),float(cfg.acceleration)*propulsion*delta)
 			position+=direction*minf(float(nav.speed)*delta,maxf(0,separation-float(cfg.arrival_clearance)))
 	nav.position=[position.x,position.y,position.z];nav.direction=[direction.x,direction.y,direction.z]
 	world.flight_position=nav.position.duplicate()

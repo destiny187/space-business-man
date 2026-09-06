@@ -139,6 +139,11 @@ func _acknowledge(epoch: String) -> void:
 func _valid_snapshot(value: Variant) -> bool:
 	if not value is Dictionary or value.get("session_id")!=session_id or not value.get("crew") is Dictionary or not value.crew.has("navigation"):return false
 	if not value.get("self_id") is String or not value.crew.get("members") is Dictionary or not value.crew.members.has(value.self_id) or not value.get("active") is bool:return false
+	if not value.get("vessel") is Dictionary or not value.get("vessel_seed") is int:return false
+	if not value.vessel.is_empty() and not FrontierVesselRefit.validate(value.vessel,value.vessel_seed,world_id).is_empty():return false
+	if not value.get("vessel_stats") is Dictionary:return false
+	for key in ["mass","power","speed","research_speed","hangar"]:
+		if not FrontierUniverse._finite(value.vessel_stats.get(key),0,100):return false
 	var crew: Dictionary=value.crew.duplicate(true);crew.receipts={}
 	for id in crew.members:
 		if not crew.members[id] is Dictionary:return false

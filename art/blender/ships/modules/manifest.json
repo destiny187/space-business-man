@@ -1,0 +1,32 @@
+{
+  "generator": "tools/build_vessel_modules.py",
+  "assets": [
+    {
+      "id": "vector_drive",
+      "source": "art/blender/ships/modules/vector_drive.blend",
+      "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/ships/modules/vector_drive.glb",
+      "triangles": 24680,
+      "materials": 6,
+      "style": "ink-v1",
+      "review": "in-engine review required; not an approved reference"
+    },
+    {
+      "id": "mobile_lab",
+      "source": "art/blender/ships/modules/mobile_lab.blend",
+      "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/ships/modules/mobile_lab.glb",
+      "triangles": 11912,
+      "materials": 7,
+      "style": "ink-v1",
+      "review": "in-engine review required; not an approved reference"
+    },
+    {
+      "id": "robot_pod",
+      "source": "art/blender/ships/modules/robot_pod.blend",
+      "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/ships/modules/robot_pod.glb",
+      "triangles": 11236,
+      "materials": 6,
+      "style": "ink-v1",
+      "review": "in-engine review required; not an approved reference"
+    }
+  ]
+}

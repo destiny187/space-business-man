@@ -104,9 +104,15 @@ static func validate_world(value: Variant) -> String:
 		var ecology_error: String=FrontierEcology.validate(value.ecology,m)
 		if not ecology_error.is_empty():return ecology_error
 	if value.has("engineering") and not value.engineering is Dictionary:return "현장 연구 형식 오류"
+	if value.has("vessel"):
+		if not value.has("crew") or not value.has("business"):return "원정선 소유 세계·사업 장부 누락"
+		var vessel_error: String=FrontierVesselRefit.validate(value.vessel,int(m.seed),value.get("crew",{}).get("world_id",""))
+		if not vessel_error.is_empty():return vessel_error
 	if value.has("business"):
 		var business_error: String=FrontierExpeditionBusiness.validate(value.business,m)
 		if not business_error.is_empty():return business_error
+		var constraint_error: String=FrontierVesselRefit.constraints(value)
+		if not constraint_error.is_empty():return constraint_error
 	if value.has("business") or value.has("engineering"):
 		var engineering_error: String=FrontierFieldEngineering.validate_world(value)
 		if not engineering_error.is_empty():return engineering_error

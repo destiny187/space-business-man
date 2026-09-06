@@ -2,11 +2,13 @@ class_name FrontierCrewFlightView
 extends FrontierSpaceFlight
 var navigation: Dictionary={}
 var exterior:=false
+var refits: FrontierVesselVisuals
 func _ready() -> void:
 	test_mode=true
 	flight_config=state.manifest.settings.flight
 	_setup_space();_build_ui();ui_root.hide()
 	ship.get_child(0).scale=Vector3.ONE*2
+	refits=FrontierVesselVisuals.new();ship.get_child(0).add_child(refits)
 	_load_system(0)
 	set_physics_process(false);set_process_unhandled_input(false)
 func update_navigation(value: Dictionary) -> void:

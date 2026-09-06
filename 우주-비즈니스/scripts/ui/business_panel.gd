@@ -108,7 +108,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	for item in [facility,factory,robot,vein,technology,hangar]:
 		if value.is_empty() or not value.sites.has(id):choices(item,{})
 	if value.is_empty():summary.value="첫 원정 · 무료 개발 등록";guidance.text="적합한 행성을 골랐다면 착륙선 주변에서 개발 구역을 등록하세요.";stock.value="광맥을 F로 채광하고 현장 창고에 운반합니다.";return
-	summary.value="공동 자금 %s Cr · 격납고 %d/%d"%[str(int(value.credits)),value.hangar.size(),int(FrontierExpeditionBusiness.config().hangar_slots)]
+	summary.value="공동 자금 %s Cr · 격납고 %d/%d"%[str(int(value.credits)),value.hangar.size(),int(value.get("hangar_capacity",FrontierExpeditionBusiness.config().hangar_slots))]
 	if not value.get("active_elsewhere","").is_empty():guidance.text="다른 행성에서 사업 진행 중 · 등록한 사업으로 돌아가 정산하세요."
 	elif not value.sites.has(id):guidance.text="새 목적지입니다. 무료 개발 등록으로 사업을 시작하세요."
 	var current: Dictionary=value.sites.get(id,{})

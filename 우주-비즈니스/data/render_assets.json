@@ -8148,5 +8148,35 @@
     "floor_y": 0.0499,
     "catalogue": "bestiary",
     "review_status": "rendered; family contact sheets reviewed; final art approval pending"
+  },
+  {
+    "id": "vessel_vector_drive",
+    "title": "KESTREL / 선박 모듈",
+    "name": "벡터 추진 보조기",
+    "group": "장비",
+    "model": "res://assets/models/ships/modules/vector_drive.glb",
+    "source": "art/blender/ships/modules/vector_drive.blend",
+    "geometry": "visual-prototype",
+    "foliage": false
+  },
+  {
+    "id": "vessel_mobile_lab",
+    "title": "KESTREL / 선박 모듈",
+    "name": "이동 실험실",
+    "group": "장비",
+    "model": "res://assets/models/ships/modules/mobile_lab.glb",
+    "source": "art/blender/ships/modules/mobile_lab.blend",
+    "geometry": "visual-prototype",
+    "foliage": false
+  },
+  {
+    "id": "vessel_robot_pod",
+    "title": "KESTREL / 선박 모듈",
+    "name": "로봇 운송 포드",
+    "group": "장비",
+    "model": "res://assets/models/ships/modules/robot_pod.glb",
+    "source": "art/blender/ships/modules/robot_pod.blend",
+    "geometry": "visual-prototype",
+    "foliage": false
   }
 ]

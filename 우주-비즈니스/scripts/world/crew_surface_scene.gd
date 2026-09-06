@@ -15,6 +15,7 @@ var lamp: SpotLight3D
 var environment: Environment
 var last_anchor:=Vector3i(99999,99999,99999)
 var tick:=0.0
+var refits: FrontierVesselVisuals
 var business_view: FrontierBusinessSiteView
 
 func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D,camera: Camera3D) -> void:
@@ -29,6 +30,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)
 	distant=FrontierDistantTerrain.new();add_child(distant)
 	var ship: Node3D=load("res://assets/models/ships/kestrel.glb").instantiate();ship.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position);FrontierInkStyle.apply(ship,material_cache);add_child(ship)
+	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout(session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
 	lamp=SpotLight3D.new();lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():_refresh_distant();ecology.invalidate())
@@ -75,6 +77,7 @@ func _refresh_distant() -> void:
 func _process(delta: float) -> void:
 	if session==null or terrain==null:return
 	if session.hosting and session.authority.world.has("ecology"):ecology.ecology=session.authority.world.ecology
+	refits.update_loadout(session.latest.get("vessel",{}))
 	_update_interest()
 	if applied_edits<incoming.size() and terrain.batch.is_empty():
 		var edit: Dictionary=incoming[applied_edits]

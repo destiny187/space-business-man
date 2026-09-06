@@ -26,6 +26,8 @@ run_expansion_check --headless --script res://tests/test_crew_authority.gd
 run_expansion_check --headless --script res://tests/test_crew_navigation.gd
 run_expansion_check --headless --script res://tests/test_crew_surface.gd
 run_expansion_check --headless --script res://tests/test_expedition_business.gd
+run_expansion_check --headless --script res://tests/test_vessel_refit.gd
+run_expansion_check --headless --script res://tests/test_vessel_visuals.gd
 run_expansion_check --headless --script res://tests/test_field_engineering.gd
 run_expansion_check --headless --script res://tests/test_industry_replica_budget.gd
 run_expansion_check --headless --script res://tests/test_ecology.gd

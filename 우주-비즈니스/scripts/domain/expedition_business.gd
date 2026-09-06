@@ -180,8 +180,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			ledger.credits-=50;robot.battery=35;robot.path=[];return ""
 		if "recovery" not in ledger.technologies or not near_base:return "회수 기술을 갖추고 창고 주변으로 로봇을 돌려보내세요."
 		if total(robot.cargo)>0:return "로봇 화물을 먼저 하역하세요."
-		if ledger.hangar.size()>=int(config().hangar_slots):return "격납고가 가득 찼습니다."
-		ledger.hangar[id]=robot.duplicate(true);ledger.hangar[id].path=[];current.robots.erase(id);return ""
+		if ledger.hangar.size()>=int(FrontierVesselRefit.stats(world).hangar):return "격납고가 가득 찼습니다."
+		ledger.hangar[id]=robot.duplicate(true);ledger.hangar[id].path=[];current.robots.erase(id);return FrontierVesselRefit.constraints(world)
 	if kind=="business_robot_deploy":
 		var id: String=str(args.get("robot_id",""))
 		if not near_base or not ledger.hangar.has(id):return "창고 주변에서 운송 로봇을 선택하세요."
@@ -209,7 +209,7 @@ static func release_carrier(world: Dictionary,actor: String) -> void:
 static func public_view(world: Dictionary,actor: String) -> Dictionary:
 	if not world.has("business"):return {}
 	var ledger: Dictionary=world.business
-	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":{},"bags":{},"crates":{}}
+	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","hangar_capacity":int(FrontierVesselRefit.stats(world).hangar),"active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":{},"bags":{},"crates":{}}
 	# Copy render state directly; do not first duplicate thousands of private waypoints.
 	for id in ledger.hangar:view.hangar[id]=visible_robot(ledger.hangar[id])
 	if ledger.sites.has(world.location):
@@ -259,7 +259,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 	for key in ["sites","hangar","bags","crates"]:
 		if not value.get(key) is Dictionary:return "사업 장부 구조 오류"
 	if not value.active.is_empty() and (not value.sites.has(value.active) or not value.sites[value.active] is Dictionary or value.sites[value.active].get("state")!="active"):return "활성 개발 사업 참조 오류"
-	if value.hangar.size()>int(config().hangar_slots):return "로봇 격납고 한도 오류"
+	if value.hangar.size()>int(FrontierVesselRefit.config().base_hangar)+int(FrontierVesselRefit.definition("cargo").hangar.max()):return "로봇 격납고 한도 오류"
 	var robots: Dictionary={}
 	for id in value.hangar:
 		if not id is String or not valid_robot(value.hangar[id],id) or total(value.hangar[id].cargo)!=0:return "운송 로봇 오류"

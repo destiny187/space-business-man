@@ -41,6 +41,7 @@ var surface_target: Dictionary={}
 var dig_timer:=0.0
 var test_scan:=false
 var reticle: Label
+var shipyard_panel: FrontierShipyardPanel
 var business_panel: FrontierBusinessPanel
 var placement_kind: String=""
 var placement_point:=Vector3.INF
@@ -141,12 +142,15 @@ func _build_ui() -> void:
 	_button(surface_panel,"선택한 운송 표본 이식",func():surface_action("surface_introduce"))
 	_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply"))
 	_button(panel,"개발 · 건설 · 자동화  [B]",toggle_business)
+	_button(panel,"우주선 정비 · 모듈",toggle_shipyard)
 	_button(panel,"내 소유 장비",show_equipment)
 	_button(panel,"원정 나가기",leave_world)
 	_button(column,"시작 화면",return_title)
 	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
 	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
+	shipyard_panel=FrontierShipyardPanel.new();ui.add_child(shipyard_panel)
+	shipyard_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 func _label(parent: Node,value: String,size: int=15) -> Label:
 	var label:=Label.new();label.text=value;label.add_theme_font_size_override("font_size",size);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.custom_minimum_size.x=265;parent.add_child(label);return label
 func _resource_label(parent: Node,value: String,size: int=15) -> FrontierResourceReadout:
@@ -176,6 +180,8 @@ func _snapshot(value: Dictionary) -> void:
 	if not value.get("active",false):return
 	if flight==null:_setup_flight()
 	flight.update_navigation(value.crew.navigation)
+	flight.refits.update_loadout(value.get("vessel",{}))
+	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
 	var members: Dictionary=value.crew.members
 	for id in actors.keys():
@@ -213,7 +219,7 @@ func _physics_process(delta: float) -> void:
 	if movement_timer<=0:
 		movement_timer=.05
 		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
-		if outside or business_panel.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
+		if outside or business_panel.visible or shipyard_panel.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not get_viewport().gui_get_focus_owner() is LineEdit
@@ -258,13 +264,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if event.physical_keycode==KEY_B:toggle_business()
 		if event.physical_keycode==KEY_F:interact_business()
-		if event.physical_keycode==KEY_ESCAPE:cancel_placement();business_panel.hide()
+		if event.physical_keycode==KEY_ESCAPE:cancel_placement();business_panel.hide();shipyard_panel.hide()
 		if event.physical_keycode==KEY_ESCAPE:Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;get_viewport().gui_release_focus()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
 			return
-		if business_panel.visible:return
+		if business_panel.visible or shipyard_panel.visible:return
 		dig_timer=.35;surface_action("surface_dig")
 func if_flight_view() -> void:
 	if flight!=null:flight.exterior=outside
@@ -414,7 +420,12 @@ func surface_action(kind: String) -> void:
 func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
+func toggle_shipyard() -> void:
+	if not session.active:return
+	cancel_placement();business_panel.hide();shipyard_panel.visible=not shipyard_panel.visible
+	shipyard_panel.update_snapshot(session.latest,session.surface.get("business",{}))
 func toggle_business() -> void:
+	shipyard_panel.hide()
 	if not session.active or surface_world==null:status.value="착륙 후 개발 사업을 시작하세요.";return
 	cancel_placement();business_panel.visible=not business_panel.visible
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
@@ -428,7 +439,7 @@ func interact_business() -> void:
 		"robot","building":toggle_business()
 		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
 func begin_placement(kind: String) -> void:
-	cancel_placement();business_panel.hide()
+	cancel_placement();business_panel.hide();shipyard_panel.hide()
 	if kind.is_empty() or surface_world==null:return
 	placement_kind=kind
 	placement_ghost=load("res://assets/models/"+FrontierCatalog.entry("buildings",kind).model+".glb").instantiate();add_child(placement_ghost)

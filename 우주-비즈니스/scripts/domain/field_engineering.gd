@@ -81,7 +81,7 @@ static func tick(world: Dictionary,dt: float) -> void:
 		if b.is_empty() or not b.active:continue
 		if row.stage=="trial" and not trial_ready(site,b):continue
 		var seconds: float=config().prototype_seconds if row.stage=="prototype" else config().trial_seconds
-		row.progress=minf(seconds,float(row.progress)+dt)
+		row.progress=minf(seconds,float(row.progress)+dt*float(FrontierVesselRefit.stats(world).research_speed))
 		if row.progress>=seconds:row.stage="prototype_ready" if row.stage=="prototype" else "certified"
 static func trial_ready(site: Dictionary,building: Dictionary) -> bool:
 	if building.type=="water":return int(site.inventory.ice)>0 and float(site.environment.water)<100

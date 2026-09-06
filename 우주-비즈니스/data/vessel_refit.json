@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "base_mass": 40.0,
+  "maximum_mass": 54.0,
+  "reactor_power": 12.0,
+  "base_power": 2.0,
+  "base_hangar": 2,
+  "maximum_modules": 9,
+  "robot_mass": 1.5,
+  "build_credits": 1200,
+  "build_materials": {"iron": 40, "copper": 20},
+  "draw_credits": 900,
+  "draw_materials": {"iron": 20, "copper": 10},
+  "pity_interval": 6,
+  "duplicate_parts": 8,
+  "grades": ["standard", "improved", "rare"],
+  "weights": [70, 25, 5],
+  "upgrade_credits": [1000, 1800],
+  "upgrade_parts": [8, 16],
+  "upgrade_materials": {"iron": 20, "copper": 12},
+  "salvage_parts": [8, 12, 20],
+  "slots": ["propulsion", "utility"],
+  "mounts": {"propulsion": [0, 1.65, 1.6], "utility": [4.0, 1.1, -0.7]},
+  "modules": {
+    "drive": {"name": "벡터 추진 보조기", "slot": "propulsion", "model": "ships/modules/vector_drive", "mass": [3.0, 4.0, 5.5], "power": [4.0, 5.0, 6.0], "speed": [1.10, 1.20, 1.30], "research": "thermal_exchange", "description": "같은 항로의 접근 속도와 가속 성능을 높입니다."},
+    "lab": {"name": "이동 실험실", "slot": "utility", "model": "ships/modules/mobile_lab", "mass": [4.0, 5.0, 6.0], "power": [3.0, 4.0, 5.0], "research_speed": [1.15, 1.30, 1.45], "research": "mineral_scaffold", "description": "전력과 현장 조건을 충족한 시제품·현장 시험 시간을 단축합니다."},
+    "cargo": {"name": "로봇 운송 포드", "slot": "utility", "model": "ships/modules/robot_pod", "mass": [3.0, 4.0, 5.0], "power": [1.0, 2.0, 3.0], "hangar": [1, 2, 2], "research": "water_membrane", "description": "회수한 로봇의 공동 격납고를 확장합니다. 적재 중 용량을 줄일 수 없습니다."}
+  }
+}
