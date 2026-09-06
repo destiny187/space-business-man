@@ -7,6 +7,7 @@ var ship: Node3D
 var camera: Camera3D
 var planets := {}
 var system_art: Node3D
+var galactic_core: FrontierGalacticCore
 var orbit_time:=0.0
 var current_system := 0
 var target_ordinal := 0
@@ -96,6 +97,7 @@ func _load_system(index: int) -> void:
 		entry.node.queue_free()
 	planets.clear()
 	current_system = index
+	if galactic_core!=null:galactic_core.queue_free();galactic_core=null
 	var s: Dictionary = FrontierUniverse.system(state.manifest,index)
 	for orbit in int(state.manifest.settings.planets_per_system):
 		var ordinal: int = index*int(state.manifest.settings.planets_per_system)+orbit
@@ -438,3 +440,24 @@ func update_orbits(elapsed: float) -> void:
 	for ordinal in planets:
 		planets[ordinal].node.position=FrontierUniverse.position(state.manifest,ordinal,elapsed)
 		if planets[ordinal].node is FrontierSolarPlanet:planets[ordinal].node.set_epoch(elapsed)
+
+func _process(_delta: float) -> void:
+	_update_galactic_core()
+
+func _update_galactic_core() -> void:
+	if state.is_empty() or camera==null:return
+	var local_viewer:=to_local(camera.global_position)
+	var view:=FrontierUniverse.central_view(state.manifest,current_system,local_viewer)
+	if not view.visible:
+		if galactic_core!=null:galactic_core.hide()
+		return
+	if galactic_core==null:
+		galactic_core=FrontierGalacticCore.new();galactic_core.name="CentralBlackHole";add_child(galactic_core)
+	galactic_core.show()
+	# Floating-origin render projection preserves direction and angular size.
+	# The actual celestial position stays at galaxy center, never follows the ship.
+	var distance: float=camera.far*.82
+	galactic_core.position=local_viewer+Vector3(view.direction)*distance
+	galactic_core.scale=Vector3.ONE*float(view.angular_scale)*distance
+	galactic_core.look_at(camera.global_position,Vector3.UP,true)
+	galactic_core.rotate_object_local(Vector3.RIGHT,.20)

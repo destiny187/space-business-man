@@ -23,3 +23,5 @@ func _process(delta: float) -> void:
 	camera.position=Vector3(0,16,57) if exterior else Vector3(0,2,-18)
 	camera.rotation=Vector3(-.15,0,0) if exterior else Vector3.ZERO
 	camera.fov=lerpf(camera.fov,minf(110.0,float(FrontierClientSettings.ensure(get_tree()).values.fov)+20) if navigation.mode=="jump" else float(FrontierClientSettings.ensure(get_tree()).values.fov),minf(delta*3,1))
+
+	_update_galactic_core()

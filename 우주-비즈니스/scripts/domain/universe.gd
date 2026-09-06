@@ -199,3 +199,22 @@ static func _validate_terrain(value: Dictionary) -> String:
 			var error: String=FrontierSurfaceLogistics.validate(value.surface_logistics[id],value.get("terrain_settings",{}))
 			if not error.is_empty():return error
 	return ""
+
+## One central celestial entity, separate from the million planet addresses.
+static func central_body(manifest: Dictionary) -> Dictionary:
+	var definition: Dictionary=manifest.settings.central_body if manifest.settings.has("central_body") else config().central_body
+	var result: Dictionary=definition.duplicate(true)
+	result.id=manifest.id+":central_black_hole"
+	result.landable=false
+	return result
+
+static func central_view(manifest: Dictionary,system_index: int,local_viewer: Vector3=Vector3.ZERO) -> Dictionary:
+	var core:=central_body(manifest)
+	var system_value:=system(manifest,system_index)
+	if system_value.is_empty():return {"visible":false}
+	var unit: float=core.galaxy_units_to_flight_units
+	var origin:=Vector3(system_value.map_position[0],0,system_value.map_position[1])*unit
+	var center:=Vector3(core.galaxy_position[0],core.galaxy_position[1],core.galaxy_position[2])*unit
+	var relative: Vector3=center-origin-local_viewer
+	var distance: float=relative.length()
+	return {"id":core.id,"visible":distance/unit<=float(core.visible_within_galaxy_units),"direction":relative.normalized(),"distance_galaxy_units":distance/unit,"angular_scale":float(core.model_scale_galaxy_units)*unit/maxf(distance,1.0)}

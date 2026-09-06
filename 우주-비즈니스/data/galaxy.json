@@ -88,5 +88,18 @@
     "gas_giant",
     "ice_giant",
     "ice_giant"
-  ]
+  ],
+  "central_body": {
+    "version": 1,
+    "kind": "black_hole",
+    "name": "은하 중심 블랙홀",
+    "galaxy_position": [
+      0,
+      0,
+      0
+    ],
+    "galaxy_units_to_flight_units": 100000,
+    "model_scale_galaxy_units": 1.4,
+    "visible_within_galaxy_units": 180
+  }
 }
