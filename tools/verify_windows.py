@@ -68,11 +68,19 @@ assert not any(p.startswith("tests/") for p in paths), "Tests should be excluded
 for filename in ("project.binary", "data/catalog.json", "data/graphics.json",
                  "assets/fonts/OFL.txt", "assets/legal/Godot-LICENSE.txt"):
     assert filename in paths, filename
-for source in (ROOT / "우주-비즈니스/assets/models").glob("*.glb"):
-    assert f"assets/models/{source.name}.import" in paths, source.name
+project = ROOT / "우주-비즈니스"
+expected_models = {str(source.relative_to(project)) + ".import"
+                   for source in (project / "assets/models").rglob("*.glb")}
+expected_audio = {str(source.relative_to(project)) + ".import"
+                  for source in (project / "assets/audio").rglob("*")
+                  if source.suffix in (".wav", ".mp3")}
+expected_data = {str(source.relative_to(project))
+                 for source in (project / "data").rglob("*.json")}
+for expected in expected_models | expected_audio | expected_data:
+    assert expected in paths, "Missing current source resource: " + expected
 models = len([p for p in paths if p.startswith("assets/models/") and p.endswith(".glb.import")])
 audio = len([p for p in paths if p.startswith("assets/audio/") and p.endswith((".wav.import", ".mp3.import"))])
-assert models == 27 and audio == 16, (models, audio)
+assert models == len(expected_models) and audio == len(expected_audio), (models, audio)
 report = {"version": version, "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
           "archive_bytes": archive.stat().st_size, "zip_crc_verified": True,
           "file_hashes_verified": len(info["files"]), "pe_x86_64_verified": True,
