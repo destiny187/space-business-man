@@ -1,5 +1,7 @@
 # 구현 현황과 검증
 
+**2026-09-06 탐험 확장은 문서 설계만 반영했다.** 단일 은하·티어 분포·시드 행성·자유 항해·우주선 추첨/개발·광활한 지표/지하·발견 연구/표본 이식·다단계 문명 외교·생물 사례 라이브러리, 호스트 포함 최대 6인 협동·개인 캐릭터/장비 반입·공동 승선·네트워크 저장은 아직 구현·검증하지 않았다. 아래 1.2 실행·테스트 결과가 새 요구사항의 통과를 뜻하지 않는다. [확장 범위와 미완료 인수 표](06-exploration-expansion-roadmap.md).
+
 갱신: 2026-09-06. **로컬에서 플레이 가능한 1.2 실행판**을 기준으로 정리한다. 원안의 파밍·건축·자동화·테라포밍·판매·계승과 네 종류의 발견을 연결했으며, Godot 소스·macOS 앱·Windows x64 ZIP을 제공한다. 초기 설계의 모든 확장 제안을 출시 범위로 간주하지 않는다.
 
 [1.1 인터페이스·연출·입문 개선](05-interface-and-feedback.md)에 새 HUD·카탈로그·흡입·펄스·로봇 동작·가이드를 정리했다.
@@ -26,7 +28,7 @@
 | 자동화 | [시뮬레이션](../../우주-비즈니스/scripts/simulation/planet_simulation.gd), [행성 생성](../../우주-비즈니스/scripts/domain/planet_factory.gd) |
 | 저장 | [원자적 저장](../../우주-비즈니스/scripts/persistence/save_store.gd), [스키마 검증](../../우주-비즈니스/scripts/persistence/save_schema.gd) |
 | Blender | 편집 가능한 `.blend` 27개와 게임용 `.glb` 27개. [장비·기존 배경 24종](../../art/blender/manifest.json), [새 암벽 3종](../../art/blender/landscape/manifest.json) |
-| 카툰 표현 | 카툰 색·외곽선과 재질별 물리 반사·2×/4× MSAA, 접지 음영·그림자·발광·지표 요철·암벽·물결·구름·식생 변화, 채광 파편·작업/전투 빔·설비 수증기·동물 동작 |
+| 카툰 표현 | [INK v1](../production/06-rendering-quality-standard.md): 굵은 검은 윤곽·공통 3단 명암, 2×/4× MSAA·FXAA, 지면·암벽·물·달·도감 공통화. 기존 작동 부품과 효과 유지. 형태 교체 상태는 렌더 목록에서 구분 |
 | ElevenLabs | 효과음·환경음 **16종 실제 생성·연결**. 원본 PCM WAV 보존, 게임용 음량 정리·짧은 페이드·45ms 반복 교차 처리. [생성 이력](../../audio/manifests/elevenlabs.json) |
 | 글꼴·법적 고지 | Noto Sans KR 가변 글꼴과 OFL, Godot MIT 및 의존성 고지 포함 |
 | 배포 | [Windows x64 ZIP](../../builds/windows/Locus-1.2.0-Windows-x64.zip), [Windows 빌드](../../tools/build_windows.sh), [macOS 앱](../../builds/macos/Locus.app), [macOS ZIP](../../builds/macos/Locus-Space-Business.zip), [macOS 빌드](../../tools/build_macos.sh) |
@@ -57,7 +59,7 @@ Blender 사용 중 종료 시 재실행하는 규칙은 [AGENTS.md](../../AGENTS
 
 ## 실행 범위
 
-- 로컬 싱글플레이, 키보드·마우스, 유한 작업 구역과 고갈되는 광맥 방식이다. 실제 구형 중력, 복셀 지형 파괴, 멀티플레이, 오프라인 생산은 원안에서 확정되지 않은 후속 확장이다.
+- 로컬 싱글플레이, 키보드·마우스, 유한 작업 구역과 고갈되는 광맥 방식이다. 광활한 지표·지하 탐험은 이후 확정된 목표이며 현재 미구현이다. 호스트 포함 최대 6인 협동은 추가 확정된 목표이며 현재 미구현이다. 실제 구형 중력·전면 복셀 파괴·오프라인 생산의 채택은 미정이다.
 - 이 환경에서 실행 검증한 대상은 Apple M2 macOS다. Intel용 실행 파일도 포함하지만 Intel 하드웨어 및 Windows/Linux 실기 검증은 수행하지 않았다.
 - 앱은 로컬 개발용 ad-hoc 서명을 사용한다. Apple Developer ID 공증·스토어 등록·외부 공개 배포는 수행하지 않았다.
 - [실행·운영 안내](../release/01-playing-and-building.md)와 [원안 요구사항 인수 표](04-requirement-audit.md)를 함께 참조한다.
@@ -72,8 +74,22 @@ Blender 사용 중 종료 시 재실행하는 규칙은 [AGENTS.md](../../AGENTS
 ./tools/build_windows.sh
 ```
 
-검증은 전용 저장 경로 또는 비영속 상태를 사용한다. 사용자의 일반 사업 저장 파일을 덮어쓰지 않는다. 기본 규칙 검사는 headless로 실행하고 입력·시각·성능 검사는 실제 창에서 실행한다. 화면·측정·로그는 `test-results/`에 보관하며 Git에는 포함하지 않는다.
+검증은 전용 저장 경로 또는 비영속 상태를 사용한다. 사용자의 일반 사업 저장 파일을 덮어쓰지 않는다. 기본 규칙 검사는 headless로 실행하고 입력·시각·성능 검사는 실제 창에서 실행한다. 일반 화면·측정·로그는 `test-results/`에 보관한다. 승인 기준과 공식 렌더 검수용 PNG·JSON은 `docs/production/media/`에 버전 관리한다.
 
 ## 데모 이후 렌더링 품질 연구 장면
 
 2026-09-06 사용자 요청에 따라 [신규 아트 품질 후보](../production/04-visual-target.md)를 추가했다. `tools/show_quality.sh`로 별도 실행한다. Blender 원본·GLB 12개, 신규 로봇·시설·절벽·식생, 재질별 반사·간접광·물가·하늘을 구성하고 실제 QHD 화면 세 장을 촬영했다. 장면·카메라·UI 동작 검사와 원본/출력 매니페스트 대조를 통과했다. 최종 캡처의 엔진 오류는 0건이며 M2 QHD 실측은 약 5fps다. 화질 검토용 후보이고, 사용자 품질 승인·플레이용 최적화·전체 자산 교체·배포 패키지 반영은 아직 수행하지 않았다. 기존 1.2 게임 및 813개 확인 항목과 별도 결과다.
+
+## 굵은 검은선 카툰 예제
+
+[로봇·자원·풀·건물 네 가지 스타일 예제](../production/05-ink-style-study.md)를 별도 장면으로 추가했다. 신규 Blender 원본·GLB 세 쌍과 기존 고품질 로봇, 단계형 명암·깊이/법선 윤곽선 셰이더를 사용한다. 실제 렌더 네 장·모음 이미지, 모델 전환·카메라·윤곽선·회전 검사, 원본/출력 대조를 완료했다. 최종 촬영 오류는 0건이다. 당시에는 스타일 검토용이었으며, 후속 승인과 실제 게임 적용은 아래 INK v1 기록을 따른다.
+
+## 공식 INK v1 적용과 필수 자산 재렌더
+
+사용자 승인에 따라 [공식 렌더링 품질 기준](../production/06-rendering-quality-standard.md)을 추가하고 AGENTS.md의 모든 후속 시각 작업에 연결했다. 게임 자산 27종과 승인 기준작 4종의 단독 렌더·도감 PNG를 같은 Godot 셰이더로 재생성했다. 지면·암벽·물·달과 행성 UI도 단계형 명암을 적용한다. 1인칭·관찰 카메라 모두 월드당 하나의 화면 윤곽 패스를 사용한다. 성능·균형·고품질 프리셋에서 스타일은 유지된다.
+
+[필수 자산 목록](../../우주-비즈니스/data/render_assets.json)과 [촬영 결과](../production/media/ink-catalog/renders.json)를 기준으로 원본·모델·상태를 추적한다. 단독 1440×1200 PNG 31장, 480×400 도감 PNG 31장, 분류 모음 5장을 생성했다. Blender 원본과 GLB 형상은 이번 렌더 통합에서 변경하지 않았다. 기존 27종은 형태 교체 대기이며 승인 기준작 4종이 앞으로의 모델 완성도 기준이다.
+
+[1인칭](../production/media/ink-catalog/game-first-person.png) · [기지 관찰](../production/media/ink-catalog/game-orbit.png) · [환경 변화](../production/media/ink-catalog/game-ecology.png) · [게임 도감](../production/media/ink-catalog/game-catalog-ui.png)
+
+기존 게임 규칙·입력·연출·그래픽 회귀 검사와 전체 자산 재질·원본·목록 검사를 통과했다. 총 1,194개 확인 항목 실패 0건이며 [검증 기록](../production/media/ink-catalog/verification.json)에 남긴다. GPU 검사는 두 카메라의 실제 윤곽 출력, 환경 변화, 도감 화면을 저장하고 지면 원근에서 잘못 생기는 검은 띠를 검사한다. 세이브·경제·자동화 규칙은 변경하지 않았다. 대규모 확장 월드의 성능 최적화와 모든 기존 모델의 고품질 재제작 완료를 뜻하지 않는다.
