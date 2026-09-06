@@ -1,0 +1,58 @@
+{
+  "form_schema": 2,
+  "id": "bio_thermal_colony_23",
+  "name": "산성 부채형 열수군락",
+  "family": "thermal_colony",
+  "family_name": "열수군락",
+  "category": "microbe",
+  "environment": "acid",
+  "environment_label": "산성 기질·수역",
+  "habitat_note": "내산성 외피·반응 기질·부산물 배출",
+  "morphology": 4,
+  "anatomy": 2,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "737347",
+    "b0b15e",
+    "94c177"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_23_near.glb",
+      "sha256": "2851a426ad75ca4147296eaa49f03fa2b959343ffd69401826a48fa2c699fd1d",
+      "triangles": 29748
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_23_far.glb",
+      "sha256": "a599513bff9eb0fe6ee1f588fbb4d3f82a74cba8a01a30cf85c0f513e2fda3ec",
+      "triangles": 9468
+    }
+  },
+  "source": "art/blender/bestiary/bio_thermal_colony_23.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Frond_12",
+    "Anim_Frond_13",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 71
+}

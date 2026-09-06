@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_stalker_24",
+  "name": "동굴 분지형 추적포식류",
+  "family": "stalker",
+  "family_name": "추적포식류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 3,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_24_near.glb",
+      "sha256": "0989ccad3c6a4fad4db6c17040098155f5c43b52458ee05c59840202ff4f21a3",
+      "triangles": 21548
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_24_far.glb",
+      "sha256": "0e5848fc2ee6c3e796a9d664b0bd6a5c94b4be10d237bf517a7b6d2d26e14405",
+      "triangles": 6866
+    }
+  },
+  "source": "art/blender/bestiary/bio_stalker_24.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 23
+}

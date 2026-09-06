@@ -1,0 +1,55 @@
+{
+  "form_schema": 2,
+  "id": "bio_aquatic_frond_22",
+  "name": "지하수 갑주형 수생엽상체",
+  "family": "aquatic_frond",
+  "family_name": "수생엽상체",
+  "category": "plant",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 1,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_22_near.glb",
+      "sha256": "4b50b34d54109d389af58ed709709d8b8fe0fe8c2df1f4deae79b06e85c51dcf",
+      "triangles": 25328
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_22_far.glb",
+      "sha256": "40c7ca8e195cac6cd575ed0a66e3ccfd29c623c4731cccdf246e5fdb922766c3",
+      "triangles": 8302
+    }
+  },
+  "source": "art/blender/bestiary/bio_aquatic_frond_22.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 33
+}

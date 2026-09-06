@@ -1,0 +1,51 @@
+{
+  "form_schema": 2,
+  "id": "bio_coil_08",
+  "name": "산성지 부채형 환절사행류",
+  "family": "coil",
+  "family_name": "환절사행류",
+  "category": "animal",
+  "environment": "acid",
+  "environment_label": "산성 기질·수역",
+  "habitat_note": "내산성 외피·반응 기질·부산물 배출",
+  "morphology": 1,
+  "anatomy": 2,
+  "attack": "spit",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "737347",
+    "b0b15e",
+    "94c177"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_coil_08_near.glb",
+      "sha256": "3be5abe8e8967818909789e0b81a1d52da47ae46712ac68f61dfdd4808a74bce",
+      "triangles": 12820
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_coil_08_far.glb",
+      "sha256": "9f81ba883dbad8b669f3b878ac866ac017890f20bf73641cd70a2edd666bc5d8",
+      "triangles": 4166
+    }
+  },
+  "source": "art/blender/bestiary/bio_coil_08.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6",
+    "Anim_Segment_7",
+    "Anim_Segment_8",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 24
+}

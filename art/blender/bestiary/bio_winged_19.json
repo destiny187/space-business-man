@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_winged_19",
+  "name": "동굴 분지형 막날개류",
+  "family": "winged",
+  "family_name": "막날개류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "dive",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_19_near.glb",
+      "sha256": "d9b7e9ba933a773b7ef56eaca01c894a32fa564d9e8173544edeb9613fd60d83",
+      "triangles": 16568
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_19_far.glb",
+      "sha256": "ed4d42c39a1455b615004972bcfa4694067ab0042abbeafe970cad01644d5f1c",
+      "triangles": 5498
+    }
+  },
+  "source": "art/blender/bestiary/bio_winged_19.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

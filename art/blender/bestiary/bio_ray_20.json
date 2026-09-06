@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_ray_20",
+  "name": "온수 확장형 부유가오리류",
+  "family": "ray",
+  "family_name": "부유가오리류",
+  "category": "animal",
+  "environment": "thermal",
+  "environment_label": "열수·온토",
+  "habitat_note": "안정된 열원·대사 기질·열 회피 구획",
+  "morphology": 3,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_20_near.glb",
+      "sha256": "f50d45afde798ee47e7074ec8bb2c0fd5b969569a86e6a94a409dd097d3549bc",
+      "triangles": 5656
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_20_far.glb",
+      "sha256": "308eb385f3b05e59655042b0ffbb2800022d5a4dcf91d2106bad6afab1bcb803",
+      "triangles": 1976
+    }
+  },
+  "source": "art/blender/bestiary/bio_ray_20.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 10
+}

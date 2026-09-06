@@ -1,0 +1,51 @@
+{
+  "form_schema": 2,
+  "id": "bio_coil_18",
+  "name": "열지 부채형 환절사행류",
+  "family": "coil",
+  "family_name": "환절사행류",
+  "category": "animal",
+  "environment": "thermal",
+  "environment_label": "열수·온토",
+  "habitat_note": "안정된 열원·대사 기질·열 회피 구획",
+  "morphology": 3,
+  "anatomy": 2,
+  "attack": "spit",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_coil_18_near.glb",
+      "sha256": "ae126887347cea155494c7d1b41d0604d98ee30c71b35795da2406d76577d5fd",
+      "triangles": 12820
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_coil_18_far.glb",
+      "sha256": "d30187b13fb5680ca1a8888eaae24e6d199cce274d069e5597f29f28b7376972",
+      "triangles": 4166
+    }
+  },
+  "source": "art/blender/bestiary/bio_coil_18.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6",
+    "Anim_Segment_7",
+    "Anim_Segment_8",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 24
+}

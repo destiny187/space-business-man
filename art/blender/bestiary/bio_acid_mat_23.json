@@ -1,0 +1,58 @@
+{
+  "form_schema": 2,
+  "id": "bio_acid_mat_23",
+  "name": "지하 부채형 기질처리막",
+  "family": "acid_mat",
+  "family_name": "기질처리막",
+  "category": "microbe",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 2,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_23_near.glb",
+      "sha256": "eb0b94e86e8c382e4faa9a40064626e5380cfc94a1b432af71816897be3ebb9e",
+      "triangles": 41732
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_23_far.glb",
+      "sha256": "ca2a76efae7574e56e475d918ad1086836b20b797ecb306aa60725defd66dd55",
+      "triangles": 13304
+    }
+  },
+  "source": "art/blender/bestiary/bio_acid_mat_23.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Frond_12",
+    "Anim_Frond_13",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 57
+}

@@ -1,0 +1,57 @@
+{
+  "form_schema": 2,
+  "id": "bio_thermal_colony_20",
+  "name": "암반 확장형 열수군락",
+  "family": "thermal_colony",
+  "family_name": "열수군락",
+  "category": "microbe",
+  "environment": "basalt",
+  "environment_label": "광물성 암반",
+  "habitat_note": "암석 기질·균열 피난처",
+  "morphology": 3,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_20_near.glb",
+      "sha256": "ee15970fddecde61fd874ca39eb9d2b8cd65163fee88a781069db3585e5a8d38",
+      "triangles": 17696
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_20_far.glb",
+      "sha256": "308c043775efa150715585f90cba1a863d2129bd99619ae30110f38203515f53",
+      "triangles": 6061
+    }
+  },
+  "source": "art/blender/bestiary/bio_thermal_colony_20.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Frond_12",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 62
+}

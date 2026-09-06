@@ -1,0 +1,50 @@
+{
+  "form_schema": 4,
+  "id": "bio_stalker_01",
+  "name": "숲 기본형 추적포식류",
+  "family": "stalker",
+  "family_name": "추적포식류",
+  "category": "animal",
+  "environment": "temperate",
+  "environment_label": "인간 거주에 적합한 온대",
+  "habitat_note": "온화한 기후·액체 물·생산자와 먹이망",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "bite",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "variant_count": 20,
+  "eye_design": "vertical",
+  "eye_count": 2,
+  "sensory_type": "긴 세로 동공과 비스듬한 눈꺼풀",
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_01_near.glb",
+      "sha256": "e41df667c262e3fe8dbc13fb6ee9aa04bc2f23b6af283784776aa3e36a2c1272",
+      "triangles": 19704
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_01_far.glb",
+      "sha256": "bdb9070766b9dd21be2acba48befcc049327a9b619a6d21393209eac8c0142a5",
+      "triangles": 6274
+    }
+  },
+  "source": "art/blender/bestiary/bio_stalker_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 23
+}

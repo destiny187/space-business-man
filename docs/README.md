@@ -34,6 +34,9 @@
 | [데모 이후 렌더링 품질 연구](production/04-visual-target.md) | 신규 모델·배경을 포함한 독립 고품질 장면, 실행·조작·검토 범위 |
 | [공식 렌더링 품질 기준 — INK v1](production/06-rendering-quality-standard.md) | **모든 후속 자산에 필수**: 승인 스타일·공통 셰이더·31종 렌더 목록·완료 조건 |
 | [굵은 검은선 카툰 기준작](production/05-ink-style-study.md) | 승인한 로봇·자원·풀·건물 네 가지 실제 렌더와 제작 이력 |
+| [첫 생물 리소섬 시연](production/07-lithotherm-specimen.md) | 독립 생물 원본·LOD·상태 표현·관찰실 |
+| [생물 기본 모델 600개 렌더링](production/08-bestiary-rendering.md) | 기존 500개와 추가 이형 100개·공격 모션/효과와 검증 |
+| [이형 생물 추가 100개](production/09-aberrant-bestiary.md) | 무안·단안·복안·다안, 새 해부 구조 10군의 제작 기록 |
 | [사운드·ElevenLabs 제작](production/02-audio-and-elevenlabs.md) | 사운드 방향, 우선 목록, 프롬프트, 생성·검수 과정 |
 | [Godot 기술 설계](technical/01-godot-architecture.md) | 현재 저장소, 제안 구조, 시뮬레이션 경계, 성능·검증 |
 | [데이터·세이브 설계](technical/02-data-and-save.md) | 정의와 인스턴스, 식별자, 저장 범위, 중복 방지 |

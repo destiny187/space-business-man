@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_swimmer_07",
+  "name": "담수 갑주형 유영어류",
+  "family": "swimmer",
+  "family_name": "유영어류",
+  "category": "animal",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_07_near.glb",
+      "sha256": "f5b7fa569adaaf3432698e8fd964c19c72bb734fde21fe120a5be8d074c16067",
+      "triangles": 7088
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_07_far.glb",
+      "sha256": "7964d5bea527954ce1ec84ce26628cd0e20636825df47562bad2fe03bb92162d",
+      "triangles": 2434
+    }
+  },
+  "source": "art/blender/bestiary/bio_swimmer_07.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 12
+}

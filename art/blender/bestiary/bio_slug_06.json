@@ -1,0 +1,41 @@
+{
+  "form_schema": 2,
+  "id": "bio_slug_06",
+  "name": "해안 기본형 여과연체류",
+  "family": "slug",
+  "family_name": "여과연체류",
+  "category": "animal",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_06_near.glb",
+      "sha256": "1a7e248c80c9925fd3680019b5ce1c0cdbe2e847fed5e13a0aa3cbef8bafee45",
+      "triangles": 7256
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_06_far.glb",
+      "sha256": "7c2c41d58a3817c00af50d5e80ff412405ab626b7fe0eaa313ceed7694859949",
+      "triangles": 2314
+    }
+  },
+  "source": "art/blender/bestiary/bio_slug_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 7
+}

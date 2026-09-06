@@ -1,0 +1,52 @@
+{
+  "form_schema": 5,
+  "id": "bio_lithic_16",
+  "name": "결정 기본형 암갑류",
+  "family": "lithic",
+  "family_name": "암갑류",
+  "category": "animal",
+  "environment": "crystal",
+  "environment_label": "결정 광맥 지대",
+  "habitat_note": "결정 기질·광물·제한된 유기물",
+  "morphology": 3,
+  "anatomy": 0,
+  "attack": "ram",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "variant_count": 20,
+  "eye_design": "diamond",
+  "eye_count": 1,
+  "sensory_type": "중앙의 마름모 단안",
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lithic_16_near.glb",
+      "sha256": "826e8e440df62b86b445bcfa60581baf96a0d4afa3d53390a2f587ee9829b223",
+      "triangles": 24002
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lithic_16_far.glb",
+      "sha256": "6e7f2dae4ac5273b6364fab6f91fe220ffd9f0c67fca7fc0b3f1ae6a08622c9e",
+      "triangles": 7664
+    }
+  },
+  "source": "art/blender/bestiary/bio_lithic_16.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 27
+}

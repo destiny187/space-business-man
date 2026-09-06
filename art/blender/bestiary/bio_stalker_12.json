@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_stalker_12",
+  "name": "서리 갑주형 추적포식류",
+  "family": "stalker",
+  "family_name": "추적포식류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 1,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_12_near.glb",
+      "sha256": "5a8881c7e943db692b09bd31a534bc29c57b550455c9f41206f6d94639aabfb2",
+      "triangles": 20768
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_12_far.glb",
+      "sha256": "5b40bf0319c5fa13646e8f9d043b774098ffb382f8f5d9769465484ad428c3ef",
+      "triangles": 6614
+    }
+  },
+  "source": "art/blender/bestiary/bio_stalker_12.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 23
+}

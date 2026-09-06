@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_ray_01",
+  "name": "연안 기본형 부유가오리류",
+  "family": "ray",
+  "family_name": "부유가오리류",
+  "category": "animal",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_01_near.glb",
+      "sha256": "5e61c9cb7c1871436dd86647da599eceb371d7c7c21e41f2fc16991eb59c5a03",
+      "triangles": 4624
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_01_far.glb",
+      "sha256": "189399b04dcbfccdfb5d7c23bd513e1dc48b81720801a9f23620e17831da6a7d",
+      "triangles": 1648
+    }
+  },
+  "source": "art/blender/bestiary/bio_ray_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 9
+}

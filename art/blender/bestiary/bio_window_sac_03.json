@@ -1,0 +1,50 @@
+{
+  "form_schema": 1,
+  "id": "bio_window_sac_03",
+  "name": "창낭보행체 · 분절형",
+  "family": "window_sac",
+  "family_name": "창낭보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "crystal",
+  "environment_label": "결정 광맥 지대",
+  "habitat_note": "결정 기질·광물·제한된 유기물",
+  "morphology": 2,
+  "anatomy": 2,
+  "eye_count": 1,
+  "sensory_type": "갈라진 외피 안쪽의 단일 긴 감광 틈",
+  "attack": "spit",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_03_near.glb",
+      "sha256": "e6b8b623577c871ed52819f3b6b1ced6f0539eff8dae2583b315af1dc0e14849",
+      "triangles": 15404
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_03_far.glb",
+      "sha256": "adc2128838d479585d492163ce1f6b1cfee477b044228dc465ec23da339b9681",
+      "triangles": 4916
+    }
+  },
+  "source": "art/blender/bestiary/bio_window_sac_03.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_L",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 20
+}

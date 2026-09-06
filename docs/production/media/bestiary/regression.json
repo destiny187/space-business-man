@@ -1,0 +1,20 @@
+{
+  "command": "./tools/test_game.sh --with-ui",
+  "checks": 17554,
+  "failures": 0,
+  "errors": false,
+  "summaries": [
+    "INK_CONTRACT_TESTS checks=16731 failures=0 assets=533",
+    "CAMPAIGN_TESTS checks=54 failures=0",
+    "EVENT_TESTS checks=44 failures=0",
+    "RELIABILITY_TESTS checks=334 failures=0",
+    "WORKFLOW_TESTS checks=211 failures=0 manual_units=1370",
+    "ONBOARDING_TESTS checks=28 failures=0",
+    "AUDIO_TESTS checks=68 failures=0",
+    "INPUT_TESTS checks=19 failures=0",
+    "PRESENTATION_TESTS checks=25 failures=0",
+    "GRAPHICS_TESTS checks=33 failures=0",
+    "INK_RENDERING_TESTS checks=7 failures=0"
+  ],
+  "scope": "Current local checkout regression, including the shared registry with 533 assets; not bestiary gameplay integration."
+}

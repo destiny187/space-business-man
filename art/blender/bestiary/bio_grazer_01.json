@@ -1,0 +1,50 @@
+{
+  "form_schema": 4,
+  "id": "bio_grazer_01",
+  "name": "초원 기본형 뿔초식류",
+  "family": "grazer",
+  "family_name": "뿔초식류",
+  "category": "animal",
+  "environment": "temperate",
+  "environment_label": "인간 거주에 적합한 온대",
+  "habitat_note": "온화한 기후·액체 물·생산자와 먹이망",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "ram",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "variant_count": 20,
+  "eye_design": "horizontal",
+  "eye_count": 2,
+  "sensory_type": "넓은 가로 동공",
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_grazer_01_near.glb",
+      "sha256": "5cc1fa94012bfe7a47f22a705ee9bc49208eee11e418a1f1cc4c0c90d86bfd4a",
+      "triangles": 20284
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_grazer_01_far.glb",
+      "sha256": "2286ed9063e74c3a8743fb0fefda08d577f50bdc75629253c80168d8bdf008fb",
+      "triangles": 6459
+    }
+  },
+  "source": "art/blender/bestiary/bio_grazer_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 22
+}

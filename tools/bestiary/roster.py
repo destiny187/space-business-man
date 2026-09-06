@@ -1,0 +1,36 @@
+"""Visual catalogue inputs. Counts distinguish body families, meshes and variants."""
+FAMILIES = [
+("lithic","암갑류","animal","ram",["basalt","arid","cold","crystal","thermal"],["현무암","사암","서리석","결정","열수"]),
+("grazer","뿔초식류","animal","ram",["temperate","arid","cold","wetland","canopy"],["초원","건조지","설원","습지","수관"]),
+("runner","도약조류","animal","kick",["arid","temperate","cold","crystal","canopy"],["사구","초원","설원","결정지","수관"]),
+("stalker","추적포식류","animal","bite",["temperate","arid","cold","wetland","cave"],["숲","협곡","서리","늪","동굴"]),
+("burrower","굴착수류","animal","slam",["basalt","arid","cold","thermal","cave"],["자갈","모래","빙토","온토","지하"]),
+("carapace","갑각류","animal","claw",["marine","wetland","acid","basalt","cold"],["조간대","늪","산성호","암반","빙해"]),
+("mantid","낫날절지류","animal","scythe",["canopy","arid","wetland","crystal","cave"],["수관","사막","습지","결정지","지하"]),
+("winged","막날개류","animal","dive",["canopy","temperate","arid","cave","cold"],["수관","숲","협곡","동굴","한랭지"]),
+("swimmer","유영어류","animal","bite",["marine","wetland","cold","thermal","cave"],["연안","담수","빙하호","열수","지하수"]),
+("ray","부유가오리류","animal","none",["marine","wetland","cold","thermal","cave"],["연안","호수","빙해","온수","지하수"]),
+("coil","환절사행류","animal","spit",["arid","acid","wetland","thermal","cave"],["모래","산성지","늪","열지","동굴"]),
+("slug","여과연체류","animal","none",["wetland","marine","acid","cold","cave"],["습지","해안","산성호","빙하수","지하"]),
+("mist_leaf","집수식생","plant","none",["wetland","canopy","cold","temperate","cave"],["안개","수관","서리","초원","결로"]),
+("crystal_fan","반사군락","plant","none",["crystal","arid","cold","basalt","thermal"],["수정","사구","빙정","암석","열수"]),
+("canopy_tree","수관식생","plant","none",["temperate","wetland","arid","cold","canopy"],["온대","늪","건조","한랭","거대수관"]),
+("spore_fungus","균사체","plant","none",["cave","wetland","thermal","acid","canopy"],["동굴","습지","열토","산성","수관"]),
+("aquatic_frond","수생엽상체","plant","none",["marine","wetland","cold","thermal","cave"],["연안","담수","빙하호","온수","지하수"]),
+("acid_mat","기질처리막","microbe","none",["acid","wetland","thermal","basalt","cave"],["산성","습지","열수","암반","지하"]),
+("thermal_colony","열수군락","microbe","none",["thermal","marine","cave","basalt","acid"],["열수","심해","지하","암반","산성"]),
+("oxygen_reef","광합성군락","microbe","none",["temperate","wetland","marine","cold","canopy"],["온대","담수","연안","한랭","수관"]),
+]
+ENVIRONMENTS={
+"basalt":{"label":"광물성 암반","palette":["596c70","839594","ba6d34"],"condition":"암석 기질·균열 피난처"},
+"arid":{"label":"건조 사구·협곡","palette":["aa8155","d0b981","725849"],"condition":"낮은 수분·일교차·수분 보존"},
+"cold":{"label":"한랭·빙하","palette":["648b9b","d2e0d4","699ea9"],"condition":"낮은 온도·휴면·단열 또는 수중 피난처"},
+"crystal":{"label":"결정 광맥 지대","palette":["526977","a1bfbd","5cabac"],"condition":"결정 기질·광물·제한된 유기물"},
+"thermal":{"label":"열수·온토","palette":["4e525a","99805e","d67a37"],"condition":"안정된 열원·대사 기질·열 회피 구획"},
+"temperate":{"label":"인간 거주에 적합한 온대","palette":["657849","adbc72","bb9357"],"condition":"온화한 기후·액체 물·생산자와 먹이망"},
+"wetland":{"label":"습지·담수","palette":["3f7467","8cac80","c0b477"],"condition":"충분한 수분·유기 기질·수위 변화"},
+"canopy":{"label":"다층 수관·숲","palette":["387463","8baa55","c99552"],"condition":"식생·빛과 그늘·수직 서식처"},
+"cave":{"label":"동굴·지하수","palette":["5b6077","9b91a5","71bdb5"],"condition":"어둠·외부 먹이 유입 또는 화학 기질"},
+"marine":{"label":"해양·연안","palette":["3c7185","8cbabd","d8ad75"],"condition":"액체 수역·염도·유속·먹이"},
+"acid":{"label":"산성 기질·수역","palette":["737347","b0b15e","94c177"],"condition":"내산성 외피·반응 기질·부산물 배출"}
+}

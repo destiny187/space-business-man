@@ -1,0 +1,49 @@
+{
+  "form_schema": 2,
+  "id": "bio_lithic_04",
+  "name": "현무암 분지형 암갑류",
+  "family": "lithic",
+  "family_name": "암갑류",
+  "category": "animal",
+  "environment": "basalt",
+  "environment_label": "광물성 암반",
+  "habitat_note": "암석 기질·균열 피난처",
+  "morphology": 0,
+  "anatomy": 3,
+  "attack": "ram",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lithic_04_near.glb",
+      "sha256": "dc7065c676a97a79cd7b019b174cb8326d81f7557b901163b9e5180b3eeafc27",
+      "triangles": 26308
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lithic_04_far.glb",
+      "sha256": "6720a9eb2483fc7fc14118357ab168b723438d7fde72efbd9b61f07956013ed0",
+      "triangles": 8376
+    }
+  },
+  "source": "art/blender/bestiary/bio_lithic_04.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 28
+}

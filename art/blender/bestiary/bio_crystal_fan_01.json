@@ -1,0 +1,48 @@
+{
+  "form_schema": 2,
+  "id": "bio_crystal_fan_01",
+  "name": "수정 기본형 반사군락",
+  "family": "crystal_fan",
+  "family_name": "반사군락",
+  "category": "plant",
+  "environment": "crystal",
+  "environment_label": "결정 광맥 지대",
+  "habitat_note": "결정 기질·광물·제한된 유기물",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crystal_fan_01_near.glb",
+      "sha256": "7404c0944d2f243f854f0b8c5b9c7cb5132d41e602360e4d9fed496d3107cced",
+      "triangles": 4316
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crystal_fan_01_far.glb",
+      "sha256": "28226e37be5f44ea4c7143de7a5755d54068eebd82ca6378f9b85eb90e09a3a4",
+      "triangles": 1372
+    }
+  },
+  "source": "art/blender/bestiary/bio_crystal_fan_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8"
+  ],
+  "mesh_nodes": 10
+}

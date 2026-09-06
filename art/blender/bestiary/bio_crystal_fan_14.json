@@ -1,0 +1,55 @@
+{
+  "form_schema": 2,
+  "id": "bio_crystal_fan_14",
+  "name": "빙정 분지형 반사군락",
+  "family": "crystal_fan",
+  "family_name": "반사군락",
+  "category": "plant",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crystal_fan_14_near.glb",
+      "sha256": "8c017ebdb41330ad1c7dd6a49bcad74be8ae11d98b7a14af9ced9bbda84f009b",
+      "triangles": 9684
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crystal_fan_14_far.glb",
+      "sha256": "ce5a474ceb29dde31e1500f0c9e95aef50e6cec8fe9d4d88c2d17b1a8c12d804",
+      "triangles": 3087
+    }
+  },
+  "source": "art/blender/bestiary/bio_crystal_fan_14.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 17
+}

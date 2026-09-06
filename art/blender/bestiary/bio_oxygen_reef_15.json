@@ -1,0 +1,56 @@
+{
+  "form_schema": 2,
+  "id": "bio_oxygen_reef_15",
+  "name": "연안 확장형 광합성군락",
+  "family": "oxygen_reef",
+  "family_name": "광합성군락",
+  "category": "microbe",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 2,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_15_near.glb",
+      "sha256": "f5161da458f6ed3e910fffbafc2b71ec4d0797d10a958d3d782493ca3f3b3d62",
+      "triangles": 31936
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_15_far.glb",
+      "sha256": "a620def6fff3c996a3c417d1dab696c87886ee7d32f9862018ebd4620d502cbd",
+      "triangles": 10612
+    }
+  },
+  "source": "art/blender/bestiary/bio_oxygen_reef_15.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 46
+}

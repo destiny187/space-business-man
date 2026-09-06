@@ -1,0 +1,58 @@
+{
+  "form_schema": 2,
+  "id": "bio_oxygen_reef_22",
+  "name": "수관 갑주형 광합성군락",
+  "family": "oxygen_reef",
+  "family_name": "광합성군락",
+  "category": "microbe",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 4,
+  "anatomy": 1,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_22_near.glb",
+      "sha256": "8d3219ad6e3c4f2b0a0dc07e8d8b67df9b6783567ec14d581588f584549ad408",
+      "triangles": 38432
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_22_far.glb",
+      "sha256": "03702fa3b362355dd6d70ed35bc32a7bf73ce9a382c7141e2d81270fefd8f162",
+      "triangles": 12464
+    }
+  },
+  "source": "art/blender/bestiary/bio_oxygen_reef_22.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Frond_12",
+    "Anim_Frond_13",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 52
+}

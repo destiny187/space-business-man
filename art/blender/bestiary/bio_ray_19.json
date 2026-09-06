@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_ray_19",
+  "name": "온수 분지형 부유가오리류",
+  "family": "ray",
+  "family_name": "부유가오리류",
+  "category": "animal",
+  "environment": "thermal",
+  "environment_label": "열수·온토",
+  "habitat_note": "안정된 열원·대사 기질·열 회피 구획",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_19_near.glb",
+      "sha256": "55b0bd1b0529a929b55244034caf3136e1acd544ed6f5c8c90cca79105bd075a",
+      "triangles": 5908
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_19_far.glb",
+      "sha256": "556b05bff6e53e9718b34d06915b892bef79b1c67ea0168de2e6f0e084fb2124",
+      "triangles": 2056
+    }
+  },
+  "source": "art/blender/bestiary/bio_ray_19.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 11
+}

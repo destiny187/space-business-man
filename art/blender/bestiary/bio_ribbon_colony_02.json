@@ -1,0 +1,52 @@
+{
+  "form_schema": 1,
+  "id": "bio_ribbon_colony_02",
+  "name": "주름띠군체 · 장축형",
+  "family": "ribbon_colony",
+  "family_name": "주름띠군체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 1,
+  "anatomy": 1,
+  "eye_count": 10,
+  "sensory_type": "몸통의 분산된 납작한 안점",
+  "attack": "none",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ribbon_colony_02_near.glb",
+      "sha256": "8db9ecda78dd456d9b83812f3077694b2f27734bbc772ef1176eb38739d7c530",
+      "triangles": 24640
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ribbon_colony_02_far.glb",
+      "sha256": "7ac7bdeac95a1075db174f87451bb03817f140b2e8aaf02ec2e8fff89c297d3e",
+      "triangles": 7840
+    }
+  },
+  "source": "art/blender/bestiary/bio_ribbon_colony_02.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6",
+    "Anim_Segment_7",
+    "Anim_Segment_8",
+    "Anim_Segment_9"
+  ],
+  "mesh_nodes": 50
+}

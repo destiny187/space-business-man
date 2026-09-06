@@ -1,0 +1,57 @@
+{
+  "form_schema": 2,
+  "id": "bio_oxygen_reef_19",
+  "name": "한랭 분지형 광합성군락",
+  "family": "oxygen_reef",
+  "family_name": "광합성군락",
+  "category": "microbe",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_19_near.glb",
+      "sha256": "7e96eb35aceb38ff5e9ce8fc79152b2dfc9c7f8053071ff18293c858b20162d5",
+      "triangles": 38704
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_19_far.glb",
+      "sha256": "9bcaf7cf10c4c6f58a6147a9b380be1eed24f8997dd69747daaa3b6cddfe9ccd",
+      "triangles": 12338
+    }
+  },
+  "source": "art/blender/bestiary/bio_oxygen_reef_19.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Frond_12",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 44
+}

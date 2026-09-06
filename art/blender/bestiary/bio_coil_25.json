@@ -1,0 +1,51 @@
+{
+  "form_schema": 2,
+  "id": "bio_coil_25",
+  "name": "동굴 확장형 환절사행류",
+  "family": "coil",
+  "family_name": "환절사행류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "spit",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_coil_25_near.glb",
+      "sha256": "2304b93e6e0784cd71af9b131901590555ecd59188455547668e8af46f730537",
+      "triangles": 13660
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_coil_25_far.glb",
+      "sha256": "258ebd6ed5f473dd4ba200acd6ab8ccae46b1de03e0cb30c2e88d0e43362b8fb",
+      "triangles": 4346
+    }
+  },
+  "source": "art/blender/bestiary/bio_coil_25.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6",
+    "Anim_Segment_7",
+    "Anim_Segment_8",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 24
+}

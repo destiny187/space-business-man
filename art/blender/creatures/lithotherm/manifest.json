@@ -1,0 +1,46 @@
+{
+  "case_id": "lithotherm",
+  "version": 1,
+  "status": "visual-prototype",
+  "generator": "tools/build_lithotherm.py",
+  "source": "art/blender/creatures/lithotherm/lithotherm.blend",
+  "source_axes": "Z up, head -Y; glTF Y up, head +Z",
+  "motion": "Godot procedural named pivots; no baked clips",
+  "lods": {
+    "near": {
+      "triangles": 45580,
+      "mesh_nodes": 46,
+      "path": "우주-비즈니스/assets/models/creatures/lithotherm/lithotherm_near.glb",
+      "sha256": "39ce8cf4c89a3450042f5444d9e1401b80e6e54ed325f0b3e8b85671de02c66b"
+    },
+    "far": {
+      "triangles": 13646,
+      "mesh_nodes": 46,
+      "path": "우주-비즈니스/assets/models/creatures/lithotherm/lithotherm_far.glb",
+      "sha256": "c2f228f58a64c6d6f7d8ea7ea9c21de3265f074282073bee967e54c934f28075"
+    }
+  },
+  "materials": [
+    "skin",
+    "plate",
+    "light",
+    "dark",
+    "heat",
+    "copper",
+    "eye",
+    "lichen",
+    "ivory"
+  ],
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "Anim_Tail"
+  ]
+}

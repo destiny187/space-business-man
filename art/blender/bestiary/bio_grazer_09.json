@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_grazer_09",
+  "name": "건조지 분지형 뿔초식류",
+  "family": "grazer",
+  "family_name": "뿔초식류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 1,
+  "anatomy": 3,
+  "attack": "ram",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_grazer_09_near.glb",
+      "sha256": "65046800f81c21027c9b01aced2cc1693d9d23269bb7a3416156201aaa757563",
+      "triangles": 21204
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_grazer_09_far.glb",
+      "sha256": "4bf52108f674b23d0fb5ecd7fb1a313d8f8b68503f2c220d8a96c520da6495e6",
+      "triangles": 6754
+    }
+  },
+  "source": "art/blender/bestiary/bio_grazer_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 22
+}

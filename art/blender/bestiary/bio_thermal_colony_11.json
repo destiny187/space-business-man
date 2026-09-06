@@ -1,0 +1,51 @@
+{
+  "form_schema": 2,
+  "id": "bio_thermal_colony_11",
+  "name": "지하 기본형 열수군락",
+  "family": "thermal_colony",
+  "family_name": "열수군락",
+  "category": "microbe",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 2,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_11_near.glb",
+      "sha256": "f475deb764754169698e549d32979279262b38894c20ab094c2df66ea42e2416",
+      "triangles": 15744
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_11_far.glb",
+      "sha256": "924c89a3a5046f4c4335c975a9157c6baf726cb8322571e37ecdd13fb1342bbf",
+      "triangles": 5004
+    }
+  },
+  "source": "art/blender/bestiary/bio_thermal_colony_11.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11"
+  ],
+  "mesh_nodes": 48
+}

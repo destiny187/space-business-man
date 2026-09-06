@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_burrower_05",
+  "name": "자갈 확장형 굴착수류",
+  "family": "burrower",
+  "family_name": "굴착수류",
+  "category": "animal",
+  "environment": "basalt",
+  "environment_label": "광물성 암반",
+  "habitat_note": "암석 기질·균열 피난처",
+  "morphology": 0,
+  "anatomy": 4,
+  "attack": "slam",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_05_near.glb",
+      "sha256": "49082f2b1b8ef925c0a037a56d3d0564bc2e5b4bf7aa866505706b8f456c2fd9",
+      "triangles": 18832
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_05_far.glb",
+      "sha256": "7aaffe1fc9349a7c64e41f199df0143735d7c7ddf0c6c1ee5a992b33f51c9f38",
+      "triangles": 5996
+    }
+  },
+  "source": "art/blender/bestiary/bio_burrower_05.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

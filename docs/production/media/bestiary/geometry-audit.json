@@ -1,0 +1,3617 @@
+{
+  "forms": 600,
+  "unique_geometry": 600,
+  "duplicate_geometry": [],
+  "appearances": 12000,
+  "categories": {
+    "animal": 400,
+    "plant": 125,
+    "microbe": 75
+  },
+  "attacking_forms": 320,
+  "structural_families": 30,
+  "seconds": 48.81,
+  "models": [
+    {
+      "id": "bio_lithic_01",
+      "floor_near": 0.0,
+      "near_triangles": 25024,
+      "far_triangles": 7968
+    },
+    {
+      "id": "bio_lithic_02",
+      "floor_near": 0.0,
+      "near_triangles": 26480,
+      "far_triangles": 8432
+    },
+    {
+      "id": "bio_lithic_03",
+      "floor_near": 0.0,
+      "near_triangles": 25216,
+      "far_triangles": 8072
+    },
+    {
+      "id": "bio_lithic_04",
+      "floor_near": 0.0,
+      "near_triangles": 26308,
+      "far_triangles": 8376
+    },
+    {
+      "id": "bio_lithic_05",
+      "floor_near": 0.0,
+      "near_triangles": 26056,
+      "far_triangles": 8296
+    },
+    {
+      "id": "bio_lithic_06",
+      "floor_near": 0.0,
+      "near_triangles": 25276,
+      "far_triangles": 8048
+    },
+    {
+      "id": "bio_lithic_07",
+      "floor_near": 0.0,
+      "near_triangles": 26732,
+      "far_triangles": 8512
+    },
+    {
+      "id": "bio_lithic_08",
+      "floor_near": 0.0,
+      "near_triangles": 25468,
+      "far_triangles": 8152
+    },
+    {
+      "id": "bio_lithic_09",
+      "floor_near": 0.0,
+      "near_triangles": 26560,
+      "far_triangles": 8456
+    },
+    {
+      "id": "bio_lithic_10",
+      "floor_near": 0.0,
+      "near_triangles": 26308,
+      "far_triangles": 8376
+    },
+    {
+      "id": "bio_lithic_11",
+      "floor_near": 0.0,
+      "near_triangles": 25528,
+      "far_triangles": 8130
+    },
+    {
+      "id": "bio_lithic_12",
+      "floor_near": 0.0,
+      "near_triangles": 26984,
+      "far_triangles": 8594
+    },
+    {
+      "id": "bio_lithic_13",
+      "floor_near": 0.0,
+      "near_triangles": 25720,
+      "far_triangles": 8234
+    },
+    {
+      "id": "bio_lithic_14",
+      "floor_near": 0.0,
+      "near_triangles": 26812,
+      "far_triangles": 8538
+    },
+    {
+      "id": "bio_lithic_15",
+      "floor_near": 0.0,
+      "near_triangles": 26560,
+      "far_triangles": 8458
+    },
+    {
+      "id": "bio_lithic_16",
+      "floor_near": 0.0,
+      "near_triangles": 24002,
+      "far_triangles": 7664
+    },
+    {
+      "id": "bio_lithic_17",
+      "floor_near": 0.0,
+      "near_triangles": 27236,
+      "far_triangles": 8674
+    },
+    {
+      "id": "bio_lithic_18",
+      "floor_near": 0.0,
+      "near_triangles": 25972,
+      "far_triangles": 8314
+    },
+    {
+      "id": "bio_lithic_19",
+      "floor_near": 0.0,
+      "near_triangles": 27064,
+      "far_triangles": 8618
+    },
+    {
+      "id": "bio_lithic_20",
+      "floor_near": 0.0,
+      "near_triangles": 26812,
+      "far_triangles": 8538
+    },
+    {
+      "id": "bio_lithic_21",
+      "floor_near": 0.0,
+      "near_triangles": 26032,
+      "far_triangles": 8290
+    },
+    {
+      "id": "bio_lithic_22",
+      "floor_near": 0.0,
+      "near_triangles": 27488,
+      "far_triangles": 8754
+    },
+    {
+      "id": "bio_lithic_23",
+      "floor_near": 0.0,
+      "near_triangles": 26224,
+      "far_triangles": 8394
+    },
+    {
+      "id": "bio_lithic_24",
+      "floor_near": 0.0,
+      "near_triangles": 27316,
+      "far_triangles": 8698
+    },
+    {
+      "id": "bio_lithic_25",
+      "floor_near": 0.0,
+      "near_triangles": 27064,
+      "far_triangles": 8618
+    },
+    {
+      "id": "bio_grazer_01",
+      "floor_near": 0.0,
+      "near_triangles": 20284,
+      "far_triangles": 6459
+    },
+    {
+      "id": "bio_grazer_02",
+      "floor_near": 0.0,
+      "near_triangles": 20396,
+      "far_triangles": 6496
+    },
+    {
+      "id": "bio_grazer_03",
+      "floor_near": 0.0,
+      "near_triangles": 19132,
+      "far_triangles": 6134
+    },
+    {
+      "id": "bio_grazer_04",
+      "floor_near": 0.0,
+      "near_triangles": 20224,
+      "far_triangles": 6440
+    },
+    {
+      "id": "bio_grazer_05",
+      "floor_near": 0.0,
+      "near_triangles": 19972,
+      "far_triangles": 6360
+    },
+    {
+      "id": "bio_grazer_06",
+      "floor_near": -0.0,
+      "near_triangles": 19920,
+      "far_triangles": 6344
+    },
+    {
+      "id": "bio_grazer_07",
+      "floor_near": -0.0,
+      "near_triangles": 21376,
+      "far_triangles": 6810
+    },
+    {
+      "id": "bio_grazer_08",
+      "floor_near": -0.0,
+      "near_triangles": 20112,
+      "far_triangles": 6448
+    },
+    {
+      "id": "bio_grazer_09",
+      "floor_near": -0.0,
+      "near_triangles": 21204,
+      "far_triangles": 6754
+    },
+    {
+      "id": "bio_grazer_10",
+      "floor_near": -0.0,
+      "near_triangles": 20952,
+      "far_triangles": 6674
+    },
+    {
+      "id": "bio_grazer_11",
+      "floor_near": -0.0,
+      "near_triangles": 20900,
+      "far_triangles": 6658
+    },
+    {
+      "id": "bio_grazer_12",
+      "floor_near": -0.0,
+      "near_triangles": 22356,
+      "far_triangles": 7122
+    },
+    {
+      "id": "bio_grazer_13",
+      "floor_near": -0.0,
+      "near_triangles": 21092,
+      "far_triangles": 6762
+    },
+    {
+      "id": "bio_grazer_14",
+      "floor_near": -0.0,
+      "near_triangles": 22184,
+      "far_triangles": 7068
+    },
+    {
+      "id": "bio_grazer_15",
+      "floor_near": -0.0,
+      "near_triangles": 21932,
+      "far_triangles": 6986
+    },
+    {
+      "id": "bio_grazer_16",
+      "floor_near": -0.0,
+      "near_triangles": 20368,
+      "far_triangles": 6486
+    },
+    {
+      "id": "bio_grazer_17",
+      "floor_near": -0.0,
+      "near_triangles": 21824,
+      "far_triangles": 6952
+    },
+    {
+      "id": "bio_grazer_18",
+      "floor_near": -0.0,
+      "near_triangles": 20560,
+      "far_triangles": 6590
+    },
+    {
+      "id": "bio_grazer_19",
+      "floor_near": -0.0,
+      "near_triangles": 21652,
+      "far_triangles": 6896
+    },
+    {
+      "id": "bio_grazer_20",
+      "floor_near": -0.0,
+      "near_triangles": 21400,
+      "far_triangles": 6816
+    },
+    {
+      "id": "bio_grazer_21",
+      "floor_near": -0.0,
+      "near_triangles": 21348,
+      "far_triangles": 6802
+    },
+    {
+      "id": "bio_grazer_22",
+      "floor_near": -0.0,
+      "near_triangles": 22804,
+      "far_triangles": 7268
+    },
+    {
+      "id": "bio_grazer_23",
+      "floor_near": -0.0,
+      "near_triangles": 21540,
+      "far_triangles": 6906
+    },
+    {
+      "id": "bio_grazer_24",
+      "floor_near": -0.0,
+      "near_triangles": 22632,
+      "far_triangles": 7212
+    },
+    {
+      "id": "bio_grazer_25",
+      "floor_near": -0.0,
+      "near_triangles": 22380,
+      "far_triangles": 7132
+    },
+    {
+      "id": "bio_runner_01",
+      "floor_near": -0.0,
+      "near_triangles": 10740,
+      "far_triangles": 3592
+    },
+    {
+      "id": "bio_runner_02",
+      "floor_near": -0.0,
+      "near_triangles": 12196,
+      "far_triangles": 4056
+    },
+    {
+      "id": "bio_runner_03",
+      "floor_near": -0.0,
+      "near_triangles": 10932,
+      "far_triangles": 3742
+    },
+    {
+      "id": "bio_runner_04",
+      "floor_near": -0.0,
+      "near_triangles": 12024,
+      "far_triangles": 4002
+    },
+    {
+      "id": "bio_runner_05",
+      "floor_near": -0.0,
+      "near_triangles": 11772,
+      "far_triangles": 3920
+    },
+    {
+      "id": "bio_runner_06",
+      "floor_near": -0.0,
+      "near_triangles": 11056,
+      "far_triangles": 3738
+    },
+    {
+      "id": "bio_runner_07",
+      "floor_near": -0.0,
+      "near_triangles": 12512,
+      "far_triangles": 4202
+    },
+    {
+      "id": "bio_runner_08",
+      "floor_near": -0.0,
+      "near_triangles": 11248,
+      "far_triangles": 3886
+    },
+    {
+      "id": "bio_runner_09",
+      "floor_near": -0.0,
+      "near_triangles": 12340,
+      "far_triangles": 4148
+    },
+    {
+      "id": "bio_runner_10",
+      "floor_near": -0.0,
+      "near_triangles": 12088,
+      "far_triangles": 4066
+    },
+    {
+      "id": "bio_runner_11",
+      "floor_near": -0.0,
+      "near_triangles": 10740,
+      "far_triangles": 3592
+    },
+    {
+      "id": "bio_runner_12",
+      "floor_near": -0.0,
+      "near_triangles": 12196,
+      "far_triangles": 4056
+    },
+    {
+      "id": "bio_runner_13",
+      "floor_near": -0.0,
+      "near_triangles": 10932,
+      "far_triangles": 3742
+    },
+    {
+      "id": "bio_runner_14",
+      "floor_near": -0.0,
+      "near_triangles": 12024,
+      "far_triangles": 4002
+    },
+    {
+      "id": "bio_runner_15",
+      "floor_near": -0.0,
+      "near_triangles": 11772,
+      "far_triangles": 3920
+    },
+    {
+      "id": "bio_runner_16",
+      "floor_near": -0.0,
+      "near_triangles": 11056,
+      "far_triangles": 3738
+    },
+    {
+      "id": "bio_runner_17",
+      "floor_near": -0.0,
+      "near_triangles": 12512,
+      "far_triangles": 4202
+    },
+    {
+      "id": "bio_runner_18",
+      "floor_near": -0.0,
+      "near_triangles": 11248,
+      "far_triangles": 3886
+    },
+    {
+      "id": "bio_runner_19",
+      "floor_near": -0.0,
+      "near_triangles": 12340,
+      "far_triangles": 4148
+    },
+    {
+      "id": "bio_runner_20",
+      "floor_near": -0.0,
+      "near_triangles": 12088,
+      "far_triangles": 4066
+    },
+    {
+      "id": "bio_runner_21",
+      "floor_near": -0.0,
+      "near_triangles": 10740,
+      "far_triangles": 3592
+    },
+    {
+      "id": "bio_runner_22",
+      "floor_near": -0.0,
+      "near_triangles": 12196,
+      "far_triangles": 4056
+    },
+    {
+      "id": "bio_runner_23",
+      "floor_near": -0.0,
+      "near_triangles": 10932,
+      "far_triangles": 3742
+    },
+    {
+      "id": "bio_runner_24",
+      "floor_near": -0.0,
+      "near_triangles": 12024,
+      "far_triangles": 4002
+    },
+    {
+      "id": "bio_runner_25",
+      "floor_near": -0.0,
+      "near_triangles": 11772,
+      "far_triangles": 3920
+    },
+    {
+      "id": "bio_stalker_01",
+      "floor_near": 0.0,
+      "near_triangles": 19704,
+      "far_triangles": 6274
+    },
+    {
+      "id": "bio_stalker_02",
+      "floor_near": 0.0,
+      "near_triangles": 19816,
+      "far_triangles": 6310
+    },
+    {
+      "id": "bio_stalker_03",
+      "floor_near": 0.0,
+      "near_triangles": 18552,
+      "far_triangles": 5950
+    },
+    {
+      "id": "bio_stalker_04",
+      "floor_near": 0.0,
+      "near_triangles": 19644,
+      "far_triangles": 6256
+    },
+    {
+      "id": "bio_stalker_05",
+      "floor_near": 0.0,
+      "near_triangles": 19392,
+      "far_triangles": 6174
+    },
+    {
+      "id": "bio_stalker_06",
+      "floor_near": -0.0,
+      "near_triangles": 18836,
+      "far_triangles": 5998
+    },
+    {
+      "id": "bio_stalker_07",
+      "floor_near": -0.0,
+      "near_triangles": 20292,
+      "far_triangles": 6462
+    },
+    {
+      "id": "bio_stalker_08",
+      "floor_near": -0.0,
+      "near_triangles": 19028,
+      "far_triangles": 6102
+    },
+    {
+      "id": "bio_stalker_09",
+      "floor_near": -0.0,
+      "near_triangles": 20120,
+      "far_triangles": 6408
+    },
+    {
+      "id": "bio_stalker_10",
+      "floor_near": -0.0,
+      "near_triangles": 19868,
+      "far_triangles": 6326
+    },
+    {
+      "id": "bio_stalker_11",
+      "floor_near": -0.0,
+      "near_triangles": 19312,
+      "far_triangles": 6150
+    },
+    {
+      "id": "bio_stalker_12",
+      "floor_near": -0.0,
+      "near_triangles": 20768,
+      "far_triangles": 6614
+    },
+    {
+      "id": "bio_stalker_13",
+      "floor_near": -0.0,
+      "near_triangles": 19504,
+      "far_triangles": 6254
+    },
+    {
+      "id": "bio_stalker_14",
+      "floor_near": -0.0,
+      "near_triangles": 20596,
+      "far_triangles": 6560
+    },
+    {
+      "id": "bio_stalker_15",
+      "floor_near": -0.0,
+      "near_triangles": 20344,
+      "far_triangles": 6478
+    },
+    {
+      "id": "bio_stalker_16",
+      "floor_near": -0.0,
+      "near_triangles": 19788,
+      "far_triangles": 6302
+    },
+    {
+      "id": "bio_stalker_17",
+      "floor_near": -0.0,
+      "near_triangles": 21244,
+      "far_triangles": 6766
+    },
+    {
+      "id": "bio_stalker_18",
+      "floor_near": -0.0,
+      "near_triangles": 19980,
+      "far_triangles": 6406
+    },
+    {
+      "id": "bio_stalker_19",
+      "floor_near": -0.0,
+      "near_triangles": 21072,
+      "far_triangles": 6712
+    },
+    {
+      "id": "bio_stalker_20",
+      "floor_near": -0.0,
+      "near_triangles": 20820,
+      "far_triangles": 6630
+    },
+    {
+      "id": "bio_stalker_21",
+      "floor_near": -0.0,
+      "near_triangles": 20264,
+      "far_triangles": 6456
+    },
+    {
+      "id": "bio_stalker_22",
+      "floor_near": -0.0,
+      "near_triangles": 21720,
+      "far_triangles": 6920
+    },
+    {
+      "id": "bio_stalker_23",
+      "floor_near": -0.0,
+      "near_triangles": 20456,
+      "far_triangles": 6560
+    },
+    {
+      "id": "bio_stalker_24",
+      "floor_near": -0.0,
+      "near_triangles": 21548,
+      "far_triangles": 6866
+    },
+    {
+      "id": "bio_stalker_25",
+      "floor_near": -0.0,
+      "near_triangles": 21296,
+      "far_triangles": 6784
+    },
+    {
+      "id": "bio_burrower_01",
+      "floor_near": 0.019,
+      "near_triangles": 17800,
+      "far_triangles": 5668
+    },
+    {
+      "id": "bio_burrower_02",
+      "floor_near": 0.019,
+      "near_triangles": 19256,
+      "far_triangles": 6134
+    },
+    {
+      "id": "bio_burrower_03",
+      "floor_near": 0.019,
+      "near_triangles": 17992,
+      "far_triangles": 5774
+    },
+    {
+      "id": "bio_burrower_04",
+      "floor_near": 0.019,
+      "near_triangles": 19084,
+      "far_triangles": 6078
+    },
+    {
+      "id": "bio_burrower_05",
+      "floor_near": 0.019,
+      "near_triangles": 18832,
+      "far_triangles": 5996
+    },
+    {
+      "id": "bio_burrower_06",
+      "floor_near": 0.019,
+      "near_triangles": 17800,
+      "far_triangles": 5668
+    },
+    {
+      "id": "bio_burrower_07",
+      "floor_near": 0.019,
+      "near_triangles": 19256,
+      "far_triangles": 6134
+    },
+    {
+      "id": "bio_burrower_08",
+      "floor_near": 0.019,
+      "near_triangles": 17992,
+      "far_triangles": 5774
+    },
+    {
+      "id": "bio_burrower_09",
+      "floor_near": 0.019,
+      "near_triangles": 19084,
+      "far_triangles": 6078
+    },
+    {
+      "id": "bio_burrower_10",
+      "floor_near": 0.019,
+      "near_triangles": 18832,
+      "far_triangles": 5996
+    },
+    {
+      "id": "bio_burrower_11",
+      "floor_near": 0.019,
+      "near_triangles": 17800,
+      "far_triangles": 5668
+    },
+    {
+      "id": "bio_burrower_12",
+      "floor_near": 0.019,
+      "near_triangles": 19256,
+      "far_triangles": 6134
+    },
+    {
+      "id": "bio_burrower_13",
+      "floor_near": 0.019,
+      "near_triangles": 17992,
+      "far_triangles": 5774
+    },
+    {
+      "id": "bio_burrower_14",
+      "floor_near": 0.019,
+      "near_triangles": 19084,
+      "far_triangles": 6078
+    },
+    {
+      "id": "bio_burrower_15",
+      "floor_near": 0.019,
+      "near_triangles": 18832,
+      "far_triangles": 5996
+    },
+    {
+      "id": "bio_burrower_16",
+      "floor_near": 0.019,
+      "near_triangles": 17800,
+      "far_triangles": 5668
+    },
+    {
+      "id": "bio_burrower_17",
+      "floor_near": 0.019,
+      "near_triangles": 19256,
+      "far_triangles": 6134
+    },
+    {
+      "id": "bio_burrower_18",
+      "floor_near": 0.019,
+      "near_triangles": 17992,
+      "far_triangles": 5774
+    },
+    {
+      "id": "bio_burrower_19",
+      "floor_near": 0.019,
+      "near_triangles": 19084,
+      "far_triangles": 6078
+    },
+    {
+      "id": "bio_burrower_20",
+      "floor_near": 0.019,
+      "near_triangles": 18832,
+      "far_triangles": 5996
+    },
+    {
+      "id": "bio_burrower_21",
+      "floor_near": 0.019,
+      "near_triangles": 17256,
+      "far_triangles": 5498
+    },
+    {
+      "id": "bio_burrower_22",
+      "floor_near": 0.019,
+      "near_triangles": 19256,
+      "far_triangles": 6134
+    },
+    {
+      "id": "bio_burrower_23",
+      "floor_near": 0.019,
+      "near_triangles": 17992,
+      "far_triangles": 5774
+    },
+    {
+      "id": "bio_burrower_24",
+      "floor_near": 0.019,
+      "near_triangles": 19084,
+      "far_triangles": 6078
+    },
+    {
+      "id": "bio_burrower_25",
+      "floor_near": 0.019,
+      "near_triangles": 18832,
+      "far_triangles": 5996
+    },
+    {
+      "id": "bio_carapace_01",
+      "floor_near": 0.0547,
+      "near_triangles": 14356,
+      "far_triangles": 4566
+    },
+    {
+      "id": "bio_carapace_02",
+      "floor_near": 0.0547,
+      "near_triangles": 16940,
+      "far_triangles": 5392
+    },
+    {
+      "id": "bio_carapace_03",
+      "floor_near": 0.0547,
+      "near_triangles": 15676,
+      "far_triangles": 5120
+    },
+    {
+      "id": "bio_carapace_04",
+      "floor_near": 0.0547,
+      "near_triangles": 16768,
+      "far_triangles": 5336
+    },
+    {
+      "id": "bio_carapace_05",
+      "floor_near": 0.0547,
+      "near_triangles": 16516,
+      "far_triangles": 5256
+    },
+    {
+      "id": "bio_carapace_06",
+      "floor_near": 0.0547,
+      "near_triangles": 15292,
+      "far_triangles": 4866
+    },
+    {
+      "id": "bio_carapace_07",
+      "floor_near": 0.0547,
+      "near_triangles": 16748,
+      "far_triangles": 5330
+    },
+    {
+      "id": "bio_carapace_08",
+      "floor_near": 0.0547,
+      "near_triangles": 15484,
+      "far_triangles": 5058
+    },
+    {
+      "id": "bio_carapace_09",
+      "floor_near": 0.0547,
+      "near_triangles": 16576,
+      "far_triangles": 5274
+    },
+    {
+      "id": "bio_carapace_10",
+      "floor_near": 0.0547,
+      "near_triangles": 16324,
+      "far_triangles": 5194
+    },
+    {
+      "id": "bio_carapace_11",
+      "floor_near": 0.0547,
+      "near_triangles": 15292,
+      "far_triangles": 4866
+    },
+    {
+      "id": "bio_carapace_12",
+      "floor_near": 0.0547,
+      "near_triangles": 16748,
+      "far_triangles": 5330
+    },
+    {
+      "id": "bio_carapace_13",
+      "floor_near": 0.0547,
+      "near_triangles": 15484,
+      "far_triangles": 5058
+    },
+    {
+      "id": "bio_carapace_14",
+      "floor_near": 0.0547,
+      "near_triangles": 16576,
+      "far_triangles": 5274
+    },
+    {
+      "id": "bio_carapace_15",
+      "floor_near": 0.0547,
+      "near_triangles": 16324,
+      "far_triangles": 5194
+    },
+    {
+      "id": "bio_carapace_16",
+      "floor_near": 0.0547,
+      "near_triangles": 15196,
+      "far_triangles": 4836
+    },
+    {
+      "id": "bio_carapace_17",
+      "floor_near": 0.0547,
+      "near_triangles": 16652,
+      "far_triangles": 5300
+    },
+    {
+      "id": "bio_carapace_18",
+      "floor_near": 0.0547,
+      "near_triangles": 15388,
+      "far_triangles": 5028
+    },
+    {
+      "id": "bio_carapace_19",
+      "floor_near": 0.0547,
+      "near_triangles": 16480,
+      "far_triangles": 5244
+    },
+    {
+      "id": "bio_carapace_20",
+      "floor_near": 0.0547,
+      "near_triangles": 16228,
+      "far_triangles": 5164
+    },
+    {
+      "id": "bio_carapace_21",
+      "floor_near": 0.0547,
+      "near_triangles": 15196,
+      "far_triangles": 4836
+    },
+    {
+      "id": "bio_carapace_22",
+      "floor_near": 0.0547,
+      "near_triangles": 16652,
+      "far_triangles": 5300
+    },
+    {
+      "id": "bio_carapace_23",
+      "floor_near": 0.0547,
+      "near_triangles": 15388,
+      "far_triangles": 5028
+    },
+    {
+      "id": "bio_carapace_24",
+      "floor_near": 0.0547,
+      "near_triangles": 16480,
+      "far_triangles": 5244
+    },
+    {
+      "id": "bio_carapace_25",
+      "floor_near": 0.0547,
+      "near_triangles": 16228,
+      "far_triangles": 5164
+    },
+    {
+      "id": "bio_mantid_01",
+      "floor_near": 0.0547,
+      "near_triangles": 15720,
+      "far_triangles": 5006
+    },
+    {
+      "id": "bio_mantid_02",
+      "floor_near": 0.0547,
+      "near_triangles": 17176,
+      "far_triangles": 5470
+    },
+    {
+      "id": "bio_mantid_03",
+      "floor_near": 0.0547,
+      "near_triangles": 15912,
+      "far_triangles": 5154
+    },
+    {
+      "id": "bio_mantid_04",
+      "floor_near": 0.0547,
+      "near_triangles": 17004,
+      "far_triangles": 5414
+    },
+    {
+      "id": "bio_mantid_05",
+      "floor_near": 0.0547,
+      "near_triangles": 16752,
+      "far_triangles": 5334
+    },
+    {
+      "id": "bio_mantid_06",
+      "floor_near": 0.0547,
+      "near_triangles": 15720,
+      "far_triangles": 5006
+    },
+    {
+      "id": "bio_mantid_07",
+      "floor_near": 0.0547,
+      "near_triangles": 17176,
+      "far_triangles": 5470
+    },
+    {
+      "id": "bio_mantid_08",
+      "floor_near": 0.0547,
+      "near_triangles": 15912,
+      "far_triangles": 5154
+    },
+    {
+      "id": "bio_mantid_09",
+      "floor_near": 0.0547,
+      "near_triangles": 17004,
+      "far_triangles": 5414
+    },
+    {
+      "id": "bio_mantid_10",
+      "floor_near": 0.0547,
+      "near_triangles": 16752,
+      "far_triangles": 5334
+    },
+    {
+      "id": "bio_mantid_11",
+      "floor_near": 0.0547,
+      "near_triangles": 15720,
+      "far_triangles": 5006
+    },
+    {
+      "id": "bio_mantid_12",
+      "floor_near": 0.0547,
+      "near_triangles": 17176,
+      "far_triangles": 5470
+    },
+    {
+      "id": "bio_mantid_13",
+      "floor_near": 0.0547,
+      "near_triangles": 15912,
+      "far_triangles": 5154
+    },
+    {
+      "id": "bio_mantid_14",
+      "floor_near": 0.0547,
+      "near_triangles": 17004,
+      "far_triangles": 5414
+    },
+    {
+      "id": "bio_mantid_15",
+      "floor_near": 0.0547,
+      "near_triangles": 16752,
+      "far_triangles": 5334
+    },
+    {
+      "id": "bio_mantid_16",
+      "floor_near": 0.0547,
+      "near_triangles": 15720,
+      "far_triangles": 5006
+    },
+    {
+      "id": "bio_mantid_17",
+      "floor_near": 0.0547,
+      "near_triangles": 17176,
+      "far_triangles": 5470
+    },
+    {
+      "id": "bio_mantid_18",
+      "floor_near": 0.0547,
+      "near_triangles": 15912,
+      "far_triangles": 5154
+    },
+    {
+      "id": "bio_mantid_19",
+      "floor_near": 0.0547,
+      "near_triangles": 17004,
+      "far_triangles": 5414
+    },
+    {
+      "id": "bio_mantid_20",
+      "floor_near": 0.0547,
+      "near_triangles": 16752,
+      "far_triangles": 5334
+    },
+    {
+      "id": "bio_mantid_21",
+      "floor_near": 0.0547,
+      "near_triangles": 15720,
+      "far_triangles": 5006
+    },
+    {
+      "id": "bio_mantid_22",
+      "floor_near": 0.0547,
+      "near_triangles": 17176,
+      "far_triangles": 5470
+    },
+    {
+      "id": "bio_mantid_23",
+      "floor_near": 0.0547,
+      "near_triangles": 15912,
+      "far_triangles": 5154
+    },
+    {
+      "id": "bio_mantid_24",
+      "floor_near": 0.0547,
+      "near_triangles": 17004,
+      "far_triangles": 5414
+    },
+    {
+      "id": "bio_mantid_25",
+      "floor_near": 0.0547,
+      "near_triangles": 16752,
+      "far_triangles": 5334
+    },
+    {
+      "id": "bio_winged_01",
+      "floor_near": 0.0073,
+      "near_triangles": 15284,
+      "far_triangles": 5090
+    },
+    {
+      "id": "bio_winged_02",
+      "floor_near": 0.0073,
+      "near_triangles": 16740,
+      "far_triangles": 5554
+    },
+    {
+      "id": "bio_winged_03",
+      "floor_near": 0.0073,
+      "near_triangles": 15476,
+      "far_triangles": 5282
+    },
+    {
+      "id": "bio_winged_04",
+      "floor_near": 0.0073,
+      "near_triangles": 16568,
+      "far_triangles": 5498
+    },
+    {
+      "id": "bio_winged_05",
+      "floor_near": 0.0073,
+      "near_triangles": 16316,
+      "far_triangles": 5418
+    },
+    {
+      "id": "bio_winged_06",
+      "floor_near": 0.0073,
+      "near_triangles": 15284,
+      "far_triangles": 5090
+    },
+    {
+      "id": "bio_winged_07",
+      "floor_near": 0.0073,
+      "near_triangles": 16740,
+      "far_triangles": 5554
+    },
+    {
+      "id": "bio_winged_08",
+      "floor_near": 0.0073,
+      "near_triangles": 15476,
+      "far_triangles": 5282
+    },
+    {
+      "id": "bio_winged_09",
+      "floor_near": 0.0073,
+      "near_triangles": 16568,
+      "far_triangles": 5498
+    },
+    {
+      "id": "bio_winged_10",
+      "floor_near": 0.0073,
+      "near_triangles": 16316,
+      "far_triangles": 5418
+    },
+    {
+      "id": "bio_winged_11",
+      "floor_near": 0.0073,
+      "near_triangles": 15284,
+      "far_triangles": 5090
+    },
+    {
+      "id": "bio_winged_12",
+      "floor_near": 0.0073,
+      "near_triangles": 16740,
+      "far_triangles": 5554
+    },
+    {
+      "id": "bio_winged_13",
+      "floor_near": 0.0073,
+      "near_triangles": 15476,
+      "far_triangles": 5282
+    },
+    {
+      "id": "bio_winged_14",
+      "floor_near": 0.0073,
+      "near_triangles": 16568,
+      "far_triangles": 5498
+    },
+    {
+      "id": "bio_winged_15",
+      "floor_near": 0.0073,
+      "near_triangles": 16316,
+      "far_triangles": 5418
+    },
+    {
+      "id": "bio_winged_16",
+      "floor_near": 0.0073,
+      "near_triangles": 17044,
+      "far_triangles": 5652
+    },
+    {
+      "id": "bio_winged_17",
+      "floor_near": 0.0073,
+      "near_triangles": 16740,
+      "far_triangles": 5554
+    },
+    {
+      "id": "bio_winged_18",
+      "floor_near": 0.0073,
+      "near_triangles": 15476,
+      "far_triangles": 5282
+    },
+    {
+      "id": "bio_winged_19",
+      "floor_near": 0.0073,
+      "near_triangles": 16568,
+      "far_triangles": 5498
+    },
+    {
+      "id": "bio_winged_20",
+      "floor_near": 0.0073,
+      "near_triangles": 16316,
+      "far_triangles": 5418
+    },
+    {
+      "id": "bio_winged_21",
+      "floor_near": 0.0073,
+      "near_triangles": 15284,
+      "far_triangles": 5090
+    },
+    {
+      "id": "bio_winged_22",
+      "floor_near": 0.0073,
+      "near_triangles": 16740,
+      "far_triangles": 5554
+    },
+    {
+      "id": "bio_winged_23",
+      "floor_near": 0.0073,
+      "near_triangles": 15476,
+      "far_triangles": 5282
+    },
+    {
+      "id": "bio_winged_24",
+      "floor_near": 0.0073,
+      "near_triangles": 16568,
+      "far_triangles": 5498
+    },
+    {
+      "id": "bio_winged_25",
+      "floor_near": 0.0073,
+      "near_triangles": 16316,
+      "far_triangles": 5418
+    },
+    {
+      "id": "bio_swimmer_01",
+      "floor_near": 0.0,
+      "near_triangles": 7844,
+      "far_triangles": 2676
+    },
+    {
+      "id": "bio_swimmer_02",
+      "floor_near": 0.0,
+      "near_triangles": 6836,
+      "far_triangles": 2352
+    },
+    {
+      "id": "bio_swimmer_03",
+      "floor_near": 0.0,
+      "near_triangles": 5572,
+      "far_triangles": 2080
+    },
+    {
+      "id": "bio_swimmer_04",
+      "floor_near": 0.0,
+      "near_triangles": 6664,
+      "far_triangles": 2296
+    },
+    {
+      "id": "bio_swimmer_05",
+      "floor_near": 0.0,
+      "near_triangles": 6412,
+      "far_triangles": 2216
+    },
+    {
+      "id": "bio_swimmer_06",
+      "floor_near": 0.0,
+      "near_triangles": 5632,
+      "far_triangles": 1970
+    },
+    {
+      "id": "bio_swimmer_07",
+      "floor_near": 0.0,
+      "near_triangles": 7088,
+      "far_triangles": 2434
+    },
+    {
+      "id": "bio_swimmer_08",
+      "floor_near": 0.0,
+      "near_triangles": 5824,
+      "far_triangles": 2162
+    },
+    {
+      "id": "bio_swimmer_09",
+      "floor_near": 0.0,
+      "near_triangles": 6916,
+      "far_triangles": 2378
+    },
+    {
+      "id": "bio_swimmer_10",
+      "floor_near": 0.0,
+      "near_triangles": 6664,
+      "far_triangles": 2298
+    },
+    {
+      "id": "bio_swimmer_11",
+      "floor_near": 0.0,
+      "near_triangles": 5884,
+      "far_triangles": 2050
+    },
+    {
+      "id": "bio_swimmer_12",
+      "floor_near": 0.0,
+      "near_triangles": 7340,
+      "far_triangles": 2514
+    },
+    {
+      "id": "bio_swimmer_13",
+      "floor_near": 0.0,
+      "near_triangles": 6076,
+      "far_triangles": 2242
+    },
+    {
+      "id": "bio_swimmer_14",
+      "floor_near": 0.0,
+      "near_triangles": 7168,
+      "far_triangles": 2458
+    },
+    {
+      "id": "bio_swimmer_15",
+      "floor_near": 0.0,
+      "near_triangles": 6916,
+      "far_triangles": 2378
+    },
+    {
+      "id": "bio_swimmer_16",
+      "floor_near": 0.0,
+      "near_triangles": 6136,
+      "far_triangles": 2130
+    },
+    {
+      "id": "bio_swimmer_17",
+      "floor_near": 0.0,
+      "near_triangles": 7592,
+      "far_triangles": 2594
+    },
+    {
+      "id": "bio_swimmer_18",
+      "floor_near": 0.0,
+      "near_triangles": 6328,
+      "far_triangles": 2322
+    },
+    {
+      "id": "bio_swimmer_19",
+      "floor_near": 0.0,
+      "near_triangles": 7420,
+      "far_triangles": 2538
+    },
+    {
+      "id": "bio_swimmer_20",
+      "floor_near": 0.0,
+      "near_triangles": 7168,
+      "far_triangles": 2458
+    },
+    {
+      "id": "bio_swimmer_21",
+      "floor_near": 0.0,
+      "near_triangles": 6388,
+      "far_triangles": 2212
+    },
+    {
+      "id": "bio_swimmer_22",
+      "floor_near": 0.0,
+      "near_triangles": 7844,
+      "far_triangles": 2676
+    },
+    {
+      "id": "bio_swimmer_23",
+      "floor_near": 0.0,
+      "near_triangles": 6580,
+      "far_triangles": 2404
+    },
+    {
+      "id": "bio_swimmer_24",
+      "floor_near": 0.0,
+      "near_triangles": 7672,
+      "far_triangles": 2620
+    },
+    {
+      "id": "bio_swimmer_25",
+      "floor_near": 0.0,
+      "near_triangles": 7420,
+      "far_triangles": 2540
+    },
+    {
+      "id": "bio_ray_01",
+      "floor_near": 0.0,
+      "near_triangles": 4624,
+      "far_triangles": 1648
+    },
+    {
+      "id": "bio_ray_02",
+      "floor_near": 0.0,
+      "near_triangles": 6080,
+      "far_triangles": 2112
+    },
+    {
+      "id": "bio_ray_03",
+      "floor_near": 0.0,
+      "near_triangles": 4816,
+      "far_triangles": 1840
+    },
+    {
+      "id": "bio_ray_04",
+      "floor_near": 0.0,
+      "near_triangles": 5908,
+      "far_triangles": 2056
+    },
+    {
+      "id": "bio_ray_05",
+      "floor_near": 0.0,
+      "near_triangles": 5656,
+      "far_triangles": 1976
+    },
+    {
+      "id": "bio_ray_06",
+      "floor_near": 0.0,
+      "near_triangles": 4624,
+      "far_triangles": 1648
+    },
+    {
+      "id": "bio_ray_07",
+      "floor_near": 0.0,
+      "near_triangles": 6080,
+      "far_triangles": 2112
+    },
+    {
+      "id": "bio_ray_08",
+      "floor_near": 0.0,
+      "near_triangles": 4816,
+      "far_triangles": 1840
+    },
+    {
+      "id": "bio_ray_09",
+      "floor_near": 0.0,
+      "near_triangles": 5908,
+      "far_triangles": 2056
+    },
+    {
+      "id": "bio_ray_10",
+      "floor_near": 0.0,
+      "near_triangles": 5656,
+      "far_triangles": 1976
+    },
+    {
+      "id": "bio_ray_11",
+      "floor_near": 0.0,
+      "near_triangles": 4624,
+      "far_triangles": 1648
+    },
+    {
+      "id": "bio_ray_12",
+      "floor_near": 0.0,
+      "near_triangles": 6080,
+      "far_triangles": 2112
+    },
+    {
+      "id": "bio_ray_13",
+      "floor_near": 0.0,
+      "near_triangles": 4816,
+      "far_triangles": 1840
+    },
+    {
+      "id": "bio_ray_14",
+      "floor_near": 0.0,
+      "near_triangles": 5908,
+      "far_triangles": 2056
+    },
+    {
+      "id": "bio_ray_15",
+      "floor_near": 0.0,
+      "near_triangles": 5656,
+      "far_triangles": 1976
+    },
+    {
+      "id": "bio_ray_16",
+      "floor_near": 0.0,
+      "near_triangles": 4624,
+      "far_triangles": 1648
+    },
+    {
+      "id": "bio_ray_17",
+      "floor_near": 0.0,
+      "near_triangles": 6080,
+      "far_triangles": 2112
+    },
+    {
+      "id": "bio_ray_18",
+      "floor_near": 0.0,
+      "near_triangles": 4816,
+      "far_triangles": 1840
+    },
+    {
+      "id": "bio_ray_19",
+      "floor_near": 0.0,
+      "near_triangles": 5908,
+      "far_triangles": 2056
+    },
+    {
+      "id": "bio_ray_20",
+      "floor_near": 0.0,
+      "near_triangles": 5656,
+      "far_triangles": 1976
+    },
+    {
+      "id": "bio_ray_21",
+      "floor_near": 0.0,
+      "near_triangles": 4624,
+      "far_triangles": 1648
+    },
+    {
+      "id": "bio_ray_22",
+      "floor_near": 0.0,
+      "near_triangles": 6080,
+      "far_triangles": 2112
+    },
+    {
+      "id": "bio_ray_23",
+      "floor_near": 0.0,
+      "near_triangles": 4816,
+      "far_triangles": 1840
+    },
+    {
+      "id": "bio_ray_24",
+      "floor_near": 0.0,
+      "near_triangles": 5908,
+      "far_triangles": 2056
+    },
+    {
+      "id": "bio_ray_25",
+      "floor_near": 0.0,
+      "near_triangles": 5656,
+      "far_triangles": 1976
+    },
+    {
+      "id": "bio_coil_01",
+      "floor_near": 0.0,
+      "near_triangles": 12628,
+      "far_triangles": 4018
+    },
+    {
+      "id": "bio_coil_02",
+      "floor_near": 0.0,
+      "near_triangles": 14084,
+      "far_triangles": 4482
+    },
+    {
+      "id": "bio_coil_03",
+      "floor_near": 0.0,
+      "near_triangles": 12820,
+      "far_triangles": 4166
+    },
+    {
+      "id": "bio_coil_04",
+      "floor_near": 0.0,
+      "near_triangles": 13912,
+      "far_triangles": 4426
+    },
+    {
+      "id": "bio_coil_05",
+      "floor_near": 0.0,
+      "near_triangles": 13660,
+      "far_triangles": 4346
+    },
+    {
+      "id": "bio_coil_06",
+      "floor_near": 0.0,
+      "near_triangles": 12628,
+      "far_triangles": 4018
+    },
+    {
+      "id": "bio_coil_07",
+      "floor_near": 0.0,
+      "near_triangles": 14084,
+      "far_triangles": 4482
+    },
+    {
+      "id": "bio_coil_08",
+      "floor_near": 0.0,
+      "near_triangles": 12820,
+      "far_triangles": 4166
+    },
+    {
+      "id": "bio_coil_09",
+      "floor_near": 0.0,
+      "near_triangles": 13912,
+      "far_triangles": 4426
+    },
+    {
+      "id": "bio_coil_10",
+      "floor_near": 0.0,
+      "near_triangles": 13660,
+      "far_triangles": 4346
+    },
+    {
+      "id": "bio_coil_11",
+      "floor_near": 0.0,
+      "near_triangles": 12628,
+      "far_triangles": 4018
+    },
+    {
+      "id": "bio_coil_12",
+      "floor_near": 0.0,
+      "near_triangles": 14084,
+      "far_triangles": 4482
+    },
+    {
+      "id": "bio_coil_13",
+      "floor_near": 0.0,
+      "near_triangles": 12820,
+      "far_triangles": 4166
+    },
+    {
+      "id": "bio_coil_14",
+      "floor_near": 0.0,
+      "near_triangles": 13912,
+      "far_triangles": 4426
+    },
+    {
+      "id": "bio_coil_15",
+      "floor_near": 0.0,
+      "near_triangles": 13660,
+      "far_triangles": 4346
+    },
+    {
+      "id": "bio_coil_16",
+      "floor_near": 0.0,
+      "near_triangles": 12628,
+      "far_triangles": 4018
+    },
+    {
+      "id": "bio_coil_17",
+      "floor_near": 0.0,
+      "near_triangles": 14084,
+      "far_triangles": 4482
+    },
+    {
+      "id": "bio_coil_18",
+      "floor_near": 0.0,
+      "near_triangles": 12820,
+      "far_triangles": 4166
+    },
+    {
+      "id": "bio_coil_19",
+      "floor_near": 0.0,
+      "near_triangles": 13912,
+      "far_triangles": 4426
+    },
+    {
+      "id": "bio_coil_20",
+      "floor_near": 0.0,
+      "near_triangles": 13660,
+      "far_triangles": 4346
+    },
+    {
+      "id": "bio_coil_21",
+      "floor_near": 0.0,
+      "near_triangles": 12628,
+      "far_triangles": 4018
+    },
+    {
+      "id": "bio_coil_22",
+      "floor_near": 0.0,
+      "near_triangles": 14084,
+      "far_triangles": 4482
+    },
+    {
+      "id": "bio_coil_23",
+      "floor_near": 0.0,
+      "near_triangles": 12820,
+      "far_triangles": 4166
+    },
+    {
+      "id": "bio_coil_24",
+      "floor_near": 0.0,
+      "near_triangles": 13912,
+      "far_triangles": 4426
+    },
+    {
+      "id": "bio_coil_25",
+      "floor_near": 0.0,
+      "near_triangles": 13660,
+      "far_triangles": 4346
+    },
+    {
+      "id": "bio_slug_01",
+      "floor_near": 0.0,
+      "near_triangles": 7004,
+      "far_triangles": 2234
+    },
+    {
+      "id": "bio_slug_02",
+      "floor_near": 0.0,
+      "near_triangles": 8460,
+      "far_triangles": 2698
+    },
+    {
+      "id": "bio_slug_03",
+      "floor_near": 0.0,
+      "near_triangles": 7196,
+      "far_triangles": 2382
+    },
+    {
+      "id": "bio_slug_04",
+      "floor_near": 0.0,
+      "near_triangles": 8288,
+      "far_triangles": 2642
+    },
+    {
+      "id": "bio_slug_05",
+      "floor_near": 0.0,
+      "near_triangles": 8036,
+      "far_triangles": 2562
+    },
+    {
+      "id": "bio_slug_06",
+      "floor_near": 0.0,
+      "near_triangles": 7256,
+      "far_triangles": 2314
+    },
+    {
+      "id": "bio_slug_07",
+      "floor_near": 0.0,
+      "near_triangles": 8712,
+      "far_triangles": 2778
+    },
+    {
+      "id": "bio_slug_08",
+      "floor_near": 0.0,
+      "near_triangles": 7448,
+      "far_triangles": 2462
+    },
+    {
+      "id": "bio_slug_09",
+      "floor_near": 0.0,
+      "near_triangles": 8540,
+      "far_triangles": 2722
+    },
+    {
+      "id": "bio_slug_10",
+      "floor_near": 0.0,
+      "near_triangles": 8288,
+      "far_triangles": 2642
+    },
+    {
+      "id": "bio_slug_11",
+      "floor_near": 0.0,
+      "near_triangles": 7508,
+      "far_triangles": 2396
+    },
+    {
+      "id": "bio_slug_12",
+      "floor_near": 0.0,
+      "near_triangles": 8964,
+      "far_triangles": 2860
+    },
+    {
+      "id": "bio_slug_13",
+      "floor_near": 0.0,
+      "near_triangles": 7700,
+      "far_triangles": 2544
+    },
+    {
+      "id": "bio_slug_14",
+      "floor_near": 0.0,
+      "near_triangles": 8792,
+      "far_triangles": 2804
+    },
+    {
+      "id": "bio_slug_15",
+      "floor_near": 0.0,
+      "near_triangles": 8540,
+      "far_triangles": 2724
+    },
+    {
+      "id": "bio_slug_16",
+      "floor_near": 0.0,
+      "near_triangles": 7760,
+      "far_triangles": 2476
+    },
+    {
+      "id": "bio_slug_17",
+      "floor_near": 0.0,
+      "near_triangles": 9216,
+      "far_triangles": 2940
+    },
+    {
+      "id": "bio_slug_18",
+      "floor_near": 0.0,
+      "near_triangles": 7952,
+      "far_triangles": 2624
+    },
+    {
+      "id": "bio_slug_19",
+      "floor_near": 0.0,
+      "near_triangles": 9044,
+      "far_triangles": 2884
+    },
+    {
+      "id": "bio_slug_20",
+      "floor_near": 0.0,
+      "near_triangles": 8792,
+      "far_triangles": 2804
+    },
+    {
+      "id": "bio_slug_21",
+      "floor_near": 0.0,
+      "near_triangles": 5548,
+      "far_triangles": 1768
+    },
+    {
+      "id": "bio_slug_22",
+      "floor_near": 0.0,
+      "near_triangles": 9468,
+      "far_triangles": 3020
+    },
+    {
+      "id": "bio_slug_23",
+      "floor_near": 0.0,
+      "near_triangles": 8204,
+      "far_triangles": 2704
+    },
+    {
+      "id": "bio_slug_24",
+      "floor_near": 0.0,
+      "near_triangles": 9296,
+      "far_triangles": 2964
+    },
+    {
+      "id": "bio_slug_25",
+      "floor_near": 0.0,
+      "near_triangles": 9044,
+      "far_triangles": 2884
+    },
+    {
+      "id": "bio_mist_leaf_01",
+      "floor_near": 0.0,
+      "near_triangles": 11792,
+      "far_triangles": 4456
+    },
+    {
+      "id": "bio_mist_leaf_02",
+      "floor_near": 0.0,
+      "near_triangles": 13712,
+      "far_triangles": 5286
+    },
+    {
+      "id": "bio_mist_leaf_03",
+      "floor_near": 0.0,
+      "near_triangles": 23172,
+      "far_triangles": 8086
+    },
+    {
+      "id": "bio_mist_leaf_04",
+      "floor_near": 0.0,
+      "near_triangles": 16592,
+      "far_triangles": 5991
+    },
+    {
+      "id": "bio_mist_leaf_05",
+      "floor_near": 0.0,
+      "near_triangles": 12432,
+      "far_triangles": 5096
+    },
+    {
+      "id": "bio_mist_leaf_06",
+      "floor_near": 0.0,
+      "near_triangles": 13200,
+      "far_triangles": 4992
+    },
+    {
+      "id": "bio_mist_leaf_07",
+      "floor_near": 0.0,
+      "near_triangles": 15120,
+      "far_triangles": 5822
+    },
+    {
+      "id": "bio_mist_leaf_08",
+      "floor_near": 0.0,
+      "near_triangles": 24580,
+      "far_triangles": 8622
+    },
+    {
+      "id": "bio_mist_leaf_09",
+      "floor_near": 0.0,
+      "near_triangles": 18000,
+      "far_triangles": 6527
+    },
+    {
+      "id": "bio_mist_leaf_10",
+      "floor_near": 0.0,
+      "near_triangles": 13840,
+      "far_triangles": 5632
+    },
+    {
+      "id": "bio_mist_leaf_11",
+      "floor_near": 0.0,
+      "near_triangles": 14608,
+      "far_triangles": 5528
+    },
+    {
+      "id": "bio_mist_leaf_12",
+      "floor_near": 0.0,
+      "near_triangles": 16528,
+      "far_triangles": 6358
+    },
+    {
+      "id": "bio_mist_leaf_13",
+      "floor_near": 0.0,
+      "near_triangles": 25988,
+      "far_triangles": 9158
+    },
+    {
+      "id": "bio_mist_leaf_14",
+      "floor_near": 0.0,
+      "near_triangles": 19408,
+      "far_triangles": 7063
+    },
+    {
+      "id": "bio_mist_leaf_15",
+      "floor_near": 0.0,
+      "near_triangles": 15248,
+      "far_triangles": 6168
+    },
+    {
+      "id": "bio_mist_leaf_16",
+      "floor_near": 0.0,
+      "near_triangles": 16016,
+      "far_triangles": 6064
+    },
+    {
+      "id": "bio_mist_leaf_17",
+      "floor_near": 0.0,
+      "near_triangles": 17936,
+      "far_triangles": 6894
+    },
+    {
+      "id": "bio_mist_leaf_18",
+      "floor_near": 0.0,
+      "near_triangles": 27396,
+      "far_triangles": 9694
+    },
+    {
+      "id": "bio_mist_leaf_19",
+      "floor_near": 0.0,
+      "near_triangles": 20816,
+      "far_triangles": 7599
+    },
+    {
+      "id": "bio_mist_leaf_20",
+      "floor_near": 0.0,
+      "near_triangles": 16656,
+      "far_triangles": 6704
+    },
+    {
+      "id": "bio_mist_leaf_21",
+      "floor_near": 0.0,
+      "near_triangles": 17424,
+      "far_triangles": 6600
+    },
+    {
+      "id": "bio_mist_leaf_22",
+      "floor_near": 0.0,
+      "near_triangles": 19344,
+      "far_triangles": 7430
+    },
+    {
+      "id": "bio_mist_leaf_23",
+      "floor_near": 0.0,
+      "near_triangles": 28804,
+      "far_triangles": 10230
+    },
+    {
+      "id": "bio_mist_leaf_24",
+      "floor_near": 0.0,
+      "near_triangles": 22224,
+      "far_triangles": 8135
+    },
+    {
+      "id": "bio_mist_leaf_25",
+      "floor_near": 0.0,
+      "near_triangles": 18064,
+      "far_triangles": 7240
+    },
+    {
+      "id": "bio_crystal_fan_01",
+      "floor_near": 0.0,
+      "near_triangles": 4316,
+      "far_triangles": 1372
+    },
+    {
+      "id": "bio_crystal_fan_02",
+      "floor_near": 0.0,
+      "near_triangles": 6236,
+      "far_triangles": 2202
+    },
+    {
+      "id": "bio_crystal_fan_03",
+      "floor_near": 0.0,
+      "near_triangles": 15696,
+      "far_triangles": 5002
+    },
+    {
+      "id": "bio_crystal_fan_04",
+      "floor_near": 0.0,
+      "near_triangles": 9116,
+      "far_triangles": 2907
+    },
+    {
+      "id": "bio_crystal_fan_05",
+      "floor_near": 0.0,
+      "near_triangles": 4956,
+      "far_triangles": 2012
+    },
+    {
+      "id": "bio_crystal_fan_06",
+      "floor_near": 0.0,
+      "near_triangles": 4600,
+      "far_triangles": 1462
+    },
+    {
+      "id": "bio_crystal_fan_07",
+      "floor_near": 0.0,
+      "near_triangles": 6520,
+      "far_triangles": 2292
+    },
+    {
+      "id": "bio_crystal_fan_08",
+      "floor_near": 0.0,
+      "near_triangles": 15980,
+      "far_triangles": 5092
+    },
+    {
+      "id": "bio_crystal_fan_09",
+      "floor_near": 0.0,
+      "near_triangles": 9400,
+      "far_triangles": 2997
+    },
+    {
+      "id": "bio_crystal_fan_10",
+      "floor_near": 0.0,
+      "near_triangles": 5240,
+      "far_triangles": 2102
+    },
+    {
+      "id": "bio_crystal_fan_11",
+      "floor_near": 0.0,
+      "near_triangles": 4884,
+      "far_triangles": 1552
+    },
+    {
+      "id": "bio_crystal_fan_12",
+      "floor_near": 0.0,
+      "near_triangles": 6804,
+      "far_triangles": 2382
+    },
+    {
+      "id": "bio_crystal_fan_13",
+      "floor_near": 0.0,
+      "near_triangles": 16264,
+      "far_triangles": 5182
+    },
+    {
+      "id": "bio_crystal_fan_14",
+      "floor_near": 0.0,
+      "near_triangles": 9684,
+      "far_triangles": 3087
+    },
+    {
+      "id": "bio_crystal_fan_15",
+      "floor_near": 0.0,
+      "near_triangles": 5524,
+      "far_triangles": 2192
+    },
+    {
+      "id": "bio_crystal_fan_16",
+      "floor_near": 0.0,
+      "near_triangles": 5168,
+      "far_triangles": 1642
+    },
+    {
+      "id": "bio_crystal_fan_17",
+      "floor_near": 0.0,
+      "near_triangles": 7088,
+      "far_triangles": 2472
+    },
+    {
+      "id": "bio_crystal_fan_18",
+      "floor_near": 0.0,
+      "near_triangles": 16548,
+      "far_triangles": 5272
+    },
+    {
+      "id": "bio_crystal_fan_19",
+      "floor_near": 0.0,
+      "near_triangles": 9968,
+      "far_triangles": 3177
+    },
+    {
+      "id": "bio_crystal_fan_20",
+      "floor_near": 0.0,
+      "near_triangles": 5808,
+      "far_triangles": 2282
+    },
+    {
+      "id": "bio_crystal_fan_21",
+      "floor_near": 0.0,
+      "near_triangles": 5452,
+      "far_triangles": 1732
+    },
+    {
+      "id": "bio_crystal_fan_22",
+      "floor_near": 0.0,
+      "near_triangles": 7372,
+      "far_triangles": 2562
+    },
+    {
+      "id": "bio_crystal_fan_23",
+      "floor_near": 0.0,
+      "near_triangles": 16832,
+      "far_triangles": 5362
+    },
+    {
+      "id": "bio_crystal_fan_24",
+      "floor_near": 0.0,
+      "near_triangles": 10252,
+      "far_triangles": 3267
+    },
+    {
+      "id": "bio_crystal_fan_25",
+      "floor_near": 0.0,
+      "near_triangles": 6092,
+      "far_triangles": 2372
+    },
+    {
+      "id": "bio_canopy_tree_01",
+      "floor_near": 0.0,
+      "near_triangles": 4960,
+      "far_triangles": 2240
+    },
+    {
+      "id": "bio_canopy_tree_02",
+      "floor_near": 0.0,
+      "near_triangles": 6880,
+      "far_triangles": 3070
+    },
+    {
+      "id": "bio_canopy_tree_03",
+      "floor_near": 0.0,
+      "near_triangles": 16340,
+      "far_triangles": 5870
+    },
+    {
+      "id": "bio_canopy_tree_04",
+      "floor_near": 0.0,
+      "near_triangles": 9760,
+      "far_triangles": 3775
+    },
+    {
+      "id": "bio_canopy_tree_05",
+      "floor_near": 0.0,
+      "near_triangles": 5600,
+      "far_triangles": 2880
+    },
+    {
+      "id": "bio_canopy_tree_06",
+      "floor_near": 0.0,
+      "near_triangles": 5440,
+      "far_triangles": 2502
+    },
+    {
+      "id": "bio_canopy_tree_07",
+      "floor_near": 0.0,
+      "near_triangles": 7360,
+      "far_triangles": 3332
+    },
+    {
+      "id": "bio_canopy_tree_08",
+      "floor_near": 0.0,
+      "near_triangles": 16820,
+      "far_triangles": 6132
+    },
+    {
+      "id": "bio_canopy_tree_09",
+      "floor_near": 0.0,
+      "near_triangles": 10240,
+      "far_triangles": 4037
+    },
+    {
+      "id": "bio_canopy_tree_10",
+      "floor_near": 0.0,
+      "near_triangles": 6080,
+      "far_triangles": 3142
+    },
+    {
+      "id": "bio_canopy_tree_11",
+      "floor_near": 0.0,
+      "near_triangles": 5920,
+      "far_triangles": 2764
+    },
+    {
+      "id": "bio_canopy_tree_12",
+      "floor_near": 0.0,
+      "near_triangles": 7840,
+      "far_triangles": 3594
+    },
+    {
+      "id": "bio_canopy_tree_13",
+      "floor_near": 0.0,
+      "near_triangles": 17300,
+      "far_triangles": 6394
+    },
+    {
+      "id": "bio_canopy_tree_14",
+      "floor_near": 0.0,
+      "near_triangles": 10720,
+      "far_triangles": 4299
+    },
+    {
+      "id": "bio_canopy_tree_15",
+      "floor_near": 0.0,
+      "near_triangles": 6560,
+      "far_triangles": 3404
+    },
+    {
+      "id": "bio_canopy_tree_16",
+      "floor_near": 0.0,
+      "near_triangles": 6400,
+      "far_triangles": 3026
+    },
+    {
+      "id": "bio_canopy_tree_17",
+      "floor_near": 0.0,
+      "near_triangles": 8320,
+      "far_triangles": 3856
+    },
+    {
+      "id": "bio_canopy_tree_18",
+      "floor_near": 0.0,
+      "near_triangles": 17780,
+      "far_triangles": 6656
+    },
+    {
+      "id": "bio_canopy_tree_19",
+      "floor_near": 0.0,
+      "near_triangles": 11200,
+      "far_triangles": 4561
+    },
+    {
+      "id": "bio_canopy_tree_20",
+      "floor_near": 0.0,
+      "near_triangles": 7040,
+      "far_triangles": 3666
+    },
+    {
+      "id": "bio_canopy_tree_21",
+      "floor_near": 0.0,
+      "near_triangles": 6880,
+      "far_triangles": 3288
+    },
+    {
+      "id": "bio_canopy_tree_22",
+      "floor_near": 0.0,
+      "near_triangles": 8800,
+      "far_triangles": 4118
+    },
+    {
+      "id": "bio_canopy_tree_23",
+      "floor_near": 0.0,
+      "near_triangles": 18260,
+      "far_triangles": 6918
+    },
+    {
+      "id": "bio_canopy_tree_24",
+      "floor_near": 0.0,
+      "near_triangles": 11680,
+      "far_triangles": 4823
+    },
+    {
+      "id": "bio_canopy_tree_25",
+      "floor_near": 0.0,
+      "near_triangles": 7520,
+      "far_triangles": 3928
+    },
+    {
+      "id": "bio_spore_fungus_01",
+      "floor_near": 0.0,
+      "near_triangles": 16704,
+      "far_triangles": 5328
+    },
+    {
+      "id": "bio_spore_fungus_02",
+      "floor_near": 0.0,
+      "near_triangles": 18624,
+      "far_triangles": 6158
+    },
+    {
+      "id": "bio_spore_fungus_03",
+      "floor_near": 0.0,
+      "near_triangles": 28084,
+      "far_triangles": 8958
+    },
+    {
+      "id": "bio_spore_fungus_04",
+      "floor_near": 0.0,
+      "near_triangles": 21504,
+      "far_triangles": 6863
+    },
+    {
+      "id": "bio_spore_fungus_05",
+      "floor_near": 0.0,
+      "near_triangles": 17344,
+      "far_triangles": 5968
+    },
+    {
+      "id": "bio_spore_fungus_06",
+      "floor_near": 0.0,
+      "near_triangles": 19488,
+      "far_triangles": 6216
+    },
+    {
+      "id": "bio_spore_fungus_07",
+      "floor_near": 0.0,
+      "near_triangles": 21408,
+      "far_triangles": 7046
+    },
+    {
+      "id": "bio_spore_fungus_08",
+      "floor_near": 0.0,
+      "near_triangles": 30868,
+      "far_triangles": 9846
+    },
+    {
+      "id": "bio_spore_fungus_09",
+      "floor_near": 0.0,
+      "near_triangles": 24288,
+      "far_triangles": 7751
+    },
+    {
+      "id": "bio_spore_fungus_10",
+      "floor_near": 0.0,
+      "near_triangles": 20128,
+      "far_triangles": 6856
+    },
+    {
+      "id": "bio_spore_fungus_11",
+      "floor_near": 0.0,
+      "near_triangles": 22272,
+      "far_triangles": 7104
+    },
+    {
+      "id": "bio_spore_fungus_12",
+      "floor_near": 0.0,
+      "near_triangles": 24192,
+      "far_triangles": 7934
+    },
+    {
+      "id": "bio_spore_fungus_13",
+      "floor_near": 0.0,
+      "near_triangles": 33652,
+      "far_triangles": 10734
+    },
+    {
+      "id": "bio_spore_fungus_14",
+      "floor_near": 0.0,
+      "near_triangles": 27072,
+      "far_triangles": 8639
+    },
+    {
+      "id": "bio_spore_fungus_15",
+      "floor_near": 0.0,
+      "near_triangles": 22912,
+      "far_triangles": 7744
+    },
+    {
+      "id": "bio_spore_fungus_16",
+      "floor_near": 0.0,
+      "near_triangles": 25056,
+      "far_triangles": 7992
+    },
+    {
+      "id": "bio_spore_fungus_17",
+      "floor_near": 0.0,
+      "near_triangles": 26976,
+      "far_triangles": 8822
+    },
+    {
+      "id": "bio_spore_fungus_18",
+      "floor_near": 0.0,
+      "near_triangles": 36436,
+      "far_triangles": 11622
+    },
+    {
+      "id": "bio_spore_fungus_19",
+      "floor_near": 0.0,
+      "near_triangles": 29856,
+      "far_triangles": 9527
+    },
+    {
+      "id": "bio_spore_fungus_20",
+      "floor_near": 0.0,
+      "near_triangles": 25696,
+      "far_triangles": 8632
+    },
+    {
+      "id": "bio_spore_fungus_21",
+      "floor_near": 0.0,
+      "near_triangles": 27840,
+      "far_triangles": 8880
+    },
+    {
+      "id": "bio_spore_fungus_22",
+      "floor_near": 0.0,
+      "near_triangles": 29760,
+      "far_triangles": 9710
+    },
+    {
+      "id": "bio_spore_fungus_23",
+      "floor_near": 0.0,
+      "near_triangles": 39220,
+      "far_triangles": 12510
+    },
+    {
+      "id": "bio_spore_fungus_24",
+      "floor_near": 0.0,
+      "near_triangles": 32640,
+      "far_triangles": 10415
+    },
+    {
+      "id": "bio_spore_fungus_25",
+      "floor_near": 0.0,
+      "near_triangles": 28480,
+      "far_triangles": 9520
+    },
+    {
+      "id": "bio_aquatic_frond_01",
+      "floor_near": 0.0,
+      "near_triangles": 15088,
+      "far_triangles": 4816
+    },
+    {
+      "id": "bio_aquatic_frond_02",
+      "floor_near": 0.0,
+      "near_triangles": 17008,
+      "far_triangles": 5646
+    },
+    {
+      "id": "bio_aquatic_frond_03",
+      "floor_near": 0.0,
+      "near_triangles": 26468,
+      "far_triangles": 8446
+    },
+    {
+      "id": "bio_aquatic_frond_04",
+      "floor_near": 0.0,
+      "near_triangles": 19888,
+      "far_triangles": 6351
+    },
+    {
+      "id": "bio_aquatic_frond_05",
+      "floor_near": 0.0,
+      "near_triangles": 15728,
+      "far_triangles": 5456
+    },
+    {
+      "id": "bio_aquatic_frond_06",
+      "floor_near": 0.0,
+      "near_triangles": 17168,
+      "far_triangles": 5480
+    },
+    {
+      "id": "bio_aquatic_frond_07",
+      "floor_near": 0.0,
+      "near_triangles": 19088,
+      "far_triangles": 6310
+    },
+    {
+      "id": "bio_aquatic_frond_08",
+      "floor_near": 0.0,
+      "near_triangles": 28548,
+      "far_triangles": 9110
+    },
+    {
+      "id": "bio_aquatic_frond_09",
+      "floor_near": 0.0,
+      "near_triangles": 21968,
+      "far_triangles": 7015
+    },
+    {
+      "id": "bio_aquatic_frond_10",
+      "floor_near": 0.0,
+      "near_triangles": 17808,
+      "far_triangles": 6120
+    },
+    {
+      "id": "bio_aquatic_frond_11",
+      "floor_near": 0.0,
+      "near_triangles": 19248,
+      "far_triangles": 6144
+    },
+    {
+      "id": "bio_aquatic_frond_12",
+      "floor_near": 0.0,
+      "near_triangles": 21168,
+      "far_triangles": 6974
+    },
+    {
+      "id": "bio_aquatic_frond_13",
+      "floor_near": 0.0,
+      "near_triangles": 30628,
+      "far_triangles": 9774
+    },
+    {
+      "id": "bio_aquatic_frond_14",
+      "floor_near": 0.0,
+      "near_triangles": 24048,
+      "far_triangles": 7679
+    },
+    {
+      "id": "bio_aquatic_frond_15",
+      "floor_near": 0.0,
+      "near_triangles": 19888,
+      "far_triangles": 6784
+    },
+    {
+      "id": "bio_aquatic_frond_16",
+      "floor_near": 0.0,
+      "near_triangles": 21328,
+      "far_triangles": 6808
+    },
+    {
+      "id": "bio_aquatic_frond_17",
+      "floor_near": 0.0,
+      "near_triangles": 23248,
+      "far_triangles": 7638
+    },
+    {
+      "id": "bio_aquatic_frond_18",
+      "floor_near": 0.0,
+      "near_triangles": 32708,
+      "far_triangles": 10438
+    },
+    {
+      "id": "bio_aquatic_frond_19",
+      "floor_near": 0.0,
+      "near_triangles": 26128,
+      "far_triangles": 8343
+    },
+    {
+      "id": "bio_aquatic_frond_20",
+      "floor_near": 0.0,
+      "near_triangles": 21968,
+      "far_triangles": 7448
+    },
+    {
+      "id": "bio_aquatic_frond_21",
+      "floor_near": 0.0,
+      "near_triangles": 23408,
+      "far_triangles": 7472
+    },
+    {
+      "id": "bio_aquatic_frond_22",
+      "floor_near": 0.0,
+      "near_triangles": 25328,
+      "far_triangles": 8302
+    },
+    {
+      "id": "bio_aquatic_frond_23",
+      "floor_near": 0.0,
+      "near_triangles": 34788,
+      "far_triangles": 11102
+    },
+    {
+      "id": "bio_aquatic_frond_24",
+      "floor_near": 0.0,
+      "near_triangles": 28208,
+      "far_triangles": 9007
+    },
+    {
+      "id": "bio_aquatic_frond_25",
+      "floor_near": 0.0,
+      "near_triangles": 24048,
+      "far_triangles": 8112
+    },
+    {
+      "id": "bio_acid_mat_01",
+      "floor_near": 0.0,
+      "near_triangles": 21680,
+      "far_triangles": 6910
+    },
+    {
+      "id": "bio_acid_mat_02",
+      "floor_near": 0.0,
+      "near_triangles": 23600,
+      "far_triangles": 7740
+    },
+    {
+      "id": "bio_acid_mat_03",
+      "floor_near": 0.0,
+      "near_triangles": 33060,
+      "far_triangles": 10540
+    },
+    {
+      "id": "bio_acid_mat_04",
+      "floor_near": 0.0,
+      "near_triangles": 26480,
+      "far_triangles": 8445
+    },
+    {
+      "id": "bio_acid_mat_05",
+      "floor_near": 0.0,
+      "near_triangles": 22320,
+      "far_triangles": 7550
+    },
+    {
+      "id": "bio_acid_mat_06",
+      "floor_near": 0.0,
+      "near_triangles": 23848,
+      "far_triangles": 7601
+    },
+    {
+      "id": "bio_acid_mat_07",
+      "floor_near": 0.0,
+      "near_triangles": 25768,
+      "far_triangles": 8431
+    },
+    {
+      "id": "bio_acid_mat_08",
+      "floor_near": 0.0,
+      "near_triangles": 35228,
+      "far_triangles": 11231
+    },
+    {
+      "id": "bio_acid_mat_09",
+      "floor_near": 0.0,
+      "near_triangles": 28648,
+      "far_triangles": 9136
+    },
+    {
+      "id": "bio_acid_mat_10",
+      "floor_near": 0.0,
+      "near_triangles": 24488,
+      "far_triangles": 8241
+    },
+    {
+      "id": "bio_acid_mat_11",
+      "floor_near": 0.0,
+      "near_triangles": 26016,
+      "far_triangles": 8292
+    },
+    {
+      "id": "bio_acid_mat_12",
+      "floor_near": 0.0,
+      "near_triangles": 27936,
+      "far_triangles": 9122
+    },
+    {
+      "id": "bio_acid_mat_13",
+      "floor_near": 0.0,
+      "near_triangles": 37396,
+      "far_triangles": 11922
+    },
+    {
+      "id": "bio_acid_mat_14",
+      "floor_near": 0.0,
+      "near_triangles": 30816,
+      "far_triangles": 9827
+    },
+    {
+      "id": "bio_acid_mat_15",
+      "floor_near": 0.0,
+      "near_triangles": 26656,
+      "far_triangles": 8932
+    },
+    {
+      "id": "bio_acid_mat_16",
+      "floor_near": 0.0,
+      "near_triangles": 28184,
+      "far_triangles": 8983
+    },
+    {
+      "id": "bio_acid_mat_17",
+      "floor_near": 0.0,
+      "near_triangles": 30104,
+      "far_triangles": 9813
+    },
+    {
+      "id": "bio_acid_mat_18",
+      "floor_near": 0.0,
+      "near_triangles": 39564,
+      "far_triangles": 12613
+    },
+    {
+      "id": "bio_acid_mat_19",
+      "floor_near": 0.0,
+      "near_triangles": 32984,
+      "far_triangles": 10518
+    },
+    {
+      "id": "bio_acid_mat_20",
+      "floor_near": 0.0,
+      "near_triangles": 28824,
+      "far_triangles": 9623
+    },
+    {
+      "id": "bio_acid_mat_21",
+      "floor_near": 0.0,
+      "near_triangles": 30352,
+      "far_triangles": 9674
+    },
+    {
+      "id": "bio_acid_mat_22",
+      "floor_near": 0.0,
+      "near_triangles": 32272,
+      "far_triangles": 10504
+    },
+    {
+      "id": "bio_acid_mat_23",
+      "floor_near": 0.0,
+      "near_triangles": 41732,
+      "far_triangles": 13304
+    },
+    {
+      "id": "bio_acid_mat_24",
+      "floor_near": 0.0,
+      "near_triangles": 35152,
+      "far_triangles": 11209
+    },
+    {
+      "id": "bio_acid_mat_25",
+      "floor_near": 0.0,
+      "near_triangles": 30992,
+      "far_triangles": 10314
+    },
+    {
+      "id": "bio_thermal_colony_01",
+      "floor_near": 0.0,
+      "near_triangles": 13120,
+      "far_triangles": 4170
+    },
+    {
+      "id": "bio_thermal_colony_02",
+      "floor_near": 0.0,
+      "near_triangles": 15040,
+      "far_triangles": 5000
+    },
+    {
+      "id": "bio_thermal_colony_03",
+      "floor_near": 0.0,
+      "near_triangles": 24500,
+      "far_triangles": 7800
+    },
+    {
+      "id": "bio_thermal_colony_04",
+      "floor_near": 0.0,
+      "near_triangles": 17920,
+      "far_triangles": 5705
+    },
+    {
+      "id": "bio_thermal_colony_05",
+      "floor_near": 0.0,
+      "near_triangles": 13760,
+      "far_triangles": 4810
+    },
+    {
+      "id": "bio_thermal_colony_06",
+      "floor_near": 0.0,
+      "near_triangles": 14432,
+      "far_triangles": 4587
+    },
+    {
+      "id": "bio_thermal_colony_07",
+      "floor_near": 0.0,
+      "near_triangles": 16352,
+      "far_triangles": 5417
+    },
+    {
+      "id": "bio_thermal_colony_08",
+      "floor_near": 0.0,
+      "near_triangles": 25812,
+      "far_triangles": 8217
+    },
+    {
+      "id": "bio_thermal_colony_09",
+      "floor_near": 0.0,
+      "near_triangles": 19232,
+      "far_triangles": 6122
+    },
+    {
+      "id": "bio_thermal_colony_10",
+      "floor_near": 0.0,
+      "near_triangles": 15072,
+      "far_triangles": 5227
+    },
+    {
+      "id": "bio_thermal_colony_11",
+      "floor_near": 0.0,
+      "near_triangles": 15744,
+      "far_triangles": 5004
+    },
+    {
+      "id": "bio_thermal_colony_12",
+      "floor_near": 0.0,
+      "near_triangles": 17664,
+      "far_triangles": 5834
+    },
+    {
+      "id": "bio_thermal_colony_13",
+      "floor_near": 0.0,
+      "near_triangles": 27124,
+      "far_triangles": 8634
+    },
+    {
+      "id": "bio_thermal_colony_14",
+      "floor_near": 0.0,
+      "near_triangles": 20544,
+      "far_triangles": 6539
+    },
+    {
+      "id": "bio_thermal_colony_15",
+      "floor_near": 0.0,
+      "near_triangles": 16384,
+      "far_triangles": 5644
+    },
+    {
+      "id": "bio_thermal_colony_16",
+      "floor_near": 0.0,
+      "near_triangles": 17056,
+      "far_triangles": 5421
+    },
+    {
+      "id": "bio_thermal_colony_17",
+      "floor_near": 0.0,
+      "near_triangles": 18976,
+      "far_triangles": 6251
+    },
+    {
+      "id": "bio_thermal_colony_18",
+      "floor_near": 0.0,
+      "near_triangles": 28436,
+      "far_triangles": 9051
+    },
+    {
+      "id": "bio_thermal_colony_19",
+      "floor_near": 0.0,
+      "near_triangles": 21856,
+      "far_triangles": 6956
+    },
+    {
+      "id": "bio_thermal_colony_20",
+      "floor_near": 0.0,
+      "near_triangles": 17696,
+      "far_triangles": 6061
+    },
+    {
+      "id": "bio_thermal_colony_21",
+      "floor_near": 0.0,
+      "near_triangles": 18368,
+      "far_triangles": 5838
+    },
+    {
+      "id": "bio_thermal_colony_22",
+      "floor_near": 0.0,
+      "near_triangles": 20288,
+      "far_triangles": 6668
+    },
+    {
+      "id": "bio_thermal_colony_23",
+      "floor_near": 0.0,
+      "near_triangles": 29748,
+      "far_triangles": 9468
+    },
+    {
+      "id": "bio_thermal_colony_24",
+      "floor_near": 0.0,
+      "near_triangles": 23168,
+      "far_triangles": 7373
+    },
+    {
+      "id": "bio_thermal_colony_25",
+      "floor_near": 0.0,
+      "near_triangles": 19008,
+      "far_triangles": 6478
+    },
+    {
+      "id": "bio_oxygen_reef_01",
+      "floor_near": 0.0,
+      "near_triangles": 26080,
+      "far_triangles": 8310
+    },
+    {
+      "id": "bio_oxygen_reef_02",
+      "floor_near": 0.0,
+      "near_triangles": 28000,
+      "far_triangles": 9140
+    },
+    {
+      "id": "bio_oxygen_reef_03",
+      "floor_near": 0.0,
+      "near_triangles": 37460,
+      "far_triangles": 11940
+    },
+    {
+      "id": "bio_oxygen_reef_04",
+      "floor_near": 0.0,
+      "near_triangles": 30880,
+      "far_triangles": 9845
+    },
+    {
+      "id": "bio_oxygen_reef_05",
+      "floor_near": 0.0,
+      "near_triangles": 26720,
+      "far_triangles": 8950
+    },
+    {
+      "id": "bio_oxygen_reef_06",
+      "floor_near": 0.0,
+      "near_triangles": 28688,
+      "far_triangles": 9141
+    },
+    {
+      "id": "bio_oxygen_reef_07",
+      "floor_near": 0.0,
+      "near_triangles": 30608,
+      "far_triangles": 9971
+    },
+    {
+      "id": "bio_oxygen_reef_08",
+      "floor_near": 0.0,
+      "near_triangles": 40068,
+      "far_triangles": 12771
+    },
+    {
+      "id": "bio_oxygen_reef_09",
+      "floor_near": 0.0,
+      "near_triangles": 33488,
+      "far_triangles": 10676
+    },
+    {
+      "id": "bio_oxygen_reef_10",
+      "floor_near": 0.0,
+      "near_triangles": 29328,
+      "far_triangles": 9781
+    },
+    {
+      "id": "bio_oxygen_reef_11",
+      "floor_near": 0.0,
+      "near_triangles": 31296,
+      "far_triangles": 9972
+    },
+    {
+      "id": "bio_oxygen_reef_12",
+      "floor_near": 0.0,
+      "near_triangles": 33216,
+      "far_triangles": 10802
+    },
+    {
+      "id": "bio_oxygen_reef_13",
+      "floor_near": 0.0,
+      "near_triangles": 42676,
+      "far_triangles": 13602
+    },
+    {
+      "id": "bio_oxygen_reef_14",
+      "floor_near": 0.0,
+      "near_triangles": 36096,
+      "far_triangles": 11507
+    },
+    {
+      "id": "bio_oxygen_reef_15",
+      "floor_near": 0.0,
+      "near_triangles": 31936,
+      "far_triangles": 10612
+    },
+    {
+      "id": "bio_oxygen_reef_16",
+      "floor_near": 0.0,
+      "near_triangles": 33904,
+      "far_triangles": 10803
+    },
+    {
+      "id": "bio_oxygen_reef_17",
+      "floor_near": 0.0,
+      "near_triangles": 35824,
+      "far_triangles": 11633
+    },
+    {
+      "id": "bio_oxygen_reef_18",
+      "floor_near": 0.0,
+      "near_triangles": 45284,
+      "far_triangles": 14433
+    },
+    {
+      "id": "bio_oxygen_reef_19",
+      "floor_near": 0.0,
+      "near_triangles": 38704,
+      "far_triangles": 12338
+    },
+    {
+      "id": "bio_oxygen_reef_20",
+      "floor_near": 0.0,
+      "near_triangles": 34544,
+      "far_triangles": 11443
+    },
+    {
+      "id": "bio_oxygen_reef_21",
+      "floor_near": 0.0,
+      "near_triangles": 36512,
+      "far_triangles": 11634
+    },
+    {
+      "id": "bio_oxygen_reef_22",
+      "floor_near": 0.0,
+      "near_triangles": 38432,
+      "far_triangles": 12464
+    },
+    {
+      "id": "bio_oxygen_reef_23",
+      "floor_near": 0.0,
+      "near_triangles": 47892,
+      "far_triangles": 15264
+    },
+    {
+      "id": "bio_oxygen_reef_24",
+      "floor_near": 0.0,
+      "near_triangles": 41312,
+      "far_triangles": 13169
+    },
+    {
+      "id": "bio_oxygen_reef_25",
+      "floor_near": 0.0,
+      "near_triangles": 37152,
+      "far_triangles": 12274
+    },
+    {
+      "id": "bio_blind_harp_01",
+      "floor_near": 0.061,
+      "near_triangles": 7728,
+      "far_triangles": 2462
+    },
+    {
+      "id": "bio_blind_harp_02",
+      "floor_near": 0.061,
+      "near_triangles": 11180,
+      "far_triangles": 3562
+    },
+    {
+      "id": "bio_blind_harp_03",
+      "floor_near": 0.061,
+      "near_triangles": 14128,
+      "far_triangles": 4504
+    },
+    {
+      "id": "bio_blind_harp_04",
+      "floor_near": 0.061,
+      "near_triangles": 12140,
+      "far_triangles": 3868
+    },
+    {
+      "id": "bio_blind_harp_05",
+      "floor_near": 0.061,
+      "near_triangles": 15408,
+      "far_triangles": 4910
+    },
+    {
+      "id": "bio_blind_harp_06",
+      "floor_near": 0.061,
+      "near_triangles": 10860,
+      "far_triangles": 3460
+    },
+    {
+      "id": "bio_blind_harp_07",
+      "floor_near": 0.061,
+      "near_triangles": 9008,
+      "far_triangles": 2870
+    },
+    {
+      "id": "bio_blind_harp_08",
+      "floor_near": 0.061,
+      "near_triangles": 12780,
+      "far_triangles": 4072
+    },
+    {
+      "id": "bio_blind_harp_09",
+      "floor_near": 0.061,
+      "near_triangles": 16048,
+      "far_triangles": 5113
+    },
+    {
+      "id": "bio_blind_harp_10",
+      "floor_near": 0.061,
+      "near_triangles": 13420,
+      "far_triangles": 4274
+    },
+    {
+      "id": "bio_spiral_maw_01",
+      "floor_near": 0.0,
+      "near_triangles": 14592,
+      "far_triangles": 4651
+    },
+    {
+      "id": "bio_spiral_maw_02",
+      "floor_near": 0.0,
+      "near_triangles": 15896,
+      "far_triangles": 5066
+    },
+    {
+      "id": "bio_spiral_maw_03",
+      "floor_near": 0.0,
+      "near_triangles": 17200,
+      "far_triangles": 5479
+    },
+    {
+      "id": "bio_spiral_maw_04",
+      "floor_near": 0.0,
+      "near_triangles": 16788,
+      "far_triangles": 5349
+    },
+    {
+      "id": "bio_spiral_maw_05",
+      "floor_near": 0.0,
+      "near_triangles": 16172,
+      "far_triangles": 5156
+    },
+    {
+      "id": "bio_spiral_maw_06",
+      "floor_near": 0.0,
+      "near_triangles": 17476,
+      "far_triangles": 5569
+    },
+    {
+      "id": "bio_spiral_maw_07",
+      "floor_near": 0.0,
+      "near_triangles": 17064,
+      "far_triangles": 5439
+    },
+    {
+      "id": "bio_spiral_maw_08",
+      "floor_near": 0.0,
+      "near_triangles": 18368,
+      "far_triangles": 5854
+    },
+    {
+      "id": "bio_spiral_maw_09",
+      "floor_near": 0.0,
+      "near_triangles": 17752,
+      "far_triangles": 5659
+    },
+    {
+      "id": "bio_spiral_maw_10",
+      "floor_near": 0.0,
+      "near_triangles": 17340,
+      "far_triangles": 5529
+    },
+    {
+      "id": "bio_tripod_bell_01",
+      "floor_near": 0.0,
+      "near_triangles": 14928,
+      "far_triangles": 4772
+    },
+    {
+      "id": "bio_tripod_bell_02",
+      "floor_near": 0.0,
+      "near_triangles": 19088,
+      "far_triangles": 6102
+    },
+    {
+      "id": "bio_tripod_bell_03",
+      "floor_near": 0.0,
+      "near_triangles": 23248,
+      "far_triangles": 7434
+    },
+    {
+      "id": "bio_tripod_bell_04",
+      "floor_near": 0.0,
+      "near_triangles": 15888,
+      "far_triangles": 5078
+    },
+    {
+      "id": "bio_tripod_bell_05",
+      "floor_near": 0.0,
+      "near_triangles": 20048,
+      "far_triangles": 6408
+    },
+    {
+      "id": "bio_tripod_bell_06",
+      "floor_near": 0.0,
+      "near_triangles": 24208,
+      "far_triangles": 7740
+    },
+    {
+      "id": "bio_tripod_bell_07",
+      "floor_near": 0.0,
+      "near_triangles": 16848,
+      "far_triangles": 5384
+    },
+    {
+      "id": "bio_tripod_bell_08",
+      "floor_near": 0.0,
+      "near_triangles": 21008,
+      "far_triangles": 6714
+    },
+    {
+      "id": "bio_tripod_bell_09",
+      "floor_near": 0.0,
+      "near_triangles": 25168,
+      "far_triangles": 8046
+    },
+    {
+      "id": "bio_tripod_bell_10",
+      "floor_near": 0.0,
+      "near_triangles": 17808,
+      "far_triangles": 5690
+    },
+    {
+      "id": "bio_lantern_sail_01",
+      "floor_near": 0.0,
+      "near_triangles": 2616,
+      "far_triangles": 945
+    },
+    {
+      "id": "bio_lantern_sail_02",
+      "floor_near": 0.0,
+      "near_triangles": 3312,
+      "far_triangles": 1204
+    },
+    {
+      "id": "bio_lantern_sail_03",
+      "floor_near": 0.0,
+      "near_triangles": 4008,
+      "far_triangles": 1463
+    },
+    {
+      "id": "bio_lantern_sail_04",
+      "floor_near": 0.0,
+      "near_triangles": 4704,
+      "far_triangles": 1722
+    },
+    {
+      "id": "bio_lantern_sail_05",
+      "floor_near": 0.0,
+      "near_triangles": 5400,
+      "far_triangles": 1981
+    },
+    {
+      "id": "bio_lantern_sail_06",
+      "floor_near": 0.0,
+      "near_triangles": 2616,
+      "far_triangles": 945
+    },
+    {
+      "id": "bio_lantern_sail_07",
+      "floor_near": 0.0,
+      "near_triangles": 3312,
+      "far_triangles": 1200
+    },
+    {
+      "id": "bio_lantern_sail_08",
+      "floor_near": 0.0,
+      "near_triangles": 4008,
+      "far_triangles": 1458
+    },
+    {
+      "id": "bio_lantern_sail_09",
+      "floor_near": 0.0,
+      "near_triangles": 4704,
+      "far_triangles": 1716
+    },
+    {
+      "id": "bio_lantern_sail_10",
+      "floor_near": 0.0,
+      "near_triangles": 5400,
+      "far_triangles": 1981
+    },
+    {
+      "id": "bio_eye_orchard_01",
+      "floor_near": 0.0446,
+      "near_triangles": 17644,
+      "far_triangles": 5623
+    },
+    {
+      "id": "bio_eye_orchard_02",
+      "floor_near": 0.0446,
+      "near_triangles": 20120,
+      "far_triangles": 6410
+    },
+    {
+      "id": "bio_eye_orchard_03",
+      "floor_near": 0.0446,
+      "near_triangles": 22596,
+      "far_triangles": 7198
+    },
+    {
+      "id": "bio_eye_orchard_04",
+      "floor_near": 0.0446,
+      "near_triangles": 23356,
+      "far_triangles": 7442
+    },
+    {
+      "id": "bio_eye_orchard_05",
+      "floor_near": 0.0446,
+      "near_triangles": 25832,
+      "far_triangles": 8230
+    },
+    {
+      "id": "bio_eye_orchard_06",
+      "floor_near": 0.0446,
+      "near_triangles": 28308,
+      "far_triangles": 9018
+    },
+    {
+      "id": "bio_eye_orchard_07",
+      "floor_near": 0.0446,
+      "near_triangles": 29068,
+      "far_triangles": 9259
+    },
+    {
+      "id": "bio_eye_orchard_08",
+      "floor_near": 0.0446,
+      "near_triangles": 31544,
+      "far_triangles": 10046
+    },
+    {
+      "id": "bio_eye_orchard_09",
+      "floor_near": 0.0446,
+      "near_triangles": 34020,
+      "far_triangles": 10836
+    },
+    {
+      "id": "bio_eye_orchard_10",
+      "floor_near": 0.0446,
+      "near_triangles": 34780,
+      "far_triangles": 11078
+    },
+    {
+      "id": "bio_asym_pincer_01",
+      "floor_near": 0.0499,
+      "near_triangles": 12856,
+      "far_triangles": 4099
+    },
+    {
+      "id": "bio_asym_pincer_02",
+      "floor_near": 0.0499,
+      "near_triangles": 13680,
+      "far_triangles": 4362
+    },
+    {
+      "id": "bio_asym_pincer_03",
+      "floor_near": 0.0499,
+      "near_triangles": 14504,
+      "far_triangles": 4623
+    },
+    {
+      "id": "bio_asym_pincer_04",
+      "floor_near": 0.0499,
+      "near_triangles": 15328,
+      "far_triangles": 4884
+    },
+    {
+      "id": "bio_asym_pincer_05",
+      "floor_near": 0.0499,
+      "near_triangles": 13864,
+      "far_triangles": 4423
+    },
+    {
+      "id": "bio_asym_pincer_06",
+      "floor_near": 0.0499,
+      "near_triangles": 14688,
+      "far_triangles": 4684
+    },
+    {
+      "id": "bio_asym_pincer_07",
+      "floor_near": 0.0499,
+      "near_triangles": 15512,
+      "far_triangles": 4945
+    },
+    {
+      "id": "bio_asym_pincer_08",
+      "floor_near": 0.0499,
+      "near_triangles": 16336,
+      "far_triangles": 5208
+    },
+    {
+      "id": "bio_asym_pincer_09",
+      "floor_near": 0.0499,
+      "near_triangles": 14872,
+      "far_triangles": 4745
+    },
+    {
+      "id": "bio_asym_pincer_10",
+      "floor_near": 0.0499,
+      "near_triangles": 15696,
+      "far_triangles": 5006
+    },
+    {
+      "id": "bio_ribbon_colony_01",
+      "floor_near": 0.0,
+      "near_triangles": 22176,
+      "far_triangles": 7056
+    },
+    {
+      "id": "bio_ribbon_colony_02",
+      "floor_near": 0.0,
+      "near_triangles": 24640,
+      "far_triangles": 7840
+    },
+    {
+      "id": "bio_ribbon_colony_03",
+      "floor_near": 0.0,
+      "near_triangles": 27104,
+      "far_triangles": 8624
+    },
+    {
+      "id": "bio_ribbon_colony_04",
+      "floor_near": 0.0,
+      "near_triangles": 29568,
+      "far_triangles": 9408
+    },
+    {
+      "id": "bio_ribbon_colony_05",
+      "floor_near": 0.0,
+      "near_triangles": 32032,
+      "far_triangles": 10192
+    },
+    {
+      "id": "bio_ribbon_colony_06",
+      "floor_near": 0.0,
+      "near_triangles": 34496,
+      "far_triangles": 10976
+    },
+    {
+      "id": "bio_ribbon_colony_07",
+      "floor_near": 0.0,
+      "near_triangles": 36960,
+      "far_triangles": 11760
+    },
+    {
+      "id": "bio_ribbon_colony_08",
+      "floor_near": 0.0,
+      "near_triangles": 39424,
+      "far_triangles": 12544
+    },
+    {
+      "id": "bio_ribbon_colony_09",
+      "floor_near": 0.0,
+      "near_triangles": 41888,
+      "far_triangles": 13328
+    },
+    {
+      "id": "bio_ribbon_colony_10",
+      "floor_near": 0.0,
+      "near_triangles": 44352,
+      "far_triangles": 14112
+    },
+    {
+      "id": "bio_window_sac_01",
+      "floor_near": 0.0658,
+      "near_triangles": 12476,
+      "far_triangles": 3980
+    },
+    {
+      "id": "bio_window_sac_02",
+      "floor_near": 0.0658,
+      "near_triangles": 13940,
+      "far_triangles": 4446
+    },
+    {
+      "id": "bio_window_sac_03",
+      "floor_near": 0.0658,
+      "near_triangles": 15404,
+      "far_triangles": 4916
+    },
+    {
+      "id": "bio_window_sac_04",
+      "floor_near": 0.0658,
+      "near_triangles": 15152,
+      "far_triangles": 4836
+    },
+    {
+      "id": "bio_window_sac_05",
+      "floor_near": 0.0658,
+      "near_triangles": 13048,
+      "far_triangles": 4162
+    },
+    {
+      "id": "bio_window_sac_06",
+      "floor_near": 0.0658,
+      "near_triangles": 14512,
+      "far_triangles": 4628
+    },
+    {
+      "id": "bio_window_sac_07",
+      "floor_near": 0.0658,
+      "near_triangles": 14260,
+      "far_triangles": 4552
+    },
+    {
+      "id": "bio_window_sac_08",
+      "floor_near": 0.0658,
+      "near_triangles": 15724,
+      "far_triangles": 5018
+    },
+    {
+      "id": "bio_window_sac_09",
+      "floor_near": 0.0658,
+      "near_triangles": 13620,
+      "far_triangles": 4344
+    },
+    {
+      "id": "bio_window_sac_10",
+      "floor_near": 0.0658,
+      "near_triangles": 13368,
+      "far_triangles": 4264
+    },
+    {
+      "id": "bio_crown_stalker_01",
+      "floor_near": 0.0702,
+      "near_triangles": 5596,
+      "far_triangles": 1775
+    },
+    {
+      "id": "bio_crown_stalker_02",
+      "floor_near": 0.0702,
+      "near_triangles": 6460,
+      "far_triangles": 2050
+    },
+    {
+      "id": "bio_crown_stalker_03",
+      "floor_near": 0.0702,
+      "near_triangles": 7324,
+      "far_triangles": 2325
+    },
+    {
+      "id": "bio_crown_stalker_04",
+      "floor_near": 0.0702,
+      "near_triangles": 8188,
+      "far_triangles": 2600
+    },
+    {
+      "id": "bio_crown_stalker_05",
+      "floor_near": 0.0702,
+      "near_triangles": 5756,
+      "far_triangles": 1827
+    },
+    {
+      "id": "bio_crown_stalker_06",
+      "floor_near": 0.0702,
+      "near_triangles": 6620,
+      "far_triangles": 2100
+    },
+    {
+      "id": "bio_crown_stalker_07",
+      "floor_near": 0.0702,
+      "near_triangles": 7484,
+      "far_triangles": 2375
+    },
+    {
+      "id": "bio_crown_stalker_08",
+      "floor_near": 0.0702,
+      "near_triangles": 8348,
+      "far_triangles": 2650
+    },
+    {
+      "id": "bio_crown_stalker_09",
+      "floor_near": 0.0702,
+      "near_triangles": 5916,
+      "far_triangles": 1879
+    },
+    {
+      "id": "bio_crown_stalker_10",
+      "floor_near": 0.0702,
+      "near_triangles": 6780,
+      "far_triangles": 2154
+    },
+    {
+      "id": "bio_manymouth_01",
+      "floor_near": 0.0499,
+      "near_triangles": 21600,
+      "far_triangles": 6898
+    },
+    {
+      "id": "bio_manymouth_02",
+      "floor_near": 0.0499,
+      "near_triangles": 30712,
+      "far_triangles": 9806
+    },
+    {
+      "id": "bio_manymouth_03",
+      "floor_near": 0.0499,
+      "near_triangles": 40076,
+      "far_triangles": 12796
+    },
+    {
+      "id": "bio_manymouth_04",
+      "floor_near": 0.0499,
+      "near_triangles": 47976,
+      "far_triangles": 15326
+    },
+    {
+      "id": "bio_manymouth_05",
+      "floor_near": 0.0499,
+      "near_triangles": 57844,
+      "far_triangles": 18476
+    },
+    {
+      "id": "bio_manymouth_06",
+      "floor_near": 0.0499,
+      "near_triangles": 22744,
+      "far_triangles": 7262
+    },
+    {
+      "id": "bio_manymouth_07",
+      "floor_near": 0.0499,
+      "near_triangles": 30140,
+      "far_triangles": 9624
+    },
+    {
+      "id": "bio_manymouth_08",
+      "floor_near": 0.0499,
+      "near_triangles": 39504,
+      "far_triangles": 12614
+    },
+    {
+      "id": "bio_manymouth_09",
+      "floor_near": 0.0499,
+      "near_triangles": 49120,
+      "far_triangles": 15690
+    },
+    {
+      "id": "bio_manymouth_10",
+      "floor_near": 0.0499,
+      "near_triangles": 57272,
+      "far_triangles": 18294
+    }
+  ],
+  "status": "pass"
+}

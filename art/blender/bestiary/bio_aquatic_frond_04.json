@@ -1,0 +1,51 @@
+{
+  "form_schema": 2,
+  "id": "bio_aquatic_frond_04",
+  "name": "연안 분지형 수생엽상체",
+  "family": "aquatic_frond",
+  "family_name": "수생엽상체",
+  "category": "plant",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 0,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_04_near.glb",
+      "sha256": "92499af8184ea29a825387defc9dac4c049b34418e4e2d32bb5323d302b30054",
+      "triangles": 19888
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_04_far.glb",
+      "sha256": "48809406aaece4a8527769d841a067e49655321030039c503eed3482c027cf56",
+      "triangles": 6351
+    }
+  },
+  "source": "art/blender/bestiary/bio_aquatic_frond_04.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 20
+}

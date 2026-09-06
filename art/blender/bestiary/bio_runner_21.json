@@ -1,0 +1,46 @@
+{
+  "form_schema": 2,
+  "id": "bio_runner_21",
+  "name": "수관 기본형 도약조류",
+  "family": "runner",
+  "family_name": "도약조류",
+  "category": "animal",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 4,
+  "anatomy": 0,
+  "attack": "kick",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_21_near.glb",
+      "sha256": "ef94f06345ad0796bd792b286ab88e936c05bd36cb7f58924b0cd95a6f4d87ea",
+      "triangles": 10740
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_21_far.glb",
+      "sha256": "aaff48f5cb2cf763521785d588817b3e0759985156a6ec9263caa6e81658d0de",
+      "triangles": 3592
+    }
+  },
+  "source": "art/blender/bestiary/bio_runner_21.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 19
+}

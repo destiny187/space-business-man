@@ -1,0 +1,47 @@
+{
+  "form_schema": 1,
+  "id": "bio_asym_pincer_10",
+  "name": "편측집게체 · 극변형",
+  "family": "asym_pincer",
+  "family_name": "편측집게체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 9,
+  "anatomy": 9,
+  "eye_count": 1,
+  "sensory_type": "한쪽 측면의 단일 동심 렌즈",
+  "attack": "claw",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_asym_pincer_10_near.glb",
+      "sha256": "f3eb7e31c4c5541cfb133a78c76e40919ae28beef6a02c84a31dbad8a18dfd39",
+      "triangles": 15696
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_asym_pincer_10_far.glb",
+      "sha256": "a6d2b1189d4397d3e2a675692659141d0e2d790e62b50d601ac229c7374ee4a9",
+      "triangles": 5006
+    }
+  },
+  "source": "art/blender/bestiary/bio_asym_pincer_10.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Arm_L"
+  ],
+  "mesh_nodes": 16
+}

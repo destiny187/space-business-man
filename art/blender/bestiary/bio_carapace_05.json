@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_carapace_05",
+  "name": "조간대 확장형 갑각류",
+  "family": "carapace",
+  "family_name": "갑각류",
+  "category": "animal",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 0,
+  "anatomy": 4,
+  "attack": "claw",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_05_near.glb",
+      "sha256": "6623121bf5f1ff525230f255be658aa7da534f964e07e918b6310bde3a49c580",
+      "triangles": 16516
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_05_far.glb",
+      "sha256": "966f51e66f0e0225686348bd01edaf2dc5503e620e31eb846bfb48038e8f5513",
+      "triangles": 5256
+    }
+  },
+  "source": "art/blender/bestiary/bio_carapace_05.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 30
+}

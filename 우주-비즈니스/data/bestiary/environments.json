@@ -1,0 +1,101 @@
+{
+  "basalt": {
+    "label": "광물성 암반",
+    "palette": [
+      "596c70",
+      "839594",
+      "ba6d34"
+    ],
+    "condition": "암석 기질·균열 피난처"
+  },
+  "arid": {
+    "label": "건조 사구·협곡",
+    "palette": [
+      "aa8155",
+      "d0b981",
+      "725849"
+    ],
+    "condition": "낮은 수분·일교차·수분 보존"
+  },
+  "cold": {
+    "label": "한랭·빙하",
+    "palette": [
+      "648b9b",
+      "d2e0d4",
+      "699ea9"
+    ],
+    "condition": "낮은 온도·휴면·단열 또는 수중 피난처"
+  },
+  "crystal": {
+    "label": "결정 광맥 지대",
+    "palette": [
+      "526977",
+      "a1bfbd",
+      "5cabac"
+    ],
+    "condition": "결정 기질·광물·제한된 유기물"
+  },
+  "thermal": {
+    "label": "열수·온토",
+    "palette": [
+      "4e525a",
+      "99805e",
+      "d67a37"
+    ],
+    "condition": "안정된 열원·대사 기질·열 회피 구획"
+  },
+  "temperate": {
+    "label": "인간 거주에 적합한 온대",
+    "palette": [
+      "657849",
+      "adbc72",
+      "bb9357"
+    ],
+    "condition": "온화한 기후·액체 물·생산자와 먹이망"
+  },
+  "wetland": {
+    "label": "습지·담수",
+    "palette": [
+      "3f7467",
+      "8cac80",
+      "c0b477"
+    ],
+    "condition": "충분한 수분·유기 기질·수위 변화"
+  },
+  "canopy": {
+    "label": "다층 수관·숲",
+    "palette": [
+      "387463",
+      "8baa55",
+      "c99552"
+    ],
+    "condition": "식생·빛과 그늘·수직 서식처"
+  },
+  "cave": {
+    "label": "동굴·지하수",
+    "palette": [
+      "5b6077",
+      "9b91a5",
+      "71bdb5"
+    ],
+    "condition": "어둠·외부 먹이 유입 또는 화학 기질"
+  },
+  "marine": {
+    "label": "해양·연안",
+    "palette": [
+      "3c7185",
+      "8cbabd",
+      "d8ad75"
+    ],
+    "condition": "액체 수역·염도·유속·먹이"
+  },
+  "acid": {
+    "label": "산성 기질·수역",
+    "palette": [
+      "737347",
+      "b0b15e",
+      "94c177"
+    ],
+    "condition": "내산성 외피·반응 기질·부산물 배출"
+  }
+}

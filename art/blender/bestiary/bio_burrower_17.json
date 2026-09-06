@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_burrower_17",
+  "name": "온토 갑주형 굴착수류",
+  "family": "burrower",
+  "family_name": "굴착수류",
+  "category": "animal",
+  "environment": "thermal",
+  "environment_label": "열수·온토",
+  "habitat_note": "안정된 열원·대사 기질·열 회피 구획",
+  "morphology": 3,
+  "anatomy": 1,
+  "attack": "slam",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_17_near.glb",
+      "sha256": "76253920875439dfb8797563e9b95e0320a1b10e021494e2161f9088882b793a",
+      "triangles": 19256
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_17_far.glb",
+      "sha256": "5cfb449a9f0c555a8315607af57f9bae6f58847b39de918a60d17738a6c2220a",
+      "triangles": 6134
+    }
+  },
+  "source": "art/blender/bestiary/bio_burrower_17.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

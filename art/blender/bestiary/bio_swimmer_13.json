@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_swimmer_13",
+  "name": "빙하호 부채형 유영어류",
+  "family": "swimmer",
+  "family_name": "유영어류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_13_near.glb",
+      "sha256": "216d24b432c87b4aad63303aad9b59211f936de0257f49fc60bc7f9355c5bf93",
+      "triangles": 6076
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_13_far.glb",
+      "sha256": "c60311813028fb643120ee7ce0b9279945a785d92adc7b7649b8770972e35d8a",
+      "triangles": 2242
+    }
+  },
+  "source": "art/blender/bestiary/bio_swimmer_13.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 12
+}

@@ -1,0 +1,54 @@
+{
+  "form_schema": 2,
+  "id": "bio_oxygen_reef_03",
+  "name": "온대 부채형 광합성군락",
+  "family": "oxygen_reef",
+  "family_name": "광합성군락",
+  "category": "microbe",
+  "environment": "temperate",
+  "environment_label": "인간 거주에 적합한 온대",
+  "habitat_note": "온화한 기후·액체 물·생산자와 먹이망",
+  "morphology": 0,
+  "anatomy": 2,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_03_near.glb",
+      "sha256": "356a97beb3a80ba224f060d24f0403e9a40ad57f87a414e5eddd9cc636bf37ca",
+      "triangles": 37460
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_oxygen_reef_03_far.glb",
+      "sha256": "681c3e35f2001e3a3530eed8bac2ac21140fbb3ff37bd405833ecb99e2ba3144",
+      "triangles": 11940
+    }
+  },
+  "source": "art/blender/bestiary/bio_oxygen_reef_03.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 45
+}

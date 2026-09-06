@@ -30,7 +30,10 @@ func run() -> void:
 	var count:=0
 	for i in selected:
 		if rows[i].group==group:count+=1
-	var board_path: String=dest+"board-"+groups[group]+".png"
+	var page: int=count/10+1
+	count=count%10
+	var suffix: String="" if page==1 else "-%03d"%page
+	var board_path: String=dest+"board-"+groups[group]+suffix+".png"
 	if FileAccess.file_exists(board_path):
 		var board:=Image.load_from_file(board_path)
 		if board.get_height()>=(count/2+1)*600:

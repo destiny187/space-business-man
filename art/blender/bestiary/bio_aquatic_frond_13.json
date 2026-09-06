@@ -1,0 +1,53 @@
+{
+  "form_schema": 2,
+  "id": "bio_aquatic_frond_13",
+  "name": "빙하호 부채형 수생엽상체",
+  "family": "aquatic_frond",
+  "family_name": "수생엽상체",
+  "category": "plant",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_13_near.glb",
+      "sha256": "20ddc204b8d97ddc640d51bb2d57ff69a8e7c508732176ca3ead7119b18f06bd",
+      "triangles": 30628
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_13_far.glb",
+      "sha256": "f120e51bd2f4bb219876bbabe0e593e9a30312c286eb8dcf5a80bfb2bc30ff1a",
+      "triangles": 9774
+    }
+  },
+  "source": "art/blender/bestiary/bio_aquatic_frond_13.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 34
+}

@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_mantid_05",
+  "name": "수관 확장형 낫날절지류",
+  "family": "mantid",
+  "family_name": "낫날절지류",
+  "category": "animal",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 0,
+  "anatomy": 4,
+  "attack": "scythe",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_05_near.glb",
+      "sha256": "a3e23947ee1d6512df91a1bad1360ce1d1c9e09a6e8e7b69243fa123f981a193",
+      "triangles": 16752
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_05_far.glb",
+      "sha256": "d3d2d061784c4ddbf700b113d3c6eb84ba0c4d5bf856e2220c2787eac6577b95",
+      "triangles": 5334
+    }
+  },
+  "source": "art/blender/bestiary/bio_mantid_05.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 28
+}

@@ -1,0 +1,54 @@
+{
+  "form_schema": 1,
+  "id": "bio_spiral_maw_09",
+  "name": "나선구강체 · 방사형",
+  "family": "spiral_maw",
+  "family_name": "나선구강체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 8,
+  "anatomy": 8,
+  "eye_count": 0,
+  "sensory_type": "빛 대신 구강 촉수의 화학 감각",
+  "attack": "bite",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spiral_maw_09_near.glb",
+      "sha256": "0bdea5250c6270028c89d9e56fd8a8da17039d4c6f42a506a1f527fb1bd68eeb",
+      "triangles": 17752
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spiral_maw_09_far.glb",
+      "sha256": "f3c34424e72575363af8c6ab5e8c5111b3175c1afae7908dd622e16401ad65a3",
+      "triangles": 5659
+    }
+  },
+  "source": "art/blender/bestiary/bio_spiral_maw_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Jaw",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 19
+}

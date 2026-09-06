@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_winged_09",
+  "name": "숲 분지형 막날개류",
+  "family": "winged",
+  "family_name": "막날개류",
+  "category": "animal",
+  "environment": "temperate",
+  "environment_label": "인간 거주에 적합한 온대",
+  "habitat_note": "온화한 기후·액체 물·생산자와 먹이망",
+  "morphology": 1,
+  "anatomy": 3,
+  "attack": "dive",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_09_near.glb",
+      "sha256": "851451a75573fd4796a7115001f911e80f52279028c9069a1fd6fb2f41cecaa8",
+      "triangles": 16568
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_09_far.glb",
+      "sha256": "88ba9617b1bb01c743ff93e87eebf1609d823c81ded9f32c23f43919ea42f382",
+      "triangles": 5498
+    }
+  },
+  "source": "art/blender/bestiary/bio_winged_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

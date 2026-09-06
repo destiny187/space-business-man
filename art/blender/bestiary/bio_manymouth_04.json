@@ -1,0 +1,52 @@
+{
+  "form_schema": 1,
+  "id": "bio_manymouth_04",
+  "name": "분지다구체 · 확공형",
+  "family": "manymouth",
+  "family_name": "분지다구체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 3,
+  "anatomy": 3,
+  "eye_count": 3,
+  "sensory_type": "분지된 여러 입과 불규칙 감각 결절",
+  "attack": "bite",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_manymouth_04_near.glb",
+      "sha256": "6751f0d09331c92e9de0c7e919c4200ee1866c8ae690d1f4a2e3cf416d48465b",
+      "triangles": 47976
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_manymouth_04_far.glb",
+      "sha256": "6441b32d4bbbbdc551c068aac2149f8fe5051bd407315f6783d5405d586871d7",
+      "triangles": 15326
+    }
+  },
+  "source": "art/blender/bestiary/bio_manymouth_04.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Jaw",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Petal_4",
+    "Anim_Petal_5",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 34
+}

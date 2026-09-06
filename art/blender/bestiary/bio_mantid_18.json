@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_mantid_18",
+  "name": "결정지 부채형 낫날절지류",
+  "family": "mantid",
+  "family_name": "낫날절지류",
+  "category": "animal",
+  "environment": "crystal",
+  "environment_label": "결정 광맥 지대",
+  "habitat_note": "결정 기질·광물·제한된 유기물",
+  "morphology": 3,
+  "anatomy": 2,
+  "attack": "scythe",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_18_near.glb",
+      "sha256": "4ae5b464ddd4885559b8526dccba35cd665f1c1f89cbcd9ca9025066b63d47df",
+      "triangles": 15912
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_18_far.glb",
+      "sha256": "eec5d6321b1b6cedf0dcd9e2cd265a650652a051afd0573d4eb82f86ab6b7a5c",
+      "triangles": 5154
+    }
+  },
+  "source": "art/blender/bestiary/bio_mantid_18.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 28
+}

@@ -1,0 +1,46 @@
+{
+  "form_schema": 2,
+  "id": "bio_runner_15",
+  "name": "설원 확장형 도약조류",
+  "family": "runner",
+  "family_name": "도약조류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 4,
+  "attack": "kick",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_15_near.glb",
+      "sha256": "c7f5dab30947b28ebc736e008c41432adb28fdc8fb81f7099ae381ca824418b2",
+      "triangles": 11772
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_15_far.glb",
+      "sha256": "572d50dd1156b29d0b1d67788daca7fdc26074bb72ea0b94a080cd89eccd09b6",
+      "triangles": 3920
+    }
+  },
+  "source": "art/blender/bestiary/bio_runner_15.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 19
+}

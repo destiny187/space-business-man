@@ -1,0 +1,60 @@
+{
+  "form_schema": 1,
+  "id": "bio_tripod_bell_10",
+  "name": "삼각종보행체 · 극변형",
+  "family": "tripod_bell",
+  "family_name": "삼각종보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 9,
+  "anatomy": 9,
+  "eye_count": 0,
+  "sensory_type": "다리 말단과 종 내부의 압력 감각",
+  "attack": "slam",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_tripod_bell_10_near.glb",
+      "sha256": "91e843113bfdd2fd47815bdb9bda8aa072bb7cd00912105cbf0976eb83be37ff",
+      "triangles": 17808
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_tripod_bell_10_far.glb",
+      "sha256": "18748e90fde57d47d5a7974363c61930cc339a453cb463f5274ba533f5ca906a",
+      "triangles": 5690
+    }
+  },
+  "source": "art/blender/bestiary/bio_tripod_bell_10.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Petal_4",
+    "Anim_Petal_5",
+    "Anim_Petal_6",
+    "Anim_Petal_7",
+    "Anim_Petal_8",
+    "Anim_Petal_9",
+    "Anim_Petal_10",
+    "Anim_Petal_11",
+    "Anim_Petal_12",
+    "Anim_Petal_13",
+    "Anim_Petal_14"
+  ],
+  "mesh_nodes": 20
+}

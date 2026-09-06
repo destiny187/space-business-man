@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_mantid_06",
+  "name": "사막 기본형 낫날절지류",
+  "family": "mantid",
+  "family_name": "낫날절지류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "scythe",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_06_near.glb",
+      "sha256": "594945442402fb3027be27f23338b5e7e22adb9608c6940e88403a392bd1fd30",
+      "triangles": 15720
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_06_far.glb",
+      "sha256": "534b1fecd72da899b19a39e9628f6ff66f16483b3764ee7bb73ecd681fcc4055",
+      "triangles": 5006
+    }
+  },
+  "source": "art/blender/bestiary/bio_mantid_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 27
+}

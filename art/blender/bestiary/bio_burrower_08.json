@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_burrower_08",
+  "name": "모래 부채형 굴착수류",
+  "family": "burrower",
+  "family_name": "굴착수류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 1,
+  "anatomy": 2,
+  "attack": "slam",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_08_near.glb",
+      "sha256": "42e93f489e6d5804b7032d1769ef5fb218fe6815a2c281d72e2f2f6c5717c8c7",
+      "triangles": 17992
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_08_far.glb",
+      "sha256": "18f0fbaa60208d0ce7c7f48610a6a83aee3cf6c292e0d9fdaac3b86f74313558",
+      "triangles": 5774
+    }
+  },
+  "source": "art/blender/bestiary/bio_burrower_08.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

@@ -1,0 +1,49 @@
+{
+  "form_schema": 2,
+  "id": "bio_acid_mat_01",
+  "name": "산성 기본형 기질처리막",
+  "family": "acid_mat",
+  "family_name": "기질처리막",
+  "category": "microbe",
+  "environment": "acid",
+  "environment_label": "산성 기질·수역",
+  "habitat_note": "내산성 외피·반응 기질·부산물 배출",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "737347",
+    "b0b15e",
+    "94c177"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_01_near.glb",
+      "sha256": "e2b68dce4d37e89cf726093802adacec5a8969459da057b457cb1f78abce9807",
+      "triangles": 21680
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_01_far.glb",
+      "sha256": "7aefafbdd8ccb17fa35d0c01967098c1350ac3820be8bb7f93d8e57582ea1cca",
+      "triangles": 6910
+    }
+  },
+  "source": "art/blender/bestiary/bio_acid_mat_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9"
+  ],
+  "mesh_nodes": 30
+}

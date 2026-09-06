@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_winged_25",
+  "name": "한랭지 확장형 막날개류",
+  "family": "winged",
+  "family_name": "막날개류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "dive",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_25_near.glb",
+      "sha256": "8c19598fadf8dbf2c6e593ff788094f7732eb96582d3940eca2e3b947d41cae6",
+      "triangles": 16316
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_25_far.glb",
+      "sha256": "060d73ddca9648a3b0509853be446793cf41d6e89ec243da54761834d773690c",
+      "triangles": 5418
+    }
+  },
+  "source": "art/blender/bestiary/bio_winged_25.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 20
+}

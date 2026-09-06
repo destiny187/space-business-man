@@ -1,0 +1,50 @@
+{
+  "form_schema": 2,
+  "id": "bio_spore_fungus_02",
+  "name": "동굴 갑주형 균사체",
+  "family": "spore_fungus",
+  "family_name": "균사체",
+  "category": "plant",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 0,
+  "anatomy": 1,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_02_near.glb",
+      "sha256": "fbc0d73b082fe275663b116d2cae676ba1f96028f0d0270c054be7b9c6e34c90",
+      "triangles": 18624
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_02_far.glb",
+      "sha256": "caf617636d5f7e5112e576ec8a6c043a9d5ac0b900cd5770a476055176b078c6",
+      "triangles": 6158
+    }
+  },
+  "source": "art/blender/bestiary/bio_spore_fungus_02.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 34
+}

@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "runs": [
+    {
+      "command": [
+        "tools/godot.sh",
+        "--script",
+        "res://tests/check_bestiary_gallery.gd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "tools/show_bestiary.sh",
+        "--",
+        "--aberrant",
+        "--attack-captures"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "tools/show_bestiary.sh",
+        "--",
+        "--aberrant",
+        "--film-captures"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

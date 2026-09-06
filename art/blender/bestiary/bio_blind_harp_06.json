@@ -1,0 +1,51 @@
+{
+  "form_schema": 1,
+  "id": "bio_blind_harp_06",
+  "name": "공명늑골체 · 편향형",
+  "family": "blind_harp",
+  "family_name": "공명늑골체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 5,
+  "anatomy": 5,
+  "eye_count": 0,
+  "sensory_type": "진동을 읽는 빈 늑골과 장력 섬유",
+  "attack": "none",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_blind_harp_06_near.glb",
+      "sha256": "94be753fbd78df7dee72136d2edd7ffe4eb86cf6461ef5f9c260814d8a96e430",
+      "triangles": 10860
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_blind_harp_06_far.glb",
+      "sha256": "7226427605cab8b6a3d16558508cdaabe1ac0e7b6c2eaa86483ddaab1481980b",
+      "triangles": 3460
+    }
+  },
+  "source": "art/blender/bestiary/bio_blind_harp_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R"
+  ],
+  "mesh_nodes": 19
+}

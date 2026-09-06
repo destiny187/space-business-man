@@ -1,0 +1,55 @@
+{
+  "status": "pass",
+  "edited_models": 8,
+  "scope": "Source objects excluding the explicitly named old/new eye parts: transforms and mesh vertices unchanged, including motion anchors.",
+  "models": [
+    {
+      "id": "bio_lithic_16",
+      "eye_design": "diamond",
+      "eye_count": 1,
+      "unchanged_body_objects": 69
+    },
+    {
+      "id": "bio_grazer_01",
+      "eye_design": "horizontal",
+      "eye_count": 2,
+      "unchanged_body_objects": 50
+    },
+    {
+      "id": "bio_stalker_01",
+      "eye_design": "vertical",
+      "eye_count": 2,
+      "unchanged_body_objects": 49
+    },
+    {
+      "id": "bio_burrower_21",
+      "eye_design": "blind",
+      "eye_count": 0,
+      "unchanged_body_objects": 45
+    },
+    {
+      "id": "bio_carapace_01",
+      "eye_design": "compound",
+      "eye_count": 2,
+      "unchanged_body_objects": 42
+    },
+    {
+      "id": "bio_winged_16",
+      "eye_design": "cluster",
+      "eye_count": 6,
+      "unchanged_body_objects": 46
+    },
+    {
+      "id": "bio_swimmer_01",
+      "eye_design": "four",
+      "eye_count": 4,
+      "unchanged_body_objects": 22
+    },
+    {
+      "id": "bio_slug_21",
+      "eye_design": "stalk",
+      "eye_count": 2,
+      "unchanged_body_objects": 19
+    }
+  ]
+}

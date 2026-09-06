@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_winged_14",
+  "name": "협곡 분지형 막날개류",
+  "family": "winged",
+  "family_name": "막날개류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 2,
+  "anatomy": 3,
+  "attack": "dive",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_14_near.glb",
+      "sha256": "b88d7ed2b7c21c938b11811aed3c9da1bcd4f515e7c6fcb5f3417fd9df355867",
+      "triangles": 16568
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_14_far.glb",
+      "sha256": "e6dba7ce03c1776d8b272868ba573f1d3b079f10b9f76d7d08069edb79eb87fa",
+      "triangles": 5498
+    }
+  },
+  "source": "art/blender/bestiary/bio_winged_14.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

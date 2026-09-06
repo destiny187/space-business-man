@@ -1,0 +1,52 @@
+{
+  "form_schema": 2,
+  "id": "bio_canopy_tree_15",
+  "name": "건조 확장형 수관식생",
+  "family": "canopy_tree",
+  "family_name": "수관식생",
+  "category": "plant",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 2,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_15_near.glb",
+      "sha256": "b8dc03df95f0ac19bfba4bc897c4fb262acce87bf4aa3b1033b60276524aa1a5",
+      "triangles": 6560
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_15_far.glb",
+      "sha256": "a49762aa51590683f4d88292e87f36bce294485fb75cbcf8311f2d8e4949440f",
+      "triangles": 3404
+    }
+  },
+  "source": "art/blender/bestiary/bio_canopy_tree_15.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 27
+}

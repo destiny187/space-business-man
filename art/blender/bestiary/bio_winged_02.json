@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_winged_02",
+  "name": "수관 갑주형 막날개류",
+  "family": "winged",
+  "family_name": "막날개류",
+  "category": "animal",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 0,
+  "anatomy": 1,
+  "attack": "dive",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_02_near.glb",
+      "sha256": "57afa0a29ae1da37c31ebc3af2864c16738ba6dd8389c1b7da160b87a61302e3",
+      "triangles": 16740
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_winged_02_far.glb",
+      "sha256": "eac107bcea8ab76ff8aa1cce5bf11aa3b1f945a1f273c6976b4e681c8bac1b4a",
+      "triangles": 5554
+    }
+  },
+  "source": "art/blender/bestiary/bio_winged_02.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 21
+}

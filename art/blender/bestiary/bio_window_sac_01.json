@@ -1,0 +1,48 @@
+{
+  "form_schema": 1,
+  "id": "bio_window_sac_01",
+  "name": "창낭보행체 · 공동형",
+  "family": "window_sac",
+  "family_name": "창낭보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 0,
+  "anatomy": 0,
+  "eye_count": 1,
+  "sensory_type": "갈라진 외피 안쪽의 단일 긴 감광 틈",
+  "attack": "spit",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_01_near.glb",
+      "sha256": "9e662997c4f10e60eee1e4533555d15c6d9d5e34ab6e759458c9385a1849a48e",
+      "triangles": 12476
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_01_far.glb",
+      "sha256": "27f3270385096c6c492d3367401c77dda218decd847271b6c64fb70e17800b40",
+      "triangles": 3980
+    }
+  },
+  "source": "art/blender/bestiary/bio_window_sac_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 16
+}

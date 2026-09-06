@@ -1,0 +1,48 @@
+{
+  "form_schema": 1,
+  "id": "bio_window_sac_10",
+  "name": "창낭보행체 · 극변형",
+  "family": "window_sac",
+  "family_name": "창낭보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "acid",
+  "environment_label": "산성 기질·수역",
+  "habitat_note": "내산성 외피·반응 기질·부산물 배출",
+  "morphology": 9,
+  "anatomy": 9,
+  "eye_count": 1,
+  "sensory_type": "갈라진 외피 안쪽의 단일 긴 감광 틈",
+  "attack": "spit",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "737347",
+    "b0b15e",
+    "94c177"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_10_near.glb",
+      "sha256": "01ad78f940cb3d7b00845be512645607a3e39631c665997dfe01791e21869937",
+      "triangles": 13368
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_10_far.glb",
+      "sha256": "b356e6030a7f4f426a81a6e4f168044940825472aba2277ca1805cfb97dbf77e",
+      "triangles": 4264
+    }
+  },
+  "source": "art/blender/bestiary/bio_window_sac_10.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 16
+}

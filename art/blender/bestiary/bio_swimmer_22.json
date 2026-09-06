@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_swimmer_22",
+  "name": "지하수 갑주형 유영어류",
+  "family": "swimmer",
+  "family_name": "유영어류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 1,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_22_near.glb",
+      "sha256": "acd4127d6a1b2ac67755f4fe5b517f718591f0f4f346b556bf393a060afe45f4",
+      "triangles": 7844
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_22_far.glb",
+      "sha256": "ae4f78214b4f669de44417c6de0a05b3a0ce8d332ff76d984e89c20e0fad157d",
+      "triangles": 2676
+    }
+  },
+  "source": "art/blender/bestiary/bio_swimmer_22.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 12
+}

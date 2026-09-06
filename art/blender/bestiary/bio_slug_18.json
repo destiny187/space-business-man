@@ -1,0 +1,41 @@
+{
+  "form_schema": 2,
+  "id": "bio_slug_18",
+  "name": "빙하수 부채형 여과연체류",
+  "family": "slug",
+  "family_name": "여과연체류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 3,
+  "anatomy": 2,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_18_near.glb",
+      "sha256": "2674de043ab17d6a9274d7d69eb382d67ccfd07affc2ad746ec1fc8437e4b749",
+      "triangles": 7952
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_18_far.glb",
+      "sha256": "704e2f625442bbfe637c8ea6681a81a0eee9566cb9ef08774b32c8806c868616",
+      "triangles": 2624
+    }
+  },
+  "source": "art/blender/bestiary/bio_slug_18.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 8
+}

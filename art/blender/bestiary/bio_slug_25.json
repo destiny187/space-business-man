@@ -1,0 +1,41 @@
+{
+  "form_schema": 2,
+  "id": "bio_slug_25",
+  "name": "지하 확장형 여과연체류",
+  "family": "slug",
+  "family_name": "여과연체류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_25_near.glb",
+      "sha256": "bd0419f08a20b0cd6121afe2d4ae960d2bcc8899e3fff7d0967101d3e8d5b259",
+      "triangles": 9044
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_25_far.glb",
+      "sha256": "6c4f8383986b23b241dce4ab33a2438976803a8e6812ec2ba6eab04822bda9b7",
+      "triangles": 2884
+    }
+  },
+  "source": "art/blender/bestiary/bio_slug_25.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 8
+}

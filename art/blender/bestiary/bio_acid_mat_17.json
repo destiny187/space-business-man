@@ -1,0 +1,57 @@
+{
+  "form_schema": 2,
+  "id": "bio_acid_mat_17",
+  "name": "암반 갑주형 기질처리막",
+  "family": "acid_mat",
+  "family_name": "기질처리막",
+  "category": "microbe",
+  "environment": "basalt",
+  "environment_label": "광물성 암반",
+  "habitat_note": "암석 기질·균열 피난처",
+  "morphology": 3,
+  "anatomy": 1,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_17_near.glb",
+      "sha256": "417f368d28c6a23825efc3f5a30c8abbcc1eb837becf887931499755e14835bb",
+      "triangles": 30104
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_17_far.glb",
+      "sha256": "b078d910440ddd12343b0192ad17397fb8f7a72e1795b1f47329f029485da8d6",
+      "triangles": 9813
+    }
+  },
+  "source": "art/blender/bestiary/bio_acid_mat_17.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10",
+    "Anim_Frond_11",
+    "Anim_Frond_12",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 49
+}

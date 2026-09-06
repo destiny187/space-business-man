@@ -1,0 +1,46 @@
+{
+  "form_schema": 2,
+  "id": "bio_runner_05",
+  "name": "사구 확장형 도약조류",
+  "family": "runner",
+  "family_name": "도약조류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 0,
+  "anatomy": 4,
+  "attack": "kick",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_05_near.glb",
+      "sha256": "191628d24251e9a5e0d8be28053069a622db9fb02212c1adefc67c060c8e8ac0",
+      "triangles": 11772
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_05_far.glb",
+      "sha256": "01a21eb4fbfdbd107e7fb571af74e6f9b9b2bd29b06e7e02884cc9c6d6dd0e45",
+      "triangles": 3920
+    }
+  },
+  "source": "art/blender/bestiary/bio_runner_05.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 19
+}

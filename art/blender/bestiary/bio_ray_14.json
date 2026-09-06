@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_ray_14",
+  "name": "빙해 분지형 부유가오리류",
+  "family": "ray",
+  "family_name": "부유가오리류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_14_near.glb",
+      "sha256": "012b89ae63d13c2eb853a36bdeb085ff77d418c40988a36d4426a663d0f7f93a",
+      "triangles": 5908
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_14_far.glb",
+      "sha256": "ad15a0a31c290d2c32c184f497e15cbf18323083c9a6092f74ff4c17936bb416",
+      "triangles": 2056
+    }
+  },
+  "source": "art/blender/bestiary/bio_ray_14.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 11
+}

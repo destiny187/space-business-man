@@ -1,0 +1,41 @@
+{
+  "form_schema": 2,
+  "id": "bio_slug_22",
+  "name": "지하 갑주형 여과연체류",
+  "family": "slug",
+  "family_name": "여과연체류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 1,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_22_near.glb",
+      "sha256": "4cfc42a999d41e1b499045afdd60115757774ecfd4a90b1394b1df1ebdfa5c24",
+      "triangles": 9468
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_22_far.glb",
+      "sha256": "3becf3f6e870cd2510825904d06542cbbbe1f28a60ba29aaef6336f05607a84b",
+      "triangles": 3020
+    }
+  },
+  "source": "art/blender/bestiary/bio_slug_22.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 9
+}

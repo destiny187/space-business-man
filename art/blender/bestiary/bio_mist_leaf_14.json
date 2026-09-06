@@ -1,0 +1,54 @@
+{
+  "form_schema": 2,
+  "id": "bio_mist_leaf_14",
+  "name": "서리 분지형 집수식생",
+  "family": "mist_leaf",
+  "family_name": "집수식생",
+  "category": "plant",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mist_leaf_14_near.glb",
+      "sha256": "52eee590325e5b05d77b85185ee816f0b22395aa47c8f02f9ae028ee2cec7590",
+      "triangles": 19408
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mist_leaf_14_far.glb",
+      "sha256": "db293e4e2d10ebe53bef24b0a11f3126dc554d0da352baa04984e75b9de83e96",
+      "triangles": 7063
+    }
+  },
+  "source": "art/blender/bestiary/bio_mist_leaf_14.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 26
+}

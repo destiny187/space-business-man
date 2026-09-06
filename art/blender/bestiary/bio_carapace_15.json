@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_carapace_15",
+  "name": "산성호 확장형 갑각류",
+  "family": "carapace",
+  "family_name": "갑각류",
+  "category": "animal",
+  "environment": "acid",
+  "environment_label": "산성 기질·수역",
+  "habitat_note": "내산성 외피·반응 기질·부산물 배출",
+  "morphology": 2,
+  "anatomy": 4,
+  "attack": "claw",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "737347",
+    "b0b15e",
+    "94c177"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_15_near.glb",
+      "sha256": "95407ae56c9653ebc56efa056864c8cbe2aac6634481112e1364dfcea48b1865",
+      "triangles": 16324
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_15_far.glb",
+      "sha256": "7ed33f78f4585ebf0243b2f3cca8ad4ea2dcdb30234305d5baf2961fae4dfc4d",
+      "triangles": 5194
+    }
+  },
+  "source": "art/blender/bestiary/bio_carapace_15.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 30
+}

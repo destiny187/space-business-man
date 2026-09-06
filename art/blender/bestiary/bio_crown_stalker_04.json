@@ -1,0 +1,52 @@
+{
+  "form_schema": 1,
+  "id": "bio_crown_stalker_04",
+  "name": "복안관추적체 · 확공형",
+  "family": "crown_stalker",
+  "family_name": "복안관추적체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 3,
+  "anatomy": 3,
+  "eye_count": 1,
+  "sensory_type": "개별 눈알 없이 이어진 다면 복안면",
+  "attack": "scythe",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crown_stalker_04_near.glb",
+      "sha256": "9015ccb279087fee33eee5214d63202ec4a091571d81d8b4fbcd432cfbeeee4f",
+      "triangles": 8188
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crown_stalker_04_far.glb",
+      "sha256": "52f284cbb0556cecc91150fffab20eee6df419c8c531a3212c8747fbf85a5433",
+      "triangles": 2600
+    }
+  },
+  "source": "art/blender/bestiary/bio_crown_stalker_04.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_L",
+    "Anim_Leg_6_R",
+    "Anim_Leg_7_L",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 22
+}

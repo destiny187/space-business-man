@@ -1,0 +1,46 @@
+{
+  "form_schema": 2,
+  "id": "bio_runner_24",
+  "name": "수관 분지형 도약조류",
+  "family": "runner",
+  "family_name": "도약조류",
+  "category": "animal",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 4,
+  "anatomy": 3,
+  "attack": "kick",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_24_near.glb",
+      "sha256": "339edb0ae3a40ed500a0671c408d40ecccc217903f9b62eb67cfe5bf04dd200f",
+      "triangles": 12024
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_24_far.glb",
+      "sha256": "a6e5fd0adc0dec3df701c188b7a5bfa6f35fe9bb3190473faec7942d585ae9c2",
+      "triangles": 4002
+    }
+  },
+  "source": "art/blender/bestiary/bio_runner_24.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 20
+}

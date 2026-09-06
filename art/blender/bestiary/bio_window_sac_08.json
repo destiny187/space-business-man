@@ -1,0 +1,49 @@
+{
+  "form_schema": 1,
+  "id": "bio_window_sac_08",
+  "name": "창낭보행체 · 다지형",
+  "family": "window_sac",
+  "family_name": "창낭보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 7,
+  "anatomy": 7,
+  "eye_count": 1,
+  "sensory_type": "갈라진 외피 안쪽의 단일 긴 감광 틈",
+  "attack": "spit",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_08_near.glb",
+      "sha256": "db452ff89305560d821a54eae3e94ef190e5bb16019974cb8273bab021042318",
+      "triangles": 15724
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_window_sac_08_far.glb",
+      "sha256": "f459c6bff032623e9937c5cd5cc9db7e32b1abdd99257984ee052721dc5fb623",
+      "triangles": 5018
+    }
+  },
+  "source": "art/blender/bestiary/bio_window_sac_08.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 18
+}

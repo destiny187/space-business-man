@@ -1,0 +1,33 @@
+{
+  "review_date": "2026-09-06",
+  "status": "visual-prototype-reviewed",
+  "base_family_boards_reviewed": 20,
+  "base_forms_on_boards": 500,
+  "lighting_lod_comparison_boards_reviewed": 4,
+  "attack_families_reviewed": 10,
+  "attack_stages": [
+    "windup",
+    "active",
+    "recovery"
+  ],
+  "mixed_field_views": [
+    "near",
+    "play",
+    "far",
+    "backlight"
+  ],
+  "fixed_findings": [
+    "Disconnected insect tarsal claws were joined and all 50 affected sources/LODs rebuilt.",
+    "Runtime linear palettes now match imported GLB color; 666 direct comparisons pass.",
+    "Spit origin follows each mouth marker. Attack slashes were moved away from eyes.",
+    "Grounded studio floor uses actual GLB vertex minimum. Oversized field rocks normalized before review.",
+    "Attack body movement interpolates through strike; diving body descends during attack."
+  ],
+  "remaining_limits": [
+    "Distant mixed foliage still has dense outlines; cluster LOD and draw-call optimization remain before gameplay integration.",
+    "20 structural families are shared by 500 geometric forms, not 500 unrelated skeletons.",
+    "Appearance variants are visual profiles, not independent species or ecological/combat statistics.",
+    "Procedural rigid-part animation; no baked skeletal clips, IK, audio or multiplayer synchronization."
+  ],
+  "user_final_art_approval": false
+}

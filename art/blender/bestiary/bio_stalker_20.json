@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_stalker_20",
+  "name": "늪 확장형 추적포식류",
+  "family": "stalker",
+  "family_name": "추적포식류",
+  "category": "animal",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 3,
+  "anatomy": 4,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_20_near.glb",
+      "sha256": "8e6b19fdc748eff0d491fa61edb5e8a980fd8165e7093116eadfc793a6209ac5",
+      "triangles": 20820
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_20_far.glb",
+      "sha256": "c133b5c50487785e9d7f0f996edea9a5635d179ff0ccd1d10fb30d3bbba1bb8c",
+      "triangles": 6630
+    }
+  },
+  "source": "art/blender/bestiary/bio_stalker_20.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 23
+}

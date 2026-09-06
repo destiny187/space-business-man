@@ -1,0 +1,57 @@
+{
+  "form_schema": 1,
+  "id": "bio_tripod_bell_07",
+  "name": "삼각종보행체 · 고관형",
+  "family": "tripod_bell",
+  "family_name": "삼각종보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "crystal",
+  "environment_label": "결정 광맥 지대",
+  "habitat_note": "결정 기질·광물·제한된 유기물",
+  "morphology": 6,
+  "anatomy": 6,
+  "eye_count": 0,
+  "sensory_type": "다리 말단과 종 내부의 압력 감각",
+  "attack": "slam",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_tripod_bell_07_near.glb",
+      "sha256": "182620ce370f3f16a017b1de1c2015e3ace40bccc5c447403c16018eeaa29ac6",
+      "triangles": 16848
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_tripod_bell_07_far.glb",
+      "sha256": "48c6664c27d04260679462d87fcfa383686beeef3fce2856cb152a48472a6730",
+      "triangles": 5384
+    }
+  },
+  "source": "art/blender/bestiary/bio_tripod_bell_07.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Petal_4",
+    "Anim_Petal_5",
+    "Anim_Petal_6",
+    "Anim_Petal_7",
+    "Anim_Petal_8",
+    "Anim_Petal_9",
+    "Anim_Petal_10",
+    "Anim_Petal_11"
+  ],
+  "mesh_nodes": 17
+}

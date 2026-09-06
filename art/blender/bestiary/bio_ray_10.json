@@ -1,0 +1,45 @@
+{
+  "form_schema": 2,
+  "id": "bio_ray_10",
+  "name": "호수 확장형 부유가오리류",
+  "family": "ray",
+  "family_name": "부유가오리류",
+  "category": "animal",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 1,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_10_near.glb",
+      "sha256": "c86d6115ac338dfd76dc435c48c2244af7ed3b7b52889434b8c8fc1071a0f79c",
+      "triangles": 5656
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ray_10_far.glb",
+      "sha256": "41d38bfa05913ebb6fb90d9400a8b571dd39719469f16b98db628a885f70783a",
+      "triangles": 1976
+    }
+  },
+  "source": "art/blender/bestiary/bio_ray_10.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 10
+}

@@ -1,0 +1,50 @@
+{
+  "form_schema": 4,
+  "id": "bio_burrower_21",
+  "name": "지하 기본형 굴착수류",
+  "family": "burrower",
+  "family_name": "굴착수류",
+  "category": "animal",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 4,
+  "anatomy": 0,
+  "attack": "slam",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "eye_design": "blind",
+  "eye_count": 0,
+  "sensory_type": "눈 대신 진동 감각 주름",
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_21_near.glb",
+      "sha256": "83914a04edbe365b67b57f317b944954a5eba65b838dbcfffb732e9e1dab1fcc",
+      "triangles": 17256
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_burrower_21_far.glb",
+      "sha256": "24630ad8f2afdacfb2d6ccee66b26ea7d81f4e6aa5c30d39382d3c942e413018",
+      "triangles": 5498
+    }
+  },
+  "source": "art/blender/bestiary/bio_burrower_21.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 18
+}

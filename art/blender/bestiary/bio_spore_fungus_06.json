@@ -1,0 +1,46 @@
+{
+  "form_schema": 2,
+  "id": "bio_spore_fungus_06",
+  "name": "습지 기본형 균사체",
+  "family": "spore_fungus",
+  "family_name": "균사체",
+  "category": "plant",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_06_near.glb",
+      "sha256": "0c95fa497a7f24234bf3726abea34a70b00eedf2c2b993312b1e7a177d74ddbd",
+      "triangles": 19488
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_06_far.glb",
+      "sha256": "89d83bd24d6e08eb65ca29e58c43a5bca7ab5c59aa74801c104e6482aaa3d990",
+      "triangles": 6216
+    }
+  },
+  "source": "art/blender/bestiary/bio_spore_fungus_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6"
+  ],
+  "mesh_nodes": 28
+}

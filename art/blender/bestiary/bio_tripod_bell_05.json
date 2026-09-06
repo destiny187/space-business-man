@@ -1,0 +1,55 @@
+{
+  "form_schema": 1,
+  "id": "bio_tripod_bell_05",
+  "name": "삼각종보행체 · 밀생형",
+  "family": "tripod_bell",
+  "family_name": "삼각종보행체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "thermal",
+  "environment_label": "열수·온토",
+  "habitat_note": "안정된 열원·대사 기질·열 회피 구획",
+  "morphology": 4,
+  "anatomy": 4,
+  "eye_count": 0,
+  "sensory_type": "다리 말단과 종 내부의 압력 감각",
+  "attack": "slam",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_tripod_bell_05_near.glb",
+      "sha256": "32569f65af58456ae5458312b164a1335d4b3664c73c9b86706a659525581832",
+      "triangles": 20048
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_tripod_bell_05_far.glb",
+      "sha256": "47d7083c2f67fb5090ba411202513109b21dbcb23ec7a5e2d147dab8da5e9488",
+      "triangles": 6408
+    }
+  },
+  "source": "art/blender/bestiary/bio_tripod_bell_05.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Petal_4",
+    "Anim_Petal_5",
+    "Anim_Petal_6",
+    "Anim_Petal_7",
+    "Anim_Petal_8",
+    "Anim_Petal_9"
+  ],
+  "mesh_nodes": 15
+}

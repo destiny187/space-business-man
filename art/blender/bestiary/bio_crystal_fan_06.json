@@ -1,0 +1,49 @@
+{
+  "form_schema": 2,
+  "id": "bio_crystal_fan_06",
+  "name": "사구 기본형 반사군락",
+  "family": "crystal_fan",
+  "family_name": "반사군락",
+  "category": "plant",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crystal_fan_06_near.glb",
+      "sha256": "b9a87ca9934c4bcd4963ce3aedd1d17082a79bcf0a882ff46c3282e5bbf790f2",
+      "triangles": 4600
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_crystal_fan_06_far.glb",
+      "sha256": "83d6e57218c0d8ccb6bb8a24706d1897919998bfb49eb73e1760dc0d708cddb1",
+      "triangles": 1462
+    }
+  },
+  "source": "art/blender/bestiary/bio_crystal_fan_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9"
+  ],
+  "mesh_nodes": 11
+}

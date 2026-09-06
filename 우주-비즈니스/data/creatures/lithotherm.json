@@ -1,0 +1,14 @@
+{
+  "case_id": "lithotherm",
+  "case_version": 1,
+  "display_name": "리소섬 · 열을 품은 바위 생물",
+  "status": "visual-prototype",
+  "spawn_enabled": false,
+  "near_model": "res://assets/models/creatures/lithotherm/lithotherm_near.glb",
+  "far_model": "res://assets/models/creatures/lithotherm/lithotherm_far.glb",
+  "lod_distance": 18.0,
+  "states": ["dormant", "walking", "feeding", "stressed"],
+  "habitat_proposal": "광물 기질과 산화제가 있는 따뜻한 지하 피난처",
+  "research_proposal": "광물 산화 발열 → 기질을 공급하는 국소 가열·해빙",
+  "limits": "전 행성 냉각 효과 없음. 실제 생태·연구·운송·번식 계산은 미연결."
+}

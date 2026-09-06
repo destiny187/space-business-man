@@ -1,0 +1,50 @@
+{
+  "form_schema": 2,
+  "id": "bio_thermal_colony_06",
+  "name": "심해 기본형 열수군락",
+  "family": "thermal_colony",
+  "family_name": "열수군락",
+  "category": "microbe",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_06_near.glb",
+      "sha256": "a12005d850f195f2725b43f3093c385e5999fd68a78b3cd6e15a35c948802114",
+      "triangles": 14432
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_thermal_colony_06_far.glb",
+      "sha256": "1c031761a54a71c42ce69a6cf48cd96f58a718f8e3072a8d48126e479e4697d5",
+      "triangles": 4587
+    }
+  },
+  "source": "art/blender/bestiary/bio_thermal_colony_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10"
+  ],
+  "mesh_nodes": 44
+}

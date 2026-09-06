@@ -1,0 +1,2 @@
+"""Selected original animals: eye changes only, stable catalogue IDs."""
+EYE_DESIGNS={'bio_lithic_16': ('diamond', 1, '중앙의 마름모 단안'), 'bio_grazer_01': ('horizontal', 2, '넓은 가로 동공'), 'bio_stalker_01': ('vertical', 2, '긴 세로 동공과 비스듬한 눈꺼풀'), 'bio_burrower_21': ('blind', 0, '눈 대신 진동 감각 주름'), 'bio_carapace_01': ('compound', 2, '두 개의 다면 복안'), 'bio_winged_16': ('cluster', 6, '이마에 모인 여섯 개의 작은 눈'), 'bio_swimmer_01': ('four', 4, '위아래로 배열된 네 개의 눈'), 'bio_slug_21': ('stalk', 2, '얼굴 눈 없이 촉수 끝의 두 눈')}

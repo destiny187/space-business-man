@@ -1,0 +1,52 @@
+{
+  "form_schema": 2,
+  "id": "bio_aquatic_frond_09",
+  "name": "담수 분지형 수생엽상체",
+  "family": "aquatic_frond",
+  "family_name": "수생엽상체",
+  "category": "plant",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 1,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_09_near.glb",
+      "sha256": "abecf851fab6eb4205f7d9a430b177cb6d3958771fbfb19c22e794199c7cafdf",
+      "triangles": 21968
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_aquatic_frond_09_far.glb",
+      "sha256": "4de63ccdfa88a483651cab1213fb4933bb9d1e6dc26bc93111aa0f88207014f5",
+      "triangles": 7015
+    }
+  },
+  "source": "art/blender/bestiary/bio_aquatic_frond_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 22
+}

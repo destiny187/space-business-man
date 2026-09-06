@@ -1,0 +1,52 @@
+{
+  "form_schema": 1,
+  "id": "bio_blind_harp_02",
+  "name": "공명늑골체 · 장축형",
+  "family": "blind_harp",
+  "family_name": "공명늑골체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 1,
+  "anatomy": 1,
+  "eye_count": 0,
+  "sensory_type": "진동을 읽는 빈 늑골과 장력 섬유",
+  "attack": "none",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_blind_harp_02_near.glb",
+      "sha256": "54e3587638efa12c468d6526246e2351c23d0072ab4cd0a7031ae8eac1963545",
+      "triangles": 11180
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_blind_harp_02_far.glb",
+      "sha256": "698a8a7b7b6a18ec238711bcf04d845a95b41e5de889aa7873b681de2e0e88d8",
+      "triangles": 3562
+    }
+  },
+  "source": "art/blender/bestiary/bio_blind_harp_02.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R"
+  ],
+  "mesh_nodes": 21
+}

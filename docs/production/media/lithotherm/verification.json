@@ -1,0 +1,30 @@
+{
+  "checks": 27,
+  "engine": "4.7.2-stable (official)",
+  "failures": [],
+  "gpu": "Apple M2 (Apple8)",
+  "scope": "독립 생물 시연·실제 엔진 키 입력·LOD·공통 재질·상태 복원 검사. 게임 생태/저장/6인 성능 검증 아님.",
+  "studio_timing": {
+    "creatures": 9,
+    "draw_calls": 889.0,
+    "frames": 120,
+    "limitation": "동일 호스트의 다른 작업 부하와 VSync를 통제하지 않은 참고 측정",
+    "mean_ms": 25.319275,
+    "p95_ms": 28.672,
+    "viewport": [
+      1600,
+      1000
+    ]
+  },
+  "shared_catalog_snapshot": {
+    "checks": 436,
+    "failures": 2,
+    "failed_asset": "kestrel",
+    "failed_requirements": [
+      "native review render",
+      "game portrait"
+    ],
+    "lithotherm_failures": 0,
+    "note": "동시에 개발 중인 메인 우주선의 이미지 미생성 시점. 전체 도감 검사 통과로 기록하지 않음."
+  }
+}

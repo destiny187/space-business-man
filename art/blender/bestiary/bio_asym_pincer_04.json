@@ -1,0 +1,49 @@
+{
+  "form_schema": 1,
+  "id": "bio_asym_pincer_04",
+  "name": "편측집게체 · 확공형",
+  "family": "asym_pincer",
+  "family_name": "편측집게체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "basalt",
+  "environment_label": "광물성 암반",
+  "habitat_note": "암석 기질·균열 피난처",
+  "morphology": 3,
+  "anatomy": 3,
+  "eye_count": 1,
+  "sensory_type": "한쪽 측면의 단일 동심 렌즈",
+  "attack": "claw",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_asym_pincer_04_near.glb",
+      "sha256": "d1c808148a76585b195c5ec2b2d7240276a28ca8990fa5319287ea767fc66f18",
+      "triangles": 15328
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_asym_pincer_04_far.glb",
+      "sha256": "3d6235e9cedd868d5900231a74ea8a56bb42b62025414b8407893d209632a1bc",
+      "triangles": 4884
+    }
+  },
+  "source": "art/blender/bestiary/bio_asym_pincer_04.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_L",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_L",
+    "Anim_Arm_L"
+  ],
+  "mesh_nodes": 20
+}

@@ -1,0 +1,56 @@
+{
+  "form_schema": 1,
+  "id": "bio_ribbon_colony_06",
+  "name": "주름띠군체 · 편향형",
+  "family": "ribbon_colony",
+  "family_name": "주름띠군체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "cave",
+  "environment_label": "동굴·지하수",
+  "habitat_note": "어둠·외부 먹이 유입 또는 화학 기질",
+  "morphology": 5,
+  "anatomy": 5,
+  "eye_count": 14,
+  "sensory_type": "몸통의 분산된 납작한 안점",
+  "attack": "none",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ribbon_colony_06_near.glb",
+      "sha256": "62569851f23ad27cef47192376491800e64a1969b3054dce97cb96132789ff6c",
+      "triangles": 34496
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_ribbon_colony_06_far.glb",
+      "sha256": "0422d730b093552e48e2641d9f79462959bc5a363111a357c176c76caa65d707",
+      "triangles": 10976
+    }
+  },
+  "source": "art/blender/bestiary/bio_ribbon_colony_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6",
+    "Anim_Segment_7",
+    "Anim_Segment_8",
+    "Anim_Segment_9",
+    "Anim_Segment_10",
+    "Anim_Segment_11",
+    "Anim_Segment_12",
+    "Anim_Segment_13"
+  ],
+  "mesh_nodes": 70
+}

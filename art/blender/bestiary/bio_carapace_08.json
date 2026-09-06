@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_carapace_08",
+  "name": "늪 부채형 갑각류",
+  "family": "carapace",
+  "family_name": "갑각류",
+  "category": "animal",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 1,
+  "anatomy": 2,
+  "attack": "claw",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_08_near.glb",
+      "sha256": "1d2acdeef626489d13b9c517d09ff964c8f60f189125d18e6c2535cd1dc80b3f",
+      "triangles": 15484
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_08_far.glb",
+      "sha256": "7f7193608a35d96b4210078733a51d3280e81f4de61ec6bba991b24b260fc46d",
+      "triangles": 5058
+    }
+  },
+  "source": "art/blender/bestiary/bio_carapace_08.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 31
+}

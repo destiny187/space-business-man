@@ -1,0 +1,53 @@
+{
+  "form_schema": 2,
+  "id": "bio_mist_leaf_09",
+  "name": "수관 분지형 집수식생",
+  "family": "mist_leaf",
+  "family_name": "집수식생",
+  "category": "plant",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 1,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mist_leaf_09_near.glb",
+      "sha256": "7d2da113469e25aa1826174702491502d8643a8fe783e5f96a5aa4e32b3c1723",
+      "triangles": 18000
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mist_leaf_09_far.glb",
+      "sha256": "f273cabcf603d8ab8729664c20075d9568015913685613aa6a8bf983209b1ca2",
+      "triangles": 6527
+    }
+  },
+  "source": "art/blender/bestiary/bio_mist_leaf_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 24
+}

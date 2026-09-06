@@ -1,0 +1,54 @@
+{
+  "form_schema": 2,
+  "id": "bio_spore_fungus_23",
+  "name": "수관 부채형 균사체",
+  "family": "spore_fungus",
+  "family_name": "균사체",
+  "category": "plant",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 4,
+  "anatomy": 2,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_23_near.glb",
+      "sha256": "10a446edda81d5c0384c00535545bca2e887b699231a68a0b8d2c86fd51e601b",
+      "triangles": 39220
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_23_far.glb",
+      "sha256": "7294612140bffb809046982683fdc4e2365a0f210a822ac3d39521175366c1f4",
+      "triangles": 12510
+    }
+  },
+  "source": "art/blender/bestiary/bio_spore_fungus_23.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 55
+}

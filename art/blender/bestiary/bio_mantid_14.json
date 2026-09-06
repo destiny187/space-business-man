@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_mantid_14",
+  "name": "습지 분지형 낫날절지류",
+  "family": "mantid",
+  "family_name": "낫날절지류",
+  "category": "animal",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 2,
+  "anatomy": 3,
+  "attack": "scythe",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_14_near.glb",
+      "sha256": "0d6066c4afd44bbb6a1c4e2db2b6da3c792c06ceee74ead02b2263f7f80f6cb4",
+      "triangles": 17004
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_mantid_14_far.glb",
+      "sha256": "17c906fa5c4979ea6aed98f3d1a6b2bf423ea8497cceea59f80a17f5505dd30c",
+      "triangles": 5414
+    }
+  },
+  "source": "art/blender/bestiary/bio_mantid_14.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 29
+}

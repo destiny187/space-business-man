@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_carapace_24",
+  "name": "빙해 분지형 갑각류",
+  "family": "carapace",
+  "family_name": "갑각류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 4,
+  "anatomy": 3,
+  "attack": "claw",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_24_near.glb",
+      "sha256": "581458e1bf875cb40503f427ddbff0b346a28d0c3b3d6bfb9cbe6cbc8ca20dd1",
+      "triangles": 16480
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_24_far.glb",
+      "sha256": "1527028402a39ab59bf35651988a05e896108021a9cf08db4281067015d1fc4f",
+      "triangles": 5244
+    }
+  },
+  "source": "art/blender/bestiary/bio_carapace_24.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 31
+}

@@ -1,0 +1,50 @@
+{
+  "form_schema": 2,
+  "id": "bio_canopy_tree_05",
+  "name": "온대 확장형 수관식생",
+  "family": "canopy_tree",
+  "family_name": "수관식생",
+  "category": "plant",
+  "environment": "temperate",
+  "environment_label": "인간 거주에 적합한 온대",
+  "habitat_note": "온화한 기후·액체 물·생산자와 먹이망",
+  "morphology": 0,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_05_near.glb",
+      "sha256": "2956fcf56695e649f4d13dcedeb589f4adc09538aca7daa5c4f9d5cc479598b7",
+      "triangles": 5600
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_05_far.glb",
+      "sha256": "c414614e9456f19348f9672915ce020c8e4dedd4fe6dd8bc873b003c174fae49",
+      "triangles": 2880
+    }
+  },
+  "source": "art/blender/bestiary/bio_canopy_tree_05.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 23
+}

@@ -1,0 +1,48 @@
+{
+  "form_schema": 4,
+  "id": "bio_swimmer_01",
+  "name": "연안 기본형 유영어류",
+  "family": "swimmer",
+  "family_name": "유영어류",
+  "category": "animal",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "bite",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "eye_design": "four",
+  "eye_count": 4,
+  "sensory_type": "위아래로 배열된 네 개의 눈",
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_01_near.glb",
+      "sha256": "49a08ec1188c8dff2e868f981cccff6db1ef3b50c1ce61573bb655568128373f",
+      "triangles": 7844
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_swimmer_01_far.glb",
+      "sha256": "ea901300a6ffc9005d9cf10d7732963a79216714328c9a713d3dfc68af8f906c",
+      "triangles": 2676
+    }
+  },
+  "source": "art/blender/bestiary/bio_swimmer_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 10
+}

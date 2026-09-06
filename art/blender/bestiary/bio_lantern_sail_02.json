@@ -1,0 +1,46 @@
+{
+  "form_schema": 1,
+  "id": "bio_lantern_sail_02",
+  "name": "유막부유체 · 장축형",
+  "family": "lantern_sail",
+  "family_name": "유막부유체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 1,
+  "anatomy": 1,
+  "eye_count": 0,
+  "sensory_type": "막 전체의 전기·유속 감각",
+  "attack": "none",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lantern_sail_02_near.glb",
+      "sha256": "01ccfcbc1832e3b7d04f067aa1b479c4644b3f5170d25bcdc4e66334320c6b69",
+      "triangles": 3312
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lantern_sail_02_far.glb",
+      "sha256": "45d0ae207d1356bd571e755d9fef96269e3f8235252e4307a0e9870672a63063",
+      "triangles": 1204
+    }
+  },
+  "source": "art/blender/bestiary/bio_lantern_sail_02.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3"
+  ],
+  "mesh_nodes": 13
+}

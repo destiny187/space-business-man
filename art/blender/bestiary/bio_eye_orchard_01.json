@@ -1,0 +1,52 @@
+{
+  "form_schema": 2,
+  "id": "bio_eye_orchard_01",
+  "name": "수지다안체 · 공동형",
+  "family": "eye_orchard",
+  "family_name": "수지다안체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 0,
+  "anatomy": 0,
+  "eye_count": 5,
+  "sensory_type": "비대칭 줄기 끝의 세로 동공",
+  "attack": "spit",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_eye_orchard_01_near.glb",
+      "sha256": "7c980e292f4accb910c9dc8c64b3b8a9fe2c3df4c050379d3fbde064dc4635cb",
+      "triangles": 17644
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_eye_orchard_01_far.glb",
+      "sha256": "1eac6aefbab837a3e5f269d22b7a9acec388cbdb3ffae8e0317bca59d06802ae",
+      "triangles": 5623
+    }
+  },
+  "source": "art/blender/bestiary/bio_eye_orchard_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Jaw",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 25
+}

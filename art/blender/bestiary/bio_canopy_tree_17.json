@@ -1,0 +1,53 @@
+{
+  "form_schema": 2,
+  "id": "bio_canopy_tree_17",
+  "name": "한랭 갑주형 수관식생",
+  "family": "canopy_tree",
+  "family_name": "수관식생",
+  "category": "plant",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 3,
+  "anatomy": 1,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_17_near.glb",
+      "sha256": "4d5325e3ffd7b9cedb972b25fe731d18f5858337e86eb23bef89a8708bcd79cb",
+      "triangles": 8320
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_17_far.glb",
+      "sha256": "9a802d069e97328b79d76c69943205637d336381356ec03e09268364c54945d3",
+      "triangles": 3856
+    }
+  },
+  "source": "art/blender/bestiary/bio_canopy_tree_17.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 29
+}

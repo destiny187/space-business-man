@@ -1,0 +1,49 @@
+{
+  "form_schema": 2,
+  "id": "bio_canopy_tree_21",
+  "name": "거대수관 기본형 수관식생",
+  "family": "canopy_tree",
+  "family_name": "수관식생",
+  "category": "plant",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 4,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_21_near.glb",
+      "sha256": "821836f6a101af9b8af0d3954d0be7bdac01feeb1adf01db59d1caec1ee3eea4",
+      "triangles": 6880
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_21_far.glb",
+      "sha256": "8e8505d942eb0009778a208dbeb4ce7b0784d065f102bda203720002ca4d2f1c",
+      "triangles": 3288
+    }
+  },
+  "source": "art/blender/bestiary/bio_canopy_tree_21.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9"
+  ],
+  "mesh_nodes": 21
+}

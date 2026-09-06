@@ -1,0 +1,41 @@
+{
+  "form_schema": 2,
+  "id": "bio_slug_09",
+  "name": "해안 분지형 여과연체류",
+  "family": "slug",
+  "family_name": "여과연체류",
+  "category": "animal",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 1,
+  "anatomy": 3,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_09_near.glb",
+      "sha256": "7e65714df74f1d53e7a101d8c40b373109d4081887821d04cf97afbdc5ccbe6d",
+      "triangles": 8540
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_09_far.glb",
+      "sha256": "8bc01fb911d7802b925e052a6295840ce4c0192c5bdd0459b57f87d1c8a74734",
+      "triangles": 2722
+    }
+  },
+  "source": "art/blender/bestiary/bio_slug_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 9
+}

@@ -1,0 +1,46 @@
+{
+  "form_schema": 2,
+  "id": "bio_runner_11",
+  "name": "설원 기본형 도약조류",
+  "family": "runner",
+  "family_name": "도약조류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 0,
+  "attack": "kick",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_11_near.glb",
+      "sha256": "eb9c46f22dac7556fbc0b55a5dc84ae619bc1e0bb3a0fe8c605b64613d25c511",
+      "triangles": 10740
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_runner_11_far.glb",
+      "sha256": "b34a1e634dabb861963d35bab37bbcada8f990d29ae4c28b0fb6b033cd2e3401",
+      "triangles": 3592
+    }
+  },
+  "source": "art/blender/bestiary/bio_runner_11.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Wing_L",
+    "Anim_Wing_R",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 19
+}

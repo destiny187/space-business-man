@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_grazer_14",
+  "name": "설원 분지형 뿔초식류",
+  "family": "grazer",
+  "family_name": "뿔초식류",
+  "category": "animal",
+  "environment": "cold",
+  "environment_label": "한랭·빙하",
+  "habitat_note": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "morphology": 2,
+  "anatomy": 3,
+  "attack": "ram",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_grazer_14_near.glb",
+      "sha256": "10e2962c399d6692fe57ec3536ce3507234523dc3ef77c1f481f7627b4945ab6",
+      "triangles": 22184
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_grazer_14_far.glb",
+      "sha256": "d5c6a00d8f75c5d735f4f3cc8881fadc41eb2664187d02afab30d02f9c9ec157",
+      "triangles": 7068
+    }
+  },
+  "source": "art/blender/bestiary/bio_grazer_14.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 22
+}

@@ -1,0 +1,50 @@
+{
+  "form_schema": 1,
+  "id": "bio_manymouth_07",
+  "name": "분지다구체 · 고관형",
+  "family": "manymouth",
+  "family_name": "분지다구체",
+  "category": "animal",
+  "collection": "aberrant",
+  "environment": "thermal",
+  "environment_label": "열수·온토",
+  "habitat_note": "안정된 열원·대사 기질·열 회피 구획",
+  "morphology": 6,
+  "anatomy": 6,
+  "eye_count": 1,
+  "sensory_type": "분지된 여러 입과 불규칙 감각 결절",
+  "attack": "bite",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_manymouth_07_near.glb",
+      "sha256": "3c7003b91c81b770b05393cfb53f9f821f9e7ae893b25c4e34765f0f0c15b25b",
+      "triangles": 30140
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_manymouth_07_far.glb",
+      "sha256": "e82fea4f753ed828c48ca7d77f3cdd9a498c82ce237932b0336f48256b68f090",
+      "triangles": 9624
+    }
+  },
+  "source": "art/blender/bestiary/bio_manymouth_07.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_2_R",
+    "Anim_Jaw",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 26
+}

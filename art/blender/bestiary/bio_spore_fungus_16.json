@@ -1,0 +1,48 @@
+{
+  "form_schema": 2,
+  "id": "bio_spore_fungus_16",
+  "name": "산성 기본형 균사체",
+  "family": "spore_fungus",
+  "family_name": "균사체",
+  "category": "plant",
+  "environment": "acid",
+  "environment_label": "산성 기질·수역",
+  "habitat_note": "내산성 외피·반응 기질·부산물 배출",
+  "morphology": 3,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "737347",
+    "b0b15e",
+    "94c177"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_16_near.glb",
+      "sha256": "7c5d304b7ed7d396085f0b2f534c289ffe2a61d08c6f7b897fcbec7f25c82c56",
+      "triangles": 25056
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_spore_fungus_16_far.glb",
+      "sha256": "c7693b414660c5bee86570781a8778d22fad4dcd0065957d31bc91d9a303cd14",
+      "triangles": 7992
+    }
+  },
+  "source": "art/blender/bestiary/bio_spore_fungus_16.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8"
+  ],
+  "mesh_nodes": 36
+}

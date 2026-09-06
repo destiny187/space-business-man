@@ -1,0 +1,52 @@
+{
+  "form_schema": 4,
+  "id": "bio_carapace_01",
+  "name": "조간대 기본형 갑각류",
+  "family": "carapace",
+  "family_name": "갑각류",
+  "category": "animal",
+  "environment": "marine",
+  "environment_label": "해양·연안",
+  "habitat_note": "액체 수역·염도·유속·먹이",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "claw",
+  "render_status": "rendered-reviewed-prototype",
+  "spawn_enabled": false,
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "d8ad75"
+  ],
+  "variant_count": 20,
+  "eye_design": "compound",
+  "eye_count": 2,
+  "sensory_type": "두 개의 다면 복안",
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_01_near.glb",
+      "sha256": "e31fcf482e5196a22aca0ae4fd585c056da4db44e0b5a6eafab6fcfdff33147b",
+      "triangles": 14356
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_01_far.glb",
+      "sha256": "896897ed5ab91462c608f88399260e01660b388ec9c9bfbdc26871211efc8e27",
+      "triangles": 4566
+    }
+  },
+  "source": "art/blender/bestiary/bio_carapace_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 30
+}

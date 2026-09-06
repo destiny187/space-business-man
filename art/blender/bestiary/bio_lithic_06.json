@@ -1,0 +1,49 @@
+{
+  "form_schema": 2,
+  "id": "bio_lithic_06",
+  "name": "사암 기본형 암갑류",
+  "family": "lithic",
+  "family_name": "암갑류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "ram",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lithic_06_near.glb",
+      "sha256": "303aa37f7d17f8bfc30ae7bc4661d2b8dc2dcbbb8d4bbd2b8956261928aa2fd1",
+      "triangles": 25276
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_lithic_06_far.glb",
+      "sha256": "13053c7fae8d3086a181bec609ce244006bd1ec6f708f33330bb9fd757aa3791",
+      "triangles": 8048
+    }
+  },
+  "source": "art/blender/bestiary/bio_lithic_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 27
+}

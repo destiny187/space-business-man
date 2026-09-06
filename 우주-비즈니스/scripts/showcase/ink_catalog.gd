@@ -13,6 +13,12 @@ func select_sample(which: int) -> void:
 	var view: Array = samples[posmod(which,samples.size())].get("view_direction",[1.22,.84,1.70])
 	direction = Vector3(view[0],view[1],view[2]).normalized()
 	super.select_sample(posmod(which,samples.size()))
+	if samples[index].has("floor_y"):
+		subject.position.y=-float(samples[index].floor_y)
+		studio_ground.position.y=-.025
+		camera.position=target+direction*maxf(32,camera.size*4)
+		camera.far=maxf(160,camera.size*10)
+		camera.look_at(target)
 	if samples[index].get("surface","") == "strata":
 		var mat := ShaderMaterial.new()
 		mat.shader = load("res://assets/materials/strata.gdshader")
@@ -34,10 +40,15 @@ func capture_all() -> void:
 	DirAccess.make_dir_recursive_absolute(dest)
 	var boards: Dictionary = {}
 	var counts: Dictionary = {}
+	var totals: Dictionary = {}
+	var pages: Dictionary = {}
+	var board_ids := {"장비":"equipment","시설":"buildings","자원":"resources","발견·환경":"environment","승인 기준작":"references"}
 	var records: Array = []
 	for sample in samples: counts[sample.group] = counts.get(sample.group,0)+1
 	for group in counts:
-		boards[group] = Image.create(1440,int(ceil(counts[group]/2.))*600,false,Image.FORMAT_RGBA8)
+		totals[group]=counts[group]
+		pages[group]=1
+		boards[group] = Image.create(1440,int(ceil(mini(counts[group],10)/2.))*600,false,Image.FORMAT_RGBA8)
 		boards[group].fill(Color("e5e2d6"))
 		counts[group] = 0
 	for i in range(samples.size()):
@@ -53,6 +64,15 @@ func capture_all() -> void:
 		var n: int = counts[group]
 		boards[group].blit_rect(tile,Rect2i(0,0,720,600),Vector2i((n%2)*720,(n/2)*600))
 		counts[group] += 1
+		if counts[group]==10:
+			var suffix: String="" if pages[group]==1 else "-%03d"%pages[group]
+			assert(boards[group].save_png(dest+"board-"+board_ids[group]+suffix+".png")==OK)
+			totals[group]-=10
+			pages[group]+=1
+			counts[group]=0
+			if totals[group]>0:
+				boards[group]=Image.create(1440,int(ceil(mini(totals[group],10)/2.))*600,false,Image.FORMAT_RGBA8)
+				boards[group].fill(Color("e5e2d6"))
 		canvas.hide()
 		await get_tree().process_frame
 		await RenderingServer.frame_post_draw
@@ -62,9 +82,10 @@ func capture_all() -> void:
 		canvas.show()
 		records.append({"id":samples[i].id,"model":samples[i].model,"geometry":samples[i].geometry,"resolution":[shot.get_width(),shot.get_height()]})
 		print("INK_CATALOG_RENDER ",samples[i].id," ",i+1,"/",samples.size())
-	var board_ids := {"장비":"equipment","시설":"buildings","자원":"resources","발견·환경":"environment","승인 기준작":"references"}
 	for group in boards:
-		assert(boards[group].save_png(dest+"board-"+board_ids[group]+".png") == OK)
+		if counts[group]>0:
+			var suffix: String="" if pages[group]==1 else "-%03d"%pages[group]
+			assert(boards[group].save_png(dest+"board-"+board_ids[group]+suffix+".png") == OK)
 	FileAccess.open(dest+"renders.json",FileAccess.WRITE).store_string(JSON.stringify({"style":FrontierInkStyle.config(),"engine":Engine.get_version_info().string,"gpu":RenderingServer.get_video_adapter_name(),"render_scale_3d":1.5,"msaa":4,"board_tile":[720,600],"preview":[480,400],"assets":records},"  "))
 	print("INK_CATALOG_COMPLETE ",records.size())
 	get_tree().quit()

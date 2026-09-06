@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "scope": "visual cues only; hit resolution and damage belong to gameplay",
+  "timing_seconds": {"windup": 0.55, "active": 0.30, "recovery": 0.75},
+  "patterns": {
+    "ram": {"motion": "낮춘 머리·몸통 전진·복귀", "effect": "충격 고리·광물 파편"},
+    "kick": {"motion": "하체 준비·다리 차기·복귀", "effect": "짧은 궤적·접촉 파편"},
+    "bite": {"motion": "턱 벌리기·전진 물기·턱 닫기", "effect": "접촉 궤적·파편"},
+    "slam": {"motion": "몸 올리기·내려치기·복귀", "effect": "동심 충격 고리·흙 파편"},
+    "claw": {"motion": "집게 벌리기·교차 타격·복귀", "effect": "접촉 궤적·파편"},
+    "scythe": {"motion": "낫날 들어올리기·베기·회복", "effect": "교차 베기 궤적·파편"},
+    "dive": {"motion": "날개 준비·하강 접근·복귀", "effect": "접촉 궤적·파편"},
+    "spit": {"motion": "머리 들기·턱 열기·분사", "effect": "이동하는 액적·접촉 비산"}
+  }
+}

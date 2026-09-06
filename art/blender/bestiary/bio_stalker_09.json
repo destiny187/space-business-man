@@ -1,0 +1,47 @@
+{
+  "form_schema": 2,
+  "id": "bio_stalker_09",
+  "name": "협곡 분지형 추적포식류",
+  "family": "stalker",
+  "family_name": "추적포식류",
+  "category": "animal",
+  "environment": "arid",
+  "environment_label": "건조 사구·협곡",
+  "habitat_note": "낮은 수분·일교차·수분 보존",
+  "morphology": 1,
+  "anatomy": 3,
+  "attack": "bite",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_09_near.glb",
+      "sha256": "691697cd6fdad92183b072d143f21fd311ab5625b84baf59bc8ef9d059571d5b",
+      "triangles": 20120
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_stalker_09_far.glb",
+      "sha256": "4fe33d85303ca9f16e924d13501852f8958f0e50677f3a2c849acc8b9e349fef",
+      "triangles": 6408
+    }
+  },
+  "source": "art/blender/bestiary/bio_stalker_09.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Head",
+    "Anim_Jaw",
+    "FX_Mouth",
+    "Anim_Tail"
+  ],
+  "mesh_nodes": 23
+}

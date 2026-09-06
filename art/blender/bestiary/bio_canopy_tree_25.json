@@ -1,0 +1,54 @@
+{
+  "form_schema": 2,
+  "id": "bio_canopy_tree_25",
+  "name": "거대수관 확장형 수관식생",
+  "family": "canopy_tree",
+  "family_name": "수관식생",
+  "category": "plant",
+  "environment": "canopy",
+  "environment_label": "다층 수관·숲",
+  "habitat_note": "식생·빛과 그늘·수직 서식처",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "387463",
+    "8baa55",
+    "c99552"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_25_near.glb",
+      "sha256": "fef7c5e7718eb01ed9e50d609ca60f6d0da64b8225ea8b6fdb08202cac4bc80a",
+      "triangles": 7520
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_canopy_tree_25_far.glb",
+      "sha256": "3ed2f030eff4c248420d3b4448b229548e3e954858d435979b2a16e0db79010f",
+      "triangles": 3928
+    }
+  },
+  "source": "art/blender/bestiary/bio_canopy_tree_25.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "mesh_nodes": 31
+}

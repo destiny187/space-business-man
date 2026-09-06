@@ -1,0 +1,50 @@
+{
+  "form_schema": 2,
+  "id": "bio_acid_mat_06",
+  "name": "습지 기본형 기질처리막",
+  "family": "acid_mat",
+  "family_name": "기질처리막",
+  "category": "microbe",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 1,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_06_near.glb",
+      "sha256": "e11ef8f89003307d097d83815a0c21188d01594efd9aa462968c8d31e3704736",
+      "triangles": 23848
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_acid_mat_06_far.glb",
+      "sha256": "a89bd139f363f10e75486c3dbf28ea334bc22591ad10a2c57d1ae4387aa32eb7",
+      "triangles": 7601
+    }
+  },
+  "source": "art/blender/bestiary/bio_acid_mat_06.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5",
+    "Anim_Frond_6",
+    "Anim_Frond_7",
+    "Anim_Frond_8",
+    "Anim_Frond_9",
+    "Anim_Frond_10"
+  ],
+  "mesh_nodes": 33
+}

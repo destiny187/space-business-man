@@ -1,0 +1,49 @@
+{
+  "form_schema": 3,
+  "id": "bio_carapace_16",
+  "name": "암반 기본형 갑각류",
+  "family": "carapace",
+  "family_name": "갑각류",
+  "category": "animal",
+  "environment": "basalt",
+  "environment_label": "광물성 암반",
+  "habitat_note": "암석 기질·균열 피난처",
+  "morphology": 3,
+  "anatomy": 0,
+  "attack": "claw",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_16_near.glb",
+      "sha256": "a802c58690580449a16578626e28935432c0128b8ac935da5ebba4d2415c5cfb",
+      "triangles": 15196
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_carapace_16_far.glb",
+      "sha256": "9059c876c37d19264dfc27ea2c38b60253e30c12ed0d7d5b111496b4c9f67c08",
+      "triangles": 4836
+    }
+  },
+  "source": "art/blender/bestiary/bio_carapace_16.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Head",
+    "FX_Mouth",
+    "Anim_Arm_L",
+    "Anim_Arm_R"
+  ],
+  "mesh_nodes": 29
+}

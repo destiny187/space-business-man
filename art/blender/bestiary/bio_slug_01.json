@@ -1,0 +1,41 @@
+{
+  "form_schema": 2,
+  "id": "bio_slug_01",
+  "name": "습지 기본형 여과연체류",
+  "family": "slug",
+  "family_name": "여과연체류",
+  "category": "animal",
+  "environment": "wetland",
+  "environment_label": "습지·담수",
+  "habitat_note": "충분한 수분·유기 기질·수위 변화",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "render_status": "generated-unverified",
+  "spawn_enabled": false,
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "c0b477"
+  ],
+  "variant_count": 20,
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_01_near.glb",
+      "sha256": "c04f05203b184d214e674bc7d538638aa2815253128dfa96feb1fd1314bf30ea",
+      "triangles": 7004
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/bestiary/bio_slug_01_far.glb",
+      "sha256": "cff6a71a3521d31b601995684ecdcf89860def8b0ec60c0d5553db22dbbd96fd",
+      "triangles": 2234
+    }
+  },
+  "source": "art/blender/bestiary/bio_slug_01.blend",
+  "pivots": [
+    "Anim_Body",
+    "Anim_Head",
+    "FX_Mouth"
+  ],
+  "mesh_nodes": 7
+}
