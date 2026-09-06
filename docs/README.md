@@ -67,3 +67,5 @@
 - 게임 규칙 변경 시 관련 화면, 데이터·저장, 완료 조건도 함께 점검한다.
 
 - [원정선 모듈 성장과 이동 실험실](production/16-vessel-refits-and-progression.md): E3 첫 범위, 실제 장착·제작·추첨·개량·수송 용량·검증과 후속 제한.
+
+- [혼자 시작·착륙 UI 수정](production/17-solo-entry-and-surface-ui.md): 현재 시작 경로, 오프라인 원정, 착륙 시 패널 숨김과 직접 조작 검증.

@@ -11,6 +11,13 @@ var camera: Camera3D
 var flight: FrontierCrewFlightView
 var space_view: SubViewport
 var exterior_view: TextureRect
+var navigation_frame: PanelContainer
+var research_frame: PanelContainer
+var surface_tools: HBoxContainer
+var navigation_toggle: Button
+var help_text: Label
+var surface_transition:=false
+var destination_initialized:=false
 var panel: VBoxContainer
 var lobby: VBoxContainer
 var roster: Label
@@ -53,6 +60,10 @@ func _ready() -> void:
 	if test_mode:
 		profile=FrontierPlayerProfile.new("user://test_crew_ui_profile.json")
 		world_store=FrontierWorldStore.new("user://test_crew_ui_world.json")
+		for argument in OS.get_cmdline_user_args():
+			if argument.begins_with("--crew-folder="):
+				var folder:=argument.trim_prefix("--crew-folder=")
+				profile=FrontierPlayerProfile.new(folder+"/profile.json");world_store=FrontierWorldStore.new(folder+"/world.json")
 	session=FrontierCrewSession.new();session.name="Coop";add_child(session)
 	session.snapshot_received.connect(_snapshot)
 	session.surface_received.connect(_surface_packet)
@@ -64,6 +75,8 @@ func _ready() -> void:
 	if FileAccess.file_exists(profile.path) and profile.ensure():
 		name_input.text=profile.data.character.name;name_input.editable=false
 	get_tree().auto_accept_quit=false
+	if get_tree().get_meta("expedition_mode","")=="solo":
+		get_tree().remove_meta("expedition_mode");start_solo.call_deferred()
 func _build_cabin() -> void:
 	cabin_root=Node3D.new();cabin_root.name="Cabin";add_child(cabin_root)
 	var room: Node3D=load("res://assets/models/crew/kestrel_cabin.glb").instantiate()
@@ -99,18 +112,19 @@ func _build_ui() -> void:
 	reticle=Label.new();reticle.text="＋";reticle.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;reticle.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;reticle.mouse_filter=Control.MOUSE_FILTER_IGNORE;ui.add_child(reticle);reticle.set_anchors_and_offsets_preset(Control.PRESET_CENTER);reticle.offset_left=-14;reticle.offset_right=14;reticle.offset_top=-14;reticle.offset_bottom=14;reticle.hide()
 	exterior_view=TextureRect.new();exterior_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);exterior_view.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;exterior_view.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED;exterior_view.mouse_filter=Control.MOUSE_FILTER_IGNORE;exterior_view.hide();ui.add_child(exterior_view)
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
-	_label(header,"L O C U S  /  함께하는 원정",23)
+	_label(header,"L O C U S  /  우주 탐험",23)
 	status=_resource_label(header,"개인 장비를 챙기고 같은 우주선에 승선하세요.",15)
-	_label(header,"WASD 이동 · 우클릭 시선 · C 외부 · 지표: 클릭 굴착 · E 스캔 · Q 표본 · F 채광 · B 건설",13)
+	help_text=_label(header,"WASD 이동 · 우클릭 시선 · C 외부 시점 · Tab 항해",13)
 	for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390)
 	get_viewport().size_changed.connect(func():
 		for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390))
-	var frame:=PanelContainer.new();ui.add_child(frame);frame.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE);frame.offset_left=-338;frame.offset_right=-22;frame.offset_top=22;frame.offset_bottom=-22
+	navigation_frame=PanelContainer.new();var frame:=navigation_frame;ui.add_child(frame);frame.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE);frame.offset_left=-338;frame.offset_right=-22;frame.offset_top=22;frame.offset_bottom=-22
 	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.065,.09,.92);style.set_content_margin_all(14);style.set_corner_radius_all(7);frame.add_theme_stylebox_override("panel",style)
 	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;frame.add_child(scroll)
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",8);scroll.add_child(column)
 	lobby=VBoxContainer.new();lobby.add_theme_constant_override("separation",9);column.add_child(lobby)
-	_label(lobby,"원정 참가",22)
+	_label(lobby,"함께하는 탐험",22)
+	_button(lobby,"혼자 게임 시작 · 연결 설정 없음",start_solo).name="SoloStart"
 	name_input=LineEdit.new();name_input.placeholder_text="탐험가 이름";name_input.text="탐험가";name_input.max_length=24;lobby.add_child(name_input)
 	host_address=LineEdit.new();host_address.text="127.0.0.1";host_address.placeholder_text="호스트 주소";lobby.add_child(host_address)
 	port_input=SpinBox.new();port_input.min_value=1024;port_input.max_value=65535;port_input.value=24560;lobby.add_child(port_input)
@@ -119,29 +133,40 @@ func _build_ui() -> void:
 	_label(lobby,"현재 접속: 직접 UDP\n인터넷 원정에는 호스트 포트 접근이 필요합니다.",13)
 	panel=VBoxContainer.new();panel.add_theme_constant_override("separation",8);panel.hide();column.add_child(panel)
 	roster=_label(panel,"",15)
+	_button(panel,"항해 패널 닫기 · Tab",func():navigation_frame.hide())
 	ready_button=_button(panel,"출항 준비",toggle_ready)
 	pilot_choices=OptionButton.new();panel.add_child(pilot_choices)
 	_button(panel,"조종 권한 전달",assign_pilot).name="TransferPilot"
 	_button(panel,"선택한 승무원 내보내기",kick_selected).name="Kick"
-	address=LineEdit.new();address.placeholder_text="행성 주소 1 ~ 1000000";address.max_length=7;panel.add_child(address)
+	address=LineEdit.new();address.placeholder_text="행성 주소 1 ~ 1000000";address.text="16";address.max_length=7;panel.add_child(address)
 	_button(panel,"항로 설정",select_destination).name="Navigate"
 	travel_status=_label(panel,"",14)
-	_button(panel,"전원 준비 후 항해",func():session.send_request("depart",{})).name="Depart"
-	_button(panel,"전원 준비 후 착륙",func():session.send_request("land",{})).name="Land"
-	_button(panel,"전원 복귀 후 이륙",func():session.send_request("launch",{})).name="Launch"
+	_button(panel,"선택한 행성으로 출발",depart_selected).name="Depart"
+	_button(panel,"전원 준비 후 착륙",func():travel_action("land")).name="Land"
+	_button(panel,"전원 복귀 후 이륙",func():travel_action("launch")).name="Launch"
 	var row:=HBoxContainer.new();panel.add_child(row)
 	_button(row,"암석 1 꺼내기",func():session.send_request("withdraw",{"amount":1}))
 	_button(row,"1 넣기",func():session.send_request("deposit",{"amount":1}))
 	_button(panel,"주변 회수 화물 줍기",recover_nearby)
-	surface_panel=VBoxContainer.new();surface_panel.add_theme_constant_override("separation",7);panel.add_child(surface_panel);surface_panel.hide();panel.move_child(surface_panel,2)
-	surface_status=_resource_label(surface_panel,"지표를 준비 중입니다.",14)
+	research_frame=PanelContainer.new();ui.add_child(research_frame);research_frame.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);research_frame.offset_left=24;research_frame.offset_right=470;research_frame.offset_top=150;research_frame.offset_bottom=-84;research_frame.add_theme_stylebox_override("panel",style.duplicate());research_frame.hide()
+	var research_scroll:=ScrollContainer.new();research_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.add_child(research_scroll)
+	surface_panel=VBoxContainer.new();surface_panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL;surface_panel.add_theme_constant_override("separation",7);research_scroll.add_child(surface_panel)
+	_label(surface_panel,"생태 연구 · 표본",22)
+	_button(surface_panel,"닫기 · J",func():research_frame.hide())
+	surface_status=_resource_label(header,"지표를 준비 중입니다.",14);surface_status.hide()
 	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options)
 	_button(surface_panel,"선택한 생명체 기초 분석 · 광물 3",func():surface_action("surface_analyze"))
 	_button(surface_panel,"선택한 서식지 시험 구획 · 광물 6",func():surface_action("surface_restore"))
 	sample_options=OptionButton.new();sample_options.fit_to_longest_item=false;surface_panel.add_child(sample_options)
 	_button(surface_panel,"선택한 운송 표본 이식",func():surface_action("surface_introduce"))
 	_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply"))
-	_button(panel,"개발 · 건설 · 자동화  [B]",toggle_business)
+	var dock:=HBoxContainer.new();ui.add_child(dock);dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62);dock.add_theme_constant_override("separation",8)
+	get_viewport().size_changed.connect(func():dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62))
+	navigation_toggle=_button(dock,"항해 · 승무원 [Tab]",toggle_navigation);navigation_toggle.hide()
+	surface_tools=HBoxContainer.new();dock.add_child(surface_tools);surface_tools.hide()
+	_button(surface_tools,"개발 · 건설 [B]",toggle_business)
+	_button(surface_tools,"생태 연구 [J]",toggle_research)
+	_button(surface_tools,"선박 정비",toggle_shipyard)
 	_button(panel,"우주선 정비 · 모듈",toggle_shipyard)
 	_button(panel,"내 소유 장비",show_equipment)
 	_button(panel,"원정 나가기",leave_world)
@@ -197,8 +222,20 @@ func _snapshot(value: Dictionary) -> void:
 	roster.text="\n".join(lines);ready_button.text="준비 취소" if own.ready else "원정 준비"
 	var nav: Dictionary=value.crew.navigation
 	var on_surface: bool=not value.crew.get("landing",{}).is_empty()
+	if on_surface!=surface_transition:
+		surface_transition=on_surface;navigation_frame.visible=not on_surface;research_frame.hide();shipyard_panel.hide()
+	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
+	help_text.text="WASD 이동 · 우클릭 시선 · 클릭 굴착 · E 스캔 · F 채광 · B 사업" if on_surface else "WASD 이동 · 우클릭 시선 · C 외부 시점 · Tab 항해"
+	roster.visible=not session.offline;ready_button.visible=not session.offline;pilot_choices.visible=not session.offline
+	panel.get_node("TransferPilot").visible=not session.offline;panel.get_node("Kick").visible=not session.offline
+	if not destination_initialized:
+		destination_initialized=true
+		if int(nav.target)!=0:address.text=str(int(nav.target)+1)
 	for action in ["Navigate","Depart","Land"]:panel.get_node(action).visible=not on_surface
+	panel.get_node("Navigate").visible=not on_surface and not session.offline
 	panel.get_node("Launch").visible=on_surface
+	panel.get_node("Launch").text="우주선으로 복귀 후 이륙" if session.offline else "전원 복귀·준비 후 이륙"
+	panel.get_node("Land").text="행성에 착륙" if session.offline else "전원 준비 후 착륙"
 	address.visible=not on_surface;travel_status.visible=not on_surface
 	panel.get_node("TransferPilot").disabled=not session.hosting
 	panel.get_node("Kick").disabled=not session.hosting
@@ -206,10 +243,15 @@ func _snapshot(value: Dictionary) -> void:
 	panel.get_node("Depart").disabled=value.self_id!=value.crew.pilot_id or nav.mode!="idle" or not value.crew.get("landing",{}).is_empty()
 	panel.get_node("Land").disabled=value.self_id!=value.crew.pilot_id or nav.mode!="idle" or not value.crew.get("landing",{}).is_empty()
 	panel.get_node("Launch").disabled=value.self_id!=value.crew.pilot_id or value.crew.get("landing",{}).is_empty()
+	var body:=FrontierUniverse.body(session.manifest,int(nav.target))
+	var arrived: bool=nav.mode=="idle" and value.location==body.id and FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewNavigation.center(int(nav.target)))-(240.0+float(body.seed%190))<=float(session.manifest.settings.flight.arrival_clearance)+3
+	panel.get_node("Land").disabled=not arrived or value.self_id!=value.crew.pilot_id
 	travel_status.text="행성 %07d · %s\n속도 %.0f m/s" % [int(nav.target)+1,{"idle":"궤도 대기","approach":"공동 접근 중","jump":"성간 도약 중"}[nav.mode],float(nav.speed)]
 	if crew_ids!=members.keys():
 		crew_ids=members.keys();pilot_choices.clear()
 		for id in crew_ids:pilot_choices.add_item(members[id].profile.name)
+	if arrived and not on_surface:travel_status.text+="\n도착했습니다. 아래 착륙 버튼을 누르세요."
+	elif nav.mode=="idle" and not on_surface:travel_status.text+="\n행성 주소를 선택해 출발하세요. 첫 탐사 추천: 16"
 	lobby.hide();panel.show()
 	_sync_surface_view()
 func _physics_process(delta: float) -> void:
@@ -219,10 +261,10 @@ func _physics_process(delta: float) -> void:
 	if movement_timer<=0:
 		movement_timer=.05
 		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
-		if outside or business_panel.visible or shipyard_panel.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
+		if outside or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
-		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not get_viewport().gui_get_focus_owner() is LineEdit
+		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		session.send_input(direction,-camera.global_basis.z,scanning)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
@@ -257,20 +299,25 @@ func _process(delta: float) -> void:
 	camera.rotation=Vector3(pitch,yaw,0)
 	_update_surface_hud()
 	_update_business_placement()
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_TAB and not get_viewport().gui_get_focus_owner() is LineEdit:
+		toggle_navigation();get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*.0025;pitch=clampf(pitch-event.relative.y*.0025,-1.3,1.3)
 	if event is InputEventKey and event.pressed and not event.echo:
+		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
+		if event.physical_keycode==KEY_J:toggle_research()
 		if event.physical_keycode==KEY_C and surface_world==null:outside=not outside;exterior_view.visible=outside;if_flight_view()
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if event.physical_keycode==KEY_B:toggle_business()
 		if event.physical_keycode==KEY_F:interact_business()
-		if event.physical_keycode==KEY_ESCAPE:cancel_placement();business_panel.hide();shipyard_panel.hide()
+		if event.physical_keycode==KEY_ESCAPE:cancel_placement();business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.hide()
 		if event.physical_keycode==KEY_ESCAPE:Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;get_viewport().gui_release_focus()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
 			return
-		if business_panel.visible or shipyard_panel.visible:return
+		if business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 		dig_timer=.35;surface_action("surface_dig")
 func if_flight_view() -> void:
 	if flight!=null:flight.exterior=outside
@@ -346,11 +393,11 @@ func _sync_surface_view() -> void:
 		if surface_world!=null:remove_child(surface_world);surface_world.queue_free();surface_world=null
 		if cabin_root.get_parent()==null:add_child(cabin_root)
 		if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
-		surface_panel.hide();reticle.hide();business_panel.hide();cancel_placement();return
+		research_frame.hide();surface_status.hide();reticle.hide();business_panel.hide();cancel_placement();return
 	if cabin_root.get_parent()!=null:remove_child(cabin_root)
 	outside=false;exterior_view.hide()
 	if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
-	surface_panel.show();reticle.show()
+	reticle.show()
 	if session.surface.is_empty() or session.surface.body_id!=landing.body_id or int(session.surface.epoch)!=int(landing.epoch):surface_status.value="호스트의 지표 기록을 수신 중입니다.";return
 	if surface_world!=null and (surface_world.body.id!=landing.body_id or surface_world.epoch!=int(landing.epoch)):remove_child(surface_world);surface_world.queue_free();surface_world=null
 	if surface_world==null and actors.has(session.latest.self_id):
@@ -361,25 +408,22 @@ func _update_surface_hud() -> void:
 	if surface_world==null:return
 	surface_target=surface_world.ecology.target(camera)
 	var position: Vector3=actors[session.latest.self_id].position
-	var record: Dictionary=surface_world.ecology.ecology.planets[surface_world.body.id]
 	var text: String="%s · 깊이 %.1fm"%[surface_world.body.name,maxf(0,-position.y)]
 	var distance: float=position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))
-	text+="\n우주선 %.0fm · 격리 화물 %d / %d"%[distance,session.surface.ecology.specimens.size(),int(FrontierEcologyCatalog.config().cargo_capacity)]
-	if distance>float(FrontierCrewSurface.config().boarding_distance):text+="\n연구·화물 작업은 우주선 근처에서 가능합니다."
-	if not record.plot.is_empty():
-		text+="\n관리 구획 · 생물량 %.1f\n지원 팩 %d분 남음"%[float(record.plot.biomass),ceili(float(record.plot.support_remaining)/60)]
-		if float(record.plot.support_remaining)<=0:text+=" · 보충 필요"
+	text+=" · 우주선 %.0fm · 표본 %d / %d"%[distance,session.surface.ecology.specimens.size(),int(FrontierEcologyCatalog.config().cargo_capacity)]
+
 	if not surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(surface_target.form_id)
 		text+="\n"+str(form.name)
 		var progress: Dictionary=session.latest.get("scan",{})
 		var known: bool=session.surface.ecology.observations.has(surface_world.body.id+":"+form.id)
 		text+="\nQ 생체 표본" if known else "\nE 유지 · 스캔 %d%%"%int(float(progress.get("progress",0))*100)
-	else:text+="\n생명체를 조준하고 E를 유지하세요."
+	else:text+="\nB로 개발 등록 · F로 광맥 채광 · E로 생명체 스캔"
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
 	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
 	if not business_target.is_empty():text+="\nF 현장 작업 · B 개발/건설"
 	surface_status.value=text
+	surface_status.visible=not business_panel.visible and not research_frame.visible and not shipyard_panel.visible
 
 func _refresh_surface_options() -> void:
 	if session.surface.is_empty():return
@@ -421,10 +465,12 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func toggle_shipyard() -> void:
+	research_frame.hide();navigation_frame.hide()
 	if not session.active:return
 	cancel_placement();business_panel.hide();shipyard_panel.visible=not shipyard_panel.visible
 	shipyard_panel.update_snapshot(session.latest,session.surface.get("business",{}))
 func toggle_business() -> void:
+	research_frame.hide();navigation_frame.hide()
 	shipyard_panel.hide()
 	if not session.active or surface_world==null:status.value="착륙 후 개발 사업을 시작하세요.";return
 	cancel_placement();business_panel.visible=not business_panel.visible
@@ -439,7 +485,7 @@ func interact_business() -> void:
 		"robot","building":toggle_business()
 		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
 func begin_placement(kind: String) -> void:
-	cancel_placement();business_panel.hide();shipyard_panel.hide()
+	cancel_placement();business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.hide()
 	if kind.is_empty() or surface_world==null:return
 	placement_kind=kind
 	placement_ghost=load("res://assets/models/"+FrontierCatalog.entry("buildings",kind).model+".glb").instantiate();add_child(placement_ghost)
@@ -463,3 +509,32 @@ func _update_business_placement() -> void:
 	placement_valid=reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
 	status.value=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason
+
+func start_solo() -> void:
+	if not test_mode:world_store=FrontierWorldStore.new("user://solo_world.json")
+	if not profile.ensure(name_input.text):status.value=profile.error;return
+	if session.host(profile,world_store,24560,"*",true):
+		lobby.hide();panel.show();outside=not FrontierCrewSurface.landed(session.authority.world);exterior_view.visible=outside;if_flight_view()
+func depart_selected() -> void:
+	if not address.text.is_valid_int():status.value="행성 주소 1 ~ 1000000을 입력하세요.";return
+	var ordinal:=int(address.text)-1
+	if ordinal<0 or ordinal>=1000000:status.value="행성 주소는 1 ~ 1000000입니다.";return
+	if int(session.latest.crew.navigation.target)!=ordinal:
+		session.send_request("navigate",{"ordinal":ordinal})
+		if not session.hosting:status.value="항로 설정을 요청했습니다. 상태가 반영되면 출발하세요.";return
+		if int(session.latest.crew.navigation.target)!=ordinal:return
+	travel_action("depart")
+func travel_action(action: String) -> void:
+	if session.offline:
+		session.send_request("ready",{"value":true})
+		if not session.latest.crew.members[session.latest.self_id].ready:return
+	session.send_request(action,{})
+	get_viewport().gui_release_focus()
+func toggle_navigation() -> void:
+	if not session.active:return
+	var opening:=not navigation_frame.visible
+	business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.visible=opening
+func toggle_research() -> void:
+	if surface_world==null:return
+	var opening:=not research_frame.visible
+	business_panel.hide();shipyard_panel.hide();navigation_frame.hide();research_frame.visible=opening
