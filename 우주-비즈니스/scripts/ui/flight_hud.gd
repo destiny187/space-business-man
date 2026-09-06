@@ -12,6 +12,7 @@ var clock: float = 0
 var hit_time: float = 0
 var pickup_time: float = 0
 var pickup_text: String = ""
+var pickup_resource: String = "stone"
 var milestone_time: float = 0
 var milestone_text: String = ""
 var previous_step: String = ""
@@ -34,7 +35,8 @@ func _ready() -> void:
 	add_child(radar)
 
 func feedback(resource: String,amount: int) -> void:
-	pickup_text = "+%d  %s" % [amount,FrontierCatalog.entry("resources",resource).name]
+	pickup_text = "+%d" % amount
+	pickup_resource = resource
 	pickup_time = 1.3
 	hit_time = 0.15
 
@@ -97,6 +99,7 @@ func _draw() -> void:
 	draw_circle(Vector2(44,47),4,MINT)
 	_text(Vector2(59,51),"LOCUS",21,WHITE,true)
 	_text(Vector2(150,50),p.name+"  /  원격 연결",14,MUTED)
+	draw_texture_rect(FrontierResourceIcons.texture("credits"),Rect2(844,29,30,30),false)
 	_text(Vector2(878,50),"%s Cr" % app._number(app.campaign.profile.credits),18,GOLD,true)
 	_text(Vector2(1044,50),"%d / %d kW" % [p.power_demand,p.power_supply],16,MINT if p.power_supply >= p.power_demand else GOLD)
 	_text(Vector2(1210,50),"LIVE",11,MINT)
@@ -136,9 +139,8 @@ func _draw() -> void:
 	_text(Vector2(42,668),"기지 보관함",11,MUTED,true)
 	var x: float = 42
 	for key in FrontierCatalog.table("resources"):
-		var color: Color = Color(FrontierCatalog.entry("resources",key).color)
-		draw_colored_polygon(PackedVector2Array([Vector2(x+7,684),Vector2(x+14,691),Vector2(x+7,698),Vector2(x,691)]),color)
-		_text(Vector2(x+21,695),str(p.inventory.get(key,0)),17,WHITE,true)
+		draw_texture_rect(FrontierResourceIcons.texture(key),Rect2(x-3,676,32,32),false)
+		_text(Vector2(x+32,699),str(p.inventory.get(key,0)),17,WHITE,true)
 		_text(Vector2(x,721),FrontierCatalog.entry("resources",key).name,11,MUTED)
 		x += 84
 	var cargo: int = FrontierCatalog.total(p.player.cargo)
@@ -186,7 +188,11 @@ func _draw() -> void:
 			_panel(Rect2(640-width/2-15,461,width+30,34))
 			_text(Vector2(640-width/2,484),label,14,WHITE)
 	else: _text(Vector2(501,600),"관찰 모드  ·  "+FrontierInput.text("camera")+" 원격 조종 복귀",15,MINT)
-	if pickup_time > 0: _text(Vector2(679,413-(1.3-pickup_time)*18),pickup_text,19,MINT,true)
+	if pickup_time > 0:
+		var at := Vector2(679,383-(1.3-pickup_time)*18)
+		_panel(Rect2(at-Vector2(5,3),Vector2(108,42)))
+		draw_texture_rect(FrontierResourceIcons.texture(pickup_resource),Rect2(at,Vector2(34,34)),false)
+		_text(at+Vector2(42,27),pickup_text,23,MINT,true)
 	if milestone_time > 0:
 		_panel(Rect2(442,141,420,58),Color(0.08,0.23,0.23,0.95),true)
 		_text(Vector2(462,177),milestone_text,16,MINT,true,380)

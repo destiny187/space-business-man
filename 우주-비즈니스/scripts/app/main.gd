@@ -117,6 +117,8 @@ func _paragraph(parent: Node,text_value: String,color: Color = MUTED) -> Label:
 func _button(parent: Node,text_value: String,action: Callable,disabled: bool = false) -> Button:
 	var button := Button.new()
 	button.text = text_value
+	if text_value.contains(" Cr"):
+		button.icon=FrontierResourceIcons.menu_texture("credits")
 	button.custom_minimum_size.y = 42
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	button.disabled = disabled
@@ -471,7 +473,7 @@ func _building_menu() -> void:
 		_label(card,"전력 +%d kW" % -definition.power if definition.power < 0 else "소비 전력 %d kW" % definition.power,11,MINT if definition.power < 0 else MUTED)
 		_label(card,definition.name,19)
 		_paragraph(card,definition.description)
-		_paragraph(card,_cost_status(definition.cost),MINT if FrontierCatalog.can_pay(campaign.planet.inventory,definition.cost) else ORANGE)
+		_resource_cost(card,_cost_status(definition.cost),MINT if FrontierCatalog.can_pay(campaign.planet.inventory,definition.cost) else ORANGE)
 		if not unlocked: _label(card,FrontierCatalog.entry("technologies",definition.tech).name+" 필요",12,MUTED)
 		var payable: bool = FrontierCatalog.can_pay(campaign.planet.inventory,definition.cost)
 		var button: Button = _button(card,("배치 시작  →" if payable else "재료 부족") if unlocked else "설계도 필요",func(): _close_menu(); world.begin_build(kind),not unlocked or not payable)
@@ -484,6 +486,14 @@ func _building_menu() -> void:
 		_label(row,"%s  /  %s" % [FrontierCatalog.entry("buildings",building.type).name,building.get("status","대기")],16).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_button(row,"정지" if building.enabled else "재가동",func(): _act(campaign.toggle_building(id)))
 		_button(row,"철거·환불",func(): _confirm("시설을 철거하고 건설 재료를 보관함으로 반환합니다.",func(): _act(campaign.demolish(id),"시설을 철거했습니다.")))
+
+func _resource_cost(parent: Node,source: String,color: Color) -> void:
+	var readout:=FrontierResourceReadout.new()
+	readout.custom_minimum_size.x=0
+	readout.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	readout.add_theme_color_override("default_color",color)
+	readout.value=source
+	parent.add_child(readout)
 
 func _cost_status(cost: Dictionary) -> String:
 	var parts: PackedStringArray = []
@@ -515,7 +525,7 @@ func _robots_menu() -> void:
 		card.custom_minimum_size.x = 238
 		_preview(card,model,150)
 		_label(card,definition.name,16)
-		_paragraph(card,_cost_status(definition.cost),MINT if FrontierCatalog.can_pay(campaign.planet.inventory,definition.cost) else ORANGE)
+		_resource_cost(card,_cost_status(definition.cost),MINT if FrontierCatalog.can_pay(campaign.planet.inventory,definition.cost) else ORANGE)
 		_paragraph(card,"제작 %d초  /  %s" % [definition.seconds,"채광·운반 자동화" if definition.role == "miner" else "문명 작전·기지 경비"])
 		var reason: String = _craft_status(model)
 		_primary(_button(card,"제작 주문  →" if reason.is_empty() else reason,func(): _act(campaign.craft(model),"제작을 시작했습니다. 현장으로 돌아가면 시간이 진행됩니다."),not reason.is_empty()))
@@ -539,7 +549,7 @@ func _robots_menu() -> void:
 			option.custom_minimum_size = Vector2(180,42)
 			option.add_item("모든 자원")
 			var keys: Array = FrontierCatalog.table("resources").keys()
-			for key in keys: option.add_item(FrontierCatalog.entry("resources",key).name)
+			for key in keys: option.add_icon_item(FrontierResourceIcons.menu_texture(key),FrontierCatalog.entry("resources",key).name)
 			option.selected = 0 if robot.filter == "all" else keys.find(robot.filter)+1
 			option.item_selected.connect(func(index: int): _act(campaign.assign_robot(id,"all" if index == 0 else keys[index-1]),"작업 대상을 변경했습니다."))
 			actions.add_child(option)
@@ -763,6 +773,7 @@ func _cargo_menu() -> void:
 		var resource: String = key
 		var amount: int = campaign.planet.inventory.get(key,0)
 		var row: HBoxContainer = _row(_card(body))
+		row.add_child(FrontierResourceIcons.view(key))
 		_label(row,"%s  %d" % [FrontierCatalog.entry("resources",key).name,amount],20).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var removed: int = mini(100,amount)
 		_button(row,"%d개 폐기" % removed,func(): _confirm("%s %d개를 폐기합니다. 되돌릴 수 없습니다." % [FrontierCatalog.entry("resources",resource).name,removed],func(): _act(campaign.discard_inventory(resource,removed),"보관 공간을 확보했습니다.")),amount == 0)

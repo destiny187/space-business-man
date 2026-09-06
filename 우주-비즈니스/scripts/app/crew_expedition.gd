@@ -14,7 +14,7 @@ var exterior_view: TextureRect
 var panel: VBoxContainer
 var lobby: VBoxContainer
 var roster: Label
-var status: Label
+var status: FrontierResourceReadout
 var travel_status: Label
 var address: LineEdit
 var pilot_choices: OptionButton
@@ -34,7 +34,7 @@ var test_camera_position:=Vector3.ZERO
 var cabin_root: Node3D
 var surface_world: FrontierCrewSurfaceScene
 var surface_panel: VBoxContainer
-var surface_status: Label
+var surface_status: FrontierResourceReadout
 var form_options: OptionButton
 var sample_options: OptionButton
 var surface_target: Dictionary={}
@@ -55,10 +55,10 @@ func _ready() -> void:
 	session=FrontierCrewSession.new();session.name="Coop";add_child(session)
 	session.snapshot_received.connect(_snapshot)
 	session.surface_received.connect(_surface_packet)
-	session.notice.connect(func(message: String):status.text=message)
+	session.notice.connect(func(message: String):status.value=message)
 	session.response_received.connect(func(_sequence: int,value: Dictionary):
-		if not value.get("ok",false):status.text=value.get("error","작업 실패")
-		else:status.text="원정 기록을 저장했습니다.")
+		if not value.get("ok",false):status.value=value.get("error","작업 실패")
+		else:status.value="원정 기록을 저장했습니다.")
 	_build_cabin();_build_ui()
 	if FileAccess.file_exists(profile.path) and profile.ensure():
 		name_input.text=profile.data.character.name;name_input.editable=false
@@ -99,7 +99,7 @@ func _build_ui() -> void:
 	exterior_view=TextureRect.new();exterior_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);exterior_view.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;exterior_view.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED;exterior_view.mouse_filter=Control.MOUSE_FILTER_IGNORE;exterior_view.hide();ui.add_child(exterior_view)
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
 	_label(header,"L O C U S  /  함께하는 원정",23)
-	status=_label(header,"개인 장비를 챙기고 같은 우주선에 승선하세요.",15)
+	status=_resource_label(header,"개인 장비를 챙기고 같은 우주선에 승선하세요.",15)
 	_label(header,"WASD 이동 · 우클릭 시선 · C 외부 · 지표: 클릭 굴착 · E 스캔 · Q 표본 · F 채광 · B 건설",13)
 	for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390)
 	get_viewport().size_changed.connect(func():
@@ -133,7 +133,7 @@ func _build_ui() -> void:
 	_button(row,"1 넣기",func():session.send_request("deposit",{"amount":1}))
 	_button(panel,"주변 회수 화물 줍기",recover_nearby)
 	surface_panel=VBoxContainer.new();surface_panel.add_theme_constant_override("separation",7);panel.add_child(surface_panel);surface_panel.hide();panel.move_child(surface_panel,2)
-	surface_status=_label(surface_panel,"지표를 준비 중입니다.",14)
+	surface_status=_resource_label(surface_panel,"지표를 준비 중입니다.",14)
 	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options)
 	_button(surface_panel,"선택한 생명체 기초 분석 · 광물 3",func():surface_action("surface_analyze"))
 	_button(surface_panel,"선택한 서식지 시험 구획 · 광물 6",func():surface_action("surface_restore"))
@@ -149,13 +149,15 @@ func _build_ui() -> void:
 	business_panel.place_building.connect(begin_placement)
 func _label(parent: Node,value: String,size: int=15) -> Label:
 	var label:=Label.new();label.text=value;label.add_theme_font_size_override("font_size",size);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.custom_minimum_size.x=265;parent.add_child(label);return label
+func _resource_label(parent: Node,value: String,size: int=15) -> FrontierResourceReadout:
+	var label:=FrontierResourceReadout.new();label.custom_minimum_size.x=265;label.value=value;label.add_theme_font_size_override("normal_font_size",size);parent.add_child(label);return label
 func _button(parent: Node,value: String,callback: Callable) -> Button:
-	var button:=Button.new();button.text=value;button.custom_minimum_size.y=35;button.pressed.connect(callback);parent.add_child(button);return button
+	var button:=Button.new();button.text=value;button.custom_minimum_size.y=35;button.pressed.connect(callback);parent.add_child(button);FrontierResourceIcons.button_caption(button);return button
 func host_world() -> void:
-	if not profile.ensure(name_input.text):status.text=profile.error;return
+	if not profile.ensure(name_input.text):status.value=profile.error;return
 	if session.host(profile,world_store,int(port_input.value)):lobby.hide();panel.show()
 func join_world() -> void:
-	if not profile.ensure(name_input.text):status.text=profile.error;return
+	if not profile.ensure(name_input.text):status.value=profile.error;return
 	if session.join(profile,host_address.text.strip_edges(),int(port_input.value)):lobby.hide();panel.show()
 func _setup_flight() -> void:
 	space_view=SubViewport.new();space_view.size=Vector2i(1280,800);space_view.own_world_3d=true;space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(space_view)
@@ -271,7 +273,7 @@ func toggle_ready() -> void:
 func assign_pilot() -> void:
 	if not crew_ids.is_empty():session.send_request("pilot",{"character_id":crew_ids[pilot_choices.selected]})
 func select_destination() -> void:
-	if not address.text.is_valid_int():status.text="행성 번호를 입력하세요.";return
+	if not address.text.is_valid_int():status.value="행성 번호를 입력하세요.";return
 	session.send_request("navigate",{"ordinal":int(address.text)-1})
 func recover_nearby() -> void:
 	if not session.active:return
@@ -279,7 +281,7 @@ func recover_nearby() -> void:
 	for id in session.latest.crew.recovery:
 		var crate: Dictionary=session.latest.crew.recovery[id]
 		if _crate_here(crate) and crate.area==own.area and FrontierCrewWorld.vector(crate.position).distance_to(FrontierCrewWorld.vector(own.position))<=float(FrontierCrewWorld.config().interaction_distance):session.send_request("recover",{"crate_id":id});return
-	status.text="가까운 곳에 회수 화물이 없습니다."
+	status.value="가까운 곳에 회수 화물이 없습니다."
 func leave_world() -> void:
 	if await session.close_session():get_tree().reload_current_scene()
 func return_title() -> void:
@@ -300,7 +302,7 @@ func _suit_color(node: Node,tint: int) -> void:
 
 func kick_selected() -> void:
 	if not crew_ids.is_empty():
-		if not session.kick(crew_ids[pilot_choices.selected]):status.text="다른 승무원을 선택하세요."
+		if not session.kick(crew_ids[pilot_choices.selected]):status.value="다른 승무원을 선택하세요."
 func show_equipment() -> void:
 	if profile.data.is_empty():return
 	var dialog:=AcceptDialog.new();dialog.theme=ui_theme;dialog.title="내 캐릭터 · 소유 장비"
@@ -343,7 +345,7 @@ func _sync_surface_view() -> void:
 	outside=false;exterior_view.hide()
 	if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
 	surface_panel.show();reticle.show()
-	if session.surface.is_empty() or session.surface.body_id!=landing.body_id or int(session.surface.epoch)!=int(landing.epoch):surface_status.text="호스트의 지표 기록을 수신 중입니다.";return
+	if session.surface.is_empty() or session.surface.body_id!=landing.body_id or int(session.surface.epoch)!=int(landing.epoch):surface_status.value="호스트의 지표 기록을 수신 중입니다.";return
 	if surface_world!=null and (surface_world.body.id!=landing.body_id or surface_world.epoch!=int(landing.epoch)):remove_child(surface_world);surface_world.queue_free();surface_world=null
 	if surface_world==null and actors.has(session.latest.self_id):
 		surface_world=FrontierCrewSurfaceScene.new();add_child(surface_world);surface_world.configure(session,session.surface,actors[session.latest.self_id],camera)
@@ -371,7 +373,7 @@ func _update_surface_hud() -> void:
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
 	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
 	if not business_target.is_empty():text+="\nF 현장 작업 · B 개발/건설"
-	surface_status.text=text
+	surface_status.value=text
 
 func _refresh_surface_options() -> void:
 	if session.surface.is_empty():return
@@ -384,13 +386,13 @@ func _refresh_surface_options() -> void:
 		for row in ecological.research.values():
 			if row.form_id not in ids:ids.append(row.form_id)
 		ids.sort()
-		for id in ids:form_options.add_item(FrontierEcologyCatalog.form(id).name);form_options.set_item_metadata(form_options.item_count-1,id)
+		for id in ids:form_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(id))),FrontierEcologyCatalog.form(id).name);form_options.set_item_metadata(form_options.item_count-1,id)
 		if selected in ids:form_options.select(ids.find(selected))
 		if ids.is_empty():form_options.add_item("스캔한 생명체 없음");form_options.set_item_metadata(0,"")
 	if not sample_options.get_popup().visible:
 		var selected: String=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
 		sample_options.clear();var ids: Array=ecological.specimens.keys();ids.sort()
-		for id in ids:sample_options.add_item(FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
+		for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
 		if selected in ids:sample_options.select(ids.find(selected))
 		if ids.is_empty():sample_options.add_item("격리 운송 표본 없음");sample_options.set_item_metadata(0,"")
 
@@ -399,12 +401,12 @@ func surface_action(kind: String) -> void:
 	var aim: Vector3=-camera.global_basis.z
 	var args: Dictionary={"aim":[aim.x,aim.y,aim.z]}
 	if kind=="surface_collect":
-		if surface_target.is_empty():status.text="생명체를 가까이서 조준하세요.";return
+		if surface_target.is_empty():status.value="생명체를 가까이서 조준하세요.";return
 		args.encounter_id=surface_target.id
 	elif kind in ["surface_analyze","surface_restore"]:
 		var id: String=str(form_options.get_item_metadata(form_options.selected)) if form_options.selected>=0 else ""
 		var form:=FrontierEcologyCatalog.form(id)
-		if form.is_empty():status.text="스캔한 생명체를 먼저 선택하세요.";return
+		if form.is_empty():status.value="스캔한 생명체를 먼저 선택하세요.";return
 		args.form_id=id;args.environment=form.environment
 	elif kind=="surface_introduce":args.sample_id=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
 	session.send_request(kind,args)
@@ -413,7 +415,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func toggle_business() -> void:
-	if not session.active or surface_world==null:status.text="착륙 후 개발 사업을 시작하세요.";return
+	if not session.active or surface_world==null:status.value="착륙 후 개발 사업을 시작하세요.";return
 	cancel_placement();business_panel.visible=not business_panel.visible
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
 func interact_business() -> void:
@@ -424,7 +426,7 @@ func interact_business() -> void:
 		"base":session.send_request("business_deposit",{})
 		"crate":session.send_request("business_recover_crate",{"crate_id":target.id})
 		"robot","building":toggle_business()
-		_:status.text="광맥이나 현장 창고를 조준하고 F를 누르세요."
+		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
 func begin_placement(kind: String) -> void:
 	cancel_placement();business_panel.hide()
 	if kind.is_empty() or surface_world==null:return
@@ -441,7 +443,7 @@ func _update_business_placement() -> void:
 	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*12);query.exclude=[actors[session.latest.self_id].get_rid()]
 	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
 	placement_valid=false
-	if hit.is_empty():placement_ghost.hide();status.text="12m 안의 지면을 조준하세요 · Esc 취소";return
+	if hit.is_empty():placement_ghost.hide();status.value="12m 안의 지면을 조준하세요 · Esc 취소";return
 	placement_point=hit.position;placement_point.y=surface_world.terrain.field.height(placement_point.x,placement_point.z);placement_ghost.position=placement_point;placement_ghost.show()
 	var packet: Dictionary=session.surface
 	var world: Dictionary=session.authority.world if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
@@ -449,4 +451,4 @@ func _update_business_placement() -> void:
 	var reason: String="먼저 개발 사업을 등록하세요." if current.is_empty() else FrontierExpeditionBusiness.placement(world,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
 	placement_valid=reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
-	status.text=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason
+	status.value=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason

@@ -1,0 +1,672 @@
+{
+  "version": 2,
+  "scope": "2026-09-06 PRD 명시 품목·범주·가상 사례 및 현재 연구 기록. 경제 품목 확정표가 아닌 UI 자산 목록.",
+  "icons": [
+    {
+      "id": "iron",
+      "name": "철",
+      "group": "기초 자원",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "implemented",
+      "aliases": [
+        "iron_ore"
+      ],
+      "path": "res://assets/ui/resources/iron.svg"
+    },
+    {
+      "id": "copper",
+      "name": "구리",
+      "group": "기초 자원",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "implemented",
+      "aliases": [
+        "copper_ore"
+      ],
+      "path": "res://assets/ui/resources/copper.svg"
+    },
+    {
+      "id": "stone",
+      "name": "암석",
+      "group": "기초 자원",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "implemented",
+      "aliases": [
+        "광물",
+        "rock"
+      ],
+      "path": "res://assets/ui/resources/stone.svg"
+    },
+    {
+      "id": "ice",
+      "name": "얼음",
+      "group": "기초 자원",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/ice.svg"
+    },
+    {
+      "id": "crystal",
+      "name": "희귀 결정",
+      "group": "기초 자원",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "implemented",
+      "aliases": [
+        "rare_mineral"
+      ],
+      "path": "res://assets/ui/resources/crystal.svg"
+    },
+    {
+      "id": "credits",
+      "name": "크레딧",
+      "group": "기초 자원",
+      "source": "우주-비즈니스/data/catalog.json",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/credits.svg"
+    },
+    {
+      "id": "water",
+      "name": "물",
+      "group": "채집·물질",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/water.svg"
+    },
+    {
+      "id": "volatile",
+      "name": "휘발성 물질",
+      "group": "채집·물질",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/volatile.svg"
+    },
+    {
+      "id": "element",
+      "name": "원소",
+      "group": "채집·물질",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/element.svg"
+    },
+    {
+      "id": "mineral_sample",
+      "name": "광물 시료",
+      "group": "채집·물질",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/mineral_sample.svg"
+    },
+    {
+      "id": "meteorite_sample",
+      "name": "운석 시료",
+      "group": "채집·물질",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/meteorite_sample.svg"
+    },
+    {
+      "id": "frozen_sample",
+      "name": "동결 표본",
+      "group": "채집·물질",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/frozen_sample.svg"
+    },
+    {
+      "id": "inert_sample",
+      "name": "비활성 시료",
+      "group": "채집·물질",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/inert_sample.svg"
+    },
+    {
+      "id": "iron_parts",
+      "name": "철 부품",
+      "group": "산업 재료",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/iron_parts.svg"
+    },
+    {
+      "id": "electronic_parts",
+      "name": "전자 부품",
+      "group": "산업 재료",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/electronic_parts.svg"
+    },
+    {
+      "id": "refined_metal",
+      "name": "정제 금속",
+      "group": "산업 재료",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/refined_metal.svg"
+    },
+    {
+      "id": "alloy",
+      "name": "합금",
+      "group": "산업 재료",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/alloy.svg"
+    },
+    {
+      "id": "intermediate_material",
+      "name": "중간재",
+      "group": "산업 재료",
+      "source": "docs/game/02-planets-resources-and-building.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/intermediate_material.svg"
+    },
+    {
+      "id": "catalyst",
+      "name": "촉매",
+      "group": "산업 재료",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/catalyst.svg"
+    },
+    {
+      "id": "adsorbent",
+      "name": "흡착제",
+      "group": "산업 재료",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/adsorbent.svg"
+    },
+    {
+      "id": "supply_material",
+      "name": "공급 물질",
+      "group": "산업 재료",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/supply_material.svg"
+    },
+    {
+      "id": "heat_exchange_material",
+      "name": "열 교환 소재",
+      "group": "산업 재료",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/heat_exchange_material.svg"
+    },
+    {
+      "id": "shielding_material",
+      "name": "차폐 소재",
+      "group": "산업 재료",
+      "source": "docs/game/08-open-world-and-underground.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/shielding_material.svg"
+    },
+    {
+      "id": "reflective_material",
+      "name": "반사 소재",
+      "group": "산업 재료",
+      "source": "docs/game/08-open-world-and-underground.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/reflective_material.svg"
+    },
+    {
+      "id": "heat_resistant_material",
+      "name": "내열 소재",
+      "group": "산업 재료",
+      "source": "docs/game/08-open-world-and-underground.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/heat_resistant_material.svg"
+    },
+    {
+      "id": "circuit",
+      "name": "회로",
+      "group": "산업 재료",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/circuit.svg"
+    },
+    {
+      "id": "salvage_parts",
+      "name": "인양 부품",
+      "group": "산업 재료",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/salvage_parts.svg"
+    },
+    {
+      "id": "repair_parts",
+      "name": "수리 부품",
+      "group": "산업 재료",
+      "source": "docs/game/03-robots-and-automation.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/repair_parts.svg"
+    },
+    {
+      "id": "research_parts",
+      "name": "연구 부품",
+      "group": "산업 재료",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/research_parts.svg"
+    },
+    {
+      "id": "bio_sample",
+      "name": "생체 표본",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/bio_sample.svg"
+    },
+    {
+      "id": "microbe_sample",
+      "name": "미생물 표본",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/microbe_sample.svg"
+    },
+    {
+      "id": "animal_sample",
+      "name": "동물 표본",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/animal_sample.svg"
+    },
+    {
+      "id": "plant_sample",
+      "name": "식생 표본",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/plant_sample.svg"
+    },
+    {
+      "id": "dormant_culture",
+      "name": "휴면 배양체",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/dormant_culture.svg"
+    },
+    {
+      "id": "spores",
+      "name": "포자",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/spores.svg"
+    },
+    {
+      "id": "egg",
+      "name": "알",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/egg.svg"
+    },
+    {
+      "id": "seed",
+      "name": "씨앗",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/seed.svg"
+    },
+    {
+      "id": "tissue_sample",
+      "name": "조직 시료",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/tissue_sample.svg"
+    },
+    {
+      "id": "substrate",
+      "name": "기질",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/substrate.svg"
+    },
+    {
+      "id": "feed",
+      "name": "먹이",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/feed.svg"
+    },
+    {
+      "id": "oxidizer",
+      "name": "산화제",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/oxidizer.svg"
+    },
+    {
+      "id": "enzyme",
+      "name": "효소",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/enzyme.svg"
+    },
+    {
+      "id": "standard_culture",
+      "name": "표준 균주",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/standard_culture.svg"
+    },
+    {
+      "id": "support_pack",
+      "name": "지원 팩",
+      "group": "생태·표본",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "implemented",
+      "aliases": [],
+      "path": "res://assets/ui/resources/support_pack.svg"
+    },
+    {
+      "id": "lithotherm_sample",
+      "name": "리소섬 표본",
+      "group": "발견 사례",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "example",
+      "aliases": [],
+      "path": "res://assets/ui/resources/lithotherm_sample.svg"
+    },
+    {
+      "id": "silver_crystal",
+      "name": "은빛 결정 군락",
+      "group": "발견 사례",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "example",
+      "aliases": [],
+      "path": "res://assets/ui/resources/silver_crystal.svg"
+    },
+    {
+      "id": "fog_leaf",
+      "name": "응결 잎",
+      "group": "발견 사례",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "example",
+      "aliases": [],
+      "path": "res://assets/ui/resources/fog_leaf.svg"
+    },
+    {
+      "id": "carbonate_shell",
+      "name": "탄산염 껍질",
+      "group": "발견 사례",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "example",
+      "aliases": [],
+      "path": "res://assets/ui/resources/carbonate_shell.svg"
+    },
+    {
+      "id": "acid_microbe",
+      "name": "황산 적응 미생물",
+      "group": "발견 사례",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "example",
+      "aliases": [],
+      "path": "res://assets/ui/resources/acid_microbe.svg"
+    },
+    {
+      "id": "scan_data",
+      "name": "스캔 데이터",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/scan_data.svg"
+    },
+    {
+      "id": "metabolic_record",
+      "name": "대사 기록",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/metabolic_record.svg"
+    },
+    {
+      "id": "structural_measurement",
+      "name": "구조 측정",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/structural_measurement.svg"
+    },
+    {
+      "id": "operation_log",
+      "name": "작동 로그",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/operation_log.svg"
+    },
+    {
+      "id": "landscape_observation",
+      "name": "경관 관측",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/landscape_observation.svg"
+    },
+    {
+      "id": "cultural_knowledge",
+      "name": "환경·문화 지식",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/cultural_knowledge.svg"
+    },
+    {
+      "id": "space_observation",
+      "name": "우주 현상 관측",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/space_observation.svg"
+    },
+    {
+      "id": "research_principle",
+      "name": "발견 원리",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/research_principle.svg"
+    },
+    {
+      "id": "validation_record",
+      "name": "검증 기록",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/validation_record.svg"
+    },
+    {
+      "id": "blueprint",
+      "name": "설계도",
+      "group": "지식 자산",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "knowledge",
+      "aliases": [],
+      "path": "res://assets/ui/resources/blueprint.svg"
+    },
+    {
+      "id": "ancient_artifact",
+      "name": "유물",
+      "group": "항해·유적",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/ancient_artifact.svg"
+    },
+    {
+      "id": "relic_fragment",
+      "name": "유물 조각",
+      "group": "항해·유적",
+      "source": "docs/game/08-open-world-and-underground.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/relic_fragment.svg"
+    },
+    {
+      "id": "fuel",
+      "name": "항로 연료",
+      "group": "항해·유적",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/fuel.svg"
+    },
+    {
+      "id": "supplies",
+      "name": "보급품",
+      "group": "항해·유적",
+      "source": "docs/game/05-economy-and-progression.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/supplies.svg"
+    },
+    {
+      "id": "landing_kit",
+      "name": "착륙 키트",
+      "group": "항해·유적",
+      "source": "docs/game/05-economy-and-progression.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/landing_kit.svg"
+    },
+    {
+      "id": "ship_module",
+      "name": "우주선 모듈",
+      "group": "항해·유적",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/ship_module.svg"
+    },
+    {
+      "id": "prototype",
+      "name": "시제품",
+      "group": "항해·유적",
+      "source": "docs/game/07-space-exploration-and-ships.md",
+      "status": "prd",
+      "aliases": [],
+      "path": "res://assets/ui/resources/prototype.svg"
+    },
+    {
+      "id": "mineral_scaffold",
+      "name": "광물 공생 배양체",
+      "group": "현장 공학",
+      "source": "우주-비즈니스/data/field_engineering.json",
+      "status": "implemented_record",
+      "aliases": [],
+      "path": "res://assets/ui/resources/mineral_scaffold.svg"
+    },
+    {
+      "id": "thermal_exchange",
+      "name": "저온 적응 열교환막",
+      "group": "현장 공학",
+      "source": "우주-비즈니스/data/field_engineering.json",
+      "status": "implemented_record",
+      "aliases": [],
+      "path": "res://assets/ui/resources/thermal_exchange.svg"
+    },
+    {
+      "id": "water_membrane",
+      "name": "건조 적응 순환막",
+      "group": "현장 공학",
+      "source": "우주-비즈니스/data/field_engineering.json",
+      "status": "implemented_record",
+      "aliases": [],
+      "path": "res://assets/ui/resources/water_membrane.svg"
+    },
+    {
+      "id": "power",
+      "name": "전력",
+      "group": "운영 자원·지표",
+      "source": "docs/game/04-terraforming-and-sales.md",
+      "status": "metric",
+      "aliases": [],
+      "path": "res://assets/ui/resources/power.svg"
+    },
+    {
+      "id": "oxygen",
+      "name": "산소",
+      "group": "운영 자원·지표",
+      "source": "docs/game/09-discovery-research-and-ecology.md",
+      "status": "metric",
+      "aliases": [],
+      "path": "res://assets/ui/resources/oxygen.svg"
+    },
+    {
+      "id": "battery",
+      "name": "배터리",
+      "group": "운영 자원·지표",
+      "source": "docs/game/03-robots-and-automation.md",
+      "status": "metric",
+      "aliases": [],
+      "path": "res://assets/ui/resources/battery.svg"
+    },
+    {
+      "id": "biomass",
+      "name": "생물량",
+      "group": "운영 자원·지표",
+      "source": "우주-비즈니스/data/ecology.json",
+      "status": "metric",
+      "aliases": [],
+      "path": "res://assets/ui/resources/biomass.svg"
+    }
+  ]
+}
