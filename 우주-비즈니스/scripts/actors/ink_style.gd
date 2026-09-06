@@ -51,7 +51,9 @@ static func attach(parent: Node3D, studio: bool = false) -> ShaderMaterial:
 	quad.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var mat := ShaderMaterial.new()
 	mat.shader = CONTOUR
-	mat.render_priority = 100
+	# Composite opaque ink before transparent ghosts, particles and labels.
+	# The screen texture does not contain transparent draws; a late pass erases them.
+	mat.render_priority = -128
 	mat.set_shader_parameter("strength",1.0)
 	for key in ["outer_width","inner_width","reference_height","crease_depth_floor","distant_ink_strength"]:
 		mat.set_shader_parameter(key,float(config()[key]))

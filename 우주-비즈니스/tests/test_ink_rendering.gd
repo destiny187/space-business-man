@@ -13,6 +13,7 @@ func frame() -> Image:
 func run() -> void:
 	root.size = Vector2i(1440,900)
 	await check_sloping_depth()
+	await check_transparent_feedback()
 	var dest := ProjectSettings.globalize_path("res://../docs/production/media/ink-catalog/")
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-output="):dest=argument.trim_prefix("--capture-output=").trim_suffix("/")+"/"
@@ -37,8 +38,9 @@ func run() -> void:
 		var plain: Image = await frame()
 		var changed := 0
 		# Screen-space contrast, sampled across the full image, proves the quad survives camera changes.
-		for y in range(0,900,3):
-			for x in range(0,1440,3):
+		check(ink.get_size()==plain.get_size(),"comparable render dimensions")
+		for y in range(0,mini(ink.get_height(),plain.get_height()),3):
+			for x in range(0,mini(ink.get_width(),plain.get_width()),3):
 				var a := ink.get_pixel(x,y)
 				var b := plain.get_pixel(x,y)
 				if b.get_luminance()-a.get_luminance() > .035: changed += 1
@@ -99,3 +101,24 @@ func check_sloping_depth() -> void:
 	check(dark < 100,"continuous ground avoids false black horizon: "+str(dark))
 	viewport.queue_free()
 	await process_frame
+
+func check_transparent_feedback() -> void:
+	var viewport:=SubViewport.new();viewport.size=Vector2i(256,256);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
+	var stage:=Node3D.new();viewport.add_child(stage)
+	var world:=WorldEnvironment.new();var environment:=Environment.new();environment.background_mode=Environment.BG_COLOR;environment.background_color=Color(.03,.06,.09);world.environment=environment;stage.add_child(world)
+	var camera:=Camera3D.new();stage.add_child(camera);camera.position=Vector3(0,0,4);camera.current=true
+	var ghost:=MeshInstance3D.new();var box:=BoxMesh.new();box.size=Vector3(2,2,1);ghost.mesh=box
+	var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;material.albedo_color=Color(1,.04,.02,.7);ghost.material_override=material;stage.add_child(ghost)
+	FrontierInkStyle.attach(stage)
+	await create_timer(.4).timeout;await RenderingServer.frame_post_draw
+	var shot:=viewport.get_texture().get_image()
+	var center:=shot.get_pixel(128,128)
+	check(center.r>center.b+.25,"transparent construction ghost survives ink compositing")
+	ghost.hide()
+	var effects:=FrontierEffects.new();stage.add_child(effects);effects.running=false
+	effects.burst(Vector3.ZERO,Color(1,.05,.02),32)
+	for effect in effects.active:effect.node.scale=Vector3.ONE*.25
+	await create_timer(.2).timeout;await RenderingServer.frame_post_draw
+	shot=viewport.get_texture().get_image();center=shot.get_pixel(128,128)
+	check(center.r>center.b+.2,"actual pooled effect shader survives ink compositing")
+	viewport.queue_free();await process_frame

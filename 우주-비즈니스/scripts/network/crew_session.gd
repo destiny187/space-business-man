@@ -4,6 +4,7 @@ signal snapshot_received(value: Dictionary)
 signal notice(message: String)
 signal surface_received(value: Dictionary)
 signal response_received(sequence: int,value: Dictionary)
+signal request_started(sequence: int,kind: String,args: Dictionary)
 var authority: FrontierCrewAuthority
 var enet: ENetMultiplayerPeer
 var profile: FrontierPlayerProfile
@@ -168,6 +169,7 @@ func send_request(kind: String,args: Dictionary) -> bool:
 	if not active or latest.is_empty():notice.emit("참가 동기화가 끝난 뒤 실행하세요.");return false
 	var request: Dictionary={"session_id":session_id,"sequence":next_sequence,"kind":kind,"args":args,"revision":latest.crew.revision}
 	next_sequence+=1
+	request_started.emit(int(request.sequence),kind,args)
 	if hosting:
 		var result:=authority.request(1,request);response_received.emit(int(request.sequence),result);_publish();_publish_surface()
 	else:_request.rpc_id(1,request)

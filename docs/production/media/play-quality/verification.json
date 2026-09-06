@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2",
+  "renderer": "Metal Forward+",
+  "hardware": "Apple M2",
+  "baseline_commit": "d73b1d6e61e28f4ae303a7d89f3f3258fe2c3cf3",
+  "checks": {
+    "solo_presentation": {
+      "checks": 70,
+      "failures": 0,
+      "log": "test-results/play-quality/acceptance.log",
+      "sha256": "3d436b802102298fcf6ad9e553ae10b28592d2629840903723dff819c57c3c58"
+    },
+    "shared_industry_two_rendered_peers": {
+      "checks": 234,
+      "failures": 0,
+      "log": "test-results/play-quality/verified-industry.log",
+      "sha256": "b36a4f19e04dc53bbeeba5d04d902f07df6f459431f0a0c7f386f62461c45a2b"
+    },
+    "gpu_ink_transparency": {
+      "checks": 11,
+      "failures": 0,
+      "log": "test-results/play-quality/legacy-render.log",
+      "sha256": "b33692c89bf1705065f8d8b67c6366b5465c71fed966b37dcf38bfb0db454f04"
+    },
+    "resource_panels": {
+      "checks": 9,
+      "failures": 0,
+      "log": "test-results/play-quality/resource-panels.log",
+      "sha256": "5d6d1bc37cf87996b4f6b5492b5814f8eec4b1e804325d15972578d6dcaa5c37"
+    },
+    "legacy_presentation": {
+      "checks": 25,
+      "failures": 0,
+      "log": "test-results/play-quality/final-legacy-presentation.log",
+      "sha256": "902270d5ccca513b04b5bcdf88aad8ab9f13439887cd76a9da046b681c0087b7"
+    }
+  },
+  "limitations": [
+    "기존 Blender/ElevenLabs 자산 재사용; 신규 모델/음원 생성 없음",
+    "두 로컬 ENet 클라이언트; 인터넷/Windows/6인 장기 부하 미검증",
+    "공동 산업 검사는 위치 제어 및 시간 가속 사용",
+    "오디오 일부는 비영속 표현 상태로 3D 위치와 루프 연결을 검사"
+  ]
+}

@@ -2,8 +2,10 @@ class_name FrontierBusinessPanel
 extends PanelContainer
 signal command(kind: String,args: Dictionary)
 signal place_building(kind: String)
+var building_cards: Dictionary={}
 var summary: FrontierResourceReadout
 var stock: FrontierResourceReadout
+var environment_bars: Dictionary={}
 var environment_label: Label
 var guidance: Label
 var technology: OptionButton
@@ -30,7 +32,8 @@ var research_trial_button: Button
 var research_install_button: Button
 var research_cancel_button: Button
 func _ready() -> void:
-	set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);offset_left=24;offset_right=578;offset_top=140;offset_bottom=-24
+	set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);offset_left=24;offset_right=minf(900,get_viewport().get_visible_rect().size.x-24);offset_top=110;offset_bottom=-24
+	get_viewport().size_changed.connect(func():offset_right=minf(900,get_viewport().get_visible_rect().size.x-24))
 	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.065,.09,.97);style.set_content_margin_all(18);style.set_corner_radius_all(8);add_theme_stylebox_override("panel",style)
 	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(scroll)
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
@@ -38,19 +41,31 @@ func _ready() -> void:
 	summary=FrontierResourceReadout.new();column.add_child(summary);guidance=label(column,"");stock=FrontierResourceReadout.new();column.add_child(stock)
 	register_button=button(column,"무료 개발 등록",func():command.emit("business_register",{}))
 	button(column,"현장 창고에 자원 반납",func():command.emit("business_deposit",{}))
-	var tabs:=TabContainer.new();tabs.custom_minimum_size.y=375;column.add_child(tabs)
+	var tabs:=TabContainer.new();tabs.custom_minimum_size.y=290;column.add_child(tabs)
 	var build_tab:=VBoxContainer.new();build_tab.name="건설";tabs.add_child(build_tab)
 	building=option(build_tab)
 	for key in FrontierExpeditionBusiness.config().buildings:
 		var def:=FrontierCatalog.entry("buildings",key);building.add_item(def.name);building.set_item_metadata(building.item_count-1,key)
+	building.hide()
+	var grid:=GridContainer.new();grid.columns=4;build_tab.add_child(grid)
+	for index in building.item_count:
+		var kind:=str(building.get_item_metadata(index))
+		var def:=FrontierCatalog.entry("buildings",kind)
+		var card:=Button.new();card.custom_minimum_size=Vector2(145,90);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;card.toggle_mode=true
+		card.tooltip_text=def.name+" · "+FrontierCatalog.cost_text(def.cost)
+		var content:=VBoxContainer.new();content.mouse_filter=Control.MOUSE_FILTER_IGNORE;card.add_child(content);content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);content.offset_top=4;content.offset_bottom=-4
+		var preview:=TextureRect.new();preview.texture=load("res://assets/ui/previews/"+def.model+".png");preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;preview.custom_minimum_size.y=62;preview.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(preview)
+		var title:=Label.new();title.text=def.name;title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;title.add_theme_font_size_override("font_size",14);title.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(title)
+		card.pressed.connect(func():building.select(index);refresh_building_cost());grid.add_child(card);building_cards[kind]=card
 	building_cost=FrontierResourceReadout.new();building_cost.custom_minimum_size.x=0;build_tab.add_child(building_cost)
 	building.item_selected.connect(func(_index: int):refresh_building_cost())
 	refresh_building_cost()
 	button(build_tab,"선택 시설 배치 · 지면 조준 후 클릭",func():place_building.emit(selected(building)))
-	facility=option(build_tab)
-	button(build_tab,"선택 시설 가동 / 정지",func():command.emit("business_toggle",{"building_id":selected(facility)}))
-	button(build_tab,"선택 시설 철거 · 건설 재료 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
-	label(build_tab,"현장 창고의 재료를 사용합니다. 시설 가까이에서 조작하세요. 건설 배치는 Esc로 취소합니다.")
+	var facility_tab:=VBoxContainer.new();facility_tab.name="시설 관리"
+	facility=option(facility_tab)
+	button(facility_tab,"선택 시설 가동 / 정지",func():command.emit("business_toggle",{"building_id":selected(facility)}))
+	button(facility_tab,"선택 시설 철거 · 건설 재료 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
+	label(build_tab,"카드 선택 → 배치 → 지면 클릭 · Esc 취소")
 	var research_tab:=VBoxContainer.new();research_tab.name="기술·보급";tabs.add_child(research_tab)
 	technology=option(research_tab)
 	button(research_tab,"선택 기술 구매",func():command.emit("business_technology",{"technology":selected(technology)}))
@@ -60,6 +75,7 @@ func _ready() -> void:
 	button(research_tab,"보급 20개 인수",func():command.emit("business_supply",{"resource":selected(supply)}))
 	label(research_tab,"공동 자금은 호스트가 지출합니다. 기술은 영구 유지하며 실제 장비는 재료로 제작합니다. 생태 배양기는 허가된 표준 균주를 사용하는 지역 복원 설비입니다.")
 	var robot_tab:=VBoxContainer.new();robot_tab.name="로봇";tabs.add_child(robot_tab)
+	var robot_preview:=TextureRect.new();robot_preview.texture=load("res://assets/ui/previews/miner.png");robot_preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;robot_preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;robot_preview.custom_minimum_size.y=140;robot_tab.add_child(robot_preview)
 	factory=option(robot_tab)
 	button(robot_tab,"선택 제작소에서 M-01 제작",func():command.emit("business_craft",{"building_id":selected(factory)}))
 	robot=option(robot_tab);vein=option(robot_tab)
@@ -83,9 +99,14 @@ func _ready() -> void:
 	research_cancel_button=button(engineering_tab,"실험 중지 · 투입 재료는 반환되지 않음",func():engineering_command("cancel"))
 	label(engineering_tab,"현장에서 생물 스캔 → 기초 분석 → 제작소 시제품 → 대상 설비의 현장 시험 → 개조. 각 작업은 설비 8m 안에서 시작합니다. 전력·가동·소모재·배양 조건이 끊기면 실험도 대기합니다.")
 	var contract_tab:=VBoxContainer.new();contract_tab.name="환경·계약";tabs.add_child(contract_tab)
+	for category in ["atmosphere","temperature","water","ecology"]:
+		var row:=HBoxContainer.new();contract_tab.add_child(row)
+		var title:=label(row,{"atmosphere":"대기","temperature":"온도","water":"물","ecology":"생태"}[category]);title.custom_minimum_size.x=50;title.size_flags_horizontal=0
+		var bar:=ProgressBar.new();bar.custom_minimum_size=Vector2(200,22);bar.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(bar);environment_bars[category]=bar
 	environment_label=label(contract_tab,"")
 	button(contract_tab,"지역 복원 계약 정산…",confirm_settlement)
 	label(contract_tab,"계약은 이 개발 구역의 복원 성과를 평가합니다. 정산하면 남긴 시설·현장 로봇·창고를 인계합니다. 필요한 로봇은 먼저 회수하세요. 행성 전체의 소유권 매각과 구분됩니다.")
+	tabs.add_child(facility_tab)
 	hide()
 func label(parent: Node,text: String,size: int=15) -> Label:
 	var item:=Label.new();item.text=text;item.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;item.size_flags_horizontal=Control.SIZE_EXPAND_FILL;item.add_theme_font_size_override("font_size",size);parent.add_child(item);return item
@@ -101,8 +122,10 @@ func choices(item: OptionButton,values: Dictionary) -> void:
 	for i in item.item_count:
 		if str(item.get_item_metadata(i))==old:item.select(i)
 func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={}) -> void:
+	register_button.show();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
 	update_engineering()
+	for bar in environment_bars.values():bar.value=0
 	register_button.disabled=not value.is_empty() and (value.sites.has(id) or not value.get("active_elsewhere","").is_empty())
 	stock.value="등록된 현장 창고가 없습니다.";environment_label.text="무료 개발 등록 후 환경을 조사합니다."
 	for item in [facility,factory,robot,vein,technology,hangar]:
@@ -112,6 +135,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	if not value.get("active_elsewhere","").is_empty():guidance.text="다른 행성에서 사업 진행 중 · 등록한 사업으로 돌아가 정산하세요."
 	elif not value.sites.has(id):guidance.text="새 목적지입니다. 무료 개발 등록으로 사업을 시작하세요."
 	var current: Dictionary=value.sites.get(id,{})
+	register_button.visible=current.is_empty();guidance.visible=current.is_empty()
 	if current.is_empty():return
 	stock.value="창고 · "+FrontierCatalog.cost_text(current.inventory)+"\n배낭 · "+FrontierCatalog.cost_text(value.bags.get(actor,FrontierExpeditionBusiness.inventory()))
 	var factories: Dictionary={};var buildings: Dictionary={};var robots: Dictionary={};var veins: Dictionary={};var technologies: Dictionary={};var transported: Dictionary={}
@@ -127,6 +151,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if key in value.technologies else " · %d Cr"%int(def.price))
 	choices(facility,buildings);choices(factory,factories);choices(robot,robots);choices(vein,veins);choices(technology,technologies);choices(hangar,transported)
 	var e: Dictionary=current.environment;var scores:=FrontierEvaluator.scores(e)
+	for category in environment_bars:environment_bars[category].value=float(e.ecology) if category=="ecology" else float(scores[category])
 	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]
 	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇에 광맥을 배정하고 대기·온도·물·생태 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
@@ -161,4 +186,5 @@ func update_engineering() -> void:
 	research_cancel_button.disabled=row.get("stage") not in ["prototype","trial"]
 
 func refresh_building_cost() -> void:
+	for kind in building_cards:building_cards[kind].set_pressed_no_signal(kind==selected(building))
 	building_cost.value="건설 재료 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",selected(building)).cost)

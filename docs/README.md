@@ -71,3 +71,5 @@
 - [혼자 시작·착륙 UI 수정](production/17-solo-entry-and-surface-ui.md): 현재 시작 경로, 오프라인 원정, 착륙 시 패널 숨김과 직접 조작 검증.
 
 - [개인 설정·그래픽·시야거리 및 원경 누락 수정](production/18-client-settings-and-view-distance.md)
+
+- [원정 기본 플레이 품질 복구](production/19-play-quality-restoration.md): 첫 커밋 대비 장비·시청각 피드백·건설 카드 연결과 검증.

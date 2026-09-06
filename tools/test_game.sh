@@ -30,5 +30,5 @@ if [[ "${1:-}" == "--with-ui" ]]; then
   run_check --script res://tests/test_input.gd
   run_check --script res://tests/test_presentation.gd
   run_check --script res://tests/test_graphics.gd
-  run_check --script res://tests/test_ink_rendering.gd
+  run_check --script res://tests/test_ink_rendering.gd -- --capture-output="$GAME_TOOLS/../test-results/ink-rendering"
 fi
