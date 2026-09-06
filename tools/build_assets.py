@@ -243,19 +243,7 @@ def building(kind, p):
 
 def environment(kind,p):
     if kind.startswith("ore_"):
-        key=kind[4:]
-        rgb={"iron":(0.43,0.60,0.7),"copper":(0.9,0.42,0.16),"stone":(0.42,0.36,0.45),"ice":(0.4,0.88,0.92),"crystal":(0.62,0.32,0.94)}[key]
-        ore=material(key+" mineral",rgb,0.35 if key in ["iron","copper"] else 0.05,0.18 if key=="crystal" else 0)
-        for i in range(6):
-            a=i*2.4
-            sphere("Basalt cluster",(math.cos(a)*0.8,math.sin(a)*0.7,0.35),(0.7,0.6,0.55),p["soil"])
-        for i in range(7):
-            a=i*2.4
-            height=random.uniform(0.6,1.6)
-            if key in ["ice","crystal"]:
-                bpy.ops.mesh.primitive_cone_add(vertices=5,radius1=0.35,radius2=0.04,depth=height,location=(math.cos(a)*0.7,math.sin(a)*0.65,height/2+0.3))
-                finish(bpy.context.object,"Mineral crystal",ore)
-            else: sphere("Ore deposit",(math.cos(a)*0.65,math.sin(a)*0.65,0.65),(0.55,0.5,height*0.55),ore,1)
+        raise RuntimeError("Minerals are owned by tools/build_minerals.py")
     elif kind == "ruin":
         for x in [-1.2,1.2]:
             pillar=box("Ancient obelisk",(x,0,1.8),(0.85,0.85,3.6),p["soil"],0.15)
@@ -300,6 +288,9 @@ if "--" in sys.argv:
     if unknown: raise SystemExit("Unknown asset IDs: "+", ".join(sorted(unknown)))
     if requested: assets=[name for name in assets if name in requested]
 for kind in assets:
+    if kind.startswith("ore_"):
+        print("MINERAL_PRESERVED",kind,"— rebuild with tools/build_minerals.py",flush=True)
+        continue
     bpy.ops.wm.read_factory_settings(use_empty=True)
     p=palette()
     if kind == "manual_tool": manual_tool(p)

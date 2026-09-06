@@ -2,6 +2,8 @@ class_name FrontierCrewAuthority
 extends RefCounted
 ## Host-only admission, immutable profile references and durable transactions.
 var world: Dictionary={}
+var phase: String="lobby"
+var lobby_ready: Dictionary={}
 var peers: Dictionary={}
 var pending: Dictionary={}
 var reserved: Dictionary={}
@@ -93,7 +95,7 @@ func snapshot(viewer: int=1) -> Dictionary:
 		visible[viewer]=id
 	for id in data.members.keys():
 		if id not in visible.values():data.members.erase(id)
-	return {"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -101,6 +103,19 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if JSON.stringify(envelope).length()>int(FrontierCrewWorld.config().maximum_message_bytes):return failure("요청 크기 초과")
 	if not FrontierUniverse._finite(envelope.get("sequence"),1,9007199254740000) or envelope.sequence!=floorf(envelope.sequence):return failure("요청 순번 오류")
 	var actor: String=peers[peer]
+	if envelope.kind=="lobby_ready":
+		if phase!="lobby" or not envelope.args.get("value") is bool:return failure("대기실 준비 상태 오류")
+		lobby_ready[actor]=envelope.args.value
+		return {"ok":true,"sequence":envelope.sequence}
+	if envelope.kind=="start_game":
+		if phase!="lobby" or peer!=1:return failure("대기실에서 호스트만 게임을 시작할 수 있습니다.")
+		if not pending.is_empty():return failure("참가자 동기화가 끝날 때까지 기다려 주세요.")
+		for id in peers.values():
+			if id!=world.crew.owner_id and not lobby_ready.get(id,false):return failure("모든 참가자의 준비 완료가 필요합니다.")
+		if not save_world.call(world):return failure("세계 저장에 실패해 시작하지 않았습니다.")
+		phase="playing";lobby_ready.clear()
+		return {"ok":true,"sequence":envelope.sequence}
+	if phase!="playing":return failure("호스트가 게임을 시작한 뒤 사용할 수 있습니다.")
 	var sequence:=int(envelope.sequence)
 	var key: String=actor+":"+str(sequence)
 	var digest:=JSON.stringify({"kind":envelope.kind,"args":envelope.args,"revision":envelope.get("revision")},"",true).sha256_text()
@@ -137,7 +152,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
 func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false) -> bool:
-	if stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
+	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	var aim: Vector3=Vector3.FORWARD if aim_value is Array and aim_value.is_empty() else FrontierCrewSurface.direction(aim_value)
@@ -159,7 +174,7 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	var draft:=world.duplicate(true)
 	FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id);draft.crew.revision+=1
 	if not save_world.call(draft):stopped=true;error="연결 종료 상태를 저장하지 못해 세계 진행을 정지했습니다.";return false
-	world=draft;peers.erase(peer)
+	world=draft;peers.erase(peer);lobby_ready.erase(id)
 	if reserve_slot and peer!=1:reserved[id]=now+float(FrontierCrewWorld.config().reconnect_seconds)
 	return true
 func close() -> bool:

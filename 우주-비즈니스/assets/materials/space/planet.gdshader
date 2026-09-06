@@ -3,6 +3,7 @@ shader_type spatial;
 uniform vec4 land_color : source_color = vec4(.32,.24,.20,1);
 uniform vec4 sea_color : source_color = vec4(.06,.18,.23,1);
 uniform vec4 cloud_color : source_color = vec4(.75,.78,.71,1);
+uniform bool gas_bands = false;
 uniform float seed_offset = 0.;
 uniform float sea_level = .43;
 varying vec3 local_position;
@@ -18,5 +19,10 @@ void fragment(){
  float strata=smoothstep(.49,.51,noise3(p*22.));surface*=mix(.92,1.03,strata);
  vec3 wind=p;wind.x+=sin(p.y*9.)*.10;wind.z+=TIME*.001;
  float cloud=smoothstep(.59,.68,fbm(wind*6.));
+ if(gas_bands){
+  float band=sin(p.y*39.+fbm(p*5.)*3.2+seed_offset);
+  surface=mix(sea_color.rgb,land_color.rgb,smoothstep(-.2,.2,band));
+  cloud=smoothstep(.62,.74,fbm(wind*8.))*.35;
+ }
  ALBEDO=mix(surface,cloud_color.rgb,cloud*.84);ROUGHNESS=.92;
 }

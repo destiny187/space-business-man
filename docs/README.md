@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-06 최신 시작 구조: [무작위 은하·지구 출발·별도 대기실](production/20-galaxy-start-and-lobby.md). 새 생성기/세션 흐름과 기존 1.2 및 이전 확장 검증을 구분한다.
+
 루트 진입점: [AGENTS.md](../AGENTS.md). 이 문서 묶음은 최초 아이디어와 변경된 목표를 시스템별로 관리한다. **2026-09-06 현재 목표는 단일 은하의 탐사·티어/시드 행성·지표/지하·발견 연구·표본 이식·외계문명·호스트 포함 6인 공동 승선으로 확장했다.** 먼저 [고도화 계획](planning/06-exploration-expansion-roadmap.md)과 [은하·티어·시드](game/11-galaxy-tiers-and-seeds.md)를 읽는다. 현재 1.2의 구매 기반 실행은 [구현 현황](planning/03-implementation-status.md), 사용법은 [실행 안내](release/01-playing-and-building.md)를 따른다. 새 문서가 새 기능 구현을 의미하지 않는다.
 
 ## 상태 표기
@@ -19,6 +21,7 @@
 | --- | --- |
 | [게임 비전과 핵심 루프](game/01-vision-and-loop.md) | 세계관, 플레이어 역할, 재미의 중심, 한 회차의 흐름 |
 | [행성·자원·건축](game/02-planets-resources-and-building.md) | 행성 특성, 수동 채집, 자원, 시설 배치, 초반 경험·화면 |
+| [광물·보석·강화](game/14-minerals-gems-and-enhancement.md) | 행성별 광물·최고급 공통 소재·지하 보석·캐릭터/장비 강화 목표·미정 |
 | [로봇·자동화](game/03-robots-and-automation.md) | 제작, 랜덤 등급·특성, 작업·운반·전력·고장 |
 | [테라포밍·행성 판매](game/04-terraforming-and-sales.md) | 환경 상태, 설비 효과, 평가 등급, 매각 절차·가격 |
 | [경제·기술·계승](game/05-economy-and-progression.md) | 탐사 투자·계약·매각, 기술 상점, 자산 회수·수송 |
@@ -76,6 +79,13 @@
 
 - [에셋 버전 관리](technical/05-asset-version-control.md): Git LFS, 생성 캡처 제외, 새 환경 설치와 이력 보존.
 
+- [태양계 8행성 Blender 제작](production/21-solar-system-blender.md): 원본 8개·근거리/원거리 GLB 16개·공통 INK·실제 항해 렌더.
+
 ## 지상 장비 구조 갱신
 
 [아이템·제작·장착 규칙](game/13-inventory-and-equipment.md) · [구현·Blender/INK 렌더·검증](production/21-ground-equipment.md). 현재 원정의 만능 도구 경로를 대체한다.
+
+- [광물·보석 19종 Blender 제작·시드용 정의](production/22-mineral-assets.md): 기존 광석 모델 교체, 신규 분포·강화는 후속.
+
+- [공통 UI/UX 가이드 FIELD v1](production/22-uiux-guide.md): 시각 표현 우선, 공통 테마·HUD·선택·장착·피드백 기준.
+- [지상 HUD·아이템 UI/UX 적용](production/23-uiux-implementation.md): 실제 3D 미리보기·격자·클릭/드래그 슬롯과 확인 범위.

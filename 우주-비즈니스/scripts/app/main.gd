@@ -283,8 +283,9 @@ func _title_menu(column: VBoxContainer) -> void:
 	_paragraph(column,"작은 위성 하나.\n당신의 첫 번째 우주 사업.",PAPER)
 	_paragraph(column,"직접 채집하고, 로봇에게 맡기고,\n황무지에 새로운 내일을 만드세요.")
 	var spacer := Control.new(); spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL; column.add_child(spacer)
-	var solo_label: String="혼자 이어하기  →" if FileAccess.file_exists("user://solo_world.json") or FileAccess.file_exists("user://solo_world.json.bak") else "혼자 게임 시작  →"
+	var solo_label: String="혼자 이어하기  →" if FileAccess.file_exists(FrontierCrewExpedition.selected_world_path(true)) or FileAccess.file_exists(FrontierCrewExpedition.selected_world_path(true)+".bak") else "혼자 게임 시작  →"
 	_primary(_button(column,solo_label,func(): _start_expedition("solo"))).name="SoloStart"
+	_button(column,"새 은하에서 혼자 시작",func(): _start_expedition("solo_new"))
 	_button(column,"함께 플레이 · 최대 6명",func(): _start_expedition("multiplayer")).name="MultiplayerStart"
 	_button(column,"설정 · 그래픽 / 시야거리 [F10]",func():FrontierClientSettings.ensure(get_tree()).open()).name="Settings"
 	_button(column,"종료",_quit_game)

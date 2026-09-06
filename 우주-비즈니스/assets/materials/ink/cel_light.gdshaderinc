@@ -1,4 +1,5 @@
 uniform float rough = .5;
+uniform float highlight_strength = 1.;
 uniform float metal = 0.;
 void light(){
  float n=dot(NORMAL,LIGHT);
@@ -11,5 +12,5 @@ void light(){
  vec3 half_vector=normalize(VIEW+LIGHT);
  float highlight=pow(max(dot(NORMAL,half_vector),0.),mix(110.,18.,rough));
  float cut=smoothstep(.52,.57,highlight);
- SPECULAR_LIGHT+=LIGHT_COLOR*cut*shadow*(.09+metal*.28)/PI;
+ SPECULAR_LIGHT+=LIGHT_COLOR*cut*shadow*(.09+metal*.28)*highlight_strength/PI;
 }

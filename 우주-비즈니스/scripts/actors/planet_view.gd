@@ -243,7 +243,7 @@ func rebuild(p: Dictionary) -> void:
 		orbital_camera.look_at(Vector3(0,0,-1))
 		return
 	for node in p.nodes:
-		if node.amount > 0: _entity("resource",node.id,"ore_"+node.resource,node.position,1.6,float(node.scale))
+		if node.amount > 0: _entity("resource",node.id,"ore_"+node.resource,node.position,1.6,float(node.scale),int(p.seed))
 	for event in p.events: _entity("event",event.id,event.kind,event.position,2.5)
 	var location: Vector2 = FrontierCampaign.point(p.player.position)
 	player.position = Vector3(location.x,0.2,location.y)
@@ -408,14 +408,19 @@ func model(key: String) -> Node3D:
 func _style_meshes(node: Node) -> void:
 	FrontierInkStyle.apply(node,material_cache)
 
-func _entity(kind: String,id: String,asset: String,location: Array,radius: float,scale_value: float = 1.0) -> Node3D:
+func _entity(kind: String,id: String,asset: String,location: Array,radius: float,scale_value: float = 1.0,planet_seed: int = 0) -> Node3D:
 	var body := StaticBody3D.new()
 	body.set_meta("kind",kind)
 	body.set_meta("id",id)
 	body.position = Vector3(float(location[0]),0,float(location[1]))
+	var appearance: Dictionary={}
+	if kind=="resource":
+		appearance=FrontierMinerals.appearance(asset.trim_prefix("ore_"),planet_seed,id)
+		if not appearance.is_empty():asset=String(appearance.model).get_file().get_basename()
 	var visual: Node3D = model(asset)
 	visual.scale = Vector3.ONE*scale_value
 	visual.set_meta("original_scale",visual.scale)
+	FrontierMinerals.apply_appearance(visual,appearance,scale_value)
 	body.add_child(visual)
 	if asset != "charger":
 		var collision := CollisionShape3D.new()

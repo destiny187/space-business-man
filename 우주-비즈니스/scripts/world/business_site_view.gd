@@ -15,6 +15,7 @@ func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terra
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
 	var root:=StaticBody3D.new();root.set_meta("business_kind",kind);root.set_meta("business_id",id);root.position=p
 	var visual: Node3D=prepared_models[model].instantiate();FrontierInkStyle.apply(visual,cache);root.add_child(visual)
+	if kind=="vein":FrontierMinerals.apply_appearance(visual,_vein_appearance(id,model))
 	var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=2.0;collision.shape=shape;collision.position.y=1;root.add_child(collision)
 	var label:=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.004;label.position.y=3.0;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;label.render_priority=110;label.outline_render_priority=109;root.add_child(label)
 	root.set_meta("label",label);root.set_meta("visual",visual);root.set_meta("parts",visual.find_children("Anim_*","Node3D",true,false))
@@ -33,7 +34,7 @@ func accept(value: Dictionary) -> void:
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"ore_"+row.resource,p,1.1,"vein");continue
 		nodes[row.id].get_meta("label").text="%s · %d\nF 채광"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining[row.id])]
-		nodes[row.id].get_meta("visual").scale=Vector3.ONE*lerpf(.55,1,float(site.remaining[row.id])/float(row.capacity))
+		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.remaining[row.id])/float(row.capacity))
 	for row in site.buildings.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):
@@ -79,7 +80,12 @@ func _process(dt: float) -> void:
 			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_x(-node.position.distance_to(previous)*4)
 			elif node.get_meta("working",false) and (part.name.begins_with("Anim_Fan") or part.name.begins_with("Anim_Drill")):part.rotate_y(dt*6)
 
+func _vein_appearance(id: String,model: String) -> Dictionary:
+	return FrontierMinerals.appearance(model.trim_prefix("ore_").trim_suffix("_b"),int(body.get("streams",{}).get("resource",body.get("seed",0))),id)
 func _queue_entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> void:
+	if kind=="vein":
+		var appearance: Dictionary=_vein_appearance(id,model)
+		if not appearance.is_empty():model=String(appearance.model).get_file().get_basename()
 	pending_models[id]={"model":model,"point":p,"radius":radius,"kind":kind}
 func _load_one_model() -> void:
 	for model in requested_models.keys():

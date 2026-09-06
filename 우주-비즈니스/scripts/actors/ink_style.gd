@@ -27,7 +27,7 @@ static func material(original: StandardMaterial3D, cache: Dictionary) -> Materia
 	mat.set_shader_parameter("base_color",original.albedo_color)
 	mat.set_shader_parameter("rough",roughness)
 	mat.set_shader_parameter("metal",original.metallic)
-	mat.set_shader_parameter("use_vertex_color",original.vertex_color_use_as_albedo)
+	mat.set_shader_parameter("use_vertex_color",original.vertex_color_use_as_albedo or label.ends_with("_vertex_paint"))
 	mat.set_shader_parameter("emission_color",original.emission)
 	mat.set_shader_parameter("emission_strength",original.emission_energy_multiplier if original.emission_enabled else 0.)
 	cache[key] = mat

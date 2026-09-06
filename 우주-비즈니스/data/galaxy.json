@@ -1,14 +1,92 @@
 {
-  "generator_version": "galaxy-v2",
+  "generator_version": "galaxy-v3",
   "catalog_version": "nasa-ps-20260906",
   "planet_count": 1000000,
-  "planets_per_system": 4,
+  "planets_per_system": 8,
   "systems_per_sector": 5000,
   "outer_radius": 500.0,
   "inner_radius": 100.0,
-  "band_names": ["외곽 개척권", "외곽 항로", "중간 성역", "내곽 성역", "중심 접근권"],
-  "tier_weights": [[85,15,0,0,0],[15,70,15,0,0],[0,15,70,15,0],[0,0,15,70,15],[0,0,0,15,85]],
-  "planet_kinds": ["basalt", "glacial", "sulfur"],
+  "band_names": [
+    "외곽 개척권",
+    "외곽 항로",
+    "중간 성역",
+    "내곽 성역",
+    "중심 접근권"
+  ],
+  "tier_weights": [
+    [
+      85,
+      15,
+      0,
+      0,
+      0
+    ],
+    [
+      15,
+      70,
+      15,
+      0,
+      0
+    ],
+    [
+      0,
+      15,
+      70,
+      15,
+      0
+    ],
+    [
+      0,
+      0,
+      15,
+      70,
+      15
+    ],
+    [
+      0,
+      0,
+      0,
+      15,
+      85
+    ]
+  ],
+  "planet_kinds": [
+    "basalt",
+    "glacial",
+    "sulfur",
+    "gas_giant",
+    "ice_giant"
+  ],
   "starting_seed": 71491,
-  "flight": {"cruise_speed": 280.0, "boost_speed": 700.0, "acceleration": 95.0, "arrival_clearance": 600.0, "jump_seconds": 3.5}
+  "flight": {
+    "cruise_speed": 280.0,
+    "boost_speed": 700.0,
+    "acceleration": 95.0,
+    "arrival_clearance": 600.0,
+    "jump_seconds": 3.5
+  },
+  "starting_ordinal": 2,
+  "orbit_spacing": 1700.0,
+  "orbit_inner_radius": 2300.0,
+  "orbit_period_seconds": 18000.0,
+  "solar_names": [
+    "수성",
+    "금성",
+    "지구",
+    "화성",
+    "목성",
+    "토성",
+    "천왕성",
+    "해왕성"
+  ],
+  "solar_kinds": [
+    "basalt",
+    "sulfur",
+    "basalt",
+    "basalt",
+    "gas_giant",
+    "gas_giant",
+    "ice_giant",
+    "ice_giant"
+  ]
 }

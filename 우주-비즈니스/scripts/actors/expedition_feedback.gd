@@ -73,7 +73,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 	var point: Vector3=request.point
 	match request.kind:
 		"surface_attack":
-			recoil=1;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);effects.burst(point,Color("ffb578"),10);audio.play("sfx_combat_pulse");show_cue("펄스 발사")
+			recoil=1;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);effects.burst(point,Color("ffb578"),10);audio.play("sfx_combat_pulse")
 		"equipment_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
 		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3
 		"surface_dig":

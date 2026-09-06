@@ -51,7 +51,8 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 	for orbit in int(cfg.planets_per_system): ids.append(body_id(m, index * int(cfg.planets_per_system) + orbit))
 	return {"id": id, "ordinal": index, "seed": seed_value, "band": band, "progress": progress,
 		"sector_id": m.id + ":sector:%d" % (index / int(cfg.systems_per_sector)),
-		"map_position": [cos(angle) * radius, sin(angle) * radius], "body_ids": ids}
+		"map_position": [cos(angle) * radius, sin(angle) * radius], "body_ids": ids,
+		"star": {"id":id+":star", "name":"태양" if index==0 else "항성 %06d" % (index+1), "spectral_type":"G" if index==0 else ["M","K","G","F","A"][derive(seed_value,"star")%5]}}
 
 static func body(m: Dictionary, ordinal: int) -> Dictionary:
 	if ordinal < 0 or ordinal >= int(m.settings.planet_count): return {}
@@ -61,19 +62,52 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 	var seed_value: int = derive(int(s.seed), id)
 	var streams: Dictionary = {}
 	for stream in STREAMS: streams[stream] = derive(seed_value, id + ":" + stream)
-	return {"id": id, "ordinal": ordinal, "system_id": s.id, "system_ordinal": s.ordinal,
+	var result: Dictionary={"id": id, "ordinal": ordinal, "system_id": s.id, "system_ordinal": s.ordinal,
 		"seed": seed_value, "name": "개척 %08d" % (ordinal + 1),
 		"planet_tier": pick_tier(streams.tier, cfg.tier_weights[int(s.band)]),
 		"kind": cfg.planet_kinds[ordinal % cfg.planet_kinds.size()], "streams": streams,
 		"origin": "fictional", "reference_id": "", "surface_origin": "seed_generated"}
+	if cfg.generator_version=="galaxy-v3":
+		var orbit: int=ordinal%int(cfg.planets_per_system)
+		result.kind=cfg.planet_kinds[derive(seed_value,"body_kind")%cfg.planet_kinds.size()]
+		if int(s.ordinal)==0:
+			result.name=cfg.solar_names[orbit];result.kind=cfg.solar_kinds[orbit]
+			result.origin="solar_reference";result.reference_id="solar:"+str(orbit);result.planet_tier=1
+		result.landable=result.kind not in ["gas_giant","ice_giant"]
+		result.orbit={"radius":float(cfg.orbit_inner_radius)+orbit*float(cfg.orbit_spacing),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
+		result.star_id=s.star.id
+	return result
+
+static func landable(body_value: Dictionary) -> bool:
+	return body_value.get("landable",true)
+
+static func kind_label(body_value: Dictionary) -> String:
+	return {"basalt":"암석형", "glacial":"빙하 암석형", "sulfur":"황산 암석형", "gas_giant":"가스 거대행성", "ice_giant":"얼음 거대행성"}.get(body_value.kind,"미확인")
+
+static func radius(body_value: Dictionary) -> float:
+	return (650.0 if not landable(body_value) else 240.0)+float(body_value.seed%190)
+
+static func navigation_radius(body_value: Dictionary) -> float:
+	# Ring geometry is part of the safe approach envelope, never a landing surface.
+	var extent: float={"solar:5":2.26,"solar:6":1.805}.get(body_value.get("reference_id",""),1.0)
+	return radius(body_value)*extent
+
+static func position(m: Dictionary,ordinal: int,elapsed: float=0.0) -> Vector3:
+	if m.is_empty() or m.settings.generator_version=="galaxy-v2":
+		return [Vector3(-620,-130,-2400),Vector3(1150,340,-3600),Vector3(-2100,450,-4900),Vector3(2400,-500,-6000)][ordinal%4]
+	var b:=body(m,ordinal)
+	var angle: float=float(b.orbit.phase)+elapsed/float(b.orbit.period)*TAU
+	return Vector3(cos(angle)*float(b.orbit.radius),0,sin(angle)*float(b.orbit.radius))
 
 static func body_from_id(m: Dictionary, id: String) -> Dictionary:
 	return body(m, ordinal_of(m, id))
 
 static func new_world(seed_value: int) -> Dictionary:
 	var manifest: Dictionary = generate(seed_value)
+	var start: int=int(manifest.settings.get("starting_ordinal",0))
+	var point:=position(manifest,start)+Vector3(0,0,radius(body(manifest,start))+float(manifest.settings.flight.arrival_clearance))
 	return {"version": 2, "manifest": manifest, "manifest_hash": fingerprint(manifest),
-		"visited": {}, "terrain_edits": {}, "location": body_id(manifest, 0), "flight_position": [0.0, 0.0, 80.0]}
+		"visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
 
 static func fingerprint(value: Dictionary) -> String:
 	return JSON.stringify(JSON.parse_string(JSON.stringify(value)), "", true).sha256_text()
@@ -82,9 +116,9 @@ static func validate_world(value: Variant) -> String:
 	if not value is Dictionary or value.get("version") != 2: return "지원하지 않는 탐험 저장 버전입니다. 원본을 보존하세요."
 	if not value.get("manifest") is Dictionary: return "은하 생성 기록이 없습니다."
 	var m: Dictionary = value.manifest
-	if not m.get("settings") is Dictionary or m.settings.get("generator_version") != "galaxy-v2": return "호환되는 은하 생성기가 필요합니다."
+	if not m.get("settings") is Dictionary or m.settings.get("generator_version") not in ["galaxy-v2","galaxy-v3"]: return "호환되는 은하 생성기가 필요합니다."
 	if value.get("manifest_hash") != fingerprint(m): return "은하 원형 기록이 손상됐습니다."
-	if m.settings.get("planet_count") != 1000000 or m.settings.get("planets_per_system") != 4: return "은하 주소 범위가 올바르지 않습니다."
+	if m.settings.get("planet_count") != 1000000 or m.settings.get("planets_per_system") != (8 if m.settings.generator_version=="galaxy-v3" else 4): return "은하 주소 범위가 올바르지 않습니다."
 	if not m.get("id") is String or not m.get("catalog") is Dictionary: return "은하 형식이 올바르지 않습니다."
 	if not value.get("visited") is Dictionary or not value.get("terrain_edits") is Dictionary: return "세계 변경 기록 형식이 올바르지 않습니다."
 	if not value.get("location") is String or ordinal_of(m, value.location) < 0: return "저장 위치를 찾을 수 없습니다."

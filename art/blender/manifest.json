@@ -127,48 +127,43 @@
   },
   {
     "id": "ore_iron",
-    "source": "art/blender/ore_iron.blend",
+    "source": "art/blender/minerals/iron.blend",
     "game": "우주-비즈니스/assets/models/ore_iron.glb",
-    "editable_objects": 13,
-    "export_objects": 2,
-    "generator": "tools/build_assets.py",
-    "blender": "5.2.1 LTS"
+    "generator": "tools/build_minerals.py",
+    "blender": "5.2.1 LTS",
+    "triangles": 1332
   },
   {
     "id": "ore_copper",
-    "source": "art/blender/ore_copper.blend",
+    "source": "art/blender/minerals/copper.blend",
     "game": "우주-비즈니스/assets/models/ore_copper.glb",
-    "editable_objects": 13,
-    "export_objects": 2,
-    "generator": "tools/build_assets.py",
-    "blender": "5.2.1 LTS"
+    "generator": "tools/build_minerals.py",
+    "blender": "5.2.1 LTS",
+    "triangles": 5724
   },
   {
     "id": "ore_stone",
-    "source": "art/blender/ore_stone.blend",
+    "source": "art/blender/minerals/stone.blend",
     "game": "우주-비즈니스/assets/models/ore_stone.glb",
-    "editable_objects": 13,
-    "export_objects": 2,
-    "generator": "tools/build_assets.py",
-    "blender": "5.2.1 LTS"
+    "generator": "tools/build_minerals.py",
+    "blender": "5.2.1 LTS",
+    "triangles": 3332
   },
   {
     "id": "ore_ice",
-    "source": "art/blender/ore_ice.blend",
+    "source": "art/blender/minerals/ice.blend",
     "game": "우주-비즈니스/assets/models/ore_ice.glb",
-    "editable_objects": 13,
-    "export_objects": 2,
-    "generator": "tools/build_assets.py",
-    "blender": "5.2.1 LTS"
+    "generator": "tools/build_minerals.py",
+    "blender": "5.2.1 LTS",
+    "triangles": 1332
   },
   {
     "id": "ore_crystal",
-    "source": "art/blender/ore_crystal.blend",
+    "source": "art/blender/minerals/crystal.blend",
     "game": "우주-비즈니스/assets/models/ore_crystal.glb",
-    "editable_objects": 13,
-    "export_objects": 2,
-    "generator": "tools/build_assets.py",
-    "blender": "5.2.1 LTS"
+    "generator": "tools/build_minerals.py",
+    "blender": "5.2.1 LTS",
+    "triangles": 2060
   },
   {
     "id": "ruin",

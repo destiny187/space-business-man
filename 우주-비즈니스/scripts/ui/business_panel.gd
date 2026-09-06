@@ -32,9 +32,10 @@ var research_trial_button: Button
 var research_install_button: Button
 var research_cancel_button: Button
 func _ready() -> void:
+	theme=FrontierInterfaceStyle.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);offset_left=24;offset_right=minf(900,get_viewport().get_visible_rect().size.x-24);offset_top=110;offset_bottom=-24
 	get_viewport().size_changed.connect(func():offset_right=minf(900,get_viewport().get_visible_rect().size.x-24))
-	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.065,.09,.97);style.set_content_margin_all(18);style.set_corner_radius_all(8);add_theme_stylebox_override("panel",style)
+	var style:=FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,20);add_theme_stylebox_override("panel",style)
 	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(scroll)
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
 	label(column,"원정 사업 · B 닫기",24)

@@ -87,8 +87,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if landed(world):return "이미 착륙했습니다."
 		if actor!=crew.pilot_id or crew.navigation.mode!="idle":return "궤도 접근을 마친 조종사가 착륙할 수 있습니다."
 		var body:=FrontierUniverse.body(world.manifest,int(crew.navigation.target))
-		var radius:=240.0+float(body.seed%190)
-		if world.location!=body.id or FrontierCrewWorld.vector(crew.navigation.position).distance_to(FrontierCrewNavigation.center(int(crew.navigation.target)))-radius>float(world.manifest.settings.flight.arrival_clearance)+3:return "선정 행성의 궤도까지 접근하세요."
+		if not FrontierUniverse.landable(body):return "가스/얼음 거대행성은 착륙할 표면이 없습니다. 궤도 탐사만 가능합니다."
+		var radius:=FrontierUniverse.radius(body)
+		if world.location!=body.id or FrontierCrewWorld.vector(crew.navigation.position).distance_to(FrontierCrewNavigation.center(int(crew.navigation.target),world.manifest,float(crew.navigation.get("orbit_time",0))))-radius>float(world.manifest.settings.flight.arrival_clearance)+3:return "선정 행성의 궤도까지 접근하세요."
 		for id in active.values():
 			if not crew.members[id].aboard or not crew.members[id].ready:return "연결된 승무원 모두 착륙 준비를 완료해야 합니다."
 		if not world.has("terrain_settings"):

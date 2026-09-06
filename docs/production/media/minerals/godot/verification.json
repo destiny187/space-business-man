@@ -1,0 +1,16 @@
+{
+	"assets": 38,
+	"deterministic_variants": true,
+	"device": "Apple M2 (Apple8)",
+	"failures": [],
+	"production_loader": true,
+	"renderer": "forward_plus",
+	"scope": "asset render, production entity loader, seeded height-field contact; full mining/network behavior not re-tested",
+	"surface_contact_resources": [
+		"iron",
+		"copper",
+		"stone",
+		"ice",
+		"crystal"
+	]
+}

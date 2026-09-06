@@ -1,0 +1,934 @@
+[
+  {
+    "id": "iron",
+    "name": "철",
+    "category": "industrial",
+    "color": "7798ae",
+    "model": "res://assets/models/ore_iron.glb",
+    "source": "art/blender/minerals/iron.blend",
+    "geometry": "mineral-only",
+    "triangles": 1332,
+    "geology_tags": [
+      "metallic",
+      "volcanic"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_iron.glb",
+        "source": "art/blender/minerals/iron.blend",
+        "triangles": 1332
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_iron_b.glb",
+        "source": "art/blender/minerals/iron_b.blend",
+        "triangles": 1020
+      }
+    ]
+  },
+  {
+    "id": "copper",
+    "name": "구리",
+    "category": "industrial",
+    "color": "d77d47",
+    "model": "res://assets/models/ore_copper.glb",
+    "source": "art/blender/minerals/copper.blend",
+    "geometry": "mineral-only",
+    "triangles": 5724,
+    "geology_tags": [
+      "hydrothermal",
+      "metallic"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_copper.glb",
+        "source": "art/blender/minerals/copper.blend",
+        "triangles": 5724
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_copper_b.glb",
+        "source": "art/blender/minerals/copper_b.blend",
+        "triangles": 4344
+      }
+    ]
+  },
+  {
+    "id": "aluminum",
+    "name": "알루미늄",
+    "category": "industrial",
+    "color": "bbc8d2",
+    "model": "res://assets/models/ore_aluminum.glb",
+    "source": "art/blender/minerals/aluminum.blend",
+    "geometry": "mineral-only",
+    "triangles": 1396,
+    "geology_tags": [
+      "weathered",
+      "rocky"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_aluminum.glb",
+        "source": "art/blender/minerals/aluminum.blend",
+        "triangles": 1396
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_aluminum_b.glb",
+        "source": "art/blender/minerals/aluminum_b.blend",
+        "triangles": 1004
+      }
+    ]
+  },
+  {
+    "id": "silicon",
+    "name": "규소",
+    "category": "industrial",
+    "color": "667f98",
+    "model": "res://assets/models/ore_silicon.glb",
+    "source": "art/blender/minerals/silicon.blend",
+    "geometry": "mineral-only",
+    "triangles": 1412,
+    "geology_tags": [
+      "silicate",
+      "rocky"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_silicon.glb",
+        "source": "art/blender/minerals/silicon.blend",
+        "triangles": 1412
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_silicon_b.glb",
+        "source": "art/blender/minerals/silicon_b.blend",
+        "triangles": 1020
+      }
+    ]
+  },
+  {
+    "id": "titanium",
+    "name": "티타늄",
+    "category": "industrial",
+    "color": "8b91b2",
+    "model": "res://assets/models/ore_titanium.glb",
+    "source": "art/blender/minerals/titanium.blend",
+    "geometry": "mineral-only",
+    "triangles": 1284,
+    "geology_tags": [
+      "volcanic",
+      "metallic"
+    ],
+    "depth_tags": [
+      "middle",
+      "deep"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_titanium.glb",
+        "source": "art/blender/minerals/titanium.blend",
+        "triangles": 1284
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_titanium_b.glb",
+        "source": "art/blender/minerals/titanium_b.blend",
+        "triangles": 988
+      }
+    ]
+  },
+  {
+    "id": "nickel",
+    "name": "니켈",
+    "category": "industrial",
+    "color": "94aa85",
+    "model": "res://assets/models/ore_nickel.glb",
+    "source": "art/blender/minerals/nickel.blend",
+    "geometry": "mineral-only",
+    "triangles": 560,
+    "geology_tags": [
+      "metallic",
+      "ultramafic"
+    ],
+    "depth_tags": [
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_nickel.glb",
+        "source": "art/blender/minerals/nickel.blend",
+        "triangles": 560
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_nickel_b.glb",
+        "source": "art/blender/minerals/nickel_b.blend",
+        "triangles": 400
+      }
+    ]
+  },
+  {
+    "id": "lithium",
+    "name": "리튬",
+    "category": "industrial",
+    "color": "e5b4ce",
+    "model": "res://assets/models/ore_lithium.glb",
+    "source": "art/blender/minerals/lithium.blend",
+    "geometry": "mineral-only",
+    "triangles": 2060,
+    "geology_tags": [
+      "pegmatite",
+      "arid"
+    ],
+    "depth_tags": [
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_lithium.glb",
+        "source": "art/blender/minerals/lithium.blend",
+        "triangles": 2060
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_lithium_b.glb",
+        "source": "art/blender/minerals/lithium_b.blend",
+        "triangles": 1372
+      }
+    ]
+  },
+  {
+    "id": "sulfur",
+    "name": "황",
+    "category": "industrial",
+    "color": "efcd32",
+    "model": "res://assets/models/ore_sulfur.glb",
+    "source": "art/blender/minerals/sulfur.blend",
+    "geometry": "mineral-only",
+    "triangles": 1940,
+    "geology_tags": [
+      "volcanic",
+      "hydrothermal"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_sulfur.glb",
+        "source": "art/blender/minerals/sulfur.blend",
+        "triangles": 1940
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_sulfur_b.glb",
+        "source": "art/blender/minerals/sulfur_b.blend",
+        "triangles": 1540
+      }
+    ]
+  },
+  {
+    "id": "phosphate",
+    "name": "인산염",
+    "category": "industrial",
+    "color": "9cceab",
+    "model": "res://assets/models/ore_phosphate.glb",
+    "source": "art/blender/minerals/phosphate.blend",
+    "geometry": "mineral-only",
+    "triangles": 1652,
+    "geology_tags": [
+      "sedimentary",
+      "hydrothermal"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_phosphate.glb",
+        "source": "art/blender/minerals/phosphate.blend",
+        "triangles": 1652
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_phosphate_b.glb",
+        "source": "art/blender/minerals/phosphate_b.blend",
+        "triangles": 1324
+      }
+    ]
+  },
+  {
+    "id": "rare_earth",
+    "name": "희토류",
+    "category": "industrial",
+    "color": "b88b6a",
+    "model": "res://assets/models/ore_rare_earth.glb",
+    "source": "art/blender/minerals/rare_earth.blend",
+    "geometry": "mineral-only",
+    "triangles": 1940,
+    "geology_tags": [
+      "alkaline",
+      "pegmatite"
+    ],
+    "depth_tags": [
+      "middle",
+      "deep"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_rare_earth.glb",
+        "source": "art/blender/minerals/rare_earth.blend",
+        "triangles": 1940
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_rare_earth_b.glb",
+        "source": "art/blender/minerals/rare_earth_b.blend",
+        "triangles": 1540
+      }
+    ]
+  },
+  {
+    "id": "stellarite_ore",
+    "name": "성핵광",
+    "category": "industrial",
+    "color": "ffc779",
+    "model": "res://assets/models/ore_stellarite_ore.glb",
+    "source": "art/blender/minerals/stellarite_ore.blend",
+    "geometry": "mineral-only",
+    "triangles": 2484,
+    "geology_tags": [
+      "stellar_anomaly"
+    ],
+    "depth_tags": [
+      "deep",
+      "cavity"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": true,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_stellarite_ore.glb",
+        "source": "art/blender/minerals/stellarite_ore.blend",
+        "triangles": 2484
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_stellarite_ore_b.glb",
+        "source": "art/blender/minerals/stellarite_ore_b.blend",
+        "triangles": 1632
+      }
+    ]
+  },
+  {
+    "id": "darkstone_ore",
+    "name": "암흑광",
+    "category": "industrial",
+    "color": "494361",
+    "model": "res://assets/models/ore_darkstone_ore.glb",
+    "source": "art/blender/minerals/darkstone_ore.blend",
+    "geometry": "mineral-only",
+    "triangles": 1500,
+    "geology_tags": [
+      "dark_anomaly"
+    ],
+    "depth_tags": [
+      "deep",
+      "cavity"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": true,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_darkstone_ore.glb",
+        "source": "art/blender/minerals/darkstone_ore.blend",
+        "triangles": 1500
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_darkstone_ore_b.glb",
+        "source": "art/blender/minerals/darkstone_ore_b.blend",
+        "triangles": 924
+      }
+    ]
+  },
+  {
+    "id": "ruby",
+    "name": "루비",
+    "category": "gem",
+    "color": "d83262",
+    "model": "res://assets/models/ore_ruby.glb",
+    "source": "art/blender/minerals/ruby.blend",
+    "geometry": "mineral-only",
+    "triangles": 2516,
+    "geology_tags": [
+      "metamorphic",
+      "hot"
+    ],
+    "depth_tags": [
+      "shallow",
+      "middle",
+      "deep"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_ruby.glb",
+        "source": "art/blender/minerals/ruby.blend",
+        "triangles": 2516
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_ruby_b.glb",
+        "source": "art/blender/minerals/ruby_b.blend",
+        "triangles": 1900
+      }
+    ]
+  },
+  {
+    "id": "sapphire",
+    "name": "사파이어",
+    "category": "gem",
+    "color": "3b79dc",
+    "model": "res://assets/models/ore_sapphire.glb",
+    "source": "art/blender/minerals/sapphire.blend",
+    "geometry": "mineral-only",
+    "triangles": 1796,
+    "geology_tags": [
+      "metamorphic",
+      "high_pressure"
+    ],
+    "depth_tags": [
+      "middle",
+      "deep"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_sapphire.glb",
+        "source": "art/blender/minerals/sapphire.blend",
+        "triangles": 1796
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_sapphire_b.glb",
+        "source": "art/blender/minerals/sapphire_b.blend",
+        "triangles": 1612
+      }
+    ]
+  },
+  {
+    "id": "emerald",
+    "name": "에메랄드",
+    "category": "gem",
+    "color": "36b987",
+    "model": "res://assets/models/ore_emerald.glb",
+    "source": "art/blender/minerals/emerald.blend",
+    "geometry": "mineral-only",
+    "triangles": 2036,
+    "geology_tags": [
+      "hydrothermal",
+      "groundwater"
+    ],
+    "depth_tags": [
+      "middle",
+      "deep"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_emerald.glb",
+        "source": "art/blender/minerals/emerald.blend",
+        "triangles": 2036
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_emerald_b.glb",
+        "source": "art/blender/minerals/emerald_b.blend",
+        "triangles": 1300
+      }
+    ]
+  },
+  {
+    "id": "diamond",
+    "name": "다이아몬드",
+    "category": "gem",
+    "color": "c9e9f0",
+    "model": "res://assets/models/ore_diamond.glb",
+    "source": "art/blender/minerals/diamond.blend",
+    "geometry": "mineral-only",
+    "triangles": 1260,
+    "geology_tags": [
+      "deep_mantle"
+    ],
+    "depth_tags": [
+      "deep",
+      "cavity"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_diamond.glb",
+        "source": "art/blender/minerals/diamond.blend",
+        "triangles": 1260
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_diamond_b.glb",
+        "source": "art/blender/minerals/diamond_b.blend",
+        "triangles": 900
+      }
+    ]
+  },
+  {
+    "id": "stone",
+    "name": "암석",
+    "category": "legacy_basic",
+    "color": "a99ba9",
+    "model": "res://assets/models/ore_stone.glb",
+    "source": "art/blender/minerals/stone.blend",
+    "geometry": "mineral-only",
+    "triangles": 3332,
+    "geology_tags": [
+      "rocky"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_stone.glb",
+        "source": "art/blender/minerals/stone.blend",
+        "triangles": 3332
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_stone_b.glb",
+        "source": "art/blender/minerals/stone_b.blend",
+        "triangles": 2380
+      }
+    ]
+  },
+  {
+    "id": "ice",
+    "name": "얼음",
+    "category": "legacy_basic",
+    "color": "87dbec",
+    "model": "res://assets/models/ore_ice.glb",
+    "source": "art/blender/minerals/ice.blend",
+    "geometry": "mineral-only",
+    "triangles": 1332,
+    "geology_tags": [
+      "icy",
+      "cold"
+    ],
+    "depth_tags": [
+      "surface",
+      "shallow"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_ice.glb",
+        "source": "art/blender/minerals/ice.blend",
+        "triangles": 1332
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_ice_b.glb",
+        "source": "art/blender/minerals/ice_b.blend",
+        "triangles": 1036
+      }
+    ]
+  },
+  {
+    "id": "crystal",
+    "name": "희귀 결정",
+    "category": "legacy_basic",
+    "color": "a777db",
+    "model": "res://assets/models/ore_crystal.glb",
+    "source": "art/blender/minerals/crystal.blend",
+    "geometry": "mineral-only",
+    "triangles": 2060,
+    "geology_tags": [
+      "legacy_crystal"
+    ],
+    "depth_tags": [
+      "surface",
+      "middle"
+    ],
+    "placement": {
+      "pivot": "surface",
+      "embed_m": 0.12,
+      "terrain_included": false,
+      "visual_version": 1,
+      "yaw_degrees": [
+        0,
+        360
+      ],
+      "uniform_scale": [
+        0.85,
+        1.15
+      ],
+      "tilt_degrees": 0
+    },
+    "distribution_status": "candidate_tags_only",
+    "fictional": false,
+    "variants": [
+      {
+        "id": "a",
+        "model": "res://assets/models/ore_crystal.glb",
+        "source": "art/blender/minerals/crystal.blend",
+        "triangles": 2060
+      },
+      {
+        "id": "b",
+        "model": "res://assets/models/ore_crystal_b.glb",
+        "source": "art/blender/minerals/crystal_b.blend",
+        "triangles": 1372
+      }
+    ]
+  }
+]

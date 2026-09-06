@@ -1,0 +1,154 @@
+[
+  {
+    "id": "solar_mercury",
+    "name": "수성",
+    "reference_id": "solar:0",
+    "source": "art/blender/solar-system/mercury.blend",
+    "model": "res://assets/models/solar-system/mercury.glb",
+    "lod_model": "res://assets/models/solar-system/mercury_lod1.glb",
+    "triangles": 65024,
+    "outer_radius": 1.02,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 9024,
+    "sha256": {
+      "source": "8ca790bc68fd3970f4b4ca5dab6dfe67bd8441830e0756013855c8d8dc875485",
+      "model": "f489a1ed477650c71bc0358ec32e73e53d169c3314e33cab99066c4cdfa7acf9",
+      "lod_model": "9767903f93bb88faebe80224a6ca178e44200bd5116cfbf60ae1e55c8b5fff5f"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/mercury.png",
+    "game_render": "docs/production/media/solar-system/godot/mercury.png"
+  },
+  {
+    "id": "solar_venus",
+    "name": "금성",
+    "reference_id": "solar:1",
+    "source": "art/blender/solar-system/venus.blend",
+    "model": "res://assets/models/solar-system/venus.glb",
+    "lod_model": "res://assets/models/solar-system/venus_lod1.glb",
+    "triangles": 65024,
+    "outer_radius": 1.02,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 9024,
+    "sha256": {
+      "source": "7962237aa77615d77da139fbd2fe1998dac2d7d3771b8ff6de6438e00232cc06",
+      "model": "a3aa30078b5469c352ab2014f1e0db3365bb75739eaf831eb8603377cdc8ce54",
+      "lod_model": "585b1ed16d6758b54d9dea1938f0d6f7a1397eb5a94b36bab32a59c6d50791a1"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/venus.png",
+    "game_render": "docs/production/media/solar-system/godot/venus.png"
+  },
+  {
+    "id": "solar_earth",
+    "name": "지구",
+    "reference_id": "solar:2",
+    "source": "art/blender/solar-system/earth.blend",
+    "model": "res://assets/models/solar-system/earth.glb",
+    "lod_model": "res://assets/models/solar-system/earth_lod1.glb",
+    "triangles": 307508,
+    "outer_radius": 1.02,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 11976,
+    "sha256": {
+      "source": "84279adadcf0c084f5dc4db86eb3ee445eaa91b9d1f9f2a083a16b90556b418f",
+      "model": "78402b3fd640b75922ff386b5265f4061cf32ce53145b6bed18e0ee8339efc89",
+      "lod_model": "2b7d878a15dc6bbd87f48c115434089f261b08d6e8dc826f44764e2db7e571a7"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/earth.png",
+    "game_render": "docs/production/media/solar-system/godot/earth.png"
+  },
+  {
+    "id": "solar_mars",
+    "name": "화성",
+    "reference_id": "solar:3",
+    "source": "art/blender/solar-system/mars.blend",
+    "model": "res://assets/models/solar-system/mars.glb",
+    "lod_model": "res://assets/models/solar-system/mars_lod1.glb",
+    "triangles": 65024,
+    "outer_radius": 1.02,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 9024,
+    "sha256": {
+      "source": "e12198d2f75930a00abf13433e80108d5e7edd0ad59deda87164a809fafe0fcd",
+      "model": "3a597a15ea2ac13c9b38a0aeda29187487d84214a6b9fdd0a984a644f0625f66",
+      "lod_model": "a755bc5e3da07d30bd591cae93a330bc67a3ef8a92e17394bc3d41fcc962fa0c"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/mars.png",
+    "game_render": "docs/production/media/solar-system/godot/mars.png"
+  },
+  {
+    "id": "solar_jupiter",
+    "name": "목성",
+    "reference_id": "solar:4",
+    "source": "art/blender/solar-system/jupiter.blend",
+    "model": "res://assets/models/solar-system/jupiter.glb",
+    "lod_model": "res://assets/models/solar-system/jupiter_lod1.glb",
+    "triangles": 65024,
+    "outer_radius": 1.02,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 9024,
+    "sha256": {
+      "source": "e24c1db082decb842f59f817e02140da3be727104e586f38aa40cf0e8f56f9dd",
+      "model": "95d0130f3488497deb1dcdd37cc22e3117965e79ea14fb119e1004d994511942",
+      "lod_model": "4f3354ad5f7cac3268d116a3a05f2315516d5581fa9e74c0d93a85036b749bb4"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/jupiter.png",
+    "game_render": "docs/production/media/solar-system/godot/jupiter.png"
+  },
+  {
+    "id": "solar_saturn",
+    "name": "토성",
+    "reference_id": "solar:5",
+    "source": "art/blender/solar-system/saturn.blend",
+    "model": "res://assets/models/solar-system/saturn.glb",
+    "lod_model": "res://assets/models/solar-system/saturn_lod1.glb",
+    "triangles": 75264,
+    "outer_radius": 2.26,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 19264,
+    "sha256": {
+      "source": "cb0938d2e4225ed01a2630f974fc2df35d40bf7905db60cdbbaa2005f44423fe",
+      "model": "1a4f6bd8c30e36467ad284b95af08bb62caf87b2add51fb1bdcece02167878c4",
+      "lod_model": "58927fa2a74df37b832339e2ad611cac78069f4c1765f8863f7c8c6a5eba2c9e"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/saturn.png",
+    "game_render": "docs/production/media/solar-system/godot/saturn.png"
+  },
+  {
+    "id": "solar_uranus",
+    "name": "천왕성",
+    "reference_id": "solar:6",
+    "source": "art/blender/solar-system/uranus.blend",
+    "model": "res://assets/models/solar-system/uranus.glb",
+    "lod_model": "res://assets/models/solar-system/uranus_lod1.glb",
+    "triangles": 71168,
+    "outer_radius": 1.805,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 15168,
+    "sha256": {
+      "source": "0c0c1dd680575c674c3fe68b8079beb7e4dc22e91a77251defa61352e59cdb9f",
+      "model": "4fd52d8c8e5f101e2ab7456ef4a3c297e8b23ee9ba3f25a196e9871300cd1c21",
+      "lod_model": "b2e8853bddb7457a112f9891aad48f1ad5a51cafc794f60e7b46ca04b94d5a94"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/uranus.png",
+    "game_render": "docs/production/media/solar-system/godot/uranus.png"
+  },
+  {
+    "id": "solar_neptune",
+    "name": "해왕성",
+    "reference_id": "solar:7",
+    "source": "art/blender/solar-system/neptune.blend",
+    "model": "res://assets/models/solar-system/neptune.glb",
+    "lod_model": "res://assets/models/solar-system/neptune_lod1.glb",
+    "triangles": 65024,
+    "outer_radius": 1.02,
+    "status": "game-integrated-render-verified",
+    "lod_triangles": 9024,
+    "sha256": {
+      "source": "6ee65f00655216744e959e09055e82076214395f42d8f7ab555ad7782f7e6dae",
+      "model": "3470d8b037cd9de6445d72b3a043dc22b0ae386f51eaf8aee7a6545a9af0bb76",
+      "lod_model": "22b664764ae827ce1d1c0d8f23f4e57ed002da385e9aa1f987bce18967711113"
+    },
+    "blender_render": "docs/production/media/solar-system/blender/neptune.png",
+    "game_render": "docs/production/media/solar-system/godot/neptune.png"
+  }
+]

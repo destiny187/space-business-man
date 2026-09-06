@@ -1,0 +1,50 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2",
+  "renderer": "Metal Forward+",
+  "device": "Apple M2",
+  "focused_checks": {
+    "passed": 25,
+    "failed": 0
+  },
+  "logs": {
+    "uiux-final.log": {
+      "sha256": "c45c1e75ba7f081c1c7427af903e6ddb7cabcf5ebe5fc856b566e6969808ae1d",
+      "result": "EQUIPMENT_CHECKS 25 FAILURES 0"
+    },
+    "uiux-review.log": {
+      "sha256": "f8ef25a550bc69d521382f902508cfbafcb77f9c179e499d1d293054d6af6135",
+      "result": "UIUX_FINAL_RENDER_OK"
+    }
+  },
+  "screenshots": {
+    "cargo.png": {
+      "width": 1280,
+      "height": 800,
+      "sha256": "f9191cbe830f6db7fb4d2cad7da5c21ed228d7dbce8c090b3e318568bb379281"
+    },
+    "equipment.png": {
+      "width": 1280,
+      "height": 800,
+      "sha256": "a685436120865c6e28c67012759606d259f6754f21a9678d3295d0b28e24a743"
+    },
+    "field.png": {
+      "width": 1280,
+      "height": 800,
+      "sha256": "ac58883f41e64124a5b953ec1a0485712b100d50594bfbdc7692b92e44bddd43"
+    },
+    "inventory.png": {
+      "width": 960,
+      "height": 640,
+      "sha256": "d5662461f22b1b9d2db1c589a1d765ee51ad803152697a2958ca09b17caff0e8"
+    }
+  },
+  "fixtures": "임시 프로필/세계, 고정 시드와 채집 접근 위치 사용. 최종 화면 촬영용 복사본의 자원 수량은 가독성을 위해 24/16/5/6/4로 설정.",
+  "verification_order": "집중 동작 확인 후 소규모 표현 변경(발사 문구 제거, 체력 막대, 카드 프레이밍, 성공 시 실패 알림 해제, 제작 잠금 표식)을 적용하고 파싱/임포트와 최종 실제 창 렌더를 확인했다.",
+  "limitations": [
+    "끌어놓기는 타일 드롭 처리 호출로 검증했으며 실제 OS 포인터 드래그 전체 흐름은 미검증",
+    "회전 미리보기의 실제 마우스 드래그 조작은 미검증",
+    "동물 체력 막대 실기 미검증",
+    "다중 클라이언트·전체 회귀·장시간 성능·패드/접근성 전체 검사 미실시"
+  ]
+}

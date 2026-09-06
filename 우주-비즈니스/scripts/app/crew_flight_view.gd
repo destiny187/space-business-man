@@ -15,6 +15,7 @@ func update_navigation(value: Dictionary) -> void:
 	if navigation.is_empty() or int(value.system)!=current_system:
 		_load_system(int(value.system));ship.position=FrontierCrewWorld.vector(value.position)
 	navigation=value.duplicate(true)
+	update_orbits(float(value.get("orbit_time",0)))
 func _process(delta: float) -> void:
 	if navigation.is_empty():return
 	ship.position=ship.position.lerp(FrontierCrewWorld.vector(navigation.position),minf(delta*14,1))

@@ -10,8 +10,9 @@ var actions: Array[Button]=[]
 var last_inventory: String=""
 var vessel: Dictionary={}
 func _ready() -> void:
+	theme=FrontierInterfaceStyle.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);offset_left=24;offset_right=578;offset_top=140;offset_bottom=-24
-	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.065,.09,.97);style.set_content_margin_all(18);style.set_corner_radius_all(8);add_theme_stylebox_override("panel",style)
+	var style:=FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,20);add_theme_stylebox_override("panel",style)
 	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(scroll)
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
 	label(column,"KESTREL · 원정선 정비",24)

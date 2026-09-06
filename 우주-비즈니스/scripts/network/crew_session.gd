@@ -43,7 +43,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 	var state:=store.read_state()
 	if state.is_empty():
 		if store.has_history():notice.emit(store.last_error);return false
-		state=FrontierUniverse.new_world(71491)
+		state=FrontierUniverse.new_world(int(Crypto.new().generate_random_bytes(4).decode_u32(0)&0x7fffffff))
 	authority=FrontierCrewAuthority.new()
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
 	offline=solo
@@ -56,7 +56,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 	hosting=true;active=true
 	session_id=authority.session_id;world_id=authority.world.crew.world_id;manifest=authority.world.manifest.duplicate(true)
 	next_sequence=int(authority.world.crew.members[profile.data.character.character_id].last_sequence)+1
-	_publish();notice.emit("혼자 탐험을 시작합니다. 목적지를 골라 출발하세요." if offline else "호스트 포함 최대 6명의 방을 열었습니다.");return true
+	_publish();notice.emit("세계를 열었습니다. 준비 후 시작하세요." if offline else "대기실을 열었습니다. 참가자 준비 후 호스트가 시작합니다.");return true
 func join(local_profile: FrontierPlayerProfile,address: String,port: int=24560) -> bool:
 	if enet!=null or hosting:notice.emit("현재 연결을 종료한 뒤 다시 참가하세요.");return false
 	profile=local_profile
@@ -144,7 +144,7 @@ func _acknowledge(epoch: String) -> void:
 	if not result.ok:_reject_peer(peer,result.error);return
 	pending_connections.erase(peer);surface_digests.erase(peer);_publish();_publish_surface()
 func _valid_snapshot(value: Variant) -> bool:
-	if not value is Dictionary or value.get("session_id")!=session_id or not value.get("crew") is Dictionary or not value.crew.has("navigation"):return false
+	if not value is Dictionary or value.get("phase") not in ["lobby","playing"] or not value.get("lobby_ready") is Dictionary or value.get("session_id")!=session_id or not value.get("crew") is Dictionary or not value.crew.has("navigation"):return false
 	if not value.get("self_id") is String or not value.crew.get("members") is Dictionary or not value.crew.members.has(value.self_id) or not value.get("active") is bool:return false
 	if not value.get("vessel") is Dictionary or not value.get("vessel_seed") is int:return false
 	if not value.vessel.is_empty() and not FrontierVesselRefit.validate(value.vessel,value.vessel_seed,world_id).is_empty():return false
@@ -222,7 +222,7 @@ func _exit_tree() -> void:
 	if enet!=null:enet.close()
 
 func _physics_process(delta: float) -> void:
-	if not hosting or not active or authority.stopped:return
+	if not hosting or not active or authority.stopped or authority.phase!="playing":return
 	authority.step_surface(minf(delta,.1))
 	if authority.stopped:
 		active=false;notice.emit(authority.error)
@@ -239,10 +239,12 @@ func _physics_process(delta: float) -> void:
 func _valid_manifest(value: Variant) -> bool:
 	if not value is Dictionary or not FrontierUniverse._finite(value.get("seed"),0,2147483647):return false
 	if value.seed!=floorf(value.seed):return false
-	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed)))
+	var settings: Dictionary=FrontierUniverse.config()
+	if value.get("settings",{}).get("generator_version")=="galaxy-v2":settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/galaxy-v2.json"))
+	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed),settings))
 
 func _publish_surface() -> void:
-	if not hosting or authority==null or authority.stopped:return
+	if not hosting or authority==null or authority.stopped or authority.phase!="playing":return
 	if not FrontierCrewSurface.landed(authority.world):
 		surface={};surface_digests.clear();return
 	for peer in authority.peers:

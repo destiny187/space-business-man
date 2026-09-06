@@ -48,3 +48,7 @@
 ### 2026-09-06 지상 아이템창·장비 슬롯
 
 현재 원정은 I 아이템/제작, 1~5 장비 교체, E 내장 스캐너로 변경했다. [규칙](../game/13-inventory-and-equipment.md) · [실제 화면과 검증](../production/21-ground-equipment.md). 위 1.1 전용 만능 도구 조작과 구분한다.
+
+### 공통 가이드 FIELD v1
+
+2026-09-06 사용자 확정 시각 표현 우선 규칙과 후속 화면의 공통 기준은 [UI/UX 가이드](../production/22-uiux-guide.md)가 원본이다. [현재 지상·아이템 개편](../production/23-uiux-implementation.md)은 위 과거 1.1 목록형 메뉴 설명보다 우선한다.
