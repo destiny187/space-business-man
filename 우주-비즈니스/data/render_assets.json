@@ -8624,5 +8624,15 @@
     "source": "art/blender/minerals/crystal_b.blend",
     "geometry": "mineral-only-remodeled",
     "foliage": false
+  },
+  {
+    "id": "central_black_hole",
+    "name": "중앙 블랙홀",
+    "title": "은하 중심",
+    "group": "천체",
+    "model": "res://assets/models/galactic-core/central_black_hole.glb",
+    "source": "art/blender/galactic-core/central_black_hole.blend",
+    "geometry": "accretion-flow-remodeled",
+    "foliage": false
   }
 ]

@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "tile_size": 80,
+  "tile_limit": 102,
+  "surface_slots": 4,
+  "underground_slots": 3,
+  "view_radius": 1,
+  "base_capacity": 180,
+  "capacity_spread": 140,
+  "gem_capacity": 40,
+  "gem_chance_percent": 30,
+  "exotic_chance_percent": 12,
+  "exotic_min_tier": 4,
+  "depth_min": 10,
+  "depth_max": 58,
+  "profiles": {
+    "metallic": {
+      "name": "금속질",
+      "kind": "basalt",
+      "primary": [
+        "iron",
+        "nickel",
+        "titanium"
+      ],
+      "secondary": [
+        "copper",
+        "silicon"
+      ],
+      "gems": [
+        "diamond",
+        "sapphire"
+      ]
+    },
+    "weathered": {
+      "name": "풍화 대륙",
+      "kind": "basalt",
+      "primary": [
+        "aluminum",
+        "iron",
+        "silicon"
+      ],
+      "secondary": [
+        "phosphate",
+        "copper"
+      ],
+      "gems": [
+        "ruby",
+        "emerald"
+      ]
+    },
+    "pegmatite": {
+      "name": "거대 결정층",
+      "kind": "basalt",
+      "primary": [
+        "silicon",
+        "lithium",
+        "rare_earth"
+      ],
+      "secondary": [
+        "aluminum",
+        "copper"
+      ],
+      "gems": [
+        "emerald",
+        "ruby"
+      ]
+    },
+    "volcanic": {
+      "name": "화산 광화대",
+      "kind": "sulfur",
+      "primary": [
+        "sulfur",
+        "titanium",
+        "iron"
+      ],
+      "secondary": [
+        "nickel",
+        "copper"
+      ],
+      "gems": [
+        "ruby",
+        "diamond"
+      ]
+    },
+    "hydrothermal": {
+      "name": "열수 광맥",
+      "kind": "sulfur",
+      "primary": [
+        "copper",
+        "sulfur",
+        "phosphate"
+      ],
+      "secondary": [
+        "iron",
+        "rare_earth"
+      ],
+      "gems": [
+        "emerald",
+        "sapphire"
+      ]
+    },
+    "cryogenic": {
+      "name": "빙하 퇴적층",
+      "kind": "glacial",
+      "primary": [
+        "ice",
+        "lithium",
+        "nickel"
+      ],
+      "secondary": [
+        "silicon",
+        "iron"
+      ],
+      "gems": [
+        "diamond",
+        "sapphire"
+      ]
+    },
+    "sedimentary": {
+      "name": "퇴적 분지",
+      "kind": "basalt",
+      "primary": [
+        "phosphate",
+        "aluminum",
+        "iron"
+      ],
+      "secondary": [
+        "copper",
+        "silicon"
+      ],
+      "gems": [
+        "emerald",
+        "ruby"
+      ]
+    },
+    "alkaline": {
+      "name": "희토 광화대",
+      "kind": "basalt",
+      "primary": [
+        "rare_earth",
+        "titanium",
+        "silicon"
+      ],
+      "secondary": [
+        "nickel",
+        "lithium"
+      ],
+      "gems": [
+        "sapphire",
+        "diamond"
+      ]
+    }
+  },
+  "resource_tiers": {
+    "iron": 1,
+    "copper": 1,
+    "aluminum": 1,
+    "silicon": 1,
+    "titanium": 2,
+    "nickel": 1,
+    "lithium": 1,
+    "sulfur": 1,
+    "phosphate": 1,
+    "rare_earth": 2,
+    "stellarite_ore": 3,
+    "darkstone_ore": 3,
+    "ruby": 2,
+    "sapphire": 2,
+    "emerald": 2,
+    "diamond": 3,
+    "stone": 1,
+    "ice": 1,
+    "crystal": 2
+  },
+  "exotic_materials": [
+    "stellarite_ore",
+    "darkstone_ore"
+  ],
+  "quality_levels": 3,
+  "region_half_extent": 8192
+}

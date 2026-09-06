@@ -303,6 +303,7 @@ func _snapshot(value: Dictionary) -> void:
 	panel.get_node("Land").disabled=not arrived or value.self_id!=value.crew.pilot_id or not FrontierUniverse.landable(body)
 	travel_status.text="%s · "+FrontierUniverse.kind_label(body)+(" · 착륙 가능" if FrontierUniverse.landable(body) else " · 착륙 불가")+"\n행성 %07d · %s\n속도 %.0f m/s"
 	travel_status.text=travel_status.text % [body.name,int(nav.target)+1,{"idle":"궤도 대기","approach":"공동 접근 중","jump":"성간 도약 중"}[nav.mode],float(nav.speed)]
+	travel_status.text+="\nT%d · "%int(body.planet_tier)+FrontierMineralWorld.summary(body)
 	if body.get("origin","")=="solar_reference":travel_status.text+="\n축약 태양계 · 지표는 게임 생성"
 	if crew_ids!=members.keys():
 		crew_ids=members.keys();pilot_choices.clear()
@@ -466,7 +467,7 @@ func _surface_packet(packet: Dictionary) -> void:
 	_sync_surface_view()
 	if surface_world!=null:
 		surface_world.accept(packet);_refresh_surface_options()
-		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
+		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
 
 func _sync_surface_view() -> void:
 	if session.latest.is_empty() or session.latest.get("phase")!="playing":return
@@ -570,7 +571,7 @@ func toggle_business() -> void:
 	shipyard_panel.hide()
 	if not session.active or surface_world==null:status.value="착륙 후 개발 사업을 시작하세요.";return
 	cancel_placement();business_panel.visible=not business_panel.visible
-	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
 func interact_business() -> void:
 	if not session.active or surface_world==null or inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])

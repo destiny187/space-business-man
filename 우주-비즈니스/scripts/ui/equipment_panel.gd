@@ -147,7 +147,7 @@ func _refresh_details() -> void:
 		title.text=resource.name;category.text="CARGO / "+("내 배낭" if storage.selected==0 else "공동 창고")
 		preview.show_model("ore_"+selected_resource)
 		_metric("보유 수량",str(int((bag if storage.selected==0 else depot).get(selected_resource,0))),float((bag if storage.selected==0 else depot).get(selected_resource,0))/96)
-		_metric("채집기 요구 등급",str(int(FrontierEquipment.config().resource_tiers[selected_resource])),float(FrontierEquipment.config().resource_tiers[selected_resource])/3)
+		_metric("채집기 요구 등급",str(int(FrontierMineralWorld.tier(selected_resource))),float(FrontierMineralWorld.tier(selected_resource))/3)
 		action.text="현장 창고에 반납";action.disabled=storage.selected!=0 or FrontierExpeditionBusiness.total(bag)==0
 		if response_left<=0:message.text="현장 창고 근처에서 반납할 수 있습니다.";message.modulate=Color.WHITE
 		return

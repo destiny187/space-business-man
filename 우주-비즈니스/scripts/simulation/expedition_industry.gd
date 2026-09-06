@@ -110,7 +110,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	if r.work<1:return
 	r.work=0
 	var amount:=mini(int(site.remaining[r.target]),mini(int(cfg.robot_mine_amount),int(cfg.robot_capacity)-FrontierExpeditionBusiness.total(r.cargo)))
-	site.remaining[r.target]-=amount;r.cargo[vein.resource]+=amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work))
+	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work))
 	if FrontierExpeditionBusiness.total(r.cargo)>=int(cfg.robot_capacity) or site.remaining[r.target]<=0:r.phase="return";r.path=[]
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()

@@ -251,7 +251,7 @@ func _select(ordinal: int) -> void:
 	target_ordinal = ordinal
 	autopilot = false
 	address.text = str(ordinal+1)
-	destination.text = "%s · T%d\n%s · 가상 시드 천체" % [body.name,int(body.planet_tier),FrontierUniverse.kind_label(body)]
+	destination.text = "%s · T%d\n%s" % [body.name,int(body.planet_tier),FrontierUniverse.kind_label(body)]+"\n"+FrontierMineralWorld.summary(body)
 	if not FrontierUniverse.landable(body):destination.text+="\n착륙 불가 · 궤도 탐사 대상";return
 	var habitat: Dictionary=FrontierEcology.profile(body)
 	destination.text+="\n궤도 추정 %.1f°C · %.0f kPa\n%s · 착륙 후 생명 신호 조사"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.config().habitats[habitat.environment].label]

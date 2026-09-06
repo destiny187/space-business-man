@@ -11,6 +11,8 @@ static func names() -> Dictionary:
 		for row in manifest.icons:
 			registry[row.id] = row.name
 			for alias in row.aliases: id_aliases[alias] = row.id
+		for id in FrontierMinerals.all():
+			if not registry.has(id):registry[id]=FrontierMinerals.entry(id).name
 	return registry
 
 static func canonical(id: String) -> String:
@@ -21,10 +23,13 @@ static var textures: Dictionary = {}
 static var patterns: Dictionary = {}
 static var menu_textures: Dictionary = {}
 
+static func icon_path(id: String) -> String:
+	return ROOT+id+(".png" if FileAccess.file_exists(ROOT+id+".png") else ".svg")
+
 static func texture(id: String) -> Texture2D:
 	id = canonical(id)
 	if not names().has(id): return null
-	if not textures.has(id): textures[id] = load(ROOT+id+".svg")
+	if not textures.has(id): textures[id] = load(icon_path(id))
 	return textures[id]
 
 static func menu_texture(id: String) -> Texture2D:
@@ -48,7 +53,7 @@ static func markup(value: String, pixels: int = 26) -> String:
 			var pattern := RegEx.new()
 			pattern.compile("(?<![가-힣A-Za-z])"+word+"(?=\\s+[+−-]?\\d)")
 			patterns[word] = pattern
-		result = patterns[word].sub(result, "[img=%dx%d]%s%s.svg[/img]" % [pixels,pixels,ROOT,aliases[word]], true)
+		result = patterns[word].sub(result, "[img=%dx%d]%s[/img]" % [pixels,pixels,icon_path(aliases[word])], true)
 	if result.contains(" Cr"):
 		if not patterns.has("currency"):
 			var currency:=RegEx.new()

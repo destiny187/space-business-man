@@ -57,8 +57,8 @@ func _requested(sequence: int,kind: String,args: Dictionary) -> void:
 	if not hit.is_empty():point=hit.position
 	var resource: String="stone"
 	if kind=="business_mine":
-		for vein in FrontierExpeditionBusiness.veins(app.surface_world.body):
-			if vein.id==args.get("vein_id",""):resource=vein.resource
+		var vein:=FrontierExpeditionBusiness.find_vein(app.surface_world.body,str(args.get("vein_id","")))
+		if not vein.is_empty():resource=vein.resource
 	if args.has("position"):point=FrontierCrewWorld.vector(args.position)
 	pending[sequence]={"kind":kind,"point":point,"resource":resource,"body":app.surface_world.body.id,"created":Time.get_ticks_msec()}
 
@@ -114,9 +114,9 @@ func _surface(packet: Dictionary) -> void:
 				var p:=FrontierCrewWorld.vector(robots[id].position)
 				effects.construction(p);audio.play("sfx_factory_complete",p)
 		if observations>known_observations:audio.play("ui_discovery");show_cue("새 생명체 기록")
-		for vein in FrontierExpeditionBusiness.veins(app.surface_world.body):
+		for vein in FrontierExpeditionBusiness.veins(app.surface_world.body,app.camera.global_position):
 			if float(last_veins.get(vein.id,0))>0 and float(site.get("remaining",{}).get(vein.id,0))<=0:
-				var p:=FrontierExpeditionBusiness.ground(app.surface_world.terrain.field,vein.position[0],vein.position[2])
+				var p:=FrontierMineralWorld.point(app.surface_world.terrain.field,vein)
 				if p.is_finite():effects.burst(p,Color(FrontierCatalog.entry("resources",vein.resource).color),24);audio.play("sfx_mine_break",p)
 	observed_body=str(packet.body_id)+":"+str(packet.epoch)
 	known_buildings=buildings.duplicate();known_robots=robots.duplicate();known_observations=observations;last_veins=site.get("remaining",{}).duplicate()

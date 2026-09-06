@@ -122,7 +122,7 @@ func choices(item: OptionButton,values: Dictionary) -> void:
 	for key in values:item.add_item(values[key]);item.set_item_metadata(item.item_count-1,key)
 	for i in item.item_count:
 		if str(item.get_item_metadata(i))==old:item.select(i)
-func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={}) -> void:
+func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO) -> void:
 	register_button.show();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
 	update_engineering()
@@ -146,8 +146,13 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	for key in current.robots:
 		var r: Dictionary=current.robots[key];robots[key]=key+" · "+FrontierCatalog.entry("grades",r.grade).name+" · "+str(r.status)
 	for key in value.hangar:transported[key]=key+" · "+FrontierCatalog.entry("grades",value.hangar[key].grade).name
-	for i in FrontierExpeditionBusiness.config().veins.size():
-		var key: String="vein:"+str(i);veins[key]=FrontierCatalog.entry("resources",FrontierExpeditionBusiness.config().veins[i]).name+" · "+key+" · "+str(int(current.remaining[key]))
+	if not planet.is_empty():
+		for row in FrontierExpeditionBusiness.veins(planet,viewer):
+			if row.get("underground",false):continue
+			veins[row.id]=FrontierCatalog.entry("resources",row.resource).name+" · "+row.id+" · "+str(int(current.remaining.get(row.id,row.capacity)))
+	else:
+		for i in FrontierExpeditionBusiness.config().veins.size():
+			var key: String="vein:"+str(i);veins[key]=FrontierCatalog.entry("resources",FrontierExpeditionBusiness.config().veins[i]).name+" · "+key+" · "+str(int(current.remaining.get(key,0)))
 	for key in FrontierExpeditionBusiness.config().technologies:
 		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if key in value.technologies else " · %d Cr"%int(def.price))
 	choices(facility,buildings);choices(factory,factories);choices(robot,robots);choices(vein,veins);choices(technology,technologies);choices(hangar,transported)

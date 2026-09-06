@@ -5,7 +5,9 @@ const CONFIG_PATH := "res://data/galaxy.json"
 const STREAMS := ["terrain", "resource", "discovery", "ecology", "civilization", "tier"]
 
 static func config() -> Dictionary:
-	return JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
+	var value: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
+	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
+	return value
 
 static func derive(seed_value: int, stream_name: String) -> int:
 	return ("%d:%s" % [seed_value, stream_name]).sha256_text().substr(0, 8).hex_to_int() & 0x7fffffff
@@ -76,6 +78,7 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		result.landable=result.kind not in ["gas_giant","ice_giant"]
 		result.orbit={"radius":float(cfg.orbit_inner_radius)+orbit*float(cfg.orbit_spacing),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
 		result.star_id=s.star.id
+	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
 	return result
 
 static func landable(body_value: Dictionary) -> bool:

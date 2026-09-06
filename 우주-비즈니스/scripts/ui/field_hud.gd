@@ -81,7 +81,7 @@ func _process(delta: float) -> void:
 		target_action.modulate=Color.WHITE if usable else FrontierInterfaceStyle.WARNING
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		if site.is_empty():target_action.text="B  개발 등록"
-		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,0)
+		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)

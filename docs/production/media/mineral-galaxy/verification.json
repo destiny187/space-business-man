@@ -1,0 +1,27 @@
+{
+  "checks": 332,
+  "failures": 0,
+  "band_average_tiers": [
+    1.15,
+    2.025,
+    2.85,
+    4.0,
+    4.925
+  ],
+  "render": {
+    "core": "Blender GLB in production chart preview",
+    "earth_models": 17,
+    "renderer": "forward_plus",
+    "scope": "actual GPU previews and production terrain/resource renderer; no full network playthrough",
+    "terrain_chunks": 75
+  },
+  "commands": [
+    "tools/godot.sh --headless --script res://tests/test_mineral_world.gd",
+    "tools/godot.sh --script res://tests/render_mineral_galaxy.gd"
+  ],
+  "observatory": {
+    "opened": true,
+    "luminous_gas_samples": 1403,
+    "command": "tools/godot.sh --script res://tests/render_mineral_galaxy.gd -- --core-only"
+  }
+}

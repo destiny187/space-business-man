@@ -25,18 +25,30 @@ static func transfer(stock: Dictionary,cost: Dictionary,multiplier: int) -> void
 	for key in cost:stock[key]=int(stock.get(key,0))+int(cost[key])*multiplier
 static func identifier(business: Dictionary,prefix: String) -> String:
 	business.counter+=1;return prefix+":"+str(int(business.counter))
-static func veins(body: Dictionary,_center: Vector3=Vector3.ZERO) -> Array:
+static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 	var values: Array=[]
+	if not FrontierUniverse.landable(body):return values
+	if FrontierMineralWorld.enabled(body):values=FrontierMineralWorld.nearby(body,center)
 	var types: Array=config().veins
+	if FrontierMineralWorld.enabled(body) and body.get("reference_id","")!="solar:2":types=body.mineral_profile.primary+body.mineral_profile.secondary+["stone"]
 	for i in types.size():
 		var seed_value: int=FrontierUniverse.derive(int(body.streams.resource),"vein:"+str(i))
 		var angle: float=float(i)*TAU/float(types.size())+float(seed_value%101)/1000
 		var radius: float=config().vein_radius[i%3]
 		var p: Array=[sin(angle)*radius,0,cos(angle)*radius]
 		if i<config().starter_vein_positions.size():p=[config().starter_vein_positions[i][0]+float(seed_value%11)*.05,0,config().starter_vein_positions[i][1]]
-		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":int(FrontierEquipment.config().resource_tiers[types[i]]),"capacity":int(config().vein_capacity[types[i]])+int(body.planet_tier-1)*20,"position":p})
+		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":FrontierMineralWorld.tier(types[i]),"capacity":int(config().vein_capacity.get(types[i],180))+int(body.planet_tier-1)*20,"position":p})
+	if FrontierMineralWorld.enabled(body):
+		var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain))
+		for level in range(-20,-40,-1):
+			var p:=Vector3(98,level,0)
+			if field.density(p+Vector3.UP*.6)<=0 and field.density(p-Vector3.UP*.6)>0:
+				var gem: String=body.mineral_profile.gems[0]
+				values.append({"id":"cave:gem:0","resource":gem,"required_tier":FrontierMineralWorld.tier(gem),"capacity":35,"position":[p.x,p.y,p.z],"underground":true,"quality":1})
+				break
 	return values
 static func find_vein(body: Dictionary,id: String) -> Dictionary:
+	if id.begins_with("ore1:"):return FrontierMineralWorld.find(body,id)
 	for row in veins(body):
 		if row.id==id:return row
 	return {}
@@ -87,7 +99,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var center:=point(config().base_position);center.y=FrontierCrewSurface.field(world).height(center.x,center.z)
 		var source:=FrontierCatalog.entry("planets",body.kind)
 		ledger.sites[world.location]={"center":array(center),"state":"active","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
-		for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
+		if not FrontierMineralWorld.enabled(body):
+			for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
 		ledger.active=world.location;return ""
 	var current:=site(world)
 	if current.is_empty():return "먼저 무료 개발 사업을 등록하세요."
@@ -96,15 +109,15 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="business_mine":
 		var row:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),str(args.get("vein_id","")))
 		if row.is_empty():return "광맥을 선택하세요."
-		var floor:=ground(FrontierCrewSurface.field(world),row.position[0],row.position[2])
+		var floor:=FrontierMineralWorld.point(FrontierCrewSurface.field(world),row)
 		if not floor.is_finite() or floor.distance_to(position)>float(config().interaction_range) or not FrontierCrewSurface.visible_in_field(FrontierCrewSurface.field(world),position+Vector3.UP*1.72,floor+Vector3.UP):return "보이는 광맥 8m 안에서 채광하세요."
 		var tool:=FrontierEquipment.active(world.crew.members[actor])
 		if tool.get("kind")!="miner":return "아이템창에서 자원채집기를 제작·장착하세요."
 		if int(tool.tier)<int(row.required_tier):return "이 광물은 %d등급 이상의 자원채집기가 필요합니다."%int(row.required_tier)
 		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
-		var amount: int=mini(int(current.remaining[row.id]),mini(int(tool.amount),int(config().bag_capacity)-total(ledger.bags[actor])))
+		var amount: int=mini(int(current.remaining.get(row.id,row.capacity)),mini(int(tool.amount),int(config().bag_capacity)-total(ledger.bags[actor])))
 		if amount<=0:return "광맥이 고갈됐거나 배낭이 가득 찼습니다."
-		current.remaining[row.id]-=amount;ledger.bags[actor][row.resource]+=amount;return ""
+		current.remaining[row.id]=int(current.remaining.get(row.id,row.capacity))-amount;ledger.bags[actor][row.resource]=int(ledger.bags[actor].get(row.resource,0))+amount;return ""
 	if kind=="business_deposit":
 		if not near_base:return "현장 창고 9m 이내로 돌아오세요."
 		if total(bag(world,actor))==0 and int(world.crew.members[actor].carried)==0:return "반납할 자원이 없습니다."
@@ -173,7 +186,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if kind=="business_robot_return":robot.target="";robot.phase="return";robot.path=[];robot.status="작업 중지 · 창고 복귀";return ""
 		if kind=="business_assign":
 			var target: String=str(args.get("vein_id",""))
-			if not current.remaining.has(target) or int(current.remaining[target])<=0:return "채광할 광맥이 없습니다."
+			var target_vein:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),target)
+			if target_vein.is_empty() or int(current.remaining.get(target,target_vein.capacity))<=0:return "채광할 광맥이 없습니다."
+			if target_vein.get("underground",false):return "지하 광맥은 수동 채집하세요. 지하 로봇 경로는 아직 지원하지 않습니다."
+			current.remaining[target]=int(current.remaining.get(target,target_vein.capacity))
 			robot.target=target;robot.phase="return" if total(robot.cargo)>0 else "outbound";robot.path=[];robot.status="경로 조사 중";return ""
 		if position.distance_to(point(robot.position))>6:return "로봇에 가까이 접근하세요."
 		if kind=="business_robot_rescue":
@@ -233,9 +249,11 @@ static func visible_robot(source: Dictionary) -> Dictionary:
 	result.position=source.position.duplicate();result.cargo=source.cargo.duplicate()
 	return result
 static func valid_inventory(value: Variant,maximum: int=100000000) -> bool:
-	if not value is Dictionary or value.size()!=5:return false
+	if not value is Dictionary or value.size()>19:return false
 	for key in inventory():
-		if not integer(value.get(key),0,maximum):return false
+		if not value.has(key):return false
+	for key in value:
+		if FrontierMinerals.entry(key).is_empty() or not integer(value[key],0,maximum):return false
 	return true
 static func integer(value: Variant,low: int,high: int) -> bool:
 	return FrontierUniverse._finite(value,low,high) and value==floorf(value)
@@ -283,10 +301,17 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		if current.state=="settled":
 			if not integer(current.settlement.get("payment"),0,100000000) or not current.settlement.get("scores") is Dictionary or not FrontierUniverse._finite(current.settlement.get("time"),0,10000000):return "계약 정산 기록 오류"
 		elif not current.settlement.is_empty():return "미정산 사업의 지급 기록 오류"
-		var expected:=veins(FrontierUniverse.body_from_id(manifest,id))
-		if current.remaining.size()!=expected.size():return "시드 광맥 목록 오류"
-		for row in expected:
-			if not integer(current.remaining.get(row.id),0,int(row.capacity)):return "고갈 자원 보존 오류"
+		var body:=FrontierUniverse.body_from_id(manifest,id)
+		if FrontierMineralWorld.enabled(body):
+			for vein_id in current.remaining:
+				if not vein_id is String:return "광맥 ID 오류"
+				var row:=find_vein(body,vein_id)
+				if row.is_empty() or not integer(current.remaining[vein_id],0,int(row.capacity)):return "고갈 자원 보존 오류"
+		else:
+			var expected:=veins(body)
+			if current.remaining.size()!=expected.size():return "시드 광맥 목록 오류"
+			for row in expected:
+				if not integer(current.remaining.get(row.id),0,int(row.capacity)):return "고갈 자원 보존 오류"
 		if current.buildings.size()>int(config().max_buildings) or current.robots.size()+current.jobs.size()>int(config().max_robots):return "개발 규모 한도 오류"
 		for key in current.buildings:
 			var b: Variant=current.buildings[key]

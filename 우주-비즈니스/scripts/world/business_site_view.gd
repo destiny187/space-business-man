@@ -11,6 +11,7 @@ var prepared_models: Dictionary={}
 var synchronous_resources:=DisplayServer.get_name()=="headless"
 var ghosts: Node3D
 var restore_amount:=0.0
+var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
 	var root:=StaticBody3D.new();root.set_meta("business_kind",kind);root.set_meta("business_id",id);root.position=p
@@ -27,14 +28,15 @@ func accept(value: Dictionary) -> void:
 	var wanted: Dictionary={"business-base":true}
 	if not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
 	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="현장 창고\nF 자원 반납 · B 사업"
-	for row in FrontierExpeditionBusiness.veins(body):
-		if site.remaining[row.id]<=0:continue
-		var p:=FrontierExpeditionBusiness.ground(terrain.field,row.position[0],row.position[2])
+	var camera:=get_viewport().get_camera_3d()
+	for row in FrontierExpeditionBusiness.veins(body,camera.global_position if camera!=null else Vector3.ZERO):
+		if site.remaining.get(row.id,row.capacity)<=0:continue
+		var p:=FrontierMineralWorld.point(terrain.field,row)
 		if not p.is_finite():continue
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"ore_"+row.resource,p,1.1,"vein");continue
-		nodes[row.id].get_meta("label").text="%s · %d\nF 채광"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining[row.id])]
-		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.remaining[row.id])/float(row.capacity))
+		nodes[row.id].get_meta("label").text="%s · %d\nF 채광"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity))]
+		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.remaining.get(row.id,row.capacity))/float(row.capacity))
 	for row in site.buildings.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):
@@ -67,6 +69,12 @@ func target(camera: Camera3D,viewer: CollisionObject3D) -> Dictionary:
 	if hit.is_empty() or not hit.collider.has_meta("business_kind"):return {}
 	return {"id":hit.collider.get_meta("business_id"),"kind":hit.collider.get_meta("business_kind")}
 func _process(dt: float) -> void:
+	if FrontierMineralWorld.enabled(body):
+		var viewer:=get_viewport().get_camera_3d()
+		if viewer!=null:
+			var size: float=body.mineral_profile.rules.tile_size
+			var next:=Vector2i(floori(viewer.global_position.x/size),floori(viewer.global_position.z/size))
+			if next!=region_key:region_key=next;accept(ledger)
 	_load_one_model()
 	for node in nodes.values():
 		var camera:=get_viewport().get_camera_3d()

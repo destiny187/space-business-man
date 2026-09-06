@@ -155,3 +155,7 @@ galaxy_seed + generation_version + catalog_version
 ## 자원·보석 생성 확장
 
 행성의 자원군·광체·보석 품질을 시드와 생성 버전으로 고정하고 변경분을 보존하는 후속안은 [광물·보석·강화](14-minerals-gems-and-enhancement.md)를 따른다. 행성 티어·보석 품질·장비 제작 등급·강화 단계는 서로 다른 값이다. 새 목록을 기존 은하에 무조건 재배치하는 규칙은 확정하지 않았다.
+
+## 자원 세계·중앙 이정표 적용
+
+새 세계의 지질·광맥 생성과 외곽/중심 티어 분포 확인, 중앙 블랙홀 관측 렌더는 [최신 적용 기록](../production/25-galactic-core-and-resource-world.md)을 따른다. 기존 저장과 새 자원 생성기의 범위를 구분한다.

@@ -37,7 +37,10 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout(session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
 	lamp=SpotLight3D.new();lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
-	terrain.geometry_changed.connect(func():_refresh_distant();ecology.invalidate())
+	terrain.geometry_changed.connect(func():
+		_refresh_distant();ecology.invalidate()
+		if business_view!=null:business_view.accept(business_view.ledger)
+	)
 	business_view=FrontierBusinessSiteView.new();add_child(business_view);business_view.configure(terrain,body);business_view.accept(packet.get("business",{}))
 	preferences=FrontierClientSettings.ensure(get_tree())
 	preferences.changed.connect(func():
