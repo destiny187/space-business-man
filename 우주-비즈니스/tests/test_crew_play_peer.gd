@@ -37,7 +37,8 @@ func _process(delta: float) -> bool:
 			"capture":capture(command.get("outside",false),command.get("view",""))
 			"kick":app.session.kick(command.character_id)
 			"close":close_peer()
-	var state: Dictionary={"active":app.session.active,"snapshot":app.session.latest,"messages":messages,"responses":responses,"actors":app.actors.size(),"recovery_models":app.recovery_models.size()}
+			_:handle_command(command)
+	var state: Dictionary=status_value()
 	var output:=FileAccess.open(folder+"/status.tmp",FileAccess.WRITE);output.store_string(JSON.stringify(state));output.close();DirAccess.rename_absolute(folder+"/status.tmp",folder+"/status.json")
 	return false
 func capture(outside: bool,view_name: String="") -> void:
@@ -53,3 +54,7 @@ func capture(outside: bool,view_name: String="") -> void:
 	app.yaw=0;app.pitch=-.03;capturing=false
 func close_peer() -> void:
 	await app.session.close_session();quit()
+
+func handle_command(_command: Dictionary) -> void:pass
+func status_value() -> Dictionary:
+	return {"active":app.session.active,"snapshot":app.session.latest,"messages":messages,"responses":responses,"actors":app.actors.size(),"recovery_models":app.recovery_models.size()}

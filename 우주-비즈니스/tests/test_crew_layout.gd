@@ -31,6 +31,23 @@ func run() -> void:
 	await create_timer(.3).timeout
 	check(app.session.authority.now>before,"personal popup does not pause world")
 	popup.queue_free()
+	app.session.send_request("navigate",{"ordinal":15});app.session.send_request("ready",{"value":true});app.session.send_request("depart",{})
+	for step in 3000:
+		FrontierCrewNavigation.step(app.session.authority.world,.05)
+		if app.session.authority.world.crew.navigation.mode=="idle":break
+	app.session._publish()
+	app.session.send_request("ready",{"value":true});app.session.send_request("land",{})
+	var deadline:=Time.get_ticks_msec()+45000
+	while Time.get_ticks_msec()<deadline:
+		if app.surface_world!=null and app.surface_world.ready_at(app.actors[app.session.latest.self_id].position):break
+		await process_frame
+	check(app.surface_world!=null and app.surface_world.ready_at(app.actors[app.session.latest.self_id].position),"solo host lands in actual shared surface at 960x640")
+	check(app.surface_panel.visible and app.reticle.visible and not app.address.visible,"surface tools replace unavailable orbital controls")
+	await create_timer(1).timeout
+	scroll.ensure_control_visible(app.surface_status);await process_frame
+	check(frame.get_global_rect().end.y<=640 and app.surface_status.get_global_rect().position.x>=0,"surface information stays inside small screen")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("/tmp/locus-crew-surface-small.png")
 	check(await app.session.close_session(),"normal close stores small-screen world")
 	app.queue_free();await process_frame
 	for path in ["user://test_crew_layout_profile.json","user://test_crew_layout_world.json"]:

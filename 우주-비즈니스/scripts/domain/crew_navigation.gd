@@ -12,6 +12,7 @@ static func validate(value: Variant) -> String:
 	return ""
 static func center(ordinal: int) -> Vector3:return [Vector3(-620,-130,-2400),Vector3(1150,340,-3600),Vector3(-2100,450,-4900),Vector3(2400,-500,-6000)][ordinal%4]
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
+	if FrontierCrewSurface.landed(world):return "지표의 승무원들과 우주선으로 복귀한 뒤 항해하세요."
 	var crew: Dictionary=world.crew
 	if actor!=crew.pilot_id:return "현재 조종사만 항로를 조작할 수 있습니다."
 	var nav: Dictionary=crew.navigation

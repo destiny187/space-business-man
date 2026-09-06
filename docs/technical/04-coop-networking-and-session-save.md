@@ -89,3 +89,7 @@ Godot의 상위 멀티플레이 API는 서버/클라이언트 연결, RPC, 전�
 - 조종사는 전원 준비 후 100만 주소 중 목적지로 이동한다. 도약 중 남은 시간·선체 위치를 저장해 재실행 시 이어간다. 접속 종료 시 들고 있던 세계 화물은 회수 위치에 남기며 개인 장비를 새로 지급하지 않는다. 공동 착륙과 행성 사업으로의 전환은 아직 연결하지 않았다.
 
 현재 수치들은 로컬 실증 설정이다. 인터넷·6인 지표·Windows의 성능 보장값으로 사용하지 않는다. [Godot ENet 문서](https://docs.godotengine.org/en/stable/classes/class_enetmultiplayerpeer.html)의 UDP 직결 제약과 [RPC 채널 문서](https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html)를 기준으로 구현했다.
+
+## 공동 지표·생태 연결
+
+[공동 지표 구현 기록](../production/12-shared-surface-and-ecology.md)에 프로토콜 2, 착륙 회차·현재 행성 검증, 모든 참가자 관심 영역 합집합, 호스트 스캔/굴착/생태 판정, 신뢰 채널 압축 기록, 표본 경합·행성별 회수·착륙 상태 재접속을 기록한다. 현재 누적 굴착 배열 전송의 상한과 후속 청크별 증분 전송을 구분한다. 실제 인터넷과 분산된 6개 작업장의 성능 검증은 별도다.

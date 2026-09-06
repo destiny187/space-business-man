@@ -78,3 +78,7 @@ ElevenLabs 음원 16종은 이미 포함되어 있다. `python3 tools/generate_a
 - Noto Sans KR: [OFL](../../우주-비즈니스/assets/fonts/OFL.txt), [원본과 해시](../../우주-비즈니스/assets/fonts/sources.json).
 - Godot: [MIT 라이선스](../../우주-비즈니스/assets/legal/Godot-LICENSE.txt), [의존성 저작권 고지](../../우주-비즈니스/assets/legal/Godot-COPYRIGHT.txt).
 - ElevenLabs: [각 음원의 생성 프롬프트·웹 기록·선택본·편집 정보](../../audio/manifests/elevenlabs.json).
+
+## 공동 지표 탐험 실증
+
+새 탐험 경로는 [공동 지표 안내](../production/12-shared-surface-and-ecology.md)를 따른다. 공동 항해 후 전원 준비→착륙, `E` 유지 스캔·`Q` 표본·클릭 굴착, 우주선 주변 공동 창고/연구/격리 작업, 전원 복귀·준비→이륙을 제공한다. 같은 프로토콜 2/콘텐츠로 참가해야 하며 저장은 호스트의 `crew_world.json`, 개인 장비는 별도 프로필이다. 단독 탐험 저장을 자동 병합하지 않는다. 직접 UDP 접속이며 Steam 로비·자동 중계·호스트 이전은 미지원이다.

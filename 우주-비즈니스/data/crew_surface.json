@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "landing_spawn_positions": [
+    [
+      -4,
+      4,
+      -2
+    ],
+    [
+      0,
+      4,
+      -2
+    ],
+    [
+      4,
+      4,
+      -2
+    ],
+    [
+      -4,
+      4,
+      2
+    ],
+    [
+      0,
+      4,
+      2
+    ],
+    [
+      4,
+      4,
+      2
+    ]
+  ],
+  "ship_position": [
+    -12,
+    5,
+    12
+  ],
+  "boarding_distance": 24.0,
+  "movement_speed": 6.0,
+  "gravity": 14.0,
+  "snapshot_interval": 0.5,
+  "maximum_edits_per_planet": 4096,
+  "maximum_packet_bytes": 524288,
+  "maximum_compressed_bytes": 262144,
+  "scan_seconds": 1.5,
+  "scan_distance": 18.0,
+  "sample_distance": 4.0,
+  "scan_input_expiry": 0.35
+}

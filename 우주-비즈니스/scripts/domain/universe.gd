@@ -98,6 +98,8 @@ static func validate_world(value: Variant) -> String:
 	if value.has("crew"):
 		var crew_error: String=FrontierCrewWorld.validate(value.crew)
 		if not crew_error.is_empty():return crew_error
+		var landing_error: String=FrontierCrewSurface.validate_world(value)
+		if not landing_error.is_empty():return landing_error
 	if value.has("ecology"):
 		var ecology_error: String=FrontierEcology.validate(value.ecology,m)
 		if not ecology_error.is_empty():return ecology_error

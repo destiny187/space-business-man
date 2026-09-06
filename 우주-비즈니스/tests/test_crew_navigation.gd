@@ -17,7 +17,7 @@ func run() -> void:
 	var guest:=FrontierPlayerProfile.new_character("지질학자",1)
 	var core:=FrontierCrewAuthority.new()
 	check(core.start(FrontierUniverse.new_world(71491),owner,persist),"host navigation state created")
-	var admission:=core.admit(2,guest,"",1,FrontierCrewWorld.content_hash())
+	var admission:=core.admit(2,guest,"",int(FrontierCrewWorld.config().protocol),FrontierCrewWorld.content_hash())
 	check(core.acknowledge(2,core.session_id).ok,"crew aboard before route")
 	check(not command(core,2,"navigate",{"ordinal":12}).ok,"passenger cannot redirect ship")
 	check(not command(core,1,"navigate",{"ordinal":1000000}).ok,"past last planet rejected")

@@ -5,7 +5,7 @@ static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/crew.json"))
 	return _config
 static func content_hash() -> String:
-	return (FileAccess.get_file_as_string("res://data/crew.json")+FileAccess.get_file_as_string("res://data/galaxy.json")+FileAccess.get_file_as_string("res://data/terrain.json")).sha256_text()
+	return (FileAccess.get_file_as_string("res://data/crew.json")+FileAccess.get_file_as_string("res://data/galaxy.json")+FileAccess.get_file_as_string("res://data/terrain.json")+FileAccess.get_file_as_string("res://data/crew_surface.json")+FileAccess.get_file_as_string("res://data/ecology.json")+FrontierEcologyCatalog.signature()).sha256_text()
 static func create(owner: Dictionary) -> Dictionary:
 	return {"version":1,"world_id":FrontierPlayerProfile.token(),"owner_id":owner.character_id,"revision":0,"pilot_id":owner.character_id,"members":{owner.character_id:member(owner,"",0)},"rock":int(config().starting_rock),"recovery":{},"receipts":{}}
 static func member(profile: Dictionary,hash_value: String,index: int) -> Dictionary:
@@ -17,6 +17,9 @@ static func validate(value: Variant) -> String:
 	if not FrontierUniverse._finite(value.get("revision"),0,9007199254740000) or value.revision!=floorf(value.revision):return "협동 변경 순번 오류"
 	if not FrontierUniverse._finite(value.get("rock"),0,100000000) or value.rock!=floorf(value.rock):return "공동 창고 수량 오류"
 	if not value.get("receipts") is Dictionary or value.receipts.size()>128 or not value.get("recovery") is Dictionary:return "공동 거래 기록 오류"
+	if value.has("landing"):
+		if not value.landing is Dictionary:return "공동 착륙 기록 오류"
+		if not value.landing.is_empty() and (not value.landing.get("body_id") is String or not FrontierUniverse._finite(value.landing.get("epoch"),1,9007199254740000)):return "공동 착륙 주소·순번 오류"
 	if value.has("navigation"):
 		var navigation_error:=FrontierCrewNavigation.validate(value.navigation)
 		if not navigation_error.is_empty():return navigation_error
@@ -49,7 +52,8 @@ static func apply(value: Dictionary,actor: String,kind: String,args: Dictionary,
 	var member: Dictionary=value.members[actor]
 	match kind:
 		"ready":
-			if not args.get("value") is bool or not member.aboard:return "승선 후 준비 상태를 선택하세요."
+			if not args.get("value") is bool:return "준비 상태 오류"
+			if args.value and not member.aboard and (member.area!="surface" or value.get("landing",{}).is_empty() or vector(member.position).distance_to(vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance)):return "우주선으로 돌아와 준비 상태를 선택하세요."
 			member.ready=args.value
 		"pilot":
 			if actor!=value.owner_id:return "호스트만 조종 권한을 넘길 수 있습니다."
@@ -68,6 +72,7 @@ static func apply(value: Dictionary,actor: String,kind: String,args: Dictionary,
 		"recover":
 			if not args.get("crate_id") is String or not value.recovery.has(args.crate_id):return "이미 회수된 화물입니다."
 			var crate: Dictionary=value.recovery[args.crate_id]
+			if crate.area=="surface" and crate.get("body_id","")!=value.get("landing",{}).get("body_id",""):return "이 화물은 다른 행성에 남아 있습니다."
 			if member.area!=crate.area or vector(member.position).distance_to(vector(crate.position))>float(config().interaction_distance):return "화물 위치에 가까이 이동하세요."
 			if int(member.carried)+int(crate.rock)>int(config().backpack_capacity):return "배낭 공간이 부족합니다."
 			member.carried+=crate.rock;value.recovery.erase(args.crate_id)
@@ -79,5 +84,6 @@ static func disconnect_member(value: Dictionary,actor: String) -> void:
 	if int(member.carried)>0:
 		var id: String=actor+":"+str(int(value.revision))
 		value.recovery[id]={"position":member.position.duplicate(),"area":member.area,"rock":int(member.carried)}
+		if member.area=="surface":value.recovery[id]["body_id"]=value.get("landing",{}).get("body_id","")
 		member.carried=0
 	if value.pilot_id==actor:value.pilot_id=value.owner_id

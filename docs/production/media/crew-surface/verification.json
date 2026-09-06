@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2",
+  "host": "Apple M2 / macOS / Metal Forward+",
+  "protocol": 2,
+  "runs": [
+    {
+      "command": "tools/test_expansion.sh",
+      "crew_surface_checks": 44,
+      "result": "pass"
+    },
+    {
+      "command": "python3 tools/test_crew_surface.py --players 6",
+      "checks": 120,
+      "result": "pass",
+      "rendering": "one Metal host and five headless participants",
+      "artifacts": "/var/folders/gx/y_kyc5wx23q_1cprsjvw6b2w0000gn/T/locus-crew-surface-ll1lcic5",
+      "retains_logs_across_reconnect": true
+    },
+    {
+      "command": "python3 tools/test_crew_surface.py --players 2 --render-guests",
+      "checks": 72,
+      "result": "pass",
+      "rendering": "two Metal windows",
+      "artifacts": "/var/folders/gx/y_kyc5wx23q_1cprsjvw6b2w0000gn/T/locus-crew-surface-d3m743tc"
+    },
+    {
+      "command": "python3 tools/test_crew_play.py",
+      "checks": 33,
+      "result": "pass"
+    },
+    {
+      "command": "tools/godot.sh --script res://tests/test_ecology_ui.gd -- --exploration-test",
+      "checks": 30,
+      "result": "pass"
+    },
+    {
+      "command": "tools/godot.sh --script res://tests/test_crew_layout.gd -- --crew-ui-test",
+      "checks": 9,
+      "result": "pass",
+      "scope": "960x640 cabin, equipment popup and actual solo shared landing"
+    }
+  ],
+  "two_player_surface_payload_bytes": 9493,
+  "payload_note": "Surface-record compressed payload only, excludes ENet headers, movement and general snapshots. Session total through second-planet introduction. Not a bandwidth/FPS guarantee.",
+  "limitations": [
+    "Same Mac loopback; no real Internet or Windows proof",
+    "Controlled player placement; actual ENet, movement, terrain rebuild, flight and action requests",
+    "Six players remain near the same work site; dispersed-region endurance unverified",
+    "Overlapping test launches caused a cabin admission timeout; cabin suite passed when rerun separately",
+    "Headless async RID failures fixed by main-thread resource loading; visual clients retain threaded loading",
+    "Prototype terrain and shared ecology, not final art or whole-game completion"
+  ],
+  "six_player_surface_payload_bytes": 34566
+}

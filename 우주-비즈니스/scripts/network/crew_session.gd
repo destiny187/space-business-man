@@ -2,6 +2,7 @@ class_name FrontierCrewSession
 extends Node
 signal snapshot_received(value: Dictionary)
 signal notice(message: String)
+signal surface_received(value: Dictionary)
 signal response_received(sequence: int,value: Dictionary)
 var authority: FrontierCrewAuthority
 var enet: ENetMultiplayerPeer
@@ -22,6 +23,12 @@ var snapshot_timer:=0.0
 var pending_connections: Dictionary={}
 var closing_connections: Dictionary={}
 var rate_windows: Dictionary={}
+var surface: Dictionary={}
+var surface_timer:=0.0
+var surface_serial:=0
+var received_surface_serial:=-1
+var surface_digests: Dictionary={}
+var surface_bytes_sent:=0
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_peer_connected)
 	multiplayer.peer_disconnected.connect(_peer_disconnected)
@@ -33,7 +40,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 	if profile.data.is_empty():notice.emit("개인 프로필을 먼저 열어 주세요.");return false
 	var state:=store.read_state()
 	if state.is_empty():
-		if FileAccess.file_exists(store.path):notice.emit(store.last_error);return false
+		if store.has_history():notice.emit(store.last_error);return false
 		state=FrontierUniverse.new_world(71491)
 	authority=FrontierCrewAuthority.new()
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
@@ -59,12 +66,12 @@ func _peer_connected(peer: int) -> void:
 	_offer.rpc_id(peer,session_id,world_id,int(FrontierCrewWorld.config().protocol),FrontierCrewWorld.content_hash())
 func _peer_disconnected(peer: int) -> void:
 	if not hosting:return
-	pending_connections.erase(peer);closing_connections.erase(peer);rate_windows.erase(peer)
+	pending_connections.erase(peer);closing_connections.erase(peer);rate_windows.erase(peer);surface_digests.erase(peer)
 	if not authority.disconnect_member(peer):
 		active=false;notice.emit(authority.error);_closed.rpc(authority.error);return
 	_publish()
 func _server_disconnected() -> void:
-	active=false;latest={};notice.emit("호스트 연결이 종료됐습니다. 개인 장비 원본은 유지됩니다.")
+	active=false;latest={};surface={};notice.emit("호스트 연결이 종료됐습니다. 개인 장비 원본은 유지됩니다.")
 func _process(delta: float) -> void:
 	if not hosting or enet==null or authority.stopped:return
 	var now:=Time.get_ticks_msec()/1000.0
@@ -74,6 +81,10 @@ func _process(delta: float) -> void:
 	for peer in closing_connections.keys():
 		if closing_connections[peer]<=now:
 			enet.disconnect_peer(peer);closing_connections.erase(peer)
+	surface_timer-=delta
+	if surface_timer<=0:
+		surface_timer=float(FrontierCrewSurface.config().snapshot_interval)
+		_publish_surface()
 	snapshot_timer-=delta
 	if snapshot_timer<=0:snapshot_timer=1.0/float(FrontierCrewWorld.config().snapshot_hz);_publish()
 func _publish() -> void:
@@ -124,7 +135,7 @@ func _acknowledge(epoch: String) -> void:
 	var peer:=multiplayer.get_remote_sender_id()
 	var result:=authority.acknowledge(peer,epoch)
 	if not result.ok:_reject_peer(peer,result.error);return
-	pending_connections.erase(peer);_publish()
+	pending_connections.erase(peer);surface_digests.erase(peer);_publish();_publish_surface()
 func _valid_snapshot(value: Variant) -> bool:
 	if not value is Dictionary or value.get("session_id")!=session_id or not value.get("crew") is Dictionary or not value.crew.has("navigation"):return false
 	if not value.get("self_id") is String or not value.crew.get("members") is Dictionary or not value.crew.members.has(value.self_id) or not value.get("active") is bool:return false
@@ -147,7 +158,7 @@ func send_request(kind: String,args: Dictionary) -> bool:
 	var request: Dictionary={"session_id":session_id,"sequence":next_sequence,"kind":kind,"args":args,"revision":latest.crew.revision}
 	next_sequence+=1
 	if hosting:
-		var result:=authority.request(1,request);response_received.emit(int(request.sequence),result);_publish()
+		var result:=authority.request(1,request);response_received.emit(int(request.sequence),result);_publish();_publish_surface()
 	else:_request.rpc_id(1,request)
 	return true
 @rpc("any_peer","call_remote","reliable",0)
@@ -156,18 +167,18 @@ func _request(value: Dictionary) -> void:
 	var peer:=multiplayer.get_remote_sender_id()
 	if not _rate_allowed(peer):return
 	var result:=authority.request(peer,value)
-	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result);_publish()
+	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result);_publish();_publish_surface()
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:response_received.emit(sequence,value)
-func send_input(direction: Vector2) -> void:
+func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false) -> void:
 	if not active:return
 	movement_sequence+=1
-	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y])
-	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y])
+	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning)
+	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning)
 @rpc("any_peer","call_remote","unreliable_ordered",1)
-func _movement(epoch: String,sequence: int,direction: Array) -> void:
-	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction)
+func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false) -> void:
+	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning)
 func kick(character_id: String) -> bool:
 	if not hosting or character_id==authority.world.crew.owner_id:return false
 	for peer in authority.peers.keys():
@@ -198,6 +209,8 @@ func _exit_tree() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not hosting or not active or authority.stopped:return
+	authority.step_surface(minf(delta,.1))
+	if authority.stopped:active=false;notice.emit(authority.error);_closed.rpc(authority.error);return
 	var arrived:=FrontierCrewNavigation.step(authority.world,minf(delta,.1))
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
@@ -208,3 +221,27 @@ func _valid_manifest(value: Variant) -> bool:
 	if not value is Dictionary or not FrontierUniverse._finite(value.get("seed"),0,2147483647):return false
 	if value.seed!=floorf(value.seed):return false
 	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed)))
+
+func _publish_surface() -> void:
+	if not hosting or authority==null or authority.stopped:return
+	if not FrontierCrewSurface.landed(authority.world):
+		surface={};surface_digests.clear();return
+	for peer in authority.peers:
+		var value:=FrontierCrewSurfaceReplica.packet(authority.world,authority.peers[peer])
+		var digest:=FrontierUniverse.fingerprint(value)
+		if surface_digests.get(peer,"")==digest:continue
+		surface_serial+=1
+		if peer==1:surface=value;surface_received.emit(value)
+		else:
+			var encoded:=FrontierCrewSurfaceReplica.encode(value)
+			if encoded.size()>int(FrontierCrewSurface.config().maximum_compressed_bytes):notice.emit("지표 기록 전송 한도를 확인해야 합니다.");continue
+			surface_bytes_sent+=encoded.size()
+			_surface_state.rpc_id(peer,session_id,surface_serial,encoded)
+		surface_digests[peer]=digest
+
+@rpc("authority","call_remote","reliable",0)
+func _surface_state(epoch: String,serial: int,data: PackedByteArray) -> void:
+	if hosting or epoch!=session_id or serial<=received_surface_serial or manifest.is_empty():return
+	var value:=FrontierCrewSurfaceReplica.decode(data,manifest)
+	if value.is_empty():notice.emit("공동 지표 기록이 손상되어 적용하지 않았습니다.");return
+	received_surface_serial=serial;surface=value;surface_received.emit(value)
