@@ -22,6 +22,7 @@ static func tick(world: Dictionary,dt: float) -> void:
 		site.robots[id]={"id":id,"grade":job.grade,"position":FrontierExpeditionBusiness.array(spawn),"battery":100.0,"cargo":FrontierExpeditionBusiness.inventory(),"phase":"idle","target":"","path":[],"status":"작업 배정 대기","work":0.0,"charging":false}
 		site.jobs.erase(id)
 	for robot in site.robots.values():_robot(world,site,robot,dt)
+	FrontierFieldEngineering.tick(world,dt)
 	environment(world,site,dt)
 	if not site.production_paid and int(site.delivered)>=48 and not site.robots.is_empty():
 		site.production_paid=true;ledger.credits+=int(FrontierExpeditionBusiness.config().production_milestone)
@@ -115,16 +116,17 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()
 	for b in site.buildings.values():
 		if not b.active:continue
+		var engineering: float=FrontierFieldEngineering.factor(world,b)
 		match b.type:
 			"atmosphere":
 				e.oxygen=move_toward(float(e.oxygen),.21,float(cfg.oxygen_rate)*dt);e.pressure=move_toward(float(e.pressure),1,float(cfg.pressure_rate)*dt);e.toxicity=move_toward(float(e.toxicity),0,float(cfg.toxicity_rate)*dt)
-			"thermal":e.temperature=move_toward(float(e.temperature),18,float(cfg.thermal_rate)*dt)
+			"thermal":e.temperature=move_toward(float(e.temperature),18,float(cfg.thermal_rate)*dt*engineering)
 			"water":
 				if e.water>=100:b.status="목표 달성";continue
 				b.work+=dt
-				if b.work>=float(cfg.water_cycle_seconds):
-					if site.inventory.ice<=0:b.status="얼음 보급 필요"
-					else:site.inventory.ice-=1;e.water=minf(100,float(e.water)+float(cfg.water_per_ice));b.work=0.0
+				if b.work>=float(cfg.water_cycle_seconds)/engineering:
+					if site.inventory.ice<=0:b.status="얼음 보급 필요";b.work=minf(b.work,float(cfg.water_cycle_seconds)/engineering)
+					else:site.inventory.ice-=1;e.water=minf(100,float(e.water)+float(cfg.water_per_ice));b.work=maxf(0.0,float(b.work)-float(cfg.water_cycle_seconds)/engineering)
 			"biolab":
 				var score:=FrontierEvaluator.scores(e)
 				if minf(score.atmosphere,minf(score.temperature,score.water))<60:b.status="대기·온도·수질 안정화 필요";continue
@@ -132,7 +134,7 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 				if site.inventory.ice<=0:b.status="배양 수분 공급 필요";continue
 				b.work+=dt
 				if b.work>=float(cfg.biolab_nutrient_seconds):site.inventory.ice-=1;b.work=0.0
-				e.ecology=minf(100,float(e.ecology)+float(cfg.biolab_rate)*dt)
+				e.ecology=minf(100,float(e.ecology)+float(cfg.biolab_rate)*dt*engineering)
 	var scores:=FrontierEvaluator.scores(e)
 	if minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60:e.stable_seconds=minf(120,e.stable_seconds+dt)
 	else:e.stable_seconds=0.0

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "prototype_seconds": 30,
+  "trial_seconds": 30,
+  "prototype_cost": {"iron": 24, "copper": 12, "stone": 8},
+  "trial_cost": {"iron": 8, "copper": 6},
+  "install_cost": {"iron": 12, "copper": 8},
+  "projects": {
+    "mineral_scaffold": {"name": "광물 공생 배양체", "environments": ["basalt", "cave"], "building": "biolab", "factor": 1.2, "description": "암반·동굴 생물의 기질 구조를 모방한 배양 지지체. 같은 전력과 수분 소비에서 지역 배양 처리 속도 20% 향상."},
+    "thermal_exchange": {"name": "저온 적응 열교환막", "environments": ["cold"], "building": "thermal", "factor": 1.2, "description": "저온 생물의 표면 구조를 모방한 열교환막. 전력이 공급되는 지역 열 설비의 목표 온도 접근 속도 20% 향상."},
+    "water_membrane": {"name": "건조 적응 순환막", "environments": ["arid"], "building": "water", "factor": 1.2, "description": "건조 생물의 수분 교환 구조를 모방한 순환막. 얼음당 물 산출량을 유지하며 지역 순환 처리 속도 20% 향상."}
+  }
+}

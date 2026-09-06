@@ -329,7 +329,7 @@ func _surface_packet(packet: Dictionary) -> void:
 	_sync_surface_view()
 	if surface_world!=null:
 		surface_world.accept(packet);_refresh_surface_options()
-		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier))
+		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
 
 func _sync_surface_view() -> void:
 	if session.latest.is_empty():return
@@ -415,7 +415,7 @@ func _exit_tree() -> void:
 func toggle_business() -> void:
 	if not session.active or surface_world==null:status.text="착륙 후 개발 사업을 시작하세요.";return
 	cancel_placement();business_panel.visible=not business_panel.visible
-	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier))
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}))
 func interact_business() -> void:
 	if not session.active or surface_world==null or business_panel.visible:return
 	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])

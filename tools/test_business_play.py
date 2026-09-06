@@ -10,7 +10,7 @@ import tempfile
 import time
 ROOT = Path(__file__).resolve().parents[1]
 
-def run(players=2, render_guests=False):
+def run(players=2, render_guests=False, engineering=False):
     work = Path(tempfile.mkdtemp(prefix='locus-business-play-'))
     procs, logs = {}, {}
     checks = 0
@@ -99,7 +99,15 @@ def run(players=2, render_guests=False):
         command('host',kind='surface_frame',name='business-menu')
         wait(lambda:(work/'host/business-menu.png').exists(),'business menu captured')
         command('host',kind='business_menu')
-        wait(lambda:'vein:0' in state('guest0').get('business_models',[]),'authored vein model exists on guest')
+        if engineering:
+            command('host',kind='choose_specimen')
+            wait(lambda:bool(state('host').get('chosen')),'visible native organism selected')
+            specimen=state('host')['chosen'];place('host',specimen['observer']);command('host',kind='look',point=specimen['center'])
+            command('host',kind='scan',pressed=True)
+            wait(lambda:state('host').get('observations'),'actual held scanner records biological evidence')
+            command('host',kind='scan',pressed=False);near_base('host')
+            success('host','surface_analyze',form_id=specimen['form_id'])
+        wait(lambda:'vein:0'  in state('guest0').get('business_models',[]),'authored vein model exists on guest')
         point=state('guest0')['business_model_positions']['vein:0'];observer=[point[0],point[1],point[2]+3]
         place('guest0',observer);command('guest0',kind='look',point=[point[0],point[1]+1,point[2]])
         wait(lambda:state('guest0').get('business_target',{}).get('id')=='vein:0','guest aims at physical ore')
@@ -144,6 +152,31 @@ def run(players=2, render_guests=False):
         for kind in ['solar','solar','atmosphere','thermal','water','biolab']:build(kind)
         command('host',kind='business_overview');command('host',kind='surface_frame',name='industry-before')
         wait(lambda:(work/'host/industry-before.png').exists(),'active facility site captured')
+        if engineering:
+            near_base('host')
+            for resource,count in {'iron':3,'copper':2,'stone':1}.items():
+                for _ in range(count):success('host','business_supply',resource=resource)
+            def research_action(stage, facility_id):
+                p=site()['buildings'][facility_id]['position'];place('host',[p[0],p[1],p[2]+4])
+                old=len(state('host').get('responses',[]))
+                command('host',kind='engineering_action',project='mineral_scaffold',building_id=facility_id,stage=stage)
+                wait(lambda:len(state('host').get('responses',[]))>old,'actual engineering button '+stage)
+                assert state('host')['responses'][-1]['result'].get('ok'),state('host')['responses'][-1]
+                command('host',kind='business_menu')
+            command('host',kind='reset_camera')
+            research_action('prototype',factory);advance(35)
+            wait(lambda:all(state(n).get('engineering',{}).get('projects',{}).get('mineral_scaffold',{}).get('stage')=='prototype_ready' for n in names),'prototype ready shared')
+            lab=next(key for key,b in site()['buildings'].items() if b['type']=='biolab')
+            research_action('trial',lab)
+            for _ in range(6):
+                advance(60)
+                if state('host')['engineering']['projects']['mineral_scaffold']['stage']=='certified':break
+            wait(lambda:all(state(n).get('engineering',{}).get('projects',{}).get('mineral_scaffold',{}).get('stage')=='certified' for n in names),'actual facilities support shared field certification')
+            research_action('install',lab)
+            wait(lambda:all(site(n)['buildings'][lab].get('engineering')=='mineral_scaffold' for n in names),'retrofit shared on one actual facility')
+            command('host',kind='business_menu');command('host',kind='surface_frame',name='engineering-certified')
+            wait(lambda:(work/'host/engineering-certified.png').exists(),'research terminal captured')
+            command('host',kind='business_menu')
         for _ in range(5):advance(100)
         wait(lambda:all(site(n).get('environment',{}).get('ecology',0)>=20 for n in names),'same environment improves for both peers')
         command('host',kind='surface_frame',name='industry-restored')
@@ -170,5 +203,5 @@ def run(players=2, render_guests=False):
         print('Surface artifacts:',work,flush=True)
         if errors:raise AssertionError('Godot runtime errors')
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--players',type=int,choices=range(2,7),default=2);parser.add_argument('--render-guests',action='store_true')
-    args=parser.parse_args();run(args.players,args.render_guests)
+    parser=argparse.ArgumentParser();parser.add_argument('--players',type=int,choices=range(2,7),default=2);parser.add_argument('--render-guests',action='store_true');parser.add_argument('--engineering',action='store_true')
+    args=parser.parse_args();run(args.players,args.render_guests,args.engineering)

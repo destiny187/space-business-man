@@ -103,9 +103,13 @@ static func validate_world(value: Variant) -> String:
 	if value.has("ecology"):
 		var ecology_error: String=FrontierEcology.validate(value.ecology,m)
 		if not ecology_error.is_empty():return ecology_error
+	if value.has("engineering") and not value.engineering is Dictionary:return "현장 연구 형식 오류"
 	if value.has("business"):
 		var business_error: String=FrontierExpeditionBusiness.validate(value.business,m)
 		if not business_error.is_empty():return business_error
+	if value.has("business") or value.has("engineering"):
+		var engineering_error: String=FrontierFieldEngineering.validate_world(value)
+		if not engineering_error.is_empty():return engineering_error
 	return _validate_terrain(value)
 
 static func _finite(value: Variant,low: float,high: float) -> bool:

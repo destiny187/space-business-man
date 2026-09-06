@@ -35,6 +35,7 @@ func accept(value: Dictionary) -> void:
 		if not nodes.has(row.id):
 			_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building")
 		nodes[row.id].get_meta("label").text=FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
+		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
 		nodes[row.id].set_meta("working",row.active)
 	for row in site.robots.values():
 		wanted[row.id]=true

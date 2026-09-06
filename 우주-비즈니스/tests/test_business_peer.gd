@@ -9,6 +9,16 @@ func handle_command(command: Dictionary) -> void:
 			var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true;app._unhandled_input(event)
 		"prepare_build":
 			find_build_spot(command.building);build_spot["token"]=command.token
+		"engineering_action":
+			app.toggle_business() if not app.business_panel.visible else null
+			var panel: FrontierBusinessPanel=app.business_panel
+			for i in panel.research_project.item_count:
+				if panel.research_project.get_item_metadata(i)==command.project:panel.research_project.select(i)
+			panel.update_engineering()
+			for i in panel.research_facility.item_count:
+				if panel.research_facility.get_item_metadata(i)==command.building_id:panel.research_facility.select(i)
+			var tabs: TabContainer=panel.research_detail.get_parent().get_parent();tabs.current_tab=3
+			panel.get("research_"+command.stage+"_button").pressed.emit()
 		"industry_ticks":
 			if app.session.hosting:
 				for i in mini(100,int(command.count)):FrontierExpeditionIndustry.tick(app.session.authority.world,1)
@@ -33,6 +43,8 @@ func find_build_spot(kind: String) -> void:
 func status_value() -> Dictionary:
 	var value:=super.status_value()
 	value["business"]=app.session.surface.get("business",{})
+	value["engineering"]=app.session.surface.get("engineering",{})
+	value["research_detail"]=app.business_panel.research_detail.text
 	value["build_spot"]=build_spot;value["placement_valid"]=app.placement_valid;value["placement_message"]=app.status.text
 	value["business_menu"]=app.business_panel.visible
 	if app.surface_world!=null and app.session.latest.has("self_id") and app.actors.has(app.session.latest.self_id):

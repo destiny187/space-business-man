@@ -1,0 +1,19 @@
+{
+  "players": 6,
+  "checks": 280,
+  "failures": 0,
+  "runtime_errors": 0,
+  "host_renderer": "Metal Forward+",
+  "guests": "five headless ENet processes on same Mac",
+  "scenario": "held scan, basic analysis, actual research UI buttons, powered prototype, material-fed culture trial, facility retrofit, contract and host restart",
+  "controlled_test_conditions": [
+    "host fixture positions",
+    "accelerated industry ticks"
+  ],
+  "internet_tested": false,
+  "image_sha256": "bba215ddc3b77dc29b0c807fdfba38a0ed105b01ead8aae2daae7ddeaba42fc6",
+  "domain_checks": 120,
+  "small_layout_checks": 12,
+  "expansion_regression": "passed",
+  "followup": "cancellation and blocked trial recovery verified by final domain suite"
+}

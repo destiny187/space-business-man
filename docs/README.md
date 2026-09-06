@@ -52,6 +52,7 @@
 | [최종 설계 개발 대조표](planning/08-expansion-execution-matrix.md) | X-01~X-16·제작/운영 조건·의존성·미완료 연결 |
 | [지하 운반 로봇과 실제 물류](production/09-courier-and-surface-logistics.md) | 실제 지형 경로·물리 운반·재로드·Blender 바퀴·성능 |
 | [행성 시드와 생명체 통합](production/11-seeded-ecology-integration.md) | 실제 접지·스캔/분석·표본 항해/이식·휴면·저장·미연결 매질 |
+| [생물 관측과 현장 공학](production/14-biological-field-engineering.md) | 원산지 증거·시제품·가동 설비 시험·개조·실제 지역 처리량 |
 | [탐험 산업과 복원 계약](production/13-expedition-industry-and-contracts.md) | 무료 개발 등록·광맥/창고·공동 건설·로봇·지역 환경·계약 정산·재투자 |
 | [공동 지표와 생태 동기화](production/12-shared-surface-and-ecology.md) | 공동 착륙·굴착·스캔/연구·표본 운송·재접속·호스트 저장 |
 | [공동 원정선과 6인 플레이](production/10-crew-cabin-and-playtest.md) | 실제 ENet·개인 장비·3D 선내/선체·재접속/화물·검증 범위 |
