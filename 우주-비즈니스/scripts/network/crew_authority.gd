@@ -140,6 +140,20 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if not reason.is_empty():return failure(reason)
 	draft.crew.revision+=1;draft.crew.members[actor].last_sequence=sequence
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
+	var gains: Dictionary={}
+	var old_bag:=FrontierExpeditionBusiness.bag(world,actor)
+	var new_bag:=FrontierExpeditionBusiness.bag(draft,actor)
+	for resource in new_bag:
+		var amount: int=int(new_bag[resource])-int(old_bag.get(resource,0))
+		if amount>0:gains[resource]=amount
+	var rock_gain: int=int(draft.crew.members[actor].carried)-int(world.crew.members[actor].carried)
+	if rock_gain>0:gains["stone"]=int(gains.get("stone",0))+rock_gain
+	if envelope.kind=="surface_collect":
+		for sample_id in draft.ecology.specimens:
+			if not world.ecology.specimens.has(sample_id):
+				var form:=FrontierEcologyCatalog.form(draft.ecology.specimens[sample_id].form_id)
+				gains[FrontierResourceIcons.specimen_id(form)]=1
+	result["gains"]=gains
 	draft.crew.receipts[key]={"digest":digest,"result":result.duplicate()}
 	if draft.crew.receipts.size()>128:
 		var oldest: String="";var revision:=INF
@@ -151,13 +165,13 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
-func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false) -> bool:
+func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	var aim: Vector3=Vector3.FORWARD if aim_value is Array and aim_value.is_empty() else FrontierCrewSurface.direction(aim_value)
 	if aim==Vector3.ZERO:return false
-	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning}
+	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting}
 	return true
 func direction_for(peer: int) -> Vector2:
 	if not inputs.has(peer) or inputs[peer].expires<now:return Vector2.ZERO

@@ -89,3 +89,5 @@
 
 - [공통 UI/UX 가이드 FIELD v1](production/22-uiux-guide.md): 시각 표현 우선, 공통 테마·HUD·선택·장착·피드백 기준.
 - [지상 HUD·아이템 UI/UX 적용](production/23-uiux-implementation.md): 실제 3D 미리보기·격자·클릭/드래그 슬롯과 확인 범위.
+
+- [지상 체력·스태미나·획득량·레이더](production/24-field-vitals-and-radar.md): FIELD v1 기본 플레이 정보 보완.

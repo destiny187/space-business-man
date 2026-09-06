@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "source": "HEAD plus selectively staged field changes; unrelated working-tree geology/galaxy edits excluded. Assets reused via symlink.",
+  "focused_result": "FIELD_CHECKS 23 FAILURES 0",
+  "render_result": "FIELD_FINAL_RENDER_OK",
+  "logs": {
+    "field-final.log": "8397b07d8baf4aa062792ed02c137136cf03d031fbaf730f1825b11297788792",
+    "field-render.log": "6746f57c1efa7af6e938fc0a446cfa939d5093de1dbca5b138860dc2383315ad"
+  },
+  "screenshots": {
+    "field-960.png": "0502687b4f4a2b2e67c764b35c1e3e692e59a4f8d4c2d57a81d77a3d26778454",
+    "field.png": "42da76569cd23ab10c32bceb148bb6f80e19aef785b126f8710d655cd4adde6a",
+    "damage.png": "4d87fb1fcdc6e3fbb264cb7e85326bdd35746c67a82b7bd982af1f64f3809b35"
+  },
+  "scope": [
+    "host walk/sprint speed and stamina drain/recovery/exhaustion",
+    "menu blocks sprint input",
+    "real CharacterBody3D fall collision health damage",
+    "landing support healing and host rescue preserving equipment/cargo",
+    "actual host mining gains, duplicate receipt filtering and merged pickup",
+    "local terrain relief and deposit radar",
+    "960x640 HUD fit",
+    "client snapshot validation",
+    "world save/rejoin retains health; legacy migration; malformed vitals rejected"
+  ],
+  "limitations": [
+    "No live multiclient network test or long performance run",
+    "Damage currently comes from falls; animal/environment attacks not connected",
+    "Radar is generated surface-height projection, not a cave or edited-terrain map",
+    "Final pickup background changed after focused checks and verified by a narrow real-window capture",
+    "Final screenshot replays verified saved receipts for stable pickup display; movement/fall/stamina fixtures used only in isolated test worlds"
+  ]
+}

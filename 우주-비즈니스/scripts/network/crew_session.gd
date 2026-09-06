@@ -184,14 +184,14 @@ func _request(value: Dictionary) -> void:
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:response_received.emit(sequence,value)
-func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false) -> void:
+func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false) -> void:
 	if not active:return
 	movement_sequence+=1
-	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning)
-	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning)
+	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting)
+	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting)
 @rpc("any_peer","call_remote","unreliable_ordered",1)
-func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false) -> void:
-	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning)
+func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false) -> void:
+	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting)
 func kick(character_id: String) -> bool:
 	if not hosting or character_id==authority.world.crew.owner_id:return false
 	for peer in authority.peers.keys():

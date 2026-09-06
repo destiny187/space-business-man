@@ -1,5 +1,6 @@
 class_name FrontierFieldHud
 extends Control
+var instruments: FrontierFieldInstruments
 var app: FrontierCrewExpedition
 var place: Label
 var location: Label
@@ -20,6 +21,7 @@ var toast_left:=0.0
 var save_left:=0.0
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;theme=FrontierInterfaceStyle.theme();mouse_filter=Control.MOUSE_FILTER_IGNORE;set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	instruments=FrontierFieldInstruments.new();add_child(instruments);instruments.configure(app)
 	var heading:=VBoxContainer.new();heading.position=Vector2(32,28);heading.add_theme_constant_override("separation",4);heading.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(heading)
 	place=FrontierInterfaceStyle.label(heading,"",24);location=FrontierInterfaceStyle.label(heading,"",12,Color("d0d6ce"))
 	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=TextureRect.new();ship_direction.texture=load("res://assets/ui/interface/ship.svg");ship_direction.custom_minimum_size=Vector2(22,22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
@@ -49,7 +51,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	get_viewport().size_changed.connect(_layout);_layout()
 func _layout() -> void:
 	var size:=get_viewport().get_visible_rect().size
-	get_node("Compass").position=Vector2(size.x/2-45,26);saved.position=Vector2(size.x-42,28)
+	get_node("Compass").position=Vector2(size.x/2-45,26);saved.position=Vector2(size.x-230,28)
 	navigation.position=Vector2(28,size.y-68);get_node("Weapon").position=Vector2(size.x-200,size.y-63)
 func _process(delta: float) -> void:
 	toast_left=maxf(0,toast_left-delta)

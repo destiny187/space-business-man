@@ -9,7 +9,7 @@ static func content_hash() -> String:
 static func create(owner: Dictionary) -> Dictionary:
 	return {"version":1,"world_id":FrontierPlayerProfile.token(),"owner_id":owner.character_id,"revision":0,"pilot_id":owner.character_id,"members":{owner.character_id:member(owner,"",0)},"rock":int(config().starting_rock),"recovery":{},"receipts":{}}
 static func member(profile: Dictionary,hash_value: String,index: int) -> Dictionary:
-	return {"loadout":FrontierEquipment.create(profile),"profile":profile.duplicate(true),"capability_hash":hash_value,"position":config().spawn_positions[index%6].duplicate(),"area":"cabin","aboard":true,"ready":false,"carried":0,"last_sequence":0}
+	return {"vitals":FrontierCrewVitals.create(),"loadout":FrontierEquipment.create(profile),"profile":profile.duplicate(true),"capability_hash":hash_value,"position":config().spawn_positions[index%6].duplicate(),"area":"cabin","aboard":true,"ready":false,"carried":0,"last_sequence":0}
 static func vector(value: Array) -> Vector3:return Vector3(value[0],value[1],value[2])
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.get("version")!=1 or not FrontierPlayerProfile.identifier(value.get("world_id")):return "협동 세계 버전·ID 오류"
@@ -32,6 +32,7 @@ static func validate(value: Variant) -> String:
 		if not record is Dictionary:return "승무원 형식 오류"
 		var error:=FrontierPlayerProfile.validate_character(record.get("profile"))
 		if not error.is_empty() or id!=record.profile.character_id:return "승무원 캐릭터·장비 오류"
+		if record.has("vitals") and not FrontierCrewVitals.validate(record.vitals):return "탐험복 체력·스태미나 기록 오류"
 		if record.has("loadout") and not FrontierEquipment.validate(record.loadout).is_empty():return "아이템·장착 기록 오류"
 		if not record.get("capability_hash") is String or (id!=value.owner_id and not FrontierPlayerProfile.identifier(record.capability_hash,64)):return "재접속 자격 오류"
 		if not FrontierUniverse._vector3_array(record.get("position")) or record.get("area") not in ["cabin","surface"]:return "승무원 위치 오류"

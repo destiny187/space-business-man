@@ -25,7 +25,7 @@ static func transfer(stock: Dictionary,cost: Dictionary,multiplier: int) -> void
 	for key in cost:stock[key]=int(stock.get(key,0))+int(cost[key])*multiplier
 static func identifier(business: Dictionary,prefix: String) -> String:
 	business.counter+=1;return prefix+":"+str(int(business.counter))
-static func veins(body: Dictionary) -> Array:
+static func veins(body: Dictionary,_center: Vector3=Vector3.ZERO) -> Array:
 	var values: Array=[]
 	var types: Array=config().veins
 	for i in types.size():

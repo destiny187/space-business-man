@@ -14,6 +14,7 @@ static func landed(world: Dictionary) -> bool:
 	return not world.get("crew",{}).get("landing",{}).is_empty()
 
 static func spawn_member(world: Dictionary,member: Dictionary,index: int) -> void:
+	FrontierCrewVitals.ensure(member).sprinting=false
 	member.position=(config().landing_spawn_positions[index%6] if landed(world) else FrontierCrewWorld.config().spawn_positions[index%6]).duplicate()
 	member.area="surface" if landed(world) else "cabin"
 	member.aboard=not landed(world);member.ready=false

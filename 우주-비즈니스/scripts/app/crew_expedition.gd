@@ -59,6 +59,7 @@ var sample_options: OptionButton
 var surface_target: Dictionary={}
 var dig_timer:=0.0
 var test_scan:=false
+var test_sprint:=false
 var reticle: Label
 var shipyard_panel: FrontierShipyardPanel
 var business_panel: FrontierBusinessPanel
@@ -328,22 +329,32 @@ func _physics_process(delta: float) -> void:
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if FrontierClientSettings.ensure(get_tree()).is_open():direction=Vector2.ZERO;scanning=false
-		session.send_input(direction,-camera.global_basis.z,scanning)
+		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
+			var member: Dictionary=session.authority.world.crew.members[id]
+			var wants_sprint: bool=session.authority.inputs.get(peer,{}).get("sprinting",false) and direction.length_squared()>0
+			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1)
+			var impact_speed:=maxf(0,-actor.velocity.y)
+			var was_grounded:=actor.is_on_floor()
 			if FrontierCrewSurface.landed(session.authority.world):
 				if surface_world==null or not surface_world.ready_at(actor.position):actor.velocity=Vector3.ZERO;continue
-				var next:=actor.position+Vector3(direction.x,0,direction.y)*float(FrontierCrewSurface.config().movement_speed)*delta
+				var next:=actor.position+Vector3(direction.x,0,direction.y)*float(FrontierCrewSurface.config().movement_speed)*multiplier*delta
 				if not surface_world.ready_at(next):actor.velocity=Vector3.ZERO;continue
-				actor.velocity.x=direction.x*float(FrontierCrewSurface.config().movement_speed);actor.velocity.z=direction.y*float(FrontierCrewSurface.config().movement_speed)
+				actor.velocity.x=direction.x*float(FrontierCrewSurface.config().movement_speed)*multiplier;actor.velocity.z=direction.y*float(FrontierCrewSurface.config().movement_speed)*multiplier
 				if not actor.is_on_floor():actor.velocity.y-=float(FrontierCrewSurface.config().gravity)*delta
 				else:actor.velocity.y=-1
 				if actor.position.y<float(surface_world.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(surface_world.config.region_half_extent):actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO
 			else:actor.velocity=Vector3(direction.x*float(FrontierCrewWorld.config().movement_speed),-1,direction.y*float(FrontierCrewWorld.config().movement_speed))
-			actor.move_and_slide();session.authority.update_position(peer,actor.position)
+			impact_speed=maxf(impact_speed,-actor.velocity.y)
+			actor.move_and_slide()
+			if member.area=="surface" and actor.is_on_floor() and not was_grounded:
+				if FrontierCrewVitals.land(member,impact_speed):
+					actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
+			session.authority.update_position(peer,actor.position)
 func _process(delta: float) -> void:
 	if session==null or session.latest.is_empty() or not session.active or session.latest.get("phase")!="playing":return
 	var members: Dictionary=session.latest.crew.members

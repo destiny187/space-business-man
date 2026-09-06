@@ -75,15 +75,14 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"surface_attack":
 			recoil=1;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);effects.burst(point,Color("ffb578"),10);audio.play("sfx_combat_pulse")
 		"equipment_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
-		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3
+		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3;cue_left=0
 		"surface_dig":
 			recoil=1;work_left=.25;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point)
-			effects.suction(point,handheld,"stone",4);audio.play("sfx_combat_pulse");show_cue("+1 암석")
+			effects.suction(point,handheld,"stone",4);audio.play("sfx_combat_pulse")
 		"business_mine":
-			recoil=.3;work_left=.4;effects.suction(point,handheld,request.resource,6)
+			cue_left=0;recoil=.3;work_left=.4;effects.suction(point,handheld,request.resource,6)
 			effects.burst(point,Color(FrontierCatalog.entry("resources",request.resource).color),8)
 			audio.play("sfx_mine_hit_metal",point);audio.play("sfx_pickup_resource")
-			show_cue(FrontierCatalog.entry("resources",request.resource).name+" 획득")
 		"business_deposit","business_recover_crate","surface_collect","surface_resupply":
 			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("인수 완료")
 		"business_build":
