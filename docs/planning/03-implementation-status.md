@@ -93,3 +93,7 @@ Blender 사용 중 종료 시 재실행하는 규칙은 [AGENTS.md](../../AGENTS
 [1인칭](../production/media/ink-catalog/game-first-person.png) · [기지 관찰](../production/media/ink-catalog/game-orbit.png) · [환경 변화](../production/media/ink-catalog/game-ecology.png) · [게임 도감](../production/media/ink-catalog/game-catalog-ui.png)
 
 기존 게임 규칙·입력·연출·그래픽 회귀 검사와 전체 자산 재질·원본·목록 검사를 통과했다. 총 1,194개 확인 항목 실패 0건이며 [검증 기록](../production/media/ink-catalog/verification.json)에 남긴다. GPU 검사는 두 카메라의 실제 윤곽 출력, 환경 변화, 도감 화면을 저장하고 지면 원근에서 잘못 생기는 검은 띠를 검사한다. 세이브·경제·자동화 규칙은 변경하지 않았다. 대규모 확장 월드의 성능 최적화와 모든 기존 모델의 고품질 재제작 완료를 뜻하지 않는다.
+
+## 탐험 확장 E0 착수
+
+[확장 개발 기록](07-expansion-development-log.md)에 E0-A 100만 주소·실제 관측 카탈로그·3D 항해와 별도 탐험 저장의 구현 및 검증을 기록한다. 기존 1.2 실행 범위와 구분하며, 지하·착륙·6인 협동은 아직 통합하지 않았다.

@@ -10,6 +10,8 @@ func _ready() -> void:
 	canvas = title.get_parent()
 
 func select_sample(which: int) -> void:
+	var view: Array = samples[posmod(which,samples.size())].get("view_direction",[1.22,.84,1.70])
+	direction = Vector3(view[0],view[1],view[2]).normalized()
 	super.select_sample(posmod(which,samples.size()))
 	if samples[index].get("surface","") == "strata":
 		var mat := ShaderMaterial.new()

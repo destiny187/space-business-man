@@ -308,5 +308,20 @@
     "source": "art/blender/ink-study/ore_refinery.blend",
     "geometry": "approved-reference",
     "foliage": false
+  },
+  {
+    "id": "kestrel",
+    "title": "32   /   우주선",
+    "name": "KESTREL · 공동 원정선",
+    "group": "장비",
+    "model": "res://assets/models/ships/kestrel.glb",
+    "source": "art/blender/ships/kestrel.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.22,
+      0.84,
+      -1.7
+    ]
   }
 ]

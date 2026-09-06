@@ -1,0 +1,14 @@
+{
+  "generator_version": "galaxy-v2",
+  "catalog_version": "nasa-ps-20260906",
+  "planet_count": 1000000,
+  "planets_per_system": 4,
+  "systems_per_sector": 5000,
+  "outer_radius": 500.0,
+  "inner_radius": 100.0,
+  "band_names": ["외곽 개척권", "외곽 항로", "중간 성역", "내곽 성역", "중심 접근권"],
+  "tier_weights": [[85,15,0,0,0],[15,70,15,0,0],[0,15,70,15,0],[0,0,15,70,15],[0,0,0,15,85]],
+  "planet_kinds": ["basalt", "glacial", "sulfur"],
+  "starting_seed": 71491,
+  "flight": {"cruise_speed": 280.0, "boost_speed": 700.0, "acceleration": 95.0, "arrival_clearance": 600.0, "jump_seconds": 3.5}
+}

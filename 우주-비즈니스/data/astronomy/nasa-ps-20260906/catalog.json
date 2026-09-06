@@ -1,0 +1,220 @@
+{
+  "version": "nasa-ps-20260906",
+  "normalizer_version": 1,
+  "retrieved_at": "2026-09-06T04:12:59.185638+00:00",
+  "source_url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name%2Chostname%2Cdefault_flag%2Cpl_bmassprov%2Cra%2Cdec%2Cpl_refname%2Cst_refname%2Csy_refname%2Cpl_rade%2Cpl_radeerr1%2Cpl_radeerr2%2Cpl_radelim%2Cpl_bmasse%2Cpl_bmasseerr1%2Cpl_bmasseerr2%2Cpl_bmasselim%2Cpl_orbper%2Cpl_orbpererr1%2Cpl_orbpererr2%2Cpl_orbperlim%2Cpl_eqt%2Cpl_eqterr1%2Cpl_eqterr2%2Cpl_eqtlim%2Cst_lum%2Cst_lumerr1%2Cst_lumerr2%2Cst_lumlim%2Csy_dist%2Csy_disterr1%2Csy_disterr2+from+ps+where+default_flag%3D1+and+pl_name+in+%28%27TRAPPIST-1+d%27%2C%27TRAPPIST-1+e%27%2C%27TRAPPIST-1+f%27%29+order+by+pl_name&format=json",
+  "query": "select pl_name,hostname,default_flag,pl_bmassprov,ra,dec,pl_refname,st_refname,sy_refname,pl_rade,pl_radeerr1,pl_radeerr2,pl_radelim,pl_bmasse,pl_bmasseerr1,pl_bmasseerr2,pl_bmasselim,pl_orbper,pl_orbpererr1,pl_orbpererr2,pl_orbperlim,pl_eqt,pl_eqterr1,pl_eqterr2,pl_eqtlim,st_lum,st_lumerr1,st_lumerr2,st_lumlim,sy_dist,sy_disterr1,sy_disterr2 from ps where default_flag=1 and pl_name in ('TRAPPIST-1 d','TRAPPIST-1 e','TRAPPIST-1 f') order by pl_name",
+  "raw_sha256": "e078b8ebe08d9b86ecc432186f54291dd7b291671761e065d2bec148c084dbdd",
+  "selection": "PS default_flag=1, one published solution per planet; missing fields remain null",
+  "acknowledgement": "NASA Exoplanet Archive, operated by Caltech under contract with NASA under the Exoplanet Exploration Program.",
+  "citation_url": "https://exoplanetarchive.ipac.caltech.edu/docs/acknowledge.html",
+  "records": [
+    {
+      "id": "nasa_ps:trappist-1_d",
+      "name": "TRAPPIST-1 d",
+      "host": "TRAPPIST-1",
+      "provenance": "published_parameters",
+      "values": {
+        "radius": {
+          "value": 0.788,
+          "unit": "earth_radius",
+          "source_field": "pl_rade",
+          "err_plus": 0.011,
+          "err_minus": -0.01,
+          "limit": 0
+        },
+        "mass": {
+          "value": 0.388,
+          "unit": "earth_mass",
+          "source_field": "pl_bmasse",
+          "err_plus": 0.012,
+          "err_minus": -0.012,
+          "limit": 0
+        },
+        "orbital_period": {
+          "value": 4.049219,
+          "unit": "day",
+          "source_field": "pl_orbper",
+          "err_plus": 2.6e-05,
+          "err_minus": -2.6e-05,
+          "limit": 0
+        },
+        "equilibrium_temperature": {
+          "value": null,
+          "unit": "K",
+          "source_field": "pl_eqt",
+          "err_plus": null,
+          "err_minus": null,
+          "limit": null
+        },
+        "stellar_log_luminosity": {
+          "value": -3.25727,
+          "unit": "log10_solar",
+          "source_field": "st_lum",
+          "err_plus": 0.01467,
+          "err_minus": -0.01518,
+          "limit": 0
+        },
+        "distance": {
+          "value": null,
+          "unit": "pc",
+          "source_field": "sy_dist",
+          "err_plus": null,
+          "err_minus": null,
+          "limit": null
+        }
+      },
+      "mass_provenance": "Mass",
+      "coordinates": {
+        "ra_deg": 346.6263919,
+        "dec_deg": -5.0434618,
+        "frame": "ICRS"
+      },
+      "references": {
+        "pl_refname": "<a refstr=AGOL_ET_AL__2021 href=https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract target=ref>Agol et al. 2021</a>",
+        "st_refname": "<a refstr=AGOL_ET_AL__2021 href=https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract target=ref>Agol et al. 2021</a>",
+        "sy_refname": "<a refstr=STASSUN_ET_AL__2019 href=https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract target=ref>TICv8</a>"
+      },
+      "surface_map": null,
+      "life_observed": null
+    },
+    {
+      "id": "nasa_ps:trappist-1_e",
+      "name": "TRAPPIST-1 e",
+      "host": "TRAPPIST-1",
+      "provenance": "published_parameters",
+      "values": {
+        "radius": {
+          "value": 0.92,
+          "unit": "earth_radius",
+          "source_field": "pl_rade",
+          "err_plus": 0.013,
+          "err_minus": -0.012,
+          "limit": 0
+        },
+        "mass": {
+          "value": 0.692,
+          "unit": "earth_mass",
+          "source_field": "pl_bmasse",
+          "err_plus": 0.022,
+          "err_minus": -0.022,
+          "limit": 0
+        },
+        "orbital_period": {
+          "value": 6.101013,
+          "unit": "day",
+          "source_field": "pl_orbper",
+          "err_plus": 3.5e-05,
+          "err_minus": -3.5e-05,
+          "limit": 0
+        },
+        "equilibrium_temperature": {
+          "value": null,
+          "unit": "K",
+          "source_field": "pl_eqt",
+          "err_plus": null,
+          "err_minus": null,
+          "limit": null
+        },
+        "stellar_log_luminosity": {
+          "value": -3.25727,
+          "unit": "log10_solar",
+          "source_field": "st_lum",
+          "err_plus": 0.01467,
+          "err_minus": -0.01518,
+          "limit": 0
+        },
+        "distance": {
+          "value": null,
+          "unit": "pc",
+          "source_field": "sy_dist",
+          "err_plus": null,
+          "err_minus": null,
+          "limit": null
+        }
+      },
+      "mass_provenance": "Mass",
+      "coordinates": {
+        "ra_deg": 346.6263919,
+        "dec_deg": -5.0434618,
+        "frame": "ICRS"
+      },
+      "references": {
+        "pl_refname": "<a refstr=AGOL_ET_AL__2021 href=https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract target=ref>Agol et al. 2021</a>",
+        "st_refname": "<a refstr=AGOL_ET_AL__2021 href=https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract target=ref>Agol et al. 2021</a>",
+        "sy_refname": "<a refstr=STASSUN_ET_AL__2019 href=https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract target=ref>TICv8</a>"
+      },
+      "surface_map": null,
+      "life_observed": null
+    },
+    {
+      "id": "nasa_ps:trappist-1_f",
+      "name": "TRAPPIST-1 f",
+      "host": "TRAPPIST-1",
+      "provenance": "published_parameters",
+      "values": {
+        "radius": {
+          "value": 1.045,
+          "unit": "earth_radius",
+          "source_field": "pl_rade",
+          "err_plus": 0.013,
+          "err_minus": -0.012,
+          "limit": 0
+        },
+        "mass": {
+          "value": 1.039,
+          "unit": "earth_mass",
+          "source_field": "pl_bmasse",
+          "err_plus": 0.031,
+          "err_minus": -0.031,
+          "limit": 0
+        },
+        "orbital_period": {
+          "value": 9.20754,
+          "unit": "day",
+          "source_field": "pl_orbper",
+          "err_plus": 3.2e-05,
+          "err_minus": -3.2e-05,
+          "limit": 0
+        },
+        "equilibrium_temperature": {
+          "value": null,
+          "unit": "K",
+          "source_field": "pl_eqt",
+          "err_plus": null,
+          "err_minus": null,
+          "limit": null
+        },
+        "stellar_log_luminosity": {
+          "value": -3.25727,
+          "unit": "log10_solar",
+          "source_field": "st_lum",
+          "err_plus": 0.01467,
+          "err_minus": -0.01518,
+          "limit": 0
+        },
+        "distance": {
+          "value": null,
+          "unit": "pc",
+          "source_field": "sy_dist",
+          "err_plus": null,
+          "err_minus": null,
+          "limit": null
+        }
+      },
+      "mass_provenance": "Mass",
+      "coordinates": {
+        "ra_deg": 346.6263919,
+        "dec_deg": -5.0434618,
+        "frame": "ICRS"
+      },
+      "references": {
+        "pl_refname": "<a refstr=AGOL_ET_AL__2021 href=https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract target=ref>Agol et al. 2021</a>",
+        "st_refname": "<a refstr=AGOL_ET_AL__2021 href=https://ui.adsabs.harvard.edu/abs/2021PSJ.....2....1A/abstract target=ref>Agol et al. 2021</a>",
+        "sy_refname": "<a refstr=STASSUN_ET_AL__2019 href=https://ui.adsabs.harvard.edu/abs/2019AJ....158..138S/abstract target=ref>TICv8</a>"
+      },
+      "surface_map": null,
+      "life_observed": null
+    }
+  ]
+}
