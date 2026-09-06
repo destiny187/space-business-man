@@ -95,4 +95,43 @@ static func validate_world(value: Variant) -> String:
 	if not position_value is Array or position_value.size() != 3: return "항해 위치 형식 오류"
 	for axis in position_value:
 		if not (axis is int or axis is float) or not is_finite(axis) or absf(axis) > 100000: return "항해 위치 범위 오류"
+	return _validate_terrain(value)
+
+static func _finite(value: Variant,low: float,high: float) -> bool:
+	return (value is float or value is int) and is_finite(value) and value>=low and value<=high
+
+static func _vector3_array(value: Variant) -> bool:
+	if not value is Array or value.size()!=3:return false
+	for axis in value:
+		if not _finite(axis,-100000,100000):return false
+	return true
+
+static func _validate_terrain(value: Dictionary) -> String:
+	if value.get("mode","space") not in ["space","surface"]:return "탐험 모드가 올바르지 않습니다."
+	if value.has("terrain_settings"):
+		var cfg: Variant=value.terrain_settings
+		if not cfg is Dictionary or value.get("terrain_settings_hash")!=fingerprint(cfg):return "지형 생성 설정이 손상됐습니다."
+		if cfg.get("generator_version")!="terrain-v1":return "지원하지 않는 지형 생성기입니다."
+		for key in ["chunk_cells","active_radius","vertical_radius","worker_limit"]:
+			if not _finite(cfg.get(key),1,24) or float(cfg[key])!=floorf(cfg[key]):return "지형 생성 수량 오류"
+		if cfg.active_radius>4 or cfg.vertical_radius>2 or cfg.worker_limit>4:return "지형 활성 범위 오류"
+		if not _finite(cfg.get("cell_size"),.5,4):return "지형 격자 크기 오류"
+		for key in ["region_half_extent","maximum_height","dig_radius","dig_range","dig_interval","walk_speed","sprint_speed","gravity","jump_speed"]:
+			if not _finite(cfg.get(key),.01,100000):return "지형 설정값 오류: "+key
+		if not _finite(cfg.get("minimum_depth"),-1000,-1):return "지하 범위 오류"
+	for id in value.terrain_edits:
+		if not id is String or ordinal_of(value.manifest,id)<0 or not value.terrain_edits[id] is Array:return "굴착 기록 형식 오류"
+		for edit in value.terrain_edits[id]:
+			if not edit is Dictionary or not _vector3_array(edit.get("center")) or not _finite(edit.get("radius"),.1,16):return "굴착 범위 오류"
+	if value.has("surface_positions"):
+		if not value.surface_positions is Dictionary:return "지표 위치 기록 오류"
+		for id in value.surface_positions:
+			if not id is String or ordinal_of(value.manifest,id)<0 or not _vector3_array(value.surface_positions[id]):return "지표 위치 범위 오류"
+	if value.get("mode","space")=="surface" or not value.terrain_edits.is_empty() or not value.get("surface_positions",{}).is_empty():
+		if not value.has("terrain_settings"):return "지표 기록에 고정 생성 설정이 필요합니다."
+	if value.has("terrain_settings"):
+		var cfg: Dictionary=value.terrain_settings
+		var span: float=float(cfg.cell_size)*int(cfg.chunk_cells)
+		for point in value.get("surface_positions",{}).values():
+			if absf(point[0])>float(cfg.region_half_extent) or absf(point[2])>float(cfg.region_half_extent) or point[1]<float(cfg.minimum_depth)+2 or point[1]>float(cfg.maximum_height)+span-2:return "저장된 지표 위치가 탐사 영역 밖입니다."
 	return ""

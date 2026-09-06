@@ -29,6 +29,10 @@ func _ready() -> void:
 	if test_mode: store = FrontierWorldStore.new("user://test_exploration_ui.json")
 	state = store.read_state()
 	if state.is_empty(): state = FrontierUniverse.new_world(int(FrontierUniverse.config().starting_seed))
+	if state.get("mode","space")=="surface":
+		set_physics_process(false)
+		get_tree().call_deferred("change_scene_to_file","res://scenes/app/planet_exploration.tscn")
+		return
 	flight_config = state.manifest.settings.flight
 	target_ordinal = FrontierUniverse.ordinal_of(state.manifest, state.get("navigation_target",state.location))
 	current_system = FrontierUniverse.ordinal_of(state.manifest,state.location) / 4
@@ -181,6 +185,7 @@ func _build_ui() -> void:
 	_button(column,"목적지 설정",_address_target)
 	destination = _label(column,"",15,Color("eac89a"))
 	_button(column,"항해 시작  F",start_travel)
+	_button(column,"선정 행성에 착륙",land)
 	sidebar = VBoxContainer.new()
 	column.add_child(sidebar)
 	_button(column,"관측 자료",_observations)
@@ -356,6 +361,24 @@ func save_flight() -> void:
 	state.navigation_target = FrontierUniverse.body_id(state.manifest,target_ordinal)
 	state.flight_position = [ship.position.x,ship.position.y,ship.position.z]
 	status.text = "항해 위치와 조사 기록을 저장했습니다." if store.write(state) else store.last_error
+
+func land() -> bool:
+	if jump_remaining>0 or not planets.has(target_ordinal):status.text="먼저 대상 행성의 궤도로 접근하세요.";return false
+	var entry: Dictionary=planets[target_ordinal]
+	if ship.position.distance_to(entry.node.position)-entry.radius>float(flight_config.arrival_clearance)+10:
+		status.text="자동 접근을 완료한 뒤 착륙할 수 있습니다.";return false
+	var next: Dictionary=state.duplicate(true)
+	next.location=entry.body.id
+	next.navigation_target=entry.body.id
+	next.flight_position=[ship.position.x,ship.position.y,ship.position.z]
+	next.mode="surface"
+	if not next.has("terrain_settings"):
+		next.terrain_settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json"))
+		next.terrain_settings_hash=FrontierUniverse.fingerprint(next.terrain_settings)
+	if not store.write(next):status.text=store.last_error;return false
+	state=next
+	get_tree().change_scene_to_file("res://scenes/app/planet_exploration.tscn")
+	return true
 
 func _observations() -> void:
 	var popup := AcceptDialog.new()

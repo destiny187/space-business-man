@@ -14,6 +14,8 @@ func run() -> void:
 	root.size = Vector2i(1440,900)
 	await check_sloping_depth()
 	var dest := ProjectSettings.globalize_path("res://../docs/production/media/ink-catalog/")
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output="):dest=argument.trim_prefix("--capture-output=").trim_suffix("/")+"/"
 	DirAccess.make_dir_recursive_absolute(dest)
 	var app: Node = load("res://scenes/app/main.tscn").instantiate()
 	root.add_child(app)
