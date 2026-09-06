@@ -41,6 +41,12 @@ var surface_target: Dictionary={}
 var dig_timer:=0.0
 var test_scan:=false
 var reticle: Label
+var business_panel: FrontierBusinessPanel
+var placement_kind: String=""
+var placement_point:=Vector3.INF
+var placement_valid:=false
+var placement_ghost: Node3D
+var ghost_material: StandardMaterial3D
 func _ready() -> void:
 	test_mode="--crew-ui-test" in OS.get_cmdline_user_args()
 	if test_mode:
@@ -94,7 +100,7 @@ func _build_ui() -> void:
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
 	_label(header,"L O C U S  /  함께하는 원정",23)
 	status=_label(header,"개인 장비를 챙기고 같은 우주선에 승선하세요.",15)
-	_label(header,"WASD 이동 · 우클릭 시선 · C 외부 · 지표: 클릭 굴착 / E 스캔 / Q 표본",13)
+	_label(header,"WASD 이동 · 우클릭 시선 · C 외부 · 지표: 클릭 굴착 · E 스캔 · Q 표본 · F 채광 · B 건설",13)
 	for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390)
 	get_viewport().size_changed.connect(func():
 		for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390))
@@ -134,9 +140,13 @@ func _build_ui() -> void:
 	sample_options=OptionButton.new();sample_options.fit_to_longest_item=false;surface_panel.add_child(sample_options)
 	_button(surface_panel,"선택한 운송 표본 이식",func():surface_action("surface_introduce"))
 	_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply"))
+	_button(panel,"개발 · 건설 · 자동화  [B]",toggle_business)
 	_button(panel,"내 소유 장비",show_equipment)
 	_button(panel,"원정 나가기",leave_world)
 	_button(column,"시작 화면",return_title)
+	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
+	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
+	business_panel.place_building.connect(begin_placement)
 func _label(parent: Node,value: String,size: int=15) -> Label:
 	var label:=Label.new();label.text=value;label.add_theme_font_size_override("font_size",size);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.custom_minimum_size.x=265;parent.add_child(label);return label
 func _button(parent: Node,value: String,callback: Callable) -> Button:
@@ -201,7 +211,7 @@ func _physics_process(delta: float) -> void:
 	if movement_timer<=0:
 		movement_timer=.05
 		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
-		if outside or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
+		if outside or business_panel.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not surface_target.is_empty() and not get_viewport().gui_get_focus_owner() is LineEdit
@@ -238,13 +248,21 @@ func _process(delta: float) -> void:
 	if test_mode and test_camera_position!=Vector3.ZERO:camera.position=test_camera_position
 	camera.rotation=Vector3(pitch,yaw,0)
 	_update_surface_hud()
+	_update_business_placement()
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*.0025;pitch=clampf(pitch-event.relative.y*.0025,-1.3,1.3)
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode==KEY_C and surface_world==null:outside=not outside;exterior_view.visible=outside;if_flight_view()
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
+		if event.physical_keycode==KEY_B:toggle_business()
+		if event.physical_keycode==KEY_F:interact_business()
+		if event.physical_keycode==KEY_ESCAPE:cancel_placement();business_panel.hide()
 		if event.physical_keycode==KEY_ESCAPE:Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;get_viewport().gui_release_focus()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
+		if not placement_kind.is_empty():
+			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
+			return
+		if business_panel.visible:return
 		dig_timer=.35;surface_action("surface_dig")
 func if_flight_view() -> void:
 	if flight!=null:flight.exterior=outside
@@ -309,7 +327,9 @@ func _crate_here(record: Dictionary) -> bool:
 func _surface_packet(packet: Dictionary) -> void:
 	if not session.active:return
 	_sync_surface_view()
-	if surface_world!=null:surface_world.accept(packet);_refresh_surface_options()
+	if surface_world!=null:
+		surface_world.accept(packet);_refresh_surface_options()
+		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier))
 
 func _sync_surface_view() -> void:
 	if session.latest.is_empty():return
@@ -318,7 +338,7 @@ func _sync_surface_view() -> void:
 		if surface_world!=null:remove_child(surface_world);surface_world.queue_free();surface_world=null
 		if cabin_root.get_parent()==null:add_child(cabin_root)
 		if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
-		surface_panel.hide();reticle.hide();return
+		surface_panel.hide();reticle.hide();business_panel.hide();cancel_placement();return
 	if cabin_root.get_parent()!=null:remove_child(cabin_root)
 	outside=false;exterior_view.hide()
 	if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
@@ -349,6 +369,8 @@ func _update_surface_hud() -> void:
 		text+="\nQ 생체 표본" if known else "\nE 유지 · 스캔 %d%%"%int(float(progress.get("progress",0))*100)
 	else:text+="\n생명체를 조준하고 E를 유지하세요."
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
+	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
+	if not business_target.is_empty():text+="\nF 현장 작업 · B 개발/건설"
 	surface_status.text=text
 
 func _refresh_surface_options() -> void:
@@ -389,3 +411,42 @@ func surface_action(kind: String) -> void:
 
 func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
+
+func toggle_business() -> void:
+	if not session.active or surface_world==null:status.text="착륙 후 개발 사업을 시작하세요.";return
+	cancel_placement();business_panel.visible=not business_panel.visible
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier))
+func interact_business() -> void:
+	if not session.active or surface_world==null or business_panel.visible:return
+	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
+	match target.get("kind",""):
+		"vein":session.send_request("business_mine",{"vein_id":target.id})
+		"base":session.send_request("business_deposit",{})
+		"crate":session.send_request("business_recover_crate",{"crate_id":target.id})
+		"robot","building":toggle_business()
+		_:status.text="광맥이나 현장 창고를 조준하고 F를 누르세요."
+func begin_placement(kind: String) -> void:
+	cancel_placement();business_panel.hide()
+	if kind.is_empty() or surface_world==null:return
+	placement_kind=kind
+	placement_ghost=load("res://assets/models/"+FrontierCatalog.entry("buildings",kind).model+".glb").instantiate();add_child(placement_ghost)
+	ghost_material=StandardMaterial3D.new();ghost_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ghost_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ghost_material.albedo_color=Color(.3,.9,.6,.45)
+	for node in placement_ghost.find_children("*","MeshInstance3D",true,false):node.material_override=ghost_material;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+func cancel_placement() -> void:
+	placement_kind="";placement_valid=false
+	if is_instance_valid(placement_ghost):placement_ghost.queue_free()
+	placement_ghost=null
+func _update_business_placement() -> void:
+	if placement_kind.is_empty() or surface_world==null:return
+	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*12);query.exclude=[actors[session.latest.self_id].get_rid()]
+	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
+	placement_valid=false
+	if hit.is_empty():placement_ghost.hide();status.text="12m 안의 지면을 조준하세요 · Esc 취소";return
+	placement_point=hit.position;placement_point.y=surface_world.terrain.field.height(placement_point.x,placement_point.z);placement_ghost.position=placement_point;placement_ghost.show()
+	var packet: Dictionary=session.surface
+	var world: Dictionary=session.authority.world if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
+	var current:=FrontierExpeditionBusiness.site(world)
+	var reason: String="먼저 개발 사업을 등록하세요." if current.is_empty() else FrontierExpeditionBusiness.placement(world,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
+	placement_valid=reason.is_empty() and surface_world.ready_at(placement_point)
+	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
+	status.text=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason

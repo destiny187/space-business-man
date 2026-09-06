@@ -16,6 +16,8 @@ var scans: Dictionary={}
 var last_dig: Dictionary={}
 var scan_timer:=0.0
 var ecology_timer:=0.0
+var industry_timer:=0.0
+var last_mine: Dictionary={}
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
 	error=FrontierPlayerProfile.validate_character(profile)
@@ -26,7 +28,8 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	if world.crew.owner_id!=profile.character_id:error="이 세계를 만든 호스트의 개인 프로필이 필요합니다.";return false
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
-	for id in world.crew.members:FrontierCrewWorld.disconnect_member(world.crew,id)
+	for id in world.crew.members:
+		FrontierExpeditionBusiness.release_carrier(world,id);FrontierCrewWorld.disconnect_member(world.crew,id)
 	FrontierCrewSurface.spawn_member(world,world.crew.members[profile.character_id],0)
 	world.crew.pilot_id=world.crew.owner_id
 	world.crew.members[profile.character_id].profile=profile.duplicate(true)
@@ -105,10 +108,13 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","land","launch"] or envelope.kind.begins_with("surface_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	var draft:=world.duplicate(true)
 	var reason: String=""
-	if envelope.kind in ["navigate","depart"]:reason=FrontierCrewNavigation.apply(draft,actor,envelope.kind,envelope.args,peers)
+	if envelope.kind.begins_with("business_"):
+		if envelope.kind=="business_mine" and now<float(last_mine.get(actor,-100))+float(FrontierExpeditionBusiness.config().mine_cooldown):return failure("채광 도구가 준비 중입니다.")
+		reason=FrontierExpeditionBusiness.apply(draft,actor,envelope.kind,envelope.args,peers)
+	elif envelope.kind in ["navigate","depart"]:reason=FrontierCrewNavigation.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind in ["land","launch"] or envelope.kind.begins_with("surface_") or (envelope.kind in ["withdraw","deposit"] and FrontierCrewSurface.landed(draft)):
 		if envelope.kind=="surface_scan":return failure("스캔은 장비 입력을 유지해 완료하세요.")
 		if envelope.kind=="surface_dig" and now<float(last_dig.get(actor,-100))+float(draft.get("terrain_settings",{}).get("dig_interval",.35)):return failure("굴착 도구가 준비 중입니다.")
@@ -126,6 +132,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
 	world=draft
 	if envelope.kind=="surface_dig":last_dig[actor]=now
+	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
 func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false) -> bool:
 	if stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
@@ -148,7 +155,7 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	if not peers.has(peer):return true
 	var id: String=peers[peer]
 	var draft:=world.duplicate(true)
-	FrontierCrewWorld.disconnect_member(draft.crew,id);draft.crew.revision+=1
+	FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id);draft.crew.revision+=1
 	if not save_world.call(draft):stopped=true;error="연결 종료 상태를 저장하지 못해 세계 진행을 정지했습니다.";return false
 	world=draft;peers.erase(peer)
 	if reserve_slot and peer!=1:reserved[id]=now+float(FrontierCrewWorld.config().reconnect_seconds)
@@ -156,7 +163,8 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 func close() -> bool:
 	stopped=true
 	var draft:=world.duplicate(true)
-	for id in peers.values():FrontierCrewWorld.disconnect_member(draft.crew,id)
+	for id in peers.values():
+		FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id)
 	draft.crew.revision+=1
 	if not save_world.call(draft):error="마지막 호스트 저장에 실패했습니다.";return false
 	world=draft;peers.clear();pending.clear();inputs.clear();return true
@@ -169,6 +177,14 @@ func checkpoint() -> bool:
 
 func step_surface(delta: float) -> void:
 	if stopped or not FrontierCrewSurface.landed(world):scans.clear();return
+	industry_timer+=delta
+	if industry_timer>=1.0:
+		industry_timer=0
+		if not FrontierExpeditionBusiness.site(world).is_empty() and FrontierExpeditionBusiness.site(world).state=="active":
+			var draft:=world.duplicate(true)
+			FrontierExpeditionIndustry.tick(draft,1.0)
+			if not save_world.call(draft):stopped=true;error="사업 생산 저장 실패로 세계를 정지했습니다.";return
+			world=draft
 	ecology_timer+=delta
 	if ecology_timer>=1.0:
 		ecology_timer=0.0;FrontierEcology.advance(world.ecology,world.crew.landing.body_id,1.0)

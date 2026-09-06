@@ -104,6 +104,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	var position:=FrontierCrewWorld.vector(member.position)
 	var near_ship: bool=position.distance_to(FrontierCrewWorld.vector(config().ship_position))<=float(config().boarding_distance)
 	if kind=="launch":
+		for id in active.values():
+			if FrontierExpeditionBusiness.total(FrontierExpeditionBusiness.bag(world,id))>0:return "사업 자원을 현장 창고에 반납한 뒤 출항하세요."
 		if actor!=crew.pilot_id:return "조종사만 출항할 수 있습니다."
 		for id in active.values():
 			var other: Dictionary=crew.members[id]

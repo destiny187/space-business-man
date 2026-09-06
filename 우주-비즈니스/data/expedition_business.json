@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "starting_credits": 6000,
+  "base_position": [
+    -4,
+    0,
+    4
+  ],
+  "build_radius": 65,
+  "interaction_range": 8,
+  "deposit_range": 9,
+  "bag_capacity": 96,
+  "mine_amount": 16,
+  "mine_cooldown": 0.5,
+  "max_buildings": 24,
+  "max_robots": 4,
+  "hangar_slots": 2,
+  "robot_capacity": 48,
+  "robot_mine_amount": 12,
+  "robot_charge_rate": 15,
+  "robot_battery_per_meter": 0.16,
+  "robot_battery_per_work": 0.3,
+  "contract_stable_seconds": 30,
+  "contract_environment_minimum": 60,
+  "contract_ecology_minimum": 20,
+  "contract_base_reward": 5000,
+  "contract_tier_reward": 1000,
+  "production_milestone": 800,
+  "thermal_rate": 0.22,
+  "pressure_rate": 0.0035,
+  "oxygen_rate": 0.0007,
+  "toxicity_rate": 0.3,
+  "water_per_ice": 1.2,
+  "water_cycle_seconds": 4,
+  "biolab_rate": 0.32,
+  "biolab_nutrient_seconds": 10,
+  "veins": [
+    "iron",
+    "copper",
+    "stone",
+    "ice",
+    "iron",
+    "copper",
+    "stone",
+    "ice",
+    "iron",
+    "copper",
+    "stone",
+    "ice",
+    "iron",
+    "copper",
+    "stone",
+    "iron",
+    "crystal",
+    "iron"
+  ],
+  "vein_capacity": {
+    "iron": 320,
+    "copper": 240,
+    "stone": 240,
+    "ice": 400,
+    "crystal": 60
+  },
+  "vein_radius": [
+    26,
+    39,
+    53
+  ],
+  "technologies": [
+    "robotics",
+    "atmosphere",
+    "thermal",
+    "water",
+    "biotech",
+    "recovery"
+  ],
+  "buildings": [
+    "storage",
+    "solar",
+    "charger",
+    "factory",
+    "atmosphere",
+    "thermal",
+    "water",
+    "biolab"
+  ],
+  "store_unit_price": {
+    "iron": 5,
+    "copper": 7,
+    "stone": 3,
+    "ice": 5
+  },
+  "minimum_ground_normal": 0.93,
+  "starter_vein_positions": [
+    [
+      -12,
+      -10
+    ],
+    [
+      8,
+      -12
+    ],
+    [
+      -12,
+      10
+    ],
+    [
+      10,
+      10
+    ]
+  ]
+}

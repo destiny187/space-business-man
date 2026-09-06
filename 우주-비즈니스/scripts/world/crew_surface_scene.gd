@@ -15,6 +15,7 @@ var lamp: SpotLight3D
 var environment: Environment
 var last_anchor:=Vector3i(99999,99999,99999)
 var tick:=0.0
+var business_view: FrontierBusinessSiteView
 
 func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D,camera: Camera3D) -> void:
 	session=connection;viewer=player;epoch=int(packet.epoch)
@@ -31,6 +32,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
 	lamp=SpotLight3D.new();lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():_refresh_distant();ecology.invalidate())
+	business_view=FrontierBusinessSiteView.new();add_child(business_view);business_view.configure(terrain,body);business_view.accept(packet.get("business",{}))
 	_update_interest()
 
 func _ecology(packet: Dictionary) -> Dictionary:
@@ -42,6 +44,7 @@ func accept(packet: Dictionary) -> void:
 	incoming=packet.edits.duplicate(true)
 	ecology.ecology=_ecology(packet)
 	ecology.refresh_timer=0
+	business_view.accept(packet.get("business",{}))
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()
@@ -57,6 +60,9 @@ func _update_interest() -> void:
 	if session.hosting:
 		points.clear()
 		for peer in session.authority.peers:points.append(FrontierCrewWorld.vector(session.authority.world.crew.members[session.authority.peers[peer]].position))
+	if session.hosting:
+		var site:=FrontierExpeditionBusiness.site(session.authority.world)
+		for robot in site.get("robots",{}).values():points.append(FrontierExpeditionBusiness.point(robot.position))
 	terrain.update_interests(points)
 	if session.hosting:ecology.observers=points
 	else:ecology.observers.clear()

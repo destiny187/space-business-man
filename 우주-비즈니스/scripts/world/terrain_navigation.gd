@@ -6,8 +6,9 @@ var settings: Dictionary
 var rejected: Dictionary={}
 var samples: Dictionary={}
 var expanded:=0
-func find_path(source: FrontierTerrainField,start: Vector3,goal: Vector3,cfg: Dictionary) -> Dictionary:
-	field=source;settings=cfg;expanded=0;samples.clear()
+var obstacles: Array=[]
+func find_path(source: FrontierTerrainField,start: Vector3,goal: Vector3,cfg: Dictionary,blocked: Array=[]) -> Dictionary:
+	field=source;settings=cfg;obstacles=blocked;expanded=0;samples.clear()
 	var started:=Time.get_ticks_usec()
 	var first:=support(start.x,start.z,start.y)
 	if not first.is_finite():return {"points":[],"reason":"출발 지점에 안전한 바닥이 없습니다."}
@@ -58,6 +59,9 @@ func support(x: float,z: float,reference_y: float) -> Vector3:
 	samples[cache_key]=Vector3(INF,INF,INF);return samples[cache_key]
 func clear_at(foot: Vector3) -> bool:
 	var radius: float=float(settings.radius)
+	for obstacle in obstacles:
+		var center:=Vector3(obstacle.position[0],obstacle.position[1],obstacle.position[2])
+		if absf(foot.y-center.y)<5 and Vector2(foot.x-center.x,foot.z-center.z).length()<radius+float(obstacle.radius):return false
 	# Side samples start above the rounded wheel/contact region.
 	for height in [.55,float(settings.height)]:
 		for offset in [Vector3.ZERO,Vector3(radius,0,0),Vector3(-radius,0,0),Vector3(0,0,radius),Vector3(0,0,-radius)]:

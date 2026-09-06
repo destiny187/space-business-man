@@ -48,6 +48,17 @@ func run() -> void:
 	check(frame.get_global_rect().end.y<=640 and app.surface_status.get_global_rect().position.x>=0,"surface information stays inside small screen")
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("/tmp/locus-crew-surface-small.png")
+	app.session.send_request("business_register",{})
+	await create_timer(.7).timeout
+	app.toggle_business();await process_frame;await process_frame
+	check(app.business_panel.visible and app.business_panel.get_global_rect().end.x<=960 and app.business_panel.get_global_rect().end.y<=640,"business terminal fits small screen")
+	check(app.business_panel.register_button.disabled,"registered site cannot offer duplicate registration")
+	var business_scroll: ScrollContainer=app.business_panel.get_child(0)
+	var business_column: VBoxContainer=business_scroll.get_child(0)
+	business_scroll.ensure_control_visible(business_column.get_child(business_column.get_child_count()-1));await process_frame
+	check(business_scroll.scroll_vertical>0,"business controls remain reachable by scrolling")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("/tmp/locus-business-small.png")
 	check(await app.session.close_session(),"normal close stores small-screen world")
 	app.queue_free();await process_frame
 	for path in ["user://test_crew_layout_profile.json","user://test_crew_layout_world.json"]:

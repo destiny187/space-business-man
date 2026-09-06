@@ -1,0 +1,19 @@
+{
+  "scenario": "actual ENet six processes, one Metal host and five headless clients",
+  "players": 6,
+  "checks": 254,
+  "failures": 0,
+  "runtime_errors": 0,
+  "position_control": "host test fixture placement",
+  "time_control": "authoritative industry ticks accelerated; no resource grants",
+  "internet_tested": false,
+  "images": {
+    "business-menu.png": "2c497658224cfca16515e39e29d9e86654b26e1b09efa2fe64c0ae445c79df8b",
+    "industry-before.png": "75c31faf305319d25a61a5b339d86abf275e4b1831ecf5526b1cea8bdf81abaa",
+    "industry-restored.png": "22ee8fcf31837e7c841ee21ce105351b8668c4292b43796c64258c9c7a49e379"
+  },
+  "domain_checks": 53,
+  "small_layout_checks": 12,
+  "expansion_regression": "passed",
+  "legacy_regression": "passed"
+}
