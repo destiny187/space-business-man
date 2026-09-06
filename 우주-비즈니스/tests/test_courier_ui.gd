@@ -18,6 +18,8 @@ func ready(app: FrontierPlanetExploration) -> bool:
 		if app.terrain.jobs.is_empty() and app.terrain.chunks.size()==app.terrain.wanted.size() and app.terrain.batch.is_empty():return true
 	return false
 func run() -> void:
+	if "--exploration-test" not in OS.get_cmdline_user_args():
+		printerr("Required isolated-save flag: -- --exploration-test");quit(1);return
 	root.size=Vector2i(1280,800)
 	var store:=FrontierWorldStore.new("user://test_exploration_ui.json")
 	var state:=FrontierUniverse.new_world(71491)

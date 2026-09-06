@@ -76,8 +76,9 @@ func _process(_delta: float) -> void:
 	label.text="M–07  ·  %d/%d\n%s" % [int(record.robot.cargo),int(settings.cargo_capacity),reason]
 func _physics_process(delta: float) -> void:
 	if not terrain.ready_at(position):velocity=Vector3.ZERO;return
+	var close_to_carrier: bool=record.robot.phase=="pickup" and not pending_path and job.is_empty() and _can_transfer()
 	var direction:=Vector3.ZERO
-	if job.is_empty() and not pending_path and waypoint<points.size():
+	if not close_to_carrier and job.is_empty() and not pending_path and waypoint<points.size():
 		var target: Vector3=points[waypoint];var offset:=Vector3(target.x-position.x,0,target.z-position.z)
 		if offset.length()<.45:waypoint+=1;stuck_time=0
 		else:direction=offset.normalized()
@@ -94,7 +95,8 @@ func _physics_process(delta: float) -> void:
 		for wheel in wheels:wheel.rotation.x-=travelled/(.63*.45)
 	if stuck_time>2:
 		points.clear();reason="경로가 막혔습니다 · 화물 보존";retry_time=3;stuck_time=0
-	if not pending_path and job.is_empty() and waypoint>=points.size() and record.robot.phase!="idle":
+	if close_to_carrier:_transfer(delta)
+	elif not pending_path and job.is_empty() and waypoint>=points.size() and record.robot.phase!="idle":
 		var target: Array=record.robot.target
 		var distance: float=position.distance_to(Vector3(target[0],target[1]+.75,target[2]))
 		if distance<float(settings.transfer_distance):_transfer(delta)
@@ -102,8 +104,13 @@ func _physics_process(delta: float) -> void:
 			retry_time-=delta
 			if retry_time<=0:retry_time=3;_request_path()
 	record.robot.position=[position.x,position.y,position.z]
+func _can_transfer() -> bool:
+	if position.distance_to(player.position)>float(settings.transfer_distance):return false
+	var query:=PhysicsRayQueryParameters3D.create(global_position,player.global_position)
+	query.exclude=[get_rid(),player.get_rid()]
+	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 func _transfer(delta: float) -> void:
-	if record.robot.phase=="pickup" and position.distance_to(player.position)>float(settings.transfer_distance):reason="운반 대상이 멀어졌습니다 · 호출 대기";return
+	if record.robot.phase=="pickup" and not _can_transfer():reason="운반 대상이 멀어졌습니다 · 호출 대기";return
 	transfer_time+=delta
 	reason="채집물 적재 중" if record.robot.phase=="pickup" else "착륙 창고에 하역 중"
 	if transfer_time<float(settings.transfer_seconds):return

@@ -25,8 +25,13 @@ var movement_input:=Vector2.ZERO
 var material_cache: Dictionary={}
 var courier: FrontierSurfaceCourier
 var logistics: Dictionary
+var render_settings: Dictionary
+var headlamp: SpotLight3D
+var lamp_timer:=0.0
+var lamp_target:=24.0
 
 func _ready() -> void:
+	render_settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/surface_render.json"))
 	test_mode="--exploration-test" in OS.get_cmdline_user_args()
 	if test_mode:store=FrontierWorldStore.new("user://test_exploration_ui.json")
 	state=store.read_state()
@@ -110,9 +115,10 @@ func _setup_player() -> void:
 	head=Node3D.new();head.position.y=.65;head.rotation.x=-.1;player.add_child(head)
 	camera=Camera3D.new();camera.fov=72;camera.far=1800;head.add_child(camera);camera.current=true
 	var lamp:=SpotLight3D.new()
+	headlamp=lamp
 	lamp.position=Vector3(.15,-.1,0)
 	lamp.light_color=Color("d5f0eb")
-	lamp.light_energy=40.0
+	lamp.light_energy=float(render_settings.lamp_energy)
 	lamp.spot_range=60
 	lamp.spot_angle=48
 	lamp.shadow_enabled=true
@@ -139,9 +145,11 @@ func _setup_ui() -> void:
 	var font:=FontVariation.new();font.base_font=load("res://assets/fonts/NotoSansKR.ttf")
 	font.variation_opentype={TextServerManager.get_primary_interface().name_to_tag("wght"):500.0}
 	var theme_value:=Theme.new();theme_value.default_font=font;theme_value.default_font_size=16
+	theme_value.set_color("font_outline_color","Label",Color(0.03,0.035,0.04,.9))
+	theme_value.set_constant("outline_size","Label",3)
 	var root:=Control.new();root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.mouse_filter=Control.MOUSE_FILTER_IGNORE;root.theme=theme_value;layer.add_child(root)
 	hud=Label.new();hud.position=Vector2(24,22);root.add_child(hud)
-	message=Label.new();message.position=Vector2(24,104);message.text="착륙 지점을 확인하고 있습니다.";root.add_child(message)
+	message=Label.new();message.position=Vector2(24,140);message.text="착륙 지점을 확인하고 있습니다.";root.add_child(message)
 	var cross:=Label.new();cross.text="+";cross.add_theme_font_size_override("font_size",26);cross.set_anchors_and_offsets_preset(Control.PRESET_CENTER);cross.position=Vector2(-8,-18);root.add_child(cross)
 	var footer:=Label.new();footer.text="WASD 이동 · Shift 달리기 · Space 점프 · 클릭 굴착 · R 로봇 호출 · F5 저장 · Esc 항해 메뉴 · F3 계측";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
 	menu=PanelContainer.new();menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER);menu.position=Vector2(-180,-120);menu.custom_minimum_size=Vector2(360,220);root.add_child(menu)
@@ -165,6 +173,7 @@ func _refresh_distant() -> void:
 
 func _process(delta: float) -> void:
 	cooldown=maxf(0,cooldown-delta)
+	headlamp.light_energy=lerpf(headlamp.light_energy,lamp_target,minf(1,delta*float(render_settings.lamp_response)))
 	_update_interest()
 	if not moving_enabled and terrain.ready_at(player.position):moving_enabled=true;message.text="착륙 완료 · 전방의 지하 신호를 조사하세요."
 	var underground: float=clampf(-player.position.y/10.0,0,1)
@@ -173,9 +182,18 @@ func _process(delta: float) -> void:
 	hud.text="%s  /  T%d\n좌표 %.0f, %.0f  ·  깊이 %.1f m\n우주선까지 %.0f m" % [body.name,int(body.planet_tier),player.position.x,player.position.z,maxf(0,-player.position.y),player.position.distance_to(ship_position)]
 	if not logistics.is_empty():hud.text+="\n휴대 암석 %d · 운반 중 %d · 창고 %d" % [int(logistics.hand_rock),int(logistics.robot.cargo),int(logistics.depot_rock)]
 	if debug_visible:hud.text+="\n활성 청크 %d · 작업 %d · 최대 생성 %.1fms · 최근 설치 %.1fms" % [terrain.chunks.size(),terrain.jobs.size(),terrain.max_build_ms,terrain.last_install_ms]
+	message.position.y=maxf(140,hud.position.y+hud.get_minimum_size().y+10)
 
 func _physics_process(delta: float) -> void:
 	if not moving_enabled:return
+	lamp_timer-=delta
+	if lamp_timer<=0:
+		lamp_timer=float(render_settings.lamp_check_interval)
+		var query:=PhysicsRayQueryParameters3D.create(camera.global_position,camera.global_position-camera.global_basis.z*60)
+		query.exclude=[player.get_rid()]
+		var hit: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
+		var distance: float=60.0 if hit.is_empty() else camera.global_position.distance_to(hit.position)
+		lamp_target=clampf(float(render_settings.lamp_energy)*pow(distance/float(render_settings.lamp_exposure_distance),2),float(render_settings.lamp_minimum_energy),float(render_settings.lamp_energy))
 	var direction:=Vector3.ZERO
 	if not menu.visible:
 		var input: Vector2=movement_input if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))).normalized()
