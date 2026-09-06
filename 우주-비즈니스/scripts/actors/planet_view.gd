@@ -54,8 +54,7 @@ func _ready() -> void:
 	world_font = FontVariation.new()
 	world_font.base_font = load("res://assets/fonts/NotoSansKR.ttf")
 	world_font.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"):500.0}
-	outline = ShaderMaterial.new()
-	outline.shader = load("res://assets/materials/toon_outline.gdshader")
+	outline = FrontierInkStyle.attach(self)
 	world_root = Node3D.new()
 	add_child(world_root)
 	_setup_lighting()
@@ -144,9 +143,9 @@ func _setup_lighting() -> void:
 	sky.sky_material = sky_material
 	environment.sky = sky
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	environment.ambient_light_energy = 0.65
+	environment.ambient_light_energy = 0.36
 	environment.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
-	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	environment.tonemap_exposure = 1.0
 	environment.fog_enabled = true
 	environment.fog_light_color = Color("bda08c")
@@ -277,6 +276,7 @@ func _terrain(p: Dictionary) -> void:
 	ground_material = ShaderMaterial.new()
 	ground_material.shader = load("res://assets/materials/ground.gdshader")
 	ground_material.set_shader_parameter("soil",color.darkened(0.12))
+	ground_material.set_shader_parameter("rough",.94)
 	mesh.material_override = ground_material
 	world_root.add_child(mesh)
 	var ground := StaticBody3D.new()
@@ -293,6 +293,8 @@ func _terrain(p: Dictionary) -> void:
 	water.position = Vector3(-42,-0.14,-45)
 	var water_mat := ShaderMaterial.new()
 	water_mat.shader = load("res://assets/materials/water.gdshader")
+	water_mat.set_shader_parameter("rough",.3)
+	water_mat.set_shader_parameter("metal",.12)
 	water.material_override = water_mat
 	water.name = "WaterSurface"
 	world_root.add_child(water)
@@ -322,6 +324,7 @@ func _distant_landscape(p: Dictionary) -> void:
 	rng.seed = int(p.seed) + 34
 	var strata := ShaderMaterial.new()
 	strata.shader = load("res://assets/materials/strata.gdshader")
+	strata.set_shader_parameter("rough",.96)
 	for i in range(26):
 		var rock: Node3D = model("mesa_"+str(i%3))
 		var angle: float = i*TAU/26
@@ -341,6 +344,7 @@ func _distant_landscape(p: Dictionary) -> void:
 	moon.position = Vector3(105,83,-170)
 	var moon_mat := ShaderMaterial.new()
 	moon_mat.shader = load("res://assets/materials/moon.gdshader")
+	moon_mat.set_shader_parameter("rough",1.0)
 	moon.material_override = moon_mat
 	moon.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	world_root.add_child(moon)
@@ -377,7 +381,7 @@ func _ground_detail(p: Dictionary) -> void:
 	mat.vertex_color_use_as_albedo = true
 	mat.roughness = 1
 	mat.diffuse_mode = BaseMaterial3D.DIFFUSE_TOON
-	mesh.material = mat
+	mesh.material = FrontierInkStyle.material(mat,material_cache)
 	gravel.multimesh = MultiMesh.new()
 	gravel.multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	gravel.multimesh.use_colors = true
@@ -402,32 +406,7 @@ func model(key: String) -> Node3D:
 	return instance
 
 func _style_meshes(node: Node) -> void:
-	if node is MeshInstance3D:
-		for index in range(node.mesh.get_surface_count()):
-			var original: Material = node.get_active_material(index)
-			if original is StandardMaterial3D:
-				var key: int = original.get_instance_id()
-				if not material_cache.has(key):
-					var mat: StandardMaterial3D = original.duplicate()
-					var name_lower: String = mat.resource_name.to_lower()
-					var natural: bool = name_lower.contains("basalt") or name_lower.contains("foliage") or name_lower.contains("mineral")
-					mat.diffuse_mode = BaseMaterial3D.DIFFUSE_BURLEY
-					mat.specular_mode = BaseMaterial3D.SPECULAR_SCHLICK_GGX
-					mat.roughness = 0.48
-					if natural: mat.roughness = 0.88
-					elif name_lower.contains("steel"): mat.roughness = 0.27
-					elif name_lower.contains("chassis"): mat.roughness = 0.52
-					elif name_lower.contains("glass") or name_lower.contains("solar"): mat.roughness = 0.22
-					elif name_lower.contains("enamel"): mat.roughness = 0.34
-					if name_lower.contains("ice") or name_lower.contains("crystal"): mat.roughness = 0.2
-					mat.rim_enabled = not natural
-					mat.rim = 0.12
-					mat.rim_tint = 0.3
-					if mat.emission_enabled: mat.emission_energy_multiplier *= 1.25
-					mat.next_pass = outline if not natural and not mat.emission_enabled else null
-					material_cache[key] = mat
-				node.set_surface_override_material(index,material_cache[key])
-	for child in node.get_children(): _style_meshes(child)
+	FrontierInkStyle.apply(node,material_cache)
 
 func _entity(kind: String,id: String,asset: String,location: Array,radius: float,scale_value: float = 1.0) -> Node3D:
 	var body := StaticBody3D.new()

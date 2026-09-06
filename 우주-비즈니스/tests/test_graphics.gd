@@ -25,6 +25,7 @@ func run() -> void:
 		selector.item_selected.emit(index)
 		await create_timer(.3).timeout
 		check(app.world.graphics_key == key and app.campaign.profile.settings.graphics == key,"UI applies and stores "+key)
+		check(app.world.outline.shader == FrontierInkStyle.CONTOUR and app.world.outline.get_shader_parameter("strength") == 1.,"mandatory ink remains enabled "+key)
 		check(app.world.environment.ssao_enabled == (key != "performance"),"AO policy "+key)
 		check(app.world.environment.ssil_enabled == (key == "high") and app.world.environment.ssr_enabled == (key == "high"),"indirect lighting and reflections policy "+key)
 		check(FrontierSaveStore.validate(app.campaign.state).is_empty(),"valid save for "+key)
@@ -47,15 +48,15 @@ func run() -> void:
 	check(app.world.graphics_key == "high","loading applies persisted quality")
 	app.world.rebuild(app.campaign.planet)
 	check(app.world.graphics_key == "high" and app.world.environment.ssr_enabled,"world rebuild preserves quality")
-	var chassis: StandardMaterial3D
-	var steel: StandardMaterial3D
-	var enamel: StandardMaterial3D
+	var chassis: ShaderMaterial
+	var steel: ShaderMaterial
+	var enamel: ShaderMaterial
 	for material in app.world.material_cache.values():
 		if material.resource_name.contains("Graphite"): chassis = material
 		if material.resource_name.contains("Edge steel"): steel = material
 		if material.resource_name.contains("Ceramic enamel"): enamel = material
 	check(chassis != null and steel != null and enamel != null,"imported material identities retained")
-	check(steel.roughness < enamel.roughness and enamel.roughness < chassis.roughness,"metal enamel chassis have distinct highlights")
+	check(steel.get_shader_parameter("rough") < enamel.get_shader_parameter("rough") and enamel.get_shader_parameter("rough") < chassis.get_shader_parameter("rough"),"metal enamel chassis have distinct highlights")
 	for i in range(3):
 		var asset: Node3D = app.world.model("mesa_"+str(i))
 		check(asset.find_children("*","MeshInstance3D",true,false).size() == 1,"mesa %d imported as one draw mesh" % i)

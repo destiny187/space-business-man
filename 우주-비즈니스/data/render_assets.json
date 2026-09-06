@@ -1,0 +1,312 @@
+[
+  {
+    "id": "miner",
+    "title": "01   /   장비",
+    "name": "채광 로봇",
+    "group": "장비",
+    "model": "res://assets/models/miner.glb",
+    "source": "art/blender/miner.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "surveyor",
+    "title": "02   /   장비",
+    "name": "탐광 로봇",
+    "group": "장비",
+    "model": "res://assets/models/surveyor.glb",
+    "source": "art/blender/surveyor.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "guardian",
+    "title": "03   /   장비",
+    "name": "경비 로봇",
+    "group": "장비",
+    "model": "res://assets/models/guardian.glb",
+    "source": "art/blender/guardian.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "manual_tool",
+    "title": "04   /   장비",
+    "name": "M-02 수동 흡입기",
+    "group": "장비",
+    "model": "res://assets/models/manual_tool.glb",
+    "source": "art/blender/manual_tool.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "base",
+    "title": "05   /   시설",
+    "name": "착륙 기지",
+    "group": "시설",
+    "model": "res://assets/models/base.glb",
+    "source": "art/blender/base.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "storage",
+    "title": "06   /   시설",
+    "name": "자원 보관함",
+    "group": "시설",
+    "model": "res://assets/models/storage.glb",
+    "source": "art/blender/storage.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "solar",
+    "title": "07   /   시설",
+    "name": "태양광 발전기",
+    "group": "시설",
+    "model": "res://assets/models/solar.glb",
+    "source": "art/blender/solar.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "charger",
+    "title": "08   /   시설",
+    "name": "충전 패드",
+    "group": "시설",
+    "model": "res://assets/models/charger.glb",
+    "source": "art/blender/charger.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "factory",
+    "title": "09   /   시설",
+    "name": "로봇 제작소",
+    "group": "시설",
+    "model": "res://assets/models/factory.glb",
+    "source": "art/blender/factory.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "atmosphere",
+    "title": "10   /   시설",
+    "name": "대기 조절기",
+    "group": "시설",
+    "model": "res://assets/models/atmosphere.glb",
+    "source": "art/blender/atmosphere.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "thermal",
+    "title": "11   /   시설",
+    "name": "온도 조절기",
+    "group": "시설",
+    "model": "res://assets/models/thermal.glb",
+    "source": "art/blender/thermal.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "water",
+    "title": "12   /   시설",
+    "name": "물 추출기",
+    "group": "시설",
+    "model": "res://assets/models/water.glb",
+    "source": "art/blender/water.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "biolab",
+    "title": "13   /   시설",
+    "name": "생태 연구소",
+    "group": "시설",
+    "model": "res://assets/models/biolab.glb",
+    "source": "art/blender/biolab.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "reactor",
+    "title": "14   /   시설",
+    "name": "원자로",
+    "group": "시설",
+    "model": "res://assets/models/reactor.glb",
+    "source": "art/blender/reactor.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "ore_iron",
+    "title": "15   /   자원",
+    "name": "철 광맥",
+    "group": "자원",
+    "model": "res://assets/models/ore_iron.glb",
+    "source": "art/blender/ore_iron.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "ore_copper",
+    "title": "16   /   자원",
+    "name": "구리 광맥",
+    "group": "자원",
+    "model": "res://assets/models/ore_copper.glb",
+    "source": "art/blender/ore_copper.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "ore_stone",
+    "title": "17   /   자원",
+    "name": "암석 노드",
+    "group": "자원",
+    "model": "res://assets/models/ore_stone.glb",
+    "source": "art/blender/ore_stone.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "ore_ice",
+    "title": "18   /   자원",
+    "name": "얼음 노드",
+    "group": "자원",
+    "model": "res://assets/models/ore_ice.glb",
+    "source": "art/blender/ore_ice.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "ore_crystal",
+    "title": "19   /   자원",
+    "name": "결정 노드",
+    "group": "자원",
+    "model": "res://assets/models/ore_crystal.glb",
+    "source": "art/blender/ore_crystal.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "ruin",
+    "title": "20   /   발견·환경",
+    "name": "고대 유적",
+    "group": "발견·환경",
+    "model": "res://assets/models/ruin.glb",
+    "source": "art/blender/ruin.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "microbe",
+    "title": "21   /   발견·환경",
+    "name": "미생물 군집",
+    "group": "발견·환경",
+    "model": "res://assets/models/microbe.glb",
+    "source": "art/blender/microbe.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "animal",
+    "title": "22   /   발견·환경",
+    "name": "야생동물",
+    "group": "발견·환경",
+    "model": "res://assets/models/animal.glb",
+    "source": "art/blender/animal.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "civilization",
+    "title": "23   /   발견·환경",
+    "name": "문명 거점",
+    "group": "발견·환경",
+    "model": "res://assets/models/civilization.glb",
+    "source": "art/blender/civilization.blend",
+    "geometry": "legacy",
+    "foliage": false
+  },
+  {
+    "id": "tree",
+    "title": "24   /   발견·환경",
+    "name": "나무",
+    "group": "발견·환경",
+    "model": "res://assets/models/tree.glb",
+    "source": "art/blender/tree.blend",
+    "geometry": "legacy",
+    "foliage": true
+  },
+  {
+    "id": "mesa_0",
+    "title": "25   /   배경",
+    "name": "퇴적 암벽 1",
+    "group": "발견·환경",
+    "model": "res://assets/models/mesa_0.glb",
+    "source": "art/blender/landscape/mesa_0.blend",
+    "geometry": "legacy",
+    "surface": "strata"
+  },
+  {
+    "id": "mesa_1",
+    "title": "26   /   배경",
+    "name": "퇴적 암벽 2",
+    "group": "발견·환경",
+    "model": "res://assets/models/mesa_1.glb",
+    "source": "art/blender/landscape/mesa_1.blend",
+    "geometry": "legacy",
+    "surface": "strata"
+  },
+  {
+    "id": "mesa_2",
+    "title": "27   /   배경",
+    "name": "퇴적 암벽 3",
+    "group": "발견·환경",
+    "model": "res://assets/models/mesa_2.glb",
+    "source": "art/blender/landscape/mesa_2.blend",
+    "geometry": "legacy",
+    "surface": "strata"
+  },
+  {
+    "id": "locus_m07",
+    "title": "28   /   승인 기준작",
+    "name": "M–07 자율 채광 로봇",
+    "group": "승인 기준작",
+    "model": "res://assets/models/showcase/locus_m07.glb",
+    "source": "art/blender/showcase/locus_m07.blend",
+    "geometry": "approved-reference",
+    "foliage": false
+  },
+  {
+    "id": "mineral_deposit",
+    "title": "29   /   승인 기준작",
+    "name": "청록 광물과 구리맥",
+    "group": "승인 기준작",
+    "model": "res://assets/models/ink-study/mineral_deposit.glb",
+    "source": "art/blender/ink-study/mineral_deposit.blend",
+    "geometry": "approved-reference",
+    "foliage": false
+  },
+  {
+    "id": "frontier_grass",
+    "title": "30   /   승인 기준작",
+    "name": "개척지 풀",
+    "group": "승인 기준작",
+    "model": "res://assets/models/ink-study/frontier_grass.glb",
+    "source": "art/blender/ink-study/frontier_grass.blend",
+    "geometry": "approved-reference",
+    "foliage": true
+  },
+  {
+    "id": "ore_refinery",
+    "title": "31   /   승인 기준작",
+    "name": "LOCUS 정제소",
+    "group": "승인 기준작",
+    "model": "res://assets/models/ink-study/ore_refinery.glb",
+    "source": "art/blender/ink-study/ore_refinery.blend",
+    "geometry": "approved-reference",
+    "foliage": false
+  }
+]

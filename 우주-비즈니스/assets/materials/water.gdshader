@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode diffuse_burley, specular_schlick_ggx;
+#include "res://assets/materials/ink/cel_light.gdshaderinc"
 varying vec3 world_pos;
 varying float shore;
 void vertex(){
@@ -19,8 +19,8 @@ void fragment(){
  float crests=smoothstep(1.83,1.98,wave)*(1.0-smoothstep(.6,.95,shore))*.3;
  vec3 deep=vec3(.025,.16,.18);
  vec3 shallow=vec3(.13,.34,.27);
- ALBEDO=mix(mix(deep,shallow,smoothstep(.45,.99,shore)),vec3(.38,.57,.47),max(foam,crests));
+ ALBEDO=mix(mix(deep,shallow,smoothstep(.70,.73,shore)),vec3(.38,.57,.47),max(foam,crests));
  ROUGHNESS=mix(.17,.56,foam);
- METALLIC=.12;
- SPECULAR=.72;
+ METALLIC=0.;
+ SPECULAR=0.;
 }

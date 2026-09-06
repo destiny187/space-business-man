@@ -1,0 +1,42 @@
+{
+  "board": "unscaled four-panel assembly",
+  "engine": "4.7.2-stable (official)",
+  "gpu": "Apple M2 (Apple8)",
+  "msaa": 4,
+  "native_engine_pixels": true,
+  "render_scale_3d": 1.5,
+  "samples": [
+    {
+      "id": "robot",
+      "model": "res://assets/models/showcase/locus_m07.glb",
+      "resolution": [
+        1440,
+        1200
+      ]
+    },
+    {
+      "id": "resource",
+      "model": "res://assets/models/ink-study/mineral_deposit.glb",
+      "resolution": [
+        1440,
+        1200
+      ]
+    },
+    {
+      "id": "grass",
+      "model": "res://assets/models/ink-study/frontier_grass.glb",
+      "resolution": [
+        1440,
+        1200
+      ]
+    },
+    {
+      "id": "building",
+      "model": "res://assets/models/ink-study/ore_refinery.glb",
+      "resolution": [
+        1440,
+        1200
+      ]
+    }
+  ]
+}

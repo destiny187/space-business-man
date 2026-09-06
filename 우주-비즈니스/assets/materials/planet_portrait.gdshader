@@ -19,8 +19,9 @@ void fragment() {
 		float n=noise(land*4.0)+noise(land*9.0)*0.3+noise(land*20.0)*0.1;
 		vec3 surface=mix(soil.rgb*0.48,soil.rgb*1.2,smoothstep(0.2,1.05,n));
 		float light=clamp(dot(normal,normalize(vec3(-0.65,0.4,0.65))),0.0,1.0);
-		color=surface*(0.12+light*1.1)+vec3(0.33,0.7,0.7)*pow(1.0-normal.z,3.0)*light*0.5;
+		color=surface*(.12+.4*smoothstep(.10,.125,light)+.48*smoothstep(.58,.605,light))+vec3(0.33,0.7,0.7)*pow(1.0-normal.z,3.0)*light*0.5;
 	}
-	color+=soil.rgb*0.2*exp(-abs(r-0.825)*80.0);
+	float line=1.-smoothstep(.006,.012,abs(r-.82));
+	color=mix(color,vec3(.012,.016,.02),line);
 	COLOR=vec4(color,1.0);
 }

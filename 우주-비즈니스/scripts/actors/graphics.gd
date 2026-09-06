@@ -13,6 +13,7 @@ static func resolve(key: String) -> String:
 static func apply(viewport: Viewport, environment: Environment, sun: DirectionalLight3D, key: String) -> Dictionary:
 	var config: Dictionary = data().profiles[resolve(key)]
 	viewport.msaa_3d = int(config.msaa) as Viewport.MSAA
+	viewport.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	viewport.mesh_lod_threshold = float(config.lod_pixels)
 	environment.ssao_enabled = config.ssao
 	environment.ssil_enabled = config.ssil

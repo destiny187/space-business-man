@@ -1,0 +1,20 @@
+{
+  "generator": "tools/build_ink_samples.py",
+  "assets": {
+    "mineral_deposit": {
+      "source": "art/blender/ink-study/mineral_deposit.blend",
+      "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/ink-study/mineral_deposit.glb",
+      "triangles": 4356
+    },
+    "frontier_grass": {
+      "source": "art/blender/ink-study/frontier_grass.blend",
+      "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/ink-study/frontier_grass.glb",
+      "triangles": 17400
+    },
+    "ore_refinery": {
+      "source": "art/blender/ink-study/ore_refinery.blend",
+      "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/ink-study/ore_refinery.glb",
+      "triangles": 29248
+    }
+  }
+}

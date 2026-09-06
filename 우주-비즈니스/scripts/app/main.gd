@@ -161,7 +161,7 @@ func _primary(button: Button) -> Button:
 
 func _preview(parent: Node,key: String,height: float = 130) -> void:
 	var frame := PanelContainer.new()
-	frame.add_theme_stylebox_override("panel",_style(Color("192f3b"),Color("2e4954"),5,0))
+	frame.add_theme_stylebox_override("panel",_style(Color("e5e2d6"),Color("2e4954"),5,0))
 	frame.custom_minimum_size.y = height
 	parent.add_child(frame)
 	var texture := TextureRect.new()

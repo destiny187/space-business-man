@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-06",
+  "engine": "Godot 4.7.2",
+  "renderer": "Metal Forward+",
+  "gpu": "Apple M2",
+  "checks": {
+    "INK_CONTRACT_TESTS": {
+      "checks": 371,
+      "failures": 0
+    },
+    "CAMPAIGN_TESTS": {
+      "checks": 54,
+      "failures": 0
+    },
+    "EVENT_TESTS": {
+      "checks": 44,
+      "failures": 0
+    },
+    "RELIABILITY_TESTS": {
+      "checks": 334,
+      "failures": 0
+    },
+    "WORKFLOW_TESTS": {
+      "checks": 211,
+      "failures": 0
+    },
+    "ONBOARDING_TESTS": {
+      "checks": 28,
+      "failures": 0
+    },
+    "AUDIO_TESTS": {
+      "checks": 68,
+      "failures": 0
+    },
+    "INPUT_TESTS": {
+      "checks": 19,
+      "failures": 0
+    },
+    "PRESENTATION_TESTS": {
+      "checks": 25,
+      "failures": 0
+    },
+    "GRAPHICS_TESTS": {
+      "checks": 33,
+      "failures": 0
+    },
+    "INK_RENDERING_TESTS": {
+      "checks": 7,
+      "failures": 0
+    }
+  },
+  "total": 1194,
+  "failures": 0,
+  "note": "Full suite followed by graphics, rendering and contract reruns after final contour correction. Approved four-sample studio check also passed.",
+  "native_assets": 31,
+  "portraits": 31,
+  "boards": 5,
+  "game_screenshots": 4
+}

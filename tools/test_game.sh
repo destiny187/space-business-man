@@ -17,6 +17,7 @@ run_check() {
   rm -f "$GAME_CHECK_LOG"
 }
 run_check --headless --editor --quit
+run_check --headless --script res://tests/test_ink_contract.gd
 run_check --headless --script res://tests/test_campaign.gd
 run_check --headless --script res://tests/test_events.gd
 run_check --headless --script res://tests/test_reliability.gd
@@ -29,4 +30,5 @@ if [[ "${1:-}" == "--with-ui" ]]; then
   run_check --script res://tests/test_input.gd
   run_check --script res://tests/test_presentation.gd
   run_check --script res://tests/test_graphics.gd
+  run_check --script res://tests/test_ink_rendering.gd
 fi
