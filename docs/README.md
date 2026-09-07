@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+- [200m 지하·시드 동굴·매장 자원 구조](technical/07-seeded-underground.md): 2026-09-07 확정 방향과 구현 전 설계. 기반암 차단·동굴 연결·지질 경관·미래 아이템/재화 확장 지점을 다룬다.
+
 2026-09-06 최신 시작 구조: [무작위 은하·지구 출발·별도 대기실](production/20-galaxy-start-and-lobby.md). 새 생성기/세션 흐름과 기존 1.2 및 이전 확장 검증을 구분한다.
 
 루트 진입점: [AGENTS.md](../AGENTS.md). 이 문서 묶음은 최초 아이디어와 변경된 목표를 시스템별로 관리한다. **2026-09-06 현재 목표는 단일 은하의 탐사·티어/시드 행성·지표/지하·발견 연구·표본 이식·외계문명·호스트 포함 6인 공동 승선으로 확장했다.** 먼저 [고도화 계획](planning/06-exploration-expansion-roadmap.md)과 [은하·티어·시드](game/11-galaxy-tiers-and-seeds.md)를 읽는다. 현재 1.2의 구매 기반 실행은 [구현 현황](planning/03-implementation-status.md), 사용법은 [실행 안내](release/01-playing-and-building.md)를 따른다. 새 문서가 새 기능 구현을 의미하지 않는다.
