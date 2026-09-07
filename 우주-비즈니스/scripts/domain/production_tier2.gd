@@ -16,12 +16,12 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if kind=="business_withdraw":
 		if not FrontierExpeditionBusiness.near_warehouse(site,position):return "현장 창고 9m 이내에서 인수하세요."
 		var id:=str(args.get("resource",""))
-		if FrontierCatalog.entry("resources",id).is_empty() or not FrontierExpeditionBusiness.integer(args.get("amount"),1,96):return "인수할 품목과 수량을 확인하세요."
+		if FrontierCatalog.entry("resources",id).is_empty() or not FrontierExpeditionBusiness.integer(args.get("amount"),1,FrontierItemInventory.limit()):return "인수할 품목과 수량을 확인하세요."
 		var amount:=int(args.amount)
 		if int(site.inventory.get(id,0))<amount:return "공동 창고의 수량이 부족합니다."
 		if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
 		var bag: Dictionary=world.business.bags[actor]
-		if FrontierExpeditionBusiness.total(bag)+amount>int(FrontierExpeditionBusiness.config().bag_capacity):return "배낭 여유 공간이 부족합니다."
+		if amount>FrontierItemInventory.room(world,actor,id):return "배낭 여유 공간이 부족합니다."
 		site.inventory[id]-=amount;bag[id]=int(bag.get(id,0))+amount;return ""
 	var id:=str(args.get("building_id",args.get("robot_id","")))
 	var robot: bool=kind=="business_robot_upgrade"

@@ -1,6 +1,13 @@
 extends CanvasLayer
 ## Presentation begins only after an accepted host landing snapshot.
+var vessel_overlay: SubViewportContainer
+var flow: ColorRect
+var flow_material: ShaderMaterial
+var entry_view: Transform3D
+var entry_fov:=65.0
 var app: FrontierCrewExpedition
+var warm_frames:=0
+var prepared:=false
 var active:=false
 var phase: String=""
 var age:=0.0
@@ -25,6 +32,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  app=owner_app;layer=90
  curtain=ColorRect.new();curtain.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);add_child(curtain)
  cover=ShaderMaterial.new();cover.shader=load("res://assets/materials/space/arrival_cloud.gdshader");curtain.material=cover
+ flow=ColorRect.new();flow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);flow.mouse_filter=Control.MOUSE_FILTER_IGNORE
+ flow_material=ShaderMaterial.new();flow_material.shader=load("res://assets/materials/space/arrival_flow.gdshader");flow.material=flow_material;add_child(flow)
  for bottom in [false,true]:
   var bar:=ColorRect.new();bar.color=Color("10191f");add_child(bar)
   bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE if bottom else Control.PRESET_TOP_WIDE)
@@ -35,10 +44,15 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  caption.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE);caption.offset_top=-45;caption.offset_bottom=-8
  audio=FrontierAudio.new();add_child(audio)
  engine=AudioStreamPlayer.new();engine.bus="SFX";engine.stream=audio.stream("sfx_landing_thrusters",true);engine.volume_db=-20;add_child(engine)
+ RenderingServer.frame_post_draw.connect(_frame_drawn)
  hide()
 
+func _frame_drawn() -> void:
+ if active and phase=="warming":warm_frames+=1
+
 func begin() -> void:
- active=true;phase="approach";age=0;show()
+ vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure(app.session.latest.get("vessel",{}));vessel_overlay.hide()
+ active=true;prepared=false;warm_frames=0;phase="approach";age=0;show()
  app.cancel_placement()
  for panel in [app.navigation_frame,app.research_frame,app.inventory_panel,app.business_panel,app.shipyard_panel]:panel.hide()
  var flight:=app.flight
@@ -50,6 +64,7 @@ func begin() -> void:
  finish=center+(start-center).normalized()*(FrontierUniverse.navigation_radius(body)+12)
  caption.text=body.name+"  ·  궤도 이탈"
  cover.set_shader_parameter("tint",Color(body.get("traits",{}).get("dust","a6afb8")))
+ flow_material.set_shader_parameter("tint",Color(body.get("traits",{}).get("dust","a6afb8")))
  cover.set_shader_parameter("cover",0.0)
  audio.play("sfx_atmosphere_entry");engine.pitch_scale=1;engine.volume_db=-22;engine.play()
  app.session.send_input(Vector2.ZERO,Vector3.FORWARD,false,false,[0.0,0.0,0.0])
@@ -69,12 +84,32 @@ func tick(delta: float) -> void:
   app.flight.camera.position=Vector3(0,16,57);app.flight.camera.rotation=Vector3(-.15,0,0)
   app.flight.drive.set_thrust(.65,false)
   cover.set_shader_parameter("cover",smoothstep(.45,1,t))
-  if t>=1:phase="loading";age=0;caption.text="진입 항로 확보 중"
+  var strength:=smoothstep(.45,.65,t)
+  vessel_overlay.match_view(app.flight.ship.get_child(0),app.flight.camera)
+  _show_vessel(strength>0,strength)
+  app.flight.ship.get_child(0).visible=strength<=0
+  if t>=1:
+   entry_view=vessel_overlay.camera.transform;entry_fov=vessel_overlay.camera.fov
+   phase="loading";age=0;caption.text="대기층 통과 중"
  elif phase=="loading":
   # Keep an animated opaque cover until authoritative edits and local collision are ready.
   app.outside=false;app.exterior_view.hide();app.space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
-  if _surface_ready():_begin_descent()
+  cover.set_shader_parameter("cover",1.0)
+  _show_vessel(true,1.0)
+  if app.surface_world!=null and not prepared:_prepare_descent()
+  if prepared:
+   vessel_overlay.match_view(app.surface_world.landing_ship,landing_camera)
+   var target: Transform3D=vessel_overlay.camera.transform
+   vessel_overlay.camera.transform=entry_view.interpolate_with(target,smoothstep(0,1,clampf(age/1.5,0,1)))
+   vessel_overlay.camera.fov=lerpf(entry_fov,landing_camera.fov,smoothstep(0,1,clampf(age/1.5,0,1)))
+  if _surface_ready() and age>=1.5:phase="warming";age=0;warm_frames=0;caption.text="착륙 시야 준비 중"
   elif age>15:caption.text="착륙 지형 준비 중 · 호스트 기록과 지형을 기다립니다"
+ elif phase=="warming":
+  # Draw the actual initial descent camera behind the opaque curtain.
+  # Restart the barrier if a terrain edit or resource request arrives meanwhile.
+  if not _surface_ready():phase="loading";age=0;warm_frames=0
+  else:_warm_camera()
+  if phase=="warming" and warm_frames>=int(config.get("warmup_frames",8)) and age>=float(config.get("warmup_seconds",.5)):_begin_descent()
  elif phase=="descent":
   var t:=clampf(age/float(config.descent_seconds),0,1)
   var rest:=pow(1-t,2.0)
@@ -85,6 +120,11 @@ func tick(delta: float) -> void:
   landing_camera.look_at(ship+Vector3(0,1,-4))
   cover.set_shader_parameter("cover",1-smoothstep(0,.3,t))
   engine.pitch_scale=lerpf(1.1,.65,t);engine.volume_db=lerpf(-18,-24,t)
+  var in_cloud:=t<.3
+  vessel_overlay.match_view(app.surface_world.landing_ship,landing_camera)
+  vessel_overlay.set_entry_direction(true)
+  _show_vessel(in_cloud,1-smoothstep(0,.3,t))
+  app.surface_world.landing_ship.visible=not in_cloud
   dust.emitting=t>.70
   drive.set_thrust(lerpf(.65,.12,t),false)
   if t>=1:
@@ -102,13 +142,21 @@ func tick(delta: float) -> void:
   caption.modulate.a=1-t
   if t>=1:cancel()
 
+func _show_vessel(enabled: bool,strength: float) -> void:
+ vessel_overlay.visible=enabled
+ flow_material.set_shader_parameter("strength",strength)
+ if enabled:
+  var uv: Vector2=vessel_overlay.camera.unproject_position(Vector3.ZERO)/Vector2(vessel_overlay.viewport.size)
+  flow_material.set_shader_parameter("vessel_uv",uv)
+
+
 func _surface_ready() -> bool:
  if app.surface_world==null or not app.actors.has(app.session.latest.self_id):return false
  var surface:=app.surface_world
- return surface.ready_at(app.actors[app.session.latest.self_id].position) and surface.ready_at(surface.landing_ship.position)
+ return prepared and surface.landing_view_ready()
 
-func _begin_descent() -> void:
- phase="descent";age=0;caption.text=app.surface_world.body.name+"  ·  착륙 지점으로 하강"
+func _prepare_descent() -> void:
+ prepared=true
  ship_home=app.surface_world.landing_ship.position
  landing_camera=Camera3D.new();app.add_child(landing_camera);landing_camera.far=app.camera.far;landing_camera.fov=65;landing_camera.make_current()
  drive=FrontierVesselDriveEffects.new();app.surface_world.landing_ship.add_child(drive)
@@ -119,11 +167,41 @@ func _begin_descent() -> void:
  var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/landing_dust.gdshader");mat.set_shader_parameter("tint",motion.color);mesh.material=mat;dust.draw_pass_1=mesh
  app.surface_world.add_child(dust)
 
+ var initial_ship:=ship_home+Vector3(0,float(config.descent_height),0)+FrontierCrewWorld.vector(config.descent_offset)
+ app.surface_world.landing_ship.position=initial_ship
+ landing_camera.position=initial_ship+Vector3(34,18,42);landing_camera.look_at(initial_ship+Vector3(0,1,-4))
+ var points: Array[Vector3]=[app.actors[app.session.latest.self_id].position]
+ for t in [0.0,.5,1.0]:
+  var p: Vector3=ship_home+FrontierCrewWorld.vector(config.descent_offset)*t+Vector3(34,0,42)
+  p.y=app.surface_world.terrain.field.height(p.x,p.z)+1
+  points.append(p)
+ app.surface_world.prepare_landing_view(points)
+
+func _warm_camera() -> void:
+ if warm_frames<2:
+  var ship: Vector3=ship_home+Vector3(0,float(config.descent_height),0)+FrontierCrewWorld.vector(config.descent_offset)
+  landing_camera.position=ship+Vector3(34,18,42);landing_camera.look_at(ship+Vector3(0,1,-4))
+ elif warm_frames<4:
+  landing_camera.position=ship_home+Vector3(34,18,42);landing_camera.look_at(ship_home+Vector3(0,1,-4))
+ elif warm_frames<6:
+  landing_camera.transform=app.camera.transform
+ else:
+  var ship: Vector3=ship_home+Vector3(0,float(config.descent_height),0)+FrontierCrewWorld.vector(config.descent_offset)
+  landing_camera.position=ship+Vector3(34,18,42);landing_camera.look_at(ship+Vector3(0,1,-4))
+
+func _begin_descent() -> void:
+ phase="descent";age=0;caption.text=app.surface_world.body.name+"  ·  착륙 지점으로 하강"
+
 func cancel() -> void:
  active=false;phase="";hide();engine.stop()
+ flow_material.set_shader_parameter("strength",0.0)
+ if is_instance_valid(vessel_overlay):vessel_overlay.release()
+ if app.flight!=null:app.flight.ship.get_child(0).show()
+ if app.surface_world!=null:app.surface_world.landing_ship.show()
  if is_instance_valid(landing_camera):landing_camera.queue_free()
  if is_instance_valid(dust):dust.queue_free()
  if is_instance_valid(drive):drive.queue_free()
+ if app.surface_world!=null:app.surface_world.finish_landing_view()
  if app.surface_world!=null and ship_home!=Vector3.ZERO:app.surface_world.landing_ship.position=ship_home;app.surface_world.landing_ship.rotation=Vector3.ZERO
  app.camera.make_current()
  if app.flight!=null:app.flight.set_process(true);app.flight.transit_overlay.show();app.flight.drive.set_thrust(0,false)

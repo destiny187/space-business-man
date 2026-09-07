@@ -116,6 +116,8 @@
 
 - [탐험복 관절 리그·협동 점프](production/37-crew-locomotion.md): 13개 뼈, 현재 원정의 Space 점프·접지·예측/보간·ElevenLabs 이동음과 검수 범위.
 
+- [첫 착륙 광맥·원경·통합 아이템 수정](production/38-first-game-fixes.md): 등록 전 광맥, 기초 자원 보장, 배경 원경 생성, 0개 제외·중첩 격자와 실제 확인 범위.
+
 - [항해 간소화·Esc 메뉴·입력 전환](production/38-navigation-context-and-menus.md): 우측 상단 지도·큰 지도·근접 착륙과 창 전환 시 마우스/시점 복구.
 
 - [시설별 작업 인터페이스](production/39-facility-interactions.md): B 건설과 F 로봇 제작소·시설·창고·착륙선 작업 분리.

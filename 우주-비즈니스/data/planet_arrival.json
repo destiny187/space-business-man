@@ -4,5 +4,11 @@
   "touchdown_seconds": 1.2,
   "handover_seconds": 1.0,
   "descent_height": 100.0,
-  "descent_offset": [0, 0, 90]
+  "descent_offset": [
+    0,
+    0,
+    90
+  ],
+  "warmup_frames": 8,
+  "warmup_seconds": 0.5
 }

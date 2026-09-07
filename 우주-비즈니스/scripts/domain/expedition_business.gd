@@ -2,6 +2,7 @@ class_name FrontierExpeditionBusiness
 extends RefCounted
 ## One host-owned business ledger; autonomous work is committed before publication.
 static var _config: Dictionary={}
+static var _starter_veins: Array=[]
 static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json"))
 	return _config
@@ -38,6 +39,8 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 		var p: Array=[sin(angle)*radius,0,cos(angle)*radius]
 		if i<config().starter_vein_positions.size():p=[config().starter_vein_positions[i][0]+float(seed_value%11)*.05,0,config().starter_vein_positions[i][1]]
 		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":FrontierMineralWorld.tier(types[i]),"capacity":int(config().vein_capacity.get(types[i],180))+int(body.planet_tier-1)*20,"position":p})
+	# Stable additive IDs preserve depletion of all older deposits.
+	if FrontierMineralWorld.enabled(body):values.append_array(starter_veins())
 	if FrontierMineralWorld.enabled(body):
 		var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 		for level in range(-20,-40,-1):
@@ -47,6 +50,9 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 				values.append({"id":"cave:gem:0","resource":gem,"required_tier":FrontierMineralWorld.tier(gem),"capacity":35,"position":[p.x,p.y,p.z],"underground":true,"quality":1})
 				break
 	return values
+static func starter_veins() -> Array:
+	if _starter_veins.is_empty():_starter_veins=JSON.parse_string(FileAccess.get_file_as_string("res://data/landing_resources.json"))
+	return _starter_veins.duplicate(true)
 static func find_vein(body: Dictionary,id: String) -> Dictionary:
 	if id.begins_with("ore1:"):return FrontierMineralWorld.find(body,id)
 	for row in veins(body):
@@ -129,7 +135,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if tool.get("kind")!="miner":return "아이템창에서 자원채집기를 제작·장착하세요."
 		if int(tool.tier)<int(row.required_tier):return "이 광물은 %d등급 이상의 자원채집기가 필요합니다."%int(row.required_tier)
 		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
-		var amount: int=mini(int(current.remaining.get(row.id,row.capacity)),mini(int(tool.amount),int(config().bag_capacity)-total(ledger.bags[actor])))
+		var amount: int=mini(int(current.remaining.get(row.id,row.capacity)),mini(int(tool.amount),FrontierItemInventory.room(world,actor,row.resource)))
 		if amount<=0:return "광맥이 고갈됐거나 배낭이 가득 찼습니다."
 		current.remaining[row.id]=int(current.remaining.get(row.id,row.capacity))-amount;ledger.bags[actor][row.resource]=int(ledger.bags[actor].get(row.resource,0))+amount;return ""
 	if kind=="business_deposit":
@@ -142,7 +148,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not ledger.crates.has(id):return "이미 회수한 사업 화물입니다."
 		var crate: Dictionary=ledger.crates[id]
 		if crate.body_id!=world.location or point(crate.position).distance_to(position)>4:return "같은 행성의 회수 화물에 접근하세요."
-		if total(bag(world,actor))+total(crate.inventory)>int(config().bag_capacity):return "배낭을 먼저 비우세요."
+		if not FrontierItemInventory.fits(world,actor,crate.inventory):return "배낭을 먼저 비우세요."
 		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
 		transfer(ledger.bags[actor],crate.inventory,1);ledger.crates.erase(id);return ""
 	if kind in ["business_technology","business_supply","business_settle","business_robot_rescue"] and actor!=world.crew.owner_id:return "공동 자금 지출과 정산은 호스트가 확정합니다."
@@ -310,10 +316,10 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		if not id is String or not valid_robot(value.hangar[id],id) or total(value.hangar[id].cargo)!=0:return "운송 로봇 오류"
 		robots[id]=true
 	for id in value.bags:
-		if not id is String or not valid_inventory(value.bags[id],int(config().bag_capacity)) or total(value.bags[id])>int(config().bag_capacity):return "개인 사업 운반량 오류"
+		if not id is String or not valid_inventory(value.bags[id],FrontierItemInventory.limit()) or FrontierItemInventory.used(value.bags[id])>int(FrontierItemInventory.config().slots):return "개인 사업 운반량 오류"
 	for id in value.crates:
 		var crate: Variant=value.crates[id]
-		if not id is String or not crate is Dictionary or not crate.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,crate.body_id)<0 or not FrontierUniverse._vector3_array(crate.get("position")) or not valid_inventory(crate.get("inventory"),int(config().bag_capacity)) or total(crate.inventory)>int(config().bag_capacity):return "사업 회수 화물 오류"
+		if not id is String or not crate is Dictionary or not crate.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,crate.body_id)<0 or not FrontierUniverse._vector3_array(crate.get("position")) or not valid_inventory(crate.get("inventory"),FrontierItemInventory.limit()) or total(crate.inventory)>FrontierItemInventory.limit():return "사업 회수 화물 오류"
 	for id in value.sites:
 		if not id is String or FrontierUniverse.ordinal_of(manifest,id)<0:return "개발 행성 주소 오류"
 		var current: Variant=value.sites[id]

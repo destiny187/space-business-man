@@ -26,7 +26,7 @@ static func active(member: Dictionary) -> Dictionary:
 	return config().items.get(data.items.get(id,""),{})
 static func validate(value: Variant) -> String:
 	if not value is Dictionary:return "장비 기록 형식"
-	if not value.get("items") is Dictionary or value.items.size()>int(config().max_items):return "장비 한도"
+	if not value.get("items") is Dictionary or value.items.size()>int(FrontierItemInventory.config().slots):return "장비 한도"
 	if not value.get("slots") is Array or value.slots.size()!=int(config().slots):return "장착 슬롯"
 	for key in ["selected","kit","counter"]:
 		if not FrontierUniverse._finite(value.get(key),0,1000000) or value[key]!=floorf(value[key]):return "장비 수량"
@@ -75,9 +75,12 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if member.area!="surface":return "착륙 후 휴대 제작기를 사용하세요."
 	var definition: String=str(args.get("definition",""))
 	if not config().items.has(definition):return "제작 설계도 오류"
-	if data.items.size()>=int(config().max_items):return "장비 보관 한도에 도달했습니다."
+	if data.items.size()>=int(FrontierItemInventory.config().slots):return "장비 보관 한도에 도달했습니다."
 	var recipe: Dictionary=config().items[definition]
 	if not recipe.get("craftable",true):return "현재 제작은 Mk.2까지 지원합니다."
+	var after_cost:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
+	FrontierExpeditionBusiness.transfer(after_cost,recipe.cost,-1)
+	if FrontierItemInventory.used(after_cost,data.items.size()+1)>int(FrontierItemInventory.config().slots):return "아이템 보관 공간이 부족합니다."
 	if definition=="miner_1":
 		if int(data.kit)<=0:return "기초 조립 키트를 이미 사용했습니다. 소유 채집기를 장착하세요."
 		data.kit-=1

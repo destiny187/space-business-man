@@ -64,6 +64,19 @@ func ready_at(point: Vector3) -> bool:
 	# Player capsule and its floor can occupy opposite sides of a chunk boundary.
 	return chunks.has(key) and chunks.has(field.key_at(point-Vector3.UP*2))
 
+func ready_for(points: Array[Vector3]) -> bool:
+	if config.is_empty():return false
+	var radius:=int(config.active_radius)
+	for point in points:
+		var anchor:=field.key_at(point)
+		for x in range(anchor.x-radius,anchor.x+radius+1):
+			for z in range(anchor.z-radius,anchor.z+radius+1):
+				for y in range(anchor.y-int(config.vertical_radius),anchor.y+int(config.vertical_radius)+1):
+					if y*span<float(config.minimum_depth) or y*span>float(config.maximum_height):continue
+					var key:=Vector3i(x,y,z)
+					if not chunks.has(key) or int(chunks[key].revision)!=int(revisions.get(key,0)):return false
+	return batch.is_empty()
+
 func _process(_delta: float) -> void:
 	if closed or config.is_empty():return
 	for key in jobs.keys():

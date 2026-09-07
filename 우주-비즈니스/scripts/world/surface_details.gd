@@ -143,3 +143,16 @@ func _process(_dt: float) -> void:
 		if not terrain.ready_at(p+Vector3.UP):continue
 		_build(key);built+=1
 		if built>=int(settings.builds_per_frame):break
+
+func presentation_ready() -> bool:
+	if meshes.is_empty():return true
+	if dirty or viewer==null:return false
+	var span: float=settings.tile_size
+	var center:=Vector2i(floori(viewer.position.x/span),floori(viewer.position.z/span))
+	var radius: int=settings.radius_tiles
+	for x in range(center.x-radius,center.x+radius+1):
+		for z in range(center.y-radius,center.y+radius+1):
+			var key:=Vector2i(x,z)
+			var p:=Vector3((x+.5)*span,0,(z+.5)*span);p.y=terrain.field.height(p.x,p.z)
+			if terrain.ready_at(p+Vector3.UP) and not tiles.has(key):return false
+	return true

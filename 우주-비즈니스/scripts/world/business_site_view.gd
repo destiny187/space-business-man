@@ -11,6 +11,7 @@ var prepared_models: Dictionary={}
 var synchronous_resources:=DisplayServer.get_name()=="headless"
 var ghosts: Node3D
 var restore_amount:=0.0
+var presentation_points: Array[Vector3]=[]
 var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
@@ -23,20 +24,26 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	add_child(root);nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
-	if value.is_empty() or not value.sites.has(body.id):return
-	var site: Dictionary=value.sites[body.id]
-	var wanted: Dictionary={"business-base":true}
-	if not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
+	var registered: bool=value.get("sites",{}).has(body.id)
+	var site: Dictionary=value.get("sites",{}).get(body.id,{"remaining":{},"buildings":{},"robots":{},"center":[0,0,0],"environment":{"temperature":body.get("traits",{}).get("temperature",20)}})
+	var wanted: Dictionary={}
+	if registered:wanted["business-base"]=true
+	if registered and not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
 	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="현장 창고\nF 창고 · 반납/인수"
 	var camera:=get_viewport().get_camera_3d()
-	for row in FrontierExpeditionBusiness.veins(body,camera.global_position if camera!=null else Vector3.ZERO):
+	var centers: Array[Vector3]=presentation_points.duplicate()
+	if centers.is_empty():centers.append(camera.global_position if camera!=null else Vector3.ZERO)
+	var veins: Dictionary={}
+	for center in centers:
+		for row in FrontierExpeditionBusiness.veins(body,center):veins[row.id]=row
+	for row in veins.values():
 		if site.remaining.get(row.id,row.capacity)<=0:continue
 		var p:=FrontierMineralWorld.point(terrain.field,row)
 		if not p.is_finite():continue
 		if FrontierExpeditionBusiness.thermal_locked(body,site,row):continue
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"ore_"+row.resource,p,1.1,"vein");continue
-		nodes[row.id].get_meta("label").text="%s · %d\nF 채광"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity))]
+		nodes[row.id].get_meta("label").text="%s · %d\n%s"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity)),"F 채광" if registered else "B 무료 개발 등록"]
 		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.remaining.get(row.id,row.capacity))/float(row.capacity))
 	for row in site.buildings.values():
 		wanted[row.id]=true
@@ -53,7 +60,7 @@ func accept(value: Dictionary) -> void:
 		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
 		_upgrade_visual(nodes[row.id],row,true)
 		nodes[row.id].set_meta("working",row.status=="채광 중")
-	for id in value.crates:
+	for id in value.get("crates",{}):
 		var row: Dictionary=value.crates[id]
 		wanted[id]=true
 		if not nodes.has(id):_queue_entity(id,"crew/recovery_crate",FrontierExpeditionBusiness.point(row.position),.5,"crate");continue
@@ -62,6 +69,7 @@ func accept(value: Dictionary) -> void:
 		if not wanted.has(id):nodes[id].queue_free();nodes.erase(id)
 	for id in pending_models.keys():
 		if not wanted.has(id):pending_models.erase(id)
+	if not registered:return
 	restore_amount=float(site.environment.ecology)/100.0
 	terrain.material.set_shader_parameter("restoration_center",FrontierExpeditionBusiness.point(site.center))
 	terrain.material.set_shader_parameter("restoration_radius",float(FrontierExpeditionBusiness.config().build_radius))
@@ -75,7 +83,7 @@ func target(camera: Camera3D,viewer: CollisionObject3D) -> Dictionary:
 	if hit.is_empty() or not hit.collider.has_meta("business_kind"):return {}
 	return {"id":hit.collider.get_meta("business_id"),"kind":hit.collider.get_meta("business_kind")}
 func _process(dt: float) -> void:
-	if FrontierMineralWorld.enabled(body):
+	if presentation_points.is_empty() and FrontierMineralWorld.enabled(body):
 		var viewer:=get_viewport().get_camera_3d()
 		if viewer!=null:
 			var size: float=body.mineral_profile.rules.tile_size

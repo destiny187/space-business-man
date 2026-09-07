@@ -132,7 +132,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		return ""
 	if kind=="surface_dig":
 		if FrontierEquipment.active(member).get("kind")!="terrain":return "지형 변환기를 제작한 뒤 번호 슬롯에 장착하세요."
-		if int(member.carried)>=int(FrontierCrewWorld.config().backpack_capacity):return "배낭을 비운 뒤 굴착하세요."
+		if FrontierItemInventory.room(world,actor,"stone")<=0:return "배낭을 비운 뒤 굴착하세요."
 		if world.terrain_edits.get(body_id,[]).size()>=int(config().maximum_edits_per_planet):return "이 실증 행성의 굴착 기록 한도에 도달했습니다."
 		var aim:=direction(args.get("aim"))
 		if aim==Vector3.ZERO:return "조준 방향 오류"
@@ -146,7 +146,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not hit.is_finite() or hit.y<float(world.terrain_settings.minimum_depth)+5:return "사거리와 굴착 가능한 지층을 확인하세요."
 		if not world.terrain_edits.has(body_id):world.terrain_edits[body_id]=[]
 		world.terrain_edits[body_id].append({"center":[hit.x,hit.y,hit.z],"radius":FrontierEquipment.active(member).radius})
-		member.carried+=1
+		if not world.has("business"):world.business=FrontierExpeditionBusiness.create()
+		if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
+		world.business.bags[actor].stone+=1
 		return ""
 	if kind=="surface_attack":
 		var weapon:=FrontierEquipment.active(member)

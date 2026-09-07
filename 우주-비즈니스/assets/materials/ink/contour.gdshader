@@ -3,6 +3,7 @@ render_mode unshaded, fog_disabled, cull_disabled, depth_draw_never, depth_test_
 uniform sampler2D screen_tex : hint_screen_texture, repeat_disable, filter_nearest;
 uniform sampler2D depth_tex : hint_depth_texture, repeat_disable, filter_nearest;
 uniform sampler2D normal_tex : hint_normal_roughness_texture, repeat_disable, filter_nearest;
+uniform bool transparent_background = false;
 uniform float outer_width = 3.0;
 uniform float inner_width = 1.15;
 uniform float strength = 1.0;
@@ -19,6 +20,7 @@ float view_depth(vec2 uv,mat4 inv_projection){
 }
 void vertex(){POSITION=vec4(VERTEX.xy,1.,1.);}
 void fragment(){
+ if(transparent_background && textureLod(depth_tex,SCREEN_UV,0.).r<=0.000001){discard;}
  vec2 pixel=(1./VIEWPORT_SIZE)*(VIEWPORT_SIZE.y/reference_height);
  float center=view_depth(SCREEN_UV,INV_PROJECTION_MATRIX);
  vec3 norm=texture(normal_tex,SCREEN_UV).xyz*2.-1.;

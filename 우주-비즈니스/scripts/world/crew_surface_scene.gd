@@ -1,5 +1,7 @@
 class_name FrontierCrewSurfaceScene
 extends Node3D
+var presentation_points: Array[Vector3]=[]
+var presentation_ecology_refreshed:=false
 var landing_ship: Node3D
 var session: FrontierCrewSession
 var viewer: Node3D
@@ -18,6 +20,7 @@ var last_anchor:=Vector3i(99999,99999,99999)
 var tick:=0.0
 var fallback_tick:=0.0
 var fallback_jobs:=-1
+var fallback_distant_builds:=-1
 var preferences: FrontierClientSettings
 var rendered_distance:=0.0
 var refits: FrontierVesselVisuals
@@ -99,13 +102,13 @@ func _update_interest() -> void:
 	if session.hosting:ecology.observers=points
 	else:ecology.observers.clear()
 	var anchor:=terrain.field.key_at(viewer.position)
-	if anchor!=last_anchor:last_anchor=anchor;_refresh_distant()
+	if anchor.x!=last_anchor.x or anchor.z!=last_anchor.z:last_anchor=anchor;_refresh_distant()
 
 func _refresh_distant() -> void:
 	rendered_distance=float(preferences.values.view_distance)
-	distant.rebuild(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.material,float(preferences.values.view_distance))
+	distant.request_rebuild(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.material,float(preferences.values.view_distance))
 	distant.rebuild_fallback(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.chunks)
-	fallback_jobs=terrain.completed_jobs
+	fallback_jobs=terrain.completed_jobs;fallback_distant_builds=distant.build_count
 
 func _process(delta: float) -> void:
 	if session==null or terrain==null:return
@@ -113,8 +116,8 @@ func _process(delta: float) -> void:
 	refits.update_loadout(session.latest.get("vessel",{}))
 	_update_interest()
 	fallback_tick-=delta
-	if fallback_tick<=0 and fallback_jobs!=terrain.completed_jobs:
-		fallback_tick=.5;fallback_jobs=terrain.completed_jobs
+	if fallback_tick<=0 and (fallback_jobs!=terrain.completed_jobs or fallback_distant_builds!=distant.build_count):
+		fallback_tick=.5;fallback_jobs=terrain.completed_jobs;fallback_distant_builds=distant.build_count
 		distant.rebuild_fallback(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.chunks)
 	if applied_edits<incoming.size() and terrain.batch.is_empty():
 		var edit: Dictionary=incoming[applied_edits]
@@ -136,7 +139,7 @@ func _process(delta: float) -> void:
 		lamp.light_energy=energy
 
 func ready_at(point: Vector3) -> bool:
-	return terrain!=null and terrain.ready_at(point+Vector3.UP) and applied_edits==incoming.size()
+	return terrain!=null and distant.mesh!=null and terrain.ready_at(point+Vector3.UP) and applied_edits==incoming.size()
 
 func _exit_tree() -> void:
 	if is_instance_valid(lamp):lamp.queue_free()
@@ -148,3 +151,23 @@ func _add_native_water() -> void:
 	var plane:=PlaneMesh.new();plane.size=Vector2(16384,16384);water.mesh=plane;water.position.y=-4
 	var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/native_water.gdshader")
 	mat.set_shader_parameter("water_color",Color(t.sea));water.material_override=mat;add_child(water)
+
+func prepare_landing_view(points: Array[Vector3]) -> void:
+	presentation_points=points.duplicate();presentation_ecology_refreshed=false
+	business_view.presentation_points=points.duplicate()
+	business_view.accept(business_view.ledger)
+	_update_interest()
+
+func landing_view_ready() -> bool:
+	var points: Array[Vector3]=[viewer.position]
+	if not terrain.ready_for(points) or applied_edits!=incoming.size():return false
+	if distant.mesh==null or distant.task_id!=-1 or not distant.queued.is_empty():return false
+	# Candidates are discovered only after their supporting terrain exists.
+	if not presentation_ecology_refreshed:
+		ecology.refresh();presentation_ecology_refreshed=true
+	if not ecology.pending.is_empty() or not ecology.resource_requests.is_empty():return false
+	return business_view.pending_models.is_empty() and business_view.requested_models.is_empty() and surface_details.presentation_ready()
+
+func finish_landing_view() -> void:
+	presentation_points.clear();business_view.presentation_points.clear()
+	business_view.region_key=Vector2i(99999,99999)
