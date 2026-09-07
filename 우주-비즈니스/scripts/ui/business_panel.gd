@@ -27,6 +27,7 @@ var summary: FrontierResourceReadout
 var stock: FrontierResourceReadout
 var environment_bars: Dictionary={}
 var environment_label: Label
+var workload_label: Label
 var guidance: Label
 var technology: OptionButton
 var building: OptionButton
@@ -60,6 +61,7 @@ func _ready() -> void:
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
 	heading=label(column,"건설 · B 닫기",24)
 	summary=FrontierResourceReadout.new();column.add_child(summary);guidance=label(column,"");stock=FrontierResourceReadout.new();column.add_child(stock)
+	workload_label=label(column,"")
 	register_button=button(column,"무료 개발 등록",func():command.emit("business_register",{}))
 	deposit_button=button(column,"현장 창고에 자원 반납",func():station_action.emit("storage"))
 	tabs=TabContainer.new();tabs.custom_minimum_size.y=290;column.add_child(tabs)
@@ -234,7 +236,9 @@ func context_in_range(position: Vector3) -> bool:
 	if context_kind=="base":return position.distance_to(FrontierCrewWorld.vector(site.center))<=float(FrontierExpeditionBusiness.config().deposit_range)
 	var row: Dictionary=site.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 	return not row.is_empty() and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
-func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO) -> void:
+func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
+	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
+	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference"
 	register_button.hide();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
 	refresh_context(value.get("sites",{}).get(id,{}))
@@ -292,7 +296,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement() -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
-	var payment: int=int(FrontierExpeditionBusiness.config().contract_base_reward)+planet_tier*int(FrontierExpeditionBusiness.config().contract_tier_reward)
+	var payment:=FrontierCoopWorkload.reward(ledger.sites[body_id],planet_tier)
 	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설·로봇·재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.confirmed.connect(func():command.emit("business_settle",{});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
 
 func engineering_command(stage: String) -> void:

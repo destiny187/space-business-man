@@ -128,6 +128,7 @@ static func ensure_site(world: Dictionary) -> Dictionary:
 	var center:=point(config().base_position);center.y=FrontierCrewSurface.field(world).height(center.x,center.z)
 	var source: Dictionary=body.get("traits",FrontierCatalog.entry("planets",body.kind))
 	ledger.sites[world.location]={"center":array(center),"state":"exploration","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
+	if int(body.planet_tier) in [1,2] and body.get("origin","")!="solar_reference":ledger.sites[world.location].workload_eligible=true
 	if not FrontierMineralWorld.enabled(body):
 		for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
 	if int(body.planet_tier)==2 and body.get("origin","")!="solar_reference":
@@ -152,7 +153,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not at_ship:return "착륙선에서 개발 범위를 등록하세요."
 		if ledger.sites.has(world.location) and ledger.sites[world.location].state!="exploration":return "이미 등록한 행성입니다."
 		if not ledger.active.is_empty():return "진행 중인 개발 사업을 정산한 뒤 새 사업을 등록하세요."
-		var registered:=ensure_site(world);registered.state="active";ledger.active=world.location;return ""
+		var registered:=ensure_site(world);registered.state="active";ledger.active=world.location
+		FrontierCoopWorkload.activate(registered,FrontierUniverse.body_from_id(world.manifest,world.location),active.size())
+		return ""
 	var current:=ensure_site(world)
 	var near_base: bool=near_warehouse(current,position)
 	if kind=="business_mine":
@@ -203,6 +206,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if current.state=="exploration":
 		if not ledger.active.is_empty():return "다른 행성의 복원 계약을 정산하면 이곳에서 시설을 운영할 수 있습니다. 채광은 계속 가능합니다."
 		current.state="active";ledger.active=world.location
+		FrontierCoopWorkload.activate(current,FrontierUniverse.body_from_id(world.manifest,world.location),active.size())
 	if current.state!="active":return "정산된 계약의 시설과 창고는 인계됐습니다."
 	if kind in ["business_produce","business_facility_upgrade","business_robot_upgrade"]:return FrontierProductionTier2.apply(world,actor,kind,args)
 	if kind in ["business_technology","business_supply","business_settle","business_robot_rescue"] and actor!=world.crew.owner_id:return "공동 자금 지출과 정산은 호스트가 확정합니다."
@@ -298,7 +302,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		for id in ledger.bags:
 			if total(ledger.bags[id])>0:return "승무원의 사업 자원을 모두 창고에 반납하세요."
 		var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
-		var payment: int=int(config().contract_base_reward)+int(body.planet_tier)*int(config().contract_tier_reward)
+		var payment:=FrontierCoopWorkload.reward(current,int(body.planet_tier))
 		current.settlement={"payment":payment,"scores":scores,"time":current.time};current.state="settled";ledger.credits+=payment;ledger.active=""
 		for robot in current.robots.values():robot.phase="idle";robot.path=[];robot.status="계약 인계 완료"
 		return ""
@@ -400,6 +404,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 			if not integer(current.settlement.get("payment"),0,100000000) or not current.settlement.get("scores") is Dictionary or not FrontierUniverse._finite(current.settlement.get("time"),0,10000000):return "계약 정산 기록 오류"
 		elif not current.settlement.is_empty():return "미정산 사업의 지급 기록 오류"
 		var body:=FrontierUniverse.body_from_id(manifest,id)
+		if not FrontierCoopWorkload.valid(current,int(body.planet_tier)):return "협동 사업량 기록 오류"
 		if FrontierMineralWorld.enabled(body):
 			for vein_id in current.remaining:
 				if not vein_id is String:return "광맥 ID 오류"

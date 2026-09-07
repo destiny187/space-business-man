@@ -134,6 +134,7 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 		if not b.active:continue
 		var before: Dictionary={"environment":e.duplicate(),"restoration":site.get("restoration2",{}).duplicate(),"work":b.work,"treatment":b.get("treatment_work",0)}
 		_process_facility(world,site,b,dt*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world)))
+		FrontierCoopWorkload.distribute(site,before.environment,before.restoration)
 		b.working=before.environment!=e or before.restoration!=site.get("restoration2",{}) or float(before.work)!=float(b.work) or float(before.treatment)!=float(b.get("treatment_work",0))
 		if b.working and "목표" in b.status:b.status="보조 처리 중"
 		elif b.working and "필요" in b.status:b.status="부분 가동 · "+b.status

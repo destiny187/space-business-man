@@ -583,7 +583,7 @@ func _surface_packet(packet: Dictionary) -> void:
 	_sync_surface_view()
 	if surface_world!=null:
 		surface_world.accept(packet);_refresh_surface_options()
-		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 
 func _sync_surface_view() -> void:
 	if session.latest.is_empty() or session.latest.get("phase")!="playing":return
@@ -716,7 +716,7 @@ func toggle_business() -> void:
 	if not session.active or surface_world==null:return
 	business_panel.set_context("build")
 	open_menu(business_panel)
-	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 func interact_business() -> void:
 	if not session.active or surface_world==null or inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
@@ -736,7 +736,7 @@ func open_station(kind: String,id: String="",management: bool=false) -> void:
 	close_menus()
 	business_panel.set_context(kind,id)
 	open_menu(business_panel)
-	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 func open_warehouse_management() -> void:
 	if not session.active or surface_world==null:return
 	var current: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{})
