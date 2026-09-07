@@ -20,7 +20,7 @@
       "channels": 2,
       "sha256": "7d276998e58f8c92bf4971c50c3c08577817211724ea2b5d4994a7fc44ab4a8d",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades; progressive arrival RMS targets -23 to -19 dBFS, peak capped at 26000",
-      "qa": "PCM signal and duration checked; Godot playback verification pending",
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback",
       "loudness_balanced": true,
       "target_rms_db": -23.0
     },
@@ -41,7 +41,7 @@
       "channels": 2,
       "sha256": "b524c939d98ca9fbaa4cb9155dcab8b8ae12565c2feac84bd98d749a3a37e35c",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades; progressive arrival RMS targets -23 to -19 dBFS, peak capped at 26000",
-      "qa": "PCM signal and duration checked; Godot playback verification pending",
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback",
       "loudness_balanced": true,
       "target_rms_db": -22.0
     },
@@ -62,7 +62,7 @@
       "channels": 2,
       "sha256": "7f0eaa30bccf35cc206f97c31ae52240a52572579f4e2f616e54d805e644b428",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades; progressive arrival RMS targets -23 to -19 dBFS, peak capped at 26000",
-      "qa": "PCM signal and duration checked; Godot playback verification pending",
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback",
       "loudness_balanced": true,
       "target_rms_db": -21.0
     },
@@ -83,7 +83,7 @@
       "channels": 2,
       "sha256": "a8cd6c11f6ee05dd17c53d41327bbbedc843ed27e9453596695c4e78affba2c9",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades; progressive arrival RMS targets -23 to -19 dBFS, peak capped at 26000",
-      "qa": "PCM signal and duration checked; Godot playback verification pending",
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback",
       "loudness_balanced": true,
       "target_rms_db": -20.0
     },
@@ -104,7 +104,7 @@
       "channels": 2,
       "sha256": "5b248ffb9a32f4c4ffcd0821af390003f153ee5290aaaa671855fdf840de8a74",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades; progressive arrival RMS targets -23 to -19 dBFS, peak capped at 26000",
-      "qa": "PCM signal and duration checked; Godot playback verification pending",
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback",
       "loudness_balanced": true,
       "target_rms_db": -19.0
     },
@@ -125,7 +125,7 @@
       "channels": 2,
       "sha256": "448d5df473a8c4fba1619487a9898eda5e425483b66905f8074754d21068bca1",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
-      "qa": "PCM signal and duration checked; Godot playback verification pending"
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback"
     },
     {
       "id": "sfx_orbital_complete",
@@ -144,7 +144,7 @@
       "channels": 2,
       "sha256": "288938ba4f25bb1fbabb368c0958c88d74c6f16738d61611a71b5777797580de",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
-      "qa": "PCM signal and duration checked; Godot playback verification pending"
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback"
     },
     {
       "id": "sfx_vessel_engine",
@@ -163,7 +163,7 @@
       "channels": 2,
       "sha256": "d40f05a5ced74300132aad7696af02483079d7d8f0f54c22861082d67ef17c8c",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
-      "qa": "PCM signal and duration checked; Godot playback verification pending"
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback"
     },
     {
       "id": "sfx_vessel_boost",
@@ -182,7 +182,7 @@
       "channels": 2,
       "sha256": "3a76047144fdff9e60c49976e6bd91c2f3fd1b5a3a717b8724c5ada84c3dd668",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
-      "qa": "PCM signal and duration checked; Godot playback verification pending"
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback"
     },
     {
       "id": "sfx_vessel_brake",
@@ -201,7 +201,7 @@
       "channels": 2,
       "sha256": "3136be728b0374ed7f781b609f047d0c4bb28c9359f58610698a53f38bf1ce77",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
-      "qa": "PCM signal and duration checked; Godot playback verification pending"
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback"
     },
     {
       "id": "sfx_stellar_warning",
@@ -220,7 +220,7 @@
       "channels": 2,
       "sha256": "defd2dd602367dc610952093fcb8967e93a898976cc5064835de0535a111a0a7",
       "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
-      "qa": "PCM signal and duration checked; Godot playback verification pending"
+      "qa": "Godot Forward+ runtime playback verified; scan completion and menu suppression checked; PCM peak <=26000; final timbral preference and long headphone sessions require player feedback"
     }
   ],
   "status": "integrated"

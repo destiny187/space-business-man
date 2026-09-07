@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-07 [우주 탐험 경험·영어 천체명·진입 사운드](production/34-space-experience.md): 5단계 적용과 사운드 제작·검증 기록.
+
 - [2티어 공통 제품·분야별 첫 개조](production/36-tier2-production-and-retrofits.md): 실제 생산·인수·장비/탐험복/로봇/설비/선박 강화와 신규 T2 복원 조건.
 
 - [테라포밍 생산 단계와 고급 제품](game/15-terraforming-production-progression.md): 초반 직접 제작 유지, 후반 정제·화학·합금·배양·코어 생산과 환경 처리 능력의 구현 전 설계.

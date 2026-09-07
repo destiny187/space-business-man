@@ -3,6 +3,7 @@ signal selected(ordinal: int)
 var journal: FrontierNavigationJournal
 var manifest: Dictionary={}
 var system_index:=0
+var current_system:=0
 var elapsed:=0.0
 var galaxy:=false
 var transit: Dictionary={}
@@ -28,17 +29,21 @@ func _draw() -> void:
 		draw_texture_rect(core_view.get_texture(),Rect2(center-Vector2(22,22),Vector2(44,44)),false)
 		for band in 5:draw_arc(center,22+band*21,0,TAU,80,Color("274152"),1,true)
 		var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)
-		var indices: Dictionary={0:true,system_index:true}
+		var indices: Dictionary={0:true,system_index:true,current_system:true}
+		var favorite_systems: Dictionary={}
 		for i in 200:indices[int(i*count/200)]=true
 		if journal!=null:
 			for key in journal.data.systems:indices[int(key)]=true
-			for key in journal.data.favorites:indices[FrontierUniverse.system_index(manifest,FrontierUniverse.ordinal_of(manifest,key))]=true
+			for key in journal.data.favorites:
+				var favorite_index:=FrontierUniverse.system_index(manifest,FrontierUniverse.ordinal_of(manifest,key))
+				indices[favorite_index]=true;favorite_systems[favorite_index]=true
 		for index in indices:
 			var sys:=FrontierUniverse.system(manifest,index)
 			var point:=center+Vector2(sys.map_position[0],sys.map_position[1])/float(manifest.settings.outer_radius)*105
 			draw_circle(point,4 if index==0 else 2.5,Color("72dfd1") if index==0 else [Color("9dcfca"),Color("81b9db"),Color("d9c379"),Color("e49468"),Color("e9778e")][int(sys.band)])
 			if journal!=null and journal.data.systems.has(str(index)):draw_arc(point,5,0,TAU,16,Color("94edcf"),1.5,true)
-			if index==system_index:draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),Color.WHITE,false,1)
+			if favorite_systems.has(index):draw_string(font,point+Vector2(4,-4),"★",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ffc180"))
+			if index==current_system:draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),Color.WHITE,false,1)
 			hits.append({"point":point,"ordinal":FrontierUniverse.showcase_ordinal(manifest,index)})
 		if not transit.is_empty():
 			var factor: float=105/float(manifest.settings.outer_radius)

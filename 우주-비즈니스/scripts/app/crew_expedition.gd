@@ -351,7 +351,7 @@ func _snapshot(value: Dictionary) -> void:
 	elif arrived and not on_surface:travel_status.text+="\n"+FrontierUniverse.landing_restriction(body)
 	elif nav.mode=="idle" and not on_surface:travel_status.text+="\n행성 주소를 선택해 출발하세요. 궤도도 또는 아래 천체에서 선택하세요"
 	lobby.hide();panel.show()
-	chart.manifest=session.manifest;chart.system_index=int(body.system_ordinal);chart.target=int(nav.target);chart.elapsed=float(nav.get("orbit_time",0));chart.transit=nav.get("transit",{}) if nav.mode=="jump" else {};chart.queue_redraw()
+	chart.manifest=session.manifest;chart.current_system=int(nav.system);chart.system_index=int(body.system_ordinal);chart.target=int(nav.target);chart.elapsed=float(nav.get("orbit_time",0));chart.transit=nav.get("transit",{}) if nav.mode=="jump" else {};chart.queue_redraw()
 	_refresh_system_candidates(int(body.system_ordinal))
 	_sync_surface_view()
 func _physics_process(delta: float) -> void:
