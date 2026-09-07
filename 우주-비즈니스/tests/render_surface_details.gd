@@ -52,7 +52,7 @@ func run() -> void:
 		camera.look_at_from_position(Vector3(-25,4.2,29),Vector3(-29,2,8))
 		var surface:=FrontierCrewSurfaceScene.new();root.add_child(surface);surface.configure(session,packet,viewer,camera)
 		FrontierInkStyle.attach(surface)
-		var deadline:=Time.get_ticks_msec()+12000
+		var deadline:=Time.get_ticks_msec()+25000
 		while Time.get_ticks_msec()<deadline:
 			await process_frame
 			if surface.terrain.completed_jobs>=60 and surface.surface_details.tiles.size()>=12:break
@@ -81,12 +81,16 @@ func run() -> void:
 			var at:=Vector3(-23,0,23);at.y=surface.terrain.field.height(at.x,at.z)
 			check(FrontierExpeditionBusiness.ground(surface.terrain.field,at.x,at.z,2).is_finite(),"facility footprint fits landing plain")
 			# Excavation invalidates cosmetic tiles; capture after their real rebuild.
-			var settle_deadline:=Time.get_ticks_msec()+6000
+			var settle_deadline:=Time.get_ticks_msec()+15000
 			while Time.get_ticks_msec()<settle_deadline:
 				await process_frame
 				if not details.dirty and details.tiles.size()>=12:break
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(folder+"/surface-"+id+".png")
+		if only_oxidized:
+			camera.look_at_from_position(Vector3(-32,19,42),Vector3(-6,2,-9))
+			await create_timer(.3).timeout;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../docs/production/media/desert-geology/overview.png"))
 		surface.queue_free();viewer.queue_free();await process_frame
 	results.checks=checks;results.failures=failures
 	var report_name: String="verification-oxidized.json" if only_oxidized else "verification.json"

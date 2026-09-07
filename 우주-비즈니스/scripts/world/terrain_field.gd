@@ -59,6 +59,10 @@ func height(x: float,z: float) -> float:
 		rough=lerpf(rough,level,plains)
 		inner=float(layout.landing_inner);outer=float(layout.landing_outer)
 	var base: float=2.0+rough*smoothstep(inner,outer,distance)
+	var geology: Dictionary=layout.get("surface_geology",{})
+	if int(geology.get("version",0))==1:
+		var masks:=FrontierSurfaceGeology.sample(x,z,FrontierSurfaceGeology.phase(traits))
+		base+=(masks.x*float(geology.shelf_height)-masks.y*float(geology.wash_depth))*smoothstep(40.0,65.0,distance)
 	if float(traits.get("water",0))>15 and float(traits.get("temperature",-100))>0:
 		var basin:=1.0
 		if int(layout.get("version",0))==2:

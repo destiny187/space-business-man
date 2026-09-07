@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "archetypes": {
     "oxidized": {
       "kind": "basalt",
@@ -24,7 +24,12 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "surface_geology": {
+          "version": 1,
+          "shelf_height": 0.32,
+          "wash_depth": 0.48
+        }
       }
     },
     "continental": {

@@ -132,3 +132,17 @@ Godot 4.7.2 Metal Forward+ 실제 창에서 9개 지표와 별도 36개 모델 �
 [Blender 비교 렌더](media/surface-details/blender-catalog.png) · [Godot INK 비교 렌더](media/surface-details/godot-catalog.png) · [사막 지표](media/surface-details/surface-oxidized.png) · [빙원 지표](media/surface-details/surface-fractured.png) · [화산 지표](media/surface-details/surface-volcanic.png) · [염원 지표](media/surface-details/surface-salt.png) · [측정·확인 기록](media/surface-details/verification.json).
 
 이번 범위는 작은 지질 장식과 표면 무늬·평지 생성이다. 제안에 있던 새 식생·큰 충돌 장애물·거대 자연 경관·분출 동작은 제작하지 않았다. 동적 분출 효과나 신규 음원도 추가하지 않았다. 기존 조작·장비·음원 경로를 유지했으나 사람이 채집→로봇 가동까지 완주한 검사, 다중 클라이언트·전체 회귀·성능 벤치마크는 실행하지 않았다.
+
+## 산화 사막의 지표 구역 연결 — 2026-09-07
+
+사용자는 자연물 추가 후에도 단색 바닥 위에 돌을 얹은 듯한 어색함을 지적했고, 산화 사막부터 지표 구역을 만들어 개선하는 방향을 승인했다. 이번에는 모델 수를 늘리지 않고 기존 Blender 자산을 사용한다.
+
+- `FrontierSurfaceGeology`의 미터 단위 구역 함수와 지면 셰이더가 같은 시드 위상·계산식을 사용한다. 밝은 모래 퇴적층, 붉은 바탕 흙, 어두운 노출 암반, 마른 유로가 돌 배치와 같은 구역을 따른다. 실제 유체·침식 시뮬레이션은 아니다.
+- 새 은하의 산화 사막은 노출 암반에 최대 0.32m의 낮은 턱, 유로에 최대 0.48m의 얕은 홈을 더한다. 원점 반경 40m까지 높이 보정을 억제하고 65m까지 전이해 착륙 평지와 시작 동굴을 보존한다. `planet_rules` v3의 선택적 `surface_geology` 설정으로 구분하며 저장된 v1/v2 지형에 이를 주입하지 않는다.
+- 돌은 암반 경계·유로에 더 모이고 모래 구역에는 작고 드물게 놓인다. 더 깊게 묻고 암반 구역에서 색을 낮춰 바닥과 이어지게 한다. 작은 돌은 52m, 군집은 72m까지 거리 페이드를 적용해 먼 검은 점무더기를 줄인다. 굵은 INK 윤곽의 공통 기준 자체를 낮추지는 않는다.
+- 전역에 이어지던 평행선을 제거하고 모래 구역에만 끊어지는 약한 바람결을 둔다. 암반은 작은 풍화 반점으로 표현한다. 단색 바닥의 단순 명도 변화에서 재질별 색면 변화로 바꿨다.
+- 다른 8개 착륙 계열에는 이번 사막용 구역·배치 규칙을 적용하지 않는다. 기존 저장에서는 표면 색과 장식 배치는 바뀌지만 지형 좌표는 유지된다. 얕은 홈·낮은 턱은 새 은하의 산화 사막에서 적용된다.
+
+Godot 4.7.2 / Metal Forward+ 실제 지표 장면에서 같은 시점과 높은 시점의 화면을 확인했다. 대표 사막 하나의 지형·장식 재생성·건축 바닥·건물 아래 제외와 철거 복원·굴착 후 지지면 제거 확인을 수행했다. 앞선 측정과 같은 표본의 평지 비율은 53.2%에서 50.9%로 바뀌었다. 행성 전체나 모든 시드의 보장 수치가 아니다. 전체 회귀·다중 클라이언트·신규 음원 제작은 수행하지 않았다.
+
+[이전 화면](media/desert-geology/before.png) · [개선 지표](media/surface-details/surface-oxidized.png) · [지표 구역을 내려다본 실제 렌더](media/desert-geology/overview.png) · [관련 확인 기록](media/surface-details/verification-oxidized.json).

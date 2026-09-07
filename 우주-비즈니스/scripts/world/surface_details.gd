@@ -74,7 +74,16 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 		var yaw: float=rng.randf()*TAU
 		var roll: float=rng.randf()
 		var patch: float=smoothstep(-.35,.35,cluster.get_noise_2d(p.x,p.z))
-		if roll>(.10+patch*patch*.85)*float(family.density):continue
+		var density: float=(.10+patch*patch*.85)*float(family.density)
+		var masks:=Vector3.ZERO
+		if family.get("geology_scatter",false):
+			masks=FrontierSurfaceGeology.sample(p.x,p.z,FrontierSurfaceGeology.phase(body.traits))
+			var edge: float=4.0*masks.x*(1.0-masks.x)
+			density=(.015+.32*edge+.22*masks.y+.12*masks.x)*(.35+patch*.65)
+			# Sand remains open; heavier fragments collect beside the exposed bedrock.
+			if masks.z>.65:variant=0;scale_value*=.6
+			elif masks.x>.65 and variant==3:scale_value*=1.5
+		if roll>density:continue
 		p.y=terrain.field.height(p.x,p.z)
 		var traits: Dictionary=terrain.field.traits
 		if float(traits.get("water",0))>15 and float(traits.get("temperature",-100))>0 and p.y<float(settings.water_height)+.15:continue
@@ -87,8 +96,10 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 		var up:=terrain.field.normal(p)
 		if up.y<float(settings.minimum_normal_y):continue
 		var basis:=Basis(Quaternion(Vector3.UP,up))*Basis(Vector3.UP,yaw)
-		p-=up*.035*scale_value
-		result.append({"id":"%d:%d:%d"%[key.x,key.y,index],"variant":variant,"transform":Transform3D(basis.scaled(Vector3.ONE*scale_value),p)})
+		p-=up*((.045+masks.z*.035) if family.get("geology_scatter",false) else .035)*scale_value
+		var tint:=Color.WHITE
+		if family.get("geology_scatter",false):tint=Color(1.0,1.0,1.0).lerp(Color(.62,.66,.7),masks.x*.7)
+		result.append({"id":"%d:%d:%d"%[key.x,key.y,index],"variant":variant,"tint":tint,"transform":Transform3D(basis.scaled(Vector3.ONE*scale_value),p)})
 	return result
 
 func _build(key: Vector2i) -> void:
@@ -96,13 +107,15 @@ func _build(key: Vector2i) -> void:
 	var rows:=candidates(key)
 	for variant in meshes.size():
 		var transforms: Array[Transform3D]=[]
+		var colors: Array[Color]=[]
 		for row in rows:
-			if int(row.variant)==variant:transforms.append(row.transform)
+			if int(row.variant)==variant:transforms.append(row.transform);colors.append(row.tint)
 		if transforms.is_empty():continue
-		var mm:=MultiMesh.new();mm.transform_format=MultiMesh.TRANSFORM_3D;mm.mesh=meshes[variant];mm.instance_count=transforms.size()
-		for i in transforms.size():mm.set_instance_transform(i,transforms[i])
+		var mm:=MultiMesh.new();mm.transform_format=MultiMesh.TRANSFORM_3D;mm.use_colors=true;mm.mesh=meshes[variant];mm.instance_count=transforms.size()
+		for i in transforms.size():mm.set_instance_transform(i,transforms[i]);mm.set_instance_color(i,colors[i])
 		var visual:=MultiMeshInstance3D.new();visual.multimesh=mm
 		visual.visibility_range_end=float(settings.visible_distance);visual.visibility_range_end_margin=12
+		if body.traits.id=="oxidized":visual.visibility_range_end=52 if variant<2 else 72;visual.visibility_range_end_margin=18
 		visual.visibility_range_fade_mode=GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
 		root.add_child(visual)
 	tiles[key]={"node":root,"count":rows.size()};instance_total+=rows.size()
