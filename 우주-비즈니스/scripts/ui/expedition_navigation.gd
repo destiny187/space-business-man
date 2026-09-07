@@ -25,6 +25,7 @@ var pending_sequence: int=-1
 var pending_revision: int=-1
 var closing:=false
 var selected_preview: int=-1
+var was_transiting:=false
 var preview: SubViewport
 var preview_root: Node3D
 var preview_camera: Camera3D
@@ -136,6 +137,10 @@ func _layout() -> void:
 func refresh(value: Dictionary) -> void:
 	_layout()
 	var nav: Dictionary=value.crew.navigation
+	if nav.mode=="jump" and not was_transiting:
+		app.close_menus();app.outside=true;app.exterior_view.show();app.if_flight_view()
+		if app.space_view!=null:app.space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+	was_transiting=nav.mode=="jump"
 	for map in [app.chart,mini]:
 		map.manifest=app.session.manifest;map.current_system=int(nav.system);map.elapsed=float(nav.get("orbit_time",0));map.ship_position=FrontierCrewWorld.vector(nav.position);map.ship_direction=FrontierCrewWorld.vector(nav.direction);map.journal=app.navigation_journal
 		map.transit=nav.get("transit",{}) if nav.mode=="jump" else {};map.queue_redraw()
@@ -228,7 +233,9 @@ func _process(delta: float) -> void:
 	if active and pending_route>=0 and pending_revision>=0 and int(app.session.latest.crew.revision)>=pending_revision:
 		var destination:=pending_route
 		pending_route=-1;pending_sequence=-1;pending_revision=-1
-		if int(app.session.latest.crew.navigation.target)==destination:app.travel_action("depart");app.close_menus()
+		if int(app.session.latest.crew.navigation.target)==destination:
+			if FrontierUniverse.system_index(app.session.manifest,destination)==int(app.session.latest.crew.navigation.system):app.close_menus()
+			app.travel_action("depart")
 	mini.visible=active and app.surface_world==null and not app.feedback.blocked() and not app.onboarding.letter.visible
 	preview.render_target_update_mode=SubViewport.UPDATE_ALWAYS if app.navigation_frame.is_visible_in_tree() and active else SubViewport.UPDATE_DISABLED
 	context.hide();context_kind=""

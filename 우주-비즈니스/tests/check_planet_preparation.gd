@@ -17,8 +17,15 @@ func run() -> void:
   if origin.distance_to(FrontierUniverse.map_position(manifest,index))<7.5:destination=index;break
  check(destination>=0,"nearby destination exists")
  if destination<0:quit(1);return
+ app.chart.galaxy=true;app.open_menu(app.navigation_frame)
  app.navigation_ui.start_route(FrontierUniverse.first_ordinal(manifest,destination))
  await create_timer(2).timeout
+ check(not app.navigation_frame.visible and app.outside and app.exterior_view.visible,"map departure shows exterior animation")
+ check(app.space_view.render_target_update_mode==SubViewport.UPDATE_ALWAYS,"flight renderer resumed")
+ check(app.session.latest.crew.navigation.mode=="jump" and float(app.session.latest.crew.navigation.transit.progress)<1,"transit has not teleported to completion")
+ await RenderingServer.frame_post_draw
+ var frames:=ProjectSettings.globalize_path("res://../test-results/navigation-cache");DirAccess.make_dir_recursive_absolute(frames)
+ root.get_texture().get_image().save_png(frames+"/flight-transition.png")
  check(app.flight.prepared_system==destination,"destination preparation active during transit")
  check(app.flight.prepared_planets.size()==FrontierUniverse.body_count(manifest,destination),"all destination planets prepared before switch")
  var identifiers: Dictionary={}
