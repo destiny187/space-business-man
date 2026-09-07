@@ -114,3 +114,7 @@ audio/
 ## 현재 원정의 기존 음원 복구
 
 기존 ElevenLabs 16종의 원본/편집본은 보존하고 `FrontierExpeditionFeedback`에서 현재 원정의 실제 작업·로봇/시설 상태와 연결한다. 새 음원을 생성한 작업은 아니다. 재생 조건·검증·미생성 범위는 [기본 플레이 품질 복구](19-play-quality-restoration.md)를 따른다.
+
+## 2026-09-07 우주 탐험 사운드 보완
+
+깊이별 항성계 진입 5종·스캔 진행/완료·엔진·고속 전환·감속·항성 경고 등 ElevenLabs 11종을 추가했다. 프롬프트·신호 편집·게임 연결·검증 범위는 [우주 탐험 경험](34-space-experience.md#추가-요청--elevenlabs-사운드), 원본/편집본 기록은 [생성 매니페스트](../../audio/manifests/space-experience.json)를 따른다.

@@ -258,6 +258,7 @@ func _setup_flight() -> void:
 	space_view=SubViewport.new();space_view.size=Vector2i(1280,800);space_view.own_world_3d=true;space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(space_view)
 	flight=FrontierCrewFlightView.new();flight.state={"manifest":session.manifest};space_view.add_child(flight)
 	navigation_journal=FrontierNavigationJournal.new();navigation_journal.configure(session.manifest,session.world_id,session.latest.self_id)
+	flight.soundscape.bind_session(session)
 	navigation_records.journal=navigation_journal;chart.journal=navigation_journal
 	flight.scanned=navigation_journal.scan_flags()
 	flight.planet_scanned.connect(func(ordinal: int):navigation_journal.scanned(ordinal);_refresh_scan_detail();chart.queue_redraw())
@@ -336,8 +337,8 @@ func _snapshot(value: Dictionary) -> void:
 	var body:=FrontierUniverse.body(session.manifest,int(nav.target))
 	var arrived: bool=nav.mode=="idle" and value.location==body.id and FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewNavigation.center(int(nav.target),session.manifest,float(nav.get("orbit_time",0))))-FrontierUniverse.navigation_radius(body)<=float(session.manifest.settings.flight.arrival_clearance)+3
 	panel.get_node("Land").disabled=not arrived or value.self_id!=value.crew.pilot_id or not FrontierUniverse.landable(body)
-	travel_status.text="%s · "+FrontierUniverse.kind_label(body)+(" · 착륙 가능" if FrontierUniverse.landable(body) else " · 착륙 불가")+"\n행성 %07d · %s\n속도 %.0f m/s"
-	travel_status.text=travel_status.text % [body.name,int(nav.target)+1,FrontierCrewNavigation.phase(nav),float(nav.speed)]
+	travel_status.text="%s · "+FrontierUniverse.kind_label(body)+(" · 착륙 가능" if FrontierUniverse.landable(body) else " · 착륙 불가")+"\n%s\n속도 %.0f m/s"
+	travel_status.text=travel_status.text % [body.name,FrontierCrewNavigation.phase(nav),float(nav.speed)]
 	if nav.mode=="jump":travel_status.text=travel_status.text.replace("\n속도 %.0f m/s"%float(nav.speed),"");travel_status.text+="\n항로 %.0f%% · 도착까지 %.1f초 · 무료" % [float(nav.get("transit",{}).get("progress",0))*100,float(nav.jump_left)]
 	if nav.get("boundary",false):travel_status.text+="\n항성계 외곽 · 다른 항성계는 성간 항해로 이동"
 	travel_status.text+="\nC 외부 시점 · W/S 전후 · 마우스 선회 · 놓으면 제동"
@@ -405,7 +406,9 @@ func _process(delta: float) -> void:
 	if session!=null and session.latest.get("phase")=="playing":
 		status.get_parent().visible=not outside
 		navigation_toggle.get_parent().visible=not outside
-		if flight!=null:flight.scan_enabled=outside and _mouse_look_allowed() and not cursor_released
+		if flight!=null:
+			flight.scan_enabled=outside and _mouse_look_allowed() and not cursor_released
+			flight.presentation_blocked=feedback.blocked() or (onboarding!=null and onboarding.letter.visible) or surface_world!=null or not get_window().has_focus()
 	if session==null or session.latest.is_empty() or not session.active or session.latest.get("phase")!="playing":return
 	var members: Dictionary=session.latest.crew.members
 	for id in actors:
@@ -728,7 +731,8 @@ func _refresh_system_candidates(index: int) -> void:
 	for id in system_value.body_ids:
 		var body:=FrontierUniverse.body_from_id(session.manifest,id)
 		var ordinal: int=body.ordinal
-		_button(candidates,("● " if FrontierUniverse.landable(body) else "◎ ")+body.name+" · "+FrontierUniverse.kind_label(body),func():selected_ordinal=ordinal;select_destination())
+		var candidate_button:=_button(candidates,("● " if FrontierUniverse.landable(body) else "◎ ")+body.name+" · "+FrontierUniverse.kind_label(body),func():selected_ordinal=ordinal;select_destination())
+		candidate_button.clip_text=true;candidate_button.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS;candidate_button.tooltip_text=body.name+" · "+FrontierUniverse.kind_label(body)
 
 static func selected_world_path(solo: bool) -> String:
 	var selection:=ConfigFile.new();selection.load("user://world_selection.cfg")

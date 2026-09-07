@@ -6,6 +6,7 @@ import json
 import re
 import shutil
 import sys
+import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,6 +50,7 @@ files = {str(p.relative_to(stage)).replace("\\", "/"): {
 } for p in sorted(stage.rglob("*")) if p.is_file() and p.name != "build-info.json"}
 info = {"product": "우주 비즈니스맨", "version": version, "engine": "Godot 4.7.2",
         "target": "Windows x86_64", "renderer": "Forward+ / Direct3D 12 (Vulkan launcher included)",
+        "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "built_at": datetime.now(timezone.utc).isoformat(), "native_windows_tested": False, "files": files}
 (stage / "build-info.json").write_text(json.dumps(info, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 archive = output / (name + ".zip")

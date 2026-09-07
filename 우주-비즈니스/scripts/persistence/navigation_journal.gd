@@ -47,7 +47,8 @@ func observe(snapshot: Dictionary) -> void:
 	var system_key:=str(int(nav.system))
 	if not data.systems.has(system_key):data.systems[system_key]=true;changed=true
 	var ordinal:=FrontierUniverse.ordinal_of(manifest,snapshot.location)
-	var near: bool=FrontierFlightTelemetry.read(manifest,nav).get("eta",-1)==0 and int(nav.target)==ordinal
+	var near: bool=FrontierFlightTelemetry.read(manifest,nav).get("eta",-1)==0
+	if near:ordinal=int(nav.target)
 	if not snapshot.crew.get("landing",{}).is_empty() or (nav.mode=="idle" and near):changed=mark(ordinal,"visited") or changed
 	var site: Dictionary=snapshot.get("navigation_site",{})
 	if not site.is_empty() and not str(site.state).is_empty():changed=mark(int(nav.target),"site",site.state) or changed

@@ -2,6 +2,7 @@ extends Control
 var nav: Dictionary={}
 var telemetry: Dictionary={}
 var guidance: Array=[]
+var presentation_blocked:=false
 var arrival_name: String=""
 var arrival_detail: String=""
 var arrival_age: float=100.0
@@ -12,7 +13,9 @@ func _ready() -> void:
 	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 func _process(delta: float) -> void:
-	clock+=delta;arrival_age+=delta;queue_redraw()
+	clock+=delta
+	if not presentation_blocked:arrival_age+=delta
+	queue_redraw()
 func _draw() -> void:
 	if nav.is_empty():return
 	var font:=get_theme_default_font()
@@ -110,7 +113,7 @@ func announce(system_name_value: String,detail: String) -> void:
 	arrival_name=system_name_value;arrival_detail=detail;arrival_age=0.0
 func _draw_arrival(font: Font) -> void:
 	var duration: float=FrontierCelestialNames.rules().arrival_seconds
-	if arrival_age>=duration or arrival_name.is_empty():return
+	if presentation_blocked or arrival_age>=duration or arrival_name.is_empty():return
 	var opacity: float=smoothstep(0.0,1.1,arrival_age)*(1.0-smoothstep(duration-1.8,duration,arrival_age))
 	var band: float=minf(110,size.y*.14)*opacity
 	draw_rect(Rect2(0,0,size.x,band),Color(.015,.027,.045,.75*opacity))
