@@ -143,6 +143,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	var at_ship: bool=position.distance_to(point(FrontierCrewSurface.config().ship_position))<=float(FrontierCrewSurface.config().boarding_distance)
 	if not world.has("business"):world.business=create()
 	var ledger: Dictionary=world.business
+	if kind=="business_efficiency":return FrontierProgressionResearch.apply(world,actor,args)
 	if kind.begins_with("business_research_"):return FrontierFieldEngineering.apply(world,actor,kind,args)
 	if kind=="business_register":
 		var restriction:=FrontierUniverse.landing_restriction(FrontierUniverse.body_from_id(world.manifest,world.location))
@@ -311,6 +312,7 @@ static func public_view(world: Dictionary,actor: String) -> Dictionary:
 	if not world.has("business"):return {}
 	var ledger: Dictionary=world.business
 	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","hangar_capacity":int(FrontierVesselRefit.stats(world).hangar),"active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":{},"bags":{},"crates":{}}
+	view.efficiency=int(ledger.get("efficiency",0))
 	# Copy render state directly; do not first duplicate thousands of private waypoints.
 	for id in ledger.hangar:view.hangar[id]=visible_robot(ledger.hangar[id])
 	if ledger.sites.has(world.location):
@@ -358,6 +360,7 @@ static func valid_robot(robot: Variant,id: String) -> bool:
 	return true
 static func validate(value: Variant,manifest: Dictionary) -> String:
 	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature():return "사업 규칙 버전이 맞지 않습니다. 저장 원본을 보존하세요."
+	if not integer(value.get("efficiency",0),0,int(FrontierProgressionResearch.config().maximum_level)):return "공동 효율 연구 단계 오류"
 	if not integer(value.get("credits"),0,1000000000) or not integer(value.get("counter"),0,1000000000):return "사업 자금·순번 오류"
 	if not value.get("technologies") is Array or not value.get("active") is String:return "사업 기술·활성 계약 오류"
 	var techs: Dictionary={}

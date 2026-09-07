@@ -374,7 +374,7 @@ func _physics_process(delta: float) -> void:
 			if FrontierCrewSurface.landed(session.authority.world):
 				if surface_world==null or not surface_world.ready_at(actor.position):
 					actor.velocity=Vector3.ZERO;motion.buffer=0.0;motion.takeoff=0.0;motion.jump_request=int(input.get("jump_request",0));continue
-				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier;gravity=float(FrontierCrewSurface.config().gravity)
+				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.personal(member,"logistics"));gravity=float(FrontierCrewSurface.config().gravity)
 				var next:=actor.position+Vector3(direction.x,0,direction.y)*speed*delta
 				if not surface_world.ready_at(next):direction=Vector2.ZERO;enabled=false
 				if actor.position.y<float(surface_world.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(surface_world.config.region_half_extent):
@@ -409,6 +409,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	var on_surface: bool=member.area=="surface"
 	var speed:=float(FrontierCrewSurface.config().movement_speed) if on_surface else float(FrontierCrewWorld.config().movement_speed)
 	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
+	if on_surface:speed*=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.personal(member,"logistics"))
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
 	var frame: Dictionary={"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
 	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled)

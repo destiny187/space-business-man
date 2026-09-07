@@ -23,9 +23,14 @@ static func state(member: Dictionary) -> Dictionary:
 static func active(member: Dictionary) -> Dictionary:
 	var data:=state(member)
 	var id: String=data.slots[int(data.selected)]
-	return config().items.get(data.items.get(id,""),{})
+	var tool: Dictionary=config().items.get(data.items.get(id,""),{})
+	var level:=FrontierProgressionResearch.personal(member,"mining")
+	if level>0 and tool.get("kind")=="miner":
+		tool=tool.duplicate(true);tool.interval=float(tool.interval)/FrontierProgressionResearch.multiplier(level)
+	return tool
 static func validate(value: Variant) -> String:
 	if not value is Dictionary:return "장비 기록 형식"
+	if not FrontierProgressionResearch.valid_personal(value.get("research",{})):return "개인 효율 연구 단계"
 	if not value.get("items") is Dictionary or value.items.size()>FrontierItemInventory.storage_slots():return "장비 한도"
 	if not FrontierExpeditionBusiness.integer(value.get("inventory_slots",FrontierItemInventory.config().slots),int(FrontierItemInventory.config().slots),FrontierItemInventory.storage_slots()):return "아이템 수납 용량"
 	if not value.get("slots") is Array or value.slots.size()!=int(config().slots):return "장착 슬롯"

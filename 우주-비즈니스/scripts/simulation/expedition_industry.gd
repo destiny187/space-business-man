@@ -5,12 +5,13 @@ static func tick(world: Dictionary,dt: float) -> void:
 	if site.is_empty() or site.state!="active":return
 	site.time=minf(10000000,site.time+dt)
 	power(world,site)
+	var efficiency:=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world))
 	var ledger: Dictionary=world.business
 	for id in site.jobs.keys():
 		var job: Dictionary=site.jobs[id]
 		var factory: Dictionary=site.buildings[job.factory_id]
 		if not factory.active:continue
-		job.progress=minf(float(job.seconds),float(job.progress)+dt*FrontierProductionTier2.factor(factory))
+		job.progress=minf(float(job.seconds),float(job.progress)+dt*efficiency*FrontierProductionTier2.factor(factory))
 		if job.progress<float(job.seconds):continue
 		var spawn:=Vector3.INF
 		for i in 12:
@@ -22,7 +23,7 @@ static func tick(world: Dictionary,dt: float) -> void:
 		site.robots[id]={"id":id,"grade":job.grade,"position":FrontierExpeditionBusiness.array(spawn),"battery":100.0,"cargo":FrontierExpeditionBusiness.inventory(),"phase":"idle","target":"","path":[],"status":"작업 배정 대기","work":0.0,"charging":false}
 		site.jobs.erase(id)
 	for robot in site.robots.values():_robot(world,site,robot,dt)
-	FrontierProductionTier2.tick(site,dt)
+	FrontierProductionTier2.tick(site,dt*efficiency)
 	FrontierFieldEngineering.tick(world,dt)
 	environment(world,site,dt)
 	if not site.production_paid and int(site.delivered)>=48 and not site.robots.is_empty():
@@ -119,11 +120,11 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	if not goal.is_finite():r.status="광맥의 토대가 무너졌습니다";return
 	r.status="광맥으로 이동"
 	if not _move(world,r,goal,dt):return
-	r.status="채광 중";r.work+=dt*float(FrontierCatalog.entry("grades",r.grade).multiplier)
+	r.status="채광 중";r.work+=dt*float(FrontierCatalog.entry("grades",r.grade).multiplier)*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world))
 	if r.work<1:return
-	r.work=maxf(0,r.work-1)
-	var amount:=mini(int(site.remaining[r.target]),mini((int(FrontierProductionTier2.config().robot_upgrade.mine_amount) if int(r.get("tier",1))==2 else int(cfg.robot_mine_amount)),FrontierProductionTier2.robot_capacity(r)-FrontierExpeditionBusiness.total(r.cargo)))
-	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work))
+	var cycles:=floori(r.work);r.work-=cycles
+	var amount:=mini(int(site.remaining[r.target]),mini((int(FrontierProductionTier2.config().robot_upgrade.mine_amount) if int(r.get("tier",1))==2 else int(cfg.robot_mine_amount))*cycles,FrontierProductionTier2.robot_capacity(r)-FrontierExpeditionBusiness.total(r.cargo)))
+	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work)*cycles)
 	if site.remaining[r.target]<=0:r.manual_target="";r.target=""
 	if FrontierExpeditionBusiness.total(r.cargo)>=FrontierProductionTier2.robot_capacity(r) or r.target.is_empty():r.phase="return";r.path=[]
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
@@ -132,7 +133,7 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	for b in site.buildings.values():
 		if not b.active:continue
 		var before: Dictionary={"environment":e.duplicate(),"restoration":site.get("restoration2",{}).duplicate(),"work":b.work,"treatment":b.get("treatment_work",0)}
-		_process_facility(world,site,b,dt)
+		_process_facility(world,site,b,dt*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world)))
 		b.working=before.environment!=e or before.restoration!=site.get("restoration2",{}) or float(before.work)!=float(b.work) or float(before.treatment)!=float(b.get("treatment_work",0))
 		if b.working and "목표" in b.status:b.status="보조 처리 중"
 		elif b.working and "필요" in b.status:b.status="부분 가동 · "+b.status
