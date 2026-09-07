@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-07",
+  "engine": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "mode": "single local window, temporary save; test fixture moves ship to permitted orbit before normal landing request",
+  "result": "passed",
+  "checks": [
+    "accepted landing starts presentation",
+    "approach/loading/descent/touchdown/handover",
+    "local spawn collision ready before handover",
+    "main camera restored",
+    "movement restored",
+    "landed save resumes without repeating entry"
+  ],
+  "engine_errors": 0,
+  "audio": "ElevenLabs three dedicated streams connected to actual arrival; 48kHz stereo, nonzero PCM, peak limited; subjective sound preference not automatically verified",
+  "not_run": [
+    "multiple clients",
+    "slow remote peer convergence",
+    "Windows",
+    "full gameplay regression"
+  ]
+}

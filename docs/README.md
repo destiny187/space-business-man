@@ -105,3 +105,5 @@
 - [항성계 구성과 진입 풍경](production/32-system-diversity.md): 가변 행성 수·궤도 간격·소행성대·위성·고리와 저장 호환.
 
 - [항성 외형 계열과 궤도선 제거](production/33-stellar-appearance.md): 표면·코로나·홍염의 네 계열과 실제 공전 유지.
+
+- [행성 진입·하강·착륙 연출](production/35-planet-arrival.md): 호스트 승인 후 접근·로딩 전환·지표 하강·조작 인계와 ElevenLabs 전용 음원.

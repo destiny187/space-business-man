@@ -1,5 +1,6 @@
 class_name FrontierCrewExpedition
 extends Node3D
+var arrival: Node
 var onboarding: FrontierFirstDeparture
 var waiting_screen: ColorRect
 var waiting_panel: VBoxContainer
@@ -96,6 +97,7 @@ func _ready() -> void:
 		else:status.value="원정 기록을 저장했습니다.")
 	_build_cabin();_build_ui();cabin_root.hide()
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
+	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
 	for frame in [navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,waiting_screen,onboarding.letter]:
 		frame.visibility_changed.connect(func():
@@ -309,6 +311,7 @@ func _snapshot(value: Dictionary) -> void:
 	selected_ordinal=int(nav.target)
 	var on_surface: bool=not value.crew.get("landing",{}).is_empty()
 	if on_surface!=surface_transition:
+		if on_surface and destination_initialized:arrival.begin()
 		surface_transition=on_surface;navigation_frame.hide();research_frame.hide();shipyard_panel.hide()
 	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
 	help_text.text="WASD 이동 · 마우스 시선 · 클릭 장비 사용 · 1–5 전환 · I 아이템 · E 스캔" if on_surface else "WASD 이동 · 마우스 시선 · C 외부 시점 · Tab 항해"
@@ -375,6 +378,7 @@ func _physics_process(delta: float) -> void:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
+			if arrival.active:direction=Vector2.ZERO
 			var member: Dictionary=session.authority.world.crew.members[id]
 			var wants_sprint: bool=session.authority.inputs.get(peer,{}).get("sprinting",false) and direction.length_squared()>0
 			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1)
@@ -397,6 +401,7 @@ func _physics_process(delta: float) -> void:
 			session.authority.update_position(peer,actor.position)
 func _process(delta: float) -> void:
 	_sync_mouse_capture()
+	if arrival!=null and arrival.active and not session.active:arrival.cancel()
 	if session!=null and session.latest.get("phase")=="playing":
 		status.get_parent().visible=not outside
 		navigation_toggle.get_parent().visible=not outside
@@ -412,13 +417,15 @@ func _process(delta: float) -> void:
 		for limb in visual.limbs:
 			if visual.limbs[limb]!=null:visual.limbs[limb].rotation.x=sin(float(visual.phase))*.45*(1 if limb in ["Anim_Arm_L","Anim_Leg_R"] else -1) if distance>.0005 else lerpf(visual.limbs[limb].rotation.x,0,minf(delta*10,1))
 		var own: bool=id==session.latest.self_id
-		visual.model.visible=not own;visual.label.visible=not own
+		visual.model.visible=not own and not arrival.active;visual.label.visible=not own and not arrival.active
 	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.72,0)
 	if test_mode and test_camera_position!=Vector3.ZERO:camera.position=test_camera_position
 	camera.rotation=Vector3(pitch,yaw,0)
 	_update_surface_hud()
 	_update_business_placement()
+	arrival.tick(delta)
 func _input(event: InputEvent) -> void:
+	if arrival!=null and arrival.active:return
 	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
 	if event is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and _mouse_look_allowed():
 		var preferences:=FrontierClientSettings.ensure(get_tree())
@@ -429,6 +436,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_TAB and not get_viewport().gui_get_focus_owner() is LineEdit:
 		toggle_navigation();get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
+	if arrival!=null and arrival.active:return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and surface_world==null and _mouse_look_allowed() and not cursor_released and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and session.latest.get("self_id","")==session.latest.get("crew",{}).get("pilot_id",""):
 		var scale_factor: float=maxf(exterior_view.size.x/space_view.size.x,exterior_view.size.y/space_view.size.y)
 		var pointer: Vector2=exterior_view.global_position+exterior_view.size*.5 if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED else event.position
@@ -539,6 +547,8 @@ func _sync_surface_view() -> void:
 	if cabin_root.get_parent()!=null:remove_child(cabin_root)
 	outside=false;exterior_view.hide()
 	if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
+	if arrival.active and arrival.phase=="approach":
+		outside=true;exterior_view.show();space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
 	reticle.show()
 	if session.surface.is_empty() or session.surface.body_id!=landing.body_id or int(session.surface.epoch)!=int(landing.epoch):surface_status.value="호스트의 지표 기록을 수신 중입니다.";return
 	if surface_world!=null and (surface_world.body.id!=landing.body_id or surface_world.epoch!=int(landing.epoch)):remove_child(surface_world);surface_world.queue_free();surface_world=null

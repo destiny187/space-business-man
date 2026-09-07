@@ -1,0 +1,58 @@
+{
+  "provider": "ElevenLabs web Sound Effects",
+  "date": "2026-09-07",
+  "page": "https://elevenlabs.io/app/sound-effects",
+  "generation_settings": {
+    "duration_seconds": 6,
+    "prompt_influence": 0.3,
+    "selected_variation": 1,
+    "download": "WAV 48kHz"
+  },
+  "assets": [
+    {
+      "id": "sfx_atmosphere_entry",
+      "prompt": "A small exploration spacecraft entering an alien atmosphere, six seconds. Starts with a restrained deep engine rumble, builds into rushing turbulent air and a warm plasma crackle around the hull, then softens smoothly. Cinematic science fiction game sound, no explosion, no alarm, no music, no speech.",
+      "loop_requested": false,
+      "source": "audio/source/elevenlabs/sfx_atmosphere_entry.wav",
+      "game": "우주-비즈니스/assets/audio/sfx_atmosphere_entry.wav",
+      "download_name": "A_small_exploration__#1-1788756969709.wav",
+      "source_sha256": "28730b0da61ead7f09f7c79f99314c14bf15ba48c2940794ccc5d29857135804",
+      "game_sha256": "6b83bdf6a1542841e8e9e0aaccfb0116943666d311c7e5cb6b29b69f66c4f035",
+      "seconds": 6.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "peak": 0.749969482421875,
+      "processing": "8ms attack/150ms tail fade; peak cap -2.5dBFS"
+    },
+    {
+      "id": "sfx_landing_thrusters",
+      "prompt": "Steady downward landing thrusters of a small industrial exploration spaceship, six seconds of smooth continuous low turbine roar with soft pressurized air and restrained hull vibration. Even sustained texture for a seamless loop, close exterior perspective, no impacts, no startup or shutdown, no voices, no music.",
+      "loop_requested": true,
+      "source": "audio/source/elevenlabs/sfx_landing_thrusters.wav",
+      "game": "우주-비즈니스/assets/audio/sfx_landing_thrusters.wav",
+      "download_name": "Steady_downward_land_#1-1788757049332.wav",
+      "source_sha256": "459b29fcb02b05e3f06a491888e556a48e3fd251a314579add911c9a2c62801c",
+      "game_sha256": "c57d4bf83b4ea6f7a221c4baa30cb78ebfc23ad3444f092fcf58e08bf70a164c",
+      "seconds": 5.95,
+      "channels": 2,
+      "sample_rate": 48000,
+      "peak": 0.749969482421875,
+      "processing": "50ms circular crossfade; peak cap -2.5dBFS"
+    },
+    {
+      "id": "sfx_landing_touchdown",
+      "prompt": "A single controlled touchdown of a compact exploration spacecraft on rocky soil. Immediate deep padded landing-gear thud and short gravel crunch, a quick hydraulic settling hiss, then a brief turbine spin-down fading into silence. About two seconds of action with quiet tail. Solid and reassuring, no crash, no explosion, no music, no voices.",
+      "loop_requested": false,
+      "source": "audio/source/elevenlabs/sfx_landing_touchdown.wav",
+      "game": "우주-비즈니스/assets/audio/sfx_landing_touchdown.wav",
+      "download_name": "A_single_controlled__#1-1788757464577.wav",
+      "source_sha256": "08c6250723567991b86f9786eb3d88e9047bcbd47ed5b1a9b58fc9d9a2671e55",
+      "game_sha256": "6043d5b5c4134e995e5ea35fba03aa7aeda1f2235144b0b942e219e1ff5bff23",
+      "seconds": 6.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "peak": 0.749969482421875,
+      "processing": "8ms attack/150ms tail fade; peak cap -2.5dBFS"
+    }
+  ]
+}

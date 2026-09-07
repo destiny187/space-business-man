@@ -1,5 +1,6 @@
 class_name FrontierCrewSurfaceScene
 extends Node3D
+var landing_ship: Node3D
 var session: FrontierCrewSession
 var viewer: Node3D
 var terrain: FrontierTerrainStreamer
@@ -40,6 +41,13 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)
 	distant=FrontierDistantTerrain.new();add_child(distant)
 	var ship: Node3D=load("res://assets/models/ships/kestrel.glb").instantiate();ship.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position);FrontierInkStyle.apply(ship,material_cache);add_child(ship)
+	# Seat the existing Blender hull on the landing plateau, rather than leaving it at a fixed hover height.
+	var bottom:=0.0
+	for mesh in ship.find_children("*","MeshInstance3D",true,false):
+		var bounds: AABB=(ship.global_transform.affine_inverse()*mesh.global_transform)*mesh.get_aabb()
+		bottom=minf(bottom,bounds.position.y)
+	ship.position.y=terrain.field.height(ship.position.x,ship.position.z)-bottom
+	landing_ship=ship
 	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout(session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
 	lamp=SpotLight3D.new();lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
