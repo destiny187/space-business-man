@@ -1,6 +1,7 @@
 extends Control
 var nav: Dictionary={}
 var telemetry: Dictionary={}
+var guidance: Array=[]
 var arrival_name: String=""
 var arrival_detail: String=""
 var arrival_age: float=100.0
@@ -45,6 +46,7 @@ func _draw() -> void:
 		draw_string(font,origin+Vector2(0,27),"%.0f%% · %.1f초 · 에너지 자동 공급" % [p*100,float(nav.jump_left)],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color(.7,.83,.9))
 	else:
 		_draw_motion(font,center)
+		_draw_guidance(font)
 		draw_arc(center,5,0,TAU,24,Color(.7,.95,1,.8),1.5,true)
 		_draw_scan(font,center)
 		if nav.get("boundary",false):draw_string(font,Vector2(24,size.y-72),"항성계 외곽 — 항법도에서 성간 항해를 설정하세요",HORIZONTAL_ALIGNMENT_LEFT,-1,18,Color(1,.76,.4))
@@ -139,3 +141,25 @@ func _draw_motion(font: Font,center: Vector2) -> void:
 		var caption: String=FrontierFlightTelemetry.distance_label(float(telemetry.distance))+" · "+FrontierFlightTelemetry.eta_label(telemetry) if telemetry.same_system else "Tab · 성간 항로 설정"
 		draw_string(font,origin+Vector2(0,27),caption,HORIZONTAL_ALIGNMENT_RIGHT,width,15,Color(.55,.77,.83))
 	if nav.get("proximity_braking",false):draw_string(font,origin+Vector2(0,-30),"근접 감속 보조",HORIZONTAL_ALIGNMENT_RIGHT,width,16,Color(1,.77,.4))
+
+func _draw_guidance(font: Font) -> void:
+	for marker in guidance:
+		var point: Vector2=marker.point
+		var color:=Color(1,.62,.23,.95) if marker.kind=="hazard" else Color(.5,.9,.91,.8)
+		if marker.onscreen:
+			if marker.kind=="target":
+				# The scanner owns the center; avoid a duplicate reticle over its progress ring.
+				if point.distance_to(size*.5)<35:continue
+				draw_polyline(PackedVector2Array([point+Vector2(0,-12),point+Vector2(12,0),point+Vector2(0,12),point+Vector2(-12,0),point+Vector2(0,-12)]),color,1.5,true)
+			else:
+				draw_polyline(PackedVector2Array([point+Vector2(0,-14),point+Vector2(14,11),point+Vector2(-14,11),point+Vector2(0,-14)]),color,2,true)
+				draw_string(font,point+Vector2(-3,7),"!",HORIZONTAL_ALIGNMENT_LEFT,-1,17,color)
+		else:
+			var direction: Vector2=marker.direction
+			var side:=Vector2(-direction.y,direction.x)
+			draw_colored_polygon(PackedVector2Array([point+direction*12,point-direction*8+side*7,point-direction*8-side*7]),color)
+		var width:=minf(300,size.x*.42)
+		var left:=clampf(point.x-width*.5,18,size.x-width-18)
+		var y:=point.y+32 if point.y<size.y*.65 else point.y-23
+		draw_string_outline(font,Vector2(left,y),marker.label,HORIZONTAL_ALIGNMENT_CENTER,width,14,3,Color(.01,.025,.035,.9))
+		draw_string(font,Vector2(left,y),marker.label,HORIZONTAL_ALIGNMENT_CENTER,width,14,color)

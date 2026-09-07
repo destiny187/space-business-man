@@ -70,6 +70,7 @@ func _process(delta: float) -> void:
 	if navigation.get("star_warning",false) and warning_clock<=0:
 		transit_audio.play("sfx_build_invalid");warning_clock=1.4 if navigation.get("star_danger",false) else 3.0
 	if not navigation.get("star_warning",false):warning_clock=0
+	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size))
 	_update_planet_scan(delta)
 	_update_galactic_core()
 	var in_transit: bool=navigation.mode=="jump"

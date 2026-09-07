@@ -1,7 +1,7 @@
 extends SceneTree
 func _initialize() -> void:run.call_deferred()
 func run() -> void:
- root.size=Vector2i(1280,800)
+ root.size=Vector2i(1280,800);root.gui_embed_subwindows=true
  var manifest:=FrontierUniverse.generate(61739)
  assert(FrontierUniverse.body(manifest,2).name=="Earth")
  var ordinal:=FrontierUniverse.first_ordinal(manifest,23)
@@ -28,6 +28,14 @@ func run() -> void:
  await RenderingServer.frame_post_draw
  root.get_texture().get_image().save_png(out+"/scan.png")
  print("SPACE EXPERIENCE: English names, arrival and survey rendered")
+ view.transit_overlay.scan_body={}
+ var behind:=FrontierSpaceGuidance.project(view.camera,view.camera.global_position+view.camera.global_basis.z*100,Vector2(1280,800))
+ assert(not behind.onscreen and Rect2(0,0,1280,800).has_point(behind.point))
+ behind.kind="target";behind.label=body.name
+ var danger:=FrontierSpaceGuidance.project(view.camera,Vector3.ZERO,Vector2(1280,800));danger.kind="hazard";danger.label="경고 경계까지 3.2 km"
+ view.transit_overlay.guidance=[behind,danger]
+ await RenderingServer.frame_post_draw
+ root.get_texture().get_image().save_png(out+"/guidance.png")
  var journal:=FrontierNavigationJournal.new();journal.manifest=manifest
  journal.path="user://space_journal_test.json"
  journal.scanned(ordinal);journal.favorite(ordinal)
