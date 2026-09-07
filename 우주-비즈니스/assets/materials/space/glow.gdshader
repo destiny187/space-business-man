@@ -7,24 +7,18 @@ uniform float seed_offset=0.;
 void vertex(){MODELVIEW_MATRIX=VIEW_MATRIX*mat4(INV_VIEW_MATRIX[0],INV_VIEW_MATRIX[1],INV_VIEW_MATRIX[2],MODEL_MATRIX[3]);}
 void fragment(){
  vec2 p=UV*2.-1.;float r=length(p);float a=atan(p.y,p.x);
- // Stellar limb is r=.4. Keep additive light off the surface so markings remain readable.
- float outside=smoothstep(.385,.415,r);
- float width=mode==2?12.:7.;
- float halo=exp(-max(0.,r-.4)*width)*.32;
- float rays=pow(max(0.,sin(a*(mode==2?13.:8.)+seed_offset)),mode==2?14.:5.);
- halo*=.65+rays*.55;
- float loops=0.;
- for(int i=0;i<3;i++){
-  float variation=.5+.5*sin(seed_offset+float(i)*4.73);
-  float center=seed_offset+float(i)*2.1+sin(float(i)*3.4+seed_offset)*.45+TIME*(mode==1?.008:.016);
-  float angle=atan(sin(a-center),cos(a-center));
-  float span=(mode==3?.38:.27)*(.65+variation*.55);
-  float arch=.41+(mode==3?.26:.16)*(.65+variation*.6)*sqrt(max(0.,1.-pow(angle/span,2.)));
-  float arc=exp(-pow((r-arch)/.013,2.))*(1.-smoothstep(span*.85,span,abs(angle)));
-  loops+=arc;
- }
- float flare=mode==3?pow(max(0.,sin(TIME*.4+seed_offset)),14.):0.;
- float plumes=mode==1||mode==3?loops*(.45+flare*.3):0.;
- ALBEDO=tint.rgb*strength;
- ALPHA=(halo+plumes)*outside*(1.-smoothstep(.85,1.,r));
+ // Disc radius is .4. Smooth irregular streamers, without repeated spokes or wire loops.
+ float h=max(0.,r-.4);
+ float drift=TIME*.006;
+ float structure=.5+.22*sin(a*3.+seed_offset+drift)
+  +.17*sin(a*7.-seed_offset*1.7+h*5.)+.09*sin(a*11.+seed_offset*.6-h*9.);
+ float width=mix(.055,.12,clamp(structure,0.,1.));
+ float corona=exp(-h/width)*(.16+.12*structure);
+ float aureole=exp(-h*7.)*.035;
+ float limb_glow=exp(-h*65.)*.24;
+ float outside=smoothstep(.393,.407,r);
+ // Use a filled diffuse plume for active stars, not an outlined animated arch.
+ float active=(mode==1||mode==3)?pow(max(0.,sin(a*2.+seed_offset)),12.)*.05*exp(-h*12.):0.;
+ ALBEDO=mix(tint.rgb,vec3(1.),.45)*strength;
+ ALPHA=(corona+aureole+limb_glow+active)*outside*(1.-smoothstep(.8,1.,r));
 }

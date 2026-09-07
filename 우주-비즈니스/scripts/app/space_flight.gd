@@ -64,7 +64,7 @@ func _setup_space() -> void:
 	env.ambient_light_color = Color("879caf")
 	env.ambient_light_energy = .45
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.glow_enabled=true;env.glow_intensity=.85;env.glow_bloom=.08
+	env.glow_enabled=true;env.glow_intensity=.85;env.glow_bloom=0.0
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()

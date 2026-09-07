@@ -1,9 +1,49 @@
 {
-  "version":1,
+  "version": 2,
   "profiles": {
-    "yellow":{"name":"황색 항성","mode":0,"tint":"ffcb74","surface_speed":0.025,"cell_scale":18.0,"corona_strength":0.85},
-    "red":{"name":"적색 항성","mode":1,"tint":"f87745","surface_speed":0.012,"cell_scale":8.0,"corona_strength":0.80},
-    "blue":{"name":"청백색 항성","mode":2,"tint":"a1ceff","surface_speed":0.07,"cell_scale":29.0,"corona_strength":0.65},
-    "active":{"name":"활동성 항성","mode":3,"tint":"ffad60","surface_speed":0.035,"cell_scale":13.0,"corona_strength":0.85}
+    "yellow": {
+      "name": "황색 항성",
+      "mode": 0,
+      "tint": "ffcb74",
+      "surface_speed": 0.025,
+      "cell_scale": 18.0,
+      "corona_strength": 0.85,
+      "radiance": 1.65,
+      "limb_darkening": 0.55,
+      "light_tint": "fff1db"
+    },
+    "red": {
+      "name": "적색 항성",
+      "mode": 1,
+      "tint": "f87745",
+      "surface_speed": 0.012,
+      "cell_scale": 8.0,
+      "corona_strength": 0.8,
+      "radiance": 1.5,
+      "limb_darkening": 0.55,
+      "light_tint": "ffc3a0"
+    },
+    "blue": {
+      "name": "청백색 항성",
+      "mode": 2,
+      "tint": "a1ceff",
+      "surface_speed": 0.07,
+      "cell_scale": 29.0,
+      "corona_strength": 0.65,
+      "radiance": 1.85,
+      "limb_darkening": 0.55,
+      "light_tint": "d7e7ff"
+    },
+    "active": {
+      "name": "활동성 항성",
+      "mode": 3,
+      "tint": "ffad60",
+      "surface_speed": 0.035,
+      "cell_scale": 13.0,
+      "corona_strength": 0.85,
+      "radiance": 1.65,
+      "limb_darkening": 0.55,
+      "light_tint": "ffe3c4"
+    }
   }
 }
