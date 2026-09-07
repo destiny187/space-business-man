@@ -150,3 +150,5 @@
 - [자연 진행·2단계·복원 정산 플레이 테스트](production/44-natural-progression-playtest.md): 실제 시작·착륙·연구, 재료 기반 강화/정산 규칙 검사와 계약·창고 UI 진입 차단.
 
 - [자연 진행 차단 복구·초반 철과 얼음](production/45-progression-repairs.md): 계약·보급·로봇 관리 진입 복구, 부적합 배정 거절, T1·T2 시작 광맥과 기존 저장 확인.
+
+- [지상 기본 플레이 개선 C00~C08](production/46-ground-play-repairs.md): 연속 채광·가방 건설·창고·로봇·시설 모션/ElevenLabs·환경 HUD의 실제 구현과 최소 확인.

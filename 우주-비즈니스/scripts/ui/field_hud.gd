@@ -1,6 +1,7 @@
 class_name FrontierFieldHud
 extends Control
 var scan_card: FrontierSurveyCard
+var environment: FrontierEnvironmentHud
 var instruments: FrontierFieldInstruments
 var app: FrontierCrewExpedition
 var place: Label
@@ -25,7 +26,9 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	instruments=FrontierFieldInstruments.new();add_child(instruments);instruments.configure(app)
 	scan_card=FrontierSurveyCard.new();scan_card.configure(app);add_child(scan_card)
 	var heading:=VBoxContainer.new();heading.position=Vector2(32,28);heading.add_theme_constant_override("separation",4);heading.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(heading)
-	place=FrontierInterfaceStyle.label(heading,"",24);location=FrontierInterfaceStyle.label(heading,"",12,Color("d0d6ce"))
+	place=FrontierInterfaceStyle.label(heading,"",24)
+	environment=FrontierEnvironmentHud.new();heading.add_child(environment);environment.configure(app)
+	location=FrontierInterfaceStyle.label(heading,"",12,Color("d0d6ce"))
 	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=TextureRect.new();ship_direction.texture=load("res://assets/ui/interface/ship.svg");ship_direction.custom_minimum_size=Vector2(22,22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
 	saved=FrontierInterfaceStyle.label(self,"✓",16,FrontierInterfaceStyle.ACCENT)
 	context=PanelContainer.new();context.mouse_filter=Control.MOUSE_FILTER_IGNORE;context.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color("10191fdb"),Color("31434d00"),10));add_child(context)

@@ -501,6 +501,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
+		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
 		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():order_robot();return
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():navigation_ui.open_galaxy();return

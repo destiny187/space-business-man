@@ -277,11 +277,17 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		filter_context=next_filter
 		for i in vein.item_count:
 			if str(vein.get_item_metadata(i))==str(selected_robot.get("resource_filter","")):vein.select(i);break
-	var e: Dictionary=current.environment;var scores:=FrontierEvaluator.scores(e)
-	for category in environment_bars:environment_bars[category].value=float(e.ecology) if category=="ecology" else float(scores[category])
-	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]
-	if current.has("restoration2"):
-		environment_label.text+="\n염류 %.0f / 목표 ≤20 · 토양 %.0f / 목표 ≥60 · Mk.2 필터·기반재 필요"%[float(current.restoration2.salinity),float(current.restoration2.soil)]
+	var e: Dictionary=current.environment;var report:=FrontierEvaluator.environment_report(current,body_id)
+	for category in environment_bars:
+		environment_bars[category].visible=report.observed
+		if report.observed:environment_bars[category].value=float(report.scores[category])
+	environment_label.text="지역 환경 · 평가 중"
+	if report.observed:
+		environment_label.text="환경 적합도 %.0f%% · 지역 환경\n지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n%s · 안정화 %.0f / %.0f초"%[report.overall,float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,"✓ 안정" if report.stable else "◷ 관찰 중",report.stable_seconds,report.stable_required]
+		if not report.limiting_factors.is_empty():environment_label.text+="\n! "+str(report.limiting_factors[0].label)
+		if current.has("restoration2"):
+			var restore_cfg: Dictionary=FrontierProductionTier2.config().restoration
+			environment_label.text+="\n염류 %.0f / 목표 ≤%.0f · 토양 %.0f / 목표 ≥%.0f"%[float(current.restoration2.salinity),float(restore_cfg.salinity_target),float(current.restoration2.soil),float(restore_cfg.soil_target)]
 	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇은 자동 채광합니다. 자원 종류를 정하고 환경 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement() -> void:
