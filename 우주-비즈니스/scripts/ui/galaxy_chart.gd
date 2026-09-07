@@ -4,6 +4,7 @@ var manifest: Dictionary={}
 var system_index:=0
 var elapsed:=0.0
 var galaxy:=false
+var transit: Dictionary={}
 var target:=0
 var hits: Array=[]
 var core_view: SubViewport
@@ -32,6 +33,13 @@ func _draw() -> void:
 			var point:=center+Vector2(sys.map_position[0],sys.map_position[1])/float(manifest.settings.outer_radius)*105
 			draw_circle(point,4 if index==0 else 2.5,Color("72dfd1") if index==0 else [Color("9dcfca"),Color("81b9db"),Color("d9c379"),Color("e49468"),Color("e9778e")][int(sys.band)])
 			hits.append({"point":point,"ordinal":index*int(manifest.settings.planets_per_system)})
+		if not transit.is_empty():
+			var factor: float=105/float(manifest.settings.outer_radius)
+			var source:=center+Vector2(transit.from[0],transit.from[1])*factor
+			var destination:=center+Vector2(transit.to[0],transit.to[1])*factor
+			var vessel:=center+Vector2(transit.galaxy_position[0],transit.galaxy_position[1])*factor
+			draw_line(source,destination,Color(.4,.85,1,.65),2,true)
+			draw_circle(vessel,5,Color.WHITE)
 		draw_string(font,Vector2(8,20),"은하 · 외곽 저티어 → 중심 고티어",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("e0ebe3"))
 	else:
 		draw_circle(center,9,Color("ffe2a3"))

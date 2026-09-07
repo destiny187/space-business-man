@@ -95,3 +95,5 @@
 - [자원 기반 은하·중앙 블랙홀](production/25-galactic-core-and-resource-world.md): 새 세계의 지역 광맥 생성·채집·저장, 중심 블랙홀 확대 렌더. [기술 구조](technical/06-mineral-galaxy-open-world.md).
 
 - [공통 조사·살아 있는 정착물](production/25-universal-survey-and-living-settlement.md): 광물/생물 스캔과 연구 활용, 테라포밍 이후 정원·서식지 확장 설계.
+
+최신 항해 구조: [항성계 오픈월드·무료 성간 초고속 항해](production/26-stellar-cruise.md).

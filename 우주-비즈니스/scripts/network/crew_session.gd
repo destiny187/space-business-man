@@ -184,14 +184,14 @@ func _request(value: Dictionary) -> void:
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:response_received.emit(sequence,value)
-func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false) -> void:
+func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0]) -> void:
 	if not active:return
 	movement_sequence+=1
-	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting)
-	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting)
+	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls)
+	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls)
 @rpc("any_peer","call_remote","unreliable_ordered",1)
-func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false) -> void:
-	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting)
+func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0]) -> void:
+	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting,flight_controls)
 func kick(character_id: String) -> bool:
 	if not hosting or character_id==authority.world.crew.owner_id:return false
 	for peer in authority.peers.keys():
@@ -228,6 +228,11 @@ func _physics_process(delta: float) -> void:
 		active=false;notice.emit(authority.error)
 		if not offline:_closed.rpc(authority.error)
 		return
+	var controls: Array=[0.0,0.0,0.0]
+	for peer in authority.peers:
+		if authority.peers[peer]==authority.world.crew.pilot_id and authority.inputs.has(peer) and authority.inputs[peer].expires>=authority.now:
+			controls=authority.inputs[peer].get("flight_controls",controls)
+	FrontierCrewNavigation.steer(authority.world,controls,minf(delta,.1))
 	var arrived:=FrontierCrewNavigation.step(authority.world,minf(delta,.1))
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
