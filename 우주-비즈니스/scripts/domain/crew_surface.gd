@@ -25,7 +25,7 @@ static func field(world: Dictionary) -> FrontierTerrainField:
 	var key: String=world.crew.world_id+":"+id+":"+str(edits.size())
 	if _field_key!=key:
 		var body:=FrontierUniverse.body_from_id(world.manifest,id)
-		_field.configure(int(body.streams.terrain),edits,float(world.terrain_settings.cell_size)*int(world.terrain_settings.chunk_cells))
+		_field.configure(int(body.streams.terrain),edits,float(world.terrain_settings.cell_size)*int(world.terrain_settings.chunk_cells),body.get("terrain_traits",{}))
 		_field_key=key;_ground.clear()
 	return _field
 

@@ -19,12 +19,12 @@ var max_build_ms := 0.0
 var last_install_ms := 0.0
 var closed := false
 
-func configure(seed_value: int,edits: Array,terrain_material: Material,settings: Dictionary={}) -> void:
+func configure(seed_value: int,edits: Array,terrain_material: Material,settings: Dictionary={},traits: Dictionary={}) -> void:
 	config=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json")) if settings.is_empty() else settings.duplicate(true)
 	seed_number=seed_value
 	span=float(config.cell_size)*int(config.chunk_cells)
 	material=terrain_material
-	field.configure(seed_number,edits,span)
+	field.configure(seed_number,edits,span,traits)
 
 func update_interests(points: Array[Vector3]) -> void:
 	var anchors: Array[Vector3i]=[]
@@ -101,7 +101,7 @@ func _process(_delta: float) -> void:
 
 func _build_job(packet: Dictionary,key: Vector3i,edits: Array) -> void:
 	var worker_field:=FrontierTerrainField.new()
-	worker_field.configure(seed_number,edits,span)
+	worker_field.configure(seed_number,edits,span,field.traits)
 	var mesher:=FrontierTerrainMesher.new()
 	packet.data=mesher.build(worker_field,key,int(config.chunk_cells),float(config.cell_size))
 

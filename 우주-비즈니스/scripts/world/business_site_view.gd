@@ -33,6 +33,7 @@ func accept(value: Dictionary) -> void:
 		if site.remaining.get(row.id,row.capacity)<=0:continue
 		var p:=FrontierMineralWorld.point(terrain.field,row)
 		if not p.is_finite():continue
+		if FrontierExpeditionBusiness.thermal_locked(body,site,row):continue
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"ore_"+row.resource,p,1.1,"vein");continue
 		nodes[row.id].get_meta("label").text="%s · %d\nF 채광"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity))]
@@ -63,6 +64,7 @@ func accept(value: Dictionary) -> void:
 	terrain.material.set_shader_parameter("restoration_center",FrontierExpeditionBusiness.point(site.center))
 	terrain.material.set_shader_parameter("restoration_radius",float(FrontierExpeditionBusiness.config().build_radius))
 	terrain.material.set_shader_parameter("restoration",restore_amount)
+	if body.get("traits",{}).get("id","")=="volcanic":terrain.material.set_shader_parameter("local_heat",clampf((float(site.environment.temperature)-float(body.traits.cooling_threshold))/maxf(1,float(body.traits.temperature)-float(body.traits.cooling_threshold)),0,1))
 func target(camera: Camera3D,viewer: CollisionObject3D) -> Dictionary:
 	var query:=PhysicsRayQueryParameters3D.create(camera.global_position,camera.global_position-camera.global_basis.z*12);query.exclude=[viewer.get_rid()]
 	var hit:=get_world_3d().direct_space_state.intersect_ray(query)

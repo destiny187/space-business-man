@@ -1,0 +1,167 @@
+[
+  {
+    "id": "oxidized",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/oxidized.blend",
+    "model": "res://assets/models/planet-variants/oxidized.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "continental",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/continental.blend",
+    "model": "res://assets/models/planet-variants/continental.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "cratered",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/cratered.blend",
+    "model": "res://assets/models/planet-variants/cratered.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "fractured",
+    "kind": "glacial",
+    "source": "art/blender/planet-variants/fractured.blend",
+    "model": "res://assets/models/planet-variants/fractured.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "tundra",
+    "kind": "glacial",
+    "source": "art/blender/planet-variants/tundra.blend",
+    "model": "res://assets/models/planet-variants/tundra.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "frozen",
+    "kind": "glacial",
+    "source": "art/blender/planet-variants/frozen.blend",
+    "model": "res://assets/models/planet-variants/frozen.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "volcanic",
+    "kind": "sulfur",
+    "source": "art/blender/planet-variants/volcanic.blend",
+    "model": "res://assets/models/planet-variants/volcanic.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "salt",
+    "kind": "sulfur",
+    "source": "art/blender/planet-variants/salt.blend",
+    "model": "res://assets/models/planet-variants/salt.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "ochre",
+    "kind": "sulfur",
+    "source": "art/blender/planet-variants/ochre.blend",
+    "model": "res://assets/models/planet-variants/ochre.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "banded",
+    "kind": "gas_giant",
+    "source": "art/blender/planet-variants/banded.blend",
+    "model": "res://assets/models/planet-variants/banded.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "storm",
+    "kind": "gas_giant",
+    "source": "art/blender/planet-variants/storm.blend",
+    "model": "res://assets/models/planet-variants/storm.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "pale",
+    "kind": "gas_giant",
+    "source": "art/blender/planet-variants/pale.blend",
+    "model": "res://assets/models/planet-variants/pale.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "azure",
+    "kind": "ice_giant",
+    "source": "art/blender/planet-variants/azure.blend",
+    "model": "res://assets/models/planet-variants/azure.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "turquoise",
+    "kind": "ice_giant",
+    "source": "art/blender/planet-variants/turquoise.blend",
+    "model": "res://assets/models/planet-variants/turquoise.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  },
+  {
+    "id": "violet",
+    "kind": "ice_giant",
+    "source": "art/blender/planet-variants/violet.blend",
+    "model": "res://assets/models/planet-variants/violet.glb",
+    "triangles": 36480,
+    "mask": "COLOR.r authored relief / COLOR.g crater rims",
+    "version": 1,
+    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
+    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+  }
+]

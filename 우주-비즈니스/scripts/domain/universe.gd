@@ -6,6 +6,7 @@ const STREAMS := ["terrain", "resource", "discovery", "ecology", "civilization",
 
 static func config() -> Dictionary:
 	var value: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
+	value.planet_rules=FrontierPlanetTraits.rules().duplicate(true)
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	return value
 
@@ -78,6 +79,8 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		result.landable=result.kind not in ["gas_giant","ice_giant"]
 		result.orbit={"radius":float(presentation().orbit_radii[orbit]),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
 		result.star_id=s.star.id
+	if result.origin=="fictional":result.traits=FrontierPlanetTraits.make(result,cfg.get("planet_rules",{}))
+	result.terrain_traits=result.get("traits",{}) if cfg.has("planet_rules") else {}
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
 	return result
 

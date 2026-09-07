@@ -6,8 +6,10 @@ var detail := FastNoiseLite.new()
 var edits_by_chunk: Dictionary = {}
 var span := 24.0
 var seed_value := 0
+var traits: Dictionary={}
 
-func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0) -> void:
+func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, characteristics: Dictionary={}) -> void:
+	traits=characteristics.duplicate(true)
 	edits_by_chunk.clear()
 	seed_value=seed_number
 	span=chunk_span
@@ -39,8 +41,10 @@ func add_edit(edit: Dictionary) -> Array[Vector3i]:
 
 func height(x: float,z: float) -> float:
 	var distance: float=Vector2(x,z).length()
-	var rough: float=noise.get_noise_2d(x,z)*42.0+detail.get_noise_2d(x,z)*4.0
+	var rough: float=noise.get_noise_2d(x,z)*float(traits.get("relief",42.0))+detail.get_noise_2d(x,z)*4.0
 	var base: float=2.0+rough*smoothstep(18.0,65.0,distance)
+	if float(traits.get("water",0))>15 and float(traits.get("temperature",-100))>0:
+		base-=smoothstep(145.0,230.0,distance)*float(traits.water)*.18
 	# Keep the E0 passage under a rock ridge; an unrelated surface valley must
 	# not cut steep exterior slopes into its walkable floor.
 	var t: float=clampf((x-14.0)/82.0,0,1)

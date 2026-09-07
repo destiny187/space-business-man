@@ -122,20 +122,29 @@ func _load_system(index: int) -> void:
 		material.shader = load("res://assets/materials/space/planet.gdshader")
 		material.set_shader_parameter("seed_offset",float(body.streams.terrain % 10000))
 		material.set_shader_parameter("rough",.94)
-		var colors: Array = {"basalt":[Color("957961"),Color("303c48"),.30],"glacial":[Color("bed2d0"),Color("266477"),.45],"sulfur":[Color("b5853a"),Color("61403c"),.26],"gas_giant":[Color("dfbd8c"),Color("945c42"),.3],"ice_giant":[Color("8cdeeb"),Color("3a6d9e"),.3]}[body.kind]
-		if body.get("reference_id","")=="solar:2":colors=[Color("5a966c"),Color("174d91"),.53]
+		var t: Dictionary=body.traits
+		var template: Node3D=load("res://assets/models/planet-variants/"+str(t.id)+".glb").instantiate()
+		var authored: MeshInstance3D=template.find_children("*","MeshInstance3D",true,false)[0]
+		node.mesh=authored.mesh;node.scale=Vector3.ONE*radius;template.free()
+		material.set_shader_parameter("authored_relief",true)
+		material.set_shader_parameter("highlight_strength",.08)
 		material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
-		material.set_shader_parameter("land_color",colors[0])
-		material.set_shader_parameter("sea_color",colors[1])
-		material.set_shader_parameter("sea_level",colors[2])
+		material.set_shader_parameter("land_color",Color(t.dust))
+		material.set_shader_parameter("sea_color",Color(t.sea))
+		material.set_shader_parameter("rock_color",Color(t.rock))
+		material.set_shader_parameter("sea_level",lerpf(.20,.61,float(t.water)/100.0) if float(t.water)>0 else 0.0)
+		material.set_shader_parameter("cloud_amount",float(t.cloud))
+		material.set_shader_parameter("seed_offset",float(t.pattern_seed))
+		material.set_shader_parameter("molten",t.id=="volcanic")
+
 		node.material_override = material
 		add_child(node)
 		var atmosphere := MeshInstance3D.new()
-		atmosphere.mesh = sphere
+		atmosphere.mesh = node.mesh
 		atmosphere.scale = Vector3.ONE*1.018
 		var air := ShaderMaterial.new()
 		air.shader = load("res://assets/materials/space/atmosphere.gdshader")
-		air.set_shader_parameter("tint",Color("71afc7") if body.kind == "glacial" else Color("c6a975"))
+		air.set_shader_parameter("tint",Color(t.sea).lightened(.35))
 		atmosphere.material_override = air
 		atmosphere.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		node.add_child(atmosphere)

@@ -39,7 +39,7 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 		if i<config().starter_vein_positions.size():p=[config().starter_vein_positions[i][0]+float(seed_value%11)*.05,0,config().starter_vein_positions[i][1]]
 		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":FrontierMineralWorld.tier(types[i]),"capacity":int(config().vein_capacity.get(types[i],180))+int(body.planet_tier-1)*20,"position":p})
 	if FrontierMineralWorld.enabled(body):
-		var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain))
+		var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 		for level in range(-20,-40,-1):
 			var p:=Vector3(98,level,0)
 			if field.density(p+Vector3.UP*.6)<=0 and field.density(p-Vector3.UP*.6)>0:
@@ -100,7 +100,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not ledger.active.is_empty():return "진행 중인 개발 사업을 정산한 뒤 새 사업을 등록하세요."
 		var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
 		var center:=point(config().base_position);center.y=FrontierCrewSurface.field(world).height(center.x,center.z)
-		var source:=FrontierCatalog.entry("planets",body.kind)
+		var source: Dictionary=body.get("traits",FrontierCatalog.entry("planets",body.kind))
 		ledger.sites[world.location]={"center":array(center),"state":"active","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
 		if not FrontierMineralWorld.enabled(body):
 			for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
@@ -112,6 +112,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="business_mine":
 		var row:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),str(args.get("vein_id","")))
 		if row.is_empty():return "광맥을 선택하세요."
+		if thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),current,row):return "고온 광맥입니다. 개발 구역의 온도 조절기로 80°C 이하까지 냉각하세요."
 		var floor:=FrontierMineralWorld.point(FrontierCrewSurface.field(world),row)
 		if not floor.is_finite() or floor.distance_to(position)>float(config().interaction_range) or not FrontierCrewSurface.visible_in_field(FrontierCrewSurface.field(world),position+Vector3.UP*1.72,floor+Vector3.UP):return "보이는 광맥 8m 안에서 채광하세요."
 		var tool:=FrontierEquipment.active(world.crew.members[actor])
@@ -335,3 +336,8 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 			var limits: Array={"temperature":[-273,1000],"pressure":[0,10],"oxygen":[0,1],"toxicity":[0,100],"water":[0,100],"ecology":[0,100],"stable_seconds":[0,120]}[key]
 			if not FrontierUniverse._finite(e.get(key),limits[0],limits[1]):return "지역 환경 수치 오류"
 	return ""
+
+static func thermal_locked(body: Dictionary,current: Dictionary,row: Dictionary) -> bool:
+	if body.get("traits",{}).get("id","")!="volcanic" or int(row.get("required_tier",1))<2:return false
+	var p:=point(row.position);var center:=point(current.center)
+	return Vector2(p.x-center.x,p.z-center.z).length()>float(config().build_radius) or float(current.environment.temperature)>float(body.traits.get("cooling_threshold",80))

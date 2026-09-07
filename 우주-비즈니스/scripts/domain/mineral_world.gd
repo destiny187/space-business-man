@@ -10,10 +10,20 @@ static func profile(body: Dictionary,rules: Dictionary) -> Dictionary:
 	var options: Array=[]
 	for id in rules.profiles:
 		if rules.profiles[id].kind==body.kind:options.append(id)
+	if int(rules.get("version",1))>=2:options.sort()
 	var seed_value: int=int(body.streams.resource)
 	var id: String=options[FrontierUniverse.derive(seed_value,"geology")%options.size()]
 	if body.get("reference_id","")=="solar:2":id="weathered"
+	if int(rules.get("version",1))>=2 and body.has("traits") and body.traits.geology in options:id=body.traits.geology
 	var p: Dictionary=rules.profiles[id].duplicate(true)
+	if int(rules.get("version",1))>=2:
+		var secondary_id: String=options[FrontierUniverse.derive(seed_value,"secondary-geology")%options.size()]
+		if secondary_id!=id:
+			p.name+=" + "+str(rules.profiles[secondary_id].name)
+			for material in rules.profiles[secondary_id].primary:
+				if material not in p.primary and material not in p.secondary:p.secondary.append(material)
+			for gem in rules.profiles[secondary_id].gems:
+				if gem not in p.gems:p.gems.append(gem)
 	p.id=id;p.version=1;p.rules=rules
 	p.exotic=""
 	if int(body.planet_tier)>=int(rules.exotic_min_tier):
@@ -33,7 +43,7 @@ static func region(body: Dictionary,x: int,z: int) -> Array:
 	var rules: Dictionary=profile.rules
 	if absi(x)>int(rules.tile_limit) or absi(z)>int(rules.tile_limit):return []
 	var result: Array=[]
-	var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain))
+	var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 	for slot in int(rules.surface_slots)+int(rules.underground_slots):
 		var id: String="ore1:%d:%d:%d"%[x,z,slot]
 		var seed_value: int=FrontierUniverse.derive(int(body.streams.resource),id)

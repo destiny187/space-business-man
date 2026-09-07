@@ -56,8 +56,8 @@ func _all_edits() -> Array:
 			var id:=JSON.stringify(edit)
 			if not seen.has(id):seen[id]=true;result.append(edit.duplicate(true))
 	return result
-func _build_path(packet: Dictionary,start: Vector3,target: Vector3,edits: Array,seed_value: int,span: float) -> void:
-	var field:=FrontierTerrainField.new();field.configure(seed_value,edits,span)
+func _build_path(packet: Dictionary,start: Vector3,target: Vector3,edits: Array,seed_value: int,span: float,traits: Dictionary) -> void:
+	var field:=FrontierTerrainField.new();field.configure(seed_value,edits,span,traits)
 	packet.result=FrontierTerrainNavigation.new().find_path(field,start,target,settings.navigation)
 func _process(_delta: float) -> void:
 	if not job.is_empty() and WorkerThreadPool.is_task_completed(job.task):
@@ -71,7 +71,7 @@ func _process(_delta: float) -> void:
 	if pending_path and job.is_empty() and terrain.ready_at(position):
 		pending_path=false
 		var target: Array=record.robot.target;var packet: Dictionary={"result":{}}
-		var task:=WorkerThreadPool.add_task(_build_path.bind(packet,position-Vector3.UP*.75,Vector3(target[0],target[1],target[2]),_all_edits(),terrain.seed_number,terrain.span),false,"courier navigation")
+		var task:=WorkerThreadPool.add_task(_build_path.bind(packet,position-Vector3.UP*.75,Vector3(target[0],target[1],target[2]),_all_edits(),terrain.seed_number,terrain.span,terrain.field.traits.duplicate(true)),false,"courier navigation")
 		job={"task":task,"packet":packet,"version":request_version}
 	label.text="M–07  ·  %d/%d\n%s" % [int(record.robot.cargo),int(settings.cargo_capacity),reason]
 func _physics_process(delta: float) -> void:

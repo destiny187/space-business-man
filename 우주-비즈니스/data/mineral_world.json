@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "tile_size": 80,
   "tile_limit": 102,
   "surface_slots": 4,
@@ -148,6 +148,40 @@
       "gems": [
         "sapphire",
         "diamond"
+      ]
+    },
+    "icy_basin": {
+      "name": "얼음 퇴적 분지",
+      "kind": "glacial",
+      "primary": [
+        "ice",
+        "aluminum",
+        "phosphate"
+      ],
+      "secondary": [
+        "copper",
+        "silicon"
+      ],
+      "gems": [
+        "emerald",
+        "sapphire"
+      ]
+    },
+    "cryovolcanic": {
+      "name": "빙저 화산층",
+      "kind": "glacial",
+      "primary": [
+        "ice",
+        "nickel",
+        "rare_earth"
+      ],
+      "secondary": [
+        "titanium",
+        "lithium"
+      ],
+      "gems": [
+        "diamond",
+        "ruby"
       ]
     }
   },

@@ -159,3 +159,7 @@ galaxy_seed + generation_version + catalog_version
 ## 자원 세계·중앙 이정표 적용
 
 새 세계의 지질·광맥 생성과 외곽/중심 티어 분포 확인, 중앙 블랙홀 관측 렌더는 [최신 적용 기록](../production/25-galactic-core-and-resource-world.md)을 따른다. 기존 저장과 새 자원 생성기의 범위를 구분한다.
+
+## 2026-09-07 외형·복합 환경 확장
+
+같은 타입의 Blender 외형·색상 변형, 복합 지질, 초기 물·대기 상태와 불타는 행성의 지역 냉각을 연결한다. 규칙·저장 호환 범위는 [행성 다양성](../production/31-planet-diversity.md)을 따른다.

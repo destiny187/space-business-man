@@ -53,7 +53,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	var width:=minf(420,size.x*.46)
 	var pointer:=center if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED else get_local_mouse_position()
 	if not Rect2(Vector2.ZERO,size).has_point(pointer):pointer=center
-	var box:=Rect2(Vector2(clampf(pointer.x+42,16,size.x-width-16),maxf(16,pointer.y-190)),Vector2(width,158))
+	var box:=Rect2(Vector2(clampf(pointer.x+42,16,size.x-width-16),maxf(16,pointer.y-215)),Vector2(width,183))
 	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.10,.15,.88);style.border_color=Color(.35,.86,1,.7);style.set_border_width_all(1);style.set_corner_radius_all(9)
 	draw_style_box(style,box)
 	draw_polyline(PackedVector2Array([pointer+Vector2(18,-18),box.position+Vector2(-12,130),box.position+Vector2(0,130)]),cyan,1.5,true)
@@ -66,7 +66,8 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	elif not FrontierUniverse.landable(scan_body):description+=" · 착륙 불가"
 	else:description+=" · 테라포밍 가능"
 	draw_string(font,origin+Vector2(0,68),description,HORIZONTAL_ALIGNMENT_LEFT,width-36,17,Color(.7,.85,.9))
-	draw_string(font,origin+Vector2(0,105),"E 접근 항해  ·  Tab 항법도",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
+	draw_string(font,origin+Vector2(0,99),FrontierPlanetTraits.describe(scan_body),HORIZONTAL_ALIGNMENT_LEFT,width-36,14,cyan)
+	draw_string(font,origin+Vector2(0,132),"E 접근 항해  ·  Tab 항법도",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 
 func _draw_vitals(font: Font) -> void:
 	var start:=Vector2(26,size.y-100)

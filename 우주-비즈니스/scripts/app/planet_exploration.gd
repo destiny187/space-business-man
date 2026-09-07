@@ -71,7 +71,7 @@ func _ready() -> void:
 	elif body.kind=="sulfur":
 		mat.set_shader_parameter("rock_color",Color("7c634b"));mat.set_shader_parameter("dust_color",Color("b39962"))
 	terrain=FrontierTerrainStreamer.new()
-	terrain.configure(int(body.streams.terrain),state.terrain_edits.get(body_id,[]),mat,config)
+	terrain.configure(int(body.streams.terrain),state.terrain_edits.get(body_id,[]),mat,config,body.get("terrain_traits",{}))
 	add_child(terrain)
 	distant=FrontierDistantTerrain.new()
 	add_child(distant)

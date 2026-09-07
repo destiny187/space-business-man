@@ -101,6 +101,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 			site.delivered+=FrontierExpeditionBusiness.total(r.cargo);FrontierExpeditionBusiness.transfer(site.inventory,r.cargo,1);r.cargo=FrontierExpeditionBusiness.inventory();r.phase="outbound" if not r.target.is_empty() and int(site.remaining.get(r.target,0))>0 else "idle";r.path=[]
 		return
 	var vein:=FrontierExpeditionBusiness.find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),r.target)
+	if not vein.is_empty() and FrontierExpeditionBusiness.thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),site,vein):r.status="고온 광맥 · 구역 냉각 필요";return
 	if vein.is_empty() or int(site.remaining.get(r.target,0))<=0:r.phase="return";r.path=[];return
 	var goal:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),vein.position[0],vein.position[2])
 	if not goal.is_finite():r.status="광맥의 토대가 무너졌습니다";return

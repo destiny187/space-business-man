@@ -12,11 +12,14 @@ static func profile(body: Dictionary) -> Dictionary:
 	var seed_value: int=int(body.streams.ecology)
 	var roll:=FrontierUniverse.derive(seed_value,"native-origin")%100
 	var weights: Dictionary=cfg.native_origin_weights
-	return {"environment":cfg.surface_environments[body.kind],
+	var result: Dictionary={"environment":cfg.surface_environments[body.kind],
 		"origin":"sterile" if roll<int(weights.sterile) else ("dormant" if roll<int(weights.sterile)+int(weights.dormant) else "established"),
 		"temperature":lerpf(climate.temperature[0],climate.temperature[1],float(FrontierUniverse.derive(seed_value,"temperature")%1001)/1000.0),
 		"pressure":lerpf(climate.pressure[0],climate.pressure[1],float(FrontierUniverse.derive(seed_value,"pressure")%1001)/1000.0),
 		"moisture":climate.moisture}
+	if not body.get("terrain_traits",{}).is_empty():
+		result.temperature=body.traits.temperature;result.pressure=body.traits.pressure;result.moisture=float(body.traits.water)/100.0
+	return result
 
 static func ensure_planet(ecology: Dictionary,body: Dictionary) -> Dictionary:
 	if ecology.planets.has(body.id):return ecology.planets[body.id]
