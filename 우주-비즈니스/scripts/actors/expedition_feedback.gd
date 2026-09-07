@@ -93,6 +93,8 @@ func _response(sequence: int,value: Dictionary) -> void:
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
 	match request.kind:
+		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대 · 광맥 작업 지시")
+		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")
 		"business_craft":audio.play("sfx_build_place");show_cue("로봇 조립 시작")
 		"surface_attack":
 			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);audio.play("sfx_combat_pulse")

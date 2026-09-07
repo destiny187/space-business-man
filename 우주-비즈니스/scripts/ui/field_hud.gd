@@ -85,7 +85,7 @@ func _process(delta: float) -> void:
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		if site.is_empty():target_action.text="광맥 조준 · 클릭 유지로 채집"
 		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
-		target_action.text+=" · E 유지  조사"
+		target_action.text+=" · E 유지  조사\nR  로봇 1대 지시 · "+("고등급 자동 선정" if app.preferred_robot_id.is_empty() else app.preferred_robot_id+" 우선")
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)
@@ -111,5 +111,6 @@ func _process(delta: float) -> void:
 		target_action.modulate=FrontierInterfaceStyle.ACCENT if app.placement_valid else FrontierInterfaceStyle.WARNING
 		target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
 		context.show();target_bar.hide()
-	else:target_action.autowrap_mode=TextServer.AUTOWRAP_OFF;target_action.custom_minimum_size.x=0
+	else:target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
+	context.position.x=minf(context.position.x,size.x-context.size.x-24)
 	if scan_card.visible:context.hide()

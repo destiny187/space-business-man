@@ -1,6 +1,8 @@
 class_name FrontierBusinessPanel
 extends PanelContainer
 signal command(kind: String,args: Dictionary)
+signal prefer_robot(id: String)
+var filter_context: String=""
 signal place_building(kind: String)
 signal station_action(kind: String)
 var context_kind: String="build"
@@ -110,6 +112,8 @@ func _ready() -> void:
 	robot=option(robot_tab)
 	robot_job_status=label(robot_tab,"")
 	robot_controls=VBoxContainer.new();robot_tab.add_child(robot_controls)
+	button(robot_controls,"이 로봇을 현장 지시 우선 대상으로",func():prefer_robot.emit(selected(robot)))
+	button(robot_controls,"현장 지시 · 가능한 고등급 자동 선정",func():prefer_robot.emit(""))
 	vein=option(robot_controls)
 	button(robot_controls,"종류 지정 · 자동 채광",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
 	button(robot_controls,"현재 로봇 위치를 작업 중심으로",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
@@ -267,6 +271,12 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	for key in FrontierExpeditionBusiness.config().technologies:
 		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if key in value.technologies else " · %d Cr"%int(def.price))
 	choices(facility,buildings);choices(factory,factories);choices(robot,robots);choices(vein,veins);choices(technology,technologies);choices(hangar,transported)
+	var selected_robot: Dictionary=current.robots.get(selected(robot),{})
+	var next_filter:=selected(robot)+":"+str(selected_robot.get("resource_filter",""))
+	if filter_context!=next_filter:
+		filter_context=next_filter
+		for i in vein.item_count:
+			if str(vein.get_item_metadata(i))==str(selected_robot.get("resource_filter","")):vein.select(i);break
 	var e: Dictionary=current.environment;var scores:=FrontierEvaluator.scores(e)
 	for category in environment_bars:environment_bars[category].value=float(e.ecology) if category=="ecology" else float(scores[category])
 	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]

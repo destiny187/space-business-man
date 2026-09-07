@@ -83,6 +83,7 @@ var station_market: FrontierStationMarketPanel
 var shipyard_panel: FrontierShipyardPanel
 var research_actions: Array[Control]=[]
 var business_panel: FrontierBusinessPanel
+var preferred_robot_id: String=""
 var placement_kind: String=""
 var placement_point:=Vector3.INF
 var placement_valid:=false
@@ -223,6 +224,7 @@ func _build_ui() -> void:
 	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
 	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
+	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시 · "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
 	business_panel.station_action.connect(station_action)
 	station_market=FrontierStationMarketPanel.new();ui.add_child(station_market)
 	station_market.command.connect(func(kind: String,args: Dictionary):
@@ -499,6 +501,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
+		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():order_robot();return
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():navigation_ui.open_galaxy();return
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
@@ -758,6 +761,11 @@ func station_action(kind: String) -> void:
 		"launch":
 			close_menus()
 			session.send_request("surface_board",{})
+func order_robot() -> void:
+	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
+	if target.get("kind")!="vein":feedback.reject("광맥을 조준하고 R로 로봇에게 지시하세요.");return
+	session.send_request("business_assign",{"vein_id":target.id,"robot_id":preferred_robot_id})
+
 func begin_placement(kind: String) -> void:
 	cancel_placement();close_menus()
 	if kind.is_empty() or surface_world==null:return

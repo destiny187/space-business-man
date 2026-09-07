@@ -245,6 +245,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var roll: int=FrontierUniverse.derive(int(world.manifest.seed),key)%100
 		var grade: String="rare" if roll>=95 else ("improved" if roll>=70 else "standard")
 		current.jobs[key]={"id":key,"factory_id":id,"progress":0.0,"seconds":float(def.seconds),"grade":grade};return ""
+	if kind=="business_assign":return FrontierRobotWork.order(world,actor,args)
 	if kind=="business_robot_auto":
 		var robot: Dictionary=current.robots.get(str(args.get("robot_id","")),{})
 		if robot.is_empty() or position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 설정하세요."
@@ -255,23 +256,12 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if args.get("reset_anchor",false)==true:robot.anchor=robot.position.duplicate()
 		robot.manual_target="";robot.target="";robot.path=[];robot.work=0.0;robot.search_wait=0.0
 		robot.phase="return" if total(robot.cargo)>0 else "idle";robot.status="자동 광맥 탐색" if robot.auto_enabled else "자동 채광 정지";return ""
-	if kind in ["business_assign","business_robot_return","business_robot_recover","business_robot_rescue"]:
+	if kind in ["business_robot_return","business_robot_recover","business_robot_rescue"]:
 		var id: String=str(args.get("robot_id",""))
 		if not current.robots.has(id):return "현장 로봇을 선택하세요."
 		var robot: Dictionary=current.robots[id]
-		if kind in ["business_assign","business_robot_return"] and position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 작업을 지시하세요."
+		if kind=="business_robot_return" and position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 작업을 지시하세요."
 		if kind=="business_robot_return":FrontierRobotWork.ensure(robot);robot.auto_enabled=false;robot.manual_target="";robot.target="";robot.phase="return";robot.path=[];robot.status="작업 중지 · 창고 복귀";return ""
-		if kind=="business_assign":
-			var target: String=str(args.get("vein_id",""))
-			var target_vein:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),target)
-			if target_vein.is_empty() or int(current.remaining.get(target,target_vein.capacity))<=0:return "채광할 광맥이 없습니다."
-			if target_vein.get("underground",false):return "지하 광맥은 수동 채집하세요. 지하 로봇 경로는 아직 지원하지 않습니다."
-			if not ground(FrontierCrewSurface.field(world),target_vein.position[0],target_vein.position[2]).is_finite():return "로봇이 접근할 평탄한 토대가 없는 광맥입니다. 다른 광맥을 선택하세요."
-			if thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),current,target_vein):return "고온 광맥입니다. 구역을 먼저 냉각하세요."
-			var reason:=FrontierRobotWork.reason(world,robot,target_vein)
-			if not reason.is_empty():return reason
-			current.remaining[target]=int(current.remaining.get(target,target_vein.capacity))
-			robot.target=target;robot.phase="return" if total(robot.cargo)>0 else "outbound";robot.path=[];robot.status="경로 조사 중";return ""
 		if position.distance_to(point(robot.position))>6:return "로봇에 가까이 접근하세요."
 		if kind=="business_robot_rescue":
 			if robot.battery>=20:return "긴급 전력이 필요하지 않습니다."
