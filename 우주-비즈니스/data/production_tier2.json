@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "maximum_tier": 2,
+  "products": {
+    "refined_iron": {
+      "name": "정제 철",
+      "tier": 2,
+      "cost": {
+        "iron": 4
+      },
+      "amount": 2,
+      "seconds": 4,
+      "model": "products/refined_iron",
+      "color": "#83d9c5",
+      "use": "구조 프레임·설비 외피"
+    },
+    "refined_copper": {
+      "name": "정제 구리",
+      "tier": 2,
+      "cost": {
+        "copper": 4
+      },
+      "amount": 2,
+      "seconds": 4,
+      "model": "products/refined_copper",
+      "color": "#83d9c5",
+      "use": "회로·열전달 부품"
+    },
+    "reinforced_frame": {
+      "name": "보강 프레임",
+      "tier": 2,
+      "cost": {
+        "refined_iron": 3,
+        "stone": 2
+      },
+      "amount": 1,
+      "seconds": 6,
+      "model": "products/reinforced_frame",
+      "color": "#83d9c5",
+      "use": "장비·로봇·설비의 Mk.2 구조"
+    },
+    "control_circuit": {
+      "name": "제어 회로",
+      "tier": 2,
+      "cost": {
+        "refined_copper": 2,
+        "stone": 2
+      },
+      "amount": 1,
+      "seconds": 6,
+      "model": "products/control_circuit",
+      "color": "#83d9c5",
+      "use": "무기·자동화·선박의 Mk.2 제어"
+    },
+    "mineral_filter": {
+      "name": "광물 필터",
+      "tier": 2,
+      "cost": {
+        "refined_iron": 1,
+        "stone": 4
+      },
+      "amount": 2,
+      "seconds": 5,
+      "model": "products/mineral_filter",
+      "color": "#83d9c5",
+      "use": "Mk.2 대기·물 정화 소모품"
+    },
+    "heat_transfer_unit": {
+      "name": "열전달 유닛",
+      "tier": 2,
+      "cost": {
+        "refined_copper": 3,
+        "refined_iron": 1
+      },
+      "amount": 1,
+      "seconds": 7,
+      "model": "products/heat_transfer_unit",
+      "color": "#83d9c5",
+      "use": "열 조절·발전·탐험복 개조"
+    },
+    "soil_base": {
+      "name": "토양 기반재",
+      "tier": 2,
+      "cost": {
+        "stone": 4,
+        "ice": 2
+      },
+      "amount": 2,
+      "seconds": 5,
+      "model": "products/soil_base",
+      "color": "#83d9c5",
+      "use": "Mk.2 배양기의 토양 개량 소모품"
+    }
+  },
+  "facility_upgrades": {
+    "solar": {
+      "cost": {
+        "refined_copper": 3,
+        "heat_transfer_unit": 1
+      },
+      "factor": 1.5,
+      "effect": "발전량 +50%"
+    },
+    "charger": {
+      "cost": {
+        "control_circuit": 1,
+        "heat_transfer_unit": 1
+      },
+      "factor": 1.5,
+      "effect": "충전 속도 +50%"
+    },
+    "factory": {
+      "cost": {
+        "reinforced_frame": 2,
+        "control_circuit": 1
+      },
+      "factor": 1.5,
+      "effect": "부품·로봇 제작 속도 +50%"
+    },
+    "atmosphere": {
+      "cost": {
+        "reinforced_frame": 1,
+        "mineral_filter": 2
+      },
+      "factor": 1.5,
+      "effect": "대기 처리 +50% · 필터로 독성 추가 제거"
+    },
+    "thermal": {
+      "cost": {
+        "reinforced_frame": 1,
+        "heat_transfer_unit": 2
+      },
+      "factor": 1.5,
+      "effect": "온도 조절 +50%"
+    },
+    "water": {
+      "cost": {
+        "reinforced_frame": 1,
+        "mineral_filter": 2
+      },
+      "factor": 1.5,
+      "effect": "급수 +50% · 필터로 염류 제거"
+    },
+    "biolab": {
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 1,
+        "soil_base": 2
+      },
+      "factor": 1.5,
+      "effect": "배양 +50% · 기반재로 토양 개량"
+    }
+  },
+  "robot_upgrade": {
+    "cost": {
+      "reinforced_frame": 2,
+      "control_circuit": 1
+    },
+    "mine_amount": 18,
+    "capacity": 64,
+    "speed_factor": 1.2
+  },
+  "suit_upgrade": {
+    "cost": {
+      "reinforced_frame": 1,
+      "heat_transfer_unit": 1
+    },
+    "stamina_factor": 0.8,
+    "fall_damage_factor": 0.75
+  },
+  "vessel_upgrade_cost": {
+    "reinforced_frame": 3,
+    "control_circuit": 2,
+    "heat_transfer_unit": 1
+  },
+  "restoration": {
+    "starting_salinity": 70,
+    "starting_soil": 10,
+    "salinity_target": 20,
+    "soil_target": 60,
+    "filter_cycle": 6,
+    "salt_per_filter": 10,
+    "soil_cycle": 6,
+    "soil_per_pack": 10
+  }
+}

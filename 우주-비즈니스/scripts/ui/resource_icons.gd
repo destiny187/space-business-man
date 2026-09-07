@@ -13,6 +13,7 @@ static func names() -> Dictionary:
 			for alias in row.aliases: id_aliases[alias] = row.id
 		for id in FrontierMinerals.all():
 			if not registry.has(id):registry[id]=FrontierMinerals.entry(id).name
+	for id in FrontierProductionTier2.config().products:registry[id]=FrontierProductionTier2.product(id).name
 	return registry
 
 static func canonical(id: String) -> String:
@@ -47,7 +48,8 @@ static func markup(value: String, pixels: int = 26) -> String:
 	var result := value.replace("[", "[lb]")
 	var aliases: Dictionary = {"광물":"stone", "부품":"research_parts"}
 	for id in names(): aliases[names()[id]] = id
-	for word in aliases:
+	var ordered: Array=aliases.keys();ordered.sort_custom(func(a: String,b: String):return a.length()>b.length())
+	for word in ordered:
 		if not result.contains(word): continue
 		if not patterns.has(word):
 			var pattern := RegEx.new()

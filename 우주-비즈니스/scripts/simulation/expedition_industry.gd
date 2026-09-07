@@ -10,7 +10,7 @@ static func tick(world: Dictionary,dt: float) -> void:
 		var job: Dictionary=site.jobs[id]
 		var factory: Dictionary=site.buildings[job.factory_id]
 		if not factory.active:continue
-		job.progress=minf(float(job.seconds),float(job.progress)+dt)
+		job.progress=minf(float(job.seconds),float(job.progress)+dt*FrontierProductionTier2.factor(factory))
 		if job.progress<float(job.seconds):continue
 		var spawn:=Vector3.INF
 		for i in 12:
@@ -22,6 +22,7 @@ static func tick(world: Dictionary,dt: float) -> void:
 		site.robots[id]={"id":id,"grade":job.grade,"position":FrontierExpeditionBusiness.array(spawn),"battery":100.0,"cargo":FrontierExpeditionBusiness.inventory(),"phase":"idle","target":"","path":[],"status":"작업 배정 대기","work":0.0,"charging":false}
 		site.jobs.erase(id)
 	for robot in site.robots.values():_robot(world,site,robot,dt)
+	FrontierProductionTier2.tick(site,dt)
 	FrontierFieldEngineering.tick(world,dt)
 	environment(world,site,dt)
 	if not site.production_paid and int(site.delivered)>=48 and not site.robots.is_empty():
@@ -35,7 +36,7 @@ static func power(world: Dictionary,site: Dictionary) -> void:
 		building.active=false;building.status="정지" if not building.enabled else "전력 대기"
 		if not supported:building.status="토대 지지 필요";continue
 		if not building.enabled:continue
-		if float(def.power)<=0:building.active=true;building.status="발전 중" if def.power<0 else "사용 가능";supply-=float(def.power)
+		if float(def.power)<=0:building.active=true;building.status="발전 중" if def.power<0 else "사용 가능";supply-=float(def.power)*FrontierProductionTier2.factor(building)
 		else:demand+=float(def.power)
 	var remaining:=supply
 	for kind in ["charger","factory","atmosphere","thermal","water","biolab"]:
@@ -65,7 +66,7 @@ static func _move(world: Dictionary,r: Dictionary,target: Vector3,dt: float) -> 
 		if result.points.is_empty():r.status="경로 막힘 · 통로 확보 필요";return false
 		for p in result.points:r.path.append(FrontierExpeditionBusiness.array(p))
 		if r.path.size()>1:r.path.pop_front()
-	var travel: float=float(FrontierCatalog.entry("robots","miner").speed)*float(FrontierCatalog.entry("grades",r.grade).multiplier)*dt
+	var travel: float=float(FrontierCatalog.entry("robots","miner").speed)*float(FrontierCatalog.entry("grades",r.grade).multiplier)*dt*(float(FrontierProductionTier2.config().robot_upgrade.speed_factor) if int(r.get("tier",1))==2 else 1.0)
 	while travel>0 and not r.path.is_empty():
 		var goal:=FrontierExpeditionBusiness.point(r.path[0]);var distance:=current.distance_to(goal)
 		var step: float=minf(distance,travel)
@@ -91,7 +92,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 		var goal:=FrontierExpeditionBusiness.point(charger.position)+Vector3(3,0,0);goal.y=FrontierCrewSurface.field(world).height(goal.x,goal.z)
 		r.status="충전기 복귀"
 		if _move(world,r,goal,dt):
-			r.status="충전 중";r.battery=minf(100,float(r.battery)+float(cfg.robot_charge_rate)*dt)
+			r.status="충전 중";r.battery=minf(100,float(r.battery)+float(cfg.robot_charge_rate)*dt*FrontierProductionTier2.factor(charger))
 			if r.battery>=99:r.charging=false;r.path=[]
 		return
 	if r.phase=="idle":r.status="작업 배정 대기";return
@@ -110,18 +111,19 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	r.status="채광 중";r.work+=dt
 	if r.work<1:return
 	r.work=0
-	var amount:=mini(int(site.remaining[r.target]),mini(int(cfg.robot_mine_amount),int(cfg.robot_capacity)-FrontierExpeditionBusiness.total(r.cargo)))
+	var amount:=mini(int(site.remaining[r.target]),mini((int(FrontierProductionTier2.config().robot_upgrade.mine_amount) if int(r.get("tier",1))==2 else int(cfg.robot_mine_amount)),FrontierProductionTier2.robot_capacity(r)-FrontierExpeditionBusiness.total(r.cargo)))
 	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work))
-	if FrontierExpeditionBusiness.total(r.cargo)>=int(cfg.robot_capacity) or site.remaining[r.target]<=0:r.phase="return";r.path=[]
+	if FrontierExpeditionBusiness.total(r.cargo)>=FrontierProductionTier2.robot_capacity(r) or site.remaining[r.target]<=0:r.phase="return";r.path=[]
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	if FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()
 	for b in site.buildings.values():
 		if not b.active:continue
-		var engineering: float=FrontierFieldEngineering.factor(world,b)
+		var engineering: float=FrontierFieldEngineering.factor(world,b)*FrontierProductionTier2.factor(b)
+		FrontierProductionTier2.restore(site,b,dt)
 		match b.type:
 			"atmosphere":
-				e.oxygen=move_toward(float(e.oxygen),.21,float(cfg.oxygen_rate)*dt);e.pressure=move_toward(float(e.pressure),1,float(cfg.pressure_rate)*dt);e.toxicity=move_toward(float(e.toxicity),0,float(cfg.toxicity_rate)*dt)
+				e.oxygen=move_toward(float(e.oxygen),.21,float(cfg.oxygen_rate)*dt*FrontierProductionTier2.factor(b));e.pressure=move_toward(float(e.pressure),1,float(cfg.pressure_rate)*dt*FrontierProductionTier2.factor(b));e.toxicity=move_toward(float(e.toxicity),0,float(cfg.toxicity_rate)*dt*FrontierProductionTier2.factor(b))
 			"thermal":e.temperature=move_toward(float(e.temperature),18,float(cfg.thermal_rate)*dt*engineering)
 			"water":
 				if e.water>=100:b.status="목표 달성";continue
@@ -132,11 +134,12 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 			"biolab":
 				var score:=FrontierEvaluator.scores(e)
 				if minf(score.atmosphere,minf(score.temperature,score.water))<60:b.status="대기·온도·수질 안정화 필요";continue
+				if not FrontierProductionTier2.restoration_ready(site):b.status="Mk.2 담수 처리·토양 개량 필요";continue
 				if e.ecology>=100:b.status="배양 목표 달성";continue
 				if site.inventory.ice<=0:b.status="배양 수분 공급 필요";continue
 				b.work+=dt
 				if b.work>=float(cfg.biolab_nutrient_seconds):site.inventory.ice-=1;b.work=0.0
 				e.ecology=minf(100,float(e.ecology)+float(cfg.biolab_rate)*dt*engineering)
 	var scores:=FrontierEvaluator.scores(e)
-	if minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60:e.stable_seconds=minf(120,e.stable_seconds+dt)
+	if FrontierProductionTier2.restoration_ready(site) and minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60:e.stable_seconds=minf(120,e.stable_seconds+dt)
 	else:e.stable_seconds=0.0

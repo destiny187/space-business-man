@@ -1,5 +1,9 @@
 # 게임 설계 문서 목차
 
+- [2티어 공통 제품·분야별 첫 개조](production/36-tier2-production-and-retrofits.md): 실제 생산·인수·장비/탐험복/로봇/설비/선박 강화와 신규 T2 복원 조건.
+
+- [테라포밍 생산 단계와 고급 제품](game/15-terraforming-production-progression.md): 초반 직접 제작 유지, 후반 정제·화학·합금·배양·코어 생산과 환경 처리 능력의 구현 전 설계.
+
 - [200m 지하·시드 동굴·매장 자원 구조](technical/07-seeded-underground.md): 2026-09-07 확정 방향과 구현 전 설계. 기반암 차단·동굴 연결·지질 경관·미래 아이템/재화 확장 지점을 다룬다.
 
 2026-09-06 최신 시작 구조: [무작위 은하·지구 출발·별도 대기실](production/20-galaxy-start-and-lobby.md). 새 생성기/세션 흐름과 기존 1.2 및 이전 확장 검증을 구분한다.

@@ -18,7 +18,7 @@ static func step(member: Dictionary,delta: float,wants_sprint: bool,moving: bool
 	if v.exhausted and v.stamina>=c.exhaustion_release:v.exhausted=false
 	v.sprinting=member.area=="surface" and wants_sprint and moving and not v.exhausted and v.stamina>0
 	if v.sprinting:
-		v.stamina=maxf(0,v.stamina-c.stamina_drain*delta);v.rest=c.recovery_delay
+		v.stamina=maxf(0,v.stamina-c.stamina_drain*delta*(float(FrontierProductionTier2.config().suit_upgrade.stamina_factor) if int(FrontierEquipment.state(member).get("suit_tier",1))==2 else 1.0));v.rest=c.recovery_delay
 		if v.stamina<=0:v.exhausted=true;v.sprinting=false
 	else:
 		v.rest=maxf(0,v.rest-delta)
@@ -29,7 +29,7 @@ static func step(member: Dictionary,delta: float,wants_sprint: bool,moving: bool
 static func land(member: Dictionary,impact_speed: float) -> bool:
 	var v:=ensure(member);var c:=config()
 	if v.protection>0 or impact_speed<=c.fall_safe_speed:return false
-	v.health=maxf(0,v.health-(impact_speed-c.fall_safe_speed)*c.fall_damage_scale)
+	v.health=maxf(0,v.health-(impact_speed-c.fall_safe_speed)*c.fall_damage_scale*(float(FrontierProductionTier2.config().suit_upgrade.fall_damage_factor) if int(FrontierEquipment.state(member).get("suit_tier",1))==2 else 1.0))
 	v.hurt=c.heal_delay;v.damage_serial+=1
 	if v.health>0:return false
 	v.health=c.rescue_health;v.protection=c.rescue_protection;v.rescue_serial+=1

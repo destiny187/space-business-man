@@ -1,0 +1,11 @@
+{
+  "engine": "Godot 4.7.2 Metal Forward+",
+  "core_checks": 29,
+  "core_failures": 0,
+  "core_log": "/tmp/space-tier2-smoke.log",
+  "ui_log": "/tmp/space-tier2-ui.log",
+  "scope": "Isolated supplied-stock and supported-facility fixture, actual host commands, save reload and UI/audio checks. No broad regression or multiple clients.",
+  "ui_checks": 6,
+  "ui_failures": 0,
+  "ui_note": "Removed an unparented fallback Node3D in the visual checker after detecting its exit leak."
+}

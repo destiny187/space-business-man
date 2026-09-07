@@ -104,10 +104,14 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		ledger.sites[world.location]={"center":array(center),"state":"active","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
 		if not FrontierMineralWorld.enabled(body):
 			for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
+		if int(body.planet_tier)==2 and body.get("origin","")!="solar_reference":
+			var cfg: Dictionary=FrontierProductionTier2.config().restoration
+			ledger.sites[world.location].restoration2={"salinity":float(cfg.starting_salinity),"soil":float(cfg.starting_soil)}
 		ledger.active=world.location;return ""
 	var current:=site(world)
 	if current.is_empty():return "먼저 무료 개발 사업을 등록하세요."
 	if current.state!="active":return "정산된 계약의 자산은 인계됐습니다. 관찰과 다른 행성 탐험은 가능합니다."
+	if kind in ["business_produce","business_withdraw","business_facility_upgrade","business_robot_upgrade"]:return FrontierProductionTier2.apply(world,actor,kind,args)
 	var near_base: bool=position.distance_to(point(current.center))<=float(config().deposit_range)
 	if kind=="business_mine":
 		var row:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),str(args.get("vein_id","")))
@@ -169,10 +173,13 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if position.distance_to(point(building.position))>float(config().interaction_range):return "시설 8m 이내로 접근하세요."
 		if kind=="business_toggle":building.enabled=not building.enabled;return ""
 		if kind=="business_demolish":
+			if not building.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
 			if FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 공학 실험을 완료한 뒤 철거하세요."
 			for job in current.jobs.values():
 				if job.factory_id==id:return "제작이 끝난 뒤 제작소를 철거하세요."
+			if int(building.get("tier",1))==2:transfer(current.inventory,FrontierProductionTier2.config().facility_upgrades[building.type].cost,1)
 			transfer(current.inventory,FrontierCatalog.entry("buildings",building.type).cost,1);current.buildings.erase(id);return ""
+		if not building.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
 		if building.type!="factory" or "robotics" not in ledger.technologies:return "기술을 갖춘 제작소가 필요합니다."
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
 		if FrontierFieldEngineering.uses(world,world.location,id):return "이 제작소의 공학 시제품 제작을 먼저 완료하세요."
@@ -211,6 +218,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="작업 배정 대기";current.robots[id]=robot;ledger.hangar.erase(id);return ""
 	if kind=="business_settle":
 		if not near_base:return "현장 창고에서 계약 인계를 확정하세요."
+		if not FrontierProductionTier2.restoration_ready(current):return "Mk.2 담수 처리·토양 개량이 필요합니다. 염류 20 이하, 토양 60 이상을 달성하세요."
+		for facility in current.buildings.values():
+			if not facility.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
 		var scores:=FrontierEvaluator.scores(current.environment)
 		if minf(scores.atmosphere,minf(scores.temperature,scores.water))<float(config().contract_environment_minimum) or current.environment.ecology<float(config().contract_ecology_minimum) or current.environment.stable_seconds<float(config().contract_stable_seconds):return "대기·온도·수자원 60점, 생태 20점, 30초 안정화가 필요합니다."
 		if not current.jobs.is_empty():return "진행 중인 로봇 제작을 완료하세요."
@@ -250,21 +260,22 @@ static func public_view(world: Dictionary,actor: String) -> Dictionary:
 static func visible_robot(source: Dictionary) -> Dictionary:
 	var result: Dictionary={"path":[]}
 	for key in ["id","grade","battery","phase","target","status","work","charging"]:result[key]=source[key]
+	result.tier=int(source.get("tier",1))
 	result.position=source.position.duplicate();result.cargo=source.cargo.duplicate()
 	return result
 static func valid_inventory(value: Variant,maximum: int=100000000) -> bool:
-	if not value is Dictionary or value.size()>19:return false
+	if not value is Dictionary or value.size()>19+FrontierProductionTier2.config().products.size():return false
 	for key in inventory():
 		if not value.has(key):return false
 	for key in value:
-		if FrontierMinerals.entry(key).is_empty() or not integer(value[key],0,maximum):return false
+		if FrontierCatalog.entry("resources",key).is_empty() or not integer(value[key],0,maximum):return false
 	return true
 static func integer(value: Variant,low: int,high: int) -> bool:
 	return FrontierUniverse._finite(value,low,high) and value==floorf(value)
 static func valid_robot(robot: Variant,id: String) -> bool:
-	if not robot is Dictionary or robot.get("id")!=id or robot.get("grade") not in FrontierCatalog.table("grades"):return false
-	if not FrontierUniverse._vector3_array(robot.get("position")) or not FrontierUniverse._finite(robot.get("battery"),0,100) or not valid_inventory(robot.get("cargo"),int(config().robot_capacity)):return false
-	if total(robot.cargo)>int(config().robot_capacity) or robot.get("phase") not in ["idle","outbound","return"] or not robot.get("target") is String or not robot.get("status") is String or not robot.get("charging") is bool:return false
+	if not robot is Dictionary or not integer(robot.get("tier",1),1,2) or robot.get("id")!=id or robot.get("grade") not in FrontierCatalog.table("grades"):return false
+	if not FrontierUniverse._vector3_array(robot.get("position")) or not FrontierUniverse._finite(robot.get("battery"),0,100) or not valid_inventory(robot.get("cargo"),FrontierProductionTier2.robot_capacity(robot)):return false
+	if total(robot.cargo)>FrontierProductionTier2.robot_capacity(robot) or robot.get("phase") not in ["idle","outbound","return"] or not robot.get("target") is String or not robot.get("status") is String or not robot.get("charging") is bool:return false
 	if not FrontierUniverse._finite(robot.get("work"),0,1) or not robot.get("path") is Array or robot.path.size()>3500:return false
 	for p in robot.path:
 		if not FrontierUniverse._vector3_array(p):return false
@@ -320,6 +331,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		for key in current.buildings:
 			var b: Variant=current.buildings[key]
 			if not b is Dictionary or b.get("id")!=key or b.get("type") not in config().buildings or not FrontierUniverse._vector3_array(b.get("position")) or not FrontierUniverse._finite(b.get("yaw"),-TAU,TAU):return "시설 정의·위치 오류"
+			if not FrontierProductionTier2.validate_building(b):return "2티어 생산·개조 기록 오류"
 			if not b.get("engineering","") is String or (not b.get("engineering","").is_empty() and FrontierFieldEngineering.definition(b.engineering).get("building")!=b.type):return "시설 개조 정의 오류"
 			if not b.get("enabled") is bool or not b.get("active") is bool or not b.get("status") is String or not FrontierUniverse._finite(b.get("work"),0,10000000):return "시설 운영 기록 오류"
 		for key in current.robots:
@@ -331,6 +343,11 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 			if not key is String or robots.has(key) or not job is Dictionary or job.get("id")!=key or not current.buildings.has(job.get("factory_id","")) or current.buildings[job.factory_id].type!="factory" or job.get("grade") not in FrontierCatalog.table("grades"):return "로봇 제작 예약 오류"
 			if job.get("seconds")!=float(FrontierCatalog.entry("robots","miner").seconds) or not FrontierUniverse._finite(job.get("progress"),0,float(job.seconds)):return "로봇 제작 진행 오류"
 			robots[key]=true
+		var restoration: Variant=current.get("restoration2",{})
+		if not restoration is Dictionary:return "2티어 복원 기록 오류"
+		if not restoration.is_empty():
+			for attribute in ["salinity","soil"]:
+				if not FrontierUniverse._finite(restoration.get(attribute),0,100):return "염류·토양 기록 오류"
 		var e: Dictionary=current.environment
 		for key in ["temperature","pressure","oxygen","toxicity","water","ecology","stable_seconds"]:
 			var limits: Array={"temperature":[-273,1000],"pressure":[0,10],"oxygen":[0,1],"toxicity":[0,100],"water":[0,100],"ecology":[0,100],"stable_seconds":[0,120]}[key]

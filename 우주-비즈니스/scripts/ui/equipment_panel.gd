@@ -5,6 +5,9 @@ var tabs: TabContainer
 var hotbar: HBoxContainer
 var hotbuttons: Array[FrontierItemTile]=[]
 var owned: GridContainer
+var upgrade_action: Button
+var suit_action: Button
+var withdraw_count: SpinBox
 var recipes: GridContainer
 var cargo: GridContainer
 var preview: FrontierEquipmentPreview
@@ -64,6 +67,9 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	materials=HBoxContainer.new();materials.add_theme_constant_override("separation",8);detail.add_child(materials)
 	message=FrontierInterfaceStyle.label(detail,"",12,FrontierInterfaceStyle.MUTED);message.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;message.custom_minimum_size.y=28
 	action=Button.new();action.custom_minimum_size.y=44;action.pressed.connect(_action);detail.add_child(action)
+	upgrade_action=Button.new();upgrade_action.text="선택 장비 Mk.2 개조";upgrade_action.pressed.connect(func():app.session.send_request("equipment_upgrade",{"item_id":selected_item}));detail.add_child(upgrade_action)
+	suit_action=Button.new();suit_action.text="탐험복 Mk.2 개조";suit_action.tooltip_text="보강 프레임 1 + 열전달 유닛 1 · 달리기 소모 −20%, 낙하 피해 −25%";suit_action.icon=FrontierResourceIcons.menu_texture("reinforced_frame");suit_action.pressed.connect(func():app.session.send_request("equipment_suit_upgrade",{}));detail.add_child(suit_action)
+	withdraw_count=SpinBox.new();withdraw_count.min_value=1;withdraw_count.max_value=96;withdraw_count.value=1;withdraw_count.prefix="인수";detail.add_child(withdraw_count)
 	var footer:=HBoxContainer.new();column.add_child(footer)
 	FrontierInterfaceStyle.label(footer,"장비 선택 → 아래 번호 슬롯 클릭  ·  끌어놓기 가능",12,FrontierInterfaceStyle.MUTED)
 	var info:=FrontierInterfaceStyle.label(footer,"E  내장 스캐너",12,FrontierInterfaceStyle.ACCENT);info.size_flags_horizontal=Control.SIZE_EXPAND_FILL;info.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
@@ -113,13 +119,17 @@ func _process(delta: float) -> void:
 		for child in grid.get_children():grid.remove_child(child);child.queue_free()
 	tiles.clear()
 	for id in data.items:_tile(owned,id,data.items[id])
-	for id in FrontierEquipment.config().items:_tile(recipes,"",id)
+	for id in FrontierEquipment.config().items:
+		if FrontierEquipment.config().items[id].get("craftable",true):_tile(recipes,"",id)
 	for i in maxi(0,12-data.items.size()):
 		var empty:=FrontierItemTile.new();empty.disabled=true;empty.tooltip_text="빈 보관 공간";owned.add_child(empty)
 	var source: Dictionary=bag if storage.selected==0 else depot
 	for id in source:
 		var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(id);tile.amount=str(int(source[id]));tile.tooltip_text=FrontierCatalog.entry("resources",id).name;tile.pressed.connect(func():selected_resource=id;selected_item="";_refresh_details());cargo.add_child(tile)
 	if selected_item!="" and not data.items.has(selected_item):selected_item=""
+	if tabs.current_tab==0 and not data.items.is_empty():
+		if selected_item.is_empty():selected_item=data.slots[int(data.selected)] if data.slots[int(data.selected)]!="" else data.items.keys()[0]
+		selected_definition=data.items[selected_item]
 	_refresh_details();_highlight()
 func _tile(parent: Node,id: String,definition: String) -> void:
 	var def: Dictionary=FrontierEquipment.config().items[definition]
@@ -141,15 +151,21 @@ func _metric(label: String,value: String,ratio: float,color: Color=FrontierInter
 func _refresh_details() -> void:
 	if data.is_empty():return
 	_clear(stats);_clear(materials)
+	upgrade_action.hide();withdraw_count.visible=tabs.current_tab==2 and storage.selected==1
+	suit_action.visible=tabs.current_tab==0
+	suit_action.disabled=int(data.get("suit_tier",1))>=2 or not FrontierExpeditionBusiness.affordable(bag,FrontierProductionTier2.config().suit_upgrade.cost)
+	suit_action.text="탐험복 Mk.2 완료" if int(data.get("suit_tier",1))>=2 else "탐험복 Mk.2 개조"
 	if tabs.current_tab==2:
 		if selected_resource.is_empty():selected_resource="iron"
 		var resource:=FrontierCatalog.entry("resources",selected_resource)
 		title.text=resource.name;category.text="CARGO / "+("내 배낭" if storage.selected==0 else "공동 창고")
-		preview.show_model("ore_"+selected_resource)
+		var product:=FrontierProductionTier2.product(selected_resource)
+		preview.show_model(product.model if not product.is_empty() else "ore_"+selected_resource)
 		_metric("보유 수량",str(int((bag if storage.selected==0 else depot).get(selected_resource,0))),float((bag if storage.selected==0 else depot).get(selected_resource,0))/96)
-		_metric("채집기 요구 등급",str(int(FrontierMineralWorld.tier(selected_resource))),float(FrontierMineralWorld.tier(selected_resource))/3)
-		action.text="현장 창고에 반납";action.disabled=storage.selected!=0 or FrontierExpeditionBusiness.total(bag)==0
-		if response_left<=0:message.text="현장 창고 근처에서 반납할 수 있습니다.";message.modulate=Color.WHITE
+		if not product.is_empty():FrontierInterfaceStyle.label(stats,product.use,12)
+		else:_metric("채집기 요구 등급",str(int(FrontierMineralWorld.tier(selected_resource))),float(FrontierMineralWorld.tier(selected_resource))/3)
+		action.text="공동 창고에서 인수" if storage.selected==1 else "현장 창고에 반납";action.disabled=int(depot.get(selected_resource,0))<=0 if storage.selected==1 else FrontierExpeditionBusiness.total(bag)==0
+		if response_left<=0:message.text="현장 창고 근처에서 선택 수량을 인수합니다." if storage.selected==1 else "현장 창고 근처에서 반납할 수 있습니다.";message.modulate=Color.WHITE
 		return
 	var def: Dictionary=FrontierEquipment.config().items[selected_definition]
 	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환"}[def.kind]
@@ -168,6 +184,13 @@ func _refresh_details() -> void:
 		action.text="제작";action.disabled=int(data.kit)<=0 if selected_definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost)
 		if response_left<=0:message.text="재료를 모으면 제작할 수 있습니다." if action.disabled else "내 배낭의 재료를 사용합니다.";message.modulate=Color.WHITE
 	else:
+		upgrade_action.visible=int(def.tier)==1 and selected_item!=""
+		var next: Dictionary=FrontierEquipment.config().items.get(str(def.kind)+"_2",{})
+		upgrade_action.disabled=not FrontierExpeditionBusiness.affordable(bag,next.get("cost",{}))
+		upgrade_action.tooltip_text=FrontierCatalog.cost_text(next.get("cost",{}))+" · 장비 ID와 슬롯 유지"
+		if upgrade_action.visible:
+			for resource in next.get("cost",{}):
+				var column:=VBoxContainer.new();materials.add_child(column);column.add_child(FrontierResourceIcons.view(resource,28));FrontierInterfaceStyle.label(column,"%d/%d"%[int(bag.get(resource,0)),int(next.cost[resource])],12)
 		action.text="현재 슬롯 비우기";action.disabled=data.slots[int(data.selected)]==""
 		if response_left<=0:message.text="장비를 선택하고 아래 슬롯에 놓으세요.";message.modulate=Color.WHITE
 func _slot(slot: int) -> void:
@@ -177,5 +200,7 @@ func _equip(id: String,slot: int) -> void:
 	if visible and data.items.has(id):app.session.send_request("equipment_equip",{"item_id":id,"slot":slot})
 func _action() -> void:
 	if tabs.current_tab==1:app.session.send_request("equipment_craft",{"definition":selected_definition})
-	elif tabs.current_tab==2:app.session.send_request("business_deposit",{})
+	elif tabs.current_tab==2:
+		if storage.selected==1:app.session.send_request("business_withdraw",{"resource":selected_resource,"amount":int(withdraw_count.value)})
+		else:app.session.send_request("business_deposit",{})
 	else:app.session.send_request("equipment_equip",{"item_id":"","slot":int(data.selected)})

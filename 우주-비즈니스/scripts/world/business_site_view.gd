@@ -44,12 +44,14 @@ func accept(value: Dictionary) -> void:
 			_queue_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building");continue
 		nodes[row.id].get_meta("label").text=FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
 		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
+		_upgrade_visual(nodes[row.id],row,false)
 		nodes[row.id].set_meta("working",row.active)
 	for row in site.robots.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"miner",FrontierExpeditionBusiness.point(row.position),.7,"robot");continue
 		nodes[row.id].set_meta("destination",FrontierExpeditionBusiness.point(row.position))
-		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),int(FrontierExpeditionBusiness.config().robot_capacity),row.status]
+		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
+		_upgrade_visual(nodes[row.id],row,true)
 		nodes[row.id].set_meta("working",row.status=="채광 중")
 	for id in value.crates:
 		var row: Dictionary=value.crates[id]
@@ -64,6 +66,8 @@ func accept(value: Dictionary) -> void:
 	terrain.material.set_shader_parameter("restoration_center",FrontierExpeditionBusiness.point(site.center))
 	terrain.material.set_shader_parameter("restoration_radius",float(FrontierExpeditionBusiness.config().build_radius))
 	terrain.material.set_shader_parameter("restoration",restore_amount)
+	terrain.material.set_shader_parameter("soil_recovery",float(site.get("restoration2",{}).get("soil",0))/100.0)
+	terrain.material.set_shader_parameter("salt_crust",float(site.get("restoration2",{}).get("salinity",0))/100.0)
 	if body.get("traits",{}).get("id","")=="volcanic":terrain.material.set_shader_parameter("local_heat",clampf((float(site.environment.temperature)-float(body.traits.cooling_threshold))/maxf(1,float(body.traits.temperature)-float(body.traits.cooling_threshold)),0,1))
 func target(camera: Camera3D,viewer: CollisionObject3D) -> Dictionary:
 	var query:=PhysicsRayQueryParameters3D.create(camera.global_position,camera.global_position-camera.global_basis.z*12);query.exclude=[viewer.get_rid()]
@@ -119,3 +123,13 @@ func _exit_tree() -> void:
 	for model in requested_models:
 		var path: String="res://assets/models/"+model+".glb"
 		if ResourceLoader.load_threaded_get_status(path)!=ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:ResourceLoader.load_threaded_get(path)
+
+func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
+	if int(row.get("tier",1))!=2 or node.has_meta("tier2_visual"):return
+	var visual: Node3D=node.get_meta("visual")
+	var pack: Node3D=load("res://assets/models/products/retrofit_pack.glb").instantiate()
+	FrontierInkStyle.apply(pack,cache);visual.add_child(pack)
+	pack.position=Vector3(0,1.1,.55) if robot else Vector3(.75,1.2,.7)
+	pack.rotation.y=PI
+	pack.scale=Vector3.ONE*(.8 if robot else 1.25)
+	node.set_meta("tier2_visual",true)

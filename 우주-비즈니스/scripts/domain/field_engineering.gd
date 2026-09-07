@@ -50,7 +50,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		"business_research_prototype":
 			if records.has(key):return "이미 시작한 과제입니다. 시제품 완료 후 현장 시험을 진행하세요."
 			if b.type!="factory":return "시제품은 로봇 제작소에서 제작합니다."
-			if uses(world,world.location,id) or not site.jobs.is_empty():return "제작소의 진행 작업을 먼저 완료하세요."
+			if uses(world,world.location,id) or not site.jobs.is_empty() or not b.get("production",{}).is_empty():return "제작소의 진행 작업을 먼저 완료하세요."
 			var proof:=evidence(world.get("ecology",{}),key)
 			if proof.is_empty():return "관련 서식 환경의 생물 스캔과 기초 분석이 필요합니다."
 			cost=config().prototype_cost

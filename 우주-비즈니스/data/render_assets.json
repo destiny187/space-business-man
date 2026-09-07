@@ -8994,5 +8994,104 @@
     "source": "art/blender/surface-details/ochre.blend",
     "geometry": "blender-authored",
     "foliage": false
+  },
+  {
+    "id": "refined_iron",
+    "name": "정제 철",
+    "source": "art/blender/tier2/refined_iron.blend",
+    "model": "res://assets/models/products/refined_iron.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "refined_copper",
+    "name": "정제 구리",
+    "source": "art/blender/tier2/refined_copper.blend",
+    "model": "res://assets/models/products/refined_copper.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "reinforced_frame",
+    "name": "보강 프레임",
+    "source": "art/blender/tier2/reinforced_frame.blend",
+    "model": "res://assets/models/products/reinforced_frame.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "control_circuit",
+    "name": "제어 회로",
+    "source": "art/blender/tier2/control_circuit.blend",
+    "model": "res://assets/models/products/control_circuit.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "mineral_filter",
+    "name": "광물 필터",
+    "source": "art/blender/tier2/mineral_filter.blend",
+    "model": "res://assets/models/products/mineral_filter.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "heat_transfer_unit",
+    "name": "열전달 유닛",
+    "source": "art/blender/tier2/heat_transfer_unit.blend",
+    "model": "res://assets/models/products/heat_transfer_unit.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "soil_base",
+    "name": "토양 기반재",
+    "source": "art/blender/tier2/soil_base.blend",
+    "model": "res://assets/models/products/soil_base.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "retrofit_pack",
+    "name": "Mk.2 개조 팩",
+    "source": "art/blender/tier2/retrofit_pack.blend",
+    "model": "res://assets/models/products/retrofit_pack.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "miner_mk2",
+    "name": "자원채집기 Mk.2",
+    "source": "art/blender/tier2/miner_mk2.blend",
+    "model": "res://assets/models/equipment/miner_mk2.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "pulse_mk2",
+    "name": "펄스 카빈 Mk.2",
+    "source": "art/blender/tier2/pulse_mk2.blend",
+    "model": "res://assets/models/equipment/pulse_mk2.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
+  },
+  {
+    "id": "terrain_mk2",
+    "name": "지형 변환기 Mk.2",
+    "source": "art/blender/tier2/terrain_mk2.blend",
+    "model": "res://assets/models/equipment/terrain_mk2.glb",
+    "group": "2티어",
+    "geometry": "gameplay-prototype",
+    "foliage": false
   }
 ]

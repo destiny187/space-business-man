@@ -33,6 +33,7 @@ static func validate(value: Variant) -> String:
 	if int(value.selected)>=int(config().slots) or int(value.kit)>1:return "선택 슬롯"
 	for id in value.items:
 		if not id is String or not config().items.has(value.items[id]):return "장비 정의"
+	if not FrontierExpeditionBusiness.integer(value.get("suit_tier",1),1,2):return "탐험복 개조 등급"
 	var seen: Array=[]
 	for id in value.slots:
 		if not id is String or (id!="" and (not value.items.has(id) or id in seen)):return "슬롯 소유권"
@@ -51,12 +52,32 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		for i in data.slots.size():
 			if data.slots[i]==id:data.slots[i]=""
 		data.slots[slot]=id;return ""
+	if kind=="equipment_suit_upgrade":
+		if member.area!="surface":return "착륙 후 탐험복을 개조하세요."
+		if int(data.get("suit_tier",1))>=2:return "탐험복은 이미 Mk.2입니다."
+		var cost: Dictionary=FrontierProductionTier2.config().suit_upgrade.cost
+		var stock:=FrontierExpeditionBusiness.bag(world,actor)
+		if not FrontierExpeditionBusiness.affordable(stock,cost):return "배낭의 탐험복 개조 부품이 부족합니다."
+		FrontierExpeditionBusiness.transfer(stock,cost,-1);data.suit_tier=2;return ""
+	if kind=="equipment_upgrade":
+		if member.area!="surface":return "착륙 후 장비를 개조하세요."
+		var id:=str(args.get("item_id",""))
+		if not data.items.has(id):return "내 장비를 선택하세요."
+		var original: String=data.items[id]
+		for key in config().items:
+			var target: Dictionary=config().items[key]
+			if target.get("upgrade_from","")!=original:continue
+			var stock:=FrontierExpeditionBusiness.bag(world,actor)
+			if not FrontierExpeditionBusiness.affordable(stock,target.cost):return "배낭의 Mk.2 부품이 부족합니다."
+			FrontierExpeditionBusiness.transfer(stock,target.cost,-1);data.items[id]=key;return ""
+		return "현재 최고 개조 단계입니다."
 	if kind!="equipment_craft":return "지원하지 않는 장비 작업"
 	if member.area!="surface":return "착륙 후 휴대 제작기를 사용하세요."
 	var definition: String=str(args.get("definition",""))
 	if not config().items.has(definition):return "제작 설계도 오류"
 	if data.items.size()>=int(config().max_items):return "장비 보관 한도에 도달했습니다."
 	var recipe: Dictionary=config().items[definition]
+	if not recipe.get("craftable",true):return "현재 제작은 Mk.2까지 지원합니다."
 	if definition=="miner_1":
 		if int(data.kit)<=0:return "기초 조립 키트를 이미 사용했습니다. 소유 채집기를 장착하세요."
 		data.kit-=1

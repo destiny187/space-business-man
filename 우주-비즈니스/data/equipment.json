@@ -26,16 +26,17 @@
       "name": "자원채집기 Mk.2",
       "kind": "miner",
       "tier": 2,
-      "model": "manual_tool",
+      "model": "equipment/miner_mk2",
       "preview": "manual_tool",
       "cost": {
-        "iron": 8,
-        "copper": 6
+        "reinforced_frame": 1,
+        "control_circuit": 1
       },
       "interval": 0.4,
       "amount": 4,
       "damage": 40,
-      "radius": 1.7
+      "radius": 1.7,
+      "upgrade_from": "miner_1"
     },
     "miner_3": {
       "name": "자원채집기 Mk.3",
@@ -50,7 +51,8 @@
       "interval": 0.3,
       "amount": 5,
       "damage": 60,
-      "radius": 2.0
+      "radius": 2.0,
+      "craftable": false
     },
     "pulse_1": {
       "name": "펄스 카빈 Mk.1",
@@ -71,16 +73,17 @@
       "name": "펄스 카빈 Mk.2",
       "kind": "pulse",
       "tier": 2,
-      "model": "equipment/pulse_carbine",
+      "model": "equipment/pulse_mk2",
       "preview": "pulse_carbine",
       "cost": {
-        "iron": 10,
-        "crystal": 3
+        "reinforced_frame": 1,
+        "control_circuit": 2
       },
       "interval": 0.3,
       "amount": 4,
       "damage": 40,
-      "radius": 1.7
+      "radius": 1.7,
+      "upgrade_from": "pulse_1"
     },
     "terrain_1": {
       "name": "지형 변환기 Mk.1",
@@ -101,16 +104,17 @@
       "name": "지형 변환기 Mk.2",
       "kind": "terrain",
       "tier": 2,
-      "model": "equipment/terrain_shaper",
+      "model": "equipment/terrain_mk2",
       "preview": "terrain_shaper",
       "cost": {
-        "copper": 8,
-        "crystal": 3
+        "reinforced_frame": 1,
+        "heat_transfer_unit": 1
       },
       "interval": 0.3,
       "amount": 4,
       "damage": 40,
-      "radius": 1.7
+      "radius": 1.7,
+      "upgrade_from": "terrain_1"
     }
   }
 }

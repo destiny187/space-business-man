@@ -2,6 +2,8 @@ shader_type spatial;
 #include "res://assets/materials/ink/cel_light.gdshaderinc"
 uniform vec4 rock_color : source_color = vec4(.43,.32,.25,1);
 uniform vec4 dust_color : source_color = vec4(.67,.53,.39,1);
+uniform float salt_crust = 0.0;
+uniform float soil_recovery = 0.0;
 uniform float restoration = 0.0;
 uniform bool molten=false;
 uniform float local_heat=1.;
@@ -72,6 +74,9 @@ void fragment(){
   ALBEDO*=1.-crack*.20*upward*near_detail;
  }
  float managed=1.0-smoothstep(restoration_radius*.7,restoration_radius,distance(world_position.xz,restoration_center.xz));
+ float salt_patch=smoothstep(.4,.68,patches)*salt_crust*managed*upward;
+ ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt_patch*.65);
+ ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),soil_recovery*managed*upward*.30);
  ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),restoration*managed*upward*.72);ROUGHNESS=.96;
  if(molten){float heat=mix(1.,local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
  float pulse=.85+.15*sin(TIME*1.3+world_position.z*.2);ALBEDO=mix(ALBEDO,vec3(.65,.07,.005),fissure*heat);EMISSION=vec3(1.,.12,.005)*fissure*heat*pulse*1.6;}

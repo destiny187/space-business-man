@@ -74,6 +74,9 @@ func _response(sequence: int,value: Dictionary) -> void:
 	match request.kind:
 		"surface_attack":
 			recoil=1;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);effects.burst(point,Color("ffb578"),10);audio.play("sfx_combat_pulse")
+		"equipment_upgrade","equipment_suit_upgrade":audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
+		"business_produce":audio.play("sfx_build_place");show_cue("제품 생산 예약")
+		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
 		"equipment_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
 		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3;cue_left=0
 		"surface_dig":
@@ -83,7 +86,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 			cue_left=0;recoil=.3;work_left=.4;effects.suction(point,handheld,request.resource,6)
 			effects.burst(point,Color(FrontierCatalog.entry("resources",request.resource).color),8)
 			audio.play("sfx_mine_hit_metal",point);audio.play("sfx_pickup_resource")
-		"business_deposit","business_recover_crate","surface_collect","surface_resupply":
+		"business_withdraw","business_deposit","business_recover_crate","surface_collect","surface_resupply":
 			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("인수 완료")
 		"business_build":
 			# The shared surface packet presents construction to every observer.
@@ -109,6 +112,10 @@ func _surface(packet: Dictionary) -> void:
 			if not known_buildings.has(id):
 				var p:=FrontierCrewWorld.vector(buildings[id].position)
 				effects.construction(p);audio.play("sfx_build_place",p)
+		for id in buildings:
+			if known_buildings.has(id) and int(buildings[id].get("product_serial",0))>int(known_buildings[id].get("product_serial",0)):
+				var p:=FrontierCrewWorld.vector(buildings[id].position)
+				effects.construction(p);audio.play("sfx_factory_complete",p)
 		for id in robots:
 			if not known_robots.has(id):
 				var p:=FrontierCrewWorld.vector(robots[id].position)
@@ -119,7 +126,7 @@ func _surface(packet: Dictionary) -> void:
 				var p:=FrontierMineralWorld.point(app.surface_world.terrain.field,vein)
 				if p.is_finite():effects.burst(p,Color(FrontierCatalog.entry("resources",vein.resource).color),24);audio.play("sfx_mine_break",p)
 	observed_body=str(packet.body_id)+":"+str(packet.epoch)
-	known_buildings=buildings.duplicate();known_robots=robots.duplicate();known_observations=observations;last_veins=site.get("remaining",{}).duplicate()
+	known_buildings=buildings.duplicate(true);known_robots=robots.duplicate();known_observations=observations;last_veins=site.get("remaining",{}).duplicate()
 
 func _process(delta: float) -> void:
 	if app==null:return
@@ -197,6 +204,9 @@ func _industry_effects() -> void:
 		elif robot.status=="충전 중":effects.burst(actor.global_position+Vector3.UP*.5,Color("82f5d2"),3)
 	for building in site.get("buildings",{}).values():
 		if not visuals.has(building.id) or not building.active:continue
+		if building.type=="factory" and not building.get("production",{}).is_empty():
+			var actor: Node3D=visuals[building.id]
+			if actor.global_position.distance_to(app.camera.global_position)<25:effects.burst(actor.global_position+Vector3.UP*1.5,Color("efb46f"),3)
 		if building.type not in ["atmosphere","thermal","water","biolab"]:continue
 		var actor: Node3D=visuals[building.id]
 		if actor.global_position.distance_to(app.camera.global_position)>25:continue
@@ -206,7 +216,7 @@ func _industry_effects() -> void:
 func _replace_tool(model: String) -> void:
 	handheld.get_parent().remove_child(handheld);handheld.queue_free()
 	equipped_model=model;handheld=load("res://assets/models/"+model+".glb").instantiate()
-	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model=="manual_tool" else .5)
+	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model in ["manual_tool","equipment/miner_mk2"] else .5)
 	handheld.set_meta("intake_offset",Vector3(0,0,-.78))
 	parts=handheld.find_children("Anim_*","Node3D",true,false)
 	for part in parts:part.set_meta("rest",part.position)

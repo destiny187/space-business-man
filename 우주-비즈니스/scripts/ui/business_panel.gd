@@ -2,6 +2,7 @@ class_name FrontierBusinessPanel
 extends PanelContainer
 signal command(kind: String,args: Dictionary)
 signal place_building(kind: String)
+var production_panel: FrontierProductionPanel
 var building_cards: Dictionary={}
 var summary: FrontierResourceReadout
 var stock: FrontierResourceReadout
@@ -43,6 +44,7 @@ func _ready() -> void:
 	register_button=button(column,"무료 개발 등록",func():command.emit("business_register",{}))
 	button(column,"현장 창고에 자원 반납",func():command.emit("business_deposit",{}))
 	var tabs:=TabContainer.new();tabs.custom_minimum_size.y=290;column.add_child(tabs)
+	production_panel=FrontierProductionPanel.new();tabs.add_child(production_panel);production_panel.configure(self)
 	var build_tab:=VBoxContainer.new();build_tab.name="건설";tabs.add_child(build_tab)
 	building=option(build_tab)
 	for key in FrontierExpeditionBusiness.config().buildings:
@@ -126,6 +128,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	register_button.show();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
 	update_engineering()
+	production_panel.update_site(value.get("sites",{}).get(id,{}))
 	for bar in environment_bars.values():bar.value=0
 	register_button.disabled=not value.is_empty() and (value.sites.has(id) or not value.get("active_elsewhere","").is_empty())
 	stock.value="등록된 현장 창고가 없습니다.";environment_label.text="무료 개발 등록 후 환경을 조사합니다."
@@ -137,6 +140,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	elif not value.sites.has(id):guidance.text="새 목적지입니다. 무료 개발 등록으로 사업을 시작하세요."
 	var current: Dictionary=value.sites.get(id,{})
 	register_button.visible=current.is_empty();guidance.visible=current.is_empty()
+	production_panel.update_site(current)
 	if current.is_empty():return
 	stock.value="창고 · "+FrontierCatalog.cost_text(current.inventory)+"\n배낭 · "+FrontierCatalog.cost_text(value.bags.get(actor,FrontierExpeditionBusiness.inventory()))
 	var factories: Dictionary={};var buildings: Dictionary={};var robots: Dictionary={};var veins: Dictionary={};var technologies: Dictionary={};var transported: Dictionary={}
@@ -159,6 +163,8 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	var e: Dictionary=current.environment;var scores:=FrontierEvaluator.scores(e)
 	for category in environment_bars:environment_bars[category].value=float(e.ecology) if category=="ecology" else float(scores[category])
 	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]
+	if current.has("restoration2"):
+		environment_label.text+="\n염류 %.0f / 목표 ≤20 · 토양 %.0f / 목표 ≥60 · Mk.2 필터·기반재 필요"%[float(current.restoration2.salinity),float(current.restoration2.soil)]
 	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇에 광맥을 배정하고 대기·온도·물·생태 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement() -> void:

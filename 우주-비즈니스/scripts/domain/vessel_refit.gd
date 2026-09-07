@@ -60,7 +60,8 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 			if grade==1 and world.get("engineering",{}).get("projects",{}).get(definition(module.type).research,{}).get("stage")!="certified":return "고급 개량에는 해당 생물공학 설계도 인증이 필요합니다."
 			for other in vessel.modules.values():
 				if other.id!=id and other.type==module.type and other.grade==config().grades[grade+1]:return "동일한 상위 모듈이 이미 있습니다."
-			credits=int(config().upgrade_credits[grade]);parts=int(config().upgrade_parts[grade]);materials=config().upgrade_materials
+			credits=int(config().upgrade_credits[grade]);parts=int(config().upgrade_parts[grade]);materials=FrontierProductionTier2.config().vessel_upgrade_cost if grade==0 else config().upgrade_materials
+			if grade==0:parts=0
 		"vessel_equip":
 			if not vessel.modules.has(id):return "장착할 모듈을 선택하세요."
 			var slot: String=definition(vessel.modules[id].type).slot

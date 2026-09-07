@@ -49,7 +49,7 @@ func refresh_details() -> void:
 	details.value=def.description+"\n등급 순서: 표준 → 개량 → 희귀\n질량 %s t · 소비 전력 %s MW"%[str(def.mass),str(def.power)]
 	if owned!=null and vessel.get("modules",{}).has(selected(owned)):
 		var module: Dictionary=vessel.modules[selected(owned)];var grade:=FrontierVesselRefit.grade_index(module.grade)
-		if grade<2:details.value+="\n개량 비용 %d Cr · 부품 %d · %s%s"%[cfg.upgrade_credits[grade],cfg.upgrade_parts[grade],FrontierCatalog.cost_text(cfg.upgrade_materials)," · 관련 생물공학 인증 필요" if grade==1 else ""]
+		if grade<2:details.value+="\n개량 비용 %d Cr · 부품 %d · %s%s"%[cfg.upgrade_credits[grade],(0 if grade==0 else cfg.upgrade_parts[grade]),FrontierCatalog.cost_text(FrontierProductionTier2.config().vessel_upgrade_cost if grade==0 else cfg.upgrade_materials)," · 관련 생물공학 인증 필요" if grade==1 else ""]
 		else:details.value+="\n최고 등급입니다."
 func update_snapshot(snapshot: Dictionary,business: Dictionary) -> void:
 	vessel=snapshot.get("vessel",{})
