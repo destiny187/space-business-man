@@ -76,19 +76,23 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 			result.name=cfg.solar_names[orbit];result.kind=cfg.solar_kinds[orbit]
 			result.origin="solar_reference";result.reference_id="solar:"+str(orbit);result.planet_tier=1
 		result.landable=result.kind not in ["gas_giant","ice_giant"]
-		result.orbit={"radius":float(cfg.orbit_inner_radius)+orbit*float(cfg.orbit_spacing),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
+		result.orbit={"radius":float(presentation().orbit_radii[orbit]),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
 		result.star_id=s.star.id
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
 	return result
 
 static func landable(body_value: Dictionary) -> bool:
-	return body_value.get("landable",true)
+	return body_value.get("origin","")!="solar_reference" and body_value.get("landable",true)
 
 static func kind_label(body_value: Dictionary) -> String:
 	return {"basalt":"암석형", "glacial":"빙하 암석형", "sulfur":"황산 암석형", "gas_giant":"가스 거대행성", "ice_giant":"얼음 거대행성"}.get(body_value.kind,"미확인")
 
 static func radius(body_value: Dictionary) -> float:
-	return (650.0 if not landable(body_value) else 240.0)+float(body_value.seed%190)
+	var cfg:=presentation()
+	var solar: String=body_value.get("reference_id","")
+	if solar.begins_with("solar:"):return float(cfg.solar_radii[int(solar.trim_prefix("solar:"))])
+	var limits: Array=cfg.giant_radius_range if body_value.kind in ["gas_giant","ice_giant"] else cfg.rock_radius_range
+	return lerpf(limits[0],limits[1],float(body_value.seed%1000)/999.0)
 
 static func navigation_radius(body_value: Dictionary) -> float:
 	# Ring geometry is part of the safe approach envelope, never a landing surface.
@@ -100,7 +104,7 @@ static func position(m: Dictionary,ordinal: int,elapsed: float=0.0) -> Vector3:
 		return [Vector3(-620,-130,-2400),Vector3(1150,340,-3600),Vector3(-2100,450,-4900),Vector3(2400,-500,-6000)][ordinal%4]
 	var b:=body(m,ordinal)
 	var angle: float=float(b.orbit.phase)+elapsed/float(b.orbit.period)*TAU
-	return Vector3(cos(angle)*float(b.orbit.radius),0,sin(angle)*float(b.orbit.radius))
+	return orbit_point(b,angle)
 
 static func body_from_id(m: Dictionary, id: String) -> Dictionary:
 	return body(m, ordinal_of(m, id))
@@ -218,3 +222,19 @@ static func central_view(manifest: Dictionary,system_index: int,local_viewer: Ve
 	var relative: Vector3=center-origin-local_viewer
 	var distance: float=relative.length()
 	return {"id":core.id,"visible":distance/unit<=float(core.visible_within_galaxy_units),"direction":relative.normalized(),"distance_galaxy_units":distance/unit,"angular_scale":float(core.model_scale_galaxy_units)*unit/maxf(distance,1.0)}
+
+static func landing_restriction(body: Dictionary) -> String:
+	if body.get("origin","")=="solar_reference":return "태양계 · 테라포밍 불가 행성입니다. 착륙할 수 없습니다."
+	if not landable(body):return "착륙할 표면이 없습니다. 궤도 탐사만 가능합니다."
+	return ""
+
+static func orbit_point(body: Dictionary,angle: float) -> Vector3:
+	var tilt: float=deg_to_rad(float(presentation().inclination_min_degrees)+float(derive(int(body.seed),"inclination")%10000)/10000.0*float(presentation().inclination_range_degrees))
+	var node: float=float(derive(int(body.seed),"ascending-node")%10000)/10000.0*TAU
+	var point:=Vector3(cos(angle),0,sin(angle))*float(body.orbit.radius)
+	return point.rotated(Vector3.RIGHT,tilt).rotated(Vector3.UP,node)
+
+static var _presentation: Dictionary={}
+static func presentation() -> Dictionary:
+	if _presentation.is_empty():_presentation=JSON.parse_string(FileAccess.get_file_as_string("res://data/space_presentation.json"))
+	return _presentation

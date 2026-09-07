@@ -27,7 +27,7 @@ static func identifier(business: Dictionary,prefix: String) -> String:
 	business.counter+=1;return prefix+":"+str(int(business.counter))
 static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 	var values: Array=[]
-	if not FrontierUniverse.landable(body):return values
+	if body.kind in ["gas_giant","ice_giant"]:return values
 	if FrontierMineralWorld.enabled(body):values=FrontierMineralWorld.nearby(body,center)
 	var types: Array=config().veins
 	if FrontierMineralWorld.enabled(body) and body.get("reference_id","")!="solar:2":types=body.mineral_profile.primary+body.mineral_profile.secondary+["stone"]
@@ -85,12 +85,15 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
 	if not FrontierCrewSurface.landed(world):return "행성에 착륙한 뒤 사업을 운영하세요."
+	if (kind=="business_build" or kind.begins_with("business_research_")) and FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return "태양계는 테라포밍 불가 행성입니다."
 	var position:=point(world.crew.members[actor].position)
 	var at_ship: bool=position.distance_to(point(FrontierCrewSurface.config().ship_position))<=float(FrontierCrewSurface.config().boarding_distance)
 	if not world.has("business"):world.business=create()
 	var ledger: Dictionary=world.business
 	if kind.begins_with("business_research_"):return FrontierFieldEngineering.apply(world,actor,kind,args)
 	if kind=="business_register":
+		var restriction:=FrontierUniverse.landing_restriction(FrontierUniverse.body_from_id(world.manifest,world.location))
+		if not restriction.is_empty():return restriction
 		if actor!=world.crew.owner_id:return "호스트가 공동 개발 사업을 등록합니다."
 		if not at_ship:return "착륙선에서 개발 범위를 등록하세요."
 		if ledger.sites.has(world.location):return "이미 등록한 행성입니다."

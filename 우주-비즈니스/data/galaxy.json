@@ -67,7 +67,15 @@
     "transit_seconds": 12.0,
     "system_boundary": 20000.0,
     "manual_speed": 700.0,
-    "turn_speed": 1.0
+    "turn_speed": 1.0,
+    "scan_seconds": 1.8,
+    "hull_max": 100.0,
+    "energy_max": 100.0,
+    "energy_recharge": 12.0,
+    "boost_drain": 22.0,
+    "boost_multiplier": 2.2,
+    "transit_energy_cost": 30.0,
+    "hull_repair": 4.0
   },
   "starting_ordinal": 2,
   "orbit_spacing": 1700.0,

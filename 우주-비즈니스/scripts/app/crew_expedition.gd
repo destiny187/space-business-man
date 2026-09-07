@@ -1,5 +1,6 @@
 class_name FrontierCrewExpedition
 extends Node3D
+var onboarding: FrontierFirstDeparture
 var waiting_screen: ColorRect
 var waiting_panel: VBoxContainer
 var waiting_roster: Label
@@ -35,13 +36,15 @@ var lobby: VBoxContainer
 var roster: Label
 var status: FrontierResourceReadout
 var travel_status: Label
-var address: LineEdit
+var selected_ordinal: int=2
 var pilot_choices: OptionButton
 var name_input: LineEdit
 var host_address: LineEdit
 var port_input: SpinBox
 var yaw:=0.0
 var pitch:=0.0
+var mouse_steering:=Vector2.ZERO
+var cursor_released:=false
 var outside:=false
 var movement_timer:=0.0
 var ready_button: Button
@@ -88,13 +91,18 @@ func _ready() -> void:
 		else:status.value="원정 기록을 저장했습니다.")
 	_build_cabin();_build_ui();cabin_root.hide()
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
-	FrontierClientSettings.ensure(get_tree()).apply_all()
+	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
+	_apply_client_settings.call_deferred()
 	if FileAccess.file_exists(profile.path) and profile.ensure():
 		name_input.text=profile.data.character.name;name_input.editable=false
 	get_tree().auto_accept_quit=false
 	if get_tree().get_meta("expedition_mode","") in ["solo","solo_new"]:
 		var fresh: bool=get_tree().get_meta("expedition_mode")=="solo_new"
 		get_tree().remove_meta("expedition_mode");start_solo.call_deferred(fresh)
+func _apply_client_settings() -> void:
+	# Direct scene launches also need to wait until the root finishes setup.
+	FrontierClientSettings.ensure(get_tree()).apply_all()
+
 func _build_cabin() -> void:
 	cabin_root=Node3D.new();cabin_root.name="Cabin";add_child(cabin_root)
 	var room: Node3D=load("res://assets/models/crew/kestrel_cabin.glb").instantiate()
@@ -137,7 +145,7 @@ func _build_ui() -> void:
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
 	_label(header,"L O C U S  /  우주 탐험",23)
 	status=_resource_label(header,"세계를 열고 준비한 뒤 지구에서 탐험을 시작하세요.",15)
-	help_text=_label(header,"WASD 이동 · 우클릭 시선 · C 외부 시점 · Tab 항해",13)
+	help_text=_label(header,"WASD 이동 · 마우스 시선 · C 외부 시점 · Tab 항해",13)
 	for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390)
 	get_viewport().size_changed.connect(func():
 		for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390))
@@ -168,20 +176,19 @@ func _build_ui() -> void:
 	pilot_choices=OptionButton.new();panel.add_child(pilot_choices)
 	_button(panel,"조종 권한 전달",assign_pilot).name="TransferPilot"
 	_button(panel,"선택한 승무원 내보내기",kick_selected).name="Kick"
-	address=LineEdit.new();address.placeholder_text="행성 주소 1 ~ 1000000";address.text="16";address.max_length=7;panel.add_child(address)
 	_button(panel,"항로 설정",select_destination).name="Navigate"
 	travel_status=_label(panel,"",14)
 	_button(panel,"선택한 행성으로 출발",depart_selected).name="Depart"
 	_button(panel,"전원 준비 후 착륙",func():travel_action("land")).name="Land"
 	_button(panel,"전원 복귀 후 이륙",func():travel_action("launch")).name="Launch"
 	chart=load("res://scripts/ui/galaxy_chart.gd").new();panel.add_child(chart)
-	chart.selected.connect(func(ordinal: int):address.text=str(ordinal+1);select_destination())
+	chart.selected.connect(func(ordinal: int):selected_ordinal=ordinal;select_destination())
 	_button(panel,"은하 지도 / 항성계",func():chart.galaxy=not chart.galaxy;chart.queue_redraw())
 	candidates=VBoxContainer.new();panel.add_child(candidates)
 	var route_row:=HBoxContainer.new();panel.add_child(route_row)
 	_button(route_row,"이웃 항성계",func():browse_system(1))
 	_button(route_row,"중심 방향",func():browse_system(25000))
-	_button(panel,"태양계 · 지구",func():address.text=str(int(session.manifest.settings.get("starting_ordinal",0))+1);select_destination())
+	_button(panel,"태양계 · 지구",func():selected_ordinal=int(session.manifest.settings.get("starting_ordinal",0));select_destination())
 	var row:=HBoxContainer.new();panel.add_child(row)
 	_button(row,"암석 1 꺼내기",func():session.send_request("withdraw",{"amount":1}))
 	_button(row,"1 넣기",func():session.send_request("deposit",{"amount":1}))
@@ -261,6 +268,7 @@ func _snapshot(value: Dictionary) -> void:
 		return
 	waiting_screen.hide();cabin_root.show();help_text.show()
 	if flight==null:_setup_flight()
+	onboarding.update_snapshot(value)
 	flight.update_navigation(value.crew.navigation)
 	flight.refits.update_loadout(value.get("vessel",{}))
 	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
@@ -278,22 +286,24 @@ func _snapshot(value: Dictionary) -> void:
 	lines.append("창고 %d · 운반 %d" % [int(value.crew.rock),int(own.carried)])
 	roster.text="\n".join(lines);ready_button.text="준비 취소" if own.ready else "원정 준비"
 	var nav: Dictionary=value.crew.navigation
+	selected_ordinal=int(nav.target)
 	var on_surface: bool=not value.crew.get("landing",{}).is_empty()
 	if on_surface!=surface_transition:
-		surface_transition=on_surface;navigation_frame.visible=not on_surface;research_frame.hide();shipyard_panel.hide()
+		surface_transition=on_surface;navigation_frame.hide();research_frame.hide();shipyard_panel.hide()
 	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
-	help_text.text="WASD 이동 · 우클릭 시선 · 클릭 장비 사용 · 1–5 전환 · I 아이템 · E 스캔" if on_surface else "WASD 이동 · 우클릭 시선 · C 외부 시점 · Tab 항해"
+	help_text.text="WASD 이동 · 마우스 시선 · 클릭 장비 사용 · 1–5 전환 · I 아이템 · E 스캔" if on_surface else "WASD 이동 · 마우스 시선 · C 외부 시점 · Tab 항해"
 	roster.visible=not session.offline;ready_button.visible=not session.offline;pilot_choices.visible=not session.offline
 	panel.get_node("TransferPilot").visible=not session.offline;panel.get_node("Kick").visible=not session.offline
 	if not destination_initialized:
 		destination_initialized=true
-		address.text=str(int(nav.target)+1)
+		selected_ordinal=int(nav.target)
+		if not on_surface:navigation_frame.hide();outside=true;exterior_view.show();if_flight_view()
 	for action in ["Navigate","Depart","Land"]:panel.get_node(action).visible=not on_surface
 	panel.get_node("Navigate").visible=not on_surface and not session.offline
 	panel.get_node("Launch").visible=on_surface
 	panel.get_node("Launch").text="우주선으로 복귀 후 이륙" if session.offline else "전원 복귀·준비 후 이륙"
 	panel.get_node("Land").text="행성에 착륙" if session.offline else "전원 준비 후 착륙"
-	address.visible=not on_surface;travel_status.visible=not on_surface
+	travel_status.visible=not on_surface
 	panel.get_node("TransferPilot").disabled=not session.hosting
 	panel.get_node("Kick").disabled=not session.hosting
 	panel.get_node("Navigate").disabled=value.self_id!=value.crew.pilot_id or nav.mode!="idle" or not value.crew.get("landing",{}).is_empty()
@@ -307,14 +317,14 @@ func _snapshot(value: Dictionary) -> void:
 	travel_status.text=travel_status.text % [body.name,int(nav.target)+1,FrontierCrewNavigation.phase(nav),float(nav.speed)]
 	if nav.mode=="jump":travel_status.text=travel_status.text.replace("\n속도 %.0f m/s"%float(nav.speed),"");travel_status.text+="\n항로 %.0f%% · 도착까지 %.1f초 · 무료" % [float(nav.get("transit",{}).get("progress",0))*100,float(nav.jump_left)]
 	if nav.get("boundary",false):travel_status.text+="\n항성계 외곽 · 다른 항성계는 성간 항해로 이동"
-	travel_status.text+="\nC 외부 시점 · W/S 전후 · 방향키 선회 · 놓으면 제동"
+	travel_status.text+="\nC 외부 시점 · W/S 전후 · 마우스 선회 · 놓으면 제동"
 	travel_status.text+="\nT%d · "%int(body.planet_tier)+FrontierMineralWorld.summary(body)
 	if body.get("origin","")=="solar_reference":travel_status.text+="\n축약 태양계 · 지표는 게임 생성"
 	if crew_ids!=members.keys():
 		crew_ids=members.keys();pilot_choices.clear()
 		for id in crew_ids:pilot_choices.add_item(members[id].profile.name)
 	if arrived and not on_surface and FrontierUniverse.landable(body):travel_status.text+="\n도착했습니다. 아래 착륙 버튼을 누르세요."
-	elif arrived and not on_surface:travel_status.text+="\n궤도 도착 · 착륙할 표면이 없습니다."
+	elif arrived and not on_surface:travel_status.text+="\n"+FrontierUniverse.landing_restriction(body)
 	elif nav.mode=="idle" and not on_surface:travel_status.text+="\n행성 주소를 선택해 출발하세요. 궤도도 또는 아래 천체에서 선택하세요"
 	lobby.hide();panel.show()
 	chart.manifest=session.manifest;chart.system_index=int(body.system_ordinal);chart.target=int(nav.target);chart.elapsed=float(nav.get("orbit_time",0));chart.transit=nav.get("transit",{}) if nav.mode=="jump" else {};chart.queue_redraw()
@@ -330,14 +340,15 @@ func _physics_process(delta: float) -> void:
 	if movement_timer<=0:
 		movement_timer=.05
 		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
-		if inventory_panel.visible or outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
+		if (onboarding!=null and onboarding.letter.visible) or inventory_panel.visible or outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if FrontierClientSettings.ensure(get_tree()).is_open():direction=Vector2.ZERO;scanning=false
 		var flight_controls: Array=[0.0,0.0,0.0]
-		if outside and surface_world==null and not test_mode and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
-			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),float(Input.is_physical_key_pressed(KEY_RIGHT))-float(Input.is_physical_key_pressed(KEY_LEFT)),float(Input.is_physical_key_pressed(KEY_UP))-float(Input.is_physical_key_pressed(KEY_DOWN))]
+		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
+			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
+		mouse_steering=Vector2.ZERO
 		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
@@ -365,6 +376,11 @@ func _physics_process(delta: float) -> void:
 					actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
 			session.authority.update_position(peer,actor.position)
 func _process(delta: float) -> void:
+	_sync_mouse_capture()
+	if session!=null and session.latest.get("phase")=="playing":
+		status.get_parent().visible=not outside
+		navigation_toggle.get_parent().visible=not outside
+		if flight!=null:flight.scan_enabled=outside and _mouse_look_allowed() and not cursor_released
 	if session==null or session.latest.is_empty() or not session.active or session.latest.get("phase")!="playing":return
 	var members: Dictionary=session.latest.crew.members
 	for id in actors:
@@ -384,18 +400,25 @@ func _process(delta: float) -> void:
 	_update_business_placement()
 func _input(event: InputEvent) -> void:
 	if FrontierClientSettings.ensure(get_tree()).is_open():return
+	if event is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and _mouse_look_allowed():
+		var preferences:=FrontierClientSettings.ensure(get_tree())
+		_mouse_look(event.relative,float(preferences.values.sensitivity),bool(preferences.values.invert_y))
+		get_viewport().set_input_as_handled();return
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and cursor_released and _mouse_look_allowed() and get_viewport().gui_get_hovered_control()==null:
+		cursor_released=false;_sync_mouse_capture();get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_TAB and not get_viewport().gui_get_focus_owner() is LineEdit:
 		toggle_navigation();get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and surface_world==null and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and session.latest.get("self_id","")==session.latest.get("crew",{}).get("pilot_id",""):
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and surface_world==null and _mouse_look_allowed() and not cursor_released and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and session.latest.get("self_id","")==session.latest.get("crew",{}).get("pilot_id",""):
 		var scale_factor: float=maxf(exterior_view.size.x/space_view.size.x,exterior_view.size.y/space_view.size.y)
-		var point: Vector2=(event.position-exterior_view.global_position+(Vector2(space_view.size)*scale_factor-exterior_view.size)*.5)/scale_factor
+		var pointer: Vector2=exterior_view.global_position+exterior_view.size*.5 if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED else event.position
+		var point: Vector2=(pointer-exterior_view.global_position+(Vector2(space_view.size)*scale_factor-exterior_view.size)*.5)/scale_factor
 		var ordinal: int=flight.pick_planet(point)
-		if ordinal>=0:
-			address.text=str(ordinal+1);select_destination();navigation_frame.show();get_viewport().set_input_as_handled();return
+		if ordinal>=0 and flight.scanned.has(FrontierUniverse.body_id(session.manifest,ordinal)):
+			selected_ordinal=ordinal;select_destination();get_viewport().set_input_as_handled();return
 	var preferences:=FrontierClientSettings.ensure(get_tree())
 	if preferences.is_open() or not session.active or session.latest.get("phase")!="playing":return
-	if event is InputEventMouseMotion and not feedback.blocked() and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):yaw-=event.relative.x*float(preferences.values.sensitivity);pitch=clampf(pitch-event.relative.y*float(preferences.values.sensitivity)*(-1 if preferences.values.invert_y else 1),-1.3,1.3)
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
 		if event.physical_keycode==KEY_I:toggle_inventory()
@@ -403,11 +426,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
 		if event.physical_keycode==KEY_J:toggle_research()
 		if event.physical_keycode==KEY_C and surface_world==null:outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
+		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():travel_action("tutorial_depart");return
+		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
+			selected_ordinal=flight.scan_target;depart_selected();return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if event.physical_keycode==KEY_B:toggle_business()
 		if event.physical_keycode==KEY_F:interact_business()
 		if event.physical_keycode==KEY_ESCAPE:inventory_panel.hide();cancel_placement();business_panel.hide();shipyard_panel.hide();research_frame.hide();navigation_frame.hide()
-		if event.physical_keycode==KEY_ESCAPE:Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;get_viewport().gui_release_focus()
+		if event.physical_keycode==KEY_ESCAPE:cursor_released=true;mouse_steering=Vector2.ZERO;Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;get_viewport().gui_release_focus()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
@@ -422,8 +448,7 @@ func toggle_ready() -> void:
 func assign_pilot() -> void:
 	if not crew_ids.is_empty():session.send_request("pilot",{"character_id":crew_ids[pilot_choices.selected]})
 func select_destination() -> void:
-	if not address.text.is_valid_int():status.value="행성 번호를 입력하세요.";return
-	session.send_request("navigate",{"ordinal":int(address.text)-1})
+	session.send_request("navigate",{"ordinal":selected_ordinal})
 func recover_nearby() -> void:
 	if not session.active:return
 	var own: Dictionary=session.latest.crew.members[session.latest.self_id]
@@ -571,6 +596,7 @@ func surface_action(kind: String) -> void:
 	session.send_request(kind,args)
 
 func _exit_tree() -> void:
+	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func toggle_shipyard() -> void:
@@ -634,8 +660,7 @@ func start_solo(fresh: bool=false) -> void:
 		session.send_request("start_game",{})
 		lobby.hide();panel.show();outside=not FrontierCrewSurface.landed(session.authority.world);exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 func depart_selected() -> void:
-	if not address.text.is_valid_int():status.value="행성 주소 1 ~ 1000000을 입력하세요.";return
-	var ordinal:=int(address.text)-1
+	var ordinal:=selected_ordinal
 	if ordinal<0 or ordinal>=1000000:status.value="행성 주소는 1 ~ 1000000입니다.";return
 	if int(session.latest.crew.navigation.target)!=ordinal:
 		session.send_request("navigate",{"ordinal":ordinal})
@@ -662,7 +687,7 @@ func toggle_research() -> void:
 func browse_system(offset: int) -> void:
 	var count: int=int(session.manifest.settings.planet_count)/int(session.manifest.settings.planets_per_system)
 	var index: int=posmod(candidate_system+offset,count)
-	address.text=str(index*int(session.manifest.settings.planets_per_system)+1);select_destination()
+	selected_ordinal=index*int(session.manifest.settings.planets_per_system);select_destination()
 
 func _refresh_system_candidates(index: int) -> void:
 	if candidate_system==index:return
@@ -673,7 +698,7 @@ func _refresh_system_candidates(index: int) -> void:
 	for id in system_value.body_ids:
 		var body:=FrontierUniverse.body_from_id(session.manifest,id)
 		var ordinal: int=body.ordinal
-		_button(candidates,("● " if FrontierUniverse.landable(body) else "◎ ")+body.name+" · "+FrontierUniverse.kind_label(body),func():address.text=str(ordinal+1);select_destination())
+		_button(candidates,("● " if FrontierUniverse.landable(body) else "◎ ")+body.name+" · "+FrontierUniverse.kind_label(body),func():selected_ordinal=ordinal;select_destination())
 
 static func selected_world_path(solo: bool) -> String:
 	var selection:=ConfigFile.new();selection.load("user://world_selection.cfg")
@@ -700,3 +725,28 @@ func use_equipped() -> void:
 			else:feedback.reject("자원 광맥을 조준하세요.")
 		"terrain":surface_action("surface_dig")
 		"pulse":surface_action("surface_attack")
+
+func _mouse_look_allowed() -> bool:
+	return session!=null and session.active and session.latest.get("phase")=="playing" and feedback!=null and not feedback.blocked() and (onboarding==null or not onboarding.letter.visible)
+
+func _sync_mouse_capture() -> void:
+	if test_mode:return
+	var capture: bool=_mouse_look_allowed() and not cursor_released and get_window().has_focus()
+	var desired: int=Input.MOUSE_MODE_CAPTURED if capture else Input.MOUSE_MODE_VISIBLE
+	if Input.mouse_mode!=desired:Input.mouse_mode=desired
+	if not capture:mouse_steering=Vector2.ZERO
+
+func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
+	var motion:=relative*sensitivity
+	if invert_y:motion.y=-motion.y
+	if outside and flight!=null:
+		var nav: Dictionary=session.latest.crew.navigation
+		if nav.mode=="idle" and session.latest.self_id==session.latest.crew.pilot_id:
+			mouse_steering+=Vector2(motion.x,-motion.y)
+			flight.look_offset=Vector2.ZERO
+		else:
+			flight.look_offset.x=clampf(flight.look_offset.x-motion.x,-2.6,2.6)
+			flight.look_offset.y=clampf(flight.look_offset.y-motion.y,-1.3,1.3)
+	else:
+		yaw-=motion.x
+		pitch=clampf(pitch-motion.y,-1.3,1.3)

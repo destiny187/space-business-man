@@ -113,6 +113,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work))
 	if FrontierExpeditionBusiness.total(r.cargo)>=int(cfg.robot_capacity) or site.remaining[r.target]<=0:r.phase="return";r.path=[]
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
+	if FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()
 	for b in site.buildings.values():
 		if not b.active:continue

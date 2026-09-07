@@ -1,10 +1,19 @@
 shader_type sky;
 float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
+float noise3(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float cloud(vec3 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=noise3(p)*a;p=p*2.03+7.3;a*=.5;}return v;}
+float stars(vec3 d,float density,float threshold){vec3 q=d*density;vec3 cell=floor(q);vec3 center=vec3(hash(cell+3.),hash(cell+7.),hash(cell+11.));float r=length(fract(q)-center);float aa=max(length(fwidth(q)),.08);return step(threshold,hash(cell))*exp(-r*r/(aa*aa))*.20/aa;}
 void sky(){
- vec3 d=normalize(EYEDIR);float belt=pow(max(0.,1.-abs(d.y+d.x*.25)),14.);
- float cloud=sin(d.x*13.+sin(d.z*6.))*sin(d.z*9.-d.x*3.)*.5+.5;
- vec3 base=vec3(.005,.009,.019)+belt*mix(vec3(.021,.025,.063),vec3(.026,.065,.065),cloud);
- vec3 cell=floor(d*700.);float h=hash(cell);vec3 f=fract(d*700.)-.5;
- float star=step(.997,h)*pow(max(0.,1.-length(f)*2.),4.);
- COLOR=base+star*mix(vec3(.60,.81,1.),vec3(1.,.72,.4),hash(cell+8.))*3.;
+ vec3 d=normalize(EYEDIR);
+ float latitude=dot(d,normalize(vec3(.28,1.,.38)));
+ float belt=exp(-abs(latitude)*14.);
+ float wisps=cloud(d*12.+vec3(17,4,9));
+ float dust=cloud(d*28.+vec3(3,18,7));
+ float nebula=pow(max(0.,wisps-.27),2.)*belt;
+ vec3 deep=vec3(.0015,.003,.009);
+ vec3 palette=mix(vec3(.09,.06,.21),vec3(.03,.18,.22),cloud(d*4.+21.));
+ vec3 glow=palette*nebula*2.0+vec3(.13,.16,.20)*belt*.14;
+ glow*=mix(.18,1.,smoothstep(.28,.62,dust));
+ float fine=stars(d,680.,.985);float bright=stars(d,230.,.997);
+ COLOR=deep+glow+fine*vec3(.70,.83,1.)+bright*vec3(1.,.82,.60)*2.;
 }

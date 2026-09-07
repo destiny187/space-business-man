@@ -60,10 +60,14 @@ func _ready() -> void:
 		if value.contains("제작 완료"): audio.play("sfx_factory_complete"))
 	world.rebuild({})
 	_show_menu("title")
-	FrontierClientSettings.ensure(get_tree()).apply_all()
+	_apply_client_settings.call_deferred()
 	if "--smoke" in OS.get_cmdline_user_args():
 		smoke_mode = true
 		_smoke_setup()
+
+func _apply_client_settings() -> void:
+	# The root is still adding the initial scene during _ready().
+	FrontierClientSettings.ensure(get_tree()).apply_all()
 
 func _theme() -> Theme:
 	var theme := Theme.new()

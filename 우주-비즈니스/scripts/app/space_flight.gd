@@ -61,12 +61,13 @@ func _setup_space() -> void:
 	env.ambient_light_color = Color("879caf")
 	env.ambient_light_energy = .45
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.glow_enabled=true;env.glow_intensity=.85;env.glow_bloom=.08
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-28,-40,0)
 	sun.light_color = Color("ffedd6")
-	sun.light_energy = 2.0
+	sun.light_energy = .35
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 150
 	add_child(sun)
@@ -85,7 +86,7 @@ func _setup_space() -> void:
 	camera.position = Vector3(0,8,31)
 	camera.rotation_degrees.x = -10
 	camera.fov = 65
-	camera.far = 20000
+	camera.far = 160000
 	ship.add_child(camera)
 	camera.current = true
 	FrontierInkStyle.attach(ship)
@@ -420,10 +421,14 @@ func _build_system_art(system_value: Dictionary) -> void:
 	if is_instance_valid(system_art):remove_child(system_art);system_art.queue_free()
 	system_art=Node3D.new();add_child(system_art)
 	if state.manifest.settings.generator_version!="galaxy-v3":return
-	var star:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=950;sphere.height=1900;sphere.radial_segments=96;sphere.rings=48;star.mesh=sphere
-	var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.albedo_color={"M":Color("ef8156"),"K":Color("ffb96a"),"G":Color("ffe2a3"),"F":Color("f4efdc"),"A":Color("a7cdff")}[system_value.star.spectral_type]
+	var star:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=float(FrontierUniverse.presentation().star_radius);sphere.height=sphere.radius*2;sphere.radial_segments=96;sphere.rings=48;star.mesh=sphere
+	var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/star.gdshader")
+	var star_color: Color={"M":Color("ef8156"),"K":Color("ffb96a"),"G":Color("ffe2a3"),"F":Color("f4efdc"),"A":Color("a7cdff")}[system_value.star.spectral_type]
+	material.set_shader_parameter("tint",star_color)
 	star.material_override=material;system_art.add_child(star)
+	var glow:=MeshInstance3D.new();var disc:=QuadMesh.new();disc.size=Vector2(11000,11000);glow.mesh=disc
+	var glow_material:=ShaderMaterial.new();glow_material.shader=load("res://assets/materials/space/glow.gdshader");glow_material.set_shader_parameter("tint",star_color);glow_material.set_shader_parameter("strength",1.55);glow.material_override=glow_material;glow.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;system_art.add_child(glow)
+	var sunlight:=OmniLight3D.new();sunlight.light_color=star_color;sunlight.light_energy=2.4;sunlight.omni_range=90000;sunlight.omni_attenuation=.25;system_art.add_child(sunlight)
 	var label:=Label3D.new();label.text=system_value.star.name;label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=64;label.pixel_size=3;label.position=Vector3(0,1200,0);label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;system_art.add_child(label)
 	for entry in planets.values():
 		var mesh:=ImmediateMesh.new();var line:=MeshInstance3D.new();line.mesh=mesh
@@ -431,7 +436,7 @@ func _build_system_art(system_value: Dictionary) -> void:
 		mesh.surface_begin(Mesh.PRIMITIVE_LINES)
 		var radius: float=entry.body.orbit.radius
 		for i in 128:
-			for angle in [TAU*i/128.0,TAU*(i+1)/128.0]:mesh.surface_add_vertex(Vector3(cos(angle)*radius,0,sin(angle)*radius))
+			for angle in [TAU*i/128.0,TAU*(i+1)/128.0]:mesh.surface_add_vertex(FrontierUniverse.orbit_point(entry.body,angle))
 		mesh.surface_end();system_art.add_child(line)
 		var caption:=Label3D.new();caption.text=entry.body.name+("" if FrontierUniverse.landable(entry.body) else " · 착륙 불가");caption.font=label.font;caption.font_size=48;caption.pixel_size=2.0;caption.position.y=entry.radius+130;caption.billboard=BaseMaterial3D.BILLBOARD_ENABLED;entry.node.add_child(caption)
 

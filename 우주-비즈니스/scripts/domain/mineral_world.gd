@@ -6,7 +6,7 @@ static func rules() -> Dictionary:
 	if _rules.is_empty():_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	return _rules
 static func profile(body: Dictionary,rules: Dictionary) -> Dictionary:
-	if not FrontierUniverse.landable(body):return {}
+	if body.kind in ["gas_giant","ice_giant"]:return {}
 	var options: Array=[]
 	for id in rules.profiles:
 		if rules.profiles[id].kind==body.kind:options.append(id)

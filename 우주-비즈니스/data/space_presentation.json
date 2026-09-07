@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "solar_radii": [
+    110,
+    250,
+    270,
+    155,
+    1050,
+    850,
+    540,
+    520
+  ],
+  "rock_radius_range": [
+    130,
+    390
+  ],
+  "giant_radius_range": [
+    540,
+    1050
+  ],
+  "orbit_radii": [
+    6500,
+    11500,
+    18000,
+    25000,
+    33500,
+    43000,
+    53500,
+    65000
+  ],
+  "inclination_min_degrees": 4,
+  "inclination_range_degrees": 13,
+  "star_radius": 1500,
+  "system_boundary": 74000,
+  "star_warning_radius": 6000,
+  "star_damage_radius": 3800,
+  "star_damage_per_second": 8,
+  "star_damage_max_per_second": 28
+}

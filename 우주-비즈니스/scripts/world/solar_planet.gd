@@ -29,7 +29,9 @@ func configure(ordinal: int,radius: float) -> void:
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():
 				var mat: Material=mesh.get_active_material(surface)
-				if mat is ShaderMaterial and mat.shader==FrontierInkStyle.CEL:mat.set_shader_parameter("highlight_strength",.08)
+				if mat is ShaderMaterial and mat.shader==FrontierInkStyle.CEL:
+					mat.set_shader_parameter("highlight_strength",.08)
+					if "_vertex_paint" in mat.resource_name:mat.set_shader_parameter("use_vertex_color",true)
 
 func set_epoch(elapsed: float) -> void:
 	# Illustrative spin is shared across clients; no real-time ephemeris claim.

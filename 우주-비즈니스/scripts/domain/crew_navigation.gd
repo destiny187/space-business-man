@@ -9,7 +9,7 @@ static func validate(value: Variant) -> String:
 		if not FrontierUniverse._finite(value.get(entry[0]),0,entry[1]) or value[entry[0]]!=floorf(value[entry[0]]):return "공동 항로 주소 오류"
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
 	if not FrontierUniverse._finite(value.get("orbit_time",0),0,1e12):return "궤도 시간 오류"
-	if not FrontierUniverse._finite(value.get("speed"),-1000,1000) or not FrontierUniverse._finite(value.get("jump_left"),0,120):return "공동 항해 속도 오류"
+	if not FrontierUniverse._finite(value.get("speed"),-10000,10000) or not FrontierUniverse._finite(value.get("jump_left"),0,120):return "공동 항해 속도 오류"
 	if value.has("transit"):
 		var route: Variant=value.transit
 		if not route is Dictionary:return "성간 항로 형식 오류"
@@ -18,6 +18,9 @@ static func validate(value: Variant) -> String:
 			for axis in route[key]:
 				if not FrontierUniverse._finite(axis,-100000,100000):return "성간 항로 범위 오류"
 		if not FrontierUniverse._finite(route.get("duration"),1,120) or not FrontierUniverse._finite(route.get("progress"),0,1):return "성간 항로 진행 오류"
+	for key in ["hull","energy"]:
+		if value.has(key) and not FrontierUniverse._finite(value[key],0,100):return "우주선 상태 범위 오류"
+	if value.has("damage_cooldown") and not FrontierUniverse._finite(value.damage_cooldown,0,8):return "우주선 수리 시간 오류"
 	return ""
 static func center(ordinal: int,manifest: Dictionary={},elapsed: float=0.0) -> Vector3:return FrontierUniverse.position(manifest,ordinal,elapsed)
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
@@ -26,14 +29,25 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if actor!=crew.pilot_id:return "현재 조종사만 항로를 조작할 수 있습니다."
 	var nav: Dictionary=crew.navigation
 	if nav.mode!="idle":return "항해를 마친 뒤 다음 항로를 설정하세요."
+	if kind=="tutorial_depart":
+		if int(nav.system)!=0:return "출격하기는 태양계에서만 사용할 수 있습니다."
+		var target:=first_destination(world.manifest)
+		if target<0:return "근처 개척 항로를 찾지 못했습니다. 항법도를 이용하세요."
+		var error:=apply(world,actor,"navigate",{"ordinal":target},active)
+		if not error.is_empty():return error
+		return apply(world,actor,"depart",{},active)
 	if kind=="navigate":
 		if not FrontierUniverse._finite(args.get("ordinal"),0,int(world.manifest.settings.planet_count)-1) or args.ordinal!=floorf(args.ordinal):return "행성 주소가 올바르지 않습니다."
 		nav.target=int(args.ordinal);world.navigation_target=FrontierUniverse.body_id(world.manifest,int(nav.target))
 	elif kind=="depart":
+		if float(nav.get("hull",100))<=0:return "선체 응급 수리가 끝날 때까지 기다려 주세요."
 		for id in active.values():
 			if not crew.members[id].aboard or not crew.members[id].ready:return "연결된 승무원 모두 승선하고 준비해야 출항할 수 있습니다."
 		nav.mode="approach" if int(nav.target)/int(world.manifest.settings.planets_per_system)==int(nav.system) else "jump"
-		nav.manual=false;nav.boundary=false
+		var energy_cost: float=world.manifest.settings.flight.get("transit_energy_cost",30.0)
+		if nav.mode=="jump" and float(nav.get("energy",100.0))<energy_cost:return "고속 추진 에너지를 충전 중입니다. 잠시 기다려 주세요."
+		if nav.mode=="jump":nav.energy=float(nav.get("energy",100.0))-energy_cost
+		nav.manual=false;nav.boundary=false;nav.boosting=false
 		nav.jump_left=float(world.manifest.settings.flight.get("transit_seconds",12.0)) if nav.mode=="jump" else 0.0
 		if nav.mode=="jump":
 			var source:=FrontierUniverse.system(world.manifest,int(nav.system))
@@ -46,6 +60,12 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	return ""
 static func step(world: Dictionary,delta: float) -> bool:
 	var nav: Dictionary=world.crew.navigation
+	var cfg_state: Dictionary=world.manifest.settings.flight
+	nav.hull=float(nav.get("hull",100.0));nav.energy=float(nav.get("energy",100.0))
+	nav.damage_cooldown=maxf(0,float(nav.get("damage_cooldown",0))-delta)
+	if nav.damage_cooldown<=0:nav.hull=minf(100,nav.hull+float(cfg_state.get("hull_repair",4))*delta)
+	if nav.mode!="jump" and not nav.get("boosting",false):nav.energy=minf(100,nav.energy+float(cfg_state.get("energy_recharge",12))*delta)
+	stellar_hazard(world,delta)
 	var old_time: float=float(nav.get("orbit_time",0))
 	nav.orbit_time=old_time+delta
 	if nav.mode=="idle" and nav.get("manual",false):return false
@@ -98,7 +118,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 			if world.manifest.settings.generator_version=="galaxy-v3":
 				var segment:=target-position
 				var nearest:=position+segment*clampf(-position.dot(segment)/maxf(segment.length_squared(),1),0,1)
-				if nearest.length()<1400:waypoint=Vector3(0,2200,0)
+				if nearest.length()<float(FrontierUniverse.presentation().star_warning_radius):waypoint=Vector3(0,float(FrontierUniverse.presentation().star_warning_radius)+2000,0)
 			direction=(waypoint-position).normalized()
 			nav.speed=move_toward(float(nav.speed),minf(float(cfg.cruise_speed)*propulsion,maxf(12,separation-float(cfg.arrival_clearance))),float(cfg.acceleration)*propulsion*delta)
 			position+=direction*minf(float(nav.speed)*delta,maxf(0,separation-float(cfg.arrival_clearance)))
@@ -120,7 +140,7 @@ static func phase(nav: Dictionary) -> String:
 static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	var nav: Dictionary=world.crew.navigation
 	if nav.mode!="idle" or FrontierCrewSurface.landed(world):return
-	if controls==[0.0,0.0,0.0] and not nav.get("manual",false):return
+	if float(controls[0])==0 and float(controls[1])==0 and float(controls[2])==0 and not nav.get("manual",false):return
 	for member in world.crew.members.values():
 		if member.get("connected",true) and not member.aboard:return
 	nav.manual=true
@@ -132,14 +152,22 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if right.length_squared()>.5:
 		var pitched:=direction.rotated(right,float(controls[2])*float(cfg.get("turn_speed",1.0))*delta)
 		if absf(pitched.y)<.98:direction=pitched
-	nav.speed=move_toward(float(nav.speed),float(controls[0])*float(cfg.get("manual_speed",700)),float(cfg.acceleration)*delta*3)
+	var boost_requested: bool=controls.size()>3 and float(controls[3])>.5 and float(controls[0])>0
+	if not boost_requested or float(nav.get("energy",100))>=25:nav.boost_depleted=false
+	nav.boosting=boost_requested and not nav.get("boost_depleted",false) and float(nav.get("energy",100))>0 and float(nav.get("hull",100))>0
+	if nav.boosting:
+		nav.energy=maxf(0,float(nav.get("energy",100))-float(cfg.get("boost_drain",22))*delta)
+		if nav.energy<=0:nav.boost_depleted=true;nav.boosting=false
+	var maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
+	if float(nav.get("hull",100))<=0:maximum=0
+	nav.speed=move_toward(float(nav.speed),float(controls[0])*maximum,float(cfg.acceleration)*delta*3)
 	var start:=FrontierCrewWorld.vector(nav.position)
 	var end:=start+direction*float(nav.speed)*delta
-	var boundary: float=cfg.get("system_boundary",20000.0)
+	var boundary: float=FrontierUniverse.presentation().system_boundary
 	nav.boundary=end.length()>boundary-800
 	if end.length()>boundary:end=end.limit_length(boundary);nav.speed=0
 	# Swept sphere checks stop even high speed frames before a celestial surface.
-	var obstacles: Array=[{"point":Vector3.ZERO,"radius":1100.0}]
+	var obstacles: Array=[{"point":Vector3.ZERO,"radius":float(FrontierUniverse.presentation().star_radius)+150}]
 	for i in int(world.manifest.settings.planets_per_system):
 		var ordinal: int=int(nav.system)*int(world.manifest.settings.planets_per_system)+i
 		var body:=FrontierUniverse.body(world.manifest,ordinal)
@@ -148,6 +176,52 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	for obstacle in obstacles:
 		var offset: Vector3=start-obstacle.point
 		var nearest:=offset+segment*clampf(-offset.dot(segment)/maxf(segment.length_squared(),.0001),0,1)
-		if nearest.length()<float(obstacle.radius) and end.distance_to(obstacle.point)<start.distance_to(obstacle.point):end=start;nav.speed=0;break
+		if nearest.length()<float(obstacle.radius) and end.distance_to(obstacle.point)<start.distance_to(obstacle.point):
+			if absf(nav.speed)>120 and float(nav.get("damage_cooldown",0))<=0:
+				nav.hull=maxf(0,float(nav.get("hull",100))-minf(45,absf(nav.speed)*.025));nav.damage_cooldown=8.0
+			end=start;nav.speed=0;break
 	nav.position=[end.x,end.y,end.z];nav.direction=[direction.x,direction.y,direction.z]
 	world.flight_position=nav.position.duplicate()
+
+static var departure_cache: Dictionary={}
+static func first_destination(manifest: Dictionary) -> int:
+	if departure_cache.has(manifest.id):return departure_cache[manifest.id]
+	var origin:=FrontierUniverse.system(manifest,0)
+	var start:=Vector2(origin.map_position[0],origin.map_position[1])
+	var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)/manifest.settings.tier_weights.size()
+	var candidates: Array=[]
+	var samples:=mini(1024,count-1)
+	for i in samples:
+		var index: int=1+i*(count-1)/samples
+		var system:=FrontierUniverse.system(manifest,index)
+		var distance:=start.distance_squared_to(Vector2(system.map_position[0],system.map_position[1]))
+		candidates.append({"index":index,"distance":distance})
+	candidates.sort_custom(func(a,b):return a.distance<b.distance)
+	for candidate in candidates:
+		for orbit in int(manifest.settings.planets_per_system):
+			var ordinal: int=int(candidate.index)*int(manifest.settings.planets_per_system)+orbit
+			var body:=FrontierUniverse.body(manifest,ordinal)
+			if FrontierUniverse.landable(body) and int(body.planet_tier)==1:
+				departure_cache[manifest.id]=ordinal;return ordinal
+	return -1
+
+static func stellar_hazard(world: Dictionary,delta: float) -> void:
+	var nav: Dictionary=world.crew.navigation
+	nav.star_warning=false;nav.star_danger=false
+	if nav.mode=="jump" or FrontierCrewSurface.landed(world):return
+	var cfg:=FrontierUniverse.presentation()
+	var point:=FrontierCrewWorld.vector(nav.position)
+	var distance:=point.length()
+	nav.star_warning=distance<float(cfg.star_warning_radius)
+	nav.star_danger=distance<float(cfg.star_damage_radius)
+	if nav.star_danger:
+		var heat:=1.0-clampf((distance-float(cfg.star_radius))/(float(cfg.star_damage_radius)-float(cfg.star_radius)),0,1)
+		nav.hull=maxf(0,float(nav.get("hull",100))-lerpf(cfg.star_damage_per_second,cfg.star_damage_max_per_second,heat)*delta)
+		nav.damage_cooldown=8.0
+		if nav.hull<=0:nav.emergency_escape=true
+	if nav.get("emergency_escape",false):
+		var away:=point.normalized() if distance>1 else Vector3.UP
+		point+=away*500*delta
+		nav.position=[point.x,point.y,point.z];world.flight_position=nav.position.duplicate()
+		nav.direction=[away.x,away.y,away.z];nav.speed=500;nav.manual=true
+		if point.length()>float(cfg.star_warning_radius)+500:nav.emergency_escape=false;nav.speed=0
