@@ -7,6 +7,7 @@ var waiting_roster: Label
 var waiting_info: Label
 var waiting_ready: Button
 var waiting_start: Button
+var scan_detail: Label
 var chart: Control
 var candidates: VBoxContainer
 var candidate_system: int=-1
@@ -188,6 +189,8 @@ func _build_ui() -> void:
 	chart=load("res://scripts/ui/galaxy_chart.gd").new();panel.add_child(chart)
 	chart.selected.connect(func(ordinal: int):selected_ordinal=ordinal;select_destination())
 	_button(panel,"은하 지도 / 항성계",func():chart.galaxy=not chart.galaxy;chart.queue_redraw())
+	_button(panel,"스캔 상세 펼치기 / 접기",func():scan_detail.visible=not scan_detail.visible;_refresh_scan_detail())
+	scan_detail=_label(panel,"",14);scan_detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;scan_detail.custom_minimum_size.x=260;scan_detail.hide()
 	candidates=VBoxContainer.new();panel.add_child(candidates)
 	var route_row:=HBoxContainer.new();panel.add_child(route_row)
 	_button(route_row,"이웃 항성계",func():browse_system(1))
@@ -322,7 +325,7 @@ func _snapshot(value: Dictionary) -> void:
 	if nav.mode=="jump":travel_status.text=travel_status.text.replace("\n속도 %.0f m/s"%float(nav.speed),"");travel_status.text+="\n항로 %.0f%% · 도착까지 %.1f초 · 무료" % [float(nav.get("transit",{}).get("progress",0))*100,float(nav.jump_left)]
 	if nav.get("boundary",false):travel_status.text+="\n항성계 외곽 · 다른 항성계는 성간 항해로 이동"
 	travel_status.text+="\nC 외부 시점 · W/S 전후 · 마우스 선회 · 놓으면 제동"
-	travel_status.text+="\nT%d · "%int(body.planet_tier)+FrontierMineralWorld.summary(body)
+	_refresh_scan_detail()
 	if body.get("origin","")=="solar_reference":travel_status.text+="\n축약 태양계 · 지표는 게임 생성"
 	if crew_ids!=members.keys():
 		crew_ids=members.keys();pilot_choices.clear()
@@ -757,3 +760,8 @@ func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
 	else:
 		yaw-=motion.x
 		pitch=clampf(pitch-motion.y,-1.3,1.3)
+
+func _refresh_scan_detail() -> void:
+	if scan_detail==null or flight==null or session.manifest.is_empty():return
+	var body:=FrontierUniverse.body(session.manifest,selected_ordinal)
+	scan_detail.text=FrontierOrbitalSurvey.report(body).detail if flight.scanned.has(body.id) or body.get("origin","")=="solar_reference" else "미스캔 천체 · 우주에서 행성을 바라보면 조사합니다."

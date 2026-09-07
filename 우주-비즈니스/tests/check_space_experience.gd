@@ -19,5 +19,13 @@ func run() -> void:
  var out:=ProjectSettings.globalize_path("res://../docs/production/media/space-experience")
  DirAccess.make_dir_recursive_absolute(out)
  root.get_texture().get_image().save_png(out+"/arrival.png")
- print("SPACE EXPERIENCE: English names and arrival rendered")
+ view.transit_overlay.arrival_age=100
+ view.set_process(false)
+ view.transit_overlay.scan_body=body;view.transit_overlay.scan_progress=1.0
+ var report:=FrontierOrbitalSurvey.report(body)
+ assert(report.available and not report.resources.is_empty())
+ assert(not FrontierOrbitalSurvey.report(FrontierUniverse.body(manifest,4)).available)
+ await RenderingServer.frame_post_draw
+ root.get_texture().get_image().save_png(out+"/scan.png")
+ print("SPACE EXPERIENCE: English names, arrival and survey rendered")
  view.queue_free();await process_frame;quit()
