@@ -99,15 +99,18 @@ func _response(_sequence: int,value: Dictionary) -> void:
 	response_left=2;last_key=""
 func _process(delta: float) -> void:
 	response_left=maxf(0,response_left-delta)
-	var active: bool=app.session.active and app.surface_world!=null and app.session.latest.get("phase","playing")=="playing"
-	hotbar.visible=active and (visible or not app.feedback.blocked())
+	var active: bool=app.session.active and app.session.latest.get("phase","playing")=="playing"
+	hotbar.visible=active and (visible or (app.surface_world!=null and not app.feedback.blocked()))
 	if not active:hide();return
 	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	data=FrontierEquipment.state(member)
 	var ledger: Dictionary=app.session.surface.get("business",{})
 	bag=ledger.get("bags",{}).get(app.session.latest.self_id,FrontierExpeditionBusiness.inventory())
-	depot=ledger.get("sites",{}).get(app.surface_world.body.id,{}).get("inventory",FrontierExpeditionBusiness.inventory())
-	var key:=JSON.stringify([data,bag,depot,ledger.get("credits",0),member.carried,storage.selected])
+	depot=ledger.get("sites",{}).get(app.surface_world.body.id if app.surface_world!=null else "",{}).get("inventory",FrontierExpeditionBusiness.inventory())
+	storage.set_item_text(1,"현장 창고 · 공동" if app.surface_world!=null else "우주선 화물 · 공동")
+	if app.surface_world==null:
+		depot={"stone":int(app.session.latest.crew.rock)};bag={"stone":int(member.carried)}
+	var key:=JSON.stringify([data,bag,depot,ledger.get("credits",0),member.carried,storage.selected,app.surface_world!=null])
 	if key==last_key:return
 	last_key=key
 	credit.text="%s"%int(ledger.get("credits",FrontierExpeditionBusiness.config().starting_credits))
@@ -153,10 +156,10 @@ func _refresh_details() -> void:
 	_clear(stats);_clear(materials)
 	upgrade_action.hide();withdraw_count.visible=tabs.current_tab==2 and storage.selected==1
 	suit_action.visible=tabs.current_tab==0
-	suit_action.disabled=int(data.get("suit_tier",1))>=2 or not FrontierExpeditionBusiness.affordable(bag,FrontierProductionTier2.config().suit_upgrade.cost)
+	suit_action.disabled=app.surface_world==null or int(data.get("suit_tier",1))>=2 or not FrontierExpeditionBusiness.affordable(bag,FrontierProductionTier2.config().suit_upgrade.cost)
 	suit_action.text="탐험복 Mk.2 완료" if int(data.get("suit_tier",1))>=2 else "탐험복 Mk.2 개조"
 	if tabs.current_tab==2:
-		if selected_resource.is_empty():selected_resource="iron"
+		if selected_resource.is_empty():selected_resource="stone" if app.surface_world==null else "iron"
 		var resource:=FrontierCatalog.entry("resources",selected_resource)
 		title.text=resource.name;category.text="CARGO / "+("내 배낭" if storage.selected==0 else "공동 창고")
 		var product:=FrontierProductionTier2.product(selected_resource)
@@ -166,6 +169,9 @@ func _refresh_details() -> void:
 		else:_metric("채집기 요구 등급",str(int(FrontierMineralWorld.tier(selected_resource))),float(FrontierMineralWorld.tier(selected_resource))/3)
 		action.text="공동 창고에서 인수" if storage.selected==1 else "현장 창고에 반납";action.disabled=int(depot.get(selected_resource,0))<=0 if storage.selected==1 else FrontierExpeditionBusiness.total(bag)==0
 		if response_left<=0:message.text="현장 창고 근처에서 선택 수량을 인수합니다." if storage.selected==1 else "현장 창고 근처에서 반납할 수 있습니다.";message.modulate=Color.WHITE
+		if app.surface_world==null:
+			action.text="우주선 화물에서 인수" if storage.selected==1 else "우주선 화물에 반납"
+			message.text="선내 보관함 근처에서 이용하세요."
 		return
 	var def: Dictionary=FrontierEquipment.config().items[selected_definition]
 	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환"}[def.kind]
@@ -181,10 +187,10 @@ func _refresh_details() -> void:
 		for id in def.cost:
 			var cost:=VBoxContainer.new();materials.add_child(cost);cost.add_child(FrontierResourceIcons.view(id,30));var have:=int(bag.get(id,0));FrontierInterfaceStyle.label(cost,"%d/%d"%[have,int(def.cost[id])],12,FrontierInterfaceStyle.ACCENT if have>=int(def.cost[id]) else FrontierInterfaceStyle.WARNING)
 		if def.cost.is_empty():materials.add_child(FrontierResourceIcons.view("research_parts",30));FrontierInterfaceStyle.label(materials,"키트 %d / 1"%int(data.kit),13)
-		action.text="제작";action.disabled=int(data.kit)<=0 if selected_definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost)
-		if response_left<=0:message.text="재료를 모으면 제작할 수 있습니다." if action.disabled else "내 배낭의 재료를 사용합니다.";message.modulate=Color.WHITE
+		action.text="제작";action.disabled=app.surface_world==null or (int(data.kit)<=0 if selected_definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost))
+		if response_left<=0:message.text="착륙 후 휴대 제작기를 사용할 수 있습니다." if app.surface_world==null else ("재료를 모으면 제작할 수 있습니다." if action.disabled else "내 배낭의 재료를 사용합니다.");message.modulate=Color.WHITE
 	else:
-		upgrade_action.visible=int(def.tier)==1 and selected_item!=""
+		upgrade_action.visible=app.surface_world!=null and int(def.tier)==1 and selected_item!=""
 		var next: Dictionary=FrontierEquipment.config().items.get(str(def.kind)+"_2",{})
 		upgrade_action.disabled=not FrontierExpeditionBusiness.affordable(bag,next.get("cost",{}))
 		upgrade_action.tooltip_text=FrontierCatalog.cost_text(next.get("cost",{}))+" · 장비 ID와 슬롯 유지"
@@ -201,6 +207,8 @@ func _equip(id: String,slot: int) -> void:
 func _action() -> void:
 	if tabs.current_tab==1:app.session.send_request("equipment_craft",{"definition":selected_definition})
 	elif tabs.current_tab==2:
-		if storage.selected==1:app.session.send_request("business_withdraw",{"resource":selected_resource,"amount":int(withdraw_count.value)})
+		if app.surface_world==null:
+			app.session.send_request("withdraw" if storage.selected==1 else "deposit",{"amount":int(withdraw_count.value) if storage.selected==1 else int(bag.get("stone",0))})
+		elif storage.selected==1:app.session.send_request("business_withdraw",{"resource":selected_resource,"amount":int(withdraw_count.value)})
 		else:app.session.send_request("business_deposit",{})
 	else:app.session.send_request("equipment_equip",{"item_id":"","slot":int(data.selected)})

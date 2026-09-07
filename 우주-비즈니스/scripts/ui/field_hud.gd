@@ -37,7 +37,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var weapon:=VBoxContainer.new();weapon.name="Weapon";weapon.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(weapon)
 	equipment_name=FrontierInterfaceStyle.label(weapon,"",14);cooldown=ProgressBar.new();cooldown.show_percentage=false;cooldown.custom_minimum_size=Vector2(170,3);weapon.add_child(cooldown)
 	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",5);add_child(navigation)
-	var rows: Array=[["inventory","I","아이템 · 장비",app.toggle_inventory],["build","B","개발 · 건설",app.toggle_business],["scan","J","생태 연구",app.toggle_research],["ship","Tab","항해 · 승무원",app.toggle_navigation]]
+	var rows: Array=[["inventory","I","아이템 · 장비",app.toggle_inventory],["build","B","개발 · 건설",app.toggle_business],["scan","J","생태 연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
 	for entry in rows:
 		var button:=Button.new();button.custom_minimum_size=Vector2(46,46);button.tooltip_text=entry[2]+" ["+entry[1]+"]";button.pressed.connect(entry[3]);navigation.add_child(button)
 		var icon:=TextureRect.new();icon.texture=load("res://assets/ui/interface/"+entry[0]+".svg");icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;icon.position=Vector2(12,5);icon.size=Vector2(22,22);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;button.add_child(icon)
@@ -60,8 +60,8 @@ func _process(delta: float) -> void:
 	toast.visible=app.surface_world!=null and toast_left>0
 	toast.position=Vector2((get_viewport().get_visible_rect().size.x-toast.size.x)/2,32)
 	var on_surface: bool=app.session.active and app.surface_world!=null
-	app.status.get_parent().visible=not on_surface
-	app.navigation_toggle.get_parent().visible=not on_surface
+	app.status.get_parent().visible=not app.session.active
+	app.navigation_toggle.get_parent().visible=false
 	visible=on_surface and app.feedback!=null and not app.feedback.blocked()
 	if not visible:return
 	save_left=maxf(0,save_left-delta);saved.visible=save_left>0

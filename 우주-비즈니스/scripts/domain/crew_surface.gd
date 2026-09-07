@@ -87,16 +87,19 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="land":
 		if landed(world):return "이미 착륙했습니다."
 		if actor!=crew.pilot_id or crew.navigation.mode!="idle":return "궤도 접근을 마친 조종사가 착륙할 수 있습니다."
-		var body:=FrontierUniverse.body(world.manifest,int(crew.navigation.target))
+		var ordinal: Variant=args.get("ordinal",crew.navigation.target)
+		if not FrontierUniverse._finite(ordinal,0,int(world.manifest.settings.planet_count)-1) or ordinal!=floorf(ordinal):return "행성 주소가 올바르지 않습니다."
+		var body:=FrontierUniverse.body(world.manifest,int(ordinal))
 		if not FrontierUniverse.landable(body):return FrontierUniverse.landing_restriction(body)
-		var radius:=FrontierUniverse.radius(body)
-		if world.location!=body.id or FrontierCrewWorld.vector(crew.navigation.position).distance_to(FrontierCrewNavigation.center(int(crew.navigation.target),world.manifest,float(crew.navigation.get("orbit_time",0))))-radius>float(world.manifest.settings.flight.arrival_clearance)+3:return "선정 행성의 궤도까지 접근하세요."
+		var radius:=FrontierUniverse.navigation_radius(body)
+		if int(crew.navigation.system)!=FrontierUniverse.system_index(world.manifest,int(ordinal)) or FrontierCrewWorld.vector(crew.navigation.position).distance_to(FrontierCrewNavigation.center(int(ordinal),world.manifest,float(crew.navigation.get("orbit_time",0))))-radius>float(world.manifest.settings.flight.arrival_clearance)+3:return "선정 행성의 궤도까지 접근하세요."
 		for id in active.values():
 			if not crew.members[id].aboard or not crew.members[id].ready:return "연결된 승무원 모두 착륙 준비를 완료해야 합니다."
 		if not world.has("terrain_settings"):
 			world.terrain_settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json"));world.terrain_settings_hash=FrontierUniverse.fingerprint(world.terrain_settings)
 		if not world.has("ecology"):world.ecology=FrontierEcology.create()
 		FrontierEcology.ensure_planet(world.ecology,body)
+		world.location=body.id;world.navigation_target=body.id;world.visited[body.id]=true;crew.navigation.target=int(ordinal)
 		crew.landing={"body_id":body.id,"epoch":int(crew.revision)+1}
 		var index:=0
 		for id in active.values():spawn_member(world,crew.members[id],index);index+=1

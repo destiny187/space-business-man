@@ -41,3 +41,7 @@ func refresh() -> void:
 	for index in range(page*50,mini(pages.size(),(page+1)*50)):
 		var ordinal: int=pages[index];var body:=FrontierUniverse.body(journal.manifest,ordinal)
 		entries.add_item(body.name+"    "+journal.status(ordinal));entries.set_item_metadata(entries.item_count-1,ordinal)
+
+func _input(event: InputEvent) -> void:
+	if visible and event is InputEventKey and event.pressed and event.physical_keycode==KEY_ESCAPE:
+		hide();get_viewport().set_input_as_handled()

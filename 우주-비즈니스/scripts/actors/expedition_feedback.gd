@@ -45,7 +45,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.surface_received.connect(_surface)
 
 func blocked() -> bool:
-	return (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
+	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
 	if app.surface_world==null:return

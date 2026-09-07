@@ -36,4 +36,7 @@ func update_snapshot(value: Dictionary) -> void:
 	if not app.session.offline:
 		for member in value.crew.members.values():
 			if member.get("connected",false) and (not member.aboard or not member.ready):
-				depart.disabled=true;depart.text="출항 준비 필요 · Tab";break
+				depart.disabled=true;depart.text="출항 준비 필요 · P";break
+
+func _process(_delta: float) -> void:
+	if app!=null and (app.any_menu_open() or FrontierClientSettings.ensure(get_tree()).is_open()):depart.hide()
