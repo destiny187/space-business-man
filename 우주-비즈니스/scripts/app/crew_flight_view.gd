@@ -1,6 +1,7 @@
 class_name FrontierCrewFlightView
 extends FrontierSpaceFlight
 var navigation: Dictionary={}
+var announced_system: int=-1
 var orbit_clock:=0.0
 var drive: FrontierVesselDriveEffects
 var previous_hull:=100.0
@@ -34,6 +35,12 @@ func update_navigation(value: Dictionary) -> void:
 	if value.mode=="jump" and float(value.get("transit",{}).get("progress",0))>=.90:render_system=FrontierUniverse.system_index(state.manifest,int(value.target))
 	if navigation.is_empty() or render_system!=current_system:
 		_load_system(render_system);ship.position=_display_position(value)
+	if render_system!=announced_system:
+		announced_system=render_system
+		var system:=FrontierUniverse.system(state.manifest,render_system)
+		var layout:=FrontierUniverse.system_layout(state.manifest,render_system)
+		var theme_name: String={"satellites":"위성 군집","giant_court":"거대행성 군집","open":"넓은 항로","debris":"소행성 회랑"}.get(layout.theme,"미지의 탐사권")
+		transit_overlay.announce(system.star.name,"항성계 진입  ·  %s형 항성  ·  %d개 행성  ·  %s"%[system.star.spectral_type,system.body_ids.size(),theme_name])
 	var phase:=FrontierCrewNavigation.phase(value)
 	if phase!=last_phase:
 		if value.mode=="jump" and last_phase in ["궤도 대기","직접 조종"]:transit_audio.play("sfx_robot_charge")

@@ -1,5 +1,8 @@
 extends Control
 var nav: Dictionary={}
+var arrival_name: String=""
+var arrival_detail: String=""
+var arrival_age: float=100.0
 var clock:=0.0
 var scan_body: Dictionary={}
 var scan_progress:=0.0
@@ -7,11 +10,12 @@ func _ready() -> void:
 	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 func _process(delta: float) -> void:
-	clock+=delta;queue_redraw()
+	clock+=delta;arrival_age+=delta;queue_redraw()
 func _draw() -> void:
 	if nav.is_empty():return
 	var font:=get_theme_default_font()
 	var center:=size*.5
+	_draw_arrival(font)
 	_draw_vitals(font)
 	if nav.get("star_warning",false):
 		var danger: bool=nav.get("star_danger",false)
@@ -81,3 +85,21 @@ func _draw_vitals(font: Font) -> void:
 		draw_rect(Rect2(point+Vector2(0,8),Vector2(180*value/100,5)),color)
 	if nav.get("boosting",false):draw_string(font,start+Vector2(0,-22),"고속 추진",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(.5,.8,1))
 	elif float(nav.get("hull",100))<=0:draw_string(font,start+Vector2(0,-22),"추진 정지 · 응급 수리",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(1,.6,.3))
+
+func announce(system_name_value: String,detail: String) -> void:
+	arrival_name=system_name_value;arrival_detail=detail;arrival_age=0.0
+func _draw_arrival(font: Font) -> void:
+	var duration: float=FrontierCelestialNames.rules().arrival_seconds
+	if arrival_age>=duration or arrival_name.is_empty():return
+	var opacity: float=smoothstep(0.0,1.1,arrival_age)*(1.0-smoothstep(duration-1.8,duration,arrival_age))
+	var band: float=minf(110,size.y*.14)*opacity
+	draw_rect(Rect2(0,0,size.x,band),Color(.015,.027,.045,.75*opacity))
+	draw_rect(Rect2(0,size.y-band,size.x,band),Color(.015,.027,.045,.75*opacity))
+	var px:=int(clampf(size.x*.068,32,92))
+	while font.get_string_size(arrival_name,HORIZONTAL_ALIGNMENT_LEFT,-1,px).x>size.x*.84 and px>20:px-=1
+	var y:=size.y*.36
+	draw_string_outline(font,Vector2(size.x*.08,y),arrival_name,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,px,5,Color(0,.01,.02,opacity*.85))
+	draw_string(font,Vector2(size.x*.08,y),arrival_name,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,px,Color(.91,.97,1,opacity))
+	var reach:=size.x*.32*smoothstep(0.1,2.0,arrival_age)
+	draw_line(Vector2(size.x*.5-reach,y+26),Vector2(size.x*.5+reach,y+26),Color(.55,.88,.92,opacity*.7),1.5,true)
+	draw_string(font,Vector2(size.x*.08,y+61),arrival_detail,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,int(clampf(size.x*.017,13,22)),Color(.65,.86,.9,opacity))

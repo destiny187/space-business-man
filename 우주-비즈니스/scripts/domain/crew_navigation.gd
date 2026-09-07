@@ -103,6 +103,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 			var body:=FrontierUniverse.body(world.manifest,int(nav.target))
 			var target:=center(int(nav.target),world.manifest,float(nav.orbit_time))
 			position=FrontierUniverse.entry_position(world.manifest,int(nav.target),float(nav.orbit_time))
+			direction=(target-position).normalized()
 			nav.mode="approach";nav.speed=0
 
 	else:

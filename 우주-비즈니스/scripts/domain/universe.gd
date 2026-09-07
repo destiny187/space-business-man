@@ -56,7 +56,7 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 	return {"id": id, "ordinal": index, "seed": seed_value, "band": band, "progress": progress,
 		"sector_id": m.id + ":sector:%d" % (index / int(cfg.systems_per_sector)),
 		"map_position": [cos(angle) * radius, sin(angle) * radius], "body_ids": ids,
-		"star": {"id":id+":star", "name":"태양" if index==0 else "항성 %06d" % (index+1), "spectral_type":"G" if index==0 else ["M","K","G","F","A"][derive(seed_value,"star")%5]}}
+		"star": {"id":id+":star", "name":FrontierCelestialNames.system_name(seed_value,index), "spectral_type":"G" if index==0 else ["M","K","G","F","A"][derive(seed_value,"star")%5]}}
 
 static func body(m: Dictionary, ordinal: int) -> Dictionary:
 	if ordinal < 0 or ordinal >= int(m.settings.planet_count): return {}
@@ -67,7 +67,7 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 	var streams: Dictionary = {}
 	for stream in STREAMS: streams[stream] = derive(seed_value, id + ":" + stream)
 	var result: Dictionary={"id": id, "ordinal": ordinal, "system_id": s.id, "system_ordinal": s.ordinal,
-		"seed": seed_value, "name": "개척 %08d" % (ordinal + 1),
+		"seed": seed_value, "name": FrontierCelestialNames.planet_name(s.star.name,ordinal-first_ordinal(m,int(s.ordinal))),
 		"planet_tier": pick_tier(streams.tier, cfg.tier_weights[int(s.band)]),
 		"kind": cfg.planet_kinds[ordinal % cfg.planet_kinds.size()], "streams": streams,
 		"origin": "fictional", "reference_id": "", "surface_origin": "seed_generated"}
@@ -75,7 +75,7 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		var orbit: int=ordinal-first_ordinal(m,int(s.ordinal))
 		result.kind=cfg.planet_kinds[derive(seed_value,"body_kind")%cfg.planet_kinds.size()]
 		if int(s.ordinal)==0:
-			result.name=cfg.solar_names[orbit];result.kind=cfg.solar_kinds[orbit]
+			result.name=FrontierCelestialNames.rules().solar_planets[orbit];result.kind=cfg.solar_kinds[orbit]
 			result.origin="solar_reference";result.reference_id="solar:"+str(orbit);result.planet_tier=1
 		if cfg.has("system_rules") and int(s.ordinal)>0:
 			var layout:=system_layout(m,int(s.ordinal))
