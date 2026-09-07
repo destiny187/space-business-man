@@ -1,5 +1,6 @@
 extends Control
 var nav: Dictionary={}
+var telemetry: Dictionary={}
 var arrival_name: String=""
 var arrival_detail: String=""
 var arrival_age: float=100.0
@@ -43,6 +44,7 @@ func _draw() -> void:
 		draw_string(font,origin+Vector2(0,-15),FrontierCrewNavigation.phase(nav),HORIZONTAL_ALIGNMENT_LEFT,-1,22,Color(.8,.95,1))
 		draw_string(font,origin+Vector2(0,27),"%.0f%% · %.1f초 · 에너지 자동 공급" % [p*100,float(nav.jump_left)],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color(.7,.83,.9))
 	else:
+		_draw_motion(font,center)
 		draw_arc(center,5,0,TAU,24,Color(.7,.95,1,.8),1.5,true)
 		_draw_scan(font,center)
 		if nav.get("boundary",false):draw_string(font,Vector2(24,size.y-72),"항성계 외곽 — 항법도에서 성간 항해를 설정하세요",HORIZONTAL_ALIGNMENT_LEFT,-1,18,Color(1,.76,.4))
@@ -103,3 +105,21 @@ func _draw_arrival(font: Font) -> void:
 	var reach:=size.x*.32*smoothstep(0.1,2.0,arrival_age)
 	draw_line(Vector2(size.x*.5-reach,y+26),Vector2(size.x*.5+reach,y+26),Color(.55,.88,.92,opacity*.7),1.5,true)
 	draw_string(font,Vector2(size.x*.08,y+61),arrival_detail,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,int(clampf(size.x*.017,13,22)),Color(.65,.86,.9,opacity))
+
+func _draw_motion(font: Font,center: Vector2) -> void:
+	var cfg:=FrontierFlightTelemetry.config()
+	var strength:=clampf(absf(float(nav.speed))/float(cfg.speed_streak_reference),0,1)
+	if strength>.02:
+		for i in int(cfg.speed_streaks):
+			var angle:=i*2.399963
+			var radius:=.38+fposmod(i*.317+clock*strength*.65,.62)
+			var ray:=Vector2(cos(angle),sin(angle))
+			var point:=center+ray*radius*size.length()*.55
+			draw_line(point,point+ray*(3+strength*30),Color(.6,.83,.9,strength*.36),1,true)
+	var width:=minf(360,size.x*.43)
+	var origin:=Vector2(size.x-width-24,size.y-91)
+	draw_string(font,origin,"%.0f m/s"%absf(float(nav.speed)),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
+	if not telemetry.is_empty():
+		var caption: String=FrontierFlightTelemetry.distance_label(float(telemetry.distance))+" · "+FrontierFlightTelemetry.eta_label(telemetry) if telemetry.same_system else "Tab · 성간 항로 설정"
+		draw_string(font,origin+Vector2(0,27),caption,HORIZONTAL_ALIGNMENT_RIGHT,width,15,Color(.55,.77,.83))
+	if nav.get("proximity_braking",false):draw_string(font,origin+Vector2(0,-30),"근접 감속 보조",HORIZONTAL_ALIGNMENT_RIGHT,width,16,Color(1,.77,.4))

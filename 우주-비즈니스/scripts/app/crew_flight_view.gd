@@ -51,6 +51,7 @@ func update_navigation(value: Dictionary) -> void:
 	orbit_clock=float(value.get("orbit_time",0))
 	navigation=value.duplicate(true)
 	transit_overlay.nav=navigation
+	transit_overlay.telemetry=FrontierFlightTelemetry.read(state.manifest,navigation)
 	update_orbits(float(value.get("orbit_time",0)))
 func _process(delta: float) -> void:
 	if navigation.is_empty():return

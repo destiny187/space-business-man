@@ -170,6 +170,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		if nav.energy<=0:nav.boost_depleted=true;nav.boosting=false
 	var maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
 	if float(nav.get("hull",100))<=0:maximum=0
+	var previous_speed: float=float(nav.speed)
 	nav.speed=move_toward(float(nav.speed),float(controls[0])*maximum,float(cfg.acceleration)*delta*3)
 	var start:=FrontierCrewWorld.vector(nav.position)
 	var end:=start+direction*float(nav.speed)*delta
@@ -184,6 +185,23 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time)),"radius":FrontierUniverse.navigation_radius(body)+80})
 		for moon in int(body.get("moons",0)):
 			obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time))+FrontierUniverse.moon_offset(body,moon,float(nav.orbit_time)),"radius":FrontierUniverse.moon_radius(body,moon)+50})
+	nav.proximity_braking=false
+	if float(controls[0])>0:
+		var safe_speed: float=maximum
+		var brake: Dictionary=FrontierFlightTelemetry.config()
+		var deceleration: float=float(cfg.acceleration)*float(brake.brake_acceleration_factor)
+		for obstacle in obstacles:
+			var offset: Vector3=obstacle.point-start
+			var along: float=offset.dot(direction)
+			var cross_distance: float=(offset-direction*along).length()
+			var envelope: float=float(obstacle.radius)+float(brake.brake_margin)
+			if along>0 and cross_distance<envelope:
+				var free_path:=maxf(0,along-sqrt(maxf(0,envelope*envelope-cross_distance*cross_distance)))
+				safe_speed=minf(safe_speed,maxf(float(brake.minimum_approach_speed),sqrt(2*deceleration*free_path)*.75))
+		if safe_speed<maximum:
+			nav.proximity_braking=true
+			nav.speed=move_toward(previous_speed,minf(float(controls[0])*maximum,safe_speed),deceleration*delta)
+			end=(start+direction*float(nav.speed)*delta).limit_length(boundary)
 	var segment:=end-start
 	for obstacle in obstacles:
 		var offset: Vector3=start-obstacle.point
