@@ -37,7 +37,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var weapon:=VBoxContainer.new();weapon.name="Weapon";weapon.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(weapon)
 	equipment_name=FrontierInterfaceStyle.label(weapon,"",14);cooldown=ProgressBar.new();cooldown.show_percentage=false;cooldown.custom_minimum_size=Vector2(170,3);weapon.add_child(cooldown)
 	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",5);add_child(navigation)
-	var rows: Array=[["inventory","I","아이템 · 장비",app.toggle_inventory],["build","B","개발 · 건설",app.toggle_business],["scan","J","생태 연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
+	var rows: Array=[["inventory","I","아이템 · 장비",app.toggle_inventory],["build","B","건설",app.toggle_business],["scan","J","생태 연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
 	for entry in rows:
 		var button:=Button.new();button.custom_minimum_size=Vector2(46,46);button.tooltip_text=entry[2]+" ["+entry[1]+"]";button.pressed.connect(entry[3]);navigation.add_child(button)
 		var icon:=TextureRect.new();icon.texture=load("res://assets/ui/interface/"+entry[0]+".svg");icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;icon.position=Vector2(12,5);icon.size=Vector2(22,22);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;button.add_child(icon)
@@ -82,7 +82,7 @@ func _process(delta: float) -> void:
 		target_action.text="클릭 유지  채집" if usable else "채집기 %s 필요"%["I","II","III"][int(vein.required_tier)-1]
 		target_action.modulate=Color.WHITE if usable else FrontierInterfaceStyle.WARNING
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
-		if site.is_empty():target_action.text="B  개발 등록"
+		if site.is_empty():target_action.text="착륙선 F  개발 등록"
 		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
 		target_action.text+=" · E 유지  조사"
 		context.show()
@@ -95,8 +95,10 @@ func _process(delta: float) -> void:
 			target_bar.show();target_bar.max_value=FrontierEquipment.config().animal_health;target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
 			target_action.text="클릭  발사" if target_bar.value>0 else "무력화"
 	elif not target.is_empty():
-		target_name.text="현장 창고" if target.get("kind")=="base" else "현장 설비"
-		target_icon.texture=load("res://assets/ui/interface/build.svg");target_action.text="F  상호작용";target_action.modulate=Color.WHITE;context.show()
+		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
+		var row: Dictionary=site.get("buildings",{}).get(target.id,{})
+		target_name.text="현장 창고" if target.get("kind")=="base" else ("M-01 로봇" if target.get("kind")=="robot" else FrontierCatalog.entry("buildings",row.get("type","")).get("name","회수 화물"))
+		target_icon.texture=load("res://assets/ui/interface/build.svg");target_action.text="F  로봇 제작소" if row.get("type","")=="factory" else "F  열기";target_action.modulate=Color.WHITE;context.show()
 	var size:=get_viewport().get_visible_rect().size
 	context.position=Vector2(size.x/2+24,size.y/2+36)
 

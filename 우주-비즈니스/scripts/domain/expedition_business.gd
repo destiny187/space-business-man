@@ -56,6 +56,12 @@ static func site(world: Dictionary) -> Dictionary:
 	return world.get("business",{}).get("sites",{}).get(world.location,{})
 static func bag(world: Dictionary,actor: String) -> Dictionary:
 	return world.get("business",{}).get("bags",{}).get(actor,inventory())
+static func near_warehouse(current: Dictionary,position: Vector3) -> bool:
+	if current.is_empty():return false
+	if position.distance_to(point(current.center))<=float(config().deposit_range):return true
+	for row in current.get("buildings",{}).values():
+		if row.type=="storage" and position.distance_to(point(row.position))<=float(config().deposit_range):return true
+	return false
 static func ground(field: FrontierTerrainField,x: float,z: float,radius: float=.4) -> Vector3:
 	var y: float=field.height(x,z)
 	var p:=Vector3(x,y,z)
@@ -112,7 +118,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if current.is_empty():return "먼저 무료 개발 사업을 등록하세요."
 	if current.state!="active":return "정산된 계약의 자산은 인계됐습니다. 관찰과 다른 행성 탐험은 가능합니다."
 	if kind in ["business_produce","business_withdraw","business_facility_upgrade","business_robot_upgrade"]:return FrontierProductionTier2.apply(world,actor,kind,args)
-	var near_base: bool=position.distance_to(point(current.center))<=float(config().deposit_range)
+	var near_base: bool=near_warehouse(current,position)
 	if kind=="business_mine":
 		var row:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),str(args.get("vein_id","")))
 		if row.is_empty():return "광맥을 선택하세요."
@@ -141,7 +147,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		transfer(ledger.bags[actor],crate.inventory,1);ledger.crates.erase(id);return ""
 	if kind in ["business_technology","business_supply","business_settle","business_robot_rescue"] and actor!=world.crew.owner_id:return "공동 자금 지출과 정산은 호스트가 확정합니다."
 	if kind=="business_technology":
-		if not near_base:return "현장 창고의 연구 단말에 접근하세요."
+		if not at_ship:return "착륙선 기술 단말에 접근하세요."
 		var key: String=str(args.get("technology",""));var def:=FrontierCatalog.entry("technologies",key)
 		if key not in config().technologies or key in ledger.technologies:return "구매 가능한 기초 기술을 선택하세요."
 		if not def.requires.is_empty() and def.requires not in ledger.technologies:return "선행 기술이 필요합니다."
@@ -179,6 +185,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 				if job.factory_id==id:return "제작이 끝난 뒤 제작소를 철거하세요."
 			if int(building.get("tier",1))==2:transfer(current.inventory,FrontierProductionTier2.config().facility_upgrades[building.type].cost,1)
 			transfer(current.inventory,FrontierCatalog.entry("buildings",building.type).cost,1);current.buildings.erase(id);return ""
+		for job in current.jobs.values():
+			if job.factory_id==id:return "이 제작소는 로봇을 제작 중입니다."
+		if not building.active or not building.enabled:return "전력이 공급되는 가동 제작소가 필요합니다."
 		if not building.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
 		if building.type!="factory" or "robotics" not in ledger.technologies:return "기술을 갖춘 제작소가 필요합니다."
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
@@ -194,6 +203,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var id: String=str(args.get("robot_id",""))
 		if not current.robots.has(id):return "현장 로봇을 선택하세요."
 		var robot: Dictionary=current.robots[id]
+		if kind in ["business_assign","business_robot_return"] and position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 작업을 지시하세요."
 		if kind=="business_robot_return":robot.target="";robot.phase="return";robot.path=[];robot.status="작업 중지 · 창고 복귀";return ""
 		if kind=="business_assign":
 			var target: String=str(args.get("vein_id",""))
@@ -217,7 +227,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
 		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="작업 배정 대기";current.robots[id]=robot;ledger.hangar.erase(id);return ""
 	if kind=="business_settle":
-		if not near_base:return "현장 창고에서 계약 인계를 확정하세요."
+		if not at_ship:return "착륙선 단말에서 계약 인계를 확정하세요."
 		if not FrontierProductionTier2.restoration_ready(current):return "Mk.2 담수 처리·토양 개량이 필요합니다. 염류 20 이하, 토양 60 이상을 달성하세요."
 		for facility in current.buildings.values():
 			if not facility.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."

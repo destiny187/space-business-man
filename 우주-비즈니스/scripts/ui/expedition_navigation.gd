@@ -250,7 +250,7 @@ func _update_context() -> void:
 		var position_value:=FrontierCrewWorld.vector(own.position)
 		if position_value.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return
 		context_kind="launch";context_ordinal=-1
-		context.text="F  이륙" if pilot else "F  출항 준비"
+		context.text="F  착륙선 단말"
 	else:
 		if nav.mode!="idle" or not app.outside:return
 		var gazed: int=app.flight.pick_planet(Vector2(app.space_view.size)*.5) if app.flight!=null else -1
@@ -283,6 +283,10 @@ func interact() -> bool:
 	if not context_ready:return true
 	if context_kind=="recover":app.recover_nearby();return true
 	if context_kind=="cargo":app.toggle_inventory();app.inventory_panel.tabs.current_tab=2;return true
+	if context_kind=="launch":
+		var target:=app.surface_world.business_view.target(app.camera,app.actors[app.session.latest.self_id])
+		if not target.is_empty():return false
+		app.open_station("ship");return true
 	var value: Dictionary=app.session.latest
 	if value.self_id!=value.crew.pilot_id:app.toggle_ready();return true
 	if app.session.offline:app.session.send_request("ready",{"value":true})

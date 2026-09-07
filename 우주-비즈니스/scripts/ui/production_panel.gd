@@ -15,13 +15,16 @@ var produce: Button
 var upgrade: Button
 var target_cost: FrontierResourceReadout
 var current: Dictionary={}
+var product_grid: GridContainer
+var product_row: HBoxContainer
+var help_label: Label
 func configure(owner_panel: FrontierBusinessPanel) -> void:
 	panel=owner_panel;name="생산·개조"
-	var row:=HBoxContainer.new();add_child(row)
+	var row:=HBoxContainer.new();add_child(row);product_row=row
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(185,185);row.add_child(preview)
 	var right:=VBoxContainer.new();right.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(right)
 	title=panel.label(right,"");description=panel.label(right,"");ingredients=HBoxContainer.new();right.add_child(ingredients)
-	var grid:=GridContainer.new();grid.columns=4;add_child(grid);move_child(grid,0)
+	var grid:=GridContainer.new();grid.columns=7;add_child(grid);move_child(grid,0);product_grid=grid
 	for id in FrontierProductionTier2.config().products:
 		var card:=FrontierItemTile.new();card.picture=FrontierResourceIcons.texture(id);card.grade=2;card.caption=FrontierProductionTier2.product(id).name;card.tooltip_text=card.caption
 		card.pressed.connect(func():selected_product=id;refresh());grid.add_child(card);product_cards[id]=card
@@ -30,21 +33,27 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	produce=panel.button(self,"",func():panel.command.emit("business_produce",{"building_id":panel.selected(targets),"product":selected_product}))
 	target_cost=FrontierResourceReadout.new();add_child(target_cost)
 	upgrade=panel.button(self,"",func():panel.command.emit("business_robot_upgrade" if current.get("robots",{}).has(panel.selected(targets)) else "business_facility_upgrade",{"building_id":panel.selected(targets),"robot_id":panel.selected(targets)}))
-	panel.label(self,"기초 제작소에서 원광 → 정제재 → Mk.2 부품. 창고 재료로 생산·시설 개조합니다. 장비용 부품은 I → 화물 → 공동 창고에서 인수하세요.")
+	help_label=panel.label(self,"원광 → 정제재 → Mk.2 부품 · 생산품은 공동 창고로 이동합니다.")
 func update_site(site: Dictionary) -> void:
 	current=site
 	var options: Dictionary={}
 	for id in site.get("buildings",{}):
+		if id!=panel.context_id:continue
 		if site.buildings[id].type=="factory":options[id]="제작소"
 	for id in site.get("buildings",{}):
+		if id!=panel.context_id:continue
 		var b: Dictionary=site.buildings[id]
 		if b.type!="factory" and not FrontierProductionTier2.config().facility_upgrades.has(b.type):continue
 		options[id]=FrontierCatalog.entry("buildings",b.type).name+" · Mk.%d · %s"%[int(b.get("tier",1)),b.status]
-	for id in site.get("robots",{}):options[id]="M-01 · Mk.%d · %s"%[int(site.robots[id].get("tier",1)),id]
+	for id in site.get("robots",{}):
+		if id==panel.context_id:options[id]="M-01 · Mk.%d · %s"%[int(site.robots[id].get("tier",1)),id]
 	panel.choices(targets,options);refresh()
 func refresh() -> void:
+	var manufacturing: bool=panel.context_kind=="factory"
+	product_grid.visible=manufacturing;ingredients.visible=manufacturing;help_label.visible=manufacturing
 	var def:=FrontierProductionTier2.product(selected_product)
-	preview.show_model(def.model);title.text=def.name+" ×%d"%int(def.amount);description.text=def.use
+	if manufacturing:preview.show_model(def.model)
+	title.text=def.name+" ×%d"%int(def.amount);description.text=def.use
 	for id in product_cards:product_cards[id].selected=id==selected_product;product_cards[id].queue_redraw()
 	for child in ingredients.get_children():ingredients.remove_child(child);child.queue_free()
 	var stock: Dictionary=current.get("inventory",{})
@@ -53,6 +62,11 @@ func refresh() -> void:
 		FrontierInterfaceStyle.label(column,"%d/%d"%[int(stock.get(id,0)),int(def.cost[id])],12,FrontierInterfaceStyle.ACCENT if int(stock.get(id,0))>=int(def.cost[id]) else FrontierInterfaceStyle.WARNING)
 	var id:=panel.selected(targets)
 	var b: Dictionary=current.get("buildings",{}).get(id,current.get("robots",{}).get(id,{}))
+	if not manufacturing:
+		var target_def:=FrontierCatalog.entry("buildings",b.get("type",""))
+		preview.show_model("miner" if panel.context_kind=="robot" else target_def.get("model",""))
+		title.text="M-01 로봇" if panel.context_kind=="robot" else target_def.get("name","시설")
+		description.text="Mk.%d · %s"%[int(b.get("tier",1)),b.get("status","")]
 	var job: Dictionary=b.get("production",{})
 	progress.value=0;progress.visible=not job.is_empty()
 	if not job.is_empty():progress.value=float(job.progress)/float(FrontierProductionTier2.product(job.product).seconds)*100

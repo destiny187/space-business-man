@@ -14,7 +14,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	var site:=FrontierExpeditionBusiness.site(world)
 	var position:=FrontierCrewWorld.vector(world.crew.members[actor].position)
 	if kind=="business_withdraw":
-		if position.distance_to(FrontierCrewWorld.vector(site.center))>float(FrontierExpeditionBusiness.config().deposit_range):return "현장 창고 9m 이내에서 인수하세요."
+		if not FrontierExpeditionBusiness.near_warehouse(site,position):return "현장 창고 9m 이내에서 인수하세요."
 		var id:=str(args.get("resource",""))
 		if FrontierCatalog.entry("resources",id).is_empty() or not FrontierExpeditionBusiness.integer(args.get("amount"),1,96):return "인수할 품목과 수량을 확인하세요."
 		var amount:=int(args.amount)

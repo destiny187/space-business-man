@@ -27,7 +27,7 @@ func accept(value: Dictionary) -> void:
 	var site: Dictionary=value.sites[body.id]
 	var wanted: Dictionary={"business-base":true}
 	if not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
-	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="현장 창고\nF 자원 반납 · B 사업"
+	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="현장 창고\nF 창고 · 반납/인수"
 	var camera:=get_viewport().get_camera_3d()
 	for row in FrontierExpeditionBusiness.veins(body,camera.global_position if camera!=null else Vector3.ZERO):
 		if site.remaining.get(row.id,row.capacity)<=0:continue

@@ -78,6 +78,7 @@ var local_direction:=Vector2.ZERO
 var local_sprint:=false
 var reticle: Label
 var shipyard_panel: FrontierShipyardPanel
+var research_actions: Array[Control]=[]
 var business_panel: FrontierBusinessPanel
 var placement_kind: String=""
 var placement_point:=Vector3.INF
@@ -197,22 +198,24 @@ func _build_ui() -> void:
 	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);surface_panel.add_child(survey_journal)
 	surface_status=_resource_label(header,"지표를 준비 중입니다.",14);surface_status.hide()
 	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options)
-	_button(surface_panel,"선택한 생명체 기초 분석 · 광물 3",func():surface_action("surface_analyze"))
-	_button(surface_panel,"선택한 서식지 시험 구획 · 광물 6",func():surface_action("surface_restore"))
+	research_actions.append(_button(surface_panel,"선택한 생명체 기초 분석 · 광물 3",func():surface_action("surface_analyze")))
+	research_actions.append(_button(surface_panel,"선택한 서식지 시험 구획 · 광물 6",func():surface_action("surface_restore")))
 	sample_options=OptionButton.new();sample_options.fit_to_longest_item=false;surface_panel.add_child(sample_options)
-	_button(surface_panel,"선택한 운송 표본 이식",func():surface_action("surface_introduce"))
-	_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply"))
+	research_actions.append(_button(surface_panel,"선택한 운송 표본 이식",func():surface_action("surface_introduce")))
+	research_actions.append(_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply")))
+	research_actions.append_array([form_options,sample_options])
 	var dock:=HBoxContainer.new();ui.add_child(dock);dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62);dock.add_theme_constant_override("separation",8)
 	get_viewport().size_changed.connect(func():dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62))
 	navigation_toggle=_button(dock,"지도 [Tab]",toggle_navigation);navigation_toggle.hide()
 	_button(dock,"설정 [F10]",func():FrontierClientSettings.ensure(get_tree()).open()).name="Settings"
 	surface_tools=HBoxContainer.new();dock.add_child(surface_tools);surface_tools.hide()
-	_button(surface_tools,"개발 · 건설 [B]",toggle_business)
+	_button(surface_tools,"건설 [B]",toggle_business)
 	_button(surface_tools,"생태 연구 [J]",toggle_research)
 	_button(surface_tools,"아이템 [I]",toggle_inventory)
 	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
 	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
+	business_panel.station_action.connect(station_action)
 	shipyard_panel=FrontierShipyardPanel.new();ui.add_child(shipyard_panel)
 	shipyard_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	inventory_panel=FrontierEquipmentPanel.new();ui.add_child(inventory_panel);inventory_panel.configure(self,ui)
@@ -307,6 +310,7 @@ func _snapshot(value: Dictionary) -> void:
 	_sync_surface_view()
 func _physics_process(delta: float) -> void:
 	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":return
+	if business_panel.visible and actors.has(session.latest.self_id) and not business_panel.context_in_range(actors[session.latest.self_id].position):close_menus()
 	dig_timer=maxf(0,dig_timer-delta)
 	if surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
@@ -684,6 +688,7 @@ func toggle_shipyard() -> void:
 	shipyard_panel.update_snapshot(session.latest,session.surface.get("business",{}))
 func toggle_business() -> void:
 	if not session.active or surface_world==null:return
+	business_panel.set_context("build")
 	open_menu(business_panel)
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
 func interact_business() -> void:
@@ -691,10 +696,30 @@ func interact_business() -> void:
 	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
 	match target.get("kind",""):
 		"vein":session.send_request("business_mine",{"vein_id":target.id})
-		"base":session.send_request("business_deposit",{})
+		"base":open_station("base",target.id)
 		"crate":session.send_request("business_recover_crate",{"crate_id":target.id})
-		"robot","building":toggle_business()
+		"robot":open_station("robot",target.id)
+		"building":
+			var row: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{}).get("buildings",{}).get(target.id,{})
+			if not row.is_empty():open_station(row.type,target.id)
 		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
+func open_station(kind: String,id: String="") -> void:
+	if not session.active or surface_world==null:return
+	close_menus()
+	business_panel.set_context(kind,id)
+	open_menu(business_panel)
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+func station_action(kind: String) -> void:
+	match kind:
+		"research":
+			close_menus();toggle_research()
+			for control in research_actions:control.show()
+		"shipyard":toggle_shipyard()
+		"launch":
+			close_menus()
+			if session.latest.self_id!=session.latest.crew.pilot_id:toggle_ready();return
+			if session.offline:session.send_request("ready",{"value":true})
+			session.send_request("launch",{})
 func begin_placement(kind: String) -> void:
 	cancel_placement();close_menus()
 	if kind.is_empty() or surface_world==null:return
@@ -746,6 +771,7 @@ func toggle_navigation() -> void:
 	open_menu(navigation_frame)
 	if navigation_frame.visible:navigation_ui.show_target(flight.scan_target if flight!=null and flight.scan_target>=0 else selected_ordinal)
 func toggle_research() -> void:
+	for control in research_actions:control.hide()
 	if surface_world!=null:open_menu(research_frame)
 
 static func selected_world_path(solo: bool) -> String:
