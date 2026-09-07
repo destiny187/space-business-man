@@ -106,6 +106,7 @@ func _ready() -> void:
 	session.surface_received.connect(_surface_packet)
 	session.notice.connect(func(message: String):status.value=message)
 	session.response_received.connect(func(_sequence: int,value: Dictionary):
+		if value.get("code")=="mining_cooldown":return
 		if not value.get("ok",false):status.value=value.get("error","작업 실패")
 		else:status.value="원정 기록을 저장했습니다.")
 	_build_cabin();_build_ui();cabin_root.hide()
@@ -824,6 +825,7 @@ func toggle_inventory() -> void:
 func use_equipped() -> void:
 	var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 제작한 장비를 장착하세요.");return
+	if tool.kind=="miner" and not session.mining_ready():return
 	dig_timer=float(tool.interval)
 	match tool.kind:
 		"miner":

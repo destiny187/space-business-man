@@ -5,6 +5,9 @@ signal notice(message: String)
 signal surface_received(value: Dictionary)
 signal response_received(sequence: int,value: Dictionary)
 signal request_started(sequence: int,kind: String,args: Dictionary)
+var mine_sequence:=0
+var mine_ready_at:=0
+var mine_revision:=0
 var authority: FrontierCrewAuthority
 var enet: ENetMultiplayerPeer
 var profile: FrontierPlayerProfile
@@ -169,13 +172,19 @@ func _snapshot(serial: int,value: Dictionary) -> void:
 @rpc("authority","call_remote","reliable",0)
 func _rejected(message: String) -> void:
 	active=false;notice.emit(message)
+func mining_ready() -> bool:
+	return mine_sequence==0 and Time.get_ticks_msec()>=mine_ready_at and not latest.is_empty() and int(latest.crew.revision)>=mine_revision
 func send_request(kind: String,args: Dictionary) -> bool:
 	if not active or latest.is_empty():notice.emit("참가 동기화가 끝난 뒤 실행하세요.");return false
+	if kind=="business_mine":
+		if not mining_ready():return false
+		mine_sequence=next_sequence
 	var request: Dictionary={"session_id":session_id,"sequence":next_sequence,"kind":kind,"args":args,"revision":latest.crew.revision}
 	next_sequence+=1
 	request_started.emit(int(request.sequence),kind,args)
 	if hosting:
-		var result:=authority.request(1,request);response_received.emit(int(request.sequence),result);_publish();_publish_surface()
+		authority.now=Time.get_ticks_msec()/1000.0
+		var result:=authority.request(1,request);_complete_request(int(request.sequence),result);_publish();_publish_surface()
 	else:_request.rpc_id(1,request)
 	return true
 @rpc("any_peer","call_remote","reliable",0)
@@ -183,11 +192,19 @@ func _request(value: Dictionary) -> void:
 	if not hosting:return
 	var peer:=multiplayer.get_remote_sender_id()
 	if not _rate_allowed(peer):return
+	authority.now=Time.get_ticks_msec()/1000.0
 	var result:=authority.request(peer,value)
 	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result);_publish();_publish_surface()
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
-	if not hosting:response_received.emit(sequence,value)
+	if not hosting:_complete_request(sequence,value)
+func _complete_request(sequence: int,value: Dictionary) -> void:
+	if sequence==mine_sequence:
+		mine_sequence=0
+		var interval:=float(FrontierEquipment.active(latest.crew.members[latest.self_id]).get("interval",.6))
+		mine_ready_at=Time.get_ticks_msec()+int(ceil(float(value.get("retry_after",interval))*1000))+20
+		mine_revision=int(value.get("revision",0))
+	response_received.emit(sequence,value)
 func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> void:
 	if not active:return
 	movement_sequence+=1
@@ -213,7 +230,7 @@ func close_session() -> bool:
 		if not authority.close():notice.emit(authority.error);return false
 		if not offline:_closed.rpc("호스트가 세계를 저장하고 종료했습니다.")
 	elif enet!=null and enet.get_connection_status()==MultiplayerPeer.CONNECTION_CONNECTED:_leave.rpc_id(1)
-	active=false
+	active=false;mine_sequence=0;mine_ready_at=0;mine_revision=0
 	if enet!=null:
 		await get_tree().create_timer(.25).timeout
 		enet.close();enet=null

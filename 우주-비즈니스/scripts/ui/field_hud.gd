@@ -47,6 +47,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	toast=PanelContainer.new();toast.theme=theme;toast.mouse_filter=Control.MOUSE_FILTER_IGNORE;toast.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.WARNING,12));get_parent().add_child(toast)
 	toast_label=FrontierInterfaceStyle.label(toast,"",13,FrontierInterfaceStyle.WARNING);toast_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;toast_label.custom_minimum_size.x=360;toast.hide()
 	app.session.response_received.connect(func(_seq: int,result: Dictionary):
+		if result.get("code")=="mining_cooldown":return
 		if not result.get("ok",false):toast_label.text=str(result.get("error","실행할 수 없습니다."));toast_left=4)
 	for label in [place,location,return_label,equipment_name]:
 		label.add_theme_color_override("font_shadow_color",Color("081218e0"));label.add_theme_constant_override("shadow_offset_y",1);label.add_theme_constant_override("shadow_offset_x",1)

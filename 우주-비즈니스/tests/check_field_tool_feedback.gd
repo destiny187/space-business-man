@@ -39,14 +39,17 @@ func run() -> void:
 	await create_timer(.2).timeout
 	await capture("idle")
 	var before: int=int(FrontierExpeditionBusiness.site(app.session.authority.world).remaining.get(vein.id,vein.capacity))
-	for cycle in 3:
+	var outcomes: Array=[]
+	app.session.response_received.connect(func(_seq: int,result: Dictionary):outcomes.append(result))
+	var stop:=Time.get_ticks_msec()+2100
+	while Time.get_ticks_msec()<stop:
 		app.use_equipped()
-		await create_timer(.28).timeout
-		if cycle==1:
-			check(app.feedback.intake_strength>.8 and app.feedback.recoil<.01,"braced extractor at speed without impact recoil")
-			check(app.feedback.optics.flow.visible and app.feedback.audio.suction.playing,"intake geometry and ElevenLabs fan loop active")
-			await capture("suction")
-		await create_timer(.35).timeout
+		await process_frame
+	check(outcomes.size()>=3 and outcomes.size()<=4,"held mining cadence bounded by tool interval")
+	check(outcomes.all(func(result: Dictionary):return result.get("ok",false)),"held mining does not generate cooldown failures")
+	check(app.feedback.intake_strength>.8 and app.feedback.recoil<.01,"braced extractor at speed without impact recoil")
+	check(app.feedback.optics.flow.visible and app.feedback.audio.suction.playing,"intake geometry and ElevenLabs fan loop active")
+	await capture("suction")
 	check(int(FrontierExpeditionBusiness.site(app.session.authority.world).remaining.get(vein.id,vein.capacity))<before,"aimed mining consumes authoritative ore")
 	check(not app.feedback.audio.last_played.has("sfx_mine_hit_metal"),"mining does not play pickaxe impact")
 	app.test_scan=true

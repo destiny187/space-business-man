@@ -136,7 +136,10 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	elif envelope.kind.begins_with("station_"):reason=FrontierSpaceStation.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind.begins_with("vessel_"):reason=FrontierVesselRefit.apply(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("business_"):
-		if envelope.kind=="business_mine" and now<float(last_mine.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.6)):return failure("채광 도구가 준비 중입니다.")
+		if envelope.kind=="business_mine":
+			var remaining:=float(last_mine.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.6))-now
+			if remaining>0:
+				var waiting:=failure("채광 도구가 준비 중입니다.");waiting.code="mining_cooldown";waiting.retry_after=remaining;return waiting
 		reason=FrontierExpeditionBusiness.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind in ["navigate","depart","tutorial_depart"]:reason=FrontierCrewNavigation.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind in ["land","launch"] or envelope.kind.begins_with("surface_") or (envelope.kind in ["withdraw","deposit"] and FrontierCrewSurface.landed(draft)):

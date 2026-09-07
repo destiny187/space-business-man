@@ -89,6 +89,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 	if request.kind in ["deposit","withdraw"]:
 		audio.play("sfx_pickup_resource" if value.get("ok",false) else "sfx_build_invalid");return
 	if app.surface_world==null or app.surface_world.body.id!=request.body:return
+	if value.get("code")=="mining_cooldown":return
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
 	match request.kind:
