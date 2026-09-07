@@ -36,6 +36,7 @@ func _ready() -> void:
 	engine=AudioStreamPlayer.new();engine.bus="SFX";engine.stream=transit_audio.stream("sfx_vessel_engine",true);engine.volume_db=-26;add_child(engine)
 	set_physics_process(false);set_process_unhandled_input(false)
 func update_navigation(value: Dictionary) -> void:
+	if value.mode=="jump":prepare_system(FrontierUniverse.system_index(state.manifest,int(value.target)))
 	var render_system: int=int(value.system)
 	if value.mode=="jump" and float(value.get("transit",{}).get("progress",0))>=.90:render_system=FrontierUniverse.system_index(state.manifest,int(value.target))
 	if navigation.is_empty() or render_system!=current_system:
@@ -64,6 +65,7 @@ func update_navigation(value: Dictionary) -> void:
 	update_orbits(float(value.get("orbit_time",0)))
 func _process(delta: float) -> void:
 	if navigation.is_empty():return
+	if navigation.mode=="jump":step_preparation()
 	soundscape.blocked=presentation_blocked
 	transit_overlay.presentation_blocked=presentation_blocked
 	engine.stream_paused=presentation_blocked

@@ -104,54 +104,11 @@ func _load_system(index: int) -> void:
 	if galactic_core!=null:galactic_core.queue_free();galactic_core=null
 	var s: Dictionary = FrontierUniverse.system(state.manifest,index)
 	for orbit in FrontierUniverse.body_count(state.manifest,index):
-		var ordinal: int = FrontierUniverse.first_ordinal(state.manifest,index)+orbit
-		var body: Dictionary = FrontierUniverse.body(state.manifest,ordinal)
-		var radius: float = FrontierUniverse.radius(body)
-		if body.get("origin","")=="solar_reference":
-			var solar:=FrontierSolarPlanet.new();solar.name="Planet_%d"%ordinal;add_child(solar);solar.configure(orbit,radius)
-			solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time)
-			planets[ordinal]={"node":solar,"radius":FrontierUniverse.navigation_radius(body),"body":body}
-			continue
-		var node := MeshInstance3D.new()
-		node.name = "Planet_%d" % ordinal
-		var sphere := SphereMesh.new()
-		sphere.radius = radius
-		sphere.height = radius*2
-		sphere.radial_segments = 128
-		sphere.rings = 64
-		node.mesh = sphere
-		node.position = FrontierUniverse.position(state.manifest,ordinal,orbit_time)
-		var material := ShaderMaterial.new()
-		material.shader = load("res://assets/materials/space/planet.gdshader")
-		material.set_shader_parameter("seed_offset",float(body.streams.terrain % 10000))
-		material.set_shader_parameter("rough",.94)
-		var t: Dictionary=body.traits
-		var template: Node3D=load("res://assets/models/planet-variants/"+str(t.id)+".glb").instantiate()
-		var authored: MeshInstance3D=template.find_children("*","MeshInstance3D",true,false)[0]
-		node.mesh=authored.mesh;node.scale=Vector3.ONE*radius;template.free()
-		material.set_shader_parameter("authored_relief",true)
-		material.set_shader_parameter("highlight_strength",.08)
-		material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
-		material.set_shader_parameter("land_color",Color(t.dust))
-		material.set_shader_parameter("sea_color",Color(t.sea))
-		material.set_shader_parameter("rock_color",Color(t.rock))
-		material.set_shader_parameter("sea_level",lerpf(.20,.61,float(t.water)/100.0) if float(t.water)>0 else 0.0)
-		material.set_shader_parameter("cloud_amount",float(t.cloud))
-		material.set_shader_parameter("seed_offset",float(t.pattern_seed))
-		material.set_shader_parameter("molten",t.id=="volcanic")
-
-		node.material_override = material
-		add_child(node)
-		var atmosphere := MeshInstance3D.new()
-		atmosphere.mesh = node.mesh
-		atmosphere.scale = Vector3.ONE*1.018
-		var air := ShaderMaterial.new()
-		air.shader = load("res://assets/materials/space/atmosphere.gdshader")
-		air.set_shader_parameter("tint",Color(t.sea).lightened(.35))
-		atmosphere.material_override = air
-		atmosphere.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		node.add_child(atmosphere)
-		planets[ordinal] = {"node":node,"radius":radius,"body":body}
+		var ordinal:=FrontierUniverse.first_ordinal(state.manifest,index)+orbit
+		if prepared_system==index and prepared_planets.has(ordinal):
+			planets[ordinal]=prepared_planets[ordinal];prepared_reused+=1;planets[ordinal].node.show();prepared_planets.erase(ordinal)
+		else:planets[ordinal]=_create_planet(index,orbit)
+	_clear_prepared()
 	_build_system_art(s)
 	_refresh_candidates()
 	status.text = "%s · 항성계 %08d · 주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,FrontierUniverse.body_count(state.manifest,index)]
@@ -472,3 +429,62 @@ func _update_galactic_core() -> void:
 	galactic_core.scale=Vector3.ONE*float(view.angular_scale)*distance
 	galactic_core.look_at(camera.global_position,Vector3.UP,true)
 	galactic_core.rotate_object_local(Vector3.RIGHT,.20)
+
+# At most one destination system is prepared, with one planet instantiated per frame.
+var prepared_system: int=-1
+var prepared_planets: Dictionary={}
+var prepared_orbit:=0
+var prepared_reused:=0
+func prepare_system(index: int) -> void:
+	if index==current_system or index==prepared_system:return
+	_clear_prepared();prepared_system=index
+func step_preparation() -> void:
+	if prepared_system<0 or prepared_orbit>=FrontierUniverse.body_count(state.manifest,prepared_system):return
+	var entry:=_create_planet(prepared_system,prepared_orbit)
+	entry.node.hide();prepared_planets[int(entry.body.ordinal)]=entry;prepared_orbit+=1
+func _clear_prepared() -> void:
+	for entry in prepared_planets.values():
+		if is_instance_valid(entry.node):entry.node.queue_free()
+	prepared_planets.clear();prepared_system=-1;prepared_orbit=0
+func _create_planet(index: int,orbit: int) -> Dictionary:
+	var ordinal: int = FrontierUniverse.first_ordinal(state.manifest,index)+orbit
+	var body: Dictionary = FrontierUniverse.body(state.manifest,ordinal)
+	var radius: float = FrontierUniverse.radius(body)
+	if body.get("origin","")=="solar_reference":
+		var solar:=FrontierSolarPlanet.new();solar.name="Planet_%d"%ordinal;add_child(solar);solar.configure(orbit,radius)
+		solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time)
+		return {"node":solar,"radius":FrontierUniverse.navigation_radius(body),"body":body}
+	var node := MeshInstance3D.new()
+	node.name = "Planet_%d" % ordinal
+	node.position = FrontierUniverse.position(state.manifest,ordinal,orbit_time)
+	var material := ShaderMaterial.new()
+	material.shader = load("res://assets/materials/space/planet.gdshader")
+	material.set_shader_parameter("seed_offset",float(body.streams.terrain % 10000))
+	material.set_shader_parameter("rough",.94)
+	var t: Dictionary=body.traits
+	var template: Node3D=load("res://assets/models/planet-variants/"+str(t.id)+".glb").instantiate()
+	var authored: MeshInstance3D=template.find_children("*","MeshInstance3D",true,false)[0]
+	node.mesh=authored.mesh;node.scale=Vector3.ONE*radius;template.free()
+	material.set_shader_parameter("authored_relief",true)
+	material.set_shader_parameter("highlight_strength",.08)
+	material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
+	material.set_shader_parameter("land_color",Color(t.dust))
+	material.set_shader_parameter("sea_color",Color(t.sea))
+	material.set_shader_parameter("rock_color",Color(t.rock))
+	material.set_shader_parameter("sea_level",lerpf(.20,.61,float(t.water)/100.0) if float(t.water)>0 else 0.0)
+	material.set_shader_parameter("cloud_amount",float(t.cloud))
+	material.set_shader_parameter("seed_offset",float(t.pattern_seed))
+	material.set_shader_parameter("molten",t.id=="volcanic")
+
+	node.material_override = material
+	add_child(node)
+	var atmosphere := MeshInstance3D.new()
+	atmosphere.mesh = node.mesh
+	atmosphere.scale = Vector3.ONE*1.018
+	var air := ShaderMaterial.new()
+	air.shader = load("res://assets/materials/space/atmosphere.gdshader")
+	air.set_shader_parameter("tint",Color(t.sea).lightened(.35))
+	atmosphere.material_override = air
+	atmosphere.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	node.add_child(atmosphere)
+	return {"node":node,"radius":radius,"body":body}

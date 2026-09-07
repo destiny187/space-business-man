@@ -20,35 +20,22 @@ var map_points:=PackedVector2Array()
 var map_cells: Dictionary={}
 var map_built:=0
 var displayed_systems: Dictionary={}
-var map_worker: Thread
-var pending_map_key: String=""
-func _exit_tree() -> void:
-	if map_worker!=null and map_worker.is_started():map_worker.wait_to_finish()
 func _process(_delta: float) -> void:
 	if compact or not galaxy or not is_visible_in_tree() or manifest.is_empty():return
-	var key:=str(manifest.id)+":"+str(manifest.settings.outer_radius)+":"+str(manifest.settings.inner_radius)+":"+str(manifest.settings.planets_per_system)
-	if map_worker!=null:
-		if map_worker.is_alive():return
-		var result: Dictionary=map_worker.wait_to_finish();map_worker=null
-		if pending_map_key==key:
-			map_key=key;map_points=result.points;map_cells=result.cells;map_built=map_points.size();queue_redraw()
-	if key==map_key:return
-	map_built=0;map_points.clear();map_cells.clear()
-	pending_map_key=key;map_worker=Thread.new()
-	if map_worker.start(_build_map_index.bind(manifest.duplicate(true)))!=OK:map_worker=null
-# Only immutable seed/settings and numeric coordinates cross the worker boundary.
-# Scene nodes, drawing and resource creation remain on the main thread.
-static func _build_map_index(source: Dictionary) -> Dictionary:
-	var count: int=int(source.settings.planet_count)/int(source.settings.planets_per_system)
-	var points:=PackedVector2Array();points.resize(count)
-	var cells: Dictionary={}
-	for index in count:
-		var point:=FrontierUniverse.map_position(source,index)/float(source.settings.outer_radius)
-		points[index]=point
+	var key:=FrontierStellarRoutes.key
+	if key.is_empty():return
+	if key!=map_key:
+		map_key=key;map_built=0;map_cells.clear();map_points.resize(FrontierStellarRoutes.points.size())
+	var previous:=map_built
+	var deadline:=Time.get_ticks_usec()+1500
+	while map_built<FrontierStellarRoutes.built and Time.get_ticks_usec()<deadline:
+		var index:=FrontierStellarRoutes.insertion_order[map_built]
+		var point:=FrontierStellarRoutes.points[index]/float(manifest.settings.outer_radius)
+		map_points[index]=point
 		var cell:=Vector2i(floori(point.x*32),floori(point.y*32))
-		if not cells.has(cell):cells[cell]=[]
-		cells[cell].append(index)
-	return {"points":points,"cells":cells}
+		if not map_cells.has(cell):map_cells[cell]=[]
+		map_cells[cell].append(index);map_built+=1
+	if map_built!=previous:queue_redraw()
 func _visible_systems(center: Vector2,extent: float) -> Dictionary:
 	var result: Dictionary={0:true,system_index:true,current_system:true}
 	var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)

@@ -222,6 +222,7 @@ func _notice(value: String) -> void:
 	message.text=value;toast_left=4;message.show()
 
 func _process(delta: float) -> void:
+	if app.session.active:FrontierStellarRoutes.build(app.session.manifest,int(app.session.latest.get("crew",{}).get("navigation",{}).get("system",0)))
 	toast_left=maxf(0,toast_left-delta);message.visible=toast_left>0
 	var active: bool=app.session.active and app.session.latest.get("phase")=="playing"
 	if active and pending_route>=0 and pending_revision>=0 and int(app.session.latest.crew.revision)>=pending_revision:
