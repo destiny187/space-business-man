@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "date": "2026-09-07",
+  "scope": "배경음악 두 곡만 적용. 여성 AI 음성은 사용자 요청으로 제외.",
+  "jobs": [
+    {
+      "id": "music_stellar_v1",
+      "title": "Stellar Solitude",
+      "provider": "ElevenLabs Music web",
+      "model_label": "Music v2",
+      "duration_setting_seconds": 120,
+      "measured_duration_seconds": 120.032625,
+      "instrumental": true,
+      "variants": 1,
+      "displayed_credits": 1800,
+      "prompt": "Original instrumental ambient science fiction exploration music, exactly 120 seconds. Vast peaceful interstellar travel, quiet wonder and gentle forward motion. Warm evolving analog pads, delicate crystalline arpeggios, sparse soft piano, restrained deep bass, very light slow pulse around 70 BPM. Spacious but clear, subtle melodic development, stable quiet dynamics underneath spacecraft effects and spoken announcements. No vocals, choir, speech, percussion impacts, alarms, dramatic climax or recognizable existing melodies. Soft opening and ending with compatible sustained harmony for looping.",
+      "project_url": "https://elevenlabs.io/app/music/project/B7uMoRWbPzRbN3srXLhW?selectedSongId=PIMEZrf0mNF64rLY5V4f",
+      "download_name": "Stellar_Solitude_2026-09-07T062606.mp3",
+      "source": "audio/source/elevenlabs/music_stellar_v1.mp3",
+      "game_file": "우주-비즈니스/assets/audio/music_stellar_v1.mp3",
+      "sha256": "859db864b20842ac395a63fd42e519111c48a0a7cf772e32ca35bdf3004ed299",
+      "format": "MP3 stereo 44100 Hz 192 kbps",
+      "processing": "원본 그대로 사용. Godot에서 장소 교차 페이드 및 루프 경계 0.45초 페이드 적용."
+    },
+    {
+      "id": "music_planet_v1",
+      "title": "Terraforming Hope",
+      "provider": "ElevenLabs Music web",
+      "model_label": "Music v2",
+      "duration_setting_seconds": 120,
+      "measured_duration_seconds": 120.032625,
+      "instrumental": true,
+      "variants": 1,
+      "displayed_credits": 1800,
+      "prompt": "Original instrumental calm planetary exploration music, exactly 120 seconds. A gentle hopeful atmosphere for gathering, building and terraforming an unfamiliar world. Soft felt piano, warm airy synth pads, delicate plucked notes and restrained organic textures, slow relaxed movement around 65 BPM. Simple memorable but unobtrusive original melody, subtle variation, quiet consistent dynamics with room for footsteps and tools. No vocals, choir, speech, wildlife recordings, dramatic percussion or recognizable existing melodies. Soft opening and ending with compatible sustained harmony for looping.",
+      "project_url": "https://elevenlabs.io/app/music/project/9z4nWfVUpq1Y29BQDXKs?selectedSongId=SuYDbx8FVBiq6jWPxzDh",
+      "download_name": "Terraforming_Hope_2026-09-07T062656.mp3",
+      "source": "audio/source/elevenlabs/music_planet_v1.mp3",
+      "game_file": "우주-비즈니스/assets/audio/music_planet_v1.mp3",
+      "sha256": "3a27f0e12d938c3fd786b7b26d98f51c6a4fe5f95de33c195bd787b58617c5f4",
+      "format": "MP3 stereo 44100 Hz 192 kbps",
+      "processing": "원본 그대로 사용. Godot에서 장소 교차 페이드 및 루프 경계 0.45초 페이드 적용."
+    }
+  ]
+}

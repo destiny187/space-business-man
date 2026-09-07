@@ -43,7 +43,7 @@ func accept(value: Dictionary) -> void:
 		if FrontierExpeditionBusiness.thermal_locked(body,site,row):continue
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"ore_"+row.resource,p,1.1,"vein");continue
-		nodes[row.id].get_meta("label").text="%s · %d\n%s"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity)),"F 채광" if registered else "B 무료 개발 등록"]
+		nodes[row.id].get_meta("label").text="%s · %d\n%s"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity)),"F 채광"]
 		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.remaining.get(row.id,row.capacity))/float(row.capacity))
 	for row in site.buildings.values():
 		wanted[row.id]=true

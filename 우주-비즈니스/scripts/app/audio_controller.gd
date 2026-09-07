@@ -7,6 +7,7 @@ var last_played: Dictionary = {}
 var ambient: AudioStreamPlayer
 var ambient_key: String = ""
 var suction: AudioStreamPlayer
+var survey: AudioStreamPlayer
 
 func _exit_tree() -> void:
 	for speaker in get_children():
@@ -33,11 +34,23 @@ func set_suction(strength: float) -> void:
 	if not is_instance_valid(suction):
 		suction = AudioStreamPlayer.new()
 		suction.bus = "SFX"
-		suction.stream = stream("sfx_robot_work",true)
+		suction.stream = stream("sfx_terraform_active",true)
 		suction.pitch_scale = 1.25
 		add_child(suction)
-	suction.volume_db = -24+linear_to_db(maxf(0.01,strength))
+	suction.pitch_scale = lerpf(.78,1.18,strength)
+	suction.volume_db = -19+linear_to_db(maxf(0.01,strength))
 	if not suction.playing: suction.play()
+
+func set_survey(progress: float) -> void:
+	if progress<=0:
+		if is_instance_valid(survey):survey.stop()
+		return
+	if not is_instance_valid(survey):
+		survey=AudioStreamPlayer.new();survey.bus="SFX"
+		survey.stream=stream("sfx_robot_charge",true);add_child(survey)
+	survey.pitch_scale=lerpf(.85,1.35,progress)
+	survey.volume_db=-27
+	if not survey.playing:survey.play()
 
 func stream(id: String,looped: bool = false) -> AudioStream:
 	var key: String = id+str(looped)

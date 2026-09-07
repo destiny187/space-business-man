@@ -38,10 +38,10 @@ func run() -> void:
 	for i in 500:
 		if FrontierCrewNavigation.step(resumed.world,.1):finished=true;break
 	var nav: Dictionary=resumed.world.crew.navigation
-	check(finished and int(nav.system)==249999 and int(nav.target)==999999,"resumed ship reaches target system and completes approach")
+	check(finished and int(nav.system)==FrontierUniverse.system_index(resumed.world.manifest,999999) and int(nav.target)==999999,"resumed ship reaches target system and stops for survey")
 	var body:=FrontierUniverse.body(resumed.world.manifest,999999)
-	var distance:=FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewNavigation.center(999999))-(240+float(body.seed%190))
-	check(distance>=599 and distance<=603,"physical arrival has safe orbit clearance")
+	var distance:=FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewNavigation.center(999999,resumed.world.manifest,float(nav.orbit_time)))-FrontierUniverse.navigation_radius(body)
+	check(distance>6000 and nav.mode=="idle" and nav.get("manual",false),"arrival keeps a broad view instead of automatically approaching")
 	check(resumed.world.location==body.id and resumed.world.visited.has(body.id),"visit recorded only at destination")
 	check(not resumed.world.crew.members[owner.character_id].ready,"arrival clears old readiness")
 	check(resumed.checkpoint() and FrontierUniverse.validate_world(saved).is_empty(),"arrival and profile remain valid durable world")

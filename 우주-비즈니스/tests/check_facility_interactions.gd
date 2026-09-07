@@ -132,10 +132,11 @@ func verify_remaining() -> void:
 	check(app.business_panel.warehouse.is_visible_in_tree() and not app.business_panel.robot_factory.is_visible_in_tree(),"warehouse contains cargo, no robot production")
 	await capture("warehouse-960")
 	app.close_menus();app.toggle_research();await process_frame
-	check(not app.research_actions[0].is_visible_in_tree(),"J is journal, lab execution is separate")
+	app.research_frame.tabs.current_tab=1
+	check(app.research_actions[0].is_visible_in_tree(),"J opens independent research desk with ecology actions")
 	app.close_menus();move_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))
 	app.open_station("ship");await process_frame;await capture("ship-terminal")
-	app.station_action("research");await process_frame
+	app.station_action("research");app.research_frame.tabs.current_tab=1;await process_frame
 	check(app.research_actions[0].is_visible_in_tree(),"ship laboratory exposes research actions")
 	app.close_menus()
 	check(await app.session.close_session(),"save station production state")

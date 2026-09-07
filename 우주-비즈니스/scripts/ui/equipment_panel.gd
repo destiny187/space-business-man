@@ -14,6 +14,7 @@ var storage_owned: GridContainer
 var storage_label: Label
 var storage_site: Dictionary={}
 var warehouse_choice: OptionButton
+var warehouse_management: Button
 func using_ship() -> bool:return app.surface_world==null or warehouse_choice.selected==1
 var warehouse_supplements: Array[Control]=[]
 var preview: FrontierEquipmentPreview
@@ -59,7 +60,9 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	tabs=TabContainer.new();tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;middle.add_child(tabs)
 	owned=_grid("아이템");recipes=_grid("제작")
 	var warehouse:=VBoxContainer.new();warehouse.name="공동 창고";tabs.add_child(warehouse)
-	warehouse_choice=OptionButton.new();warehouse_choice.add_item("행성 창고 · 이 행성에 남음");warehouse_choice.add_item("우주선 창고 · 함께 운송");warehouse_choice.item_selected.connect(func(_index: int):last_key="");warehouse.add_child(warehouse_choice)
+	var warehouse_header:=HBoxContainer.new();warehouse.add_child(warehouse_header)
+	warehouse_choice=OptionButton.new();warehouse_choice.size_flags_horizontal=Control.SIZE_EXPAND_FILL;warehouse_choice.add_item("행성 창고 · 이 행성에 남음");warehouse_choice.add_item("우주선 창고 · 함께 운송");warehouse_choice.item_selected.connect(func(_index: int):last_key="");warehouse_header.add_child(warehouse_choice)
+	warehouse_management=Button.new();warehouse_management.text="보급 · 로봇 관리";warehouse_management.icon=FrontierResourceIcons.menu_texture("reinforced_frame");warehouse_management.pressed.connect(app.open_warehouse_management);warehouse_header.add_child(warehouse_management)
 	storage_label=FrontierInterfaceStyle.label(warehouse,"배낭 ↔ 창고 · 아이템을 끌어놓으세요",14)
 	var pair:=HBoxContainer.new();pair.add_theme_constant_override("separation",24);pair.size_flags_vertical=Control.SIZE_EXPAND_FILL;warehouse.add_child(pair)
 	for side in ["내 배낭","공동 창고"]:
@@ -141,6 +144,9 @@ func _process(delta: float) -> void:
 	if app.surface_world==null:warehouse_choice.select(1)
 	if using_ship():
 		storage_site=FrontierItemInventory.ship_site(app.session.latest.crew);depot=storage_site.inventory
+	warehouse_management.visible=not using_ship()
+	warehouse_management.disabled=using_ship() or storage_site.is_empty() or storage_site.get("state")=="settled" or not FrontierExpeditionBusiness.near_warehouse(storage_site,FrontierCrewWorld.vector(member.position))
+	warehouse_management.tooltip_text="현장 창고 9m 이내에서 보급·로봇·시설을 관리합니다."
 	var key:=JSON.stringify([data,bag,depot,storage_site.get("stored_equipment",{}),storage_site.get("buildings",{}).size(),ledger.get("credits",0),member.carried,storage.selected,using_ship(),app.surface_world!=null])
 	if key==last_key:return
 	last_key=key

@@ -66,7 +66,7 @@ func run() -> void:
 	world.business.bags[actor].iron=201;world.crew.members[actor].carried=7
 	app.session._publish();app.toggle_inventory();await create_timer(.5).timeout
 	var panel:=app.inventory_panel
-	check(panel.owned.get_child_count()==48,"single 48 slot grid")
+	check(panel.owned.get_child_count()==FrontierItemInventory.capacity(app.session.latest.crew.members[actor]),"single personal capacity grid")
 	var counts: Array=[]
 	for tile in panel.owned.get_children():
 		if not tile.amount.is_empty():counts.append(tile.amount)

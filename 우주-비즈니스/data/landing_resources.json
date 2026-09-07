@@ -31,5 +31,29 @@
       0,
       -9
     ]
+  },
+  {
+    "id": "landing:iron:reserve",
+    "resource": "iron",
+    "required_tier": 1,
+    "capacity": 400,
+    "position": [
+      -12,
+      0,
+      -16
+    ],
+    "maximum_planet_tier": 2
+  },
+  {
+    "id": "landing:ice",
+    "resource": "ice",
+    "required_tier": 1,
+    "capacity": 400,
+    "position": [
+      10,
+      0,
+      -17
+    ],
+    "maximum_planet_tier": 2
   }
 ]

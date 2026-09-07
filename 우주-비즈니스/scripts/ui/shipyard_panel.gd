@@ -1,6 +1,7 @@
 class_name FrontierShipyardPanel
 extends PanelContainer
 signal command(kind: String,args: Dictionary)
+var heading: Label
 var summary: FrontierResourceReadout
 var details: FrontierResourceReadout
 var outcome: Label
@@ -15,7 +16,7 @@ func _ready() -> void:
 	var style:=FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,20);add_theme_stylebox_override("panel",style)
 	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(scroll)
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
-	label(column,"KESTREL · 원정선 정비",24)
+	heading=label(column,"KESTREL · 원정선 정비",24)
 	summary=resource_label(column)
 	kind=OptionButton.new();kind.fit_to_longest_item=false;column.add_child(kind)
 	for key in FrontierVesselRefit.config().modules:
@@ -53,9 +54,10 @@ func refresh_details() -> void:
 		else:details.value+="\n최고 등급입니다."
 func update_snapshot(snapshot: Dictionary,business: Dictionary) -> void:
 	vessel=snapshot.get("vessel",{})
+	heading.text=FrontierSpaceStation.hull(vessel).name+" · 원정선 정비"
 	var stats: Dictionary=snapshot.get("vessel_stats",{});var cfg:=FrontierVesselRefit.config()
 	if stats.is_empty():return
-	summary.value="질량 %.1f / %.1f t · 전력 %.1f / %.1f MW\n접근 성능 ×%.2f · 현장 연구 ×%.2f · 로봇 격납고 %d칸\n공동 자금 %s · 부품 %d · 확정 추첨까지 %d회"%[stats.mass,cfg.maximum_mass,stats.power,cfg.reactor_power,stats.speed,stats.research_speed,stats.hangar,str(int(business.credits))+" Cr" if business.has("credits") else "착륙 후 장부 확인",vessel.get("parts",0),int(cfg.pity_interval)-int(vessel.get("draws",0))%int(cfg.pity_interval)]
+	summary.value="항속거리 %.1f 항로 단위\n질량 %.1f / %.1f t · 전력 %.1f / %.1f MW\n접근 성능 ×%.2f · 현장 연구 ×%.2f · 로봇 격납고 %d칸\n공동 자금 %s · 부품 %d · 확정 추첨까지 %d회"%[stats.get("stellar_range",8.0),stats.mass,stats.get("maximum_mass",cfg.maximum_mass),stats.power,stats.get("reactor_power",cfg.reactor_power),stats.speed,stats.research_speed,stats.hangar,str(int(business.credits))+" Cr" if business.has("credits") else "착륙 후 장부 확인",vessel.get("parts",0),int(cfg.pity_interval)-int(vessel.get("draws",0))%int(cfg.pity_interval)]
 	var fingerprint:=FrontierUniverse.fingerprint(vessel)
 	if fingerprint!=last_inventory:
 		last_inventory=fingerprint;var old:=selected(owned);owned.clear()

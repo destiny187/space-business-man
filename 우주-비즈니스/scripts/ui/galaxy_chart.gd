@@ -1,5 +1,14 @@
 extends Control
 signal selected(ordinal: int)
+signal station_selected(index: int)
+signal route_selected(ordinal: int)
+var stellar_range:=8.0
+var nearby_only:=false
+var scene_3d
+var route_system: int=-1
+var spatial_key: String=""
+var spatial_indices: Dictionary={}
+var station_excluded: int=-1
 var journal: FrontierNavigationJournal
 var manifest: Dictionary={}
 var system_index:=0
@@ -20,22 +29,14 @@ var map_points:=PackedVector2Array()
 var map_cells: Dictionary={}
 var map_built:=0
 var displayed_systems: Dictionary={}
+var map_worker: Thread
+var pending_map_key: String=""
+func _exit_tree() -> void:
+	if map_worker!=null and map_worker.is_started():map_worker.wait_to_finish()
 func _process(_delta: float) -> void:
 	if compact or not galaxy or not is_visible_in_tree() or manifest.is_empty():return
-	var key:=FrontierStellarRoutes.key
-	if key.is_empty():return
-	if key!=map_key:
-		map_key=key;map_built=0;map_cells.clear();map_points.resize(FrontierStellarRoutes.points.size())
-	var previous:=map_built
-	var deadline:=Time.get_ticks_usec()+1500
-	while map_built<FrontierStellarRoutes.built and Time.get_ticks_usec()<deadline:
-		var index:=FrontierStellarRoutes.insertion_order[map_built]
-		var point:=FrontierStellarRoutes.points[index]/float(manifest.settings.outer_radius)
-		map_points[index]=point
-		var cell:=Vector2i(floori(point.x*32),floori(point.y*32))
-		if not map_cells.has(cell):map_cells[cell]=[]
-		map_cells[cell].append(index);map_built+=1
-	if map_built!=previous:queue_redraw()
+	if map_built!=FrontierStellarRoutes.built:
+		map_built=FrontierStellarRoutes.built;spatial_key="";queue_redraw()
 func _visible_systems(center: Vector2,extent: float) -> Dictionary:
 	var result: Dictionary={0:true,system_index:true,current_system:true}
 	var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)
@@ -56,14 +57,15 @@ func _visible_systems(center: Vector2,extent: float) -> Dictionary:
 				occupied[pixel_cell]=true;result[index]=true
 	return result
 func reset_view() -> void:
-	zoom=1.0;pan=Vector2.ZERO;queue_redraw()
+	nearby_only=false;zoom=1.0;pan=Vector2.ZERO;queue_redraw()
 var core_view: SubViewport
 func _ready() -> void:
-	if not compact:core_view=FrontierGalacticCore.preview(self,128,true)
+	if not compact:
+		scene_3d=load("res://scripts/ui/galaxy_scene.gd").new();scene_3d.setup(self)
 	visibility_changed.connect(func():
 		if core_view!=null:core_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if galaxy and is_visible_in_tree() else SubViewport.UPDATE_DISABLED
 	)
-	tooltip_text="외곽: 저티어 · 중심: 고티어 비중 증가\n방문한 항성계만 선택할 수 있습니다.\n중앙 블랙홀은 위치 표식입니다."
+	tooltip_text="외곽: 저티어 · 중심: 고티어 비중 증가\n별을 선택해 항로를 설정하세요. 내부 정보는 방문 후 공개됩니다.\n중앙 블랙홀은 위치 표식입니다."
 	custom_minimum_size=Vector2(180,180) if compact else Vector2(280,340)
 	clip_contents=true
 	mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
@@ -72,6 +74,9 @@ func can_inspect_system(index: int) -> bool:
 func _draw() -> void:
 	hits.clear()
 	if manifest.is_empty():return
+	if scene_3d!=null:
+		scene_3d.viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED if not galaxy or not is_visible_in_tree() else scene_3d.viewport.render_target_update_mode
+		if galaxy:_draw_spatial();return
 	if compact:draw_circle(size*.5,minf(size.x,size.y)*.5,Color("10191fe6"))
 	else:draw_style_box(_background(),Rect2(Vector2.ZERO,size))
 	var center:=Vector2(size.x/2,size.y/2)+pan
@@ -113,6 +118,13 @@ func _draw() -> void:
 	else:
 		draw_circle(center,9,Color("ffe2a3"))
 		var count: int=FrontierUniverse.body_count(manifest,system_index)
+		var station:=FrontierSpaceStation.definition(manifest,system_index,station_excluded)
+		if not station.is_empty():
+			var factor: float=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
+			var point:=center+Vector2(station.position[0],station.position[2])*factor
+			draw_rect(Rect2(point-Vector2(5,5),Vector2(10,10)),Color("ffc180"),false,2)
+			if not compact:draw_string(font,point+Vector2(9,0),"정거장",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ffc180"))
+			hits.append({"point":point,"station":system_index,"ordinal":-1})
 		for i in count:
 			var ordinal:=FrontierUniverse.first_ordinal(manifest,system_index)+i
 			var body:=FrontierUniverse.body(manifest,ordinal)
@@ -141,17 +153,97 @@ func _background() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new();style.bg_color=Color("0b1d2b");style.set_corner_radius_all(6);return style
 func _gui_input(event: InputEvent) -> void:
 	if compact:return
+	if galaxy and event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_MIDDLE:
+		scene_3d.yaw-=event.relative.x*.005;scene_3d.tilt=clampf(scene_3d.tilt+event.relative.y*.005,.25,1.5);spatial_key="";queue_redraw();accept_event();return
 	if event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_RIGHT:
 		pan+=event.relative;queue_redraw();accept_event();return
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		var previous:=zoom
-		zoom=clampf(zoom*(1.25 if event.button_index==MOUSE_BUTTON_WHEEL_UP else .8),.75,24.0)
+		zoom=clampf(zoom*(1.25 if event.button_index==MOUSE_BUTTON_WHEEL_UP else .8),.75,160.0)
 		pan=event.position-size*.5-(event.position-size*.5-pan)*(zoom/previous)
 		queue_redraw();accept_event();return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
-		if galaxy and event.position.distance_to(size*.5+pan)<22:accept_event();return
+
 		var best: Dictionary={};var distance:=16.0
 		for hit in hits:
 			var separation: float=event.position.distance_to(hit.point)
 			if separation<distance:distance=separation;best=hit
-		if not best.is_empty():galaxy=false;reset_view();selected.emit(int(best.ordinal));queue_redraw();accept_event()
+		if not best.is_empty():
+			if galaxy:
+				route_system=FrontierUniverse.system_index(manifest,int(best.ordinal));route_selected.emit(int(best.ordinal));queue_redraw();accept_event();return
+			galaxy=false;reset_view()
+			if best.has("station"):station_selected.emit(int(best.station))
+			else:selected.emit(int(best.ordinal))
+			queue_redraw();accept_event()
+
+func _draw_spatial() -> void:
+	scene_3d.update(size,zoom,pan,nearby_only)
+	draw_texture_rect(scene_3d.viewport.get_texture(),Rect2(Vector2.ZERO,size),false)
+	var outer: float=manifest.settings.outer_radius
+	var origin:=FrontierUniverse.map_position(manifest,current_system)/outer
+	var source: Vector2=scene_3d.project(origin)
+	var ring:=PackedVector2Array()
+	for i in 129:ring.append(scene_3d.project(origin+Vector2.from_angle(float(i)/128*TAU)*stellar_range/outer))
+	draw_polyline(ring,Color("67cbb4"),1.5,true)
+	var indices: Dictionary={0:true,current_system:true}
+	if route_system>=0:indices[route_system]=true
+	# Screen density sampling is recomputed at every zoom; every cached system can emerge.
+	var view_key:=str([manifest.id,size,zoom,pan,map_built,current_system,nearby_only,stellar_range])
+	if spatial_key!=view_key:
+		spatial_key=view_key;spatial_indices.clear()
+		var occupied: Dictionary={}
+		var candidates: Array=[]
+		if nearby_only:
+			for item in FrontierStellarRoutes.nearby(manifest,current_system,stellar_range):candidates.append(item.index)
+		else:
+			var count:=FrontierStellarRoutes.points.size()
+			var stride:=maxi(1,int(float(count)/minf(6000,180*zoom*zoom)))
+			for index in range(0,count,stride):
+				if FrontierStellarRoutes.has_point(index):candidates.append(index)
+		for index in candidates:
+			var point: Vector2=scene_3d.project(FrontierStellarRoutes.points[index]/outer)
+			if not Rect2(Vector2(16,38),size-Vector2(32,68)).has_point(point):continue
+			var cell:=Vector2i(point/(32.0 if nearby_only else 22.0))
+			if occupied.has(cell):continue
+			occupied[cell]=true;spatial_indices[index]=true
+		var stars:=PackedVector2Array()
+		for index in spatial_indices:stars.append(FrontierStellarRoutes.points[index]/outer)
+		stars.append(origin);scene_3d.set_stars(stars)
+	indices.merge(spatial_indices)
+	displayed_systems.clear()
+	if journal!=null and not nearby_only:
+		for key in journal.data.systems:indices[int(key)]=true
+	for index in indices:
+		var coordinate: Vector2=FrontierStellarRoutes.points[index]/outer if FrontierStellarRoutes.has_point(index) else FrontierUniverse.map_position(manifest,index)/outer
+		var point: Vector2=scene_3d.project(coordinate)
+		if not Rect2(Vector2.ZERO,size).grow(-8).has_point(point):continue
+		var reachable: bool=coordinate.distance_to(origin)*outer<=stellar_range+.001
+		if nearby_only and not reachable:continue
+		var color:=Color("b2f4e1") if reachable else Color("647286")
+		draw_circle(point,2.5 if reachable else 1.5,color)
+		if can_inspect_system(index):draw_arc(point,5,0,TAU,16,color,1,true)
+		if index==current_system:draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),Color.WHITE,false,2)
+		if index==route_system:draw_arc(point,9,0,TAU,24,Color("ffc180"),2,true)
+		displayed_systems[index]=point;hits.append({"point":point,"ordinal":FrontierUniverse.first_ordinal(manifest,index)})
+	if route_system>=0:
+		var destination: Vector2=scene_3d.project(FrontierUniverse.map_position(manifest,route_system)/outer)
+		draw_line(source,destination,Color("ffc180"),2,true)
+	if not transit.is_empty():
+		var from: Vector2=scene_3d.project(Vector2(transit.from[0],transit.from[1])/outer)
+		var to: Vector2=scene_3d.project(Vector2(transit.to[0],transit.to[1])/outer)
+		var ship: Vector2=scene_3d.project(Vector2(transit.galaxy_position[0],transit.galaxy_position[1])/outer)
+		draw_line(from,to,Color("7bebd0"),2,true);draw_circle(ship,6,Color.WHITE)
+		var distance:=Vector2(transit.from[0],transit.from[1]).distance_to(Vector2(transit.to[0],transit.to[1]))
+		draw_string(get_theme_default_font(),Vector2(18,54),"항해  %.1f / %.1f 항로 단위"%[distance*float(transit.progress),distance],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color.WHITE)
+	draw_string(get_theme_default_font(),Vector2(18,26),"은하 항로  ·  항속거리 %.0f"%stellar_range,HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color("b2f4e1"))
+	draw_string(get_theme_default_font(),Vector2(18,size.y-18),"휠 확대 · 우클릭 이동 · 휠 버튼 회전 · 별 선택",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("bccbd8"))
+
+func focus_nearby() -> void:
+	galaxy=true;nearby_only=true
+	await get_tree().process_frame
+	if not is_inside_tree() or manifest.is_empty():return
+	scene_3d.yaw=0;scene_3d.tilt=1.15
+	zoom=clampf(2.55*float(manifest.settings.outer_radius)/(stellar_range*3.0),1.0,160.0)
+	pan=Vector2.ZERO;scene_3d.update(size,zoom,pan,true)
+	var point: Vector2=scene_3d.project(FrontierUniverse.map_position(manifest,current_system)/float(manifest.settings.outer_radius))
+	pan=size*.5-point;spatial_key="";queue_redraw()

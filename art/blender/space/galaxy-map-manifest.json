@@ -1,0 +1,18 @@
+{
+  "source": "galaxy_map.blend",
+  "builder": "tools/build_galaxy_map.py",
+  "render": "galaxy_map-preview.png",
+  "purpose": "3D 은하 항로 UI의 시각 별 무리. 실제 선택 항성계 좌표는 저장된 은하 데이터를 따른다.",
+  "lod_stars": {
+    "far": 584,
+    "medium": 2334,
+    "near": 14000
+  },
+  "runtime": "Godot Forward+; 주변 보기에서 전역 별 무리를 숨기고 실제 지역 항성계 인스턴스만 표시",
+  "exports": [
+    "galaxy_map.glb",
+    "galaxy_map_far.glb",
+    "galaxy_map_medium.glb",
+    "navigation_star.glb"
+  ]
+}

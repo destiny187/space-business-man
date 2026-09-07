@@ -11,6 +11,16 @@ static func read(manifest: Dictionary,nav: Dictionary) -> Dictionary:
 	result.name=body.name
 	result.same_system=FrontierUniverse.system_index(manifest,ordinal)==int(nav.system)
 	if nav.mode=="jump":result.eta=float(nav.jump_left);return result
+	if nav.get("station_target",false):
+		var station:=FrontierSpaceStation.definition(manifest,int(nav.system),int(nav.get("first_stellar_system",-1)))
+		if not station.is_empty():
+			var offset:=FrontierCrewWorld.vector(station.position)-FrontierCrewWorld.vector(nav.position)
+			result.name=station.name;result.same_system=true
+			result.distance=maxf(0,offset.length()-float(FrontierSpaceStation.config().approach_distance))
+			result.closing=offset.normalized().dot(FrontierCrewWorld.vector(nav.direction))*float(nav.speed)
+			if result.distance<=3:result.eta=0.0
+			elif result.closing>1:result.eta=result.distance/result.closing
+			return result
 	if not result.same_system:return result
 	var offset:=FrontierUniverse.position(manifest,ordinal,float(nav.get("orbit_time",0)))-FrontierCrewWorld.vector(nav.position)
 	result.distance=maxf(0,offset.length()-FrontierUniverse.navigation_radius(body)-float(manifest.settings.flight.arrival_clearance))

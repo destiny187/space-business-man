@@ -46,7 +46,7 @@ func suction(origin: Vector3,intake: Node3D,resource: String,amount: int) -> voi
 	var color: Color = Color(FrontierCatalog.entry("resources",resource).color)
 	for i in range(clampi(amount/2,4,10)):
 		var start: Vector3 = origin+Vector3(randf_range(-0.35,0.35),randf_range(-0.15,0.35),randf_range(-0.35,0.35))
-		var e: Dictionary = _spawn("suction",start,intake.global_position,color,randf_range(0.45,0.8),randf_range(0.045,0.11))
+		var e: Dictionary = _spawn("suction",start,intake.global_position,color,randf_range(0.55,0.85),randf_range(0.028,0.075))
 		if not e.is_empty(): e.intake = intake
 
 func burst(position_value: Vector3,color: Color,count: int = 12) -> void:
@@ -84,7 +84,8 @@ func _process(delta: float) -> void:
 				if is_instance_valid(e.get("intake")) and e.intake.is_inside_tree(): e.end = e.intake.to_global(e.intake.get_meta("intake_offset",Vector3(0,1.2,0)))
 				var direction: Vector3 = (e.end-e.start).normalized()
 				var side: Vector3 = direction.cross(Vector3.UP).normalized()
-				var spiral: Vector3 = (side*cos(t*TAU*1.6+e.seed)+Vector3.UP*sin(t*TAU*1.6+e.seed))*sin(t*PI)*0.32
+				var up: Vector3 = side.cross(direction).normalized()
+				var spiral: Vector3 = (side*cos(t*TAU*1.2+e.seed)+up*sin(t*TAU*1.2+e.seed))*sin(t*PI)*0.20
 				node.position = e.start.lerp(e.end,t*t)+spiral
 				node.scale = Vector3.ONE*e.scale*(1-t*0.8)
 				node.rotate_x(delta*7); node.rotate_z(delta*9)

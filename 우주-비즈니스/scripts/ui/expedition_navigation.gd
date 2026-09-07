@@ -25,12 +25,16 @@ var pending_sequence: int=-1
 var pending_revision: int=-1
 var closing:=false
 var selected_preview: int=-1
-var was_transiting:=false
 var preview: SubViewport
 var preview_root: Node3D
 var preview_camera: Camera3D
 var preview_body: Node3D
 var preview_key: String=""
+var selecting_route:=false
+var was_transiting:=false
+var nearby_stars: Control
+var flight_render_suspended:=false
+var route_distance: Label
 
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;theme=app.ui_theme;mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -38,6 +42,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	_build_map()
 	_build_pause()
 	_build_crew()
+	nearby_stars=load("res://scripts/ui/nearby_stars.gd").new();add_child(nearby_stars);nearby_stars.configure(app)
 	mini=load("res://scripts/ui/galaxy_chart.gd").new();mini.compact=true;mini.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(mini)
 	context=Button.new();context.hide();context.focus_mode=Control.FOCUS_NONE;context.pressed.connect(interact);add_child(context)
 	context.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(Color("10191fd9"),Color("31434d00"),12))
@@ -60,11 +65,16 @@ func _build_map() -> void:
 	var heading:=HBoxContainer.new();app.panel.add_child(heading)
 	var title:=FrontierInterfaceStyle.label(heading,"항성 지도",24);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	map_mode=_button(heading,"은하 보기",func():app.chart.galaxy=not app.chart.galaxy;app.chart.reset_view();_map_mode())
+	_button(heading,"이동 가능한 근처",func():app.chart.focus_nearby();_map_mode())
 	_button(heading,"기록",func():app.navigation_records.refresh();app.navigation_records.popup_centered())
 	_button(heading,"닫기  Tab",app.close_menus)
 	var body:=HBoxContainer.new();body.size_flags_vertical=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",18);app.panel.add_child(body)
 	app.chart=load("res://scripts/ui/galaxy_chart.gd").new();app.chart.size_flags_horizontal=Control.SIZE_EXPAND_FILL;app.chart.size_flags_vertical=Control.SIZE_EXPAND_FILL;body.add_child(app.chart)
 	app.chart.selected.connect(show_target)
+	app.chart.route_selected.connect(show_route)
+	app.chart.station_selected.connect(func(index: int):
+		if index==int(app.session.latest.crew.navigation.system):app.approach_trade_station()
+		else:_notice("해당 항성계로 이동한 뒤 정거장에 접근하세요."))
 	card=VBoxContainer.new();card.custom_minimum_size.x=240;card.add_theme_constant_override("separation",12);body.add_child(card)
 	preview=SubViewport.new();preview.size=Vector2i(320,240);preview.own_world_3d=true;preview.transparent_bg=true;preview.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(preview)
 	preview_root=Node3D.new();preview.add_child(preview_root)
@@ -85,6 +95,7 @@ func _build_map() -> void:
 		bar.add_theme_stylebox_override("fill",FrontierInterfaceStyle.box(FrontierInterfaceStyle.ACCENT,Color.TRANSPARENT,0))
 		row.add_child(bar);survey_bars[entry[0]]=bar
 	survey_note=FrontierInterfaceStyle.label(card,"",12,FrontierInterfaceStyle.MUTED);survey_note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	route_distance=FrontierInterfaceStyle.label(card,"",16,FrontierInterfaceStyle.ACCENT);route_distance.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	route=_button(card,"출발",func():start_route(selected_preview))
 	app.travel_status=target_kind
 	app.navigation_records=FrontierNavigationRecords.new();app.add_child(app.navigation_records);app.navigation_records.selected.connect(show_target)
@@ -118,7 +129,9 @@ func _leave(quit_game: bool) -> void:
 		else:get_tree().change_scene_to_file("res://scenes/app/main.tscn")
 	else:closing=false
 func _map_mode() -> void:
-	map_mode.text="항성계 보기" if app.chart.galaxy else "은하 보기"
+	map_mode.text="현재 항성계" if app.chart.galaxy else "은하 항로"
+	if not app.chart.galaxy and selecting_route:
+		selecting_route=false;app.chart.system_index=app.chart.current_system;show_target(int(app.session.latest.crew.navigation.target))
 	app.chart.queue_redraw()
 func _layout() -> void:
 	var view_size:=get_viewport().get_visible_rect().size
@@ -137,11 +150,15 @@ func _layout() -> void:
 func refresh(value: Dictionary) -> void:
 	_layout()
 	var nav: Dictionary=value.crew.navigation
+	app.chart.stellar_range=float(value.get("vessel_stats",{}).get("stellar_range",8.0))
 	if nav.mode=="jump" and not was_transiting:
 		app.close_menus();app.outside=true;app.exterior_view.show();app.if_flight_view()
 		if app.space_view!=null:app.space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+		flight_render_suspended=false
+	if nav.mode!="jump" and was_transiting:app.close_menus();selecting_route=false;selected_preview=-1
 	was_transiting=nav.mode=="jump"
 	for map in [app.chart,mini]:
+		map.station_excluded=int(nav.get("first_stellar_system",-1))
 		map.manifest=app.session.manifest;map.current_system=int(nav.system);map.elapsed=float(nav.get("orbit_time",0));map.ship_position=FrontierCrewWorld.vector(nav.position);map.ship_direction=FrontierCrewWorld.vector(nav.direction);map.journal=app.navigation_journal
 		map.transit=nav.get("transit",{}) if nav.mode=="jump" else {};map.queue_redraw()
 	mini.system_index=int(nav.system);mini.target=int(nav.target)
@@ -163,9 +180,12 @@ func refresh(value: Dictionary) -> void:
 	route.disabled=not value.crew.get("landing",{}).is_empty() or value.self_id!=value.crew.pilot_id or nav.mode!="idle" or pending_route>=0
 	route.tooltip_text="지표에서는 우주선으로 돌아와 이륙하세요." if not value.crew.get("landing",{}).is_empty() else ("조종사만 항로를 설정할 수 있습니다." if value.self_id!=value.crew.pilot_id else "")
 
+	if selecting_route:_route_info()
+
 func show_target(ordinal: int) -> void:
 	if ordinal<0 or app.session.manifest.is_empty():return
 	if not app.chart.can_inspect_system(FrontierUniverse.system_index(app.session.manifest,ordinal)):return
+	selecting_route=false;card.get_child(0).show();route_distance.text=""
 	selected_preview=ordinal;app.selected_ordinal=ordinal
 	var body:=FrontierUniverse.body(app.session.manifest,ordinal)
 	app.chart.target=ordinal;app.chart.system_index=int(body.system_ordinal);app.chart.queue_redraw();_map_mode()
@@ -176,6 +196,7 @@ func show_target(ordinal: int) -> void:
 	_update_preview(body)
 
 func refresh_survey() -> void:
+	if selecting_route:return
 	if selected_preview<0 or app.session.manifest.is_empty():return
 	var body:=FrontierUniverse.body(app.session.manifest,selected_preview)
 	for child in resources.get_children():resources.remove_child(child);child.queue_free()
@@ -228,6 +249,12 @@ func _notice(value: String) -> void:
 
 func _process(delta: float) -> void:
 	if app.session.active:FrontierStellarRoutes.build(app.session.manifest,int(app.session.latest.get("crew",{}).get("navigation",{}).get("system",0)))
+	if app.space_view!=null:
+		if app.navigation_frame.visible and app.chart.galaxy and app.surface_world==null:
+			app.space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED;flight_render_suspended=true
+		elif flight_render_suspended:
+			app.space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if app.surface_world==null and app.outside else SubViewport.UPDATE_DISABLED
+			flight_render_suspended=false
 	toast_left=maxf(0,toast_left-delta);message.visible=toast_left>0
 	var active: bool=app.session.active and app.session.latest.get("phase")=="playing"
 	if active and pending_route>=0 and pending_revision>=0 and int(app.session.latest.crew.revision)>=pending_revision:
@@ -261,9 +288,17 @@ func _update_context() -> void:
 		var nearby_target:=app.surface_world.business_view.target(app.camera,app.actors[value.self_id])
 		if not nearby_target.is_empty():return
 		context_kind="launch";context_ordinal=-1
-		context.text="F  착륙선 탑승"
+		context.text="F  착륙선 단말 · 정산 / 출항"
 	else:
 		if nav.mode!="idle" or not app.outside:return
+		var station: Dictionary=value.get("station",{})
+		if not station.is_empty():
+			var gap:=FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewWorld.vector(station.position))
+			var near: bool=gap<=float(FrontierSpaceStation.config().trade_distance) and absf(float(nav.speed))<=5
+			if near or app.flight.looking_at_station():
+				context_kind="trade" if near else "station_approach";context_ready=true
+				context.text=station.name+" · "+("F  교역" if near else "F  정거장 접근")
+				context.disabled=false;context.reset_size();context.show();return
 		var gazed: int=app.flight.pick_planet(Vector2(app.space_view.size)*.5) if app.flight!=null else -1
 		var ordinal: int=gazed if gazed>=0 else int(nav.target)
 		if FrontierUniverse.system_index(app.session.manifest,ordinal)!=int(nav.system):return
@@ -292,12 +327,36 @@ func interact() -> bool:
 	if context_kind.is_empty() or not context.visible:return false
 	if not app._mouse_look_allowed():return false
 	if not context_ready:return true
+	if context_kind=="trade":app.open_trade_station();return true
+	if context_kind=="station_approach":app.approach_trade_station();return true
 	if context_kind=="recover":app.recover_nearby();return true
 	if context_kind=="cargo":app.toggle_inventory();app.inventory_panel.tabs.current_tab=2;return true
 	if context_kind=="launch":
-		app.station_action("launch");return true
+		app.open_station("ship");return true
 	var value: Dictionary=app.session.latest
 	if value.self_id!=value.crew.pilot_id:app.toggle_ready();return true
 	if app.session.offline:app.session.send_request("ready",{"value":true})
 	app.session.send_request(context_kind,{"ordinal":context_ordinal} if context_kind=="land" else {})
 	return true
+
+func open_galaxy(reset: bool=true) -> void:
+	app.chart.galaxy=true
+	if reset:app.chart.reset_view()
+	_map_mode()
+	if not app.navigation_frame.visible:app.open_menu(app.navigation_frame)
+func show_route(ordinal: int) -> void:
+	selecting_route=true;selected_preview=ordinal;app.selected_ordinal=ordinal
+	card.get_child(0).hide();resources.hide();survey.hide()
+	var index:=FrontierUniverse.system_index(app.session.manifest,ordinal)
+	target_name.text=FrontierUniverse.system(app.session.manifest,index).star.name
+	target_kind.text="방문한 항성계" if app.chart.can_inspect_system(index) else "미방문 항성계"
+	survey_note.text="내부 행성 정보는 항성계 진입 후 공개됩니다." if not app.chart.can_inspect_system(index) else "도착 후 행성을 선택해 탐사하세요."
+	_route_info()
+func _route_info() -> void:
+	var nav: Dictionary=app.session.latest.crew.navigation
+	var index:=FrontierUniverse.system_index(app.session.manifest,selected_preview)
+	var distance:=FrontierUniverse.map_position(app.session.manifest,int(nav.system)).distance_to(FrontierUniverse.map_position(app.session.manifest,index))
+	var limit: float=app.chart.stellar_range
+	route_distance.text="항로 거리  %.1f\n최대 항속거리  %.1f"%[distance,limit]
+	route.text="항속거리 초과" if distance>limit+.001 else ("현재 항성계" if index==int(nav.system) else "고속 항해 출발")
+	route.disabled=not app.session.latest.crew.get("landing",{}).is_empty() or app.session.latest.self_id!=app.session.latest.crew.pilot_id or nav.mode!="idle" or pending_route>=0 or distance>limit+.001 or index==int(nav.system)

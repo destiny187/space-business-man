@@ -10,11 +10,19 @@ var handheld: Node3D
 var muzzle: OmniLight3D
 var parts: Array[Node]=[]
 var pending: Dictionary={}
+var optics: FrontierFieldToolEffects
+var intake_strength:=0.0
+var intake_point:=Vector3.ZERO
+var intake_resource: String="stone"
+var intake_tick:=0.0
+var scan_id: String=""
+var scan_was_known:=false
+var scan_complete_left:=0.0
+var recoil_velocity:=0.0
 var recoil:=0.0
 var elapsed:=0.0
 var work_left:=0.0
 var audio_tick:=0.0
-var scan_tick:=0.0
 var industry_tick:=0.0
 var scan_bar: ProgressBar
 var cue: FrontierResourceReadout
@@ -30,6 +38,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app
 	audio=FrontierAudio.new();add_child(audio)
 	effects=FrontierEffects.new();add_child(effects)
+	optics=FrontierFieldToolEffects.new();add_child(optics)
 	handheld=load("res://assets/models/manual_tool.glb").instantiate()
 	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld)
 	handheld.position=Vector3(.36,-.30,-.92);handheld.scale=Vector3.ONE*.72
@@ -60,11 +69,18 @@ func _requested(sequence: int,kind: String,args: Dictionary) -> void:
 	var resource: String="stone"
 	if kind=="business_mine":
 		var vein:=FrontierExpeditionBusiness.find_vein(app.surface_world.body,str(args.get("vein_id","")))
-		if not vein.is_empty():resource=vein.resource
+		if not vein.is_empty():
+			resource=vein.resource
+			# The target selector can see an ore mesh before a physics ray hits it.
+			if app.surface_world.business_view.nodes.has(vein.id):
+				var visual: Node3D=app.surface_world.business_view.nodes[vein.id]
+				var center:=visual.global_position+Vector3.UP*.55
+				if hit.is_empty() or point.distance_to(center)>1.5:point=center
 	if args.has("position"):point=FrontierCrewWorld.vector(args.position)
 	pending[sequence]={"kind":kind,"point":point,"resource":resource,"body":app.surface_world.body.id,"created":Time.get_ticks_msec()}
 
 func reject(message: String="배치할 수 없습니다") -> void:
+	work_left=0;intake_strength=0;optics.reset()
 	audio.play("sfx_build_invalid");app.reticle.modulate=Color("ff826d");cue.value=message;cue_left=.8;cue.show()
 
 func _response(sequence: int,value: Dictionary) -> void:
@@ -78,7 +94,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 	match request.kind:
 		"business_craft":audio.play("sfx_build_place");show_cue("로봇 조립 시작")
 		"surface_attack":
-			recoil=1;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);effects.burst(point,Color("ffb578"),10);audio.play("sfx_combat_pulse")
+			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);audio.play("sfx_combat_pulse")
 		"equipment_upgrade","equipment_suit_upgrade":audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
 		"business_produce":audio.play("sfx_build_place");show_cue("제품 생산 예약")
 		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
@@ -88,9 +104,12 @@ func _response(sequence: int,value: Dictionary) -> void:
 			recoil=1;work_left=.25;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point)
 			effects.suction(point,handheld,"stone",4);audio.play("sfx_combat_pulse")
 		"business_mine":
-			cue_left=0;recoil=.3;work_left=.4;effects.suction(point,handheld,request.resource,6)
-			effects.burst(point,Color(FrontierCatalog.entry("resources",request.resource).color),8)
-			audio.play("sfx_mine_hit_metal",point);audio.play("sfx_pickup_resource")
+			cue_left=0;recoil=0;recoil_velocity=0
+			var equipped:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
+			work_left=float(equipped.get("interval",.6))+.16
+			intake_point=point;intake_resource=request.resource
+			effects.suction(point,handheld,request.resource,12)
+			audio.play("sfx_pickup_resource")
 		"business_store_equipment","business_withdraw","business_deposit","business_recover_crate","surface_collect","surface_resupply":
 			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("인수 완료")
 		"business_build":
@@ -147,29 +166,57 @@ func _process(delta: float) -> void:
 		effects.clear();observed_body="";pending.clear()
 	for sequence in pending.keys():
 		if Time.get_ticks_msec()-int(pending[sequence].created)>15000:pending.erase(sequence)
-	recoil=move_toward(recoil,0,delta*5);muzzle.light_energy=pow(recoil,4)*2
+	var mining: bool=enabled and tool.get("kind")=="miner" and work_left>0
+	if not enabled:
+		work_left=0;intake_strength=0;recoil=0;recoil_velocity=0;scan_complete_left=0
+		optics.reset()
+	intake_strength=move_toward(intake_strength,1.0 if mining else 0.0,delta*(4.5 if mining else 7.0))
+	# Damped spring is reserved for weapons. A loaded extractor stays braced.
+	var step:=minf(delta,.04)
+	recoil_velocity+=(-recoil*140-recoil_velocity*20)*step
+	recoil=maxf(0,recoil+recoil_velocity*step)
+	muzzle.light_color=Color("8de8db") if tool.get("kind")=="miner" else Color("ffc07c")
+	muzzle.light_energy=intake_strength*.32+pow(recoil,3)*2.4
 	var moving: bool=active and app.actors[app.session.latest.self_id].velocity.length()>1
-	handheld.position=Vector3(.36,-.30+sin(elapsed*(9 if moving else 2))*(.018 if moving else .005),-.92+recoil*.13)
-	handheld.rotation=Vector3(recoil*.16,0,-.03)
+	var bob: float=sin(elapsed*(9 if moving else 2))*(.018 if moving else .005)*(1-intake_strength*.75)
+	handheld.position=Vector3(.36-intake_strength*.035,-.30+bob+intake_strength*.015,-.92+recoil*.10-intake_strength*.025)
+	handheld.rotation=Vector3(recoil*.10+sin(elapsed*73)*intake_strength*.002,0,-.03+sin(elapsed*59)*intake_strength*.003)
 	for part in parts:
-		if part.name.begins_with("Anim_Fan"):part.rotate_z(delta*(30 if work_left>0 else 2))
-		elif part.name.begins_with("Anim_Piston") or part.name.begins_with("Anim_Collar"):part.position=part.get_meta("rest")+Vector3(0,0,recoil*.075)
+		if part.name.begins_with("Anim_Fan"):part.rotate_z(delta*(2+intake_strength*65))
+		elif part.name.begins_with("Anim_Piston") or part.name.begins_with("Anim_Collar"):
+			part.position=part.get_meta("rest")+Vector3(0,0,recoil*.065+sin(elapsed*47)*intake_strength*.002)
+	optics.update_intake(intake_point,handheld.to_global(Vector3(0,0,-.78)),app.camera,intake_strength if enabled else 0.0,delta)
+	intake_tick-=delta
+	if mining and intake_tick<=0:
+		intake_tick=.10;effects.suction(intake_point,handheld,intake_resource,4)
 	var scanning: bool=enabled and float(app.session.latest.get("scan",{}).get("progress",0))>0 and not app.session.latest.get("scan",{}).get("known",false)
-	audio.set_suction(1 if enabled and work_left>0 else (.35 if scanning else 0))
+	audio.set_suction(intake_strength if enabled and tool.get("kind")=="miner" else 0.0)
+	audio.set_survey(float(app.session.latest.get("scan",{}).get("progress",0)) if scanning else 0.0)
 	var size:=get_viewport().get_visible_rect().size
 	cue.position=Vector2(size.x/2-180,size.y/2+45);cue.visible=enabled and cue_left>0
 	if cue_left<=0:app.reticle.modulate=Color.WHITE
 	var progress: float=float(app.session.latest.get("scan",{}).get("progress",0))
 	scan_bar.position=Vector2(size.x/2-80,size.y/2+22);scan_bar.value=progress*100;scan_bar.visible=enabled and progress>0 and not app.session.latest.get("scan",{}).get("known",false)
-	scan_tick-=delta
-	if scan_bar.visible and scan_tick<=0:
-		scan_tick=.22
-		var encounter: String=str(app.session.latest.get("scan",{}).get("id",""))
-		if app.surface_world.ecology.actors.has(encounter):
-			var subject: Node3D=app.surface_world.ecology.actors[encounter]
-			effects.burst(subject.global_position+Vector3.UP*.5,Color("64dce6"),3)
-		elif app.session.latest.get("scan",{}).has("point"):
-			effects.burst(FrontierCrewWorld.vector(app.session.latest.scan.point)+Vector3.UP,Color("64dce6"),3)
+	var scan: Dictionary=app.session.latest.get("scan",{})
+	var current_id: String=str(scan.get("id",""))
+	var known: bool=scan.get("known",false)
+	scan_complete_left=maxf(0,scan_complete_left-delta)
+	if enabled and known and not scan_was_known and current_id==scan_id and not current_id.is_empty():
+		scan_complete_left=.5;audio.play("ui_discovery")
+	if current_id!=scan_id:scan_complete_left=0
+	scan_id=current_id;scan_was_known=known
+	if enabled and (scanning or scan_complete_left>0):
+		var scan_point:=Vector3.INF
+		var subject: Node3D=null
+		if app.surface_world.ecology.actors.has(current_id):
+			subject=app.surface_world.ecology.actors[current_id]
+			scan_point=subject.global_position+Vector3.UP*.7
+		elif scan.has("point"):scan_point=FrontierCrewWorld.vector(scan.point)+Vector3.UP*.45
+		elif scan.get("info",{}).has("point"):scan_point=FrontierCrewWorld.vector(scan.info.point)+Vector3.UP*.45
+		if subject==null and app.surface_world.business_view.nodes.has(current_id):subject=app.surface_world.business_view.nodes[current_id]
+		if scan_point.is_finite():optics.survey(scan_point,progress,scan_complete_left>0,1.25,subject)
+		else:optics.stop_survey()
+	else:optics.stop_survey()
 	industry_tick-=delta
 	if enabled and industry_tick<=0:
 		industry_tick=.65;_industry_effects()
@@ -219,6 +266,7 @@ func _industry_effects() -> void:
 		effects.burst(actor.global_position+Vector3.UP*2,color,2)
 
 func _replace_tool(model: String) -> void:
+	work_left=0;intake_strength=0;recoil=0;recoil_velocity=0;optics.reset();effects.clear()
 	handheld.get_parent().remove_child(handheld);handheld.queue_free()
 	equipped_model=model;handheld=load("res://assets/models/"+model+".glb").instantiate()
 	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model in ["manual_tool","equipment/miner_mk2"] else .5)

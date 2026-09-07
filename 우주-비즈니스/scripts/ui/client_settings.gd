@@ -3,8 +3,8 @@ extends CanvasLayer
 ## Local presentation only: never stored in the host's simulation manifest.
 signal changed
 const BASE_MOUSE_SENSITIVITY:=0.0025
-const DEFAULTS={"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":2400.0,"shadow_distance":180.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":3.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":3,"local_shadow_size":2048}
-const LIMITS={"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,8000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
+const DEFAULTS={"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":2400.0,"shadow_distance":180.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":3.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"music_volume":0.65,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":3,"local_shadow_size":2048}
+const LIMITS={"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,8000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"music_volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
 const RESOLUTIONS=[Vector2i(1280,800),Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080),Vector2i(2560,1440)]
 var values: Dictionary=DEFAULTS.duplicate()
 var path="user://client_settings.json"
@@ -239,6 +239,7 @@ func _build() -> void:
 	_sensitivity(input)
 	_check(input,"마우스 세로 반전","invert_y")
 	_number(input,"전체 음량","volume",.05)
+	_number(input,"배경음악 음량","music_volume",.05)
 	notice=Label.new();notice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;notice.text="시야거리는 원경 범위입니다. 굴착 지형·생물의 활성 범위는 게임 규칙을 따릅니다.";column.add_child(notice)
 	var buttons:=HBoxContainer.new();column.add_child(buttons)
 	for entry in [["닫기 · Esc / F10",close],["화면 변경 유지",func():display_previous.clear();notice.text="화면 설정을 저장했습니다." if save_settings() else "설정 저장 실패"],["기본값 복원",func():

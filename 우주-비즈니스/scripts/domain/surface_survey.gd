@@ -56,8 +56,7 @@ static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionar
 	var tool:=FrontierEquipment.active(world.crew.members[actor])
 	var usable: bool=tool.get("kind")=="miner" and int(tool.get("tier",0))>=int(row.required_tier)
 	var action: String="클릭 유지  채집" if usable else "채집기 %d등급 장착 필요"%int(row.required_tier)
-	if site.is_empty():action="B  개발 등록 후 채집"
-	elif remaining<=0:action="고갈된 광맥"
+	if remaining<=0:action="고갈된 광맥"
 	var usage: PackedStringArray=[]
 	for recipe in FrontierEquipment.config().items.values():
 		if int(recipe.get("cost",{}).get(row.resource,0))>0:usage.append(recipe.name)

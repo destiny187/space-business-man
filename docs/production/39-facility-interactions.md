@@ -44,3 +44,7 @@ F로 연 물체 ID를 고정하여 다른 건물을 목록에서 다시 고르�
 최종 추가 확인: 지정 제작소의 정제 철 생산 완료와 시작/완료 ElevenLabs 음원의 실제 재생 호출을 확인했다. 960×640에서 제작 버튼이 아래로 밀리는 부분을 조정하고 로봇/시설 관리의 정적 사진을 회전 가능한 실제 모델로 바꾼 뒤 Forward+로 재렌더했다. 마지막 관련 실행은 오류 없이 종료했다.
 
 [로봇 제작 화면](media/facility-interactions/robot-factory.png) · [제품 생산 화면](media/facility-interactions/production.png) · [개별 시설 관리](media/facility-interactions/facility.png).
+
+2026-09-07 후속: 무료 등록 버튼과 착륙선 내 기술 목록을 제거했다. 연구는 J 독립 화면으로 이동했으며 채광은 등록 없이 가능하다. [후속 기록](40-smoke-and-research.md)이 기존 등록/읽기 전용 J 설명에 우선한다.
+
+2026-09-07 후속: 착륙선 F를 계약 단말로 복구하고 출항은 단말의 탑승 버튼으로 분리했다. 창고의 드래그 화면에서 보급·로봇 관리로 연결한다. [복구 기록](45-progression-repairs.md).

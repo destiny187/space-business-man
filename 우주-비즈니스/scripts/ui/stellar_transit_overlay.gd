@@ -55,27 +55,46 @@ func _draw() -> void:
 		if nav.get("boundary",false):draw_string(font,Vector2(24,size.y-72),"항성계 외곽 — 항법도에서 성간 항해를 설정하세요",HORIZONTAL_ALIGNMENT_LEFT,-1,18,Color(1,.76,.4))
 
 func _draw_scan(font: Font,center: Vector2) -> void:
-	if scan_body.is_empty():return
+	if scan_body.is_empty() or presentation_blocked:return
 	var cyan:=Color(.45,.94,1,.95)
 	draw_arc(center,22,-PI*.5,TAU-PI*.5,64,Color(.2,.5,.6,.35),3,true)
 	draw_arc(center,22,-PI*.5,TAU*scan_progress-PI*.5,64,cyan,3,true)
 	if scan_progress<1.0:
 		draw_string(font,center+Vector2(-38,44),"분석 중",HORIZONTAL_ALIGNMENT_LEFT,-1,15,cyan);return
-	var width:=minf(320,size.x*.38)
-	var origin:=center+Vector2(-width*.5,58)
-	draw_string(font,origin,scan_body.name,HORIZONTAL_ALIGNMENT_CENTER,width,20,Color("e6e8df"))
+	var width:=minf(440,size.x*.48)
+	var pointer:=center
+	if not Rect2(Vector2.ZERO,size).has_point(pointer):pointer=center
+	var box:=Rect2(Vector2(clampf(pointer.x-width-42,16,size.x-width-16),maxf(16,pointer.y-305)),Vector2(width,277))
+	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.10,.15,.88);style.border_color=Color(.35,.86,1,.7);style.set_border_width_all(1);style.set_corner_radius_all(9)
+	draw_style_box(style,box)
+	draw_polyline(PackedVector2Array([pointer+Vector2(-18,-18),box.position+Vector2(width+12,130),box.position+Vector2(width,130)]),cyan,1.5,true)
+	for i in 15:draw_line(box.position+Vector2(1,i*10+5),box.position+Vector2(width-1,i*10+5),Color(.3,.8,1,.035),1)
+	var origin:=box.position+Vector2(18,27)
+	draw_string(font,origin,"스캔 완료",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,cyan)
+	draw_string(font,origin+Vector2(0,33),scan_body.name,HORIZONTAL_ALIGNMENT_LEFT,width-36,27,Color(.88,.98,1))
+	var description:=FrontierUniverse.kind_label(scan_body)+" · T%d"%int(scan_body.planet_tier)
+	if scan_body.get("origin","")=="solar_reference":description="태양계 · 테라포밍 불가 행성"
+	elif not FrontierUniverse.landable(scan_body):description+=" · 착륙 불가"
+	else:description+=" · 테라포밍 가능"
+	draw_string(font,origin+Vector2(0,68),description,HORIZONTAL_ALIGNMENT_LEFT,width-36,17,Color(.7,.85,.9))
 	var report:=FrontierOrbitalSurvey.report(scan_body)
 	if report.available:
-		var count:=mini(4,report.resources.size())
-		for i in count:
-			var texture:=FrontierResourceIcons.texture(report.resources[i])
-			if texture!=null:draw_texture_rect(texture,Rect2(center+Vector2((i-count*.5)*32,70),Vector2(26,26)),false)
-	else:
-		draw_string(font,origin+Vector2(0,28),"착륙 불가" if not FrontierUniverse.landable(scan_body) else "미확인 환경",HORIZONTAL_ALIGNMENT_CENTER,width,13,Color("efb46f"))
-	var hint: String="E 접근  ·  Tab 조사"
-	if report.available and report.risk!="주의":
-		draw_string(font,origin+Vector2(0,83),"△ "+str(report.risk),HORIZONTAL_ALIGNMENT_CENTER,width,12,Color("efb46f"))
-	draw_string(font,origin+Vector2(0,63),hint,HORIZONTAL_ALIGNMENT_CENTER,width,13,cyan)
+		var slot_width: float=(width-36)/4
+		for i in mini(4,report.resources.size()):
+			var id: String=report.resources[i];var icon:=FrontierResourceIcons.texture(id)
+			var point:=origin+Vector2(i*slot_width,82)
+			if icon!=null:draw_texture_rect(icon,Rect2(point,Vector2(30,30)),false)
+			draw_string(font,point+Vector2(0,47),FrontierMinerals.entry(id).name,HORIZONTAL_ALIGNMENT_LEFT,slot_width-4,12,cyan)
+		for i in 2:
+			var point:=origin+Vector2(i*(width-36)/2,151)
+			var value: float=report.water if i==0 else report.air
+			draw_string(font,point,("물 %.0f%%"%value if i==0 else "대기 적합 %.0f/100"%value),HORIZONTAL_ALIGNMENT_LEFT,-1,14,cyan)
+			draw_rect(Rect2(point+Vector2(0,8),Vector2((width-48)/2,3)),Color(.14,.3,.35))
+			draw_rect(Rect2(point+Vector2(0,8),Vector2((width-48)/2*value/100,3)),cyan)
+		var warning: String="위험: %s  ·  개선 %s"%[report.risk,report.difficulty]
+		draw_string(font,origin+Vector2(0,190),warning,HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
+	else:draw_string(font,origin+Vector2(0,108),report.detail,HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
+	draw_string(font,origin+Vector2(0,224),"E 접근  ·  Tab 항성 지도",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 
 func _draw_vitals(font: Font) -> void:
 	var start:=Vector2(26,size.y-100)
@@ -131,7 +150,9 @@ func _draw_guidance(font: Font) -> void:
 		var point: Vector2=marker.point
 		var color:=Color(1,.62,.23,.95) if marker.kind=="hazard" else Color(.5,.9,.91,.8)
 		if marker.onscreen:
-			if marker.kind=="target":
+			if marker.kind=="station":
+				draw_rect(Rect2(point-Vector2(9,9),Vector2(18,18)),Color("ffc180"),false,2)
+			elif marker.kind=="target":
 				# The scanner owns the center; avoid a duplicate reticle over its progress ring.
 				if point.distance_to(size*.5)<35:continue
 				draw_polyline(PackedVector2Array([point+Vector2(0,-12),point+Vector2(12,0),point+Vector2(0,12),point+Vector2(-12,0),point+Vector2(0,-12)]),color,1.5,true)

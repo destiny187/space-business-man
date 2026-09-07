@@ -40,7 +40,7 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 		if i<config().starter_vein_positions.size():p=[config().starter_vein_positions[i][0]+float(seed_value%11)*.05,0,config().starter_vein_positions[i][1]]
 		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":FrontierMineralWorld.tier(types[i]),"capacity":int(config().vein_capacity.get(types[i],180))+int(body.planet_tier-1)*20,"position":p})
 	# Stable additive IDs preserve depletion of all older deposits.
-	if FrontierMineralWorld.enabled(body):values.append_array(starter_veins())
+	if FrontierMineralWorld.enabled(body):values.append_array(starter_veins(body))
 	if FrontierMineralWorld.enabled(body):
 		var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 		for level in range(-20,-40,-1):
@@ -50,9 +50,12 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 				values.append({"id":"cave:gem:0","resource":gem,"required_tier":FrontierMineralWorld.tier(gem),"capacity":35,"position":[p.x,p.y,p.z],"underground":true,"quality":1})
 				break
 	return values
-static func starter_veins() -> Array:
+static func starter_veins(body: Dictionary={}) -> Array:
 	if _starter_veins.is_empty():_starter_veins=JSON.parse_string(FileAccess.get_file_as_string("res://data/landing_resources.json"))
-	return _starter_veins.duplicate(true)
+	var result: Array=[]
+	for row in _starter_veins:
+		if int(body.get("planet_tier",1))<=int(row.get("maximum_planet_tier",5)):result.append(row.duplicate(true))
+	return result
 static func find_vein(body: Dictionary,id: String) -> Dictionary:
 	if id.begins_with("ore1:"):return FrontierMineralWorld.find(body,id)
 	for row in veins(body):
@@ -235,6 +238,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			var target_vein:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),target)
 			if target_vein.is_empty() or int(current.remaining.get(target,target_vein.capacity))<=0:return "채광할 광맥이 없습니다."
 			if target_vein.get("underground",false):return "지하 광맥은 수동 채집하세요. 지하 로봇 경로는 아직 지원하지 않습니다."
+			if not ground(FrontierCrewSurface.field(world),target_vein.position[0],target_vein.position[2]).is_finite():return "로봇이 접근할 평탄한 토대가 없는 광맥입니다. 다른 광맥을 선택하세요."
+			if thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),current,target_vein):return "고온 광맥입니다. 구역을 먼저 냉각하세요."
 			current.remaining[target]=int(current.remaining.get(target,target_vein.capacity))
 			robot.target=target;robot.phase="return" if total(robot.cargo)>0 else "outbound";robot.path=[];robot.status="경로 조사 중";return ""
 		if position.distance_to(point(robot.position))>6:return "로봇에 가까이 접근하세요."

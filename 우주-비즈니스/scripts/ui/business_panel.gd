@@ -105,7 +105,7 @@ func _ready() -> void:
 	button(supply_controls,"보급 20개 인수",func():command.emit("business_supply",{"resource":selected(supply)}))
 	label(research_tab,"공동 자금은 호스트가 지출합니다. 기술은 영구 유지하며 실제 장비는 재료로 제작합니다. 생태 배양기는 허가된 표준 균주를 사용하는 지역 복원 설비입니다.")
 	var robot_tab:=VBoxContainer.new();robot_tab.name="로봇";tabs.add_child(robot_tab)
-	var robot_preview:=FrontierEquipmentPreview.new();robot_preview.custom_minimum_size=Vector2(140,140);robot_preview.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;robot_tab.add_child(robot_preview);robot_preview.show_model("miner")
+	var robot_preview:=FrontierEquipmentPreview.new();robot_preview.custom_minimum_size=Vector2(140,100);robot_preview.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;robot_tab.add_child(robot_preview);robot_preview.show_model("miner")
 	factory=option(robot_tab);factory.hide()
 	robot=option(robot_tab)
 	robot_job_status=label(robot_tab,"")
@@ -141,7 +141,7 @@ func _ready() -> void:
 	label(contract_tab,"계약은 이 개발 구역의 복원 성과를 평가합니다. 정산하면 남긴 시설·현장 로봇·창고를 인계합니다. 필요한 로봇은 먼저 회수하세요. 행성 전체의 소유권 매각과 구분됩니다.")
 	tabs.add_child(facility_tab)
 	var ship_tab:=VBoxContainer.new();ship_tab.name="착륙선";tabs.add_child(ship_tab)
-	button(ship_tab,"연구실 · 표본 분석과 시험",func():station_action.emit("research"))
+	button(ship_tab,"연구 · 기술 설계도와 생태 분석",func():station_action.emit("research"))
 	button(ship_tab,"우주선 창고 · 운송할 물건 싣기",func():station_action.emit("cargo"))
 	button(ship_tab,"우주선 정비",func():station_action.emit("shipyard"))
 	button(ship_tab,"탑승 · 전원 탑승 시 자동 이륙",func():station_action.emit("launch"))
@@ -165,7 +165,7 @@ func set_context(kind: String,id: String="") -> void:
 	var allowed: Array=[]
 	match kind:
 		"build":allowed=["건설"]
-		"ship":allowed=["착륙선","기술","환경·계약"]
+		"ship":allowed=["착륙선","환경·계약"]
 		"base","storage":allowed=["창고","로봇"]
 		"factory":allowed=["로봇 제작","생산·개조","생물공학","시설 관리"]
 		"robot":allowed=["로봇","생산·개조"]
@@ -177,7 +177,8 @@ func set_context(kind: String,id: String="") -> void:
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
 	var title: String={"build":"건설","ship":"착륙선 단말","base":"현장 창고","factory":"로봇 제작소","robot":"M-01 작업 관리"}.get(kind,FrontierCatalog.entry("buildings",kind).get("name","시설"))
 	heading.text=title+" · Esc 닫기"
-	register_button.visible=kind=="ship"
+	register_button.hide()
+	stock.visible=kind not in ["base","storage","ship"]
 	deposit_button.visible=kind in ["base","storage"]
 	robot_controls.visible=kind=="robot";recovery_controls.visible=kind in ["base","storage"]
 	facility.hide();research_facility.hide();robot.visible=kind in ["base","storage"]
@@ -191,9 +192,9 @@ func set_context(kind: String,id: String="") -> void:
 		if kind=="factory" or def.building==kind:available[key]=def.name
 	choices(research_project,available)
 func refresh_context(current: Dictionary) -> void:
-	register_button.visible=context_kind=="ship" and current.is_empty()
+	register_button.hide()
 	guidance.visible=current.is_empty()
-	if current.is_empty():guidance.text="착륙선에 접근해 F로 무료 개발 등록을 진행하세요."
+	if current.is_empty():guidance.text="착륙 지표를 준비 중입니다."
 	robot_factory.refresh(current)
 	var cargo: Dictionary={}
 	for key in current.get("inventory",{}):
@@ -226,24 +227,24 @@ func context_in_range(position: Vector3) -> bool:
 	if site.is_empty():return false
 	if context_kind=="base":return position.distance_to(FrontierCrewWorld.vector(site.center))<=float(FrontierExpeditionBusiness.config().deposit_range)
 	var row: Dictionary=site.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
-	return not row.is_empty() and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().interaction_range)
+	return not row.is_empty() and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
 func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO) -> void:
-	register_button.show();guidance.show()
+	register_button.hide();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
 	refresh_context(value.get("sites",{}).get(id,{}))
 	update_engineering()
 	production_panel.update_site(value.get("sites",{}).get(id,{}))
 	for bar in environment_bars.values():bar.value=0
 	register_button.disabled=not value.is_empty() and (value.sites.has(id) or not value.get("active_elsewhere","").is_empty())
-	stock.value="등록된 현장 창고가 없습니다.";environment_label.text="무료 개발 등록 후 환경을 조사합니다."
+	stock.value="등록된 현장 창고가 없습니다.";environment_label.text="착륙 지표의 환경을 조사합니다."
 	for item in [facility,factory,robot,vein,technology,hangar]:
 		if value.is_empty() or not value.sites.has(id):choices(item,{})
-	if value.is_empty():summary.value="첫 원정 · 무료 개발 등록";register_button.visible=context_kind=="ship";stock.value="착륙선에서 F · 개발 등록";return
+	if value.is_empty():summary.value="첫 원정 · 채광 가능";register_button.hide();stock.value="광맥 조준 · 클릭 유지로 채광";return
 	summary.value="공동 자금 %s Cr · 격납고 %d/%d"%[str(int(value.credits)),value.hangar.size(),int(value.get("hangar_capacity",FrontierExpeditionBusiness.config().hangar_slots))]
 	if not value.get("active_elsewhere","").is_empty():guidance.text="다른 행성에서 사업 진행 중 · 등록한 사업으로 돌아가 정산하세요."
-	elif not value.sites.has(id):guidance.text="새 목적지입니다. 무료 개발 등록으로 사업을 시작하세요."
+	elif not value.sites.has(id):guidance.text="광맥을 바로 채집할 수 있습니다."
 	var current: Dictionary=value.sites.get(id,{})
-	register_button.visible=current.is_empty() and context_kind=="ship";guidance.visible=current.is_empty()
+	register_button.hide();guidance.visible=current.is_empty()
 	production_panel.update_site(current)
 	if current.is_empty():return
 	stock.value="창고 · "+FrontierCatalog.cost_text(current.inventory)+"\n배낭 · "+FrontierCatalog.cost_text(value.bags.get(actor,FrontierExpeditionBusiness.inventory()))

@@ -17,8 +17,9 @@ func run() -> void:
   if origin.distance_to(FrontierUniverse.map_position(manifest,index))<7.5:destination=index;break
  check(destination>=0,"nearby destination exists")
  if destination<0:quit(1);return
- app.chart.galaxy=true;app.open_menu(app.navigation_frame)
- app.navigation_ui.start_route(FrontierUniverse.first_ordinal(manifest,destination))
+ app.navigation_ui.open_galaxy()
+ app.navigation_ui.show_route(FrontierUniverse.first_ordinal(manifest,destination))
+ app.navigation_ui.route.pressed.emit()
  await create_timer(2).timeout
  check(not app.navigation_frame.visible and app.outside and app.exterior_view.visible,"map departure shows exterior animation")
  check(app.space_view.render_target_update_mode==SubViewport.UPDATE_ALWAYS,"flight renderer resumed")

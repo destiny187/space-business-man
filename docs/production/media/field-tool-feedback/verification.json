@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-07",
+  "engine": "Godot 4.7.2",
+  "renderer": "Metal Forward+",
+  "hardware": "Apple M2",
+  "viewport": [
+    1280,
+    800
+  ],
+  "script": "res://tests/check_field_tool_feedback.gd",
+  "seed": 71491,
+  "checks": 12,
+  "failures": 0,
+  "scope": "현재 원정 실제 창의 광맥 조준 채집, 스캔 진행/완료, 카빈 발사, 메뉴 중단, 임시 세계 저장. 위치와 카빈 재료는 검사 전용으로 공급.",
+  "not_checked": [
+    "6인 협동",
+    "생물 전투/피격",
+    "모든 생물 스캔",
+    "장시간 음향 청감",
+    "전체 회귀"
+  ]
+}

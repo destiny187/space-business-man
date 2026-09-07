@@ -135,7 +135,8 @@ static func body_from_id(m: Dictionary, id: String) -> Dictionary:
 static func new_world(seed_value: int) -> Dictionary:
 	var manifest: Dictionary = generate(seed_value)
 	var start: int=int(manifest.settings.get("starting_ordinal",0))
-	var point:=position(manifest,start)+Vector3(0,0,radius(body(manifest,start))+float(manifest.settings.flight.arrival_clearance))
+	# A new game starts inside the Solar System beside Earth; interstellar entry_position is separate.
+	var point:=position(manifest,start)+Vector3(0,0,navigation_radius(body(manifest,start))+float(manifest.settings.flight.arrival_clearance))
 	return {"version": 2, "manifest": manifest, "manifest_hash": fingerprint(manifest),
 		"visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
 
@@ -171,6 +172,9 @@ static func validate_world(value: Variant) -> String:
 		var ecology_error: String=FrontierEcology.validate(value.ecology,m)
 		if not ecology_error.is_empty():return ecology_error
 	if value.has("engineering") and not value.engineering is Dictionary:return "현장 연구 형식 오류"
+	if value.has("station_markets"):
+		var station_error:=FrontierSpaceStation.validate(value)
+		if not station_error.is_empty():return station_error
 	if value.has("vessel"):
 		if not value.has("crew") or not value.has("business"):return "원정선 소유 세계·사업 장부 누락"
 		var vessel_error: String=FrontierVesselRefit.validate(value.vessel,int(m.seed),value.get("crew",{}).get("world_id",""))
@@ -304,12 +308,14 @@ static func orbit_radius(m: Dictionary,index: int,orbit: int) -> float:
 	return lerpf(inner,outer,part/maxf(total,1))
 static func entry_position(m: Dictionary,ordinal: int,elapsed: float,extra: float=0.0) -> Vector3:
 	var b:=body(m,ordinal);var target:=position(m,ordinal,elapsed)
+	var cfg: Dictionary=presentation().entry_overview
 	var outward:=target.normalized()
-	if m.settings.has("system_rules"):
-		outward=(outward+Vector3.UP*.55+outward.cross(Vector3.UP)*.25).normalized()
-	var clearance: float=navigation_radius(b)+float(m.settings.flight.arrival_clearance)+1200
+	outward=(outward+Vector3.UP*float(cfg.elevation)+outward.cross(Vector3.UP)*float(cfg.side_offset)).normalized()
+	var clearance: float=maxf(float(cfg.minimum_clearance),navigation_radius(b)+float(m.settings.flight.arrival_clearance))
 	if int(b.get("moons",0))>0 or b.get("rings",false):clearance=maxf(clearance,radius(b)*7.5)
-	return target+outward*(clearance+extra)
+	return (target+outward*(clearance+extra)).limit_length(float(system_layout(m,system_index(m,ordinal)).boundary)*float(cfg.boundary_fraction))
+static func entry_focus(m: Dictionary,ordinal: int,elapsed: float) -> Vector3:
+	return position(m,ordinal,elapsed)*float(presentation().entry_overview.focus_orbit_fraction)
 static func star_settings(m: Dictionary,index: int) -> Dictionary:
 	var result:=presentation().duplicate(true)
 	var layout:=system_layout(m,index)

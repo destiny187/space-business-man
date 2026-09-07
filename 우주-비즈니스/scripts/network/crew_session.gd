@@ -149,6 +149,7 @@ func _valid_snapshot(value: Variant) -> bool:
 	if not value.get("vessel") is Dictionary or not value.get("vessel_seed") is int:return false
 	if not value.vessel.is_empty() and not FrontierVesselRefit.validate(value.vessel,value.vessel_seed,world_id).is_empty():return false
 	if not value.get("vessel_stats") is Dictionary:return false
+	if value.vessel_stats.has("stellar_range") and not FrontierUniverse._finite(value.vessel_stats.stellar_range,0,1000):return false
 	for key in ["mass","power","speed","research_speed","hangar"]:
 		if not FrontierUniverse._finite(value.vessel_stats.get(key),0,100):return false
 	if not value.get("motion",{}) is Dictionary or not FrontierUniverse._finite(value.get("motion_time",0),0,9007199254740000):return false

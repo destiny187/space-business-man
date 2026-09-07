@@ -30,9 +30,10 @@ func run() -> void:
 	ready_all(core);check(request(core,1,"depart").ok,"host starts interstellar flight")
 	FrontierCrewNavigation.step(core.world,12)
 	var nav: Dictionary=core.world.crew.navigation
-	check(nav.system==FrontierUniverse.system_index(m,target) and nav.mode=="approach","transit arrives in correct variable system")
+	check(nav.system==FrontierUniverse.system_index(m,target) and nav.mode=="idle" and nav.get("manual",false),"transit stops at an overview in the correct variable system")
 	check(FrontierCrewWorld.vector(nav.position).is_equal_approx(FrontierUniverse.entry_position(m,target,float(nav.orbit_time))),"server and visual arrival use the same position")
 	check(FrontierUniverse.validate_world(JSON.parse_string(JSON.stringify(core.world))).is_empty(),"arrival can be saved")
+	ready_all(core);check(request(core,1,"depart").ok,"explicit approach starts after surveying arrival")
 	for step in 800:
 		FrontierCrewNavigation.step(core.world,.1)
 		if nav.mode=="idle":break

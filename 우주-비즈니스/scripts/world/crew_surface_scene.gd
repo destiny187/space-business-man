@@ -15,6 +15,7 @@ var incoming: Array=[]
 var config: Dictionary
 var material_cache: Dictionary={}
 var lamp: SpotLight3D
+var atmosphere: RefCounted
 var environment: Environment
 var last_anchor:=Vector3i(99999,99999,99999)
 var tick:=0.0
@@ -32,6 +33,8 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	body=FrontierUniverse.body_from_id(session.manifest,packet.body_id)
 	config=packet.terrain_settings
 	_setup_environment()
+	atmosphere.accept(packet.get("business",{}))
+	atmosphere.current=atmosphere.target_at(viewer.position);atmosphere.paint()
 	var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/terrain.gdshader");mat.set_shader_parameter("rough",.96)
 	if body.kind=="glacial":mat.set_shader_parameter("rock_color",Color("4e777f"));mat.set_shader_parameter("dust_color",Color("b9cdd0"))
 	elif body.kind=="sulfur":mat.set_shader_parameter("rock_color",Color("7c634b"));mat.set_shader_parameter("dust_color",Color("b39962"))
@@ -76,19 +79,17 @@ func accept(packet: Dictionary) -> void:
 	ecology.refresh_timer=0
 	business_view.accept(packet.get("business",{}))
 	surface_details.accept(packet.get("business",{}))
+	atmosphere.accept(packet.get("business",{}))
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()
 	environment.background_mode=Environment.BG_SKY
-	var sky:=Sky.new();var sky_mat:=ProceduralSkyMaterial.new();sky_mat.sky_top_color=Color("253748");sky_mat.sky_horizon_color=Color("c6ae91");sky_mat.ground_horizon_color=Color("b99977");sky_mat.ground_bottom_color=Color("433844");sky.sky_material=sky_mat;environment.sky=sky
-	environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;environment.ambient_light_color=Color("a2b5c5");environment.ambient_light_energy=.28
-	environment.tonemap_mode=Environment.TONE_MAPPER_FILMIC;environment.fog_enabled=true;environment.fog_light_color=Color("b8a080");environment.fog_density=.0007
-	if body.has("traits"):
-		var t: Dictionary=body.traits
-		sky_mat.sky_top_color=Color(t.sea).darkened(.35);sky_mat.sky_horizon_color=Color(t.dust).lightened(.2)
-		environment.fog_light_color=Color(t.dust);environment.fog_density=.00015+float(t.pressure)*.0003
+	environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
+	environment.tonemap_mode=Environment.TONE_MAPPER_FILMIC;environment.fog_enabled=true;environment.fog_sky_affect=0.0
 	environment.ssao_enabled=true;environment.ssao_radius=1.2;environment.ssao_intensity=1.2;world.environment=environment;add_child(world)
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-35,-30,0);sun.light_color=Color("ffe1b5");sun.light_energy=1.8;sun.shadow_enabled=true;sun.directional_shadow_max_distance=180;add_child(sun)
+	atmosphere=load("res://scripts/world/surface_atmosphere.gd").new()
+	atmosphere.configure(body,environment,sun)
 
 func _update_interest() -> void:
 	var points: Array[Vector3]=[viewer.position]
@@ -122,8 +123,8 @@ func _process(delta: float) -> void:
 	if applied_edits<incoming.size() and terrain.batch.is_empty():
 		var edit: Dictionary=incoming[applied_edits]
 		terrain.dig(FrontierCrewWorld.vector(edit.center),float(edit.radius));applied_edits+=1
-	var underground: float=clampf(-viewer.position.y/10.0,0,1)
-	environment.ambient_light_energy=lerpf(.28,.035,underground);environment.fog_density=lerpf(.0007,.002,underground)*float(preferences.values.fog)
+	var underground: float=clampf((terrain.field.height(viewer.position.x,viewer.position.z)-viewer.position.y-2.0)/10.0,0,1)
+	atmosphere.step(delta,viewer.position,underground,float(preferences.values.fog))
 	tick-=delta
 	if tick<=0:
 		tick=.15

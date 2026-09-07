@@ -11,21 +11,22 @@ static func grade_index(grade: String) -> int:return config().grades.find(grade)
 static func definition(kind: String) -> Dictionary:return config().modules.get(kind,{})
 static func stats(world: Dictionary) -> Dictionary:
 	var cfg:=config()
-	var result: Dictionary={"mass":float(cfg.base_mass),"power":float(cfg.base_power),"speed":1.0,"research_speed":1.0,"hangar":int(cfg.base_hangar)}
+	var hull:=FrontierSpaceStation.hull(world.get("vessel",{}))
+	var result: Dictionary={"stellar_range":stellar_range(world),"mass":float(hull.mass),"power":float(cfg.base_power),"speed":float(hull.speed),"research_speed":1.0,"hangar":int(hull.hangar),"maximum_mass":float(hull.maximum_mass),"reactor_power":float(hull.reactor_power)}
 	var vessel: Dictionary=world.get("vessel",{})
 	for id in vessel.get("loadout",{}).values():
 		if id.is_empty():continue
 		var module: Dictionary=vessel.modules[id];var def:=definition(module.type);var grade:=grade_index(module.grade)
 		result.mass+=float(def.mass[grade]);result.power+=float(def.power[grade])
 		for key in ["speed","research_speed"]:
-			if def.has(key):result[key]=float(def[key][grade])
+			if def.has(key):result[key]*=float(def[key][grade])
 		if def.has("hangar"):result.hangar+=int(def.hangar[grade])
 	result.mass+=world.get("business",{}).get("hangar",{}).size()*float(cfg.robot_mass)
 	return result
 static func constraints(world: Dictionary) -> String:
 	var value:=stats(world)
-	if value.power>float(config().reactor_power):return "원정선 전력 한도를 넘습니다. 다른 모듈 또는 등급 조합을 선택하세요."
-	if value.mass>float(config().maximum_mass):return "원정선 적재 질량 한도를 넘습니다."
+	if value.power>float(value.reactor_power):return "원정선 전력 한도를 넘습니다. 다른 모듈 또는 등급 조합을 선택하세요."
+	if value.mass>float(value.maximum_mass):return "원정선 적재 질량 한도를 넘습니다."
 	if world.get("business",{}).get("hangar",{}).size()>int(value.hangar):return "적재한 로봇을 먼저 재파견해야 격납고 용량을 줄일 수 있습니다."
 	return ""
 static func add_module(vessel: Dictionary,kind: String,grade: String) -> String:
@@ -98,6 +99,12 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 	return ""
 static func validate(value: Variant,seed_value: int,realm: String="") -> String:
 	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or value.get("id")!=create(seed_value,realm).id:return "원정선 개조 원형·식별 오류"
+	if value.has("hull") or value.has("hulls"):
+		if not value.get("hulls") is Array or value.hulls.is_empty() or value.hulls.size()>FrontierSpaceStation.config().hulls.size() or value.get("hull") not in value.hulls or "kestrel" not in value.hulls:return "보유 선체 구조 오류"
+		var hull_seen: Dictionary={}
+		for id in value.hulls:
+			if not id is String or not FrontierSpaceStation.config().hulls.has(id) or hull_seen.has(id):return "보유 선체 정의 오류"
+			hull_seen[id]=true
 	for key in ["counter","draws","parts"]:
 		if not FrontierExpeditionBusiness.integer(value.get(key),0,10000000):return "원정선 제작·추첨 기록 오류"
 	if not value.get("modules") is Dictionary or value.modules.size()>int(config().maximum_modules) or not value.get("loadout") is Dictionary or value.loadout.size()!=config().slots.size() or not value.get("last_draw") is Dictionary:return "원정선 모듈 구조 오류"
@@ -118,3 +125,13 @@ static func validate(value: Variant,seed_value: int,realm: String="") -> String:
 		if row.get("index")!=value.draws or not row.get("type") is String or definition(row.type).is_empty() or row.get("grade") not in config().grades or not row.get("duplicate") is bool or not row.get("guaranteed") is bool or not row.get("module_id") is String:return "선박 추첨 결과 오류"
 		if row.guaranteed!=(int(value.draws)%int(config().pity_interval)==0) or (row.guaranteed and row.grade!="improved") or row.duplicate!=row.module_id.is_empty():return "선박 확정 추첨 기록 오류"
 	return ""
+
+static var navigation_rules: Dictionary={}
+static func stellar_range(world: Dictionary) -> float:
+	if navigation_rules.is_empty():navigation_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/stellar_navigation.json"))
+	var rules: Dictionary=navigation_rules
+	var vessel: Dictionary=world.get("vessel",{})
+	var result: float=rules.hull_range.get(vessel.get("hull","kestrel"),rules.hull_range.kestrel)
+	var module: Dictionary=vessel.get("modules",{}).get(vessel.get("loadout",{}).get("propulsion",""),{})
+	if not module.is_empty():result*=float(rules.propulsion_range_multiplier[maxi(0,grade_index(module.grade))])
+	return result

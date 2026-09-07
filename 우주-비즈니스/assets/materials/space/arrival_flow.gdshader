@@ -5,11 +5,7 @@ uniform vec4 tint : source_color = vec4(0.9, 0.75, 0.55, 1.0);
 // The same foreground layer crosses the hull, with bounded translucency.
 uniform float cloud_opacity : hint_range(0.0, 0.65) = 0.58;
 uniform float flow_time = -1.0;
-float cloud_noise(vec2 p) {
- vec2 cell=floor(p), f=fract(p);f=f*f*(3.0-2.0*f);
- vec4 h=fract(sin(vec4(dot(cell,vec2(127.1,311.7)),dot(cell+vec2(1,0),vec2(127.1,311.7)),dot(cell+vec2(0,1),vec2(127.1,311.7)),dot(cell+vec2(1,1),vec2(127.1,311.7))))*43758.5453);
- return mix(mix(h.x,h.y,f.x),mix(h.z,h.w,f.x),f.y);
-}
+#include "res://assets/materials/space/arrival_smoke.gdshaderinc"
 void fragment() {
  vec2 p=UV-vessel_uv;
  float clock=flow_time<0.0?TIME:flow_time;
@@ -23,10 +19,10 @@ void fragment() {
  float bow=exp(-abs(length((p-vec2(0.0,0.07))*vec2(1.0,2.0))-0.20)*100.0);
  float front=smoothstep(0.02,0.08,p.y);
  vec2 drift=vec2(clock*0.32,-clock*0.85);
- vec2 cloud_p=UV*vec2(5.0,8.0)+drift;
- float broad=cloud_noise(cloud_p);
- float detail=cloud_noise(cloud_p*2.7+vec2(clock*0.1,0.0));
- float density=smoothstep(0.30,0.76,broad*0.76+detail*0.24);
+ vec2 cloud_p=UV*vec2(4.5,5.5)+drift;
+ float broad=smoke_density(cloud_p,clock);
+ float detail=smoke_density(cloud_p*1.8+vec2(clock*0.1,0.0),clock);
+ float density=smoothstep(0.18,0.82,broad*0.80+detail*0.20);
  // No hull-clear mask here: irregular cloud banks pass in FRONT of the ship.
  float cloud=density*cloud_opacity;
  float wisps=streak*0.27*hull_clear+bow*front*0.16;

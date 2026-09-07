@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "status": "existing_elevenlabs_assets_reused",
+  "new_audio_generated": false,
+  "mapping": {
+    "market_open": "ui_discovery",
+    "goods_confirmed": "sfx_pickup_resource",
+    "hull_confirmed": "sfx_factory_complete",
+    "rejected": "sfx_build_invalid",
+    "market_ambience": "sfx_robot_move"
+  },
+  "ambience_db": -32,
+  "verification": "Godot actual window: stream exists, playback after host response, ambience stops on menu close. No new listening-quality approval."
+}

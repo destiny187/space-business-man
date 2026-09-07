@@ -15,6 +15,7 @@ var chart: Control
 var inventory_panel: FrontierEquipmentPanel
 var field_hud: FrontierFieldHud
 var feedback: FrontierExpeditionFeedback
+var soundtrack: Node
 var session: FrontierCrewSession
 var profile:=FrontierPlayerProfile.new()
 var world_store:=FrontierWorldStore.new("user://crew_world_v3.json")
@@ -78,6 +79,7 @@ var camera_correction:=Vector3.ZERO
 var local_direction:=Vector2.ZERO
 var local_sprint:=false
 var reticle: Label
+var station_market: FrontierStationMarketPanel
 var shipyard_panel: FrontierShipyardPanel
 var research_actions: Array[Control]=[]
 var business_panel: FrontierBusinessPanel
@@ -113,6 +115,7 @@ func _ready() -> void:
 	navigation_ui.get_parent().move_child(navigation_ui,-1)
 	for frame in menu_frames()+[waiting_screen,onboarding.letter]:
 		frame.visibility_changed.connect(_menu_changed)
+	soundtrack=load("res://scripts/app/expedition_audio.gd").new();add_child(soundtrack);soundtrack.configure(self)
 	_apply_client_settings.call_deferred()
 	if FileAccess.file_exists(profile.path) and profile.ensure():
 		name_input.text=profile.data.character.name;name_input.editable=false
@@ -193,32 +196,38 @@ func _build_ui() -> void:
 			if session.host(profile,FrontierWorldStore.new("user://solo_world.json"),24560,"*",true):session.send_request("start_game",{}))
 	_label(lobby,"현재 접속: 직접 UDP\n인터넷 원정에는 호스트 포트 접근이 필요합니다.",13)
 	panel=VBoxContainer.new();panel.add_theme_constant_override("separation",12);panel.hide();column.add_child(panel)
-	research_frame=PanelContainer.new();ui.add_child(research_frame);research_frame.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);research_frame.offset_left=24;research_frame.offset_right=470;research_frame.offset_top=26;research_frame.offset_bottom=-108;research_frame.add_theme_stylebox_override("panel",style.duplicate());research_frame.hide()
-	var research_scroll:=ScrollContainer.new();research_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.add_child(research_scroll)
-	surface_panel=VBoxContainer.new();surface_panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL;surface_panel.add_theme_constant_override("separation",7);research_scroll.add_child(surface_panel)
-	_label(surface_panel,"조사 기록 · 생태 연구",22)
-	_button(surface_panel,"닫기 · J",func():research_frame.hide())
-	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);surface_panel.add_child(survey_journal)
+	research_frame=load("res://scripts/ui/research_panel.gd").new();ui.add_child(research_frame);research_frame.configure(self)
+	var research_scroll:=ScrollContainer.new();research_scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;research_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.ecology.add_child(research_scroll)
+	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);research_scroll.add_child(survey_journal)
+	var action_scroll:=ScrollContainer.new();action_scroll.custom_minimum_size.x=300;action_scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;action_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.ecology.add_child(action_scroll)
+	surface_panel=VBoxContainer.new();surface_panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL;action_scroll.add_child(surface_panel)
+	_label(surface_panel,"관측 → 분석 → 시험 → 이식",20)
+	_label(surface_panel,"E로 생물을 조사한 뒤 대상을 선택하세요.",14)
 	surface_status=_resource_label(header,"지표를 준비 중입니다.",14);surface_status.hide()
 	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options)
-	research_actions.append(_button(surface_panel,"선택한 생명체 기초 분석 · 광물 3",func():surface_action("surface_analyze")))
-	research_actions.append(_button(surface_panel,"선택한 서식지 시험 구획 · 광물 6",func():surface_action("surface_restore")))
+	research_actions.append(_button(surface_panel,"기초 분석 · 광물 3",func():surface_action("surface_analyze")))
+	research_actions.append(_button(surface_panel,"서식지 시험 · 광물 6",func():surface_action("surface_restore")))
 	sample_options=OptionButton.new();sample_options.fit_to_longest_item=false;surface_panel.add_child(sample_options)
-	research_actions.append(_button(surface_panel,"선택한 운송 표본 이식",func():surface_action("surface_introduce")))
+	research_actions.append(_button(surface_panel,"운송 표본 이식",func():surface_action("surface_introduce")))
 	research_actions.append(_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply")))
-	research_actions.append_array([form_options,sample_options])
 	var dock:=HBoxContainer.new();ui.add_child(dock);dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62);dock.add_theme_constant_override("separation",8)
 	get_viewport().size_changed.connect(func():dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62))
 	navigation_toggle=_button(dock,"지도 [Tab]",toggle_navigation);navigation_toggle.hide()
 	_button(dock,"설정 [F10]",func():FrontierClientSettings.ensure(get_tree()).open()).name="Settings"
 	surface_tools=HBoxContainer.new();dock.add_child(surface_tools);surface_tools.hide()
 	_button(surface_tools,"건설 [B]",toggle_business)
-	_button(surface_tools,"생태 연구 [J]",toggle_research)
+	_button(surface_tools,"연구 [J]",toggle_research)
 	_button(surface_tools,"아이템 [I]",toggle_inventory)
 	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
 	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
 	business_panel.station_action.connect(station_action)
+	station_market=FrontierStationMarketPanel.new();ui.add_child(station_market)
+	station_market.command.connect(func(kind: String,args: Dictionary):
+		if not session.send_request(kind,args):station_market.pending=false;station_market.message.text="현재 교역 요청을 보낼 수 없습니다.";station_market.refresh_detail())
+	session.request_started.connect(func(sequence: int,kind: String,_args: Dictionary):
+		if kind.begins_with("station_") and station_market.pending:station_market.pending_sequence=sequence)
+	session.response_received.connect(station_market.response)
 	shipyard_panel=FrontierShipyardPanel.new();ui.add_child(shipyard_panel)
 	shipyard_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	inventory_panel=FrontierEquipmentPanel.new();ui.add_child(inventory_panel);inventory_panel.configure(self,ui)
@@ -280,6 +289,7 @@ func _snapshot(value: Dictionary) -> void:
 	flight.update_navigation(value.crew.navigation)
 	navigation_journal.observe(value)
 	flight.refits.update_loadout(value.get("vessel",{}))
+	station_market.update_snapshot(value)
 	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
 	var members: Dictionary=value.crew.members
@@ -488,7 +498,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
-		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():travel_action("tutorial_depart");return
+		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():navigation_ui.open_galaxy();return
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
 			navigation_ui.start_route(flight.scan_target);return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
@@ -664,7 +674,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func menu_frames() -> Array:
-	var frames: Array=[navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame]
+	var frames: Array=[navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:
@@ -712,14 +722,27 @@ func interact_business() -> void:
 			var row: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{}).get("buildings",{}).get(target.id,{})
 			if not row.is_empty():open_station(row.type,target.id)
 		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
-func open_station(kind: String,id: String="") -> void:
+func open_station(kind: String,id: String="",management: bool=false) -> void:
 	if not session.active or surface_world==null:return
-	if kind in ["base","storage"]:
+	if kind in ["base","storage"] and not management:
 		open_menu(inventory_panel);inventory_panel.warehouse_choice.select(0);inventory_panel.tabs.current_tab=2;return
 	close_menus()
 	business_panel.set_context(kind,id)
 	open_menu(business_panel)
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+func open_warehouse_management() -> void:
+	if not session.active or surface_world==null:return
+	var current: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{})
+	if current.is_empty():return
+	var position_value:=FrontierCrewWorld.vector(session.latest.crew.members[session.latest.self_id].position)
+	var closest: String="";var distance:=position_value.distance_to(FrontierCrewWorld.vector(current.center))
+	for id in current.get("buildings",{}):
+		var row: Dictionary=current.buildings[id]
+		if row.type!="storage":continue
+		var gap:=position_value.distance_to(FrontierCrewWorld.vector(row.position))
+		if gap<distance:distance=gap;closest=id
+	if distance>float(FrontierExpeditionBusiness.config().deposit_range):status.value="현장 창고 9m 이내로 접근하세요.";return
+	open_station("base" if closest.is_empty() else "storage",closest,true)
 func station_action(kind: String) -> void:
 	match kind:
 		"storage":
@@ -758,7 +781,7 @@ func _update_business_placement() -> void:
 	var packet: Dictionary=session.surface
 	var world: Dictionary=session.authority.world if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
 	var current:=FrontierExpeditionBusiness.site(world)
-	var reason: String="먼저 개발 사업을 등록하세요." if current.is_empty() else FrontierExpeditionBusiness.placement(world,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
+	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.placement(world,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
 	if not on_surface:reason="지표의 평탄한 지면에 배치하세요 · Esc 취소"
 	placement_valid=on_surface and reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
@@ -784,7 +807,6 @@ func toggle_navigation() -> void:
 	open_menu(navigation_frame)
 	if navigation_frame.visible:navigation_ui.show_target(flight.scan_target if flight!=null and flight.scan_target>=0 else selected_ordinal)
 func toggle_research() -> void:
-	for control in research_actions:control.hide()
 	if surface_world!=null:open_menu(research_frame)
 
 static func selected_world_path(solo: bool) -> String:
@@ -842,3 +864,11 @@ func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
 
 func _refresh_scan_detail() -> void:
 	if navigation_ui!=null:navigation_ui.refresh_survey()
+
+func open_trade_station() -> void:
+	station_market.update_snapshot(session.latest)
+	if station_market.in_range():open_menu(station_market)
+func approach_trade_station() -> void:
+	if session.latest.crew.navigation.mode!="idle":return
+	if session.offline:session.send_request("ready",{"value":true})
+	session.send_request("station_approach",{});close_menus()

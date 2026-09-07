@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "appearance_percent": 32,
+  "orbit_radius": 26000,
+  "altitude": 19000,
+  "radius": 360,
+  "trade_distance": 1500,
+  "approach_distance": 1100,
+  "max_stock": 100000,
+  "sale_ratio": 0.45,
+  "model": "res://assets/models/ships/wayfarer_station.glb",
+  "audio": {
+    "open": "ui_discovery",
+    "trade": "sfx_pickup_resource",
+    "hull": "sfx_factory_complete",
+    "failure": "sfx_build_invalid",
+    "ambience": "sfx_robot_move"
+  },
+  "goods": {
+    "iron": {
+      "price": 12,
+      "stock": 160
+    },
+    "copper": {
+      "price": 18,
+      "stock": 120
+    },
+    "stone": {
+      "price": 4,
+      "stock": 200
+    },
+    "ice": {
+      "price": 10,
+      "stock": 140
+    },
+    "crystal": {
+      "price": 45,
+      "stock": 35
+    }
+  },
+  "hulls": {
+    "kestrel": {
+      "name": "KESTREL",
+      "role": "균형 탐사선",
+      "price": 0,
+      "model": "res://assets/models/ships/kestrel.glb",
+      "speed": 1.0,
+      "mass": 40,
+      "maximum_mass": 54,
+      "reactor_power": 12,
+      "hangar": 2
+    },
+    "swift": {
+      "name": "SWIFT",
+      "role": "고속 탐사선",
+      "price": 6800,
+      "model": "res://assets/models/ships/swift.glb",
+      "speed": 1.25,
+      "mass": 36,
+      "maximum_mass": 52,
+      "reactor_power": 13,
+      "hangar": 2
+    },
+    "mule": {
+      "name": "MULE",
+      "role": "중량 수송선",
+      "price": 8200,
+      "model": "res://assets/models/ships/mule.glb",
+      "speed": 0.9,
+      "mass": 44,
+      "maximum_mass": 68,
+      "reactor_power": 15,
+      "hangar": 5
+    }
+  },
+  "approach_speed": 1400,
+  "approach_acceleration": 220
+}

@@ -16,6 +16,10 @@ static func project(camera: Camera3D,point: Vector3,viewport_size: Vector2) -> D
 static func read(manifest: Dictionary,nav: Dictionary,camera: Camera3D,viewport_size: Vector2) -> Array:
 	if nav.mode=="jump":return []
 	var result: Array=[]
+	var station:=FrontierSpaceStation.definition(manifest,int(nav.system),int(nav.get("first_stellar_system",-1)))
+	if not station.is_empty():
+		var marker:=project(camera,FrontierCrewWorld.vector(station.position),viewport_size)
+		marker.kind="station";marker.label=station.name+" · 정거장";result.append(marker)
 	var ordinal:=int(nav.target)
 	if FrontierUniverse.system_index(manifest,ordinal)==int(nav.system):
 		var body:=FrontierUniverse.body(manifest,ordinal)

@@ -121,7 +121,24 @@
 - [항해 간소화·Esc 메뉴·입력 전환](production/38-navigation-context-and-menus.md): 우측 상단 지도·큰 지도·근접 착륙과 창 전환 시 마우스/시점 복구.
 
 - [시설별 작업 인터페이스](production/39-facility-interactions.md): B 건설과 F 로봇 제작소·시설·창고·착륙선 작업 분리.
+- [탐험 배경음악](production/39-music-and-ship-ai.md): ElevenLabs 우주·행성 2분 음악, 장소 전환·반복·음량·메뉴 정지. 여성 음성 제외.
+
+- [착륙 연기·즉시 채광·독립 연구 화면](production/40-smoke-and-research.md)
+
+- [흡입 채집·표면 스캔·카빈 동작 개선](production/40-field-tool-feedback.md): 타격 반동 제거, 연속 흡입 기류·팬 음향, 표면 조사와 실제 창 확인.
+
+- [행성 지상 하늘·지역 테라포밍 대기](production/41-surface-atmosphere.md)
+
+- [초기 8칸 아이템창](production/41-eight-slot-inventory.md): 4×2 수납, 기존 초과 아이템 보존, 후속 개인별 확장 연결점과 실제 창 확인.
+
+- [정거장 교역·선체 획득과 교체](production/42-space-stations-and-hulls.md): 일부 항성계 출현·첫 목적지 제외·물자 거래·SWIFT/MULE·기존 자산 보존과 검증.
 
 - [유한 창고·운송 화물·FPS 시점](production/43-warehouse-and-fps-input.md): 행성/우주선 10칸, 드래그 입출고, 개인 배낭 운송과 실제 창 확인.
 
+- [3D 은하 항로·항속거리·주변 별 항해](production/43-galaxy-routes.md): 거리 제한, 지도 LOD/근처 보기, 미방문 이동, 방향별 별 직접 출발.
+
 - [항성 좌표 영속 캐시·목적지 행성 준비](production/44-navigation-cache.md): 주변 구역 우선 캐시 재사용과 항해 중 행성 모델 사전 준비.
+
+- [자연 진행·2단계·복원 정산 플레이 테스트](production/44-natural-progression-playtest.md): 실제 시작·착륙·연구, 재료 기반 강화/정산 규칙 검사와 계약·창고 UI 진입 차단.
+
+- [자연 진행 차단 복구·초반 철과 얼음](production/45-progression-repairs.md): 계약·보급·로봇 관리 진입 복구, 부적합 배정 거절, T1·T2 시작 광맥과 기존 저장 확인.

@@ -35,5 +35,23 @@
   "star_warning_radius": 6000,
   "star_damage_radius": 3800,
   "star_damage_per_second": 8,
-  "star_damage_max_per_second": 28
+  "star_damage_max_per_second": 28,
+  "entry_overview": {
+    "minimum_clearance": 12000,
+    "elevation": 0.8,
+    "side_offset": 0.25,
+    "focus_orbit_fraction": 0.35,
+    "boundary_fraction": 0.97
+  },
+  "stellar_transition": {
+    "swap_progress": 0.5,
+    "departure_start": 0.2,
+    "departure_fade_start": 0.34,
+    "arrival_fade_end": 0.64,
+    "distant_offset": 240000,
+    "camera_far": 500000,
+    "departure_clearance": 220,
+    "departure_direction_steps": 12,
+    "departure_directions_per_ring": 16
+  }
 }
