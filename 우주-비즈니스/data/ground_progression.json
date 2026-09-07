@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "intro_max_processing_seconds": 360,
+  "near_resource_radius": 80,
+  "starter": [
+    {
+      "id": "landing2:iron:a",
+      "resource": "iron",
+      "capacity": 310,
+      "radius": 26,
+      "angle": -2.3
+    },
+    {
+      "id": "landing2:copper",
+      "resource": "copper",
+      "capacity": 205,
+      "radius": 32,
+      "angle": 1.4
+    },
+    {
+      "id": "landing2:iron:b",
+      "resource": "iron",
+      "capacity": 300,
+      "radius": 48,
+      "angle": -1.9
+    },
+    {
+      "id": "landing2:stone",
+      "resource": "stone",
+      "capacity": 195,
+      "radius": 52,
+      "angle": 2.0
+    },
+    {
+      "id": "landing2:ice",
+      "resource": "ice",
+      "capacity": 150,
+      "radius": 66,
+      "angle": 0.7
+    }
+  ]
+}

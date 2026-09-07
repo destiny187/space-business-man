@@ -32,6 +32,7 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 	if FrontierMineralWorld.enabled(body):values=FrontierMineralWorld.nearby(body,center)
 	var types: Array=config().veins
 	if FrontierMineralWorld.enabled(body) and body.get("reference_id","")!="solar:2":types=body.mineral_profile.primary+body.mineral_profile.secondary+["stone"]
+	if body.has("ground_rules"):types=[]
 	for i in types.size():
 		var seed_value: int=FrontierUniverse.derive(int(body.streams.resource),"vein:"+str(i))
 		var angle: float=float(i)*TAU/float(types.size())+float(seed_value%101)/1000
@@ -51,6 +52,7 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 				break
 	return values
 static func starter_veins(body: Dictionary={}) -> Array:
+	if body.has("ground_rules"):return FrontierGroundProgression.starter(body)
 	if _starter_veins.is_empty():_starter_veins=JSON.parse_string(FileAccess.get_file_as_string("res://data/landing_resources.json"))
 	var result: Array=[]
 	for row in _starter_veins:

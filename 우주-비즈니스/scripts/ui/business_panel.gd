@@ -288,7 +288,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		if current.has("restoration2"):
 			var restore_cfg: Dictionary=FrontierProductionTier2.config().restoration
 			environment_label.text+="\n염류 %.0f / 목표 ≤%.0f · 토양 %.0f / 목표 ≥%.0f"%[float(current.restoration2.salinity),float(restore_cfg.salinity_target),float(current.restoration2.soil),float(restore_cfg.soil_target)]
-	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇은 자동 채광합니다. 자원 종류를 정하고 환경 시설을 가동하세요.")
+	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("가방 재료로 태양광·대기·열·급수 먼저 가동 → 얼음 보급 → 로봇·배양 병행" if current.robots.is_empty() else "로봇은 자동 채광합니다. 자원 종류를 정하고 환경 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement() -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return

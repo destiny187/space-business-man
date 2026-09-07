@@ -8,6 +8,7 @@ static func config() -> Dictionary:
 	var value: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
 	value.system_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/system_diversity.json"))
 	value.planet_rules=FrontierPlanetTraits.rules().duplicate(true)
+	value.ground_rules=FrontierGroundProgression.config().duplicate(true)
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	return value
 
@@ -100,6 +101,7 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		result.moons=1+derive(seed_value,"moons")%2 if layout.theme=="satellites" or result.kind in ["gas_giant","ice_giant"] else 0
 	if result.origin=="fictional":result.traits=FrontierPlanetTraits.make(result,cfg.get("planet_rules",{}))
 	result.terrain_traits=result.get("traits",{}) if cfg.has("planet_rules") else {}
+	if cfg.has("ground_rules") and result.origin=="fictional" and int(result.planet_tier)<=2:result.ground_rules=cfg.ground_rules
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
 	return result
 
@@ -149,6 +151,7 @@ static func validate_world(value: Variant) -> String:
 	var m: Dictionary = value.manifest
 	if not m.get("settings") is Dictionary or m.settings.get("generator_version") not in ["galaxy-v2","galaxy-v3"]: return "호환되는 은하 생성기가 필요합니다."
 	if value.get("manifest_hash") != fingerprint(m): return "은하 원형 기록이 손상됐습니다."
+	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
 	if m.settings.has("system_rules"):
 		var rules: Variant=m.settings.system_rules
 		if not rules is Dictionary or rules.get("version")!=1 or rules.get("pair_planets")!=16 or rules.get("minimum_planets")!=4 or rules.get("maximum_planets")!=12:return "항성계 배치 규칙이 올바르지 않습니다."
