@@ -80,8 +80,10 @@ static func _move(world: Dictionary,r: Dictionary,target: Vector3,dt: float) -> 
 	return current.distance_to(target)<2.5
 static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -> void:
 	var cfg:=FrontierExpeditionBusiness.config()
+	FrontierRobotWork.ensure(r)
+	r.search_wait=maxf(0,float(r.search_wait)-dt)
 	if float(r.battery)<=0:r.status="배터리 고갈 · 근접 긴급 충전";return
-	if float(r.battery)<25:r.charging=true;r.path=[]
+	if float(r.battery)<25 and not r.charging:r.charging=true;r.path=[]
 	if r.charging:
 		var charger: Dictionary={};var distance:=INF
 		for b in site.buildings.values():
@@ -95,7 +97,12 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 			r.status="충전 중";r.battery=minf(100,float(r.battery)+float(cfg.robot_charge_rate)*dt*FrontierProductionTier2.factor(charger))
 			if r.battery>=99:r.charging=false;r.path=[]
 		return
-	if r.phase=="idle":r.status="작업 배정 대기";return
+	if r.phase=="idle":
+		if not r.auto_enabled:r.status="자동 채광 정지";return
+		if r.search_wait<=0:
+			r.search_wait=float(FrontierRobotWork.config().search_interval)
+			FrontierRobotWork.search(world,r)
+		return
 	if r.phase=="return":
 		r.status="창고로 운반"
 		if _move(world,r,FrontierExpeditionBusiness.point(site.center)+Vector3(3,0,0),dt):
@@ -106,18 +113,19 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 			r.phase="outbound" if not r.target.is_empty() and int(site.remaining.get(r.target,0))>0 else "idle";r.path=[]
 		return
 	var vein:=FrontierExpeditionBusiness.find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),r.target)
-	if not vein.is_empty() and FrontierExpeditionBusiness.thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),site,vein):r.status="고온 광맥 · 구역 냉각 필요";return
-	if vein.is_empty() or int(site.remaining.get(r.target,0))<=0:r.phase="return";r.path=[];return
+	if not FrontierRobotWork.reason(world,r,vein).is_empty():
+		r.manual_target="";r.target="";r.phase="return" if FrontierExpeditionBusiness.total(r.cargo)>0 else "idle";r.path=[];r.search_wait=0.0;return
 	var goal:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),vein.position[0],vein.position[2])
 	if not goal.is_finite():r.status="광맥의 토대가 무너졌습니다";return
 	r.status="광맥으로 이동"
 	if not _move(world,r,goal,dt):return
-	r.status="채광 중";r.work+=dt
+	r.status="채광 중";r.work+=dt*float(FrontierCatalog.entry("grades",r.grade).multiplier)
 	if r.work<1:return
-	r.work=0
+	r.work=maxf(0,r.work-1)
 	var amount:=mini(int(site.remaining[r.target]),mini((int(FrontierProductionTier2.config().robot_upgrade.mine_amount) if int(r.get("tier",1))==2 else int(cfg.robot_mine_amount)),FrontierProductionTier2.robot_capacity(r)-FrontierExpeditionBusiness.total(r.cargo)))
 	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work))
-	if FrontierExpeditionBusiness.total(r.cargo)>=FrontierProductionTier2.robot_capacity(r) or site.remaining[r.target]<=0:r.phase="return";r.path=[]
+	if site.remaining[r.target]<=0:r.manual_target="";r.target=""
+	if FrontierExpeditionBusiness.total(r.cargo)>=FrontierProductionTier2.robot_capacity(r) or r.target.is_empty():r.phase="return";r.path=[]
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	if FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()

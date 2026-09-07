@@ -111,7 +111,9 @@ func _ready() -> void:
 	robot_job_status=label(robot_tab,"")
 	robot_controls=VBoxContainer.new();robot_tab.add_child(robot_controls)
 	vein=option(robot_controls)
-	button(robot_controls,"광맥 배정",func():command.emit("business_assign",{"robot_id":selected(robot),"vein_id":selected(vein)}))
+	button(robot_controls,"종류 지정 · 자동 채광",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
+	button(robot_controls,"현재 로봇 위치를 작업 중심으로",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
+	label(robot_controls,"작업 중심 80m · 가까운 접근 가능 광맥을 자동 탐색 · Mk 등급은 채집 가능 광물, 품질은 작업 속도")
 	button(robot_controls,"작업 중지 · 창고로 복귀",func():command.emit("business_robot_return",{"robot_id":selected(robot)}))
 	button(robot_controls,"긴급 충전 · 50 Cr",func():command.emit("business_robot_rescue",{"robot_id":selected(robot)}))
 	recovery_controls=VBoxContainer.new();robot_tab.add_child(recovery_controls)
@@ -213,7 +215,7 @@ func refresh_context(current: Dictionary) -> void:
 				for other in warehouse_grid.get_children():other.selected=other==tile;other.queue_redraw())
 			warehouse_grid.add_child(tile)
 	var target_robot: Dictionary=current.get("robots",{}).get(context_id,{})
-	robot_job_status.text=str(target_robot.get("status",""))
+	robot_job_status.text="Mk.%d · %s · %s"%[int(target_robot.get("tier",1)),"자동" if target_robot.get("auto_enabled",true) else "정지",str(target_robot.get("status",""))]
 	if context_kind not in ["build","ship","base"]:
 		var row: Dictionary=current.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 		if context_kind!="robot" and not row.is_empty():
@@ -258,13 +260,10 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		if context_kind=="robot" and key!=context_id:continue
 		var r: Dictionary=current.robots[key];robots[key]=key+" · "+FrontierCatalog.entry("grades",r.grade).name+" · "+str(r.status)
 	for key in value.hangar:transported[key]=key+" · "+FrontierCatalog.entry("grades",value.hangar[key].grade).name
-	if not planet.is_empty():
-		for row in FrontierExpeditionBusiness.veins(planet,viewer):
-			if row.get("underground",false):continue
-			veins[row.id]=FrontierCatalog.entry("resources",row.resource).name+" · "+row.id+" · "+str(int(current.remaining.get(row.id,row.capacity)))
-	else:
-		for i in FrontierExpeditionBusiness.config().veins.size():
-			var key: String="vein:"+str(i);veins[key]=FrontierCatalog.entry("resources",FrontierExpeditionBusiness.config().veins[i]).name+" · "+key+" · "+str(int(current.remaining.get(key,0)))
+	veins[""]="전체 자원 · 자동"
+	for key in FrontierCatalog.table("resources"):
+		if key in FrontierProductionTier2.config().products:continue
+		veins[key]=FrontierCatalog.entry("resources",key).name
 	for key in FrontierExpeditionBusiness.config().technologies:
 		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if key in value.technologies else " · %d Cr"%int(def.price))
 	choices(facility,buildings);choices(factory,factories);choices(robot,robots);choices(vein,veins);choices(technology,technologies);choices(hangar,transported)
@@ -273,7 +272,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]
 	if current.has("restoration2"):
 		environment_label.text+="\n염류 %.0f / 목표 ≤20 · 토양 %.0f / 목표 ≥60 · Mk.2 필터·기반재 필요"%[float(current.restoration2.salinity),float(current.restoration2.soil)]
-	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇에 광맥을 배정하고 대기·온도·물·생태 시설을 가동하세요.")
+	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇은 자동 채광합니다. 자원 종류를 정하고 환경 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement() -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return

@@ -245,12 +245,22 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var roll: int=FrontierUniverse.derive(int(world.manifest.seed),key)%100
 		var grade: String="rare" if roll>=95 else ("improved" if roll>=70 else "standard")
 		current.jobs[key]={"id":key,"factory_id":id,"progress":0.0,"seconds":float(def.seconds),"grade":grade};return ""
+	if kind=="business_robot_auto":
+		var robot: Dictionary=current.robots.get(str(args.get("robot_id","")),{})
+		if robot.is_empty() or position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 설정하세요."
+		var filter:=str(args.get("resource",""))
+		if not filter.is_empty() and FrontierCatalog.entry("resources",filter).is_empty():return "자원 종류를 선택하세요."
+		if not args.get("enabled",true) is bool:return "자동 작업 설정 오류"
+		FrontierRobotWork.ensure(robot);robot.auto_enabled=args.get("enabled",true);robot.resource_filter=filter
+		if args.get("reset_anchor",false)==true:robot.anchor=robot.position.duplicate()
+		robot.manual_target="";robot.target="";robot.path=[];robot.work=0.0;robot.search_wait=0.0
+		robot.phase="return" if total(robot.cargo)>0 else "idle";robot.status="자동 광맥 탐색" if robot.auto_enabled else "자동 채광 정지";return ""
 	if kind in ["business_assign","business_robot_return","business_robot_recover","business_robot_rescue"]:
 		var id: String=str(args.get("robot_id",""))
 		if not current.robots.has(id):return "현장 로봇을 선택하세요."
 		var robot: Dictionary=current.robots[id]
 		if kind in ["business_assign","business_robot_return"] and position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 작업을 지시하세요."
-		if kind=="business_robot_return":robot.target="";robot.phase="return";robot.path=[];robot.status="작업 중지 · 창고 복귀";return ""
+		if kind=="business_robot_return":FrontierRobotWork.ensure(robot);robot.auto_enabled=false;robot.manual_target="";robot.target="";robot.phase="return";robot.path=[];robot.status="작업 중지 · 창고 복귀";return ""
 		if kind=="business_assign":
 			var target: String=str(args.get("vein_id",""))
 			var target_vein:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),target)
@@ -258,6 +268,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			if target_vein.get("underground",false):return "지하 광맥은 수동 채집하세요. 지하 로봇 경로는 아직 지원하지 않습니다."
 			if not ground(FrontierCrewSurface.field(world),target_vein.position[0],target_vein.position[2]).is_finite():return "로봇이 접근할 평탄한 토대가 없는 광맥입니다. 다른 광맥을 선택하세요."
 			if thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),current,target_vein):return "고온 광맥입니다. 구역을 먼저 냉각하세요."
+			var reason:=FrontierRobotWork.reason(world,robot,target_vein)
+			if not reason.is_empty():return reason
 			current.remaining[target]=int(current.remaining.get(target,target_vein.capacity))
 			robot.target=target;robot.phase="return" if total(robot.cargo)>0 else "outbound";robot.path=[];robot.status="경로 조사 중";return ""
 		if position.distance_to(point(robot.position))>6:return "로봇에 가까이 접근하세요."
@@ -273,7 +285,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var id: String=str(args.get("robot_id",""))
 		if not near_base or not ledger.hangar.has(id):return "창고 주변에서 운송 로봇을 선택하세요."
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
-		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="작업 배정 대기";current.robots[id]=robot;ledger.hangar.erase(id);return ""
+		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="자동 광맥 탐색";robot.auto_enabled=true;robot.anchor=robot.position.duplicate();robot.manual_target="";robot.search_wait=0.0;current.robots[id]=robot;ledger.hangar.erase(id);return ""
 	if kind=="business_settle":
 		if not current.get("stored_equipment",{}).is_empty():return "승무원이 보관한 장비를 먼저 회수하세요."
 		if not at_ship:return "착륙선 단말에서 계약 인계를 확정하세요."
@@ -320,6 +332,8 @@ static func visible_robot(source: Dictionary) -> Dictionary:
 	var result: Dictionary={"path":[]}
 	for key in ["id","grade","battery","phase","target","status","work","charging"]:result[key]=source[key]
 	result.tier=int(source.get("tier",1))
+	for key in ["auto_enabled","resource_filter","anchor","manual_target"]:
+		if source.has(key):result[key]=source[key]
 	result.position=source.position.duplicate();result.cargo=source.cargo.duplicate()
 	return result
 static func valid_inventory(value: Variant,maximum: int=100000000) -> bool:
@@ -336,6 +350,11 @@ static func valid_robot(robot: Variant,id: String) -> bool:
 	if not FrontierUniverse._vector3_array(robot.get("position")) or not FrontierUniverse._finite(robot.get("battery"),0,100) or not valid_inventory(robot.get("cargo"),FrontierProductionTier2.robot_capacity(robot)):return false
 	if total(robot.cargo)>FrontierProductionTier2.robot_capacity(robot) or robot.get("phase") not in ["idle","outbound","return"] or not robot.get("target") is String or not robot.get("status") is String or not robot.get("charging") is bool:return false
 	if not FrontierUniverse._finite(robot.get("work"),0,1) or not robot.get("path") is Array or robot.path.size()>3500:return false
+	if robot.has("auto_enabled") and not robot.auto_enabled is bool:return false
+	if robot.has("resource_filter") and (not robot.resource_filter is String or (not robot.resource_filter.is_empty() and FrontierCatalog.entry("resources",robot.resource_filter).is_empty())):return false
+	if robot.has("anchor") and not FrontierUniverse._vector3_array(robot.anchor):return false
+	if robot.has("manual_target") and not robot.manual_target is String:return false
+	if robot.has("search_wait") and not FrontierUniverse._finite(robot.search_wait,0,60):return false
 	for p in robot.path:
 		if not FrontierUniverse._vector3_array(p):return false
 	return true
