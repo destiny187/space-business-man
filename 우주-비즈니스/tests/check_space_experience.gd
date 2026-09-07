@@ -28,4 +28,18 @@ func run() -> void:
  await RenderingServer.frame_post_draw
  root.get_texture().get_image().save_png(out+"/scan.png")
  print("SPACE EXPERIENCE: English names, arrival and survey rendered")
+ var journal:=FrontierNavigationJournal.new();journal.manifest=manifest
+ journal.path="user://space_journal_test.json"
+ journal.scanned(ordinal);journal.favorite(ordinal)
+ journal.observe({"crew":{"navigation":nav,"landing":{}},"location":body.id,"navigation_site":{"state":"active"}})
+ var loaded: Variant=JSON.parse_string(FileAccess.get_file_as_string(journal.path))
+ assert(journal.valid(loaded) and loaded.favorites.has(body.id) and loaded.bodies[body.id].scanned)
+ assert(journal.ordinals(2).has(ordinal))
+ var records:=FrontierNavigationRecords.new();records.journal=journal;root.add_child(records);records.refresh();records.popup_centered()
+ await create_timer(.2).timeout;await RenderingServer.frame_post_draw
+ root.get_texture().get_image().save_png(out+"/records.png")
+ assert(records.entries.item_count==1)
+ records.hide();records.queue_free()
+ DirAccess.remove_absolute(journal.path);DirAccess.remove_absolute(journal.path+".bak")
+ print("NAVIGATION RECORDS: persistence, favorites, development filter and window OK")
  view.queue_free();await process_frame;quit()

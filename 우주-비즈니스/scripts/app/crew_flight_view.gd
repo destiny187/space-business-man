@@ -1,5 +1,6 @@
 class_name FrontierCrewFlightView
 extends FrontierSpaceFlight
+signal planet_scanned(ordinal: int)
 var navigation: Dictionary={}
 var announced_system: int=-1
 var orbit_clock:=0.0
@@ -126,6 +127,6 @@ func _update_planet_scan(delta: float) -> void:
 	else:
 		scan_progress=minf(1.0,scan_progress+delta/float(flight_config.get("scan_seconds",1.8)))
 		if scan_progress>=1.0:
-			scanned[body.id]=true;transit_audio.play("ui_discovery")
+			scanned[body.id]=true;transit_audio.play("ui_discovery");planet_scanned.emit(target)
 	transit_overlay.scan_body=body
 	transit_overlay.scan_progress=scan_progress

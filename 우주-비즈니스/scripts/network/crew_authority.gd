@@ -95,7 +95,9 @@ func snapshot(viewer: int=1) -> Dictionary:
 		visible[viewer]=id
 	for id in data.members.keys():
 		if id not in visible.values():data.members.erase(id)
-	return {"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	var target_id:=FrontierUniverse.body_id(world.manifest,int(world.crew.navigation.target))
+	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
+	return {"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")

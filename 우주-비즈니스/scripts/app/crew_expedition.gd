@@ -7,6 +7,9 @@ var waiting_roster: Label
 var waiting_info: Label
 var waiting_ready: Button
 var waiting_start: Button
+var navigation_journal: FrontierNavigationJournal
+var navigation_records: FrontierNavigationRecords
+var favorite_button: Button
 var scan_detail: Label
 var chart: Control
 var candidates: VBoxContainer
@@ -189,6 +192,11 @@ func _build_ui() -> void:
 	chart=load("res://scripts/ui/galaxy_chart.gd").new();panel.add_child(chart)
 	chart.selected.connect(func(ordinal: int):selected_ordinal=ordinal;select_destination())
 	_button(panel,"은하 지도 / 항성계",func():chart.galaxy=not chart.galaxy;chart.queue_redraw())
+	favorite_button=_button(panel,"☆ 즐겨찾기",func():
+		if navigation_journal!=null:navigation_journal.favorite(selected_ordinal);_refresh_scan_detail();chart.queue_redraw())
+	navigation_records=FrontierNavigationRecords.new();add_child(navigation_records)
+	navigation_records.selected.connect(func(ordinal: int):selected_ordinal=ordinal;select_destination())
+	_button(panel,"탐험 기록 · 귀환",func():navigation_records.refresh();navigation_records.popup_centered())
 	_button(panel,"스캔 상세 펼치기 / 접기",func():scan_detail.visible=not scan_detail.visible;_refresh_scan_detail())
 	scan_detail=_label(panel,"",14);scan_detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;scan_detail.custom_minimum_size.x=260;scan_detail.hide()
 	candidates=VBoxContainer.new();panel.add_child(candidates)
@@ -247,6 +255,10 @@ func join_world() -> void:
 func _setup_flight() -> void:
 	space_view=SubViewport.new();space_view.size=Vector2i(1280,800);space_view.own_world_3d=true;space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(space_view)
 	flight=FrontierCrewFlightView.new();flight.state={"manifest":session.manifest};space_view.add_child(flight)
+	navigation_journal=FrontierNavigationJournal.new();navigation_journal.configure(session.manifest,session.world_id,session.latest.self_id)
+	navigation_records.journal=navigation_journal;chart.journal=navigation_journal
+	flight.scanned=navigation_journal.scan_flags()
+	flight.planet_scanned.connect(func(ordinal: int):navigation_journal.scanned(ordinal);_refresh_scan_detail();chart.queue_redraw())
 	exterior_view.texture=space_view.get_texture()
 	var window:=MeshInstance3D.new();var quad:=QuadMesh.new();quad.size=Vector2(7.3,2.35);window.mesh=quad;window.position=Vector3(0,2.16,-7.72)
 	var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_texture=space_view.get_texture();material.uv1_scale=Vector3(1,.515,1);material.uv1_offset=Vector3(0,.2425,0);window.material_override=material;window.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;cabin_root.add_child(window)
@@ -277,6 +289,7 @@ func _snapshot(value: Dictionary) -> void:
 	if flight==null:_setup_flight()
 	onboarding.update_snapshot(value)
 	flight.update_navigation(value.crew.navigation)
+	navigation_journal.observe(value)
 	flight.refits.update_loadout(value.get("vessel",{}))
 	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
@@ -764,4 +777,5 @@ func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
 func _refresh_scan_detail() -> void:
 	if scan_detail==null or flight==null or session.manifest.is_empty():return
 	var body:=FrontierUniverse.body(session.manifest,selected_ordinal)
+	if navigation_journal!=null:favorite_button.text="★ 즐겨찾기 해제" if navigation_journal.data.favorites.has(body.id) else "☆ 즐겨찾기 추가"
 	scan_detail.text=FrontierOrbitalSurvey.report(body).detail if flight.scanned.has(body.id) or body.get("origin","")=="solar_reference" else "미스캔 천체 · 우주에서 행성을 바라보면 조사합니다."

@@ -1,5 +1,6 @@
 extends Control
 signal selected(ordinal: int)
+var journal: FrontierNavigationJournal
 var manifest: Dictionary={}
 var system_index:=0
 var elapsed:=0.0
@@ -27,11 +28,17 @@ func _draw() -> void:
 		draw_texture_rect(core_view.get_texture(),Rect2(center-Vector2(22,22),Vector2(44,44)),false)
 		for band in 5:draw_arc(center,22+band*21,0,TAU,80,Color("274152"),1,true)
 		var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)
-		for i in 201:
-			var index: int=0 if i==0 else int((i-1)*count/200)
+		var indices: Dictionary={0:true,system_index:true}
+		for i in 200:indices[int(i*count/200)]=true
+		if journal!=null:
+			for key in journal.data.systems:indices[int(key)]=true
+			for key in journal.data.favorites:indices[FrontierUniverse.system_index(manifest,FrontierUniverse.ordinal_of(manifest,key))]=true
+		for index in indices:
 			var sys:=FrontierUniverse.system(manifest,index)
 			var point:=center+Vector2(sys.map_position[0],sys.map_position[1])/float(manifest.settings.outer_radius)*105
 			draw_circle(point,4 if index==0 else 2.5,Color("72dfd1") if index==0 else [Color("9dcfca"),Color("81b9db"),Color("d9c379"),Color("e49468"),Color("e9778e")][int(sys.band)])
+			if journal!=null and journal.data.systems.has(str(index)):draw_arc(point,5,0,TAU,16,Color("94edcf"),1.5,true)
+			if index==system_index:draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),Color.WHITE,false,1)
 			hits.append({"point":point,"ordinal":FrontierUniverse.showcase_ordinal(manifest,index)})
 		if not transit.is_empty():
 			var factor: float=105/float(manifest.settings.outer_radius)
@@ -52,10 +59,14 @@ func _draw() -> void:
 			var radius:=20.0+float(body.orbit.radius)/FrontierUniverse.orbit_radius(manifest,system_index,count-1)*95.0
 			var point:=center+radial*radius
 			draw_circle(point,5 if FrontierUniverse.landable(body) else 8,Color("79cfc8") if FrontierUniverse.landable(body) else Color("d2a977"))
+			if journal!=null:
+				if journal.data.bodies.get(body.id,{}).get("scanned",false):draw_arc(point,10,0,TAU,24,Color("94edcf"),1,true)
+				if journal.data.favorites.has(body.id):draw_string(font,point+Vector2(-16,-10),"★",HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color("ffc180"))
+				if journal.data.bodies.get(body.id,{}).get("site","")=="active":draw_rect(Rect2(point-Vector2(8,8),Vector2(16,16)),Color("ffc180"),false,1.5)
 			if ordinal==target:draw_arc(point,11,0,TAU,24,Color.WHITE,2,true)
 			draw_string(font,point+Vector2(7,-7),str(i+1),HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 			hits.append({"point":point,"ordinal":ordinal})
-		draw_string(font,Vector2(8,20),"항성계 · 천체를 눌러 선택",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("e0ebe3"))
+		draw_string(font,Vector2(8,20),FrontierUniverse.system(manifest,system_index).star.name,HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("e0ebe3"))
 func _background() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new();style.bg_color=Color("0b1d2b");style.set_corner_radius_all(6);return style
 func _show_core() -> void:
