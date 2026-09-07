@@ -1,6 +1,8 @@
 """Editable INK expedition cabin and rigged survey suit, authored in Blender."""
 from pathlib import Path
-import bpy, math, json
+import bpy, math, json, sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from surveyor_rig import export_suit
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/'art/blender/crew'; OUTPUT=ROOT/'우주-비즈니스/assets/models/crew'
 SOURCE.mkdir(parents=True,exist_ok=True); OUTPUT.mkdir(parents=True,exist_ok=True)
@@ -29,6 +31,9 @@ def sphere(name,p,s,key,parent=None):
 def pivot(name,p):
  o=bpy.data.objects.new(name,None);bpy.context.collection.objects.link(o);o.location=loc(p);bpy.context.view_layer.update();return o
 def export(name):
+ if name=='surveyor_suit':
+  tris, surfaces, bones=export_suit(SOURCE/(name+'.blend'), OUTPUT/(name+'.glb'))
+  return {'source':str((SOURCE/(name+'.blend')).relative_to(ROOT)), 'output':str((OUTPUT/(name+'.glb')).relative_to(ROOT)), 'triangles':tris, 'surfaces':surfaces, 'bones':bones, 'style':'ink-v1', 'status':'articulated-locomotion'}
  bpy.context.scene.unit_settings.system='METRIC'
  bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/(name+'.blend')))
  groups={}
@@ -88,7 +93,7 @@ for x in [-.51,.51]:
 box('Shared locker',(0,.59,5.6),(1.7,1.18,.85),'teal',.12)
 box('Locker lid',(0,1.21,5.6),(1.81,.15,.94),'cream',.06)
 for x in [-.48,.48]:box('Locker latch',(x,.93,5.13),(.19,.27,.07),'orange',.025)
-cabin=export('kestrel_cabin')
+cabin=export('kestrel_cabin') if '--suit-only' not in sys.argv else None
 clear()
 # Rounded pressure suit: seam layering and independent arm/leg pivots.
 box('Life support pack',(0,1.19,.23),(.53,.63,.34),'teal',.09)
@@ -128,6 +133,9 @@ for side in [-1,1]:
  box('Carry grip',(side*.46,.32,0),(.13,.08,.23),'steel',.03)
  for z in [-.22,.22]:sphere('Rail fastener',(side*.36,.58,z),(.025,.012,.025),'steel')
 box('Cargo identification strip',(0,.29,-.266),(.30,.095,.018),'cream',.008)
-crate=export('recovery_crate')
+crate=export('recovery_crate') if '--suit-only' not in sys.argv else None
+if '--suit-only' in sys.argv:
+ prior=json.loads((SOURCE/'manifest.json').read_text())
+ cabin=prior['assets'][0];crate=prior['assets'][2]
 (SOURCE/'manifest.json').write_text(json.dumps({'generator':'tools/build_crew_cabin.py','assets':[cabin,suit,crate]},indent=2)+'\n')
 print('CREW_EXPORTED',cabin,suit)

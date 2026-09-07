@@ -9,6 +9,7 @@ var pending: Dictionary={}
 var reserved: Dictionary={}
 var inputs: Dictionary={}
 var input_sequences: Dictionary={}
+var motions: Dictionary={}
 var session_id: String
 var save_world: Callable
 var stopped:=false
@@ -97,7 +98,7 @@ func snapshot(viewer: int=1) -> Dictionary:
 		if id not in visible.values():data.members.erase(id)
 	var target_id:=FrontierUniverse.body_id(world.manifest,int(world.crew.navigation.target))
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
-	return {"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"motion":motions.duplicate(true),"motion_time":now,"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -167,16 +168,17 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
-func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0]) -> bool:
+func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
+	if jump_request<0 or jump_request>9007199254740000:return false
 	if flight_controls.size() not in [3,4]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	var aim: Vector3=Vector3.FORWARD if aim_value is Array and aim_value.is_empty() else FrontierCrewSurface.direction(aim_value)
 	if aim==Vector3.ZERO:return false
-	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate()}
+	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled}
 	return true
 func direction_for(peer: int) -> Vector2:
 	if not inputs.has(peer) or inputs[peer].expires<now:return Vector2.ZERO
@@ -187,6 +189,7 @@ func update_position(peer: int,position: Vector3) -> void:
 	var id: String=peers[peer]
 	world.crew.members[id].position=[position.x,position.y,position.z]
 func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
+	if peers.has(peer):motions.erase(peers[peer])
 	_drop_pending(peer);inputs.erase(peer);input_sequences.erase(peer);scans.erase(peer)
 	if not peers.has(peer):return true
 	var id: String=peers[peer]

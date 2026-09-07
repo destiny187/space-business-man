@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-07",
+  "service": "ElevenLabs web Sound Effects",
+  "selection": "generation variant 1 of 4",
+  "duration_seconds": 6,
+  "prompt_influence": 0.3,
+  "loop": false,
+  "prompt": "Dry close-up science fiction spacesuit foley: one short boot push-off with fabric rustle at the start, silence, one heavy two-boot landing with knee servo compression in the middle, silence, then two separate walking boot steps on rough stone. Six seconds total, distinct isolated events for game editing. Restrained mechanical detail, no voices, no music, no background ambience, no reverb.",
+  "source_sha256": "d33d98b2dab0648cb0c849896eb27da374d8d1a2253fb78d7abfc33b2476082a",
+  "edits": "Selected isolated transients from generated foley; mono 48kHz PCM16, 10ms fades, RMS -20dBFS with peak limit 24000. Generation timing did not follow the requested sequence exactly.",
+  "jobs": [
+    {
+      "id": "sfx_suit_jump",
+      "source": "audio/source/elevenlabs/suit_foley_v1.wav",
+      "source_range_seconds": [
+        0.05,
+        0.47
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_suit_jump.wav",
+      "sha256": "fe868398dfc89c92d931cffd8e1ace40ba8e904ce0f43aee53f90066a1a35e60",
+      "duration": 0.42,
+      "peak": 24000,
+      "qa": "48kHz mono PCM16, signal/duration/peak checked; actual Godot spatial SFX playback observed during two-client walking/jump/landing. Subjective timbre preference not automatically verified."
+    },
+    {
+      "id": "sfx_suit_land",
+      "source": "audio/source/elevenlabs/suit_foley_v1.wav",
+      "source_range_seconds": [
+        5.0,
+        5.58
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_suit_land.wav",
+      "sha256": "c07c8669ca4f4b54a6befd28aa1175e426e9889ef1e94b6eac817ecbaace1e30",
+      "duration": 0.58,
+      "peak": 24000,
+      "qa": "48kHz mono PCM16, signal/duration/peak checked; actual Godot spatial SFX playback observed during two-client walking/jump/landing. Subjective timbre preference not automatically verified."
+    },
+    {
+      "id": "sfx_suit_step",
+      "source": "audio/source/elevenlabs/suit_foley_v1.wav",
+      "source_range_seconds": [
+        2.0,
+        2.28
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_suit_step.wav",
+      "sha256": "10fb7427b2c8223cdde9b7574e5afe3eb8f93cf28706cd4dbddd81b0b25aaf0c",
+      "duration": 0.28,
+      "peak": 21351,
+      "qa": "48kHz mono PCM16, signal/duration/peak checked; actual Godot spatial SFX playback observed during two-client walking/jump/landing. Subjective timbre preference not automatically verified."
+    }
+  ]
+}

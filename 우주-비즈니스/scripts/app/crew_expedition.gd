@@ -69,6 +69,15 @@ var survey_journal: FrontierSurveyJournal
 var dig_timer:=0.0
 var test_scan:=false
 var test_sprint:=false
+var test_jump:=false
+var jump_held:=false
+var jump_request:=0
+var prediction_history: Array[Dictionary]=[]
+var prediction_snapshot: Dictionary={}
+var predicted_motion: Dictionary={}
+var camera_correction:=Vector3.ZERO
+var local_direction:=Vector2.ZERO
+var local_sprint:=false
 var reticle: Label
 var shipyard_panel: FrontierShipyardPanel
 var business_panel: FrontierBusinessPanel
@@ -155,7 +164,7 @@ func _build_ui() -> void:
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
 	_label(header,"L O C U S  /  우주 탐험",23)
 	status=_resource_label(header,"세계를 열고 준비한 뒤 지구에서 탐험을 시작하세요.",15)
-	help_text=_label(header,"WASD 이동 · 마우스 시선 · C 외부 시점 · Tab 항해",13)
+	help_text=_label(header,"WASD 이동 · Space 점프 · 마우스 시선 · C 외부 시점 · Tab 항해",13)
 	for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390)
 	get_viewport().size_changed.connect(func():
 		for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390))
@@ -270,8 +279,11 @@ func _spawn_actor(id: String,member: Dictionary) -> void:
 	var collision:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.29;capsule.height=1.86;collision.shape=capsule;collision.position.y=.93;actor.add_child(collision);add_child(actor)
 	var visual: Node3D=load("res://assets/models/crew/surveyor_suit.glb").instantiate();actor.add_child(visual);FrontierInkStyle.apply(visual,cache);_suit_color(visual,int(member.profile.tint))
 	var label:=Label3D.new();label.render_priority=110;label.outline_render_priority=109;label.outline_size=4;label.text=member.profile.name;label.font=ui_theme.default_font;label.font_size=52;label.pixel_size=.0035;label.position.y=2.2;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;actor.add_child(label)
-	actors[id]=actor;visuals[id]={"model":visual,"label":label,"last":actor.position,"phase":0.0,"limbs":{},"area":member.area}
-	for limb in ["Anim_Arm_L","Anim_Arm_R","Anim_Leg_L","Anim_Leg_R"]:visuals[id].limbs[limb]=visual.find_child(limb,true,false)
+	var pose:=FrontierCrewPose.new();actor.add_child(pose);pose.configure(visual)
+	pose.landed.connect(func(point: Vector3,strength: float):
+		if surface_world!=null and not feedback.blocked():feedback.effects.burst(point+Vector3.UP*.06,Color("a99f88"),int(3+strength*5)))
+	actors[id]=actor;visuals[id]={"model":visual,"label":label,"last":actor.position,"pose":pose,"replica":FrontierCrewMotionReplica.new(),"area":member.area,"motion":FrontierCrewLocomotion.create()}
+	if session.hosting:session.authority.motions[id]=FrontierCrewLocomotion.create()
 func _snapshot(value: Dictionary) -> void:
 	if not value.get("active",false):return
 	if value.get("phase","lobby")=="lobby":
@@ -304,6 +316,12 @@ func _snapshot(value: Dictionary) -> void:
 		if not actors.has(id):_spawn_actor(id,members[id])
 		elif visuals[id].area!=members[id].area:
 			actors[id].position=FrontierCrewWorld.vector(members[id].position);actors[id].velocity=Vector3.ZERO;visuals[id].area=members[id].area;visuals[id].last=actors[id].position
+			visuals[id].pose.reset();visuals[id].replica.frames.clear()
+			if id==value.self_id:prediction_history.clear();predicted_motion.clear();camera_correction=Vector3.ZERO
+			if session.hosting:session.authority.motions[id]=FrontierCrewLocomotion.create()
+		if not session.hosting:
+			visuals[id].replica.push(FrontierCrewWorld.vector(members[id].position),value.get("motion",{}).get(id,FrontierCrewLocomotion.create()))
+			if id==value.self_id and value.get("motion",{}).has(id):prediction_snapshot={"position":FrontierCrewWorld.vector(members[id].position),"motion":value.motion[id].duplicate(true)}
 		lines.append("%s %s%s" % ["✓" if members[id].ready else "○",members[id].profile.name," · 조종" if id==value.crew.pilot_id else ""])
 	var own: Dictionary=members[value.self_id]
 	lines.append("창고 %d · 운반 %d" % [int(value.crew.rock),int(own.carried)])
@@ -315,7 +333,7 @@ func _snapshot(value: Dictionary) -> void:
 		if on_surface and destination_initialized:arrival.begin()
 		surface_transition=on_surface;navigation_frame.hide();research_frame.hide();shipyard_panel.hide()
 	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
-	help_text.text="WASD 이동 · 마우스 시선 · 클릭 장비 사용 · 1–5 전환 · I 아이템 · E 스캔" if on_surface else "WASD 이동 · 마우스 시선 · C 외부 시점 · Tab 항해"
+	help_text.text="WASD 이동 · Space 점프 · 마우스 시선 · 클릭 장비 사용 · 1–5 전환 · I 아이템 · E 스캔" if on_surface else "WASD 이동 · Space 점프 · 마우스 시선 · C 외부 시점 · Tab 항해"
 	roster.visible=not session.offline;ready_button.visible=not session.offline;pilot_choices.visible=not session.offline
 	panel.get_node("TransferPilot").visible=not session.offline;panel.get_node("Kick").visible=not session.offline
 	if not destination_initialized:
@@ -360,8 +378,12 @@ func _physics_process(delta: float) -> void:
 	if surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 		if tool.get("kind")=="miner":use_equipped()
+	var controls_enabled:=_locomotion_enabled()
+	var jump_pressed:=test_jump if test_mode else FrontierInput.pressed("jump")
+	if jump_pressed and not jump_held and controls_enabled:jump_request+=1;movement_timer=0
+	jump_held=jump_pressed
 	movement_timer-=delta
-	if movement_timer<=0:
+	if movement_timer<=0 or (not session.hosting and not outside):
 		movement_timer=.05
 		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
 		if (onboarding!=null and onboarding.letter.visible) or inventory_panel.visible or outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
@@ -373,33 +395,76 @@ func _physics_process(delta: float) -> void:
 		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
 			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
 		mouse_steering=Vector2.ZERO
-		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls)
+		local_direction=direction if controls_enabled else Vector2.ZERO
+		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
+		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled)
+	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
-			if arrival.active:direction=Vector2.ZERO
+			var input: Dictionary=session.authority.inputs.get(peer,{})
+			var enabled: bool=float(input.get("expires",-1))>=session.authority.now and input.get("controls_enabled",true) and not arrival.active
 			var member: Dictionary=session.authority.world.crew.members[id]
-			var wants_sprint: bool=session.authority.inputs.get(peer,{}).get("sprinting",false) and direction.length_squared()>0
+			var motion: Dictionary=session.authority.motions.get(id,FrontierCrewLocomotion.create())
+			session.authority.motions[id]=motion
+			var wants_sprint: bool=enabled and input.get("sprinting",false) and direction.length_squared()>0
 			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1)
-			var impact_speed:=maxf(0,-actor.velocity.y)
-			var was_grounded:=actor.is_on_floor()
+			var speed:=float(FrontierCrewWorld.config().movement_speed)
+			var gravity:=float(FrontierCrewLocomotion.config().cabin_gravity)
 			if FrontierCrewSurface.landed(session.authority.world):
-				if surface_world==null or not surface_world.ready_at(actor.position):actor.velocity=Vector3.ZERO;continue
-				var next:=actor.position+Vector3(direction.x,0,direction.y)*float(FrontierCrewSurface.config().movement_speed)*multiplier*delta
-				if not surface_world.ready_at(next):actor.velocity=Vector3.ZERO;continue
-				actor.velocity.x=direction.x*float(FrontierCrewSurface.config().movement_speed)*multiplier;actor.velocity.z=direction.y*float(FrontierCrewSurface.config().movement_speed)*multiplier
-				if not actor.is_on_floor():actor.velocity.y-=float(FrontierCrewSurface.config().gravity)*delta
-				else:actor.velocity.y=-1
-				if actor.position.y<float(surface_world.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(surface_world.config.region_half_extent):actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO
-			else:actor.velocity=Vector3(direction.x*float(FrontierCrewWorld.config().movement_speed),-1,direction.y*float(FrontierCrewWorld.config().movement_speed))
-			impact_speed=maxf(impact_speed,-actor.velocity.y)
-			actor.move_and_slide()
-			if member.area=="surface" and actor.is_on_floor() and not was_grounded:
-				if FrontierCrewVitals.land(member,impact_speed):
-					actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
+				if surface_world==null or not surface_world.ready_at(actor.position):
+					actor.velocity=Vector3.ZERO;motion.buffer=0.0;motion.takeoff=0.0;motion.jump_request=int(input.get("jump_request",0));continue
+				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier;gravity=float(FrontierCrewSurface.config().gravity)
+				var next:=actor.position+Vector3(direction.x,0,direction.y)*speed*delta
+				if not surface_world.ready_at(next):direction=Vector2.ZERO;enabled=false
+				if actor.position.y<float(surface_world.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(surface_world.config.region_half_extent):
+					actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO;motion=FrontierCrewLocomotion.create();session.authority.motions[id]=motion
+			var old_land: int=motion.land_serial
+			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled)
+			motion.input_ack=int(session.authority.input_sequences.get(peer,0))
+			if member.area=="surface" and int(motion.land_serial)>old_land and FrontierCrewVitals.land(member,float(motion.impact)):
+				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
 			session.authority.update_position(peer,actor.position)
+func _predict_local(delta: float,enabled: bool) -> void:
+	if outside:prediction_history.clear();predicted_motion.clear();return
+	var id: String=session.latest.self_id
+	if not actors.has(id):return
+	var body: CharacterBody3D=actors[id]
+	if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(body.position)):
+		prediction_history.clear();predicted_motion.clear();return
+	if not prediction_snapshot.is_empty():
+		var previous:=body.position
+		var confirmed: Dictionary=prediction_snapshot.motion
+		var ack:=int(confirmed.input_ack)
+		prediction_history=prediction_history.filter(func(frame: Dictionary):return int(frame.sequence)>ack)
+		body.position=prediction_snapshot.position;body.velocity=FrontierCrewWorld.vector(confirmed.velocity)
+		predicted_motion=confirmed.duplicate(true)
+		for frame in prediction_history:
+			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled)
+		var correction:=previous-body.position
+		camera_correction=(camera_correction+correction).limit_length(.3) if correction.length()<1.0 else Vector3.ZERO
+		prediction_snapshot.clear()
+	if predicted_motion.is_empty():return
+	var member: Dictionary=session.latest.crew.members[id]
+	var on_surface: bool=member.area=="surface"
+	var speed:=float(FrontierCrewSurface.config().movement_speed) if on_surface else float(FrontierCrewWorld.config().movement_speed)
+	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
+	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
+	var frame: Dictionary={"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
+	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled)
+	prediction_history.append(frame)
+	# Bounded replay: stale links cannot build an unbounded local simulation backlog.
+	if prediction_history.size()>90:prediction_history.pop_front()
+
+func _locomotion_enabled() -> bool:
+	if feedback.blocked() or outside or (onboarding!=null and onboarding.letter.visible) or get_viewport().gui_get_focus_owner() is LineEdit:return false
+	if not test_mode and not get_window().has_focus():return false
+	if not session.latest.crew.get("landing",{}).is_empty():
+		return surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position)
+	return true
+
 func _process(delta: float) -> void:
 	_sync_mouse_capture()
 	if arrival!=null and arrival.active and not session.active:arrival.cancel()
@@ -413,15 +478,22 @@ func _process(delta: float) -> void:
 	var members: Dictionary=session.latest.crew.members
 	for id in actors:
 		var actor: CharacterBody3D=actors[id];var visual: Dictionary=visuals[id]
-		if not session.hosting:actor.position=actor.position.lerp(FrontierCrewWorld.vector(members[id].position),minf(delta*14,1))
-		var displacement: Vector3=actor.position-visual.last;visual.last=actor.position
-		var distance:=Vector2(displacement.x,displacement.z).length();visual.phase+=distance*7
-		if distance>.0005:visual.model.rotation.y=lerp_angle(visual.model.rotation.y,atan2(-displacement.x,-displacement.z),minf(delta*12,1))
-		for limb in visual.limbs:
-			if visual.limbs[limb]!=null:visual.limbs[limb].rotation.x=sin(float(visual.phase))*.45*(1 if limb in ["Anim_Arm_L","Anim_Leg_R"] else -1) if distance>.0005 else lerpf(visual.limbs[limb].rotation.x,0,minf(delta*10,1))
+		var motion: Dictionary=session.authority.motions.get(id,{}) if session.hosting else {}
+		if not session.hosting:
+			var frame: Dictionary=visual.replica.sample()
+			if id==session.latest.self_id and not predicted_motion.is_empty():motion=predicted_motion
+			elif not frame.is_empty():actor.position=frame.position;motion=frame.motion
+		visual.motion=motion
 		var own: bool=id==session.latest.self_id
+		# Success sounds/events always follow the host, including the predicted owner.
+		var presentation: Dictionary=motion.duplicate(true)
+		if own and not session.hosting:
+			var approved: Dictionary=session.latest.get("motion",{}).get(id,{})
+			for key in ["jump_serial","land_serial","impact"]:presentation[key]=approved.get(key,0)
+		visual.pose.animate(presentation,delta,not feedback.blocked() and not outside and (test_mode or get_window().has_focus()),not arrival.active)
 		visual.model.visible=not own and not arrival.active;visual.label.visible=not own and not arrival.active
-	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.72,0)
+	camera_correction=camera_correction.lerp(Vector3.ZERO,1-exp(-delta*18))
+	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.72,0)+camera_correction
 	if test_mode and test_camera_position!=Vector3.ZERO:camera.position=test_camera_position
 	camera.rotation=Vector3(pitch,yaw,0)
 	_update_surface_hud()

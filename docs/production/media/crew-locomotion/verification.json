@@ -1,0 +1,57 @@
+{
+  "runtime_errors": [
+    "SCRIPT ERROR: Invalid access to property or key 'landing' on a base object of type 'Dictionary'."
+  ],
+  "checks": [
+    "host opens",
+    "guest joins",
+    "guest ready",
+    "shared scene starts",
+    "cabin contact",
+    "13 imported bones on remote actor",
+    "guest input moves host collision body",
+    "walk stops",
+    "prediction reconciles with host",
+    "guest jumps on host",
+    "jump lands with contact",
+    "held space jumps only once",
+    "menu blocks jump without deferred launch",
+    "host ready to land",
+    "guest0 ready to land",
+    "landed terrain and input ready",
+    "terrain contact",
+    "terrain jump rises",
+    "terrain jump lands",
+    "approved jump serial reaches guest",
+    "surface running pose",
+    "surface comes to rest"
+  ],
+  "audio_playback_states": {
+    "guest0": [
+      "fall",
+      "idle",
+      "land",
+      "rise",
+      "run",
+      "walk"
+    ],
+    "host": [
+      "fall",
+      "idle",
+      "land",
+      "rise",
+      "run",
+      "walk"
+    ]
+  },
+  "workspace": "/var/folders/gx/y_kyc5wx23q_1cprsjvw6b2w0000gn/T/crew-locomotion-axckuj7g",
+  "scope": "two local ENet clients, actual Forward+ windows; isolated saves; no internet or Windows test",
+  "gameplay_result": "22 focused multiplayer checks passed; integration run also exposed navigation UI error listed above",
+  "startup_recheck": {
+    "result": "passed",
+    "engine_errors": 0,
+    "scope": "960x640 actual Metal window; new solo cabin, jump, landing, saved-world reopen; after optional landing access fix",
+    "log": "Godot 4.7.2 Metal Forward+ Apple M2\nLOCOMOTION_STARTUP_PASS: 960x640 fresh cabin, jump, landing, saved-world reopen; no stale motion"
+  },
+  "resolved_error": "expedition_navigation.gd refresh accessed optional crew.landing directly in a fresh cabin; changed to get(landing, {})"
+}

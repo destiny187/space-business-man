@@ -9093,5 +9093,15 @@
     "group": "2티어",
     "geometry": "gameplay-prototype",
     "foliage": false
+  },
+  {
+    "id": "crew_surveyor_suit",
+    "title": "승무원 / 탐험복",
+    "name": "관절 탐험복",
+    "group": "승무원",
+    "model": "res://assets/models/crew/surveyor_suit.glb",
+    "source": "art/blender/crew/surveyor_suit.blend",
+    "geometry": "articulated-locomotion",
+    "foliage": false
   }
 ]
