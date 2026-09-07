@@ -144,7 +144,7 @@ func _ready() -> void:
 	button(ship_tab,"연구실 · 표본 분석과 시험",func():station_action.emit("research"))
 	button(ship_tab,"우주선 창고 · 운송할 물건 싣기",func():station_action.emit("cargo"))
 	button(ship_tab,"우주선 정비",func():station_action.emit("shipyard"))
-	button(ship_tab,"출항 · 승무원 준비",func():station_action.emit("launch"))
+	button(ship_tab,"탑승 · 전원 탑승 시 자동 이륙",func():station_action.emit("launch"))
 	set_context("build")
 	hide()
 func label(parent: Node,text: String,size: int=15) -> Label:

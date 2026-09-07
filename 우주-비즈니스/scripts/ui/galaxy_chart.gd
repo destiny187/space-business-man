@@ -14,6 +14,60 @@ var ship_position:=Vector3.ZERO
 var ship_direction:=Vector3.FORWARD
 var zoom:=1.0
 var pan:=Vector2.ZERO
+# Coordinate-only spatial cache; never instantiate the million planet records.
+var map_key: String=""
+var map_points:=PackedVector2Array()
+var map_cells: Dictionary={}
+var map_built:=0
+var displayed_systems: Dictionary={}
+var map_worker: Thread
+var pending_map_key: String=""
+func _exit_tree() -> void:
+	if map_worker!=null and map_worker.is_started():map_worker.wait_to_finish()
+func _process(_delta: float) -> void:
+	if compact or not galaxy or not is_visible_in_tree() or manifest.is_empty():return
+	var key:=str(manifest.id)+":"+str(manifest.settings.outer_radius)+":"+str(manifest.settings.inner_radius)+":"+str(manifest.settings.planets_per_system)
+	if map_worker!=null:
+		if map_worker.is_alive():return
+		var result: Dictionary=map_worker.wait_to_finish();map_worker=null
+		if pending_map_key==key:
+			map_key=key;map_points=result.points;map_cells=result.cells;map_built=map_points.size();queue_redraw()
+	if key==map_key:return
+	map_built=0;map_points.clear();map_cells.clear()
+	pending_map_key=key;map_worker=Thread.new()
+	if map_worker.start(_build_map_index.bind(manifest.duplicate(true)))!=OK:map_worker=null
+# Only immutable seed/settings and numeric coordinates cross the worker boundary.
+# Scene nodes, drawing and resource creation remain on the main thread.
+static func _build_map_index(source: Dictionary) -> Dictionary:
+	var count: int=int(source.settings.planet_count)/int(source.settings.planets_per_system)
+	var points:=PackedVector2Array();points.resize(count)
+	var cells: Dictionary={}
+	for index in count:
+		var point:=FrontierUniverse.map_position(source,index)/float(source.settings.outer_radius)
+		points[index]=point
+		var cell:=Vector2i(floori(point.x*32),floori(point.y*32))
+		if not cells.has(cell):cells[cell]=[]
+		cells[cell].append(index)
+	return {"points":points,"cells":cells}
+func _visible_systems(center: Vector2,extent: float) -> Dictionary:
+	var result: Dictionary={0:true,system_index:true,current_system:true}
+	var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)
+	for i in 200:result[int(i*count/200)]=true
+	if compact or zoom<=1.05:return result
+	var low:=(-center-Vector2(16,16))/extent
+	var high:=(size-center+Vector2(16,16))/extent
+	var occupied: Dictionary={}
+	var stride:=maxi(1,floori(count/(200.0*pow(zoom,2.5))))
+	for y in range(maxi(-32,floori(low.y*32)),mini(31,floori(high.y*32))+1):
+		for x in range(maxi(-32,floori(low.x*32)),mini(31,floori(high.x*32))+1):
+			for index in map_cells.get(Vector2i(x,y),[]):
+				if index%stride!=0:continue
+				var point:=center+map_points[index]*extent
+				if not Rect2(Vector2.ZERO,size).grow(8).has_point(point):continue
+				var pixel_cell:=Vector2i(floori(point.x/14),floori(point.y/14))
+				if occupied.has(pixel_cell):continue
+				occupied[pixel_cell]=true;result[index]=true
+	return result
 func reset_view() -> void:
 	zoom=1.0;pan=Vector2.ZERO;queue_redraw()
 var core_view: SubViewport
@@ -22,13 +76,15 @@ func _ready() -> void:
 	visibility_changed.connect(func():
 		if core_view!=null:core_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if galaxy and is_visible_in_tree() else SubViewport.UPDATE_DISABLED
 	)
-	tooltip_text="외곽: 저티어 · 중심: 고티어 비중 증가\n중앙 블랙홀은 항해 기준점입니다."
+	tooltip_text="외곽: 저티어 · 중심: 고티어 비중 증가\n방문한 항성계만 선택할 수 있습니다.\n중앙 블랙홀은 위치 표식입니다."
 	custom_minimum_size=Vector2(180,180) if compact else Vector2(280,340)
 	clip_contents=true
 	mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
+func can_inspect_system(index: int) -> bool:
+	return index==current_system or (journal!=null and journal.data.systems.has(str(index)))
 func _draw() -> void:
-	if manifest.is_empty():return
 	hits.clear()
+	if manifest.is_empty():return
 	if compact:draw_circle(size*.5,minf(size.x,size.y)*.5,Color("10191fe6"))
 	else:draw_style_box(_background(),Rect2(Vector2.ZERO,size))
 	var center:=Vector2(size.x/2,size.y/2)+pan
@@ -40,22 +96,25 @@ func _draw() -> void:
 		else:draw_circle(center,5,Color("83d9c5"))
 		for band in 5:draw_arc(center,extent*(band+1)/5,0,TAU,80,Color("274152"),1,true)
 		var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)
-		var indices: Dictionary={0:true,system_index:true,current_system:true}
+		var indices:=_visible_systems(center,extent)
 		var favorite_systems: Dictionary={}
-		for i in 200:indices[int(i*count/200)]=true
 		if journal!=null:
 			for key in journal.data.systems:indices[int(key)]=true
 			for key in journal.data.favorites:
 				var favorite_index:=FrontierUniverse.system_index(manifest,FrontierUniverse.ordinal_of(manifest,key))
 				indices[favorite_index]=true;favorite_systems[favorite_index]=true
+		displayed_systems.clear()
 		for index in indices:
-			var sys:=FrontierUniverse.system(manifest,index)
-			var point:=center+Vector2(sys.map_position[0],sys.map_position[1])/float(manifest.settings.outer_radius)*extent
-			draw_circle(point,4 if index==0 else 2.5,Color("72dfd1") if index==0 else [Color("9dcfca"),Color("81b9db"),Color("d9c379"),Color("e49468"),Color("e9778e")][int(sys.band)])
+			var normalized: Vector2=map_points[index] if index<map_built else FrontierUniverse.map_position(manifest,index)/float(manifest.settings.outer_radius)
+			var point:=center+normalized*extent
+			if not Rect2(Vector2.ZERO,size).grow(12).has_point(point):continue
+			displayed_systems[index]=point
+			var band: int=mini(index/(count/manifest.settings.tier_weights.size()),manifest.settings.tier_weights.size()-1)
+			draw_circle(point,4 if index==0 else 2.5,Color("72dfd1") if index==0 else [Color("9dcfca"),Color("81b9db"),Color("d9c379"),Color("e49468"),Color("e9778e")][band])
 			if journal!=null and journal.data.systems.has(str(index)):draw_arc(point,5,0,TAU,16,Color("94edcf"),1.5,true)
 			if favorite_systems.has(index):draw_string(font,point+Vector2(4,-4),"★",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ffc180"))
 			if index==current_system:draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),Color.WHITE,false,1)
-			hits.append({"point":point,"ordinal":FrontierUniverse.showcase_ordinal(manifest,index)})
+			if can_inspect_system(index):hits.append({"point":point,"ordinal":FrontierUniverse.showcase_ordinal(manifest,index)})
 		if not transit.is_empty():
 			var factor: float=extent/float(manifest.settings.outer_radius)
 			var source:=center+Vector2(transit.from[0],transit.from[1])*factor
@@ -93,13 +152,6 @@ func _draw() -> void:
 	if compact:draw_string(font,Vector2(64,size.y-10),"Tab 지도",HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color("a4b5bd"))
 func _background() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new();style.bg_color=Color("0b1d2b");style.set_corner_radius_all(6);return style
-func _show_core() -> void:
-	var popup:=Window.new();popup.title="은하 중심 · 중앙 블랙홀";popup.size=Vector2i(900,700);popup.exclusive=true;add_child(popup)
-	var background:=ColorRect.new();background.color=Color("02040a");background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);popup.add_child(background)
-	var view:=FrontierGalacticCore.preview(popup,1024)
-	var picture:=TextureRect.new();picture.texture=view.get_texture();picture.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;picture.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);popup.add_child(picture)
-	var caption:=Label.new();caption.text="은하 중심 · 고티어 성역\n강착 원반과 극축 제트 · 탐험의 이정표";caption.position=Vector2(24,24);caption.add_theme_font_size_override("font_size",23);popup.add_child(caption)
-	popup.close_requested.connect(popup.queue_free);popup.popup_centered()
 func _gui_input(event: InputEvent) -> void:
 	if compact:return
 	if event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_RIGHT:
@@ -110,7 +162,7 @@ func _gui_input(event: InputEvent) -> void:
 		pan=event.position-size*.5-(event.position-size*.5-pan)*(zoom/previous)
 		queue_redraw();accept_event();return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
-		if galaxy and event.position.distance_to(size*.5+pan)<22:_show_core();accept_event();return
+		if galaxy and event.position.distance_to(size*.5+pan)<22:accept_event();return
 		var best: Dictionary={};var distance:=16.0
 		for hit in hits:
 			var separation: float=event.position.distance_to(hit.point)

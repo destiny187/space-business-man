@@ -24,6 +24,9 @@ var engine: AudioStreamPlayer
 var audio: FrontierAudio
 var dust: GPUParticles3D
 var drive: FrontierVesselDriveEffects
+var unboard: Button
+var exit_position: Vector3
+var exit_rotation: Quaternion
 var approach_rotation: Quaternion
 var handover_position: Vector3
 var handover_rotation: Quaternion
@@ -44,11 +47,14 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  caption.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE);caption.offset_top=-45;caption.offset_bottom=-8
  audio=FrontierAudio.new();add_child(audio)
  engine=AudioStreamPlayer.new();engine.bus="SFX";engine.stream=audio.stream("sfx_landing_thrusters",true);engine.volume_db=-20;add_child(engine)
+ unboard=Button.new();unboard.text="탑승 취소";unboard.theme=app.ui_theme;add_child(unboard)
+ unboard.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT);unboard.offset_left=-150;unboard.offset_top=-100;unboard.offset_right=-24;unboard.offset_bottom=-60
+ unboard.pressed.connect(func():app.session.send_request("surface_unboard",{}));unboard.hide()
  RenderingServer.frame_post_draw.connect(_frame_drawn)
  hide()
 
 func _frame_drawn() -> void:
- if active and phase=="warming":warm_frames+=1
+ if active and phase in ["warming","escape_loading"]:warm_frames+=1
 
 func begin() -> void:
  vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure(app.session.latest.get("vessel",{}));vessel_overlay.hide()
@@ -71,7 +77,10 @@ func begin() -> void:
 
 func tick(delta: float) -> void:
  if not active:return
- if not app.session.active or app.session.latest.get("crew",{}).get("landing",{}).is_empty():cancel();return
+ if not app.session.active:cancel();return
+ if phase in ["boarding","ascent","escape_loading","escape","exit_handover"]:
+  _tick_launch(delta);return
+ if app.session.latest.get("crew",{}).get("landing",{}).is_empty():cancel();return
  age+=delta
  app.reticle.hide();app.field_hud.hide();app.surface_status.hide();app.help_text.hide()
  app.navigation_toggle.get_parent().hide()
@@ -193,7 +202,8 @@ func _begin_descent() -> void:
  phase="descent";age=0;caption.text=app.surface_world.body.name+"  ·  착륙 지점으로 하강"
 
 func cancel() -> void:
- active=false;phase="";hide();engine.stop()
+ var leaving:=phase in ["ascent","escape_loading","escape","exit_handover"]
+ active=false;phase="";hide();engine.stop();unboard.hide()
  flow_material.set_shader_parameter("strength",0.0)
  if is_instance_valid(vessel_overlay):vessel_overlay.release()
  if app.flight!=null:app.flight.ship.get_child(0).show()
@@ -209,3 +219,115 @@ func cancel() -> void:
  caption.modulate.a=1;ship_home=Vector3.ZERO
  app.help_text.show();app.field_hud.show()
  app._sync_surface_view()
+ if leaving and app.session.active and app.session.latest.crew.get("landing",{}).is_empty():
+  app.outside=true;app.exterior_view.show();app.if_flight_view();app.cursor_released=false;app.mouse_steering=Vector2.ZERO;app._sync_mouse_capture()
+
+func begin_boarding() -> void:
+ if app.surface_world==null:return
+ active=true;phase="boarding";age=0;show();app.close_menus()
+ cover.set_shader_parameter("cover",0.0);flow_material.set_shader_parameter("strength",0.0)
+ ship_home=app.surface_world.landing_ship.position
+ landing_camera=Camera3D.new();app.add_child(landing_camera);landing_camera.fov=65;landing_camera.far=app.camera.far
+ landing_camera.position=ship_home+Vector3(28,14,36);landing_camera.look_at(ship_home+Vector3.UP*2);landing_camera.make_current()
+ unboard.show()
+ app.session.send_input(Vector2.ZERO,Vector3.FORWARD,false,false,[0.0,0.0,0.0])
+
+func begin_launch() -> void:
+ # Called only when the host snapshot actually clears the landing state.
+ unboard.hide()
+ active=true;phase="ascent";age=0;warm_frames=0;show();app.close_menus()
+ vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure(app.session.latest.get("vessel",{}));vessel_overlay.hide()
+ app.flight.set_process(false);app.flight.transit_overlay.hide();app.flight.engine.stop()
+ var nav: Dictionary=app.session.latest.crew.navigation
+ exit_position=FrontierCrewWorld.vector(nav.position)
+ exit_rotation=app.flight._flight_basis(FrontierCrewWorld.vector(nav.direction)).get_rotation_quaternion()
+ var body:=FrontierUniverse.body(app.session.manifest,int(nav.target))
+ var center:=FrontierCrewNavigation.center(int(nav.target),app.session.manifest,float(nav.orbit_time))
+ start=center+(exit_position-center).normalized()*(FrontierUniverse.navigation_radius(body)+12)
+ caption.text=body.name+"  ·  이륙"
+ for material in [cover,flow_material]:material.set_shader_parameter("tint",Color(body.traits.dust))
+ cover.set_shader_parameter("cover",0.0)
+ if is_instance_valid(landing_camera):landing_camera.queue_free()
+ landing_camera=null
+ if app.surface_world!=null:
+  _prepare_descent()
+  app.surface_world.landing_ship.position=ship_home
+  landing_camera.position=ship_home+Vector3(34,18,42);landing_camera.look_at(ship_home+Vector3(0,1,-4))
+ else:
+  phase="escape_loading";cover.set_shader_parameter("cover",1.0)
+  _prepare_escape()
+ audio.play("sfx_vessel_boost");engine.pitch_scale=.7;engine.volume_db=-22;engine.play()
+ app.session.send_input(Vector2.ZERO,Vector3.FORWARD,false,false,[0.0,0.0,0.0])
+
+func _prepare_escape() -> void:
+ app._sync_surface_view()
+ app.outside=true;app.exterior_view.show();app.if_flight_view()
+ app.space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+ app.flight.ship.position=start;app.flight.ship.quaternion=exit_rotation
+ app.flight.camera.position=Vector3(0,16,57);app.flight.camera.rotation=Vector3(-.15,0,0)
+ app.flight.ship.get_child(0).hide()
+ # If there was no local surface (e.g. a slow joining client), start with this view.
+ if not vessel_overlay.visible:
+  vessel_overlay.match_view(app.flight.ship.get_child(0),app.flight.camera)
+  entry_view=vessel_overlay.camera.transform;entry_fov=vessel_overlay.camera.fov
+ _show_vessel(true,1.0)
+ vessel_overlay.set_entry_direction(false)
+
+func _tick_launch(delta: float) -> void:
+ age+=delta
+ app.reticle.hide();app.field_hud.hide();app.surface_status.hide();app.help_text.hide()
+ app.navigation_toggle.get_parent().hide()
+ if phase=="boarding":
+  if not app.session.latest.crew.members[app.session.latest.self_id].aboard:cancel();return
+  var boarded:=0;var total:=0
+  for member in app.session.latest.crew.members.values():
+   if member.get("connected",true):
+    total+=1
+    if member.aboard:boarded+=1
+  caption.text=("조종석 · " if app.session.latest.self_id==app.session.latest.crew.pilot_id else "탑승 완료 · ")+"승무원 %d/%d · 전원 탑승 시 자동 이륙"%[boarded,total]
+ elif phase=="ascent":
+  var t:=clampf(age/float(config.ascent_seconds),0,1)
+  var rise:=t*t
+  var ship:=app.surface_world.landing_ship
+  ship.position=ship_home+Vector3(0,float(config.descent_height),0)*rise-FrontierCrewWorld.vector(config.descent_offset)*rise
+  ship.rotation.x=.18*sin(t*PI)
+  landing_camera.position=ship.position+Vector3(34,18,42);landing_camera.look_at(ship.position+Vector3(0,1,-4))
+  var strength:=smoothstep(.35,.95,t)
+  cover.set_shader_parameter("cover",strength)
+  vessel_overlay.match_view(ship,landing_camera);vessel_overlay.set_entry_direction(true);_show_vessel(strength>0,strength)
+  ship.visible=strength<=0
+  dust.emitting=t<.45;drive.set_thrust(lerpf(.2,1,t),false)
+  engine.pitch_scale=lerpf(.7,1.2,t);engine.volume_db=lerpf(-22,-17,t)
+  if t>=1:
+   entry_view=vessel_overlay.camera.transform;entry_fov=vessel_overlay.camera.fov
+   phase="escape_loading";age=0;warm_frames=0;caption.text="대기층 상승 · 우주 시야 준비 중"
+   cover.set_shader_parameter("cover",1.0);audio.play("sfx_atmosphere_entry")
+   _prepare_escape()
+ elif phase=="escape_loading":
+  # Render the actual system behind the opaque atmosphere before revealing it.
+  cover.set_shader_parameter("cover",1.0)
+  vessel_overlay.match_view(app.flight.ship.get_child(0),app.flight.camera)
+  var target: Transform3D=vessel_overlay.camera.transform
+  var t:=smoothstep(0,1,clampf(age/1.5,0,1))
+  vessel_overlay.camera.transform=entry_view.interpolate_with(target,t)
+  vessel_overlay.camera.fov=lerpf(entry_fov,app.flight.camera.fov,t)
+  _show_vessel(true,1.0)
+  if warm_frames>=int(config.warmup_frames) and age>=maxf(1.5,float(config.warmup_seconds)) and app.flight.current_system==int(app.session.latest.crew.navigation.system):
+   phase="escape";age=0;caption.text="대기권 이탈"
+ elif phase=="escape":
+  var t:=clampf(age/float(config.escape_seconds),0,1)
+  app.flight.ship.position=start.lerp(exit_position,smoothstep(0,1,t))
+  app.flight.ship.quaternion=exit_rotation;app.flight.drive.set_thrust(.85,false)
+  var strength:=1-smoothstep(.15,.65,t)
+  cover.set_shader_parameter("cover",strength)
+  vessel_overlay.match_view(app.flight.ship.get_child(0),app.flight.camera);_show_vessel(strength>0,strength)
+  app.flight.ship.get_child(0).visible=strength<=0
+  engine.pitch_scale=lerpf(1.2,.8,t);engine.volume_db=lerpf(-17,-25,t)
+  if t>=1:
+   phase="exit_handover";age=0;engine.stop()
+   caption.text="직접 조종 · W/S 추진 · 마우스 방향" if app.session.latest.self_id==app.session.latest.crew.pilot_id else "우주 비행 · 호스트 조종"
+ elif phase=="exit_handover":
+  var t:=clampf(age/float(config.escape_handover_seconds),0,1)
+  for bar in bars:bar.modulate.a=1-t
+  caption.modulate.a=1-t
+  if t>=1:cancel()

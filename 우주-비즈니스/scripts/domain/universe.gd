@@ -39,6 +39,16 @@ static func ordinal_of(m: Dictionary, id: String) -> int:
 	var ordinal := int(suffix)
 	return ordinal if ordinal >= 0 and ordinal < int(m.settings.planet_count) else -1
 
+static func map_position(m: Dictionary,index: int) -> Vector2:
+	var cfg: Dictionary=m.settings
+	var count: int=int(cfg.planet_count)/int(cfg.planets_per_system)
+	var band: int=mini(index/(count/cfg.tier_weights.size()),cfg.tier_weights.size()-1)
+	var seed_value:=derive(int(m.seed),m.id+":system:%d"%index)
+	var fraction:=float(derive(seed_value,"radius")%1000000)/1000000.0
+	var radius:=lerpf(float(cfg.outer_radius),float(cfg.inner_radius),(float(band)+fraction)/float(cfg.tier_weights.size()))
+	var angle:=float(derive(seed_value,"angle")%1000000)/1000000.0*TAU
+	return Vector2(cos(angle)*radius,sin(angle)*radius)
+
 static func system(m: Dictionary, index: int) -> Dictionary:
 	var cfg: Dictionary = m.settings
 	var count: int = int(cfg.planet_count) / int(cfg.planets_per_system)

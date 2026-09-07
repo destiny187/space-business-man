@@ -109,15 +109,16 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	var body_id: String=crew.landing.body_id
 	var position:=FrontierCrewWorld.vector(member.position)
 	var near_ship: bool=position.distance_to(FrontierCrewWorld.vector(config().ship_position))<=float(config().boarding_distance)
-	if kind=="launch":
-		if actor!=crew.pilot_id:return "조종사만 출항할 수 있습니다."
-		for id in active.values():
-			var other: Dictionary=crew.members[id]
-			if not other.ready or FrontierCrewWorld.vector(other.position).distance_to(FrontierCrewWorld.vector(config().ship_position))>float(config().boarding_distance):return "모든 승무원이 우주선에 돌아와 출항 준비를 완료해야 합니다."
-		crew.landing={}
-		var index:=0
-		for id in active.values():spawn_member(world,crew.members[id],index);index+=1
+	if kind in ["surface_board","launch"]:
+		if not near_ship:return "착륙선 가까이 돌아와 탑승하세요."
+		member.aboard=true;member.ready=true
+		if actor==crew.owner_id:crew.pilot_id=actor
+		launch_if_boarded(world,active)
 		return ""
+	if kind=="surface_unboard":
+		member.aboard=false;member.ready=false
+		return ""
+	if member.aboard:return "착륙선에서 내린 뒤 실행하세요."
 	if kind in ["deposit","withdraw"]:
 		if not near_ship:return "우주선의 공동 보관함에 가까이 돌아오세요."
 		if not FrontierUniverse._finite(args.get("amount"),1,int(FrontierCrewWorld.config().backpack_capacity)) or args.amount!=floorf(args.amount):return "옮길 수량 오류"
@@ -209,3 +210,23 @@ static func validate_world(world: Dictionary) -> String:
 
 static func reset_cache() -> void:
 	_field_key="";_ground.clear()
+
+static func launch_if_boarded(world: Dictionary,active: Dictionary) -> bool:
+	if not landed(world) or active.is_empty():return false
+	var crew: Dictionary=world.crew
+	for id in active.values():
+		if not crew.members[id].aboard:return false
+	# The host resumes the helm on return, even after previously assigning a pilot.
+	if crew.owner_id in active.values():crew.pilot_id=crew.owner_id
+	var ordinal:=FrontierUniverse.ordinal_of(world.manifest,crew.landing.body_id)
+	var nav: Dictionary=crew.navigation
+	var point:=FrontierUniverse.entry_position(world.manifest,ordinal,float(nav.orbit_time))
+	var outward: Vector3=(point-FrontierCrewNavigation.center(ordinal,world.manifest,float(nav.orbit_time))).normalized()
+	nav.system=FrontierUniverse.system_index(world.manifest,ordinal);nav.target=ordinal
+	nav.position=FrontierExpeditionBusiness.array(point);nav.direction=FrontierExpeditionBusiness.array(outward)
+	nav.mode="idle";nav.manual=true;nav.speed=0.0;nav.boosting=false;nav.station_target=false;nav.boundary=false
+	world.flight_position=nav.position.duplicate();world.navigation_target=crew.landing.body_id
+	crew.landing={}
+	var index:=0
+	for id in crew.members:spawn_member(world,crew.members[id],index);index+=1
+	return true

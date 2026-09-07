@@ -303,7 +303,9 @@ func _snapshot(value: Dictionary) -> void:
 	var on_surface: bool=not value.crew.get("landing",{}).is_empty()
 	if on_surface!=surface_transition:
 		if on_surface and destination_initialized:arrival.begin()
+		elif not on_surface and destination_initialized:arrival.begin_launch()
 		surface_transition=on_surface;close_menus()
+	if on_surface and own.aboard and not arrival.active:arrival.begin_boarding()
 	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
 	if not destination_initialized:
 		destination_initialized=true;selected_ordinal=int(nav.target)
@@ -345,8 +347,10 @@ func _physics_process(delta: float) -> void:
 			if not actors.has(id):continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
 			var input: Dictionary=session.authority.inputs.get(peer,{})
-			var enabled: bool=float(input.get("expires",-1))>=session.authority.now and input.get("controls_enabled",true) and not arrival.active
+			var enabled: bool=float(input.get("expires",-1))>=session.authority.now and input.get("controls_enabled",true) and (not arrival.active or arrival.phase=="boarding")
 			var member: Dictionary=session.authority.world.crew.members[id]
+			if (FrontierCrewSurface.landed(session.authority.world) and member.aboard) or (arrival.active and arrival.phase in ["ascent","escape_loading","escape","exit_handover"]):
+				actor.velocity=Vector3.ZERO;continue
 			var motion: Dictionary=session.authority.motions.get(id,FrontierCrewLocomotion.create())
 			session.authority.motions[id]=motion
 			var wants_sprint: bool=enabled and input.get("sprinting",false) and direction.length_squared()>0
@@ -368,7 +372,7 @@ func _physics_process(delta: float) -> void:
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
 			session.authority.update_position(peer,actor.position)
 func _predict_local(delta: float,enabled: bool) -> void:
-	if outside:prediction_history.clear();predicted_motion.clear();return
+	if outside or (arrival.active and arrival.phase in ["boarding","ascent","escape_loading","escape","exit_handover"]):prediction_history.clear();predicted_motion.clear();return
 	var id: String=session.latest.self_id
 	if not actors.has(id):return
 	var body: CharacterBody3D=actors[id]
@@ -568,6 +572,7 @@ func _sync_surface_view() -> void:
 	if session.latest.is_empty() or session.latest.get("phase")!="playing":return
 	var landing: Dictionary=session.latest.crew.get("landing",{})
 	if landing.is_empty():
+		if arrival.active and arrival.phase=="ascent":return
 		if surface_world!=null:remove_child(surface_world);surface_world.queue_free();surface_world=null
 		if cabin_root.get_parent()==null:add_child(cabin_root)
 		if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
@@ -585,7 +590,7 @@ func _sync_surface_view() -> void:
 		_refresh_surface_options()
 
 func _update_surface_hud() -> void:
-	if surface_world==null:return
+	if surface_world==null or session.surface.is_empty() or arrival.active:return
 	for id in surface_world.ecology.actors:
 		var creature: Node3D=surface_world.ecology.actors[id]
 		var hp: int=int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(id),FrontierEquipment.config().animal_health))
@@ -727,9 +732,7 @@ func station_action(kind: String) -> void:
 		"shipyard":toggle_shipyard()
 		"launch":
 			close_menus()
-			if session.latest.self_id!=session.latest.crew.pilot_id:toggle_ready();return
-			if session.offline:session.send_request("ready",{"value":true})
-			session.send_request("launch",{})
+			session.send_request("surface_board",{})
 func begin_placement(kind: String) -> void:
 	cancel_placement();close_menus()
 	if kind.is_empty() or surface_world==null:return

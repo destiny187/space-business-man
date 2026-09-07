@@ -54,5 +54,15 @@
       "peak": 0.749969482421875,
       "processing": "8ms attack/150ms tail fade; peak cap -2.5dBFS"
     }
-  ]
+  ],
+  "reuse_planet_departure": {
+    "date": "2026-09-07",
+    "new_generation": false,
+    "events": {
+      "sfx_vessel_boost": "호스트 승인 후 지상 이륙 시작; 기존 우주선 추진 음원",
+      "sfx_landing_thrusters": "상승·구름 속 전환·대기권 이탈 반복; pitch 0.7→1.2→0.8, volume -22→-17→-25 dB",
+      "sfx_atmosphere_entry": "상승 후 불투명 대기층 진입"
+    },
+    "verification": "Godot 실제 출항에서 추진 플레이어 재생 및 승인 후 boost 호출 확인; 새 음원 생성 없음"
+  }
 }

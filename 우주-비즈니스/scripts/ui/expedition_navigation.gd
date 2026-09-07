@@ -160,6 +160,7 @@ func refresh(value: Dictionary) -> void:
 
 func show_target(ordinal: int) -> void:
 	if ordinal<0 or app.session.manifest.is_empty():return
+	if not app.chart.can_inspect_system(FrontierUniverse.system_index(app.session.manifest,ordinal)):return
 	selected_preview=ordinal;app.selected_ordinal=ordinal
 	var body:=FrontierUniverse.body(app.session.manifest,ordinal)
 	app.chart.target=ordinal;app.chart.system_index=int(body.system_ordinal);app.chart.queue_redraw();_map_mode()
@@ -249,8 +250,10 @@ func _update_context() -> void:
 	if app.surface_world!=null:
 		var position_value:=FrontierCrewWorld.vector(own.position)
 		if position_value.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return
+		var nearby_target:=app.surface_world.business_view.target(app.camera,app.actors[value.self_id])
+		if not nearby_target.is_empty():return
 		context_kind="launch";context_ordinal=-1
-		context.text="F  착륙선 단말"
+		context.text="F  착륙선 탑승"
 	else:
 		if nav.mode!="idle" or not app.outside:return
 		var gazed: int=app.flight.pick_planet(Vector2(app.space_view.size)*.5) if app.flight!=null else -1
@@ -284,9 +287,7 @@ func interact() -> bool:
 	if context_kind=="recover":app.recover_nearby();return true
 	if context_kind=="cargo":app.toggle_inventory();app.inventory_panel.tabs.current_tab=2;return true
 	if context_kind=="launch":
-		var target:=app.surface_world.business_view.target(app.camera,app.actors[app.session.latest.self_id])
-		if not target.is_empty():return false
-		app.open_station("ship");return true
+		app.station_action("launch");return true
 	var value: Dictionary=app.session.latest
 	if value.self_id!=value.crew.pilot_id:app.toggle_ready();return true
 	if app.session.offline:app.session.send_request("ready",{"value":true})

@@ -129,6 +129,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	var draft:=world.duplicate(true)
 	if envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit"]:FrontierItemInventory.merge_legacy(draft,actor)
+	if FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var reason: String=""
 	if envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("equipment_"):reason=FrontierEquipment.apply(draft,actor,envelope.kind,envelope.args)
@@ -197,6 +198,8 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	var id: String=peers[peer]
 	var draft:=world.duplicate(true)
 	FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id);draft.crew.revision+=1
+	var remaining:=peers.duplicate();remaining.erase(peer)
+	FrontierCrewSurface.launch_if_boarded(draft,remaining)
 	if not save_world.call(draft):stopped=true;error="연결 종료 상태를 저장하지 못해 세계 진행을 정지했습니다.";return false
 	world=draft;peers.erase(peer);lobby_ready.erase(id)
 	if reserve_slot and peer!=1:reserved[id]=now+float(FrontierCrewWorld.config().reconnect_seconds)
@@ -235,6 +238,7 @@ func step_surface(delta: float) -> void:
 	for peer in peers:
 		if not inputs.has(peer) or inputs[peer].expires<now or not inputs[peer].scanning:scans.erase(peer);continue
 		var actor: String=peers[peer]
+		if world.crew.members[actor].aboard:scans.erase(peer);continue
 		var target:=FrontierSurfaceSurvey.target(world,actor,inputs[peer].aim)
 		if target.is_empty():scans.erase(peer);continue
 		if FrontierSurfaceSurvey.known(world,target):

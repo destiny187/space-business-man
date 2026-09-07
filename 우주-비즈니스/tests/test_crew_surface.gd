@@ -107,9 +107,9 @@ func run() -> void:
 	# The real host stays peer 1 in play; restore this unit-test actor to inspect departure gates.
 	core.peers[1]=owner.character_id
 	core.update_position(2,Vector3(90,-20,0));ready_all(core)
-	check(not request(core,1,"launch").ok,"ship cannot strand a remote crew member")
+	check(request(core,1,"surface_board").ok and FrontierCrewSurface.landed(core.world),"boarded host waits without stranding remote crew")
 	core.update_position(2,Vector3(0,2,4));ready_all(core)
-	check(request(core,1,"launch").ok and not FrontierCrewSurface.landed(core.world),"ready returned crew board original cabin before launch")
+	check(request(core,2,"surface_board").ok and not FrontierCrewSurface.landed(core.world),"last returned crew boards and launches automatically")
 	check(core.world.ecology.specimens[specimen_id].state=="cargo","unique specimen remains aboard during launch")
 	navigate(core,21);ready_all(core);check(request(core,1,"land").ok,"same crew can land on destination planet B")
 	var other_id: String=core.world.crew.landing.body_id
