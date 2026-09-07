@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "generator": "tools/build_facility_motion.py",
+  "models": [
+    {
+      "kind": "atmosphere",
+      "source": "art/blender/atmosphere.blend",
+      "game_file": "우주-비즈니스/assets/models/atmosphere.glb",
+      "moving_node": "Anim_Fan_Process",
+      "review": "/tmp/ground-facility-atmosphere.png"
+    },
+    {
+      "kind": "thermal",
+      "source": "art/blender/thermal.blend",
+      "game_file": "우주-비즈니스/assets/models/thermal.glb",
+      "moving_node": "Anim_Fan_Process",
+      "review": "/tmp/ground-facility-thermal.png"
+    },
+    {
+      "kind": "water",
+      "source": "art/blender/water.blend",
+      "game_file": "우주-비즈니스/assets/models/water.glb",
+      "moving_node": "Anim_Piston_Process",
+      "review": "/tmp/ground-facility-water.png"
+    },
+    {
+      "kind": "biolab",
+      "source": "art/blender/biolab.blend",
+      "game_file": "우주-비즈니스/assets/models/biolab.glb",
+      "moving_node": "Anim_Agitator_Process",
+      "review": "/tmp/ground-facility-biolab.png"
+    }
+  ]
+}

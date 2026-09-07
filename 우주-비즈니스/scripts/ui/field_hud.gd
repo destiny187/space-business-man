@@ -100,6 +100,9 @@ func _process(delta: float) -> void:
 		var row: Dictionary=site.get("buildings",{}).get(target.id,{})
 		target_name.text="현장 창고" if target.get("kind")=="base" else ("M-01 로봇" if target.get("kind")=="robot" else FrontierCatalog.entry("buildings",row.get("type","")).get("name","회수 화물"))
 		target_icon.texture=load("res://assets/ui/interface/build.svg");target_action.text="F  로봇 제작소" if row.get("type","")=="factory" else "F  열기";target_action.modulate=Color.WHITE;context.show()
+		if not row.is_empty():
+			target_action.text+="\n"+("▶ " if row.get("working",false) else "Ⅱ ")+str(row.get("status",""))
+			target_action.modulate=FrontierInterfaceStyle.ACCENT if row.get("working",false) else FrontierInterfaceStyle.WARNING
 	var size:=get_viewport().get_visible_rect().size
 	context.position=Vector2(size.x/2+24,size.y/2+36)
 

@@ -220,7 +220,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not current.buildings.has(id):return "시설을 선택하세요."
 		var building: Dictionary=current.buildings[id]
 		if position.distance_to(point(building.position))>float(config().interaction_range):return "시설 8m 이내로 접근하세요."
-		if kind=="business_toggle":building.enabled=not building.enabled;return ""
+		if kind=="business_toggle":
+			building.enabled=not building.enabled
+			if not building.enabled:building.active=false;building.working=false;building.status="정지"
+			return ""
 		if kind=="business_demolish":
 			if not building.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
 			if FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 공학 실험을 완료한 뒤 철거하세요."

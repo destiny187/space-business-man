@@ -25,7 +25,17 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 		var rotor:=visual.find_child("ToolRotor",true,false)
 		if rotor!=null:root.get_meta("parts").append(rotor)
 		var intake:=Node3D.new();intake.name="DrillIntake";intake.position=Vector3(-.43,1.35,2.45);visual.add_child(intake);root.set_meta("intake",intake)
-	add_child(root);nodes[id]=root;return root
+	for part in root.get_meta("parts"):part.set_meta("rest_position",part.position)
+	add_child(root)
+	if kind=="building":
+		var top:=3.0
+		for mesh in visual.find_children("*","MeshInstance3D",true,false):
+			var bounds: AABB=mesh.get_aabb()
+			for x in [bounds.position.x,bounds.end.x]:
+				for y in [bounds.position.y,bounds.end.y]:
+					for z in [bounds.position.z,bounds.end.z]:top=maxf(top,root.to_local(mesh.to_global(Vector3(x,y,z))).y+.45)
+		label.position.y=top
+	nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
 	var registered: bool=value.get("sites",{}).has(body.id)
@@ -53,10 +63,13 @@ func accept(value: Dictionary) -> void:
 		wanted[row.id]=true
 		if not nodes.has(row.id):
 			_queue_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building");continue
-		nodes[row.id].get_meta("label").text=FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
+		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active
+		var symbol: String="▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! "))
+		nodes[row.id].get_meta("label").text=symbol+FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
+		nodes[row.id].get_meta("label").modulate=Color("82f5d2") if working else Color("f2c077")
 		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
 		_upgrade_visual(nodes[row.id],row,false)
-		nodes[row.id].set_meta("working",row.active)
+		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active)
 	for row in site.robots.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"miner",FrontierExpeditionBusiness.point(row.position),.7,"robot");continue
@@ -106,6 +119,9 @@ func _process(dt: float) -> void:
 			if node.get_meta("working",false) and node.get_meta("aim",Vector3.INF).is_finite():direction=node.get_meta("aim")-node.position
 			if direction.length()>.002:node.get_meta("visual").rotation.y=lerp_angle(node.get_meta("visual").rotation.y,atan2(direction.x,direction.z),minf(dt*8,1))
 		for part in node.get_meta("parts"):
+			if part.name.begins_with("Anim_Piston"):
+				part.position=part.get_meta("rest_position")+Vector3.UP*(sin(Time.get_ticks_msec()*.005)*.18 if node.get_meta("working",false) else 0.0)
+			elif part.name.begins_with("Anim_Agitator") and node.get_meta("working",false):part.rotate_y(dt*1.3)
 			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_object_local(Vector3.UP,-node.position.distance_to(previous)*4)
 			elif node.get_meta("working",false) and part.name=="ToolRotor":part.rotate_object_local(Vector3.UP,dt*18)
 			elif node.get_meta("working",false) and (part.name.begins_with("Anim_Fan") or part.name.begins_with("Anim_Drill")):part.rotate_y(dt*6)

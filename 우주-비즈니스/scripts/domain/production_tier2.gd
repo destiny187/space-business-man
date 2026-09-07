@@ -86,6 +86,7 @@ static func restore(site: Dictionary,b: Dictionary,dt: float) -> void:
 	elif b.type=="biolab":r.soil=minf(100,float(r.soil)+float(cfg.soil_per_pack))
 	else:site.environment.toxicity=maxf(0,float(site.environment.toxicity)-float(cfg.salt_per_filter))
 static func validate_building(b: Dictionary) -> bool:
+	if b.has("working") and not b.working is bool:return false
 	if not FrontierExpeditionBusiness.integer(b.get("tier",1),1,2):return false
 	if int(b.get("tier",1))==2 and not config().facility_upgrades.has(b.type):return false
 	if not FrontierUniverse._finite(b.get("treatment_work",0),0,10000000) or not FrontierExpeditionBusiness.integer(b.get("product_serial",0),0,100000000):return false

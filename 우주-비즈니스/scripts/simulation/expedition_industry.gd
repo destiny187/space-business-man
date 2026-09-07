@@ -33,7 +33,7 @@ static func power(world: Dictionary,site: Dictionary) -> void:
 		var def:=FrontierCatalog.entry("buildings",building.type)
 		var p:=FrontierExpeditionBusiness.point(building.position)
 		var supported:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),p.x,p.z,float(def.radius)).is_finite()
-		building.active=false;building.status="정지" if not building.enabled else "전력 대기"
+		building.active=false;building.working=false;building.status="정지" if not building.enabled else "전력 대기"
 		if not supported:building.status="토대 지지 필요";continue
 		if not building.enabled:continue
 		if float(def.power)<=0:building.active=true;building.status="발전 중" if def.power<0 else "사용 가능";supply-=float(def.power)*FrontierProductionTier2.factor(building)
@@ -131,27 +131,40 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()
 	for b in site.buildings.values():
 		if not b.active:continue
-		var engineering: float=FrontierFieldEngineering.factor(world,b)*FrontierProductionTier2.factor(b)
-		FrontierProductionTier2.restore(site,b,dt)
-		match b.type:
-			"atmosphere":
-				e.oxygen=move_toward(float(e.oxygen),.21,float(cfg.oxygen_rate)*dt*FrontierProductionTier2.factor(b));e.pressure=move_toward(float(e.pressure),1,float(cfg.pressure_rate)*dt*FrontierProductionTier2.factor(b));e.toxicity=move_toward(float(e.toxicity),0,float(cfg.toxicity_rate)*dt*FrontierProductionTier2.factor(b))
-			"thermal":e.temperature=move_toward(float(e.temperature),18,float(cfg.thermal_rate)*dt*engineering)
-			"water":
-				if e.water>=100:b.status="목표 달성";continue
-				b.work+=dt
-				if b.work>=float(cfg.water_cycle_seconds)/engineering:
-					if site.inventory.ice<=0:b.status="얼음 보급 필요";b.work=minf(b.work,float(cfg.water_cycle_seconds)/engineering)
-					else:site.inventory.ice-=1;e.water=minf(100,float(e.water)+float(cfg.water_per_ice));b.work=maxf(0.0,float(b.work)-float(cfg.water_cycle_seconds)/engineering)
-			"biolab":
-				var score:=FrontierEvaluator.scores(e)
-				if minf(score.atmosphere,minf(score.temperature,score.water))<60:b.status="대기·온도·수질 안정화 필요";continue
-				if not FrontierProductionTier2.restoration_ready(site):b.status="Mk.2 담수 처리·토양 개량 필요";continue
-				if e.ecology>=100:b.status="배양 목표 달성";continue
-				if site.inventory.ice<=0:b.status="배양 수분 공급 필요";continue
-				b.work+=dt
-				if b.work>=float(cfg.biolab_nutrient_seconds):site.inventory.ice-=1;b.work=0.0
-				e.ecology=minf(100,float(e.ecology)+float(cfg.biolab_rate)*dt*engineering)
+		var before: Dictionary={"environment":e.duplicate(),"restoration":site.get("restoration2",{}).duplicate(),"work":b.work,"treatment":b.get("treatment_work",0)}
+		_process_facility(world,site,b,dt)
+		b.working=before.environment!=e or before.restoration!=site.get("restoration2",{}) or float(before.work)!=float(b.work) or float(before.treatment)!=float(b.get("treatment_work",0))
+		if b.working and "목표" in b.status:b.status="보조 처리 중"
+		elif b.working and "필요" in b.status:b.status="부분 가동 · "+b.status
+
 	var scores:=FrontierEvaluator.scores(e)
 	if FrontierProductionTier2.restoration_ready(site) and minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60:e.stable_seconds=minf(120,e.stable_seconds+dt)
 	else:e.stable_seconds=0.0
+
+static func _process_facility(world: Dictionary,site: Dictionary,b: Dictionary,dt: float) -> void:
+	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()
+	var engineering: float=FrontierFieldEngineering.factor(world,b)*FrontierProductionTier2.factor(b)
+	FrontierProductionTier2.restore(site,b,dt)
+	match b.type:
+		"atmosphere":
+			if is_equal_approx(float(e.oxygen),.21) and is_equal_approx(float(e.pressure),1) and float(e.toxicity)<=0:b.status="목표 달성";return
+			e.oxygen=move_toward(float(e.oxygen),.21,float(cfg.oxygen_rate)*dt*FrontierProductionTier2.factor(b));e.pressure=move_toward(float(e.pressure),1,float(cfg.pressure_rate)*dt*FrontierProductionTier2.factor(b));e.toxicity=move_toward(float(e.toxicity),0,float(cfg.toxicity_rate)*dt*FrontierProductionTier2.factor(b))
+		"thermal":
+			if is_equal_approx(float(e.temperature),18):b.status="목표 달성";return
+			e.temperature=move_toward(float(e.temperature),18,float(cfg.thermal_rate)*dt*engineering)
+		"water":
+			if e.water>=100:b.status="목표 달성";return
+			if site.inventory.ice<=0:b.status="얼음 보급 필요";return
+			b.work+=dt
+			if b.work>=float(cfg.water_cycle_seconds)/engineering:
+				if site.inventory.ice<=0:b.status="얼음 보급 필요";b.work=minf(b.work,float(cfg.water_cycle_seconds)/engineering)
+				else:site.inventory.ice-=1;e.water=minf(100,float(e.water)+float(cfg.water_per_ice));b.work=maxf(0.0,float(b.work)-float(cfg.water_cycle_seconds)/engineering)
+		"biolab":
+			var score:=FrontierEvaluator.scores(e)
+			if minf(score.atmosphere,minf(score.temperature,score.water))<60:b.status="대기·온도·수질 안정화 필요";return
+			if not FrontierProductionTier2.restoration_ready(site):b.status="Mk.2 담수 처리·토양 개량 필요";return
+			if e.ecology>=100:b.status="배양 목표 달성";return
+			if site.inventory.ice<=0:b.status="배양 수분 공급 필요";return
+			b.work+=dt
+			if b.work>=float(cfg.biolab_nutrient_seconds):site.inventory.ice-=1;b.work=0.0
+			e.ecology=minf(100,float(e.ecology)+float(cfg.biolab_rate)*dt*engineering)
