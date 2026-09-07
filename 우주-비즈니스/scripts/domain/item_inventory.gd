@@ -58,12 +58,19 @@ static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dic
 		var error:=warehouse_equipment(world,actor,{"item_id":args.item_id,"withdraw":kind=="withdraw"},site)
 		if not error.is_empty():return error
 		world.crew.cargo_equipment=site.stored_equipment;return ""
+	if args.get("all_resources",false)==true and kind=="deposit":
+		var error:=deposit_all(world,actor,site)
+		if not error.is_empty():return error
+		world.crew.rock=int(site.inventory.get("stone",0));site.inventory.erase("stone");world.crew.cargo=site.inventory;return ""
 	if not FrontierExpeditionBusiness.integer(args.get("amount"),1,limit()):return "옮길 수량을 확인하세요."
 	var amount:=int(args.amount);var resource:=str(args.get("resource","stone"))
 	if FrontierCatalog.entry("resources",resource).is_empty():return "지원하지 않는 화물입니다."
 	if not world.has("business"):world.business=FrontierExpeditionBusiness.create()
 	if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
 	var stock:=FrontierExpeditionBusiness.bag(world,actor)
+	if args.get("quick",false)==true:
+		amount=mini(amount,mini(int(site.inventory.get(resource,0)),room(world,actor,resource)) if kind=="withdraw" else mini(int(stock.get(resource,0)),warehouse_room(site,resource)))
+		if amount<=0:return "옮길 재고 또는 목적지 공간이 부족합니다."
 	if kind=="withdraw":
 		if int(site.inventory.get(resource,0))<amount or room(world,actor,resource)<amount:return "우주선 재고 또는 배낭 공간이 부족합니다."
 		site.inventory[resource]-=amount;stock[resource]=int(stock.get(resource,0))+amount
@@ -72,6 +79,19 @@ static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dic
 		if not warehouse_fits(site,{resource:amount}):return "우주선 창고 10칸이 가득 찼습니다."
 		stock[resource]-=amount;site.inventory[resource]=int(site.inventory.get(resource,0))+amount
 	world.crew.rock=int(site.inventory.get("stone",0));site.inventory.erase("stone");world.crew.cargo=site.inventory
+	return ""
+
+static func deposit_all(world: Dictionary,actor: String,site: Dictionary) -> String:
+	var stock:=FrontierExpeditionBusiness.bag(world,actor)
+	var moved:=0
+	var keys:=stock.keys();keys.sort()
+	for key in keys:
+		if FrontierCatalog.entry("resources",key).is_empty():continue
+		var amount:=mini(int(stock[key]),warehouse_room(site,key))
+		if amount<=0:continue
+		stock[key]-=amount;site.inventory[key]=int(site.inventory.get(key,0))+amount;moved+=amount
+	if moved==0:return "보관할 자원이 없거나 창고 공간이 부족합니다."
+	if site.has("delivered"):site.delivered+=moved
 	return ""
 
 # A landing depot starts with ten shared slots; each built storage adds ten.

@@ -18,6 +18,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		var id:=str(args.get("resource",""))
 		if FrontierCatalog.entry("resources",id).is_empty() or not FrontierExpeditionBusiness.integer(args.get("amount"),1,FrontierItemInventory.limit()):return "인수할 품목과 수량을 확인하세요."
 		var amount:=int(args.amount)
+		if args.get("quick",false)==true:
+			amount=mini(amount,mini(int(site.inventory.get(id,0)),FrontierItemInventory.room(world,actor,id)))
+			if amount<=0:return "옮길 재고 또는 배낭 공간이 부족합니다."
 		if int(site.inventory.get(id,0))<amount:return "공동 창고의 수량이 부족합니다."
 		if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
 		var bag: Dictionary=world.business.bags[actor]

@@ -184,9 +184,13 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="business_deposit":
 		if not near_base:return "현장 창고 9m 이내로 돌아오세요."
 		if total(bag(world,actor))==0 and int(world.crew.members[actor].carried)==0:return "반납할 자원이 없습니다."
+		if args.get("all_resources",false)==true:return FrontierItemInventory.deposit_all(world,actor,current)
 		var resource:=str(args.get("resource",""))
 		if FrontierCatalog.entry("resources",resource).is_empty() or not integer(args.get("amount"),1,int(FrontierItemInventory.config().resource_stack)):return "보관할 아이템을 창고로 끌어놓으세요."
 		var amount:=int(args.amount);var stock:=bag(world,actor)
+		if args.get("quick",false)==true:
+			amount=mini(amount,mini(int(stock.get(resource,0)),FrontierItemInventory.warehouse_room(current,resource)))
+			if amount<=0:return "옮길 재고 또는 창고 공간이 부족합니다."
 		if int(stock.get(resource,0))<amount:return "배낭의 수량이 부족합니다."
 		if not FrontierItemInventory.warehouse_fits(current,{resource:amount}):return "창고가 가득 찼습니다. 아이템을 꺼내거나 창고를 추가 건설하세요."
 		stock[resource]-=amount;current.inventory[resource]=int(current.inventory.get(resource,0))+amount;current.delivered+=amount;return ""
