@@ -65,6 +65,17 @@ func _draw() -> void:
 	for radius in [24,48,72]:draw_arc(Vector2(90,92),radius,0,TAU,64,Color("83d9c530"),1,true)
 	draw_arc(Vector2(90,92),fmod(elapsed/float(FrontierCrewSurface.config().radar.sweep_seconds),1)*72,0,TAU,64,Color("83d9c550"),1,true)
 	for row in contacts:marker(row.point,p,row.kind,row.color)
+	var clue_index:=0
+	for clue in FrontierGroundExploration.deposits(app.surface_world.body):
+		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
+		if int(site.get("remaining",{}).get(clue.id,clue.capacity))<=0:continue
+		var point:=Vector3(clue.position[0],0,clue.position[2])
+		var color:=Color(FrontierCatalog.entry("resources",clue.resource).color)
+		marker(point,p,"mineral",color,true)
+		var at:=Vector2(20,178+clue_index*22)
+		draw_texture_rect(FrontierResourceIcons.texture(clue.resource),Rect2(at,Vector2(18,18)),false)
+		draw_string(font,at+Vector2(23,14),"%s 단서 · %.0fm"%[FrontierCatalog.entry("resources",clue.resource).name,Vector2(point.x-p.x,point.z-p.z).length()],HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color.WHITE)
+		clue_index+=1
 	marker(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position),p,"ship",Color.WHITE,true)
 	for id in app.session.latest.crew.members:
 		if id==app.session.latest.self_id:continue

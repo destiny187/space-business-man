@@ -71,7 +71,8 @@ func _process(delta: float) -> void:
 	save_left=maxf(0,save_left-delta);saved.visible=save_left>0
 	var position: Vector3=app.actors[app.session.latest.self_id].position
 	place.text=app.surface_world.body.name
-	location.text="지표 탐사" if position.y>=-5 else "지하  %.0f m"%absf(position.y)
+	var depth:=maxf(0,app.surface_world.terrain.field.height(position.x,position.z)-position.y)
+	location.text="지표 탐사" if depth<5 else "지하  %.0f m"%depth
 	var ship:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)
 	return_label.text="%.0f m"%position.distance_to(ship)
 	var tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])

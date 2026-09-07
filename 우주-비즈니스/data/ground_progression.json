@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "intro_max_processing_seconds": 360,
   "near_resource_radius": 80,
   "starter": [
@@ -38,5 +38,11 @@
       "radius": 66,
       "angle": 0.7
     }
-  ]
+  ],
+  "expedition": {
+    "radius": 450,
+    "capacity": 160,
+    "samples": 160,
+    "radius_spread": 60
+  }
 }

@@ -40,6 +40,7 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 		var p: Array=[sin(angle)*radius,0,cos(angle)*radius]
 		if i<config().starter_vein_positions.size():p=[config().starter_vein_positions[i][0]+float(seed_value%11)*.05,0,config().starter_vein_positions[i][1]]
 		values.append({"id":"vein:"+str(i),"resource":types[i],"required_tier":FrontierMineralWorld.tier(types[i]),"capacity":int(config().vein_capacity.get(types[i],180))+int(body.planet_tier-1)*20,"position":p})
+	values.append_array(FrontierGroundExploration.deposits(body))
 	# Stable additive IDs preserve depletion of all older deposits.
 	if FrontierMineralWorld.enabled(body):values.append_array(starter_veins(body))
 	if FrontierMineralWorld.enabled(body):
@@ -132,6 +133,8 @@ static func ensure_site(world: Dictionary) -> Dictionary:
 	if int(body.planet_tier)==2 and body.get("origin","")!="solar_reference":
 		var cfg: Dictionary=FrontierProductionTier2.config().restoration
 		ledger.sites[world.location].restoration2={"salinity":float(cfg.starting_salinity),"soil":float(cfg.starting_soil)}
+		var inputs:=FrontierGroundExploration.inputs(body)
+		if not inputs.is_empty():ledger.sites[world.location].restoration2.inputs=inputs
 	return ledger.sites[world.location]
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
 	if not FrontierCrewSurface.landed(world):return "행성에 착륙한 뒤 사업을 운영하세요."
@@ -423,6 +426,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		var restoration: Variant=current.get("restoration2",{})
 		if not restoration is Dictionary:return "2티어 복원 기록 오류"
 		if not restoration.is_empty():
+			if restoration.has("inputs") and (not restoration.inputs is Dictionary or restoration.inputs!=FrontierGroundExploration.inputs(body)):return "지역 처리재 프로필 오류"
 			for attribute in ["salinity","soil"]:
 				if not FrontierUniverse._finite(restoration.get(attribute),0,100):return "염류·토양 기록 오류"
 		var e: Dictionary=current.environment

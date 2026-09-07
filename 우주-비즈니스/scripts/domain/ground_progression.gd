@@ -38,9 +38,13 @@ static func starter(body: Dictionary) -> Array:
 	_starter_cache[key]=rows.duplicate(true);return rows
 
 static func valid(value: Variant) -> bool:
-	if not value is Dictionary or value.get("version")!=1:return false
+	if not value is Dictionary or (value.get("version")!=1 and value.get("version")!=2):return false
 	if not FrontierUniverse._finite(value.get("intro_max_processing_seconds"),120,1200) or not FrontierUniverse._finite(value.get("near_resource_radius"),20,200):return false
 	if not value.get("starter") is Array or value.starter.size()!=5:return false
+	if int(value.version)>=2:
+		if not value.get("expedition") is Dictionary:return false
+		for field in ["radius","capacity","samples","radius_spread"]:
+			if not FrontierUniverse._finite(value.expedition.get(field),1,1000):return false
 	var seen: Array=[]
 	for row in value.starter:
 		if not row is Dictionary or not row.get("id") is String or row.id in seen or row.get("resource") not in ["iron","copper","stone","ice"]:return false

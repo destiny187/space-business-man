@@ -73,13 +73,13 @@ static func restore(site: Dictionary,b: Dictionary,dt: float) -> void:
 	var cfg: Dictionary=config().restoration
 	var r: Dictionary=site.get("restoration2",{})
 	var item: String="";var needed:=false
-	if b.type=="water" and not r.is_empty():item="mineral_filter";needed=float(r.salinity)>0
-	elif b.type=="biolab" and not r.is_empty():item="soil_base";needed=float(r.soil)<100
+	if b.type=="water" and not r.is_empty():item=str(r.get("inputs",{}).get("water","mineral_filter"));needed=float(r.salinity)>0
+	elif b.type=="biolab" and not r.is_empty():item=str(r.get("inputs",{}).get("biolab","soil_base"));needed=float(r.soil)<100
 	elif b.type=="atmosphere":item="mineral_filter";needed=float(site.environment.toxicity)>0
 	if not needed:return
 	if int(site.inventory.get(item,0))<=0:b.status=product(item).name+" 공급 필요";return
 	b.treatment_work=float(b.get("treatment_work",0))+dt
-	var cycle: float=cfg.soil_cycle if item=="soil_base" else cfg.filter_cycle
+	var cycle: float=cfg.soil_cycle if b.type=="biolab" else cfg.filter_cycle
 	if float(b.treatment_work)<cycle:return
 	b.treatment_work-=cycle;site.inventory[item]-=1
 	if b.type=="water":r.salinity=maxf(0,float(r.salinity)-float(cfg.salt_per_filter))
