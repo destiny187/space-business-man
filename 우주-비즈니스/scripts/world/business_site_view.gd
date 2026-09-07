@@ -21,6 +21,10 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=2.0;collision.shape=shape;collision.position.y=1;root.add_child(collision)
 	var label:=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.004;label.position.y=3.0;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;label.render_priority=110;label.outline_render_priority=109;root.add_child(label)
 	root.set_meta("label",label);root.set_meta("visual",visual);root.set_meta("parts",visual.find_children("Anim_*","Node3D",true,false))
+	if kind=="robot":
+		var rotor:=visual.find_child("ToolRotor",true,false)
+		if rotor!=null:root.get_meta("parts").append(rotor)
+		var intake:=Node3D.new();intake.name="DrillIntake";intake.position=Vector3(-.43,1.35,2.45);visual.add_child(intake);root.set_meta("intake",intake)
 	add_child(root);nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
@@ -60,6 +64,8 @@ func accept(value: Dictionary) -> void:
 		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
 		_upgrade_visual(nodes[row.id],row,true)
 		nodes[row.id].set_meta("working",row.status=="채광 중")
+		var vein:=FrontierExpeditionBusiness.find_vein(body,str(row.target))
+		nodes[row.id].set_meta("aim",FrontierMineralWorld.point(terrain.field,vein) if not vein.is_empty() else Vector3.INF)
 	for id in value.get("crates",{}):
 		var row: Dictionary=value.crates[id]
 		wanted[id]=true
@@ -97,9 +103,11 @@ func _process(dt: float) -> void:
 		if node.has_meta("destination"):
 			node.position=node.position.lerp(node.get_meta("destination"),minf(dt*8,1))
 			var direction: Vector3=node.position-previous
-			if direction.length()>.002:node.get_meta("visual").rotation.y=lerp_angle(node.get_meta("visual").rotation.y,atan2(-direction.x,-direction.z),minf(dt*8,1))
+			if node.get_meta("working",false) and node.get_meta("aim",Vector3.INF).is_finite():direction=node.get_meta("aim")-node.position
+			if direction.length()>.002:node.get_meta("visual").rotation.y=lerp_angle(node.get_meta("visual").rotation.y,atan2(direction.x,direction.z),minf(dt*8,1))
 		for part in node.get_meta("parts"):
-			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_x(-node.position.distance_to(previous)*4)
+			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_object_local(Vector3.UP,-node.position.distance_to(previous)*4)
+			elif node.get_meta("working",false) and part.name=="ToolRotor":part.rotate_object_local(Vector3.UP,dt*18)
 			elif node.get_meta("working",false) and (part.name.begins_with("Anim_Fan") or part.name.begins_with("Anim_Drill")):part.rotate_y(dt*6)
 
 func _vein_appearance(id: String,model: String) -> Dictionary:

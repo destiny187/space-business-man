@@ -253,7 +253,7 @@ func _industry_effects() -> void:
 		if robot.status=="채광 중":
 			var vein:=FrontierExpeditionBusiness.find_vein(app.surface_world.body,robot.target)
 			if vein.is_empty() or not visuals.has(vein.id):continue
-			effects.suction(visuals[vein.id].global_position+Vector3.UP,actor,vein.resource,4)
+			effects.suction(visuals[vein.id].global_position+Vector3.UP,actor.get_meta("intake",actor),vein.resource,4)
 		elif robot.status=="충전 중":effects.burst(actor.global_position+Vector3.UP*.5,Color("82f5d2"),3)
 	for building in site.get("buildings",{}).values():
 		if not visuals.has(building.id) or not building.active:continue
