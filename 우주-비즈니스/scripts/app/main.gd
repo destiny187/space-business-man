@@ -35,6 +35,7 @@ var show_all_planets: bool = false
 var menu_scroll: ScrollContainer
 
 func _ready() -> void:
+	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	DisplayServer.window_set_min_size(Vector2i(960,640))
 	get_tree().auto_accept_quit = false
 	campaign.persistence_enabled = false
@@ -806,9 +807,14 @@ func _pause_menu() -> void:
 	_button(body,"저장하고 종료",_quit_game)
 
 func _process(delta: float) -> void:
+	var settings:=FrontierClientSettings.current(get_tree())
+	var interface_open: bool=not screen.is_empty() or (settings!=null and settings.is_open()) or FrontierCursorPolicy.modal_open(get_tree())
+	world.controls_enabled=not interface_open and not campaign.planet.is_empty() and get_window().has_focus()
+	if not world.controls_enabled:FrontierCursorPolicy.release()
+	elif Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED:Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 	notification_time = maxf(0,notification_time-delta)
 	notification.visible = notification_time > 0
-	if screen.is_empty() and not campaign.planet.is_empty():
+	if screen.is_empty() and not campaign.planet.is_empty() and not interface_open:
 		sim_accumulator += minf(delta,0.25)
 		while sim_accumulator >= 0.1:
 			simulation.step(campaign,0.1)
@@ -834,7 +840,7 @@ func _process(delta: float) -> void:
 	if refresh_time >= 0.25:
 		refresh_time = 0
 		world.sync()
-		audio.update_world(campaign.planet,not screen.is_empty())
+		audio.update_world(campaign.planet,interface_open)
 		if screen.is_empty(): _update_hud()
 
 func _update_hud() -> void:
@@ -860,6 +866,8 @@ func _input(event: InputEvent) -> void:
 	toast("키를 변경했습니다. 설정·진행 저장으로 보존하세요.")
 
 func _unhandled_input(event: InputEvent) -> void:
+	var settings:=FrontierClientSettings.current(get_tree())
+	if (settings!=null and settings.is_open()) or FrontierCursorPolicy.modal_open(get_tree()):return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode == KEY_ESCAPE:
 			if screen == "title": return

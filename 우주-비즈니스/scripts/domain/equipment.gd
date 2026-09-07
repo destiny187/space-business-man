@@ -11,6 +11,12 @@ static func create(profile: Dictionary) -> Dictionary:
 		if item.definition=="rock_tool":
 			var tier: int={"standard":1,"improved":2,"rare":3}[item.grade]
 			result.items[item.id]="miner_"+str(tier)
+			if result.slots[0].is_empty():result.slots[0]=item.id
+	if result.slots[0].is_empty():
+		result.items["crafted:1"]="miner_1"
+		result.slots[0]="crafted:1"
+		result.counter=1
+	result.kit=0
 	return result
 static func state(member: Dictionary) -> Dictionary:
 	return member.get("loadout",create(member.profile))

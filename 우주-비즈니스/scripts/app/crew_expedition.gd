@@ -73,6 +73,7 @@ var placement_valid:=false
 var placement_ghost: Node3D
 var ghost_material: StandardMaterial3D
 func _ready() -> void:
+	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	world_store=FrontierWorldStore.new(selected_world_path(false))
 	test_mode="--crew-ui-test" in OS.get_cmdline_user_args()
 	if test_mode:
@@ -92,6 +93,9 @@ func _ready() -> void:
 	_build_cabin();_build_ui();cabin_root.hide()
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
+	for frame in [navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,waiting_screen,onboarding.letter]:
+		frame.visibility_changed.connect(func():
+			if frame.is_visible_in_tree():FrontierCursorPolicy.release();mouse_steering=Vector2.ZERO)
 	_apply_client_settings.call_deferred()
 	if FileAccess.file_exists(profile.path) and profile.ensure():
 		name_input.text=profile.data.character.name;name_input.editable=false
@@ -344,7 +348,7 @@ func _physics_process(delta: float) -> void:
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
-		if FrontierClientSettings.ensure(get_tree()).is_open():direction=Vector2.ZERO;scanning=false
+		if feedback.blocked() or (onboarding!=null and onboarding.letter.visible):direction=Vector2.ZERO;scanning=false
 		var flight_controls: Array=[0.0,0.0,0.0]
 		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
 			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
@@ -399,7 +403,7 @@ func _process(delta: float) -> void:
 	_update_surface_hud()
 	_update_business_placement()
 func _input(event: InputEvent) -> void:
-	if FrontierClientSettings.ensure(get_tree()).is_open():return
+	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
 	if event is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and _mouse_look_allowed():
 		var preferences:=FrontierClientSettings.ensure(get_tree())
 		_mouse_look(event.relative,float(preferences.values.sensitivity),bool(preferences.values.invert_y))
@@ -417,7 +421,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if ordinal>=0 and flight.scanned.has(FrontierUniverse.body_id(session.manifest,ordinal)):
 			selected_ordinal=ordinal;select_destination();get_viewport().set_input_as_handled();return
 	var preferences:=FrontierClientSettings.ensure(get_tree())
-	if preferences.is_open() or not session.active or session.latest.get("phase")!="playing":return
+	if preferences.is_open() or FrontierCursorPolicy.modal_open(get_tree()) or not session.active or session.latest.get("phase")!="playing":return
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
@@ -727,7 +731,10 @@ func use_equipped() -> void:
 		"pulse":surface_action("surface_attack")
 
 func _mouse_look_allowed() -> bool:
-	return session!=null and session.active and session.latest.get("phase")=="playing" and feedback!=null and not feedback.blocked() and (onboarding==null or not onboarding.letter.visible)
+	if session==null or not session.active or session.latest.get("phase")!="playing":return false
+	if waiting_screen!=null and waiting_screen.is_visible_in_tree():return false
+	if lobby!=null and lobby.is_visible_in_tree():return false
+	return feedback!=null and not feedback.blocked() and (onboarding==null or not onboarding.letter.visible)
 
 func _sync_mouse_capture() -> void:
 	if test_mode:return
