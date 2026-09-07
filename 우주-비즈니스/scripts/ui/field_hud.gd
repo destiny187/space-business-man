@@ -103,4 +103,13 @@ func _process(delta: float) -> void:
 	var size:=get_viewport().get_visible_rect().size
 	context.position=Vector2(size.x/2+24,size.y/2+36)
 
+	if not app.placement_kind.is_empty():
+		var def:=FrontierCatalog.entry("buildings",app.placement_kind)
+		target_icon.texture=FrontierInterfaceStyle.icon(def.model)
+		target_name.text=("✓ 건설 가능 · " if app.placement_valid else "× 건설 불가 · ")+str(def.name)
+		target_action.text="클릭 건설 · 가방 "+FrontierCatalog.cost_text(def.cost) if app.placement_valid else app.placement_reason
+		target_action.modulate=FrontierInterfaceStyle.ACCENT if app.placement_valid else FrontierInterfaceStyle.WARNING
+		target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
+		context.show();target_bar.hide()
+	else:target_action.autowrap_mode=TextServer.AUTOWRAP_OFF;target_action.custom_minimum_size.x=0
 	if scan_card.visible:context.hide()

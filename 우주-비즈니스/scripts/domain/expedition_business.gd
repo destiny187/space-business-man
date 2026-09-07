@@ -98,6 +98,25 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	for vein in veins(body):
 		if Vector2(vein.position[0]-p.x,vein.position[2]-p.z).length()<radius+2:return "광맥과 채광 접근로를 비워 두세요."
 	return ""
+static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3,active: Dictionary) -> String:
+	var current:=site(world)
+	if current.is_empty():return "착륙 지표를 준비 중입니다."
+	if FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return "태양계는 테라포밍 불가 행성입니다."
+	if not world.business.get("active_elsewhere","").is_empty():return "다른 행성의 복원 계약을 먼저 정산하세요."
+	if current.state=="settled":return "정산된 계약의 시설은 인계됐습니다."
+	if current.state=="exploration" and not world.business.get("active","").is_empty() and world.business.active!=world.location:return "다른 행성의 복원 계약을 먼저 정산하세요."
+	if p.distance_to(point(world.crew.members[actor].position))>12:return "건설할 지점에 가까이 이동하세요."
+	var error:=placement(world,kind,p,active)
+	if not error.is_empty():return error
+	if current.buildings.size()>=int(config().max_buildings):return "이 개발 구역의 시설 한도에 도달했습니다."
+	var def:=FrontierCatalog.entry("buildings",kind)
+	if not def.tech.is_empty() and def.tech not in world.business.technologies:return "시설 기술이 필요합니다."
+	var missing: Dictionary={}
+	for key in def.cost:
+		var amount:=int(def.cost[key])-int(bag(world,actor).get(key,0))
+		if amount>0:missing[key]=amount
+	if not missing.is_empty():return "가방 부족 · "+FrontierCatalog.cost_text(missing)+" · 창고에서 직접 인수하세요."
+	return ""
 static func ensure_site(world: Dictionary) -> Dictionary:
 	if not world.has("business"):world.business=create()
 	var ledger: Dictionary=world.business
@@ -188,14 +207,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="business_build":
 		if not FrontierUniverse._vector3_array(args.get("position")):return "배치 좌표 오류"
 		var p:=point(args.position);var key: String=str(args.get("building",""))
-		if p.distance_to(position)>12:return "건설할 지점에 가까이 이동하세요."
-		var error:=placement(world,key,p,active)
+		var error:=build_reason(world,actor,key,p,active)
 		if not error.is_empty():return error
-		var def:=FrontierCatalog.entry("buildings",key)
-		if current.buildings.size()>=int(config().max_buildings):return "이 개발 구역의 시설 한도에 도달했습니다."
-		if not def.tech.is_empty() and def.tech not in ledger.technologies:return "시설 기술이 필요합니다."
-		if not affordable(current.inventory,def.cost):return "현장 창고의 건설 재료가 부족합니다."
-		transfer(current.inventory,def.cost,-1)
+		transfer(bag(world,actor),FrontierCatalog.entry("buildings",key).cost,-1)
 		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"position":array(p),"yaw":0.0,"enabled":true,"active":false,"status":"전력 확인 중","work":0.0};return ""
 	if kind in ["business_toggle","business_demolish","business_craft"]:
 		var id: String=str(args.get("building_id",""))

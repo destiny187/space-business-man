@@ -86,6 +86,7 @@ var business_panel: FrontierBusinessPanel
 var placement_kind: String=""
 var placement_point:=Vector3.INF
 var placement_valid:=false
+var placement_reason: String=""
 var placement_ghost: Node3D
 var ghost_material: StandardMaterial3D
 func _ready() -> void:
@@ -508,7 +509,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
-			else:feedback.reject()
+			else:feedback.reject(placement_reason)
 			return
 		if inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 		use_equipped()
@@ -765,7 +766,7 @@ func begin_placement(kind: String) -> void:
 	ghost_material=StandardMaterial3D.new();ghost_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ghost_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ghost_material.albedo_color=Color(.3,.9,.6,.45)
 	for node in placement_ghost.find_children("*","MeshInstance3D",true,false):node.material_override=ghost_material;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 func cancel_placement() -> void:
-	placement_kind="";placement_valid=false
+	placement_kind="";placement_valid=false;placement_reason=""
 	if is_instance_valid(placement_ghost):placement_ghost.queue_free()
 	placement_ghost=null
 func _update_business_placement() -> void:
@@ -773,7 +774,7 @@ func _update_business_placement() -> void:
 	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*12);query.exclude=[actors[session.latest.self_id].get_rid()]
 	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
 	placement_valid=false
-	if hit.is_empty():placement_ghost.hide();status.value="12m 안의 지면을 조준하세요 · Esc 취소";return
+	if hit.is_empty():placement_ghost.hide();placement_reason="12m 안의 지면을 조준하세요 · Esc 취소";return
 	placement_point=hit.position
 	var ground_height: float=surface_world.terrain.field.height(placement_point.x,placement_point.z)
 	var on_surface: bool=absf(placement_point.y-ground_height)<1.5
@@ -782,8 +783,10 @@ func _update_business_placement() -> void:
 	var packet: Dictionary=session.surface
 	var world: Dictionary=session.authority.world if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
 	var current:=FrontierExpeditionBusiness.site(world)
-	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.placement(world,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
+	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
 	if not on_surface:reason="지표의 평탄한 지면에 배치하세요 · Esc 취소"
+	if reason.is_empty() and not surface_world.ready_at(placement_point):reason="지면을 불러오는 중입니다."
+	placement_reason=reason
 	placement_valid=on_surface and reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
 	status.value=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason

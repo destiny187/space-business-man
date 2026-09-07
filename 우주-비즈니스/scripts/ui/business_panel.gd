@@ -232,6 +232,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	register_button.hide();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
 	refresh_context(value.get("sites",{}).get(id,{}))
+	refresh_building_cost()
 	update_engineering()
 	production_panel.update_site(value.get("sites",{}).get(id,{}))
 	for bar in environment_bars.values():bar.value=0
@@ -307,4 +308,8 @@ func update_engineering() -> void:
 
 func refresh_building_cost() -> void:
 	for kind in building_cards:building_cards[kind].set_pressed_no_signal(kind==selected(building))
-	building_cost.value="건설 재료 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",selected(building)).cost)
+	var cost: Dictionary=FrontierCatalog.entry("buildings",selected(building)).cost
+	var bag: Dictionary=ledger.get("bags",{}).get(actor_id,{})
+	var parts: PackedStringArray=[]
+	for key in cost:parts.append("%s %d/%d"%[FrontierCatalog.entry("resources",key).name,int(bag.get(key,0)),int(cost[key])])
+	building_cost.value="내 가방 · "+" · ".join(parts)+(" · 재료 충분" if FrontierExpeditionBusiness.affordable(bag,cost) else " · 부족분은 창고에서 직접 인수")
