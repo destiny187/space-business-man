@@ -95,6 +95,20 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	for vein in veins(body):
 		if Vector2(vein.position[0]-p.x,vein.position[2]-p.z).length()<radius+2:return "광맥과 채광 접근로를 비워 두세요."
 	return ""
+static func ensure_site(world: Dictionary) -> Dictionary:
+	if not world.has("business"):world.business=create()
+	var ledger: Dictionary=world.business
+	if ledger.sites.has(world.location):return ledger.sites[world.location]
+	var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
+	var center:=point(config().base_position);center.y=FrontierCrewSurface.field(world).height(center.x,center.z)
+	var source: Dictionary=body.get("traits",FrontierCatalog.entry("planets",body.kind))
+	ledger.sites[world.location]={"center":array(center),"state":"exploration","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
+	if not FrontierMineralWorld.enabled(body):
+		for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
+	if int(body.planet_tier)==2 and body.get("origin","")!="solar_reference":
+		var cfg: Dictionary=FrontierProductionTier2.config().restoration
+		ledger.sites[world.location].restoration2={"salinity":float(cfg.starting_salinity),"soil":float(cfg.starting_soil)}
+	return ledger.sites[world.location]
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
 	if not FrontierCrewSurface.landed(world):return "행성에 착륙한 뒤 사업을 운영하세요."
 	if (kind=="business_build" or kind.begins_with("business_research_")) and FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return "태양계는 테라포밍 불가 행성입니다."
@@ -108,22 +122,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not restriction.is_empty():return restriction
 		if actor!=world.crew.owner_id:return "호스트가 공동 개발 사업을 등록합니다."
 		if not at_ship:return "착륙선에서 개발 범위를 등록하세요."
-		if ledger.sites.has(world.location):return "이미 등록한 행성입니다."
+		if ledger.sites.has(world.location) and ledger.sites[world.location].state!="exploration":return "이미 등록한 행성입니다."
 		if not ledger.active.is_empty():return "진행 중인 개발 사업을 정산한 뒤 새 사업을 등록하세요."
-		var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
-		var center:=point(config().base_position);center.y=FrontierCrewSurface.field(world).height(center.x,center.z)
-		var source: Dictionary=body.get("traits",FrontierCatalog.entry("planets",body.kind))
-		ledger.sites[world.location]={"center":array(center),"state":"active","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
-		if not FrontierMineralWorld.enabled(body):
-			for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity
-		if int(body.planet_tier)==2 and body.get("origin","")!="solar_reference":
-			var cfg: Dictionary=FrontierProductionTier2.config().restoration
-			ledger.sites[world.location].restoration2={"salinity":float(cfg.starting_salinity),"soil":float(cfg.starting_soil)}
-		ledger.active=world.location;return ""
-	var current:=site(world)
-	if current.is_empty():return "먼저 무료 개발 사업을 등록하세요."
-	if current.state!="active":return "정산된 계약의 자산은 인계됐습니다. 관찰과 다른 행성 탐험은 가능합니다."
-	if kind in ["business_produce","business_withdraw","business_facility_upgrade","business_robot_upgrade"]:return FrontierProductionTier2.apply(world,actor,kind,args)
+		var registered:=ensure_site(world);registered.state="active";ledger.active=world.location;return ""
+	var current:=ensure_site(world)
 	var near_base: bool=near_warehouse(current,position)
 	if kind=="business_mine":
 		var row:=find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),str(args.get("vein_id","")))
@@ -138,11 +140,14 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var amount: int=mini(int(current.remaining.get(row.id,row.capacity)),mini(int(tool.amount),FrontierItemInventory.room(world,actor,row.resource)))
 		if amount<=0:return "광맥이 고갈됐거나 배낭이 가득 찼습니다."
 		current.remaining[row.id]=int(current.remaining.get(row.id,row.capacity))-amount;ledger.bags[actor][row.resource]=int(ledger.bags[actor].get(row.resource,0))+amount;return ""
-	if kind=="business_deposit":
-		if not near_base:return "현장 창고 9m 이내로 돌아오세요."
-		if total(bag(world,actor))==0 and int(world.crew.members[actor].carried)==0:return "반납할 자원이 없습니다."
-		transfer(current.inventory,bag(world,actor),1);current.delivered+=total(bag(world,actor));ledger.bags[actor]=inventory()
-		current.inventory.stone+=int(world.crew.members[actor].carried);current.delivered+=int(world.crew.members[actor].carried);world.crew.members[actor].carried=0;return ""
+	if kind=="business_technology":
+		if actor!=world.crew.owner_id:return "공동 기술 구매는 호스트가 진행합니다."
+		if not at_ship:return "착륙선 기술 단말에 접근하세요."
+		var key: String=str(args.get("technology",""));var def:=FrontierCatalog.entry("technologies",key)
+		if key not in config().technologies or key in ledger.technologies:return "구매 가능한 기초 기술을 선택하세요."
+		if not def.requires.is_empty() and def.requires not in ledger.technologies:return "선행 기술이 필요합니다."
+		if ledger.credits<int(def.price):return "공동 크레딧이 부족합니다."
+		ledger.credits-=int(def.price);ledger.technologies.append(key);return ""
 	if kind=="business_recover_crate":
 		var id: String=str(args.get("crate_id",""))
 		if not ledger.crates.has(id):return "이미 회수한 사업 화물입니다."
@@ -151,20 +156,31 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not FrontierItemInventory.fits(world,actor,crate.inventory):return "배낭을 먼저 비우세요."
 		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
 		transfer(ledger.bags[actor],crate.inventory,1);ledger.crates.erase(id);return ""
+	if current.state=="settled":return "정산된 계약의 시설과 창고는 인계됐습니다."
+	if kind=="business_withdraw":return FrontierProductionTier2.apply(world,actor,kind,args)
+	if kind=="business_store_equipment":return FrontierItemInventory.warehouse_equipment(world,actor,args)
+	if kind=="business_deposit":
+		if not near_base:return "현장 창고 9m 이내로 돌아오세요."
+		if total(bag(world,actor))==0 and int(world.crew.members[actor].carried)==0:return "반납할 자원이 없습니다."
+		var resource:=str(args.get("resource",""))
+		if FrontierCatalog.entry("resources",resource).is_empty() or not integer(args.get("amount"),1,int(FrontierItemInventory.config().resource_stack)):return "보관할 아이템을 창고로 끌어놓으세요."
+		var amount:=int(args.amount);var stock:=bag(world,actor)
+		if int(stock.get(resource,0))<amount:return "배낭의 수량이 부족합니다."
+		if not FrontierItemInventory.warehouse_fits(current,{resource:amount}):return "창고가 가득 찼습니다. 아이템을 꺼내거나 창고를 추가 건설하세요."
+		stock[resource]-=amount;current.inventory[resource]=int(current.inventory.get(resource,0))+amount;current.delivered+=amount;return ""
+	if current.state=="exploration":
+		if not ledger.active.is_empty():return "다른 행성의 복원 계약을 정산하면 이곳에서 시설을 운영할 수 있습니다. 채광은 계속 가능합니다."
+		current.state="active";ledger.active=world.location
+	if current.state!="active":return "정산된 계약의 시설과 창고는 인계됐습니다."
+	if kind in ["business_produce","business_facility_upgrade","business_robot_upgrade"]:return FrontierProductionTier2.apply(world,actor,kind,args)
 	if kind in ["business_technology","business_supply","business_settle","business_robot_rescue"] and actor!=world.crew.owner_id:return "공동 자금 지출과 정산은 호스트가 확정합니다."
-	if kind=="business_technology":
-		if not at_ship:return "착륙선 기술 단말에 접근하세요."
-		var key: String=str(args.get("technology",""));var def:=FrontierCatalog.entry("technologies",key)
-		if key not in config().technologies or key in ledger.technologies:return "구매 가능한 기초 기술을 선택하세요."
-		if not def.requires.is_empty() and def.requires not in ledger.technologies:return "선행 기술이 필요합니다."
-		if ledger.credits<int(def.price):return "공동 크레딧이 부족합니다."
-		ledger.credits-=int(def.price);ledger.technologies.append(key);return ""
 	if kind=="business_supply":
 		if not near_base:return "현장 창고에서 보급을 인수하세요."
 		var resource: String=str(args.get("resource",""))
 		if not config().store_unit_price.has(resource):return "보급 품목 오류"
 		var cost: int=int(config().store_unit_price[resource])*20
 		if ledger.credits<cost:return "보급 크레딧이 부족합니다."
+		if not FrontierItemInventory.warehouse_fits(current,{resource:20}):return "창고 공간이 부족합니다."
 		ledger.credits-=cost;current.inventory[resource]+=20;return ""
 	if kind=="business_build":
 		if not FrontierUniverse._vector3_array(args.get("position")):return "배치 좌표 오류"
@@ -189,6 +205,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			if FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 공학 실험을 완료한 뒤 철거하세요."
 			for job in current.jobs.values():
 				if job.factory_id==id:return "제작이 끝난 뒤 제작소를 철거하세요."
+			var refund: Dictionary=FrontierCatalog.entry("buildings",building.type).cost.duplicate()
+			if int(building.get("tier",1))==2:transfer(refund,FrontierProductionTier2.config().facility_upgrades[building.type].cost,1)
+			if not FrontierItemInventory.warehouse_fits(current,refund,-int(FrontierItemInventory.config().warehouse_slots) if building.type=="storage" else 0):return "철거 후 창고 용량과 반환 재료 공간이 부족합니다."
 			if int(building.get("tier",1))==2:transfer(current.inventory,FrontierProductionTier2.config().facility_upgrades[building.type].cost,1)
 			transfer(current.inventory,FrontierCatalog.entry("buildings",building.type).cost,1);current.buildings.erase(id);return ""
 		for job in current.jobs.values():
@@ -233,6 +252,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
 		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="작업 배정 대기";current.robots[id]=robot;ledger.hangar.erase(id);return ""
 	if kind=="business_settle":
+		if not current.get("stored_equipment",{}).is_empty():return "승무원이 보관한 장비를 먼저 회수하세요."
 		if not at_ship:return "착륙선 단말에서 계약 인계를 확정하세요."
 		if not FrontierProductionTier2.restoration_ready(current):return "Mk.2 담수 처리·토양 개량이 필요합니다. 염류 20 이하, 토양 60 이상을 달성하세요."
 		for facility in current.buildings.values():
@@ -316,14 +336,18 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		if not id is String or not valid_robot(value.hangar[id],id) or total(value.hangar[id].cargo)!=0:return "운송 로봇 오류"
 		robots[id]=true
 	for id in value.bags:
-		if not id is String or not valid_inventory(value.bags[id],FrontierItemInventory.limit()) or FrontierItemInventory.used(value.bags[id])>int(FrontierItemInventory.config().slots):return "개인 사업 운반량 오류"
+		if not id is String or not valid_inventory(value.bags[id],FrontierItemInventory.limit()) or FrontierItemInventory.used(value.bags[id])>FrontierItemInventory.storage_slots():return "개인 사업 운반량 오류"
 	for id in value.crates:
 		var crate: Variant=value.crates[id]
 		if not id is String or not crate is Dictionary or not crate.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,crate.body_id)<0 or not FrontierUniverse._vector3_array(crate.get("position")) or not valid_inventory(crate.get("inventory"),FrontierItemInventory.limit()) or total(crate.inventory)>FrontierItemInventory.limit():return "사업 회수 화물 오류"
 	for id in value.sites:
 		if not id is String or FrontierUniverse.ordinal_of(manifest,id)<0:return "개발 행성 주소 오류"
 		var current: Variant=value.sites[id]
-		if not current is Dictionary or current.get("state") not in ["active","settled"] or not FrontierUniverse._vector3_array(current.get("center")) or not valid_inventory(current.get("inventory")):return "개발 현장 구조 오류"
+		if not current is Dictionary or current.get("state") not in ["active","settled","exploration"] or not FrontierUniverse._vector3_array(current.get("center")) or not valid_inventory(current.get("inventory")):return "개발 현장 구조 오류"
+		if not current.get("stored_equipment",{}) is Dictionary:return "창고 장비 기록 오류"
+		for equipment_key in current.get("stored_equipment",{}):
+			var stored: Variant=current.stored_equipment[equipment_key]
+			if not stored is Dictionary or not stored.get("owner") is String or not stored.get("item_id") is String or equipment_key!=stored.owner+"/"+stored.item_id or not FrontierEquipment.config().items.has(stored.get("definition","")):return "창고 장비 소유 기록 오류"
 		if current.state=="active" and value.active!=id:return "활성 사업은 하나여야 합니다."
 		for key in ["remaining","buildings","robots","jobs","environment","settlement"]:
 			if not current.get(key) is Dictionary:return "개발 기록 형식 오류"

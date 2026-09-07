@@ -121,3 +121,5 @@
 - [항해 간소화·Esc 메뉴·입력 전환](production/38-navigation-context-and-menus.md): 우측 상단 지도·큰 지도·근접 착륙과 창 전환 시 마우스/시점 복구.
 
 - [시설별 작업 인터페이스](production/39-facility-interactions.md): B 건설과 F 로봇 제작소·시설·창고·착륙선 작업 분리.
+
+- [유한 창고·운송 화물·FPS 시점](production/43-warehouse-and-fps-input.md): 행성/우주선 10칸, 드래그 입출고, 개인 배낭 운송과 실제 창 확인.

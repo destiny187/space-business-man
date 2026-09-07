@@ -16,6 +16,13 @@ static func validate(value: Variant) -> String:
 	if not value.get("members") is Dictionary or not value.members.has(value.get("owner_id")) or not value.members.has(value.get("pilot_id")):return "승무원 소유·조종 기록 오류"
 	if not FrontierUniverse._finite(value.get("revision"),0,9007199254740000) or value.revision!=floorf(value.revision):return "협동 변경 순번 오류"
 	if not FrontierUniverse._finite(value.get("rock"),0,100000000) or value.rock!=floorf(value.rock):return "공동 창고 수량 오류"
+	if not value.get("cargo",{}) is Dictionary:return "우주선 화물 기록 오류"
+	for resource in value.get("cargo",{}):
+		if resource=="stone" or FrontierCatalog.entry("resources",resource).is_empty() or not FrontierExpeditionBusiness.integer(value.cargo[resource],0,100000000):return "우주선 화물 수량 오류"
+	if not value.get("cargo_equipment",{}) is Dictionary:return "우주선 장비 기록 오류"
+	for key in value.get("cargo_equipment",{}):
+		var stored: Variant=value.cargo_equipment[key]
+		if not stored is Dictionary or not stored.get("owner") is String or not stored.get("item_id") is String or key!=stored.owner+"/"+stored.item_id or not FrontierEquipment.config().items.has(stored.get("definition","")):return "우주선 장비 소유 오류"
 	if not value.get("receipts") is Dictionary or value.receipts.size()>128 or not value.get("recovery") is Dictionary:return "공동 거래 기록 오류"
 	if value.has("landing"):
 		if not value.landing is Dictionary:return "공동 착륙 기록 오류"

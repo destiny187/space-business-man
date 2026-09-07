@@ -48,6 +48,8 @@ func blocked() -> bool:
 	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
+	if kind in ["deposit","withdraw"]:
+		pending[sequence]={"kind":kind};return
 	if app.surface_world==null:return
 	# Keep the point at request time, including when the client turns while awaiting the host.
 	var point:=app.camera.global_position-app.camera.global_basis.z*4
@@ -68,6 +70,8 @@ func reject(message: String="배치할 수 없습니다") -> void:
 func _response(sequence: int,value: Dictionary) -> void:
 	if not pending.has(sequence):return
 	var request: Dictionary=pending[sequence];pending.erase(sequence)
+	if request.kind in ["deposit","withdraw"]:
+		audio.play("sfx_pickup_resource" if value.get("ok",false) else "sfx_build_invalid");return
 	if app.surface_world==null or app.surface_world.body.id!=request.body:return
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
@@ -87,7 +91,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 			cue_left=0;recoil=.3;work_left=.4;effects.suction(point,handheld,request.resource,6)
 			effects.burst(point,Color(FrontierCatalog.entry("resources",request.resource).color),8)
 			audio.play("sfx_mine_hit_metal",point);audio.play("sfx_pickup_resource")
-		"business_withdraw","business_deposit","business_recover_crate","surface_collect","surface_resupply":
+		"business_store_equipment","business_withdraw","business_deposit","business_recover_crate","surface_collect","surface_resupply":
 			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("인수 완료")
 		"business_build":
 			# The shared surface packet presents construction to every observer.

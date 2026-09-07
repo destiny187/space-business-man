@@ -1,6 +1,9 @@
 class_name FrontierItemTile
 extends Button
 signal item_dropped(item_id: String)
+signal cargo_dropped(payload: Dictionary)
+var cargo_payload: Dictionary={}
+var cargo_destination: String=""
 var item_id: String=""
 var slot: int=-1
 var caption: String=""
@@ -35,9 +38,12 @@ func _draw() -> void:
 	if not amount.is_empty():draw_string(font,Vector2(6,size.y-8),amount,HORIZONTAL_ALIGNMENT_RIGHT,size.x-12,14,FrontierInterfaceStyle.TEXT)
 	elif not caption.is_empty():draw_string(font,Vector2(7,size.y-8),caption,HORIZONTAL_ALIGNMENT_LEFT,size.x-14,11,FrontierInterfaceStyle.MUTED)
 func _get_drag_data(_at: Vector2) -> Variant:
-	if item_id.is_empty() or slot>=0:return null
+	if (item_id.is_empty() and cargo_payload.is_empty()) or slot>=0:return null
 	var image:=TextureRect.new();image.texture=picture;image.custom_minimum_size=Vector2(80,70);image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;set_drag_preview(image)
-	return {"equipment_item":item_id}
+	return cargo_payload if not cargo_payload.is_empty() else {"equipment_item":item_id}
 func _can_drop_data(_at: Vector2,data: Variant) -> bool:
+	if not cargo_destination.is_empty():return data is Dictionary and data.get("source",cargo_destination)!=cargo_destination and data.has("source")
 	return slot>=0 and data is Dictionary and data.get("equipment_item") is String
-func _drop_data(_at: Vector2,data: Variant) -> void:item_dropped.emit(data.equipment_item)
+func _drop_data(_at: Vector2,data: Variant) -> void:
+	if not cargo_destination.is_empty():cargo_dropped.emit(data)
+	else:item_dropped.emit(data.equipment_item)

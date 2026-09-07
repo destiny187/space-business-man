@@ -59,6 +59,7 @@ static func tick(site: Dictionary,dt: float) -> void:
 		job.progress=minf(float(recipe.seconds),float(job.progress)+dt*factor(row))
 		row.status=recipe.name+" · %d%%"%int(float(job.progress)/float(recipe.seconds)*100)
 		if float(job.progress)<float(recipe.seconds):continue
+		if not FrontierItemInventory.warehouse_fits(site,{job.product:int(recipe.amount)}):row.status="창고 가득 참 · 완성품 출고 대기";continue
 		site.inventory[job.product]=int(site.inventory.get(job.product,0))+int(recipe.amount)
 		row.production={};row.product_serial=int(row.get("product_serial",0))+1;row.status=recipe.name+" · 생산 완료"
 static func restoration_ready(site: Dictionary) -> bool:

@@ -48,6 +48,7 @@ var pitch:=0.0
 var mouse_steering:=Vector2.ZERO
 var cursor_released:=false
 var mouse_resume_guard:=false
+var previous_accumulated_input:=true
 var outside:=false
 var movement_timer:=0.0
 var ready_button: Button
@@ -86,6 +87,8 @@ var placement_valid:=false
 var placement_ghost: Node3D
 var ghost_material: StandardMaterial3D
 func _ready() -> void:
+	previous_accumulated_input=Input.use_accumulated_input
+	Input.use_accumulated_input=false
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	world_store=FrontierWorldStore.new(selected_world_path(false))
 	test_mode="--crew-ui-test" in OS.get_cmdline_user_args()
@@ -461,7 +464,7 @@ func _input(event: InputEvent) -> void:
 func _look_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and _mouse_look_allowed():
 		var preferences:=FrontierClientSettings.ensure(get_tree())
-		_mouse_look(event.relative,float(preferences.values.sensitivity),bool(preferences.values.invert_y))
+		_mouse_look(event.screen_relative,preferences.mouse_sensitivity(),bool(preferences.values.invert_y))
 		get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
 	if arrival!=null and arrival.active:return
@@ -651,6 +654,7 @@ func surface_action(kind: String) -> void:
 	session.send_request(kind,args)
 
 func _exit_tree() -> void:
+	Input.use_accumulated_input=previous_accumulated_input
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
@@ -705,12 +709,18 @@ func interact_business() -> void:
 		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
 func open_station(kind: String,id: String="") -> void:
 	if not session.active or surface_world==null:return
+	if kind in ["base","storage"]:
+		open_menu(inventory_panel);inventory_panel.warehouse_choice.select(0);inventory_panel.tabs.current_tab=2;return
 	close_menus()
 	business_panel.set_context(kind,id)
 	open_menu(business_panel)
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
 func station_action(kind: String) -> void:
 	match kind:
+		"storage":
+			open_station("base")
+		"cargo":
+			open_menu(inventory_panel);inventory_panel.warehouse_choice.select(1);inventory_panel.tabs.current_tab=2
 		"research":
 			close_menus();toggle_research()
 			for control in research_actions:control.show()
@@ -824,7 +834,8 @@ func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
 			flight.look_offset.y=clampf(flight.look_offset.y-motion.y,-1.3,1.3)
 	else:
 		yaw-=motion.x
-		pitch=clampf(pitch-motion.y,-1.3,1.3)
+		pitch=clampf(pitch-motion.y,deg_to_rad(-89),deg_to_rad(89))
+		if camera!=null:camera.rotation=Vector3(pitch,yaw,0)
 
 func _refresh_scan_detail() -> void:
 	if navigation_ui!=null:navigation_ui.refresh_survey()

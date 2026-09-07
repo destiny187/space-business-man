@@ -99,7 +99,11 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	if r.phase=="return":
 		r.status="창고로 운반"
 		if _move(world,r,FrontierExpeditionBusiness.point(site.center)+Vector3(3,0,0),dt):
-			site.delivered+=FrontierExpeditionBusiness.total(r.cargo);FrontierExpeditionBusiness.transfer(site.inventory,r.cargo,1);r.cargo=FrontierExpeditionBusiness.inventory();r.phase="outbound" if not r.target.is_empty() and int(site.remaining.get(r.target,0))>0 else "idle";r.path=[]
+			for resource in r.cargo:
+				var amount:=mini(int(r.cargo[resource]),FrontierItemInventory.warehouse_room(site,resource))
+				site.inventory[resource]=int(site.inventory.get(resource,0))+amount;r.cargo[resource]-=amount;site.delivered+=amount
+			if FrontierExpeditionBusiness.total(r.cargo)>0:r.status="창고 가득 참 · 하역 대기";return
+			r.phase="outbound" if not r.target.is_empty() and int(site.remaining.get(r.target,0))>0 else "idle";r.path=[]
 		return
 	var vein:=FrontierExpeditionBusiness.find_vein(FrontierUniverse.body_from_id(world.manifest,world.location),r.target)
 	if not vein.is_empty() and FrontierExpeditionBusiness.thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),site,vein):r.status="고온 광맥 · 구역 냉각 필요";return

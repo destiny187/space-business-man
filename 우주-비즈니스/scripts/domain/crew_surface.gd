@@ -101,6 +101,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		FrontierEcology.ensure_planet(world.ecology,body)
 		world.location=body.id;world.navigation_target=body.id;world.visited[body.id]=true;crew.navigation.target=int(ordinal)
 		crew.landing={"body_id":body.id,"epoch":int(crew.revision)+1}
+		FrontierExpeditionBusiness.ensure_site(world)
 		var index:=0
 		for id in active.values():spawn_member(world,crew.members[id],index);index+=1
 		return ""
@@ -109,8 +110,6 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	var position:=FrontierCrewWorld.vector(member.position)
 	var near_ship: bool=position.distance_to(FrontierCrewWorld.vector(config().ship_position))<=float(config().boarding_distance)
 	if kind=="launch":
-		for id in active.values():
-			if FrontierExpeditionBusiness.total(FrontierExpeditionBusiness.bag(world,id))>0:return "사업 자원을 현장 창고에 반납한 뒤 출항하세요."
 		if actor!=crew.pilot_id:return "조종사만 출항할 수 있습니다."
 		for id in active.values():
 			var other: Dictionary=crew.members[id]

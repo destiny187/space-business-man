@@ -2,8 +2,9 @@ class_name FrontierClientSettings
 extends CanvasLayer
 ## Local presentation only: never stored in the host's simulation manifest.
 signal changed
-const DEFAULTS={"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":2400.0,"shadow_distance":180.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":3.0,"fov":76.0,"sensitivity":0.0025,"invert_y":false,"volume":0.8,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":3,"local_shadow_size":2048}
-const LIMITS={"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,8000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.0008,.006],"volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
+const BASE_MOUSE_SENSITIVITY:=0.0025
+const DEFAULTS={"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":2400.0,"shadow_distance":180.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":3.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":3,"local_shadow_size":2048}
+const LIMITS={"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,8000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
 const RESOLUTIONS=[Vector2i(1280,800),Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080),Vector2i(2560,1440)]
 var values: Dictionary=DEFAULTS.duplicate()
 var path="user://client_settings.json"
@@ -15,6 +16,10 @@ var display_previous: Dictionary={}
 var display_deadline:=0
 var controls: Dictionary={}
 var rebuilding:=false
+var sensitivity_slider: HSlider
+
+func mouse_sensitivity() -> float:
+	return float(values.sensitivity)*BASE_MOUSE_SENSITIVITY
 
 static func ensure(tree: SceneTree) -> FrontierClientSettings:
 	var existing:=tree.root.get_node_or_null("ClientSettings") as FrontierClientSettings
@@ -41,6 +46,8 @@ func load_settings() -> void:
 	if not data is Dictionary:return
 	for key in DEFAULTS:
 		var value: Variant=data.get(key,DEFAULTS[key])
+		if key=="sensitivity" and data.has(key) and data.get("sensitivity_format","")!="multiplier_v1" and (value is float or value is int) and is_finite(float(value)):
+			value=clampf(float(value),.0008,.006)/BASE_MOUSE_SENSITIVITY
 		if DEFAULTS[key] is bool:
 			if value is bool:values[key]=value
 		elif (value is float or value is int) and is_finite(float(value)):
@@ -51,6 +58,7 @@ func load_settings() -> void:
 
 func save_settings() -> bool:
 	var stored:=values.duplicate()
+	stored.sensitivity_format="multiplier_v1"
 	# An unconfirmed display mode must never survive a crash/restart.
 	for key in display_previous:stored[key]=display_previous[key]
 	var file:=FileAccess.open(path+".tmp",FileAccess.WRITE)
@@ -152,6 +160,7 @@ func _sync() -> void:
 			control.select(options.find(values[key]))
 		elif control is CheckBox:control.button_pressed=values[key]
 		else:control.value=values[key]
+	if sensitivity_slider!=null:sensitivity_slider.set_value_no_signal(values.sensitivity)
 	rebuilding=false
 func _page(title: String) -> VBoxContainer:
 	var scroll:=ScrollContainer.new();scroll.name=title;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;tabs.add_child(scroll)
@@ -171,6 +180,15 @@ func _choice(page: VBoxContainer,title: String,key: String,labels: Array,options
 func _number(page: VBoxContainer,title: String,key: String,step: float,suffix: String="") -> void:
 	var row:=_row(page,title);var spin:=SpinBox.new();spin.min_value=LIMITS[key][0];spin.max_value=LIMITS[key][1];spin.step=step;spin.suffix=suffix;spin.custom_minimum_size.x=220;row.add_child(spin);controls[key]=spin
 	spin.value_changed.connect(func(value: float):set_option(key,value))
+func _sensitivity(page: VBoxContainer) -> void:
+	var row:=_row(page,"마우스 감도")
+	sensitivity_slider=HSlider.new();sensitivity_slider.min_value=LIMITS.sensitivity[0];sensitivity_slider.max_value=LIMITS.sensitivity[1];sensitivity_slider.step=.01;sensitivity_slider.custom_minimum_size.x=180;sensitivity_slider.size_flags_vertical=Control.SIZE_SHRINK_CENTER;row.add_child(sensitivity_slider)
+	var spin:=SpinBox.new();spin.min_value=LIMITS.sensitivity[0];spin.max_value=LIMITS.sensitivity[1];spin.step=.01;spin.custom_minimum_size.x=110;row.add_child(spin);controls.sensitivity=spin
+	spin.tooltip_text="기본 1.00 · 0.50은 절반, 2.00은 두 배 속도 · 숫자를 직접 입력할 수 있습니다."
+	sensitivity_slider.tooltip_text=spin.tooltip_text
+	sensitivity_slider.value_changed.connect(func(value: float):set_option("sensitivity",value))
+	spin.value_changed.connect(func(value: float):set_option("sensitivity",value))
+	var reset:=Button.new();reset.text="기본 1.00";reset.pressed.connect(func():set_option("sensitivity",1.0));row.add_child(reset)
 func _check(page: VBoxContainer,title: String,key: String) -> void:
 	var row:=_row(page,title);var check:=CheckBox.new();check.text="사용";check.custom_minimum_size.x=220;row.add_child(check);controls[key]=check
 	check.toggled.connect(func(value: bool):set_option(key,value))
@@ -218,7 +236,7 @@ func _build() -> void:
 	_check(display,"FPS·프레임 시간 표시","show_fps")
 	var input:=_page("조작 · 소리")
 	_number(input,"시야각 · 시야거리와 별도","fov",1,"°")
-	_number(input,"마우스 감도","sensitivity",.0001)
+	_sensitivity(input)
 	_check(input,"마우스 세로 반전","invert_y")
 	_number(input,"전체 음량","volume",.05)
 	notice=Label.new();notice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;notice.text="시야거리는 원경 범위입니다. 굴착 지형·생물의 활성 범위는 게임 규칙을 따릅니다.";column.add_child(notice)
