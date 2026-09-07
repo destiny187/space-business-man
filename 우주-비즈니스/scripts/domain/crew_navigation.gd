@@ -2,7 +2,7 @@ class_name FrontierCrewNavigation
 extends RefCounted
 static func create(world: Dictionary) -> Dictionary:
 	var ordinal:=FrontierUniverse.ordinal_of(world.manifest,world.location)
-	return {"system":ordinal/int(world.manifest.settings.planets_per_system),"target":FrontierUniverse.ordinal_of(world.manifest,world.get("navigation_target",world.location)),"position":world.flight_position.duplicate(),"direction":[0.0,0.0,-1.0],"speed":0.0,"mode":"idle","jump_left":0.0,"orbit_time":0.0}
+	return {"system":FrontierUniverse.system_index(world.manifest,ordinal),"target":FrontierUniverse.ordinal_of(world.manifest,world.get("navigation_target",world.location)),"position":world.flight_position.duplicate(),"direction":[0.0,0.0,-1.0],"speed":0.0,"mode":"idle","jump_left":0.0,"orbit_time":0.0}
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.get("mode") not in ["idle","approach","jump"]:return "공동 항해 상태 오류"
 	for entry in [["system",249999],["target",999999]]:
@@ -43,7 +43,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if float(nav.get("hull",100))<=0:return "선체 응급 수리가 끝날 때까지 기다려 주세요."
 		for id in active.values():
 			if not crew.members[id].aboard or not crew.members[id].ready:return "연결된 승무원 모두 승선하고 준비해야 출항할 수 있습니다."
-		nav.mode="approach" if int(nav.target)/int(world.manifest.settings.planets_per_system)==int(nav.system) else "jump"
+		nav.mode="approach" if FrontierUniverse.system_index(world.manifest,int(nav.target))==int(nav.system) else "jump"
 		var energy_cost: float=world.manifest.settings.flight.get("transit_energy_cost",30.0)
 		if nav.mode=="jump" and float(nav.get("energy",100.0))<energy_cost:return "고속 추진 에너지를 충전 중입니다. 잠시 기다려 주세요."
 		if nav.mode=="jump":nav.energy=float(nav.get("energy",100.0))-energy_cost
@@ -51,7 +51,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		nav.jump_left=float(world.manifest.settings.flight.get("transit_seconds",12.0)) if nav.mode=="jump" else 0.0
 		if nav.mode=="jump":
 			var source:=FrontierUniverse.system(world.manifest,int(nav.system))
-			var destination:=FrontierUniverse.system(world.manifest,int(nav.target)/int(world.manifest.settings.planets_per_system))
+			var destination:=FrontierUniverse.system(world.manifest,FrontierUniverse.system_index(world.manifest,int(nav.target)))
 			nav.transit={"from":source.map_position,"to":destination.map_position,"galaxy_position":source.map_position.duplicate(),"duration":nav.jump_left,"progress":0.0}
 			var direction:=Vector3(destination.map_position[0]-source.map_position[0],0,destination.map_position[1]-source.map_position[1]).normalized()
 			nav.direction=[direction.x,direction.y,direction.z]
@@ -84,7 +84,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 		# Legacy in-flight saves acquire a deterministic route when resumed.
 		if not nav.has("transit"):
 			var source:=FrontierUniverse.system(world.manifest,int(nav.system))
-			var destination:=FrontierUniverse.system(world.manifest,int(nav.target)/int(world.manifest.settings.planets_per_system))
+			var destination:=FrontierUniverse.system(world.manifest,FrontierUniverse.system_index(world.manifest,int(nav.target)))
 			nav.transit={"from":source.map_position,"to":destination.map_position,"galaxy_position":source.map_position.duplicate(),"duration":maxf(1,nav.jump_left),"progress":0.0}
 		nav.jump_left=maxf(0,float(nav.jump_left)-delta)
 		var progress: float=1.0-float(nav.jump_left)/float(nav.transit.duration)
@@ -99,10 +99,10 @@ static func step(world: Dictionary,delta: float) -> bool:
 		position+=direction*float(nav.speed)*delta
 		if nav.jump_left<=0:
 			nav.transit.galaxy_position=nav.transit.to.duplicate()
-			nav.system=int(nav.target)/int(world.manifest.settings.planets_per_system)
+			nav.system=FrontierUniverse.system_index(world.manifest,int(nav.target))
 			var body:=FrontierUniverse.body(world.manifest,int(nav.target))
 			var target:=center(int(nav.target),world.manifest,float(nav.orbit_time))
-			position=target+target.normalized()*(FrontierUniverse.navigation_radius(body)+float(cfg.arrival_clearance)+1200)
+			position=FrontierUniverse.entry_position(world.manifest,int(nav.target),float(nav.orbit_time))
 			nav.mode="approach";nav.speed=0
 
 	else:
@@ -118,13 +118,22 @@ static func step(world: Dictionary,delta: float) -> bool:
 			if world.manifest.settings.generator_version=="galaxy-v3":
 				var segment:=target-position
 				var nearest:=position+segment*clampf(-position.dot(segment)/maxf(segment.length_squared(),1),0,1)
-				if nearest.length()<float(FrontierUniverse.presentation().star_warning_radius):waypoint=Vector3(0,float(FrontierUniverse.presentation().star_warning_radius)+2000,0)
+				if nearest.length()<float(FrontierUniverse.star_settings(world.manifest,int(nav.system)).star_warning_radius):waypoint=Vector3(0,float(FrontierUniverse.star_settings(world.manifest,int(nav.system)).star_warning_radius)+2000,0)
+			for moon in int(body.get("moons",0)):
+				var moon_point:=target+FrontierUniverse.moon_offset(body,moon,float(nav.orbit_time))
+				var segment:=waypoint-position
+				var nearest:=position+segment*clampf((moon_point-position).dot(segment)/maxf(segment.length_squared(),1),0,1)
+				var clearance:=FrontierUniverse.moon_radius(body,moon)+150
+				if nearest.distance_to(moon_point)<clearance:
+					var side:=segment.cross(Vector3.UP).normalized()
+					if side.length_squared()<.1:side=Vector3.RIGHT
+					waypoint=moon_point+side*(clearance+300)
 			direction=(waypoint-position).normalized()
 			nav.speed=move_toward(float(nav.speed),minf(float(cfg.cruise_speed)*propulsion,maxf(12,separation-float(cfg.arrival_clearance))),float(cfg.acceleration)*propulsion*delta)
 			position+=direction*minf(float(nav.speed)*delta,maxf(0,separation-float(cfg.arrival_clearance)))
 	nav.position=[position.x,position.y,position.z];nav.direction=[direction.x,direction.y,direction.z]
 	world.flight_position=nav.position.duplicate()
-	if nav.mode!="idle":world.location=FrontierUniverse.body_id(world.manifest,int(nav.system)*int(world.manifest.settings.planets_per_system))
+	if nav.mode!="idle":world.location=FrontierUniverse.body_id(world.manifest,FrontierUniverse.first_ordinal(world.manifest,int(nav.system)))
 	return nav.mode=="idle"
 
 static func phase(nav: Dictionary) -> String:
@@ -163,20 +172,22 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	nav.speed=move_toward(float(nav.speed),float(controls[0])*maximum,float(cfg.acceleration)*delta*3)
 	var start:=FrontierCrewWorld.vector(nav.position)
 	var end:=start+direction*float(nav.speed)*delta
-	var boundary: float=FrontierUniverse.presentation().system_boundary
+	var boundary: float=FrontierUniverse.system_layout(world.manifest,int(nav.system)).boundary
 	nav.boundary=end.length()>boundary-800
 	if end.length()>boundary:end=end.limit_length(boundary);nav.speed=0
 	# Swept sphere checks stop even high speed frames before a celestial surface.
-	var obstacles: Array=[{"point":Vector3.ZERO,"radius":float(FrontierUniverse.presentation().star_radius)+150}]
-	for i in int(world.manifest.settings.planets_per_system):
-		var ordinal: int=int(nav.system)*int(world.manifest.settings.planets_per_system)+i
+	var obstacles: Array=[{"point":Vector3.ZERO,"radius":float(FrontierUniverse.star_settings(world.manifest,int(nav.system)).star_radius)+150}]
+	for i in FrontierUniverse.body_count(world.manifest,int(nav.system)):
+		var ordinal: int=FrontierUniverse.first_ordinal(world.manifest,int(nav.system))+i
 		var body:=FrontierUniverse.body(world.manifest,ordinal)
 		obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time)),"radius":FrontierUniverse.navigation_radius(body)+80})
+		for moon in int(body.get("moons",0)):
+			obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time))+FrontierUniverse.moon_offset(body,moon,float(nav.orbit_time)),"radius":FrontierUniverse.moon_radius(body,moon)+50})
 	var segment:=end-start
 	for obstacle in obstacles:
 		var offset: Vector3=start-obstacle.point
 		var nearest:=offset+segment*clampf(-offset.dot(segment)/maxf(segment.length_squared(),.0001),0,1)
-		if nearest.length()<float(obstacle.radius) and end.distance_to(obstacle.point)<start.distance_to(obstacle.point):
+		if nearest.length()<float(obstacle.radius) and offset.dot(segment)<0:
 			if absf(nav.speed)>120 and float(nav.get("damage_cooldown",0))<=0:
 				nav.hull=maxf(0,float(nav.get("hull",100))-minf(45,absf(nav.speed)*.025));nav.damage_cooldown=8.0
 			end=start;nav.speed=0;break
@@ -185,7 +196,8 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 
 static var departure_cache: Dictionary={}
 static func first_destination(manifest: Dictionary) -> int:
-	if departure_cache.has(manifest.id):return departure_cache[manifest.id]
+	var cache_key: String=manifest.id+":"+str(manifest.settings.get("system_rules",{}).get("version",0))
+	if departure_cache.has(cache_key):return departure_cache[cache_key]
 	var origin:=FrontierUniverse.system(manifest,0)
 	var start:=Vector2(origin.map_position[0],origin.map_position[1])
 	var count: int=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system)/manifest.settings.tier_weights.size()
@@ -198,18 +210,18 @@ static func first_destination(manifest: Dictionary) -> int:
 		candidates.append({"index":index,"distance":distance})
 	candidates.sort_custom(func(a,b):return a.distance<b.distance)
 	for candidate in candidates:
-		for orbit in int(manifest.settings.planets_per_system):
-			var ordinal: int=int(candidate.index)*int(manifest.settings.planets_per_system)+orbit
+		for orbit in FrontierUniverse.body_count(manifest,int(candidate.index)):
+			var ordinal: int=FrontierUniverse.first_ordinal(manifest,int(candidate.index))+orbit
 			var body:=FrontierUniverse.body(manifest,ordinal)
 			if FrontierUniverse.landable(body) and int(body.planet_tier)==1:
-				departure_cache[manifest.id]=ordinal;return ordinal
+				departure_cache[cache_key]=ordinal;return ordinal
 	return -1
 
 static func stellar_hazard(world: Dictionary,delta: float) -> void:
 	var nav: Dictionary=world.crew.navigation
 	nav.star_warning=false;nav.star_danger=false
 	if nav.mode=="jump" or FrontierCrewSurface.landed(world):return
-	var cfg:=FrontierUniverse.presentation()
+	var cfg:=FrontierUniverse.star_settings(world.manifest,int(nav.system))
 	var point:=FrontierCrewWorld.vector(nav.position)
 	var distance:=point.length()
 	nav.star_warning=distance<float(cfg.star_warning_radius)

@@ -31,7 +31,7 @@ func _ready() -> void:
 	set_physics_process(false);set_process_unhandled_input(false)
 func update_navigation(value: Dictionary) -> void:
 	var render_system: int=int(value.system)
-	if value.mode=="jump" and float(value.get("transit",{}).get("progress",0))>=.90:render_system=int(value.target)/int(state.manifest.settings.planets_per_system)
+	if value.mode=="jump" and float(value.get("transit",{}).get("progress",0))>=.90:render_system=FrontierUniverse.system_index(state.manifest,int(value.target))
 	if navigation.is_empty() or render_system!=current_system:
 		_load_system(render_system);ship.position=_display_position(value)
 	var phase:=FrontierCrewNavigation.phase(value)
@@ -95,7 +95,7 @@ func _display_position(value: Dictionary) -> Vector3:
 	if value.mode=="jump" and p>=.90:
 		var body:=FrontierUniverse.body(state.manifest,int(value.target))
 		var target:=FrontierCrewNavigation.center(int(value.target),state.manifest,float(value.get("orbit_time",0)))
-		return target+target.normalized()*(FrontierUniverse.navigation_radius(body)+float(flight_config.arrival_clearance)+1200+(1-p)*12000)
+		return FrontierUniverse.entry_position(state.manifest,int(value.target),float(value.get("orbit_time",0)),(1-p)*12000)
 	return FrontierCrewWorld.vector(value.position)
 
 func _load_system(index: int) -> void:

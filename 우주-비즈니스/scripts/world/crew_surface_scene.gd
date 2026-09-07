@@ -21,6 +21,7 @@ var preferences: FrontierClientSettings
 var rendered_distance:=0.0
 var refits: FrontierVesselVisuals
 var business_view: FrontierBusinessSiteView
+var surface_details: FrontierSurfaceDetails
 
 func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D,camera: Camera3D) -> void:
 	session=connection;viewer=player;epoch=int(packet.epoch)
@@ -32,6 +33,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	elif body.kind=="sulfur":mat.set_shader_parameter("rock_color",Color("7c634b"));mat.set_shader_parameter("dust_color",Color("b39962"))
 	if body.has("traits"):
 		mat.set_shader_parameter("molten",body.traits.id=="volcanic");mat.set_shader_parameter("rock_color",Color(body.traits.rock));mat.set_shader_parameter("dust_color",Color(body.traits.dust))
+		mat.set_shader_parameter("surface_pattern",{"oxidized":1,"frozen":2,"fractured":2,"salt":3}.get(body.traits.id,0))
 	terrain=FrontierTerrainStreamer.new();terrain.configure(int(body.streams.terrain),packet.edits,mat,config,body.get("terrain_traits",{}));add_child(terrain)
 	if not body.get("terrain_traits",{}).is_empty():_add_native_water()
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)
@@ -45,6 +47,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		if business_view!=null:business_view.accept(business_view.ledger)
 	)
 	business_view=FrontierBusinessSiteView.new();add_child(business_view);business_view.configure(terrain,body);business_view.accept(packet.get("business",{}))
+	surface_details=FrontierSurfaceDetails.new();add_child(surface_details);surface_details.configure(terrain,body,viewer);surface_details.accept(packet.get("business",{}))
 	preferences=FrontierClientSettings.ensure(get_tree())
 	preferences.changed.connect(func():
 		if not is_equal_approx(rendered_distance,float(preferences.values.view_distance)):_refresh_distant())
@@ -60,6 +63,7 @@ func accept(packet: Dictionary) -> void:
 	ecology.ecology=_ecology(packet)
 	ecology.refresh_timer=0
 	business_view.accept(packet.get("business",{}))
+	surface_details.accept(packet.get("business",{}))
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()

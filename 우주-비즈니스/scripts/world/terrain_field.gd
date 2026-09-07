@@ -3,6 +3,8 @@ extends RefCounted
 ## Positive density is rock. Carving removes mass; it never changes the seed.
 var noise := FastNoiseLite.new()
 var detail := FastNoiseLite.new()
+var regions := FastNoiseLite.new()
+var plateau := FastNoiseLite.new()
 var edits_by_chunk: Dictionary = {}
 var span := 24.0
 var seed_value := 0
@@ -19,6 +21,12 @@ func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, ch
 	detail.seed=FrontierUniverse.derive(seed_number,"geology-detail")
 	detail.frequency=.045
 	detail.fractal_octaves=2
+	regions.seed=FrontierUniverse.derive(seed_number,"plain-regions-v2")
+	regions.frequency=float(traits.get("terrain_layout",{}).get("region_frequency",.0023))
+	regions.fractal_octaves=2
+	plateau.seed=FrontierUniverse.derive(seed_number,"plateau-v2")
+	plateau.frequency=.0012
+	plateau.fractal_octaves=2
 	for edit in edits:add_edit(edit)
 
 func key_at(point: Vector3) -> Vector3i:
@@ -42,9 +50,21 @@ func add_edit(edit: Dictionary) -> Array[Vector3i]:
 func height(x: float,z: float) -> float:
 	var distance: float=Vector2(x,z).length()
 	var rough: float=noise.get_noise_2d(x,z)*float(traits.get("relief",42.0))+detail.get_noise_2d(x,z)*4.0
-	var base: float=2.0+rough*smoothstep(18.0,65.0,distance)
+	var inner:=18.0
+	var outer:=65.0
+	var layout: Dictionary=traits.get("terrain_layout",{})
+	if int(layout.get("version",0))==2:
+		var plains: float=1.0-smoothstep(float(layout.plain_threshold),float(layout.plain_threshold)+float(layout.transition),regions.get_noise_2d(x,z))
+		var level: float=plateau.get_noise_2d(x,z)*float(layout.plateau_relief)+detail.get_noise_2d(x,z)*float(layout.plain_detail)
+		rough=lerpf(rough,level,plains)
+		inner=float(layout.landing_inner);outer=float(layout.landing_outer)
+	var base: float=2.0+rough*smoothstep(inner,outer,distance)
 	if float(traits.get("water",0))>15 and float(traits.get("temperature",-100))>0:
-		base-=smoothstep(145.0,230.0,distance)*float(traits.water)*.18
+		var basin:=1.0
+		if int(layout.get("version",0))==2:
+			# Keep elevated plains dry instead of sinking every flat region into water.
+			basin=1.0-smoothstep(float(layout.basin_threshold),float(layout.basin_threshold)+float(layout.basin_transition),plateau.get_noise_2d(x,z))
+		base-=smoothstep(145.0,230.0,distance)*float(traits.water)*.18*basin
 	# Keep the E0 passage under a rock ridge; an unrelated surface valley must
 	# not cut steep exterior slopes into its walkable floor.
 	var t: float=clampf((x-14.0)/82.0,0,1)

@@ -99,3 +99,7 @@
 최신 항해 구조: [항성계 오픈월드·무료 성간 초고속 항해](production/26-stellar-cruise.md).
 
 - [행성 외형·복합 지질·초기 환경·지역 냉각](production/31-planet-diversity.md).
+
+- [항성계 구성과 진입 풍경](production/32-system-diversity.md): 가변 행성 수·궤도 간격·소행성대·위성·고리와 저장 호환.
+
+- [항성 외형 계열과 궤도선 제거](production/33-stellar-appearance.md): 표면·코로나·홍염의 네 계열과 실제 공전 유지.

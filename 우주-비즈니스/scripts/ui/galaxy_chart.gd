@@ -32,7 +32,7 @@ func _draw() -> void:
 			var sys:=FrontierUniverse.system(manifest,index)
 			var point:=center+Vector2(sys.map_position[0],sys.map_position[1])/float(manifest.settings.outer_radius)*105
 			draw_circle(point,4 if index==0 else 2.5,Color("72dfd1") if index==0 else [Color("9dcfca"),Color("81b9db"),Color("d9c379"),Color("e49468"),Color("e9778e")][int(sys.band)])
-			hits.append({"point":point,"ordinal":index*int(manifest.settings.planets_per_system)})
+			hits.append({"point":point,"ordinal":FrontierUniverse.showcase_ordinal(manifest,index)})
 		if not transit.is_empty():
 			var factor: float=105/float(manifest.settings.outer_radius)
 			var source:=center+Vector2(transit.from[0],transit.from[1])*factor
@@ -43,14 +43,13 @@ func _draw() -> void:
 		draw_string(font,Vector2(8,20),"은하 · 외곽 저티어 → 중심 고티어",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("e0ebe3"))
 	else:
 		draw_circle(center,9,Color("ffe2a3"))
-		var count: int=manifest.settings.planets_per_system
+		var count: int=FrontierUniverse.body_count(manifest,system_index)
 		for i in count:
-			var ordinal:=system_index*count+i
+			var ordinal:=FrontierUniverse.first_ordinal(manifest,system_index)+i
 			var body:=FrontierUniverse.body(manifest,ordinal)
 			var position:=FrontierUniverse.position(manifest,ordinal,elapsed)
 			var radial:=Vector2(position.x,position.z).normalized()
-			var radius:=25.0+i*11.5
-			draw_arc(center,radius,0,TAU,80,Color("355568"),1,true)
+			var radius:=20.0+float(body.orbit.radius)/FrontierUniverse.orbit_radius(manifest,system_index,count-1)*95.0
 			var point:=center+radial*radius
 			draw_circle(point,5 if FrontierUniverse.landable(body) else 8,Color("79cfc8") if FrontierUniverse.landable(body) else Color("d2a977"))
 			if ordinal==target:draw_arc(point,11,0,TAU,24,Color.WHITE,2,true)

@@ -6,6 +6,8 @@ var store := FrontierWorldStore.new()
 var ship: Node3D
 var camera: Camera3D
 var planets := {}
+var landmarks: FrontierSystemLandmarks
+var sky_material: ShaderMaterial
 var system_art: Node3D
 var galactic_core: FrontierGalacticCore
 var orbit_time:=0.0
@@ -41,7 +43,7 @@ func _ready() -> void:
 		return
 	flight_config = state.manifest.settings.flight
 	target_ordinal = FrontierUniverse.ordinal_of(state.manifest, state.get("navigation_target",state.location))
-	current_system = FrontierUniverse.ordinal_of(state.manifest,state.location) / int(state.manifest.settings.planets_per_system)
+	current_system = FrontierUniverse.system_index(state.manifest,FrontierUniverse.ordinal_of(state.manifest,state.location))
 	_setup_space()
 	_build_ui()
 	_load_system(current_system)
@@ -56,6 +58,7 @@ func _setup_space() -> void:
 	var sky_mat := ShaderMaterial.new()
 	sky_mat.shader = load("res://assets/materials/space/sky.gdshader")
 	sky.sky_material = sky_mat
+	sky_material=sky_mat
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color("879caf")
@@ -100,8 +103,8 @@ func _load_system(index: int) -> void:
 	current_system = index
 	if galactic_core!=null:galactic_core.queue_free();galactic_core=null
 	var s: Dictionary = FrontierUniverse.system(state.manifest,index)
-	for orbit in int(state.manifest.settings.planets_per_system):
-		var ordinal: int = index*int(state.manifest.settings.planets_per_system)+orbit
+	for orbit in FrontierUniverse.body_count(state.manifest,index):
+		var ordinal: int = FrontierUniverse.first_ordinal(state.manifest,index)+orbit
 		var body: Dictionary = FrontierUniverse.body(state.manifest,ordinal)
 		var radius: float = FrontierUniverse.radius(body)
 		if body.get("origin","")=="solar_reference":
@@ -151,7 +154,7 @@ func _load_system(index: int) -> void:
 		planets[ordinal] = {"node":node,"radius":radius,"body":body}
 	_build_system_art(s)
 	_refresh_candidates()
-	status.text = "%s · 항성계 %08d · 주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,int(state.manifest.settings.planets_per_system)]
+	status.text = "%s · 항성계 %08d · 주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,FrontierUniverse.body_count(state.manifest,index)]
 
 func _build_ui() -> void:
 	var layer := CanvasLayer.new()
@@ -276,7 +279,7 @@ func _address_target() -> void:
 
 func start_travel() -> void:
 	if jump_remaining > 0:return
-	if target_ordinal/int(state.manifest.settings.planets_per_system) != current_system:
+	if FrontierUniverse.system_index(state.manifest,target_ordinal) != current_system:
 		pending_ordinal = target_ordinal
 		jump_remaining = float(flight_config.jump_seconds)
 		cursor_label.hide()
@@ -308,7 +311,7 @@ func step_flight(delta: float) -> void:
 		ship.position += jump_direction*float(flight_config.boost_speed)*delta
 		camera.fov = lerpf(camera.fov,100.0,minf(delta*3,1))
 		if jump_remaining<=0:
-			_load_system(pending_ordinal/int(state.manifest.settings.planets_per_system))
+			_load_system(FrontierUniverse.system_index(state.manifest,pending_ordinal))
 			ship.position = Vector3(0,2200,0) if state.manifest.settings.generator_version=="galaxy-v3" else Vector3(0,0,80)
 			ship.rotation = Vector3.ZERO
 			target_ordinal = pending_ordinal
@@ -389,7 +392,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func save_flight() -> void:
 	if jump_remaining>0:status.text="도약 완료 후 저장할 수 있습니다.";return
 	# Save current system, not an unvisited destination in another system.
-	state.location = FrontierUniverse.body_id(state.manifest,current_system*int(state.manifest.settings.planets_per_system))
+	state.location = FrontierUniverse.body_id(state.manifest,FrontierUniverse.first_ordinal(state.manifest,current_system))
 	state.navigation_target = FrontierUniverse.body_id(state.manifest,target_ordinal)
 	state.flight_position = [ship.position.x,ship.position.y,ship.position.z]
 	status.text = "항해 위치와 조사 기록을 저장했습니다." if store.write(state) else store.last_error
@@ -430,27 +433,21 @@ func _build_system_art(system_value: Dictionary) -> void:
 	if is_instance_valid(system_art):remove_child(system_art);system_art.queue_free()
 	system_art=Node3D.new();add_child(system_art)
 	if state.manifest.settings.generator_version!="galaxy-v3":return
-	var star:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=float(FrontierUniverse.presentation().star_radius);sphere.height=sphere.radius*2;sphere.radial_segments=96;sphere.rings=48;star.mesh=sphere
-	var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/star.gdshader")
-	var star_color: Color={"M":Color("ef8156"),"K":Color("ffb96a"),"G":Color("ffe2a3"),"F":Color("f4efdc"),"A":Color("a7cdff")}[system_value.star.spectral_type]
-	material.set_shader_parameter("tint",star_color)
-	star.material_override=material;system_art.add_child(star)
-	var glow:=MeshInstance3D.new();var disc:=QuadMesh.new();disc.size=Vector2(11000,11000);glow.mesh=disc
-	var glow_material:=ShaderMaterial.new();glow_material.shader=load("res://assets/materials/space/glow.gdshader");glow_material.set_shader_parameter("tint",star_color);glow_material.set_shader_parameter("strength",1.55);glow.material_override=glow_material;glow.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;system_art.add_child(glow)
-	var sunlight:=OmniLight3D.new();sunlight.light_color=star_color;sunlight.light_energy=2.4;sunlight.omni_range=90000;sunlight.omni_attenuation=.25;system_art.add_child(sunlight)
-	var label:=Label3D.new();label.text=system_value.star.name;label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=64;label.pixel_size=3;label.position=Vector3(0,1200,0);label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;system_art.add_child(label)
+	var stellar_radius: float=FrontierUniverse.system_layout(state.manifest,current_system).star_radius
+	var star:=FrontierStarVisual.new();star.name="StarVisual";system_art.add_child(star);star.configure(system_value,stellar_radius)
+	var label:=Label3D.new();label.text=system_value.star.name;label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=64;label.pixel_size=3;label.position=Vector3(0,stellar_radius*.8,0);label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;system_art.add_child(label)
 	for entry in planets.values():
-		var mesh:=ImmediateMesh.new();var line:=MeshInstance3D.new();line.mesh=mesh
-		var ink:=StandardMaterial3D.new();ink.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ink.albedo_color=Color("314c64");line.material_override=ink
-		mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-		var radius: float=entry.body.orbit.radius
-		for i in 128:
-			for angle in [TAU*i/128.0,TAU*(i+1)/128.0]:mesh.surface_add_vertex(FrontierUniverse.orbit_point(entry.body,angle))
-		mesh.surface_end();system_art.add_child(line)
 		var caption:=Label3D.new();caption.text=entry.body.name+("" if FrontierUniverse.landable(entry.body) else " · 착륙 불가");caption.font=label.font;caption.font_size=48;caption.pixel_size=2.0;caption.position.y=entry.radius+130;caption.billboard=BaseMaterial3D.BILLBOARD_ENABLED;entry.node.add_child(caption)
+
+	landmarks=FrontierSystemLandmarks.new();system_art.add_child(landmarks);landmarks.configure(state.manifest,current_system,planets)
+	var theme: String=FrontierUniverse.system_layout(state.manifest,current_system).theme
+	if sky_material!=null:
+		sky_material.set_shader_parameter("local_haze",{"open":.03,"debris":.22,"satellites":.10,"giant_court":.16}.get(theme,0.0))
+		sky_material.set_shader_parameter("haze_color",{"debris":Color("b39169"),"satellites":Color("649cbb"),"giant_court":Color("887fb5")}.get(theme,Color("658aab")))
 
 func update_orbits(elapsed: float) -> void:
 	orbit_time=elapsed
+	if is_instance_valid(landmarks):landmarks.update_epoch(elapsed)
 	for ordinal in planets:
 		planets[ordinal].node.position=FrontierUniverse.position(state.manifest,ordinal,elapsed)
 		if planets[ordinal].node is FrontierSolarPlanet:planets[ordinal].node.set_epoch(elapsed)

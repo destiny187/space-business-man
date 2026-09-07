@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "archetypes": {
     "oxidized": {
       "kind": "basalt",
@@ -13,7 +13,19 @@
       "toxicity": 35,
       "temperature": 28,
       "geology": "metallic",
-      "relief": 34
+      "relief": 34,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.03,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "continental": {
       "kind": "basalt",
@@ -27,7 +39,19 @@
       "toxicity": 8,
       "temperature": 18,
       "geology": "weathered",
-      "relief": 23
+      "relief": 23,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.08,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "cratered": {
       "kind": "basalt",
@@ -41,7 +65,19 @@
       "toxicity": 18,
       "temperature": -30,
       "geology": "pegmatite",
-      "relief": 48
+      "relief": 48,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.05,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "fractured": {
       "kind": "glacial",
@@ -55,7 +91,19 @@
       "toxicity": 12,
       "temperature": -48,
       "geology": "cryovolcanic",
-      "relief": 32
+      "relief": 32,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.015,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "tundra": {
       "kind": "glacial",
@@ -69,7 +117,19 @@
       "toxicity": 7,
       "temperature": -8,
       "geology": "icy_basin",
-      "relief": 25
+      "relief": 25,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.055,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "frozen": {
       "kind": "glacial",
@@ -83,7 +143,19 @@
       "toxicity": 10,
       "temperature": -110,
       "geology": "cryogenic",
-      "relief": 42
+      "relief": 42,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.035,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "volcanic": {
       "kind": "sulfur",
@@ -98,7 +170,19 @@
       "temperature": 320,
       "geology": "volcanic",
       "relief": 55,
-      "cooling_threshold": 80
+      "cooling_threshold": 80,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.155,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "salt": {
       "kind": "sulfur",
@@ -112,7 +196,19 @@
       "toxicity": 45,
       "temperature": 42,
       "geology": "hydrothermal",
-      "relief": 20
+      "relief": 20,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.1,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "ochre": {
       "kind": "sulfur",
@@ -126,7 +222,19 @@
       "toxicity": 55,
       "temperature": 60,
       "geology": "hydrothermal",
-      "relief": 38
+      "relief": 38,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.06,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     },
     "banded": {
       "kind": "gas_giant",

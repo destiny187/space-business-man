@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "tile_size": 24.0,
+  "candidates_per_tile": 92,
+  "radius_tiles": 3,
+  "builds_per_frame": 1,
+  "visible_distance": 94.0,
+  "minimum_normal_y": 0.82,
+  "scale_min": 0.65,
+  "scale_max": 1.45,
+  "water_height": -4.0,
+  "families": {
+    "oxidized": {
+      "models": [
+        "res://assets/models/surface-details/oxidized_0.glb",
+        "res://assets/models/surface-details/oxidized_1.glb",
+        "res://assets/models/surface-details/oxidized_2.glb",
+        "res://assets/models/surface-details/oxidized_3.glb"
+      ],
+      "density": 1.0
+    },
+    "continental": {
+      "models": [
+        "res://assets/models/surface-details/continental_0.glb",
+        "res://assets/models/surface-details/continental_1.glb",
+        "res://assets/models/surface-details/continental_2.glb",
+        "res://assets/models/surface-details/continental_3.glb"
+      ],
+      "density": 1.0
+    },
+    "cratered": {
+      "models": [
+        "res://assets/models/surface-details/cratered_0.glb",
+        "res://assets/models/surface-details/cratered_1.glb",
+        "res://assets/models/surface-details/cratered_2.glb",
+        "res://assets/models/surface-details/cratered_3.glb"
+      ],
+      "density": 1.0
+    },
+    "fractured": {
+      "models": [
+        "res://assets/models/surface-details/fractured_0.glb",
+        "res://assets/models/surface-details/fractured_1.glb",
+        "res://assets/models/surface-details/fractured_2.glb",
+        "res://assets/models/surface-details/fractured_3.glb"
+      ],
+      "density": 1.0
+    },
+    "tundra": {
+      "models": [
+        "res://assets/models/surface-details/tundra_0.glb",
+        "res://assets/models/surface-details/tundra_1.glb",
+        "res://assets/models/surface-details/tundra_2.glb",
+        "res://assets/models/surface-details/tundra_3.glb"
+      ],
+      "density": 1.0
+    },
+    "frozen": {
+      "models": [
+        "res://assets/models/surface-details/frozen_0.glb",
+        "res://assets/models/surface-details/frozen_1.glb",
+        "res://assets/models/surface-details/frozen_2.glb",
+        "res://assets/models/surface-details/frozen_3.glb"
+      ],
+      "density": 0.85
+    },
+    "volcanic": {
+      "models": [
+        "res://assets/models/surface-details/volcanic_0.glb",
+        "res://assets/models/surface-details/volcanic_1.glb",
+        "res://assets/models/surface-details/volcanic_2.glb",
+        "res://assets/models/surface-details/volcanic_3.glb"
+      ],
+      "density": 1.0
+    },
+    "salt": {
+      "models": [
+        "res://assets/models/surface-details/salt_0.glb",
+        "res://assets/models/surface-details/salt_1.glb",
+        "res://assets/models/surface-details/salt_2.glb",
+        "res://assets/models/surface-details/salt_3.glb"
+      ],
+      "density": 0.85
+    },
+    "ochre": {
+      "models": [
+        "res://assets/models/surface-details/ochre_0.glb",
+        "res://assets/models/surface-details/ochre_1.glb",
+        "res://assets/models/surface-details/ochre_2.glb",
+        "res://assets/models/surface-details/ochre_3.glb"
+      ],
+      "density": 1.0
+    }
+  }
+}

@@ -687,7 +687,7 @@ func toggle_research() -> void:
 func browse_system(offset: int) -> void:
 	var count: int=int(session.manifest.settings.planet_count)/int(session.manifest.settings.planets_per_system)
 	var index: int=posmod(candidate_system+offset,count)
-	selected_ordinal=index*int(session.manifest.settings.planets_per_system);select_destination()
+	selected_ordinal=FrontierUniverse.showcase_ordinal(session.manifest,index);select_destination()
 
 func _refresh_system_candidates(index: int) -> void:
 	if candidate_system==index:return

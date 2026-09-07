@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "minimum_planets": 4,
+  "maximum_planets": 12,
+  "pair_planets": 16,
+  "star_radius_range": [900, 2100],
+  "outer_radius_range": [68000, 82000],
+  "boundary": 94000,
+  "themes": ["open", "debris", "satellites", "giant_court"],
+  "names": {"open":"넓은 항로", "debris":"소행성 회랑", "satellites":"위성 군집", "giant_court":"거대행성 성역"},
+  "asteroid_instances": 420,
+  "ring_outer_radius": 2.25,
+  "moon_orbit_radius": 3.2
+}

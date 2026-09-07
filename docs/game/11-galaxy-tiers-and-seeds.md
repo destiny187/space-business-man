@@ -163,3 +163,7 @@ galaxy_seed + generation_version + catalog_version
 ## 2026-09-07 외형·복합 환경 확장
 
 같은 타입의 Blender 외형·색상 변형, 복합 지질, 초기 물·대기 상태와 불타는 행성의 지역 냉각을 연결한다. 규칙·저장 호환 범위는 [행성 다양성](../production/31-planet-diversity.md)을 따른다.
+
+## 2026-09-07 항성계 전체 다양성
+
+새 은하는 4~12개 행성의 가변 항성계와 소행성대·위성·고리·진입 구도를 사용한다. 총 100만 행성과 태양계 8개를 유지한다. [구성·주소·기존 저장 호환](../production/32-system-diversity.md).

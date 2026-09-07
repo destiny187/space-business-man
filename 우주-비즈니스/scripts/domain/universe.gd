@@ -6,6 +6,7 @@ const STREAMS := ["terrain", "resource", "discovery", "ecology", "civilization",
 
 static func config() -> Dictionary:
 	var value: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
+	value.system_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/system_diversity.json"))
 	value.planet_rules=FrontierPlanetTraits.rules().duplicate(true)
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	return value
@@ -51,7 +52,7 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 	var radius: float = lerpf(float(cfg.outer_radius), float(cfg.inner_radius), progress)
 	var angle: float = float(derive(seed_value, "angle") % 1000000) / 1000000.0 * TAU
 	var ids: Array = []
-	for orbit in int(cfg.planets_per_system): ids.append(body_id(m, index * int(cfg.planets_per_system) + orbit))
+	for orbit in body_count(m,index): ids.append(body_id(m, first_ordinal(m,index) + orbit))
 	return {"id": id, "ordinal": index, "seed": seed_value, "band": band, "progress": progress,
 		"sector_id": m.id + ":sector:%d" % (index / int(cfg.systems_per_sector)),
 		"map_position": [cos(angle) * radius, sin(angle) * radius], "body_ids": ids,
@@ -60,7 +61,7 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 static func body(m: Dictionary, ordinal: int) -> Dictionary:
 	if ordinal < 0 or ordinal >= int(m.settings.planet_count): return {}
 	var cfg: Dictionary = m.settings
-	var s: Dictionary = system(m, ordinal / int(cfg.planets_per_system))
+	var s: Dictionary = system(m, system_index(m,ordinal))
 	var id := body_id(m, ordinal)
 	var seed_value: int = derive(int(s.seed), id)
 	var streams: Dictionary = {}
@@ -71,14 +72,22 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		"kind": cfg.planet_kinds[ordinal % cfg.planet_kinds.size()], "streams": streams,
 		"origin": "fictional", "reference_id": "", "surface_origin": "seed_generated"}
 	if cfg.generator_version=="galaxy-v3":
-		var orbit: int=ordinal%int(cfg.planets_per_system)
+		var orbit: int=ordinal-first_ordinal(m,int(s.ordinal))
 		result.kind=cfg.planet_kinds[derive(seed_value,"body_kind")%cfg.planet_kinds.size()]
 		if int(s.ordinal)==0:
 			result.name=cfg.solar_names[orbit];result.kind=cfg.solar_kinds[orbit]
 			result.origin="solar_reference";result.reference_id="solar:"+str(orbit);result.planet_tier=1
+		if cfg.has("system_rules") and int(s.ordinal)>0:
+			var layout:=system_layout(m,int(s.ordinal))
+			if orbit==0:result.kind="basalt"
+			elif layout.theme=="giant_court" and orbit%2==1:result.kind="gas_giant"
 		result.landable=result.kind not in ["gas_giant","ice_giant"]
-		result.orbit={"radius":float(presentation().orbit_radii[orbit]),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
+		result.orbit={"radius":orbit_radius(m,int(s.ordinal),orbit),"phase":float(derive(seed_value,"orbit")%1000000)/1000000.0*TAU,"period":float(cfg.orbit_period_seconds)*pow(1.0+orbit,.9)}
 		result.star_id=s.star.id
+	if result.origin=="fictional" and cfg.has("system_rules"):
+		var layout:=system_layout(m,int(s.ordinal))
+		result.rings=(result.kind in ["gas_giant","ice_giant"] and (layout.theme=="giant_court" or derive(seed_value,"rings")%3==0))
+		result.moons=1+derive(seed_value,"moons")%2 if layout.theme=="satellites" or result.kind in ["gas_giant","ice_giant"] else 0
 	if result.origin=="fictional":result.traits=FrontierPlanetTraits.make(result,cfg.get("planet_rules",{}))
 	result.terrain_traits=result.get("traits",{}) if cfg.has("planet_rules") else {}
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
@@ -100,6 +109,7 @@ static func radius(body_value: Dictionary) -> float:
 static func navigation_radius(body_value: Dictionary) -> float:
 	# Ring geometry is part of the safe approach envelope, never a landing surface.
 	var extent: float={"solar:5":2.26,"solar:6":1.805}.get(body_value.get("reference_id",""),1.0)
+	if body_value.get("rings",false):extent=maxf(extent,2.25)
 	return radius(body_value)*extent
 
 static func position(m: Dictionary,ordinal: int,elapsed: float=0.0) -> Vector3:
@@ -128,6 +138,9 @@ static func validate_world(value: Variant) -> String:
 	var m: Dictionary = value.manifest
 	if not m.get("settings") is Dictionary or m.settings.get("generator_version") not in ["galaxy-v2","galaxy-v3"]: return "호환되는 은하 생성기가 필요합니다."
 	if value.get("manifest_hash") != fingerprint(m): return "은하 원형 기록이 손상됐습니다."
+	if m.settings.has("system_rules"):
+		var rules: Variant=m.settings.system_rules
+		if not rules is Dictionary or rules.get("version")!=1 or rules.get("pair_planets")!=16 or rules.get("minimum_planets")!=4 or rules.get("maximum_planets")!=12:return "항성계 배치 규칙이 올바르지 않습니다."
 	if m.settings.get("planet_count") != 1000000 or m.settings.get("planets_per_system") != (8 if m.settings.generator_version=="galaxy-v3" else 4): return "은하 주소 범위가 올바르지 않습니다."
 	if not m.get("id") is String or not m.get("catalog") is Dictionary: return "은하 형식이 올바르지 않습니다."
 	if not value.get("visited") is Dictionary or not value.get("terrain_edits") is Dictionary: return "세계 변경 기록 형식이 올바르지 않습니다."
@@ -241,3 +254,64 @@ static var _presentation: Dictionary={}
 static func presentation() -> Dictionary:
 	if _presentation.is_empty():_presentation=JSON.parse_string(FileAccess.get_file_as_string("res://data/space_presentation.json"))
 	return _presentation
+
+# Paired variable-length systems preserve all one million contiguous addresses.
+# Solar system and its pair remain eight bodies each; no prefix table is allocated.
+static func _pair_first_count(m: Dictionary,pair: int) -> int:
+	if pair==0:return 8
+	var cfg: Dictionary=m.settings.system_rules
+	return int(cfg.minimum_planets)+derive(int(m.seed),"system-pair-v1:%d"%pair)%(int(cfg.maximum_planets)-int(cfg.minimum_planets)+1)
+static func body_count(m: Dictionary,index: int) -> int:
+	if not m.settings.has("system_rules"):return int(m.settings.planets_per_system)
+	var first:=_pair_first_count(m,index/2)
+	return first if index%2==0 else int(m.settings.system_rules.pair_planets)-first
+static func first_ordinal(m: Dictionary,index: int) -> int:
+	if not m.settings.has("system_rules"):return index*int(m.settings.planets_per_system)
+	return (index/2)*int(m.settings.system_rules.pair_planets)+(0 if index%2==0 else _pair_first_count(m,index/2))
+static func system_index(m: Dictionary,ordinal: int) -> int:
+	if not m.settings.has("system_rules"):return ordinal/int(m.settings.planets_per_system)
+	var pair: int=ordinal/int(m.settings.system_rules.pair_planets)
+	return pair*2+(1 if ordinal%int(m.settings.system_rules.pair_planets)>=_pair_first_count(m,pair) else 0)
+static func system_layout(m: Dictionary,index: int) -> Dictionary:
+	if not m.settings.has("system_rules") or index==0:
+		return {"theme":"solar" if index==0 else "legacy","star_radius":presentation().star_radius,"warning":presentation().star_warning_radius,"damage":presentation().star_damage_radius,"boundary":presentation().system_boundary,"belt_radius":0.0}
+	var cfg: Dictionary=m.settings.system_rules
+	var seed_value:=derive(int(m.seed),"system-layout-v1:%d"%index)
+	var star: float=lerpf(cfg.star_radius_range[0],cfg.star_radius_range[1],float(seed_value%1000)/999.0)
+	var theme: String=cfg.themes[derive(seed_value,"theme")%cfg.themes.size()]
+	return {"theme":theme,"star_radius":star,"warning":star*4.0,"damage":star*2.53,"boundary":cfg.boundary,"belt_radius":(orbit_radius(m,index,0)+orbit_radius(m,index,1))*.5 if theme=="debris" else 0.0}
+static func orbit_radius(m: Dictionary,index: int,orbit: int) -> float:
+	if not m.settings.has("system_rules") or index==0:return float(presentation().orbit_radii[orbit])
+	var cfg: Dictionary=m.settings.system_rules
+	var seed_value:=derive(int(m.seed),"system-layout-v1:%d"%index)
+	var inner: float=lerpf(cfg.star_radius_range[0],cfg.star_radius_range[1],float(seed_value%1000)/999.0)*4.0+2600.0
+	var outer: float=lerpf(cfg.outer_radius_range[0],cfg.outer_radius_range[1],float(derive(seed_value,"extent")%1000)/999.0)
+	var total:=0.0;var part:=0.0
+	for i in range(1,body_count(m,index)):
+		var weight:=.85+float(derive(seed_value,"gap:%d"%i)%1000)/3330.0
+		total+=weight
+		if i<=orbit:part+=weight
+	return lerpf(inner,outer,part/maxf(total,1))
+static func entry_position(m: Dictionary,ordinal: int,elapsed: float,extra: float=0.0) -> Vector3:
+	var b:=body(m,ordinal);var target:=position(m,ordinal,elapsed)
+	var outward:=target.normalized()
+	if m.settings.has("system_rules"):
+		outward=(outward+Vector3.UP*.55+outward.cross(Vector3.UP)*.25).normalized()
+	var clearance: float=navigation_radius(b)+float(m.settings.flight.arrival_clearance)+1200
+	if int(b.get("moons",0))>0 or b.get("rings",false):clearance=maxf(clearance,radius(b)*7.5)
+	return target+outward*(clearance+extra)
+static func star_settings(m: Dictionary,index: int) -> Dictionary:
+	var result:=presentation().duplicate(true)
+	var layout:=system_layout(m,index)
+	result.star_radius=layout.star_radius;result.star_warning_radius=layout.warning;result.star_damage_radius=layout.damage;result.system_boundary=layout.boundary
+	return result
+static func moon_offset(body_value: Dictionary,index: int,elapsed: float) -> Vector3:
+	var seed_value:=derive(int(body_value.seed),"moon:%d"%index)
+	var angle:=float(seed_value%10000)/10000.0*TAU+elapsed*.00012/(index+1)
+	return Vector3(cos(angle),sin(angle)*.3,sin(angle))*(3.2+index*1.35)*radius(body_value)
+static func moon_radius(body_value: Dictionary,index: int) -> float:
+	return radius(body_value)*(.16+float(derive(int(body_value.seed),"moon-size:%d"%index)%100)/1000.0)
+
+static func showcase_ordinal(m: Dictionary,index: int) -> int:
+	var first:=first_ordinal(m,index)
+	return first+1 if system_layout(m,index).theme=="giant_court" else first
