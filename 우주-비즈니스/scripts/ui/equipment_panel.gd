@@ -301,12 +301,14 @@ func _refresh_details() -> void:
 		for id in def.cost:
 			var cost:=VBoxContainer.new();materials.add_child(cost);cost.add_child(FrontierResourceIcons.view(id,30));var have:=int(bag.get(id,0));FrontierInterfaceStyle.label(cost,"%d/%d"%[have,int(def.cost[id])],12,FrontierInterfaceStyle.ACCENT if have>=int(def.cost[id]) else FrontierInterfaceStyle.WARNING)
 		if def.cost.is_empty():materials.add_child(FrontierResourceIcons.view("research_parts",30));FrontierInterfaceStyle.label(materials,"키트 %d / 1"%int(data.kit),13)
-		action.text="제작";action.disabled=app.surface_world==null or (int(data.kit)<=0 if selected_definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost))
+		var research_reason:=FrontierExpeditionResearch.craft_reason(app.session.latest,selected_definition)
+		action.text="제작";action.disabled=not research_reason.is_empty() or app.surface_world==null or (int(data.kit)<=0 if selected_definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost))
 		if response_left<=0:message.text="착륙 후 휴대 제작기를 사용할 수 있습니다." if app.surface_world==null else ("재료를 모으면 제작할 수 있습니다." if action.disabled else "내 배낭의 재료를 사용합니다.");message.modulate=Color.WHITE
+		if not research_reason.is_empty():message.text=research_reason
 	else:
 		upgrade_action.visible=app.surface_world!=null and int(def.tier)==1 and selected_item!=""
 		var next: Dictionary=FrontierEquipment.config().items.get(str(def.kind)+"_2",{})
-		upgrade_action.disabled=not FrontierExpeditionBusiness.affordable(bag,next.get("cost",{}))
+		upgrade_action.disabled=not FrontierExpeditionResearch.craft_reason(app.session.latest,str(def.kind)+"_2").is_empty() or not FrontierExpeditionBusiness.affordable(bag,next.get("cost",{}))
 		upgrade_action.tooltip_text=FrontierCatalog.cost_text(next.get("cost",{}))+" · 장비 ID와 슬롯 유지"
 		if upgrade_action.visible:
 			for resource in next.get("cost",{}):

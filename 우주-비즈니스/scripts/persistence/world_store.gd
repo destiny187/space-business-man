@@ -49,6 +49,7 @@ func _read(candidate: String) -> Dictionary:
 	if not error.is_empty():
 		if last_error.is_empty():last_error=error
 		return {}
+	FrontierExpeditionResearch.ensure(parser.data)
 	return parser.data
 
 func has_history() -> bool:

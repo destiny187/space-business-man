@@ -150,7 +150,7 @@ static func new_world(seed_value: int) -> Dictionary:
 	var start: int=int(manifest.settings.get("starting_ordinal",0))
 	# A new game starts inside the Solar System beside Earth; interstellar entry_position is separate.
 	var point:=position(manifest,start)+Vector3(0,0,navigation_radius(body(manifest,start))+float(manifest.settings.flight.arrival_clearance))
-	return {"version": 2, "manifest": manifest, "manifest_hash": fingerprint(manifest),
+	return {"version": 2, "expedition_research":FrontierExpeditionResearch.create(), "manifest": manifest, "manifest_hash": fingerprint(manifest),
 		"visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
 
 static func fingerprint(value: Dictionary) -> String:
@@ -183,6 +183,8 @@ static func validate_world(value: Variant) -> String:
 		if not crew_error.is_empty():return crew_error
 		var landing_error: String=FrontierCrewSurface.validate_world(value)
 		if not landing_error.is_empty():return landing_error
+	var research_error:=FrontierExpeditionResearch.validate(value)
+	if not research_error.is_empty():return research_error
 	if value.has("ecology"):
 		var ecology_error: String=FrontierEcology.validate(value.ecology,m)
 		if not ecology_error.is_empty():return ecology_error

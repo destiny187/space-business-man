@@ -3,6 +3,7 @@ extends RefCounted
 ## Host-only admission, immutable profile references and durable transactions.
 # Host scene resolves a live device descriptor (area/body/position/enabled); no RPC setter.
 var augmentation_station_provider: Callable
+var research_station_provider: Callable
 var world: Dictionary={}
 var phase: String="lobby"
 var lobby_ready: Dictionary={}
@@ -29,6 +30,8 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
 	error=FrontierPlayerProfile.validate_character(profile)
 	if not error.is_empty():return false
+	error=FrontierExpeditionResearch.validate(source)
+	if not error.is_empty():return false
 	world=source.duplicate(true);save_world=persist
 	rover_runtime={"seats":{},"exits":{},"tasks":{},"status":{}}
 	FrontierRovers.brake_all(world)
@@ -40,6 +43,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	if world.crew.owner_id!=profile.character_id:error="이 세계를 만든 호스트의 개인 프로필이 필요합니다.";return false
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
+	FrontierExpeditionResearch.ensure(world)
 	for id in world.crew.members:
 		FrontierCrewAugmentation.ensure(world.crew.members[id])
 		FrontierExpeditionBusiness.release_carrier(world,id);FrontierCrewWorld.disconnect_member(world.crew,id);FrontierShuttles.resume(world,id)
@@ -117,7 +121,7 @@ func snapshot(viewer: int=1) -> Dictionary:
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
-	return {"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"local_shuttle":actor if local.has("local_shuttle") else "","rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":vessel_stats,"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"local_shuttle":actor if local.has("local_shuttle") else "","rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":vessel_stats,"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -145,7 +149,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","augmentation_upgrade"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	if envelope.kind=="shuttle_recall":
 		var target: String=str(envelope.args.get("character_id",""))
 		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
@@ -170,6 +174,12 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 			var offered: Variant=augmentation_station_provider.call(actor,str(envelope.args.get("station_id","")))
 			if offered is Dictionary:station=offered
 		reason=FrontierCrewAugmentation.apply(draft,actor,envelope.args,station)
+	elif envelope.kind=="research_contribute":
+		var station: Dictionary={}
+		if research_station_provider.is_valid():
+			var offered: Variant=research_station_provider.call(actor,str(envelope.args.get("station_id","")))
+			if offered is Dictionary:station=offered
+		reason=FrontierExpeditionResearch.contribute(draft,actor,envelope.args,station)
 	elif envelope.kind.begins_with("shuttle_"):reason=FrontierShuttles.apply(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("rover_"):reason=FrontierRovers.apply(draft,actor,envelope.kind,envelope.args,rover_draft)
 	elif envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)
@@ -193,6 +203,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	draft.crew.revision+=1;draft.crew.members[actor].last_sequence=sequence
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
 	if envelope.kind=="augmentation_upgrade":result.augmentation=FrontierCrewAugmentation.outcome(draft.crew.members[actor],envelope.args.field)
+	if envelope.kind=="research_contribute":result.research={"project":envelope.args.project,"stage":draft.expedition_research.projects[envelope.args.project].stage,"contributed":{envelope.args.resource:int(envelope.args.amount)}}
 	var gains: Dictionary={}
 	var old_bag:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	old_bag.stone=int(old_bag.get("stone",0))+int(world.crew.members[actor].carried)
@@ -319,7 +330,7 @@ func step_surface(delta: float) -> void:
 		if progress<1.0:continue
 		var draft:=world.duplicate(true)
 		var survey_local:=FrontierShuttles.context(draft,actor)
-		FrontierSurfaceSurvey.record(survey_local,target);FrontierShuttles.commit(draft,survey_local,actor)
+		FrontierSurfaceSurvey.record(survey_local,target,actor);FrontierShuttles.commit(draft,survey_local,actor)
 		draft.crew.revision+=1
 		if not save_world.call(draft):stopped=true;error="스캔 저장 실패로 공동 세계를 정지했습니다.";return
 		world=draft

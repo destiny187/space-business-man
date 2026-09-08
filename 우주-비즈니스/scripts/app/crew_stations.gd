@@ -42,7 +42,9 @@ func build_set(parent: Node3D,outdoors: bool,terrain: FrontierTerrainStreamer=nu
 	return group
 func _process(delta: float) -> void:
 	if app.session.latest.is_empty():hint.hide();panel.hide();return
-	if app.session.hosting:app.session.authority.augmentation_station_provider=resolve
+	if app.session.hosting:
+		app.session.authority.augmentation_station_provider=resolve
+		app.session.authority.research_station_provider=resolve
 	sync_spaces()
 	var local:=local_set()
 	hovered=target() if not app.any_menu_open() and not app.outside and not app.arrival.active else ""
@@ -114,7 +116,7 @@ func interact() -> bool:
 	app.feedback.audio.play("sfx_pickup_resource")
 	return true
 func resolve(actor: String,station_id: String) -> Dictionary:
-	if station_id!="ship:augmentation" or not app.session.hosting:return {}
+	if station_id not in ["ship:augmentation","ship:research"] or not app.session.hosting:return {}
 	var world: Dictionary=app.session.authority.world
 	if not world.crew.members.has(actor) or FrontierShuttles.aboard(world,actor):return {}
 	var group: Node3D=cabin
@@ -123,6 +125,6 @@ func resolve(actor: String,station_id: String) -> Dictionary:
 		if not is_instance_valid(surface) or surface.is_queued_for_deletion() or surface_body!=world.crew.get("landing",{}).get("body_id",""):return {}
 		group=surface
 	if not is_instance_valid(group) or group.is_queued_for_deletion() or not group.is_inside_tree():return {}
-	var node: FrontierCrewStation=group.get_node_or_null("Station_augmentation")
+	var node: FrontierCrewStation=group.get_node_or_null("Station_augmentation" if station_id=="ship:augmentation" else "Station_research")
 	if not is_instance_valid(node) or node.is_queued_for_deletion():return {}
 	return {"enabled":true,"position":node.interaction_point(),"area":area,"body_id":surface_body if area=="surface" else ""}

@@ -76,6 +76,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		for key in config().items:
 			var target: Dictionary=config().items[key]
 			if target.get("upgrade_from","")!=original:continue
+			var access:=FrontierExpeditionResearch.craft_reason(world,key)
+			if not access.is_empty():return access
 			var stock:=FrontierExpeditionBusiness.bag(world,actor)
 			if not FrontierExpeditionBusiness.affordable(stock,target.cost):return "배낭의 Mk.2 부품이 부족합니다."
 			FrontierExpeditionBusiness.transfer(stock,target.cost,-1);data.items[id]=key;return ""
@@ -86,7 +88,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if not config().items.has(definition):return "제작 설계도 오류"
 	if data.items.size()>=FrontierItemInventory.capacity(member):return "장비 보관 한도에 도달했습니다."
 	var recipe: Dictionary=config().items[definition]
-	if not recipe.get("craftable",true):return "현재 제작은 Mk.2까지 지원합니다."
+	var access:=FrontierExpeditionResearch.craft_reason(world,definition)
+	if not access.is_empty():return access
 	var after_cost:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	FrontierExpeditionBusiness.transfer(after_cost,recipe.cost,-1)
 	if FrontierItemInventory.used(after_cost,data.items.size()+1)>FrontierItemInventory.capacity(member):return "아이템 보관 공간이 부족합니다."

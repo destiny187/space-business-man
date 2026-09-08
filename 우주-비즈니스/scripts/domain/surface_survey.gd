@@ -30,7 +30,7 @@ static func known(world: Dictionary,row: Dictionary) -> bool:
 	var body_id: String=world.crew.landing.body_id
 	if row.kind=="biology":return world.ecology.observations.has(body_id+":"+row.form_id)
 	return world.crew.get("survey",{}).has(key(body_id,row))
-static func record(world: Dictionary,row: Dictionary) -> void:
+static func record(world: Dictionary,row: Dictionary,actor: String="") -> void:
 	if row.kind=="biology":FrontierEcology.scan(world.ecology,world.crew.landing.body_id,row);return
 	if not world.crew.has("survey"):world.crew.survey={}
 	var site:=FrontierExpeditionBusiness.site(world)
@@ -38,6 +38,7 @@ static func record(world: Dictionary,row: Dictionary) -> void:
 	var id:=key(world.crew.landing.body_id,row)
 	# Discovery is per planet/material, not an unbounded entry for every physical rock.
 	if world.crew.survey.size()>=256 and not world.crew.survey.has(id):world.crew.survey.erase(world.crew.survey.keys()[0])
+	FrontierExpeditionResearch.record(world,world.crew.landing.body_id,row.resource,row.id,int(row.required_tier),"scan",actor)
 	world.crew.survey[id]={"body_id":world.crew.landing.body_id,"resource":row.resource,"vein_id":row.id,"tier":int(row.required_tier)}
 static func biology_info(form: Dictionary) -> Dictionary:
 	var c:=FrontierEcologyCatalog.config()

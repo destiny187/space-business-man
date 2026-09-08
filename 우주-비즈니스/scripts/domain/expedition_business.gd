@@ -174,6 +174,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var amount: int=mini(int(current.remaining.get(row.id,row.capacity)),mini(int(tool.amount),FrontierItemInventory.room(world,actor,row.resource)))
 		if amount<=0:return "광맥이 고갈됐거나 배낭이 가득 찼습니다."
 		FrontierRobotWork.discover(current,row.resource)
+		FrontierExpeditionResearch.record(world,world.location,row.resource,row.id,int(row.required_tier),"extraction",actor)
 		current.remaining[row.id]=int(current.remaining.get(row.id,row.capacity))-amount;ledger.bags[actor][row.resource]=int(ledger.bags[actor].get(row.resource,0))+amount;return ""
 	if kind=="business_technology" and str(args.get("technology","")) in FrontierEarlyAccess.config().open_technologies:return "기초 설계는 이미 사용할 수 있습니다. 제작 재료를 준비하세요."
 	if kind=="business_technology":
