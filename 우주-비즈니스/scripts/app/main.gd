@@ -205,20 +205,11 @@ func _show_menu(kind: String) -> void:
 	menu.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	ui.add_child(menu)
 	var shade := ColorRect.new()
-	shade.color = Color(0.025,0.052,0.077,0.40 if kind == "title" else 0.95)
+	shade.color = Color(0.025,0.052,0.077,0.12 if kind == "title" else 0.95)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu.add_child(shade)
 	if kind == "title":
-		var panel := PanelContainer.new()
-		panel.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
-		panel.offset_left = 48; panel.offset_right = 520; panel.offset_top = 54; panel.offset_bottom = -54
-		panel.add_theme_stylebox_override("panel",_style(Color(0.025,0.055,0.075,0.94),Color("354e54"),8,32))
-		menu.add_child(panel)
-		var column := VBoxContainer.new()
-		panel.add_child(column)
-		_title_menu(column)
-		var caption: Label = _label(menu,"KEPLER SECTOR\nYOUR NEXT FRONTIER",15,MINT)
-		caption.position = Vector2(855,654)
+		_build_title_screen()
 		return
 	var shell := HBoxContainer.new()
 	shell.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -281,20 +272,92 @@ func _show_menu(kind: String) -> void:
 	menu.modulate.a = 0.3
 	menu.create_tween().tween_property(menu,"modulate:a",1.0,0.16)
 
+func _build_title_screen() -> void:
+	menu.theme = FrontierInterfaceStyle.theme()
+	# Fade only behind the menu so the existing game landscape stays visible.
+	var backdrop := TextureRect.new()
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var gradient := Gradient.new()
+	gradient.offsets = PackedFloat32Array([0.0,0.36,0.70,1.0])
+	gradient.colors = PackedColorArray([Color("10191ff5"),Color("10191fe8"),Color("10191f40"),Color("10191f00")])
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.fill_from = Vector2.ZERO
+	texture.fill_to = Vector2.RIGHT
+	backdrop.texture = texture
+	menu.add_child(backdrop)
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
+	margin.offset_right = 432
+	for side in ["left","right","top","bottom"]:
+		margin.add_theme_constant_override("margin_"+side,48 if side != "right" else 24)
+	menu.add_child(margin)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation",0)
+	margin.add_child(column)
+	_title_menu(column)
+
 func _title_menu(column: VBoxContainer) -> void:
-	_label(column,"L O C U S   /   01",14,MINT)
-	var gap := Control.new(); gap.custom_minimum_size.y = 38; column.add_child(gap)
-	_label(column,"우주\n비즈니스맨",56)
-	_paragraph(column,"작은 위성 하나.\n당신의 첫 번째 우주 사업.",PAPER)
-	_paragraph(column,"직접 채집하고, 로봇에게 맡기고,\n황무지에 새로운 내일을 만드세요.")
-	var spacer := Control.new(); spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL; column.add_child(spacer)
-	var solo_label: String="혼자 이어하기  →" if FileAccess.file_exists(FrontierCrewExpedition.selected_world_path(true)) or FileAccess.file_exists(FrontierCrewExpedition.selected_world_path(true)+".bak") else "혼자 게임 시작  →"
-	_primary(_button(column,solo_label,func(): _start_expedition("solo"))).name="SoloStart"
-	_button(column,"새 은하에서 혼자 시작",func(): _start_expedition("solo_new"))
-	_button(column,"함께 플레이 · 최대 6명",func(): _start_expedition("multiplayer")).name="MultiplayerStart"
-	_button(column,"설정 · 그래픽 / 시야거리 [F10]",func():FrontierClientSettings.ensure(get_tree()).open()).name="Settings"
-	_button(column,"종료",_quit_game)
-	_label(column,"혼자 플레이는 연결 설정 없이 바로 시작합니다.",12,MUTED)
+	var title := _label(column,"우주\n비즈니스맨",48,FrontierInterfaceStyle.TEXT)
+	title.add_theme_constant_override("line_spacing",-6)
+	var space := Control.new()
+	space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(space)
+	var actions := VBoxContainer.new()
+	actions.add_theme_constant_override("separation",12)
+	column.add_child(actions)
+	var path := FrontierCrewExpedition.selected_world_path(true)
+	var has_save := FileAccess.file_exists(path) or FileAccess.file_exists(path+".bak")
+	var first: Button
+	if has_save:
+		first = _title_button(actions,"이어하기",func(): _start_expedition("solo"),true)
+		first.name = "SoloStart"
+	var new_game := _title_button(actions,"새 게임",func(): _start_expedition("solo_new"),not has_save)
+	new_game.name = "NewGame" if has_save else "SoloStart"
+	if not has_save: first = new_game
+	var multiplayer := _title_button(actions,"함께하기",func(): _start_expedition("multiplayer"))
+	multiplayer.name = "MultiplayerStart"
+	multiplayer.tooltip_text = "방을 만들거나 참가합니다. 최대 6명."
+	var crew_count := _label(multiplayer,"최대 6명",13,FrontierInterfaceStyle.MUTED)
+	crew_count.set_anchors_and_offsets_preset(Control.PRESET_CENTER_RIGHT)
+	crew_count.offset_left = -88
+	crew_count.offset_right = -18
+	crew_count.offset_top = -10
+	crew_count.offset_bottom = 10
+	crew_count.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var gap := Control.new()
+	gap.custom_minimum_size.y = 36
+	column.add_child(gap)
+	var footer := HBoxContainer.new()
+	footer.add_theme_constant_override("separation",12)
+	column.add_child(footer)
+	var settings := _button(footer,"설정",func():FrontierClientSettings.ensure(get_tree()).open())
+	settings.name = "Settings"
+	settings.tooltip_text = "설정 (F10)"
+	var quit := _button(footer,"종료",_quit_game)
+	for button in [settings,quit]:
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(Color.TRANSPARENT,FrontierInterfaceStyle.LINE,10))
+	first.grab_focus.call_deferred()
+
+func _title_button(parent: Node,text_value: String,action: Callable,primary: bool=false) -> Button:
+	var button := _button(parent,text_value,action)
+	button.custom_minimum_size.y = 60
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.add_theme_font_size_override("font_size",20)
+	if primary:
+		for state in ["normal","hover","pressed"]:
+			var color := FrontierInterfaceStyle.ACCENT.lightened(0.12) if state == "hover" else FrontierInterfaceStyle.ACCENT
+			if state == "pressed": color = color.darkened(0.12)
+			button.add_theme_stylebox_override(state,FrontierInterfaceStyle.box(color,color,18))
+		for state in ["font_color","font_hover_color","font_pressed_color","font_focus_color"]:
+			button.add_theme_color_override(state,FrontierInterfaceStyle.INK)
+	else:
+		button.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(FrontierInterfaceStyle.PANEL,FrontierInterfaceStyle.LINE,18))
+		button.add_theme_stylebox_override("hover",FrontierInterfaceStyle.box(Color("263941"),FrontierInterfaceStyle.ACCENT,18))
+		button.add_theme_stylebox_override("pressed",FrontierInterfaceStyle.box(Color("29463f"),FrontierInterfaceStyle.ACCENT,18))
+	return button
 
 func _start_expedition(mode: String) -> void:
 	get_tree().set_meta("expedition_mode",mode)
