@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS host starts
+RESULT equipment_research_prototype 시제품과 현재 제작소를 다시 선택하세요.
+PASS analysis required before assembly
+PASS A05 schema remains readable
+PASS A05 migration preserves analysis without inventing a tool
+RESULT equipment_research_prototype 제작소 전력 공급을 확인하세요.
+PASS unpowered assembly rejected
+RESULT equipment_research_prototype 제작소 8m 이내로 접근하세요.
+PASS remote assembly rejected
+RESULT equipment_research_prototype 제작소의 진행 중인 작업을 먼저 완료하세요.
+PASS busy factory rejected
+PASS save failure rolls back parts, item and project
+PASS host assembles probe
+PASS own components become one persistent equipment item
+PASS retry never duplicates the prototype
+PASS prototype equips as T2 and cannot gather T3
+PASS probe enters existing cargo equipment storage
+PASS cargo retrieval restores identical item ID and definition
+PASS prototype grants no Mk3 license and has no portable craft bypass
+PASS assembled world validates
+PASS resume keeps probe and shared project
+RESEARCH_PROTOTYPE_A06 17 FAILURES 0

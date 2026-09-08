@@ -204,6 +204,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
 	if envelope.kind=="augmentation_upgrade":result.augmentation=FrontierCrewAugmentation.outcome(draft.crew.members[actor],envelope.args.field)
 	if envelope.kind=="research_contribute":result.research={"project":envelope.args.project,"stage":draft.expedition_research.projects[envelope.args.project].stage,"contributed":{envelope.args.resource:int(envelope.args.amount)}}
+	if envelope.kind=="equipment_research_prototype":result.research={"project":"deep_mining","stage":"prototyped","item_id":"crafted:"+str(int(draft.crew.members[actor].loadout.counter))}
 	var gains: Dictionary={}
 	var old_bag:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	old_bag.stone=int(old_bag.get("stone",0))+int(world.crew.members[actor].carried)

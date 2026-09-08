@@ -8,9 +8,8 @@ var surface: Node3D
 var surface_body: String=""
 var panel: PanelContainer
 var augmentation: FrontierAugmentationPanel
-var preview: FrontierEquipmentPreview
+var research: FrontierExpeditionResearchPanel
 var title: Label
-var detail: Label
 var hint: Label
 var selected: String=""
 var hovered: String=""
@@ -24,8 +23,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var column:=VBoxContainer.new();panel.add_child(column)
 	var header:=HBoxContainer.new();column.add_child(header);title=FrontierInterfaceStyle.label(header,"",24);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	var close:=Button.new();close.text="닫기 · Esc";header.add_child(close);close.pressed.connect(panel.hide)
-	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(280,260);preview.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(preview)
-	detail=FrontierInterfaceStyle.label(column,"",16);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	research=FrontierExpeditionResearchPanel.new();column.add_child(research);research.configure(app);research.hide()
 	augmentation=FrontierAugmentationPanel.new();column.add_child(augmentation);augmentation.configure(app);augmentation.hide()
 	panel.hide()
 	hint=FrontierInterfaceStyle.label(ui,"",16);hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
@@ -58,7 +56,9 @@ func _process(delta: float) -> void:
 		if not is_instance_valid(group):continue
 		for node in group.get_children():
 			node.present(delta,group==local and (node.kind==hovered or (panel.visible and node.kind==selected)))
-			if node.kind!="augmentation":continue
+			if node.kind=="research":
+				node.load_gem(research.selected if group==local and panel.visible and selected=="research" and (research.loaded or research.phase=="success") else "")
+				continue
 			var showing: bool=group==local and panel.visible and selected=="augmentation"
 			node.load_gem(augmentation.body.preview.gem_id if showing else "")
 			if showing:
@@ -66,7 +66,6 @@ func _process(delta: float) -> void:
 				node.tray.position=augmentation.body.preview.station.tray.position
 	if panel.visible:
 		if local==null or not is_instance_valid(local.get_node_or_null("Station_"+selected)) or not within(local.get_node("Station_"+selected)):panel.hide();return
-		if selected=="research":detail.text="표본 계측 · 시제품 연구\n탐사 기록은 J에서 확인할 수 있습니다."
 func sync_spaces() -> void:
 	var snapshot: Dictionary=app.session.latest
 	var cabin_parent: Node3D=app.cabin_root
@@ -108,11 +107,9 @@ func interact() -> bool:
 	var key:=target()
 	if key.is_empty():return false
 	selected=key;app.open_menu(panel);title.text=definitions[key].name
-	preview.visible=key=="research";detail.visible=key=="research";augmentation.visible=key=="augmentation"
+	research.visible=key=="research";augmentation.visible=key=="augmentation"
 	if key=="augmentation":augmentation.open()
-	else:
-		preview.show_model(definitions[key].model)
-		preview.camera.position.z=absf(preview.camera.position.z);preview.camera.look_at(Vector3.ZERO)
+	else:research.open()
 	app.feedback.audio.play("sfx_pickup_resource")
 	return true
 func resolve(actor: String,station_id: String) -> Dictionary:

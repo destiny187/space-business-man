@@ -1,0 +1,12 @@
+{
+  "id": "miner_probe",
+  "source": "art/blender/equipment/miner_probe.blend",
+  "output": "우주-비즈니스/assets/models/equipment/miner_probe.glb",
+  "generator": "tools/build_research_probe.py",
+  "blender": "5.2.1 LTS",
+  "material_preset": "ink-industrial-v1",
+  "editable_objects": 31,
+  "export_surfaces": 15,
+  "front": "Blender +Y / Godot -Z",
+  "purpose": "T2 research prototype, open calibration head"
+}

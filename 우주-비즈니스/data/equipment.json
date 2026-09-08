@@ -115,6 +115,22 @@
       "damage": 40,
       "radius": 1.7,
       "upgrade_from": "terrain_1"
+    },
+    "miner_probe": {
+      "name": "심부 채집 시험기",
+      "kind": "miner",
+      "tier": 2,
+      "model": "equipment/miner_probe",
+      "preview": "miner_probe",
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 1
+      },
+      "interval": 0.5,
+      "amount": 3,
+      "damage": 40,
+      "radius": 1.7,
+      "craftable": false
     }
   }
 }

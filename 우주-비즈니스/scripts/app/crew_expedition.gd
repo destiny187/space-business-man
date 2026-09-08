@@ -127,6 +127,7 @@ func _ready() -> void:
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
 	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
 	stations=FrontierCrewStations.new();add_child(stations);stations.configure(self)
+	var probe_factory:=FrontierExpeditionResearchPanel.new();business_panel.tabs.add_child(probe_factory);probe_factory.configure(self,"factory")
 	var rover_factory:=FrontierRoverWorkshop.new();business_panel.tabs.add_child(rover_factory);rover_factory.configure(self,true)
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
@@ -674,7 +675,7 @@ func _sync_surface_view() -> void:
 		if surface_world!=null:remove_child(surface_world);surface_world.queue_free();surface_world=null
 		if cabin_root.get_parent()==null:add_child(cabin_root)
 		if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
-		research_frame.hide();surface_status.hide();reticle.hide();business_panel.hide();cancel_placement();return
+		surface_status.hide();reticle.hide();business_panel.hide();cancel_placement();return
 	if cabin_root.get_parent()!=null:remove_child(cabin_root)
 	outside=false;exterior_view.hide()
 	if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
@@ -908,7 +909,7 @@ func toggle_navigation() -> void:
 	open_menu(navigation_frame)
 	if navigation_frame.visible:navigation_ui.show_target(flight.scan_target if flight!=null and flight.scan_target>=0 else selected_ordinal)
 func toggle_research() -> void:
-	if surface_world!=null:open_menu(research_frame)
+	if session.active and session.latest.get("phase")=="playing":open_menu(research_frame)
 
 static func selected_world_path(solo: bool) -> String:
 	var selection:=ConfigFile.new();selection.load("user://world_selection.cfg")

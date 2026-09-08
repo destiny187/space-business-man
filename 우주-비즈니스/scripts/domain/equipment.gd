@@ -49,6 +49,7 @@ static func validate(value: Variant) -> String:
 		if id!="":seen.append(id)
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
+	if kind=="equipment_research_prototype":return FrontierExpeditionResearch.assemble(world,actor,args)
 	var member: Dictionary=world.crew.members[actor]
 	if not member.has("loadout"):member.loadout=create(member.profile)
 	var data: Dictionary=member.loadout

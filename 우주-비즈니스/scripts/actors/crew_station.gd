@@ -44,11 +44,12 @@ func load_gem(id: String) -> void:
 	if gem_id==id:return
 	gem_id=id
 	if is_instance_valid(gem):gem.queue_free();gem=null
-	if id.is_empty() or tray==null:return
-	gem=load(FrontierMinerals.entry(id).model).instantiate();tray.add_child(gem);FrontierInkStyle.apply(gem,{})
+	var holder: Node3D=tray if kind=="augmentation" else rotor
+	if id.is_empty() or holder==null:return
+	gem=load(FrontierMinerals.entry(id).model).instantiate();holder.add_child(gem);FrontierInkStyle.apply(gem,{})
 	var bounds:=AABB();var first:=true
 	for node in gem.find_children("*","MeshInstance3D",true,false):
 		var box: AABB=gem.global_transform.affine_inverse()*node.global_transform*node.get_aabb()
 		bounds=box if first else bounds.merge(box);first=false
-	var factor:=.15/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z));gem.scale=Vector3.ONE*factor
-	gem.position=Vector3(0,.10,.11)-bounds.get_center()*factor
+	var factor: float=(.15 if kind=="augmentation" else .30)/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z));gem.scale=Vector3.ONE*factor
+	gem.position=(Vector3(0,.10,.11) if kind=="augmentation" else Vector3(0,.25,0))-bounds.get_center()*factor

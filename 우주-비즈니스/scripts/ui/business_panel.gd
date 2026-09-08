@@ -183,7 +183,7 @@ func set_context(kind: String,id: String="") -> void:
 		"build":allowed=["건설"]
 		"ship":allowed=["착륙선","환경·계약","생산 거점","소형선"]
 		"base","storage":allowed=["창고","로봇"]
-		"factory":allowed=["로봇 제작","로버 제작","생산·개조","생물공학","시설 관리","소형선"]
+		"factory":allowed=["로봇 제작","로버 제작","시험기 조립","생산·개조","생물공학","시설 관리","소형선"]
 		"robot":allowed=["로봇","생산·개조"]
 		_:allowed=["시설 관리","생산·개조"]
 	if kind in ["atmosphere","thermal","water","biolab"]:allowed.append("생물공학")

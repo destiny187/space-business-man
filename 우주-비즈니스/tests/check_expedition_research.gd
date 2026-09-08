@@ -26,8 +26,8 @@ func run() -> void:
 	FrontierExpeditionResearch.ensure(migrated)
 	check(FrontierUniverse.fingerprint(migrated)==migrated_hash and migrated.crew.members[owner.character_id].loadout.items["old:miner"]=="miner_3","migration is idempotent and keeps held equipment")
 	check(store.write(migrated) and store.read_state().expedition_research.projects.deep_mining.contributions.is_empty(),"migrated save reload does not invent contributions")
-	var future:=migrated.duplicate(true);future.expedition_research.version=2
-	check(not store.write(future) and store.read_state().expedition_research.version==1,"unknown research version cannot overwrite save")
+	var future:=migrated.duplicate(true);future.expedition_research.version=3
+	check(not store.write(future) and store.read_state().expedition_research.version==2,"unknown research version cannot overwrite save")
 	var forged:=core.world.duplicate(true);forged.expedition_research.projects.deep_mining.stage="analyzed"
 	check(not FrontierUniverse.validate_world(forged).is_empty(),"stage cannot advance without evidence and samples")
 	forged=core.world.duplicate(true);forged.expedition_research.licenses.miner_3="legacy"

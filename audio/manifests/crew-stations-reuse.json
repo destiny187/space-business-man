@@ -8,8 +8,34 @@
   },
   "volume_db": -10,
   "loop": false,
-  "verification": "A03 inspection and A04 actual Godot body page playback verified. A04 only accepts the matching host receipt for success, stops processing on receipt/close, and suppresses late hidden-panel audio. UI bus capture is recorded with the A04 review. No new audio generated.",
+  "verification": "A03 inspection and A04 actual Godot body page playback verified. A04 only accepts the matching host receipt for success, stops processing on receipt/close, and suppresses late hidden-panel audio. UI bus capture is recorded with the A04 review. No new audio generated. A06 specimen/prototype UI verified with existing ElevenLabs result/rejection streams and close-time stop; no new sounds generated.",
   "augmentation": {
+    "prepared": {
+      "id": "sfx_pickup_resource",
+      "bus": "UI",
+      "volume_db": -12,
+      "loop": false
+    },
+    "waiting": {
+      "id": "sfx_robot_charge",
+      "bus": "SFX",
+      "volume_db": -27,
+      "loop": true
+    },
+    "success": {
+      "id": "sfx_factory_complete",
+      "bus": "UI",
+      "volume_db": -12,
+      "loop": false
+    },
+    "error": {
+      "id": "sfx_build_invalid",
+      "bus": "UI",
+      "volume_db": -12,
+      "loop": false
+    }
+  },
+  "research": {
     "prepared": {
       "id": "sfx_pickup_resource",
       "bus": "UI",

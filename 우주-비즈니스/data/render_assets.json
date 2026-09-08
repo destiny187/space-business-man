@@ -10192,5 +10192,15 @@
     "foliage": false,
     "generator": "tools/build_crew_stations.py",
     "review": "docs/production/64-crew-stations.md"
+  },
+  {
+    "id": "miner_probe",
+    "title": "심부 채집 시험기",
+    "name": "심부 채집 시험기",
+    "group": "장비",
+    "model": "res://assets/models/equipment/miner_probe.glb",
+    "source": "art/blender/equipment/miner_probe.blend",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
   }
 ]

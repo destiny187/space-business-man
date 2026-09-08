@@ -5,9 +5,16 @@
     "deep_mining": {
       "name": "심부 정밀 채집",
       "license": "miner_3",
-      "sample_resources": ["sapphire", "ruby", "emerald"],
+      "sample_resources": [
+        "sapphire",
+        "ruby",
+        "emerald"
+      ],
       "maximum_evidence_tier": 2,
-      "analysis_samples": 3
+      "analysis_samples": 3,
+      "prototype": "miner_probe",
+      "factory_tier": 2,
+      "factory_range": 8.0
     }
   }
 }

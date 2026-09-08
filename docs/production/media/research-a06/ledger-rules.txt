@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS new shared research world starts
+PASS play starts
+PASS new worlds receive no legacy license
+PASS old save remains accepted
+PASS old survey imports and existing-world license migrates
+PASS migration is idempotent and keeps held equipment
+PASS migrated save reload does not invent contributions
+PASS unknown research version cannot overwrite save
+PASS stage cannot advance without evidence and samples
+PASS new state cannot claim legacy license
+PASS duplicate material proof and T3 diamond do not advance first research
+PASS missing live research provider rejects contribution
+PASS client cannot inject a stage
+PASS unexpected stage rejected
+PASS unobserved specimen rejected
+PASS remote contribution rejected
+PASS save failure rolls back bag and research together
+PASS partial contribution spends own sample and retains discovery stage
+PASS exact retry returns receipt without duplicate sample consumption
+PASS over-contribution rejected
+PASS guest joins shared project
+PASS guest cannot consume host bag or shared cargo
+PASS guest completes shared analysis with own samples
+PASS completed analysis cannot consume more samples
+PASS both crew see one ledger; profiles remain unchanged
+PASS FINCH cannot act as a research lab
+PASS host resume retains shared analysis and contributions
+PASS A05 analysis grants no T3 recipe; existing T2 and unavailable T3 remain unchanged
+PASS craft execution uses the same unlicensed-recipe gate
+PASS legacy license preserves access when recipe becomes available
+EXPEDITION_RESEARCH_A05 30 FAILURES 0
