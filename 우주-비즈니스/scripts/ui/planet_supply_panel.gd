@@ -45,7 +45,19 @@ func update(ledger: Dictionary,body: Dictionary,actor: String,owner: bool) -> vo
 		var shown:=0
 		for id in row.inventory:
 			if int(row.inventory[id])<=0:continue
-			if shown==4:break
-			var item:=VBoxContainer.new();stock.add_child(item);item.add_child(FrontierResourceIcons.view(id,28));panel.label(item,str(int(row.inventory[id])),12);shown+=1
+			if shown==3:break
+			var item:=VBoxContainer.new();stock.add_child(item);item.add_child(FrontierResourceIcons.view(id,28));panel.label(item,str(int(row.inventory[id])),12);item.tooltip_text=FrontierCatalog.entry("resources",id).name;shown+=1
+		var count:=0
+		for id in row.inventory:
+			if int(row.inventory[id])>0:count+=1
+		var more:=panel.button(column,"창고 전체 · %d종"%count,func():
+			var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.configure(str(row.name)+" · 현장 창고",row.inventory);dialog.popup_centered(Vector2i(510,400)))
+		more.tooltip_text="전 품목 검색 · 보유 재고만 표시"
+		for job in row.get("production",[]):
+			var product:=FrontierProductionTier2.product(job.product)
+			var line:=HBoxContainer.new();column.add_child(line);line.add_child(FrontierResourceIcons.view(job.product,24))
+			panel.label(line,product.name+" · "+("생산 중" if job.active else str(job.status)),12)
+			var progress:=ProgressBar.new();progress.custom_minimum_size.y=14;progress.value=clampf(float(job.progress)/float(product.seconds)*100,0,100);column.add_child(progress)
+		if row.get("production",[]).is_empty():panel.label(column,"생산 대기",12)
 		frame.tooltip_text="현장 창고 · "+FrontierCatalog.stock_text(row.inventory)
 		if shown==0:panel.label(column,"창고 비어 있음",12)

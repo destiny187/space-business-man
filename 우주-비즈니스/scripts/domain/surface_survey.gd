@@ -37,7 +37,6 @@ static func record(world: Dictionary,row: Dictionary,actor: String="") -> void:
 	if not site.is_empty():FrontierRobotWork.discover(site,row.resource)
 	var id:=key(world.crew.landing.body_id,row)
 	# Discovery is per planet/material, not an unbounded entry for every physical rock.
-	if world.crew.survey.size()>=256 and not world.crew.survey.has(id):world.crew.survey.erase(world.crew.survey.keys()[0])
 	FrontierExpeditionResearch.record(world,world.crew.landing.body_id,row.resource,row.id,int(row.required_tier),"scan",actor)
 	world.crew.survey[id]={"body_id":world.crew.landing.body_id,"resource":row.resource,"vein_id":row.id,"tier":int(row.required_tier)}
 static func biology_info(form: Dictionary) -> Dictionary:
@@ -67,7 +66,7 @@ static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionar
 		if int(recipe.cost.get(row.resource,0))>0:usage.append(recipe.name)
 	return {"kind":"mineral","id":row.id,"name":FrontierCatalog.entry("resources",row.resource).name,"icon":row.resource,"point":[row.point.x,row.point.y,row.point.z],"subtitle":"광물 조사 · 채집기 %d등급 필요"%int(row.required_tier),"remaining":remaining,"capacity":int(row.capacity),"notes":[{"icon":"inventory","text":"매장량 %d / %d"%[remaining,int(row.capacity)]},{"icon":"build","text":"제작: "+(" · ".join(usage.slice(0,2)) if not usage.is_empty() else "현장 재료 · 상세 용도 조사 중")}],"condition":"같은 행성의 같은 자원은 기록을 공유합니다.","action":action}
 static func valid(records: Variant) -> bool:
-	if not records is Dictionary or records.size()>256:return false
+	if not records is Dictionary or records.size()>1000000*FrontierMinerals.all().size():return false
 	for id in records:
 		var row: Variant=records[id]
 		if not id is String or not row is Dictionary:return false

@@ -9,6 +9,11 @@ signal place_building(kind: String)
 signal station_action(kind: String)
 var context_kind: String="build"
 var context_id: String=""
+var factory_navigation: HBoxContainer
+var factory_section: OptionButton
+var factory_category: OptionButton
+var outer_scroll: ScrollContainer
+var main_column: VBoxContainer
 var tabs: TabContainer
 var heading: Label
 var deposit_button: Button
@@ -51,6 +56,11 @@ var supply_panel: FrontierPlanetSupplyPanel
 var register_button: Button
 var engineering: Dictionary={}
 var knowledge: Dictionary={}
+var engineering_cards: HFlowContainer
+var engineering_preview: FrontierEquipmentPreview
+var engineering_steps: Array[Label]=[]
+var engineering_cost: FrontierResourceReadout
+var engineering_progress: ProgressBar
 var research_project: OptionButton
 var research_facility: OptionButton
 var research_detail: Label
@@ -63,14 +73,21 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);offset_left=24;offset_right=minf(900,get_viewport().get_visible_rect().size.x-24);offset_top=26;offset_bottom=-24
 	get_viewport().size_changed.connect(func():offset_right=minf(900,get_viewport().get_visible_rect().size.x-24))
 	var style:=FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,20);add_theme_stylebox_override("panel",style)
-	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(scroll)
-	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
+	var scroll:=ScrollContainer.new();outer_scroll=scroll;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(scroll)
+	var column:=VBoxContainer.new();main_column=column;column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
 	heading=label(column,"건설 · B 닫기",24)
 	summary=FrontierResourceReadout.new();column.add_child(summary);guidance=label(column,"");stock=FrontierResourceReadout.new();column.add_child(stock)
 	workload_label=label(column,"")
 	register_button=button(column,"무료 개발 등록",func():command.emit("business_register",{}))
 	deposit_button=button(column,"현장 창고에 자원 반납",func():station_action.emit("storage"))
-	tabs=TabContainer.new();tabs.custom_minimum_size.y=290;column.add_child(tabs)
+	factory_navigation=HBoxContainer.new();column.add_child(factory_navigation)
+	factory_section=option(factory_navigation)
+	for title in ["제작","시설 관리"]:factory_section.add_item(title)
+	factory_category=option(factory_navigation)
+	for title in ["부품","로봇","로버","시험기","생물공학","소형선"]:factory_category.add_item(title)
+	factory_section.item_selected.connect(func(_i):_factory_page())
+	factory_category.item_selected.connect(func(_i):_factory_page())
+	tabs=TabContainer.new();tabs.use_hidden_tabs_for_min_size=false;tabs.custom_minimum_size.y=290;column.add_child(tabs)
 	robot_factory=load("res://scripts/ui/robot_factory_panel.gd").new();tabs.add_child(robot_factory);robot_factory.configure(self)
 	production_panel=FrontierProductionPanel.new();tabs.add_child(production_panel);production_panel.configure(self)
 	var build_tab:=VBoxContainer.new();build_tab.name="건설";tabs.add_child(build_tab)
@@ -134,18 +151,31 @@ func _ready() -> void:
 	hangar=option(recovery_controls)
 	button(recovery_controls,"운송한 로봇 재파견",func():command.emit("business_robot_deploy",{"robot_id":selected(hangar)}))
 	var engineering_tab:=VBoxContainer.new();engineering_tab.name="생물공학";tabs.add_child(engineering_tab)
-	research_project=option(engineering_tab)
+	engineering_cards=HFlowContainer.new();engineering_tab.add_child(engineering_cards)
+	research_project=option(engineering_tab);research_project.hide()
 	for key in FrontierFieldEngineering.config().projects:
 		research_project.add_icon_item(FrontierResourceIcons.menu_texture(key),FrontierFieldEngineering.definition(key).name);research_project.set_item_metadata(research_project.item_count-1,key)
 	research_project.item_selected.connect(func(_index: int):update_engineering())
-	research_detail=label(engineering_tab,"")
+	for key in FrontierFieldEngineering.config().projects:
+		var card:=FrontierItemTile.new();card.picture=FrontierResourceIcons.texture(key);card.caption=FrontierFieldEngineering.definition(key).name;card.tooltip_text=card.caption;card.set_meta("project",key);engineering_cards.add_child(card)
+		card.pressed.connect(func():
+			for i in research_project.item_count:
+				if research_project.get_item_metadata(i)==key:research_project.select(i);update_engineering();break)
+	var evidence_row:=HBoxContainer.new();engineering_tab.add_child(evidence_row)
+	engineering_preview=FrontierEquipmentPreview.new();engineering_preview.custom_minimum_size=Vector2(140,120);evidence_row.add_child(engineering_preview)
+	research_detail=label(evidence_row,"")
+	var steps:=HBoxContainer.new();engineering_tab.add_child(steps)
+	for title in ["분석","시제품","현장 시험","개조"]:
+		var step:=label(steps,title,14);engineering_steps.append(step)
+	engineering_progress=ProgressBar.new();engineering_progress.custom_minimum_size.y=18;engineering_tab.add_child(engineering_progress)
+	engineering_cost=FrontierResourceReadout.new();engineering_tab.add_child(engineering_cost)
 	research_facility=option(engineering_tab)
 	research_facility.item_selected.connect(func(_index: int):update_engineering())
-	research_prototype_button=button(engineering_tab,"시제품 제작 · "+FrontierCatalog.cost_text(FrontierFieldEngineering.config().prototype_cost),func():engineering_command("prototype"))
-	research_trial_button=button(engineering_tab,"현장 시험 · "+FrontierCatalog.cost_text(FrontierFieldEngineering.config().trial_cost),func():engineering_command("trial"))
-	research_install_button=button(engineering_tab,"설비 개조 · "+FrontierCatalog.cost_text(FrontierFieldEngineering.config().install_cost),func():engineering_command("install"))
+	research_prototype_button=button(engineering_tab,"시제품 제작",func():engineering_command("prototype"))
+	research_trial_button=button(engineering_tab,"현장 시험 시작",func():engineering_command("trial"))
+	research_install_button=button(engineering_tab,"설비에 적용",func():engineering_command("install"))
 	research_cancel_button=button(engineering_tab,"실험 중지 · 투입 재료는 반환되지 않음",func():engineering_command("cancel"))
-	label(engineering_tab,"현장에서 생물 스캔 → 기초 분석 → 제작소 시제품 → 대상 설비의 현장 시험 → 개조. 각 작업은 설비 8m 안에서 시작합니다. 전력·가동·소모재·배양 조건이 끊기면 실험도 대기합니다.")
+
 	var contract_tab:=VBoxContainer.new();contract_tab.name="환경·계약";tabs.add_child(contract_tab)
 	for category in ["atmosphere","temperature","water","ecology"]:
 		var row:=HBoxContainer.new();contract_tab.add_child(row)
@@ -178,6 +208,7 @@ func choices(item: OptionButton,values: Dictionary) -> void:
 		if str(item.get_item_metadata(i))==old:item.select(i)
 func set_context(kind: String,id: String="") -> void:
 	context_kind=kind;context_id=id
+	factory_navigation.visible=kind=="factory"
 	var allowed: Array=[]
 	match kind:
 		"build":allowed=["건설"]
@@ -188,10 +219,12 @@ func set_context(kind: String,id: String="") -> void:
 		_:allowed=["시설 관리","생산·개조"]
 	if kind in ["atmosphere","thermal","water","biolab"]:allowed.append("생물공학")
 	if kind=="storage":allowed.append("시설 관리")
-	tabs.tabs_visible=allowed.size()>1
+	tabs.tabs_visible=allowed.size()>1 and kind!="factory"
 	for i in tabs.get_tab_count():tabs.set_tab_hidden(i,str(tabs.get_tab_control(i).name) not in allowed)
 	for i in tabs.get_tab_count():
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
+	if kind=="factory":_factory_page()
+	else:_factory_layout(false)
 	var title: String={"build":"건설","ship":"착륙선 단말","base":"현장 창고","factory":"현장 제작소","robot":"M-01 작업 관리"}.get(kind,FrontierCatalog.entry("buildings",kind).get("name","시설"))
 	heading.text=title+" · Esc 닫기"
 	register_button.hide()
@@ -208,6 +241,7 @@ func set_context(kind: String,id: String="") -> void:
 		var def:=FrontierFieldEngineering.definition(key)
 		if kind=="factory" or def.building==kind:available[key]=def.name
 	choices(research_project,available)
+	for card in engineering_cards.get_children():card.visible=available.has(card.get_meta("project"))
 func refresh_context(current: Dictionary) -> void:
 	register_button.hide()
 	guidance.visible=current.is_empty()
@@ -322,18 +356,44 @@ func update_engineering() -> void:
 		if b.type in ["factory",def.building]:facilities[id]=FrontierCatalog.entry("buildings",b.type).name+" · "+str(b.status)+(" · 개조 완료" if not b.get("engineering","").is_empty() else "")
 	choices(research_facility,facilities)
 	var row: Dictionary=engineering.get("projects",{}).get(key,{})
-	var stages: Dictionary={"prototype":"시제품 제작","prototype_ready":"현장 시험 준비","trial":"현장 시험","certified":"설계도 확정"}
-	research_detail.text=def.description+"\n"+str(stages.get(row.get("stage",""),"관련 생물의 기초 분석 필요"))
-	if row.is_empty():
-		for environment in def.environments:
-			if knowledge.get("research",{}).has(environment):research_detail.text=def.description+"\n기초 분석 완료 · 제작소에서 시제품을 제작하세요.";break
-	else:
-		research_detail.text+=" · %.0f초\n원본 관측: %s"%[float(row.progress),FrontierEcologyCatalog.form(row.form_id).name]
-		if row.stage in ["prototype","trial"] and row.body_id!=body_id:research_detail.text+="\n다른 행성의 실험 시설로 돌아가세요."
-	research_prototype_button.disabled=not row.is_empty()
-	research_trial_button.disabled=row.get("stage")!="prototype_ready"
-	research_install_button.disabled=row.get("stage")!="certified" or not current.get("buildings",{}).get(selected(research_facility),{}).get("engineering","").is_empty()
-	research_cancel_button.disabled=row.get("stage") not in ["prototype","trial"]
+	var analyzed:=false
+	var form_id: String=str(row.get("form_id",""))
+	for environment in def.environments:
+		if knowledge.get("research",{}).has(environment):analyzed=true;form_id=knowledge.research[environment].form_id;break
+	for card in engineering_cards.get_children():card.selected=card.get_meta("project")==key;card.queue_redraw()
+	engineering_preview.show_model(FrontierCatalog.entry("buildings",def.building).model if form_id.is_empty() else "bestiary/"+str(FrontierEcologyCatalog.form(form_id).lods.near.path).get_file().trim_suffix(".glb"))
+	var stage: String=str(row.get("stage",""))
+	var installed: bool=not current.get("buildings",{}).get(context_id,{}).get("engineering","").is_empty()
+	var done: Array=[analyzed,stage in ["prototype_ready","trial","certified"],stage=="certified",installed]
+	for i in engineering_steps.size():
+		engineering_steps[i].text=("✓ " if done[i] else "%d "%(i+1))+["분석","시제품","현장 시험","개조"][i]
+		engineering_steps[i].modulate=FrontierInterfaceStyle.ACCENT if done[i] else FrontierInterfaceStyle.MUTED
+	research_detail.text=def.description
+	if not analyzed:research_detail.text+="\n관련 생물을 E로 조사한 뒤 착륙선에서 분석하세요."
+	elif not form_id.is_empty():research_detail.text+="\n연구 표본 · "+FrontierEcologyCatalog.form(form_id).name
+	var cfg:=FrontierFieldEngineering.config()
+	engineering_progress.visible=stage in ["prototype","trial"]
+	if engineering_progress.visible:
+		var elapsed:=float(row.progress)
+		engineering_progress.value=clampf(elapsed/float(cfg.trial_seconds if stage=="trial" else cfg.prototype_seconds)*100,0,100)
+		if row.body_id!=body_id or row.facility_id!=context_id:research_detail.text+="\n진행 중인 실험 시설로 돌아가세요."
+	var action: Button
+	var cost: Dictionary={}
+	for control in [research_prototype_button,research_trial_button,research_install_button,research_cancel_button]:control.hide()
+	if stage.is_empty() and analyzed and context_kind=="factory":action=research_prototype_button;cost=cfg.prototype_cost
+	elif stage=="prototype_ready":
+		if context_kind==def.building:action=research_trial_button;cost=cfg.trial_cost
+		else:research_detail.text+="\n"+FrontierCatalog.entry("buildings",def.building).name+"에서 현장 시험을 시작하세요."
+	elif stage=="certified" and not installed:
+		if context_kind==def.building:action=research_install_button;cost=cfg.install_cost
+		else:research_detail.text+="\n"+FrontierCatalog.entry("buildings",def.building).name+"에 적용할 수 있습니다."
+	elif stage in ["prototype","trial"] and row.body_id==body_id and row.facility_id==context_id:research_cancel_button.show();research_cancel_button.disabled=false
+	engineering_cost.visible=not cost.is_empty();engineering_cost.value="현장 창고 · "+FrontierCatalog.cost_text(cost)
+	if action!=null:
+		action.show()
+		var facility_row: Dictionary=current.get("buildings",{}).get(context_id,{})
+		action.disabled=not facility_row.get("active",false) or not FrontierExpeditionBusiness.affordable(current.get("inventory",{}),cost)
+		if action.disabled:research_detail.text+="\n전력·가동 상태와 현장 창고 재료를 확인하세요."
 
 func refresh_building_cost() -> void:
 	for kind in building_cards:building_cards[kind].set_pressed_no_signal(kind==selected(building))
@@ -358,3 +418,14 @@ func refresh_work_cards(values: Dictionary) -> void:
 				refresh_work_cards(values))
 			work_cards.add_child(card)
 	for card in work_cards.get_children():card.selected=card.get_meta("resource")==selected(vein);card.queue_redraw()
+
+func _factory_page() -> void:
+	factory_category.visible=factory_section.selected==0
+	var target: String="시설 관리" if factory_section.selected==1 else ["생산·개조","로봇 제작","로버 제작","시험기 조립","생물공학","소형선"][factory_category.selected]
+	for i in tabs.get_tab_count():
+		if str(tabs.get_tab_control(i).name)==target:tabs.current_tab=i;break
+	_factory_layout(target=="생산·개조")
+func _factory_layout(fixed: bool) -> void:
+	outer_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED if fixed else ScrollContainer.SCROLL_MODE_AUTO
+	main_column.size_flags_vertical=Control.SIZE_EXPAND_FILL if fixed else Control.SIZE_FILL
+	tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL if fixed else Control.SIZE_FILL

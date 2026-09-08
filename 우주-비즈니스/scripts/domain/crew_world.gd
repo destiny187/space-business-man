@@ -60,8 +60,13 @@ static func validate(value: Variant) -> String:
 		if not id is String or not receipt is Dictionary or not receipt.get("result") is Dictionary or not FrontierPlayerProfile.identifier(receipt.get("digest"),64):return "거래 수령 기록 오류"
 	return ""
 static func public_snapshot(value: Dictionary,active: Dictionary) -> Dictionary:
-	var result:=value.duplicate(true)
-	result.erase("receipts")
+	var result:=value.duplicate()
+	result.erase("survey");result.erase("receipts");result=result.duplicate(true)
+	# Keep movement snapshots bounded; the full saved history is queried on demand.
+	if value.has("survey"):
+		result.survey={}
+		var keys: Array=value.survey.keys()
+		for key in keys.slice(maxi(0,keys.size()-256)):result.survey[key]=value.survey[key].duplicate(true)
 	for id in result.members:
 		result.members[id].erase("capability_hash")
 		result.members[id].connected=id in active.values()

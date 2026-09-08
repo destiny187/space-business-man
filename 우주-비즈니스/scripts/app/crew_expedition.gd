@@ -226,19 +226,16 @@ func _build_ui() -> void:
 	_label(lobby,"현재 접속: 직접 UDP\n인터넷 원정에는 호스트 포트 접근이 필요합니다.",13)
 	panel=VBoxContainer.new();panel.add_theme_constant_override("separation",12);panel.hide();column.add_child(panel)
 	research_frame=load("res://scripts/ui/research_panel.gd").new();ui.add_child(research_frame);research_frame.configure(self)
-	var research_scroll:=ScrollContainer.new();research_scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;research_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.ecology.add_child(research_scroll)
-	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);research_scroll.add_child(survey_journal)
-	var action_scroll:=ScrollContainer.new();action_scroll.custom_minimum_size.x=300;action_scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;action_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;research_frame.ecology.add_child(action_scroll)
-	surface_panel=VBoxContainer.new();surface_panel.size_flags_horizontal=Control.SIZE_EXPAND_FILL;action_scroll.add_child(surface_panel)
-	_label(surface_panel,"관측 → 분석 → 시험 → 이식",20)
-	_label(surface_panel,"E로 생물을 조사한 뒤 대상을 선택하세요.",14)
+	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);research_frame.ecology.add_child(survey_journal)
+	surface_panel=FrontierEcologyWorkflow.new();survey_journal.detail_column.add_child(surface_panel)
 	surface_status=_resource_label(header,"지표를 준비 중입니다.",14);surface_status.hide()
-	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options)
-	research_actions.append(_button(surface_panel,"기초 분석 · 광물 3",func():surface_action("surface_analyze")))
-	research_actions.append(_button(surface_panel,"서식지 시험 · 광물 6",func():surface_action("surface_restore")))
+	form_options=OptionButton.new();form_options.fit_to_longest_item=false;surface_panel.add_child(form_options);form_options.hide()
+	research_actions.append(_button(surface_panel,"",func():surface_action("surface_analyze")))
+	research_actions.append(_button(surface_panel,"",func():surface_action("surface_restore")))
 	sample_options=OptionButton.new();sample_options.fit_to_longest_item=false;surface_panel.add_child(sample_options)
-	research_actions.append(_button(surface_panel,"운송 표본 이식",func():surface_action("surface_introduce")))
-	research_actions.append(_button(surface_panel,"지원 팩 보충 · 광물 3",func():surface_action("surface_resupply")))
+	research_actions.append(_button(surface_panel,"",func():surface_action("surface_introduce")))
+	research_actions.append(_button(surface_panel,"",func():surface_action("surface_resupply")))
+	surface_panel.configure(self)
 	var dock:=HBoxContainer.new();ui.add_child(dock);dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62);dock.add_theme_constant_override("separation",8)
 	get_viewport().size_changed.connect(func():dock.position=Vector2(24,get_viewport().get_visible_rect().size.y-62))
 	navigation_toggle=_button(dock,"지도 [Tab]",toggle_navigation);navigation_toggle.hide()
@@ -736,7 +733,7 @@ func _refresh_surface_options() -> void:
 		if ids.is_empty():form_options.add_item("스캔한 생명체 없음");form_options.set_item_metadata(0,"")
 	if not sample_options.get_popup().visible:
 		var selected: String=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
-		sample_options.clear();var ids: Array=ecological.specimens.keys();ids.sort()
+		sample_options.clear();var ids: Array=ecological.specimens.keys().filter(func(id):return ecological.specimens[id].state=="cargo");ids.sort()
 		for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
 		if selected in ids:sample_options.select(ids.find(selected))
 		if ids.is_empty():sample_options.add_item("격리 운송 표본 없음");sample_options.set_item_metadata(0,"")
@@ -750,7 +747,7 @@ func surface_action(kind: String) -> void:
 		if surface_target.is_empty():status.value="생명체를 가까이서 조준하세요.";return
 		args.encounter_id=surface_target.id
 	elif kind in ["surface_analyze","surface_restore"]:
-		var id: String=str(form_options.get_item_metadata(form_options.selected)) if form_options.selected>=0 else ""
+		var id: String=str(survey_journal.selected_entry.get("row",{}).get("form_id",""))
 		var form:=FrontierEcologyCatalog.form(id)
 		if form.is_empty():status.value="스캔한 생명체를 먼저 선택하세요.";return
 		args.form_id=id;args.environment=form.environment

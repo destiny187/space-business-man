@@ -51,7 +51,12 @@ static func summaries(world: Dictionary) -> Array:
 		var site: Dictionary=world.business.sites[id]
 		if not site.get("production_lease",false):continue
 		var body:=FrontierUniverse.body_from_id(world.manifest,id)
-		result.append({"ordinal":FrontierUniverse.ordinal_of(world.manifest,id),"name":body.name,"role":role(body),"inventory":site.inventory.duplicate(),"state":site.state,"paused":not operating(site),"remote":id!=world.location or not FrontierCrewSurface.landed(world)})
+		var production: Array=[]
+		for building in site.buildings.values():
+			var job: Dictionary=building.get("production",{})
+			if job.is_empty():continue
+			production.append({"product":job.product,"progress":float(job.progress),"status":str(building.get("status","")),"active":bool(building.get("active",false))})
+		result.append({"ordinal":FrontierUniverse.ordinal_of(world.manifest,id),"name":body.name,"role":role(body),"inventory":site.inventory.duplicate(),"production":production,"state":site.state,"paused":not operating(site),"remote":id!=world.location or not FrontierCrewSurface.landed(world)})
 	return result
 
 static func context(world: Dictionary,body_id: String) -> Dictionary:

@@ -216,6 +216,12 @@ func refresh_survey() -> void:
 	if not known or not report.available:return
 	for id in report.resources.slice(0,4):
 		var icon:=FrontierResourceIcons.view(id,32);icon.tooltip_text=FrontierCatalog.entry("resources",id).name;resources.add_child(icon)
+	var more:=Button.new();more.text="+%d"%(report.resources.size()-4) if report.resources.size()>4 else "전체"
+	more.tooltip_text="조사한 광물 전체 보기";resources.add_child(more)
+	more.pressed.connect(func():
+		var stock: Dictionary={}
+		for id in report.resources:stock[id]=1
+		var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.configure(body.name+" · 원격 관측 광물",stock,false);dialog.popup_centered(Vector2i(510,400)))
 	var environment: Dictionary=body.traits.duplicate();environment.ecology=0;environment.stable_seconds=0
 	var scores:=FrontierEvaluator.scores(environment)
 	survey_bars.water.value=report.water

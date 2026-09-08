@@ -20,6 +20,10 @@ func valid(value: Variant) -> bool:
 		if not str(key).is_valid_int() or int(key)<0 or int(key)>=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system):return false
 	for key in value.bodies:
 		if FrontierUniverse.ordinal_of(manifest,str(key))<0 or not value.bodies[key] is Dictionary:return false
+		if value.bodies[key].has("resources"):
+			if not value.bodies[key].resources is Array or value.bodies[key].resources.size()>FrontierMinerals.all().size():return false
+			for resource in value.bodies[key].resources:
+				if not resource is String or FrontierMinerals.entry(resource).is_empty():return false
 		for field in ["scanned","visited"]:
 			if not value.bodies[key].get(field,false) is bool:return false
 		if value.bodies[key].get("site","") not in ["","active","settled","supply","exploration"]:return false
@@ -44,6 +48,11 @@ func observe(snapshot: Dictionary) -> void:
 	var nav: Dictionary=snapshot.crew.navigation
 	if nav.mode=="jump":return
 	var changed:=false
+	for row in snapshot.crew.get("survey",{}).values():
+		var known: Array=data.bodies.get(row.body_id,{}).get("resources",[]).duplicate()
+		if row.resource not in known:
+			known.append(row.resource)
+			changed=mark(FrontierUniverse.ordinal_of(manifest,row.body_id),"resources",known) or changed
 	# A host-owned lease proves a previous landing, even after local journal loss.
 	for supply in snapshot.get("supply_sites",[]):
 		var supplied_ordinal:=int(supply.ordinal)
@@ -91,6 +100,21 @@ func ordinals(filter_index: int=0,query: String="") -> Array[int]:
 		if filter_index==1 and not data.favorites.has(id):continue
 		if filter_index==2 and ids[id].get("site","")!="active":continue
 		var ordinal:=FrontierUniverse.ordinal_of(manifest,id)
-		if not query.is_empty() and not FrontierUniverse.body(manifest,ordinal).name.to_lower().contains(query.to_lower()):continue
+		if not query.is_empty() and not matches(ordinal,query):continue
 		result.append(ordinal)
 	result.sort();return result
+
+func known_resources(ordinal: int) -> Array:
+	var body:=FrontierUniverse.body(manifest,ordinal)
+	var record: Dictionary=data.bodies.get(body.id,{})
+	var resources: Array=record.get("resources",[]).duplicate()
+	if record.get("scanned",false) or body.get("origin","")=="solar_reference":
+		for id in FrontierOrbitalSurvey.report(body).resources:
+			if id not in resources:resources.append(id)
+	return resources
+func matches(ordinal: int,query: String) -> bool:
+	var needle:=query.strip_edges().to_lower()
+	if needle.is_empty() or FrontierUniverse.body(manifest,ordinal).name.to_lower().contains(needle):return true
+	for resource in known_resources(ordinal):
+		if FrontierCatalog.entry("resources",resource).name.to_lower().contains(needle):return true
+	return false

@@ -1,5 +1,6 @@
 class_name FrontierCrewSession
 extends Node
+signal discoveries_received(serial: int,value: Dictionary)
 signal snapshot_received(value: Dictionary)
 signal notice(message: String)
 signal surface_received(value: Dictionary)
@@ -320,3 +321,22 @@ func _surface_state(epoch: String,serial: int,data: PackedByteArray) -> void:
 	var value:=FrontierCrewSurfaceReplica.decode(data,manifest)
 	if value.is_empty():notice.emit("공동 지표 기록이 손상되어 적용하지 않았습니다.");return
 	received_surface_serial=serial;surface=value;surface_received.emit(value)
+
+# A requested page travels once on the reliable channel, outside movement/surface snapshots.
+func request_discoveries(serial: int,query: String,kind: String,body_id: String,page_index: int) -> void:
+	if not active:return
+	if hosting:discoveries_received.emit(serial,FrontierDiscoveryIndex.page(authority.world,query,kind,body_id,page_index))
+	else:_discoveries_request.rpc_id(1,session_id,serial,query,kind,body_id,page_index)
+@rpc("any_peer","call_remote","reliable",0)
+func _discoveries_request(epoch: String,serial: int,query: String,kind: String,body_id: String,page_index: int) -> void:
+	if not hosting or epoch!=session_id:return
+	var peer:=multiplayer.get_remote_sender_id()
+	if not authority.peers.has(peer) or not _rate_allowed(peer):return
+	if query.length()>100 or kind not in ["all","mineral","biology"] or page_index<0:return
+	if not body_id.is_empty() and FrontierUniverse.ordinal_of(manifest,body_id)<0:return
+	_discoveries_page.rpc_id(peer,epoch,serial,FrontierDiscoveryIndex.page(authority.world,query,kind,body_id,page_index))
+@rpc("authority","call_remote","reliable",0)
+func _discoveries_page(epoch: String,serial: int,value: Dictionary) -> void:
+	if hosting or not active or epoch!=session_id:return
+	if not value.get("entries") is Array or value.entries.size()>FrontierDiscoveryIndex.PAGE_SIZE:return
+	discoveries_received.emit(serial,value)

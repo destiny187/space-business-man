@@ -103,7 +103,9 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 	world=draft;peers[peer]=id;pending.erase(peer)
 	return {"ok":true,"snapshot":snapshot(peer)}
 func snapshot(viewer: int=1) -> Dictionary:
-	var data: Dictionary=world.crew.duplicate(true)
+	var data: Dictionary=world.crew.duplicate()
+	data.erase("survey");data=data.duplicate(true)
+	if world.crew.has("survey"):data.survey=world.crew.survey
 	var visible: Dictionary=peers.duplicate()
 	if pending.has(viewer):
 		var entry: Dictionary=pending[viewer];var id: String=entry.profile.character_id
