@@ -301,6 +301,7 @@ func _snapshot(value: Dictionary) -> void:
 	flight.refits.flight_mode=true
 	flight.refits.update_loadout({"hull":"finch"} if not value.get("local_shuttle","").is_empty() else value.get("vessel",{}))
 	business_panel.shuttle_panel.update_snapshot(value)
+	business_panel.vessel_terminal.update_snapshot(value)
 	station_market.update_snapshot(value)
 	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
@@ -760,6 +761,7 @@ func open_station(kind: String,id: String="",management: bool=false) -> void:
 	close_menus()
 	business_panel.set_context(kind,id)
 	business_panel.shuttle_panel.update_snapshot(session.latest)
+	business_panel.vessel_terminal.update_snapshot(session.latest)
 	open_menu(business_panel)
 	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 func open_warehouse_management() -> void:
@@ -777,6 +779,8 @@ func open_warehouse_management() -> void:
 	open_station("base" if closest.is_empty() else "storage",closest,true)
 func station_action(kind: String) -> void:
 	match kind:
+		"inventory":
+			open_menu(inventory_panel)
 		"storage":
 			open_station("base")
 		"cargo":

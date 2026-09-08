@@ -11,6 +11,7 @@ var unload: Button
 var cancel: Button
 var progress: ProgressBar
 var summary: Label
+var terminal_row: HBoxContainer
 func configure(owner_app: FrontierCrewExpedition,owner_controller: FrontierRoverController) -> void:
 	app=owner_app;controller=owner_controller;theme=FrontierInterfaceStyle.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE);offset_left=-410;offset_right=-24;offset_top=35;offset_bottom=-75
@@ -29,7 +30,7 @@ func configure(owner_app: FrontierCrewExpedition,owner_controller: FrontierRover
 	for i in app.business_panel.tabs.get_tab_count():
 		var tab:=app.business_panel.tabs.get_tab_control(i)
 		if tab.name!="착륙선":continue
-		var row:=HBoxContainer.new();tab.add_child(row);tab.move_child(row,0)
+		var row:=HBoxContainer.new();terminal_row=row;tab.add_child(row);tab.move_child(row,0)
 		var icon:=TextureRect.new();icon.texture=load("res://assets/ui/previews/scout_rover.png");icon.custom_minimum_size=Vector2(58,48);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;row.add_child(icon)
 		summary=FrontierInterfaceStyle.label(row,"",14);summary.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 		var button:=Button.new();button.text="차량 적재함";row.add_child(button);button.pressed.connect(func():app.open_menu(self))
@@ -44,6 +45,7 @@ func action(parent: Node,caption: String,kind: String) -> Button:
 		app.session.send_request(kind,{"id":id}))
 	return button
 func _process(_delta: float) -> void:
+	if terminal_row!=null:terminal_row.visible=app.session.latest.get("local_shuttle","").is_empty()
 	if app.session.latest.is_empty():return
 	var fleet:=controller.fleet();var aboard:=FrontierRoverTransport.ship(fleet)
 	if summary!=null:summary.text="선내 %d / 1대 · 이 행성에 남길 차량 %d대"%[0 if aboard.is_empty() else 1,controller.local().size()]

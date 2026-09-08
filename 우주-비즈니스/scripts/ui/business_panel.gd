@@ -43,6 +43,7 @@ var body_id: String=""
 var actor_id: String=""
 var planet_tier: int=1
 var planet_body: Dictionary={}
+var vessel_terminal: FrontierVesselTerminal
 var shuttle_panel: FrontierShuttlePanel
 var supply_panel: FrontierPlanetSupplyPanel
 var register_button: Button
@@ -155,10 +156,7 @@ func _ready() -> void:
 	var ship_tab:=VBoxContainer.new();ship_tab.name="착륙선";tabs.add_child(ship_tab)
 	var supply_tab:=VBoxContainer.new();supply_tab.name="생산 거점";tabs.add_child(supply_tab)
 	supply_panel=FrontierPlanetSupplyPanel.new();supply_tab.add_child(supply_panel);supply_panel.configure(self)
-	button(ship_tab,"연구 · 기술 설계도와 생태 분석",func():station_action.emit("research"))
-	button(ship_tab,"우주선 창고 · 운송할 물건 싣기",func():station_action.emit("cargo"))
-	button(ship_tab,"우주선 정비",func():station_action.emit("shipyard"))
-	button(ship_tab,"탑승 · 전원 탑승 시 자동 이륙",func():station_action.emit("launch"))
+	vessel_terminal=FrontierVesselTerminal.new();ship_tab.add_child(vessel_terminal);vessel_terminal.configure(self)
 	shuttle_panel=FrontierShuttlePanel.new();tabs.add_child(shuttle_panel);shuttle_panel.configure(self)
 	set_context("build")
 	hide()
@@ -245,7 +243,7 @@ func context_in_range(position: Vector3) -> bool:
 	return not row.is_empty() and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
 func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
 	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
-	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference"
+	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경·계약"
 	register_button.hide();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;planet_body=planet;engineering=research;knowledge=ecology
 	supply_panel.update(value,planet,actor,actor==value.get("owner_id",""))

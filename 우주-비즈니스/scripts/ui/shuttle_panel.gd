@@ -11,13 +11,15 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	panel=owner_panel;name="소형선"
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(270,200);preview.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;add_child(preview);preview.show_model("ships/finch");preview.camera.size*=.7
 	panel.label(self,"FINCH · 1인승 항성계 운송선",22)
-	panel.label(self,"W/S 추진 · 마우스 조종 · Shift 가속 · Tab 행성 선택 · F 착륙\n다른 행성에서 직접 채집·창고 인수 후 귀환합니다. 성간 이동은 원정선에 합류하세요.")
+	var scope:=panel.label(self,"1인승  ·  화물 4칸  ·  항성계 내부 운송")
+	scope.tooltip_text="W/S 추진 · 마우스 조종 · Shift 가속 · Tab 행성 선택 · F 착륙. 성간 이동은 공동 원정선에 합류하세요."
 	var cost:=FrontierResourceReadout.new();add_child(cost);cost.value=FrontierCatalog.cost_text(FrontierShuttles.config().cost)
 	info=panel.label(self,"")
 	progress=ProgressBar.new();progress.max_value=float(FrontierShuttles.config().seconds);add_child(progress)
-	build_button=panel.button(self,"가방 부품으로 조립 · Mk.2 제작소",func():panel.command.emit("shuttle_build",{"factory_id":panel.context_id}))
-	dock_button=panel.button(self,"공동 원정선에 합류 · 소형선 화물 유지",func():panel.command.emit("shuttle_dock",{}))
-	panel.button(self,"운송 창고 열기",func():panel.station_action.emit("cargo"))
+	build_button=panel.button(self,"FINCH 조립 시작",func():panel.command.emit("shuttle_build",{"factory_id":panel.context_id}))
+	dock_button=panel.button(self,"공동 원정선에 합류",func():panel.command.emit("shuttle_dock",{}))
+	dock_button.tooltip_text="필요한 화물은 먼저 직접 내리세요. 남은 화물은 FINCH에 보존됩니다."
+	var cargo_button:=panel.button(self,"화물 슬롯 열기",func():panel.station_action.emit("cargo"));cargo_button.icon=FrontierResourceIcons.menu_texture("stone")
 func update_snapshot(value: Dictionary) -> void:
 	var actor:=str(value.self_id);var ship: Dictionary=value.crew.get("shuttles",{}).get(actor,{})
 	progress.visible=ship.get("state","")=="assembling";progress.value=float(ship.get("progress",0))
