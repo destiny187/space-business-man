@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-08 [아이템 미리보기·아이콘 투명화](production/69-transparent-inventory-previews.md): 3D 미리보기와 장비·보석/부품 이미지의 사각 배경을 제거하고 실제 아이템·제작·신체·증강 화면을 확인했다.
+
 2026-09-08 [A01~A06 통합 플레이 확인](production/68-augmentation-research-playcheck.md): 증강·연구·시험기·실제 지하 보석→선박 분석과 저장을 확인하고 I 화면 위 가이드 겹침을 수정했다. 기존 저장 242개 파일은 변경되지 않았다.
 
 2026-09-08 [A06 표본 분석·시제품](production/67-specimen-analysis-and-prototypes.md): 연구대 실물 표본·분석, 제작소 Mk.2 시험기 조립, I 장착/화물 운송과 J 공동 기록을 연결했다. 현장 시험·Mk.3 해금은 A07이다.

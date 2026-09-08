@@ -7,12 +7,12 @@ var camera: Camera3D
 var model_path: String=""
 func _ready() -> void:
 	stretch=true;mouse_default_cursor_shape=Control.CURSOR_DRAG;tooltip_text="드래그하여 장비 회전"
-	viewport=SubViewport.new();viewport.own_world_3d=true;viewport.size=Vector2i(480,480);viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(viewport)
+	viewport=SubViewport.new();viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.size=Vector2i(480,480);viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(viewport)
 	stage=Node3D.new();viewport.add_child(stage)
 	var world:=WorldEnvironment.new();var env:=Environment.new();env.background_mode=Environment.BG_COLOR;env.background_color=FrontierInterfaceStyle.INK;env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("b5cbd4");env.ambient_light_energy=.65;world.environment=env;stage.add_child(world)
 	var light:=DirectionalLight3D.new();light.rotation_degrees=Vector3(-38,-40,0);light.light_energy=1.4;stage.add_child(light)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.current=true;camera.near=.01;stage.add_child(camera)
-	FrontierInkStyle.attach(stage,true)
+	var contour:=FrontierInkStyle.attach(stage,true);contour.set_shader_parameter("transparent_background",true)
 func show_model(path: String) -> void:
 	if model_path==path:return
 	model_path=path
