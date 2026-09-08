@@ -240,7 +240,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 
 static var departure_cache: Dictionary={}
 static func first_destination(manifest: Dictionary) -> int:
-	var cache_key: String=manifest.id+":"+str(manifest.settings.get("system_rules",{}).get("version",0))
+	var cache_key: String=str(FrontierPlanetaryCycles.enabled(manifest))+":"+manifest.id+":"+str(manifest.settings.get("system_rules",{}).get("version",0))+":"+str(manifest.settings.get("ground_rules",{}).get("version",0))
 	if departure_cache.has(cache_key):return departure_cache[cache_key]
 	var origin:=FrontierUniverse.system(manifest,0)
 	var start:=Vector2(origin.map_position[0],origin.map_position[1])
@@ -257,7 +257,8 @@ static func first_destination(manifest: Dictionary) -> int:
 		for orbit in FrontierUniverse.body_count(manifest,int(candidate.index)):
 			var ordinal: int=FrontierUniverse.first_ordinal(manifest,int(candidate.index))+orbit
 			var body:=FrontierUniverse.body(manifest,ordinal)
-			if FrontierUniverse.landable(body) and int(body.planet_tier)==1:
+			if FrontierPlanetaryCycles.enabled(manifest) and not body.astro.intro_eligible:continue
+			if FrontierUniverse.landable(body) and int(body.planet_tier)==1 and (not manifest.settings.has("ground_rules") or FrontierGroundProgression.intro_candidate(body)):
 				departure_cache[cache_key]=ordinal;return ordinal
 	return -1
 

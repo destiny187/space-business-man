@@ -1,0 +1,50 @@
+{
+  "completed_at": "2026-09-08T03:31:48.007623+00:00",
+  "runtime": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "orbital_archetypes": 15,
+  "solar_bodies": 8,
+  "near_far_meshes": 46,
+  "ground_archetypes": 9,
+  "logs": {
+    "orbital": {
+      "script_error_count": 0,
+      "engine_error_count": 0,
+      "sha256": "c2d15e283a30f0b626395b4cbb4a14e7b8cbfe967aa5e5d2e31c44cae97827d0"
+    },
+    "solar-scoped": {
+      "script_error_count": 0,
+      "engine_error_count": 0,
+      "sha256": "a229d158cde6b561cf0af08c609d5df5cc2055a14c54d842a5b1e9d36f5acf8e"
+    },
+    "ground-current": {
+      "script_error_count": 0,
+      "engine_error_count": 0,
+      "sha256": "55501946578838d0f9bdd7a3535f7bab8018cf8ddba8f2975433ca46eb044263"
+    }
+  },
+  "source_drift_since_static_audit": [],
+  "unregistered_near_in_common_catalog": [
+    "oxidized",
+    "continental",
+    "cratered",
+    "fractured",
+    "tundra",
+    "frozen",
+    "volcanic",
+    "salt",
+    "ochre",
+    "banded",
+    "storm",
+    "pale",
+    "azure",
+    "turquoise",
+    "violet"
+  ],
+  "scope": "Representative seed per archetype; explicit near/far appearance, not distance transition or all seeds; ground capture uses each native sky time, not equal lighting comparison",
+  "earlier_issues": [
+    "LOD resources had not been imported; editor import performed",
+    "old cooling fixture lacked work; omitted unrelated fixture",
+    "old solar navigation fixture lacked speed; final run scoped to SolarPlanet previews",
+    "ground ecology geometry access errors in first run; latest 600 definitions have geometry and final same-scope run has no script errors; no gameplay source fix made"
+  ]
+}

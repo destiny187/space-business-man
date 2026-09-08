@@ -1,0 +1,10 @@
+{
+  "version":1,
+  "maximum_level":5,
+  "increment":0.1,
+  "fields":{
+    "mining":{"name":"채집 공학","model":"manual_tool","picture":"robotics","cost":{"refined_iron":2,"control_circuit":1},"effect":"내 채집기의 작업 빈도 +10% / 단계 · 광물 등급 제한 유지"},
+    "logistics":{"name":"개인 물류","model":"storage","picture":"recovery","cost":{"reinforced_frame":1,"control_circuit":1},"effect":"내 지상 이동 속도 +10% · 가방 +1칸 / 단계"},
+    "industry":{"name":"생산 공학","model":"factory","picture":"atmosphere","price":600,"effect":"공동 제작·로봇 채광·환경 처리 +10% / 단계 · 한 번만 적용"}
+  }
+}

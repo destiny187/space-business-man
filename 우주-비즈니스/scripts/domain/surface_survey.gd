@@ -60,6 +60,8 @@ static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionar
 	var usage: PackedStringArray=[]
 	for recipe in FrontierEquipment.config().items.values():
 		if int(recipe.get("cost",{}).get(row.resource,0))>0:usage.append(recipe.name)
+	for recipe in FrontierProductionTier2.config().products.values():
+		if int(recipe.cost.get(row.resource,0))>0:usage.append(recipe.name)
 	return {"kind":"mineral","id":row.id,"name":FrontierCatalog.entry("resources",row.resource).name,"icon":row.resource,"point":[row.point.x,row.point.y,row.point.z],"subtitle":"광물 조사 · 채집기 %d등급 필요"%int(row.required_tier),"remaining":remaining,"capacity":int(row.capacity),"notes":[{"icon":"inventory","text":"매장량 %d / %d"%[remaining,int(row.capacity)]},{"icon":"build","text":"제작: "+(" · ".join(usage.slice(0,2)) if not usage.is_empty() else "현장 재료 · 상세 용도 조사 중")}],"condition":"같은 행성의 같은 자원은 기록을 공유합니다.","action":action}
 static func valid(records: Variant) -> bool:
 	if not records is Dictionary or records.size()>256:return false

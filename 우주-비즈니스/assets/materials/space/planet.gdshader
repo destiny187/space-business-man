@@ -3,6 +3,9 @@ shader_type spatial;
 uniform vec4 land_color : source_color = vec4(.32,.24,.20,1);
 uniform vec4 sea_color : source_color = vec4(.06,.18,.23,1);
 uniform vec4 cloud_color : source_color = vec4(.75,.78,.71,1);
+uniform float surface_temperature=20.;
+uniform float surface_water=0.;
+uniform int geology_style=0;
 uniform bool gas_bands = false;
 uniform bool authored_relief = false;
 uniform bool molten = false;
@@ -10,35 +13,59 @@ uniform float cloud_amount = .5;
 uniform vec4 rock_color:source_color=vec4(.2,.15,.13,1);
 uniform float seed_offset = 0.;
 uniform float sea_level = .43;
+uniform float visual_time = -1.0;
 varying vec3 local_position;
 float hash3(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7))+seed_offset)*43758.5453);}
 float noise3(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash3(i),hash3(i+vec3(1,0,0)),f.x),mix(hash3(i+vec3(0,1,0)),hash3(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash3(i+vec3(0,0,1)),hash3(i+vec3(1,0,1)),f.x),mix(hash3(i+vec3(0,1,1)),hash3(i+vec3(1)),f.x),f.y),f.z);}
 float fbm(vec3 p){return .57*noise3(p)+.28*noise3(p*2.07)+.15*noise3(p*4.13);}
 void vertex(){local_position=VERTEX;}
 void fragment(){
+ float cycle_time=visual_time<0.0?TIME:visual_time;
  vec3 p=normalize(local_position);float h=mix(fbm(p*4.3),COLOR.r,.45*float(authored_relief));
  vec3 land=mix(rock_color.rgb,land_color.rgb,smoothstep(.28,.65,h));
  land*=mix(.78,1.08,COLOR.g);
  float coast=smoothstep(sea_level-.012,sea_level+.012,h);
- vec3 surface=mix(sea_color.rgb,land,coast);
+ // Broad shelf / highland regions, with detail carried by authored relief masks.
+ float shelf=smoothstep(sea_level-.08,sea_level-.015,h)*(1.-coast);
+ vec3 ocean=mix(sea_color.rgb*.73,sea_color.rgb*1.18,shelf);
+ vec3 surface=mix(ocean,land,coast);
+ if(!gas_bands){
+  float freeze=1.-smoothstep(-3.,3.,surface_temperature+12.-abs(p.y)*36.);
+  vec3 ice=mix(vec3(.34,.56,.65),vec3(.79,.86,.86),smoothstep(.2,.8,COLOR.b));
+  surface=mix(surface,ice,freeze*(1.-coast)*step(.001,surface_water));
+  float frost=freeze*surface_water*smoothstep(.12,.78,abs(p.y))*coast;
+  surface=mix(surface,vec3(.76,.82,.82),frost);
+  if(geology_style==1){float beds=smoothstep(.3,.7,COLOR.b);surface=mix(surface,mix(rock_color.rgb,land_color.rgb*1.16,beds),coast*.52);}
+  if(geology_style==2){float outcrop=smoothstep(.48,.8,COLOR.b);surface=mix(surface,vec3(.68,.77,.80),outcrop*coast*.45);}
+  if(geology_style==3){float vein=smoothstep(.45,.85,COLOR.b);surface=mix(surface,land_color.rgb*1.2,vein*coast*.6);}
+ }
+ float highland=smoothstep(.57,.76,h)*float(authored_relief);
+ surface=mix(surface,rock_color.rgb*1.12,highland*.32);
+ float shore=(1.-smoothstep(.01,.025,abs(h-sea_level)))*step(.05,sea_level);
+ surface=mix(surface,mix(land_color.rgb,cloud_color.rgb,.24),shore*.23);
+ float relief_detail=mix(.95,1.04,COLOR.b);
+ surface*=mix(1.,relief_detail,float(authored_relief));
  float strata=smoothstep(.49,.51,noise3(p*22.));surface*=mix(.92,1.03,strata);
- vec3 wind=p;wind.x+=sin(p.y*9.)*.10;wind.z+=TIME*.001;
+ vec3 wind=p;wind.x+=sin(p.y*9.)*.10;wind.z+=cycle_time*.001;
  float cloud=smoothstep(.72-cloud_amount*.18,.82-cloud_amount*.18,fbm(wind*6.))*cloud_amount;
  if(gas_bands){
   float latitude=p.y;
-  float longitude=atan(p.z,p.x)+TIME*.012*(1.+sin(latitude*14.)*.3);
+  float longitude=atan(p.z,p.x)+cycle_time*.012*(1.+sin(latitude*14.)*.3);
   vec3 flow=vec3(cos(longitude)*sqrt(max(0.,1.-latitude*latitude)),latitude,sin(longitude)*sqrt(max(0.,1.-latitude*latitude)));
   float dx=atan(sin(longitude-seed_offset),cos(longitude-seed_offset));
   float dy=latitude+.22;
   float storm=exp(-pow(dx/.38,2.)-pow(dy/.16,2.));
-  float spiral=sin(atan(dy/.16,dx/.38)*2.+length(vec2(dx/.38,dy/.16))*14.-TIME*.25);
+  float spiral=sin(atan(dy/.16,dx/.38)*2.+length(vec2(dx/.38,dy/.16))*14.-cycle_time*.25);
   float band=sin(latitude*(25.+mod(seed_offset,20.))+fbm(flow*6.)*4.+storm*spiral*2.);
-  surface=mix(sea_color.rgb,land_color.rgb,smoothstep(-.2,.2,band));
+  float belt=smoothstep(-.45,.4,band);
+  surface=mix(sea_color.rgb,land_color.rgb,belt);
+  float filament=sin(latitude*73.+fbm(flow*13.)*2.+storm*spiral);
+  surface=mix(surface,cloud_color.rgb,smoothstep(.45,.85,filament)*.075);
   surface=mix(surface,rock_color.rgb,storm*(.5+.18*spiral));
   cloud=smoothstep(.60,.76,fbm(flow*9.))*.3;
-  float flash=pow(max(0.,sin(TIME*1.7+seed_offset)),45.)*storm;
+  float flash=pow(max(0.,sin(cycle_time*1.7+seed_offset)),45.)*storm;
   EMISSION=vec3(.4,.65,1.)*flash*.45;
  }
  if(molten){float fissure=1.-smoothstep(.02,.065,abs(fbm(p*12.)-.5));surface=mix(surface,vec3(.85,.14,.015),fissure*.8);EMISSION=vec3(1.,.15,.008)*fissure*1.4;}
- ALBEDO=mix(surface,cloud_color.rgb,cloud*.84);ROUGHNESS=.92;
+ ALBEDO=mix(surface,cloud_color.rgb,cloud*.84);ROUGHNESS=gas_bands?.92:mix(.42,.94,coast);
 }

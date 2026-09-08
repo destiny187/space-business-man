@@ -1,6 +1,8 @@
 class_name FrontierBusinessPanel
 extends PanelContainer
 signal command(kind: String,args: Dictionary)
+signal prefer_robot(id: String)
+var filter_context: String=""
 signal place_building(kind: String)
 signal station_action(kind: String)
 var context_kind: String="build"
@@ -25,6 +27,7 @@ var summary: FrontierResourceReadout
 var stock: FrontierResourceReadout
 var environment_bars: Dictionary={}
 var environment_label: Label
+var workload_label: Label
 var guidance: Label
 var technology: OptionButton
 var building: OptionButton
@@ -39,6 +42,10 @@ var ledger: Dictionary={}
 var body_id: String=""
 var actor_id: String=""
 var planet_tier: int=1
+var planet_body: Dictionary={}
+var vessel_terminal: FrontierVesselTerminal
+var shuttle_panel: FrontierShuttlePanel
+var supply_panel: FrontierPlanetSupplyPanel
 var register_button: Button
 var engineering: Dictionary={}
 var knowledge: Dictionary={}
@@ -58,6 +65,7 @@ func _ready() -> void:
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
 	heading=label(column,"건설 · B 닫기",24)
 	summary=FrontierResourceReadout.new();column.add_child(summary);guidance=label(column,"");stock=FrontierResourceReadout.new();column.add_child(stock)
+	workload_label=label(column,"")
 	register_button=button(column,"무료 개발 등록",func():command.emit("business_register",{}))
 	deposit_button=button(column,"현장 창고에 자원 반납",func():station_action.emit("storage"))
 	tabs=TabContainer.new();tabs.custom_minimum_size.y=290;column.add_child(tabs)
@@ -110,8 +118,12 @@ func _ready() -> void:
 	robot=option(robot_tab)
 	robot_job_status=label(robot_tab,"")
 	robot_controls=VBoxContainer.new();robot_tab.add_child(robot_controls)
+	button(robot_controls,"이 로봇을 현장 지시 우선 대상으로",func():prefer_robot.emit(selected(robot)))
+	button(robot_controls,"현장 지시 · 가능한 고등급 자동 선정",func():prefer_robot.emit(""))
 	vein=option(robot_controls)
-	button(robot_controls,"광맥 배정",func():command.emit("business_assign",{"robot_id":selected(robot),"vein_id":selected(vein)}))
+	button(robot_controls,"종류 지정 · 자동 채광",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
+	button(robot_controls,"현재 로봇 위치를 작업 중심으로",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
+	label(robot_controls,"작업 중심 80m · 가까운 접근 가능 광맥을 자동 탐색 · Mk 등급은 채집 가능 광물, 품질은 작업 속도")
 	button(robot_controls,"작업 중지 · 창고로 복귀",func():command.emit("business_robot_return",{"robot_id":selected(robot)}))
 	button(robot_controls,"긴급 충전 · 50 Cr",func():command.emit("business_robot_rescue",{"robot_id":selected(robot)}))
 	recovery_controls=VBoxContainer.new();robot_tab.add_child(recovery_controls)
@@ -137,14 +149,15 @@ func _ready() -> void:
 		var title:=label(row,{"atmosphere":"대기","temperature":"온도","water":"물","ecology":"생태"}[category]);title.custom_minimum_size.x=50;title.size_flags_horizontal=0
 		var bar:=ProgressBar.new();bar.custom_minimum_size=Vector2(200,22);bar.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(bar);environment_bars[category]=bar
 	environment_label=label(contract_tab,"")
-	button(contract_tab,"지역 복원 계약 정산…",confirm_settlement)
-	label(contract_tab,"계약은 이 개발 구역의 복원 성과를 평가합니다. 정산하면 남긴 시설·현장 로봇·창고를 인계합니다. 필요한 로봇은 먼저 회수하세요. 행성 전체의 소유권 매각과 구분됩니다.")
+	button(contract_tab,"시설·재고 인계 후 정산…",confirm_settlement)
+	button(contract_tab,"생산 거점 유지하며 정산…",func():confirm_settlement(true))
+	label(contract_tab,"전체 인계는 계약 대금 전액, 생산 거점 유지는 60%를 받습니다. 유지하려면 착륙선의 생산 이용권이 필요합니다. 인계한 자산은 되돌릴 수 없습니다.")
 	tabs.add_child(facility_tab)
 	var ship_tab:=VBoxContainer.new();ship_tab.name="착륙선";tabs.add_child(ship_tab)
-	button(ship_tab,"연구 · 기술 설계도와 생태 분석",func():station_action.emit("research"))
-	button(ship_tab,"우주선 창고 · 운송할 물건 싣기",func():station_action.emit("cargo"))
-	button(ship_tab,"우주선 정비",func():station_action.emit("shipyard"))
-	button(ship_tab,"탑승 · 전원 탑승 시 자동 이륙",func():station_action.emit("launch"))
+	var supply_tab:=VBoxContainer.new();supply_tab.name="생산 거점";tabs.add_child(supply_tab)
+	supply_panel=FrontierPlanetSupplyPanel.new();supply_tab.add_child(supply_panel);supply_panel.configure(self)
+	vessel_terminal=FrontierVesselTerminal.new();ship_tab.add_child(vessel_terminal);vessel_terminal.configure(self)
+	shuttle_panel=FrontierShuttlePanel.new();tabs.add_child(shuttle_panel);shuttle_panel.configure(self)
 	set_context("build")
 	hide()
 func label(parent: Node,text: String,size: int=15) -> Label:
@@ -165,9 +178,9 @@ func set_context(kind: String,id: String="") -> void:
 	var allowed: Array=[]
 	match kind:
 		"build":allowed=["건설"]
-		"ship":allowed=["착륙선","환경·계약"]
+		"ship":allowed=["착륙선","환경·계약","생산 거점","소형선"]
 		"base","storage":allowed=["창고","로봇"]
-		"factory":allowed=["로봇 제작","생산·개조","생물공학","시설 관리"]
+		"factory":allowed=["로봇 제작","로버 제작","생산·개조","생물공학","시설 관리","소형선"]
 		"robot":allowed=["로봇","생산·개조"]
 		_:allowed=["시설 관리","생산·개조"]
 	if kind in ["atmosphere","thermal","water","biolab"]:allowed.append("생물공학")
@@ -213,13 +226,13 @@ func refresh_context(current: Dictionary) -> void:
 				for other in warehouse_grid.get_children():other.selected=other==tile;other.queue_redraw())
 			warehouse_grid.add_child(tile)
 	var target_robot: Dictionary=current.get("robots",{}).get(context_id,{})
-	robot_job_status.text=str(target_robot.get("status",""))
+	robot_job_status.text="Mk.%d · %s · %s"%[int(target_robot.get("tier",1)),"자동" if target_robot.get("auto_enabled",true) else "정지",str(target_robot.get("status",""))]
 	if context_kind not in ["build","ship","base"]:
 		var row: Dictionary=current.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 		if context_kind!="robot" and not row.is_empty():
 			facility_picture.show_model(FrontierCatalog.entry("buildings",row.type).model)
 			facility_status.text="Mk.%d · %s"%[int(row.get("tier",1)),row.get("status","")]
-		if row.is_empty() or current.get("state","")!="active":hide()
+		if row.is_empty() or not FrontierPlanetSupply.operating(current):hide()
 func context_in_range(position: Vector3) -> bool:
 	if context_kind=="build":return true
 	if context_kind=="ship":return position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))<=float(FrontierCrewSurface.config().boarding_distance)
@@ -228,10 +241,14 @@ func context_in_range(position: Vector3) -> bool:
 	if context_kind=="base":return position.distance_to(FrontierCrewWorld.vector(site.center))<=float(FrontierExpeditionBusiness.config().deposit_range)
 	var row: Dictionary=site.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 	return not row.is_empty() and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
-func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO) -> void:
+func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
+	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
+	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경·계약"
 	register_button.hide();guidance.show()
-	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;engineering=research;knowledge=ecology
+	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;planet_body=planet;engineering=research;knowledge=ecology
+	supply_panel.update(value,planet,actor,actor==value.get("owner_id",""))
 	refresh_context(value.get("sites",{}).get(id,{}))
+	refresh_building_cost()
 	update_engineering()
 	production_panel.update_site(value.get("sites",{}).get(id,{}))
 	for bar in environment_bars.values():bar.value=0
@@ -257,27 +274,36 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		if context_kind=="robot" and key!=context_id:continue
 		var r: Dictionary=current.robots[key];robots[key]=key+" · "+FrontierCatalog.entry("grades",r.grade).name+" · "+str(r.status)
 	for key in value.hangar:transported[key]=key+" · "+FrontierCatalog.entry("grades",value.hangar[key].grade).name
-	if not planet.is_empty():
-		for row in FrontierExpeditionBusiness.veins(planet,viewer):
-			if row.get("underground",false):continue
-			veins[row.id]=FrontierCatalog.entry("resources",row.resource).name+" · "+row.id+" · "+str(int(current.remaining.get(row.id,row.capacity)))
-	else:
-		for i in FrontierExpeditionBusiness.config().veins.size():
-			var key: String="vein:"+str(i);veins[key]=FrontierCatalog.entry("resources",FrontierExpeditionBusiness.config().veins[i]).name+" · "+key+" · "+str(int(current.remaining.get(key,0)))
+	veins[""]="전체 자원 · 자동"
+	for key in FrontierCatalog.table("resources"):
+		if key in FrontierProductionTier2.config().products:continue
+		veins[key]=FrontierCatalog.entry("resources",key).name
 	for key in FrontierExpeditionBusiness.config().technologies:
 		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if key in value.technologies else " · %d Cr"%int(def.price))
 	choices(facility,buildings);choices(factory,factories);choices(robot,robots);choices(vein,veins);choices(technology,technologies);choices(hangar,transported)
-	var e: Dictionary=current.environment;var scores:=FrontierEvaluator.scores(e)
-	for category in environment_bars:environment_bars[category].value=float(e.ecology) if category=="ecology" else float(scores[category])
-	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]
-	if current.has("restoration2"):
-		environment_label.text+="\n염류 %.0f / 목표 ≤20 · 토양 %.0f / 목표 ≥60 · Mk.2 필터·기반재 필요"%[float(current.restoration2.salinity),float(current.restoration2.soil)]
-	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("수동 채집 → 부품 생산 → 제작소 Mk.2 개조 → 채광 로봇 제작" if current.robots.is_empty() else "로봇에 광맥을 배정하고 대기·온도·물·생태 시설을 가동하세요.")
+	var selected_robot: Dictionary=current.robots.get(selected(robot),{})
+	var next_filter:=selected(robot)+":"+str(selected_robot.get("resource_filter",""))
+	if filter_context!=next_filter:
+		filter_context=next_filter
+		for i in vein.item_count:
+			if str(vein.get_item_metadata(i))==str(selected_robot.get("resource_filter","")):vein.select(i);break
+	var e: Dictionary=current.environment;var report:=FrontierEvaluator.environment_report(current,body_id)
+	for category in environment_bars:
+		environment_bars[category].visible=report.observed
+		if report.observed:environment_bars[category].value=float(report.scores[category])
+	environment_label.text="지역 환경 · 평가 중"
+	if report.observed:
+		environment_label.text="환경 적합도 %.0f%% · 지역 환경\n지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n%s · 안정화 %.0f / %.0f초"%[report.overall,float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,"✓ 안정" if report.stable else "◷ 관찰 중",report.stable_seconds,report.stable_required]
+		if not report.limiting_factors.is_empty():environment_label.text+="\n! "+str(report.limiting_factors[0].label)
+		if current.has("restoration2"):
+			var restore_cfg: Dictionary=FrontierProductionTier2.config().restoration
+			environment_label.text+="\n염류 %.0f / 목표 ≤%.0f · 토양 %.0f / 목표 ≥%.0f"%[float(current.restoration2.salinity),float(restore_cfg.salinity_target),float(current.restoration2.soil),float(restore_cfg.soil_target)]
+	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("수동 채집 → 부품 생산 → 제작소 Mk.2 개조 → 채광 로봇 제작" if current.robots.is_empty() else "로봇은 자동 채광합니다. 자원 종류를 정하고 환경 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
-func confirm_settlement() -> void:
+func confirm_settlement(retain: bool=false) -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
-	var payment: int=int(FrontierExpeditionBusiness.config().contract_base_reward)+planet_tier*int(FrontierExpeditionBusiness.config().contract_tier_reward)
-	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설·로봇·재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.confirmed.connect(func():command.emit("business_settle",{});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
+	var payment:=FrontierPlanetSupply.settlement_payment(ledger.get("sites",{}).get(body_id,{}),planet_tier,retain)
+	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설·로봇·재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.dialog_text=("복원 대금 %d Cr (60%%)\n인계 대금 40%%를 포기하고 시설·로봇·재고와 생산 이용권을 유지합니다.\n부재중 생산은 일시 정지하며, 재방문 시 계속 가동합니다."%payment) if retain else dialog.dialog_text;dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
 
 func engineering_command(stage: String) -> void:
 	command.emit("business_research_"+stage,{"project":selected(research_project),"building_id":selected(research_facility)})
@@ -307,4 +333,8 @@ func update_engineering() -> void:
 
 func refresh_building_cost() -> void:
 	for kind in building_cards:building_cards[kind].set_pressed_no_signal(kind==selected(building))
-	building_cost.value="건설 재료 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",selected(building)).cost)
+	var cost: Dictionary=FrontierCatalog.entry("buildings",selected(building)).cost
+	var bag: Dictionary=ledger.get("bags",{}).get(actor_id,{})
+	var parts: PackedStringArray=[]
+	for key in cost:parts.append("%s %d/%d"%[FrontierCatalog.entry("resources",key).name,int(bag.get(key,0)),int(cost[key])])
+	building_cost.value="내 가방 · "+" · ".join(parts)+(" · 재료 충분" if FrontierExpeditionBusiness.affordable(bag,cost) else " · 부족분은 창고에서 직접 인수")

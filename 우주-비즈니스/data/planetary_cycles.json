@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "enabled": true,
+  "time_scale": 60.0,
+  "epoch_offset": 0.0,
+  "year_seconds": 31557600.0,
+  "star_profiles": {
+    "M": [0.3, 0.3, 0.012], "K": [0.75, 0.75, 0.3], "G": [1.0, 1.0, 1.0], "F": [1.3, 1.3, 3.0], "A": [2.0, 1.8, 20.0]
+  },
+  "inner_habitable_fraction": [0.55, 0.95],
+  "orbit_spacing": 1.7,
+  "eccentricity_max": 0.12,
+  "spin_hours": [8.0, 72.0],
+  "tilt_degrees": [0.0, 40.0],
+  "locked_days": [10.0, 30.0],
+  "locked_weights": [0.8, 0.4],
+  "intro_day_hours": [16.0, 30.0],
+  "intro_max_tilt": 25.0,
+  "latitude_degrees": [-35.0, 35.0],
+  "solar": {
+    "source": "https://science.nasa.gov/learn/basics-of-space-flight/chapter1-2/",
+    "semimajor_au": [0.387, 0.723, 1.0, 1.524, 5.203, 9.537, 19.191, 30.069],
+    "eccentricity": [0.2056, 0.0068, 0.0167, 0.0934, 0.0484, 0.0542, 0.0472, 0.0086],
+    "spin_hours": [1407.6, 5832.5, 23.9345, 24.6229, 9.925, 10.656, 17.24, 16.11],
+    "tilt_degrees": [0.034, 177.36, 23.44, 25.19, 3.13, 26.73, 97.77, 28.32]
+  },
+  "presentation": {
+    "refresh_seconds": 0.12,
+    "night_ambient": 0.20,
+    "night_zenith": "060e20",
+    "night_horizon": "172738",
+    "twilight_color": "e78a56",
+    "sun_energy": 1.8,
+    "sun_angular_radius": 0.00465,
+    "cloud_speed": 0.006,
+    "clock_extrapolation_limit": 1.0,
+    "worklight_energy": 12.0,
+    "rover_headlight_energy": 18.0,
+    "night_wind_db": -2.0
+  }
+}

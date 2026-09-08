@@ -28,7 +28,7 @@ func refresh(site: Dictionary) -> void:
 	progress.visible=not job.is_empty()
 	if not job.is_empty():progress.value=100*float(job.progress)/float(job.seconds)
 	if b.get("type","")!="factory":reason="로봇 제작소가 필요합니다."
-	elif site.get("state","")!="active":reason="인계된 제작소입니다."
+	elif not FrontierPlanetSupply.operating(site):reason="인계된 제작소입니다."
 	elif not job.is_empty():reason="로봇 조립 중 · "+str(b.get("status",""))
 	elif not b.get("production",{}).is_empty():reason="제품 생산 중"
 	elif not FrontierProductionTier2.robot_gate(b).is_empty():reason=FrontierProductionTier2.robot_gate(b)

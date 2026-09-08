@@ -4,6 +4,16 @@ extends RefCounted
 const CEL = preload("res://assets/materials/ink/cel.gdshader")
 const CONTOUR = preload("res://assets/materials/ink/contour.gdshader")
 static var _config: Dictionary = {}
+static var _material_roles: Dictionary = {}
+
+static func material_role(label: String) -> Dictionary:
+	if _material_roles.is_empty():
+		var preset: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/ink_materials.json"))
+		for role in preset.roles:
+			var spec: Dictionary = preset.roles[role]
+			_material_roles["INK::"+role] = spec
+			for alias in spec.legacy_names: _material_roles[alias] = spec
+	return _material_roles.get(label,{})
 
 static func config() -> Dictionary:
 	if _config.is_empty():
@@ -27,6 +37,14 @@ static func material(original: StandardMaterial3D, cache: Dictionary) -> Materia
 	mat.set_shader_parameter("base_color",original.albedo_color)
 	mat.set_shader_parameter("rough",roughness)
 	mat.set_shader_parameter("metal",original.metallic)
+	# Exact industrial roles only: preserve species colours, process signals and paint data.
+	var role := material_role(original.resource_name)
+	if not role.is_empty() and not original.vertex_color_use_as_albedo and not label.ends_with("_vertex_paint") and not original.emission_enabled:
+		var rgb: Array = role.color_linear
+		mat.set_shader_parameter("base_color",Color(rgb[0],rgb[1],rgb[2],original.albedo_color.a).linear_to_srgb())
+		mat.set_shader_parameter("rough",float(role.roughness))
+		mat.set_shader_parameter("metal",float(role.metallic))
+		mat.set_shader_parameter("highlight_strength",float(role.highlight_strength))
 	mat.set_shader_parameter("use_vertex_color",original.vertex_color_use_as_albedo or label.ends_with("_vertex_paint"))
 	mat.set_shader_parameter("emission_color",original.emission)
 	mat.set_shader_parameter("emission_strength",original.emission_energy_multiplier if original.emission_enabled else 0.)
@@ -55,7 +73,7 @@ static func attach(parent: Node3D, studio: bool = false) -> ShaderMaterial:
 	# The screen texture does not contain transparent draws; a late pass erases them.
 	mat.render_priority = -128
 	mat.set_shader_parameter("strength",1.0)
-	for key in ["outer_width","inner_width","reference_height","crease_depth_floor","distant_ink_strength"]:
+	for key in ["outer_width","inner_width","reference_height","crease_depth_floor","distant_ink_strength","small_feature_strength"]:
 		mat.set_shader_parameter(key,float(config()[key]))
 	var fade: Array = config().crease_fade
 	mat.set_shader_parameter("crease_fade",Vector2(1000,2000) if studio else Vector2(fade[0],fade[1]))

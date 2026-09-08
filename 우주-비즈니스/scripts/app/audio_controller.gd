@@ -124,16 +124,18 @@ func update_world(p: Dictionary,paused: bool) -> void:
 				if listener.distance_to(position) < 22: play("sfx_creature_call",Vector3(position.x,0.8,position.y))
 	for b in p.buildings:
 		if not b.get("active",false):continue
-		if b.type=="factory" and not b.get("production",{}).is_empty():
+		if b.type=="factory" and (not b.get("production",{}).is_empty() or b.get("working",false)):
 			var at:=Vector2(float(b.position[0]),float(b.position[1]))
 			if listener.distance_to(at)<35 and wanted.size()<12:wanted[b.id]=["sfx_robot_work",Vector3(at.x,1.5,at.y)]
 			continue
-		if b.type not in ["atmosphere","thermal","water","biolab"]:continue
+		if b.type not in ["atmosphere","thermal","water","biolab"] or not b.get("working",b.active):continue
 		var location := Vector2(float(b.position[0]),float(b.position[1]))
-		if listener.distance_to(location) < 35 and wanted.size() < 12: wanted[b.id] = ["sfx_terraform_active",Vector3(location.x,1.5,location.y)]
+		if listener.distance_to(location) < 35 and wanted.size() < 12: wanted[b.id] = [{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop"}[b.type],Vector3(location.x,1.5,location.y)]
 	for id in emitters.keys():
 		if not wanted.has(id):
-			emitters[id].queue_free()
+			var retiring: AudioStreamPlayer3D=emitters[id]
+			if paused:retiring.stream_paused=true
+			var fade:=create_tween();fade.tween_property(retiring,"volume_db",-55,.18);fade.tween_callback(retiring.queue_free)
 			emitters.erase(id)
 	for id in wanted:
 		var value: Array = wanted[id]
@@ -142,13 +144,18 @@ func update_world(p: Dictionary,paused: bool) -> void:
 			var emitter := AudioStreamPlayer3D.new()
 			emitter.bus = "SFX"
 			emitter.max_distance = 35
-			emitter.volume_db = -18
+			emitter.unit_size = 8
+			emitter.volume_db = -50
 			add_child(emitter)
 			emitters[id] = emitter
 		var emitter: AudioStreamPlayer3D = emitters[id]
 		if emitter.get_meta("sound","") != value[0]:
 			emitter.stream = stream(value[0],true)
 			emitter.set_meta("sound",value[0])
-			if emitter.stream: emitter.play()
+			if emitter.stream:
+				emitter.volume_db=-50
+				emitter.play(fmod(float(hash(str(id))%1000)/1000.0*emitter.stream.get_length(),emitter.stream.get_length()))
+				var level:= -8.0 if value[0] in ["sfx_thermal_loop","sfx_water_loop","sfx_biolab_loop"] else (-20.0 if value[0] in ["sfx_robot_work","sfx_robot_move"] else -18.0)
+				create_tween().tween_property(emitter,"volume_db",level,.22)
 		emitter.global_position = value[1]
 		emitter.stream_paused = paused

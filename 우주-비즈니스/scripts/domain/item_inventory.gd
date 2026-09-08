@@ -22,7 +22,7 @@ static func used(stock: Dictionary,items: int=0) -> int:
 static func storage_slots() -> int:return int(config().max_slots)
 static func limit() -> int:return storage_slots()*int(config().resource_stack)
 static func capacity(member: Dictionary) -> int:
-	return int(member.get("loadout",{}).get("inventory_slots",config().slots))
+	return mini(storage_slots(),int(member.get("loadout",{}).get("inventory_slots",config().slots))+FrontierProgressionResearch.personal(member,"logistics"))
 static func room(world: Dictionary,actor: String,resource: String) -> int:
 	var stock:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	stock.stone=int(stock.get("stone",0))+int(world.crew.members[actor].carried)
@@ -46,7 +46,7 @@ static func merge_legacy(world: Dictionary,actor: String) -> void:
 static func ship_site(crew: Dictionary) -> Dictionary:
 	var stock: Dictionary=crew.get("cargo",{}).duplicate()
 	stock.stone=int(crew.rock)
-	return {"inventory":stock,"stored_equipment":crew.get("cargo_equipment",{}),"buildings":{}}
+	return {"inventory":stock,"stored_equipment":crew.get("cargo_equipment",{}),"buildings":{},"slot_capacity":int(crew.get("cargo_slots",config().warehouse_slots))}
 static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
 	var member: Dictionary=world.crew.members[actor]
 	var position:=FrontierCrewWorld.vector(member.position)
@@ -54,16 +54,24 @@ static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dic
 		if position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "우주선 창고 가까이 돌아오세요."
 	elif member.area!="cabin" or position.distance_to(FrontierCrewWorld.vector(FrontierCrewWorld.config().locker_position))>float(FrontierCrewWorld.config().interaction_distance):return "선내 창고 가까이 이동하세요."
 	var site:=ship_site(world.crew)
+	if world.has("local_shuttle"):site["slot_capacity"]=int(FrontierShuttles.config().cargo_slots)
 	if args.has("item_id"):
 		var error:=warehouse_equipment(world,actor,{"item_id":args.item_id,"withdraw":kind=="withdraw"},site)
 		if not error.is_empty():return error
 		world.crew.cargo_equipment=site.stored_equipment;return ""
+	if args.get("all_resources",false)==true and kind=="deposit":
+		var error:=deposit_all(world,actor,site)
+		if not error.is_empty():return error
+		world.crew.rock=int(site.inventory.get("stone",0));site.inventory.erase("stone");world.crew.cargo=site.inventory;return ""
 	if not FrontierExpeditionBusiness.integer(args.get("amount"),1,limit()):return "옮길 수량을 확인하세요."
 	var amount:=int(args.amount);var resource:=str(args.get("resource","stone"))
 	if FrontierCatalog.entry("resources",resource).is_empty():return "지원하지 않는 화물입니다."
 	if not world.has("business"):world.business=FrontierExpeditionBusiness.create()
 	if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
 	var stock:=FrontierExpeditionBusiness.bag(world,actor)
+	if args.get("quick",false)==true:
+		amount=mini(amount,mini(int(site.inventory.get(resource,0)),room(world,actor,resource)) if kind=="withdraw" else mini(int(stock.get(resource,0)),warehouse_room(site,resource)))
+		if amount<=0:return "옮길 재고 또는 목적지 공간이 부족합니다."
 	if kind=="withdraw":
 		if int(site.inventory.get(resource,0))<amount or room(world,actor,resource)<amount:return "우주선 재고 또는 배낭 공간이 부족합니다."
 		site.inventory[resource]-=amount;stock[resource]=int(stock.get(resource,0))+amount
@@ -74,8 +82,22 @@ static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dic
 	world.crew.rock=int(site.inventory.get("stone",0));site.inventory.erase("stone");world.crew.cargo=site.inventory
 	return ""
 
+static func deposit_all(world: Dictionary,actor: String,site: Dictionary) -> String:
+	var stock:=FrontierExpeditionBusiness.bag(world,actor)
+	var moved:=0
+	var keys:=stock.keys();keys.sort()
+	for key in keys:
+		if FrontierCatalog.entry("resources",key).is_empty():continue
+		var amount:=mini(int(stock[key]),warehouse_room(site,key))
+		if amount<=0:continue
+		stock[key]-=amount;site.inventory[key]=int(site.inventory.get(key,0))+amount;moved+=amount
+	if moved==0:return "보관할 자원이 없거나 창고 공간이 부족합니다."
+	if site.has("delivered"):site.delivered+=moved
+	return ""
+
 # A landing depot starts with ten shared slots; each built storage adds ten.
 static func warehouse_capacity(site: Dictionary) -> int:
+	if site.has("slot_capacity"):return int(site.slot_capacity)
 	var count:=1
 	for building in site.get("buildings",{}).values():
 		if building.type=="storage":count+=1

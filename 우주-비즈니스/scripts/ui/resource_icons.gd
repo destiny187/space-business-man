@@ -25,6 +25,7 @@ static var patterns: Dictionary = {}
 static var menu_textures: Dictionary = {}
 
 static func icon_path(id: String) -> String:
+	id=str(FrontierProductionTier2.product(id).get("icon",id))
 	return ROOT+id+(".png" if FileAccess.file_exists(ROOT+id+".png") else ".svg")
 
 static func texture(id: String) -> Texture2D:

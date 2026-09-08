@@ -36,6 +36,8 @@ func _process(_delta: float) -> void:
 func _install(arrays: Array,terrain_material: Material) -> void:
 	var result:=ArrayMesh.new();result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	mesh=result;material_override=terrain_material;build_count+=1
+	var fallback:=get_node_or_null("StreamingFallback") as MeshInstance3D
+	if fallback!=null:fallback.material_override=terrain_material
 
 func rebuild(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,terrain_material: Material,view_distance: float=1060.0) -> void:
 	rendered_anchor=anchor;has_rendered_anchor=true
@@ -72,6 +74,8 @@ static func _arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: 
 				normals.append(Vector3.UP);normals.append(Vector3.UP)
 			indices.append_array(PackedInt32Array([start,start+1,start+2,start+2,start+1,start+3,start+2,start+1,start,start+3,start+1,start+2]))
 	var arrays: Array=[];arrays.resize(Mesh.ARRAY_MAX)
+	var exposure:=PackedColorArray();exposure.resize(vertices.size());exposure.fill(Color.WHITE)
+	arrays[Mesh.ARRAY_COLOR]=exposure
 	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_INDEX]=indices
 	return arrays
 
@@ -118,10 +122,12 @@ func rebuild_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 			if field.density(probe-Vector3.UP*.5)<0:continue
 			var start:=vertices.size()
 			for offset in [Vector3.ZERO,Vector3(4,0,0),Vector3(4,0,4),Vector3(0,0,4)]:
-				var p: Vector3=origin+offset;p.y=field.height(p.x,p.z)-.15;vertices.append(p);normals.append(Vector3.UP)
+				var p: Vector3=origin+offset;p.y=field.height(p.x,p.z)-.15;vertices.append(p);normals.append(field.normal(p))
 			indices.append_array(PackedInt32Array([start,start+1,start+2,start,start+2,start+3]))
 	if vertices.is_empty():fallback.mesh=null;return
 	var arrays: Array=[];arrays.resize(Mesh.ARRAY_MAX)
+	var exposure:=PackedColorArray();exposure.resize(vertices.size());exposure.fill(Color.WHITE)
+	arrays[Mesh.ARRAY_COLOR]=exposure
 	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_INDEX]=indices
 	var result:=ArrayMesh.new();result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	fallback.mesh=result;fallback.material_override=material_override

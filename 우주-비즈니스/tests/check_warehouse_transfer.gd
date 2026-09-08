@@ -35,6 +35,22 @@ func run() -> void:
 	var stored: Dictionary=app.session.authority.world.crew.cargo_equipment.values()[0]
 	panel._transfer_cargo({"equipment_item":stored.item_id,"source":"warehouse"});await create_timer(.2).timeout
 	check(panel.data.items.has(stored.item_id),"equipment owner recovers original item")
+	# New quick UI path: Shift-click one stack, then selected quantity withdrawal.
+	var quick_tile: FrontierItemTile=null
+	for tile in panel.storage_owned.get_children():
+		if tile.cargo_payload.get("resource")=="iron":quick_tile=tile;break
+	var shift:=InputEventKey.new();shift.physical_keycode=KEY_SHIFT;shift.pressed=true;Input.parse_input_event(shift);await process_frame
+	quick_tile.pressed.emit();shift.pressed=false;Input.parse_input_event(shift);await create_timer(.2).timeout
+	check(int(app.session.authority.world.crew.cargo.iron)==120,"Shift click transfers remaining stack")
+	for tile in panel.cargo.get_children():
+		if tile.cargo_payload.get("resource")=="iron":tile.pressed.emit();break
+	panel.transfer_count.value=20;panel.transfer_button.pressed.emit();await create_timer(.2).timeout
+	check(int(FrontierExpeditionBusiness.bag(app.session.authority.world,id).iron)==20,"selected quantity button withdraws to backpack")
+	app.session.authority.world.business.bags[id].copper=15;app.session._publish()
+	app.session.send_request("deposit",{"all_resources":true});await create_timer(.2).timeout
+	check(int(app.session.authority.world.crew.cargo.copper)==15 and panel.data.items.has(stored.item_id),"bulk deposits resources and preserves equipment")
+	app.session.send_request("withdraw",{"resource":"iron","amount":20});await create_timer(.2).timeout
+	app.session.authority.world.crew.cargo.erase("copper");app.session._publish()
 	await capture("ship-storage-1280")
 	root.size=Vector2i(960,640);root.content_scale_size=Vector2i(960,640);await create_timer(.3).timeout
 	check(panel.cargo.get_child(9).get_global_rect().end.x<936 and panel.cargo.get_child(9).get_global_rect().end.y<panel.tabs.get_global_rect().end.y,"ten slots fit small window")

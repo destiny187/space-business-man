@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "blender": "5.2.1 LTS",
+  "resolution": 1024,
+  "channels": "linear normal XY / height / roughness",
+  "materials": [
+    {
+      "id": "bedrock",
+      "texture": "우주-비즈니스/assets/textures/surfaces/bedrock.png",
+      "sha256": "134e6f535ab2dca26e0096eee9db5ec9de18598fa7252fe2c1b08223bee2ad60",
+      "height_amplitude_m": 0.035,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "regolith",
+      "texture": "우주-비즈니스/assets/textures/surfaces/regolith.png",
+      "sha256": "d52d92f4cd9bbe07bb6aee1c1644331864bdaaec728d897ea97b4d38b1ff2c03",
+      "height_amplitude_m": 0.01,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "sand",
+      "texture": "우주-비즈니스/assets/textures/surfaces/sand.png",
+      "sha256": "6d0b1d6db1cc65e35a4601432bc5f353bb74ab3af2220e148bdd22b1967abcc8",
+      "height_amplitude_m": 0.012,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "gravel",
+      "texture": "우주-비즈니스/assets/textures/surfaces/gravel.png",
+      "sha256": "cc750c2a890c934e8be03e4dbe99c469cabc3a74979ed83f4d56181b0ff6072e",
+      "height_amplitude_m": 0.022,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "snow",
+      "texture": "우주-비즈니스/assets/textures/surfaces/snow.png",
+      "sha256": "4f238f03598c4e52251c546a7920a2751b05a0f1f2cbf2a306447750602d06f7",
+      "height_amplitude_m": 0.014,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "ice",
+      "texture": "우주-비즈니스/assets/textures/surfaces/ice.png",
+      "sha256": "82c412284dcb498ebc1f83c694b11c77e99f8db617c873924883b0d33cdce100",
+      "height_amplitude_m": 0.018,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "salt",
+      "texture": "우주-비즈니스/assets/textures/surfaces/salt.png",
+      "sha256": "d24de00679e42df80e21157fb6380b1de5c318e8289e14e1a898a368f1d7a2cc",
+      "height_amplitude_m": 0.012,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "lava",
+      "texture": "우주-비즈니스/assets/textures/surfaces/lava.png",
+      "sha256": "2366728e7cc9b71a63c1ff3e628e429c5ab714fa34dd1d2289d7b6b5e6c052fd",
+      "height_amplitude_m": 0.026,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "sediment",
+      "texture": "우주-비즈니스/assets/textures/surfaces/sediment.png",
+      "sha256": "aaf48ba6bea9e7890a2300425562259c3c2ade6a88a7bf11689489861022244a",
+      "height_amplitude_m": 0.023,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "crystal",
+      "texture": "우주-비즈니스/assets/textures/surfaces/crystal.png",
+      "sha256": "4cd2a9e228b30282b6ef2b4ce370ba13db71e7c3aea96aedd1cac5b0e24b33c3",
+      "height_amplitude_m": 0.032,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    }
+  ]
+}

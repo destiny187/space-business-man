@@ -1,5 +1,6 @@
 class_name FrontierExpeditionFeedback
 extends Node3D
+const HANDHELD_LAYER := 1 << 19
 
 # Presentation consumes accepted commands; it never mutates world or inventory.
 var app: FrontierCrewExpedition
@@ -30,6 +31,7 @@ var cue_left:=0.0
 var observed_body: String=""
 var known_buildings: Dictionary={}
 var known_robots: Dictionary={}
+var known_shuttle_state: String=""
 var known_observations:=0
 var last_veins: Dictionary={}
 var cache: Dictionary={}
@@ -40,7 +42,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	effects=FrontierEffects.new();add_child(effects)
 	optics=FrontierFieldToolEffects.new();add_child(optics)
 	handheld=load("res://assets/models/manual_tool.glb").instantiate()
-	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld)
+	FrontierInkStyle.apply(handheld,cache);_tool_lighting();app.camera.add_child(handheld)
 	handheld.position=Vector3(.36,-.30,-.92);handheld.scale=Vector3.ONE*.72
 	handheld.set_meta("intake_offset",Vector3(0,0,-.78));handheld.hide()
 	parts=handheld.find_children("Anim_*","Node3D",true,false)
@@ -52,6 +54,14 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.request_started.connect(_requested)
 	app.session.response_received.connect(_response)
 	app.session.surface_received.connect(_surface)
+	app.session.snapshot_received.connect(_shuttle_snapshot)
+
+func _shuttle_snapshot(value: Dictionary) -> void:
+	var state:=str(value.get("crew",{}).get("shuttles",{}).get(value.get("self_id",""),{}).get("state",""))
+	if known_shuttle_state=="assembling" and state=="docked":
+		show_cue("FINCH 조립 완료 · 착륙선 옆에서 출발하세요.")
+		if not blocked():audio.play("sfx_factory_complete")
+	known_shuttle_state=state
 
 func blocked() -> bool:
 	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
@@ -88,16 +98,23 @@ func _response(sequence: int,value: Dictionary) -> void:
 	var request: Dictionary=pending[sequence];pending.erase(sequence)
 	if request.kind in ["deposit","withdraw"]:
 		audio.play("sfx_pickup_resource" if value.get("ok",false) else "sfx_build_invalid");return
+	if request.kind.begins_with("shuttle_"):
+		if not value.get("ok",false):reject(str(value.get("error","소형선 작업 실패")))
+		else:audio.play("sfx_build_place" if request.kind=="shuttle_build" else "sfx_factory_complete");show_cue("FINCH 조립 시작" if request.kind=="shuttle_build" else "FINCH 출동" if request.kind=="shuttle_board" else "원정선 합류 완료")
+		return
 	if app.surface_world==null or app.surface_world.body.id!=request.body:return
+	if value.get("code")=="mining_cooldown":return
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
 	match request.kind:
+		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대 · 광맥 작업 지시")
+		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")
 		"business_craft":audio.play("sfx_build_place");show_cue("로봇 조립 시작")
 		"surface_attack":
 			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);audio.play("sfx_combat_pulse")
 		"equipment_upgrade","equipment_suit_upgrade":audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
 		"business_produce":audio.play("sfx_build_place");show_cue("제품 생산 예약")
-		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
+		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("시설·로봇 개조 완료")
 		"equipment_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
 		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3;cue_left=0
 		"surface_dig":
@@ -115,7 +132,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"business_build":
 			# The shared surface packet presents construction to every observer.
 			show_cue("건설 완료")
-		"business_register","business_toggle","business_demolish":
+		"business_register","business_lease","business_lease_release","business_toggle","business_demolish":
 			effects.construction(point);audio.play("sfx_build_place",point)
 		"surface_analyze","surface_restore","surface_introduce","business_research_install":
 			effects.construction(point);audio.play("ui_discovery");show_cue("연구 · 생태 기록 갱신")
@@ -156,7 +173,7 @@ func _process(delta: float) -> void:
 	if app==null:return
 	elapsed+=delta;work_left=maxf(0,work_left-delta);cue_left=maxf(0,cue_left-delta)
 	var active: bool=app.session.active and app.surface_world!=null
-	var enabled: bool=active and not blocked() and app.placement_kind.is_empty()
+	var enabled: bool=active and not blocked() and app.placement_kind.is_empty() and (app.rovers==null or app.rovers.seat().is_empty())
 	var tool: Dictionary={}
 	if active:tool=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	if not tool.is_empty() and tool.model!=equipped_model:_replace_tool(tool.model)
@@ -224,7 +241,9 @@ func _process(delta: float) -> void:
 	if audio_tick<=0:
 		audio_tick=.2;_update_audio(active)
 
+var daylight_mix_db:=0.0
 func _update_audio(active: bool) -> void:
+	audio.ambient.volume_db-=daylight_mix_db;daylight_mix_db=0.0
 	if not active:audio.update_world({},false);return
 	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 	var player: Vector3=app.actors[app.session.latest.self_id].position
@@ -239,8 +258,19 @@ func _update_audio(active: bool) -> void:
 			if category=="robots" and record.status in ["창고로 운반","충전기 복귀"]:record.status="자원 운반"
 			state[category].append(record);heights[row.id]=p.y
 	audio.update_world(state,blocked())
+	var atmosphere=app.surface_world.atmosphere
+	var particles=app.surface_world.atmospheric_particles
+	if particles!=null:
+		var air: Dictionary=atmosphere.current
+		var gain: float=float(air.atmosphere)*(.3+maxf(float(air.dust),float(air.ice)))*float(particles.exposure)
+		audio.ambient.stream_paused=blocked() or not DisplayServer.window_is_focused()
+		audio.ambient.volume_db=linear_to_db(maxf(.0001,gain*float(atmosphere.config().particles.wind_level)))
 	for id in audio.emitters:
 		if heights.has(id):audio.emitters[id].position.y=float(heights[id])+.8
+	daylight_mix_db=lerpf(float(app.surface_world.atmosphere.cycles.get("night_wind_db",0)),0.0,app.surface_world.atmosphere.daylight)
+	audio.ambient.volume_db+=daylight_mix_db
+	# Match the existing rover playback fixture gate without changing normal focus muting.
+	if app.test_mode:audio.ambient.stream_paused=blocked()
 
 func _industry_effects() -> void:
 	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
@@ -252,14 +282,14 @@ func _industry_effects() -> void:
 		if robot.status=="채광 중":
 			var vein:=FrontierExpeditionBusiness.find_vein(app.surface_world.body,robot.target)
 			if vein.is_empty() or not visuals.has(vein.id):continue
-			effects.suction(visuals[vein.id].global_position+Vector3.UP,actor,vein.resource,4)
+			effects.suction(visuals[vein.id].global_position+Vector3.UP,actor.get_meta("intake",actor),vein.resource,4)
 		elif robot.status=="충전 중":effects.burst(actor.global_position+Vector3.UP*.5,Color("82f5d2"),3)
 	for building in site.get("buildings",{}).values():
 		if not visuals.has(building.id) or not building.active:continue
-		if building.type=="factory" and not building.get("production",{}).is_empty():
+		if building.type=="factory" and (not building.get("production",{}).is_empty() or building.get("working",false)):
 			var actor: Node3D=visuals[building.id]
 			if actor.global_position.distance_to(app.camera.global_position)<25:effects.burst(actor.global_position+Vector3.UP*1.5,Color("efb46f"),3)
-		if building.type not in ["atmosphere","thermal","water","biolab"]:continue
+		if building.type not in ["atmosphere","thermal","water","biolab"] or not building.get("working",false):continue
 		var actor: Node3D=visuals[building.id]
 		if actor.global_position.distance_to(app.camera.global_position)>25:continue
 		var color: Color={"atmosphere":Color("c4e8e2"),"thermal":Color("ffc487"),"water":Color("71caf4"),"biolab":Color("8bdd82")}[building.type]
@@ -269,8 +299,11 @@ func _replace_tool(model: String) -> void:
 	work_left=0;intake_strength=0;recoil=0;recoil_velocity=0;optics.reset();effects.clear()
 	handheld.get_parent().remove_child(handheld);handheld.queue_free()
 	equipped_model=model;handheld=load("res://assets/models/"+model+".glb").instantiate()
-	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model in ["manual_tool","equipment/miner_mk2"] else .5)
+	FrontierInkStyle.apply(handheld,cache);_tool_lighting();app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model in ["manual_tool","equipment/miner_mk2"] else .5)
 	handheld.set_meta("intake_offset",Vector3(0,0,-.78))
 	parts=handheld.find_children("Anim_*","Node3D",true,false)
 	for part in parts:part.set_meta("rest",part.position)
 	muzzle=OmniLight3D.new();muzzle.position=Vector3(0,0,-.78);muzzle.omni_range=4;muzzle.light_color=Color("ffc07c");muzzle.light_energy=0;handheld.add_child(muzzle)
+
+func _tool_lighting() -> void:
+	for mesh in handheld.find_children("*","GeometryInstance3D",true,false):mesh.layers=HANDHELD_LAYER

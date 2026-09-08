@@ -18,9 +18,12 @@ func run() -> void:
 		if arg.begins_with("--crew-folder="):folder=arg.trim_prefix("--crew-folder=")
 	if folder.is_empty() or not "--crew-ui-test" in OS.get_cmdline_user_args():quit(2);return
 	root.size=Vector2i(1280,800)
+	DisplayServer.window_move_to_foreground()
 	app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app
 	await process_frame
-	app.world_store.write(FrontierUniverse.new_world(71491));app.start_solo()
+	if not app.world_store.write(FrontierUniverse.new_world(71491)):
+		check(false,"fixture: "+app.world_store.last_error);quit(1);return
+	app.start_solo()
 	if not await until(func():return app.session.active,15):check(false,"session starts");quit(1);return
 	app.onboarding.letter.hide()
 	var preferences:=FrontierClientSettings.ensure(self)
@@ -41,19 +44,26 @@ func run() -> void:
 	var center:=FrontierCrewWorld.vector(site.center)
 	var original: Dictionary=site.environment.duplicate(true)
 	app.pitch=.20
-	var samples: Array=[{"pressure":0.0,"toxicity":0.0,"temperature":-60.0,"water":0.0},{"pressure":.45,"toxicity":55.0,"temperature":40.0,"water":25.0},{"pressure":1.0,"toxicity":0.0,"temperature":18.0,"water":75.0}]
+	var samples: Array=[{"pressure":0.0,"toxicity":0.0,"temperature":-60.0,"water":0.0},{"pressure":.45,"toxicity":55.0,"temperature":40.0,"water":25.0},{"pressure":1.0,"toxicity":0.0,"temperature":18.0,"water":75.0},{"pressure":1.0,"toxicity":80.0,"temperature":55.0,"water":0.0},{"pressure":1.0,"toxicity":0.0,"temperature":-55.0,"water":65.0}]
 	var states: Array=[]
 	for index in samples.size():
 		for key in samples[index]:site.environment[key]=samples[index][key]
 		app.session._publish_surface();await process_frame
 		# Advance presentation to its settled state; no mutation of persistent simulation rules.
 		controller.step(60,center,0,1)
-		for frame in 18:await process_frame
+		for frame in 60:await process_frame
 		states.append(controller.current.duplicate())
 		await capture("sky-stage-"+str(index))
+		if index==3:
+			var ambient: AudioStreamPlayer=app.feedback.audio.ambient
+			check(ambient.playing and ambient.volume_db>-45,"existing ElevenLabs wind plays at atmospheric level")
+			app.feedback.audio.update_world({"environment":{"ecology":0},"player":{"position":[0,0]},"robots":[],"buildings":[],"events":[]},true)
+			check(ambient.stream_paused,"ambient pauses with menu audio")
 	check(states[0].atmosphere<.01 and states[0].fog<.00001,"vacuum has no atmospheric haze")
 	check(states[2].atmosphere>.7 and states[2].cloud_amount>.7,"pressure and water form sky and clouds")
 	check(states[1].fog>states[2].fog,"detoxification clears dirty haze")
+	check(states[3].dust>.5 and states[4].ice>.7,"dry dust and frozen airborne ice respond to environment")
+	check(states[0].dust<.001 and states[0].ice<.001 and states[0].mist<.001,"vacuum suppresses all atmospheric particles")
 	var remote: Dictionary=controller.target_at(center+Vector3(1000,0,0))
 	var native: Dictionary=controller.appearance(surface.body,{})
 	check(remote==native,"regional restoration does not change entire planet")

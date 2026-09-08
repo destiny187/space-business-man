@@ -152,36 +152,45 @@ def setup_render(kind):
   bpy.ops.object.light_add(type='AREA',location=loc);lamp=bpy.context.object;lamp.data.energy=power;lamp.data.shape='DISK';lamp.data.size=size;lamp.rotation_euler=(-lamp.location).to_track_quat('-Z','Y').to_euler()
  scene.render.image_settings.file_format='PNG';scene.render.filepath=str(RENDER/(kind+'.png'))
 
-only=next((arg.split("=",1)[1] for arg in sys.argv if arg.startswith("--planet=")),None)
-records=json.loads((SOURCE/"manifest.json").read_text()) if only else []
-records=[record for record in records if record["id"]!="solar_"+str(only)]
-for index,kind in enumerate(NAMES):
- if only and kind!=only:continue
- for lod in [0,1]:
-  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
-  bpy.ops.object.empty_add();root=bpy.context.object;root.name='Solar_'+kind
-  # Obliquity is a visual orientation; orbital/spin periods stay game-scaled.
-  root.rotation_euler.y=math.radians([.03,3,23.4,25.2,3.1,26.7,97.8,28.3][index])
-  body_mesh(kind,(512 if kind=="earth" else 256) if lod==0 else 96,(256 if kind=="earth" else 128) if lod==0 else 48,root)
-  if kind=='saturn':
-   for a,b,c in [(1.24,1.48,'796f5c'),(1.50,1.72,'b2a489'),(1.73,1.91,'d1c3a1'),(1.96,2.11,'b3a584'),(2.12,2.26,'c4b69a')]:ring('Saturn ring %.2f'%a,a,b,c,root)
-  if kind=='uranus':
-   for a,b in [(1.46,1.477),(1.61,1.632),(1.77,1.805)]:ring('Uranus narrow ring %.2f'%a,a,b,'6d8990',root)
-  geometry=[o for o in bpy.context.scene.objects if o.type in ['MESH','EMPTY']]
-  triangles=sum(sum(len(f.vertices)-2 for f in o.data.polygons) for o in geometry if o.type=='MESH')
-  if lod==0:
-   setup_render(kind)
-   bpy.context.scene.unit_settings.system='METRIC'
-   bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/(kind+'.blend')))
-  bpy.ops.object.select_all(action='DESELECT')
-  for o in geometry:o.select_set(True)
-  path=OUTPUT/(kind+('_lod1' if lod else '')+'.glb')
-  bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_apply=True,export_yup=True,export_animations=False)
-  if lod==0:
-   bpy.ops.render.render(write_still=True)
-   records.append({'id':'solar_'+kind,'name':TITLES[index],'reference_id':'solar:'+str(index),'source':str((SOURCE/(kind+'.blend')).relative_to(ROOT)),'model':'res://assets/models/solar-system/'+kind+'.glb','lod_model':'res://assets/models/solar-system/'+kind+'_lod1.glb','triangles':triangles,'outer_radius':2.26 if kind=='saturn' else (1.805 if kind=='uranus' else 1.02),'status':'blender-created-game-render-pending'})
-  else:records[-1]['lod_triangles']=triangles
-  print('SOLAR DONE',kind,lod,triangles,flush=True)
-records.sort(key=lambda record:NAMES.index(record['id'].removeprefix('solar_')))
-(SOURCE/'manifest.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
-(OUTPUT/'manifest.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+def main():
+ only=next((arg.split("=",1)[1] for arg in sys.argv if arg.startswith("--planet=")),None)
+ records=json.loads((SOURCE/"manifest.json").read_text()) if only else []
+ records=[record for record in records if record["id"]!="solar_"+str(only)]
+ for index,kind in enumerate(NAMES):
+  if only and kind!=only:continue
+  for lod in [0,1]:
+   bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
+   bpy.ops.object.empty_add();root=bpy.context.object;root.name='Solar_'+kind
+   # Obliquity is a visual orientation; orbital/spin periods stay game-scaled.
+   root.rotation_euler.y=math.radians([.03,3,23.4,25.2,3.1,26.7,97.8,28.3][index])
+   body_mesh(kind,(512 if kind=="earth" else 256) if lod==0 else 96,(256 if kind=="earth" else 128) if lod==0 else 48,root)
+   if kind=='saturn':
+    for a,b,c in [(1.24,1.48,'796f5c'),(1.50,1.72,'b2a489'),(1.73,1.91,'d1c3a1'),(1.96,2.11,'b3a584'),(2.12,2.26,'c4b69a')]:ring('Saturn ring %.2f'%a,a,b,c,root)
+   if kind=='uranus':
+    for a,b in [(1.46,1.477),(1.61,1.632),(1.77,1.805)]:ring('Uranus narrow ring %.2f'%a,a,b,'6d8990',root)
+   geometry=[o for o in bpy.context.scene.objects if o.type in ['MESH','EMPTY']]
+   triangles=sum(sum(len(f.vertices)-2 for f in o.data.polygons) for o in geometry if o.type=='MESH')
+   if lod==0:
+    setup_render(kind)
+    bpy.context.scene.unit_settings.system='METRIC'
+    bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/(kind+'.blend')))
+   bpy.ops.object.select_all(action='DESELECT')
+   for o in geometry:o.select_set(True)
+   path=OUTPUT/(kind+('_lod1' if lod else '')+'.glb')
+   bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_apply=True,export_yup=True,export_animations=False)
+   if lod==0:
+    bpy.ops.render.render(write_still=True)
+    records.append({'id':'solar_'+kind,'name':TITLES[index],'reference_id':'solar:'+str(index),'source':str((SOURCE/(kind+'.blend')).relative_to(ROOT)),'model':'res://assets/models/solar-system/'+kind+'.glb','lod_model':'res://assets/models/solar-system/'+kind+'_lod1.glb','triangles':triangles,'outer_radius':2.26 if kind=='saturn' else (1.805 if kind=='uranus' else 1.02),'status':'blender-created-game-render-pending'})
+   else:records[-1]['lod_triangles']=triangles
+   print('SOLAR DONE',kind,lod,triangles,flush=True)
+ records.sort(key=lambda record:NAMES.index(record['id'].removeprefix('solar_')))
+ (SOURCE/'manifest.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+ (OUTPUT/'manifest.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+
+if __name__=="__main__":
+ manifest=SOURCE/'manifest.json'
+ if manifest.exists() and any(r.get('art_revision')=='ink-life-1' for r in json.loads(manifest.read_text())):
+  sys.path.insert(0,str(ROOT/'tools'))
+  import build_ink_planets
+  build_ink_planets.solar()
+ else:main()

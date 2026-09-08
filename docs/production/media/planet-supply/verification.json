@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-08",
+  "engine": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "transactions": {
+    "checks": 41,
+    "failures": 0,
+    "log": "transactions.txt"
+  },
+  "game_ui": {
+    "checks": 8,
+    "failures": 0,
+    "log": "runtime.txt",
+    "sizes": [
+      [
+        1280,
+        800
+      ],
+      [
+        960,
+        640
+      ]
+    ]
+  },
+  "script_errors": 0,
+  "scope": "격리된 준비 재료·이동 위치로 호스트 거래/저장과 실제 게임 UI·INK 렌더·기존 작업 음원 노드 연결 확인. 수동 전구간 성장·실제 성간 왕복·다중 클라이언트·청음·장시간 성능은 미검수.",
+  "limitations": [
+    "부재중·항해 중 생산 정지",
+    "P3 특화 현지 가공은 게임 규칙",
+    "고유 신규 부품 모델 대신 기존 Blender 자산 재사용",
+    "복합 표면·신규 행성 계열·전체 P4/P5 미구현"
+  ],
+  "captures": [
+    "supply-actions-960.png",
+    "supply-factory-mk3.png",
+    "supply-navigation-960.png",
+    "supply-production-960.png",
+    "supply-stock-960.png",
+    "supply-terminal-960.png",
+    "supply-terminal.png"
+  ]
+}

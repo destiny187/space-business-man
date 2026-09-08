@@ -66,6 +66,7 @@ func _build_map() -> void:
 	var title:=FrontierInterfaceStyle.label(heading,"항성 지도",24);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	map_mode=_button(heading,"은하 보기",func():app.chart.galaxy=not app.chart.galaxy;app.chart.reset_view();_map_mode())
 	_button(heading,"이동 가능한 근처",func():app.chart.focus_nearby();_map_mode())
+	_button(heading,"생산 거점",func():app.navigation_records.filter.select(3);app.navigation_records.page=0;app.navigation_records.refresh();app.navigation_records.popup_centered())
 	_button(heading,"기록",func():app.navigation_records.refresh();app.navigation_records.popup_centered())
 	_button(heading,"닫기  Tab",app.close_menus)
 	var body:=HBoxContainer.new();body.size_flags_vertical=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",18);app.panel.add_child(body)
@@ -149,6 +150,7 @@ func _layout() -> void:
 
 func refresh(value: Dictionary) -> void:
 	_layout()
+	app.navigation_records.supply_sites=value.get("supply_sites",[])
 	var nav: Dictionary=value.crew.navigation
 	app.chart.stellar_range=float(value.get("vessel_stats",{}).get("stellar_range",8.0))
 	if nav.mode=="jump" and not was_transiting:
@@ -216,7 +218,8 @@ func refresh_survey() -> void:
 	survey_bars.air.tooltip_text="대기 적합 %.0f/100 · 기압 %.2f atm · 산소 %.1f%%"%[report.air,environment.pressure,float(environment.oxygen)*100]
 	survey_bars.temperature.value=scores.temperature
 	survey_bars.temperature.tooltip_text="기온 %.0f°C · 적합도 %.0f/100"%[environment.temperature,scores.temperature]
-	if report.risk!="주의":survey_note.text="△ "+str(report.risk);survey_note.modulate=FrontierInterfaceStyle.WARNING
+	survey_note.text=FrontierPlanetSupply.role_name(FrontierPlanetSupply.role(body))+" · 현지 가공 특화"
+	if report.risk!="주의":survey_note.text+="\n△ "+str(report.risk);survey_note.modulate=FrontierInterfaceStyle.WARNING
 	else:survey_note.modulate=Color.WHITE
 
 func _update_preview(body: Dictionary) -> void:
@@ -231,6 +234,7 @@ func _update_preview(body: Dictionary) -> void:
 		var mesh:=MeshInstance3D.new();mesh.mesh=template.find_children("*","MeshInstance3D",true,false)[0].mesh;template.free()
 		var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/planet.gdshader")
 		var t: Dictionary=body.traits
+		FrontierSurfaceMaterialLibrary.orbital(material,t)
 		material.set_shader_parameter("authored_relief",true);material.set_shader_parameter("highlight_strength",.08);material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
 		material.set_shader_parameter("land_color",Color(t.dust));material.set_shader_parameter("sea_color",Color(t.sea));material.set_shader_parameter("rock_color",Color(t.rock));material.set_shader_parameter("sea_level",lerpf(.20,.61,float(t.water)/100.0) if float(t.water)>0 else 0.0);material.set_shader_parameter("cloud_amount",float(t.cloud));material.set_shader_parameter("seed_offset",float(t.pattern_seed));material.set_shader_parameter("molten",t.id=="volcanic")
 		mesh.material_override=material;preview_body=mesh;preview_root.add_child(mesh)
@@ -271,9 +275,18 @@ func _process(delta: float) -> void:
 	_layout()
 func _update_context() -> void:
 	var value: Dictionary=app.session.latest
+	app.navigation_records.supply_sites=value.get("supply_sites",[])
 	var nav: Dictionary=value.crew.navigation
 	var own: Dictionary=value.crew.members[value.self_id]
 	var pilot: bool=value.self_id==value.crew.pilot_id
+	if app.surface_world!=null and value.get("local_shuttle","").is_empty():
+		var ship: Dictionary=value.crew.get("shuttles",{}).get(value.self_id,{})
+		if ship.get("state","")=="docked":
+			var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad)
+			point.x+=float(ship.get("pad_slot",0))*7.0
+			point.y=app.surface_world.terrain.field.height(point.x,point.z)
+			if FrontierCrewWorld.vector(own.position).distance_to(point)<=float(FrontierShuttles.config().interaction_distance):
+				context_kind="shuttle_board";context_ready=true;context.text="F  FINCH 탑승 · 항성계 운송 출발";context.disabled=false;context.reset_size();context.show();return
 	if not app.outside:
 		for crate in value.crew.recovery.values():
 			if app._crate_here(crate) and crate.area==own.area and FrontierCrewWorld.vector(crate.position).distance_to(FrontierCrewWorld.vector(own.position))<=float(FrontierCrewWorld.config().interaction_distance):
@@ -288,7 +301,7 @@ func _update_context() -> void:
 		var nearby_target:=app.surface_world.business_view.target(app.camera,app.actors[value.self_id])
 		if not nearby_target.is_empty():return
 		context_kind="launch";context_ordinal=-1
-		context.text="F  착륙선 단말 · 정산 / 출항"
+		context.text="F  FINCH · 화물 / 출항 / 합류" if not value.get("local_shuttle","").is_empty() else "F  착륙선 단말 · 정산 / 출항"
 	else:
 		if nav.mode!="idle" or not app.outside:return
 		var station: Dictionary=value.get("station",{})
@@ -317,7 +330,7 @@ func _update_context() -> void:
 	if not app.session.offline:
 		var ready_count:=0;var connected_count:=0
 		for member in value.crew.members.values():
-			if member.get("connected",true):
+			if member.get("connected",true) and (value.get("local_shuttle","").is_empty() or member.get("shuttle_id","")==value.self_id):
 				connected_count+=1
 				if member.ready:ready_count+=1
 		context.text+="  ·  준비 %d/%d"%[ready_count,connected_count]
@@ -327,6 +340,7 @@ func interact() -> bool:
 	if context_kind.is_empty() or not context.visible:return false
 	if not app._mouse_look_allowed():return false
 	if not context_ready:return true
+	if context_kind=="shuttle_board":app.session.send_request("shuttle_board",{});return true
 	if context_kind=="trade":app.open_trade_station();return true
 	if context_kind=="station_approach":app.approach_trade_station();return true
 	if context_kind=="recover":app.recover_nearby();return true
@@ -335,7 +349,7 @@ func interact() -> bool:
 		app.open_station("ship");return true
 	var value: Dictionary=app.session.latest
 	if value.self_id!=value.crew.pilot_id:app.toggle_ready();return true
-	if app.session.offline:app.session.send_request("ready",{"value":true})
+	if app.session.offline or not value.get("local_shuttle","").is_empty():app.session.send_request("ready",{"value":true})
 	app.session.send_request(context_kind,{"ordinal":context_ordinal} if context_kind=="land" else {})
 	return true
 

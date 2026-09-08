@@ -90,6 +90,34 @@
       "model": "products/soil_base",
       "color": "#83d9c5",
       "use": "Mk.2 배양기의 토양 개량 소모품"
+    },
+    "freshwater_module": {
+      "name": "담수 필터 모듈",
+      "tier": 2,
+      "cost": {
+        "mineral_filter": 2,
+        "silicon": 8
+      },
+      "amount": 1,
+      "seconds": 8,
+      "model": "products/mineral_filter",
+      "icon": "mineral_filter",
+      "color": "#83d9c5",
+      "use": "외곽 규소 → 새 지역의 Mk.2 담수 처리"
+    },
+    "soil_activation_pack": {
+      "name": "토양 활성 팩",
+      "tier": 2,
+      "cost": {
+        "soil_base": 2,
+        "phosphate": 8
+      },
+      "amount": 1,
+      "seconds": 8,
+      "model": "products/soil_base",
+      "icon": "soil_base",
+      "color": "#83d9c5",
+      "use": "외곽 인산염 → 새 지역의 Mk.2 토양 개량"
     }
   },
   "robot_creation": {

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "generator": "tools/build_facility_motion.py",
+  "models": [
+    {
+      "kind": "atmosphere",
+      "source": "art/blender/atmosphere.blend",
+      "game_file": "우주-비즈니스/assets/models/atmosphere.glb",
+      "moving_node": "Anim_Fan_Process",
+      "review": "docs/production/media/ink-industry/atmosphere-blender.png",
+      "generator": "tools/build_ink_industry.py"
+    },
+    {
+      "kind": "thermal",
+      "source": "art/blender/thermal.blend",
+      "game_file": "우주-비즈니스/assets/models/thermal.glb",
+      "moving_node": "Anim_Fan_Process",
+      "review": "docs/production/media/ink-industry/thermal-blender.png",
+      "generator": "tools/build_ink_industry.py"
+    },
+    {
+      "kind": "water",
+      "source": "art/blender/water.blend",
+      "game_file": "우주-비즈니스/assets/models/water.glb",
+      "moving_node": "Anim_Piston_Process",
+      "review": "docs/production/media/ink-industry/water-blender.png",
+      "generator": "tools/build_ink_industry.py"
+    },
+    {
+      "kind": "biolab",
+      "source": "art/blender/biolab.blend",
+      "game_file": "우주-비즈니스/assets/models/biolab.glb",
+      "moving_node": "Anim_Agitator_Process",
+      "review": "docs/production/media/ink-industry/biolab-blender.png",
+      "generator": "tools/build_ink_industry.py"
+    }
+  ]
+}

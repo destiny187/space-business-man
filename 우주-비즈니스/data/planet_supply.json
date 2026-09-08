@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "lease_price": 500,
+  "maximum_leases": 8,
+  "retained_reward_ratio": 0.6,
+  "roles": {
+    "metallurgy": {"name": "금속 가공", "geologies": ["metallic", "weathered", "pegmatite", "sedimentary", "alkaline"], "icon": "nickel"},
+    "cryogenic": {"name": "저온 가공", "geologies": ["cryogenic", "icy_basin", "cryovolcanic"], "icon": "ice"},
+    "geothermal": {"name": "열수·화산", "geologies": ["volcanic", "hydrothermal"], "icon": "sulfur"}
+  },
+  "products": {
+    "alloy_frame": {"name": "고합금 프레임", "tier": 3, "factory_tier": 2, "supply_role": "metallurgy", "cost": {"nickel": 8, "titanium": 4, "reinforced_frame": 1}, "amount": 1, "seconds": 12, "model": "products/reinforced_frame", "icon": "reinforced_frame", "color": "#efb46f", "use": "금속 지질 현지 가공 · Mk.3 산업 코어의 내열 구조"},
+    "cryo_cell": {"name": "저온 전해 셀", "tier": 3, "factory_tier": 2, "supply_role": "cryogenic", "cost": {"lithium": 6, "ice": 12, "refined_copper": 2}, "amount": 1, "seconds": 12, "model": "products/heat_transfer_unit", "icon": "heat_transfer_unit", "color": "#efb46f", "use": "빙하 지질 현지 가공 · Mk.3 산업 코어의 냉각 전원"},
+    "industrial_core": {"name": "산업 코어", "tier": 3, "factory_tier": 2, "cost": {"alloy_frame": 2, "cryo_cell": 2, "control_circuit": 2}, "amount": 1, "seconds": 18, "model": "products/control_circuit", "icon": "control_circuit", "color": "#efb46f", "use": "두 공급 거점의 부품을 운송·조립 → 제작소 Mk.3 개조"}
+  },
+  "factory_upgrade": {"cost": {"industrial_core": 1, "reinforced_frame": 2}, "factor": 2.0, "effect": "부품·로봇 제작 속도 +100% (Mk.1 대비)"}
+}

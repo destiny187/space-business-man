@@ -36,7 +36,7 @@ static func summary(body: Dictionary) -> String:
 	var p: Dictionary=body.mineral_profile
 	var labels: PackedStringArray=[]
 	for id in p.primary:labels.append(FrontierMinerals.entry(id).name)
-	return p.name+" · 주력 "+" / ".join(labels)+"\n지하 보석 탐사 가능"+(" · 특이 소재 반응" if not p.exotic.is_empty() else "")
+	return FrontierGroundExploration.summary(body)+p.name+" · 주력 "+" / ".join(labels)+"\n지하 보석 탐사 가능"+(" · 특이 소재 반응" if not p.exotic.is_empty() else "")
 static func region(body: Dictionary,x: int,z: int) -> Array:
 	if not enabled(body):return []
 	var profile: Dictionary=body.mineral_profile
@@ -55,6 +55,8 @@ static func region(body: Dictionary,x: int,z: int) -> Array:
 		var px: float=(x+float(FrontierUniverse.derive(seed_value,"x")%8000)/10000.0+.1)*float(rules.tile_size)
 		var pz: float=(z+float(FrontierUniverse.derive(seed_value,"z")%8000)/10000.0+.1)*float(rules.tile_size)
 		if absf(px)>float(rules.get("region_half_extent",8192)) or absf(pz)>float(rules.get("region_half_extent",8192)):continue
+		if body.has("ground_rules") and Vector2(px,pz).length()<float(body.ground_rules.near_resource_radius):continue
+		if int(body.get("ground_rules",{}).get("version",0))>=2 and int(body.planet_tier)==2 and resource in ["silicon","phosphate"] and Vector2(px,pz).length()<float(body.ground_rules.expedition.radius):continue
 		var depth: float=float(rules.depth_min)+float(FrontierUniverse.derive(seed_value,"depth")%int(rules.depth_max-rules.depth_min+1)) if below else 0.0
 		var y: float=maxf(-64,field.height(px,pz)-depth) if below else 0.0
 		result.append({"id":id,"resource":resource,"required_tier":int(rules.get("resource_tiers",rules().resource_tiers).get(resource,1)),"capacity":int(rules.gem_capacity) if FrontierMinerals.entry(resource).category=="gem" else int(rules.base_capacity)+seed_value%int(rules.capacity_spread),"position":[px,y,pz],"underground":below,"quality":1+FrontierUniverse.derive(seed_value,"quality")%int(rules.get("quality_levels",3))})

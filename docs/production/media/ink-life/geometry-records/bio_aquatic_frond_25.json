@@ -1,0 +1,49 @@
+{
+  "id": "bio_aquatic_frond_25",
+  "lods": {
+    "near": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_aquatic_frond_25_near.glb",
+      "sha256": "8f0850e4b7ca87847dc940e98aac03cc94e9056eccfabe675d51919bc66a4a5f",
+      "triangles": 65228
+    },
+    "far": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_aquatic_frond_25_far.glb",
+      "sha256": "7410606659ebfde5c42563d2c14d2eb7d5e7ec4db06c35e9f880d8bbb5117cc2",
+      "triangles": 18234
+    }
+  },
+  "geometry": {
+    "near": {
+      "geometry_hash": "b4dc7196476058254e3482297a0bd647c95759b272480eda16922265c41cd39a",
+      "vertices": 31734,
+      "floor_y": 0.0,
+      "ceiling_y": 1.9129,
+      "min": [
+        -1.0916,
+        0.0,
+        -0.9865
+      ],
+      "max": [
+        1.1011,
+        1.9129,
+        1.0979
+      ]
+    },
+    "far": {
+      "geometry_hash": "84b0ed92702e4a44025a3eb889ff366aad50e1a8fe3f20711e3d028bf8e27338",
+      "vertices": 8289,
+      "floor_y": 0.0,
+      "ceiling_y": 1.9129,
+      "min": [
+        -1.0916,
+        0.0,
+        -0.9865
+      ],
+      "max": [
+        1.0998,
+        1.9129,
+        1.0979
+      ]
+    }
+  }
+}

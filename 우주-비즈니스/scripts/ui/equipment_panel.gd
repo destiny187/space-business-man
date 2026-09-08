@@ -11,7 +11,15 @@ var withdraw_count: SpinBox
 var recipes: GridContainer
 var cargo: GridContainer
 var storage_owned: GridContainer
+var storage_selection: Dictionary={}
+var transfer_button: Button
+var transfer_count: SpinBox
 var storage_label: Label
+var storage_headers: Array[Label]=[]
+var storage_bars: Array[ProgressBar]=[]
+var cargo_selection_info: Label
+var storage_pending: Dictionary={}
+var bulk_transfer: Button
 var storage_site: Dictionary={}
 var warehouse_choice: OptionButton
 var warehouse_management: Button
@@ -56,18 +64,28 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	title=FrontierInterfaceStyle.label(left,"자원채집기",25);title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	preview=FrontierEquipmentPreview.new();preview.size_flags_vertical=Control.SIZE_EXPAND_FILL;preview.custom_minimum_size.y=150;left.add_child(preview)
 	FrontierInterfaceStyle.label(left,"마우스로 회전",11,FrontierInterfaceStyle.MUTED)
+	cargo_selection_info=FrontierInterfaceStyle.label(left,"",14);cargo_selection_info.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;cargo_selection_info.hide()
 	var middle:=VBoxContainer.new();middle.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_child(middle)
 	tabs=TabContainer.new();tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;middle.add_child(tabs)
 	owned=_grid("아이템");recipes=_grid("제작")
-	var warehouse:=VBoxContainer.new();warehouse.name="공동 창고";tabs.add_child(warehouse)
+	var warehouse:=VBoxContainer.new();warehouse.name="화물";tabs.add_child(warehouse)
 	var warehouse_header:=HBoxContainer.new();warehouse.add_child(warehouse_header)
-	warehouse_choice=OptionButton.new();warehouse_choice.size_flags_horizontal=Control.SIZE_EXPAND_FILL;warehouse_choice.add_item("행성 창고 · 이 행성에 남음");warehouse_choice.add_item("우주선 창고 · 함께 운송");warehouse_choice.item_selected.connect(func(_index: int):last_key="");warehouse_header.add_child(warehouse_choice)
+	warehouse_choice=OptionButton.new();warehouse_choice.size_flags_horizontal=Control.SIZE_EXPAND_FILL;warehouse_choice.add_item("행성 창고 · 이 행성에 남음");warehouse_choice.add_item("우주선 창고 · 함께 운송");warehouse_choice.item_selected.connect(func(_index: int):last_key="";storage_selection={};transfer_button.disabled=true);warehouse_header.add_child(warehouse_choice)
 	warehouse_management=Button.new();warehouse_management.text="보급 · 로봇 관리";warehouse_management.icon=FrontierResourceIcons.menu_texture("reinforced_frame");warehouse_management.pressed.connect(app.open_warehouse_management);warehouse_header.add_child(warehouse_management)
 	storage_label=FrontierInterfaceStyle.label(warehouse,"배낭 ↔ 창고 · 아이템을 끌어놓으세요",14)
+	var actions:=HBoxContainer.new();actions.add_theme_constant_override("separation",8);warehouse.add_child(actions)
+	transfer_count=SpinBox.new();transfer_count.min_value=1;transfer_count.max_value=FrontierItemInventory.config().resource_stack;transfer_count.value=20;actions.add_child(transfer_count)
+	transfer_button=Button.new();transfer_button.text="선택 자원 입출고";transfer_button.disabled=true;actions.add_child(transfer_button)
+	transfer_button.pressed.connect(func():
+		if storage_selection.is_empty():return
+		var payload:=storage_selection.duplicate();payload.amount=int(transfer_count.value);payload.quick=true;_transfer_cargo(payload))
+	var bulk:=Button.new();bulk_transfer=bulk;bulk.text="자원 모두 싣기 →";bulk.tooltip_text="장비는 유지하고 창고에 들어가는 자원만 보관합니다.";actions.add_child(bulk)
+	bulk.pressed.connect(func():app.session.send_request("deposit" if using_ship() else "business_deposit",{"all_resources":true}))
 	var pair:=HBoxContainer.new();pair.add_theme_constant_override("separation",24);pair.size_flags_vertical=Control.SIZE_EXPAND_FILL;warehouse.add_child(pair)
 	for side in ["내 배낭","공동 창고"]:
 		var section:=VBoxContainer.new();section.size_flags_horizontal=Control.SIZE_EXPAND_FILL;pair.add_child(section)
-		FrontierInterfaceStyle.label(section,side,18)
+		storage_headers.append(FrontierInterfaceStyle.label(section,side,16))
+		var bar:=ProgressBar.new();bar.show_percentage=false;bar.custom_minimum_size.y=5;section.add_child(bar);storage_bars.append(bar)
 		var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;section.add_child(scroll)
 		var grid:=GridContainer.new();grid.columns=4;grid.add_theme_constant_override("h_separation",6);grid.add_theme_constant_override("v_separation",6);scroll.add_child(grid)
 		if side=="내 배낭":storage_owned=grid
@@ -77,7 +95,7 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 		selected_resource="";selected_item=""
 		if index==0 and not data.get("items",{}).is_empty():selected_item=data.items.keys()[0];selected_definition=data.items[selected_item]
 		if index==1:selected_definition="miner_1"
-		storage.select(1 if index==2 else 0);left.visible=index!=2;detail.visible=index!=2;last_key=""
+		storage.select(1 if index==2 else 0);left.visible=index!=2 or using_ship();detail.visible=index!=2;cargo_selection_info.visible=index==2 and using_ship();last_key=""
 		for control in warehouse_supplements:control.visible=index!=2
 		_layout();_refresh_details();_highlight())
 	storage=OptionButton.new();storage.add_item("내 배낭 · 운반 중");storage.add_item("현장 창고 · 공동");storage.item_selected.connect(func(_i: int):last_key="");middle.add_child(storage);storage.hide()
@@ -105,10 +123,11 @@ func _grid(caption: String) -> GridContainer:
 	var grid:=GridContainer.new();grid.columns=3;grid.add_theme_constant_override("h_separation",6);grid.add_theme_constant_override("v_separation",6);scroll.add_child(grid);return grid
 func _layout() -> void:
 	var size:=get_viewport().get_visible_rect().size
-	left.custom_minimum_size.x=clampf(size.x*.24,190,320);detail.custom_minimum_size.x=clampf(size.x*.21,205,280)
+	left.custom_minimum_size.x=clampf(size.x*(.18 if tabs.current_tab==2 else .24),170,320);detail.custom_minimum_size.x=clampf(size.x*.21,205,280)
 	var width: float=size.x-48-48-left.custom_minimum_size.x-detail.custom_minimum_size.x-48-24
 	recipes.columns=maxi(2,int(width/94))
-	cargo.columns=5;storage_owned.columns=4
+	var tile_width:=72 if size.x<1100 else 84
+	cargo.columns=maxi(2,int((tabs.size.x-48)/2/(tile_width+6)));storage_owned.columns=cargo.columns
 	for grid in [cargo,storage_owned]:
 		for tile in grid.get_children():tile.custom_minimum_size=Vector2(72,80) if size.x<1100 else Vector2(84,96)
 	owned.columns=4 if tabs.size.x>=378 else 2
@@ -119,9 +138,13 @@ func _visibility() -> void:
 		tabs.current_tab=0
 		get_viewport().gui_release_focus()
 func _response(_sequence: int,value: Dictionary) -> void:
-	if not visible:return
+	var cargo_response:=storage_pending.has(_sequence)
+	storage_pending.erase(_sequence)
+	if not visible or (tabs.current_tab==2 and not cargo_response):return
 	message.text="완료" if value.get("ok",false) else str(value.get("error","실행할 수 없습니다."))
-	if value.get("ok",false):message.text="완료";message.modulate=FrontierInterfaceStyle.ACCENT
+	if value.get("ok",false):
+		if cargo_response:storage_selection={}
+		message.text="완료";message.modulate=FrontierInterfaceStyle.ACCENT
 	else:message.modulate=FrontierInterfaceStyle.WARNING
 	response_left=2;last_key=""
 	if tabs.current_tab==2:storage_label.text=message.text;storage_label.modulate=message.modulate
@@ -129,7 +152,7 @@ func _process(delta: float) -> void:
 	if response_left>0 and response_left<=delta:last_key=""
 	response_left=maxf(0,response_left-delta)
 	var active: bool=app.session.active and app.session.latest.get("phase","playing")=="playing"
-	hotbar.visible=active and (visible or (app.surface_world!=null and not app.feedback.blocked()))
+	hotbar.visible=active and (app.rovers==null or app.rovers.seat().is_empty()) and (visible or (app.surface_world!=null and not app.feedback.blocked()))
 	if not active:hide();return
 	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	data=FrontierEquipment.state(member)
@@ -144,10 +167,16 @@ func _process(delta: float) -> void:
 	if app.surface_world==null:warehouse_choice.select(1)
 	if using_ship():
 		storage_site=FrontierItemInventory.ship_site(app.session.latest.crew);depot=storage_site.inventory
+		if not app.session.latest.get("local_shuttle","").is_empty():storage_site["slot_capacity"]=int(FrontierShuttles.config().cargo_slots)
+	var personal: bool=not app.session.latest.get("local_shuttle","").is_empty()
+	warehouse_choice.set_item_text(1,"FINCH · 내 화물" if personal else "원정선 · 공동 화물")
+	if tabs.current_tab==2:
+		left.visible=using_ship();cargo_selection_info.visible=using_ship()
+	bulk_transfer.text="자원 모두 싣기 →" if using_ship() else "자원 모두 보관 →"
 	warehouse_management.visible=not using_ship()
 	warehouse_management.disabled=using_ship() or storage_site.is_empty() or storage_site.get("state")=="settled" or not FrontierExpeditionBusiness.near_warehouse(storage_site,FrontierCrewWorld.vector(member.position))
 	warehouse_management.tooltip_text="현장 창고 9m 이내에서 보급·로봇·시설을 관리합니다."
-	var key:=JSON.stringify([data,bag,depot,storage_site.get("stored_equipment",{}),storage_site.get("buildings",{}).size(),ledger.get("credits",0),member.carried,storage.selected,using_ship(),app.surface_world!=null])
+	var key:=JSON.stringify([data,bag,depot,storage_site.get("stored_equipment",{}),storage_site.get("buildings",{}).size(),ledger.get("credits",0),member.carried,storage.selected,using_ship(),app.surface_world!=null,personal,storage_pending.size()])
 	if key==last_key:return
 	last_key=key
 	credit.text="%s"%int(ledger.get("credits",FrontierExpeditionBusiness.config().starting_credits))
@@ -185,7 +214,7 @@ func _process(delta: float) -> void:
 	if tabs.current_tab==0 and selected_resource.is_empty() and not data.items.is_empty():
 		if selected_item.is_empty():selected_item=data.slots[int(data.selected)] if data.slots[int(data.selected)]!="" else data.items.keys()[0]
 		selected_definition=data.items[selected_item]
-	_refresh_details();_highlight()
+	_layout();_refresh_details();_highlight()
 func _tile(parent: Node,id: String,definition: String) -> void:
 	var def: Dictionary=FrontierEquipment.config().items[definition]
 	var tile:=FrontierItemTile.new();tile.item_id=id;tile.set_meta("definition",definition);tile.picture=FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.tier);tile.caption="Mk. %d"%int(def.tier);tile.tooltip_text=def.name
@@ -214,7 +243,27 @@ func _refresh_details() -> void:
 	suit_action.visible=tabs.current_tab==0
 	suit_action.disabled=app.surface_world==null or int(data.get("suit_tier",1))>=2 or not FrontierExpeditionBusiness.affordable(bag,FrontierProductionTier2.config().suit_upgrade.cost)
 	suit_action.text="탐험복 Mk.2 완료" if int(data.get("suit_tier",1))>=2 else "탐험복 Mk.2 개조"
-	if tabs.current_tab==2 or (tabs.current_tab==0 and not selected_resource.is_empty()):
+	if tabs.current_tab==2:
+		var personal: bool=not app.session.latest.get("local_shuttle","").is_empty()
+		var hull_id: String="finch" if personal else str(app.session.latest.get("vessel",{}).get("hull","kestrel"))
+		title.text=hull_id.to_upper();category.text="개인 운송선" if personal else "공동 원정선"
+		if using_ship():preview.show_model(FrontierVesselTerminal.model_path(hull_id))
+		cargo_selection_info.text="물건을 선택하세요.\nShift+클릭 · 빠른 이동\n드래그 · 반대편에 놓기"
+		if storage_selection.has("resource"):
+			var id: String=storage_selection.resource
+			cargo_selection_info.text=FrontierCatalog.entry("resources",id).name+"\n"+str(int((bag if storage_selection.source=="bag" else depot).get(id,0)))+"개 · "+("내 배낭" if storage_selection.source=="bag" else "선박 화물")
+		elif storage_selection.has("equipment_item"):
+			var id: String=storage_selection.equipment_item
+			var definition: String=data.items.get(id,"") if storage_selection.source=="bag" else ""
+			if definition.is_empty():
+				for stored in storage_site.get("stored_equipment",{}).values():
+					if stored.item_id==id and stored.owner==app.session.latest.self_id:definition=stored.definition
+			cargo_selection_info.text=FrontierEquipment.config().items.get(definition,{}).get("name","장비")+"\n개인 소유 · 1칸"
+		transfer_count.editable=storage_selection.has("resource") and storage_pending.is_empty()
+		transfer_button.disabled=storage_selection.is_empty() or not storage_pending.is_empty()
+		bulk_transfer.disabled=not storage_pending.is_empty()
+		return
+	if tabs.current_tab==0 and not selected_resource.is_empty():
 		var source: Dictionary=depot if tabs.current_tab==2 and storage.selected==1 else bag
 		if int(source.get(selected_resource,0))<=0:
 			selected_resource=""
@@ -276,7 +325,13 @@ func _action() -> void:
 func _refresh_storage(available: int) -> void:
 	var limit:=FrontierItemInventory.warehouse_capacity(storage_site)
 	var occupied:=FrontierItemInventory.warehouse_used(storage_site)
-	if response_left<=0:storage_label.text=("우주선 " if using_ship() else "행성 ")+"창고 %d / %d칸%s · 아이템을 반대편으로 끌어놓으세요"%[occupied,limit," · 기존 초과 재고" if occupied>limit else ""]
+	storage_headers[0].text="내 배낭  %d / %d"%[FrontierItemInventory.used(bag,data.items.size()),available]
+	storage_headers[1].text=("내 FINCH" if not app.session.latest.get("local_shuttle","").is_empty() else "공동 원정선") if using_ship() else "행성 창고"
+	storage_headers[1].text+="  %d / %d"%[occupied,limit]
+	for i in 2:
+		storage_bars[i].max_value=available if i==0 else limit
+		storage_bars[i].value=FrontierItemInventory.used(bag,data.items.size()) if i==0 else occupied
+	if response_left<=0:storage_label.text="옮기는 중…" if not storage_pending.is_empty() else "아이템을 선택하거나 반대편 슬롯으로 끌어놓으세요."
 	if response_left<=0:storage_label.modulate=FrontierInterfaceStyle.WARNING if occupied>limit else FrontierInterfaceStyle.ACCENT
 	for id in data.items:
 		_storage_tile(storage_owned,{"equipment_item":id,"source":"bag"},FrontierInterfaceStyle.icon(FrontierEquipment.config().items[data.items[id]].model),"",FrontierEquipment.config().items[data.items[id]].name)
@@ -295,16 +350,27 @@ func _refresh_storage(available: int) -> void:
 		for i in maxi(0,count-grid.get_child_count()):_storage_tile(grid,{},null,"","빈 칸 · 이곳에 끌어놓기")
 func _storage_tile(grid: GridContainer,payload: Dictionary,picture: Texture2D,amount: String,caption: String) -> void:
 	var tile:=FrontierItemTile.new();tile.custom_minimum_size=Vector2(72,80) if get_viewport().get_visible_rect().size.x<1100 else Vector2(84,96);tile.picture=picture;tile.amount=amount;tile.tooltip_text=caption
+	tile.selected=not payload.is_empty() and payload==storage_selection
+	tile.pressed.connect(func():
+		if payload.is_empty():return
+		storage_selection=payload.duplicate();last_key=""
+		transfer_button.disabled=not storage_pending.is_empty()
+		transfer_button.text="← 배낭으로" if payload.get("source")=="warehouse" else "화물로 →"
+		if Input.is_physical_key_pressed(KEY_SHIFT):
+			var quick:=payload.duplicate();quick.quick=true;_transfer_cargo(quick))
 	tile.cargo_payload=payload;tile.cargo_destination="bag" if grid==storage_owned else "warehouse";tile.cargo_dropped.connect(_transfer_cargo);grid.add_child(tile)
 func _transfer_cargo(payload: Dictionary) -> void:
+	if not storage_pending.is_empty():return
 	var withdraw: bool=payload.get("source")=="warehouse"
 	if payload.has("equipment_item"):
 		if using_ship():app.session.send_request("withdraw" if withdraw else "deposit",{"item_id":payload.equipment_item})
 		else:app.session.send_request("business_store_equipment",{"item_id":payload.equipment_item,"withdraw":withdraw})
 	else:
-		var args: Dictionary={"resource":payload.resource,"amount":payload.amount}
+		var args: Dictionary={"resource":payload.resource,"amount":payload.amount,"quick":payload.get("quick",false)}
 		app.session.send_request(("withdraw" if withdraw else "deposit") if using_ship() else ("business_withdraw" if withdraw else "business_deposit"),args)
 
 func _storage_requested(_sequence: int,kind: String,_args: Dictionary) -> void:
 	if visible and tabs.current_tab==2 and kind in ["deposit","withdraw","business_deposit","business_withdraw","business_store_equipment"]:
+		storage_pending[_sequence]=true;last_key=""
+		transfer_button.disabled=true;bulk_transfer.disabled=true
 		storage_label.text="옮기는 중…";storage_label.modulate=FrontierInterfaceStyle.MUTED

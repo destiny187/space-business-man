@@ -9,7 +9,9 @@ static func config() -> Dictionary:
 	value.system_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/system_diversity.json"))
 	value.planet_rules=FrontierPlanetTraits.rules().duplicate(true)
 	value.underground_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/underground.json"))
+	value.ground_rules=FrontierGroundProgression.config().duplicate(true)
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
+	value.planetary_cycles=FrontierPlanetaryCycles.config()
 	return value
 
 static func derive(seed_value: int, stream_name: String) -> int:
@@ -108,7 +110,9 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		result.terrain_traits.underground=underground.profiles[family].duplicate(true)
 		for key in ["version","region_size","occupancy","maximum_depth"]:result.terrain_traits.underground[key]=underground[key]
 		result.terrain_traits.underground.family=family
+	if cfg.has("ground_rules") and result.origin=="fictional" and int(result.planet_tier)<=2:result.ground_rules=cfg.ground_rules
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
+	if cfg.has("planetary_cycles"):result.astro=FrontierPlanetaryCycles.metadata(m,result)
 	return result
 
 static func landable(body_value: Dictionary) -> bool:
@@ -134,6 +138,7 @@ static func position(m: Dictionary,ordinal: int,elapsed: float=0.0) -> Vector3:
 	if m.is_empty() or m.settings.generator_version=="galaxy-v2":
 		return [Vector3(-620,-130,-2400),Vector3(1150,340,-3600),Vector3(-2100,450,-4900),Vector3(2400,-500,-6000)][ordinal%4]
 	var b:=body(m,ordinal)
+	if FrontierPlanetaryCycles.enabled(m):return FrontierPlanetaryCycles.orbit_position(b,elapsed)
 	var angle: float=float(b.orbit.phase)+elapsed/float(b.orbit.period)*TAU
 	return orbit_point(b,angle)
 
@@ -157,6 +162,8 @@ static func validate_world(value: Variant) -> String:
 	var m: Dictionary = value.manifest
 	if not m.get("settings") is Dictionary or m.settings.get("generator_version") not in ["galaxy-v2","galaxy-v3"]: return "호환되는 은하 생성기가 필요합니다."
 	if value.get("manifest_hash") != fingerprint(m): return "은하 원형 기록이 손상됐습니다."
+	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
+	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전·설정 오류"
 	if m.settings.has("system_rules"):
 		var rules: Variant=m.settings.system_rules
 		if not rules is Dictionary or rules.get("version")!=1 or rules.get("pair_planets")!=16 or rules.get("minimum_planets")!=4 or rules.get("maximum_planets")!=12:return "항성계 배치 규칙이 올바르지 않습니다."
@@ -195,6 +202,10 @@ static func validate_world(value: Variant) -> String:
 	if value.has("business") or value.has("engineering"):
 		var engineering_error: String=FrontierFieldEngineering.validate_world(value)
 		if not engineering_error.is_empty():return engineering_error
+	var rover_error:=FrontierRovers.valid(value)
+	if not rover_error.is_empty():return rover_error
+	var sky_error:=FrontierPlanetaryCycles.validate_regions(value)
+	if not sky_error.is_empty():return sky_error
 	return _validate_terrain(value)
 
 static func _finite(value: Variant,low: float,high: float) -> bool:
@@ -267,6 +278,9 @@ static func landing_restriction(body: Dictionary) -> String:
 	return ""
 
 static func orbit_point(body: Dictionary,angle: float) -> Vector3:
+	if body.get("astro",{}).get("enabled",false):
+		var e: float=body.astro.display_eccentricity
+		return FrontierPlanetaryCycles.orbit_basis(body)*Vector3(cos(angle),0,-sin(angle))*float(body.orbit.radius)*(1-e*e)/(1+e*cos(angle))
 	var tilt: float=deg_to_rad(float(presentation().inclination_min_degrees)+float(derive(int(body.seed),"inclination")%10000)/10000.0*float(presentation().inclination_range_degrees))
 	var node: float=float(derive(int(body.seed),"ascending-node")%10000)/10000.0*TAU
 	var point:=Vector3(cos(angle),0,sin(angle))*float(body.orbit.radius)

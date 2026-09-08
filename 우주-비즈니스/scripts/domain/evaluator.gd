@@ -55,3 +55,28 @@ static func material_value(cost: Dictionary) -> int:
 	for key in cost:
 		result += int(cost[key]) * int(FrontierCatalog.entry("resources", key).value)
 	return result
+
+static func environment_report(site: Dictionary,scope_id: String="") -> Dictionary:
+	var result: Dictionary={"version":1,"scope_id":scope_id,"scores":{},"overall":null,"limiting_factors":[],"observed":false,"stable":false}
+	var env: Dictionary=site.get("environment",{})
+	for key in ["oxygen","pressure","toxicity","temperature","water","ecology","stable_seconds"]:
+		if not env.has(key) or not (env[key] is float or env[key] is int) or not is_finite(float(env[key])):return result
+	var s:=scores(env);s.erase("stability")
+	var restoration: Dictionary=site.get("restoration2",{})
+	if site.has("restoration2"):
+		for key in ["salinity","soil"]:
+			if not restoration.has(key) or not (restoration[key] is float or restoration[key] is int) or not is_finite(float(restoration[key])):return result
+		s.water=minf(float(s.water),clampf(100-float(restoration.salinity),0,100))
+		s.ecology=minf(float(s.ecology),clampf(float(restoration.soil),0,100))
+	result.scores=s;result.overall=(float(s.atmosphere)+float(s.temperature)+float(s.water)+float(s.ecology))/4.0;result.observed=true
+	var cfg:=FrontierExpeditionBusiness.config()
+	result.stable=float(env.stable_seconds)>=float(cfg.contract_stable_seconds)
+	result.stable_seconds=float(env.stable_seconds);result.stable_required=float(cfg.contract_stable_seconds)
+	for row in [["atmosphere","대기",float(cfg.contract_environment_minimum)],["temperature","온도",float(cfg.contract_environment_minimum)],["water","물",float(cfg.contract_environment_minimum)],["ecology","생태",float(cfg.contract_ecology_minimum)]]:
+		if float(s[row[0]])<float(row[2]):result.limiting_factors.append({"key":row[0],"label":row[1]+" 부족","score":float(s[row[0]]),"required":row[2],"deficit":1-float(s[row[0]])/float(row[2])})
+	if not restoration.is_empty():
+		var restore_cfg: Dictionary=FrontierProductionTier2.config().restoration
+		if float(restoration.salinity)>float(restore_cfg.salinity_target):result.limiting_factors.append({"key":"salinity","label":"염류 처리 필요","score":float(restoration.salinity),"required":float(restore_cfg.salinity_target),"deficit":(float(restoration.salinity)-float(restore_cfg.salinity_target))/100.0})
+		if float(restoration.soil)<float(restore_cfg.soil_target):result.limiting_factors.append({"key":"soil","label":"토양 개량 필요","score":float(restoration.soil),"required":float(restore_cfg.soil_target),"deficit":1-float(restoration.soil)/float(restore_cfg.soil_target)})
+	result.limiting_factors.sort_custom(func(a: Dictionary,b: Dictionary):return a.key<b.key if is_equal_approx(a.deficit,b.deficit) else a.deficit>b.deficit)
+	return result

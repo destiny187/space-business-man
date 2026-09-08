@@ -26,14 +26,14 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	title=panel.label(right,"");description=panel.label(right,"");ingredients=HBoxContainer.new();right.add_child(ingredients)
 	var grid:=GridContainer.new();grid.columns=7;add_child(grid);move_child(grid,0);product_grid=grid
 	for id in FrontierProductionTier2.config().products:
-		var card:=FrontierItemTile.new();card.picture=FrontierResourceIcons.texture(id);card.grade=2;card.caption=FrontierProductionTier2.product(id).name;card.tooltip_text=card.caption
+		var card:=FrontierItemTile.new();card.picture=FrontierResourceIcons.texture(id);card.grade=int(FrontierProductionTier2.product(id).tier);card.caption=FrontierProductionTier2.product(id).name;card.tooltip_text=card.caption
 		card.pressed.connect(func():selected_product=id;refresh());grid.add_child(card);product_cards[id]=card
 	targets=panel.option(self);targets.item_selected.connect(func(_i: int):refresh())
 	progress=ProgressBar.new();progress.custom_minimum_size.y=18;add_child(progress)
 	produce=panel.button(self,"",func():panel.command.emit("business_produce",{"building_id":panel.selected(targets),"product":selected_product}))
 	target_cost=FrontierResourceReadout.new();add_child(target_cost)
 	upgrade=panel.button(self,"",func():panel.command.emit("business_robot_upgrade" if current.get("robots",{}).has(panel.selected(targets)) else "business_facility_upgrade",{"building_id":panel.selected(targets),"robot_id":panel.selected(targets)}))
-	help_label=panel.label(self,"원광 → 정제재 → Mk.2 부품 · 생산품은 공동 창고로 이동합니다.")
+	help_label=panel.label(self,"Mk.2 부품 → 금속·저온 현지 부품 → 산업 코어 → Mk.3 제작소")
 func update_site(site: Dictionary) -> void:
 	current=site
 	var options: Dictionary={}
@@ -71,9 +71,13 @@ func refresh() -> void:
 	progress.value=0;progress.visible=not job.is_empty()
 	if not job.is_empty():progress.value=float(job.progress)/float(FrontierProductionTier2.product(job.product).seconds)*100
 	produce.text="제품 생산 · %.0f초 · 제작소 8m 이내"%(float(def.seconds)/FrontierProductionTier2.factor(b))
-	produce.disabled=b.get("type","")!="factory" or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,def.cost) or current.get("state","")!="active"
-	var upgrade_def: Dictionary=FrontierProductionTier2.config().robot_upgrade if current.get("robots",{}).has(id) else FrontierProductionTier2.config().facility_upgrades.get(b.get("type",""),{})
-	target_cost.value="Mk.2 개조 · "+FrontierCatalog.cost_text(upgrade_def.get("cost",{}))
-	upgrade.text="Mk.2 개조 · "+str(upgrade_def.get("effect","채광 18 · 적재 64 · 이동 +20%"))
-	upgrade.disabled=b.is_empty() or int(b.get("tier",1))>=2 or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or current.get("state","")!="active"
-	if int(b.get("tier",1))>=2:upgrade.text="Mk.2 개조 완료"
+	var reason:=FrontierPlanetSupply.production_reason(panel.planet_body,b,def) if not panel.planet_body.is_empty() else ""
+	produce.disabled=b.get("type","")!="factory" or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,def.cost) or not FrontierPlanetSupply.operating(current) or not reason.is_empty()
+	if not reason.is_empty():produce.text=reason
+	var is_robot: bool=current.get("robots",{}).has(id)
+	var upgrade_def: Dictionary=(FrontierProductionTier2.config().robot_upgrade if int(b.get("tier",1))==1 else {}) if is_robot else FrontierProductionTier2.upgrade_definition(b)
+	var next_tier:=int(b.get("tier",1))+1
+	target_cost.value="Mk.%d 개조 · "%next_tier+FrontierCatalog.cost_text(upgrade_def.get("cost",{}))
+	upgrade.text="Mk.%d 개조 · "%next_tier+str(upgrade_def.get("effect","채광 18 · 적재 64 · 이동 +20%"))
+	upgrade.disabled=b.is_empty() or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or not FrontierPlanetSupply.operating(current)
+	if upgrade_def.is_empty():upgrade.text="현재 최고 단계 · Mk.%d"%int(b.get("tier",1));target_cost.value=""

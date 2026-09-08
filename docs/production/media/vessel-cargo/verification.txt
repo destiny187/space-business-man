@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS prepare isolated docked craft:
+PASS opens actual supply site
+PASS mother terminal renders current hull
+PASS terminal opens shared inventory cargo layout
+PASS cargo exposes resource slots
+PASS selected amount reaches mother cargo through host
+PASS equipment supports selected transfer button
+PASS drag from ship restores owned equipment
+PASS cargo grids fit 960 width
+PASS prepare independent landed FINCH:
+PASS opens FINCH surface
+PASS FINCH shows its own available functions
+PASS FINCH cargo transfer stays personal
+PASS FINCH model and four-slot capacity
+PASS cargo menu blocks field controls and work audio
+VESSEL_CARGO_UI_CHECKS 15 FAILURES 0

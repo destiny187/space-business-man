@@ -407,7 +407,11 @@ func update_orbits(elapsed: float) -> void:
 	if is_instance_valid(landmarks):landmarks.update_epoch(elapsed)
 	for ordinal in planets:
 		planets[ordinal].node.position=FrontierUniverse.position(state.manifest,ordinal,elapsed)
-		if planets[ordinal].node is FrontierSolarPlanet:planets[ordinal].node.set_epoch(elapsed)
+		if planets[ordinal].node is FrontierSolarPlanet:planets[ordinal].node.set_epoch(elapsed,planets[ordinal].body)
+		elif FrontierPlanetaryCycles.enabled(state.manifest):
+			var node: MeshInstance3D=planets[ordinal].node
+			node.basis=FrontierPlanetaryCycles.orientation(planets[ordinal].body,elapsed).scaled(Vector3.ONE*FrontierUniverse.radius(planets[ordinal].body))
+			node.material_override.set_shader_parameter("visual_time",fposmod(elapsed,100000.0))
 
 func _process(_delta: float) -> void:
 	_update_galactic_core()
@@ -452,7 +456,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	var radius: float = FrontierUniverse.radius(body)
 	if body.get("origin","")=="solar_reference":
 		var solar:=FrontierSolarPlanet.new();solar.name="Planet_%d"%ordinal;add_child(solar);solar.configure(orbit,radius)
-		solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time)
+		solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time,body)
 		return {"node":solar,"radius":FrontierUniverse.navigation_radius(body),"body":body}
 	var node := MeshInstance3D.new()
 	node.name = "Planet_%d" % ordinal
@@ -465,6 +469,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	var template: Node3D=load("res://assets/models/planet-variants/"+str(t.id)+".glb").instantiate()
 	var authored: MeshInstance3D=template.find_children("*","MeshInstance3D",true,false)[0]
 	node.mesh=authored.mesh;node.scale=Vector3.ONE*radius;template.free()
+	FrontierSurfaceMaterialLibrary.orbital(material,t)
 	material.set_shader_parameter("authored_relief",true)
 	material.set_shader_parameter("highlight_strength",.08)
 	material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
@@ -487,4 +492,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	atmosphere.material_override = air
 	atmosphere.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	node.add_child(atmosphere)
+	var orbital_lod:Node=load("res://scripts/world/orbital_lod.gd").new()
+	orbital_lod.name="OrbitalLOD";node.add_child(orbital_lod)
+	orbital_lod.configure(node,"res://assets/models/planet-variants/"+str(t.id)+"_lod1.glb",atmosphere)
 	return {"node":node,"radius":radius,"body":body}

@@ -57,7 +57,7 @@ func _frame_drawn() -> void:
  if active and phase in ["warming","escape_loading"]:warm_frames+=1
 
 func begin() -> void:
- vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure(app.session.latest.get("vessel",{}));vessel_overlay.hide()
+ vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure({"hull":"finch"} if not app.session.latest.get("local_shuttle","").is_empty() else app.session.latest.get("vessel",{}));vessel_overlay.hide()
  active=true;prepared=false;warm_frames=0;phase="approach";age=0;show()
  app.cancel_placement()
  for panel in [app.navigation_frame,app.research_frame,app.inventory_panel,app.business_panel,app.shipyard_panel]:panel.hide()
@@ -169,6 +169,7 @@ func _prepare_descent() -> void:
  ship_home=app.surface_world.landing_ship.position
  landing_camera=Camera3D.new();app.add_child(landing_camera);landing_camera.far=app.camera.far;landing_camera.fov=65;landing_camera.make_current()
  drive=FrontierVesselDriveEffects.new();app.surface_world.landing_ship.add_child(drive)
+ if not app.session.latest.get("local_shuttle","").is_empty():drive.set_finch(true)
  for jet in drive.jets:jet.process_material.direction=Vector3.DOWN
  dust=GPUParticles3D.new();dust.amount=100;dust.lifetime=1.4;dust.emitting=false;dust.position=Vector3(ship_home.x,app.surface_world.terrain.field.height(ship_home.x,ship_home.z)+.15,ship_home.z)
  var motion:=ParticleProcessMaterial.new();motion.direction=Vector3.UP;motion.spread=85;motion.gravity=Vector3(0,-.3,0);motion.initial_velocity_min=3;motion.initial_velocity_max=7;motion.scale_min=.3;motion.scale_max=1.3;motion.emission_shape=ParticleProcessMaterial.EMISSION_SHAPE_RING;motion.emission_ring_radius=5;motion.emission_ring_inner_radius=2;motion.emission_ring_height=.2;motion.color=Color(app.surface_world.body.get("traits",{}).get("dust","b8a080"));dust.process_material=motion
@@ -236,7 +237,7 @@ func begin_launch() -> void:
  # Called only when the host snapshot actually clears the landing state.
  unboard.hide()
  active=true;phase="ascent";age=0;warm_frames=0;show();app.close_menus()
- vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure(app.session.latest.get("vessel",{}));vessel_overlay.hide()
+ vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure({"hull":"finch"} if not app.session.latest.get("local_shuttle","").is_empty() else app.session.latest.get("vessel",{}));vessel_overlay.hide()
  app.flight.set_process(false);app.flight.transit_overlay.hide();app.flight.engine.stop()
  var nav: Dictionary=app.session.latest.crew.navigation
  exit_position=FrontierCrewWorld.vector(nav.position)

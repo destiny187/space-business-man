@@ -1,0 +1,49 @@
+{
+  "id": "bio_swimmer_09",
+  "lods": {
+    "near": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_swimmer_09_near.glb",
+      "sha256": "a7e1bf65130b6c2c2cf391c1cf47d85fd4b1a8f52e6e11d474729c92e45f43f4",
+      "triangles": 17060
+    },
+    "far": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_swimmer_09_far.glb",
+      "sha256": "2fdec1a7b7f68f2e8fbc2f6664fdd16499b0d3aa6a54ba7449a0472cfaa04899",
+      "triangles": 4762
+    }
+  },
+  "geometry": {
+    "near": {
+      "geometry_hash": "07f994ca3492498f3ea8106328e8f5f5f99384b226775f6d692e6b3a70be088b",
+      "vertices": 8535,
+      "floor_y": 0.0,
+      "ceiling_y": 1.1615,
+      "min": [
+        -1.1557,
+        0.0,
+        -2.0163
+      ],
+      "max": [
+        1.1557,
+        1.1615,
+        1.398
+      ]
+    },
+    "far": {
+      "geometry_hash": "653c5b4e687ef1d8bce71bd870b070484b89c3c497e5438686013808ed1adf25",
+      "vertices": 2386,
+      "floor_y": 0.0003,
+      "ceiling_y": 1.162,
+      "min": [
+        -1.1567,
+        0.0003,
+        -2.0175
+      ],
+      "max": [
+        1.1567,
+        1.162,
+        1.398
+      ]
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "checks": 50,
+  "failures": 0,
+  "lighting": "fixed review daylight; real streamed scene",
+  "profiles": {
+    "alkaline": {
+      "geology": "alkaline",
+      "profile": "alkaline",
+      "scatter": 623,
+      "seed": 2105341841,
+      "terrain_jobs": 43
+    },
+    "continental": {
+      "geology": "weathered",
+      "profile": "continental",
+      "scatter": 580,
+      "seed": 578495280,
+      "terrain_jobs": 44
+    },
+    "cratered": {
+      "geology": "pegmatite",
+      "profile": "cratered",
+      "scatter": 656,
+      "seed": 1002291502,
+      "terrain_jobs": 45
+    },
+    "crystalline": {
+      "geology": "pegmatite",
+      "profile": "crystalline",
+      "scatter": 412,
+      "seed": 1274490464,
+      "terrain_jobs": 44
+    },
+    "fractured": {
+      "geology": "cryovolcanic",
+      "profile": "fractured",
+      "scatter": 634,
+      "seed": 370539516,
+      "terrain_jobs": 43
+    },
+    "frozen": {
+      "geology": "cryogenic",
+      "profile": "frozen",
+      "scatter": 548,
+      "seed": 666327461,
+      "terrain_jobs": 45
+    },
+    "ochre": {
+      "geology": "hydrothermal",
+      "profile": "ochre",
+      "scatter": 557,
+      "seed": 1700178110,
+      "terrain_jobs": 43
+    },
+    "oxidized": {
+      "geology": "metallic",
+      "profile": "oxidized",
+      "scatter": 140,
+      "seed": 1256389452,
+      "terrain_jobs": 56
+    },
+    "salt": {
+      "geology": "hydrothermal",
+      "profile": "salt",
+      "scatter": 519,
+      "seed": 1011527695,
+      "terrain_jobs": 43
+    },
+    "sedimentary": {
+      "geology": "sedimentary",
+      "profile": "sedimentary",
+      "scatter": 673,
+      "seed": 1298031313,
+      "terrain_jobs": 45
+    },
+    "tundra": {
+      "geology": "icy_basin",
+      "profile": "tundra",
+      "scatter": 683,
+      "seed": 1145502502,
+      "terrain_jobs": 62
+    },
+    "volcanic": {
+      "geology": "volcanic",
+      "profile": "volcanic",
+      "scatter": 497,
+      "seed": 1715827205,
+      "terrain_jobs": 49
+    }
+  },
+  "renderer": "forward_plus"
+}

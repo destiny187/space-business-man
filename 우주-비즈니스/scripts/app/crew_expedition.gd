@@ -10,6 +10,7 @@ var waiting_ready: Button
 var waiting_start: Button
 var navigation_journal: FrontierNavigationJournal
 var navigation_records: FrontierNavigationRecords
+var rovers: FrontierRoverController
 var navigation_ui: Control
 var chart: Control
 var inventory_panel: FrontierEquipmentPanel
@@ -58,6 +59,7 @@ var ui_theme: Theme
 var test_mode:=false
 var test_direction:=Vector2.ZERO
 var test_camera_position:=Vector3.ZERO
+var spaces:=FrontierCrewSpaces.new()
 var cabin_root: Node3D
 var surface_world: FrontierCrewSurfaceScene
 var surface_panel: VBoxContainer
@@ -83,9 +85,11 @@ var station_market: FrontierStationMarketPanel
 var shipyard_panel: FrontierShipyardPanel
 var research_actions: Array[Control]=[]
 var business_panel: FrontierBusinessPanel
+var preferred_robot_id: String=""
 var placement_kind: String=""
 var placement_point:=Vector3.INF
 var placement_valid:=false
+var placement_reason: String=""
 var placement_ghost: Node3D
 var ghost_material: StandardMaterial3D
 func _ready() -> void:
@@ -106,10 +110,13 @@ func _ready() -> void:
 	session.surface_received.connect(_surface_packet)
 	session.notice.connect(func(message: String):status.value=message)
 	session.response_received.connect(func(_sequence: int,value: Dictionary):
+		if value.get("code")=="mining_cooldown":return
 		if not value.get("ok",false):status.value=value.get("error","작업 실패")
 		else:status.value="원정 기록을 저장했습니다.")
-	_build_cabin();_build_ui();cabin_root.hide()
+	_build_cabin();_build_ui();cabin_root.hide();spaces.configure(self)
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
+	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
+	var rover_factory:=FrontierRoverWorkshop.new();business_panel.tabs.add_child(rover_factory);rover_factory.configure(self,true)
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
 	navigation_ui.get_parent().move_child(navigation_ui,-1)
@@ -221,6 +228,7 @@ func _build_ui() -> void:
 	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
 	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
+	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시 · "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
 	business_panel.station_action.connect(station_action)
 	station_market=FrontierStationMarketPanel.new();ui.add_child(station_market)
 	station_market.command.connect(func(kind: String,args: Dictionary):
@@ -247,7 +255,9 @@ func join_world() -> void:
 	if not profile.ensure(name_input.text):status.value=profile.error;return
 	if session.join(profile,host_address.text.strip_edges(),int(port_input.value)):lobby.hide();panel.hide();waiting_roster.text="호스트에 연결 중입니다."
 func _setup_flight() -> void:
-	space_view=SubViewport.new();space_view.size=Vector2i(1280,800);space_view.own_world_3d=true;space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(space_view)
+	space_view=SubViewport.new();space_view.size=Vector2i(get_viewport().get_visible_rect().size);space_view.own_world_3d=true;space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(space_view)
+	get_viewport().size_changed.connect(func():
+		if is_instance_valid(space_view):space_view.size=Vector2i(get_viewport().get_visible_rect().size))
 	flight=FrontierCrewFlightView.new();flight.state={"manifest":session.manifest};space_view.add_child(flight)
 	navigation_journal=FrontierNavigationJournal.new();navigation_journal.configure(session.manifest,session.world_id,session.latest.self_id)
 	flight.soundscape.bind_session(session)
@@ -288,18 +298,22 @@ func _snapshot(value: Dictionary) -> void:
 	onboarding.update_snapshot(value)
 	flight.update_navigation(value.crew.navigation)
 	navigation_journal.observe(value)
-	flight.refits.update_loadout(value.get("vessel",{}))
+	flight.refits.flight_mode=true
+	flight.refits.update_loadout({"hull":"finch"} if not value.get("local_shuttle","").is_empty() else value.get("vessel",{}))
+	business_panel.shuttle_panel.update_snapshot(value)
+	business_panel.vessel_terminal.update_snapshot(value)
 	station_market.update_snapshot(value)
 	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
 	var members: Dictionary=value.crew.members
 	for id in actors.keys():
-		if not members.has(id):actors[id].queue_free();actors.erase(id);visuals.erase(id)
+		if not members.has(id) or not members[id].get("connected",true):actors[id].queue_free();actors.erase(id);visuals.erase(id)
 	var lines: PackedStringArray=["승무원 %d / 6" % members.size()]
 	for id in members:
+		if not members[id].get("connected",true):continue
 		if not actors.has(id):_spawn_actor(id,members[id])
-		elif visuals[id].area!=members[id].area:
-			actors[id].position=FrontierCrewWorld.vector(members[id].position);actors[id].velocity=Vector3.ZERO;visuals[id].area=members[id].area;visuals[id].last=actors[id].position
+		elif visuals[id].area!=members[id].area or visuals[id].get("place_key","")!=members[id].get("place_key",""):
+			actors[id].position=FrontierCrewWorld.vector(members[id].position);actors[id].velocity=Vector3.ZERO;visuals[id].area=members[id].area;visuals[id].last=actors[id].position;visuals[id]["place_key"]=members[id].get("place_key","")
 			visuals[id].pose.reset();visuals[id].replica.frames.clear()
 			if id==value.self_id:prediction_history.clear();predicted_motion.clear();camera_correction=Vector3.ZERO
 			if session.hosting:session.authority.motions[id]=FrontierCrewLocomotion.create()
@@ -313,7 +327,11 @@ func _snapshot(value: Dictionary) -> void:
 	var on_surface: bool=not value.crew.get("landing",{}).is_empty()
 	if on_surface!=surface_transition:
 		if on_surface and destination_initialized:arrival.begin()
-		elif not on_surface and destination_initialized:arrival.begin_launch()
+		elif not on_surface and destination_initialized:
+			if surface_world!=null and not value.get("local_shuttle","").is_empty():
+				surface_world.refits.update_loadout({"hull":"finch"})
+				if surface_world.shuttle_models.has(value.self_id):surface_world.landing_ship.position=surface_world.shuttle_models[value.self_id].position
+			arrival.begin_launch()
 		surface_transition=on_surface;close_menus()
 	if on_surface and own.aboard and not arrival.active:arrival.begin_boarding()
 	surface_tools.visible=on_surface;surface_status.visible=on_surface;navigation_toggle.show()
@@ -325,9 +343,11 @@ func _snapshot(value: Dictionary) -> void:
 	_sync_surface_view()
 func _physics_process(delta: float) -> void:
 	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":return
+	spaces.sync()
 	if business_panel.visible and actors.has(session.latest.self_id) and not business_panel.context_in_range(actors[session.latest.self_id].position):close_menus()
+	rovers.physics(delta)
 	dig_timer=maxf(0,dig_timer-delta)
-	if surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
+	if rovers.seat().is_empty() and surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 		if tool.get("kind")=="miner":use_equipped()
 	var controls_enabled:=_locomotion_enabled()
@@ -349,17 +369,19 @@ func _physics_process(delta: float) -> void:
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
-		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled)
+		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled))
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
+			if not rovers.seat(id).is_empty():continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
 			var input: Dictionary=session.authority.inputs.get(peer,{})
-			var enabled: bool=float(input.get("expires",-1))>=session.authority.now and input.get("controls_enabled",true) and (not arrival.active or arrival.phase=="boarding")
+			var enabled: bool=float(input.get("expires",-1))>=session.authority.now and input.get("controls_enabled",true) and (not arrival.active or arrival.phase=="boarding" or FrontierShuttles.area_key(session.authority.world,id)!=FrontierShuttles.area_key(session.authority.world,session.latest.self_id))
 			var member: Dictionary=session.authority.world.crew.members[id]
-			if (FrontierCrewSurface.landed(session.authority.world) and member.aboard) or (arrival.active and arrival.phase in ["ascent","escape_loading","escape","exit_handover"]):
+			var local:=FrontierShuttles.context(session.authority.world,id)
+			if (member.has("shuttle_id") and member.area=="cabin") or (FrontierCrewSurface.landed(local) and member.aboard) or (arrival.active and arrival.phase in ["ascent","escape_loading","escape","exit_handover"] and FrontierShuttles.area_key(session.authority.world,id)==FrontierShuttles.area_key(session.authority.world,session.latest.self_id)):
 				actor.velocity=Vector3.ZERO;continue
 			var motion: Dictionary=session.authority.motions.get(id,FrontierCrewLocomotion.create())
 			session.authority.motions[id]=motion
@@ -367,13 +389,14 @@ func _physics_process(delta: float) -> void:
 			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1)
 			var speed:=float(FrontierCrewWorld.config().movement_speed)
 			var gravity:=float(FrontierCrewLocomotion.config().cabin_gravity)
-			if FrontierCrewSurface.landed(session.authority.world):
-				if surface_world==null or not surface_world.ready_at(actor.position):
+			if FrontierCrewSurface.landed(local):
+				var ground:=spaces.terrain_for(id)
+				if ground==null or not ground.ready_at(actor.position):
 					actor.velocity=Vector3.ZERO;motion.buffer=0.0;motion.takeoff=0.0;motion.jump_request=int(input.get("jump_request",0));continue
-				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier;gravity=float(FrontierCrewSurface.config().gravity)
+				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.personal(member,"logistics"));gravity=float(FrontierCrewSurface.config().gravity)
 				var next:=actor.position+Vector3(direction.x,0,direction.y)*speed*delta
-				if not surface_world.ready_at(next):direction=Vector2.ZERO;enabled=false
-				if actor.position.y<float(surface_world.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(surface_world.config.region_half_extent):
+				if not ground.ready_at(next):direction=Vector2.ZERO;enabled=false
+				if actor.position.y<float(ground.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(ground.config.region_half_extent):
 					actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO;motion=FrontierCrewLocomotion.create();session.authority.motions[id]=motion
 			var old_land: int=motion.land_serial
 			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled)
@@ -382,6 +405,7 @@ func _physics_process(delta: float) -> void:
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
 			session.authority.update_position(peer,actor.position)
 func _predict_local(delta: float,enabled: bool) -> void:
+	if not rovers.seat().is_empty():prediction_history.clear();predicted_motion.clear();return
 	if outside or (arrival.active and arrival.phase in ["boarding","ascent","escape_loading","escape","exit_handover"]):prediction_history.clear();predicted_motion.clear();return
 	var id: String=session.latest.self_id
 	if not actors.has(id):return
@@ -405,6 +429,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	var on_surface: bool=member.area=="surface"
 	var speed:=float(FrontierCrewSurface.config().movement_speed) if on_surface else float(FrontierCrewWorld.config().movement_speed)
 	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
+	if on_surface:speed*=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.personal(member,"logistics"))
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
 	var frame: Dictionary={"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
 	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled)
@@ -413,7 +438,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	if prediction_history.size()>90:prediction_history.pop_front()
 
 func _locomotion_enabled() -> bool:
-	if feedback.blocked() or outside or (onboarding!=null and onboarding.letter.visible) or get_viewport().gui_get_focus_owner() is LineEdit:return false
+	if any_menu_open() or feedback.blocked() or outside or (onboarding!=null and onboarding.letter.visible) or get_viewport().gui_get_focus_owner() is LineEdit:return false
 	if not test_mode and not get_window().has_focus():return false
 	if not session.latest.crew.get("landing",{}).is_empty():
 		return surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position)
@@ -445,8 +470,10 @@ func _process(delta: float) -> void:
 		if own and not session.hosting:
 			var approved: Dictionary=session.latest.get("motion",{}).get(id,{})
 			for key in ["jump_serial","land_serial","impact"]:presentation[key]=approved.get(key,0)
-		visual.pose.animate(presentation,delta,not feedback.blocked() and not outside and (test_mode or get_window().has_focus()),not arrival.active)
-		visual.model.visible=not own and not arrival.active;visual.label.visible=not own and not arrival.active
+		visual.pose.animate(presentation,delta,not feedback.blocked() and not outside and members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and (test_mode or get_window().has_focus()),not arrival.active)
+		var here: bool=members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and members[id].get("connected",true)
+		visual.model.visible=not own and not arrival.active and here;visual.label.visible=not own and not arrival.active and here
+		if not session.hosting:actor.collision_layer=2 if here else 0;actor.collision_mask=1 if here else 0
 	camera_correction=camera_correction.lerp(Vector3.ZERO,1-exp(-delta*18))
 	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.72,0)+camera_correction
 	if test_mode and test_camera_position!=Vector3.ZERO:camera.position=test_camera_position
@@ -454,6 +481,7 @@ func _process(delta: float) -> void:
 	_update_surface_hud()
 	_update_business_placement()
 	arrival.tick(delta)
+	rovers.present(delta)
 func _input(event: InputEvent) -> void:
 	if arrival!=null and arrival.active:return
 	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
@@ -495,19 +523,23 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
+		if FrontierInput.matches(event,"rover_seat") and not rovers.seat().is_empty():session.send_request("rover_switch",{"id":rovers.seat().id});return
+		if FrontierInput.matches(event,"camera") and not rovers.seat().is_empty():rovers.chase=not rovers.chase;return
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
+		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
+		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():order_robot();return
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():navigation_ui.open_galaxy();return
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
 			navigation_ui.start_route(flight.scan_target);return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
-		if event.physical_keycode==KEY_F and _mouse_look_allowed():
-			if not navigation_ui.interact():interact_business()
+		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
+			if not rovers.interact() and not navigation_ui.interact():interact_business()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
-			else:feedback.reject()
+			else:feedback.reject(placement_reason)
 			return
 		if inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 		use_equipped()
@@ -576,7 +608,7 @@ func _surface_packet(packet: Dictionary) -> void:
 	_sync_surface_view()
 	if surface_world!=null:
 		surface_world.accept(packet);_refresh_surface_options()
-		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+		business_panel.update(packet.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 
 func _sync_surface_view() -> void:
 	if session.latest.is_empty() or session.latest.get("phase")!="playing":return
@@ -674,7 +706,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func menu_frames() -> Array:
-	var frames: Array=[navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
+	var frames: Array=[rovers.panel if rovers!=null else null,rovers.dock if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:
@@ -709,7 +741,7 @@ func toggle_business() -> void:
 	if not session.active or surface_world==null:return
 	business_panel.set_context("build")
 	open_menu(business_panel)
-	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 func interact_business() -> void:
 	if not session.active or surface_world==null or inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
 	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
@@ -728,8 +760,10 @@ func open_station(kind: String,id: String="",management: bool=false) -> void:
 		open_menu(inventory_panel);inventory_panel.warehouse_choice.select(0);inventory_panel.tabs.current_tab=2;return
 	close_menus()
 	business_panel.set_context(kind,id)
+	business_panel.shuttle_panel.update_snapshot(session.latest)
+	business_panel.vessel_terminal.update_snapshot(session.latest)
 	open_menu(business_panel)
-	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position)
+	business_panel.update(session.surface.get("business",{}),surface_world.body.id,session.latest.self_id,int(surface_world.body.planet_tier),session.surface.get("engineering",{}),session.surface.get("ecology",{}),surface_world.body,camera.global_position,session.latest.crew.members.size())
 func open_warehouse_management() -> void:
 	if not session.active or surface_world==null:return
 	var current: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{})
@@ -745,6 +779,8 @@ func open_warehouse_management() -> void:
 	open_station("base" if closest.is_empty() else "storage",closest,true)
 func station_action(kind: String) -> void:
 	match kind:
+		"inventory":
+			open_menu(inventory_panel)
 		"storage":
 			open_station("base")
 		"cargo":
@@ -756,6 +792,11 @@ func station_action(kind: String) -> void:
 		"launch":
 			close_menus()
 			session.send_request("surface_board",{})
+func order_robot() -> void:
+	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
+	if target.get("kind")!="vein":feedback.reject("광맥을 조준하고 R로 로봇에게 지시하세요.");return
+	session.send_request("business_assign",{"vein_id":target.id,"robot_id":preferred_robot_id})
+
 func begin_placement(kind: String) -> void:
 	cancel_placement();close_menus()
 	if kind.is_empty() or surface_world==null:return
@@ -764,7 +805,7 @@ func begin_placement(kind: String) -> void:
 	ghost_material=StandardMaterial3D.new();ghost_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ghost_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ghost_material.albedo_color=Color(.3,.9,.6,.45)
 	for node in placement_ghost.find_children("*","MeshInstance3D",true,false):node.material_override=ghost_material;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 func cancel_placement() -> void:
-	placement_kind="";placement_valid=false
+	placement_kind="";placement_valid=false;placement_reason=""
 	if is_instance_valid(placement_ghost):placement_ghost.queue_free()
 	placement_ghost=null
 func _update_business_placement() -> void:
@@ -772,17 +813,19 @@ func _update_business_placement() -> void:
 	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*12);query.exclude=[actors[session.latest.self_id].get_rid()]
 	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
 	placement_valid=false
-	if hit.is_empty():placement_ghost.hide();status.value="12m 안의 지면을 조준하세요 · Esc 취소";return
+	if hit.is_empty():placement_ghost.hide();placement_reason="12m 안의 지면을 조준하세요 · Esc 취소";return
 	placement_point=hit.position
 	var ground_height: float=surface_world.terrain.field.height(placement_point.x,placement_point.z)
 	var on_surface: bool=absf(placement_point.y-ground_height)<1.5
 	if on_surface:placement_point.y=ground_height
 	placement_ghost.position=placement_point;placement_ghost.show()
 	var packet: Dictionary=session.surface
-	var world: Dictionary=session.authority.world if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
+	var world: Dictionary=FrontierShuttles.context(session.authority.world,session.latest.self_id) if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
 	var current:=FrontierExpeditionBusiness.site(world)
-	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.placement(world,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
+	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
 	if not on_surface:reason="지표의 평탄한 지면에 배치하세요 · Esc 취소"
+	if reason.is_empty() and not surface_world.ready_at(placement_point):reason="지면을 불러오는 중입니다."
+	placement_reason=reason
 	placement_valid=on_surface and reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
 	status.value=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason
@@ -793,11 +836,11 @@ func start_solo(fresh: bool=false) -> void:
 	if session.host(profile,world_store,24560,"*",true):
 		remember_world(true)
 		session.send_request("start_game",{})
-		lobby.hide();panel.show();outside=not FrontierCrewSurface.landed(session.authority.world);exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
+		lobby.hide();panel.show();outside=session.latest.crew.get("landing",{}).is_empty();exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 func depart_selected() -> void:
 	navigation_ui.start_route(selected_ordinal)
 func travel_action(action: String) -> void:
-	if session.offline:
+	if session.offline or not session.latest.get("local_shuttle","").is_empty():
 		session.send_request("ready",{"value":true})
 		if not session.latest.crew.members[session.latest.self_id].ready:return
 	session.send_request(action,{})
@@ -822,8 +865,10 @@ func toggle_inventory() -> void:
 	if not session.active or session.latest.get("phase")!="playing":return
 	open_menu(inventory_panel)
 func use_equipped() -> void:
+	if not rovers.seat().is_empty():return
 	var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 제작한 장비를 장착하세요.");return
+	if tool.kind=="miner" and not session.mining_ready():return
 	dig_timer=float(tool.interval)
 	match tool.kind:
 		"miner":

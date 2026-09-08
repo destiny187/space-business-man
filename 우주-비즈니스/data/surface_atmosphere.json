@@ -10,6 +10,45 @@
   "clear_fog_density": 0.00012,
   "pollution_fog_density": 0.0011,
   "cave_fog_density": 0.002,
-  "surface_ambient": [0.07, 0.32],
-  "cave_ambient": 0.035
+  "surface_ambient": [
+    0.07,
+    0.32
+  ],
+  "cave_ambient": 0.035,
+  "particles": {
+    "radius": 22.0,
+    "height": 9.0,
+    "ground_refresh_seconds": 0.4,
+    "dry_water_max": 35.0,
+    "freeze_temperature": 0.0,
+    "frozen_temperature": -45.0,
+    "mist_water_min": 25.0,
+    "mist_water_full": 75.0,
+    "hot_temperature": 65.0,
+    "hot_temperature_full": 180.0,
+    "wind_level": 0.18,
+    "layers": {
+      "dust": {
+        "count": 110,
+        "size": 0.065,
+        "opacity": 0.48,
+        "speed": 2.8,
+        "fall": 0.08
+      },
+      "ice": {
+        "count": 100,
+        "size": 0.1,
+        "opacity": 0.65,
+        "speed": 1.1,
+        "fall": 0.7
+      },
+      "mist": {
+        "count": 24,
+        "size": 3.8,
+        "opacity": 0.09,
+        "speed": 0.55,
+        "fall": 0.0
+      }
+    }
+  }
 }

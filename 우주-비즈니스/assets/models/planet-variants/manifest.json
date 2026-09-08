@@ -4,164 +4,431 @@
     "kind": "basalt",
     "source": "art/blender/planet-variants/oxidized.blend",
     "model": "res://assets/models/planet-variants/oxidized.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/oxidized_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/oxidized.glb",
+        "triangles": 65024,
+        "sha256": "c9b4d435bd6c4b0a47bfcd949c24d0213b4c9407ece2f695ff3f97bdb774a328"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/oxidized_lod1.glb",
+        "triangles": 11704,
+        "sha256": "1da1ddddb495af785d6b6d77980c0701d6eb1cc1fd53487bb1a2f8602bb189fd"
+      }
+    }
   },
   {
     "id": "continental",
     "kind": "basalt",
     "source": "art/blender/planet-variants/continental.blend",
     "model": "res://assets/models/planet-variants/continental.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/continental_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/continental.glb",
+        "triangles": 65024,
+        "sha256": "59e65bd36d6f9d4deb63273ba884b6a2275942404352d78bfa41c3167da67695"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/continental_lod1.glb",
+        "triangles": 11704,
+        "sha256": "fb00b2e4e89e0952907679f2137a6929a7290ccf7d5e2c0f517d5bddbef330e2"
+      }
+    }
   },
   {
     "id": "cratered",
     "kind": "basalt",
     "source": "art/blender/planet-variants/cratered.blend",
     "model": "res://assets/models/planet-variants/cratered.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/cratered_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/cratered.glb",
+        "triangles": 65024,
+        "sha256": "0fbe6341e2b8f66fb74677d1c0a4e07d92b6da757559255e670bdb18f59397b5"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/cratered_lod1.glb",
+        "triangles": 11704,
+        "sha256": "75b4b9a875d30618c5700929fed0a6917bf3ab1b594395360bebe6b1d4d834d2"
+      }
+    }
   },
   {
     "id": "fractured",
     "kind": "glacial",
     "source": "art/blender/planet-variants/fractured.blend",
     "model": "res://assets/models/planet-variants/fractured.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/fractured_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/fractured.glb",
+        "triangles": 65024,
+        "sha256": "aaa1b167007e33d913dd6c411210ef35d3054719eee0e434748e204d150e71f9"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/fractured_lod1.glb",
+        "triangles": 11704,
+        "sha256": "c7fa81524b3f94df06fe48832d392b60f8df55d2496122b3cba6b3d8a26003f8"
+      }
+    }
   },
   {
     "id": "tundra",
     "kind": "glacial",
     "source": "art/blender/planet-variants/tundra.blend",
     "model": "res://assets/models/planet-variants/tundra.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/tundra_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/tundra.glb",
+        "triangles": 65024,
+        "sha256": "62126e429e04f9ce6485b371f4585a1aef44bd98738afd3804a5e7a5db4f6038"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/tundra_lod1.glb",
+        "triangles": 11704,
+        "sha256": "15d8253759fe262a94b62ccf2f6aa8491e8f6a90b8a91b3c05430d5de58ec426"
+      }
+    }
   },
   {
     "id": "frozen",
     "kind": "glacial",
     "source": "art/blender/planet-variants/frozen.blend",
     "model": "res://assets/models/planet-variants/frozen.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/frozen_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/frozen.glb",
+        "triangles": 65024,
+        "sha256": "d01e2ee45040e4161e90a4c79b716dd41fe461b4d8606134068d5905d5930d2f"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/frozen_lod1.glb",
+        "triangles": 11704,
+        "sha256": "3c574322111594d878df9bcac073ecf704a0424ec6c77a68f6230f208198090d"
+      }
+    }
   },
   {
     "id": "volcanic",
     "kind": "sulfur",
     "source": "art/blender/planet-variants/volcanic.blend",
     "model": "res://assets/models/planet-variants/volcanic.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/volcanic_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/volcanic.glb",
+        "triangles": 65024,
+        "sha256": "e2038907af4732f322bbabc8e82c5974ceb6a10ccfb759ebd18972b75e09e1eb"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/volcanic_lod1.glb",
+        "triangles": 11704,
+        "sha256": "c9e8b618d8fa6e4bf183c548013d08da73ed0d5213eca1ae7321620c60f863e1"
+      }
+    }
   },
   {
     "id": "salt",
     "kind": "sulfur",
     "source": "art/blender/planet-variants/salt.blend",
     "model": "res://assets/models/planet-variants/salt.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/salt_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/salt.glb",
+        "triangles": 65024,
+        "sha256": "f309cd8207e3f2d6a0491e86e7d7126a94ed0aa2313b04ca351db287f69eff36"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/salt_lod1.glb",
+        "triangles": 11704,
+        "sha256": "3c187615679a7f55c4c3f291ca5f2493d855c3e3a8fa9c29296591330e446133"
+      }
+    }
   },
   {
     "id": "ochre",
     "kind": "sulfur",
     "source": "art/blender/planet-variants/ochre.blend",
     "model": "res://assets/models/planet-variants/ochre.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/ochre_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/ochre.glb",
+        "triangles": 65024,
+        "sha256": "039b86cfc7deee4fc8ff4d4b3f5e7157054461e0151b7f3a9abb04847f849050"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/ochre_lod1.glb",
+        "triangles": 11704,
+        "sha256": "55986c38fe0b969185c247107e01563d57e9efd22690de37ff3ae49a65fe4f99"
+      }
+    }
   },
   {
     "id": "banded",
     "kind": "gas_giant",
     "source": "art/blender/planet-variants/banded.blend",
     "model": "res://assets/models/planet-variants/banded.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/banded_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/banded.glb",
+        "triangles": 65024,
+        "sha256": "eee1ac8a8de134447e10b83feaa9e35d226862e53ca2343337d6f558d555cbdd"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/banded_lod1.glb",
+        "triangles": 11704,
+        "sha256": "0152c870bd789ba60cbe2eea2a2c225723ac9d5cfb45d2326303f09c8ed316e9"
+      }
+    }
   },
   {
     "id": "storm",
     "kind": "gas_giant",
     "source": "art/blender/planet-variants/storm.blend",
     "model": "res://assets/models/planet-variants/storm.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/storm_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/storm.glb",
+        "triangles": 65024,
+        "sha256": "9f8fdbeef267f50537f44bd1dd354d75caeafc78ceefe72fb97d9afdd37c96d5"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/storm_lod1.glb",
+        "triangles": 11704,
+        "sha256": "33cff335f5a155edeb3f7e9c2275cd1fe656ee8efa5f5624567a43ebef75516d"
+      }
+    }
   },
   {
     "id": "pale",
     "kind": "gas_giant",
     "source": "art/blender/planet-variants/pale.blend",
     "model": "res://assets/models/planet-variants/pale.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/pale_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/pale.glb",
+        "triangles": 65024,
+        "sha256": "e3ef659369e9852082627903c6462f96c7a4ef7dd5e881c18b4620c78d2fb356"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/pale_lod1.glb",
+        "triangles": 11704,
+        "sha256": "d6fc4085b4eab739162964ef22c2c8ca1102c8832a207e4c8fd1903bcd6f345f"
+      }
+    }
   },
   {
     "id": "azure",
     "kind": "ice_giant",
     "source": "art/blender/planet-variants/azure.blend",
     "model": "res://assets/models/planet-variants/azure.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/azure_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/azure.glb",
+        "triangles": 65024,
+        "sha256": "9e38aa2bc1acb326c6525ededc91b32b05df6578026c0c403a2fe271c5b9fdab"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/azure_lod1.glb",
+        "triangles": 11704,
+        "sha256": "c0e5fc04adc06e725c700b2aaaf1e50619023975ff7df258218b3ee26ecf7d35"
+      }
+    }
   },
   {
     "id": "turquoise",
     "kind": "ice_giant",
     "source": "art/blender/planet-variants/turquoise.blend",
     "model": "res://assets/models/planet-variants/turquoise.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/turquoise_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/turquoise.glb",
+        "triangles": 65024,
+        "sha256": "7d0c262bf3fa8eefaff5b772e0eff721e3cd246c9706587b1b4cab04faafeac8"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/turquoise_lod1.glb",
+        "triangles": 11704,
+        "sha256": "e3d80d728eb4bf16499531f1739eee13c0fdc0038d8ae1c9372321120d5ed3e7"
+      }
+    }
   },
   {
     "id": "violet",
     "kind": "ice_giant",
     "source": "art/blender/planet-variants/violet.blend",
     "model": "res://assets/models/planet-variants/violet.glb",
-    "triangles": 36480,
-    "mask": "COLOR.r authored relief / COLOR.g crater rims",
-    "version": 1,
-    "validation": "Blender Cycles + Godot 4.7.2 Metal Forward+ flight renderer",
-    "preview": "docs/production/media/planet-diversity/godot-variants.png"
+    "lod_model": "res://assets/models/planet-variants/violet_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "ink-life-1",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/violet.glb",
+        "triangles": 65024,
+        "sha256": "d9ed4e8e28f23c4cab766fabb44536088ddf1d79bda7ac78640585f1ec1c7f64"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/violet_lod1.glb",
+        "triangles": 11704,
+        "sha256": "fac6f3a6857524f42fb432616294d3dd0ed1dca15ee67e7da9d9ce6cf939ec54"
+      }
+    }
+  },
+  {
+    "id": "sedimentary",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/sedimentary.blend",
+    "model": "res://assets/models/planet-variants/sedimentary.glb",
+    "lod_model": "res://assets/models/planet-variants/sedimentary_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "surface-v2",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/sedimentary.glb",
+        "triangles": 65024,
+        "sha256": "4e6d197e44bccdbc0227b372a25aaf88e9baa1d8418c55b567c551a25ce34abc"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/sedimentary_lod1.glb",
+        "triangles": 11704,
+        "sha256": "17a1dab3e007095d0f4c2adfa023c15c0d94ae5e26693f0663794f9c00bdc61e"
+      }
+    }
+  },
+  {
+    "id": "crystalline",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/crystalline.blend",
+    "model": "res://assets/models/planet-variants/crystalline.glb",
+    "lod_model": "res://assets/models/planet-variants/crystalline_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "surface-v2",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/crystalline.glb",
+        "triangles": 65024,
+        "sha256": "84b39dfca36f3b593f0025008aaba43a51115e62e120361b46abb963d3247437"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/crystalline_lod1.glb",
+        "triangles": 11704,
+        "sha256": "8e50ad147723dd62e38530ad7260b72cf7f4f8d06bee26672e081ed846258643"
+      }
+    }
+  },
+  {
+    "id": "alkaline",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/alkaline.blend",
+    "model": "res://assets/models/planet-variants/alkaline.glb",
+    "lod_model": "res://assets/models/planet-variants/alkaline_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "surface-v2",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/alkaline.glb",
+        "triangles": 65024,
+        "sha256": "feb45c3c3b3779cd4fdb11cd4264798fa70d02a77a101594dcc111ec2889235f"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/alkaline_lod1.glb",
+        "triangles": 11704,
+        "sha256": "8295ea5e7bc5567fa06d6378471d2c390c3a1de378416d5d51ef710313078d4c"
+      }
+    }
   }
 ]

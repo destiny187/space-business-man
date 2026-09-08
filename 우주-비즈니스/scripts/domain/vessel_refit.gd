@@ -43,7 +43,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 	var vessel: Dictionary=world.vessel
 	var kind: String=str(args.get("module_type",""));var id: String=str(args.get("module_id",""))
 	var site:=FrontierExpeditionBusiness.site(world)
-	if action in ["vessel_build","vessel_draw","vessel_upgrade"] and (site.is_empty() or site.state!="active"):return "진행 중인 현장 사업의 재료 창고가 필요합니다."
+	if action in ["vessel_build","vessel_draw","vessel_upgrade"] and (site.is_empty() or not FrontierPlanetSupply.operating(site)):return "진행 중인 현장 사업의 재료 창고가 필요합니다."
 	var credits:=0;var materials: Dictionary={};var parts:=0
 	match action:
 		"vessel_build":

@@ -29,7 +29,7 @@ func update_snapshot(value: Dictionary) -> void:
 	if checked_world!=key:
 		checked_world=key
 		if solar and not bool(seen.get_value("read",key,false)):letter.show();Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
-	depart.visible=value.crew.get("landing",{}).is_empty() and nav.mode=="idle" and not letter.visible
+	depart.visible=value.get("local_shuttle","").is_empty() and value.crew.get("landing",{}).is_empty() and nav.mode=="idle" and not letter.visible
 	depart.disabled=false
 	depart.text=("출격하기  [G]" if solar else "고속 항해  [G]")
 

@@ -1,0 +1,1025 @@
+{
+  "checked_at": "2026-09-08T03:21:53.425644+00:00",
+  "scope": "Current catalog assets and source mapping; not all seeds or physical exoplanet possibilities",
+  "archetypes": {
+    "oxidized": {
+      "kind": "basalt",
+      "name": "산화 사막",
+      "dust": "b56745",
+      "rock": "633e36",
+      "sea": "183e50",
+      "water": 0,
+      "pressure": 0.22,
+      "oxygen": 0.015,
+      "toxicity": 35,
+      "temperature": 28,
+      "geology": "metallic",
+      "relief": 34,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.03,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16,
+        "surface_geology": {
+          "version": 1,
+          "shelf_height": 0.32,
+          "wash_depth": 0.48
+        }
+      }
+    },
+    "continental": {
+      "kind": "basalt",
+      "name": "습윤 대륙",
+      "dust": "8a9865",
+      "rock": "515b48",
+      "sea": "205e83",
+      "water": 65,
+      "pressure": 1.0,
+      "oxygen": 0.19,
+      "toxicity": 8,
+      "temperature": 18,
+      "geology": "weathered",
+      "relief": 23,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.08,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "cratered": {
+      "kind": "basalt",
+      "name": "충돌 고원",
+      "dust": "aaa596",
+      "rock": "565865",
+      "sea": "244456",
+      "water": 8,
+      "pressure": 0.12,
+      "oxygen": 0.005,
+      "toxicity": 18,
+      "temperature": -30,
+      "geology": "pegmatite",
+      "relief": 48,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.05,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "fractured": {
+      "kind": "glacial",
+      "name": "균열 빙원",
+      "dust": "c4e1e0",
+      "rock": "527e91",
+      "sea": "164958",
+      "water": 35,
+      "pressure": 0.55,
+      "oxygen": 0.06,
+      "toxicity": 12,
+      "temperature": -48,
+      "geology": "cryovolcanic",
+      "relief": 32,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.015,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "tundra": {
+      "kind": "glacial",
+      "name": "해빙 툰드라",
+      "dust": "a2aeac",
+      "rock": "5c6778",
+      "sea": "315e78",
+      "water": 48,
+      "pressure": 0.9,
+      "oxygen": 0.16,
+      "toxicity": 7,
+      "temperature": -8,
+      "geology": "icy_basin",
+      "relief": 25,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.055,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "frozen": {
+      "kind": "glacial",
+      "name": "극저온 설원",
+      "dust": "e0d5e5",
+      "rock": "7b7194",
+      "sea": "3d426c",
+      "water": 12,
+      "pressure": 0.18,
+      "oxygen": 0.008,
+      "toxicity": 10,
+      "temperature": -110,
+      "geology": "cryogenic",
+      "relief": 42,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.035,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "volcanic": {
+      "kind": "sulfur",
+      "name": "불타는 화산",
+      "dust": "ac6940",
+      "rock": "3b3540",
+      "sea": "51382e",
+      "water": 0,
+      "pressure": 1.8,
+      "oxygen": 0.01,
+      "toxicity": 75,
+      "temperature": 320,
+      "geology": "volcanic",
+      "relief": 55,
+      "cooling_threshold": 80,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.155,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "salt": {
+      "kind": "sulfur",
+      "name": "염류 분지",
+      "dust": "d4bc83",
+      "rock": "897454",
+      "sea": "437e78",
+      "water": 28,
+      "pressure": 1.15,
+      "oxygen": 0.08,
+      "toxicity": 45,
+      "temperature": 42,
+      "geology": "hydrothermal",
+      "relief": 20,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": 0.1,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "ochre": {
+      "kind": "sulfur",
+      "name": "황토 열수대",
+      "dust": "af9b4f",
+      "rock": "646340",
+      "sea": "356c68",
+      "water": 18,
+      "pressure": 0.85,
+      "oxygen": 0.06,
+      "toxicity": 55,
+      "temperature": 60,
+      "geology": "hydrothermal",
+      "relief": 38,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0023,
+        "plain_threshold": -0.06,
+        "transition": 0.14,
+        "plateau_relief": 12.0,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "banded": {
+      "kind": "gas_giant",
+      "name": "다층 구름대",
+      "dust": "e3cf9c",
+      "rock": "956647",
+      "sea": "bea880",
+      "water": 0,
+      "pressure": 8,
+      "oxygen": 0,
+      "toxicity": 100,
+      "temperature": -80,
+      "geology": "",
+      "relief": 0
+    },
+    "storm": {
+      "kind": "gas_giant",
+      "name": "거대 폭풍대",
+      "dust": "c99586",
+      "rock": "593f62",
+      "sea": "80748d",
+      "water": 0,
+      "pressure": 9,
+      "oxygen": 0,
+      "toxicity": 100,
+      "temperature": -60,
+      "geology": "",
+      "relief": 0
+    },
+    "pale": {
+      "kind": "gas_giant",
+      "name": "담황 제트대",
+      "dust": "d9dcb5",
+      "rock": "8c9a82",
+      "sea": "a3b7b3",
+      "water": 0,
+      "pressure": 7,
+      "oxygen": 0,
+      "toxicity": 100,
+      "temperature": -110,
+      "geology": "",
+      "relief": 0
+    },
+    "azure": {
+      "kind": "ice_giant",
+      "name": "청색 폭풍대",
+      "dust": "71b8e0",
+      "rock": "254581",
+      "sea": "607aaa",
+      "water": 0,
+      "pressure": 7,
+      "oxygen": 0,
+      "toxicity": 100,
+      "temperature": -150,
+      "geology": "",
+      "relief": 0
+    },
+    "turquoise": {
+      "kind": "ice_giant",
+      "name": "청록 구름대",
+      "dust": "9fe3ca",
+      "rock": "386f80",
+      "sea": "82bfc7",
+      "water": 0,
+      "pressure": 8,
+      "oxygen": 0,
+      "toxicity": 100,
+      "temperature": -180,
+      "geology": "",
+      "relief": 0
+    },
+    "violet": {
+      "kind": "ice_giant",
+      "name": "보랏빛 극대기",
+      "dust": "b6b4e5",
+      "rock": "514780",
+      "sea": "8d83ba",
+      "water": 0,
+      "pressure": 9,
+      "oxygen": 0,
+      "toxicity": 100,
+      "temperature": -170,
+      "geology": "",
+      "relief": 0
+    }
+  },
+  "resources": [
+    {
+      "id": "oxidized",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/oxidized.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "c9b4d435bd6c4b0a47bfcd949c24d0213b4c9407ece2f695ff3f97bdb774a328",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/oxidized_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "1da1ddddb495af785d6b6d77980c0701d6eb1cc1fd53487bb1a2f8602bb189fd",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "continental",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/continental.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "59e65bd36d6f9d4deb63273ba884b6a2275942404352d78bfa41c3167da67695",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/continental_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "fb00b2e4e89e0952907679f2137a6929a7290ccf7d5e2c0f517d5bddbef330e2",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "cratered",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/cratered.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "0fbe6341e2b8f66fb74677d1c0a4e07d92b6da757559255e670bdb18f59397b5",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/cratered_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "75b4b9a875d30618c5700929fed0a6917bf3ab1b594395360bebe6b1d4d834d2",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "fractured",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/fractured.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "aaa1b167007e33d913dd6c411210ef35d3054719eee0e434748e204d150e71f9",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/fractured_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "c7fa81524b3f94df06fe48832d392b60f8df55d2496122b3cba6b3d8a26003f8",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "tundra",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/tundra.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "62126e429e04f9ce6485b371f4585a1aef44bd98738afd3804a5e7a5db4f6038",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/tundra_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "15d8253759fe262a94b62ccf2f6aa8491e8f6a90b8a91b3c05430d5de58ec426",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "frozen",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/frozen.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "d01e2ee45040e4161e90a4c79b716dd41fe461b4d8606134068d5905d5930d2f",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/frozen_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "3c574322111594d878df9bcac073ecf704a0424ec6c77a68f6230f208198090d",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "volcanic",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/volcanic.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "e2038907af4732f322bbabc8e82c5974ceb6a10ccfb759ebd18972b75e09e1eb",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/volcanic_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "c9e8b618d8fa6e4bf183c548013d08da73ed0d5213eca1ae7321620c60f863e1",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "salt",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/salt.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "f309cd8207e3f2d6a0491e86e7d7126a94ed0aa2313b04ca351db287f69eff36",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/salt_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "3c187615679a7f55c4c3f291ca5f2493d855c3e3a8fa9c29296591330e446133",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "ochre",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/ochre.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "039b86cfc7deee4fc8ff4d4b3f5e7157054461e0151b7f3a9abb04847f849050",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/ochre_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "55986c38fe0b969185c247107e01563d57e9efd22690de37ff3ae49a65fe4f99",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "banded",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/banded.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "eee1ac8a8de134447e10b83feaa9e35d226862e53ca2343337d6f558d555cbdd",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/banded_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "0152c870bd789ba60cbe2eea2a2c225723ac9d5cfb45d2326303f09c8ed316e9",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "storm",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/storm.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "9f8fdbeef267f50537f44bd1dd354d75caeafc78ceefe72fb97d9afdd37c96d5",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/storm_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "33cff335f5a155edeb3f7e9c2275cd1fe656ee8efa5f5624567a43ebef75516d",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "pale",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/pale.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "e3ef659369e9852082627903c6462f96c7a4ef7dd5e881c18b4620c78d2fb356",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/pale_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "d6fc4085b4eab739162964ef22c2c8ca1102c8832a207e4c8fd1903bcd6f345f",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "azure",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/azure.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "9e38aa2bc1acb326c6525ededc91b32b05df6578026c0c403a2fe271c5b9fdab",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/azure_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "c0e5fc04adc06e725c700b2aaaf1e50619023975ff7df258218b3ee26ecf7d35",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "turquoise",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/turquoise.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "7d0c262bf3fa8eefaff5b772e0eff721e3cd246c9706587b1b4cab04faafeac8",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/turquoise_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "e3d80d728eb4bf16499531f1739eee13c0fdc0038d8ae1c9372321120d5ed3e7",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "violet",
+      "folder": "planet-variants",
+      "manifest_entry": true,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/violet.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "d9ed4e8e28f23c4cab766fabb44536088ddf1d79bda7ac78640585f1ec1c7f64",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        },
+        {
+          "path": "우주-비즈니스/assets/models/planet-variants/violet_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "fac6f3a6857524f42fb432616294d3dd0ed1dca15ee67e7da9d9ce6cf939ec54",
+          "manifest_hash_matches": true,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "mercury",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/mercury.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "1cebd83019fb53b3c4d649f5da71313be1574c51ea5b73f3f51b338cc249c86d",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/mercury_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "77d29daa1658fec92bfe5e6d6355f924061cbdef4ad37083407ca8f220850bd3",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "venus",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/venus.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "f518b27e83ed5217284a0ab7f13b081922bde1a8aa515deba941c664896a7c79",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/venus_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "9d0226e5105cbd14664b8a4055f40115297768c4259b11d5f58103b5b708b5fb",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "earth",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/earth.glb",
+          "valid_glb_header": true,
+          "mesh_count": 2,
+          "color0": true,
+          "sha256": "cc60277d022740768910d13912319fc4cf28980694696b39ddd88f78eef925df",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/earth_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 2,
+          "color0": true,
+          "sha256": "7f52448a3e27dccb85c5d91cd2dd45fcf6334d8bac5f3994c4fc081ac2477222",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "mars",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/mars.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "9e00451fdd6cf49828af9016de8c9504454c78e80e174cf88e13090a67ff8d2c",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/mars_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "b3b67ada386aa32c344a17ffecde87ab68115c8f81b3c1c903cfb42be2aa6697",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "jupiter",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/jupiter.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "6b3855b553d070c5b6697a5164f1bccc5029eb0ce027027782315b3bcfa45605",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/jupiter_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "3e3ecef93546bdc8eafe80f848315bcfac0dab0cae6a2ab8405bab4ee24caec7",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "saturn",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/saturn.glb",
+          "valid_glb_header": true,
+          "mesh_count": 6,
+          "color0": true,
+          "sha256": "f2ab558d22c537aede0471a457c2ec53d79dfcba7c9cfccec34b8ac1ae10105a",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/saturn_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 6,
+          "color0": true,
+          "sha256": "2c995a164958a8f0363f190f78f6cad7d2da966cf9779ca505712286f47bbfc9",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "uranus",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/uranus.glb",
+          "valid_glb_header": true,
+          "mesh_count": 4,
+          "color0": true,
+          "sha256": "987c573dd706b0c705af21551f59f752be85a1f7f51f71c105cb5ececf4837c4",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/uranus_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 4,
+          "color0": true,
+          "sha256": "057b5848284b7913da7ea8b826522eed4c5942f8e9da7b94c9b3040bdd4a6605",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    },
+    {
+      "id": "neptune",
+      "folder": "solar-system",
+      "manifest_entry": false,
+      "source_exists": true,
+      "meshes": [
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/neptune.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "c1cba8101cd67e41065f8008ae0ea6d094f4ae2247c777b5fea22eac0cb87caa",
+          "manifest_hash_matches": null,
+          "catalog_registered": true
+        },
+        {
+          "path": "우주-비즈니스/assets/models/solar-system/neptune_lod1.glb",
+          "valid_glb_header": true,
+          "mesh_count": 1,
+          "color0": true,
+          "sha256": "33fef9e0e74f3d93e8d03253bac3234e2744976742fdc263087839e5d7c29c81",
+          "manifest_hash_matches": null,
+          "catalog_registered": false
+        }
+      ]
+    }
+  ],
+  "surface_families": {
+    "oxidized": {
+      "models": [
+        "res://assets/models/surface-details/oxidized_0.glb",
+        "res://assets/models/surface-details/oxidized_1.glb",
+        "res://assets/models/surface-details/oxidized_2.glb",
+        "res://assets/models/surface-details/oxidized_3.glb"
+      ],
+      "all_exist": true
+    },
+    "continental": {
+      "models": [
+        "res://assets/models/surface-details/continental_0.glb",
+        "res://assets/models/surface-details/continental_1.glb",
+        "res://assets/models/surface-details/continental_2.glb",
+        "res://assets/models/surface-details/continental_3.glb"
+      ],
+      "all_exist": true
+    },
+    "cratered": {
+      "models": [
+        "res://assets/models/surface-details/cratered_0.glb",
+        "res://assets/models/surface-details/cratered_1.glb",
+        "res://assets/models/surface-details/cratered_2.glb",
+        "res://assets/models/surface-details/cratered_3.glb"
+      ],
+      "all_exist": true
+    },
+    "fractured": {
+      "models": [
+        "res://assets/models/surface-details/fractured_0.glb",
+        "res://assets/models/surface-details/fractured_1.glb",
+        "res://assets/models/surface-details/fractured_2.glb",
+        "res://assets/models/surface-details/fractured_3.glb"
+      ],
+      "all_exist": true
+    },
+    "tundra": {
+      "models": [
+        "res://assets/models/surface-details/tundra_0.glb",
+        "res://assets/models/surface-details/tundra_1.glb",
+        "res://assets/models/surface-details/tundra_2.glb",
+        "res://assets/models/surface-details/tundra_3.glb"
+      ],
+      "all_exist": true
+    },
+    "frozen": {
+      "models": [
+        "res://assets/models/surface-details/frozen_0.glb",
+        "res://assets/models/surface-details/frozen_1.glb",
+        "res://assets/models/surface-details/frozen_2.glb",
+        "res://assets/models/surface-details/frozen_3.glb"
+      ],
+      "all_exist": true
+    },
+    "volcanic": {
+      "models": [
+        "res://assets/models/surface-details/volcanic_0.glb",
+        "res://assets/models/surface-details/volcanic_1.glb",
+        "res://assets/models/surface-details/volcanic_2.glb",
+        "res://assets/models/surface-details/volcanic_3.glb"
+      ],
+      "all_exist": true
+    },
+    "salt": {
+      "models": [
+        "res://assets/models/surface-details/salt_0.glb",
+        "res://assets/models/surface-details/salt_1.glb",
+        "res://assets/models/surface-details/salt_2.glb",
+        "res://assets/models/surface-details/salt_3.glb"
+      ],
+      "all_exist": true
+    },
+    "ochre": {
+      "models": [
+        "res://assets/models/surface-details/ochre_0.glb",
+        "res://assets/models/surface-details/ochre_1.glb",
+        "res://assets/models/surface-details/ochre_2.glb",
+        "res://assets/models/surface-details/ochre_3.glb"
+      ],
+      "all_exist": true
+    }
+  },
+  "source_hashes": {
+    "data/galaxy.json": "ca1997d61dc32782c559aaae3fa5c53726731da0270307b8bfacff72d7b1729b",
+    "data/planet_diversity.json": "b5aedac1dfb73bcc90a4bbf39060c47df67f868196bdcec05eccbf8c2354247f",
+    "data/mineral_world.json": "e1cfd0f58d044af1268c9049242abb84b16b4614523f8e5d9a641aa000b9862b",
+    "scripts/domain/planet_traits.gd": "53f92524ba4f1f9fdeb54c4492780953f866acc1e923f1b70c7a6a3efb5bd82a",
+    "scripts/domain/mineral_world.gd": "f54227506fac845b6c828d1057329e434ca0bb0fd4d01c4b92a4a171ce92e6e1",
+    "scripts/app/space_flight.gd": "54b8e2380792d396c36e18bd12a53d3db94ab0297649adb2c6ce535e2da93519",
+    "scripts/world/crew_surface_scene.gd": "41f1f92d62a0d6f9b66b034d7e603fabe3325d098f28ea5739fe0d4be9515911",
+    "assets/materials/space/planet.gdshader": "e83d6408da9393bac2152bd6fa3774f419de8223ef512107e807efbda6d359a4",
+    "assets/materials/space/terrain.gdshader": "0945b31d0d263efd8fca4a848fe09b218e764c5ecdfc1ef71fed7156c88dda14"
+  },
+  "asset_problems": []
+}

@@ -1,0 +1,49 @@
+{
+  "id": "bio_winged_03",
+  "lods": {
+    "near": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_winged_03_near.glb",
+      "sha256": "eaafaabfb480d943c8481c1b124fd8b54b9fb2bb5dc5967938a116c1f4a10427",
+      "triangles": 32508
+    },
+    "far": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_winged_03_far.glb",
+      "sha256": "69958e44c0be9e4e9fb2058354215e16ad1a5d72b83376655705995df9eb0e89",
+      "triangles": 9086
+    }
+  },
+  "geometry": {
+    "near": {
+      "geometry_hash": "3926c369eb39d2e8684964abb0b5573bb4e56a5544bb0f478426401c9c4be44b",
+      "vertices": 16119,
+      "floor_y": 0.0268,
+      "ceiling_y": 1.5873,
+      "min": [
+        -1.6874,
+        0.0268,
+        -1.5641
+      ],
+      "max": [
+        1.6874,
+        1.5873,
+        1.08
+      ]
+    },
+    "far": {
+      "geometry_hash": "1740b3929026442651421302bf7051eb081f74ed5089e11dcc7ccfeca601b180",
+      "vertices": 4412,
+      "floor_y": 0.0269,
+      "ceiling_y": 1.5873,
+      "min": [
+        -1.6874,
+        0.0269,
+        -1.5641
+      ],
+      "max": [
+        1.6874,
+        1.5873,
+        1.0797
+      ]
+    }
+  }
+}

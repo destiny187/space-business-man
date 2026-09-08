@@ -1,9 +1,11 @@
 class_name FrontierFieldHud
 extends Control
 var scan_card: FrontierSurveyCard
+var environment: FrontierEnvironmentHud
 var instruments: FrontierFieldInstruments
 var app: FrontierCrewExpedition
 var place: Label
+var day_dial: DayDial
 var location: Label
 var return_label: Label
 var ship_direction: TextureRect
@@ -25,7 +27,11 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	instruments=FrontierFieldInstruments.new();add_child(instruments);instruments.configure(app)
 	scan_card=FrontierSurveyCard.new();scan_card.configure(app);add_child(scan_card)
 	var heading:=VBoxContainer.new();heading.position=Vector2(32,28);heading.add_theme_constant_override("separation",4);heading.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(heading)
-	place=FrontierInterfaceStyle.label(heading,"",24);location=FrontierInterfaceStyle.label(heading,"",12,Color("d0d6ce"))
+	place=FrontierInterfaceStyle.label(heading,"",24)
+	environment=FrontierEnvironmentHud.new();heading.add_child(environment);environment.configure(app)
+	var local_row:=HBoxContainer.new();heading.add_child(local_row)
+	day_dial=DayDial.new();local_row.add_child(day_dial)
+	location=FrontierInterfaceStyle.label(local_row,"",12,Color("d0d6ce"))
 	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=TextureRect.new();ship_direction.texture=load("res://assets/ui/interface/ship.svg");ship_direction.custom_minimum_size=Vector2(22,22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
 	saved=FrontierInterfaceStyle.label(self,"✓",16,FrontierInterfaceStyle.ACCENT)
 	context=PanelContainer.new();context.mouse_filter=Control.MOUSE_FILTER_IGNORE;context.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color("10191fdb"),Color("31434d00"),10));add_child(context)
@@ -47,6 +53,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	toast=PanelContainer.new();toast.theme=theme;toast.mouse_filter=Control.MOUSE_FILTER_IGNORE;toast.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.WARNING,12));get_parent().add_child(toast)
 	toast_label=FrontierInterfaceStyle.label(toast,"",13,FrontierInterfaceStyle.WARNING);toast_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;toast_label.custom_minimum_size.x=360;toast.hide()
 	app.session.response_received.connect(func(_seq: int,result: Dictionary):
+		if result.get("code")=="mining_cooldown":return
 		if not result.get("ok",false):toast_label.text=str(result.get("error","실행할 수 없습니다."));toast_left=4)
 	for label in [place,location,return_label,equipment_name]:
 		label.add_theme_color_override("font_shadow_color",Color("081218e0"));label.add_theme_constant_override("shadow_offset_y",1);label.add_theme_constant_override("shadow_offset_x",1)
@@ -67,11 +74,20 @@ func _process(delta: float) -> void:
 	save_left=maxf(0,save_left-delta);saved.visible=save_left>0
 	var position: Vector3=app.actors[app.session.latest.self_id].position
 	place.text=app.surface_world.body.name
-	location.text="지표 탐사" if position.y>=-5 else "지하  %.0f m"%absf(position.y)
+	var depth:=maxf(0,app.surface_world.terrain.field.height(position.x,position.z)-position.y)
+	location.text="지표 탐사" if depth<5 else "지하  %.0f m"%depth
+	var air=app.surface_world.atmosphere
+	day_dial.visible=not air.cycles.is_empty()
+	if day_dial.visible:
+		day_dial.height=float(air.sky_state.sun_height);day_dial.queue_redraw()
+		location.text+=" · "+air.cycle_label()
+		var a: Dictionary=app.surface_world.body.astro
+		location.tooltip_text="동주기 자전 · 같은 지역은 낮/밤 면 유지" if a.spin_state=="synchronous" else "현지 하루 약 %.1f시간 · 플레이 약 %.1f분"%[float(a.mean_solar_seconds)/3600.0,float(a.mean_solar_seconds)/float(a.time_scale)/60.0]
 	var ship:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)
 	return_label.text="%.0f m"%position.distance_to(ship)
 	var tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	equipment_name.text=tool.get("name","I  장비 준비")
+	equipment_name.get_parent().visible=app.rovers==null or app.rovers.seat().is_empty()
 	cooldown.value=100*(1-clampf(app.dig_timer/maxf(.1,float(tool.get("interval",1))),0,1))
 	context.hide();target_bar.hide()
 	var target:=app.surface_world.business_view.target(app.camera,app.actors[app.session.latest.self_id])
@@ -84,7 +100,7 @@ func _process(delta: float) -> void:
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		if site.is_empty():target_action.text="광맥 조준 · 클릭 유지로 채집"
 		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
-		target_action.text+=" · E 유지  조사"
+		target_action.text+=" · E 유지  조사\nR  로봇 1대 지시 · "+("고등급 자동 선정" if app.preferred_robot_id.is_empty() else app.preferred_robot_id+" 우선")
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)
@@ -99,7 +115,29 @@ func _process(delta: float) -> void:
 		var row: Dictionary=site.get("buildings",{}).get(target.id,{})
 		target_name.text="현장 창고" if target.get("kind")=="base" else ("M-01 로봇" if target.get("kind")=="robot" else FrontierCatalog.entry("buildings",row.get("type","")).get("name","회수 화물"))
 		target_icon.texture=load("res://assets/ui/interface/build.svg");target_action.text="F  로봇 제작소" if row.get("type","")=="factory" else "F  열기";target_action.modulate=Color.WHITE;context.show()
+		if not row.is_empty():
+			target_action.text+="\n"+("▶ " if row.get("working",false) else "Ⅱ ")+str(row.get("status",""))
+			target_action.modulate=FrontierInterfaceStyle.ACCENT if row.get("working",false) else FrontierInterfaceStyle.WARNING
 	var size:=get_viewport().get_visible_rect().size
 	context.position=Vector2(size.x/2+24,size.y/2+36)
 
+	if not app.placement_kind.is_empty():
+		var def:=FrontierCatalog.entry("buildings",app.placement_kind)
+		target_icon.texture=FrontierInterfaceStyle.icon(def.model)
+		target_name.text=("✓ 건설 가능 · " if app.placement_valid else "× 건설 불가 · ")+str(def.name)
+		target_action.text="클릭 건설 · 가방 "+FrontierCatalog.cost_text(def.cost) if app.placement_valid else app.placement_reason
+		target_action.modulate=FrontierInterfaceStyle.ACCENT if app.placement_valid else FrontierInterfaceStyle.WARNING
+		target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
+		context.show();target_bar.hide()
+	else:target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
+	context.position.x=minf(context.position.x,size.x-context.size.x-24)
 	if scan_card.visible:context.hide()
+
+class DayDial extends Control:
+	var height:=1.0
+	func _init() -> void:custom_minimum_size=Vector2(28,19);mouse_filter=Control.MOUSE_FILTER_IGNORE
+	func _draw() -> void:
+		draw_line(Vector2(2,10),Vector2(26,10),Color("718794"),1.0,true)
+		draw_arc(Vector2(14,10),9,PI,TAU,20,Color("536b7b"),1.0,true)
+		var point:=Vector2(14,10-clampf(height,-1,1)*7)
+		draw_circle(point,3.2,Color("ffc77f") if height>-.1 else Color("a2c4e8"),true,-1,true)

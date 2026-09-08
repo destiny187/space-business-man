@@ -11,6 +11,7 @@ var prepared_models: Dictionary={}
 var synchronous_resources:=DisplayServer.get_name()=="headless"
 var ghosts: Node3D
 var restore_amount:=0.0
+var visual_temperature: float=NAN
 var presentation_points: Array[Vector3]=[]
 var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
@@ -21,7 +22,21 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=2.0;collision.shape=shape;collision.position.y=1;root.add_child(collision)
 	var label:=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.004;label.position.y=3.0;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;label.render_priority=110;label.outline_render_priority=109;root.add_child(label)
 	root.set_meta("label",label);root.set_meta("visual",visual);root.set_meta("parts",visual.find_children("Anim_*","Node3D",true,false))
-	add_child(root);nodes[id]=root;return root
+	if kind=="robot":
+		var rotor:=visual.find_child("ToolRotor",true,false)
+		if rotor!=null:root.get_meta("parts").append(rotor)
+		var intake:=Node3D.new();intake.name="DrillIntake";intake.position=Vector3(-.43,1.35,2.45);visual.add_child(intake);root.set_meta("intake",intake)
+	for part in root.get_meta("parts"):part.set_meta("rest_position",part.position)
+	add_child(root)
+	if kind=="building":
+		var top:=3.0
+		for mesh in visual.find_children("*","MeshInstance3D",true,false):
+			var bounds: AABB=mesh.get_aabb()
+			for x in [bounds.position.x,bounds.end.x]:
+				for y in [bounds.position.y,bounds.end.y]:
+					for z in [bounds.position.z,bounds.end.z]:top=maxf(top,root.to_local(mesh.to_global(Vector3(x,y,z))).y+.45)
+		label.position.y=top
+	nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
 	var registered: bool=value.get("sites",{}).has(body.id)
@@ -49,10 +64,13 @@ func accept(value: Dictionary) -> void:
 		wanted[row.id]=true
 		if not nodes.has(row.id):
 			_queue_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building");continue
-		nodes[row.id].get_meta("label").text=FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
+		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active
+		var symbol: String="▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! "))
+		nodes[row.id].get_meta("label").text=symbol+FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
+		nodes[row.id].get_meta("label").modulate=Color("82f5d2") if working else Color("f2c077")
 		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
 		_upgrade_visual(nodes[row.id],row,false)
-		nodes[row.id].set_meta("working",row.active)
+		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active)
 	for row in site.robots.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"miner",FrontierExpeditionBusiness.point(row.position),.7,"robot");continue
@@ -60,6 +78,8 @@ func accept(value: Dictionary) -> void:
 		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
 		_upgrade_visual(nodes[row.id],row,true)
 		nodes[row.id].set_meta("working",row.status=="채광 중")
+		var vein:=FrontierExpeditionBusiness.find_vein(body,str(row.target))
+		nodes[row.id].set_meta("aim",FrontierMineralWorld.point(terrain.field,vein) if not vein.is_empty() else Vector3.INF)
 	for id in value.get("crates",{}):
 		var row: Dictionary=value.crates[id]
 		wanted[id]=true
@@ -83,6 +103,12 @@ func target(camera: Camera3D,viewer: CollisionObject3D) -> Dictionary:
 	if hit.is_empty() or not hit.collider.has_meta("business_kind"):return {}
 	return {"id":hit.collider.get_meta("business_id"),"kind":hit.collider.get_meta("business_kind")}
 func _process(dt: float) -> void:
+	if terrain!=null and terrain.material is ShaderMaterial:
+		var native: float=body.get("traits",{}).get("temperature",20)
+		var target: float=ledger.get("sites",{}).get(body.id,{}).get("environment",{}).get("temperature",native)
+		if is_nan(visual_temperature):visual_temperature=native
+		visual_temperature=lerpf(visual_temperature,target,1.0-exp(-dt/float(FrontierSurfaceMaterialLibrary.config().transition_seconds)))
+		terrain.material.set_shader_parameter("local_temperature",visual_temperature)
 	if presentation_points.is_empty() and FrontierMineralWorld.enabled(body):
 		var viewer:=get_viewport().get_camera_3d()
 		if viewer!=null:
@@ -97,9 +123,14 @@ func _process(dt: float) -> void:
 		if node.has_meta("destination"):
 			node.position=node.position.lerp(node.get_meta("destination"),minf(dt*8,1))
 			var direction: Vector3=node.position-previous
-			if direction.length()>.002:node.get_meta("visual").rotation.y=lerp_angle(node.get_meta("visual").rotation.y,atan2(-direction.x,-direction.z),minf(dt*8,1))
+			if node.get_meta("working",false) and node.get_meta("aim",Vector3.INF).is_finite():direction=node.get_meta("aim")-node.position
+			if direction.length()>.002:node.get_meta("visual").rotation.y=lerp_angle(node.get_meta("visual").rotation.y,atan2(direction.x,direction.z),minf(dt*8,1))
 		for part in node.get_meta("parts"):
-			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_x(-node.position.distance_to(previous)*4)
+			if part.name.begins_with("Anim_Piston"):
+				part.position=part.get_meta("rest_position")+Vector3.UP*(sin(Time.get_ticks_msec()*.005)*.18 if node.get_meta("working",false) else 0.0)
+			elif part.name.begins_with("Anim_Agitator") and node.get_meta("working",false):part.rotate_y(dt*1.3)
+			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_object_local(Vector3.UP,-node.position.distance_to(previous)*4)
+			elif node.get_meta("working",false) and part.name=="ToolRotor":part.rotate_object_local(Vector3.UP,dt*18)
 			elif node.get_meta("working",false) and (part.name.begins_with("Anim_Fan") or part.name.begins_with("Anim_Drill")):part.rotate_y(dt*6)
 
 func _vein_appearance(id: String,model: String) -> Dictionary:
@@ -133,7 +164,11 @@ func _exit_tree() -> void:
 		if ResourceLoader.load_threaded_get_status(path)!=ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:ResourceLoader.load_threaded_get(path)
 
 func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
-	if int(row.get("tier",1))!=2 or node.has_meta("tier2_visual"):return
+	if int(row.get("tier",1))<2:return
+	if int(row.get("tier",1))==3 and not node.has_meta("tier3_visual"):
+		var core: Node3D=load("res://assets/models/products/control_circuit.glb").instantiate()
+		FrontierInkStyle.apply(core,cache);node.get_meta("visual").add_child(core);core.position=Vector3(1.12,2.0,1.34);core.rotation=Vector3(PI/2,0,0);core.scale=Vector3.ONE*.65;node.set_meta("tier3_visual",true)
+	if node.has_meta("tier2_visual"):return
 	var visual: Node3D=node.get_meta("visual")
 	var pack: Node3D=load("res://assets/models/products/retrofit_pack.glb").instantiate()
 	FrontierInkStyle.apply(pack,cache);visual.add_child(pack)

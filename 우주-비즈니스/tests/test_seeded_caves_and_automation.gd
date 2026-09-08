@@ -66,9 +66,9 @@ func robot_checks() -> void:
 	world.crew={"owner_id":"test","members":{"test":{"position":[0,2,0]}},"landing":{"body_id":world.location}}
 	world.business=FrontierExpeditionBusiness.create()
 	world.business.technologies=["robotics"]
-	var factory: Dictionary={"id":"factory","type":"factory","position":[0,2,0],"tier":1,"active":true,"enabled":true}
+	var factory: Dictionary={"id":"factory","type":"factory","position":[0,2,0],"tier":1,"active":true,"enabled":true,"work":0.0}
 	var stock: Dictionary={"iron":999,"copper":999,"stone":999,"reinforced_frame":20,"control_circuit":20,"heat_transfer_unit":20}
-	var site: Dictionary={"state":"active","center":[0,2,0],"inventory":stock,"buildings":{"factory":factory},"jobs":{},"robots":{}}
+	var site: Dictionary={"state":"active","center":[0,2,0],"inventory":stock,"buildings":{"factory":factory},"jobs":{},"robots":{},"remaining":{}}
 	world.business.sites[world.location]=site;world.business.active=world.location
 	var before:=FrontierUniverse.fingerprint(world)
 	var error:=FrontierExpeditionBusiness.apply(world,"test","business_craft",{"building_id":"factory"},{})
@@ -93,3 +93,4 @@ func robot_checks() -> void:
 		var robot: Dictionary=site.robots.values()[0]
 		check(FrontierExpeditionBusiness.valid_robot(JSON.parse_string(JSON.stringify(robot)),robot.id),"T2 robot round trip retains a valid saved state")
 		check(FrontierProductionTier2.robot_capacity(robot)==64,"new robot uses T2 capacity")
+		check(robot.get("auto_enabled",false) and FrontierRobotWork.tier(robot)==2,"new T2 robot retains latest automatic mining and capability")

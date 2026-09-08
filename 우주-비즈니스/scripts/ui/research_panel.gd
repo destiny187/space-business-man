@@ -47,6 +47,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	action=Button.new();action.custom_minimum_size.y=44;detail_column.add_child(action);action.pressed.connect(func():app.session.send_request("business_technology",{"technology":selected}))
 	var note:=FrontierInterfaceStyle.label(detail,"설계도는 공동 연구로 영구 유지됩니다.\n장비·시설은 해금 후 재료로 제작하세요.",13,FrontierInterfaceStyle.MUTED);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	ecology=HBoxContainer.new();ecology.name="생태 조사 · 분석";tabs.add_child(ecology)
+	var efficiency:=FrontierProgressionResearchPanel.new();tabs.add_child(efficiency);efficiency.configure(app)
+	var logistics:=FrontierRoverWorkshop.new();tabs.add_child(logistics);logistics.configure(app)
 	hide()
 func _process(_delta: float) -> void:
 	if visible:refresh()

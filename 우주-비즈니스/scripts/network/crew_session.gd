@@ -5,6 +5,9 @@ signal notice(message: String)
 signal surface_received(value: Dictionary)
 signal response_received(sequence: int,value: Dictionary)
 signal request_started(sequence: int,kind: String,args: Dictionary)
+var mine_sequence:=0
+var mine_ready_at:=0
+var mine_revision:=0
 var authority: FrontierCrewAuthority
 var enet: ENetMultiplayerPeer
 var profile: FrontierPlayerProfile
@@ -169,13 +172,19 @@ func _snapshot(serial: int,value: Dictionary) -> void:
 @rpc("authority","call_remote","reliable",0)
 func _rejected(message: String) -> void:
 	active=false;notice.emit(message)
+func mining_ready() -> bool:
+	return mine_sequence==0 and Time.get_ticks_msec()>=mine_ready_at and not latest.is_empty() and int(latest.crew.revision)>=mine_revision
 func send_request(kind: String,args: Dictionary) -> bool:
 	if not active or latest.is_empty():notice.emit("참가 동기화가 끝난 뒤 실행하세요.");return false
+	if kind=="business_mine":
+		if not mining_ready():return false
+		mine_sequence=next_sequence
 	var request: Dictionary={"session_id":session_id,"sequence":next_sequence,"kind":kind,"args":args,"revision":latest.crew.revision}
 	next_sequence+=1
 	request_started.emit(int(request.sequence),kind,args)
 	if hosting:
-		var result:=authority.request(1,request);response_received.emit(int(request.sequence),result);_publish();_publish_surface()
+		authority.now=Time.get_ticks_msec()/1000.0
+		var result:=authority.request(1,request);_complete_request(int(request.sequence),result);_publish();_publish_surface()
 	else:_request.rpc_id(1,request)
 	return true
 @rpc("any_peer","call_remote","reliable",0)
@@ -183,19 +192,27 @@ func _request(value: Dictionary) -> void:
 	if not hosting:return
 	var peer:=multiplayer.get_remote_sender_id()
 	if not _rate_allowed(peer):return
+	authority.now=Time.get_ticks_msec()/1000.0
 	var result:=authority.request(peer,value)
 	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result);_publish();_publish_surface()
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
-	if not hosting:response_received.emit(sequence,value)
-func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> void:
+	if not hosting:_complete_request(sequence,value)
+func _complete_request(sequence: int,value: Dictionary) -> void:
+	if sequence==mine_sequence:
+		mine_sequence=0
+		var interval:=float(FrontierEquipment.active(latest.crew.members[latest.self_id]).get("interval",.6))
+		mine_ready_at=Time.get_ticks_msec()+int(ceil(float(value.get("retry_after",interval))*1000))+20
+		mine_revision=int(value.get("revision",0))
+	response_received.emit(sequence,value)
+func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[]) -> void:
 	if not active:return
 	movement_sequence+=1
-	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled)
-	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled)
+	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled,vehicle_controls)
+	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled,vehicle_controls)
 @rpc("any_peer","call_remote","unreliable_ordered",1)
-func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> void:
-	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting,flight_controls,jump_request,controls_enabled)
+func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[]) -> void:
+	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting,flight_controls,jump_request,controls_enabled,vehicle_controls)
 func kick(character_id: String) -> bool:
 	if not hosting or character_id==authority.world.crew.owner_id:return false
 	for peer in authority.peers.keys():
@@ -213,7 +230,7 @@ func close_session() -> bool:
 		if not authority.close():notice.emit(authority.error);return false
 		if not offline:_closed.rpc("호스트가 세계를 저장하고 종료했습니다.")
 	elif enet!=null and enet.get_connection_status()==MultiplayerPeer.CONNECTION_CONNECTED:_leave.rpc_id(1)
-	active=false
+	active=false;mine_sequence=0;mine_ready_at=0;mine_revision=0
 	if enet!=null:
 		await get_tree().create_timer(.25).timeout
 		enet.close();enet=null
@@ -238,6 +255,15 @@ func _physics_process(delta: float) -> void:
 			controls=authority.inputs[peer].get("flight_controls",controls)
 	FrontierCrewNavigation.steer(authority.world,controls,minf(delta,.1))
 	var arrived:=FrontierCrewNavigation.step(authority.world,minf(delta,.1))
+	for peer in authority.peers:
+		var actor: String=authority.peers[peer]
+		if not FrontierShuttles.aboard(authority.world,actor):continue
+		var local:=FrontierShuttles.context(authority.world,actor)
+		var input: Dictionary=authority.inputs.get(peer,{})
+		var local_controls: Array=input.get("flight_controls",[0.0,0.0,0.0]) if float(input.get("expires",-1))>=authority.now else [0.0,0.0,0.0]
+		FrontierCrewNavigation.steer(local,local_controls,minf(delta,.1))
+		if FrontierCrewNavigation.step(local,minf(delta,.1)):arrived=true
+		FrontierShuttles.commit(authority.world,local,actor)
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
 		checkpoint_timer=5.0
@@ -250,14 +276,20 @@ func _valid_manifest(value: Variant) -> bool:
 	if value.seed!=floorf(value.seed):return false
 	var settings: Dictionary=FrontierUniverse.config()
 	if value.get("settings",{}).get("generator_version")=="galaxy-v2":settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/galaxy-v2.json"))
+	if not value.get("settings",{}).has("planetary_cycles"):settings.erase("planetary_cycles")
+	else:
+		if not FrontierPlanetaryCycles.valid(value.settings.planetary_cycles):return false
+		settings.planetary_cycles=value.settings.planetary_cycles.duplicate(true)
 	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed),settings))
 
 func _publish_surface() -> void:
 	if not hosting or authority==null or authority.stopped or authority.phase!="playing":return
-	if not FrontierCrewSurface.landed(authority.world):
-		surface={};surface_digests.clear();return
 	for peer in authority.peers:
-		var value:=FrontierCrewSurfaceReplica.packet(authority.world,authority.peers[peer])
+		var local:=FrontierShuttles.context(authority.world,authority.peers[peer])
+		var value:=FrontierCrewSurfaceReplica.packet(local,authority.peers[peer])
+		if value.is_empty():
+			if peer==1:surface={}
+			surface_digests.erase(peer);continue
 		var digest:=FrontierUniverse.fingerprint(value)
 		if surface_digests.get(peer,"")==digest:continue
 		surface_serial+=1

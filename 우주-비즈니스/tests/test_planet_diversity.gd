@@ -11,7 +11,7 @@ func run() -> void:
 		var body:=FrontierUniverse.body(m,i)
 		samples[body.traits.id]=body;colors[body.traits.dust]=true
 		if not body.mineral_profile.is_empty() and "+" in body.mineral_profile.name:mixed=true
-	check(samples.size()==15 and colors.size()>50,"15 archetypes and seeded palettes")
+	check(samples.size()==FrontierPlanetTraits.rules().archetypes.size() and colors.size()>50,"configured archetypes and seeded palettes")
 	check(mixed,"mixed geological profiles")
 	check(FrontierUniverse.fingerprint(FrontierUniverse.body(JSON.parse_string(JSON.stringify(m)),19))==FrontierUniverse.fingerprint(FrontierUniverse.body(m,19)),"save/load reproduces traits and resource rules")
 	var body: Dictionary=samples.volcanic

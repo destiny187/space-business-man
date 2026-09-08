@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-08",
+  "provider": "ElevenLabs existing generated assets",
+  "new_audio_generated": false,
+  "source_manifests": [
+    "audio/manifests/elevenlabs.json",
+    "audio/manifests/space-experience.json",
+    "audio/manifests/planet-arrival.json"
+  ],
+  "mapping": {
+    "assembly_start": "sfx_build_place",
+    "assembly_work_loop": "sfx_robot_work",
+    "assembly_complete_and_rejoin": "sfx_factory_complete",
+    "rejected": "sfx_build_invalid",
+    "flight_engine": "sfx_vessel_engine",
+    "boost": "sfx_vessel_boost",
+    "brake": "sfx_vessel_brake",
+    "entry": "sfx_atmosphere_entry",
+    "takeoff_landing": "sfx_landing_thrusters",
+    "touchdown": "sfx_landing_touchdown"
+  },
+  "verification": "기존 WAV를 실제 Forward+ 실행 경로에 연결. 메뉴 중 작업음/조작 차단, 출입 연출·비행 엔진 스트림·쌍발 배기 연결 확인. FINCH 전용 신규 음색 생성과 주관적 청음 평가는 미실행."
+}

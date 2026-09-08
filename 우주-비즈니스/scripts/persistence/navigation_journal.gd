@@ -22,7 +22,7 @@ func valid(value: Variant) -> bool:
 		if FrontierUniverse.ordinal_of(manifest,str(key))<0 or not value.bodies[key] is Dictionary:return false
 		for field in ["scanned","visited"]:
 			if not value.bodies[key].get(field,false) is bool:return false
-		if value.bodies[key].get("site","") not in ["","active","settled"]:return false
+		if value.bodies[key].get("site","") not in ["","active","settled","supply","exploration"]:return false
 	for key in value.favorites:
 		if FrontierUniverse.ordinal_of(manifest,str(key))<0 or not value.favorites[key] is bool:return false
 	return true
@@ -44,6 +44,13 @@ func observe(snapshot: Dictionary) -> void:
 	var nav: Dictionary=snapshot.crew.navigation
 	if nav.mode=="jump":return
 	var changed:=false
+	# A host-owned lease proves a previous landing, even after local journal loss.
+	for supply in snapshot.get("supply_sites",[]):
+		var supplied_ordinal:=int(supply.ordinal)
+		changed=mark(supplied_ordinal,"site",supply.state) or changed
+		changed=mark(supplied_ordinal,"visited") or changed
+		var supplied_system:=str(FrontierUniverse.system_index(manifest,supplied_ordinal))
+		if not data.systems.has(supplied_system):data.systems[supplied_system]=true;changed=true
 	var system_key:=str(int(nav.system))
 	if not data.systems.has(system_key):data.systems[system_key]=true;changed=true
 	var ordinal:=FrontierUniverse.ordinal_of(manifest,snapshot.location)
@@ -70,6 +77,7 @@ func status(ordinal: int) -> String:
 	var parts: PackedStringArray=[]
 	if data.favorites.has(id):parts.append("★ 즐겨찾기")
 	if record.get("site","")=="active":parts.append("▣ 개발 중")
+	elif record.get("site","")=="supply":parts.append("▣ 생산 거점")
 	elif record.get("site","")=="settled":parts.append("▣ 정산 완료")
 	if record.get("visited",false):parts.append("✓ 방문")
 	if record.get("scanned",false):parts.append("◉ 스캔")
