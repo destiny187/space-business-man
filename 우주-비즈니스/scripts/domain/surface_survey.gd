@@ -33,6 +33,8 @@ static func known(world: Dictionary,row: Dictionary) -> bool:
 static func record(world: Dictionary,row: Dictionary) -> void:
 	if row.kind=="biology":FrontierEcology.scan(world.ecology,world.crew.landing.body_id,row);return
 	if not world.crew.has("survey"):world.crew.survey={}
+	var site:=FrontierExpeditionBusiness.site(world)
+	if not site.is_empty():FrontierRobotWork.discover(site,row.resource)
 	var id:=key(world.crew.landing.body_id,row)
 	# Discovery is per planet/material, not an unbounded entry for every physical rock.
 	if world.crew.survey.size()>=256 and not world.crew.survey.has(id):world.crew.survey.erase(world.crew.survey.keys()[0])

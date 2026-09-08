@@ -13,7 +13,7 @@ var action: Button
 var signature:=""
 var pending_sequence:=-1
 func configure(owner_app: FrontierCrewExpedition) -> void:
-	app=owner_app;name="효율 연구";add_theme_constant_override("separation",10)
+	app=owner_app;name="성능 개조";add_theme_constant_override("separation",10)
 	var choices:=HBoxContainer.new();add_child(choices)
 	for key in FrontierProgressionResearch.config().fields:
 		var def: Dictionary=FrontierProgressionResearch.config().fields[key]
@@ -35,7 +35,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.response_received.connect(func(seq: int,result: Dictionary):
 		signature=""
 		if seq==pending_sequence and result.get("ok",false) and app.feedback!=null:
-			app.feedback.audio.play("ui_discovery");app.feedback.show_cue("효율 연구 완료"))
+			app.feedback.audio.play("ui_discovery");app.feedback.show_cue("성능 개조 완료"))
 func _process(_delta: float) -> void:
 	if is_visible_in_tree():refresh()
 func refresh() -> void:
@@ -54,4 +54,4 @@ func refresh() -> void:
 	effect.text=def.effect+"\n현재 +%d%% → 다음 +%d%%"%[level*10,mini(5,level+1)*10]
 	if selected=="logistics":effect.text+="\n현재 가방 %d칸"%FrontierItemInventory.capacity(world.crew.members[actor])
 	cost.value="최고 단계" if level>=5 else ("공동 자금 %d Cr"%[int(def.price)*(level+1)] if selected=="industry" else "가방 · "+FrontierCatalog.cost_text(FrontierProgressionResearch.cost(selected,level)))
-	action.disabled=not reason.is_empty();action.text=reason if action.disabled else "다음 단계 연구"
+	action.disabled=not reason.is_empty();action.text=reason if action.disabled else "다음 단계 개조"

@@ -100,7 +100,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 			if r.battery>=99:r.charging=false;r.path=[]
 		return
 	if r.phase=="idle":
-		if not r.auto_enabled:r.status="자동 채광 정지";return
+		if not r.auto_enabled:r.status="작업 선택 대기";return
 		if r.search_wait<=0:
 			r.search_wait=float(FrontierRobotWork.config().search_interval)
 			FrontierRobotWork.search(world,r)
@@ -125,6 +125,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	if r.work<1:return
 	var cycles:=floori(r.work);r.work-=cycles
 	var amount:=mini(int(site.remaining[r.target]),mini((int(FrontierProductionTier2.config().robot_upgrade.mine_amount) if int(r.get("tier",1))==2 else int(cfg.robot_mine_amount))*cycles,FrontierProductionTier2.robot_capacity(r)-FrontierExpeditionBusiness.total(r.cargo)))
+	if amount>0:FrontierRobotWork.discover(site,vein.resource)
 	site.remaining[r.target]-=amount;r.cargo[vein.resource]=int(r.cargo.get(vein.resource,0))+amount;r.battery=maxf(0,float(r.battery)-float(cfg.robot_battery_per_work)*cycles)
 	if site.remaining[r.target]<=0:r.manual_target="";r.target=""
 	if FrontierExpeditionBusiness.total(r.cargo)>=FrontierProductionTier2.robot_capacity(r) or r.target.is_empty():r.phase="return";r.path=[]

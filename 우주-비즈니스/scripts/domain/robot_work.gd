@@ -7,11 +7,25 @@ static func config() -> Dictionary:
 	return _config
 static func tier(robot: Dictionary) -> int:return int(config().capability_tiers.get(str(int(robot.get("tier",1))),1))
 static func ensure(robot: Dictionary) -> void:
-	if not robot.has("auto_enabled"):robot.auto_enabled=true
+	if int(robot.get("work_mode_version",0))<2:
+		robot.work_mode_version=2;robot.auto_enabled=false;robot.resource_filter=""
+		robot.manual_target="";robot.target="";robot.path=[]
+		robot.phase="return" if FrontierExpeditionBusiness.total(robot.cargo)>0 else "idle"
+		robot.status="작업 선택 대기"
+	if not robot.has("auto_enabled"):robot.auto_enabled=false
 	if not robot.has("resource_filter"):robot.resource_filter=""
 	if not robot.has("anchor"):robot.anchor=robot.position.duplicate()
 	if not robot.has("manual_target"):robot.manual_target=""
 	if not robot.has("search_wait"):robot.search_wait=0.0
+static func discover(site: Dictionary,resource: String) -> void:
+	if FrontierCatalog.entry("resources",resource).is_empty() or resource in FrontierProductionTier2.config().products:return
+	if not site.has("discovered_resources"):site.discovered_resources=[]
+	if resource not in site.discovered_resources:site.discovered_resources.append(resource)
+static func discovered(world: Dictionary) -> Array:
+	var result: Array=FrontierExpeditionBusiness.site(world).get("discovered_resources",[]).duplicate()
+	for row in world.crew.get("survey",{}).values():
+		if row.body_id==world.location and row.resource not in result and row.resource not in FrontierProductionTier2.config().products:result.append(row.resource)
+	result.sort();return result
 static func reason(world: Dictionary,robot: Dictionary,vein: Dictionary) -> String:
 	if vein.is_empty():return "채광할 광맥이 없습니다."
 	var site:=FrontierExpeditionBusiness.site(world)
@@ -102,7 +116,7 @@ static func order(world: Dictionary,actor: String,args: Dictionary) -> String:
 			if a.rank[i]!=b.rank[i]:return a.rank[i]>b.rank[i]
 		return a.robot.id<b.robot.id if is_equal_approx(a.eta,b.eta) else a.eta<b.eta)
 	var chosen: Dictionary=candidates[0].robot
-	ensure(chosen);chosen.auto_enabled=true;chosen.manual_target=vein.id
+	ensure(chosen);chosen.auto_enabled=false;chosen.manual_target=vein.id
 	assign(site,chosen,vein,candidates[0].path)
 	for other in site.robots.values():
 		if other.id!=chosen.id and other.target==vein.id:

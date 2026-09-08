@@ -30,6 +30,9 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	world=source.duplicate(true);save_world=persist
 	rover_runtime={"seats":{},"exits":{},"tasks":{},"status":{}}
 	FrontierRovers.brake_all(world)
+	for site in world.get("business",{}).get("sites",{}).values():
+		for robot in site.robots.values():FrontierRobotWork.ensure(robot)
+	for robot in world.get("business",{}).get("hangar",{}).values():FrontierRobotWork.ensure(robot)
 	if not world.has("crew"):world.crew=FrontierCrewWorld.create(profile)
 	if not world.crew.has("navigation"):world.crew.navigation=FrontierCrewNavigation.create(world)
 	if world.crew.owner_id!=profile.character_id:error="이 세계를 만든 호스트의 개인 프로필이 필요합니다.";return false

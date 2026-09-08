@@ -115,7 +115,7 @@ static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3
 	if not error.is_empty():return error
 	if current.buildings.size()>=int(config().max_buildings):return "이 개발 구역의 시설 한도에 도달했습니다."
 	var def:=FrontierCatalog.entry("buildings",kind)
-	if not def.tech.is_empty() and def.tech not in world.business.technologies:return "시설 기술이 필요합니다."
+	if not FrontierEarlyAccess.available(world.business,def.tech):return "시설 기술이 필요합니다."
 	var missing: Dictionary={}
 	for key in def.cost:
 		var amount:=int(def.cost[key])-int(bag(world,actor).get(key,0))
@@ -173,7 +173,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
 		var amount: int=mini(int(current.remaining.get(row.id,row.capacity)),mini(int(tool.amount),FrontierItemInventory.room(world,actor,row.resource)))
 		if amount<=0:return "광맥이 고갈됐거나 배낭이 가득 찼습니다."
+		FrontierRobotWork.discover(current,row.resource)
 		current.remaining[row.id]=int(current.remaining.get(row.id,row.capacity))-amount;ledger.bags[actor][row.resource]=int(ledger.bags[actor].get(row.resource,0))+amount;return ""
+	if kind=="business_technology" and str(args.get("technology","")) in FrontierEarlyAccess.config().open_technologies:return "기초 설계는 이미 사용할 수 있습니다. 제작 재료를 준비하세요."
 	if kind=="business_technology":
 		if actor!=world.crew.owner_id:return "공동 기술 구매는 호스트가 진행합니다."
 		if not at_ship:return "착륙선 기술 단말에 접근하세요."
@@ -251,7 +253,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			if job.factory_id==id:return "이 제작소는 로봇을 제작 중입니다."
 		if not building.active or not building.enabled:return "전력이 공급되는 가동 제작소가 필요합니다."
 		if not building.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
-		if building.type!="factory" or "robotics" not in ledger.technologies:return "기술을 갖춘 제작소가 필요합니다."
+		if building.type!="factory" or not FrontierEarlyAccess.available(ledger,"robotics"):return "기술을 갖춘 제작소가 필요합니다."
 		var robot_gate:=FrontierProductionTier2.robot_gate(building)
 		if not robot_gate.is_empty():return robot_gate
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
@@ -268,7 +270,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var robot: Dictionary=current.robots.get(str(args.get("robot_id","")),{})
 		if robot.is_empty() or position.distance_to(point(robot.position))>float(config().interaction_range):return "로봇 8m 이내에서 설정하세요."
 		var filter:=str(args.get("resource",""))
-		if not filter.is_empty() and FrontierCatalog.entry("resources",filter).is_empty():return "자원 종류를 선택하세요."
+		if not filter.is_empty() and filter not in FrontierRobotWork.discovered(world):return "이 행성에서 발견한 광물만 선택할 수 있습니다."
 		if not args.get("enabled",true) is bool:return "자동 작업 설정 오류"
 		FrontierRobotWork.ensure(robot);robot.auto_enabled=args.get("enabled",true);robot.resource_filter=filter
 		if args.get("reset_anchor",false)==true:robot.anchor=robot.position.duplicate()
@@ -285,7 +287,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			if robot.battery>=20:return "긴급 전력이 필요하지 않습니다."
 			if ledger.credits<50:return "긴급 충전 비용 50 Cr가 필요합니다."
 			ledger.credits-=50;robot.battery=35;robot.path=[];return ""
-		if "recovery" not in ledger.technologies or not near_base:return "회수 기술을 갖추고 창고 주변으로 로봇을 돌려보내세요."
+		if not FrontierEarlyAccess.available(ledger,"recovery") or not near_base:return "창고 주변으로 로봇을 돌려보내세요."
 		if total(robot.cargo)>0:return "로봇 화물을 먼저 하역하세요."
 		if ledger.hangar.size()>=int(FrontierVesselRefit.stats(world).hangar):return "격납고가 가득 찼습니다."
 		ledger.hangar[id]=robot.duplicate(true);ledger.hangar[id].path=[];current.robots.erase(id);return FrontierVesselRefit.constraints(world)
@@ -293,7 +295,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var id: String=str(args.get("robot_id",""))
 		if not near_base or not ledger.hangar.has(id):return "창고 주변에서 운송 로봇을 선택하세요."
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
-		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="자동 광맥 탐색";robot.auto_enabled=true;robot.anchor=robot.position.duplicate();robot.manual_target="";robot.search_wait=0.0;current.robots[id]=robot;ledger.hangar.erase(id);return ""
+		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="작업 선택 대기";robot.auto_enabled=false;robot.resource_filter="";robot.work_mode_version=2;robot.anchor=robot.position.duplicate();robot.manual_target="";robot.search_wait=0.0;current.robots[id]=robot;ledger.hangar.erase(id);return ""
 	if kind=="business_settle":
 		if current.state!="active" or ledger.active!=world.location:return "진행 중인 복원 계약만 정산할 수 있습니다."
 		if not args.get("retain",false) is bool:return "정산 방식 오류"
@@ -328,6 +330,7 @@ static func public_view(world: Dictionary,actor: String) -> Dictionary:
 	if not world.has("business"):return {}
 	var ledger: Dictionary=world.business
 	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","hangar_capacity":int(FrontierVesselRefit.stats(world).hangar),"active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":{},"bags":{},"crates":{}}
+	view.discovered_resources=FrontierRobotWork.discovered(world)
 	view.owner_id=world.crew.owner_id
 	view.efficiency=int(ledger.get("efficiency",0))
 	view.supply_sites=FrontierPlanetSupply.summaries(world)
@@ -350,7 +353,7 @@ static func visible_robot(source: Dictionary) -> Dictionary:
 	var result: Dictionary={"path":[]}
 	for key in ["id","grade","battery","phase","target","status","work","charging"]:result[key]=source[key]
 	result.tier=int(source.get("tier",1))
-	for key in ["auto_enabled","resource_filter","anchor","manual_target"]:
+	for key in ["auto_enabled","resource_filter","anchor","manual_target","work_mode_version"]:
 		if source.has(key):result[key]=source[key]
 	result.position=source.position.duplicate();result.cargo=source.cargo.duplicate()
 	return result
@@ -368,6 +371,7 @@ static func valid_robot(robot: Variant,id: String) -> bool:
 	if not FrontierUniverse._vector3_array(robot.get("position")) or not FrontierUniverse._finite(robot.get("battery"),0,100) or not valid_inventory(robot.get("cargo"),FrontierProductionTier2.robot_capacity(robot)):return false
 	if total(robot.cargo)>FrontierProductionTier2.robot_capacity(robot) or robot.get("phase") not in ["idle","outbound","return"] or not robot.get("target") is String or not robot.get("status") is String or not robot.get("charging") is bool:return false
 	if not FrontierUniverse._finite(robot.get("work"),0,1) or not robot.get("path") is Array or robot.path.size()>3500:return false
+	if not integer(robot.get("work_mode_version",0),0,2):return false
 	if robot.has("auto_enabled") and not robot.auto_enabled is bool:return false
 	if robot.has("resource_filter") and (not robot.resource_filter is String or (not robot.resource_filter.is_empty() and FrontierCatalog.entry("resources",robot.resource_filter).is_empty())):return false
 	if robot.has("anchor") and not FrontierUniverse._vector3_array(robot.anchor):return false
@@ -406,6 +410,12 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		if not id is String or FrontierUniverse.ordinal_of(manifest,id)<0:return "개발 행성 주소 오류"
 		var current: Variant=value.sites[id]
 		if not current is Dictionary or current.get("state") not in ["active","settled","exploration","supply"] or not FrontierUniverse._vector3_array(current.get("center")) or not valid_inventory(current.get("inventory")):return "개발 현장 구조 오류"
+		var discoveries: Variant=current.get("discovered_resources",[])
+		if not discoveries is Array or discoveries.size()>FrontierCatalog.table("resources").size():return "발견 광물 기록 오류"
+		var seen_resources: Dictionary={}
+		for resource in discoveries:
+			if not resource is String or FrontierCatalog.entry("resources",resource).is_empty() or resource in FrontierProductionTier2.config().products or seen_resources.has(resource):return "발견 광물 종류 오류"
+			seen_resources[resource]=true
 		if not current.get("production_lease",false) is bool:return "생산 이용권 형식 오류"
 		if current.get("production_lease",false) and current.state not in ["active","supply"]:return "생산 이용권 상태 오류"
 		if current.state=="supply" and not current.get("production_lease",false):return "생산 이용권 누락"

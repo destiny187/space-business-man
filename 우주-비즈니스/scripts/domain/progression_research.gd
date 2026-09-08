@@ -18,7 +18,7 @@ static func reason(world: Dictionary,actor: String,key: String) -> String:
 	if not config().fields.has(key):return "연구 분야를 선택하세요."
 	if not FrontierCrewSurface.landed(world):return "착륙선 연구실에서 연구하세요."
 	if FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "착륙선 연구실에 접근하세요."
-	if not world.has("business") or "robotics" not in world.business.technologies:return "기초 로봇 공학을 먼저 연구하세요."
+	if not world.has("business"):return "착륙 현장을 먼저 준비하세요."
 	var current:=level(world,actor,key)
 	if current>=int(config().maximum_level):return "최고 연구 단계입니다."
 	if key=="industry":

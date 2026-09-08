@@ -9,7 +9,7 @@ static func fleet(world: Dictionary) -> Dictionary:return world.get("rovers",{"v
 static func ensure(world: Dictionary) -> Dictionary:
 	if not world.has("rovers"):world.rovers=fleet(world)
 	return world.rovers
-static func research(member: Dictionary) -> int:return int(member.get("loadout",{}).get("field_logistics",0))
+static func research(member: Dictionary) -> int:return maxi(int(FrontierEarlyAccess.config().basic_field_logistics),int(member.get("loadout",{}).get("field_logistics",0)))
 static func local(world: Dictionary) -> Dictionary:
 	var result: Dictionary={}
 	for id in fleet(world).vehicles:
@@ -86,7 +86,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if member.aboard:return "우주선에서 내린 뒤 실행하세요."
 	if kind=="rover_research":
 		if actor_pos.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "착륙선 연구실에 접근하세요."
-		if "robotics" not in world.get("business",{}).get("technologies",[]):return "기초 로봇공학이 필요합니다."
+		if not FrontierEarlyAccess.available(world.get("business",{}),"robotics"):return "기초 설계가 필요합니다."
 		if research(member)>=1:return "현장 물류 I 연구를 보유하고 있습니다."
 		if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().research_cost):return "가방의 연구 재료가 부족합니다."
 		FrontierExpeditionBusiness.transfer(world.business.bags[actor],config().research_cost,-1)

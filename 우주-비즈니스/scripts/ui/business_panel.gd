@@ -2,6 +2,8 @@ class_name FrontierBusinessPanel
 extends PanelContainer
 signal command(kind: String,args: Dictionary)
 signal prefer_robot(id: String)
+var work_cards: GridContainer
+var work_signature: String=""
 var filter_context: String=""
 signal place_building(kind: String)
 signal station_action(kind: String)
@@ -99,7 +101,7 @@ func _ready() -> void:
 	label(build_tab,"카드 선택 → 배치 → 지면 클릭 · Esc 취소")
 	var research_tab:=VBoxContainer.new();research_tab.name="기술";tabs.add_child(research_tab)
 	technology=option(research_tab)
-	button(research_tab,"선택 기술 구매",func():command.emit("business_technology",{"technology":selected(technology)}))
+	label(research_tab,"기초 설계 사용 가능")
 	warehouse=VBoxContainer.new();warehouse.name="창고";tabs.add_child(warehouse)
 	warehouse_stock=option(warehouse)
 	warehouse_stock.hide()
@@ -118,14 +120,15 @@ func _ready() -> void:
 	robot=option(robot_tab)
 	robot_job_status=label(robot_tab,"")
 	robot_controls=VBoxContainer.new();robot_tab.add_child(robot_controls)
-	button(robot_controls,"이 로봇을 현장 지시 우선 대상으로",func():prefer_robot.emit(selected(robot)))
-	button(robot_controls,"현장 지시 · 가능한 고등급 자동 선정",func():prefer_robot.emit(""))
-	vein=option(robot_controls)
-	button(robot_controls,"종류 지정 · 자동 채광",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
-	button(robot_controls,"현재 로봇 위치를 작업 중심으로",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
-	label(robot_controls,"작업 중심 80m · 가까운 접근 가능 광맥을 자동 탐색 · Mk 등급은 채집 가능 광물, 품질은 작업 속도")
+	vein=option(robot_controls);vein.hide()
+	work_cards=GridContainer.new();work_cards.columns=5;robot_controls.add_child(work_cards)
+	button(robot_controls,"선택 작업 시작",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
+	button(robot_controls,"현재 위치를 중심으로 시작",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
+	label(robot_controls,"작업 범위 80m · 발견한 광물만 표시 · R: 조준한 광맥 지시")
 	button(robot_controls,"작업 중지 · 창고로 복귀",func():command.emit("business_robot_return",{"robot_id":selected(robot)}))
 	button(robot_controls,"긴급 충전 · 50 Cr",func():command.emit("business_robot_rescue",{"robot_id":selected(robot)}))
+	button(robot_controls,"R 지시 우선 로봇으로 선택",func():prefer_robot.emit(selected(robot)))
+	button(robot_controls,"R 지시 로봇 자동 선정",func():prefer_robot.emit(""))
 	recovery_controls=VBoxContainer.new();robot_tab.add_child(recovery_controls)
 	button(recovery_controls,"창고 근처 로봇을 격납고로 회수",func():command.emit("business_robot_recover",{"robot_id":selected(robot)}))
 	hangar=option(recovery_controls)
@@ -226,7 +229,7 @@ func refresh_context(current: Dictionary) -> void:
 				for other in warehouse_grid.get_children():other.selected=other==tile;other.queue_redraw())
 			warehouse_grid.add_child(tile)
 	var target_robot: Dictionary=current.get("robots",{}).get(context_id,{})
-	robot_job_status.text="Mk.%d · %s · %s"%[int(target_robot.get("tier",1)),"자동" if target_robot.get("auto_enabled",true) else "정지",str(target_robot.get("status",""))]
+	robot_job_status.text="Mk.%d · %s · %s"%[int(target_robot.get("tier",1)),"자동" if target_robot.get("auto_enabled",false) else "지정 광맥" if not target_robot.get("manual_target","").is_empty() else "대기",str(target_robot.get("status",""))]
 	if context_kind not in ["build","ship","base"]:
 		var row: Dictionary=current.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 		if context_kind!="robot" and not row.is_empty():
@@ -275,11 +278,10 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		var r: Dictionary=current.robots[key];robots[key]=key+" · "+FrontierCatalog.entry("grades",r.grade).name+" · "+str(r.status)
 	for key in value.hangar:transported[key]=key+" · "+FrontierCatalog.entry("grades",value.hangar[key].grade).name
 	veins[""]="전체 자원 · 자동"
-	for key in FrontierCatalog.table("resources"):
-		if key in FrontierProductionTier2.config().products:continue
+	for key in value.get("discovered_resources",[]):
 		veins[key]=FrontierCatalog.entry("resources",key).name
 	for key in FrontierExpeditionBusiness.config().technologies:
-		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if key in value.technologies else " · %d Cr"%int(def.price))
+		var def:=FrontierCatalog.entry("technologies",key);technologies[key]=def.name+(" · 보유" if FrontierEarlyAccess.available(value,key) else " · %d Cr"%int(def.price))
 	choices(facility,buildings);choices(factory,factories);choices(robot,robots);choices(vein,veins);choices(technology,technologies);choices(hangar,transported)
 	var selected_robot: Dictionary=current.robots.get(selected(robot),{})
 	var next_filter:=selected(robot)+":"+str(selected_robot.get("resource_filter",""))
@@ -287,6 +289,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		filter_context=next_filter
 		for i in vein.item_count:
 			if str(vein.get_item_metadata(i))==str(selected_robot.get("resource_filter","")):vein.select(i);break
+	refresh_work_cards(veins)
 	var e: Dictionary=current.environment;var report:=FrontierEvaluator.environment_report(current,body_id)
 	for category in environment_bars:
 		environment_bars[category].visible=report.observed
@@ -298,7 +301,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		if current.has("restoration2"):
 			var restore_cfg: Dictionary=FrontierProductionTier2.config().restoration
 			environment_label.text+="\n염류 %.0f / 목표 ≤%.0f · 토양 %.0f / 목표 ≥%.0f"%[float(current.restoration2.salinity),float(restore_cfg.salinity_target),float(current.restoration2.soil),float(restore_cfg.soil_target)]
-	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("수동 채집 → 부품 생산 → 제작소 Mk.2 개조 → 채광 로봇 제작" if current.robots.is_empty() else "로봇은 자동 채광합니다. 자원 종류를 정하고 환경 시설을 가동하세요.")
+	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else "F 상호작용 · B 건설 · I 아이템"
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement(retain: bool=false) -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
@@ -338,3 +341,19 @@ func refresh_building_cost() -> void:
 	var parts: PackedStringArray=[]
 	for key in cost:parts.append("%s %d/%d"%[FrontierCatalog.entry("resources",key).name,int(bag.get(key,0)),int(cost[key])])
 	building_cost.value="내 가방 · "+" · ".join(parts)+(" · 재료 충분" if FrontierExpeditionBusiness.affordable(bag,cost) else " · 부족분은 창고에서 직접 인수")
+
+func refresh_work_cards(values: Dictionary) -> void:
+	var signature:=str(values.keys())
+	if work_signature!=signature:
+		work_signature=signature
+		for child in work_cards.get_children():work_cards.remove_child(child);child.queue_free()
+		for key in values:
+			var card:=FrontierItemTile.new();card.set_meta("resource",key)
+			card.caption="자동 · 전체" if key=="" else str(values[key]);card.tooltip_text=card.caption
+			card.picture=load("res://assets/ui/previews/miner.png") if key=="" else FrontierResourceIcons.texture(key)
+			card.pressed.connect(func():
+				for i in vein.item_count:
+					if str(vein.get_item_metadata(i))==key:vein.select(i);break
+				refresh_work_cards(values))
+			work_cards.add_child(card)
+	for card in work_cards.get_children():card.selected=card.get_meta("resource")==selected(vein);card.queue_redraw()

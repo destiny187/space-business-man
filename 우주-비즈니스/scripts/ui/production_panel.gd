@@ -33,7 +33,7 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	produce=panel.button(self,"",func():panel.command.emit("business_produce",{"building_id":panel.selected(targets),"product":selected_product}))
 	target_cost=FrontierResourceReadout.new();add_child(target_cost)
 	upgrade=panel.button(self,"",func():panel.command.emit("business_robot_upgrade" if current.get("robots",{}).has(panel.selected(targets)) else "business_facility_upgrade",{"building_id":panel.selected(targets),"robot_id":panel.selected(targets)}))
-	help_label=panel.label(self,"Mk.2 부품 → 금속·저온 현지 부품 → 산업 코어 → Mk.3 제작소")
+	help_label=panel.label(self,"재료와 완성품은 현장 창고를 사용합니다.")
 func update_site(site: Dictionary) -> void:
 	current=site
 	var options: Dictionary={}

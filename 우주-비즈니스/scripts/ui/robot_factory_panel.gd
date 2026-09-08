@@ -16,7 +16,7 @@ func configure(panel: FrontierBusinessPanel) -> void:
 	state_label=panel.label(detail,"")
 	progress=ProgressBar.new();progress.custom_minimum_size.y=24;add_child(progress)
 	craft=panel.button(self,"로봇 제작 시작",func():panel.command.emit("business_craft",{"building_id":panel.context_id}))
-	panel.label(self,"완성 후 제작소 옆으로 출고됩니다. 로봇을 보고 F를 눌러 작업을 배정하세요.")
+	panel.label(self,"출고 후 대기 · 로봇을 보고 F로 작업 선택")
 func refresh(site: Dictionary) -> void:
 	var b: Dictionary=site.get("buildings",{}).get(owner_panel.context_id,{})
 	var def:=FrontierProductionTier2.robot_recipe()
@@ -33,7 +33,7 @@ func refresh(site: Dictionary) -> void:
 	elif not b.get("production",{}).is_empty():reason="제품 생산 중"
 	elif not FrontierProductionTier2.robot_gate(b).is_empty():reason=FrontierProductionTier2.robot_gate(b)
 	elif not b.get("active",false):reason="전력·가동 상태를 확인하세요."
-	elif "robotics" not in owner_panel.ledger.get("technologies",[]):reason="착륙선 단말에서 로봇공학을 구매하세요."
+	elif not FrontierEarlyAccess.available(owner_panel.ledger,"robotics"):reason="착륙선 단말에서 로봇공학을 구매하세요."
 	elif not FrontierExpeditionBusiness.affordable(site.get("inventory",{}),def.cost):reason="공동 창고에 제작 재료가 부족합니다."
 	for project in owner_panel.engineering.get("projects",{}).values():
 		if project.get("facility_id","")==owner_panel.context_id and project.get("stage","") in ["prototype","trial"]:reason="공학 작업 진행 중"

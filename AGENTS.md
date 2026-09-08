@@ -125,3 +125,7 @@
 ## 항성계 소형선 운송 — 2026-09-08 추가 확정
 
 부재중 생산을 개발하고 운송은 플레이어끼리 직접 맡는다. 공동 원정선의 성간 이동을 유지하면서 **소형선으로 같은 항성계의 다른 행성에 독립 출동**할 수 있다. 이 요구는 모든 승무원이 항상 같은 행성에 있어야 한다는 기존 전제에 우선한다. [소관 규칙](docs/game/18-local-shuttles-and-distributed-industry.md)과 [제작·검증](docs/production/57-distributed-industry-and-finch.md)을 따른다. 자동 운송을 이번 범위에 추가하지 않는다.
+
+## 초반 개방·직접 작업 선택 — 2026-09-08 변경
+
+초반 T2 기초 설계는 연구 구매 없이 개방한다. 자동화는 필수가 아니며 기본 조작·조건만 안내한다. 로봇 출고·재파견 후 대기, 직접 자동 또는 행성에서 발견한 광물 선택을 따른다. 소관 규칙은 [로봇·자동화](docs/game/03-robots-and-automation.md), [경제·기술·계승](docs/game/05-economy-and-progression.md), 구현 경계는 [제작 기록](docs/production/61-early-access-and-explicit-robot-work.md)에 둔다.
