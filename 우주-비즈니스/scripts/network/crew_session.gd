@@ -267,6 +267,10 @@ func _valid_manifest(value: Variant) -> bool:
 	if value.seed!=floorf(value.seed):return false
 	var settings: Dictionary=FrontierUniverse.config()
 	if value.get("settings",{}).get("generator_version")=="galaxy-v2":settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/galaxy-v2.json"))
+	if not value.get("settings",{}).has("planetary_cycles"):settings.erase("planetary_cycles")
+	else:
+		if not FrontierPlanetaryCycles.valid(value.settings.planetary_cycles):return false
+		settings.planetary_cycles=value.settings.planetary_cycles.duplicate(true)
 	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed),settings))
 
 func _publish_surface() -> void:

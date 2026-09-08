@@ -69,3 +69,7 @@ omega_spin = 2π / P_spin_seconds
 예정 파일은 `data/planetary_cycles.json`, `scripts/domain/planetary_cycles.gd`. 기존 `universe.gd`는 생성/천체 위치, `crew_world.gd`·`world_store.gd`는 시계/저장, `crew_authority.gd`·`crew_surface_replica.gd`는 스냅샷, `surface_atmosphere.gd`·`surface_sky.gdshader`는 하늘/광원에 연결한다. 만 개 이상의 행성을 매 프레임 갱신하지 않고 현재 항성계와 관찰 지역만 평가한다. 클라이언트는 호스트 시각을 보간하며 환경 원장을 바꾸지 않는다.
 
 최소 확인은 같은 시드의 일반 하루 재현, 낮→일몰→밤의 태양/그림자/별 방향, 동주기 태양 고정, 저장/합류 후 위상 보존, 기존 항해 도착 위치와의 일치다. 시간 가속은 확인용으로 한 구간만 사용하고 장시간 전체 행성 전수 검사를 관행적으로 수행하지 않는다. 기존 하늘·조명과 새 기능의 실제 연결/미연결을 제작 기록에 구분한다. 이번 문서 작업에서는 위 장면을 실행하지 않았다.
+
+## 2026-09-08 구현 기록
+
+C16의 데이터·독립 시드·계산과 기존 저장 호환 기반을 구현했다. [C16~C17 제작 기록](../production/50-seeded-cycles.md)에 현재 활성 상태와 실제 확인 범위를 기록한다. 위의 `active_sim_seconds` 의미는 기존 저장 필드 `crew.navigation.orbit_time`이 담당한다. 같은 시간을 두 필드에 중복 누적하지 않는다.
