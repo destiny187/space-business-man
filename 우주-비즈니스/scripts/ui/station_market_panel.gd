@@ -10,6 +10,10 @@ var pending_kind: String=""
 var heading: Label
 var money: Label
 var message: Label
+var browser: FrontierItemBrowser
+var sale_only: CheckButton
+var empty: Label
+var unit_price: Label
 var grid: GridContainer
 var title_label: Label
 var role: Label
@@ -31,7 +35,7 @@ func _ready() -> void:
  set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
  offset_left=24;offset_right=-24;offset_top=24;offset_bottom=-24
  add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,18))
- var column:=VBoxContainer.new();column.add_theme_constant_override("separation",14);add_child(column)
+ var column:=VBoxContainer.new();column.add_theme_constant_override("separation",8);add_child(column)
  var header:=HBoxContainer.new();column.add_child(header)
  heading=label(header,"WAYFARER · 교역",24);heading.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  money=label(header,"",18);money.autowrap_mode=TextServer.AUTOWRAP_OFF;money.custom_minimum_size.x=120;money.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
@@ -40,19 +44,28 @@ func _ready() -> void:
  for tab in [["goods","물자 거래"],["ships","선체 구매"],["owned","보유 선체"]]:
   var key: String=tab[0]
   button(tabs,tab[1],func():mode=key;selected="";rebuild())
+ browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품 · 선체 이름 검색";browser.changed.connect(rebuild)
+ sale_only=CheckButton.new();sale_only.text="내가 판매할 수 있는 물자";column.add_child(sale_only);sale_only.toggled.connect(func(_v):rebuild())
  var body:=HBoxContainer.new();body.add_theme_constant_override("separation",24);body.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(body)
- var scroll:=ScrollContainer.new();scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;body.add_child(scroll)
+ var list:=VBoxContainer.new();list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_child(list)
+ var scroll:=ScrollContainer.new();scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;list.add_child(scroll)
  grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",12);grid.add_theme_constant_override("v_separation",12);grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL;scroll.add_child(grid)
- var detail:=VBoxContainer.new();detail.custom_minimum_size.x=300;detail.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail.add_theme_constant_override("separation",12);body.add_child(detail)
- title_label=label(detail,"상품 선택",25);role=label(detail,"",14)
+ empty=label(list,"조건에 맞는 상품이 없습니다.",14)
+ var detail:=VBoxContainer.new();detail.custom_minimum_size.x=300;detail.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail.add_theme_constant_override("separation",6);body.add_child(detail)
+ var detail_scroll:=ScrollContainer.new();detail_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;detail_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail.add_child(detail_scroll)
+ var content:=VBoxContainer.new();content.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail_scroll.add_child(content)
+ var selected_row:=HBoxContainer.new();content.add_child(selected_row)
+ var selected_text:=VBoxContainer.new();selected_text.size_flags_horizontal=Control.SIZE_EXPAND_FILL;selected_row.add_child(selected_text)
+ title_label=label(selected_text,"상품 선택",25);role=label(selected_text,"",14)
  preview=SubViewport.new();preview.size=Vector2i(560,300);preview.own_world_3d=true;preview.transparent_bg=true;preview.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(preview)
  preview_root=Node3D.new();preview.add_child(preview_root)
  var light:=DirectionalLight3D.new();light.rotation_degrees=Vector3(-30,-35,0);light.light_energy=1.6;preview_root.add_child(light)
  var environment:=WorldEnvironment.new();environment.environment=Environment.new();environment.environment.background_mode=Environment.BG_COLOR;environment.environment.background_color=Color("10191f");environment.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;environment.environment.ambient_light_color=Color("a0bbc3");environment.environment.ambient_light_energy=.45;preview_root.add_child(environment)
  preview_camera=Camera3D.new();preview_camera.projection=Camera3D.PROJECTION_ORTHOGONAL;preview_camera.size=13;preview_camera.position=Vector3(18,12,24);preview_root.add_child(preview_camera);preview_camera.look_at(Vector3.ZERO);FrontierInkStyle.attach(preview_camera)
- picture=TextureRect.new();picture.custom_minimum_size.y=170;picture.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;picture.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;picture.texture=preview.get_texture();detail.add_child(picture)
- icon=TextureRect.new();icon.custom_minimum_size.y=150;icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;detail.add_child(icon)
- bars=VBoxContainer.new();bars.add_theme_constant_override("separation",9);detail.add_child(bars)
+ picture=TextureRect.new();picture.custom_minimum_size.y=130;picture.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;picture.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;picture.texture=preview.get_texture();content.add_child(picture)
+ icon=TextureRect.new();icon.custom_minimum_size=Vector2(96,96);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;selected_row.add_child(icon)
+ bars=VBoxContainer.new();bars.add_theme_constant_override("separation",9);content.add_child(bars)
+ unit_price=label(detail,"",13)
  quantity=SpinBox.new();quantity.min_value=1;quantity.max_value=1000;quantity.value=1;quantity.prefix="수량 ";quantity.value_changed.connect(func(_v: float):refresh_detail());detail.add_child(quantity)
  buy=button(detail,"구매",func():send("station_equip" if mode=="owned" else "station_buy"))
  sell=button(detail,"판매",func():send("station_sell"))
@@ -89,17 +102,29 @@ func rebuild() -> void:
  else:
   for id in station.get("stock",{}):
    if id.begins_with("hull:")==(mode=="ships"):items.append(id)
+ browser.category.visible=mode=="goods";sale_only.visible=mode=="goods"
+ items=items.filter(func(id):
+  var title: String=FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")].name if mode!="goods" else FrontierCatalog.entry("resources",id).name
+  var query:=browser.search.text.strip_edges().to_lower()
+  if not query.is_empty() and not title.to_lower().contains(query):return false
+  if mode=="goods":
+   var count:=int(data.get("inventory",{}).get(id,0))
+   if count<=0 and (sale_only.button_pressed or int(station.stock[id])<=0):return false
+   if not browser.matches(title,FrontierItemBrowser.kind(id)):return false
+  elif mode=="ships" and int(station.stock[id])<=0:return false
+  return true)
+ empty.visible=items.is_empty()
  if selected not in items:selected=str(items[0]) if not items.is_empty() else ""
  for id in items:
   var is_ship: bool=mode!="goods"
   var def: Dictionary=FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")] if is_ship else FrontierCatalog.entry("resources",id)
-  var caption: String=def.name+"\n"+(def.role if is_ship else "재고 %d · 보유 %d"%[station.stock[id],data.get("inventory",{}).get(id,0)])
+  var caption: String=def.name+"\n"+(def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+(" · 내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
   var key: String=id
   var card:=button(grid,caption,func():selected=key;refresh_detail())
   card.custom_minimum_size=Vector2(160,100);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL
   card.icon=load("res://assets/ui/interface/ship.svg") if is_ship else FrontierResourceIcons.texture(id)
   card.expand_icon=true;card.add_theme_constant_override("icon_max_width",40)
-  card.clip_text=true;card.tooltip_text=caption
+  card.clip_text=true;card.tooltip_text=caption;card.set_meta("item",id);card.toggle_mode=true;card.disabled=pending
  refresh_detail()
 func refresh_detail() -> void:
  if buy==null:return
@@ -109,17 +134,22 @@ func refresh_detail() -> void:
  buy.disabled=not valid or pending or data.get("self_id","")!=data.get("crew",{}).get("owner_id","") or not in_range()
  sell.disabled=buy.disabled
  quantity.visible=mode=="goods";sell.visible=mode=="goods";icon.visible=mode=="goods";picture.visible=mode!="goods"
- if not valid:title_label.text="취급 상품 없음";role.text="";return
+ for card in grid.get_children():card.set_pressed_no_signal(card.get_meta("item")==selected);card.disabled=pending
+ if not valid:
+  title_label.text="상품 선택";role.text="";unit_price.text="";icon.hide();picture.hide();quantity.hide();buy.hide();sell.hide();preview.render_target_update_mode=SubViewport.UPDATE_DISABLED;return
+ buy.show()
  var count:=int(quantity.value)
  if mode=="goods":
   var price:=int(station.prices[selected]);var sale:=maxi(1,floori(price*float(FrontierSpaceStation.config().sale_ratio)))
   title_label.text=FrontierCatalog.entry("resources",selected).name
-  role.text="재고 %d · 내 화물 %d"%[station.stock[selected],data.get("inventory",{}).get(selected,0)]
+  role.text=("상점 재고 %d"%int(station.stock[selected]) if int(station.stock[selected])>0 else "상점 품절")+(" · 내 가방 %d"%int(data.inventory[selected]) if int(data.get("inventory",{}).get(selected,0))>0 else "")
+  unit_price.text="개당 구매 %d Cr · 판매 %d Cr"%[price,sale]
   icon.texture=FrontierResourceIcons.texture(selected)
   buy.text="구매 · %d Cr"%(price*count);sell.text="판매 · %d Cr"%(sale*count)
   buy.disabled=buy.disabled or int(station.stock[selected])<count or int(station.credits)<price*count
   sell.disabled=sell.disabled or int(data.get("inventory",{}).get(selected,0))<count
  else:
+  unit_price.text=""
   var hull_id:=selected.trim_prefix("hull:");var def: Dictionary=FrontierSpaceStation.config().hulls[hull_id]
   title_label.text=def.name;role.text=def.role
   if preview_model==null or preview_model.get_meta("hull","")!=hull_id:

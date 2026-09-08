@@ -126,8 +126,8 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	materials=HBoxContainer.new();materials.add_theme_constant_override("separation",8);detail.add_child(materials)
 	message=FrontierInterfaceStyle.label(detail,"",12,FrontierInterfaceStyle.MUTED);message.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;message.custom_minimum_size.y=28
 	action=Button.new();action.custom_minimum_size.y=44;action.pressed.connect(_action);detail_shell.add_child(action)
-	upgrade_action=Button.new();upgrade_action.text="선택 장비 Mk.2 개조";upgrade_action.pressed.connect(func():app.session.send_request("equipment_upgrade",{"item_id":selected_item}));detail_shell.add_child(upgrade_action)
-	suit_action=Button.new();suit_action.text="탐험복 Mk.2 개조";suit_action.tooltip_text="보강 프레임 1 + 열전달 유닛 1 · 달리기 소모 −20%, 낙하 피해 −25%";suit_action.icon=FrontierResourceIcons.menu_texture("reinforced_frame");suit_action.pressed.connect(func():app.session.send_request("equipment_suit_upgrade",{}));detail_shell.add_child(suit_action)
+	upgrade_action=Button.new();upgrade_action.text="선택 장비 Mk.2 개조";upgrade_action.pressed.connect(func():app.stations.navigate("augmentation",1));detail_shell.add_child(upgrade_action)
+	suit_action=Button.new();suit_action.text="탐험복 Mk.2 개조";suit_action.tooltip_text="보강 프레임 1 + 열전달 유닛 1 · 달리기 소모 −20%, 낙하 피해 −25%";suit_action.icon=FrontierResourceIcons.menu_texture("reinforced_frame");suit_action.pressed.connect(func():app.stations.navigate("augmentation",1));detail_shell.add_child(suit_action)
 	withdraw_count=SpinBox.new();withdraw_count.min_value=1;withdraw_count.max_value=FrontierItemInventory.limit();withdraw_count.value=1;withdraw_count.prefix="인수";detail.add_child(withdraw_count)
 	var footer:=HBoxContainer.new();warehouse_supplements.append(footer);column.add_child(footer)
 	FrontierInterfaceStyle.label(footer,"장비 선택 → 아래 번호 슬롯 클릭  ·  끌어놓기 가능",12,FrontierInterfaceStyle.MUTED)
@@ -275,7 +275,8 @@ func _refresh_details() -> void:
 	upgrade_action.hide();withdraw_count.visible=tabs.current_tab==2 and storage.selected==1
 	suit_action.visible=tabs.current_tab==0 and selected_resource.is_empty() and not selected_item.is_empty()
 	suit_action.disabled=app.surface_world==null or int(data.get("suit_tier",1))>=2 or not FrontierExpeditionBusiness.affordable(bag,FrontierProductionTier2.config().suit_upgrade.cost)
-	suit_action.text="탐험복 Mk.2 완료" if int(data.get("suit_tier",1))>=2 else "탐험복 Mk.2 개조"
+	suit_action.text="탐험복 Mk.2 완료" if int(data.get("suit_tier",1))>=2 else "탐험복 개조 · 증강 장치"
+	suit_action.disabled=int(data.get("suit_tier",1))>=2
 	if tabs.current_tab==2:
 		_refresh_transfer()
 		return
@@ -324,7 +325,8 @@ func _refresh_details() -> void:
 	else:
 		upgrade_action.visible=app.surface_world!=null and int(def.tier)==1 and selected_item!=""
 		var next: Dictionary=FrontierEquipment.config().items.get(str(def.kind)+"_2",{})
-		upgrade_action.disabled=not FrontierExpeditionResearch.craft_reason(app.session.latest,str(def.kind)+"_2").is_empty() or not FrontierExpeditionBusiness.affordable(bag,next.get("cost",{}))
+		upgrade_action.text="장비 개조 · 증강 장치"
+		upgrade_action.disabled=false
 		upgrade_action.tooltip_text=FrontierCatalog.cost_text(next.get("cost",{}))+" · 장비 ID와 슬롯 유지"
 		if upgrade_action.visible:
 			for resource in next.get("cost",{}):

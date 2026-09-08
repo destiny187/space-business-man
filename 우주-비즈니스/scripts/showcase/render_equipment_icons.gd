@@ -27,6 +27,9 @@ func run() -> void:
 		for id in FrontierExpeditionBusiness.config().buildings:
 			var model: String=FrontierCatalog.entry("buildings",id).model
 			jobs.append({"model":model,"output":"res://assets/ui/previews/"+model+".png"})
+	if "--vessels-only" in OS.get_cmdline_user_args():
+		jobs.clear()
+		for definition in FrontierVesselRefit.config().modules.values():jobs.append({"model":definition.model,"output":"res://assets/ui/previews/vessel_"+str(definition.model).get_file()+".png"})
 	for job in jobs:
 		var destination:=ProjectSettings.globalize_path(job.output)
 		if FileAccess.file_exists(destination):preview.size=Image.load_from_file(destination).get_size()

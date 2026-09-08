@@ -5,17 +5,21 @@ var stages: Array[Label]=[]
 var note: Label
 var samples: HFlowContainer
 var sample_signature:=""
+var at_station:=false
+var visit: Button
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app
 	var strip:=HBoxContainer.new();add_child(strip);move_child(strip,0)
 	for title in ["관측","분석","서식지","이식"]:
 		var step:=FrontierInterfaceStyle.label(strip,title,13);step.size_flags_horizontal=Control.SIZE_EXPAND_FILL;stages.append(step)
 	note=FrontierInterfaceStyle.label(self,"",13);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;move_child(note,1)
+	visit=Button.new();visit.text="표본 연구대에서 작업";add_child(visit);visit.pressed.connect(func():app.stations.navigate("research",2))
 	samples=HFlowContainer.new();add_child(samples);move_child(samples,2)
 func refresh(near: bool) -> void:
 	var entry: Dictionary=app.survey_journal.selected_entry
 	visible=not entry.is_empty() and entry.kind=="biology"
 	if not visible:return
+	visit.visible=not at_station
 	var ecology: Dictionary=app.session.surface.ecology
 	var form:=FrontierEcologyCatalog.form(entry.row.form_id)
 	var record: Dictionary=ecology.planets.get(app.session.latest.location,{})
@@ -83,3 +87,8 @@ func refresh(near: bool) -> void:
 			var reason:=FrontierEcology.unsuitable(form,climate,layer)
 			if not climate.get("restored",false):reason="지원 중인 실험 구획 안에서 이식하세요."
 			if not reason.is_empty():app.research_actions[2].disabled=true;note.text=reason
+
+	if not at_station:
+		for control in app.research_actions:control.hide()
+		samples.hide();note.text="기록 열람 · 착륙선 표본 연구대"
+	else:visit.hide()

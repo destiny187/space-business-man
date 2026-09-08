@@ -2,6 +2,7 @@ class_name FrontierProgressionResearchPanel
 extends VBoxContainer
 var app: FrontierCrewExpedition
 var selected:="mining"
+var shared_only:=false
 var cards: Dictionary={}
 var preview: FrontierEquipmentPreview
 var title: Label
@@ -12,12 +13,13 @@ var cost: FrontierResourceReadout
 var action: Button
 var signature:=""
 var pending_sequence:=-1
-func configure(owner_app: FrontierCrewExpedition) -> void:
-	app=owner_app;name="성능 개조";add_theme_constant_override("separation",10)
+func configure(owner_app: FrontierCrewExpedition,shared_view: bool=false) -> void:
+	app=owner_app;shared_only=shared_view;selected="industry" if shared_only else "mining";name="공동 설비" if shared_only else "개인 성능";add_theme_constant_override("separation",10)
 	var choices:=HBoxContainer.new();add_child(choices)
 	for key in FrontierProgressionResearch.config().fields:
+		if (key=="industry")!=shared_only:continue
 		var def: Dictionary=FrontierProgressionResearch.config().fields[key]
-		var tile:=FrontierItemTile.new();tile.custom_minimum_size=Vector2(150,120);tile.size_flags_horizontal=Control.SIZE_EXPAND_FILL;tile.caption=def.name;tile.picture=load("res://assets/ui/research/"+def.picture+".png");choices.add_child(tile);cards[key]=tile
+		var tile:=FrontierItemTile.new();tile.custom_minimum_size=Vector2(150,120);tile.size_flags_horizontal=Control.SIZE_EXPAND_FILL;tile.caption=def.name;tile.picture=FrontierInterfaceStyle.icon(def.model);choices.add_child(tile);cards[key]=tile
 		tile.pressed.connect(func():selected=key;signature="";refresh())
 	var row:=HBoxContainer.new();row.size_flags_vertical=Control.SIZE_EXPAND_FILL;add_child(row)
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(250,170);row.add_child(preview)
@@ -29,7 +31,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	effect=FrontierInterfaceStyle.label(detail,"",14);effect.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	cost=FrontierResourceReadout.new();cost.custom_minimum_size.x=250;detail.add_child(cost)
 	action=Button.new();action.custom_minimum_size.y=42;add_child(action)
-	action.pressed.connect(func():app.session.send_request("business_efficiency",{"field":selected}))
+	action.pressed.connect(func():app.session.send_request("business_efficiency",{"field":selected,"station_id":"ship:research" if shared_only else "ship:augmentation"}))
 	app.session.request_started.connect(func(seq: int,kind: String,_args: Dictionary):
 		if kind=="business_efficiency":pending_sequence=seq)
 	app.session.response_received.connect(func(seq: int,result: Dictionary):
@@ -43,7 +45,8 @@ func refresh() -> void:
 	var actor: String=app.session.latest.self_id
 	var world: Dictionary={"crew":app.session.latest.crew,"business":app.session.surface.get("business",{})}
 	var level:=FrontierProgressionResearch.level(world,actor,selected)
-	var reason:=FrontierProgressionResearch.reason(world,actor,selected)
+	var reason: String=app.stations.work_reason("research" if shared_only else "augmentation")
+	if reason.is_empty():reason=FrontierProgressionResearch.reason(world,actor,selected)
 	var key:=str([selected,level,reason,world.business.get("credits",0),FrontierExpeditionBusiness.bag(world,actor)])
 	if key==signature:return
 	signature=key

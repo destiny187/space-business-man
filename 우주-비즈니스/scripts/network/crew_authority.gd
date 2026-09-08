@@ -160,6 +160,13 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 			if entry.profile.character_id==target:return failure("승무원이 재접속 중입니다. 동기화를 기다려 주세요.")
 	var restriction:=FrontierShuttles.guard(world,actor,envelope.kind,envelope.args)
 	if not restriction.is_empty():return failure(restriction)
+	var work_station:=FrontierUpgradeAccess.station_for(envelope.kind,envelope.args)
+	if not work_station.is_empty():
+		if envelope.args.get("station_id")!="ship:"+work_station:return failure("실제 작업 장치를 선택하세요.")
+		var provider: Callable=research_station_provider if work_station=="research" else augmentation_station_provider
+		var descriptor: Dictionary=provider.call(actor,"ship:"+work_station) if provider.is_valid() else {}
+		var access:=FrontierUpgradeAccess.reason(FrontierShuttles.context(world,actor),actor,work_station,descriptor)
+		if not access.is_empty():return failure(access)
 	var canonical:=world.duplicate(true)
 	var draft:=canonical if envelope.kind.begins_with("shuttle_") else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)

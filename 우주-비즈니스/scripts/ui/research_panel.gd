@@ -17,21 +17,12 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	tabs=TabContainer.new();tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(tabs)
 	expedition=FrontierExpeditionResearchPanel.new();tabs.add_child(expedition);expedition.configure(app,"journal")
 	ecology=HBoxContainer.new();ecology.name="발견 도감";tabs.add_child(ecology)
-	var efficiency:=FrontierProgressionResearchPanel.new();tabs.add_child(efficiency);efficiency.configure(app)
-	var logistics:=FrontierRoverWorkshop.new();tabs.add_child(logistics);logistics.configure(app)
 	hide()
 func _process(_delta: float) -> void:
 	if visible:refresh()
 func refresh() -> void:
 	if app.session.latest.is_empty():return
-	var landed: bool=not app.session.latest.crew.get("landing",{}).is_empty()
-	for i in range(2,tabs.get_tab_count()):tabs.set_tab_hidden(i,not landed)
-	if not landed:
-		app.surface_panel.hide();access.text="원정대 공동 기록 · 열람"
-		if tabs.current_tab>=2:tabs.current_tab=0
-		return
-	if app.session.surface.is_empty():return
-	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
-	var near:=FrontierCrewWorld.vector(member.position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))<=float(FrontierCrewSurface.config().boarding_distance)
-	access.text="착륙선 연구실 연결됨" if near else "현장 기록 열람 · 분석은 착륙선에서"
-	app.surface_panel.refresh(near)
+	if app.session.surface.is_empty() or app.session.latest.crew.get("landing",{}).is_empty():app.surface_panel.hide()
+	else:app.surface_panel.refresh(false)
+	access.text="원정대 공동 기록 · 분석과 개조는 실제 장치에서"
+	if app.session.surface.has("business"):access.text+=" · 공동 생산 +%d%%"%(int(app.session.surface.business.get("efficiency",0))*10)

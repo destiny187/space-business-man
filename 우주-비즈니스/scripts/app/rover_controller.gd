@@ -15,7 +15,7 @@ var preview_timer:=0.0
 var unloading: FrontierRoverActor
 var ghost: Node3D
 var ropes: MeshInstance3D
-var dock_card: FrontierItemTile
+var dock_card: Button
 var notice_value:=""
 var pending_requests: Dictionary={}
 func configure(owner_app: FrontierCrewExpedition) -> void:
@@ -31,7 +31,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		if not InputMap.has_action("frontier_"+key):
 			InputMap.add_action("frontier_"+key);var event:=InputEventKey.new();event.physical_keycode=FrontierInput.DEFAULTS[key];InputMap.action_add_event("frontier_"+key,event)
 	dock=FrontierRoverDock.new();app.navigation_frame.get_parent().add_child(dock);dock.configure(app,self)
-	dock_card=FrontierItemTile.new();dock_card.picture=load("res://assets/ui/previews/scout_rover.png");dock_card.caption="차량 적재함 · 한 대";dock_card.custom_minimum_size.y=125;var column: Node=app.shipyard_panel.heading.get_parent();column.add_child(dock_card);column.move_child(dock_card,1);dock_card.pressed.connect(func():app.open_menu(dock))
+	dock_card=Button.new();dock_card.icon=load("res://assets/ui/previews/scout_rover.png");dock_card.add_theme_constant_override("icon_max_width",32);dock_card.text="차량 적재함";dock_card.custom_minimum_size.y=42;var column: Node=app.shipyard_panel.heading.get_parent();column.add_child(dock_card);column.move_child(dock_card,1);dock_card.pressed.connect(func():app.open_menu(dock))
 	panel=FrontierRoverPanel.new();app.navigation_frame.get_parent().add_child(panel);panel.configure(app,self)
 	hint=Label.new();hint.theme=FrontierInterfaceStyle.theme();hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM);hint.offset_left=-390;hint.offset_right=390;hint.offset_top=-162;hint.offset_bottom=-132;app.navigation_frame.get_parent().add_child(hint)
 	gauge=ProgressBar.new();gauge.mouse_filter=Control.MOUSE_FILTER_IGNORE;gauge.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM);gauge.offset_left=-125;gauge.offset_right=125;gauge.offset_top=-130;gauge.offset_bottom=-117;gauge.show_percentage=false;app.navigation_frame.get_parent().add_child(gauge)

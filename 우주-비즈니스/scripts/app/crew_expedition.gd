@@ -63,7 +63,7 @@ var test_camera_position:=Vector3.ZERO
 var spaces:=FrontierCrewSpaces.new()
 var cabin_root: Node3D
 var surface_world: FrontierCrewSurfaceScene
-var surface_panel: VBoxContainer
+var surface_panel: FrontierEcologyWorkflow
 var surface_status: FrontierResourceReadout
 var form_options: OptionButton
 var sample_options: OptionButton
@@ -256,6 +256,11 @@ func _build_ui() -> void:
 		if kind.begins_with("station_") and station_market.pending:station_market.pending_sequence=sequence)
 	session.response_received.connect(station_market.response)
 	shipyard_panel=FrontierShipyardPanel.new();ui.add_child(shipyard_panel)
+	session.request_started.connect(func(seq: int,kind: String,_args: Dictionary):
+		if kind.begins_with("vessel_"):shipyard_panel.pending_sequence=seq)
+	session.response_received.connect(shipyard_panel.response)
+	session.response_received.connect(func(seq: int,result: Dictionary):
+		if seq==shipyard_panel.pending_sequence and feedback!=null:feedback.audio.play("ui_discovery" if result.get("ok",false) else "sfx_build_invalid"))
 	shipyard_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
 	inventory_panel=FrontierEquipmentPanel.new();ui.add_child(inventory_panel);inventory_panel.configure(self,ui)
 	field_hud=FrontierFieldHud.new();ui.add_child(field_hud);field_hud.configure(self)
@@ -353,6 +358,7 @@ func _apply_snapshot(value: Dictionary) -> void:
 	business_panel.shuttle_panel.update_snapshot(value)
 	business_panel.vessel_terminal.update_snapshot(value)
 	station_market.update_snapshot(value)
+	shipyard_panel.set_meta("engineering",session.surface.get("engineering",{}))
 	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
 	var members: Dictionary=value.crew.members
@@ -752,6 +758,7 @@ func surface_action(kind: String) -> void:
 		if form.is_empty():status.value="스캔한 생명체를 먼저 선택하세요.";return
 		args.form_id=id;args.environment=form.environment
 	elif kind=="surface_introduce":args.sample_id=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
+	if not FrontierUpgradeAccess.station_for(kind,args).is_empty():args.station_id="ship:research"
 	session.send_request(kind,args)
 
 func _exit_tree() -> void:
@@ -774,6 +781,9 @@ func close_menus() -> void:
 		if is_instance_valid(frame):frame.hide()
 	_menu_changed()
 func open_menu(frame: Control) -> void:
+	if frame==research_frame:
+		if survey_journal.get_parent()!=research_frame.ecology:survey_journal.reparent(research_frame.ecology)
+		surface_panel.at_station=false
 	var opening:=not frame.visible
 	close_menus();cancel_placement()
 	if opening:frame.show()

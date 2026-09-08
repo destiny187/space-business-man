@@ -10,6 +10,9 @@ var panel: PanelContainer
 var augmentation: FrontierAugmentationPanel
 var research: FrontierExpeditionResearchPanel
 var title: Label
+var augmentation_tabs: TabContainer
+var research_tabs: TabContainer
+var ecology_holder: HBoxContainer
 var hint: Label
 var selected: String=""
 var hovered: String=""
@@ -23,8 +26,15 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var column:=VBoxContainer.new();panel.add_child(column)
 	var header:=HBoxContainer.new();column.add_child(header);title=FrontierInterfaceStyle.label(header,"",24);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	var close:=Button.new();close.text="닫기 · Esc";header.add_child(close);close.pressed.connect(panel.hide)
-	research=FrontierExpeditionResearchPanel.new();column.add_child(research);research.configure(app);research.hide()
-	augmentation=FrontierAugmentationPanel.new();column.add_child(augmentation);augmentation.configure(app);augmentation.hide()
+	research_tabs=TabContainer.new();research_tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;research_tabs.use_hidden_tabs_for_min_size=false;column.add_child(research_tabs)
+	research=FrontierExpeditionResearchPanel.new();research_tabs.add_child(research);research.configure(app);research.name="표본 분석"
+	var shared:=FrontierProgressionResearchPanel.new();research_tabs.add_child(shared);shared.configure(app,true)
+	ecology_holder=HBoxContainer.new();ecology_holder.name="생태 작업";research_tabs.add_child(ecology_holder)
+	augmentation_tabs=TabContainer.new();augmentation_tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;augmentation_tabs.use_hidden_tabs_for_min_size=false;column.add_child(augmentation_tabs)
+	augmentation=FrontierAugmentationPanel.new();augmentation_tabs.add_child(augmentation);augmentation.configure(app);augmentation.name="신체 증강"
+	var equipment:=FrontierEquipmentWorkshop.new();augmentation_tabs.add_child(equipment);equipment.configure(app)
+	var personal:=FrontierProgressionResearchPanel.new();augmentation_tabs.add_child(personal);personal.configure(app)
+	var transport:=FrontierRoverWorkshop.new();augmentation_tabs.add_child(transport);transport.configure(app)
 	panel.hide()
 	hint=FrontierInterfaceStyle.label(ui,"",16);hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,8));hint.hide()
@@ -65,6 +75,9 @@ func _process(delta: float) -> void:
 				node.scan.position=augmentation.body.preview.station.scan.position
 				node.tray.position=augmentation.body.preview.station.tray.position
 	if panel.visible:
+		if selected=="research" and app.surface_panel.at_station:
+			if app.session.surface.is_empty() or app.session.latest.crew.get("landing",{}).is_empty():app.surface_panel.hide()
+			else:app.surface_panel.refresh(work_reason("research").is_empty())
 		if local==null or not is_instance_valid(local.get_node_or_null("Station_"+selected)) or not within(local.get_node("Station_"+selected)):panel.hide();return
 func sync_spaces() -> void:
 	var snapshot: Dictionary=app.session.latest
@@ -106,11 +119,7 @@ func target() -> String:
 func interact() -> bool:
 	var key:=target()
 	if key.is_empty():return false
-	selected=key;app.open_menu(panel);title.text=definitions[key].name
-	research.visible=key=="research";augmentation.visible=key=="augmentation"
-	if key=="augmentation":augmentation.open()
-	else:research.open()
-	app.feedback.audio.play("sfx_pickup_resource")
+	open_device(key)
 	return true
 func resolve(actor: String,station_id: String) -> Dictionary:
 	if station_id not in ["ship:augmentation","ship:research"] or not app.session.hosting:return {}
@@ -125,3 +134,28 @@ func resolve(actor: String,station_id: String) -> Dictionary:
 	var node: FrontierCrewStation=group.get_node_or_null("Station_augmentation" if station_id=="ship:augmentation" else "Station_research")
 	if not is_instance_valid(node) or node.is_queued_for_deletion():return {}
 	return {"enabled":true,"position":node.interaction_point(),"area":area,"body_id":surface_body if area=="surface" else ""}
+
+func open_device(key: String,page: int=0) -> void:
+	selected=key;app.open_menu(panel);title.text=definitions[key].name
+	for container in [augmentation_tabs,research_tabs]:
+		for i in range(1,container.get_tab_count()):container.set_tab_disabled(i,app.surface_world==null)
+	if app.surface_world==null:page=0
+	research_tabs.visible=key=="research";augmentation_tabs.visible=key=="augmentation"
+	if key=="augmentation":augmentation_tabs.current_tab=page;augmentation.open()
+	else:
+		app.survey_journal.reparent(ecology_holder);app.surface_panel.at_station=true
+		research_tabs.current_tab=page;research.open()
+	app.feedback.audio.play("sfx_pickup_resource")
+func navigate(key: String,page: int=0) -> void:
+	var group:=local_set()
+	if group!=null:
+		var device: FrontierCrewStation=group.get_node_or_null("Station_"+key)
+		if device!=null and within(device):open_device(key,page);return
+	app.feedback.show_cue("착륙선 옆 "+str(definitions[key].name)+" · 가까이에서 F")
+func work_reason(key: String) -> String:
+	var descriptor: Dictionary={}
+	var group:=local_set()
+	if group!=null:
+		var device: FrontierCrewStation=group.get_node_or_null("Station_"+key)
+		if device!=null:descriptor={"enabled":true,"position":device.interaction_point(),"area":"surface" if app.surface_world!=null else "cabin","body_id":surface_body}
+	return FrontierUpgradeAccess.reason({"crew":app.session.latest.crew},app.session.latest.self_id,key,descriptor)
