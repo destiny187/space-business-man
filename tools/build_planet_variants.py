@@ -4,6 +4,14 @@ import numpy as np
 from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1]
+# Keep this historical entry point from overwriting the approved revised assets.
+manifest=ROOT/'art/blender/planet-variants/manifest.json'
+if manifest.exists() and any(r.get('art_revision')=='ink-life-1' for r in json.loads(manifest.read_text())):
+ import sys
+ sys.path.insert(0,str(ROOT/'tools'))
+ import build_ink_planets
+ build_ink_planets.variants()
+ raise SystemExit()
 SRC=ROOT/'art/blender/planet-variants'; OUT=ROOT/'우주-비즈니스/assets/models/planet-variants'; RENDER=ROOT/'docs/production/media/planet-diversity/blender'
 for d in (SRC,OUT,RENDER):d.mkdir(parents=True,exist_ok=True)
 rules=json.loads((ROOT/'우주-비즈니스/data/planet_diversity.json').read_text()); records=[]

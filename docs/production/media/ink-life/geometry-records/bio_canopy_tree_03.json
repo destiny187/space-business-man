@@ -1,0 +1,49 @@
+{
+  "id": "bio_canopy_tree_03",
+  "lods": {
+    "near": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_canopy_tree_03_near.glb",
+      "sha256": "baf01dda4037a1bb01c7582a5f283210584daea5976e8c74e7b44d000489fa4b",
+      "triangles": 35388
+    },
+    "far": {
+      "path": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/bestiary/bio_canopy_tree_03_far.glb",
+      "sha256": "7b5aef87f1e0f374e437496a7b3d7f9c1301d3cb3f13985b85bbf14f2b6bae24",
+      "triangles": 9875
+    }
+  },
+  "geometry": {
+    "near": {
+      "geometry_hash": "9854754f74c4795ec4b59f1751cfff458e1d13c71074e4655c9b82c52d2ac0c6",
+      "vertices": 17265,
+      "floor_y": 0.0,
+      "ceiling_y": 2.9943,
+      "min": [
+        -1.415,
+        0.0,
+        -1.2687
+      ],
+      "max": [
+        1.5441,
+        2.9943,
+        1.6503
+      ]
+    },
+    "far": {
+      "geometry_hash": "7b4fb6e05cd7e230256fd83a4df125cf5477e1a52d9b51e4372490505c11246a",
+      "vertices": 4549,
+      "floor_y": 0.0008,
+      "ceiling_y": 2.9943,
+      "min": [
+        -1.415,
+        0.0008,
+        -1.2687
+      ],
+      "max": [
+        1.5431,
+        2.9943,
+        1.6503
+      ]
+    }
+  }
+}

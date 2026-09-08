@@ -22,7 +22,16 @@ void fragment(){
  vec3 land=mix(rock_color.rgb,land_color.rgb,smoothstep(.28,.65,h));
  land*=mix(.78,1.08,COLOR.g);
  float coast=smoothstep(sea_level-.012,sea_level+.012,h);
- vec3 surface=mix(sea_color.rgb,land,coast);
+ // Broad shelf / highland regions, with detail carried by authored relief masks.
+ float shelf=smoothstep(sea_level-.08,sea_level-.015,h)*(1.-coast);
+ vec3 ocean=mix(sea_color.rgb*.73,sea_color.rgb*1.18,shelf);
+ vec3 surface=mix(ocean,land,coast);
+ float highland=smoothstep(.57,.76,h)*float(authored_relief);
+ surface=mix(surface,rock_color.rgb*1.12,highland*.32);
+ float shore=(1.-smoothstep(.01,.025,abs(h-sea_level)))*step(.05,sea_level);
+ surface=mix(surface,mix(land_color.rgb,cloud_color.rgb,.24),shore*.23);
+ float relief_detail=mix(.95,1.04,COLOR.b);
+ surface*=mix(1.,relief_detail,float(authored_relief));
  float strata=smoothstep(.49,.51,noise3(p*22.));surface*=mix(.92,1.03,strata);
  vec3 wind=p;wind.x+=sin(p.y*9.)*.10;wind.z+=cycle_time*.001;
  float cloud=smoothstep(.72-cloud_amount*.18,.82-cloud_amount*.18,fbm(wind*6.))*cloud_amount;
@@ -35,12 +44,15 @@ void fragment(){
   float storm=exp(-pow(dx/.38,2.)-pow(dy/.16,2.));
   float spiral=sin(atan(dy/.16,dx/.38)*2.+length(vec2(dx/.38,dy/.16))*14.-cycle_time*.25);
   float band=sin(latitude*(25.+mod(seed_offset,20.))+fbm(flow*6.)*4.+storm*spiral*2.);
-  surface=mix(sea_color.rgb,land_color.rgb,smoothstep(-.2,.2,band));
+  float belt=smoothstep(-.45,.4,band);
+  surface=mix(sea_color.rgb,land_color.rgb,belt);
+  float filament=sin(latitude*73.+fbm(flow*13.)*2.+storm*spiral);
+  surface=mix(surface,cloud_color.rgb,smoothstep(.45,.85,filament)*.075);
   surface=mix(surface,rock_color.rgb,storm*(.5+.18*spiral));
   cloud=smoothstep(.60,.76,fbm(flow*9.))*.3;
   float flash=pow(max(0.,sin(cycle_time*1.7+seed_offset)),45.)*storm;
   EMISSION=vec3(.4,.65,1.)*flash*.45;
  }
  if(molten){float fissure=1.-smoothstep(.02,.065,abs(fbm(p*12.)-.5));surface=mix(surface,vec3(.85,.14,.015),fissure*.8);EMISSION=vec3(1.,.15,.008)*fissure*1.4;}
- ALBEDO=mix(surface,cloud_color.rgb,cloud*.84);ROUGHNESS=.92;
+ ALBEDO=mix(surface,cloud_color.rgb,cloud*.84);ROUGHNESS=gas_bands?.92:mix(.42,.94,coast);
 }

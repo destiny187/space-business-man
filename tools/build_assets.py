@@ -288,6 +288,13 @@ if "--" in sys.argv:
     if unknown: raise SystemExit("Unknown asset IDs: "+", ".join(sorted(unknown)))
     if requested: assets=[name for name in assets if name in requested]
 for kind in assets:
+    if kind in ['base','factory','charger','solar','reactor','surveyor','guardian','manual_tool',
+                'ruin','microbe','animal','civilization','tree']:
+        print('INK_FOLLOWUP_PRESERVED',kind,'— rebuild with tools/build_ink_followups.py',flush=True)
+        continue
+    if kind in ['miner','atmosphere','thermal','water','biolab']:
+        print('INK_INDUSTRY_PRESERVED',kind,'— rebuild with tools/build_ink_industry.py',flush=True)
+        continue
     if kind == "storage":
         print("STORAGE_PRESERVED",kind,"— rebuild with tools/build_locus_storage.py",flush=True)
         continue

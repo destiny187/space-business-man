@@ -1,0 +1,245 @@
+{
+  "date": "2026-09-08",
+  "blender": "5.2.1 LTS / Cycles 16 samples",
+  "renderer": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "assets": [
+    {
+      "id": "surveyor",
+      "source": "art/blender/surveyor.blend",
+      "model": "res://assets/models/surveyor.glb",
+      "editable_meshes": 168,
+      "export_meshes": 34,
+      "triangles": 86356,
+      "preserved_original_pivots": [
+        "Anim_Wheel_0.88_0",
+        "Anim_Wheel_0.88_0.74",
+        "Anim_Wheel_0.88_-0.74",
+        "Anim_Wheel_-0.88_0",
+        "Anim_Wheel_-0.88_0.74",
+        "Anim_Wheel_-0.88_-0.74",
+        "ToolRotor"
+      ],
+      "sha256": "5a409281c13beec58ac341412f53fbbf0fa5695184c5a3f4c29a2ab3e5f86341"
+    },
+    {
+      "id": "guardian",
+      "source": "art/blender/guardian.blend",
+      "model": "res://assets/models/guardian.glb",
+      "editable_meshes": 155,
+      "export_meshes": 42,
+      "triangles": 78060,
+      "preserved_original_pivots": [
+        "Anim_Barrel_0.22",
+        "Anim_Barrel_-0.22",
+        "Anim_Turret",
+        "Anim_Wheel_0.88_0",
+        "Anim_Wheel_0.88_0.74",
+        "Anim_Wheel_0.88_-0.74",
+        "Anim_Wheel_-0.88_0",
+        "Anim_Wheel_-0.88_0.74",
+        "Anim_Wheel_-0.88_-0.74"
+      ],
+      "sha256": "22a1e1cb0aeefc5a8ceb1e44ffdd8f94bb5f5822d6bd917de6a5195cc274c6bd"
+    },
+    {
+      "id": "manual_tool",
+      "source": "art/blender/manual_tool.blend",
+      "model": "res://assets/models/manual_tool.glb",
+      "editable_meshes": 39,
+      "export_meshes": 11,
+      "triangles": 18324,
+      "preserved_original_pivots": [
+        "Anim_Collar",
+        "Anim_Fan",
+        "Anim_Piston_0.27",
+        "Anim_Piston_-0.27"
+      ],
+      "sha256": "80df5da0154e691bf0c5e7b0290cfadb45d3ee5b1c98cb76bdc95a402d9657e9"
+    },
+    {
+      "id": "base",
+      "source": "art/blender/base.blend",
+      "model": "res://assets/models/base.glb",
+      "editable_meshes": 42,
+      "export_meshes": 7,
+      "triangles": 17588,
+      "preserved_original_pivots": [],
+      "sha256": "dde4c5aa5e85a4378c8bb3be89f715cec79f6687885993cec6f2a60bfbc20b23"
+    },
+    {
+      "id": "solar",
+      "source": "art/blender/solar.blend",
+      "model": "res://assets/models/solar.glb",
+      "editable_meshes": 41,
+      "export_meshes": 7,
+      "triangles": 16448,
+      "preserved_original_pivots": [],
+      "sha256": "b0ea7a835cedb496d20fa0230bdb5fae36551aa5509dce3cd835ef3937f43df9"
+    },
+    {
+      "id": "charger",
+      "source": "art/blender/charger.blend",
+      "model": "res://assets/models/charger.glb",
+      "editable_meshes": 29,
+      "export_meshes": 7,
+      "triangles": 12352,
+      "preserved_original_pivots": [],
+      "sha256": "190796326bfce5abdb69557efa8a7afe893572a5747555f51a71f11920330e47"
+    },
+    {
+      "id": "factory",
+      "source": "art/blender/factory.blend",
+      "model": "res://assets/models/factory.glb",
+      "editable_meshes": 39,
+      "export_meshes": 6,
+      "triangles": 15172,
+      "preserved_original_pivots": [],
+      "sha256": "133f37ae63379cc564282405f3eea2a935c13adf26cccc2ac30025747e042df4"
+    },
+    {
+      "id": "reactor",
+      "source": "art/blender/reactor.blend",
+      "model": "res://assets/models/reactor.glb",
+      "editable_meshes": 30,
+      "export_meshes": 7,
+      "triangles": 18624,
+      "preserved_original_pivots": [],
+      "sha256": "16a3b379b68fadc46f0e13ea11d86e6199b3c8d86291230fc6a86da8aed9e651"
+    },
+    {
+      "id": "ruin",
+      "source": "art/blender/ruin.blend",
+      "model": "res://assets/models/ruin.glb",
+      "editable_meshes": 33,
+      "export_meshes": 5,
+      "triangles": 7976,
+      "preserved_original_pivots": [],
+      "sha256": "f1a14b82bda4ab45a65fe009fc198d96dfd964a2ff25fd94d704627bf1651f33"
+    },
+    {
+      "id": "microbe",
+      "source": "art/blender/microbe.blend",
+      "model": "res://assets/models/microbe.glb",
+      "editable_meshes": 37,
+      "export_meshes": 3,
+      "triangles": 31200,
+      "preserved_original_pivots": [],
+      "sha256": "5f064126ad00c9f50c22ecd32ce7e3e7e920589dcad47b648acd11025d39135b"
+    },
+    {
+      "id": "animal",
+      "source": "art/blender/animal.blend",
+      "model": "res://assets/models/animal.glb",
+      "editable_meshes": 42,
+      "export_meshes": 6,
+      "triangles": 32160,
+      "preserved_original_pivots": [],
+      "sha256": "ca533455dc8ac8bd8b2641cf0593fc865fc573b54978f92d710809803750b302"
+    },
+    {
+      "id": "civilization",
+      "source": "art/blender/civilization.blend",
+      "model": "res://assets/models/civilization.glb",
+      "editable_meshes": 56,
+      "export_meshes": 6,
+      "triangles": 34472,
+      "preserved_original_pivots": [],
+      "sha256": "a2cf214f68b9cba12c009945d25b50f4d454707ebcbe84263fd855e3a3e43504"
+    },
+    {
+      "id": "tree",
+      "source": "art/blender/tree.blend",
+      "model": "res://assets/models/tree.glb",
+      "editable_meshes": 53,
+      "export_meshes": 3,
+      "triangles": 13472,
+      "preserved_original_pivots": [],
+      "sha256": "27f5fd6bf899fa4675e4fde23be2244680cd643fb80dc5cdbb03e7840ee091c5"
+    },
+    {
+      "id": "mesa_0",
+      "source": "art/blender/landscape/mesa_0.blend",
+      "model": "res://assets/models/mesa_0.glb",
+      "editable_meshes": 11,
+      "export_meshes": 1,
+      "triangles": 2848,
+      "preserved_original_pivots": [],
+      "sha256": "2dc1ce6f6b1ff0d977776774eafc50398feb73d75d6699cab31f32b5615f08e9"
+    },
+    {
+      "id": "mesa_1",
+      "source": "art/blender/landscape/mesa_1.blend",
+      "model": "res://assets/models/mesa_1.glb",
+      "editable_meshes": 10,
+      "export_meshes": 1,
+      "triangles": 2276,
+      "preserved_original_pivots": [],
+      "sha256": "76f048ac575d51b5ca784d10f45744f05d89f6d3e5b3aba90048b6ba9472c61e"
+    },
+    {
+      "id": "mesa_2",
+      "source": "art/blender/landscape/mesa_2.blend",
+      "model": "res://assets/models/mesa_2.glb",
+      "editable_meshes": 10,
+      "export_meshes": 1,
+      "triangles": 2276,
+      "preserved_original_pivots": [],
+      "sha256": "f1db598a2e7b1de60fdeece44f7ef4ec33164a257f5e9dd7e62d65735d6a1cf1"
+    }
+  ],
+  "rendered_assets": 16,
+  "legacy_remaining": 0,
+  "current_expedition": {
+    "passed": 40,
+    "failures": 0,
+    "completion": "FIELD_TOOL_FAILURES 0",
+    "scope": [
+      "landing",
+      "extractor mining + intake animation + ElevenLabs loop",
+      "survey and pulse feedback",
+      "solar/charger/factory placement ghosts and accepted backpack consumption",
+      "factory real production",
+      "charger real battery",
+      "960x640 menus and pause",
+      "save"
+    ]
+  },
+  "legacy_campaign": {
+    "checks": 15,
+    "failures": 0,
+    "axis_reproduction": {
+      "checks": 15,
+      "failures": 2
+    },
+    "fixed": "wheel and ToolRotor rotate in local axle space",
+    "scope": [
+      "reactor construction",
+      "surveyor/guardian production",
+      "ecology-dependent tree visibility",
+      "four discovery models",
+      "wheel and drill axis",
+      "guardian aiming and shots"
+    ]
+  },
+  "final_preview_resume": {
+    "passed": 5,
+    "failures": 0,
+    "scope": [
+      "restore saved expedition",
+      "three menu image pixel matches with final source",
+      "save restored world"
+    ]
+  },
+  "not_tested": [
+    "full regression",
+    "multi-client",
+    "long session performance and distant LOD",
+    "Windows runtime",
+    "subjective sound listening"
+  ],
+  "notes": [
+    "QA fixture corrections: legacy robot model key; re-enable orbital camera after scene rebuild; final-preview shutdown uses session.close_session. These are review script errors, not shipped gameplay defects.",
+    "Reimport generated previews before final UI review.",
+    "Mixed lighting images are a quality studio, not a gameplay performance measurement."
+  ]
+}

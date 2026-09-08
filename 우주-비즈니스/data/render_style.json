@@ -2,19 +2,20 @@
   "version": "ink-v1",
   "reference_height": 1200,
   "outer_width": 3.0,
-  "inner_width": 1.25,
+  "inner_width": 0.8,
   "foliage_outer_width": 2.5,
-  "foliage_inner_width": 0.85,
-  "crease_depth_floor": 0.005,
+  "foliage_inner_width": 0.55,
+  "crease_depth_floor": 0.007,
   "crease_fade": [
-    35,
-    100
+    15,
+    55
   ],
   "ink": "030405",
   "mandatory": true,
   "outline_fade": [
-    60,
-    180
+    28,
+    110
   ],
-  "distant_ink_strength": 0.4
+  "distant_ink_strength": 0.24,
+  "small_feature_strength": 0.45
 }

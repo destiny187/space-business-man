@@ -25,7 +25,12 @@ def part(name,loc,scale,mat,parent=None,cylinder=False):
     return ob
 
 records=[]
+asset_manifest=json.loads((ROOT/'art/blender/manifest.json').read_text())
+remodeled={row['id'] for row in asset_manifest if row.get('generator')=='tools/build_ink_industry.py'}
 for kind in ['atmosphere','thermal','water','biolab']:
+    if kind in remodeled:
+        print('INK_INDUSTRY_MOTION_PRESERVED',kind,'— mechanisms are authored by tools/build_ink_industry.py',flush=True)
+        continue
     src=ROOT/'art/blender'/f'{kind}.blend';out=ROOT/'우주-비즈니스/assets/models'/f'{kind}.glb'
     bpy.ops.wm.open_mainfile(filepath=str(src))
     for ob in list(bpy.data.objects):
@@ -60,4 +65,9 @@ for kind in ['atmosphere','thermal','water','biolab']:
         bpy.ops.object.light_add(type='AREA',location=pos);light=bpy.context.object;light.data.energy=energy;light.data.shape='DISK';light.data.size=5;light.rotation_euler=(Vector((0,0,1.5))-light.location).to_track_quat('-Z','Y').to_euler()
     scene.render.engine='CYCLES';scene.cycles.samples=16;scene.render.resolution_x=800;scene.render.resolution_y=600;scene.render.resolution_percentage=100;scene.render.filepath=f'/tmp/ground-facility-{kind}.png';bpy.ops.render.render(write_still=True)
     records.append({'kind':kind,'source':str(src.relative_to(ROOT)),'game_file':str(out.relative_to(ROOT)),'moving_node':name,'review':scene.render.filepath})
-(ROOT/'art/blender/ground-motion-manifest.json').write_text(json.dumps({'version':1,'generator':'tools/build_facility_motion.py','models':records},ensure_ascii=False,indent=2)+'\n')
+if records:
+    manifest_path=ROOT/'art/blender/ground-motion-manifest.json'
+    old=json.loads(manifest_path.read_text()).get('models',[]) if manifest_path.exists() else []
+    merged={row['kind']:row for row in old}
+    merged.update({row['kind']:row for row in records})
+    manifest_path.write_text(json.dumps({'version':1,'generator':'tools/build_facility_motion.py','models':list(merged.values())},ensure_ascii=False,indent=2)+'\n')

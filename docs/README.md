@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-08 [행성·생물 선별 개선 완료](production/54-planets-and-life-art.md): 600개 기본형 검토·200개 개선/400개 유지, 행성 23종과 9개 지표, 내부/원거리 선 조정 및 실제 렌더 확인.
+
 2026-09-08 **C00~C17 첫 구현·개별 커밋 완료**. [기본 조작·로봇·시설·환경 HUD](production/46-ground-play-repairs.md), [탐험·연구·협동 사업량](production/47-ground-exploration-growth.md)에 실제 실행·화면·저장 확인과 미확인 범위를 정리했다. [로버·한 대 운송](production/48-rover-and-transport.md)도 현재 게임에 연결했다. [C16/C17 시드 천체 시간·낮밤](production/50-seeded-cycles.md)까지 신규 세계에 연결했다. 구형 모델 재제작·전체 UI 개편·집중 성능 안정화는 별도 후속이다.
 
 2026-09-07 **지상 개선 변경 문서 정리 완료**. 아래 명세에 최종 승인된 [협동 인원별 사업량](game/12-host-coop-and-crew.md)까지 반영했다. 완료 표기는 문서 정리이며 게임 구현·플레이 검증은 별도다.
@@ -52,6 +54,9 @@
 | [호스트 협동·승무원](game/12-host-coop-and-crew.md) | 호스트 포함 6인·개인 장비·같은 우주선·역할·합류/이탈·시간 |
 | [아트·Blender 제작](production/01-art-and-blender.md) | 카툰 표현, 에셋 목록, 제작·복구·내보내기 과정 |
 | [Blender 공통 제작 규격](production/49-common-blender-art.md) | 산업 재질 단일 데이터·형태/곡면·출력 규칙·로버/창고 통일·남은 구형 모델 |
+| [채광 로봇·환경 시설 재제작](production/51-industry-remodel.md) | 우선 5종 형태 교체·가동부 보존·Blender/INK 렌더·현재 게임 연결 확인 |
+| [구형 그래픽 후속 16종](production/52-legacy-art-completion.md) | 시설·장비·발견물·자연물 전량 교체·legacy 0종·INK 렌더·현재/기존 게임 연결 |
+| [행성·생물 선별 개선](production/54-planets-and-life-art.md) | 600개 기본형 검토·200개 개선/400개 유지·행성 23종·내부/원거리 선 조정 |
 | [1.2 렌더링 품질과 성능](production/03-rendering-and-performance.md) | 조명·그림자·접지 음영·재질·Blender 암벽·프리셋·실측 비교 |
 | [데모 이후 렌더링 품질 연구](production/04-visual-target.md) | 신규 모델·배경을 포함한 독립 고품질 장면, 실행·조작·검토 범위 |
 | [공식 렌더링 품질 기준 — INK v1](production/06-rendering-quality-standard.md) | **모든 후속 자산에 필수**: 승인 스타일·공통 셰이더·31종 렌더 목록·완료 조건 |

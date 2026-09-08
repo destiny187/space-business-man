@@ -1,0 +1,99 @@
+{
+  "date": "2026-09-08",
+  "blender": "5.2.1 LTS",
+  "godot": "4.7.2 Metal Forward+",
+  "gpu": "Apple M2",
+  "models": [
+    {
+      "id": "miner",
+      "editable_objects": 156,
+      "export_objects": 33,
+      "triangles": 78788,
+      "preserved_pivot_names": [
+        "Anim_Wheel_-0.88_-0.74",
+        "Anim_Wheel_-0.88_0",
+        "Anim_Wheel_-0.88_0.74",
+        "Anim_Wheel_0.88_-0.74",
+        "Anim_Wheel_0.88_0",
+        "Anim_Wheel_0.88_0.74",
+        "ToolRotor"
+      ]
+    },
+    {
+      "id": "atmosphere",
+      "editable_objects": 39,
+      "export_objects": 8,
+      "triangles": 21796,
+      "preserved_pivot_names": [
+        "Anim_Fan_Process"
+      ]
+    },
+    {
+      "id": "thermal",
+      "editable_objects": 43,
+      "export_objects": 8,
+      "triangles": 18564,
+      "preserved_pivot_names": [
+        "Anim_Fan_Process"
+      ]
+    },
+    {
+      "id": "water",
+      "editable_objects": 37,
+      "export_objects": 9,
+      "triangles": 22532,
+      "preserved_pivot_names": [
+        "Anim_Piston_Process"
+      ]
+    },
+    {
+      "id": "biolab",
+      "editable_objects": 55,
+      "export_objects": 12,
+      "triangles": 34112,
+      "preserved_pivot_names": [
+        "Anim_Agitator_Process"
+      ]
+    }
+  ],
+  "checks": {
+    "studio": "단독 5종·혼합 주광/약광/역광·관찰 유리 렌더 확인",
+    "robot": "채광 기능 검사 7건 통과; 종료 시 crew 참조 오류를 발견하여 세션 종료 가드 추가",
+    "facility": "첫 실행 29건 중 목표 도달 검사 1건 실패; 나머지 28건 통과. 실수형 대신 정수형을 사용한 검수 자료를 수정",
+    "focused_followup": "저장 fixture 읽기·목표 도달 정지 2건 통과; 전체 시설 실행을 반복하지 않음",
+    "shutdown": "가드 수정 후 시설 실제 실행의 종료 로그에서 SCRIPT ERROR 없음"
+  },
+  "audio_signal": {
+    "source": "격리 검수 세션의 실제 SFX 버스 녹음",
+    "duration_seconds": 6.410666666666667,
+    "channels": 2,
+    "peak_dbfs": -16.92,
+    "rms_dbfs": -30.84,
+    "clipped_samples": 0,
+    "listened": false
+  },
+  "not_checked": [
+    "전체 착륙→수동 채집→건설 반복",
+    "960px 메뉴·재접속",
+    "다중 클라이언트",
+    "장거리 LOD·장시간 성능",
+    "음색 청음"
+  ],
+  "log_counts": {
+    "robot": {
+      "pass": 7,
+      "fail": 0,
+      "script_errors": 1
+    },
+    "facility": {
+      "pass": 28,
+      "fail": 1,
+      "script_errors": 0
+    },
+    "focused": {
+      "pass": 2,
+      "fail": 0,
+      "script_errors": 0
+    }
+  }
+}

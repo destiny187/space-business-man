@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "reviewed_base_forms": 600,
+  "remodeled": 200,
+  "retained": 400,
+  "native_renders": 600,
+  "preview_size": [
+    480,
+    400
+  ],
+  "near_far_pairs": 600,
+  "motion_states_per_form": 5,
+  "attack_forms": 320,
+  "lighting_representatives": 30,
+  "failures": 0,
+  "style_sha256": "1f3d83943506ba8cc14359c5c3ca17f7a790468cc68305f4cf1caff05ba150d1",
+  "appearance_sha256": "1a7abf3a16aa8b80e3e2cc610f9244d37f69282ed545a3837e923aad871d1eaf",
+  "appearance_profiles_unchanged": 12000,
+  "appearance_profiles_rerendered": 0,
+  "renderer": "Godot 4.7.2 Metal Forward+ / Apple M2",
+  "visual_review": "All 30 original family sheets; 8 revised families; final family overview; representative Blender, lighting and motion renders",
+  "limits": "Atlas motion/LOD presentation and actual planet/surface scenes; no full regression or long multiplayer run"
+}

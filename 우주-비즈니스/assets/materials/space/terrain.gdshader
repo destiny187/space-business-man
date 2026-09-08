@@ -9,6 +9,7 @@ uniform bool molten=false;
 uniform float local_heat=1.;
 uniform int surface_pattern=0;
 uniform float geology_phase=0.;
+uniform int biome_style=-1;
 uniform vec3 restoration_center = vec3(0.0);
 uniform float restoration_radius = 65.0;
 varying vec3 world_position;
@@ -72,6 +73,34 @@ void fragment(){
   float edge=second-first;float aa=max(fwidth(edge),.025);
   float crack=1.-smoothstep(.035,.035+aa,edge);
   ALBEDO*=1.-crack*.20*upward*near_detail;
+ }
+ // Distinct broad surface regions; visual only, no height/collision/save changes.
+ float region=ground_noise(gp*.025+vec2(geology_phase));
+ float grain=ground_noise(gp*.38+region*3.);
+ float patch_edge=smoothstep(.38,.62,region);
+ if(biome_style==1 || biome_style==4){
+  vec3 dry=mix(dust_color.rgb,rock_color.rgb,.30);
+  vec3 damp=mix(rock_color.rgb,dust_color.rgb*.66,.30);
+  ALBEDO=mix(ALBEDO,mix(dry,damp,patch_edge),upward*.64);
+  float fleck=smoothstep(.65,.84,grain)*near_detail;
+  ALBEDO=mix(ALBEDO,dust_color.rgb*1.12,fleck*.12*upward);
+ }
+ if(biome_style==3 || biome_style==5){
+  vec3 bare=mix(rock_color.rgb,vec3(.20,.39,.46),.28);
+  vec3 drift=mix(dust_color.rgb,vec3(.74,.81,.80),.40);
+  ALBEDO=mix(ALBEDO,mix(bare,drift,smoothstep(.29,.70,region)),upward*.66);
+ }
+ if(biome_style==2 || biome_style==8){
+  float beds=smoothstep(.44,.58,ground_noise(gp*.045+region*2.));
+  ALBEDO=mix(ALBEDO,mix(rock_color.rgb*.94,dust_color.rgb*1.13,beds),upward*.54);
+ }
+ if(biome_style==7){
+  float crust=smoothstep(.38,.57,region);
+  ALBEDO=mix(ALBEDO,mix(rock_color.rgb*.8,dust_color.rgb*1.16,crust),upward*.58);
+ }
+ if(biome_style==6){
+  float ash=smoothstep(.35,.66,region);
+  ALBEDO=mix(ALBEDO,mix(rock_color.rgb*.60,dust_color.rgb*.87,ash),upward*.72);
  }
  float managed=1.0-smoothstep(restoration_radius*.7,restoration_radius,distance(world_position.xz,restoration_center.xz));
  float salt_patch=smoothstep(.4,.68,patches)*salt_crust*managed*upward;

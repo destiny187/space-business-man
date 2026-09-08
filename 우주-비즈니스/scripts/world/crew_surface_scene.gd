@@ -43,6 +43,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		mat.set_shader_parameter("molten",body.traits.id=="volcanic");mat.set_shader_parameter("rock_color",Color(body.traits.rock));mat.set_shader_parameter("dust_color",Color(body.traits.dust))
 		mat.set_shader_parameter("surface_pattern",{"oxidized":1,"frozen":2,"fractured":2,"salt":3}.get(body.traits.id,0))
 		mat.set_shader_parameter("geology_phase",FrontierSurfaceGeology.phase(body.traits))
+		mat.set_shader_parameter("biome_style",["oxidized","continental","cratered","fractured","tundra","frozen","volcanic","salt","ochre"].find(body.traits.id))
 	terrain=FrontierTerrainStreamer.new();terrain.configure(int(body.streams.terrain),packet.edits,mat,config,body.get("terrain_traits",{}));add_child(terrain)
 	if not body.get("terrain_traits",{}).is_empty():_add_native_water()
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)

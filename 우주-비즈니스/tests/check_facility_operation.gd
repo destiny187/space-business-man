@@ -4,6 +4,11 @@ func run() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--crew-folder="):folder=arg.trim_prefix("--crew-folder=")
 	if folder.is_empty() or not "--crew-ui-test" in OS.get_cmdline_user_args():quit(2);return
+	if "--facility-stopped-review" in OS.get_cmdline_user_args():
+		var saved:=FrontierWorldStore.new(folder+"/world.json").read_state()
+		check(not saved.is_empty(),"saved operating fixture readable")
+		if not saved.is_empty():verify_completed_facilities(saved)
+		print("FACILITY_STOPPED_FAILURES ",failures);quit(1 if failures else 0);return
 	root.size=Vector2i(1280,800)
 	app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app
 	await process_frame
@@ -74,11 +79,19 @@ func run() -> void:
 	app.session.send_request("business_toggle",{"building_id":"water"})
 	check(not FrontierExpeditionBusiness.site(app.session.authority.world).buildings.water.enabled,"host toggle disables facility")
 	var isolated: Dictionary=app.session.authority.world.duplicate(true)
-	var fixture:=FrontierExpeditionBusiness.site(isolated);fixture.environment.temperature=18;fixture.environment.oxygen=.21;fixture.environment.pressure=1;fixture.environment.toxicity=0
-	FrontierExpeditionIndustry.power(isolated,fixture);FrontierExpeditionIndustry.environment(isolated,fixture,1)
-	check(not fixture.buildings.thermal.working and not fixture.buildings.atmosphere.working,"completed facilities stop processing")
+	var fixture:=FrontierExpeditionBusiness.site(isolated)
+	verify_completed_facilities(isolated)
 	fixture.buildings.solar.enabled=false;fixture.buildings.solar2.enabled=false
 	FrontierExpeditionIndustry.power(isolated,fixture);FrontierExpeditionIndustry.environment(isolated,fixture,1)
 	check(not fixture.buildings.atmosphere.active and not fixture.buildings.atmosphere.working,"power loss stops facility")
 	check(await app.session.close_session(),"operating facility state saved")
 	print("FACILITY_OPERATION_FAILURES ",failures);quit(1 if failures else 0)
+
+func verify_completed_facilities(world: Dictionary) -> void:
+	var fixture:=FrontierExpeditionBusiness.site(world)
+	# Runtime environment values are floats. Integer fixture values otherwise cause
+	# a type-only Dictionary difference when cooperative distribution normalizes them.
+	fixture.environment.temperature=18.0;fixture.environment.oxygen=.21
+	fixture.environment.pressure=1.0;fixture.environment.toxicity=0.0
+	FrontierExpeditionIndustry.power(world,fixture);FrontierExpeditionIndustry.environment(world,fixture,1)
+	check(not fixture.buildings.thermal.working and not fixture.buildings.atmosphere.working,"completed facilities stop processing")

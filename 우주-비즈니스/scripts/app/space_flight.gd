@@ -491,4 +491,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	atmosphere.material_override = air
 	atmosphere.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	node.add_child(atmosphere)
+	var orbital_lod:Node=load("res://scripts/world/orbital_lod.gd").new()
+	orbital_lod.name="OrbitalLOD";node.add_child(orbital_lod)
+	orbital_lod.configure(node,"res://assets/models/planet-variants/"+str(t.id)+"_lod1.glb",atmosphere)
 	return {"node":node,"radius":radius,"body":body}

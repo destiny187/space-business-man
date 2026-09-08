@@ -73,7 +73,7 @@ static func attach(parent: Node3D, studio: bool = false) -> ShaderMaterial:
 	# The screen texture does not contain transparent draws; a late pass erases them.
 	mat.render_priority = -128
 	mat.set_shader_parameter("strength",1.0)
-	for key in ["outer_width","inner_width","reference_height","crease_depth_floor","distant_ink_strength"]:
+	for key in ["outer_width","inner_width","reference_height","crease_depth_floor","distant_ink_strength","small_feature_strength"]:
 		mat.set_shader_parameter(key,float(config()[key]))
 	var fade: Array = config().crease_fade
 	mat.set_shader_parameter("crease_fade",Vector2(1000,2000) if studio else Vector2(fade[0],fade[1]))

@@ -1,0 +1,333 @@
+{
+  "surveyor": {
+    "source": "art/blender/surveyor.blend",
+    "model": "res://assets/models/surveyor.glb",
+    "moving_nodes": {
+      "Anim_Wheel_0.88_0": {
+        "translation": [
+          1.0471999645233154,
+          0.46000000834465027,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_0.88_0.74": {
+        "translation": [
+          1.0471999645233154,
+          0.46000000834465027,
+          -0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_0.88_-0.74": {
+        "translation": [
+          1.0471999645233154,
+          0.46000000834465027,
+          0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_-0.88_0": {
+        "translation": [
+          -1.0471999645233154,
+          0.46000000834465027,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_-0.88_0.74": {
+        "translation": [
+          -1.0471999645233154,
+          0.46000000834465027,
+          -0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_-0.88_-0.74": {
+        "translation": [
+          -1.0471999645233154,
+          0.46000000834465027,
+          0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "ToolRotor": {
+        "translation": [
+          -0.4300000071525574,
+          1.350000023841858,
+          2.119999885559082
+        ],
+        "rotation": [
+          0.7071068286895752,
+          0,
+          0,
+          0.7071068286895752
+        ]
+      }
+    }
+  },
+  "guardian": {
+    "source": "art/blender/guardian.blend",
+    "model": "res://assets/models/guardian.glb",
+    "moving_nodes": {
+      "Anim_Barrel_0.22": {
+        "translation": [
+          0.2199999988079071,
+          1.809999942779541,
+          0.8199999928474426
+        ],
+        "rotation": [
+          0.7071068286895752,
+          0,
+          0,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Barrel_-0.22": {
+        "translation": [
+          -0.2199999988079071,
+          1.809999942779541,
+          0.8199999928474426
+        ],
+        "rotation": [
+          0.7071068286895752,
+          0,
+          0,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Turret": {
+        "translation": [
+          0,
+          1.7599999904632568,
+          0
+        ]
+      },
+      "Anim_Wheel_0.88_0": {
+        "translation": [
+          1.0471999645233154,
+          0.46000000834465027,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_0.88_0.74": {
+        "translation": [
+          1.0471999645233154,
+          0.46000000834465027,
+          -0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_0.88_-0.74": {
+        "translation": [
+          1.0471999645233154,
+          0.46000000834465027,
+          0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_-0.88_0": {
+        "translation": [
+          -1.0471999645233154,
+          0.46000000834465027,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_-0.88_0.74": {
+        "translation": [
+          -1.0471999645233154,
+          0.46000000834465027,
+          -0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Wheel_-0.88_-0.74": {
+        "translation": [
+          -1.0471999645233154,
+          0.46000000834465027,
+          0.7400000095367432
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.7071068286895752,
+          0.7071068286895752
+        ]
+      }
+    }
+  },
+  "manual_tool": {
+    "source": "art/blender/manual_tool.blend",
+    "model": "res://assets/models/manual_tool.glb",
+    "moving_nodes": {
+      "Anim_Collar": {
+        "translation": [
+          0,
+          0,
+          -0.6899999976158142
+        ],
+        "rotation": [
+          0.7071068286895752,
+          0,
+          0,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Fan": {
+        "translation": [
+          0,
+          0,
+          -0.777999997138977
+        ]
+      },
+      "Anim_Piston_0.27": {
+        "translation": [
+          0.27000001072883606,
+          0.1899999976158142,
+          -0.20999999344348907
+        ],
+        "rotation": [
+          0.7071068286895752,
+          0,
+          0,
+          0.7071068286895752
+        ]
+      },
+      "Anim_Piston_-0.27": {
+        "translation": [
+          -0.27000001072883606,
+          0.1899999976158142,
+          -0.20999999344348907
+        ],
+        "rotation": [
+          0.7071068286895752,
+          0,
+          0,
+          0.7071068286895752
+        ]
+      }
+    }
+  },
+  "base": {
+    "source": "art/blender/base.blend",
+    "model": "res://assets/models/base.glb",
+    "moving_nodes": {}
+  },
+  "solar": {
+    "source": "art/blender/solar.blend",
+    "model": "res://assets/models/solar.glb",
+    "moving_nodes": {}
+  },
+  "charger": {
+    "source": "art/blender/charger.blend",
+    "model": "res://assets/models/charger.glb",
+    "moving_nodes": {}
+  },
+  "factory": {
+    "source": "art/blender/factory.blend",
+    "model": "res://assets/models/factory.glb",
+    "moving_nodes": {}
+  },
+  "reactor": {
+    "source": "art/blender/reactor.blend",
+    "model": "res://assets/models/reactor.glb",
+    "moving_nodes": {}
+  },
+  "ruin": {
+    "source": "art/blender/ruin.blend",
+    "model": "res://assets/models/ruin.glb",
+    "moving_nodes": {}
+  },
+  "microbe": {
+    "source": "art/blender/microbe.blend",
+    "model": "res://assets/models/microbe.glb",
+    "moving_nodes": {}
+  },
+  "animal": {
+    "source": "art/blender/animal.blend",
+    "model": "res://assets/models/animal.glb",
+    "moving_nodes": {}
+  },
+  "civilization": {
+    "source": "art/blender/civilization.blend",
+    "model": "res://assets/models/civilization.glb",
+    "moving_nodes": {}
+  },
+  "tree": {
+    "source": "art/blender/tree.blend",
+    "model": "res://assets/models/tree.glb",
+    "moving_nodes": {}
+  },
+  "mesa_0": {
+    "source": "art/blender/landscape/mesa_0.blend",
+    "model": "res://assets/models/mesa_0.glb",
+    "moving_nodes": {}
+  },
+  "mesa_1": {
+    "source": "art/blender/landscape/mesa_1.blend",
+    "model": "res://assets/models/mesa_1.glb",
+    "moving_nodes": {}
+  },
+  "mesa_2": {
+    "source": "art/blender/landscape/mesa_2.blend",
+    "model": "res://assets/models/mesa_2.glb",
+    "moving_nodes": {}
+  }
+}

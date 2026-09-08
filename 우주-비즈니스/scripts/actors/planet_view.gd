@@ -605,11 +605,11 @@ func _process(delta: float) -> void:
 		if difference.length() > 0.03:
 			object.rotation.y = lerp_angle(object.rotation.y,atan2(difference.x,difference.z),delta*9)
 		for part in object.get_meta("parts",[]):
-			if part.name.begins_with("Anim_Wheel") and difference.length() > 0.03 and controls_enabled: part.rotate_y(delta*8)
+			if part.name.begins_with("Anim_Wheel") and difference.length() > 0.03 and controls_enabled: part.rotate_object_local(Vector3.UP,delta*8)
 			elif part.name.begins_with("Anim_Barrel"):
 				part.position = part.get_meta("rest")+Vector3(0,0,-0.18*maxf(0,1-fmod(elapsed+float(robot.id.hash()%10)*0.07,0.6)*10)) if robot.status == "전투 작전 중" and controls_enabled else part.get_meta("rest")
 		var rotor: Node3D = object.find_child("ToolRotor",true,false)
-		if rotor and robot.status == "채광 중": rotor.rotate_y(delta*15)
+		if rotor and robot.status == "채광 중": rotor.rotate_object_local(Vector3.UP,delta*15)
 		object.position.y = sin(elapsed*5+float(robot.id.hash()%20))*0.015
 		var working: bool = robot.status in ["채광 중","전투 작전 중"] and controls_enabled
 		var endpoint: Dictionary = FrontierCampaign.find_by_id(campaign.planet.nodes,robot.target) if robot.status == "채광 중" else FrontierCampaign.find_by_id(campaign.planet.events,campaign.planet.conflict)
