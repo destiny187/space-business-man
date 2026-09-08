@@ -1,6 +1,8 @@
 class_name FrontierCrewAuthority
 extends RefCounted
 ## Host-only admission, immutable profile references and durable transactions.
+# Host scene resolves a live device descriptor (area/body/position/enabled); no RPC setter.
+var augmentation_station_provider: Callable
 var world: Dictionary={}
 var phase: String="lobby"
 var lobby_ready: Dictionary={}
@@ -143,7 +145,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","augmentation_upgrade"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	if envelope.kind=="shuttle_recall":
 		var target: String=str(envelope.args.get("character_id",""))
 		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
@@ -162,7 +164,13 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
 	if not envelope.kind.begins_with("rover_") and (FrontierRovers.factory_busy(draft,facility_id) or (envelope.kind=="business_settle" and FrontierRovers.fleet(draft).jobs.values().any(func(job: Dictionary):return job.body_id==draft.location))):return failure("로버 조립이 끝난 뒤 실행하세요.")
 	var reason: String=""
-	if envelope.kind.begins_with("shuttle_"):reason=FrontierShuttles.apply(draft,actor,envelope.kind,envelope.args)
+	if envelope.kind=="augmentation_upgrade":
+		var station: Dictionary={}
+		if augmentation_station_provider.is_valid():
+			var offered: Variant=augmentation_station_provider.call(actor,str(envelope.args.get("station_id","")))
+			if offered is Dictionary:station=offered
+		reason=FrontierCrewAugmentation.apply(draft,actor,envelope.args,station)
+	elif envelope.kind.begins_with("shuttle_"):reason=FrontierShuttles.apply(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("rover_"):reason=FrontierRovers.apply(draft,actor,envelope.kind,envelope.args,rover_draft)
 	elif envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("equipment_"):reason=FrontierEquipment.apply(draft,actor,envelope.kind,envelope.args)
@@ -184,6 +192,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	FrontierShuttles.commit(canonical,draft,actor);draft=canonical
 	draft.crew.revision+=1;draft.crew.members[actor].last_sequence=sequence
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
+	if envelope.kind=="augmentation_upgrade":result.augmentation=FrontierCrewAugmentation.outcome(draft.crew.members[actor],envelope.args.field)
 	var gains: Dictionary={}
 	var old_bag:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	old_bag.stone=int(old_bag.get("stone",0))+int(world.crew.members[actor].carried)

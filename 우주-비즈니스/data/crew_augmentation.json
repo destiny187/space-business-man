@@ -5,17 +5,21 @@
     "mobility": {
       "name": "기동 증강",
       "increment": 0.1,
-      "gem": "sapphire"
+      "gem": "sapphire",
+      "base_cost": 3
     },
     "combat": {
       "name": "전투 증강",
       "increment": 0.1,
-      "gem": "ruby"
+      "gem": "ruby",
+      "base_cost": 3
     },
     "vitality": {
       "name": "생명 증강",
       "increment": 0.2,
-      "gem": "emerald"
+      "gem": "emerald",
+      "base_cost": 3
     }
-  }
+  },
+  "interaction_range": 3.0
 }

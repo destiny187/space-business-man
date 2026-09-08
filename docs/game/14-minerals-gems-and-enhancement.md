@@ -1,5 +1,7 @@
 # 행성 광물·최고급 소재·지하 보석·강화
 
+2026-09-08 A02: 사파이어·루비·에메랄드를 소비하는 기동·전투·생명 증강의 호스트 거래를 연결했다. 실제 장치/플레이 UI는 아직 대기다. [소비·소유·검증 경계](../production/63-gem-augmentation-transactions.md).
+
 2026-09-08 사용자 승인: 보석을 소비하는 **신체 증강**으로 이동속도·무기 피해량·최대 체력을 성장시키고, **탐사 연구**로 고티어 설계를 개방한다. 장비 교체 후에도 남는 개인 성장과 공동 지식은 분리한다. 기본선의 증강 장치·표본 연구대, 발견→분석→시제품→현장 시험의 시각적 흐름을 따른다. [전체 명세·A01~A09 커밋 계획](../planning/12-augmentation-and-research-commits.md), [A01 실제 구현](../production/62-character-augmentation-foundation.md). 아래 전부 미구현 표기는 이전 이력이며 보석 소비·장치·연구의 완료 여부는 새 기록에서 구분한다.
 
 2026-09-08 외형 연결 추가: 신규 `sedimentary`/`crystalline`/`alkaline` 행성은 기존 `sedimentary`/`pegmatite`/`alkaline` 광물 프로필을 사용한다. 광물 ID나 드롭 수치는 이번에 추가하지 않았다. [제작 범위와 새 은하 적용](../production/56-planet-surface-materials.md).
