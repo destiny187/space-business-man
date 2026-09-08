@@ -122,3 +122,13 @@ func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=tr
 		_rotate("foot_"+side,Vector3(ankle,0,0),weight)
 		_rotate("upper_arm_"+side,Vector3(-swing*.32*blend-air*.24,0,sign_value*(.055+air*.12)),weight)
 		_rotate("forearm_"+side,Vector3(.18+run*.38+air*.38+maxf(0,swing)*.15*blend,0,0),weight)
+
+func seated(yaw: float,driver: bool) -> void:
+	if skeleton==null:return
+	model.rotation.y=yaw;skeleton.reset_bone_poses()
+	for side in ["L","R"]:
+		_rotate("thigh_"+side,Vector3(-1.25,0,0),1)
+		_rotate("shin_"+side,Vector3(1.35,0,0),1)
+		_rotate("upperarm_"+side,Vector3(-.75 if driver else -.3,0,0),1)
+		_rotate("forearm_"+side,Vector3(-.7,0,0),1)
+	for player in speakers:player.stop()

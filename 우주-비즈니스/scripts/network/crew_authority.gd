@@ -21,11 +21,15 @@ var scan_timer:=0.0
 var ecology_timer:=0.0
 var industry_timer:=0.0
 var last_mine: Dictionary={}
+var rover_spawn_validator: Callable
+var rover_runtime: Dictionary={"seats":{},"exits":{},"tasks":{},"status":{}}
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
 	error=FrontierPlayerProfile.validate_character(profile)
 	if not error.is_empty():return false
 	world=source.duplicate(true);save_world=persist
+	rover_runtime={"seats":{},"exits":{},"tasks":{},"status":{}}
+	FrontierRovers.brake_all(world)
 	if not world.has("crew"):world.crew=FrontierCrewWorld.create(profile)
 	if not world.crew.has("navigation"):world.crew.navigation=FrontierCrewNavigation.create(world)
 	if world.crew.owner_id!=profile.character_id:error="이 세계를 만든 호스트의 개인 프로필이 필요합니다.";return false
@@ -98,7 +102,7 @@ func snapshot(viewer: int=1) -> Dictionary:
 		if id not in visible.values():data.members.erase(id)
 	var target_id:=FrontierUniverse.body_id(world.manifest,int(world.crew.navigation.target))
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
-	return {"station":FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":FrontierVesselRefit.stats(world),"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":world.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -126,12 +130,17 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	var draft:=world.duplicate(true)
-	if envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit"]:FrontierItemInventory.merge_legacy(draft,actor)
+	var rover_draft:=rover_runtime.duplicate(true)
+	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch"]:return failure("먼저 로버에서 내리세요.")
+	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit"]:FrontierItemInventory.merge_legacy(draft,actor)
 	if FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready"]:return failure("착륙선에서 내린 뒤 실행하세요.")
+	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
+	if not envelope.kind.begins_with("rover_") and (FrontierRovers.factory_busy(draft,facility_id) or (envelope.kind=="business_settle" and not FrontierRovers.fleet(draft).jobs.is_empty())):return failure("로버 조립이 끝난 뒤 실행하세요.")
 	var reason: String=""
-	if envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)
+	if envelope.kind.begins_with("rover_"):reason=FrontierRovers.apply(draft,actor,envelope.kind,envelope.args,rover_draft)
+	elif envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("equipment_"):reason=FrontierEquipment.apply(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("station_"):reason=FrontierSpaceStation.apply(draft,actor,envelope.kind,envelope.args,peers)
 	elif envelope.kind.begins_with("vessel_"):reason=FrontierVesselRefit.apply(draft,actor,envelope.kind,envelope.args)
@@ -171,11 +180,11 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 			if float(draft.crew.receipts[id].result.revision)<revision:revision=float(draft.crew.receipts[id].result.revision);oldest=id
 		draft.crew.receipts.erase(oldest)
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
-	world=draft
+	world=draft;rover_runtime=rover_draft
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
-func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> bool:
+func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[]) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
@@ -183,9 +192,14 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	if flight_controls.size() not in [3,4]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
+	if vehicle_controls.size() not in [0,4]:return false
+	for axis in vehicle_controls:
+		if not FrontierUniverse._finite(axis,-1,1):return false
+	var seat:=FrontierRovers.seated(rover_runtime,str(peers[peer]))
+	if not seat.is_empty() and int(seat.seat)==0:scanning=false
 	var aim: Vector3=Vector3.FORWARD if aim_value is Array and aim_value.is_empty() else FrontierCrewSurface.direction(aim_value)
 	if aim==Vector3.ZERO:return false
-	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled}
+	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled,"vehicle_controls":vehicle_controls.duplicate()}
 	return true
 func direction_for(peer: int) -> Vector2:
 	if not inputs.has(peer) or inputs[peer].expires<now:return Vector2.ZERO
@@ -201,16 +215,19 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	if not peers.has(peer):return true
 	var id: String=peers[peer]
 	var draft:=world.duplicate(true)
+	var rover_draft:=rover_runtime.duplicate(true)
+	FrontierRovers.release(draft,rover_draft,id)
 	FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id);draft.crew.revision+=1
 	var remaining:=peers.duplicate();remaining.erase(peer)
 	FrontierCrewSurface.launch_if_boarded(draft,remaining)
 	if not save_world.call(draft):stopped=true;error="연결 종료 상태를 저장하지 못해 세계 진행을 정지했습니다.";return false
-	world=draft;peers.erase(peer);lobby_ready.erase(id)
+	world=draft;rover_runtime=rover_draft;peers.erase(peer);lobby_ready.erase(id)
 	if reserve_slot and peer!=1:reserved[id]=now+float(FrontierCrewWorld.config().reconnect_seconds)
 	return true
 func close() -> bool:
 	stopped=true
 	var draft:=world.duplicate(true)
+	FrontierRovers.brake_all(draft)
 	for id in peers.values():
 		FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id)
 	draft.crew.revision+=1
@@ -231,6 +248,7 @@ func step_surface(delta: float) -> void:
 		if not FrontierExpeditionBusiness.site(world).is_empty() and FrontierExpeditionBusiness.site(world).state=="active":
 			var draft:=world.duplicate(true)
 			FrontierExpeditionIndustry.tick(draft,1.0)
+			FrontierRovers.manufacture(draft,1.0,rover_spawn_validator)
 			if not save_world.call(draft):stopped=true;error="사업 생산 저장 실패로 세계를 정지했습니다.";return
 			world=draft
 	ecology_timer+=delta

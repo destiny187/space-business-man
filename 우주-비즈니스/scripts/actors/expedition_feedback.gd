@@ -159,7 +159,7 @@ func _process(delta: float) -> void:
 	if app==null:return
 	elapsed+=delta;work_left=maxf(0,work_left-delta);cue_left=maxf(0,cue_left-delta)
 	var active: bool=app.session.active and app.surface_world!=null
-	var enabled: bool=active and not blocked() and app.placement_kind.is_empty()
+	var enabled: bool=active and not blocked() and app.placement_kind.is_empty() and (app.rovers==null or app.rovers.seat().is_empty())
 	var tool: Dictionary={}
 	if active:tool=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	if not tool.is_empty() and tool.model!=equipped_model:_replace_tool(tool.model)

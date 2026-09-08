@@ -1,8 +1,8 @@
 class_name FrontierInput
 extends RefCounted
 
-const DEFAULTS := {"forward":KEY_W,"backward":KEY_S,"left":KEY_A,"right":KEY_D,"sprint":KEY_SHIFT,"jump":KEY_SPACE,"interact":KEY_E,"build":KEY_B,"robots":KEY_R,"technology":KEY_T,"journal":KEY_J,"planet":KEY_P,"camera":KEY_V,"rotate":KEY_Q,"save":KEY_F5,"help":KEY_F1}
-const LABELS := {"forward":"앞으로","backward":"뒤로","left":"왼쪽","right":"오른쪽","sprint":"질주","jump":"점프","interact":"상호작용","build":"건설","robots":"로봇","technology":"기술","journal":"탐사","planet":"평가","camera":"관찰 시점","rotate":"건축 회전","save":"빠른 저장","help":"도움말"}
+const DEFAULTS := {"rover_seat":KEY_X,"rover_interact":KEY_F,"forward":KEY_W,"backward":KEY_S,"left":KEY_A,"right":KEY_D,"sprint":KEY_SHIFT,"jump":KEY_SPACE,"interact":KEY_E,"build":KEY_B,"robots":KEY_R,"technology":KEY_T,"journal":KEY_J,"planet":KEY_P,"camera":KEY_V,"rotate":KEY_Q,"save":KEY_F5,"help":KEY_F1}
+const LABELS := {"rover_seat":"로버 운전석 이동","rover_interact":"차량 탑승·하차·복구","forward":"앞으로","backward":"뒤로","left":"왼쪽","right":"오른쪽","sprint":"질주","jump":"점프 / 로버 제동","interact":"상호작용","build":"건설","robots":"로봇","technology":"기술","journal":"탐사","planet":"평가","camera":"관찰 시점","rotate":"건축 회전","save":"빠른 저장","help":"도움말"}
 
 static func apply(settings: Dictionary) -> void:
 	for key in DEFAULTS:

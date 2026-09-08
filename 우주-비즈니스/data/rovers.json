@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "definition": "rover_scout_1",
+  "name": "SCOUT 탐사 로버",
+  "model": "vehicles/scout_rover",
+  "maximum_world_vehicles": 48,
+  "maximum_local_vehicles": 8,
+  "research_cost": {"iron":20,"copper":10,"stone":10},
+  "cost": {"reinforced_frame":6,"control_circuit":2,"heat_transfer_unit":2,"refined_copper":4},
+  "craft_seconds": 45.0,
+  "speed":12.0,"reverse_speed":4.0,"acceleration":3.0,"braking":6.0,"wheelbase":2.7,"steer_angle":0.48,"slope_degrees":25.0,
+  "battery":100.0,"health":300.0,"battery_per_metre":0.015,"battery_per_second":0.02,"charge_rate":2.0,"charge_range":4.0,
+  "repair_cost":{"iron":5,"copper":2},"repair_amount":100.0,"rescue_cost":50,"rescue_charge":25.0,"recovery_seconds":3.0,
+  "cargo_slots":4,"door_range":3.0,"cargo_range":3.0,"service_range":8.0,"spawn_radius":7.0,
+  "seats":[[-0.57,1.38,-0.15],[0.57,1.38,-0.15]],"eyes":[[-0.57,2.10,-0.21],[0.57,2.10,-0.21]],
+  "doors":[[-1.45,0,-0.1],[1.45,0,-0.1]],"cargo_point":[0,1.30,2.16],"wheel_points":[[-1.34,0,-1.35],[1.34,0,-1.35],[-1.34,0,1.35],[1.34,0,1.35]],
+  "audio":{"drive":"sfx_rover_drive","start":"sfx_rover_start","door":"sfx_rover_door","brake":"sfx_rover_brake","service":"sfx_rover_winch","fault":"sfx_rover_fault"}
+}

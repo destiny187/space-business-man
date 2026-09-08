@@ -190,6 +190,8 @@ static func validate_world(value: Variant) -> String:
 	if value.has("business") or value.has("engineering"):
 		var engineering_error: String=FrontierFieldEngineering.validate_world(value)
 		if not engineering_error.is_empty():return engineering_error
+	var rover_error:=FrontierRovers.valid(value)
+	if not rover_error.is_empty():return rover_error
 	return _validate_terrain(value)
 
 static func _finite(value: Variant,low: float,high: float) -> bool:

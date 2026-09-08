@@ -77,6 +77,7 @@ func _process(delta: float) -> void:
 	return_label.text="%.0f m"%position.distance_to(ship)
 	var tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	equipment_name.text=tool.get("name","I  장비 준비")
+	equipment_name.get_parent().visible=app.rovers==null or app.rovers.seat().is_empty()
 	cooldown.value=100*(1-clampf(app.dig_timer/maxf(.1,float(tool.get("interval",1))),0,1))
 	context.hide();target_bar.hide()
 	var target:=app.surface_world.business_view.target(app.camera,app.actors[app.session.latest.self_id])

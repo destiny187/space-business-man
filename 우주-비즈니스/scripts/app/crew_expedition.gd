@@ -10,6 +10,7 @@ var waiting_ready: Button
 var waiting_start: Button
 var navigation_journal: FrontierNavigationJournal
 var navigation_records: FrontierNavigationRecords
+var rovers: FrontierRoverController
 var navigation_ui: Control
 var chart: Control
 var inventory_panel: FrontierEquipmentPanel
@@ -113,6 +114,8 @@ func _ready() -> void:
 		else:status.value="원정 기록을 저장했습니다.")
 	_build_cabin();_build_ui();cabin_root.hide()
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
+	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
+	var rover_factory:=FrontierRoverWorkshop.new();business_panel.tabs.add_child(rover_factory);rover_factory.configure(self,true)
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
 	navigation_ui.get_parent().move_child(navigation_ui,-1)
@@ -330,8 +333,9 @@ func _snapshot(value: Dictionary) -> void:
 func _physics_process(delta: float) -> void:
 	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":return
 	if business_panel.visible and actors.has(session.latest.self_id) and not business_panel.context_in_range(actors[session.latest.self_id].position):close_menus()
+	rovers.physics(delta)
 	dig_timer=maxf(0,dig_timer-delta)
-	if surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
+	if rovers.seat().is_empty() and surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 		if tool.get("kind")=="miner":use_equipped()
 	var controls_enabled:=_locomotion_enabled()
@@ -353,12 +357,13 @@ func _physics_process(delta: float) -> void:
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
-		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled)
+		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled))
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
+			if not rovers.seat(id).is_empty():continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
 			var input: Dictionary=session.authority.inputs.get(peer,{})
 			var enabled: bool=float(input.get("expires",-1))>=session.authority.now and input.get("controls_enabled",true) and (not arrival.active or arrival.phase=="boarding")
@@ -386,6 +391,7 @@ func _physics_process(delta: float) -> void:
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
 			session.authority.update_position(peer,actor.position)
 func _predict_local(delta: float,enabled: bool) -> void:
+	if not rovers.seat().is_empty():prediction_history.clear();predicted_motion.clear();return
 	if outside or (arrival.active and arrival.phase in ["boarding","ascent","escape_loading","escape","exit_handover"]):prediction_history.clear();predicted_motion.clear();return
 	var id: String=session.latest.self_id
 	if not actors.has(id):return
@@ -418,7 +424,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	if prediction_history.size()>90:prediction_history.pop_front()
 
 func _locomotion_enabled() -> bool:
-	if feedback.blocked() or outside or (onboarding!=null and onboarding.letter.visible) or get_viewport().gui_get_focus_owner() is LineEdit:return false
+	if any_menu_open() or feedback.blocked() or outside or (onboarding!=null and onboarding.letter.visible) or get_viewport().gui_get_focus_owner() is LineEdit:return false
 	if not test_mode and not get_window().has_focus():return false
 	if not session.latest.crew.get("landing",{}).is_empty():
 		return surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position)
@@ -459,6 +465,7 @@ func _process(delta: float) -> void:
 	_update_surface_hud()
 	_update_business_placement()
 	arrival.tick(delta)
+	rovers.present(delta)
 func _input(event: InputEvent) -> void:
 	if arrival!=null and arrival.active:return
 	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
@@ -500,6 +507,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
+		if FrontierInput.matches(event,"rover_seat") and not rovers.seat().is_empty():session.send_request("rover_switch",{"id":rovers.seat().id});return
+		if FrontierInput.matches(event,"camera") and not rovers.seat().is_empty():rovers.chase=not rovers.chase;return
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
 		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
@@ -509,8 +518,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
 			navigation_ui.start_route(flight.scan_target);return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
-		if event.physical_keycode==KEY_F and _mouse_look_allowed():
-			if not navigation_ui.interact():interact_business()
+		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
+			if not rovers.interact() and not navigation_ui.interact():interact_business()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
@@ -681,7 +690,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func menu_frames() -> Array:
-	var frames: Array=[navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
+	var frames: Array=[rovers.panel if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:
@@ -836,6 +845,7 @@ func toggle_inventory() -> void:
 	if not session.active or session.latest.get("phase")!="playing":return
 	open_menu(inventory_panel)
 func use_equipped() -> void:
+	if not rovers.seat().is_empty():return
 	var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 제작한 장비를 장착하세요.");return
 	if tool.kind=="miner" and not session.mining_ready():return

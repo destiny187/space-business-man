@@ -140,7 +140,7 @@ func _process(delta: float) -> void:
 	if response_left>0 and response_left<=delta:last_key=""
 	response_left=maxf(0,response_left-delta)
 	var active: bool=app.session.active and app.session.latest.get("phase","playing")=="playing"
-	hotbar.visible=active and (visible or (app.surface_world!=null and not app.feedback.blocked()))
+	hotbar.visible=active and (app.rovers==null or app.rovers.seat().is_empty()) and (visible or (app.surface_world!=null and not app.feedback.blocked()))
 	if not active:hide();return
 	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	data=FrontierEquipment.state(member)

@@ -205,14 +205,14 @@ func _complete_request(sequence: int,value: Dictionary) -> void:
 		mine_ready_at=Time.get_ticks_msec()+int(ceil(float(value.get("retry_after",interval))*1000))+20
 		mine_revision=int(value.get("revision",0))
 	response_received.emit(sequence,value)
-func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> void:
+func send_input(direction: Vector2,aim: Vector3=Vector3.FORWARD,scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[]) -> void:
 	if not active:return
 	movement_sequence+=1
-	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled)
-	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled)
+	if hosting:authority.input(1,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled,vehicle_controls)
+	else:_movement.rpc_id(1,session_id,movement_sequence,[direction.x,direction.y],[aim.x,aim.y,aim.z],scanning,sprinting,flight_controls,jump_request,controls_enabled,vehicle_controls)
 @rpc("any_peer","call_remote","unreliable_ordered",1)
-func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true) -> void:
-	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting,flight_controls,jump_request,controls_enabled)
+func _movement(epoch: String,sequence: int,direction: Array,aim: Array=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[]) -> void:
+	if hosting and epoch==session_id:authority.input(multiplayer.get_remote_sender_id(),sequence,direction,aim,scanning,sprinting,flight_controls,jump_request,controls_enabled,vehicle_controls)
 func kick(character_id: String) -> bool:
 	if not hosting or character_id==authority.world.crew.owner_id:return false
 	for peer in authority.peers.keys():
