@@ -1,0 +1,96 @@
+{
+  "version": "ink-industrial-v1",
+  "color_space": "linear-srgb",
+  "scope": "Manufactured surfaces only. Unlisted, transparent, vertex-painted and natural materials retain authored values.",
+  "roles": {
+    "enamel_cream": {
+      "color_linear": [
+        0.7,
+        0.73,
+        0.6
+      ],
+      "metallic": 0.12,
+      "roughness": 0.34,
+      "highlight_strength": 0.55,
+      "legacy_names": [
+        "Ceramic enamel",
+        "Ceramic enamel ivory",
+        "Motion ceramic"
+      ]
+    },
+    "enamel_teal": {
+      "color_linear": [
+        0.02,
+        0.22,
+        0.22
+      ],
+      "metallic": 0.3,
+      "roughness": 0.44,
+      "highlight_strength": 0.55,
+      "legacy_names": [
+        "Locus teal",
+        "Lagoon coating",
+        "Ceramic enamel lagoon"
+      ]
+    },
+    "safety_orange": {
+      "color_linear": [
+        0.9,
+        0.29,
+        0.035
+      ],
+      "metallic": 0.22,
+      "roughness": 0.5,
+      "highlight_strength": 0.55,
+      "legacy_names": [
+        "Mine safety orange",
+        "Safety ochre",
+        "Service ochre"
+      ]
+    },
+    "structural_dark": {
+      "color_linear": [
+        0.012,
+        0.02,
+        0.024
+      ],
+      "metallic": 0.15,
+      "roughness": 0.52,
+      "highlight_strength": 0.45,
+      "legacy_names": [
+        "Graphite / chassis",
+        "Ink structural",
+        "Graphite chassis",
+        "Motion graphite"
+      ]
+    },
+    "edge_steel": {
+      "color_linear": [
+        0.23,
+        0.34,
+        0.37
+      ],
+      "metallic": 0.65,
+      "roughness": 0.27,
+      "highlight_strength": 1.0,
+      "legacy_names": [
+        "Edge steel",
+        "Brushed steel",
+        "Edge steel machined"
+      ]
+    },
+    "rubber": {
+      "color_linear": [
+        0.025,
+        0.03,
+        0.031
+      ],
+      "metallic": 0,
+      "roughness": 0.9,
+      "highlight_strength": 0.1,
+      "legacy_names": [
+        "Soft graphite tyre"
+      ]
+    }
+  }
+}
