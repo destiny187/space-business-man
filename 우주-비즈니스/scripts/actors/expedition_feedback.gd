@@ -67,7 +67,7 @@ func blocked() -> bool:
 	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
-	if kind in ["deposit","withdraw"]:
+	if kind in ["deposit","withdraw"] or kind.begins_with("shuttle_"):
 		pending[sequence]={"kind":kind};return
 	if app.surface_world==null:return
 	# Keep the point at request time, including when the client turns while awaiting the host.
@@ -100,7 +100,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 		audio.play("sfx_pickup_resource" if value.get("ok",false) else "sfx_build_invalid");return
 	if request.kind.begins_with("shuttle_"):
 		if not value.get("ok",false):reject(str(value.get("error","소형선 작업 실패")))
-		else:audio.play("sfx_build_place" if request.kind=="shuttle_build" else "sfx_factory_complete");show_cue("FINCH 조립 시작" if request.kind=="shuttle_build" else "FINCH 출동" if request.kind=="shuttle_board" else "원정선 합류 완료")
+		else:audio.play("sfx_build_place" if request.kind=="shuttle_build" else "sfx_factory_complete");show_cue("FINCH 조립 시작" if request.kind=="shuttle_build" else "FINCH 출동" if request.kind=="shuttle_board" else "이탈 승무원 회수 완료" if request.kind=="shuttle_recall" else "원정선 합류 완료")
 		return
 	if app.surface_world==null or app.surface_world.body.id!=request.body:return
 	if value.get("code")=="mining_cooldown":return

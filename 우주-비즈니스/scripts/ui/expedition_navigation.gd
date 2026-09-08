@@ -3,6 +3,7 @@ extends Control
 var app: FrontierCrewExpedition
 var pause_frame: PanelContainer
 var crew_frame: PanelContainer
+var shuttle_recovery: FrontierShuttleRecoveryPanel
 var mini: Control
 var context: Button
 var context_kind: String=""
@@ -114,13 +115,16 @@ func _build_pause() -> void:
 	_button(column,"시작 화면으로",func():_leave(false))
 	_button(column,"게임 종료",func():_leave(true))
 func _build_crew() -> void:
-	crew_frame=_frame();var column:=_column(crew_frame)
+	crew_frame=_frame()
+	var scroll:=ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;crew_frame.add_child(scroll)
+	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",12);scroll.add_child(column)
 	FrontierInterfaceStyle.label(column,"승무원",24)
 	app.roster=FrontierInterfaceStyle.label(column,"",15)
 	app.ready_button=_button(column,"준비",app.toggle_ready)
 	app.pilot_choices=OptionButton.new();column.add_child(app.pilot_choices)
 	var transfer:=_button(column,"조종 권한 전달",app.assign_pilot);transfer.name="TransferPilot"
 	var kick:=_button(column,"선택 승무원 내보내기",app.kick_selected);kick.name="Kick"
+	shuttle_recovery=FrontierShuttleRecoveryPanel.new();column.add_child(shuttle_recovery);shuttle_recovery.configure(app)
 	_button(column,"닫기  Esc",app.close_menus)
 func _leave(quit_game: bool) -> void:
 	if closing:return
@@ -145,6 +149,7 @@ func _layout() -> void:
 	mini.position=Vector2(view_size.x-208,26);mini.size=Vector2(180,180)
 	for frame in [pause_frame,crew_frame]:
 		frame.position=Vector2((view_size.x-320)/2,maxf(24,(view_size.y-390)/2));frame.size=Vector2(320,0)
+	crew_frame.size=Vector2(minf(620,view_size.x-48),view_size.y-48);crew_frame.position=Vector2((view_size.x-crew_frame.size.x)/2,24)
 	context.position=Vector2((view_size.x-context.size.x)/2,view_size.y*.66)
 	message.position=Vector2(24,view_size.y-55);message.size.x=view_size.x-48
 
@@ -169,8 +174,9 @@ func refresh(value: Dictionary) -> void:
 	var members: Dictionary=value.crew.members
 	var lines: PackedStringArray=[]
 	for id in members:
-		lines.append(("✓  " if members[id].ready else "○  ")+members[id].profile.name+("  ◈ 조종" if id==value.crew.pilot_id else ""))
+		lines.append(("✓  " if members[id].ready else "○  ")+members[id].profile.name+(" · 연결 끊김" if not members[id].get("connected",false) else "")+("  ◈ 조종" if id==value.crew.pilot_id else ""))
 	app.roster.text="\n".join(lines)
+	shuttle_recovery.update_snapshot(value)
 	app.ready_button.visible=not app.session.offline
 	app.ready_button.text="준비 취소" if members[value.self_id].ready else "준비 완료"
 	if app.crew_ids!=members.keys():

@@ -1,5 +1,5 @@
 {
-  "protocol": 2,
+  "protocol": 3,
   "maximum_players": 6,
   "port": 24560,
   "handshake_seconds": 8.0,
@@ -67,5 +67,8 @@
       0.0,
       6.0
     ]
-  ]
+  ],
+  "snapshot_fragment_bytes": 900,
+  "snapshot_maximum_bytes": 524288,
+  "snapshot_maximum_compressed_bytes": 131072
 }

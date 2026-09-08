@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-08 [이탈 FINCH 회수·스냅샷 분할](production/60-shuttle-recovery-and-snapshot-packets.md): P 승무원 창의 호스트 회수, 가방/장비/화물·재접속 보존, 프로토콜 3의 압축/900바이트 조각 전송과 지표 채널 분리를 구현했다. 관련 34개·실제 화면 9개·별도 ENet 두 프로세스 확인을 통과했다. 기존 은하 참가 호환도 수정했으며 6인 인터넷·장시간 성능은 미확인이다. 아래 회수/패킷 개선 미구현 표기는 이전 이력이다.
+
 - [채광 로봇 2티어·시드 동굴 구현](production/46-seeded-caves-and-automation.md)
 - [첫 원정 단계·행성 환경별 개척 제안](planning/09-first-expedition-and-environment.md)
 

@@ -319,7 +319,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	return "지원하지 않는 사업 작업입니다."
 static func release_carrier(world: Dictionary,actor: String) -> void:
 	# A departing courier and their bag remain with the world-owned craft for reconnect.
-	if FrontierShuttles.aboard(world,actor):return
+	if FrontierShuttles.aboard(world,actor) or world.crew.members[actor].get("shuttle_recalled",false):return
 	if not world.has("business") or total(bag(world,actor))==0:return
 	var ledger: Dictionary=world.business
 	var id:=identifier(ledger,"business-crate")

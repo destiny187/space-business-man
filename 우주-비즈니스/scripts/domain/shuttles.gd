@@ -76,6 +76,22 @@ static func pad(world: Dictionary,actor: String) -> Vector3:
 	return point
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
 	var member: Dictionary=world.crew.members[actor]
+	if kind=="shuttle_recall":
+		if actor!=world.crew.owner_id:return "호스트만 이탈 승무원을 회수할 수 있습니다."
+		if aboard(world,actor):return "공동 원정선에 합류한 뒤 회수하세요."
+		var target: String=str(args.get("character_id",""))
+		if target==actor or not aboard(world,target) or fleet(world).get(target,{}).get("state")!="sortie":return "회수할 이탈 소형선이 없습니다."
+		var craft: Dictionary=fleet(world)[target]
+		# No transfer: craft cargo, bag and owned equipment keep their original ledgers.
+		craft.state="docked";craft.location=world.location;craft.navigation_target=world.location
+		craft.system=int(world.crew.navigation.system);craft.navigation=world.crew.navigation.duplicate(true)
+		craft.navigation.mode="idle";craft.navigation.speed=0.0;craft.navigation.boosting=false;craft.navigation.manual=true
+		craft.navigation.target=FrontierUniverse.ordinal_of(world.manifest,world.location)
+		craft.landing=world.crew.get("landing",{}).duplicate(true)
+		var rescued: Dictionary=world.crew.members[target]
+		rescued.erase("shuttle_id");rescued["shuttle_recalled"]=true
+		FrontierCrewSurface.spawn_member(world,rescued,int(craft.pad_slot))
+		return ""
 	if kind=="shuttle_build":
 		if aboard(world,actor) or not FrontierCrewSurface.landed(world) or member.aboard:return "공동 원정선의 착륙 현장에서 제작하세요."
 		if not world.crew.has("shuttles"):world.crew.shuttles={}

@@ -40,6 +40,7 @@ static func validate(value: Variant) -> String:
 		if not record is Dictionary:return "승무원 형식 오류"
 		var error:=FrontierPlayerProfile.validate_character(record.get("profile"))
 		if not error.is_empty() or id!=record.profile.character_id:return "승무원 캐릭터·장비 오류"
+		if record.has("shuttle_recalled") and not record.shuttle_recalled is bool:return "소형선 회수 기록 오류"
 		if record.has("vitals") and not FrontierCrewVitals.validate(record.vitals):return "탐험복 체력·스태미나 기록 오류"
 		if record.has("loadout") and not FrontierEquipment.validate(record.loadout).is_empty():return "아이템·장착 기록 오류"
 		if not record.get("capability_hash") is String or (id!=value.owner_id and not FrontierPlayerProfile.identifier(record.capability_hash,64)):return "재접속 자격 오류"
@@ -97,7 +98,7 @@ static func apply(value: Dictionary,actor: String,kind: String,args: Dictionary,
 static func disconnect_member(value: Dictionary,actor: String) -> void:
 	var member: Dictionary=value.members[actor]
 	member.ready=false
-	if int(member.carried)>0:
+	if int(member.carried)>0 and not member.has("shuttle_id") and not member.get("shuttle_recalled",false):
 		var id: String=actor+":"+str(int(value.revision))
 		value.recovery[id]={"position":member.position.duplicate(),"area":member.area,"rock":int(member.carried)}
 		if member.area=="surface":value.recovery[id]["body_id"]=value.get("shuttles",{}).get(actor,{}).get("location","") if member.has("shuttle_id") else value.get("landing",{}).get("body_id","")

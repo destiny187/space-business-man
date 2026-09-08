@@ -87,6 +87,7 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 		# gets written into the owner's equipment list.
 		draft.crew.members[id].profile=entry.profile.duplicate(true)
 	FrontierCrewSurface.spawn_member(draft,draft.crew.members[id],peers.size())
+	draft.crew.members[id].erase("shuttle_recalled")
 	draft.crew.revision+=1
 	if not save_world.call(draft):return failure("참가 상태 저장에 실패했습니다.")
 	world=draft;peers[peer]=id;pending.erase(peer)
@@ -139,6 +140,12 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
 	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if envelope.kind=="shuttle_recall":
+		var target: String=str(envelope.args.get("character_id",""))
+		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
+		if target in peers.values():return failure("접속 중인 승무원은 회수할 수 없습니다.")
+		for entry in pending.values():
+			if entry.profile.character_id==target:return failure("승무원이 재접속 중입니다. 동기화를 기다려 주세요.")
 	var restriction:=FrontierShuttles.guard(world,actor,envelope.kind,envelope.args)
 	if not restriction.is_empty():return failure(restriction)
 	var canonical:=world.duplicate(true)
@@ -147,7 +154,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	var rover_draft:=rover_runtime.duplicate(true)
 	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch"]:return failure("먼저 로버에서 내리세요.")
 	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit"]:FrontierItemInventory.merge_legacy(draft,actor)
-	if FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready"]:return failure("착륙선에서 내린 뒤 실행하세요.")
+	if FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
 	if not envelope.kind.begins_with("rover_") and (FrontierRovers.factory_busy(draft,facility_id) or (envelope.kind=="business_settle" and FrontierRovers.fleet(draft).jobs.values().any(func(job: Dictionary):return job.body_id==draft.location))):return failure("로버 조립이 끝난 뒤 실행하세요.")
 	var reason: String=""
@@ -195,6 +202,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		draft.crew.receipts.erase(oldest)
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
 	world=draft;rover_runtime=rover_draft
+	if envelope.kind=="shuttle_recall":motions.erase(str(envelope.args.character_id))
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
