@@ -28,12 +28,12 @@ func run() -> void:
 	check(app.stations.target()=="augmentation","cabin device reachable and aimed")
 	await capture("augmentation-cabin")
 	await press_f()
-	check(app.stations.panel.visible and app.stations.preview.model!=null and app.feedback.blocked(),"F opens actual device inspection and blocks tools")
+	check(app.stations.panel.visible and app.stations.augmentation.body.preview.character!=null and app.feedback.blocked(),"F opens actual device inspection and blocks tools")
 	var opened_sound:=false
 	for speaker in app.feedback.audio.get_children():
 		if speaker is AudioStreamPlayer and speaker.playing and speaker.stream==app.feedback.audio.stream("sfx_pickup_resource"):opened_sound=true
 	check(opened_sound,"existing ElevenLabs opening cue is playing")
-	check(station.scan.position.distance_to(station.origins[station.scan].origin)>.01,"inspection moves scan head")
+	check(app.stations.augmentation.body.preview.pose.skeleton!=null,"body inspection connects the articulated suit")
 	root.size=Vector2i(960,640);root.content_scale_size=root.size;await capture("augmentation-inspect-960")
 	check(app.stations.panel.get_global_rect().end.y<=640,"device page fits small viewport")
 	app.close_menus()

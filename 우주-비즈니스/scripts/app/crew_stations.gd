@@ -7,6 +7,7 @@ var cabin: Node3D
 var surface: Node3D
 var surface_body: String=""
 var panel: PanelContainer
+var augmentation: FrontierAugmentationPanel
 var preview: FrontierEquipmentPreview
 var title: Label
 var detail: Label
@@ -25,6 +26,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var close:=Button.new();close.text="닫기 · Esc";header.add_child(close);close.pressed.connect(panel.hide)
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(280,260);preview.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(preview)
 	detail=FrontierInterfaceStyle.label(column,"",16);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	augmentation=FrontierAugmentationPanel.new();column.add_child(augmentation);augmentation.configure(app);augmentation.hide()
 	panel.hide()
 	hint=FrontierInterfaceStyle.label(ui,"",16);hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,8));hint.hide()
@@ -52,13 +54,17 @@ func _process(delta: float) -> void:
 		hint.position=Vector2(width*.5-150,get_viewport().get_visible_rect().size.y*.66);hint.size=Vector2(300,40)
 	for group in [cabin,surface]:
 		if not is_instance_valid(group):continue
-		for node in group.get_children():node.present(delta,group==local and (node.kind==hovered or (panel.visible and node.kind==selected)))
+		for node in group.get_children():
+			node.present(delta,group==local and (node.kind==hovered or (panel.visible and node.kind==selected)))
+			if node.kind!="augmentation":continue
+			var showing: bool=group==local and panel.visible and selected=="augmentation"
+			node.load_gem(augmentation.body.preview.gem_id if showing else "")
+			if showing:
+				node.scan.position=augmentation.body.preview.station.scan.position
+				node.tray.position=augmentation.body.preview.station.tray.position
 	if panel.visible:
-		if local==null or not within(local.get_node("Station_"+selected)):panel.hide();return
-		if selected=="augmentation":
-			var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
-			detail.text="기동 %d  ·  전투 %d  ·  생명 %d\n개인 증강 기록 · 최대 체력 %.0f"%[FrontierCrewAugmentation.level(member,"mobility"),FrontierCrewAugmentation.level(member,"combat"),FrontierCrewAugmentation.level(member,"vitality"),FrontierCrewAugmentation.maximum_health(member)]
-		else:detail.text="표본 계측 · 시제품 연구\n탐사 기록은 J에서 확인할 수 있습니다."
+		if local==null or not is_instance_valid(local.get_node_or_null("Station_"+selected)) or not within(local.get_node("Station_"+selected)):panel.hide();return
+		if selected=="research":detail.text="표본 계측 · 시제품 연구\n탐사 기록은 J에서 확인할 수 있습니다."
 func sync_spaces() -> void:
 	var snapshot: Dictionary=app.session.latest
 	var cabin_parent: Node3D=app.cabin_root
@@ -99,8 +105,12 @@ func target() -> String:
 func interact() -> bool:
 	var key:=target()
 	if key.is_empty():return false
-	selected=key;app.open_menu(panel);title.text=definitions[key].name;preview.show_model(definitions[key].model)
-	preview.camera.position.z=absf(preview.camera.position.z);preview.camera.look_at(Vector3.ZERO)
+	selected=key;app.open_menu(panel);title.text=definitions[key].name
+	preview.visible=key=="research";detail.visible=key=="research";augmentation.visible=key=="augmentation"
+	if key=="augmentation":augmentation.open()
+	else:
+		preview.show_model(definitions[key].model)
+		preview.camera.position.z=absf(preview.camera.position.z);preview.camera.look_at(Vector3.ZERO)
 	app.feedback.audio.play("sfx_pickup_resource")
 	return true
 func resolve(actor: String,station_id: String) -> Dictionary:

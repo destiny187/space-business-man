@@ -46,6 +46,7 @@ var data: Dictionary={}
 var bag: Dictionary={}
 var depot: Dictionary={}
 var tiles: Array[FrontierItemTile]=[]
+var augmentation_readout: FrontierAugmentationReadout
 var response_left:=0.0
 func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	app=owner_app;theme=FrontierInterfaceStyle.theme()
@@ -90,13 +91,14 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 		var grid:=GridContainer.new();grid.columns=4;grid.add_theme_constant_override("h_separation",6);grid.add_theme_constant_override("v_separation",6);scroll.add_child(grid)
 		if side=="내 배낭":storage_owned=grid
 		else:cargo=grid
+	augmentation_readout=FrontierAugmentationReadout.new();tabs.add_child(augmentation_readout);augmentation_readout.configure(app)
 	tabs.resized.connect(_layout)
 	tabs.tab_changed.connect(func(index: int):
 		selected_resource="";selected_item=""
 		if index==0 and not data.get("items",{}).is_empty():selected_item=data.items.keys()[0];selected_definition=data.items[selected_item]
 		if index==1:selected_definition="miner_1"
-		storage.select(1 if index==2 else 0);left.visible=index!=2 or using_ship();detail.visible=index!=2;cargo_selection_info.visible=index==2 and using_ship();last_key=""
-		for control in warehouse_supplements:control.visible=index!=2
+		storage.select(1 if index==2 else 0);left.visible=index!=3 and (index!=2 or using_ship());detail.visible=index not in [2,3];cargo_selection_info.visible=index==2 and using_ship();last_key=""
+		for control in warehouse_supplements:control.visible=index not in [2,3]
 		_layout();_refresh_details();_highlight())
 	storage=OptionButton.new();storage.add_item("내 배낭 · 운반 중");storage.add_item("현장 창고 · 공동");storage.item_selected.connect(func(_i: int):last_key="");middle.add_child(storage);storage.hide()
 	var load_row:=HBoxContainer.new();warehouse_supplements.append(load_row);middle.add_child(load_row);load_row.add_child(FrontierResourceIcons.view("stone",20));capacity_text=FrontierInterfaceStyle.label(load_row,"배낭",12,FrontierInterfaceStyle.MUTED)

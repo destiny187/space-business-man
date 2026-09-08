@@ -1,6 +1,6 @@
 class_name FrontierCrewStation
 extends Node3D
-## A03 physical access point; processing/result choreography follows in A04/A06.
+## Ship access point; A04 reuses the articulated scanner and gem tray in the body page.
 var kind: String
 var model: Node3D
 var socket: Node3D
@@ -10,6 +10,8 @@ var tray: Node3D
 var rotor: Node3D
 var arm: Node3D
 var origins: Dictionary={}
+var gem: Node3D
+var gem_id: String=""
 func configure(value: String,definition: Dictionary) -> void:
 	kind=value;name="Station_"+kind
 	model=load("res://assets/models/"+str(definition.model)+".glb").instantiate();add_child(model);FrontierInkStyle.apply(model,{})
@@ -37,3 +39,16 @@ func present(delta: float,active: bool) -> void:
 	if tray!=null:tray.position=origins[tray].origin+Vector3(0,0,.08 if active else 0)
 	if rotor!=null:rotor.rotation.y=elapsed*.35 if active else 0
 	if arm!=null:arm.rotation.x=.05*sin(elapsed*1.8) if active else 0
+
+func load_gem(id: String) -> void:
+	if gem_id==id:return
+	gem_id=id
+	if is_instance_valid(gem):gem.queue_free();gem=null
+	if id.is_empty() or tray==null:return
+	gem=load(FrontierMinerals.entry(id).model).instantiate();tray.add_child(gem);FrontierInkStyle.apply(gem,{})
+	var bounds:=AABB();var first:=true
+	for node in gem.find_children("*","MeshInstance3D",true,false):
+		var box: AABB=gem.global_transform.affine_inverse()*node.global_transform*node.get_aabb()
+		bounds=box if first else bounds.merge(box);first=false
+	var factor:=.15/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z));gem.scale=Vector3.ONE*factor
+	gem.position=Vector3(0,.10,.11)-bounds.get_center()*factor
