@@ -92,6 +92,10 @@
       "use": "Mk.2 배양기의 토양 개량 소모품"
     }
   },
+  "robot_creation": {
+    "factory_tier": 2,
+    "cost": {"iron": 100, "copper": 10, "reinforced_frame": 3, "control_circuit": 2, "heat_transfer_unit": 1}
+  },
   "facility_upgrades": {
     "solar": {
       "cost": {

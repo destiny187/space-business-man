@@ -10,7 +10,7 @@ func configure(panel: FrontierBusinessPanel) -> void:
 	var row:=HBoxContainer.new();add_child(row)
 	var preview:=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(190,190);row.add_child(preview);preview.show_model("miner")
 	var detail:=VBoxContainer.new();detail.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(detail)
-	panel.label(detail,"M-01 채광 로봇",24)
+	panel.label(detail,"M-01 채광 로봇 · Mk.2",24)
 	panel.label(detail,"채광 → 운반 → 하역 → 충전",16)
 	cost=FrontierResourceReadout.new();detail.add_child(cost)
 	state_label=panel.label(detail,"")
@@ -19,7 +19,7 @@ func configure(panel: FrontierBusinessPanel) -> void:
 	panel.label(self,"완성 후 제작소 옆으로 출고됩니다. 로봇을 보고 F를 눌러 작업을 배정하세요.")
 func refresh(site: Dictionary) -> void:
 	var b: Dictionary=site.get("buildings",{}).get(owner_panel.context_id,{})
-	var def:=FrontierCatalog.entry("robots","miner")
+	var def:=FrontierProductionTier2.robot_recipe()
 	cost.value="필요 재료 · "+FrontierCatalog.cost_text(def.cost)
 	var reason: String=""
 	var job: Dictionary={}
@@ -31,6 +31,7 @@ func refresh(site: Dictionary) -> void:
 	elif site.get("state","")!="active":reason="인계된 제작소입니다."
 	elif not job.is_empty():reason="로봇 조립 중 · "+str(b.get("status",""))
 	elif not b.get("production",{}).is_empty():reason="제품 생산 중"
+	elif not FrontierProductionTier2.robot_gate(b).is_empty():reason=FrontierProductionTier2.robot_gate(b)
 	elif not b.get("active",false):reason="전력·가동 상태를 확인하세요."
 	elif "robotics" not in owner_panel.ledger.get("technologies",[]):reason="착륙선 단말에서 로봇공학을 구매하세요."
 	elif not FrontierExpeditionBusiness.affordable(site.get("inventory",{}),def.cost):reason="공동 창고에 제작 재료가 부족합니다."

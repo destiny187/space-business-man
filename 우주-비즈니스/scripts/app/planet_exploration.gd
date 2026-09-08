@@ -261,6 +261,7 @@ func dig() -> bool:
 	var hit: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
 	if hit.is_empty() or not hit.collider.has_meta("terrain_chunk"):message.value="굴착할 지층에 가까이 접근하세요.";return false
 	if hit.position.y<float(config.minimum_depth)+5:message.value="현재 장비의 굴착 깊이 한계입니다.";return false
+	if terrain.field.is_bedrock(hit.position):message.value="최초 지표 아래 200m 기반암은 굴착할 수 없습니다.";return false
 	var edit: Dictionary=terrain.dig(hit.position,float(config.dig_radius))
 	if edit.is_empty():return false
 	if not state.terrain_edits.has(body_id):state.terrain_edits[body_id]=[]

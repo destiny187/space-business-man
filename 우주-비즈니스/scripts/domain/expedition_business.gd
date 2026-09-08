@@ -43,8 +43,10 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 	if FrontierMineralWorld.enabled(body):values.append_array(starter_veins(body))
 	if FrontierMineralWorld.enabled(body):
 		var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
-		for level in range(-20,-40,-1):
-			var p:=Vector3(98,level,0)
+		var cave_point:=Vector3(98,-20,0)
+		if field.caves!=null:cave_point=field.caves.system_at(0,0).chambers[-1].center
+		for offset in range(0,20):
+			var p:=cave_point-Vector3.UP*offset
 			if field.density(p+Vector3.UP*.6)<=0 and field.density(p-Vector3.UP*.6)>0:
 				var gem: String=body.mineral_profile.gems[0]
 				values.append({"id":"cave:gem:0","resource":gem,"required_tier":FrontierMineralWorld.tier(gem),"capacity":35,"position":[p.x,p.y,p.z],"underground":true,"quality":1})
@@ -218,15 +220,17 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not building.active or not building.enabled:return "전력이 공급되는 가동 제작소가 필요합니다."
 		if not building.get("production",{}).is_empty():return "제품 생산을 먼저 완료하세요."
 		if building.type!="factory" or "robotics" not in ledger.technologies:return "기술을 갖춘 제작소가 필요합니다."
+		var robot_gate:=FrontierProductionTier2.robot_gate(building)
+		if not robot_gate.is_empty():return robot_gate
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
 		if FrontierFieldEngineering.uses(world,world.location,id):return "이 제작소의 공학 시제품 제작을 먼저 완료하세요."
-		var def:=FrontierCatalog.entry("robots","miner")
+		var def:=FrontierProductionTier2.robot_recipe()
 		if not affordable(current.inventory,def.cost):return "로봇 제작 재료가 부족합니다."
 		transfer(current.inventory,def.cost,-1)
 		var key:=identifier(ledger,"robot")
 		var roll: int=FrontierUniverse.derive(int(world.manifest.seed),key)%100
 		var grade: String="rare" if roll>=95 else ("improved" if roll>=70 else "standard")
-		current.jobs[key]={"id":key,"factory_id":id,"progress":0.0,"seconds":float(def.seconds),"grade":grade};return ""
+		current.jobs[key]={"id":key,"factory_id":id,"progress":0.0,"seconds":float(def.seconds),"grade":grade,"tier":2};return ""
 	if kind in ["business_assign","business_robot_return","business_robot_recover","business_robot_rescue"]:
 		var id: String=str(args.get("robot_id",""))
 		if not current.robots.has(id):return "현장 로봇을 선택하세요."
@@ -387,6 +391,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 			var job: Variant=current.jobs[key]
 			if not key is String or robots.has(key) or not job is Dictionary or job.get("id")!=key or not current.buildings.has(job.get("factory_id","")) or current.buildings[job.factory_id].type!="factory" or job.get("grade") not in FrontierCatalog.table("grades"):return "로봇 제작 예약 오류"
 			if job.get("seconds")!=float(FrontierCatalog.entry("robots","miner").seconds) or not FrontierUniverse._finite(job.get("progress"),0,float(job.seconds)):return "로봇 제작 진행 오류"
+			if not integer(job.get("tier",1),1,2):return "로봇 제작 등급 오류"
 			robots[key]=true
 		var restoration: Variant=current.get("restoration2",{})
 		if not restoration is Dictionary:return "2티어 복원 기록 오류"

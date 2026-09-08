@@ -144,6 +144,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			var point:=origin+aim*float(step)*.1
 			if terrain.density(point)>=0:hit=point;break
 		if not hit.is_finite() or hit.y<float(world.terrain_settings.minimum_depth)+5:return "사거리와 굴착 가능한 지층을 확인하세요."
+		if terrain.is_bedrock(hit):return "최초 지표 아래 200m 기반암은 굴착할 수 없습니다."
 		if not world.terrain_edits.has(body_id):world.terrain_edits[body_id]=[]
 		world.terrain_edits[body_id].append({"center":[hit.x,hit.y,hit.z],"radius":FrontierEquipment.active(member).radius})
 		if not world.has("business"):world.business=FrontierExpeditionBusiness.create()

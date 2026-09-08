@@ -29,6 +29,18 @@ func build(kind: String) -> String:
 			check(result.ok,"build "+kind+" from mined inventory: "+str(result.get("error","")))
 			return FrontierExpeditionBusiness.site(core.world).buildings.keys().back() if result.ok else ""
 	check(false,"safe building placement "+kind);return ""
+func produce_for(factory: String,cost: Dictionary) -> void:
+	for key in cost:
+		var recipe:=FrontierProductionTier2.product(key)
+		if recipe.is_empty():continue
+		while int(FrontierExpeditionBusiness.site(core.world).inventory.get(key,0))<int(cost[key]):
+			produce_for(factory,recipe.cost)
+			if failures:return
+			var result:=command("business_produce",{"building_id":factory,"product":key})
+			check(result.ok,"produce paid automation component "+key)
+			if not result.ok:return
+			for i in 12:FrontierExpeditionIndustry.tick(core.world,1)
+			if not FrontierExpeditionBusiness.site(core.world).buildings[factory].get("production",{}).is_empty():check(false,"component output blocked");return
 func run() -> void:
 	core=FrontierCrewAuthority.new()
 	var owner:=FrontierPlayerProfile.new_character("사업 검증",0);owner_id=owner.character_id
@@ -56,6 +68,11 @@ func run() -> void:
 	check(not solar.is_empty() and not charger.is_empty() and not factory.is_empty(),"power charging and fabrication facilities exist")
 	if failures:quit(1);return
 	core.update_position(1,FrontierExpeditionBusiness.point(FrontierExpeditionBusiness.site(core.world).buildings[factory].position)+Vector3(0,0,4))
+	check(not command("business_craft",{"building_id":factory}).ok,"T1 factory does not unlock early automation")
+	produce_for(factory,FrontierProductionTier2.config().facility_upgrades.factory.cost)
+	check(command("business_facility_upgrade",{"building_id":factory}).ok,"manual parts upgrade factory to T2")
+	produce_for(factory,FrontierProductionTier2.robot_recipe().cost)
+	if failures:quit(1);return
 	check(command("business_craft",{"building_id":factory}).ok,"reserve paid robot fabrication with stable result")
 	check(not command("business_demolish",{"building_id":factory}).ok,"cannot refund factory while fabrication is pending")
 	for tick in 20:FrontierExpeditionIndustry.tick(core.world,1)

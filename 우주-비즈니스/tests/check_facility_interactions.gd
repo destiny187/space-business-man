@@ -74,6 +74,10 @@ func run() -> void:
 	if built.size()!=2:quit(1);return
 	var factory_id: String=built[0]
 	site=FrontierExpeditionBusiness.site(app.session.authority.world)
+	# This UI fixture starts after manual T2 progression; production rules have their own focused test.
+	site.buildings[factory_id].tier=2
+	for resource in FrontierProductionTier2.robot_recipe().cost:
+		site.inventory[resource]=maxi(int(site.inventory.get(resource,0)),int(FrontierProductionTier2.robot_recipe().cost[resource]))
 	point=FrontierExpeditionBusiness.point(site.buildings[factory_id].position)
 	move_to(point+Vector3(0,0,5))
 	await create_timer(1).timeout

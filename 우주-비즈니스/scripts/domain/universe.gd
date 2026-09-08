@@ -8,6 +8,7 @@ static func config() -> Dictionary:
 	var value: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
 	value.system_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/system_diversity.json"))
 	value.planet_rules=FrontierPlanetTraits.rules().duplicate(true)
+	value.underground_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/underground.json"))
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	return value
 
@@ -100,6 +101,13 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		result.moons=1+derive(seed_value,"moons")%2 if layout.theme=="satellites" or result.kind in ["gas_giant","ice_giant"] else 0
 	if result.origin=="fictional":result.traits=FrontierPlanetTraits.make(result,cfg.get("planet_rules",{}))
 	result.terrain_traits=result.get("traits",{}) if cfg.has("planet_rules") else {}
+	if cfg.has("underground_rules") and result.get("landable",true):
+		var underground: Dictionary=cfg.underground_rules
+		var family: String=underground.archetypes.get(result.terrain_traits.get("id",""),"fracture")
+		result.terrain_traits=result.terrain_traits.duplicate(true)
+		result.terrain_traits.underground=underground.profiles[family].duplicate(true)
+		for key in ["version","region_size","occupancy","maximum_depth"]:result.terrain_traits.underground[key]=underground[key]
+		result.terrain_traits.underground.family=family
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
 	return result
 

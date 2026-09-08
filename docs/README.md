@@ -1,5 +1,8 @@
 # 게임 설계 문서 목차
 
+- [채광 로봇 2티어·시드 동굴 구현](production/46-seeded-caves-and-automation.md)
+- [첫 원정 단계·행성 환경별 개척 제안](planning/09-first-expedition-and-environment.md)
+
 2026-09-07 [우주 탐험 경험·영어 천체명·진입 사운드](production/34-space-experience.md): 5단계 적용과 사운드 제작·검증 기록.
 
 - [2티어 공통 제품·분야별 첫 개조](production/36-tier2-production-and-retrofits.md): 실제 생산·인수·장비/탐험복/로봇/설비/선박 강화와 신규 T2 복원 조건.

@@ -9,6 +9,7 @@ var edits_by_chunk: Dictionary = {}
 var span := 24.0
 var seed_value := 0
 var traits: Dictionary={}
+var caves: FrontierSeededCaves
 
 func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, characteristics: Dictionary={}) -> void:
 	traits=characteristics.duplicate(true)
@@ -27,6 +28,10 @@ func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, ch
 	plateau.seed=FrontierUniverse.derive(seed_number,"plateau-v2")
 	plateau.frequency=.0012
 	plateau.fractal_octaves=2
+	caves=null
+	if int(traits.get("underground",{}).get("version",0))==1:
+		caves=FrontierSeededCaves.new()
+		caves.configure(seed_number,traits.underground,base_height)
 	for edit in edits:add_edit(edit)
 
 func key_at(point: Vector3) -> Vector3i:
@@ -48,6 +53,10 @@ func add_edit(edit: Dictionary) -> Array[Vector3i]:
 	return affected
 
 func height(x: float,z: float) -> float:
+	var base:=base_height(x,z)
+	return caves.roof(x,z,base) if caves!=null else base
+
+func base_height(x: float,z: float) -> float:
 	var distance: float=Vector2(x,z).length()
 	var rough: float=noise.get_noise_2d(x,z)*float(traits.get("relief",42.0))+detail.get_noise_2d(x,z)*4.0
 	var inner:=18.0
@@ -71,13 +80,26 @@ func height(x: float,z: float) -> float:
 		base-=smoothstep(145.0,230.0,distance)*float(traits.water)*.18*basin
 	# Keep the E0 passage under a rock ridge; an unrelated surface valley must
 	# not cut steep exterior slopes into its walkable floor.
+	if caves!=null:return base
 	var t: float=clampf((x-14.0)/82.0,0,1)
 	var lateral: float=1.0-smoothstep(14.0,36.0,absf(z-sin(t*PI)*5.0))
 	var ridge: float=lateral*smoothstep(18.0,35.0,x)*(1.0-smoothstep(110.0,145.0,x))
 	return lerpf(base,maxf(base,12.0+detail.get_noise_2d(x,z)*2.0),ridge)
 
 func density(p: Vector3) -> float:
-	var value: float=height(p.x,p.z)-p.y
+	var original_surface:=height(p.x,p.z)
+	var value: float=original_surface-p.y
+	if caves!=null:
+		value=minf(value,caves.density(p))
+	else:
+		value=legacy_cave_density(p,value)
+	for edit in edits_by_chunk.get(key_at(p),[]):
+		value=minf(value,p.distance_to(Vector3(edit.center[0],edit.center[1],edit.center[2]))-float(edit.radius))
+	if caves!=null:
+		value=maxf(value,original_surface-float(traits.underground.maximum_depth)-p.y)
+	return value
+
+func legacy_cave_density(p: Vector3,value: float) -> float:
 	# A connected, walkable inclined entrance and a deeper chamber for risk testing.
 	var t: float=clampf((p.x-14.0)/82.0,0,1)
 	var center:=Vector3(14.0+t*82.0,7.4-t*27.4,sin(t*PI)*5.0)
@@ -85,11 +107,12 @@ func density(p: Vector3) -> float:
 	var weathering: float=(detail.get_noise_3d(p.x,p.y*1.4,p.z)*.7+sin(p.y*.65+p.x*.045)*.25)*sin(t*PI)
 	value=minf(value,p.distance_to(center)-radius+weathering)
 	value=minf(value,p.distance_to(Vector3(99,-20,0))-11.0+detail.get_noise_3d(p.x,p.y,p.z)*.7)
-	for edit in edits_by_chunk.get(key_at(p),[]):
-		value=minf(value,p.distance_to(Vector3(edit.center[0],edit.center[1],edit.center[2]))-float(edit.radius))
 	return value
 
 func normal(p: Vector3) -> Vector3:
 	var e:=.15
 	var gradient:=Vector3(density(p+Vector3(e,0,0))-density(p-Vector3(e,0,0)),density(p+Vector3(0,e,0))-density(p-Vector3(0,e,0)),density(p+Vector3(0,0,e))-density(p-Vector3(0,0,e)))
 	return -gradient.normalized() if gradient.length_squared()>.000001 else Vector3.UP
+
+func is_bedrock(p: Vector3) -> bool:
+	return caves!=null and height(p.x,p.z)-p.y>=float(traits.underground.maximum_depth)-.1

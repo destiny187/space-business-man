@@ -175,7 +175,7 @@ func set_context(kind: String,id: String="") -> void:
 	for i in tabs.get_tab_count():tabs.set_tab_hidden(i,str(tabs.get_tab_control(i).name) not in allowed)
 	for i in tabs.get_tab_count():
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
-	var title: String={"build":"건설","ship":"착륙선 단말","base":"현장 창고","factory":"로봇 제작소","robot":"M-01 작업 관리"}.get(kind,FrontierCatalog.entry("buildings",kind).get("name","시설"))
+	var title: String={"build":"건설","ship":"착륙선 단말","base":"현장 창고","factory":"현장 제작소","robot":"M-01 작업 관리"}.get(kind,FrontierCatalog.entry("buildings",kind).get("name","시설"))
 	heading.text=title+" · Esc 닫기"
 	register_button.hide()
 	stock.visible=kind not in ["base","storage","ship"]
@@ -272,7 +272,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	environment_label.text="지역 전력 %.0f / %.0f kW\n온도 %.1f°C · 기압 %.2f bar · 산소 %.1f%%\n대기 %.0f · 온도 %.0f · 물 %.0f · 생태 %.0f\n안정화 %.0f / 30초"%[float(current.power_demand),float(current.power_supply),float(e.temperature),float(e.pressure),float(e.oxygen)*100,scores.atmosphere,scores.temperature,scores.water,float(e.ecology),float(e.stable_seconds)]
 	if current.has("restoration2"):
 		environment_label.text+="\n염류 %.0f / 목표 ≤20 · 토양 %.0f / 목표 ≥60 · Mk.2 필터·기반재 필요"%[float(current.restoration2.salinity),float(current.restoration2.soil)]
-	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("광맥 채집 → 창고 반납 → 태양광·충전기·제작소 → 로봇 제작" if current.robots.is_empty() else "로봇에 광맥을 배정하고 대기·온도·물·생태 시설을 가동하세요.")
+	guidance.text="계약 인계 완료 · 다음 목적지에서 재투자하세요." if current.state=="settled" else ("수동 채집 → 부품 생산 → 제작소 Mk.2 개조 → 채광 로봇 제작" if current.robots.is_empty() else "로봇에 광맥을 배정하고 대기·온도·물·생태 시설을 가동하세요.")
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행 · %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement() -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return

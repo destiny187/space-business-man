@@ -20,6 +20,7 @@ static func tick(world: Dictionary,dt: float) -> void:
 			if candidate.is_finite() and clear(world,candidate):spawn=candidate;break
 		if not spawn.is_finite():factory.status="출고 공간 필요";continue
 		site.robots[id]={"id":id,"grade":job.grade,"position":FrontierExpeditionBusiness.array(spawn),"battery":100.0,"cargo":FrontierExpeditionBusiness.inventory(),"phase":"idle","target":"","path":[],"status":"작업 배정 대기","work":0.0,"charging":false}
+		site.robots[id].tier=int(job.get("tier",1))
 		site.jobs.erase(id)
 	for robot in site.robots.values():_robot(world,site,robot,dt)
 	FrontierProductionTier2.tick(site,dt)

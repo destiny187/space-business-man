@@ -6,6 +6,12 @@ static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/production_tier2.json"))
 	return _config
 static func product(id: String) -> Dictionary:return config().products.get(id,{})
+static func robot_recipe() -> Dictionary:
+	var result:=FrontierCatalog.entry("robots","miner").duplicate(true)
+	result.cost=config().robot_creation.cost.duplicate(true)
+	return result
+static func robot_gate(factory: Dictionary) -> String:
+	return "제작소를 Mk.2로 개조하면 채광 로봇이 해금됩니다." if int(factory.get("tier",1))<int(config().robot_creation.factory_tier) else ""
 static func factor(row: Dictionary) -> float:
 	return float(config().facility_upgrades.get(row.get("type",""),{}).get("factor",1)) if int(row.get("tier",1))==2 else 1.0
 static func robot_capacity(row: Dictionary) -> int:
