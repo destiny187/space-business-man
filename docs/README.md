@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-08 [A03 선박 증강 장치·표본 연구대](production/64-crew-stations.md): Blender 실물 장치, 선내/착륙지 F 접근, 실제 장치 제공자 연결. 보석 투입 UI와 표본 연구 수행은 A04/A06에서 이어진다.
+
 2026-09-08 [A02 보석 소비·신체 증강 거래](production/63-gem-augmentation-transactions.md): 본인 보석 차감과 단계 증가를 한 번 저장하며 중복·저장 실패·장치 접근을 검사한다. 관련 32개 확인을 통과했다. 실제 장치·화면은 A03~A04 대기다.
 
 2026-09-08 [신체 증강·탐사 연구 커밋 계획](planning/12-augmentation-and-research-commits.md): 보석 소비·개인 성장 3종·우주선 장치·시제품/현장 시험·T3 해금·지상 확장을 A01~A09로 정리했다. [첫 구현 기록](production/62-character-augmentation-foundation.md)과 이후 대기 항목을 구분한다.

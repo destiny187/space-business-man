@@ -1,0 +1,24 @@
+[
+  {
+    "id": "augmentation_station",
+    "source": "art/blender/crew/augmentation_station.blend",
+    "output": "우주-비즈니스/assets/models/crew/augmentation_station.glb",
+    "editable_objects": 39,
+    "export_surfaces": 13,
+    "blender": "5.2.1 LTS",
+    "material_preset": "ink-industrial-v1",
+    "front": "Blender -Y / Godot +Z",
+    "generator": "tools/build_crew_stations.py"
+  },
+  {
+    "id": "research_station",
+    "source": "art/blender/crew/research_station.blend",
+    "output": "우주-비즈니스/assets/models/crew/research_station.glb",
+    "editable_objects": 46,
+    "export_surfaces": 12,
+    "blender": "5.2.1 LTS",
+    "material_preset": "ink-industrial-v1",
+    "front": "Blender -Y / Godot +Z",
+    "generator": "tools/build_crew_stations.py"
+  }
+]

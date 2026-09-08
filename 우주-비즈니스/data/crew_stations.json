@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "stations": {
+    "augmentation": {
+      "id": "ship:augmentation",
+      "name": "신체 증강 장치",
+      "model": "crew/augmentation_station",
+      "cabin_position": [
+        -3.0,
+        0,
+        4.2
+      ],
+      "cabin_yaw": 90,
+      "surface_offset": [
+        8.1,
+        0,
+        2.0
+      ],
+      "surface_yaw": 90
+    },
+    "research": {
+      "id": "ship:research",
+      "name": "표본 연구대",
+      "model": "crew/research_station",
+      "cabin_position": [
+        3.0,
+        0,
+        4.2
+      ],
+      "cabin_yaw": -90,
+      "surface_offset": [
+        8.1,
+        0,
+        -2.0
+      ],
+      "surface_yaw": 90
+    }
+  }
+}

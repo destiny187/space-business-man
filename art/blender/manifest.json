@@ -849,5 +849,31 @@
     "material_preset": "ink-industrial-v1",
     "triangles": 13472,
     "motion_pivots": {}
+  },
+  {
+    "id": "augmentation_station",
+    "source": "art/blender/crew/augmentation_station.blend",
+    "editable_objects": 39,
+    "blender": "5.2.1 LTS",
+    "material_preset": "ink-industrial-v1",
+    "front": "Blender -Y / Godot +Z",
+    "generator": "tools/build_crew_stations.py",
+    "game": "우주-비즈니스/assets/models/crew/augmentation_station.glb",
+    "export_objects": 13,
+    "geometry": "ink-family-manufactured",
+    "review": "docs/production/64-crew-stations.md"
+  },
+  {
+    "id": "research_station",
+    "source": "art/blender/crew/research_station.blend",
+    "editable_objects": 46,
+    "blender": "5.2.1 LTS",
+    "material_preset": "ink-industrial-v1",
+    "front": "Blender -Y / Godot +Z",
+    "generator": "tools/build_crew_stations.py",
+    "game": "우주-비즈니스/assets/models/crew/research_station.glb",
+    "export_objects": 12,
+    "geometry": "ink-family-manufactured",
+    "review": "docs/production/64-crew-stations.md"
   }
 ]

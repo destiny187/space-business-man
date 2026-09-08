@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "status": "existing_elevenlabs_assets_reused",
+  "new_audio_generated": false,
+  "mapping": {
+    "station_inspection_open": "sfx_pickup_resource"
+  },
+  "volume_db": -10,
+  "loop": false,
+  "verification": "A03 actual Godot window verifies the existing 0.6s stream starts on opening inspection. No purchase/result cue is emitted. New scan/processing/result choreography and listening review follow in A04/A06."
+}

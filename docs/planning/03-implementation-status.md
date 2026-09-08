@@ -1,5 +1,7 @@
 # 구현 현황과 검증
 
+2026-09-08 [A03 선박 성장 장치](../production/64-crew-stations.md): Blender 증강 장치·연구대, 선내/착륙지 F 진입, 가동 부품·장치 제공자를 연결했다. Cycles·Forward+ 렌더 및 실제 장면 15개 확인을 통과했다. 아래 A02 장치 미연결 표기는 당시 이력이며 보석 투입 UI·표본 연구 수행은 A04/A06에서 이어진다.
+
 2026-09-08 [A02 보석 증강 거래](../production/63-gem-augmentation-transactions.md) 기반을 완료했다. 개인 보석 소비·현재 단계 확인·저장 실패 원복·재요청과 게스트 분리를 32개 확인했다. 실제 장치 제공자가 없는 일반 게임에서는 아직 실행할 수 없으며 A03 배치·A04 화면을 기다린다.
 
 2026-09-08 신체 증강·탐사 연구를 [A01~A09](12-augmentation-and-research-commits.md)로 분할했다. A01의 개인 성장 저장·이동/피해/체력 적용과 과거 물류 속도 보존을 완료했고, 보석 소비·실물 장치·연구 해금은 A02 이후다. [검증과 현재 상태](../production/62-character-augmentation-foundation.md).

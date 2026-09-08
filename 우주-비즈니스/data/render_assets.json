@@ -10168,5 +10168,29 @@
       0.84,
       -1.7
     ]
+  },
+  {
+    "id": "augmentation_station",
+    "title": "선박 / 성장 장치",
+    "name": "신체 증강 장치",
+    "group": "선박 설비",
+    "model": "res://assets/models/crew/augmentation_station.glb",
+    "source": "art/blender/crew/augmentation_station.blend",
+    "geometry": "ink-family-manufactured",
+    "foliage": false,
+    "generator": "tools/build_crew_stations.py",
+    "review": "docs/production/64-crew-stations.md"
+  },
+  {
+    "id": "research_station",
+    "title": "선박 / 성장 장치",
+    "name": "표본 연구대",
+    "group": "선박 설비",
+    "model": "res://assets/models/crew/research_station.glb",
+    "source": "art/blender/crew/research_station.blend",
+    "geometry": "ink-family-manufactured",
+    "foliage": false,
+    "generator": "tools/build_crew_stations.py",
+    "review": "docs/production/64-crew-stations.md"
   }
 ]

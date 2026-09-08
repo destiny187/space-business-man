@@ -81,6 +81,7 @@ var camera_correction:=Vector3.ZERO
 var local_direction:=Vector2.ZERO
 var local_sprint:=false
 var reticle: Label
+var stations: FrontierCrewStations
 var station_market: FrontierStationMarketPanel
 var shipyard_panel: FrontierShipyardPanel
 var research_actions: Array[Control]=[]
@@ -116,6 +117,7 @@ func _ready() -> void:
 	_build_cabin();_build_ui();cabin_root.hide();spaces.configure(self)
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
 	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
+	stations=FrontierCrewStations.new();add_child(stations);stations.configure(self)
 	var rover_factory:=FrontierRoverWorkshop.new();business_panel.tabs.add_child(rover_factory);rover_factory.configure(self,true)
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
@@ -535,7 +537,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			navigation_ui.start_route(flight.scan_target);return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
-			if not rovers.interact() and not navigation_ui.interact():interact_business()
+			if not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
@@ -707,6 +709,7 @@ func _exit_tree() -> void:
 
 func menu_frames() -> Array:
 	var frames: Array=[rovers.panel if rovers!=null else null,rovers.dock if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
+	if stations!=null:frames.append(stations.panel)
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:
