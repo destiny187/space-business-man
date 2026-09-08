@@ -690,7 +690,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func menu_frames() -> Array:
-	var frames: Array=[rovers.panel if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
+	var frames: Array=[rovers.panel if rovers!=null else null,rovers.dock if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:

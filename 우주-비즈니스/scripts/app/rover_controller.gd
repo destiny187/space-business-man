@@ -7,13 +7,31 @@ var hint: Label
 var gauge: ProgressBar
 var chase:=false
 var last_seat: String=""
+var seat_yaw:=0.0
 var target: Dictionary={}
 var test_controls: Array=[]
+var dock: FrontierRoverDock
+var preview_timer:=0.0
+var unloading: FrontierRoverActor
+var ghost: Node3D
+var ropes: MeshInstance3D
+var dock_card: FrontierItemTile
+var notice_value:=""
+var pending_requests: Dictionary={}
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app
+	app.session.request_started.connect(func(sequence: int,kind: String,_args: Dictionary):
+		if kind.begins_with("rover_"):pending_requests[sequence]=kind)
+	app.session.response_received.connect(func(sequence: int,result: Dictionary):
+		if not pending_requests.has(sequence):return
+		var kind: String=pending_requests[sequence];pending_requests.erase(sequence)
+		if not result.get("ok",false):app.feedback.reject(result.get("error","차량 작업 실패"))
+		elif kind in ["rover_research","rover_research2","rover_transport_upgrade"]:app.feedback.audio.play("ui_discovery");app.feedback.show_cue("차량 연구·개조 완료"))
 	for key in FrontierInput.DEFAULTS:
 		if not InputMap.has_action("frontier_"+key):
 			InputMap.add_action("frontier_"+key);var event:=InputEventKey.new();event.physical_keycode=FrontierInput.DEFAULTS[key];InputMap.action_add_event("frontier_"+key,event)
+	dock=FrontierRoverDock.new();app.navigation_frame.get_parent().add_child(dock);dock.configure(app,self)
+	dock_card=FrontierItemTile.new();dock_card.picture=load("res://assets/ui/previews/scout_rover.png");dock_card.caption="차량 적재함 · 한 대";dock_card.custom_minimum_size.y=125;var column: Node=app.shipyard_panel.heading.get_parent();column.add_child(dock_card);column.move_child(dock_card,1);dock_card.pressed.connect(func():app.open_menu(dock))
 	panel=FrontierRoverPanel.new();app.navigation_frame.get_parent().add_child(panel);panel.configure(app,self)
 	hint=Label.new();hint.theme=FrontierInterfaceStyle.theme();hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM);hint.offset_left=-390;hint.offset_right=390;hint.offset_top=-162;hint.offset_bottom=-132;app.navigation_frame.get_parent().add_child(hint)
 	gauge=ProgressBar.new();gauge.mouse_filter=Control.MOUSE_FILTER_IGNORE;gauge.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM);gauge.offset_left=-125;gauge.offset_right=125;gauge.offset_top=-130;gauge.offset_bottom=-117;gauge.show_percentage=false;app.navigation_frame.get_parent().add_child(gauge)
@@ -73,7 +91,12 @@ func physics(delta: float) -> void:
 				runtime().status[rider]="하차 공간이 막혔습니다 · 자리를 확보하세요"
 			member.position=FrontierExpeditionBusiness.array(FrontierRovers.point(r,FrontierRovers.config().eyes[index])-Vector3.UP*1.72)
 			if app.actors.has(rider):app.actors[rider].position=FrontierCrewWorld.vector(member.position);app.actors[rider].velocity=Vector3.ZERO
-		step_task(r,delta)
+	for id in runtime().tasks.keys():
+		var r: Dictionary=fleet().vehicles.get(id,{})
+		if not r.is_empty():step_task(r,delta)
+	preview_timer-=delta
+	if preview_timer<=0:
+		preview_timer=.5;update_unload_point()
 	for actor_id in app.actors:
 		var seated: bool=not seat(actor_id).is_empty();app.actors[actor_id].collision_layer=0 if seated else 2;app.actors[actor_id].collision_mask=0 if seated else 1
 func clear(p: Vector3,size: Vector3,ignore: String="") -> bool:
@@ -83,6 +106,7 @@ func clear(p: Vector3,size: Vector3,ignore: String="") -> bool:
 func step_task(r: Dictionary,delta: float) -> void:
 	var task: Dictionary=runtime().tasks.get(r.id,{})
 	if task.is_empty():return
+	if task.kind!="recover":step_transport(r,task,delta);return
 	var authority:=app.session.authority;var input: Dictionary={}
 	for peer in authority.peers:
 		if authority.peers[peer]==task.actor:input=authority.inputs.get(peer,{});break
@@ -118,6 +142,8 @@ func present(delta: float) -> void:
 	if not own.is_empty() and actors.has(own.id):
 		var node: FrontierRoverActor=actors[own.id]
 		if last_seat!=own.id:app.yaw=node.rotation.y;app.pitch=0;chase=false
+		else:app.yaw+=wrapf(node.rotation.y-seat_yaw,-PI,PI)
+		seat_yaw=node.rotation.y;app.camera.rotation=Vector3(app.pitch,app.yaw,0)
 		if chase:
 			var target_point:=node.position+Vector3.UP*1.8;var desired:=target_point+Basis(Vector3.UP,app.yaw)*Vector3(0,2.8,7)
 			var hit:=app.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(target_point,desired,1,[node.get_rid()]))
@@ -142,8 +168,9 @@ func present(delta: float) -> void:
 	else:hint.text=target.get("caption","")
 	for id in runtime().get("tasks",{}):
 		var task: Dictionary=runtime().tasks[id]
-		if task.actor==app.session.latest.self_id:gauge.visible=hint.visible;gauge.max_value=task.seconds;gauge.value=task.progress;hint.text="%s 유지 · 차량 복구 중"%FrontierInput.text("rover_interact")
+		if task.actor==app.session.latest.self_id:gauge.visible=hint.visible;gauge.max_value=task.seconds;gauge.value=task.progress;hint.text=("%s 유지 · 차량 복구 중"%FrontierInput.text("rover_interact")) if task.kind=="recover" else {"load":"차량 적재 중","unload":"차량 하역 중","upgrade":"Mk.2 정비 중"}.get(task.kind,"차량 작업 중")
 	if panel.visible:panel.refresh()
+	transport_visuals(delta,audible)
 func find_target() -> Dictionary:
 	if app.surface_world==null or not app.actors.has(app.session.latest.self_id):return {}
 	var origin: Vector3=app.actors[app.session.latest.self_id].position
@@ -166,3 +193,75 @@ func interact() -> bool:
 	elif int(target.seat)<2:app.session.send_request("rover_enter",{"id":target.id,"seat":target.seat})
 	else:app.session.send_request("rover_cargo_open",{"id":target.id});panel.vehicle_id=target.id;app.open_menu(panel)
 	return true
+func update_unload_point() -> void:
+	runtime()["unload_point"]=[]
+	var authority:=app.session.authority
+	if app.surface_world==null or not FrontierCrewSurface.landed(authority.world) or FrontierRoverTransport.ship(fleet()).is_empty():return
+	var validator:=func(p: Vector3):return app.surface_world.ready_at(p) and clear(p,Vector3(2.6,2.6,4.0))
+	var p:=FrontierRovers.spawn_point(authority.world,FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position),"",10.0,validator)
+	if p.is_finite():runtime().unload_point=FrontierExpeditionBusiness.array(p)
+func step_transport(r: Dictionary,task: Dictionary,delta: float) -> void:
+	var authority:=app.session.authority
+	var reason:=FrontierRoverTransport.interrupted(authority.world,r,task,authority.peers.values())
+	if not reason.is_empty():runtime().status[task.actor]=reason;runtime().tasks.erase(r.id);return
+	task.progress=minf(float(task.seconds),float(task.progress)+delta)
+	if float(task.progress)<float(task.seconds):return
+	if task.kind=="unload":
+		var p:=FrontierCrewWorld.vector(task.destination)
+		var safe:=FrontierRovers.safe(authority.world,p)
+		if not safe.is_finite() or not app.surface_world.ready_at(p) or not clear(p,Vector3(2.6,2.6,4.0)):
+			runtime().status[task.actor]="하역 공간이 막혀 차량을 선내에 보존했습니다";runtime().tasks.erase(r.id);return
+	var draft:=authority.world.duplicate(true)
+	reason=FrontierRoverTransport.finish(draft,draft.rovers.vehicles[r.id],task)
+	if not reason.is_empty():runtime().status[task.actor]=reason;runtime().tasks.erase(r.id);return
+	draft.crew.revision+=1
+	if not authority.save_world.call(draft):authority.stopped=true;authority.error="차량 작업 저장에 실패해 진행을 정지했습니다.";return
+	authority.world=draft;runtime().status[task.actor]={"load":"차량 적재 완료","unload":"차량 하역 완료","upgrade":"로버 Mk.2 개조 완료"}[task.kind];runtime().tasks.erase(r.id)
+func transport_visuals(delta: float,audible: bool) -> void:
+	if dock.visible:dock.refresh()
+	var message:=str(runtime().get("status",{}).get(app.session.latest.self_id,""))
+	if not message.is_empty() and message!=notice_value:
+		app.feedback.show_cue(message)
+		if audible:app.feedback.audio.play("sfx_rover_door" if message.contains("완료") else "sfx_rover_fault")
+	notice_value=message
+	var task: Dictionary={};var id:=""
+	for key in runtime().get("tasks",{}):
+		var row: Dictionary=runtime().tasks[key]
+		if row.kind in ["load","unload"]:task=row;id=key;break
+	var local_task: bool=not task.is_empty() and app.surface_world!=null
+	var aboard:=FrontierRoverTransport.ship(fleet())
+	var preview: Array=runtime().get("unload_point",[])
+	if ghost==null:
+		ghost=load("res://assets/models/vehicles/scout_rover.glb").instantiate();app.add_child(ghost)
+		var material:=StandardMaterial3D.new();material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_color=Color(.3,.95,.8,.35)
+		for mesh in ghost.find_children("*","MeshInstance3D",true,false):mesh.material_override=material;mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	ghost.visible=dock.visible and not aboard.is_empty() and preview.size()==3 and not local_task
+	if ghost.visible:
+		ghost.position=FrontierCrewWorld.vector(preview)
+		var target_point:=ghost.position+Vector3.UP*1.3
+		app.camera.position=target_point+Vector3(7,4,9);app.camera.look_at(target_point+Vector3(2,0,0))
+	for node in actors.values():node.visual.position=Vector3.ZERO
+	if ropes==null:
+		ropes=MeshInstance3D.new();app.add_child(ropes);ropes.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		ropes.mesh=ImmediateMesh.new();var paint:=StandardMaterial3D.new();paint.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;paint.albedo_color=Color("e5ad50");ropes.material_override=paint
+	ropes.visible=local_task
+	if not local_task:
+		if is_instance_valid(unloading):unloading.queue_free();unloading=null
+		return
+	var r: Dictionary=fleet().vehicles.get(id,{})
+	if r.is_empty():return
+	var fraction:=smoothstep(0,1,float(task.progress)/float(task.seconds))
+	var anchor:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)+Vector3.UP*1.0
+	var display:=Vector3.ZERO;var model: FrontierRoverVisual
+	if task.kind=="load" and actors.has(id):
+		display=FrontierCrewWorld.vector(task.vehicle_origin).lerp(anchor,fraction);actors[id].visual.global_position=display;model=actors[id].visual
+	elif task.kind=="unload":
+		if not is_instance_valid(unloading):
+			unloading=FrontierRoverActor.new();app.add_child(unloading);unloading.collision_layer=0;unloading.collision_mask=0;unloading.last_distance=float(r.distance)
+		display=anchor.lerp(FrontierCrewWorld.vector(task.destination),fraction);unloading.position=display;model=unloading.visual;unloading.present(r,delta,audible,task)
+	if model==null:return
+	var mesh: ImmediateMesh=ropes.mesh;mesh.clear_surfaces()
+	mesh.surface_begin(Mesh.PRIMITIVE_LINES)
+	for side in [-1.0,1.0]:
+		mesh.surface_add_vertex(display+Vector3(side*.8,.7,-1.7));mesh.surface_add_vertex(anchor+Vector3(side*.8,.7,0))
+	mesh.surface_end()

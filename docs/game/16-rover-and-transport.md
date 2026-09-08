@@ -1,6 +1,6 @@
 # 2인승 탐사 로버와 강화 기반 운송
 
-2026-09-07 **구현 전 명세**. 사용자 확정은 여러 형태의 탈것 중 2인승 바퀴형 로버부터 제작, 소형 화물칸, 발전 후 우주선에 한 대 운송이다. 구체 설계는 사용자 위임에 따른 아래 개발 기본안으로 정한다. 수치·레시피는 밸런스 조정값이며 사용자 확정 수치나 실제 제작 완료가 아니다. [결정 이력](../planning/09-ground-play-feedback.md) · [개발 순서·시간 예산](../planning/10-ground-development-spec.md).
+2026-09-07 설계, 2026-09-08 C13~C15 구현. 실제 완료·확인 범위는 [제작·운송 기록](../production/48-rover-and-transport.md)을 따른다. 사용자 확정은 여러 형태의 탈것 중 2인승 바퀴형 로버부터 제작, 소형 화물칸, 발전 후 우주선에 한 대 운송이다. 구체 설계는 사용자 위임에 따른 아래 개발 기본안으로 정한다. 수치·레시피는 밸런스 조정값이며 사용자 확정 수치는 아니다. [결정 이력](../planning/09-ground-play-feedback.md) · [개발 순서·시간 예산](../planning/10-ground-development-spec.md).
 
 ## 역할·획득·성장
 
@@ -59,10 +59,10 @@
 
 ## 데이터·네트워크·제작 연결
 
-예정 데이터 `data/rovers.json`에 레시피·좌석/문 좌표·속도·경사·소모·화물·업그레이드를 둔다. 신규 `scripts/domain/rovers.gd`는 `craft_rover`, `enter_rover`, `exit_rover`, `rover_transfer`, `repair_rover`, `load_rover`, `unload_rover` 명령의 호스트 검증을 맡는다. 신규 `scripts/actors/rover_actor.gd`는 접지·조향·차체 이동을 담당하고 `crew_expedition.gd`, `crew_authority.gd`, `crew_motion_replica.gd`와 연결한다. 초기에는 지형 추종과 휠 접지로 주행을 제어해 클라이언트별 독립 강체 시뮬레이션 결과가 자산 원장을 바꾸지 않게 한다.
+현재 데이터 `data/rovers.json`에 레시피·좌석/문 좌표·속도·경사·소모·화물·업그레이드를 둔다. `scripts/domain/rovers.gd`와 `rover_transport.gd`는 `rover_craft`, `rover_enter`, `rover_exit`, `rover_transfer`, `rover_repair`, `rover_load`, `rover_unload` 명령의 호스트 검증을 맡는다. 신규 `scripts/actors/rover_actor.gd`는 접지·조향·차체 이동을 담당하고 `crew_expedition.gd`, `crew_authority.gd`, `crew_motion_replica.gd`와 연결한다. 초기에는 지형 추종과 휠 접지로 주행을 제어해 클라이언트별 독립 강체 시뮬레이션 결과가 자산 원장을 바꾸지 않게 한다.
 
-저장에 `vehicles[id] = {definition, owner_world_id, location_kind, body_id, transform, upgrade_level, battery, health, cargo}`와 선박의 `vehicle_id/transport_level`을 둔다. 좌석과 예약은 세션 상태이며 저장 복원 때 안전한 점유 상태로 재구성한다. `world_store.gd`·사업/아이템 검증기에 차량 ID의 단일 위치·화물·상한을 추가한다. 경로/보간 캐시는 저장하지 않는다. 기존 세계의 기본값은 차량 없음·운송 개조 없음이다.
+저장에 `world.rovers.vehicles[id] = {definition, owner_world_id, location_kind, body_id, transform, upgrade_level, battery, health, cargo}`와 선박의 `vehicle_id/transport_level`을 둔다. 좌석과 예약은 세션 상태이며 저장 복원 때 안전한 점유 상태로 재구성한다. `world_store.gd`·사업/아이템 검증기에 차량 ID의 단일 위치·화물·상한을 추가한다. 경로/보간 캐시는 저장하지 않는다. 기존 세계의 기본값은 차량 없음·운송 개조 없음이다.
 
-Blender 원본/GLB에는 바퀴 회전·조향·서스펜션·문·좌석·화물함·적재 고정점이 필요하다. INK 공통 렌더, ElevenLabs의 주행 루프·시동/정지·제동·승하차·적재·고장 음원을 용도/프롬프트/생성 정보와 연결한다. 최초 고품질 모델·소리 제작은 아직 하지 않았다.
+Blender 원본/GLB에는 바퀴 회전·조향·서스펜션·문·좌석·화물함·적재 고정점이 필요하다. INK 공통 렌더, ElevenLabs의 주행 루프·시동/정지·제동·승하차·적재·고장 음원을 용도/프롬프트/생성 정보와 연결한다. 모델·소리 제작 및 실제 연결은 C13~C15에서 완료했으며 검수 범위는 제작 기록에 구분했다.
 
 최소 완료 흐름은 제작→두 좌석 예약→주행/제동/하차→화물 입출고→전복 복구→선박 개조→만재 차량 적재→다음 행성 동일 ID 하역이다. 발견한 버그가 없다면 전체 다중 클라이언트/장시간 주행 검사를 관행적으로 반복하지 않는다. 위 흐름 중 실제 확인한 항목과 코드만 연결한 범위를 구분해 기록한다.

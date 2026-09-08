@@ -30,7 +30,7 @@ static func active(member: Dictionary) -> Dictionary:
 	return tool
 static func validate(value: Variant) -> String:
 	if not value is Dictionary:return "장비 기록 형식"
-	if not FrontierExpeditionBusiness.integer(value.get("field_logistics",0),0,1):return "현장 물류 연구 단계"
+	if not FrontierExpeditionBusiness.integer(value.get("field_logistics",0),0,2):return "현장 물류 연구 단계"
 	if not FrontierProgressionResearch.valid_personal(value.get("research",{})):return "개인 효율 연구 단계"
 	if not value.get("items") is Dictionary or value.items.size()>FrontierItemInventory.storage_slots():return "장비 한도"
 	if not FrontierExpeditionBusiness.integer(value.get("inventory_slots",FrontierItemInventory.config().slots),int(FrontierItemInventory.config().slots),FrontierItemInventory.storage_slots()):return "아이템 수납 용량"

@@ -137,7 +137,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit"]:FrontierItemInventory.merge_legacy(draft,actor)
 	if FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
-	if not envelope.kind.begins_with("rover_") and (FrontierRovers.factory_busy(draft,facility_id) or (envelope.kind=="business_settle" and not FrontierRovers.fleet(draft).jobs.is_empty())):return failure("로버 조립이 끝난 뒤 실행하세요.")
+	if not envelope.kind.begins_with("rover_") and (FrontierRovers.factory_busy(draft,facility_id) or (envelope.kind=="business_settle" and FrontierRovers.fleet(draft).jobs.values().any(func(job: Dictionary):return job.body_id==draft.location))):return failure("로버 조립이 끝난 뒤 실행하세요.")
 	var reason: String=""
 	if envelope.kind.begins_with("rover_"):reason=FrontierRovers.apply(draft,actor,envelope.kind,envelope.args,rover_draft)
 	elif envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)

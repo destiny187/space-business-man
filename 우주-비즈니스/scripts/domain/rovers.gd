@@ -29,7 +29,9 @@ static func point(r: Dictionary,offset: Array=[0,0,0]) -> Vector3:
 static func stopped(r: Dictionary) -> bool:return absf(float(r.speed))<=1.0
 static func within(world: Dictionary,actor: String,r: Dictionary,distance: float) -> bool:
 	return r.location_kind=="surface" and r.body_id==world.location and point(r).distance_to(FrontierCrewWorld.vector(world.crew.members[actor].position))<=distance
-static func stats(r: Dictionary) -> Dictionary:return {"speed":float(config().speed),"battery":float(config().battery),"health":float(config().health)}
+static func stats(r: Dictionary) -> Dictionary:
+	var upgraded: bool=int(r.upgrade_level)>0
+	return {"speed":float(config().speed)*(float(config().upgrade.speed_multiplier) if upgraded else 1.0),"battery":float(config().upgrade.battery if upgraded else config().battery),"health":float(config().upgrade.health if upgraded else config().health)}
 static func room(r: Dictionary,resource: String) -> int:
 	var count:=FrontierItemInventory.used(r.cargo,r.equipment.size());var stack:=int(FrontierItemInventory.config().resource_stack);var old:=int(r.cargo.get(resource,0))
 	return maxi(0,int(config().cargo_slots)-count)*stack+(0 if old%stack==0 else stack-old%stack)
@@ -78,6 +80,7 @@ static func craft_reason(world: Dictionary,actor: String,id: String) -> String:
 	if not FrontierExpeditionBusiness.affordable(s.inventory,config().cost):return "공동 창고의 로버 부품이 부족합니다."
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,runtime: Dictionary) -> String:
+	if kind in ["rover_transport_upgrade","rover_research2","rover_upgrade","rover_load","rover_unload","rover_cancel"]:return FrontierRoverTransport.apply(world,actor,kind,args,runtime)
 	if not FrontierCrewSurface.landed(world):return "행성에 착륙한 뒤 차량을 사용하세요."
 	var member: Dictionary=world.crew.members[actor];var actor_pos:=FrontierCrewWorld.vector(member.position)
 	if member.aboard:return "우주선에서 내린 뒤 실행하세요."
@@ -178,17 +181,18 @@ static func manufacture(world: Dictionary,dt: float,validator: Callable=Callable
 		f.jobs.erase(id)
 static func valid(world: Dictionary) -> String:
 	if not world.has("rovers"):return ""
+	if not world.get("crew") is Dictionary or not world.crew.get("members") is Dictionary:return "차량 세계 소유자 누락"
 	var f: Variant=world.rovers
 	if not f is Dictionary or f.get("version")!=1 or not FrontierExpeditionBusiness.integer(f.get("counter"),0,1000000) or not f.get("vehicles") is Dictionary or not f.get("jobs") is Dictionary:return "차량 원장 형식 오류"
 	if f.vehicles.size()+f.jobs.size()>int(config().maximum_world_vehicles):return "차량 원장 한도 오류"
 	var stored_items: Dictionary={}
 	for id in f.vehicles.keys()+f.jobs.keys():
-		if not id is String or not id.begins_with("rover:") or not id.trim_prefix("rover:").is_valid_int() or int(id.trim_prefix("rover:"))<1 or int(id.trim_prefix("rover:"))>int(f.counter):return "차량 고유 번호 오류"
+		if not id is String or not id.begins_with("rover:") or not id.trim_prefix("rover:").is_valid_int() or id!="rover:"+str(int(id.trim_prefix("rover:"))) or int(id.trim_prefix("rover:"))<1 or int(id.trim_prefix("rover:"))>int(f.counter):return "차량 고유 번호 오류"
 	for id in f.vehicles:
 		var r: Variant=f.vehicles[id]
-		if not r is Dictionary or r.get("id")!=id or r.get("definition")!=config().definition or r.get("owner_world_id")!=world.crew.world_id or r.get("location_kind")!="surface":return "차량 소유·위치 오류"
+		if not r is Dictionary or r.get("id")!=id or r.get("definition")!=config().definition or r.get("owner_world_id")!=world.crew.world_id or r.get("location_kind") not in ["surface","ship"]:return "차량 소유·위치 오류"
 		if FrontierUniverse.ordinal_of(world.manifest,str(r.get("body_id","")))<0 or not FrontierUniverse._vector3_array(r.get("position")) or not FrontierUniverse._vector3_array(r.get("rotation")):return "차량 지표 위치 오류"
-		if r.get("upgrade_level")!=0 or not FrontierUniverse._finite(r.get("battery"),0,float(config().battery)) or not FrontierUniverse._finite(r.get("health"),0,float(config().health)):return "차량 강화·내구·전력 오류"
+		if not FrontierExpeditionBusiness.integer(r.get("upgrade_level"),0,1) or not FrontierUniverse._finite(r.get("battery"),0,float(stats(r).battery)) or not FrontierUniverse._finite(r.get("health"),0,float(stats(r).health)):return "차량 강화·내구·전력 오류"
 		if not FrontierExpeditionBusiness.valid_inventory(r.get("cargo"),400) or not r.get("equipment") is Dictionary or FrontierItemInventory.used(r.cargo,r.equipment.size())>int(config().cargo_slots):return "차량 화물칸 오류"
 		for key in r.equipment:
 			var item: Variant=r.equipment[key]
@@ -203,7 +207,7 @@ static func valid(world: Dictionary) -> String:
 		if f.vehicles.has(id) or not job is Dictionary or job.get("id")!=id or not FrontierUniverse._finite(job.get("progress"),0,float(config().craft_seconds)):return "차량 제작 예약 오류"
 		var s: Dictionary=world.get("business",{}).get("sites",{}).get(job.get("body_id"),{})
 		if s.get("buildings",{}).get(job.get("factory_id"),{}).get("type")!="factory":return "차량 제작소 참조 오류"
-	return ""
+	return FrontierRoverTransport.valid(f)
 static func brake_all(world: Dictionary) -> void:
 	for r in fleet(world).vehicles.values():r.speed=0.0;r.steering=0.0
 static func release(world: Dictionary,runtime: Dictionary,actor: String) -> void:
