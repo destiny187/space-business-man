@@ -56,7 +56,7 @@ static func valid(site: Dictionary,tier: int) -> bool:
 	if not value is Dictionary or value.get("version")!=1 or not FrontierExpeditionBusiness.integer(value.get("participant_count"),1,6):return false
 	if not FrontierUniverse._finite(value.get("coefficient"),1,2.5) or not is_equal_approx(float(value.coefficient),coefficient(tier,int(value.participant_count))):return false
 	if not FrontierExpeditionBusiness.integer(value.get("reward"),0,100000000) or int(value.reward)!=roundi(base_reward(tier)*float(value.coefficient)):return false
-	if site.get("state")=="settled" and site.get("settlement",{}).get("payment")!=value.reward:return false
+	if site.get("state")=="settled" and site.get("settlement",{}).get("payment")!=FrontierPlanetSupply.settlement_payment(site,tier,site.get("settlement",{}).get("retained",false)):return false
 	for key in ["base_workload","target_workload","processed","initial","thresholds"]:
 		if not value.get(key) is Dictionary:return false
 	var keys: Array=["oxygen","pressure","toxicity","temperature","water","ecology"]

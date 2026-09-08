@@ -1,17 +1,37 @@
 shader_type spatial;
+#define INK_SURFACE_ROUGHNESS
 #include "res://assets/materials/ink/cel_light.gdshaderinc"
-uniform vec4 rock_color : source_color = vec4(.43,.32,.25,1);
-uniform vec4 dust_color : source_color = vec4(.67,.53,.39,1);
-uniform float salt_crust = 0.0;
-uniform float soil_recovery = 0.0;
-uniform float restoration = 0.0;
+uniform vec4 rock_color:source_color=vec4(.43,.32,.25,1);
+uniform vec4 dust_color:source_color=vec4(.67,.53,.39,1);
+uniform float salt_crust=0.;
+uniform float soil_recovery=0.;
+uniform float restoration=0.;
 uniform bool molten=false;
 uniform float local_heat=1.;
 uniform int surface_pattern=0;
-uniform float geology_phase=0.;
 uniform int biome_style=-1;
-uniform vec3 restoration_center = vec3(0.0);
-uniform float restoration_radius = 65.0;
+uniform float geology_phase=0.;
+uniform vec3 restoration_center=vec3(0.);
+uniform float restoration_radius=65.;
+uniform bool textured_surface=false;
+uniform sampler2DArray surface_textures:filter_linear_mipmap_anisotropic,repeat_enable;
+uniform int rock_layer=0;
+uniform int deposit_layer=1;
+uniform int snow_layer=4;
+uniform int ice_layer=5;
+uniform float rock_meters=5.;
+uniform float deposit_meters=3.5;
+uniform float snow_meters=4.5;
+uniform float ice_meters=5.5;
+uniform float normal_strength=.42;
+uniform float detail_near=25.;
+uniform float detail_far=95.;
+uniform float native_temperature=20.;
+uniform float local_temperature=20.;
+uniform float volatile_supply=0.;
+uniform bool liquid_allowed=false;
+uniform float freeze_start=-3.;
+uniform float freeze_end=3.;
 varying vec3 world_position;
 varying vec3 world_normal;
 float ground_hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -26,88 +46,64 @@ vec3 geology(vec2 p){
  float wash=1.-smoothstep(1.8,6.5,d);
  return vec3(rock,wash,(1.-rock)*(1.-wash));
 }
-void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.)).xyz;world_normal=MODEL_NORMAL_MATRIX*NORMAL;}
+
+// One packed fetch per contributing axis; linear data, no lighting baked into tone.
+vec4 layer(int id,float meters,vec3 p,vec3 n,vec3 weights,out vec3 bump){
+ vec3 q=p/meters;vec3 s=sign(n);vec4 value=vec4(0.);bump=vec3(0.);
+ if(weights.x>.001){vec4 t=texture(surface_textures,vec3(q.zy*vec2(s.x,1.),float(id)));value+=t*weights.x;bump+=vec3(0.,t.g*2.-1.,(t.r*2.-1.)*s.x)*weights.x;}
+ if(weights.y>.001){vec4 t=texture(surface_textures,vec3(q.xz*vec2(1.,-s.y),float(id)));value+=t*weights.y;bump+=vec3(t.r*2.-1.,0.,-(t.g*2.-1.)*s.y)*weights.y;}
+ if(weights.z>.001){vec4 t=texture(surface_textures,vec3(q.xy*vec2(-s.z,1.),float(id)));value+=t*weights.z;bump+=vec3(-(t.r*2.-1.)*s.z,t.g*2.-1.,0.)*weights.z;}
+ return value;
+}
+void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.)).xyz;world_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);}
 void fragment(){
- float terrace=sin(world_position.y*.60+sin(world_position.x*.045)*.55)*.5+.5;
- vec3 strata=mix(rock_color.rgb*.76,rock_color.rgb*1.16,smoothstep(.23,.70,terrace));
- float upward=smoothstep(.50,.88,normalize(world_normal).y);
- ALBEDO=mix(strata,dust_color.rgb,upward*.87);
- // Broad sediment patches retain readable colour planes at walking distance.
- float patches=ground_noise(world_position.xz*.16);
- ALBEDO*=mix(.89,1.06,smoothstep(.2,.8,patches)*upward);
- vec2 gp=world_position.xz;
- float wave=sin(gp.x*2.6+ground_noise(gp*.23)*5.+gp.y*.25);
- float near_detail=1.-smoothstep(18.,45.,distance(CAMERA_POSITION_WORLD,world_position));
- if(surface_pattern==1){
-  vec3 geo=geology(gp);
-  // Sand, oxidized subsoil and worn bedrock share the scatter/relief masks.
-  vec3 sand=mix(dust_color.rgb*1.5,vec3(.56,.35,.16),.65);
-  vec3 bedrock=mix(rock_color.rgb*1.25,dust_color.rgb*.72,.35);
-  vec3 soil=mix(dust_color.rgb*.86,bedrock,geo.x*.87);
-  vec3 surface=mix(soil,sand,smoothstep(.12,.85,geo.z));
-  surface=mix(surface,mix(sand,bedrock,.55),geo.y*.72);
-  float sediment=ground_noise(gp*.5+ground_noise(gp*.06)*4.);
-  surface*=mix(.92,1.07,sediment);
-  ALBEDO=mix(ALBEDO,surface,upward);
-  // Short ripples only on sand deposits; no continuous ruled lines across rock.
-  float ripple=sin(gp.x*3.7+gp.y*.6+ground_noise(gp*.35)*9.);
-  float aa=max(fwidth(ripple),.12);
-  float line=(1.-smoothstep(.05,.05+aa,abs(ripple)))*smoothstep(.42,.67,sediment);
-  ALBEDO*=1.-line*.07*geo.z*near_detail;
-  float chips=ground_noise(gp*2.1+vec2(ground_noise(gp*.27)*3.));
-  float worn=smoothstep(.61,.83,chips)*smoothstep(.4,.7,sediment);
-  ALBEDO=mix(ALBEDO,ALBEDO*1.19,worn*geo.x*near_detail*upward);
+ vec3 n=normalize(world_normal);float exposure=clamp(COLOR.r,0.,1.);
+ float upward=smoothstep(.42,.90,n.y);float skin=upward*exposure;
+ vec3 geo=geology(world_position.xz);
+ float managed=1.-smoothstep(restoration_radius*.7,restoration_radius,distance(world_position.xz,restoration_center.xz));
+ float near_detail=1.-smoothstep(detail_near,detail_far,distance(CAMERA_POSITION_WORLD,world_position));
+ float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
+ vec3 strata=mix(rock_color.rgb*.82,rock_color.rgb*1.09,smoothstep(.2,.8,terrace));
+ float deposit=skin*smoothstep(.18,.88,geo.z+geo.y*.75);
+ float temp=mix(native_temperature,local_temperature,managed)+(geo.x-.5)*14.-max(0.,world_position.y-2.)*.012;
+ float freeze=1.-smoothstep(freeze_start,freeze_end,temp);
+ float moisture=volatile_supply*(.60+.40*(1.-geo.x));
+ float ice=freeze*moisture*(.28+.72*geo.y)*skin;
+ float snow=freeze*moisture*smoothstep(.12,.76,geo.z+geo.y*.15)*skin;
+ float wet=(1.-freeze)*moisture*(.15+.85*geo.y)*skin*float(liquid_allowed);
+ vec3 bump=vec3(0.);float roughness=.94;
+ vec4 rock=vec4(.5,.5,.5,.94);vec4 dirt=rock;
+ vec3 br=vec3(0.);vec3 bd=vec3(0.);
+ if(textured_surface && near_detail>.001){
+  vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
+  rock=layer(rock_layer,rock_meters,world_position,n,weights,br);
+  dirt=layer(deposit_layer,deposit_meters,world_position,n,weights,bd);
+  // Raised bedrock breaks through soil; only the local boundary receives height contrast.
+  float height_bias=(dirt.b-rock.b)*.65*near_detail;
+  deposit=clamp(deposit+height_bias*4.*deposit*(1.-deposit),0.,1.);
  }
- if(surface_pattern==2){
-  float aa=max(fwidth(wave),.06);
-  float line=1.-smoothstep(.04,.04+aa,abs(wave));
-  ALBEDO*=1.-line*.10*upward*near_detail;
+ ALBEDO=mix(strata,dust_color.rgb,deposit);
+ float tone=mix(rock.b,dirt.b,deposit);
+ ALBEDO*=mix(1.,.69+tone*.65,near_detail);
+ roughness=mix(rock.a,dirt.a,deposit);bump=mix(br,bd,deposit);
+ if(textured_surface && near_detail>.001 && max(ice,snow)>.01){
+  vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
+  vec3 bi;vec3 bs;vec4 ti=layer(ice_layer,ice_meters,world_position,n,weights,bi);vec4 ts=layer(snow_layer,snow_meters,world_position,n,weights,bs);
+  ice=clamp(ice+(ti.b-tone)*ice*(1.-ice)*near_detail,0.,1.);
+  ALBEDO=mix(ALBEDO,vec3(.33,.57,.66)*(.68+ti.b*.64),ice*.9);
+  ALBEDO=mix(ALBEDO,vec3(.52,.62,.66)*(.70+ts.b*.55),snow);
+  bump=mix(mix(bump,bi,ice),bs,snow);roughness=mix(mix(roughness,ti.a,ice),ts.a,snow);
+ }else{
+  ALBEDO=mix(ALBEDO,vec3(.34,.58,.66),ice*.9);ALBEDO=mix(ALBEDO,vec3(.52,.62,.66),snow);
+  roughness=mix(mix(roughness,.27,ice),.82,snow);
  }
- if(surface_pattern==3){
-  vec2 cell=gp*.7;vec2 grid=floor(cell);float first=10.;float second=10.;
-  for(int x=-1;x<=1;x++){for(int z=-1;z<=1;z++){
-   vec2 offset=vec2(float(x),float(z));vec2 q=grid+offset;
-   vec2 delta=offset+vec2(ground_hash(q),ground_hash(q+71.))-fract(cell);
-   float d=dot(delta,delta);if(d<first){second=first;first=d;}else{second=min(second,d);}
-  }}
-  float edge=second-first;float aa=max(fwidth(edge),.025);
-  float crack=1.-smoothstep(.035,.035+aa,edge);
-  ALBEDO*=1.-crack*.20*upward*near_detail;
- }
- // Distinct broad surface regions; visual only, no height/collision/save changes.
- float region=ground_noise(gp*.025+vec2(geology_phase));
- float grain=ground_noise(gp*.38+region*3.);
- float patch_edge=smoothstep(.38,.62,region);
- if(biome_style==1 || biome_style==4){
-  vec3 dry=mix(dust_color.rgb,rock_color.rgb,.30);
-  vec3 damp=mix(rock_color.rgb,dust_color.rgb*.66,.30);
-  ALBEDO=mix(ALBEDO,mix(dry,damp,patch_edge),upward*.64);
-  float fleck=smoothstep(.65,.84,grain)*near_detail;
-  ALBEDO=mix(ALBEDO,dust_color.rgb*1.12,fleck*.12*upward);
- }
- if(biome_style==3 || biome_style==5){
-  vec3 bare=mix(rock_color.rgb,vec3(.20,.39,.46),.28);
-  vec3 drift=mix(dust_color.rgb,vec3(.74,.81,.80),.40);
-  ALBEDO=mix(ALBEDO,mix(bare,drift,smoothstep(.29,.70,region)),upward*.66);
- }
- if(biome_style==2 || biome_style==8){
-  float beds=smoothstep(.44,.58,ground_noise(gp*.045+region*2.));
-  ALBEDO=mix(ALBEDO,mix(rock_color.rgb*.94,dust_color.rgb*1.13,beds),upward*.54);
- }
- if(biome_style==7){
-  float crust=smoothstep(.38,.57,region);
-  ALBEDO=mix(ALBEDO,mix(rock_color.rgb*.8,dust_color.rgb*1.16,crust),upward*.58);
- }
- if(biome_style==6){
-  float ash=smoothstep(.35,.66,region);
-  ALBEDO=mix(ALBEDO,mix(rock_color.rgb*.60,dust_color.rgb*.87,ash),upward*.72);
- }
- float managed=1.0-smoothstep(restoration_radius*.7,restoration_radius,distance(world_position.xz,restoration_center.xz));
- float salt_patch=smoothstep(.4,.68,patches)*salt_crust*managed*upward;
- ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt_patch*.65);
- ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),soil_recovery*managed*upward*.30);
- ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),restoration*managed*upward*.72);ROUGHNESS=.96;
+ ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);
+ float salt=salt_crust*managed*skin*smoothstep(.25,.7,geo.z);
+ ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt*.6);
+ ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),soil_recovery*managed*skin*.30);
+ ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),restoration*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
+ vec3 perturbed=normalize(n+(bump-n*dot(n,bump))*normal_strength*near_detail);
+ NORMAL=normalize((VIEW_MATRIX*vec4(perturbed,0.)).xyz);ROUGHNESS=roughness;
  if(molten){float heat=mix(1.,local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
  float pulse=.85+.15*sin(TIME*1.3+world_position.z*.2);ALBEDO=mix(ALBEDO,vec3(.65,.07,.005),fissure*heat);EMISSION=vec3(1.,.12,.005)*fissure*heat*pulse*1.6;}
-
 }

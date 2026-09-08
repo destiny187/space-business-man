@@ -42,7 +42,7 @@ func local() -> Dictionary:
 	var result: Dictionary={}
 	for id in fleet().vehicles:
 		var r: Dictionary=fleet().vehicles[id]
-		if r.location_kind=="surface" and r.body_id==app.session.latest.get("location") and app.surface_world!=null:result[id]=r
+		if r.location_kind=="surface" and ((app.session.hosting and app.spaces.terrain_for_body(r.body_id)!=null) or (r.body_id==app.session.latest.get("location") and app.surface_world!=null)):result[id]=r
 	return result
 func controls(enabled: bool) -> Array:
 	if not test_controls.is_empty():return test_controls if enabled else [0.0,0.0,1.0,0.0]
@@ -55,10 +55,13 @@ func physics(delta: float) -> void:
 	for id in rows:
 		var r: Dictionary=rows[id]
 		if not actors.has(id):
-			var node:=FrontierRoverActor.new();app.add_child(node);node.position=FrontierCrewWorld.vector(r.position);node.rotation=FrontierCrewWorld.vector(r.rotation);node.last_distance=float(r.distance);actors[id]=node
+			var node:=FrontierRoverActor.new();(app.spaces.root_for_body(r.body_id) if app.session.hosting else app).add_child(node);node.position=FrontierCrewWorld.vector(r.position);node.rotation=FrontierCrewWorld.vector(r.rotation);node.last_distance=float(r.distance);actors[id]=node
+	for id in actors:
+		if app.session.hosting and rows.has(id) and actors[id].get_parent()!=app.spaces.root_for_body(rows[id].body_id):actors[id].reparent(app.spaces.root_for_body(rows[id].body_id),false)
 	if not app.session.hosting:return
 	var authority:=app.session.authority
-	authority.rover_spawn_validator=func(p: Vector3):return app.surface_world!=null and app.surface_world.ready_at(p) and clear(p,Vector3(2.6,2.8,4.0))
+	var spawn_body:=str(authority.world.location)
+	authority.rover_spawn_validator=func(p: Vector3):return app.spaces.terrain_for_body(spawn_body)!=null and app.spaces.terrain_for_body(spawn_body).ready_at(p) and clear(p,Vector3(2.6,2.8,4.0))
 	var excludes: Array[RID]=[]
 	for actor in app.actors.values():excludes.append(actor.get_rid())
 	for actor in actors.values():excludes.append(actor.get_rid())
@@ -71,9 +74,9 @@ func physics(delta: float) -> void:
 		if control.size()!=4:control=[0.0,0.0,1.0,0.0]
 		for rider in riders:
 			if runtime().exits.has(rider):control=[0.0,0.0,1.0,0.0]
-		actors[id].drive_host(r,control,delta,app.surface_world,excludes)
+		actors[id].drive_host(r,control,delta,app.spaces.terrain_for_body(r.body_id),excludes)
 		if FrontierRovers.stopped(r):
-			for b in FrontierExpeditionBusiness.site(authority.world).get("buildings",{}).values():
+			for b in authority.world.get("business",{}).get("sites",{}).get(r.body_id,{}).get("buildings",{}).values():
 				if b.type=="charger" and b.get("active",false) and FrontierRovers.point(r).distance_to(FrontierCrewWorld.vector(b.position))<=float(FrontierRovers.config().charge_range):r.battery=minf(float(FrontierRovers.stats(r).battery),float(r.battery)+float(FrontierRovers.config().charge_rate)*delta);break
 		for index in 2:
 			var rider: String=riders[index]
@@ -102,7 +105,8 @@ func physics(delta: float) -> void:
 func clear(p: Vector3,size: Vector3,ignore: String="") -> bool:
 	var query:=PhysicsShapeQueryParameters3D.new();var shape:=BoxShape3D.new();shape.size=size;query.shape=shape;query.transform.origin=p+Vector3.UP*(size.y*.5+.32);query.collision_mask=11
 	if actors.has(ignore):query.exclude=[actors[ignore].get_rid()]
-	return app.get_world_3d().direct_space_state.intersect_shape(query,1).is_empty()
+	var space: World3D=actors[ignore].get_world_3d() if actors.has(ignore) else (app.spaces.root_for_body(app.session.authority.world.location).get_world_3d() if app.session.hosting else app.get_world_3d())
+	return space.direct_space_state.intersect_shape(query,1).is_empty()
 func step_task(r: Dictionary,delta: float) -> void:
 	var task: Dictionary=runtime().tasks.get(r.id,{})
 	if task.is_empty():return
@@ -121,12 +125,12 @@ func step_task(r: Dictionary,delta: float) -> void:
 		var center:=FrontierRovers.point(r)
 		var validator:=func(candidate: Vector3):
 			if not clear(candidate,Vector3(2.6,2.6,3.8),r.id):return false
-			return app.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(center+Vector3.UP*1.5,candidate+Vector3.UP*1.5,1,[actors[r.id].get_rid()])).is_empty()
+			return actors[r.id].get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(center+Vector3.UP*1.5,candidate+Vector3.UP*1.5,1,[actors[r.id].get_rid()])).is_empty()
 		var p:=FrontierRovers.safe(authority.world,center,2.3,r.id)
 		if not p.is_finite() or not validator.call(p):p=FrontierRovers.spawn_point(authority.world,center,r.id,4.0,validator)
 		if p.is_finite() and clear(p,Vector3(2.6,2.8,3.8),r.id):
 			var query:=PhysicsRayQueryParameters3D.create(center+Vector3.UP*1.5,p+Vector3.UP*1.5,1,[actors[r.id].get_rid()])
-			if app.get_world_3d().direct_space_state.intersect_ray(query).is_empty():r.position=FrontierExpeditionBusiness.array(p);r.rotation=[0.0,float(r.rotation[1]),0.0];r.overturned=false;r.speed=0.0;actors[r.id].position=p;actors[r.id].rotation=FrontierCrewWorld.vector(r.rotation);r.event="service";r.event_serial+=1
+			if actors[r.id].get_world_3d().direct_space_state.intersect_ray(query).is_empty():r.position=FrontierExpeditionBusiness.array(p);r.rotation=[0.0,float(r.rotation[1]),0.0];r.overturned=false;r.speed=0.0;actors[r.id].position=p;actors[r.id].rotation=FrontierCrewWorld.vector(r.rotation);r.event="service";r.event_serial+=1
 		if r.overturned:runtime().status[task.actor]="차량 주변 5m에 안전한 복구 공간이 없습니다"
 		runtime().tasks.erase(r.id)
 func present(delta: float) -> void:
@@ -138,8 +142,10 @@ func present(delta: float) -> void:
 		if not app.session.hosting:
 			node.position=node.position.lerp(FrontierCrewWorld.vector(r.position),1-exp(-delta*14));var rot:=FrontierCrewWorld.vector(r.rotation)
 			for i in 3:node.rotation[i]=lerp_angle(node.rotation[i],rot[i],1-exp(-delta*14))
-		node.present(r,delta,audible,runtime().get("tasks",{}).get(id,{}))
-		node.set_headlights(app.surface_world.atmosphere.daylight<.6 and float(r.battery)>0 and float(r.health)>0)
+		var here: bool=app.surface_world!=null and r.body_id==app.surface_world.body.id
+		node.visible=here
+		node.present(r,delta,audible and here,runtime().get("tasks",{}).get(id,{}))
+		node.set_headlights(here and app.surface_world.atmosphere.daylight<.6 and float(r.battery)>0 and float(r.health)>0)
 	if not own.is_empty() and actors.has(own.id):
 		var node: FrontierRoverActor=actors[own.id]
 		if last_seat!=own.id:app.yaw=node.rotation.y;app.pitch=0;chase=false
@@ -178,6 +184,7 @@ func find_target() -> Dictionary:
 	var closest:=3.01;var result: Dictionary={}
 	for id in local():
 		var r: Dictionary=local()[id]
+		if r.body_id!=app.surface_world.body.id:continue
 		for index in 3:
 			var p:=FrontierRovers.point(r,FrontierRovers.config().doors[index] if index<2 else FrontierRovers.config().cargo_point)
 			var distance:=origin.distance_to(p)
@@ -197,8 +204,9 @@ func interact() -> bool:
 func update_unload_point() -> void:
 	runtime()["unload_point"]=[]
 	var authority:=app.session.authority
-	if app.surface_world==null or not FrontierCrewSurface.landed(authority.world) or FrontierRoverTransport.ship(fleet()).is_empty():return
-	var validator:=func(p: Vector3):return app.surface_world.ready_at(p) and clear(p,Vector3(2.6,2.6,4.0))
+	var terrain:=app.spaces.terrain_for_body(authority.world.location)
+	if terrain==null or not FrontierCrewSurface.landed(authority.world) or FrontierRoverTransport.ship(fleet()).is_empty():return
+	var validator:=func(p: Vector3):return terrain.ready_at(p) and clear(p,Vector3(2.6,2.6,4.0))
 	var p:=FrontierRovers.spawn_point(authority.world,FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position),"",10.0,validator)
 	if p.is_finite():runtime().unload_point=FrontierExpeditionBusiness.array(p)
 func step_transport(r: Dictionary,task: Dictionary,delta: float) -> void:
@@ -210,7 +218,7 @@ func step_transport(r: Dictionary,task: Dictionary,delta: float) -> void:
 	if task.kind=="unload":
 		var p:=FrontierCrewWorld.vector(task.destination)
 		var safe:=FrontierRovers.safe(authority.world,p)
-		if not safe.is_finite() or not app.surface_world.ready_at(p) or not clear(p,Vector3(2.6,2.6,4.0)):
+		if not safe.is_finite() or app.spaces.terrain_for_body(authority.world.location)==null or not app.spaces.terrain_for_body(authority.world.location).ready_at(p) or not clear(p,Vector3(2.6,2.6,4.0)):
 			runtime().status[task.actor]="하역 공간이 막혀 차량을 선내에 보존했습니다";runtime().tasks.erase(r.id);return
 	var draft:=authority.world.duplicate(true)
 	reason=FrontierRoverTransport.finish(draft,draft.rovers.vehicles[r.id],task)
@@ -229,7 +237,7 @@ func transport_visuals(delta: float,audible: bool) -> void:
 	for key in runtime().get("tasks",{}):
 		var row: Dictionary=runtime().tasks[key]
 		if row.kind in ["load","unload"]:task=row;id=key;break
-	var local_task: bool=not task.is_empty() and app.surface_world!=null
+	var local_task: bool=not task.is_empty() and app.surface_world!=null and task.actor==app.session.latest.self_id
 	var aboard:=FrontierRoverTransport.ship(fleet())
 	var preview: Array=runtime().get("unload_point",[])
 	if ghost==null:

@@ -6,13 +6,14 @@ var requested: Dictionary={}
 var installed: Dictionary={}
 var installed_paths: Dictionary={}
 var cache: Dictionary={}
+var flight_mode:=false
 var hull_id: String="kestrel"
 var hull_node: Node3D
 var requested_hull: String=""
 func update_loadout(vessel: Dictionary) -> void:
 	var next_hull: String=vessel.get("hull","kestrel")
 	if next_hull!=hull_id:
-		hull_id=next_hull;requested_hull=FrontierSpaceStation.config().hulls[hull_id].model
+		hull_id=next_hull;requested_hull=FrontierShuttles.config().model if hull_id=="finch" else ("res://assets/models/ships/kestrel.glb" if hull_id=="kestrel" else FrontierSpaceStation.config().hulls[hull_id].model)
 		ResourceLoader.load_threaded_request(requested_hull)
 	var desired: Dictionary={}
 	for slot in vessel.get("loadout",{}):
@@ -28,12 +29,18 @@ func update_loadout(vessel: Dictionary) -> void:
 		if installed.has(slot):continue
 		requested[slot]=desired[slot];ResourceLoader.load_threaded_request(desired[slot])
 func _process(_delta: float) -> void:
+	if hull_id=="finch" and is_instance_valid(hull_node):
+		for node in hull_node.find_children("Anim_*","Node3D",true,false):
+			if str(node.name).begins_with("Anim_Leg_"):node.rotation.x=lerpf(node.rotation.x,1.1 if flight_mode else 0.0,minf(1.0,_delta*3))
+			elif node.name=="Anim_Canopy":node.rotation.x=lerpf(node.rotation.x,0.0 if flight_mode else .32,minf(1.0,_delta*3))
 	if not requested_hull.is_empty() and ResourceLoader.load_threaded_get_status(requested_hull)==ResourceLoader.THREAD_LOAD_LOADED:
 		var scene: PackedScene=ResourceLoader.load_threaded_get(requested_hull)
 		if is_instance_valid(hull_node):hull_node.queue_free()
 		hull_node=scene.instantiate();FrontierInkStyle.apply(hull_node,cache);add_child(hull_node)
 		for child in get_parent().get_children():
 			if child!=self and not child is FrontierVesselDriveEffects:_hide_base(child)
+		for child in get_parent().get_children():
+			if child is FrontierVesselDriveEffects:child.set_finch(hull_id=="finch")
 		requested_hull=""
 	for slot in requested.keys():
 		var path: String=requested[slot];var state:=ResourceLoader.load_threaded_get_status(path)

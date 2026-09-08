@@ -10,7 +10,11 @@ void light(){
  float shadow=LIGHT_IS_DIRECTIONAL?smoothstep(.28,.48,ATTENUATION):ATTENUATION;
  DIFFUSE_LIGHT+=ALBEDO*LIGHT_COLOR*band*shadow/PI;
  vec3 half_vector=normalize(VIEW+LIGHT);
+ #ifdef INK_SURFACE_ROUGHNESS
+ float highlight=pow(max(dot(NORMAL,half_vector),0.),mix(110.,18.,ROUGHNESS));
+#else
  float highlight=pow(max(dot(NORMAL,half_vector),0.),mix(110.,18.,rough));
+#endif
  float cut=smoothstep(.52,.57,highlight);
  SPECULAR_LIGHT+=LIGHT_COLOR*cut*shadow*(.09+metal*.28)*highlight_strength/PI;
 }

@@ -3,6 +3,9 @@ shader_type spatial;
 uniform vec4 land_color : source_color = vec4(.32,.24,.20,1);
 uniform vec4 sea_color : source_color = vec4(.06,.18,.23,1);
 uniform vec4 cloud_color : source_color = vec4(.75,.78,.71,1);
+uniform float surface_temperature=20.;
+uniform float surface_water=0.;
+uniform int geology_style=0;
 uniform bool gas_bands = false;
 uniform bool authored_relief = false;
 uniform bool molten = false;
@@ -26,6 +29,16 @@ void fragment(){
  float shelf=smoothstep(sea_level-.08,sea_level-.015,h)*(1.-coast);
  vec3 ocean=mix(sea_color.rgb*.73,sea_color.rgb*1.18,shelf);
  vec3 surface=mix(ocean,land,coast);
+ if(!gas_bands){
+  float freeze=1.-smoothstep(-3.,3.,surface_temperature+12.-abs(p.y)*36.);
+  vec3 ice=mix(vec3(.34,.56,.65),vec3(.79,.86,.86),smoothstep(.2,.8,COLOR.b));
+  surface=mix(surface,ice,freeze*(1.-coast)*step(.001,surface_water));
+  float frost=freeze*surface_water*smoothstep(.12,.78,abs(p.y))*coast;
+  surface=mix(surface,vec3(.76,.82,.82),frost);
+  if(geology_style==1){float beds=smoothstep(.3,.7,COLOR.b);surface=mix(surface,mix(rock_color.rgb,land_color.rgb*1.16,beds),coast*.52);}
+  if(geology_style==2){float outcrop=smoothstep(.48,.8,COLOR.b);surface=mix(surface,vec3(.68,.77,.80),outcrop*coast*.45);}
+  if(geology_style==3){float vein=smoothstep(.45,.85,COLOR.b);surface=mix(surface,land_color.rgb*1.2,vein*coast*.6);}
+ }
  float highland=smoothstep(.57,.76,h)*float(authored_relief);
  surface=mix(surface,rock_color.rgb*1.12,highland*.32);
  float shore=(1.-smoothstep(.01,.025,abs(h-sea_level)))*step(.05,sea_level);

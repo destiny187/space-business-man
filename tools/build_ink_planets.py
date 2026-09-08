@@ -5,7 +5,7 @@ import numpy as np
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'tools'))
 import build_solar_system as S
-DEST=ROOT/'docs/production/media/ink-life/planets';DEST.mkdir(parents=True,exist_ok=True)
+DEST=ROOT/('docs/production/media/planet-surfaces-v2/blender-planets' if any(a.startswith('--families=') for a in sys.argv) else 'docs/production/media/ink-life/planets');DEST.mkdir(parents=True,exist_ok=True)
 RULES=json.loads((ROOT/'우주-비즈니스/data/planet_diversity.json').read_text())
 original_surface=S.surface
 
@@ -57,7 +57,10 @@ def render_variant(name,obj,traits):
 
 def variants():
     src=ROOT/'art/blender/planet-variants';out=ROOT/'우주-비즈니스/assets/models/planet-variants';records=[]
+    selected=next((a.split('=',1)[1].split(',') for a in sys.argv if a.startswith('--families=')),[])
+    if selected and (src/'manifest.json').exists():records=[r for r in json.loads((src/'manifest.json').read_text()) if r['id'] not in selected]
     for idx,(name,t) in enumerate(RULES['archetypes'].items()):
+        if selected and name not in selected:continue
         bpy.ops.wm.read_factory_settings(use_empty=True)
         bpy.ops.mesh.primitive_uv_sphere_add(segments=256,ring_count=128,radius=1);obj=bpy.context.object;obj.name='Surface';mesh=obj.data
         v=np.array([tuple(p.co) for p in mesh.vertices]);v/=np.linalg.norm(v,axis=1)[:,None];x,y,z=v.T;phase=idx*1.783
@@ -75,6 +78,12 @@ def variants():
                 mesa=np.floor(h*7)/7;radius+=mesa*.005;feature=np.clip(.5+np.sin(h*41)*.3,0,1)
             elif name in ['continental','tundra']:
                 ranges=np.maximum(0,ridges-.65)*np.maximum(0,h-.40);radius+=ranges*.027;feature=np.clip(ranges*9,0,1)
+            elif name=='sedimentary':
+                strata=np.sin(h*54+fine*.8);radius+=np.floor(h*9)/9*.010;feature=np.clip(.5+strata*.45,0,1)
+            elif name=='crystalline':
+                peaks=np.maximum(0,ridges-.65);radius+=peaks*.035;feature=np.clip(peaks*4+fine*.2,0,1)
+            elif name=='alkaline':
+                veins=np.exp(-(np.sin(x*7+y*5+z*3+fine)/.16)**2);radius+=veins*.004;feature=veins
             elif name=='salt':
                 basin=np.exp(-((h-.40)/.055)**2);radius-=basin*.003;feature=basin
         else:
@@ -94,7 +103,7 @@ def variants():
             output=out/(name+('_lod1' if lod=='far' else '')+'.glb');bpy.ops.export_scene.gltf(filepath=str(output),export_format='GLB',use_selection=True,export_apply=True,export_animations=False)
             obj.data.calc_loop_triangles();lods[lod]={'model':'res://assets/models/planet-variants/'+output.name,'triangles':len(obj.data.loop_triangles),'sha256':hashlib.sha256(output.read_bytes()).hexdigest()}
         bpy.ops.wm.open_mainfile(filepath=str(src/(name+'.blend')));obj=bpy.data.objects['Surface'];render_variant(name,obj,t)
-        records.append({'id':name,'kind':t['kind'],'source':str((src/(name+'.blend')).relative_to(ROOT)),'model':lods['near']['model'],'lod_model':lods['far']['model'],'triangles':lods['near']['triangles'],'lod_triangles':lods['far']['triangles'],'mask':'R elevation / G impact rim / B geologic structure','version':2,'art_revision':'ink-life-1','lods':lods})
+        records.append({'id':name,'kind':t['kind'],'source':str((src/(name+'.blend')).relative_to(ROOT)),'model':lods['near']['model'],'lod_model':lods['far']['model'],'triangles':lods['near']['triangles'],'lod_triangles':lods['far']['triangles'],'mask':'R elevation / G impact rim / B geologic structure','version':2,'art_revision':'surface-v2' if name in ['sedimentary','crystalline','alkaline'] else 'ink-life-1','lods':lods})
         (src/'manifest.json').write_text(json.dumps(records,indent=2)+'\n');(out/'manifest.json').write_text(json.dumps(records,indent=2)+'\n');print('INK_PLANET_EXPORTED',name,flush=True)
 
 def solar():

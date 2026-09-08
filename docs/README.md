@@ -1,6 +1,18 @@
 # 게임 설계 문서 목차
 
+2026-09-08 [부재중 생산·FINCH 소형선 개별 구현](production/57-distributed-industry-and-finch.md): 호스트 세션 중 거점 생산과 같은 항성계의 개인 출동·직접 운송·귀환을 연결했다. 실제 두 클라이언트의 서로 다른 행성 이동, 제작/비행 화면, 화물/재접속을 확인했다. 아래 부재중 생산 일시 정지·전원 동일 행성 전제는 이전 이력이며, 6인 인터넷·구조 회수는 후속이다.
+
+2026-09-08 [지표 텍스처·행성 3계열](production/56-planet-surface-materials.md): 공유 재질 10종·지상 12계열의 복합 표면, 퇴적 분지/결정질 고원/알칼리 광화대의 Blender 원본·궤도 LOD·지상 자연물을 적용했다. 전체 외형은 18계열이며 새 계열은 새 은하에서 생성된다. 확인한 렌더와 후속 경계는 소관 기록을 따른다.
+
+2026-09-08 [생산 거점·직접 운송·첫 P3 생산 구현](production/55-planet-supply-and-tier3.md): 여러 거점의 권리·재고를 유지하고 금속/저온 부품을 운송하여 제작소 Mk.3를 개조한다. 부재중 생산과 추가 표면 계열은 후속 범위다.
+
 2026-09-08 [행성·생물 선별 개선 완료](production/54-planets-and-life-art.md): 600개 기본형 검토·200개 개선/400개 유지, 행성 23종과 9개 지표, 내부/원거리 선 조정 및 실제 렌더 확인.
+
+2026-09-08 승인 전 조사 기록 — [행성 특화·후반 공급망과 재방문](game/17-planet-specialization-and-supply.md): 15계열의 충분성을 외형 수와 경제 역할로 나누고, 신규/강화 후보·주력 자원·수입 수요·복원 계약과 공급 거점 분리·비활성 생산·운송·막힘 방지를 **구현 전 제안**으로 정리했다.
+
+2026-09-08 [행성 종류·지질·렌더링 적용 범위 감사](production/53-planet-coverage-audit.md): 가상 외형 15계열·태양계 8종·지상 9계열·지질 10종을 대조하고 실제 렌더와 환경 표현 공백을 구분했다. [복합 표면 설계](technical/09-planet-surface-materials-and-biomes.md)의 전체 계열 대응표·공통 표현 계약을 보완했다.
+
+2026-09-08 [행성 지표 재질·복합 지역 구조](technical/09-planet-surface-materials-and-biomes.md): 바닥 품질 개선, 지질·기후별 재질 분포, 눈/얼음/습윤 피복, 지역 테라포밍·저장 연결의 **구현 전 설계 제안**. 현재 지표 구현과 구분한다.
 
 2026-09-08 **C00~C17 첫 구현·개별 커밋 완료**. [기본 조작·로봇·시설·환경 HUD](production/46-ground-play-repairs.md), [탐험·연구·협동 사업량](production/47-ground-exploration-growth.md)에 실제 실행·화면·저장 확인과 미확인 범위를 정리했다. [로버·한 대 운송](production/48-rover-and-transport.md)도 현재 게임에 연결했다. [C16/C17 시드 천체 시간·낮밤](production/50-seeded-cycles.md)까지 신규 세계에 연결했다. 구형 모델 재제작·전체 UI 개편·집중 성능 안정화는 별도 후속이다.
 
@@ -56,6 +68,7 @@
 | [Blender 공통 제작 규격](production/49-common-blender-art.md) | 산업 재질 단일 데이터·형태/곡면·출력 규칙·로버/창고 통일·남은 구형 모델 |
 | [채광 로봇·환경 시설 재제작](production/51-industry-remodel.md) | 우선 5종 형태 교체·가동부 보존·Blender/INK 렌더·현재 게임 연결 확인 |
 | [구형 그래픽 후속 16종](production/52-legacy-art-completion.md) | 시설·장비·발견물·자연물 전량 교체·legacy 0종·INK 렌더·현재/기존 게임 연결 |
+| [생산 거점·첫 P3 생산](production/55-planet-supply-and-tier3.md) | 독립 이용권·보유 정산·직접 운송·Mk.3 제작소·실행 확인 |
 | [행성·생물 선별 개선](production/54-planets-and-life-art.md) | 600개 기본형 검토·200개 개선/400개 유지·행성 23종·내부/원거리 선 조정 |
 | [1.2 렌더링 품질과 성능](production/03-rendering-and-performance.md) | 조명·그림자·접지 음영·재질·Blender 암벽·프리셋·실측 비교 |
 | [데모 이후 렌더링 품질 연구](production/04-visual-target.md) | 신규 모델·배경을 포함한 독립 고품질 장면, 실행·조작·검토 범위 |

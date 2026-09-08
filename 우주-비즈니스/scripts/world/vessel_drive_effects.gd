@@ -18,3 +18,10 @@ func set_thrust(amount: float,boost: bool) -> void:
 		material.initial_velocity_min=lerpf(4,36 if boost else 18,amount)
 		material.initial_velocity_max=material.initial_velocity_min*1.3
 		lights[i].light_energy=amount*(4 if boost else 1.5)
+
+func set_finch(enabled: bool) -> void:
+	for i in jets.size():
+		var side:=float(i*2-1)
+		jets[i].position=Vector3(side*.79,1.49,2.7) if enabled else Vector3(side*5,.12,7.48)
+		jets[i].scale=Vector3.ONE*(.3 if enabled else 1.0)
+		lights[i].position=jets[i].position;lights[i].omni_range=3 if enabled else 8

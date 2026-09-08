@@ -2,7 +2,7 @@ class_name FrontierExpeditionIndustry
 extends RefCounted
 static func tick(world: Dictionary,dt: float) -> void:
 	var site:=FrontierExpeditionBusiness.site(world)
-	if site.is_empty() or site.state!="active":return
+	if site.is_empty() or not FrontierPlanetSupply.operating(site):return
 	site.time=minf(10000000,site.time+dt)
 	power(world,site)
 	var efficiency:=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world))

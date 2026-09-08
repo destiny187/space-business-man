@@ -5,6 +5,7 @@ static var _config: Dictionary={}
 static var _field:=FrontierTerrainField.new()
 static var _field_key: String=""
 static var _ground: Dictionary={}
+static var _fields: Dictionary={}
 
 static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/crew_surface.json"))
@@ -14,6 +15,7 @@ static func landed(world: Dictionary) -> bool:
 	return not world.get("crew",{}).get("landing",{}).is_empty()
 
 static func spawn_member(world: Dictionary,member: Dictionary,index: int) -> void:
+	if member.has("shuttle_id"):return
 	FrontierCrewVitals.ensure(member).sprinting=false
 	member.position=(config().landing_spawn_positions[index%6] if landed(world) else FrontierCrewWorld.config().spawn_positions[index%6]).duplicate()
 	member.area="surface" if landed(world) else "cabin"
@@ -25,7 +27,12 @@ static func field(world: Dictionary) -> FrontierTerrainField:
 	var key: String=world.crew.world_id+":"+id+":"+str(edits.size())
 	if _field_key!=key:
 		var body:=FrontierUniverse.body_from_id(world.manifest,id)
-		_field.configure(int(body.streams.terrain),edits,float(world.terrain_settings.cell_size)*int(world.terrain_settings.chunk_cells),body.get("terrain_traits",{}))
+		if not _fields.has(key):
+			if _fields.size()>=16:_fields.clear()
+			var terrain:=FrontierTerrainField.new()
+			terrain.configure(int(body.streams.terrain),edits,float(world.terrain_settings.cell_size)*int(world.terrain_settings.chunk_cells),body.get("terrain_traits",{}))
+			_fields[key]=terrain
+		_field=_fields[key]
 		_field_key=key;_ground.clear()
 	return _field
 
@@ -104,7 +111,11 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		FrontierPlanetaryCycles.ensure_region(world,body)
 		FrontierExpeditionBusiness.ensure_site(world)
 		var index:=0
-		for id in active.values():spawn_member(world,crew.members[id],index);index+=1
+		for id in active.values():
+			if world.has("local_shuttle"):
+				crew.members[id].position=config().landing_spawn_positions[index%6].duplicate();crew.members[id].area="surface";crew.members[id].aboard=false;crew.members[id].ready=false
+			else:spawn_member(world,crew.members[id],index)
+			index+=1
 		return ""
 	if not landed(world) or member.area!="surface":return "같은 행성에 착륙한 뒤 실행하세요."
 	var body_id: String=crew.landing.body_id
@@ -201,6 +212,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	return ""
 
 static func validate_world(world: Dictionary) -> String:
+	var shuttle_error:=FrontierShuttles.validate_world(world)
+	if not shuttle_error.is_empty():return shuttle_error
 	if landed(world):
 		var id: String=world.crew.landing.body_id
 		if FrontierUniverse.ordinal_of(world.manifest,id)<0 or id!=world.location or not world.has("terrain_settings") or not world.get("ecology") is Dictionary or not world.ecology.get("planets") is Dictionary or not world.ecology.planets.has(id):return "공동 착륙에 고정 지형·생태 기록이 필요합니다."
@@ -210,7 +223,7 @@ static func validate_world(world: Dictionary) -> String:
 	return ""
 
 static func reset_cache() -> void:
-	_field_key="";_ground.clear()
+	_field_key="";_ground.clear();_fields.clear()
 
 static func launch_if_boarded(world: Dictionary,active: Dictionary) -> bool:
 	if not landed(world) or active.is_empty():return false
@@ -229,5 +242,10 @@ static func launch_if_boarded(world: Dictionary,active: Dictionary) -> bool:
 	world.flight_position=nav.position.duplicate();world.navigation_target=crew.landing.body_id
 	crew.landing={}
 	var index:=0
-	for id in crew.members:spawn_member(world,crew.members[id],index);index+=1
+	for id in crew.members:
+		if not world.has("local_shuttle") and crew.members[id].has("shuttle_id"):continue
+		if world.has("local_shuttle"):
+			crew.members[id].position=FrontierCrewWorld.config().spawn_positions[0].duplicate();crew.members[id].area="cabin";crew.members[id].aboard=true;crew.members[id].ready=true
+		else:spawn_member(world,crew.members[id],index)
+		index+=1
 	return true

@@ -2,6 +2,7 @@ class_name FrontierCrewSurfaceScene
 extends Node3D
 var presentation_points: Array[Vector3]=[]
 var presentation_ecology_refreshed:=false
+var shuttle_models: Dictionary={}
 var landing_ship: Node3D
 var session: FrontierCrewSession
 var viewer: Node3D
@@ -15,6 +16,7 @@ var incoming: Array=[]
 var config: Dictionary
 var material_cache: Dictionary={}
 var lamp: SpotLight3D
+var atmospheric_particles: Node3D
 var atmosphere: RefCounted
 var environment: Environment
 var last_anchor:=Vector3i(99999,99999,99999)
@@ -44,10 +46,11 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		mat.set_shader_parameter("surface_pattern",{"oxidized":1,"frozen":2,"fractured":2,"salt":3}.get(body.traits.id,0))
 		mat.set_shader_parameter("geology_phase",FrontierSurfaceGeology.phase(body.traits))
 		mat.set_shader_parameter("biome_style",["oxidized","continental","cratered","fractured","tundra","frozen","volcanic","salt","ochre"].find(body.traits.id))
+	FrontierSurfaceMaterialLibrary.configure(mat,body)
 	terrain=FrontierTerrainStreamer.new();terrain.configure(int(body.streams.terrain),packet.edits,mat,config,body.get("terrain_traits",{}));add_child(terrain)
 	if not body.get("terrain_traits",{}).is_empty():_add_native_water()
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)
-	distant=FrontierDistantTerrain.new();add_child(distant)
+	distant=FrontierDistantTerrain.new();distant.material_override=mat;add_child(distant)
 	var ship: Node3D=load("res://assets/models/ships/kestrel.glb").instantiate();ship.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position);FrontierInkStyle.apply(ship,material_cache);add_child(ship)
 	# Seat the existing Blender hull on the landing plateau, rather than leaving it at a fixed hover height.
 	var bottom:=0.0
@@ -56,7 +59,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		bottom=minf(bottom,bounds.position.y)
 	ship.position.y=terrain.field.height(ship.position.x,ship.position.z)-bottom
 	landing_ship=ship
-	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout(session.latest.get("vessel",{}))
+	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
 	lamp=SpotLight3D.new();lamp.light_cull_mask=((1 << 20)-1)^FrontierExpeditionFeedback.HANDHELD_LAYER;lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():
@@ -68,7 +71,10 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	preferences=FrontierClientSettings.ensure(get_tree())
 	preferences.changed.connect(func():
 		if not is_equal_approx(rendered_distance,float(preferences.values.view_distance)):_refresh_distant())
+	atmospheric_particles=load("res://scripts/world/surface_atmosphere_particles.gd").new()
+	add_child(atmospheric_particles);atmospheric_particles.configure(self,camera)
 	_update_interest()
+	_update_shuttles()
 
 func _ecology(packet: Dictionary) -> Dictionary:
 	return session.authority.world.ecology if session.hosting else packet.ecology
@@ -81,7 +87,7 @@ func accept(packet: Dictionary) -> void:
 	ecology.refresh_timer=0
 	business_view.accept(packet.get("business",{}))
 	surface_details.accept(packet.get("business",{}))
-	atmosphere.accept(packet.get("business",{}))
+	atmosphere.accept(packet.get("business",{}));_update_shuttles()
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()
@@ -97,9 +103,11 @@ func _update_interest() -> void:
 	var points: Array[Vector3]=[viewer.position]
 	if session.hosting:
 		points.clear()
-		for peer in session.authority.peers:points.append(FrontierCrewWorld.vector(session.authority.world.crew.members[session.authority.peers[peer]].position))
+		for peer in session.authority.peers:
+			var id: String=session.authority.peers[peer]
+			if FrontierShuttles.area_key(session.authority.world,id)=="surface:"+str(body.id):points.append(FrontierCrewWorld.vector(session.authority.world.crew.members[id].position))
 	if session.hosting:
-		var site:=FrontierExpeditionBusiness.site(session.authority.world)
+		var site:=FrontierExpeditionBusiness.site(FrontierShuttles.context(session.authority.world,session.latest.self_id))
 		for robot in site.get("robots",{}).values():points.append(FrontierExpeditionBusiness.point(robot.position))
 	terrain.update_interests(points)
 	if session.hosting:ecology.observers=points
@@ -116,7 +124,7 @@ func _refresh_distant() -> void:
 func _process(delta: float) -> void:
 	if session==null or terrain==null or not session.active or not session.latest.has("crew"):return
 	if session.hosting and session.authority.world.has("ecology"):ecology.ecology=session.authority.world.ecology
-	refits.update_loadout(session.latest.get("vessel",{}))
+	refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
 	_update_interest()
 	fallback_tick-=delta
 	if fallback_tick<=0 and (fallback_jobs!=terrain.completed_jobs or fallback_distant_builds!=distant.build_count):
@@ -176,3 +184,17 @@ func landing_view_ready() -> bool:
 func finish_landing_view() -> void:
 	presentation_points.clear();business_view.presentation_points.clear()
 	business_view.region_key=Vector2i(99999,99999)
+
+func _update_shuttles() -> void:
+	var value: Dictionary=session.latest
+	var fleet: Dictionary=value.crew.get("shuttles",{})
+	var at_mother: bool=value.get("local_shuttle","").is_empty()
+	for id in shuttle_models.keys():
+		if not at_mother or not fleet.has(id) or fleet[id].state!="docked":shuttle_models[id].queue_free();shuttle_models.erase(id)
+	if not at_mother:return
+	for id in fleet:
+		if fleet[id].state!="docked" or shuttle_models.has(id):continue
+		var ship: Node3D=load(FrontierShuttles.config().model).instantiate();add_child(ship);FrontierInkStyle.apply(ship,{})
+		var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad);point.x+=float(fleet[id].get("pad_slot",0))*7.0;point.y=terrain.field.height(point.x,point.z)
+		ship.position=point;shuttle_models[id]=ship
+		var label:=Label3D.new();label.text="FINCH · "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)

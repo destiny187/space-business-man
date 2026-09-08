@@ -19,7 +19,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if actor!=world.crew.owner_id or not near_ship(world,actor):return "호스트가 착륙선 정비소에서 개조하세요."
 		if level(f)>=1:return "차량 적재 개조 I을 갖추고 있습니다."
 		var site:=FrontierExpeditionBusiness.site(world)
-		if site.get("state")!="active" or not FrontierExpeditionBusiness.affordable(site.inventory,config().cost):return "현장 공동 창고의 적재 개조 부품이 부족합니다."
+		if not FrontierPlanetSupply.operating(site) or not FrontierExpeditionBusiness.affordable(site.inventory,config().cost):return "현장 공동 창고의 적재 개조 부품이 부족합니다."
 		FrontierExpeditionBusiness.transfer(site.inventory,config().cost,-1);f.transport_level=1;f.ship_vehicle="";return ""
 	if kind=="rover_research2":
 		if not near_ship(world,actor):return "착륙선 연구실에 접근하세요."

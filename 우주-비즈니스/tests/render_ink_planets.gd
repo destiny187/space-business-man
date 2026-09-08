@@ -16,6 +16,7 @@ func capture(name_value: String) -> void:
 	root.get_texture().get_image().save_png(folder+"/"+name_value+".png")
 func run() -> void:
 	folder=ProjectSettings.globalize_path("res://../docs/production/media/ink-life/planets/game")
+	if "--seeded-only" in OS.get_cmdline_user_args():folder=ProjectSettings.globalize_path("res://../docs/production/media/planet-surfaces-v2/orbit")
 	DirAccess.make_dir_recursive_absolute(folder);root.size=Vector2i(900,900)
 	stage=Node3D.new();root.add_child(stage)
 	var world:=WorldEnvironment.new();var env:=Environment.new();env.background_mode=Environment.BG_COLOR;env.background_color=Color("0e1c2d");env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("a1b4ca");env.ambient_light_energy=.35;env.tonemap_mode=Environment.TONE_MAPPER_FILMIC;world.environment=env;stage.add_child(world)
@@ -24,7 +25,7 @@ func run() -> void:
 	FrontierInkStyle.attach(camera,true);root.msaa_3d=Viewport.MSAA_4X
 	var layer:=CanvasLayer.new();stage.add_child(layer);label=Label.new();label.position=Vector2(38,28);label.add_theme_font_override("font",load("res://assets/fonts/NotoSansKR.ttf"));label.add_theme_font_size_override("font_size",28);layer.add_child(label)
 	var data: Array=JSON.parse_string(FileAccess.get_file_as_string("res://assets/models/solar-system/manifest.json"))
-	for i in (range(0) if "--rings-only" in OS.get_cmdline_user_args() else range(8)):
+	for i in (range(0) if "--rings-only" in OS.get_cmdline_user_args() or "--seeded-only" in OS.get_cmdline_user_args() else range(8)):
 		solar=FrontierSolarPlanet.new();stage.add_child(solar);solar.configure(i,1)
 		camera.size=5.4 if i==5 else (4.2 if i==6 else 3.0)
 		label.text="%02d  /  %s\n"%[i+1,data[i].name]+FrontierSolarPlanet.ASSETS[i].to_upper()
@@ -45,7 +46,7 @@ func run() -> void:
 	var flight:=FrontierCrewFlightView.new();flight.state={"manifest":FrontierUniverse.generate(1976)};root.add_child(flight)
 	await process_frame
 	check(flight.planets.size()==8,"production flight renders eight Blender planets")
-	for i in ([] if "--rings-only" in OS.get_cmdline_user_args() else [2,5]):
+	for i in ([] if "--rings-only" in OS.get_cmdline_user_args() or "--seeded-only" in OS.get_cmdline_user_args() else [2,5]):
 		var body:=FrontierUniverse.body(flight.state.manifest,i)
 		var target:=FrontierUniverse.position(flight.state.manifest,i)
 		var position:=target+Vector3(0,FrontierUniverse.radius(body)*.35,FrontierUniverse.radius(body)*(4.0 if i==5 else 3.4))
@@ -59,7 +60,7 @@ func run() -> void:
 	for ordinal in range(8,500):
 		var b:=FrontierUniverse.body(flight.state.manifest,ordinal)
 		if not samples.has(b.traits.id):samples[b.traits.id]=b
-	check(samples.size()==15,"all seeded planet types available")
+	check(samples.size()==FrontierPlanetTraits.rules().archetypes.size(),"all seeded planet types available")
 	flight.ship.hide();flight.ui_root.hide();flight.transit_overlay.hide();flight.set_process(false)
 	var review_camera:=Camera3D.new();flight.add_child(review_camera);review_camera.current=true;review_camera.projection=Camera3D.PROJECTION_ORTHOGONAL;review_camera.size=2.8;review_camera.far=100
 	var key:=DirectionalLight3D.new();flight.add_child(key);key.rotation_degrees=Vector3(-30,-35,0);key.light_energy=1.3
@@ -82,6 +83,6 @@ func run() -> void:
 		await capture("seeded-"+id+"-far")
 		review_camera.position=Vector3(0,0,6);lod._process(0);check(node.mesh==lod.near_mesh,id+" returns near")
 		node.queue_free();await process_frame
-	var result={"checks":checks,"failed":failed,"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),"scope":"seeded ring framing and LOD checks" if "--rings-only" in OS.get_cmdline_user_args() else "8 solar bodies and 15 seeded types; actual production loader; near/far geometry and return"}
+	var result={"checks":checks,"failed":failed,"renderer":RenderingServer.get_current_rendering_method(),"device":RenderingServer.get_video_adapter_name(),"scope":"seeded ring framing and LOD checks" if "--rings-only" in OS.get_cmdline_user_args() else "%d seeded types; actual production loader; near/far geometry and return" % samples.size()}
 	var output:=FileAccess.open(folder+("/ring-framing.json" if "--rings-only" in OS.get_cmdline_user_args() else "/verification.json"),FileAccess.WRITE);output.store_string(JSON.stringify(result,"\t"));output.close()
 	print("SOLAR RENDER ",JSON.stringify(result));quit(1 if failed else 0)

@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "archetypes": {
     "oxidized": {
       "kind": "basalt",
@@ -324,6 +324,84 @@
       "temperature": -170,
       "geology": "",
       "relief": 0
+    },
+    "sedimentary": {
+      "kind": "basalt",
+      "name": "퇴적 분지",
+      "dust": "b8aa80",
+      "rock": "76634e",
+      "sea": "39666c",
+      "water": 24,
+      "pressure": 0.78,
+      "oxygen": 0.07,
+      "toxicity": 25,
+      "temperature": 12,
+      "geology": "sedimentary",
+      "relief": 22,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0019,
+        "plain_threshold": 0.17,
+        "transition": 0.14,
+        "plateau_relief": 6,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "crystalline": {
+      "kind": "basalt",
+      "name": "결정질 고원",
+      "dust": "b1bbc4",
+      "rock": "595f79",
+      "sea": "344e67",
+      "water": 9,
+      "pressure": 0.18,
+      "oxygen": 0.01,
+      "toxicity": 20,
+      "temperature": -22,
+      "geology": "pegmatite",
+      "relief": 49,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0028,
+        "plain_threshold": -0.08,
+        "transition": 0.14,
+        "plateau_relief": 18,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
+    },
+    "alkaline": {
+      "kind": "basalt",
+      "name": "알칼리 광화대",
+      "dust": "b5bfa3",
+      "rock": "526f69",
+      "sea": "47716d",
+      "water": 14,
+      "pressure": 0.48,
+      "oxygen": 0.025,
+      "toxicity": 42,
+      "temperature": 32,
+      "geology": "alkaline",
+      "relief": 35,
+      "terrain_layout": {
+        "version": 2,
+        "region_frequency": 0.0028,
+        "plain_threshold": 0.02,
+        "transition": 0.14,
+        "plateau_relief": 10,
+        "plain_detail": 0.14,
+        "landing_inner": 40.0,
+        "landing_outer": 85.0,
+        "basin_threshold": -0.18,
+        "basin_transition": 0.16
+      }
     }
   }
 }

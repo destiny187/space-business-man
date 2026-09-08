@@ -155,6 +155,7 @@ func _process(delta: float) -> void:
 	if app.surface_world==null:warehouse_choice.select(1)
 	if using_ship():
 		storage_site=FrontierItemInventory.ship_site(app.session.latest.crew);depot=storage_site.inventory
+		if not app.session.latest.get("local_shuttle","").is_empty():storage_site["slot_capacity"]=int(FrontierShuttles.config().cargo_slots)
 	warehouse_management.visible=not using_ship()
 	warehouse_management.disabled=using_ship() or storage_site.is_empty() or storage_site.get("state")=="settled" or not FrontierExpeditionBusiness.near_warehouse(storage_site,FrontierCrewWorld.vector(member.position))
 	warehouse_management.tooltip_text="현장 창고 9m 이내에서 보급·로봇·시설을 관리합니다."

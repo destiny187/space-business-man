@@ -65,7 +65,7 @@ static func factory_busy(world: Dictionary,id: String) -> bool:
 static func craft_reason(world: Dictionary,actor: String,id: String) -> String:
 	var s:=FrontierExpeditionBusiness.site(world);var b: Dictionary=s.get("buildings",{}).get(id,{})
 	if research(world.crew.members[actor])<1:return "착륙선에서 현장 물류 I을 연구하세요."
-	if s.get("state")!="active" or b.get("type")!="factory":return "가동 중인 로봇 제작소가 필요합니다."
+	if not FrontierPlanetSupply.operating(s) or b.get("type")!="factory":return "가동 중인 로봇 제작소가 필요합니다."
 	if FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(b.position))>8:return "제작소 가까이 이동하세요."
 	if not b.get("active",false):return "제작소의 전력·가동 상태를 확인하세요."
 	if factory_busy(world,id) or not b.get("production",{}).is_empty():return "제작소가 다른 제품을 조립 중입니다."
@@ -172,7 +172,7 @@ static func manufacture(world: Dictionary,dt: float,validator: Callable=Callable
 		var job: Dictionary=f.jobs[id]
 		if job.body_id!=world.location:continue
 		var s:=FrontierExpeditionBusiness.site(world);var b: Dictionary=s.get("buildings",{}).get(job.factory_id,{})
-		if s.get("state")!="active" or not b.get("active",false):continue
+		if not FrontierPlanetSupply.operating(s) or not b.get("active",false):continue
 		job.progress=minf(float(config().craft_seconds),float(job.progress)+dt*FrontierProductionTier2.factor(b)*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world)))
 		if float(job.progress)<float(config().craft_seconds):continue
 		var p:=spawn_point(world,FrontierCrewWorld.vector(b.position),"",float(config().spawn_radius),validator)

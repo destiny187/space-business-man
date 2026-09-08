@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "resolution": 1024,
+  "channels": "linear R/G signed tangent normal XY; B height/tone; A roughness",
+  "materials": [
+    {
+      "id": "bedrock",
+      "texture": "res://assets/textures/surfaces/bedrock.png"
+    },
+    {
+      "id": "regolith",
+      "texture": "res://assets/textures/surfaces/regolith.png"
+    },
+    {
+      "id": "sand",
+      "texture": "res://assets/textures/surfaces/sand.png"
+    },
+    {
+      "id": "gravel",
+      "texture": "res://assets/textures/surfaces/gravel.png"
+    },
+    {
+      "id": "snow",
+      "texture": "res://assets/textures/surfaces/snow.png"
+    },
+    {
+      "id": "ice",
+      "texture": "res://assets/textures/surfaces/ice.png"
+    },
+    {
+      "id": "salt",
+      "texture": "res://assets/textures/surfaces/salt.png"
+    },
+    {
+      "id": "lava",
+      "texture": "res://assets/textures/surfaces/lava.png"
+    },
+    {
+      "id": "sediment",
+      "texture": "res://assets/textures/surfaces/sediment.png"
+    },
+    {
+      "id": "crystal",
+      "texture": "res://assets/textures/surfaces/crystal.png"
+    }
+  ],
+  "profiles": {
+    "oxidized": {
+      "rock": "bedrock",
+      "deposit": "sand",
+      "rock_meters": 4.8,
+      "deposit_meters": 3.2,
+      "deposit_color": "b08a63"
+    },
+    "continental": {
+      "rock": "bedrock",
+      "deposit": "regolith",
+      "rock_meters": 4.8,
+      "deposit_meters": 3.4
+    },
+    "cratered": {
+      "rock": "bedrock",
+      "deposit": "gravel",
+      "rock_meters": 5.5,
+      "deposit_meters": 3.5
+    },
+    "fractured": {
+      "rock": "bedrock",
+      "deposit": "gravel",
+      "rock_meters": 5,
+      "deposit_meters": 5
+    },
+    "tundra": {
+      "rock": "bedrock",
+      "deposit": "regolith",
+      "rock_meters": 5,
+      "deposit_meters": 3.4
+    },
+    "frozen": {
+      "rock": "bedrock",
+      "deposit": "regolith",
+      "rock_meters": 5,
+      "deposit_meters": 4
+    },
+    "volcanic": {
+      "rock": "lava",
+      "deposit": "gravel",
+      "rock_meters": 4,
+      "deposit_meters": 3
+    },
+    "salt": {
+      "rock": "bedrock",
+      "deposit": "salt",
+      "rock_meters": 5,
+      "deposit_meters": 4
+    },
+    "ochre": {
+      "rock": "bedrock",
+      "deposit": "sediment",
+      "rock_meters": 5,
+      "deposit_meters": 4
+    },
+    "sedimentary": {
+      "rock": "sediment",
+      "deposit": "sand",
+      "rock_meters": 6,
+      "deposit_meters": 4
+    },
+    "crystalline": {
+      "rock": "crystal",
+      "deposit": "gravel",
+      "rock_meters": 5,
+      "deposit_meters": 3.6,
+      "deposit_color": "828e9e"
+    },
+    "alkaline": {
+      "rock": "bedrock",
+      "deposit": "crystal",
+      "rock_meters": 5,
+      "deposit_meters": 4.5
+    }
+  },
+  "normal_strength": 0.42,
+  "detail_near": 25,
+  "detail_far": 95,
+  "snow_meters": 4.5,
+  "ice_meters": 5.5,
+  "freeze_start": -3.0,
+  "freeze_end": 3.0,
+  "transition_seconds": 18.0,
+  "highlight_strength": 0.24
+}

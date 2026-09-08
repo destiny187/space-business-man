@@ -255,6 +255,15 @@ func _physics_process(delta: float) -> void:
 			controls=authority.inputs[peer].get("flight_controls",controls)
 	FrontierCrewNavigation.steer(authority.world,controls,minf(delta,.1))
 	var arrived:=FrontierCrewNavigation.step(authority.world,minf(delta,.1))
+	for peer in authority.peers:
+		var actor: String=authority.peers[peer]
+		if not FrontierShuttles.aboard(authority.world,actor):continue
+		var local:=FrontierShuttles.context(authority.world,actor)
+		var input: Dictionary=authority.inputs.get(peer,{})
+		var local_controls: Array=input.get("flight_controls",[0.0,0.0,0.0]) if float(input.get("expires",-1))>=authority.now else [0.0,0.0,0.0]
+		FrontierCrewNavigation.steer(local,local_controls,minf(delta,.1))
+		if FrontierCrewNavigation.step(local,minf(delta,.1)):arrived=true
+		FrontierShuttles.commit(authority.world,local,actor)
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
 		checkpoint_timer=5.0
@@ -275,10 +284,12 @@ func _valid_manifest(value: Variant) -> bool:
 
 func _publish_surface() -> void:
 	if not hosting or authority==null or authority.stopped or authority.phase!="playing":return
-	if not FrontierCrewSurface.landed(authority.world):
-		surface={};surface_digests.clear();return
 	for peer in authority.peers:
-		var value:=FrontierCrewSurfaceReplica.packet(authority.world,authority.peers[peer])
+		var local:=FrontierShuttles.context(authority.world,authority.peers[peer])
+		var value:=FrontierCrewSurfaceReplica.packet(local,authority.peers[peer])
+		if value.is_empty():
+			if peer==1:surface={}
+			surface_digests.erase(peer);continue
 		var digest:=FrontierUniverse.fingerprint(value)
 		if surface_digests.get(peer,"")==digest:continue
 		surface_serial+=1

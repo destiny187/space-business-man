@@ -469,6 +469,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	var template: Node3D=load("res://assets/models/planet-variants/"+str(t.id)+".glb").instantiate()
 	var authored: MeshInstance3D=template.find_children("*","MeshInstance3D",true,false)[0]
 	node.mesh=authored.mesh;node.scale=Vector3.ONE*radius;template.free()
+	FrontierSurfaceMaterialLibrary.orbital(material,t)
 	material.set_shader_parameter("authored_relief",true)
 	material.set_shader_parameter("highlight_strength",.08)
 	material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))

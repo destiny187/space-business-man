@@ -31,6 +31,7 @@ var cue_left:=0.0
 var observed_body: String=""
 var known_buildings: Dictionary={}
 var known_robots: Dictionary={}
+var known_shuttle_state: String=""
 var known_observations:=0
 var last_veins: Dictionary={}
 var cache: Dictionary={}
@@ -53,6 +54,14 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.request_started.connect(_requested)
 	app.session.response_received.connect(_response)
 	app.session.surface_received.connect(_surface)
+	app.session.snapshot_received.connect(_shuttle_snapshot)
+
+func _shuttle_snapshot(value: Dictionary) -> void:
+	var state:=str(value.get("crew",{}).get("shuttles",{}).get(value.get("self_id",""),{}).get("state",""))
+	if known_shuttle_state=="assembling" and state=="docked":
+		show_cue("FINCH 조립 완료 · 착륙선 옆에서 출발하세요.")
+		if not blocked():audio.play("sfx_factory_complete")
+	known_shuttle_state=state
 
 func blocked() -> bool:
 	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
@@ -89,6 +98,10 @@ func _response(sequence: int,value: Dictionary) -> void:
 	var request: Dictionary=pending[sequence];pending.erase(sequence)
 	if request.kind in ["deposit","withdraw"]:
 		audio.play("sfx_pickup_resource" if value.get("ok",false) else "sfx_build_invalid");return
+	if request.kind.begins_with("shuttle_"):
+		if not value.get("ok",false):reject(str(value.get("error","소형선 작업 실패")))
+		else:audio.play("sfx_build_place" if request.kind=="shuttle_build" else "sfx_factory_complete");show_cue("FINCH 조립 시작" if request.kind=="shuttle_build" else "FINCH 출동" if request.kind=="shuttle_board" else "원정선 합류 완료")
+		return
 	if app.surface_world==null or app.surface_world.body.id!=request.body:return
 	if value.get("code")=="mining_cooldown":return
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
@@ -101,7 +114,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);audio.play("sfx_combat_pulse")
 		"equipment_upgrade","equipment_suit_upgrade":audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
 		"business_produce":audio.play("sfx_build_place");show_cue("제품 생산 예약")
-		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
+		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("시설·로봇 개조 완료")
 		"equipment_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
 		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3;cue_left=0
 		"surface_dig":
@@ -119,7 +132,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"business_build":
 			# The shared surface packet presents construction to every observer.
 			show_cue("건설 완료")
-		"business_register","business_toggle","business_demolish":
+		"business_register","business_lease","business_lease_release","business_toggle","business_demolish":
 			effects.construction(point);audio.play("sfx_build_place",point)
 		"surface_analyze","surface_restore","surface_introduce","business_research_install":
 			effects.construction(point);audio.play("ui_discovery");show_cue("연구 · 생태 기록 갱신")
@@ -245,6 +258,13 @@ func _update_audio(active: bool) -> void:
 			if category=="robots" and record.status in ["창고로 운반","충전기 복귀"]:record.status="자원 운반"
 			state[category].append(record);heights[row.id]=p.y
 	audio.update_world(state,blocked())
+	var atmosphere=app.surface_world.atmosphere
+	var particles=app.surface_world.atmospheric_particles
+	if particles!=null:
+		var air: Dictionary=atmosphere.current
+		var gain: float=float(air.atmosphere)*(.3+maxf(float(air.dust),float(air.ice)))*float(particles.exposure)
+		audio.ambient.stream_paused=blocked() or not DisplayServer.window_is_focused()
+		audio.ambient.volume_db=linear_to_db(maxf(.0001,gain*float(atmosphere.config().particles.wind_level)))
 	for id in audio.emitters:
 		if heights.has(id):audio.emitters[id].position.y=float(heights[id])+.8
 	daylight_mix_db=lerpf(float(app.surface_world.atmosphere.cycles.get("night_wind_db",0)),0.0,app.surface_world.atmosphere.daylight)
@@ -266,7 +286,7 @@ func _industry_effects() -> void:
 		elif robot.status=="충전 중":effects.burst(actor.global_position+Vector3.UP*.5,Color("82f5d2"),3)
 	for building in site.get("buildings",{}).values():
 		if not visuals.has(building.id) or not building.active:continue
-		if building.type=="factory" and not building.get("production",{}).is_empty():
+		if building.type=="factory" and (not building.get("production",{}).is_empty() or building.get("working",false)):
 			var actor: Node3D=visuals[building.id]
 			if actor.global_position.distance_to(app.camera.global_position)<25:effects.burst(actor.global_position+Vector3.UP*1.5,Color("efb46f"),3)
 		if building.type not in ["atmosphere","thermal","water","biolab"] or not building.get("working",false):continue

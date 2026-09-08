@@ -6,6 +6,7 @@ const TETRA := [[0,5,1,6],[0,1,2,6],[0,2,3,6],[0,3,7,6],[0,7,4,6],[0,4,5,6]]
 const EDGES := [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]
 var positions := PackedVector3Array()
 var normals := PackedVector3Array()
+var colors := PackedColorArray()
 var indices := PackedInt32Array()
 var cache: Dictionary = {}
 var field: FrontierTerrainField
@@ -17,7 +18,7 @@ func build(source: FrontierTerrainField,chunk: Vector3i,cells: int=12,cell_size:
 	var started:=Time.get_ticks_usec()
 	field=source
 	origin=Vector3(chunk)*cells*cell_size
-	positions.clear();normals.clear();indices.clear();cache.clear()
+	positions.clear();normals.clear();colors.clear();indices.clear();cache.clear()
 	var width:=cells+1
 	grid.resize(width*width*width)
 	grid_points.resize(grid.size())
@@ -54,7 +55,7 @@ func build(source: FrontierTerrainField,chunk: Vector3i,cells: int=12,cell_size:
 								if positions[previous].distance_squared_to(positions[vertex])<.00000001:duplicate=true;break
 							if not duplicate:polygon.append(vertex)
 						_polygon(polygon)
-	return {"vertices":positions,"normals":normals,"indices":indices,"build_ms":(Time.get_ticks_usec()-started)/1000.0}
+	return {"vertices":positions,"normals":normals,"colors":colors,"indices":indices,"build_ms":(Time.get_ticks_usec()-started)/1000.0}
 
 func _intersection(a: int,b: int) -> int:
 	var edge:=Vector2i(mini(a,b),maxi(a,b))
@@ -64,6 +65,10 @@ func _intersection(a: int,b: int) -> int:
 	var index:=positions.size()
 	positions.append(p)
 	normals.append(field.normal(origin+p))
+	var wp:=origin+p
+	var depth:=field.height(wp.x,wp.z)-wp.y
+	# Excavated and cave surfaces expose geology, never projected surface snow/ecology.
+	colors.append(Color(1.0-smoothstep(1.0,3.5,depth),0,0,1))
 	cache[edge]=index
 	return index
 
@@ -96,6 +101,7 @@ static func mesh(data: Dictionary) -> ArrayMesh:
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX]=data.vertices
 	arrays[Mesh.ARRAY_NORMAL]=data.normals
+	if data.has("colors"):arrays[Mesh.ARRAY_COLOR]=data.colors
 	arrays[Mesh.ARRAY_INDEX]=data.indices
 	result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	return result

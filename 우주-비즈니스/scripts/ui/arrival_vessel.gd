@@ -21,7 +21,7 @@ func configure(vessel: Dictionary) -> void:
  environment.tonemap_mode=Environment.TONE_MAPPER_FILMIC;world.environment=environment;stage.add_child(world)
  light=DirectionalLight3D.new();light.rotation_degrees=Vector3(-35,-30,0);light.light_color=Color("ffe1b5");light.light_energy=1.8;stage.add_child(light)
  hull=load("res://assets/models/ships/kestrel.glb").instantiate();stage.add_child(hull);FrontierInkStyle.apply(hull,{})
- refits=FrontierVesselVisuals.new();hull.add_child(refits);refits.update_loadout(vessel)
+ refits=FrontierVesselVisuals.new();refits.flight_mode=true;hull.add_child(refits);refits.update_loadout(vessel)
  drive=FrontierVesselDriveEffects.new();hull.add_child(drive);drive.set_thrust(.65,false)
  camera=Camera3D.new();camera.near=.05;camera.far=500;stage.add_child(camera);camera.make_current()
  var contour:=FrontierInkStyle.attach(stage,true);contour.set_shader_parameter("transparent_background",true)

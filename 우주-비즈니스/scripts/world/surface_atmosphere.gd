@@ -24,7 +24,12 @@ static func appearance(planet: Dictionary,values: Dictionary) -> Dictionary:
 	var clear: float=(1.0-toxicity)*habitable
 	var tint:=dust.lerp(Color(cfg.clear_horizon),clear)
 	var top:=dust.darkened(.55).lerp(Color(cfg.clear_zenith),clear)
-	return {"zenith":Color(cfg.vacuum_zenith).lerp(top,depth),"horizon":Color(cfg.vacuum_horizon).lerp(tint,depth),"cloud_color":tint.lerp(Color("eef1e9"),clear*.85),"atmosphere":depth,"cloud_amount":depth*water*habitable*(1.0-toxicity*.7),"fog":depth*(float(cfg.clear_fog_density)+toxicity*float(cfg.pollution_fog_density)),"ambient":lerpf(cfg.surface_ambient[0],cfg.surface_ambient[1],depth),"light":Color("ffe1b5").lerp(Color("edf4ff"),clear*depth*.65)}
+	var fx: Dictionary=cfg.particles
+	var cold: float=1.0-smoothstep(float(fx.frozen_temperature),float(fx.freeze_temperature),temperature)
+	var dry: float=1.0-clampf(float(values.get("water",native.water))/float(fx.dry_water_max),0,1)
+	var damp: float=smoothstep(float(fx.mist_water_min),float(fx.mist_water_full),float(values.get("water",native.water)))
+	var hot: float=smoothstep(float(fx.hot_temperature),float(fx.hot_temperature_full),temperature)
+	return {"dust":depth*dry*(1.0-cold)*(.3+.7*toxicity),"ice":depth*cold*water,"mist":depth*(1.0-cold)*maxf(toxicity*.75,damp*(.3+.7*hot)),"dust_color":dust,"zenith":Color(cfg.vacuum_zenith).lerp(top,depth),"horizon":Color(cfg.vacuum_horizon).lerp(tint,depth),"cloud_color":tint.lerp(Color("eef1e9"),clear*.85),"atmosphere":depth,"cloud_amount":depth*water*habitable*(1.0-toxicity*.7),"fog":depth*(float(cfg.clear_fog_density)+toxicity*float(cfg.pollution_fog_density)),"ambient":lerpf(cfg.surface_ambient[0],cfg.surface_ambient[1],depth),"light":Color("ffe1b5").lerp(Color("edf4ff"),clear*depth*.65)}
 func configure(planet: Dictionary,target: Environment,light: DirectionalLight3D) -> void:
 	body=planet;environment=target;sun=light
 	material=ShaderMaterial.new();material.shader=load("res://assets/materials/space/surface_sky.gdshader")

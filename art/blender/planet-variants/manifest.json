@@ -358,5 +358,77 @@
         "sha256": "fac6f3a6857524f42fb432616294d3dd0ed1dca15ee67e7da9d9ce6cf939ec54"
       }
     }
+  },
+  {
+    "id": "sedimentary",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/sedimentary.blend",
+    "model": "res://assets/models/planet-variants/sedimentary.glb",
+    "lod_model": "res://assets/models/planet-variants/sedimentary_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "surface-v2",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/sedimentary.glb",
+        "triangles": 65024,
+        "sha256": "4e6d197e44bccdbc0227b372a25aaf88e9baa1d8418c55b567c551a25ce34abc"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/sedimentary_lod1.glb",
+        "triangles": 11704,
+        "sha256": "17a1dab3e007095d0f4c2adfa023c15c0d94ae5e26693f0663794f9c00bdc61e"
+      }
+    }
+  },
+  {
+    "id": "crystalline",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/crystalline.blend",
+    "model": "res://assets/models/planet-variants/crystalline.glb",
+    "lod_model": "res://assets/models/planet-variants/crystalline_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "surface-v2",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/crystalline.glb",
+        "triangles": 65024,
+        "sha256": "84b39dfca36f3b593f0025008aaba43a51115e62e120361b46abb963d3247437"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/crystalline_lod1.glb",
+        "triangles": 11704,
+        "sha256": "8e50ad147723dd62e38530ad7260b72cf7f4f8d06bee26672e081ed846258643"
+      }
+    }
+  },
+  {
+    "id": "alkaline",
+    "kind": "basalt",
+    "source": "art/blender/planet-variants/alkaline.blend",
+    "model": "res://assets/models/planet-variants/alkaline.glb",
+    "lod_model": "res://assets/models/planet-variants/alkaline_lod1.glb",
+    "triangles": 65024,
+    "lod_triangles": 11704,
+    "mask": "R elevation / G impact rim / B geologic structure",
+    "version": 2,
+    "art_revision": "surface-v2",
+    "lods": {
+      "near": {
+        "model": "res://assets/models/planet-variants/alkaline.glb",
+        "triangles": 65024,
+        "sha256": "feb45c3c3b3779cd4fdb11cd4264798fa70d02a77a101594dcc111ec2889235f"
+      },
+      "far": {
+        "model": "res://assets/models/planet-variants/alkaline_lod1.glb",
+        "triangles": 11704,
+        "sha256": "8295ea5e7bc5567fa06d6378471d2c390c3a1de378416d5d51ef710313078d4c"
+      }
+    }
   }
 ]

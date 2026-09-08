@@ -28,7 +28,7 @@ static func factor(world: Dictionary,building: Dictionary) -> float:
 	return float(definition(key).factor)
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
 	var site:=FrontierExpeditionBusiness.site(world)
-	if site.is_empty() or site.state!="active" or not FrontierCrewSurface.landed(world):return "착륙한 활성 사업에서 공학 연구를 진행하세요."
+	if site.is_empty() or not FrontierPlanetSupply.operating(site) or not FrontierCrewSurface.landed(world):return "착륙한 활성 사업에서 공학 연구를 진행하세요."
 	var key: String=str(args.get("project",""));var def:=definition(key)
 	if def.is_empty():return "공학 연구 과제를 선택하세요."
 	var id: String=str(args.get("building_id",""))
@@ -116,7 +116,7 @@ static func validate_world(world: Dictionary) -> String:
 		var environment: String=FrontierEcologyCatalog.form(row.form_id).environment
 		if world.get("ecology",{}).get("research",{}).get(environment,{}).get("form_id")!=row.form_id:return "기초 분석 없는 공학 연구"
 		if row.stage in ["prototype","trial"]:
-			if not sites.has(row.body_id) or sites[row.body_id].state!="active" or not sites[row.body_id].buildings.has(row.facility_id):return "공학 실험 시설 연결 오류"
+			if not sites.has(row.body_id) or not FrontierPlanetSupply.operating(sites[row.body_id]) or not sites[row.body_id].buildings.has(row.facility_id):return "공학 실험 시설 연결 오류"
 			var expected: String="factory" if row.stage=="prototype" else definition(key).building
 			if sites[row.body_id].buildings[row.facility_id].type!=expected:return "공학 실험 시설 종류 오류"
 	for site in sites.values():

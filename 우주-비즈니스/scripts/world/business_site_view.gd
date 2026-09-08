@@ -11,6 +11,7 @@ var prepared_models: Dictionary={}
 var synchronous_resources:=DisplayServer.get_name()=="headless"
 var ghosts: Node3D
 var restore_amount:=0.0
+var visual_temperature: float=NAN
 var presentation_points: Array[Vector3]=[]
 var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
@@ -102,6 +103,12 @@ func target(camera: Camera3D,viewer: CollisionObject3D) -> Dictionary:
 	if hit.is_empty() or not hit.collider.has_meta("business_kind"):return {}
 	return {"id":hit.collider.get_meta("business_id"),"kind":hit.collider.get_meta("business_kind")}
 func _process(dt: float) -> void:
+	if terrain!=null and terrain.material is ShaderMaterial:
+		var native: float=body.get("traits",{}).get("temperature",20)
+		var target: float=ledger.get("sites",{}).get(body.id,{}).get("environment",{}).get("temperature",native)
+		if is_nan(visual_temperature):visual_temperature=native
+		visual_temperature=lerpf(visual_temperature,target,1.0-exp(-dt/float(FrontierSurfaceMaterialLibrary.config().transition_seconds)))
+		terrain.material.set_shader_parameter("local_temperature",visual_temperature)
 	if presentation_points.is_empty() and FrontierMineralWorld.enabled(body):
 		var viewer:=get_viewport().get_camera_3d()
 		if viewer!=null:
@@ -157,7 +164,11 @@ func _exit_tree() -> void:
 		if ResourceLoader.load_threaded_get_status(path)!=ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:ResourceLoader.load_threaded_get(path)
 
 func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
-	if int(row.get("tier",1))!=2 or node.has_meta("tier2_visual"):return
+	if int(row.get("tier",1))<2:return
+	if int(row.get("tier",1))==3 and not node.has_meta("tier3_visual"):
+		var core: Node3D=load("res://assets/models/products/control_circuit.glb").instantiate()
+		FrontierInkStyle.apply(core,cache);node.get_meta("visual").add_child(core);core.position=Vector3(1.12,2.0,1.34);core.rotation=Vector3(PI/2,0,0);core.scale=Vector3.ONE*.65;node.set_meta("tier3_visual",true)
+	if node.has_meta("tier2_visual"):return
 	var visual: Node3D=node.get_meta("visual")
 	var pack: Node3D=load("res://assets/models/products/retrofit_pack.glb").instantiate()
 	FrontierInkStyle.apply(pack,cache);visual.add_child(pack)

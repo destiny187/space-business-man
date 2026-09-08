@@ -99,7 +99,7 @@ func _process(delta: float) -> void:
 		var align:=smoothstep(0,float(FrontierUniverse.presentation().stellar_transition.departure_start),float(navigation.transit.progress))
 		ship.quaternion=_flight_basis(departure_initial).get_rotation_quaternion().slerp(_flight_basis(departure_heading).get_rotation_quaternion(),align)
 	else:ship.quaternion=ship.quaternion.slerp(_flight_basis(facing).get_rotation_quaternion(),minf(delta*6,1))
-	camera.position=Vector3(0,16,57) if exterior else Vector3(0,2,-18)
+	camera.position=(Vector3(0,8,21) if refits.hull_id=="finch" else Vector3(0,16,57)) if exterior else (Vector3(0,5.3,-1.2) if refits.hull_id=="finch" else Vector3(0,2,-18))
 	camera.rotation=(Vector3(-.15,0,0) if exterior else Vector3.ZERO)+Vector3(look_offset.y,look_offset.x,0)
 	if navigation.mode=="jump":camera.global_basis=Basis(previous_view.slerp(camera.global_basis.get_rotation_quaternion(),minf(delta*6,1)))
 	camera.fov=lerpf(camera.fov,minf(110.0,float(FrontierClientSettings.ensure(get_tree()).values.fov)+20) if navigation.mode=="jump" or navigation.get("boosting",false) else float(FrontierClientSettings.ensure(get_tree()).values.fov),minf(delta*3,1))

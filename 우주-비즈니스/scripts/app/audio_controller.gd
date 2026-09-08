@@ -124,7 +124,7 @@ func update_world(p: Dictionary,paused: bool) -> void:
 				if listener.distance_to(position) < 22: play("sfx_creature_call",Vector3(position.x,0.8,position.y))
 	for b in p.buildings:
 		if not b.get("active",false):continue
-		if b.type=="factory" and not b.get("production",{}).is_empty():
+		if b.type=="factory" and (not b.get("production",{}).is_empty() or b.get("working",false)):
 			var at:=Vector2(float(b.position[0]),float(b.position[1]))
 			if listener.distance_to(at)<35 and wanted.size()<12:wanted[b.id]=["sfx_robot_work",Vector3(at.x,1.5,at.y)]
 			continue

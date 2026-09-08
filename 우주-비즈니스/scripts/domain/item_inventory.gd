@@ -46,7 +46,7 @@ static func merge_legacy(world: Dictionary,actor: String) -> void:
 static func ship_site(crew: Dictionary) -> Dictionary:
 	var stock: Dictionary=crew.get("cargo",{}).duplicate()
 	stock.stone=int(crew.rock)
-	return {"inventory":stock,"stored_equipment":crew.get("cargo_equipment",{}),"buildings":{}}
+	return {"inventory":stock,"stored_equipment":crew.get("cargo_equipment",{}),"buildings":{},"slot_capacity":int(crew.get("cargo_slots",config().warehouse_slots))}
 static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
 	var member: Dictionary=world.crew.members[actor]
 	var position:=FrontierCrewWorld.vector(member.position)
@@ -54,6 +54,7 @@ static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dic
 		if position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "우주선 창고 가까이 돌아오세요."
 	elif member.area!="cabin" or position.distance_to(FrontierCrewWorld.vector(FrontierCrewWorld.config().locker_position))>float(FrontierCrewWorld.config().interaction_distance):return "선내 창고 가까이 이동하세요."
 	var site:=ship_site(world.crew)
+	if world.has("local_shuttle"):site["slot_capacity"]=int(FrontierShuttles.config().cargo_slots)
 	if args.has("item_id"):
 		var error:=warehouse_equipment(world,actor,{"item_id":args.item_id,"withdraw":kind=="withdraw"},site)
 		if not error.is_empty():return error
@@ -96,6 +97,7 @@ static func deposit_all(world: Dictionary,actor: String,site: Dictionary) -> Str
 
 # A landing depot starts with ten shared slots; each built storage adds ten.
 static func warehouse_capacity(site: Dictionary) -> int:
+	if site.has("slot_capacity"):return int(site.slot_capacity)
 	var count:=1
 	for building in site.get("buildings",{}).values():
 		if building.type=="storage":count+=1

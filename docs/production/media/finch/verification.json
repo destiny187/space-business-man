@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-08",
+  "renderer": "Godot 4.7.2 Forward+ Metal / Apple M2",
+  "checks": {
+    "remote_domain": 45,
+    "remote_ui": 8,
+    "shuttle_domain": 40,
+    "shuttle_ui": 10
+  },
+  "two_peers": {
+    "host": {
+      "passed": true,
+      "moved": {
+        "60d4c06270c1a27a4fbe119a7ed3011b": true,
+        "65632807b347c5a6b6e5fcbc4622e641": true
+      },
+      "surface": "galaxy:galaxy-v3:71491:planet:43",
+      "main_location": "galaxy:galaxy-v3:71491:planet:43",
+      "spaces": [
+        "surface:galaxy:galaxy-v3:71491:planet:41"
+      ]
+    },
+    "courier": {
+      "passed": true,
+      "moved": {
+        "60d4c06270c1a27a4fbe119a7ed3011b": true,
+        "65632807b347c5a6b6e5fcbc4622e641": true
+      },
+      "surface": "galaxy:galaxy-v3:71491:planet:41",
+      "main_location": "galaxy:galaxy-v3:71491:planet:43",
+      "spaces": []
+    }
+  },
+  "scope": "격리 fixture의 실제 명령·로컬 ENet 두 클라이언트. 6인 인터넷/장시간/Windows 미확인."
+}
