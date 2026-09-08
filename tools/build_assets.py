@@ -288,6 +288,9 @@ if "--" in sys.argv:
     if unknown: raise SystemExit("Unknown asset IDs: "+", ".join(sorted(unknown)))
     if requested: assets=[name for name in assets if name in requested]
 for kind in assets:
+    if kind == "storage":
+        print("STORAGE_PRESERVED",kind,"— rebuild with tools/build_locus_storage.py",flush=True)
+        continue
     if kind.startswith("ore_"):
         print("MINERAL_PRESERVED",kind,"— rebuild with tools/build_minerals.py",flush=True)
         continue

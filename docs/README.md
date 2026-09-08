@@ -51,6 +51,7 @@
 | [은하·티어·시드](game/11-galaxy-tiers-and-seeds.md) | 단일 은하·중심 방향 진행·티어 분포·시드 계층·생물 사례 선택 |
 | [호스트 협동·승무원](game/12-host-coop-and-crew.md) | 호스트 포함 6인·개인 장비·같은 우주선·역할·합류/이탈·시간 |
 | [아트·Blender 제작](production/01-art-and-blender.md) | 카툰 표현, 에셋 목록, 제작·복구·내보내기 과정 |
+| [Blender 공통 제작 규격](production/49-common-blender-art.md) | 산업 재질 단일 데이터·형태/곡면·출력 규칙·로버/창고 통일·남은 구형 모델 |
 | [1.2 렌더링 품질과 성능](production/03-rendering-and-performance.md) | 조명·그림자·접지 음영·재질·Blender 암벽·프리셋·실측 비교 |
 | [데모 이후 렌더링 품질 연구](production/04-visual-target.md) | 신규 모델·배경을 포함한 독립 고품질 장면, 실행·조작·검토 범위 |
 | [공식 렌더링 품질 기준 — INK v1](production/06-rendering-quality-standard.md) | **모든 후속 자산에 필수**: 승인 스타일·공통 셰이더·31종 렌더 목록·완료 조건 |

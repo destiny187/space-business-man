@@ -1,0 +1,63 @@
+{
+  "rover_before": {
+    "meshes": 226,
+    "triangles": 55480,
+    "materials": 10,
+    "bounds_min": [
+      -1.580000102519989,
+      -0.007500023732727402,
+      -2.2000000671657576
+    ],
+    "bounds_max": [
+      1.580000102519989,
+      3.210000157356262,
+      2.2099998891353607
+    ]
+  },
+  "rover_after": {
+    "meshes": 45,
+    "triangles": 58504,
+    "materials": 10,
+    "bounds_min": [
+      -1.5800001099705696,
+      -0.007500052452087402,
+      -2.200000248849392
+    ],
+    "bounds_max": [
+      1.5800001099705696,
+      3.2100002765655518,
+      2.2099997997283936
+    ]
+  },
+  "rover_preserved_pivots": 25,
+  "max_pivot_transform_error": 0.0,
+  "storage": {
+    "meshes": 5,
+    "triangles": 19944,
+    "materials": 5,
+    "bounds_min": [
+      -1.7999999523162842,
+      0.0,
+      -1.7999999523162842
+    ],
+    "bounds_max": [
+      1.7999999523162842,
+      2.0250000059604645,
+      1.7999999523162842
+    ]
+  },
+  "renderer": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "blender": "5.2.1 LTS",
+  "scope": "Focused asset import, Blender and production INK rendering. Not a game FPS benchmark or complete gameplay regression.",
+  "material_regression": "Passed: rubber roughness/highlight, imported INK roles, linear colour mapping, emission/vertex/alpha preservation",
+  "mechanism_render": "Front, rear, posed doors/wheels/suspension/cargo and cockpit captured; 25 live mechanisms",
+  "reviewed_images": [
+    "family-before.png",
+    "family-after.png",
+    "mixed-day.png",
+    "mixed-shade.png",
+    "mixed-backlight.png",
+    "storage-blender.png"
+  ],
+  "rover_bounds_max_delta_metres": 1.1920928955078125e-07
+}

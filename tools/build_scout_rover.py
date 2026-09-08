@@ -2,9 +2,11 @@
 Independent steering, suspension, wheel, door, cargo and lashing nodes survive GLB export.
 """
 from pathlib import Path
-import bpy, math, json
+import bpy, math, json, sys
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'tools'))
+import ink_blender as ink
 OUT=ROOT/'art/blender/vehicles';OUT.mkdir(parents=True,exist_ok=True)
 GAME=ROOT/'우주-비즈니스/assets/models/vehicles';GAME.mkdir(parents=True,exist_ok=True)
 REVIEW=ROOT/'docs/production/media/rover';REVIEW.mkdir(parents=True,exist_ok=True)
@@ -14,12 +16,12 @@ def mat(name,color,metal=0,rough=.5,alpha=1,emission=0):
  if alpha<1:m.surface_render_method='DITHERED';m.use_transparency_overlap=False
  if emission:p.inputs['Emission Color'].default_value=(*color,1);p.inputs['Emission Strength'].default_value=emission
  return m
-cream=mat('Ceramic enamel ivory',(.82,.79,.66),.25,.34)
-teal=mat('Ceramic enamel lagoon',(.045,.38,.37),.3,.34)
-orange=mat('Service ochre',(.96,.35,.055),.15)
-dark=mat('Graphite chassis',(.028,.045,.055),.55)
-rubber=mat('Soft graphite tyre',(.035,.039,.041),0,.9)
-steel=mat('Edge steel machined',(.36,.44,.46),.8,.27)
+cream=ink.material('enamel_cream')
+teal=ink.material('enamel_teal')
+orange=ink.material('safety_orange')
+dark=ink.material('structural_dark')
+rubber=ink.material('rubber')
+steel=ink.material('edge_steel')
 glass=mat('Pressure glazing',(.12,.32,.36),.05,.18,.18)
 light=mat('Headlight warm',(.96,.9,.64),0,.4,emission=1.5)
 red=mat('Rear signal',(.7,.07,.035),0,.4,emission=.5)
@@ -32,8 +34,7 @@ def empty(name,loc,p=None):
 def finish(ob,name,m,p=None,bevel=0):
  ob.name=name;ob.data.materials.append(m)
  if bevel:
-  mod=ob.modifiers.new('Rounded manufactured edge','BEVEL');mod.width=bevel;mod.segments=3
-  ob.modifiers.new('Weighted face normals','WEIGHTED_NORMAL')
+  ink.manufactured_edges(ob,bevel,3 if bevel<.045 else 4)
  return parent(ob,p)
 def box(name,loc,size,m,p=None,bevel=.035,rot=None):
  bpy.ops.mesh.primitive_cube_add(size=1,location=loc);ob=bpy.context.object;ob.scale=size;bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
@@ -129,6 +130,8 @@ for side,x in [('L',-1.34),('R',1.34)]:
 # Save before export and render. Cameras/lights are review-only, excluded from the GLB.
 bpy.context.scene.unit_settings.system='METRIC'
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'scout_rover.blend'))
+editable_meshes=sum(ob.type=='MESH' for ob in bpy.context.scene.objects)
+export_meshes=ink.consolidate_static_surfaces()
 bpy.ops.export_scene.gltf(filepath=str(GAME/'scout_rover.glb'),export_format='GLB',export_apply=True,export_cameras=False,export_lights=False)
 scene=bpy.context.scene;scene.world.color=(.16,.16,.16)
 box('Review floor',(0,0,-.05),(200,200,.08),mat('Review neutral',(.13,.17,.18)))
@@ -136,6 +139,6 @@ bpy.ops.object.camera_add(location=(7,9,5.2));cam=bpy.context.object;cam.rotatio
 for pos,energy,size in [((4,5,8),1700,5),((-5,2,4),1100,5),((0,-5,7),1700,4)]:
  bpy.ops.object.light_add(type='AREA',location=pos);ob=bpy.context.object;ob.data.energy=energy;ob.data.shape='DISK';ob.data.size=size;ob.rotation_euler=(Vector((0,0,1))-ob.location).to_track_quat('-Z','Y').to_euler()
 scene.render.engine='CYCLES';scene.cycles.samples=32;scene.render.resolution_x=1200;scene.render.resolution_y=1000;scene.render.resolution_percentage=100;scene.render.filepath=str(REVIEW/'scout-blender.png');bpy.ops.render.render(write_still=True)
-record={'version':1,'generator':'tools/build_scout_rover.py','source':'art/blender/vehicles/scout_rover.blend','game_file':'우주-비즈니스/assets/models/vehicles/scout_rover.glb','nodes':[ob.name for ob in bpy.data.objects if ob.name.startswith(('Anim_','Socket_'))],'geometry':'new-scout-rover','dimensions_metres':[3.1,4.4,3.25],'authoring_forward':'+Y','game_forward':'-Z'}
+record={'version':2,'material_preset':ink.PRESET['version'],'editable_meshes':editable_meshes,'export_meshes':export_meshes,'generator':'tools/build_scout_rover.py','source':'art/blender/vehicles/scout_rover.blend','game_file':'우주-비즈니스/assets/models/vehicles/scout_rover.glb','nodes':[ob.name for ob in bpy.data.objects if ob.name.startswith(('Anim_','Socket_'))],'geometry':'new-scout-rover','dimensions_metres':[3.1,4.4,3.25],'authoring_forward':'+Y','game_forward':'-Z'}
 (OUT/'manifest.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
 print('SCOUT_ROVER_EXPORTED')

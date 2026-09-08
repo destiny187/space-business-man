@@ -48,10 +48,12 @@
     "id": "storage",
     "source": "art/blender/storage.blend",
     "game": "우주-비즈니스/assets/models/storage.glb",
-    "editable_objects": 22,
+    "editable_objects": 62,
     "export_objects": 5,
-    "generator": "tools/build_assets.py",
-    "blender": "5.2.1 LTS"
+    "generator": "tools/build_locus_storage.py",
+    "blender": "5.2.1 LTS",
+    "material_preset": "ink-industrial-v1",
+    "geometry": "ink-family-remodeled"
   },
   {
     "id": "solar",
