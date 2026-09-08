@@ -407,7 +407,11 @@ func update_orbits(elapsed: float) -> void:
 	if is_instance_valid(landmarks):landmarks.update_epoch(elapsed)
 	for ordinal in planets:
 		planets[ordinal].node.position=FrontierUniverse.position(state.manifest,ordinal,elapsed)
-		if planets[ordinal].node is FrontierSolarPlanet:planets[ordinal].node.set_epoch(elapsed)
+		if planets[ordinal].node is FrontierSolarPlanet:planets[ordinal].node.set_epoch(elapsed,planets[ordinal].body)
+		elif FrontierPlanetaryCycles.enabled(state.manifest):
+			var node: MeshInstance3D=planets[ordinal].node
+			node.basis=FrontierPlanetaryCycles.orientation(planets[ordinal].body,elapsed).scaled(Vector3.ONE*FrontierUniverse.radius(planets[ordinal].body))
+			node.material_override.set_shader_parameter("visual_time",fposmod(elapsed,100000.0))
 
 func _process(_delta: float) -> void:
 	_update_galactic_core()
@@ -452,7 +456,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	var radius: float = FrontierUniverse.radius(body)
 	if body.get("origin","")=="solar_reference":
 		var solar:=FrontierSolarPlanet.new();solar.name="Planet_%d"%ordinal;add_child(solar);solar.configure(orbit,radius)
-		solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time)
+		solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time,body)
 		return {"node":solar,"radius":FrontierUniverse.navigation_radius(body),"body":body}
 	var node := MeshInstance3D.new()
 	node.name = "Planet_%d" % ordinal

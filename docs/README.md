@@ -1,14 +1,14 @@
 # 게임 설계 문서 목차
 
-2026-09-08 **C00~C15 구현·개별 커밋 완료**. [기본 조작·로봇·시설·환경 HUD](production/46-ground-play-repairs.md), [탐험·연구·협동 사업량](production/47-ground-exploration-growth.md)에 실제 실행·화면·저장 확인과 미확인 범위를 정리했다. [로버·한 대 운송](production/48-rover-and-transport.md)도 현재 게임에 연결했다. C16/C17 시드 낮밤과 집중 성능 안정화는 후속이다.
+2026-09-08 **C00~C17 첫 구현·개별 커밋 완료**. [기본 조작·로봇·시설·환경 HUD](production/46-ground-play-repairs.md), [탐험·연구·협동 사업량](production/47-ground-exploration-growth.md)에 실제 실행·화면·저장 확인과 미확인 범위를 정리했다. [로버·한 대 운송](production/48-rover-and-transport.md)도 현재 게임에 연결했다. [C16/C17 시드 천체 시간·낮밤](production/50-seeded-cycles.md)까지 신규 세계에 연결했다. 구형 모델 재제작·전체 UI 개편·집중 성능 안정화는 별도 후속이다.
 
 2026-09-07 **지상 개선 변경 문서 정리 완료**. 아래 명세에 최종 승인된 [협동 인원별 사업량](game/12-host-coop-and-crew.md)까지 반영했다. 완료 표기는 문서 정리이며 게임 구현·플레이 검증은 별도다.
 
 - [지상 플레이 피드백·개선안·확정 결정](planning/09-ground-play-feedback.md): 문제 7건·개선 5건과 최신 정정. **건설은 가방 실물만 소비**하며 창고 자동 보충은 폐기했다.
 - [지상 개선 개발 명세·시간 예산](planning/10-ground-development-spec.md): 코드/데이터 근거, 첫 행성 10~20분·티어별 연구/숙련 계산, 분포·구현 파일·저장·최소 완료 조건. 게임 실행 없이 정적 계산했다.
-- [지상 개선 커밋 계획](planning/11-ground-commit-plan.md): C00 문서 기준점·C01~C17 구현 분할, 의존성과 사용자 선택 종료 지점. 실행 범위 선택 전 계획이다.
+- [지상 개선 커밋 계획](planning/11-ground-commit-plan.md): C00 문서 기준점·C01~C17 구현 분할, 의존성과 사용자 선택 종료 지점. 첫 구현 범위의 실행·완료 기록을 포함한다.
 - [2인 로버·강화 운송](game/16-rover-and-transport.md): 제작·조작·화물·충전/복구·협동·선박 한 대 운송의 소관 설계. 구현과 실제 확인은 C13~C15 제작 기록을 따른다.
-- [시드 천체 시간](technical/08-seeded-planetary-cycles.md): 항성계·행성 자전/공전·낮밤·태양/별, 현실 근거·동주기 예외·게임 시간 압축과 기존 저장 경계. 구현 전.
+- [시드 천체 시간](technical/08-seeded-planetary-cycles.md): 항성계·행성 자전/공전·낮밤·태양/별, 현실 근거·동주기 예외·게임 시간 압축과 기존 저장 경계. 일반/동주기 첫 구현과 검수는 C16~C17 제작 기록을 따른다.
 
 2026-09-07 [우주 탐험 경험·영어 천체명·진입 사운드](production/34-space-experience.md): 5단계 적용과 사운드 제작·검증 기록.
 

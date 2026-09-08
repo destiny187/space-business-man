@@ -1,6 +1,7 @@
 class_name FrontierRoverActor
 extends CharacterBody3D
 ## Host-authoritative kinematic chassis. Visual wheel travel never decides ownership.
+var headlights: Array[SpotLight3D]=[]
 var visual: FrontierRoverVisual
 var drive: AudioStreamPlayer3D
 var effects: AudioStreamPlayer3D
@@ -15,6 +16,10 @@ func _ready() -> void:
 	collision_layer=9;collision_mask=11;floor_snap_length=.25
 	var shape:=CollisionShape3D.new();var box:=BoxShape3D.new();box.size=Vector3(2.5,1.9,3.7);shape.shape=box;shape.position.y=1.55;add_child(shape)
 	visual=FrontierRoverVisual.new();add_child(visual)
+	for x in [-.94,.94]:
+		var light:=SpotLight3D.new();light.position=Vector3(x,1.20,-2.10);light.rotation.x=-.06
+		light.light_color=Color("fff0c7");light.spot_range=52;light.spot_angle=35;light.spot_attenuation=.65;light.shadow_enabled=true;light.light_energy=float(FrontierPlanetaryCycles.config().presentation.rover_headlight_energy)
+		add_child(light);headlights.append(light);light.hide()
 	drive=speaker("sfx_rover_drive",true,-8);effects=speaker("",false,-5);work=speaker("sfx_rover_winch",true,-8)
 func speaker(id: String,loop: bool,volume: float) -> AudioStreamPlayer3D:
 	var player:=AudioStreamPlayer3D.new();player.bus="SFX";player.max_distance=55;player.unit_size=5;player.volume_db=volume;add_child(player)
@@ -91,3 +96,6 @@ func present(r: Dictionary,delta: float,audible: bool,task: Dictionary={}) -> vo
 	door_time=maxf(0,door_time-delta)
 	visual.pose(float(r.distance)-last_distance,float(r.steering)*.48,compression,Vector2.ONE*minf(1,door_time*3),minf(1,door_time*3))
 	last_distance=float(r.distance);last_speed=speed
+
+func set_headlights(active: bool) -> void:
+	for light in headlights:light.visible=active

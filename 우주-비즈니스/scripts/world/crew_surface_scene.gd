@@ -33,6 +33,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	body=FrontierUniverse.body_from_id(session.manifest,packet.body_id)
 	config=packet.terrain_settings
 	_setup_environment()
+	atmosphere.configure_cycles(session.manifest,packet.get("sky_region",{}),float(session.latest.crew.navigation.orbit_time))
 	atmosphere.accept(packet.get("business",{}))
 	atmosphere.current=atmosphere.target_at(viewer.position);atmosphere.paint()
 	var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/terrain.gdshader");mat.set_shader_parameter("rough",.96)
@@ -56,7 +57,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	landing_ship=ship
 	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout(session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
-	lamp=SpotLight3D.new();lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
+	lamp=SpotLight3D.new();lamp.light_cull_mask=((1 << 20)-1)^FrontierExpeditionFeedback.HANDHELD_LAYER;lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():
 		_refresh_distant();ecology.invalidate()
 		if business_view!=null:business_view.accept(business_view.ledger)
@@ -112,7 +113,7 @@ func _refresh_distant() -> void:
 	fallback_jobs=terrain.completed_jobs;fallback_distant_builds=distant.build_count
 
 func _process(delta: float) -> void:
-	if session==null or terrain==null:return
+	if session==null or terrain==null or not session.active or not session.latest.has("crew"):return
 	if session.hosting and session.authority.world.has("ecology"):ecology.ecology=session.authority.world.ecology
 	refits.update_loadout(session.latest.get("vessel",{}))
 	_update_interest()
@@ -124,6 +125,7 @@ func _process(delta: float) -> void:
 		var edit: Dictionary=incoming[applied_edits]
 		terrain.dig(FrontierCrewWorld.vector(edit.center),float(edit.radius));applied_edits+=1
 	var underground: float=clampf((terrain.field.height(viewer.position.x,viewer.position.z)-viewer.position.y-2.0)/10.0,0,1)
+	atmosphere.sync_clock(float(session.latest.crew.navigation.orbit_time))
 	atmosphere.step(delta,viewer.position,underground,float(preferences.values.fog))
 	tick-=delta
 	if tick<=0:
@@ -131,12 +133,13 @@ func _process(delta: float) -> void:
 		var camera:=lamp.get_parent() as Camera3D
 		var covered: bool=terrain.field.density(camera.global_position+Vector3.UP*8)>0
 		var energy:=0.0
-		if covered:
+		if covered or atmosphere.daylight<.55:
 			var query:=PhysicsRayQueryParameters3D.create(camera.global_position,camera.global_position-camera.global_basis.z*60)
 			if viewer is CollisionObject3D:query.exclude=[viewer.get_rid()]
 			var hit:=get_world_3d().direct_space_state.intersect_ray(query)
 			var distance: float=60.0 if hit.is_empty() else camera.global_position.distance_to(hit.position)
-			energy=clampf(24.0*pow(distance/8.0,2),.8,24.0)
+			var base_energy: float=24.0 if covered else float(atmosphere.cycles.get("worklight_energy",12.0))
+			energy=clampf(base_energy*pow(distance/8.0,2),.8,24.0)
 		lamp.light_energy=energy
 
 func ready_at(point: Vector3) -> bool:

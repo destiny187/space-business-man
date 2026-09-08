@@ -5,6 +5,7 @@ var environment: FrontierEnvironmentHud
 var instruments: FrontierFieldInstruments
 var app: FrontierCrewExpedition
 var place: Label
+var day_dial: DayDial
 var location: Label
 var return_label: Label
 var ship_direction: TextureRect
@@ -28,7 +29,9 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var heading:=VBoxContainer.new();heading.position=Vector2(32,28);heading.add_theme_constant_override("separation",4);heading.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(heading)
 	place=FrontierInterfaceStyle.label(heading,"",24)
 	environment=FrontierEnvironmentHud.new();heading.add_child(environment);environment.configure(app)
-	location=FrontierInterfaceStyle.label(heading,"",12,Color("d0d6ce"))
+	var local_row:=HBoxContainer.new();heading.add_child(local_row)
+	day_dial=DayDial.new();local_row.add_child(day_dial)
+	location=FrontierInterfaceStyle.label(local_row,"",12,Color("d0d6ce"))
 	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=TextureRect.new();ship_direction.texture=load("res://assets/ui/interface/ship.svg");ship_direction.custom_minimum_size=Vector2(22,22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
 	saved=FrontierInterfaceStyle.label(self,"✓",16,FrontierInterfaceStyle.ACCENT)
 	context=PanelContainer.new();context.mouse_filter=Control.MOUSE_FILTER_IGNORE;context.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color("10191fdb"),Color("31434d00"),10));add_child(context)
@@ -73,6 +76,13 @@ func _process(delta: float) -> void:
 	place.text=app.surface_world.body.name
 	var depth:=maxf(0,app.surface_world.terrain.field.height(position.x,position.z)-position.y)
 	location.text="지표 탐사" if depth<5 else "지하  %.0f m"%depth
+	var air=app.surface_world.atmosphere
+	day_dial.visible=not air.cycles.is_empty()
+	if day_dial.visible:
+		day_dial.height=float(air.sky_state.sun_height);day_dial.queue_redraw()
+		location.text+=" · "+air.cycle_label()
+		var a: Dictionary=app.surface_world.body.astro
+		location.tooltip_text="동주기 자전 · 같은 지역은 낮/밤 면 유지" if a.spin_state=="synchronous" else "현지 하루 약 %.1f시간 · 플레이 약 %.1f분"%[float(a.mean_solar_seconds)/3600.0,float(a.mean_solar_seconds)/float(a.time_scale)/60.0]
 	var ship:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)
 	return_label.text="%.0f m"%position.distance_to(ship)
 	var tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
@@ -122,3 +132,12 @@ func _process(delta: float) -> void:
 	else:target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
 	context.position.x=minf(context.position.x,size.x-context.size.x-24)
 	if scan_card.visible:context.hide()
+
+class DayDial extends Control:
+	var height:=1.0
+	func _init() -> void:custom_minimum_size=Vector2(28,19);mouse_filter=Control.MOUSE_FILTER_IGNORE
+	func _draw() -> void:
+		draw_line(Vector2(2,10),Vector2(26,10),Color("718794"),1.0,true)
+		draw_arc(Vector2(14,10),9,PI,TAU,20,Color("536b7b"),1.0,true)
+		var point:=Vector2(14,10-clampf(height,-1,1)*7)
+		draw_circle(point,3.2,Color("ffc77f") if height>-.1 else Color("a2c4e8"),true,-1,true)

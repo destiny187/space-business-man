@@ -130,6 +130,7 @@ static func position(m: Dictionary,ordinal: int,elapsed: float=0.0) -> Vector3:
 	if m.is_empty() or m.settings.generator_version=="galaxy-v2":
 		return [Vector3(-620,-130,-2400),Vector3(1150,340,-3600),Vector3(-2100,450,-4900),Vector3(2400,-500,-6000)][ordinal%4]
 	var b:=body(m,ordinal)
+	if FrontierPlanetaryCycles.enabled(m):return FrontierPlanetaryCycles.orbit_position(b,elapsed)
 	var angle: float=float(b.orbit.phase)+elapsed/float(b.orbit.period)*TAU
 	return orbit_point(b,angle)
 
@@ -195,6 +196,8 @@ static func validate_world(value: Variant) -> String:
 		if not engineering_error.is_empty():return engineering_error
 	var rover_error:=FrontierRovers.valid(value)
 	if not rover_error.is_empty():return rover_error
+	var sky_error:=FrontierPlanetaryCycles.validate_regions(value)
+	if not sky_error.is_empty():return sky_error
 	return _validate_terrain(value)
 
 static func _finite(value: Variant,low: float,high: float) -> bool:
@@ -267,6 +270,9 @@ static func landing_restriction(body: Dictionary) -> String:
 	return ""
 
 static func orbit_point(body: Dictionary,angle: float) -> Vector3:
+	if body.get("astro",{}).get("enabled",false):
+		var e: float=body.astro.display_eccentricity
+		return FrontierPlanetaryCycles.orbit_basis(body)*Vector3(cos(angle),0,-sin(angle))*float(body.orbit.radius)*(1-e*e)/(1+e*cos(angle))
 	var tilt: float=deg_to_rad(float(presentation().inclination_min_degrees)+float(derive(int(body.seed),"inclination")%10000)/10000.0*float(presentation().inclination_range_degrees))
 	var node: float=float(derive(int(body.seed),"ascending-node")%10000)/10000.0*TAU
 	var point:=Vector3(cos(angle),0,sin(angle))*float(body.orbit.radius)

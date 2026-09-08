@@ -101,6 +101,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		FrontierEcology.ensure_planet(world.ecology,body)
 		world.location=body.id;world.navigation_target=body.id;world.visited[body.id]=true;crew.navigation.target=int(ordinal)
 		crew.landing={"body_id":body.id,"epoch":int(crew.revision)+1}
+		FrontierPlanetaryCycles.ensure_region(world,body)
 		FrontierExpeditionBusiness.ensure_site(world)
 		var index:=0
 		for id in active.values():spawn_member(world,crew.members[id],index);index+=1

@@ -9,6 +9,9 @@ func run() -> void:
 	assert(not FrontierPlanetaryCycles.enabled(legacy))
 	assert(FrontierUniverse.body(legacy,17).streams==FrontierUniverse.body(m,17).streams)
 	if not FrontierPlanetaryCycles.enabled(m):assert(FrontierUniverse.position(m,17,123)==FrontierUniverse.position(legacy,17,123))
+	var prepared:=m.duplicate(true);prepared.settings.planetary_cycles.enabled=false;prepared.settings.planetary_cycles.presentation.erase("night_wind_db")
+	assert(FrontierUniverse.position(prepared,17,123)==FrontierUniverse.position(legacy,17,123))
+	assert(FrontierPlanetaryCycles.valid(prepared.settings.planetary_cycles))
 	var restored: Dictionary=JSON.parse_string(JSON.stringify(m))
 	var regular:=FrontierUniverse.body(m,303);var locked:=FrontierUniverse.body(m,304)
 	assert(regular.astro.spin_state=="prograde" and locked.astro.spin_state=="synchronous")
@@ -23,6 +26,12 @@ func run() -> void:
 	assert(day.sun_height*night.sun_height<0)
 	var region:=FrontierPlanetaryCycles.landing_region(regular,345.0)
 	assert(FrontierPlanetaryCycles.sky_state(regular,345.0,region).sun_height>.4)
+	assert(FrontierUniverse.position(m,303,123).is_equal_approx(FrontierPlanetaryCycles.orbit_position(regular,123)))
+	assert(FrontierUniverse.orbit_point(regular,FrontierPlanetaryCycles.anomaly(regular,123)).is_equal_approx(FrontierUniverse.position(m,303,123)))
+	world.crew={"navigation":{"orbit_time":345.0}}
+	var fixed:=FrontierPlanetaryCycles.ensure_region(world,regular).duplicate(true)
+	world.crew.navigation.orbit_time=999.0
+	assert(FrontierPlanetaryCycles.ensure_region(world,regular)==fixed)
 	var session:=FrontierCrewSession.new()
 	assert(session._valid_manifest(legacy));assert(session._valid_manifest(m));session.free()
 	print("CYCLES_CORE_OK / deterministic, Earth day, synchronous sun/stars, right-handed frame, legacy join, daylight landing")

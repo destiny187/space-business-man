@@ -32,13 +32,14 @@ static func packet(world: Dictionary,actor: String) -> Dictionary:
 		cargo[key]=sample.duplicate(true)
 		var observation: String=sample.source_body+":"+sample.form_id
 		if world.ecology.observations.has(observation):observations[observation]=world.ecology.observations[observation].duplicate(true)
-	return {"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
+	return {"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
 		"edits":world.terrain_edits.get(id,[]).duplicate(true),"rules_hash":world.ecology.rules_hash,"catalog_hash":world.ecology.catalog_hash,
 		"ecology":{"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo}}
 
 static func validate(value: Variant,manifest: Dictionary) -> bool:
 	if not value is Dictionary or value.get("version")!=1 or not value.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,value.body_id)<0:return false
 	if not FrontierUniverse._finite(value.get("epoch"),1,9007199254740000):return false
+	if FrontierPlanetaryCycles.enabled(manifest) and not FrontierPlanetaryCycles.valid_region(value.get("sky_region")):return false
 	if value.get("rules_hash")!=FrontierUniverse.fingerprint(FrontierEcologyCatalog.config()) or value.get("catalog_hash")!=FrontierEcologyCatalog.signature():return false
 	if not value.get("edits") is Array or value.edits.size()>int(FrontierCrewSurface.config().maximum_edits_per_planet):return false
 	var terrain_world: Dictionary={"manifest":manifest,"terrain_edits":{value.body_id:value.edits},"terrain_settings":value.get("terrain_settings"),"terrain_settings_hash":value.get("terrain_settings_hash")}

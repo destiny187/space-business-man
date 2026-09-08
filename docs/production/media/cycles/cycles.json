@@ -1,0 +1,67 @@
+{
+  "astro": {
+    "a_au": 3.9029153352297,
+    "display_eccentricity": 0.04513368,
+    "eccentricity": 0.04513368,
+    "enabled": true,
+    "epoch_offset": 0.0,
+    "intro_eligible": true,
+    "irradiation_earth": 1.31296072451013,
+    "latitude": -0.579383687282242,
+    "longitude": 5.6424135031828,
+    "mean_solar_seconds": 79617.025953772,
+    "orbit_seconds": 172057126.206752,
+    "origin": "generated",
+    "reference_source": "",
+    "spin_phase": 0.0689642419316031,
+    "spin_seconds": 79580.2013299138,
+    "spin_state": "prograde",
+    "star": {
+      "luminosity_solar": 20.0,
+      "mass_solar": 2.0,
+      "origin": "generated",
+      "radius_solar": 1.8,
+      "version": 1
+    },
+    "tilt": 0.411427162704324,
+    "time_scale": 60.0,
+    "version": 1
+  },
+  "body": "galaxy:galaxy-v3:71491:planet:61916",
+  "failures": 0,
+  "region": {
+    "latitude": -0.579383687282242,
+    "longitude": 0.22181084689815,
+    "north": "-Z"
+  },
+  "samples": [
+    {
+      "ambient": 0.13473179936409,
+      "clock": 14.651364860672,
+      "lamp": 0.0,
+      "phase": 0.0,
+      "sun_height": 0.89647376537323
+    },
+    {
+      "ambient": 0.114774361252785,
+      "clock": 346.393311326315,
+      "lamp": 24.0,
+      "phase": 0.25,
+      "sun_height": 0.0114030241966248
+    },
+    {
+      "ambient": 0.101048842072487,
+      "clock": 678.169983642599,
+      "lamp": 24.0,
+      "phase": 0.5,
+      "sun_height": -0.759889662265778
+    },
+    {
+      "ambient": 0.131871119141579,
+      "clock": 1009.96340343574,
+      "lamp": 0.0,
+      "phase": 0.75,
+      "sun_height": 0.126205712556839
+    }
+  ]
+}

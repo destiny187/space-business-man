@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "enabled": false,
+  "enabled": true,
   "time_scale": 60.0,
   "epoch_offset": 0.0,
   "year_seconds": 31557600.0,
@@ -35,6 +35,7 @@
     "cloud_speed": 0.006,
     "clock_extrapolation_limit": 1.0,
     "worklight_energy": 12.0,
-    "rover_headlight_energy": 18.0
+    "rover_headlight_energy": 18.0,
+    "night_wind_db": -2.0
   }
 }

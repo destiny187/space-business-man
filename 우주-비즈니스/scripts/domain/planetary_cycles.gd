@@ -9,7 +9,9 @@ static func enabled(manifest: Dictionary) -> bool:
 static func valid(value: Variant) -> bool:
 	# Presets are snapshotted in the manifest; reject unsupported rules without migrating saves.
 	if not value is Dictionary or value.get("version")!=1 or not value.get("enabled") is bool:return false
+	if not value.get("presentation") is Dictionary:return false
 	var expected:=config();expected.enabled=value.enabled
+	if not value.presentation.has("night_wind_db"):expected.presentation.erase("night_wind_db")
 	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(expected)
 static func fraction(seed_value: int,key: String) -> float:
 	return float(FrontierUniverse.derive(seed_value,key)%1000000)/1000000.0
@@ -45,6 +47,12 @@ static func metadata(manifest: Dictionary,body: Dictionary) -> Dictionary:
 	# Extreme irradiation/climate disagreements remain fictional; not tutorial recommendations.
 	var flux: float=primary.luminosity_solar/(a*a)
 	result.intro_eligible=state=="prograde" and solar_day/3600>=cfg.intro_day_hours[0] and solar_day/3600<=cfg.intro_day_hours[1] and tilt<=float(cfg.intro_max_tilt) and flux>=.45 and flux<=2.5
+	var visual_e:=e
+	for neighbour in [slot-1,slot+1]:
+		if neighbour<0 or neighbour>=FrontierUniverse.body_count(manifest,int(system.ordinal)):continue
+		var other:=FrontierUniverse.orbit_radius(manifest,int(system.ordinal),neighbour)
+		visual_e=minf(visual_e,absf(other-float(body.orbit.radius))/(other+float(body.orbit.radius))*.4)
+	result.display_eccentricity=visual_e
 	result.irradiation_earth=flux
 	result.mean_solar_seconds=solar_day
 	if cache.size()>1024:cache.clear()
@@ -64,7 +72,7 @@ static func orbit_basis(body: Dictionary) -> Basis:
 	return Basis(Vector3.UP,node)*Basis(Vector3.RIGHT,tilt)
 static func orbit_position(body: Dictionary,elapsed: float) -> Vector3:
 	var angle:=anomaly(body,elapsed)
-	var e: float=body.astro.eccentricity
+	var e: float=body.astro.display_eccentricity
 	var radius: float=body.orbit.radius*(1-e*e)/(1+e*cos(angle))
 	return orbit_basis(body)*Vector3(cos(angle),0,-sin(angle))*radius
 static func orientation(body: Dictionary,elapsed: float) -> Basis:
@@ -89,3 +97,21 @@ static func landing_region(body: Dictionary,elapsed: float) -> Dictionary:
 	# Choose a daylight longitude once, without resetting the global shared clock.
 	var toward:=orientation(body,elapsed).transposed()*(-orbit_position(body,elapsed).normalized())
 	return {"latitude":a.latitude,"longitude":atan2(-toward.z,toward.x),"north":"-Z"}
+
+static func ensure_region(world: Dictionary,body: Dictionary) -> Dictionary:
+	if not enabled(world.manifest):return {}
+	if not world.has("celestial_regions"):world.celestial_regions={}
+	if not world.celestial_regions.has(body.id):
+		var a: Dictionary=body.astro
+		var region:={"latitude":a.latitude,"longitude":a.longitude,"north":"-Z"}
+		if world.celestial_regions.is_empty() and a.intro_eligible:region=landing_region(body,float(world.crew.navigation.orbit_time))
+		world.celestial_regions[body.id]=region
+	return world.celestial_regions[body.id]
+static func valid_region(value: Variant) -> bool:
+	return value is Dictionary and FrontierUniverse._finite(value.get("latitude"),-PI/2,PI/2) and FrontierUniverse._finite(value.get("longitude"),-TAU,TAU) and value.get("north")=="-Z"
+static func validate_regions(world: Dictionary) -> String:
+	if not world.has("celestial_regions"):return ""
+	if not world.celestial_regions is Dictionary or not enabled(world.manifest):return "천체 지역 기록 오류"
+	for id in world.celestial_regions:
+		if not id is String or FrontierUniverse.ordinal_of(world.manifest,id)<0 or not valid_region(world.celestial_regions[id]):return "천체 지역 위도·경도 오류"
+	return ""

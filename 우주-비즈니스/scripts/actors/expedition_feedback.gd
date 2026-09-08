@@ -1,5 +1,6 @@
 class_name FrontierExpeditionFeedback
 extends Node3D
+const HANDHELD_LAYER := 1 << 19
 
 # Presentation consumes accepted commands; it never mutates world or inventory.
 var app: FrontierCrewExpedition
@@ -40,7 +41,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	effects=FrontierEffects.new();add_child(effects)
 	optics=FrontierFieldToolEffects.new();add_child(optics)
 	handheld=load("res://assets/models/manual_tool.glb").instantiate()
-	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld)
+	FrontierInkStyle.apply(handheld,cache);_tool_lighting();app.camera.add_child(handheld)
 	handheld.position=Vector3(.36,-.30,-.92);handheld.scale=Vector3.ONE*.72
 	handheld.set_meta("intake_offset",Vector3(0,0,-.78));handheld.hide()
 	parts=handheld.find_children("Anim_*","Node3D",true,false)
@@ -227,7 +228,9 @@ func _process(delta: float) -> void:
 	if audio_tick<=0:
 		audio_tick=.2;_update_audio(active)
 
+var daylight_mix_db:=0.0
 func _update_audio(active: bool) -> void:
+	audio.ambient.volume_db-=daylight_mix_db;daylight_mix_db=0.0
 	if not active:audio.update_world({},false);return
 	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 	var player: Vector3=app.actors[app.session.latest.self_id].position
@@ -244,6 +247,10 @@ func _update_audio(active: bool) -> void:
 	audio.update_world(state,blocked())
 	for id in audio.emitters:
 		if heights.has(id):audio.emitters[id].position.y=float(heights[id])+.8
+	daylight_mix_db=lerpf(float(app.surface_world.atmosphere.cycles.get("night_wind_db",0)),0.0,app.surface_world.atmosphere.daylight)
+	audio.ambient.volume_db+=daylight_mix_db
+	# Match the existing rover playback fixture gate without changing normal focus muting.
+	if app.test_mode:audio.ambient.stream_paused=blocked()
 
 func _industry_effects() -> void:
 	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
@@ -272,8 +279,11 @@ func _replace_tool(model: String) -> void:
 	work_left=0;intake_strength=0;recoil=0;recoil_velocity=0;optics.reset();effects.clear()
 	handheld.get_parent().remove_child(handheld);handheld.queue_free()
 	equipped_model=model;handheld=load("res://assets/models/"+model+".glb").instantiate()
-	FrontierInkStyle.apply(handheld,cache);app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model in ["manual_tool","equipment/miner_mk2"] else .5)
+	FrontierInkStyle.apply(handheld,cache);_tool_lighting();app.camera.add_child(handheld);handheld.scale=Vector3.ONE*(.72 if model in ["manual_tool","equipment/miner_mk2"] else .5)
 	handheld.set_meta("intake_offset",Vector3(0,0,-.78))
 	parts=handheld.find_children("Anim_*","Node3D",true,false)
 	for part in parts:part.set_meta("rest",part.position)
 	muzzle=OmniLight3D.new();muzzle.position=Vector3(0,0,-.78);muzzle.omni_range=4;muzzle.light_color=Color("ffc07c");muzzle.light_energy=0;handheld.add_child(muzzle)
+
+func _tool_lighting() -> void:
+	for mesh in handheld.find_children("*","GeometryInstance3D",true,false):mesh.layers=HANDHELD_LAYER

@@ -33,7 +33,16 @@ func configure(ordinal: int,radius: float) -> void:
 					mat.set_shader_parameter("highlight_strength",.08)
 					if "_vertex_paint" in mat.resource_name:mat.set_shader_parameter("use_vertex_color",true)
 
-func set_epoch(elapsed: float) -> void:
+func set_epoch(elapsed: float,body: Dictionary={}) -> void:
+	if body.get("astro",{}).get("enabled",false):
+		# Replace the source's illustrative tilt; do not add a second obliquity.
+		for model in [detail,distant]:
+			if str(model.name).begins_with("Solar_"):model.rotation=Vector3.ZERO
+			for pivot in model.find_children("Solar_*","Node3D",true,false):pivot.rotation=Vector3.ZERO
+		basis=FrontierPlanetaryCycles.orientation(body,elapsed)
+		for surface in surfaces:surface.rotation=Vector3.ZERO
+		for cloud in clouds:cloud.rotation.y=fposmod(elapsed*.001,TAU)
+		return
 	# Illustrative spin is shared across clients; no real-time ephemeris claim.
 	var speed:=.006 if index not in [1,6] else -.003
 	for surface in surfaces:surface.rotation.y=fmod(elapsed*speed,TAU)

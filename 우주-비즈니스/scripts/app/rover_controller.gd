@@ -139,6 +139,7 @@ func present(delta: float) -> void:
 			node.position=node.position.lerp(FrontierCrewWorld.vector(r.position),1-exp(-delta*14));var rot:=FrontierCrewWorld.vector(r.rotation)
 			for i in 3:node.rotation[i]=lerp_angle(node.rotation[i],rot[i],1-exp(-delta*14))
 		node.present(r,delta,audible,runtime().get("tasks",{}).get(id,{}))
+		node.set_headlights(app.surface_world.atmosphere.daylight<.6 and float(r.battery)>0 and float(r.health)>0)
 	if not own.is_empty() and actors.has(own.id):
 		var node: FrontierRoverActor=actors[own.id]
 		if last_seat!=own.id:app.yaw=node.rotation.y;app.pitch=0;chase=false
