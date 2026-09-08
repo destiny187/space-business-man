@@ -30,8 +30,9 @@ for label,stride in [('far',24),('medium',6)]:
  bpy.ops.object.select_all(action='DESELECT');lo.select_set(True)
  bpy.ops.export_scene.gltf(filepath=str(export/('galaxy_map_'+label+'.glb')),export_format='GLB',use_selection=True)
  lo.hide_render=True;lo.hide_viewport=True
-bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=1)
+bpy.ops.mesh.primitive_uv_sphere_add(segments=24,ring_count=12,radius=1)
 star=bpy.context.object;star.name='navigation_star';star.data.materials.append(mat)
+for polygon in star.data.polygons:polygon.use_smooth=True
 bpy.ops.object.select_all(action='DESELECT');star.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(export/'navigation_star.glb'),export_format='GLB',use_selection=True)
 star.hide_render=True;star.hide_viewport=True

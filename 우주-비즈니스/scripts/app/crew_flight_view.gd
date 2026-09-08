@@ -35,7 +35,8 @@ func _ready() -> void:
 	ship.get_child(0).scale=Vector3.ONE*2
 	drive=FrontierVesselDriveEffects.new();ship.get_child(0).add_child(drive)
 	refits=FrontierVesselVisuals.new();ship.get_child(0).add_child(refits)
-	_load_system(0)
+	# First authoritative navigation builds the actual system once.
+	current_system = -1
 	var layer:=CanvasLayer.new();add_child(layer)
 	transit_overlay=load("res://scripts/ui/stellar_transit_overlay.gd").new();layer.add_child(transit_overlay)
 	transit_audio=FrontierAudio.new();add_child(transit_audio)

@@ -1,8 +1,14 @@
 # 게임 설계 문서 목차
 
+2026-09-08 [은하 지도 확대 입체감](production/64-galaxy-map-depth.md): 확대용 Blender 별·지도 높이·성운 유지·같은 구역 회전과 3D 위치 클릭을 연결했다. 실제 확대/회전·작은 창·정지 렌더를 확인했다.
+
 2026-09-08 [A03 선박 증강 장치·표본 연구대](production/64-crew-stations.md): Blender 실물 장치, 선내/착륙지 F 접근, 실제 장치 제공자 연결. 보석 투입 UI와 표본 연구 수행은 A04/A06에서 이어진다.
 
+2026-09-08 [우주 화면 직접 항해·플레이 가이드](production/63-contextual-play-guide.md): 항성계 표식 조준/클릭/F를 첫 태양계부터 동일하게 안내하며, 캐릭터별 자동 표시·항상 표시·끄기를 제공한다.
+
 2026-09-08 [A02 보석 소비·신체 증강 거래](production/63-gem-augmentation-transactions.md): 본인 보석 차감과 단계 증가를 한 번 저장하며 중복·저장 실패·장치 접근을 검사한다. 관련 32개 확인을 통과했다. 실제 장치·화면은 A03~A04 대기다.
+
+2026-09-08 [초기 실행·원정 로딩](production/62-startup-loading.md): 별도 진행률 페이지·모델 백그라운드 읽기·첫 렌더 준비와 초기 항성계 중복 생성 제거. 실제 홈/새 원정·대기실 시작을 최소 확인했으며 장시간 성능은 미검증이다.
 
 2026-09-08 [신체 증강·탐사 연구 커밋 계획](planning/12-augmentation-and-research-commits.md): 보석 소비·개인 성장 3종·우주선 장치·시제품/현장 시험·T3 해금·지상 확장을 A01~A09로 정리했다. [첫 구현 기록](production/62-character-augmentation-foundation.md)과 이후 대기 항목을 구분한다.
 

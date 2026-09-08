@@ -154,7 +154,13 @@ func _background() -> StyleBoxFlat:
 func _gui_input(event: InputEvent) -> void:
 	if compact:return
 	if galaxy and event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_MIDDLE:
-		scene_3d.yaw-=event.relative.x*.005;scene_3d.tilt=clampf(scene_3d.tilt+event.relative.y*.005,.25,1.5);spatial_key="";queue_redraw();accept_event();return
+		var eye: Vector3=scene_3d.camera.position
+		var forward: Vector3=-scene_3d.camera.basis.z
+		var pivot: Vector3=eye+forward*(-eye.y/forward.y)
+		scene_3d.yaw-=event.relative.x*.005;scene_3d.tilt=clampf(scene_3d.tilt+event.relative.y*.005,.25,1.5)
+		scene_3d.update(size,zoom,Vector2.ZERO,nearby_only)
+		pan=Vector2(-pivot.dot(scene_3d.camera.basis.x),pivot.dot(scene_3d.camera.basis.y))*size.y/scene_3d.camera.size
+		spatial_key="";queue_redraw();accept_event();return
 	if event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_RIGHT:
 		pan+=event.relative;queue_redraw();accept_event();return
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
@@ -181,10 +187,17 @@ func _draw_spatial() -> void:
 	draw_texture_rect(scene_3d.viewport.get_texture(),Rect2(Vector2.ZERO,size),false)
 	var outer: float=manifest.settings.outer_radius
 	var origin:=FrontierUniverse.map_position(manifest,current_system)/outer
-	var source: Vector2=scene_3d.project(origin)
+	var source: Vector2=scene_3d.project_star(origin)
 	var ring:=PackedVector2Array()
 	for i in 129:ring.append(scene_3d.project(origin+Vector2.from_angle(float(i)/128*TAU)*stellar_range/outer))
 	draw_polyline(ring,Color("67cbb4"),1.5,true)
+	if zoom>5:
+		for fraction in [.25,.5,.75]:
+			var guide_ring:=PackedVector2Array()
+			for i in 65:guide_ring.append(scene_3d.project(origin+Vector2.from_angle(float(i)/64*TAU)*stellar_range/outer*fraction))
+			draw_polyline(guide_ring,Color("83d9c51c"),1,true)
+		for axis in [Vector2.RIGHT,Vector2.UP]:
+			draw_line(scene_3d.project(origin-axis*stellar_range/outer),scene_3d.project(origin+axis*stellar_range/outer),Color("83d9c51c"),1,true)
 	var indices: Dictionary={0:true,current_system:true}
 	if route_system>=0:indices[route_system]=true
 	# Screen density sampling is recomputed at every zoom; every cached system can emerge.
@@ -201,37 +214,41 @@ func _draw_spatial() -> void:
 			for index in range(0,count,stride):
 				if FrontierStellarRoutes.has_point(index):candidates.append(index)
 		for index in candidates:
-			var point: Vector2=scene_3d.project(FrontierStellarRoutes.points[index]/outer)
+			var point: Vector2=scene_3d.project_star(FrontierStellarRoutes.points[index]/outer)
 			if not Rect2(Vector2(16,38),size-Vector2(32,68)).has_point(point):continue
 			var cell:=Vector2i(point/(32.0 if nearby_only else 22.0))
 			if occupied.has(cell):continue
 			occupied[cell]=true;spatial_indices[index]=true
-		var stars:=PackedVector2Array()
-		for index in spatial_indices:stars.append(FrontierStellarRoutes.points[index]/outer)
-		stars.append(origin);scene_3d.set_stars(stars)
 	indices.merge(spatial_indices)
 	displayed_systems.clear()
 	if journal!=null and not nearby_only:
 		for key in journal.data.systems:indices[int(key)]=true
+	var rendered_stars:=PackedVector2Array()
 	for index in indices:
 		var coordinate: Vector2=FrontierStellarRoutes.points[index]/outer if FrontierStellarRoutes.has_point(index) else FrontierUniverse.map_position(manifest,index)/outer
-		var point: Vector2=scene_3d.project(coordinate)
+		var point: Vector2=scene_3d.project_star(coordinate)
 		if not Rect2(Vector2.ZERO,size).grow(-8).has_point(point):continue
 		var reachable: bool=coordinate.distance_to(origin)*outer<=stellar_range+.001
 		if nearby_only and not reachable:continue
 		var color:=Color("b2f4e1") if reachable else Color("647286")
-		draw_circle(point,2.5 if reachable else 1.5,color)
+		rendered_stars.append(coordinate)
+		# Thin projection stem exposes height without replacing the actual 3D star.
+		var plane_point: Vector2=scene_3d.project(coordinate)
+		if zoom>5 and point.distance_to(plane_point)>3:
+			draw_line(plane_point,point,Color(color,.24),1,true)
+			draw_arc(plane_point,2,0,TAU,12,Color(color,.25),1,true)
 		if can_inspect_system(index):draw_arc(point,5,0,TAU,16,color,1,true)
 		if index==current_system:draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),Color.WHITE,false,2)
 		if index==route_system:draw_arc(point,9,0,TAU,24,Color("ffc180"),2,true)
 		displayed_systems[index]=point;hits.append({"point":point,"ordinal":FrontierUniverse.first_ordinal(manifest,index)})
+	scene_3d.set_stars(rendered_stars,origin,stellar_range/outer)
 	if route_system>=0:
-		var destination: Vector2=scene_3d.project(FrontierUniverse.map_position(manifest,route_system)/outer)
+		var destination: Vector2=scene_3d.project_star(FrontierUniverse.map_position(manifest,route_system)/outer)
 		draw_line(source,destination,Color("ffc180"),2,true)
 	if not transit.is_empty():
-		var from: Vector2=scene_3d.project(Vector2(transit.from[0],transit.from[1])/outer)
-		var to: Vector2=scene_3d.project(Vector2(transit.to[0],transit.to[1])/outer)
-		var ship: Vector2=scene_3d.project(Vector2(transit.galaxy_position[0],transit.galaxy_position[1])/outer)
+		var from: Vector2=scene_3d.project_star(Vector2(transit.from[0],transit.from[1])/outer)
+		var to: Vector2=scene_3d.project_star(Vector2(transit.to[0],transit.to[1])/outer)
+		var ship: Vector2=from.lerp(to,float(transit.progress))
 		draw_line(from,to,Color("7bebd0"),2,true);draw_circle(ship,6,Color.WHITE)
 		var distance:=Vector2(transit.from[0],transit.from[1]).distance_to(Vector2(transit.to[0],transit.to[1]))
 		draw_string(get_theme_default_font(),Vector2(18,54),"항해  %.1f / %.1f 항로 단위"%[distance*float(transit.progress),distance],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color.WHITE)
@@ -242,8 +259,8 @@ func focus_nearby() -> void:
 	galaxy=true;nearby_only=true
 	await get_tree().process_frame
 	if not is_inside_tree() or manifest.is_empty():return
-	scene_3d.yaw=0;scene_3d.tilt=1.15
+	scene_3d.yaw=0;scene_3d.tilt=.72
 	zoom=clampf(2.55*float(manifest.settings.outer_radius)/(stellar_range*3.0),1.0,160.0)
 	pan=Vector2.ZERO;scene_3d.update(size,zoom,pan,true)
-	var point: Vector2=scene_3d.project(FrontierUniverse.map_position(manifest,current_system)/float(manifest.settings.outer_radius))
+	var point: Vector2=scene_3d.project_star(FrontierUniverse.map_position(manifest,current_system)/float(manifest.settings.outer_radius))
 	pan=size*.5-point;spatial_key="";queue_redraw()

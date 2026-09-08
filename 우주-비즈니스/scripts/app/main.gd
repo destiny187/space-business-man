@@ -35,6 +35,8 @@ var show_all_planets: bool = false
 var menu_scroll: ScrollContainer
 
 func _ready() -> void:
+	set_process(false)
+	set_process_input(false)
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	DisplayServer.window_set_min_size(Vector2i(960,640))
 	get_tree().auto_accept_quit = false
@@ -42,6 +44,8 @@ func _ready() -> void:
 	campaign.new_campaign()
 	campaign.persistence_enabled = true
 	_apply_settings()
+	if get_tree().has_meta("startup_loader"):
+		await get_tree().get_meta("startup_loader").checkpoint(45, "홈 화면 준비")
 	world = FrontierPlanetView.new()
 	world.campaign = campaign
 	add_child(world)
@@ -62,6 +66,9 @@ func _ready() -> void:
 	world.rebuild({})
 	_show_menu("title")
 	_apply_client_settings.call_deferred()
+	set_process(true)
+	set_process_input(true)
+	set_meta("startup_complete", true)
 	if "--smoke" in OS.get_cmdline_user_args():
 		smoke_mode = true
 		_smoke_setup()
@@ -361,7 +368,8 @@ func _title_button(parent: Node,text_value: String,action: Callable,primary: boo
 
 func _start_expedition(mode: String) -> void:
 	get_tree().set_meta("expedition_mode",mode)
-	get_tree().change_scene_to_file("res://scenes/app/crew_expedition.tscn")
+	get_tree().set_meta("loading_destination", "res://scenes/app/crew_expedition.tscn")
+	get_tree().change_scene_to_file("res://scenes/app/loading.tscn")
 
 func _new_game() -> void:
 	var error: String = campaign.new_campaign()

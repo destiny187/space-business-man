@@ -55,6 +55,7 @@ var outside:=false
 var movement_timer:=0.0
 var ready_button: Button
 var crew_ids: Array=[]
+var ui: Control
 var ui_theme: Theme
 var test_mode:=false
 var test_direction:=Vector2.ZERO
@@ -94,6 +95,9 @@ var placement_reason: String=""
 var placement_ghost: Node3D
 var ghost_material: StandardMaterial3D
 func _ready() -> void:
+	set_process(false)
+	set_physics_process(false)
+	set_process_input(false)
 	previous_accumulated_input=Input.use_accumulated_input
 	Input.use_accumulated_input=false
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
@@ -114,7 +118,12 @@ func _ready() -> void:
 		if value.get("code")=="mining_cooldown":return
 		if not value.get("ok",false):status.value=value.get("error","작업 실패")
 		else:status.value="원정 기록을 저장했습니다.")
-	_build_cabin();_build_ui();cabin_root.hide();spaces.configure(self)
+	if get_tree().has_meta("startup_loader"):
+		await get_tree().get_meta("startup_loader").checkpoint(40, "우주선 내부 준비")
+	_build_cabin()
+	if get_tree().has_meta("startup_loader"):
+		await get_tree().get_meta("startup_loader").checkpoint(55, "탐험 장비와 화면 준비")
+	_build_ui();cabin_root.hide();spaces.configure(self)
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
 	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
 	stations=FrontierCrewStations.new();add_child(stations);stations.configure(self)
@@ -124,6 +133,8 @@ func _ready() -> void:
 	navigation_ui.get_parent().move_child(navigation_ui,-1)
 	for frame in menu_frames()+[waiting_screen,onboarding.letter]:
 		frame.visibility_changed.connect(_menu_changed)
+	if get_tree().has_meta("startup_loader"):
+		await get_tree().get_meta("startup_loader").checkpoint(72, "환경음과 원정 기록 준비")
 	soundtrack=load("res://scripts/app/expedition_audio.gd").new();add_child(soundtrack);soundtrack.configure(self)
 	_apply_client_settings.call_deferred()
 	if FileAccess.file_exists(profile.path) and profile.ensure():
@@ -131,7 +142,15 @@ func _ready() -> void:
 	get_tree().auto_accept_quit=false
 	if get_tree().get_meta("expedition_mode","") in ["solo","solo_new"]:
 		var fresh: bool=get_tree().get_meta("expedition_mode")=="solo_new"
-		get_tree().remove_meta("expedition_mode");start_solo.call_deferred(fresh)
+		get_tree().remove_meta("expedition_mode")
+		if get_tree().has_meta("startup_loader"):
+			await get_tree().get_meta("startup_loader").checkpoint(82, "은하와 시작 항성계 준비")
+			start_solo(fresh)
+		else:start_solo.call_deferred(fresh)
+	set_process(true)
+	set_physics_process(true)
+	set_process_input(true)
+	set_meta("startup_complete", true)
 func _apply_client_settings() -> void:
 	# Direct scene launches also need to wait until the root finishes setup.
 	var settings:=FrontierClientSettings.ensure(get_tree())
@@ -163,7 +182,7 @@ func _collision(position_value: Vector3,size: Vector3) -> void:
 	var body:=StaticBody3D.new();body.position=position_value;var shape:=CollisionShape3D.new();var box:=BoxShape3D.new();box.size=size;shape.shape=box;body.add_child(shape);cabin_root.add_child(body)
 func _build_ui() -> void:
 	var layer:=CanvasLayer.new();add_child(layer)
-	var ui:=Control.new();ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);ui.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(ui)
+	ui=Control.new();ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);ui.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(ui)
 	ui_theme=FrontierInterfaceStyle.theme();ui.theme=ui_theme
 	reticle=Label.new();reticle.text="＋";reticle.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;reticle.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;reticle.mouse_filter=Control.MOUSE_FILTER_IGNORE;ui.add_child(reticle);reticle.set_anchors_and_offsets_preset(Control.PRESET_CENTER);reticle.offset_left=-14;reticle.offset_right=14;reticle.offset_top=-14;reticle.offset_bottom=14;reticle.hide()
 	exterior_view=TextureRect.new();exterior_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);exterior_view.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;exterior_view.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED;exterior_view.mouse_filter=Control.MOUSE_FILTER_IGNORE;exterior_view.hide();ui.add_child(exterior_view)
@@ -279,7 +298,38 @@ func _spawn_actor(id: String,member: Dictionary) -> void:
 		if surface_world!=null and not feedback.blocked():feedback.effects.burst(point+Vector3.UP*.06,Color("a99f88"),int(3+strength*5)))
 	actors[id]=actor;visuals[id]={"model":visual,"label":label,"last":actor.position,"pose":pose,"replica":FrontierCrewMotionReplica.new(),"area":member.area,"motion":FrontierCrewLocomotion.create()}
 	if session.hosting:session.authority.motions[id]=FrontierCrewLocomotion.create()
+var first_snapshot_pending: Dictionary = {}
+var preparing_first_snapshot := false
+
 func _snapshot(value: Dictionary) -> void:
+	if preparing_first_snapshot:
+		first_snapshot_pending = value
+		return
+	# A network game starts after the lobby; cover its first world build as well.
+	if value.get("phase") == "playing" and flight == null and not get_tree().has_meta("startup_loader") and DisplayServer.get_name() != "headless":
+		preparing_first_snapshot = true
+		first_snapshot_pending = value
+		_prepare_first_world.call_deferred()
+		return
+	_apply_snapshot(value)
+
+func _prepare_first_world() -> void:
+	var loading: Node = load("res://scripts/app/loading.gd").new()
+	loading.overlay_only = true
+	add_child(loading)
+	await loading.checkpoint(40, "시작 항성계 준비")
+	_apply_snapshot(first_snapshot_pending)
+	await loading.checkpoint(92, "첫 화면 렌더 준비")
+	for frame in 6:await RenderingServer.frame_post_draw
+	# Apply the newest authoritative state received during presentation warmup.
+	_apply_snapshot(first_snapshot_pending)
+	await loading.checkpoint(100, "준비 완료")
+	get_tree().remove_meta("startup_loader")
+	loading.queue_free()
+	preparing_first_snapshot = false
+	first_snapshot_pending = {}
+
+func _apply_snapshot(value: Dictionary) -> void:
 	if not value.get("active",false):return
 	if value.get("phase","lobby")=="lobby":
 		waiting_screen.show();cabin_root.hide();exterior_view.hide();lobby.hide();panel.hide();help_text.hide();navigation_toggle.hide()
@@ -344,6 +394,7 @@ func _snapshot(value: Dictionary) -> void:
 	navigation_ui.refresh(value)
 	_sync_surface_view()
 func _physics_process(delta: float) -> void:
+	if preparing_first_snapshot:return
 	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":return
 	spaces.sync()
 	if business_panel.visible and actors.has(session.latest.self_id) and not business_panel.context_in_range(actors[session.latest.self_id].position):close_menus()
@@ -447,6 +498,7 @@ func _locomotion_enabled() -> bool:
 	return true
 
 func _process(delta: float) -> void:
+	if preparing_first_snapshot:return
 	_sync_mouse_capture()
 	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):mouse_resume_guard=false
 	if arrival!=null and arrival.active and not session.active:arrival.cancel()
@@ -485,6 +537,7 @@ func _process(delta: float) -> void:
 	arrival.tick(delta)
 	rovers.present(delta)
 func _input(event: InputEvent) -> void:
+	if get_tree().has_meta("startup_loader"):return
 	if arrival!=null and arrival.active:return
 	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
 	if event is InputEventKey and event.pressed and not event.echo and session.active and session.latest.get("phase")=="playing":
@@ -532,7 +585,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
 		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():order_robot();return
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
-		if event.physical_keycode==KEY_G and onboarding.depart.visible and not onboarding.depart.disabled and _mouse_look_allowed():navigation_ui.open_galaxy();return
+		if event.physical_keycode==KEY_G and onboarding.can_open_map() and _mouse_look_allowed():navigation_ui.open_galaxy();return
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
 			navigation_ui.start_route(flight.scan_target);return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
@@ -606,6 +659,7 @@ func _crate_here(record: Dictionary) -> bool:
 	return record.area=="cabin" if landing.is_empty() else record.area=="surface" and record.get("body_id","")==landing.body_id
 
 func _surface_packet(packet: Dictionary) -> void:
+	if preparing_first_snapshot:return
 	if not session.active or session.latest.get("phase")!="playing":return
 	_sync_surface_view()
 	if surface_world!=null:
@@ -713,6 +767,7 @@ func menu_frames() -> Array:
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:
+	if get_tree().has_meta("startup_loader"):return true
 	for frame in menu_frames():
 		if is_instance_valid(frame) and frame.is_visible_in_tree():return true
 	return false
