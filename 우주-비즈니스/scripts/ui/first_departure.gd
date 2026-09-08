@@ -172,16 +172,17 @@ func _process(delta: float) -> void:
 	step = ""
 	if letter.visible or not enabled() or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase") != "playing":queue_redraw();return
 	if get_tree().has_meta("startup_loader") or FrontierClientSettings.ensure(get_tree()).is_open() or (app.arrival != null and app.arrival.active):queue_redraw();return
+	# Record the equipment visit without drawing world guidance over item/body controls.
+	if app.surface_world != null and app.inventory_panel.visible and not progress.get("inventory", false):
+		progress.inventory = true
+		_save()
 	var nav_ui = app.navigation_ui
-	if app.any_menu_open() and not app.navigation_frame.visible and not app.inventory_panel.visible:queue_redraw();return
+	if app.any_menu_open() and not app.navigation_frame.visible:queue_redraw();return
 	card.position = Vector2(28, 170)
 	card.show()
 	var value: Dictionary = app.session.latest
 	var nav: Dictionary = value.crew.navigation
 	if app.surface_world != null:
-		if app.inventory_panel.visible and not progress.get("inventory", false):
-			progress.inventory = true
-			_save()
 		var tool := FrontierEquipment.active(value.crew.members[value.self_id])
 		if not progress.get("inventory", false) or tool.get("kind") != "miner":
 			_hint("equipment", 5, "채집 장비 준비", "I  아이템에서 채집기를 제작·번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")

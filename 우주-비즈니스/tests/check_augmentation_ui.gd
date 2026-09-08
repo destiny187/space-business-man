@@ -4,13 +4,14 @@ func press(key: Key) -> void:
 	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
 func run() -> void:
 	folder="/tmp/augmentation-a04"
-	if "--crew-folder=/tmp/augmentation-a04" not in OS.get_cmdline_user_args():quit(1);return
+	if "--crew-folder=/tmp/augmentation-a04" not in OS.get_cmdline_user_args() or "--crew-ui-test" not in OS.get_cmdline_user_args():quit(1);return
 	DirAccess.make_dir_recursive_absolute(folder)
 	var owner:=FrontierPlayerProfile.new_character("증강 탐험가",2)
 	FrontierWorldStore.new(folder+"/world.json").write(FrontierUniverse.new_world(71491))
 	var profile:=FrontierPlayerProfile.new(folder+"/profile.json");profile.data={"version":1,"character":owner,"sessions":{}};profile.save()
 	app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app;await process_frame;app.start_solo()
 	if not await until(func():return app.session.active and app.flight!=null and not has_meta("startup_loader"),"ship scene",60):quit(1);return
+	if not app.test_mode or app.world_store.path!=folder+"/world.json" or app.session.latest.self_id!=owner.character_id:printerr("ISOLATION_MISMATCH");quit(1);return
 	app.outside=false;app.exterior_view.hide();app.if_flight_view();app.close_menus();app.onboarding.letter.hide()
 	var station: FrontierCrewStation=app.stations.cabin.get_node("Station_augmentation")
 	var actor: CharacterBody3D=app.actors[owner.character_id]

@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS ship scene
+PASS F opens own rigged character and scanner
+PASS click prepares visible gem without consuming it
+PASS host receipt confirms a single gem purchase
+PASS accepted growth plays success effects and ElevenLabs cue
+PASS repeat click during result does not buy again
+PASS gem slot accepts drag payload
+PASS wrong gem is rejected visibly
+PASS combat and vitality purchases update personal stats
+PASS equipped pulse damage includes purchased augmentation
+PASS I body page retains abilities after equipment change
+PASS station controls fit 960 viewport
+PASS host refusal clears prepared slot without success
+PASS unrelated reply cannot complete a pending augmentation
+PASS closed panel accepts delayed receipt without playing audio
+PASS landed collision
+PASS purchased mobility changes actual ground speed
+PASS purchased vitality changes actual HUD
+PASS landing keeps unspent gems in own bag
+PASS saved levels and departure recovery gems survive JSON number conversion
+PASS host world resume retains purchased augmentation
+AUGMENTATION_A04_UI 21 FAILURES 0

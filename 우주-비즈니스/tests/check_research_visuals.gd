@@ -12,6 +12,7 @@ func run() -> void:
 	var profile:=FrontierPlayerProfile.new(folder+"/profile.json");profile.data={"version":1,"character":owner,"sessions":{}};profile.save()
 	app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app;await process_frame;app.start_solo()
 	if not await until(func():return app.session.active and app.flight!=null and not has_meta("startup_loader"),"ship scene",60):quit(1);return
+	if not app.test_mode or app.world_store.path!=folder+"/world.json" or app.session.latest.self_id!=owner.character_id:printerr("ISOLATION_MISMATCH");quit(1);return
 	app.outside=false;app.exterior_view.hide();app.if_flight_view();app.close_menus();app.onboarding.letter.hide()
 	var bench: FrontierCrewStation=app.stations.cabin.get_node("Station_research")
 	var actor: CharacterBody3D=app.actors[owner.character_id]
