@@ -91,4 +91,4 @@ C16은 새 값이 기존 천체 표시 주기를 자동 변경하지 않는 준�
 
 순서는 기본 제안이다. 예를 들어 **C00~C08 + C16~C17**을 선택하면 탐험/로버 전에 낮밤을 적용할 수 있다. 로버와 낮밤은 서로 선행 관계가 아니다. 의존성에 없는 앞 번호를 반드시 모두 실행할 필요는 없으며, 선택한 범위와 필수 선행만 작업한다.
 
-현재 C00~C12는 **구현·개별 커밋 완료**이며 C13~C17은 후속 계획이다. 실제 화면·음원 재생·저장 확인과 미확인 범위는 [C01~C08 기록](../production/46-ground-play-repairs.md), [C09~C12 기록](../production/47-ground-exploration-growth.md)에 정리했다.
+현재 C00~C12는 **구현·개별 커밋 완료**, C13은 제작 자산 완료이며 C14~C17은 후속 계획이다. C13 이후의 실제 확인 범위는 [로버 제작·운송 기록](../production/48-rover-and-transport.md)을 따른다. 실제 화면·음원 재생·저장 확인과 미확인 범위는 [C01~C08 기록](../production/46-ground-play-repairs.md), [C09~C12 기록](../production/47-ground-exploration-growth.md)에 정리했다.

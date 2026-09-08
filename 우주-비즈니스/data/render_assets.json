@@ -9103,5 +9103,15 @@
     "source": "art/blender/crew/surveyor_suit.blend",
     "geometry": "articulated-locomotion",
     "foliage": false
+  },
+  {
+    "id": "scout_rover",
+    "title": "탐사 차량",
+    "name": "SCOUT 2인 탐사 로버",
+    "group": "차량",
+    "model": "res://assets/models/vehicles/scout_rover.glb",
+    "source": "art/blender/vehicles/scout_rover.blend",
+    "geometry": "new-scout-rover",
+    "foliage": false
   }
 ]
