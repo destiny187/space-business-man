@@ -12,6 +12,7 @@ var building_signature:=""
 var cluster:=FastNoiseLite.new()
 var anchor:=Vector2i(99999,99999)
 var dirty:=true
+var dirty_tiles: Dictionary={}
 var instance_total:=0
 var material_cache: Dictionary={}
 
@@ -47,13 +48,26 @@ func accept(ledger: Dictionary) -> void:
 		var b: Dictionary=buildings[key]
 		signature+=str([key,b.type,b.position])
 	if signature==building_signature:return
+	var previous: Array[Vector4]=exclusions.duplicate()
 	building_signature=signature;exclusions.clear()
 	if site.has("center"):
 		var p: Array=site.center;exclusions.append(Vector4(p[0],p[1],p[2],5))
 	for key in keys:
 		var b: Dictionary=buildings[key];var p: Array=b.position
 		exclusions.append(Vector4(p[0],p[1],p[2],float(FrontierCatalog.entry("buildings",b.type).radius)+1.2))
-	invalidate()
+	# Construction only changes decoration inside old/new footprints. Keep all
+	# other tiles, including their MultiMeshes, untouched.
+	for area in previous:
+		if not exclusions.has(area):_invalidate_area(area)
+	for area in exclusions:
+		if not previous.has(area):_invalidate_area(area)
+
+func _invalidate_area(area: Vector4) -> void:
+	var span: float=settings.tile_size
+	for key in tiles:
+		var nearest:=Vector2(clampf(area.x,key.x*span,(key.x+1)*span),clampf(area.z,key.y*span,(key.y+1)*span))
+		if nearest.distance_squared_to(Vector2(area.x,area.z))<=area.w*area.w:
+			dirty_tiles[key]=true
 
 func _blocked(p: Vector3) -> bool:
 	var ship: Array=FrontierCrewSurface.config().ship_position
@@ -103,7 +117,7 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 	return result
 
 func _build(key: Vector2i) -> void:
-	var root:=Node3D.new();root.name="Details_%d_%d"%[key.x,key.y];add_child(root)
+	var root:=Node3D.new();root.name="Details_%d_%d"%[key.x,key.y]
 	var rows:=candidates(key)
 	for variant in meshes.size():
 		var transforms: Array[Transform3D]=[]
@@ -118,24 +132,32 @@ func _build(key: Vector2i) -> void:
 		if body.traits.id=="oxidized":visual.visibility_range_end=52 if variant<2 else 72;visual.visibility_range_end_margin=18
 		visual.visibility_range_fade_mode=GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
 		root.add_child(visual)
+	# Build off-tree, then swap in the same frame: no empty tile or doubled rocks.
+	if tiles.has(key):
+		var previous: Dictionary=tiles[key]
+		instance_total-=int(previous.count)
+		remove_child(previous.node);previous.node.queue_free()
+	add_child(root)
 	tiles[key]={"node":root,"count":rows.size()};instance_total+=rows.size()
+	dirty_tiles.erase(key)
 
 func _process(_dt: float) -> void:
 	if meshes.is_empty() or viewer==null:return
 	if dirty:
-		for row in tiles.values():row.node.queue_free()
-		tiles.clear();instance_total=0;dirty=false
+		for key in tiles:dirty_tiles[key]=true
+		dirty=false
 	var span: float=settings.tile_size
 	anchor=Vector2i(floori(viewer.position.x/span),floori(viewer.position.z/span))
 	var radius: int=settings.radius_tiles
 	for key in tiles.keys():
 		if maxi(absi(key.x-anchor.x),absi(key.y-anchor.y))>radius:
 			instance_total-=int(tiles[key].count);tiles[key].node.queue_free();tiles.erase(key)
+			dirty_tiles.erase(key)
 	var pending: Array[Vector2i]=[]
 	for x in range(anchor.x-radius,anchor.x+radius+1):
 		for z in range(anchor.y-radius,anchor.y+radius+1):
 			var key:=Vector2i(x,z)
-			if not tiles.has(key):pending.append(key)
+			if not tiles.has(key) or dirty_tiles.has(key):pending.append(key)
 	pending.sort_custom(func(a: Vector2i,b: Vector2i)->bool:return (a-anchor).length_squared()<(b-anchor).length_squared())
 	var built:=0
 	for key in pending:
@@ -154,5 +176,5 @@ func presentation_ready() -> bool:
 		for z in range(center.y-radius,center.y+radius+1):
 			var key:=Vector2i(x,z)
 			var p:=Vector3((x+.5)*span,0,(z+.5)*span);p.y=terrain.field.height(p.x,p.z)
-			if terrain.ready_at(p+Vector3.UP) and not tiles.has(key):return false
+			if terrain.ready_at(p+Vector3.UP) and (not tiles.has(key) or dirty_tiles.has(key)):return false
 	return true

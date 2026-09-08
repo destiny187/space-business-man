@@ -152,3 +152,13 @@ Godot 4.7.2 Metal Forward+ 실제 창에서 9개 지표와 별도 36개 모델 �
 Godot 4.7.2 / Metal Forward+ 실제 지표 장면에서 같은 시점과 높은 시점의 화면을 확인했다. 대표 사막 하나의 지형·장식 재생성·건축 바닥·건물 아래 제외와 철거 복원·굴착 후 지지면 제거 확인을 수행했다. 앞선 측정과 같은 표본의 평지 비율은 53.2%에서 50.9%로 바뀌었다. 행성 전체나 모든 시드의 보장 수치가 아니다. 전체 회귀·다중 클라이언트·신규 음원 제작은 수행하지 않았다.
 
 [이전 화면](media/desert-geology/before.png) · [개선 지표](media/surface-details/surface-oxidized.png) · [지표 구역을 내려다본 실제 렌더](media/desert-geology/overview.png) · [관련 확인 기록](media/surface-details/verification-oxidized.json).
+
+## 건설 시 자갈 깜빡임 수정 — 2026-09-08
+
+건설 기록이 바뀔 때 지표 장식 타일을 전부 삭제하고 프레임당 하나씩 다시 생성하여, 건물에서 떨어진 자갈까지 사라졌다가 나타났다. 녹화 원본에서도 확인된 게임 렌더링 버그다.
+
+`surface_details.gd`는 추가·제거된 시설의 장식 제외 영역과 겹치는 타일만 갱신한다. 교체할 MultiMesh가 완성될 때까지 기존 타일을 유지하고 같은 프레임에 교체한다. 일반 지형 갱신에도 이 방식을 적용하며 기존 시드·배치·색·프레임당 생성 예산은 유지한다. 준비 완료 판정은 남은 교체 작업까지 기다린다.
+
+Godot 4.7.2 Metal Forward+ 실제 원정 창에서 `check_surface_detail_construction.gd`로 호스트 건설·철거를 확인했다. 타일 모서리에 시설을 지어 겹치는 4개 구역만 교체하는 동안 기존 9개 구역이 유지됐고, 나머지 구역의 노드와 살아남은 자갈의 위치·색이 유지됐다. 건물 아래 장식 제외, 철거 후 원래 배치 복원, 동일 원장 수신 시 불필요한 갱신 없음, 일반 지형 갱신의 표시 유지·준비 판정도 통과했다. 결과는 `DETAIL_CONSTRUCTION_FAILURES 0`이며 로컬 `test-results/detail-construction/`에 로그와 전후 화면을 남겼다.
+
+실행 명령: `tools/godot.sh --resolution 1280x800 --script res://tests/check_surface_detail_construction.gd -- --crew-ui-test --memory-world --crew-folder="$PWD/test-results/detail-construction"`. 같은 작업 사본의 별도 연구 저장 검증에서 `공동 연구 버전·이행 기록 오류`가 발생하여 이번 렌더 검사는 메모리 저장소로 분리했다. 디스크 저장·재접속, 실제 굴착 플레이, 다중 클라이언트·전체 회귀는 이번 확인 범위가 아니다.
