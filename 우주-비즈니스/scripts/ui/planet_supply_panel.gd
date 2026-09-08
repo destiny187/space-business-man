@@ -47,5 +47,5 @@ func update(ledger: Dictionary,body: Dictionary,actor: String,owner: bool) -> vo
 			if int(row.inventory[id])<=0:continue
 			if shown==4:break
 			var item:=VBoxContainer.new();stock.add_child(item);item.add_child(FrontierResourceIcons.view(id,28));panel.label(item,str(int(row.inventory[id])),12);shown+=1
-		frame.tooltip_text="현장 창고 · "+FrontierCatalog.cost_text(row.inventory)
+		frame.tooltip_text="현장 창고 · "+FrontierCatalog.stock_text(row.inventory)
 		if shown==0:panel.label(column,"창고 비어 있음",12)

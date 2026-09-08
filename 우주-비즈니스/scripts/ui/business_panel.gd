@@ -82,10 +82,10 @@ func _ready() -> void:
 	for index in building.item_count:
 		var kind:=str(building.get_item_metadata(index))
 		var def:=FrontierCatalog.entry("buildings",kind)
-		var card:=Button.new();card.custom_minimum_size=Vector2(145,90);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;card.toggle_mode=true
+		var card:=Button.new();card.custom_minimum_size=Vector2(145,116);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;card.toggle_mode=true
 		card.tooltip_text=def.name+" · "+FrontierCatalog.cost_text(def.cost)
 		var content:=VBoxContainer.new();content.mouse_filter=Control.MOUSE_FILTER_IGNORE;card.add_child(content);content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);content.offset_top=4;content.offset_bottom=-4
-		var preview:=TextureRect.new();preview.texture=load("res://assets/ui/previews/"+def.model+".png");preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;preview.custom_minimum_size.y=62;preview.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(preview)
+		var preview:=TextureRect.new();preview.texture=load("res://assets/ui/previews/"+def.model+".png");preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;preview.custom_minimum_size.y=78;preview.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(preview)
 		var title:=Label.new();title.text=def.name;title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;title.add_theme_font_size_override("font_size",14);title.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(title)
 		card.pressed.connect(func():building.select(index);refresh_building_cost());grid.add_child(card);building_cards[kind]=card
 	building_cost=FrontierResourceReadout.new();building_cost.custom_minimum_size.x=0;build_tab.add_child(building_cost)
@@ -98,7 +98,7 @@ func _ready() -> void:
 	facility=option(facility_tab)
 	button(facility_tab,"선택 시설 가동 / 정지",func():command.emit("business_toggle",{"building_id":selected(facility)}))
 	button(facility_tab,"선택 시설 철거 · 건설 재료 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
-	label(build_tab,"카드 선택 → 배치 → 지면 클릭 · Esc 취소")
+	label(build_tab,"Esc · 배치 취소",12)
 	var research_tab:=VBoxContainer.new();research_tab.name="기술";tabs.add_child(research_tab)
 	technology=option(research_tab)
 	label(research_tab,"기초 설계 사용 가능")
@@ -188,6 +188,7 @@ func set_context(kind: String,id: String="") -> void:
 		_:allowed=["시설 관리","생산·개조"]
 	if kind in ["atmosphere","thermal","water","biolab"]:allowed.append("생물공학")
 	if kind=="storage":allowed.append("시설 관리")
+	tabs.tabs_visible=allowed.size()>1
 	for i in tabs.get_tab_count():tabs.set_tab_hidden(i,str(tabs.get_tab_control(i).name) not in allowed)
 	for i in tabs.get_tab_count():
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
@@ -267,7 +268,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 	register_button.hide();guidance.visible=current.is_empty()
 	production_panel.update_site(current)
 	if current.is_empty():return
-	stock.value="창고 · "+FrontierCatalog.cost_text(current.inventory)+"\n배낭 · "+FrontierCatalog.cost_text(value.bags.get(actor,FrontierExpeditionBusiness.inventory()))
+	stock.value="건설 재료 · 내 배낭" if context_kind=="build" else "생산 재료 · 현장 창고    장비/시험기 · 내 배낭"
 	var factories: Dictionary={};var buildings: Dictionary={};var robots: Dictionary={};var veins: Dictionary={};var technologies: Dictionary={};var transported: Dictionary={}
 	for key in current.buildings:
 		if key!=context_id:continue
@@ -306,7 +307,7 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 func confirm_settlement(retain: bool=false) -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
 	var payment:=FrontierPlanetSupply.settlement_payment(ledger.get("sites",{}).get(body_id,{}),planet_tier,retain)
-	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설·로봇·재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.dialog_text=("복원 대금 %d Cr (60%%)\n인계 대금 40%%를 포기하고 시설·로봇·재고와 생산 이용권을 유지합니다.\n부재중 생산은 일시 정지하며, 재방문 시 계속 가동합니다."%payment) if retain else dialog.dialog_text;dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
+	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설·로봇·재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.dialog_text=("복원 대금 %d Cr (60%%)\n인계 대금 40%%를 포기하고 시설·로봇·재고와 생산 이용권을 유지합니다.\n호스트 세션 중에는 다른 행성에서도 생산합니다. 원료·전력·창고 조건에 따라 대기합니다."%payment) if retain else dialog.dialog_text;dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
 
 func engineering_command(stage: String) -> void:
 	command.emit("business_research_"+stage,{"project":selected(research_project),"building_id":selected(research_facility)})
@@ -339,7 +340,7 @@ func refresh_building_cost() -> void:
 	var cost: Dictionary=FrontierCatalog.entry("buildings",selected(building)).cost
 	var bag: Dictionary=ledger.get("bags",{}).get(actor_id,{})
 	var parts: PackedStringArray=[]
-	for key in cost:parts.append("%s %d/%d"%[FrontierCatalog.entry("resources",key).name,int(bag.get(key,0)),int(cost[key])])
+	for key in cost:parts.append(("%s · %d 필요 · 부족"%[FrontierCatalog.entry("resources",key).name,int(cost[key])]) if int(bag.get(key,0))<=0 else "%s %d/%d"%[FrontierCatalog.entry("resources",key).name,int(bag.get(key,0)),int(cost[key])])
 	building_cost.value="내 가방 · "+" · ".join(parts)+(" · 재료 충분" if FrontierExpeditionBusiness.affordable(bag,cost) else " · 부족분은 창고에서 직접 인수")
 
 func refresh_work_cards(values: Dictionary) -> void:

@@ -84,7 +84,7 @@ func accept(value: Dictionary) -> void:
 		var row: Dictionary=value.crates[id]
 		wanted[id]=true
 		if not nodes.has(id):_queue_entity(id,"crew/recovery_crate",FrontierExpeditionBusiness.point(row.position),.5,"crate");continue
-		nodes[id].get_meta("label").text="사업 회수 화물 · F\n"+FrontierCatalog.cost_text(row.inventory)
+		nodes[id].get_meta("label").text="사업 회수 화물 · F\n"+FrontierCatalog.stock_text(row.inventory)
 	for id in nodes.keys():
 		if not wanted.has(id):nodes[id].queue_free();nodes.erase(id)
 	for id in pending_models.keys():

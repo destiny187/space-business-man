@@ -51,7 +51,7 @@ func refresh() -> void:
 		var status:=journal.status(ordinal) if supply.is_empty() else FrontierPlanetSupply.role_name(supply.role)+(" · 운영 정지" if supply.paused else (" · 원격 운영" if supply.get("remote",false) else " · 현장 운영"))
 		var icon: Texture2D=null if supply.is_empty() else FrontierResourceIcons.menu_texture(FrontierPlanetSupply.config().roles.get(supply.role,{}).get("icon","stone"))
 		entries.add_item(body.name+"    "+status,icon);entries.set_item_metadata(entries.item_count-1,ordinal)
-		if not supply.is_empty():entries.set_item_tooltip(entries.item_count-1,"현장 창고 · "+FrontierCatalog.cost_text(supply.inventory))
+		if not supply.is_empty():entries.set_item_tooltip(entries.item_count-1,"현장 창고 · "+FrontierCatalog.stock_text(supply.inventory))
 
 func _input(event: InputEvent) -> void:
 	if visible and event is InputEventKey and event.pressed and event.physical_keycode==KEY_ESCAPE:

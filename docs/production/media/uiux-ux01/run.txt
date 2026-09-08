@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS isolated UX01 fixture
+PASS fixture conforms to business save schema
+PASS zero-stock item absent
+PASS gem filter excludes equipment and zero diamond
+PASS Korean item search
+PASS selected gem exposes known uses
+PASS usage opens a read-only model/recipe detail
+PASS planet cargo retains name and direction
+PASS maximum uses source stock and destination room
+PASS real host transfer moves exact remaining quantity
+PASS last stack disappears without a stale selection
+PASS reverse transfer from warehouse
+PASS cargo hides equipment hotbar and uses available height
+PASS cargo list and transfer controls fit small window
+PASS cargo columns shrink within viewport width
+PASS item footer no longer overlaps hotbar
+PASS primary action fits without scrolling the whole page
+PASS item details and close button remain on screen
+PASS menu blocks world equipment action
+PASS construction no longer enumerates inventory
+PASS construction fits small window
+PASS transfer recorded in persisted world
+PASS isolated session closes and saves
+UIUX_INVENTORY 23 FAILURES 0

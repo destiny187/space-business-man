@@ -22,6 +22,11 @@ func run() -> void:
 			if model.is_empty() and ResourceLoader.exists("res://assets/models/products/"+id+".glb"):model="products/"+id
 			if model.is_empty():push_error("Missing icon model: "+id);quit(1);return
 			jobs.append({"model":model.trim_prefix("res://assets/models/").trim_suffix(".glb"),"output":"res://assets/ui/resources/"+file})
+	if "--facilities-only" in OS.get_cmdline_user_args():
+		jobs.clear()
+		for id in FrontierExpeditionBusiness.config().buildings:
+			var model: String=FrontierCatalog.entry("buildings",id).model
+			jobs.append({"model":model,"output":"res://assets/ui/previews/"+model+".png"})
 	for job in jobs:
 		var destination:=ProjectSettings.globalize_path(job.output)
 		if FileAccess.file_exists(destination):preview.size=Image.load_from_file(destination).get_size()

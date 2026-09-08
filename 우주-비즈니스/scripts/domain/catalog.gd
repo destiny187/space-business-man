@@ -25,6 +25,12 @@ static func cost_text(cost: Dictionary) -> String:
 		parts.append("%s %d" % [entry("resources", key).get("name", key), cost[key]])
 	return " · ".join(parts)
 
+static func stock_text(stock: Dictionary) -> String:
+	var present: Dictionary={}
+	for id in stock:
+		if int(stock[id])>0:present[id]=stock[id]
+	return "비어 있음" if present.is_empty() else cost_text(present)
+
 static func total(items: Dictionary) -> int:
 	var result: int = 0
 	for amount in items.values():

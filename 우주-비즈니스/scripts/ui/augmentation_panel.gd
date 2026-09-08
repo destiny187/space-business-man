@@ -117,7 +117,7 @@ func refresh() -> void:
 	for i in steps.size():steps[i].color=FrontierInterfaceStyle.ACCENT if i<current else FrontierInterfaceStyle.LINE
 	var required:=int(definition().base_cost)*(current+1)
 	for id in gems:
-		gems[id].amount=str(int(bag().get(id,0)));gems[id].selected=id==definition().gem;gems[id].disabled=busy();gems[id].queue_redraw()
+		gems[id].visible=int(bag().get(id,0))>0;gems[id].amount=str(int(bag().get(id,0)));gems[id].selected=id==definition().gem;gems[id].disabled=busy();gems[id].queue_redraw()
 	body.selected=field;body.preview.field=field
 	for button in body.buttons.values():button.disabled=busy()
 	body.preview.load_gem(str(definition().gem) if loaded or phase in ["waiting","success"] else "")

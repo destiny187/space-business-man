@@ -21,7 +21,7 @@ func _draw() -> void:
 	draw_style_box(FrontierInterfaceStyle.box(bg,edge,0),Rect2(Vector2.ZERO,size))
 	if selected:draw_rect(Rect2(0,0,3,size.y),FrontierInterfaceStyle.ACCENT)
 	var font:=get_theme_default_font()
-	var picture_size:=Vector2(size.x-18,size.y-35)
+	var picture_size:=Vector2(size.x-18,size.y-40)
 	if picture!=null:
 		var ratio:=minf(picture_size.x/picture.get_width(),picture_size.y/picture.get_height())
 		var dims:=picture.get_size()*ratio
@@ -35,8 +35,14 @@ func _draw() -> void:
 		var p:=Vector2(size.x-16,size.y-18)
 		draw_rect(Rect2(p,Vector2(8,7)),FrontierInterfaceStyle.WARNING,false,1)
 		draw_arc(p+Vector2(4,0),3,PI,TAU,12,FrontierInterfaceStyle.WARNING,1,true)
-	if not amount.is_empty():draw_string(font,Vector2(6,size.y-8),amount,HORIZONTAL_ALIGNMENT_RIGHT,size.x-12,14,FrontierInterfaceStyle.TEXT)
-	elif not caption.is_empty():draw_string(font,Vector2(7,size.y-8),caption,HORIZONTAL_ALIGNMENT_LEFT,size.x-14,11,FrontierInterfaceStyle.MUTED)
+	if not amount.is_empty():
+		var width:=font.get_string_size(amount,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x
+		draw_style_box(FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,Color.TRANSPARENT,0),Rect2(size.x-width-14,3,width+10,21))
+		draw_string(font,Vector2(size.x-width-9,19),amount,HORIZONTAL_ALIGNMENT_LEFT,-1,14,FrontierInterfaceStyle.TEXT)
+	if not caption.is_empty():
+		var label:=caption
+		while label.length()>1 and font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x>size.x-14:label=label.left(label.length()-2)+"…"
+		draw_string(font,Vector2(7,size.y-8),label,HORIZONTAL_ALIGNMENT_LEFT,size.x-14,12,FrontierInterfaceStyle.TEXT)
 func _get_drag_data(_at: Vector2) -> Variant:
 	if (item_id.is_empty() and cargo_payload.is_empty()) or slot>=0:return null
 	var image:=TextureRect.new();image.texture=picture;image.custom_minimum_size=Vector2(80,70);image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;set_drag_preview(image)
