@@ -59,11 +59,12 @@ func _process(delta: float) -> void:
 		gains[resource].left-=delta
 		if gains[resource].left<=0:gains[resource].row.queue_free();gains.erase(resource)
 	if app.session.latest.is_empty():return
-	var v: Dictionary=app.session.latest.crew.members[app.session.latest.self_id].get("vitals",FrontierCrewVitals.create())
-	health.max_value=FrontierCrewVitals.config().maximum_health;health.value=v.health
+	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
+	var v: Dictionary=member.get("vitals",FrontierCrewVitals.create())
+	health.max_value=FrontierCrewAugmentation.maximum_health(member);health.value=v.health
 	stamina.max_value=FrontierCrewVitals.config().maximum_stamina;stamina.value=v.stamina
-	health_text.text="%d"%ceili(v.health);stamina_text.text="회복 중" if v.exhausted else "%d"%ceili(v.stamina)
-	health.modulate=FrontierInterfaceStyle.WARNING if v.health<=30 else Color.WHITE
+	health_text.text="%d / %d"%[ceili(v.health),ceili(health.max_value)];stamina_text.text="회복 중" if v.exhausted else "%d"%ceili(v.stamina)
+	health.modulate=FrontierInterfaceStyle.WARNING if v.health<=health.max_value*.3 else Color.WHITE
 	stamina.modulate=FrontierInterfaceStyle.WARNING if v.exhausted else Color.WHITE
 	if last_damage>=0 and int(v.damage_serial)>last_damage:
 		damage_flash=.65;app.feedback.audio.play("sfx_build_invalid")

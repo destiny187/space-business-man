@@ -39,6 +39,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
 	for id in world.crew.members:
+		FrontierCrewAugmentation.ensure(world.crew.members[id])
 		FrontierExpeditionBusiness.release_carrier(world,id);FrontierCrewWorld.disconnect_member(world.crew,id);FrontierShuttles.resume(world,id)
 	FrontierCrewSurface.spawn_member(world,world.crew.members[profile.character_id],0)
 	world.crew.pilot_id=world.crew.owner_id

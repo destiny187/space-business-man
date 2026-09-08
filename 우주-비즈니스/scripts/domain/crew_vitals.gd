@@ -5,13 +5,14 @@ static func config() -> Dictionary:return FrontierCrewSurface.config().vitals
 static func create() -> Dictionary:
 	return {"health":float(config().maximum_health),"stamina":float(config().maximum_stamina),"rest":0.0,"hurt":0.0,"exhausted":false,"sprinting":false,"damage_serial":0,"rescue_serial":0,"protection":0.0}
 static func ensure(member: Dictionary) -> Dictionary:
-	if not member.has("vitals"):member.vitals=create()
+	if not member.has("vitals"):
+		member.vitals=create();member.vitals.health=FrontierCrewAugmentation.maximum_health(member)
 	return member.vitals
-static func validate(v: Variant) -> bool:
+static func validate(v: Variant,member: Dictionary={}) -> bool:
 	if not v is Dictionary:return false
 	for key in ["health","stamina","rest","hurt","protection","damage_serial","rescue_serial"]:
 		if not FrontierUniverse._finite(v.get(key),0,9007199254740000):return false
-	return v.health<=config().maximum_health and v.stamina<=config().maximum_stamina and v.get("exhausted") is bool and v.get("sprinting") is bool
+	return v.health<=FrontierCrewAugmentation.maximum_health(member) and v.stamina<=config().maximum_stamina and v.get("exhausted") is bool and v.get("sprinting") is bool
 static func step(member: Dictionary,delta: float,wants_sprint: bool,moving: bool) -> float:
 	var v:=ensure(member);var c:=config()
 	v.hurt=maxf(0,v.hurt-delta);v.protection=maxf(0,v.protection-delta)
@@ -24,7 +25,7 @@ static func step(member: Dictionary,delta: float,wants_sprint: bool,moving: bool
 		v.rest=maxf(0,v.rest-delta)
 		if v.rest<=0:v.stamina=minf(c.maximum_stamina,v.stamina+c.stamina_recovery*delta)
 	var near_ship: bool=member.area=="cabin" or FrontierCrewWorld.vector(member.position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))<=float(FrontierCrewSurface.config().boarding_distance)
-	if near_ship and v.hurt<=0:v.health=minf(c.maximum_health,v.health+c.heal_per_second*delta)
+	if near_ship and v.hurt<=0:v.health=minf(FrontierCrewAugmentation.maximum_health(member),v.health+c.heal_per_second*delta)
 	return float(c.sprint_multiplier) if v.sprinting else 1.0
 static func land(member: Dictionary,impact_speed: float) -> bool:
 	var v:=ensure(member);var c:=config()

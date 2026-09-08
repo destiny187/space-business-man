@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "maximum_level": 5,
+  "fields": {
+    "mobility": {
+      "name": "기동 증강",
+      "increment": 0.1,
+      "gem": "sapphire"
+    },
+    "combat": {
+      "name": "전투 증강",
+      "increment": 0.1,
+      "gem": "ruby"
+    },
+    "vitality": {
+      "name": "생명 증강",
+      "increment": 0.2,
+      "gem": "emerald"
+    }
+  }
+}

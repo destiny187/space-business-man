@@ -27,6 +27,8 @@ static func active(member: Dictionary) -> Dictionary:
 	var level:=FrontierProgressionResearch.personal(member,"mining")
 	if level>0 and tool.get("kind")=="miner":
 		tool=tool.duplicate(true);tool.interval=float(tool.interval)/FrontierProgressionResearch.multiplier(level)
+	if tool.get("kind")=="pulse":
+		tool=tool.duplicate(true);tool.damage=roundi(float(tool.damage)*FrontierCrewAugmentation.multiplier(member,"combat"))
 	return tool
 static func validate(value: Variant) -> String:
 	if not value is Dictionary:return "장비 기록 형식"

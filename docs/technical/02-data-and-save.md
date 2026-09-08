@@ -1,5 +1,7 @@
 # 데이터·세이브 설계
 
+2026-09-08 A01: 신체 증강을 `crew.members[character_id].augmentation`에 버전·3계열 단계로 추가한다. 기존 저장은 유효성 검사 뒤 유료 물류 속도를 한 번 이행한다. 개인 원본 프로필·장비 개체와 분리하며 JSON 저장·호스트/클라이언트 공개 상태를 공유한다. [명세와 커밋별 저장 범위](../planning/12-augmentation-and-research-commits.md), [실제 확인](../production/62-character-augmentation-foundation.md). 보석 거래·공동 연구 저장은 후속 커밋이다.
+
 콘텐츠 정의·런타임·영구 성장을 구분하는 설계 문서다. 현재 구현은 버전 1 JSON 스냅샷이며 [스키마 검사](../../우주-비즈니스/scripts/persistence/save_schema.gd)와 [원자적 저장](../../우주-비즈니스/scripts/persistence/save_store.gd)이 실제 형식의 기준이다. 아래 초기 단일 행성·구매·지구 회수 규칙은 기존 범위다. **새 단일 은하·티어·시드·다중 목적지·표본·협약은 확장 절의 미구현 제안**이다. 협동의 개인 프로필·호스트 세계 저장은 [협동 저장 설계](04-coop-networking-and-session-save.md)를 함께 따른다. 기존 파일의 형식이 이미 바뀌었다는 의미가 아니며 예시와 실제 필드명은 다를 수 있다.
 
 ## 데이터 원칙

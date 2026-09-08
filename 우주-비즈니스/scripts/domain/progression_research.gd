@@ -29,6 +29,7 @@ static func reason(world: Dictionary,actor: String,key: String) -> String:
 static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
 	var key:=str(args.get("field",""));var error:=reason(world,actor,key)
 	if not error.is_empty():return error
+	FrontierCrewAugmentation.ensure(world.crew.members[actor])
 	var current:=level(world,actor,key)
 	if key=="industry":world.business.credits-=int(config().fields[key].price)*(current+1);world.business.efficiency=current+1
 	else:
