@@ -1,0 +1,27 @@
+{
+  "checks": 18,
+  "chunks": [
+    {
+      "key": "(0, 0, 0)",
+      "new_ms": 35.916,
+      "old_ms": 51.165,
+      "triangles": 459
+    },
+    {
+      "key": "(1, -1, 0)",
+      "new_ms": 29.453,
+      "old_ms": 43.059,
+      "triangles": 778
+    }
+  ],
+  "commit_ms": 0.371,
+  "failures": 0,
+  "max_collision_ms": 0.084,
+  "max_commit_ms": 1.741,
+  "max_tile_upload_ms": 0.682,
+  "max_visual_ms": 0.12,
+  "new_warm_distant_ms": 27.969,
+  "old_warm_distant_ms": 115.694,
+  "rebuilt_tiles": 4,
+  "total_tiles": 100
+}

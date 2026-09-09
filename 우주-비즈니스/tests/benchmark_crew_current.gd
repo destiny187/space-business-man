@@ -77,7 +77,7 @@ func run() -> void:
 func measure_ground() -> void:
  var prefs:=FrontierClientSettings.ensure(self)
  var surface:=app.surface_world
- if not await until(func():return surface.terrain.jobs.is_empty() and surface.distant.task_id==-1 and surface.distant.queued.is_empty(),"streaming settled",45):quit(1);return
+ if not await until(func():return surface.terrain.jobs.is_empty() and surface.terrain.staged.is_empty() and surface.distant.task_id==-1 and surface.distant.queued.is_empty(),"streaming settled",45):quit(1);return
  if "--verify-controls-only" in OS.get_cmdline_user_args():
   app.onboarding.letter.hide();app.close_menus()
   await verify_controls()
@@ -182,7 +182,7 @@ func verify_play() -> void:
  for value in timings:total+=value
  var walking: Dictionary={"label":"ground_walk_110m","frames":timings.size(),"distance":surface.viewer.position.distance_to(start),"mean_ms":total/timings.size(),"p95_ms":timings[int(timings.size()*.95)],"max_ms":timings[-1]}
  print("OPTIMIZED_WALK ",JSON.stringify(walking));results.append(walking)
- await until(func():return surface.terrain.jobs.is_empty() and surface.distant.task_id==-1 and surface.distant.queued.is_empty(),"walked terrain settled",40)
+ await until(func():return surface.terrain.jobs.is_empty() and surface.terrain.staged.is_empty() and surface.distant.task_id==-1 and surface.distant.queued.is_empty(),"walked terrain settled",40)
  var before:=Time.get_ticks_usec()
  for i in 100:FrontierCursorPolicy.modal_open(self)
  var cursor_ms: float=(Time.get_ticks_usec()-before)/100000.0
@@ -191,7 +191,7 @@ func verify_play() -> void:
  var fallback_ms: float=(Time.get_ticks_usec()-before)/10000.0
  await verify_controls()
  var prefs:=FrontierClientSettings.ensure(self)
- var output: Dictionary={"results":results,"cursor_query_ms":cursor_ms,"fallback_refresh_ms":fallback_ms,"settings":prefs.values,"checks":checks,"failures":failures,"gpu":"Apple M2","size":root.size,"scope":"Current solo, seed 71491. Simulation active. 110m walk, current medium preset, not a frozen identical-clock before/after benchmark."}
+ var output: Dictionary={"results":results,"terrain_costs":{"streamer_main_max_ms":surface.terrain.max_main_ms,"distant_main_max_ms":surface.distant.max_main_ms,"mesh_upload_max_ms":surface.terrain.max_visual_ms,"collision_prepare_max_ms":surface.terrain.max_collision_ms,"chunk_commit_max_ms":surface.terrain.max_commit_ms,"last_distant_worker_ms":surface.distant.last_build_ms,"last_rebuilt_tiles":surface.distant.last_built_tiles,"active_tiles":surface.distant.tiles.size()},"cursor_query_ms":cursor_ms,"fallback_refresh_ms":fallback_ms,"settings":prefs.values,"checks":checks,"failures":failures,"gpu":"Apple M2","size":root.size,"scope":"Current solo, seed 71491. Simulation active. 110m walk, current medium preset, not a frozen identical-clock before/after benchmark."}
  FileAccess.open(folder+"/optimized.json",FileAccess.WRITE).store_string(JSON.stringify(output,"  "))
  print("OPTIMIZATION ",JSON.stringify(output))
  await app.session.close_session();app.queue_free();await process_frame;await process_frame;quit(1 if failures else 0)

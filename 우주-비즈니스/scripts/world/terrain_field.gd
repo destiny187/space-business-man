@@ -90,7 +90,10 @@ func base_height(x: float,z: float) -> float:
 	return lerpf(base,maxf(base,12.0+detail.get_noise_2d(x,z)*2.0),ridge)
 
 func density(p: Vector3) -> float:
-	var original_surface:=height(p.x,p.z)
+	return density_at_height(p,height(p.x,p.z))
+
+## A vertical column shares its surface height; edits and cave density remain 3D.
+func density_at_height(p: Vector3,original_surface: float) -> float:
 	var value: float=original_surface-p.y
 	if caves!=null:
 		value=minf(value,caves.density(p))
@@ -112,9 +115,10 @@ func legacy_cave_density(p: Vector3,value: float) -> float:
 	value=minf(value,p.distance_to(Vector3(99,-20,0))-11.0+detail.get_noise_3d(p.x,p.y,p.z)*.7)
 	return value
 
-func normal(p: Vector3) -> Vector3:
+func normal(p: Vector3,surface_height: float=NAN) -> Vector3:
 	var e:=.15
-	var gradient:=Vector3(density(p+Vector3(e,0,0))-density(p-Vector3(e,0,0)),density(p+Vector3(0,e,0))-density(p-Vector3(0,e,0)),density(p+Vector3(0,0,e))-density(p-Vector3(0,0,e)))
+	if is_nan(surface_height):surface_height=height(p.x,p.z)
+	var gradient:=Vector3(density(p+Vector3(e,0,0))-density(p-Vector3(e,0,0)),density_at_height(p+Vector3(0,e,0),surface_height)-density_at_height(p-Vector3(0,e,0),surface_height),density(p+Vector3(0,0,e))-density(p-Vector3(0,0,e)))
 	return -gradient.normalized() if gradient.length_squared()>.000001 else Vector3.UP
 
 func is_bedrock(p: Vector3) -> bool:

@@ -57,9 +57,9 @@ func run() -> void:
 	check(app.find_child("Settings",true,false)!=null,"game toolbar exposes settings")
 	var config_before:=JSON.stringify(app.session.manifest.settings)
 	settings.set_option("view_distance",600)
-	var near_bounds: AABB=app.surface_world.distant.mesh.get_aabb()
+	var near_bounds: AABB=app.surface_world.distant.terrain_bounds()
 	settings.set_option("view_distance",8000)
-	var far_bounds: AABB=app.surface_world.distant.mesh.get_aabb()
+	var far_bounds: AABB=app.surface_world.distant.terrain_bounds()
 	check(far_bounds.size.x>=16000 and near_bounds.size.x<=1201,"view distance changes generated terrain extent from 600 to 8000m")
 	check(JSON.stringify(app.session.manifest.settings)==config_before,"graphics leave seeded simulation manifest unchanged")
 	settings.set_option("fog",0);await process_frame

@@ -21,6 +21,9 @@ var interest_signature := ""
 var completed_jobs := 0
 var max_build_ms := 0.0
 var last_install_ms := 0.0
+var max_visual_ms:=0.0
+var max_collision_ms:=0.0
+var max_commit_ms:=0.0
 var closed := false
 
 func configure(seed_value: int,edits: Array,terrain_material: Material,settings: Dictionary={},traits: Dictionary={}) -> void:
@@ -83,9 +86,17 @@ func ready_for(points: Array[Vector3]) -> bool:
 					if not chunks.has(key) or int(chunks[key].revision)!=int(revisions.get(key,0)):return false
 	return batch.is_empty()
 
+var last_main_ms:=0.0
+var max_main_ms:=0.0
 func _process(_delta: float) -> void:
+	var started:=Time.get_ticks_usec()
+	_stream()
+	last_main_ms=(Time.get_ticks_usec()-started)/1000.0
+	max_main_ms=maxf(max_main_ms,last_main_ms)
+
+func _stream() -> void:
 	if closed or config.is_empty():return
-	if jobs.is_empty() and batch.is_empty() and not candidates_dirty and chunks.size()==wanted.size():return
+	if jobs.is_empty() and staged.is_empty() and batch.is_empty() and not candidates_dirty and chunks.size()==wanted.size():return
 	var deadline:=Time.get_ticks_usec()+INSTALL_BUDGET_USEC
 	for key in jobs.keys():
 		if Time.get_ticks_usec()>=deadline:break
@@ -97,25 +108,37 @@ func _process(_delta: float) -> void:
 		completed_jobs+=1
 		var data: Dictionary=job.packet.data
 		max_build_ms=maxf(max_build_ms,float(data.build_ms))
-		if batch.has(key):staged[key]=data
-		else:_install(key,data)
+		data.revision=job.revision;staged[key]=data
+	for key in staged.keys():
+		if Time.get_ticks_usec()>=deadline:break
+		var data: Dictionary=staged[key]
+		if not wanted.has(key) or int(data.revision)!=int(revisions.get(key,0)):
+			if prepared.has(key):prepared[key].free();prepared.erase(key)
+			staged.erase(key);continue
+		if not prepared.has(key):
+			var started:=Time.get_ticks_usec()
+			prepared[key]=_prepare_visual(data)
+			max_visual_ms=maxf(max_visual_ms,(Time.get_ticks_usec()-started)/1000.0)
+		if Time.get_ticks_usec()>=deadline:break
+		var node: Node3D=prepared[key]
+		if not node.get_meta("collision_ready",false):
+			var started:=Time.get_ticks_usec()
+			_prepare_collision(key,data,node)
+			max_collision_ms=maxf(max_collision_ms,(Time.get_ticks_usec()-started)/1000.0)
+		if not batch.has(key):
+			_commit(key,data,node);staged.erase(key);prepared.erase(key)
 	if not batch.is_empty():
 		var complete:=true
 		for key in batch:
-			if wanted.has(key) and not staged.has(key):complete=false
+			if wanted.has(key) and (not prepared.has(key) or not prepared[key].get_meta("collision_ready",false)):complete=false
 		if complete:
-			# Prepare expensive meshes and collision shapes over several frames.
-			# Keep the old batch visible/solid until every replacement is ready.
-			for key in staged:
-				if wanted.has(key) and not prepared.has(key):
-					if Time.get_ticks_usec()>=deadline:complete=false;break
-					prepared[key]=_prepare(key,staged[key])
-			if complete:
-				for key in prepared:
-					if wanted.has(key):_commit(key,staged[key],prepared[key])
-					else:prepared[key].free()
-				batch.clear();staged.clear();prepared.clear();candidates_dirty=true
-				geometry_changed.emit()
+			for key in batch:
+				if not prepared.has(key):continue
+				if wanted.has(key):_commit(key,staged[key],prepared[key])
+				else:prepared[key].free()
+				prepared.erase(key);staged.erase(key)
+			batch.clear();candidates_dirty=true
+			geometry_changed.emit()
 	if candidates_dirty:
 		ordered_candidates=wanted.keys()
 		ordered_candidates.sort_custom(func(a: Vector3i,b: Vector3i) -> bool:
@@ -123,7 +146,7 @@ func _process(_delta: float) -> void:
 			return wanted[a]<wanted[b])
 		candidates_dirty=false
 	for key in ordered_candidates:
-		if jobs.size()>=int(config.worker_limit):break
+		if jobs.size()>=int(config.worker_limit) or (batch.is_empty() and staged.size()>=int(config.worker_limit)*2):break
 		if jobs.has(key) or staged.has(key):continue
 		if chunks.has(key) and chunks[key].revision==int(revisions.get(key,0)):continue
 		var packet: Dictionary={"data":{}}
@@ -137,29 +160,24 @@ func _build_job(packet: Dictionary,key: Vector3i,edits: Array) -> void:
 	var mesher:=FrontierTerrainMesher.new()
 	packet.data=mesher.build(worker_field,key,int(config.chunk_cells),float(config.cell_size))
 
-func _install(key: Vector3i,data: Dictionary) -> void:
-	var start:=Time.get_ticks_usec()
-	var node:=_prepare(key,data)
-	_commit(key,data,node)
-	last_install_ms=(Time.get_ticks_usec()-start)/1000.0
-
-func _prepare(key: Vector3i,data: Dictionary) -> Node3D:
+func _prepare_visual(data: Dictionary) -> Node3D:
 	var node:=Node3D.new()
 	var mesh:=FrontierTerrainMesher.mesh(data)
 	if mesh.get_surface_count()>0:
-		var visual:=MeshInstance3D.new()
-		visual.mesh=mesh
-		visual.material_override=material
+		var visual:=MeshInstance3D.new();visual.mesh=mesh;visual.material_override=material
 		node.add_child(visual)
-		var body:=StaticBody3D.new()
-		body.set_meta("terrain_chunk",key)
-		var collision:=CollisionShape3D.new()
-		collision.shape=mesh.create_trimesh_shape()
-		body.add_child(collision)
-		node.add_child(body)
 	return node
 
+func _prepare_collision(key: Vector3i,data: Dictionary,node: Node3D) -> void:
+	if not data.collision_faces.is_empty():
+		var shape:=ConcavePolygonShape3D.new();shape.set_faces(data.collision_faces)
+		var body:=StaticBody3D.new();body.set_meta("terrain_chunk",key)
+		var collision:=CollisionShape3D.new();collision.shape=shape
+		body.add_child(collision);node.add_child(body)
+	node.set_meta("collision_ready",true)
+
 func _commit(key: Vector3i,data: Dictionary,node: Node3D) -> void:
+	var started:=Time.get_ticks_usec()
 	node.position=Vector3(key)*span
 	node.name="Chunk_%d_%d_%d" % [key.x,key.y,key.z]
 	if chunks.has(key):
@@ -167,6 +185,8 @@ func _commit(key: Vector3i,data: Dictionary,node: Node3D) -> void:
 		chunks[key].node.queue_free()
 	add_child(node)
 	chunks[key]={"node":node,"revision":int(revisions.get(key,0)),"triangles":data.indices.size()/3}
+	last_install_ms=(Time.get_ticks_usec()-started)/1000.0
+	max_commit_ms=maxf(max_commit_ms,last_install_ms)
 
 func _exit_tree() -> void:
 	closed=true

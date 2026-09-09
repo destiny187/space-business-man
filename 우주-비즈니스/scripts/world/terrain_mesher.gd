@@ -22,6 +22,9 @@ func build(source: FrontierTerrainField,chunk: Vector3i,cells: int=12,cell_size:
 	var width:=cells+1
 	grid.resize(width*width*width)
 	grid_points.resize(grid.size())
+	var column_heights:=PackedFloat64Array();column_heights.resize(width*width)
+	for z in width:
+		for x in width:column_heights[x+z*width]=field.height(origin.x+x*cell_size,origin.z+z*cell_size)
 	var low:=INF
 	var high:=-INF
 	for y in width:
@@ -29,7 +32,7 @@ func build(source: FrontierTerrainField,chunk: Vector3i,cells: int=12,cell_size:
 			for x in width:
 				var index: int=x+z*width+y*width*width
 				var p:=Vector3(x,y,z)*cell_size
-				var d: float=field.density(origin+p)
+				var d: float=field.density_at_height(origin+p,column_heights[x+z*width])
 				grid[index]=d;grid_points[index]=p
 				low=minf(low,d);high=maxf(high,d)
 	if low<0 and high>=0:
@@ -55,7 +58,7 @@ func build(source: FrontierTerrainField,chunk: Vector3i,cells: int=12,cell_size:
 								if positions[previous].distance_squared_to(positions[vertex])<.00000001:duplicate=true;break
 							if not duplicate:polygon.append(vertex)
 						_polygon(polygon)
-	return {"vertices":positions,"normals":normals,"colors":colors,"indices":indices,"build_ms":(Time.get_ticks_usec()-started)/1000.0}
+	return {"vertices":positions,"normals":normals,"colors":colors,"indices":indices,"collision_faces":collision_faces(positions,indices),"build_ms":(Time.get_ticks_usec()-started)/1000.0}
 
 func _intersection(a: int,b: int) -> int:
 	var edge:=Vector2i(mini(a,b),maxi(a,b))
@@ -64,9 +67,10 @@ func _intersection(a: int,b: int) -> int:
 	var p: Vector3=grid_points[a].lerp(grid_points[b],t)
 	var index:=positions.size()
 	positions.append(p)
-	normals.append(field.normal(origin+p))
 	var wp:=origin+p
-	var depth:=field.height(wp.x,wp.z)-wp.y
+	var surface_height:=field.height(wp.x,wp.z)
+	normals.append(field.normal(wp,surface_height))
+	var depth:=surface_height-wp.y
 	# Excavated and cave surfaces expose geology, never projected surface snow/ecology.
 	colors.append(Color(1.0-smoothstep(1.0,3.5,depth),0,0,1))
 	cache[edge]=index
@@ -105,3 +109,12 @@ static func mesh(data: Dictionary) -> ArrayMesh:
 	arrays[Mesh.ARRAY_INDEX]=data.indices
 	result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	return result
+
+## Use worker-owned CPU vertices directly; never read a freshly uploaded mesh back.
+static func collision_faces(vertices: PackedVector3Array,triangles: PackedInt32Array) -> PackedVector3Array:
+	var faces:=PackedVector3Array();faces.resize(triangles.size())
+	# Match TriangleMesh::create's welding precision used by create_trimesh_shape.
+	var welded:=PackedVector3Array();welded.resize(vertices.size())
+	for i in vertices.size():welded[i]=vertices[i].snappedf(.0001)
+	for i in triangles.size():faces[i]=welded[triangles[i]]
+	return faces
