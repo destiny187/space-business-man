@@ -30,8 +30,10 @@ static func tick(world: Dictionary,dt: float) -> void:
 	if not site.production_paid and int(site.delivered)>=48 and not site.robots.is_empty():
 		site.production_paid=true;ledger.credits+=int(FrontierExpeditionBusiness.config().production_milestone)
 static func power(world: Dictionary,site: Dictionary) -> void:
+	FrontierFacilityFlooding.refresh_base(world,site)
 	var supply:=2.0;var demand:=0.0
 	for building in site.buildings.values():
+		if FrontierFacilityFlooding.refresh(world,building):continue
 		var def:=FrontierCatalog.entry("buildings",building.type)
 		var p:=FrontierExpeditionBusiness.point(building.position)
 		var supported:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),p.x,p.z,float(def.radius)).is_finite()
@@ -43,7 +45,7 @@ static func power(world: Dictionary,site: Dictionary) -> void:
 	var remaining:=supply
 	for kind in ["charger","factory","atmosphere","thermal","water","biolab"]:
 		for building in site.buildings.values():
-			if building.type!=kind or not building.enabled or building.status=="토대 지지 필요":continue
+			if building.type!=kind or not building.enabled or building.get("submerged",false) or building.status=="토대 지지 필요":continue
 			var consumption: float=FrontierCatalog.entry("buildings",kind).power
 			if remaining>=consumption:building.active=true;building.status="가동 중";remaining-=consumption
 	site.power_supply=supply;site.power_demand=demand
@@ -107,7 +109,13 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 		return
 	if r.phase=="return":
 		r.status="창고로 운반"
-		if _move(world,r,FrontierExpeditionBusiness.point(site.center)+Vector3(3,0,0),dt):
+		var destination:=FrontierExpeditionBusiness.point(site.center)
+		if site.get("base_submerged",false):
+			destination=Vector3.INF
+			for storage in site.buildings.values():
+				if storage.type=="storage" and not storage.get("submerged",false):destination=FrontierExpeditionBusiness.point(storage.position);break
+			if not destination.is_finite():r.status="침수 · 사용 가능한 창고 필요";return
+		if _move(world,r,destination+Vector3(3,0,0),dt):
 			for resource in r.cargo:
 				var amount:=mini(int(r.cargo[resource]),FrontierItemInventory.warehouse_room(site,resource))
 				site.inventory[resource]=int(site.inventory.get(resource,0))+amount;r.cargo[resource]-=amount;site.delivered+=amount

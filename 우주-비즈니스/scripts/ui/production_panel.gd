@@ -96,12 +96,13 @@ func refresh() -> void:
 	target_cost.value="Mk.%d 개조 · "%next_tier+FrontierCatalog.cost_text(upgrade_def.get("cost",{}))
 	upgrade.text="제작소 Mk.%d 개조"%next_tier if manufacturing else "Mk.%d 개조"%next_tier
 	upgrade.tooltip_text=str(upgrade_def.get("effect","채광 18 · 적재 64 · 이동 +20%"))
-	upgrade.disabled=b.is_empty() or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or not FrontierPlanetSupply.operating(current)
+	upgrade.disabled=b.get("submerged",false) or b.is_empty() or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or not FrontierPlanetSupply.operating(current)
 	if upgrade_def.is_empty():upgrade.text="현재 최고 단계 · Mk.%d"%int(b.get("tier",1));target_cost.value=""
 
 func production_reason(product_id: String) -> String:
 	var b: Dictionary=current.get("buildings",{}).get(panel.context_id,{})
 	var recipe:=FrontierProductionTier2.product(product_id)
+	if b.get("submerged",false):return FrontierFacilityFlooding.STATUS
 	if b.get("type","")!="factory":return "제작소가 필요합니다."
 	if not FrontierPlanetSupply.operating(current):return "가동 중인 거점이 필요합니다."
 	if not b.get("production",{}).is_empty():return "생산 중 · "+FrontierProductionTier2.product(b.production.product).name

@@ -45,7 +45,7 @@ func accept(value: Dictionary) -> void:
 	var wanted: Dictionary={}
 	if registered:wanted["business-base"]=true
 	if registered and not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
-	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="현장 창고\nF 창고 · 반납/인수"
+	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고 · 반납/인수"
 	var camera:=get_viewport().get_camera_3d()
 	var centers: Array[Vector3]=presentation_points.duplicate()
 	if centers.is_empty():centers.append(camera.global_position if camera!=null else Vector3.ZERO)
@@ -66,9 +66,9 @@ func accept(value: Dictionary) -> void:
 		if not nodes.has(row.id):
 			_queue_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building");continue
 		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active
-		var symbol: String="▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! "))
+		var symbol: String="⊘ " if row.get("submerged",false) else ("▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! ")))
 		nodes[row.id].get_meta("label").text=symbol+FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
-		nodes[row.id].get_meta("label").modulate=Color("82f5d2") if working else Color("f2c077")
+		nodes[row.id].get_meta("label").modulate=Color("9bc7ef") if row.get("submerged",false) else (Color("82f5d2") if working else Color("f2c077"))
 		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
 		_upgrade_visual(nodes[row.id],row,false)
 		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active)

@@ -109,6 +109,7 @@ static func restore(site: Dictionary,b: Dictionary,dt: float) -> void:
 	else:site.environment.toxicity=maxf(0,float(site.environment.toxicity)-float(cfg.salt_per_filter))
 static func validate_building(b: Dictionary) -> bool:
 	if b.has("working") and not b.working is bool:return false
+	if b.has("submerged") and not b.submerged is bool:return false
 	if not FrontierExpeditionBusiness.integer(b.get("tier",1),1,3):return false
 	if int(b.get("tier",1))==3 and b.get("type")!="factory":return false
 	if int(b.get("tier",1))>=2 and not config().facility_upgrades.has(b.type):return false

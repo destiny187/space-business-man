@@ -72,9 +72,9 @@ static func bag(world: Dictionary,actor: String) -> Dictionary:
 	return world.get("business",{}).get("bags",{}).get(actor,inventory())
 static func near_warehouse(current: Dictionary,position: Vector3) -> bool:
 	if current.is_empty():return false
-	if position.distance_to(point(current.center))<=float(config().deposit_range):return true
+	if not current.get("base_submerged",false) and position.distance_to(point(current.center))<=float(config().deposit_range):return true
 	for row in current.get("buildings",{}).values():
-		if row.type=="storage" and position.distance_to(point(row.position))<=float(config().deposit_range):return true
+		if row.type=="storage" and not row.get("submerged",false) and position.distance_to(point(row.position))<=float(config().deposit_range):return true
 	return false
 static func ground(field: FrontierTerrainField,x: float,z: float,radius: float=.4) -> Vector3:
 	var y: float=field.height(x,z)
@@ -410,6 +410,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 	for id in value.sites:
 		if not id is String or FrontierUniverse.ordinal_of(manifest,id)<0:return "개발 행성 주소 오류"
 		var current: Variant=value.sites[id]
+		if current is Dictionary and current.has("base_submerged") and not current.base_submerged is bool:return "현장 창고 침수 상태 오류"
 		if not current is Dictionary or current.get("state") not in ["active","settled","exploration","supply"] or not FrontierUniverse._vector3_array(current.get("center")) or not valid_inventory(current.get("inventory")):return "개발 현장 구조 오류"
 		var discoveries: Variant=current.get("discovered_resources",[])
 		if not discoveries is Array or discoveries.size()>FrontierCatalog.table("resources").size():return "발견 광물 기록 오류"

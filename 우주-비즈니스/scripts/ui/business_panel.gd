@@ -276,9 +276,9 @@ func context_in_range(position: Vector3) -> bool:
 	if context_kind=="ship":return position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))<=float(FrontierCrewSurface.config().boarding_distance)
 	var site: Dictionary=ledger.get("sites",{}).get(body_id,{})
 	if site.is_empty():return false
-	if context_kind=="base":return position.distance_to(FrontierCrewWorld.vector(site.center))<=float(FrontierExpeditionBusiness.config().deposit_range)
+	if context_kind=="base":return not site.get("base_submerged",false) and position.distance_to(FrontierCrewWorld.vector(site.center))<=float(FrontierExpeditionBusiness.config().deposit_range)
 	var row: Dictionary=site.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
-	return not row.is_empty() and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
+	return not row.is_empty() and not row.get("submerged",false) and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
 func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
 	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
 	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경·계약"

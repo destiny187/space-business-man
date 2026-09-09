@@ -247,7 +247,9 @@ func _build_ui() -> void:
 	_button(surface_tools,"연구 [J]",toggle_research)
 	_button(surface_tools,"아이템 [I]",toggle_inventory)
 	business_panel=FrontierBusinessPanel.new();ui.add_child(business_panel)
-	business_panel.command.connect(func(kind: String,args: Dictionary):session.send_request(kind,args))
+	business_panel.command.connect(func(kind: String,args: Dictionary):
+		if business_panel.context_kind not in ["build","ship","base","robot"]:args["access_facility_id"]=business_panel.context_id
+		session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
 	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시 · "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
 	business_panel.station_action.connect(station_action)
@@ -839,6 +841,11 @@ func interact_business() -> void:
 		_:status.value="광맥이나 현장 창고를 조준하고 F를 누르세요."
 func open_station(kind: String,id: String="",management: bool=false) -> void:
 	if not session.active or surface_world==null:return
+	var current_site: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{})
+	if kind=="base" and current_site.get("base_submerged",false):feedback.reject(FrontierFacilityFlooding.STATUS);return
+	var facility_row: Dictionary=current_site.get("buildings",{}).get(id,{})
+	if facility_row.get("submerged",false):feedback.reject(FrontierFacilityFlooding.STATUS);return
+	if status.value==FrontierFacilityFlooding.STATUS:status.value=""
 	if kind in ["base","storage"] and not management:
 		open_menu(inventory_panel);inventory_panel.warehouse_choice.select(0);inventory_panel.tabs.current_tab=2;return
 	close_menus()
@@ -852,10 +859,10 @@ func open_warehouse_management() -> void:
 	var current: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{})
 	if current.is_empty():return
 	var position_value:=FrontierCrewWorld.vector(session.latest.crew.members[session.latest.self_id].position)
-	var closest: String="";var distance:=position_value.distance_to(FrontierCrewWorld.vector(current.center))
+	var closest: String="";var distance:=INF if current.get("base_submerged",false) else position_value.distance_to(FrontierCrewWorld.vector(current.center))
 	for id in current.get("buildings",{}):
 		var row: Dictionary=current.buildings[id]
-		if row.type!="storage":continue
+		if row.type!="storage" or row.get("submerged",false):continue
 		var gap:=position_value.distance_to(FrontierCrewWorld.vector(row.position))
 		if gap<distance:distance=gap;closest=id
 	if distance>float(FrontierExpeditionBusiness.config().deposit_range):status.value="현장 창고 9m 이내로 접근하세요.";return
