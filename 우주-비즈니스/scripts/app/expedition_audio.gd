@@ -12,6 +12,8 @@ var previous_mode: String=""
 var discovery_left:=0.0
 var danger_left:=0.0
 var music_duck:=1.0
+var planet_music_key: String=""
+var planet_music_mood: String="planet"
 func configure(owner_app: Node) -> void:
 	app=owner_app;config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_audio.json"))
 	library=FrontierAudio.new();add_child(library)
@@ -54,7 +56,7 @@ func _update_mood(delta: float,nav: Dictionary,on_planet: bool) -> void:
 		previous_system=system
 	previous_mode=mode
 	if nav.get("star_warning",false) or nav.get("star_danger",false) or float(nav.get("hull",100))<35:danger_left=float(config.danger_hold_seconds)
-	current_mood="planet" if on_planet else ("danger" if danger_left>0 else ("discovery" if discovery_left>0 else "space"))
+	current_mood=_planet_music() if on_planet else ("danger" if danger_left>0 else ("discovery" if discovery_left>0 else "space"))
 	if not music.has(current_mood) or music[current_mood].stream==null:current_mood=current_place
 	var duck:=1.0
 	if not on_planet and mode=="jump":
@@ -63,5 +65,17 @@ func _update_mood(delta: float,nav: Dictionary,on_planet: bool) -> void:
 	elif not on_planet and discovery_left>float(config.discovery_seconds)-4:duck=.5
 	if app.arrival.active:duck=minf(duck,.5)
 	music_duck=move_toward(music_duck,duck,delta*3.0)
+func _planet_music() -> String:
+	# Per-player snapshots already resolve FINCH's independent landing context.
+	var landing: Dictionary=app.session.latest.get("crew",{}).get("landing",{})
+	var body_id: String=str(landing.get("body_id",app.session.latest.get("location","")))
+	if body_id.is_empty():return "planet"
+	var key: String=str(app.session.manifest.get("id",""))+":"+body_id
+	if key!=planet_music_key:
+		planet_music_key=key
+		var body: Dictionary=FrontierUniverse.body_from_id(app.session.manifest,body_id)
+		var tier:=clampi(int(body.get("planet_tier",1)),1,5)
+		planet_music_mood=str(config.get("planet_tiers",{}).get(str(tier),"planet"))
+	return planet_music_mood
 func _exit_tree() -> void:
 	for player in music.values():player.stop();player.stream=null

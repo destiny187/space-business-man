@@ -30,9 +30,15 @@ func run() -> void:
 	if "--vessels-only" in OS.get_cmdline_user_args():
 		jobs.clear()
 		for definition in FrontierVesselRefit.config().modules.values():jobs.append({"model":definition.model,"output":"res://assets/ui/previews/vessel_"+str(definition.model).get_file()+".png"})
+	if "--all-white-backgrounds" in OS.get_cmdline_user_args():
+		jobs.assign(JSON.parse_string(FileAccess.get_file_as_string("res://data/transparent_ui_renders.json")))
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--only-output="):
+			jobs=jobs.filter(func(job: Dictionary):return str(job.output)==arg.trim_prefix("--only-output="))
 	for job in jobs:
 		var destination:=ProjectSettings.globalize_path(job.output)
 		if FileAccess.file_exists(destination):preview.size=Image.load_from_file(destination).get_size()
+		assert(ResourceLoader.exists("res://assets/models/"+str(job.model)+".glb"), "Missing preview model: "+str(job.model))
 		preview.show_model(job.model);preview.camera.size*=.75
 		await create_timer(.35).timeout;await RenderingServer.frame_post_draw
 		var image:=preview.viewport.get_texture().get_image()

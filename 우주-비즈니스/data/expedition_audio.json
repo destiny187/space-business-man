@@ -3,11 +3,23 @@
     "space": "music_stellar_v1",
     "planet": "music_planet_v1",
     "discovery": "music_discovery_v2",
-    "danger": "music_danger_v2"
+    "danger": "music_danger_v2",
+    "planet_t1": "music_planet_t1_v1",
+    "planet_t2": "music_planet_t2_v1",
+    "planet_t3": "music_planet_t3_v1",
+    "planet_t4": "music_planet_t4_v1",
+    "planet_t5": "music_planet_t5_v1"
   },
   "crossfade_seconds": 2.5,
   "loop_fade_seconds": 0.45,
   "level": 0.32,
   "discovery_seconds": 28,
-  "danger_hold_seconds": 5
+  "danger_hold_seconds": 5,
+  "planet_tiers": {
+    "1": "planet_t1",
+    "2": "planet_t2",
+    "3": "planet_t3",
+    "4": "planet_t4",
+    "5": "planet_t5"
+  }
 }
