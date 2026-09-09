@@ -6,7 +6,7 @@ func run() -> void:
  root.size=Vector2i(1280,800)
  app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app
  await process_frame
- app.world_store.write(FrontierUniverse.new_world(71491));app.start_solo()
+ var legacy_world:=FrontierUniverse.new_world(71491);legacy_world.manifest.settings.regional_rules.erase("free_placement");legacy_world.manifest.settings.regional_rules.version=2;app.world_store.write(legacy_world);app.start_solo()
  if not await until(func():return app.session.active,15):quit(1);return
  if not await until(func():return app.flight!=null and not app.preparing_first_snapshot and not has_meta("startup_loader"),60):quit(1);return
  app.onboarding.letter.hide()

@@ -4,6 +4,7 @@ extends RefCounted
 const LOCAL_KEYS=["center","inventory","environment","restoration2","power_supply","power_demand","stored_equipment","delivered","production_paid","time","cells"]
 static func enabled(site: Dictionary) -> bool:return site.has("regions")
 static func initialize(site: Dictionary,body: Dictionary) -> void:
+ if FrontierFreeTerraform.enabled(body):FrontierFreeTerraform.initialize(site,body);return
  var zones:=FrontierSurfaceRegions.zones(body)
  if zones.is_empty():return
  site.regions={};site.regional_version=1;site.regional_paid={};site.regional_observed={}
@@ -24,17 +25,20 @@ static func home(site: Dictionary) -> void:
  for key in LOCAL_KEYS:
   if site.regions["region:0"].has(key):site[key]=site.regions["region:0"][key]
 static func region_id(site: Dictionary,position: Vector3) -> String:
+ if FrontierFreeTerraform.active(site):return FrontierFreeTerraform.district_id(site,position)
  var result: String="region:0";var nearest:=INF
  for id in site.get("regions",{}):
   var d:=Vector2(position.x-site.regions[id].center[0],position.z-site.regions[id].center[2]).length_squared()
   if d<nearest:nearest=d;result=id
  return result
 static func facade(site: Dictionary,id: String) -> Dictionary:
- var local: Dictionary=site.duplicate(false);var region: Dictionary=site.regions[id]
+ var local: Dictionary=site.duplicate(false);var region: Dictionary=site.regions.get(id,{})
+ if region.is_empty() and FrontierFreeTerraform.active(site):region=FrontierFreeTerraform.district(site,id)
  for key in LOCAL_KEYS:
   if region.has(key):local[key]=region[key]
   else:local.erase(key)
  local.local_region=id;local.base_deployed=false
+ if FrontierFreeTerraform.active(site):local.placement_neighbors=site.buildings
  for key in ["buildings","robots","jobs"]:
   local[key]={}
   for entity_id in site[key]:
@@ -43,7 +47,9 @@ static func facade(site: Dictionary,id: String) -> Dictionary:
    if owner==id:local[key][entity_id]=row
  return local
 static func merge(site: Dictionary,local: Dictionary) -> void:
- var id: String=local.local_region;var region: Dictionary=site.regions[id]
+ var id: String=local.local_region
+ if not site.regions.has(id) and FrontierFreeTerraform.active(site):site.regions[id]=FrontierFreeTerraform.district(site,id)
+ var region: Dictionary=site.regions[id]
  for key in LOCAL_KEYS:
   if local.has(key):region[key]=local[key]
   else:region.erase(key)
@@ -60,6 +66,12 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
  if not enabled(site) or kind in ["business_settle","business_register","business_lease","business_lease_release"]:
   return FrontierExpeditionBusiness.apply_local(world,actor,kind,args,active)
  var id:=region_id(site,FrontierCrewWorld.vector(world.crew.members[actor].position))
+ if FrontierFreeTerraform.active(site):
+  id=FrontierFreeTerraform.supply_at(site,FrontierCrewWorld.vector(world.crew.members[actor].position))
+  if kind=="business_build" and FrontierUniverse._vector3_array(args.get("position")):id=FrontierFreeTerraform.district_id(site,FrontierCrewWorld.vector(args.position))
+  var target_id: String=str(args.get("building_id",args.get("facility_id",args.get("factory_id",args.get("robot_id","")))))
+  var target: Dictionary=site.buildings.get(target_id,site.robots.get(target_id,{}))
+  if not target.is_empty():id=str(target.get("region_id",id))
  var local:=facade(site,id);world.business.sites[world.location]=local
  var error:=FrontierExpeditionBusiness.apply_local(world,actor,kind,args,active)
  merge(site,local);world.business.sites[world.location]=site
@@ -68,13 +80,23 @@ static func tick(world: Dictionary,dt: float) -> void:
  var site:=FrontierExpeditionBusiness.site(world)
  for actor in world.crew.members:
   if FrontierShuttles.location(world,actor)==world.location and world.crew.members[actor].area=="surface":observe(site,FrontierCrewWorld.vector(world.crew.members[actor].position))
- FrontierTerraformTier3.begin(world,site,dt)
+ if FrontierFreeTerraform.active(site):FrontierFreeTerraform.begin(world,site,dt)
+ else:FrontierTerraformTier3.begin(world,site,dt)
  for id in site.regions:
   var local:=facade(site,id);world.business.sites[world.location]=local
   FrontierExpeditionIndustry.tick_local(world,dt)
   merge(site,local)
  world.business.sites[world.location]=site
  var tier: int=FrontierUniverse.body_from_id(world.manifest,world.location).planet_tier
+ if FrontierFreeTerraform.active(site):
+  if FrontierPlanetSupply.operating(site):FrontierFreeTerraform.finish(site,dt)
+  if site.state=="active":
+   for i in site.free_terraform.rules.stage_thresholds.size():
+    var id: String="area:%d"%i
+    if not site.regional_paid.has(id) and FrontierFreeTerraform.progress(site)>=float(site.free_terraform.rules.stage_thresholds[i]):
+     var amount:=floori(FrontierCoopWorkload.reward(site,tier)*float(site.free_terraform.rules.stage_fraction))
+     site.regional_paid[id]=amount;world.business.credits+=amount
+  return
  if site.state=="active":
   for id in site.regions:
    if id=="region:0" or site.regional_paid.has(id) or not ready(site.regions[id]):continue
@@ -82,6 +104,7 @@ static func tick(world: Dictionary,dt: float) -> void:
    var amount:=floori(total*stage_fraction(site))
    site.regional_paid[id]=amount;world.business.credits+=amount
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
+ if FrontierFreeTerraform.active(site):FrontierFreeTerraform.process(world,site,dt);return
  var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
  var radius: float=body.regional_rules.facility_radius
  for b in site.buildings.values():
@@ -119,11 +142,13 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
   for cell in site.cells:amount+=float(cell.restoration2.get(key,0))
   site.restoration2[key]=amount/site.cells.size()
 static func ready(region: Dictionary) -> bool:
+ if region.get("cells",[]).is_empty():return false
  var count:=0
  for cell in region.get("cells",[]):
   if float(cell.environment.stable_seconds)>=float(region.get("tier3_stable_seconds",FrontierExpeditionBusiness.config().contract_stable_seconds)):count+=1
  return count>=mini(region.get("cells",[]).size(),int(FrontierSurfaceRegions.config().required_cells))
 static func settlement_reason(site: Dictionary) -> String:
+ if FrontierFreeTerraform.active(site):return FrontierFreeTerraform.settlement_reason(site)
  for region in site.get("regions",{}).values():
   if not ready(region):return region.name+"의 복원 구획 %d곳을 안정시켜야 합니다. Tab 지도를 확인하세요."%mini(region.cells.size(),int(FrontierSurfaceRegions.config().required_cells))
  return ""
@@ -136,15 +161,19 @@ static func paid(site: Dictionary) -> int:
 static func observe(site: Dictionary,position: Vector3) -> void:
  if not enabled(site):return
  var id:=region_id(site,position)
+ if not site.regions.has(id):return
  if position.distance_to(FrontierCrewWorld.vector(site.regions[id].center))<100:site.regional_observed[id]=true
 static func local_public(site: Dictionary,position: Vector3) -> Dictionary:
  if not enabled(site):return site
- var result:=facade(site,region_id(site,position))
+ var result:=facade(site,FrontierFreeTerraform.supply_at(site,position) if FrontierFreeTerraform.active(site) else region_id(site,position))
  result.slot_capacity=FrontierItemInventory.warehouse_capacity(result)
  result.buildings=site.buildings;result.robots=site.robots;result.jobs=site.jobs
- result.current_region=result.local_region;result.erase("local_region")
+ result.current_region=result.local_region;result.erase("local_region");result.erase("placement_neighbors")
+ if FrontierFreeTerraform.active(site):
+  var cell:=FrontierFreeTerraform.sample(site,Vector2(position.x,position.z));result.environment=cell.environment;result.restoration2=cell.restoration2
  return result
 static func valid(site: Dictionary,body: Dictionary) -> bool:
+ if FrontierFreeTerraform.enabled(body) or FrontierFreeTerraform.active(site):return FrontierFreeTerraform.valid(site,body)
  if not FrontierTerraformTier3.valid(site,body):return false
  if not enabled(site):return not body.has("regional_rules") or FrontierSurfaceRegions.zones(body).is_empty()
  if not site.regions is Dictionary or not site.get("regional_paid") is Dictionary or not site.get("regional_observed") is Dictionary:return false

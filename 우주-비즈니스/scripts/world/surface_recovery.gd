@@ -30,6 +30,7 @@ static func region(body: Dictionary,ledger: Dictionary) -> Dictionary:
 
 static func regions(body: Dictionary,ledger: Dictionary) -> Array:
  var site: Dictionary=ledger.get("sites",{}).get(body.id,{})
+ if FrontierFreeTerraform.active(site):return FrontierFreeTerraform.visual_regions(site)
  if not FrontierRegionalTerraform.enabled(site):
   var old:=region(body,ledger);return [] if old.is_empty() else [old]
  var result: Array=[]
@@ -41,6 +42,9 @@ static func regions(body: Dictionary,ledger: Dictionary) -> Array:
    result.append({"center":FrontierCrewWorld.vector(cell.position),"radius":38.0 if zone.cells.size()>1 else float(zone.radius),"state":conditions(values),"environment":cell.environment,"restoration2":cell.restoration2,"pollution":float(cell.get("pollution",0))})
  return result
 static func sample_at(body: Dictionary,ledger: Dictionary,position: Vector3) -> Dictionary:
+ var site: Dictionary=ledger.get("sites",{}).get(body.id,{})
+ if FrontierFreeTerraform.active(site):
+  var cell:=FrontierFreeTerraform.sample(site,Vector2(position.x,position.z));var values: Dictionary=cell.environment.duplicate();values.merge(cell.restoration2,true);return values
  return sample_regions(body,regions(body,ledger),position)
 static func sample_regions(body: Dictionary,areas: Array,position: Vector3) -> Dictionary:
  var source: Dictionary=body.get("traits",{}).duplicate();source.ecology=0.0
@@ -55,11 +59,15 @@ static func sample_regions(body: Dictionary,areas: Array,position: Vector3) -> D
 static func nearest_region(body: Dictionary,ledger: Dictionary,position: Vector3) -> Dictionary:
  var site: Dictionary=ledger.get("sites",{}).get(body.id,{})
  if not FrontierRegionalTerraform.enabled(site):return region(body,ledger)
+ if FrontierFreeTerraform.active(site):
+  var e:=sample_at(body,ledger,position);return {"center":position,"radius":float(site.free_terraform.rules.cell_size),"state":conditions(e),"environment":e,"id":FrontierFreeTerraform.key_at(site,Vector2(position.x,position.z))}
  var zone: Dictionary=site.regions[FrontierRegionalTerraform.region_id(site,position)]
  var values: Dictionary=zone.environment.duplicate();values.merge(zone.get("restoration2",{}),true)
  return {"center":FrontierCrewWorld.vector(zone.center),"radius":float(zone.radius),"state":conditions(values),"environment":zone.environment,"id":zone.id}
 static func shader_regions(material: ShaderMaterial,body: Dictionary,ledger: Dictionary) -> void:
  var source: Dictionary=ledger.get("sites",{}).get(body.id,{})
+ if FrontierFreeTerraform.active(source):FrontierFreeTerraform.shader(material,body,source);return
+ material.set_shader_parameter("free_enabled",false)
  var areas: Array=regions(body,ledger) if FrontierRegionalTerraform.enabled(source) else []
  var points:=PackedVector4Array();var values:=PackedVector4Array();var extras:=PackedVector4Array()
  for area in areas:

@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "region_span": 640,
   "cluster_slots": 12,
   "cluster_fraction": 0.8,
@@ -101,5 +101,51 @@
         ]
       }
     }
+  },
+  "free_placement": {
+    "version": 1,
+    "cell_size": 24.0,
+    "extent": 8192.0,
+    "supply_span": 512.0,
+    "radius": {
+      "atmosphere": 96.0,
+      "thermal": 64.0,
+      "water": 64.0,
+      "biolab": 64.0,
+      "source_control": 160.0
+    },
+    "targets": {
+      "1": {
+        "area": 2304.0,
+        "stable": 30.0
+      },
+      "2": {
+        "area": 27648.0,
+        "stable": 30.0
+      },
+      "3": {
+        "area": 55296.0,
+        "stable": 45.0
+      }
+    },
+    "air_columns": 64,
+    "air_rows": 32,
+    "air_mix": 0.0003,
+    "air_volume": 1.0,
+    "water_lowland_gain": 0.75,
+    "water_height_span": 35.0,
+    "pollution_radius": 120.0,
+    "pollution_rate": 0.5,
+    "pollution_initial": 60.0,
+    "pollution_target": 8.0,
+    "stage_thresholds": [
+      0.3,
+      0.65
+    ],
+    "stage_fraction": 0.2,
+    "max_cells": 50000,
+    "specialized_rate_factor": 6.0,
+    "surface_capacity": 4.0,
+    "intro_radius": 32.0
   }
 }

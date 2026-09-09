@@ -66,7 +66,7 @@ func marker(point: Vector3,p: Vector3,kind: String,color: Color,edge: bool=false
 		"life":draw_arc(q,4,0,TAU,16,color,1.5,true)
 		_:draw_colored_polygon(PackedVector2Array([q+Vector2(0,-3),q+Vector2(3,0),q+Vector2(0,3),q+Vector2(-3,0)]),color)
 func _draw() -> void:
-	if app==null or app.surface_world==null:return
+	if app==null or app.surface_world==null or not app.actors.has(app.session.latest.get("self_id","")):return
 	var p: Vector3=app.actors[app.session.latest.self_id].position
 	var font:=get_theme_font("font","Label")
 	if relief!=null:draw_texture_rect(relief,Rect2(18,20,144,144),false,Color(1,1,1,.9))

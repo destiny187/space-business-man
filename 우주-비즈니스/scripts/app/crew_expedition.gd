@@ -948,6 +948,7 @@ func begin_placement(kind: String) -> void:
 	placement_ghost=load("res://assets/models/"+FrontierCatalog.entry("buildings",kind).model+".glb").instantiate();add_child(placement_ghost)
 	ghost_material=StandardMaterial3D.new();ghost_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ghost_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ghost_material.albedo_color=Color(.3,.9,.6,.45)
 	for node in placement_ghost.find_children("*","MeshInstance3D",true,false):node.material_override=ghost_material;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var footprint:=FrontierTerraformPlacement.new();placement_ghost.add_child(footprint);footprint.configure(self,kind)
 func cancel_placement() -> void:
 	placement_kind="";placement_valid=false;placement_reason=""
 	if is_instance_valid(placement_ghost):placement_ghost.queue_free()

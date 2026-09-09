@@ -131,6 +131,7 @@ static func ready(site: Dictionary,region: Dictionary) -> bool:
   if float(cell.environment.stable_seconds)>=float(site.tier3.rules.stable_seconds):amount+=1
  return amount>=int(site.tier3.rules.required_cells)
 static func detail(site: Dictionary,region: Dictionary) -> String:
+ if FrontierFreeTerraform.active(site):return FrontierFreeTerraform.detail(site)
  var record: Dictionary=site.tier3;var value:=0.0;var planted:=0.0
  for cell in region.cells:value+=float(cell.pollution);planted+=float(cell.colonization)
  var profile: Dictionary=record.rules.profiles[record.profile]

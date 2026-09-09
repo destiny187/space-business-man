@@ -20,6 +20,9 @@ var selected: String=""
 var waypoint:=Vector2.INF
 var timer:=0.0
 var groups: Array=[]
+var terraform: FrontierTerraformPanel
+var modes: TabBar
+var map_bar: HBoxContainer
 func configure(owner_app: FrontierCrewExpedition) -> void:
  app=owner_app;name="PlanetMap";set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);offset_left=24;offset_top=28;offset_right=-24;offset_bottom=-28
  theme=app.ui_theme
@@ -28,7 +31,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  title=FrontierInterfaceStyle.label(header,"행성지도",22);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  var system:=Button.new();system.text="항성계";header.add_child(system);system.pressed.connect(func():app.open_menu(app.navigation_frame))
  var close:=Button.new();close.text="닫기  Tab / Esc";header.add_child(close);close.pressed.connect(app.close_menus)
- var bar:=HBoxContainer.new();column.add_child(bar)
+ modes=TabBar.new();modes.add_tab("행성지도");modes.add_tab("테라포밍");column.add_child(modes)
+ var bar:=HBoxContainer.new();column.add_child(bar);map_bar=bar
  layers=OptionButton.new()
  for text in ["자원·지질","환경·복원","시설·공급"]:layers.add_item(text)
  bar.add_child(layers);layers.item_selected.connect(func(_i):canvas.queue_redraw())
@@ -39,12 +43,15 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  canvas=Control.new();canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL;canvas.custom_minimum_size=Vector2(300,200);canvas.clip_contents=true;column.add_child(canvas)
  canvas.draw.connect(draw_map);canvas.gui_input.connect(input_map)
  detail=FrontierInterfaceStyle.label(column,"지도를 선택하면 공급·복원 정보를 확인합니다.",16);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.custom_minimum_size.y=78
+ terraform=FrontierTerraformPanel.new();column.add_child(terraform);terraform.configure(app);terraform.hide()
+ modes.tab_changed.connect(func(i):map_bar.visible=i==0;canvas.visible=i==0;detail.visible=i==0;terraform.visible=i==1;refresh())
  hide()
 func refresh() -> void:
  if app.surface_world==null:hide();return
  body=app.surface_world.body;terrain=app.surface_world.terrain.field
  site=app.session.surface.get("business",{}).get("sites",{}).get(body.id,{})
  title.text=body.name+"  T%d  행성지도"%int(body.planet_tier)
+ if modes.current_tab==1:terraform.refresh();return
  if cached_id!=body.id:
   cached_id=body.id;focus=Vector2(app.camera.position.x,app.camera.position.z);groups=[];waypoint=Vector2.INF;selected=""
  var bake_key: String=body.id+str((focus/32).floor())+str(meters_per_pixel)+str(canvas.size)
@@ -125,7 +132,7 @@ func draw_map() -> void:
    if row.is_empty() or row.get("underground",false):continue
    var point:=at(Vector2(row.position[0],row.position[2]));canvas.draw_circle(point,4,Color.WHITE)
    if meters_per_pixel<2:text_at(point+Vector2(8,20),"확인 잔량 %d"%int(site.get("remaining",{}).get(row.id,row.capacity)),Color.WHITE,14)
- for region in site.get("regions",{}).values():
+ for region in ([] if FrontierFreeTerraform.active(site) else site.get("regions",{}).values()):
   var center:=Vector2(region.center[0],region.center[2]);var pos:=at(center)
   var color:=Color("83d9c5") if FrontierRegionalTerraform.ready(region) else Color("efb46f")
   canvas.draw_arc(pos,maxf(10,float(region.radius)/meters_per_pixel),0,TAU,40,color,2,true)
@@ -136,7 +143,7 @@ func draw_map() -> void:
   text_at(pos+Vector2(maxf(18,float(region.radius)/meters_per_pixel)+8,-12),region.name,color)
   text_at(pos+Vector2(maxf(18,float(region.radius)/meters_per_pixel)+8,8),"✓ 안정" if FrontierRegionalTerraform.ready(region) else "복원 대기",color,14)
   if not site.has("tier3") and region.id!="region:0":canvas.draw_dashed_line(at(Vector2(site.regions["region:0"].center[0],site.regions["region:0"].center[2])),pos,Color(.6,.8,.8,.3),1,6)
- if site.has("tier3"):
+ if site.has("tier3") and not FrontierFreeTerraform.active(site):
   for edge in [["region:1","region:2"],["region:2","region:3"]]:
    var a: Array=site.regions[edge[0]].center;var b: Array=site.regions[edge[1]].center
    var start:=at(Vector2(a[0],a[2]));var finish:=at(Vector2(b[0],b[2]));var direction: Vector2=(finish-start).normalized()
@@ -157,6 +164,7 @@ func draw_map() -> void:
   var pos:=at(waypoint);canvas.draw_line(pos-Vector2(8,0),pos+Vector2(8,0),Color.WHITE,2);canvas.draw_line(pos-Vector2(0,8),pos+Vector2(0,8),Color.WHITE,2)
  text_at(Vector2(12,canvas.size.y-12),"N ↑   후보 범위 ? / 실제 확인 전 잔량 미확정   ·   지원 지표 ±8.2km",Color("e6e8df"),12)
 func update_detail() -> void:
+ if FrontierFreeTerraform.active(site):detail.text=FrontierFreeTerraform.detail(site)+"\n대기·수질·토양·오염 분포는 테라포밍 탭에서 확인하세요.";return
  if selected.is_empty() or not site.get("regions",{}).has(selected):
   detail.text="공급 후보는 지질 추정입니다. 현장에서 광맥과 잔량을 확인하세요.\n"+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "환경 탭에서 복원 구획, 시설 탭에서 현장 공급을 확인합니다.")
   return

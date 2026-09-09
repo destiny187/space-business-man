@@ -93,14 +93,15 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	if def.is_empty() or kind not in config().buildings:return "건설 설계도를 확인하세요."
 	var radius: float=def.radius
 	if current.has("tier3"):
-		var source:=point(current.regions["region:1"].center)
+		var source:=point(current.free_terraform.source if FrontierFreeTerraform.active(current) else current.regions["region:1"].center)
 		if Vector2(p.x-source.x,p.z-source.z).length()<radius+4:return "유입원과 현장 처리 통로를 비워 두세요."
 	if FrontierLotusSupport.blocks(world,world.location,p,radius):return "Lotus 보급 상자와 투하 예정 공간을 비워 두세요."
-	if p.distance_to(point(current.center))>float(config().build_radius):return "개발 거점 65m 이내에 배치하세요."
+	if not FrontierFreeTerraform.active(current) and p.distance_to(point(current.center))>float(config().build_radius):return "개발 거점 65m 이내에 배치하세요."
 	if (current.get("base_deployed",true) and p.distance_to(point(current.center))<radius+4) or p.distance_to(point(FrontierCrewSurface.config().ship_position))<radius+13:return "착륙선과 창고의 진입로를 비워 두세요."
+	if FrontierFreeTerraform.active(current) and maxf(absf(p.x),absf(p.z))>float(current.free_terraform.rules.extent):return "지원 지표 범위를 벗어났습니다."
 	var floor:=ground(FrontierCrewSurface.field(world),p.x,p.z,radius)
 	if not floor.is_finite() or absf(floor.y-p.y)>.5:return "평탄하고 지지되는 지면이 필요합니다."
-	for building in current.buildings.values():
+	for building in current.get("placement_neighbors",current.buildings).values():
 		if point(building.position).distance_to(p)<radius+FrontierTerraformTier3.radius(building)+1.5:return "시설과 운반 통로가 겹칩니다."
 	for id in active.values():
 		if point(world.crew.members[id].position).distance_to(p)<radius+1:return "승무원이 배치 구역 안에 있습니다."
@@ -114,7 +115,7 @@ static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3
 	var current:=site(world)
 	if FrontierRegionalTerraform.enabled(current) and not current.has("local_region"):
 		var preview: Dictionary=world.duplicate(false);preview.business=world.business.duplicate(false);preview.business.sites=world.business.sites.duplicate(false)
-		preview.business.sites[world.location]=FrontierRegionalTerraform.facade(current,FrontierRegionalTerraform.region_id(current,point(world.crew.members[actor].position)))
+		preview.business.sites[world.location]=FrontierRegionalTerraform.facade(current,FrontierRegionalTerraform.region_id(current,p if FrontierFreeTerraform.active(current) else point(world.crew.members[actor].position)))
 		return build_reason(preview,actor,kind,p,active)
 	if current.is_empty():return "착륙 지표를 준비 중입니다."
 	if FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return "태양계는 테라포밍 불가 행성입니다."
@@ -131,8 +132,9 @@ static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3
 		if not gate.is_empty():return gate
 		if kind=="source_control":
 			if not current.has("tier3"):return "T3 지역 사업의 유입원에서 사용하세요."
-			var center:=point(current.regions["region:1"].center)
-			if Vector2(p.x-center.x,p.z-center.z).length()>float(current.tier3.rules.source_radius):return "유입원 48m 이내에 배치하세요."
+			var center:=point(current.free_terraform.source if FrontierFreeTerraform.active(current) else current.regions["region:1"].center)
+			var range_limit: float=current.free_terraform.rules.pollution_radius if FrontierFreeTerraform.active(current) else current.tier3.rules.source_radius
+			if Vector2(p.x-center.x,p.z-center.z).length()>range_limit:return "오염 구역 내부에 배치하세요."
 	if not FrontierEarlyAccess.available(world.business,def.tech):return "시설 기술이 필요합니다."
 	var missing: Dictionary={}
 	for key in def.cost:

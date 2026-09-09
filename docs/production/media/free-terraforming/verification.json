@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-09",
+  "engine": "Godot 4.7.2 / Forward+ Metal / Apple M2",
+  "results": {
+    "water": {
+      "result": [
+        "FREE_RESULT checks=30 failures=0 profile=acid_water simulated_seconds=264"
+      ],
+      "window_checks": null
+    },
+    "gas": {
+      "result": [
+        "FREE_RESULT checks=30 failures=0 profile=reactive_gas simulated_seconds=264"
+      ],
+      "window_checks": null
+    },
+    "intro": {
+      "result": [
+        "FREE_INTRO_RESULT checks=7 failures=0"
+      ],
+      "window_checks": null
+    },
+    "play": {
+      "result": [
+        "FREE_PLAY_FAILURES 0"
+      ],
+      "window_checks": 12
+    }
+  },
+  "fixtures": "Core flow uses prepared climate, equipment and materials; acquisition/mining/transport economy and six-player validation not covered."
+}

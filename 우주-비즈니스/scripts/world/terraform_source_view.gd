@@ -16,7 +16,7 @@ func accept(ledger: Dictionary) -> void:
  if not site.has("tier3"):return
  if marker==null:
   marker=Node3D.new();add_child(marker)
-  var center:=FrontierCrewWorld.vector(site.regions["region:1"].center);center.y=terrain.field.height(center.x,center.z);marker.position=center
+  var center:=FrontierCrewWorld.vector(site.free_terraform.source if FrontierFreeTerraform.active(site) else site.regions["region:1"].center);center.y=terrain.field.height(center.x,center.z);marker.position=center
   for n in 3:
    var rock: Node3D=load("res://assets/models/ore_stone_b.glb").instantiate();FrontierInkStyle.apply(rock,cache);marker.add_child(rock)
    var a:=n*TAU/3;rock.position=Vector3(cos(a)*1.5,0,sin(a)*1.5);rock.rotation.y=a;rock.scale=Vector3(1.8,1.3,1.8)

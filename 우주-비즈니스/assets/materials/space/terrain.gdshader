@@ -6,6 +6,11 @@ uniform vec4 dust_color:source_color=vec4(.67,.53,.39,1);
 uniform float salt_crust=0.;
 uniform float soil_recovery=0.;
 uniform float restoration=0.;
+uniform bool free_enabled=false;
+uniform sampler2D free_values : filter_nearest, repeat_disable;
+uniform sampler2D free_extras : filter_nearest, repeat_disable;
+uniform sampler2D free_mask : filter_nearest, repeat_disable;
+uniform float free_extent=8208.;
 uniform int region_count=0;
 uniform vec4 region_points[20];
 uniform vec4 region_values[20];
@@ -78,6 +83,13 @@ void fragment(){
    if(w>managed){managed=w;local_temp_value=region_values[i].x;local_life_value=region_values[i].y;local_water_value=region_values[i].z;local_pressure_value=region_values[i].w;local_salt_value=region_extras[i].x;local_soil_value=region_extras[i].y;local_restore_value=region_extras[i].z;pollution_value=region_extras[i].w;}
   }
  }
+ if(free_enabled){
+  vec2 uv=(world_position.xz+vec2(free_extent))/(2.*free_extent);
+  managed=texture(free_mask,uv).r;
+  if(any(lessThan(uv,vec2(0.)))||any(greaterThan(uv,vec2(1.)))){managed=0.;}
+  vec4 fv=texture(free_values,uv);vec4 fe=texture(free_extras,uv);
+  local_temp_value=fv.x;local_life_value=fv.y;local_water_value=fv.z;local_pressure_value=fv.w;local_salt_value=fe.x;local_soil_value=fe.y;local_restore_value=fe.z;pollution_value=fe.w;
+ }
  local_life_value*=1.-pollution_value;local_restore_value*=1.-pollution_value;
  float near_detail=1.-smoothstep(detail_near,detail_far,distance(CAMERA_POSITION_WORLD,world_position));
  float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
@@ -124,6 +136,6 @@ void fragment(){
  ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),(local_life_value<0.?local_restore_value:local_life_value)*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
  vec3 perturbed=normalize(n+(bump-n*dot(n,bump))*normal_strength*near_detail);
  NORMAL=normalize((VIEW_MATRIX*vec4(perturbed,0.)).xyz);ROUGHNESS=roughness;
- if(molten){float heat=mix(1.,region_count>0?clamp((local_temp_value-80.)/max(1.,native_temperature-80.),0.,1.):local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
+ if(molten){float heat=mix(1.,(region_count>0||free_enabled)?clamp((local_temp_value-80.)/max(1.,native_temperature-80.),0.,1.):local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
  float pulse=.85+.15*sin(TIME*1.3+world_position.z*.2);ALBEDO=mix(ALBEDO,vec3(.65,.07,.005),fissure*heat);EMISSION=vec3(1.,.12,.005)*fissure*heat*pulse*1.6;}
 }

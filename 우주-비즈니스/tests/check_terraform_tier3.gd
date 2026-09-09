@@ -1,7 +1,8 @@
 extends "res://tests/test_crew_surface.gd"
 func run() -> void:
  var core:=FrontierCrewAuthority.new();var profile:=FrontierPlayerProfile.new_character("T3 확인",0)
- check(core.start(FrontierUniverse.new_world(71503),profile,persist),"new world")
+ var legacy_world:=FrontierUniverse.new_world(71503);legacy_world.manifest.settings.regional_rules.erase("free_placement");legacy_world.manifest.settings.regional_rules.version=2
+ check(core.start(legacy_world,profile,persist),"new world")
  core.world.terrain_settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json"));core.world.terrain_settings_hash=FrontierUniverse.fingerprint(core.world.terrain_settings)
  var chosen: String="acid_water"
  for arg in OS.get_cmdline_user_args():
