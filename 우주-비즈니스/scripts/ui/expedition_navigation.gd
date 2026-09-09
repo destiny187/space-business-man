@@ -264,12 +264,13 @@ func _notice(value: String) -> void:
 	message.text=value;toast_left=4;message.show()
 
 func _process(delta: float) -> void:
-	if app.session.active:FrontierStellarRoutes.build(app.session.manifest,int(app.session.latest.get("crew",{}).get("navigation",{}).get("system",0)))
+	if app.session.active and (app.surface_world==null or app.navigation_frame.visible):
+		FrontierStellarRoutes.build(app.session.manifest,int(app.session.latest.get("crew",{}).get("navigation",{}).get("system",0)),1500 if app.navigation_frame.visible else 250)
 	if app.space_view!=null:
 		if app.navigation_frame.visible and app.chart.galaxy and app.surface_world==null:
 			app.space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED;flight_render_suspended=true
 		elif flight_render_suspended:
-			app.space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if app.surface_world==null and app.outside else SubViewport.UPDATE_DISABLED
+			app.space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if app.surface_world==null else SubViewport.UPDATE_DISABLED
 			flight_render_suspended=false
 	toast_left=maxf(0,toast_left-delta);message.visible=toast_left>0
 	var active: bool=app.session.active and app.session.latest.get("phase")=="playing"

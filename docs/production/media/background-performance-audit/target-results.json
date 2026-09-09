@@ -1,0 +1,71 @@
+{
+  "note": "Only hidden flight visual callback / route index building / subviewport 3D disabled temporarily, separately and restored. World simulation, physics, current ground view continue.",
+  "routes": {
+    "after": 125000,
+    "before": 125000,
+    "total": 125000
+  },
+  "samples": [
+    {
+      "draw_calls": 1632.0423076923,
+      "fps": 46.0593400192599,
+      "frames": 260,
+      "label": "target_baseline",
+      "max_ms": 115.056,
+      "mean_ms": 21.7111230769231,
+      "p95_ms": 25.869,
+      "primitives": 498058.446153846
+    },
+    {
+      "draw_calls": 1635.58333333334,
+      "fps": 44.1667175810772,
+      "frames": 120,
+      "label": "target_no_hidden_flight",
+      "max_ms": 52.295,
+      "mean_ms": 22.6414833333333,
+      "p95_ms": 45.186,
+      "primitives": 498486.666666666
+    },
+    {
+      "draw_calls": 1638.825,
+      "fps": 42.1459006789705,
+      "frames": 120,
+      "label": "target_no_route_build",
+      "max_ms": 96.463,
+      "mean_ms": 23.7271,
+      "p95_ms": 40.823,
+      "primitives": 499207.733333334
+    },
+    {
+      "draw_calls": 1643.575,
+      "fps": 48.5886613499874,
+      "frames": 120,
+      "label": "target_no_subviewport_3d",
+      "max_ms": 47.046,
+      "mean_ms": 20.5809333333333,
+      "p95_ms": 25.151,
+      "primitives": 500915.0
+    },
+    {
+      "draw_calls": 1663.00833333334,
+      "fps": 49.2591020558286,
+      "frames": 120,
+      "label": "target_no_hidden_flight_or_routes",
+      "max_ms": 29.395,
+      "mean_ms": 20.3008166666667,
+      "p95_ms": 25.781,
+      "primitives": 502320.175
+    },
+    {
+      "draw_calls": 1692.86111111111,
+      "fps": 47.2330238608116,
+      "frames": 180,
+      "label": "target_return",
+      "max_ms": 85.413,
+      "mean_ms": 21.1716277777778,
+      "p95_ms": 30.046,
+      "primitives": 504131.383333333
+    }
+  ],
+  "snapshots_during_probes": 144
+}

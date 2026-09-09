@@ -1,0 +1,25 @@
+{
+  "note": "Post-fix ground profile; no renderer omissions.",
+  "samples": [
+    {
+      "draw_calls": 1612.54166666666,
+      "fps": 51.6671481757837,
+      "frames": 120,
+      "label": "active_baseline",
+      "max_ms": 27.584,
+      "mean_ms": 19.3546583333333,
+      "p95_ms": 22.721,
+      "primitives": 489691.0
+    },
+    {
+      "draw_calls": 1613.00000000001,
+      "fps": 43.3730759221598,
+      "frames": 180,
+      "label": "active_profiled",
+      "max_ms": 67.223,
+      "mean_ms": 23.0557777777778,
+      "p95_ms": 38.463,
+      "primitives": 490648.0
+    }
+  ]
+}

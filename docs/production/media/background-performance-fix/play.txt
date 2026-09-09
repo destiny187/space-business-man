@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS saved ground ready
+PASS hidden flight visual clock stopped
+PASS host time continues while visuals sleep
+PASS ground leaves route preparation idle
+PASS hidden vessel terminal not rebuilt
+PASS opening terminal applies latest snapshot immediately
+PASS periodic checkpoint scheduled
+PASS periodic checkpoint completes
+PASS approved launch starts
+PASS launch returns to flight
+PASS latest navigation restored after launch
+PASS restored flight uses current system
+PASS galaxy map suspends hidden flight
+PASS map close restores latest orbit state
+PASS cabin window resumes after galaxy map
+PASS checkpoint queued before exit
+PASS exit joins worker and saves final state
+PASS final save reloads with no worker left
+BACKGROUND PLAY checks 18 failures 0

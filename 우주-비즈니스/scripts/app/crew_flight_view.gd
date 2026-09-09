@@ -18,6 +18,9 @@ var transit_overlay: Control
 var transit_audio: FrontierAudio
 var soundscape: FrontierSpaceAudio
 var presentation_blocked:=false
+var transition_preparing:=false
+var pending_navigation: Dictionary={}
+var visual_suspended:=false
 var engine: AudioStreamPlayer
 var vessel_sound: FrontierVesselSound
 var last_phase: String=""
@@ -47,7 +50,16 @@ func _ready() -> void:
 	soundscape=FrontierSpaceAudio.new();add_child(soundscape)
 	vessel_sound=FrontierVesselSound.new();add_child(vessel_sound);engine=vessel_sound.layers.turbine
 	set_physics_process(false);set_process_unhandled_input(false)
+func _visual_hidden() -> bool:
+	var viewport:=get_viewport()
+	return viewport is SubViewport and viewport.render_target_update_mode==SubViewport.UPDATE_DISABLED
+
 func update_navigation(value: Dictionary) -> void:
+	# Arrival owns camera motion and may need system preparation behind its cover.
+	if _visual_hidden() and not transition_preparing:
+		pending_navigation=value.duplicate(true)
+		return
+	pending_navigation={}
 	var initial_view:=navigation.is_empty()
 	var solar_start: bool=initial_view and int(value.system)==0 and value.mode=="idle"
 	station_excluded=int(value.get("first_stellar_system",-1))
@@ -93,6 +105,16 @@ func update_navigation(value: Dictionary) -> void:
 	transit_overlay.telemetry=FrontierFlightTelemetry.read(state.manifest,navigation)
 	update_orbits(float(value.get("orbit_time",0)))
 func _process(delta: float) -> void:
+	if _visual_hidden():
+		if not visual_suspended:
+			visual_suspended=true;vessel_sound.suspend();soundscape.scan.stop();soundscape.arrival.stream_paused=true
+			scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
+		return
+	visual_suspended=false
+	if not pending_navigation.is_empty():
+		update_navigation(pending_navigation)
+		ship.position=_display_position(navigation)
+		ship.quaternion=_flight_basis(FrontierCrewWorld.vector(navigation.direction)).get_rotation_quaternion()
 	if navigation.is_empty():return
 	if navigation.mode=="jump":step_preparation()
 	soundscape.blocked=presentation_blocked

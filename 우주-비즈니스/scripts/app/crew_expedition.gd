@@ -351,15 +351,17 @@ func _apply_snapshot(value: Dictionary) -> void:
 	waiting_screen.hide();cabin_root.show();help_text.show()
 	if flight==null:_setup_flight()
 	onboarding.update_snapshot(value)
+	flight.transition_preparing=arrival.active
 	flight.update_navigation(value.crew.navigation)
 	navigation_journal.observe(value)
 	flight.refits.flight_mode=true
 	flight.refits.update_loadout({"hull":"finch"} if not value.get("local_shuttle","").is_empty() else value.get("vessel",{}))
-	business_panel.shuttle_panel.update_snapshot(value)
-	business_panel.vessel_terminal.update_snapshot(value)
-	station_market.update_snapshot(value)
-	shipyard_panel.set_meta("engineering",session.surface.get("engineering",{}))
-	shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
+	if business_panel.shuttle_panel.is_visible_in_tree():business_panel.shuttle_panel.update_snapshot(value)
+	if business_panel.vessel_terminal.is_visible_in_tree():business_panel.vessel_terminal.update_snapshot(value)
+	if station_market.visible:station_market.update_snapshot(value)
+	if shipyard_panel.visible:
+		shipyard_panel.set_meta("engineering",session.surface.get("engineering",{}))
+		shipyard_panel.update_snapshot(value,session.surface.get("business",{}))
 	_sync_recovery(value.crew.recovery)
 	var members: Dictionary=value.crew.members
 	for id in actors.keys():
@@ -802,6 +804,7 @@ func _menu_changed() -> void:
 func toggle_shipyard() -> void:
 	if not session.active:return
 	open_menu(shipyard_panel)
+	shipyard_panel.set_meta("engineering",session.surface.get("engineering",{}))
 	shipyard_panel.update_snapshot(session.latest,session.surface.get("business",{}))
 func toggle_business() -> void:
 	if not session.active or surface_world==null:return

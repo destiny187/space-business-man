@@ -252,12 +252,15 @@ func close_session() -> bool:
 func _closed(message: String) -> void:
 	active=false;notice.emit(message)
 func _exit_tree() -> void:
+	if store!=null:store.finish_pending()
 	if hosting and authority!=null and not authority.stopped:authority.close()
 	if enet!=null:enet.close()
 
 func _physics_process(delta: float) -> void:
 	if not hosting or not active or authority.stopped or authority.phase!="playing":return
-	authority.step_surface(minf(delta,.1))
+	if not store.poll_checkpoint():
+		authority.stopped=true;authority.error="체크포인트 저장 실패: "+store.last_error
+	else:authority.step_surface(minf(delta,.1))
 	if authority.stopped:
 		active=false;notice.emit(authority.error)
 		if not offline:_closed.rpc(authority.error)
@@ -280,7 +283,8 @@ func _physics_process(delta: float) -> void:
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
 		checkpoint_timer=5.0
-		if not authority.checkpoint():
+		if not (authority.checkpoint() if arrived else store.begin_checkpoint(authority.world)):
+			authority.stopped=true;authority.error="항해 상태 저장 실패: "+store.last_error
 			active=false;notice.emit(authority.error)
 			if not offline:_closed.rpc(authority.error)
 
