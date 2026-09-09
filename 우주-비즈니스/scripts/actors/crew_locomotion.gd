@@ -12,7 +12,7 @@ static func valid(value: Variant) -> bool:
 	for key in ["jump_serial","land_serial","impact","phase","coyote","buffer","takeoff","landing","jump_request","input_ack"]:
 		if not FrontierUniverse._finite(value.get(key),0,9007199254740000):return false
 	return FrontierUniverse._finite(value.get("yaw"),-TAU,TAU)
-static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true) -> void:
+static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0) -> void:
 	var c:=config()
 	var was_grounded: bool=motion.grounded
 	var start:=body.position
@@ -30,13 +30,21 @@ static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,spe
 		motion.takeoff=maxf(0,float(motion.takeoff)-delta)
 		if motion.takeoff<=0:
 			body.velocity.y=float(c.jump_speed);motion.jump_serial+=1;motion.landing=0.0;motion.coyote=0.0;launched=true
-	var target:=direction*speed
+	var immersion:=clampf(water_depth/1.5,0,1)
+	var water_cfg:=FrontierSurfaceWater.config()
+	if immersion>.15:motion.takeoff=0.0
+	var target:=direction*speed*lerpf(1.0,float(water_cfg.water_speed_multiplier),immersion)
 	var acceleration: float=c.acceleration if was_grounded else c.air_acceleration
 	body.velocity.x=move_toward(body.velocity.x,target.x,acceleration*delta)
 	body.velocity.z=move_toward(body.velocity.z,target.y,acceleration*delta)
 	if not launched:
-		if not was_grounded:body.velocity.y-=gravity*delta
+		if not was_grounded or immersion>.7:body.velocity.y-=gravity*delta
 		else:body.velocity.y=-1.0
+	if immersion>0:
+		body.velocity.y+=gravity*float(water_cfg.buoyancy)*immersion*delta
+		body.velocity.y*=exp(-float(water_cfg.water_drag)*immersion*delta)
+		if enabled and water_depth>1.0 and motion.buffer>0:
+			body.velocity.y=3.0;motion.buffer=0.0
 	body.floor_snap_length=float(c.floor_snap) if body.velocity.y<=0 else 0.0
 	var impact:=maxf(0,-body.velocity.y)
 	body.move_and_slide()

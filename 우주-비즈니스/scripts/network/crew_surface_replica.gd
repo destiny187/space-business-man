@@ -32,11 +32,12 @@ static func packet(world: Dictionary,actor: String) -> Dictionary:
 		cargo[key]=sample.duplicate(true)
 		var observation: String=sample.source_body+":"+sample.form_id
 		if world.ecology.observations.has(observation):observations[observation]=world.ecology.observations[observation].duplicate(true)
-	return {"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
+	return {"water":FrontierSurfaceWater.packet(world.get("surface_water",{}).get(id,FrontierSurfaceWater.create()),position),"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
 		"edits":world.terrain_edits.get(id,[]).duplicate(true),"rules_hash":world.ecology.rules_hash,"catalog_hash":world.ecology.catalog_hash,
 		"ecology":{"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo}}
 
 static func validate(value: Variant,manifest: Dictionary) -> bool:
+	if not value is Dictionary or not FrontierSurfaceWater.valid(value.get("water",FrontierSurfaceWater.create()),int(FrontierSurfaceWater.config().snapshot_cells)):return false
 	if not value is Dictionary or value.get("version")!=1 or not value.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,value.body_id)<0:return false
 	if not FrontierUniverse._finite(value.get("epoch"),1,9007199254740000):return false
 	if FrontierPlanetaryCycles.enabled(manifest) and not FrontierPlanetaryCycles.valid_region(value.get("sky_region")):return false

@@ -296,8 +296,49 @@ func checkpoint() -> bool:
 	if not save_world.call(world):stopped=true;error="항해 상태 저장 실패로 세계를 정지했습니다.";return false
 	return true
 
+var water_solvers: Dictionary={}
+var water_timer:=0.0
+var water_cursor:=0
+func water_depth(actor: String,p: Vector3) -> float:
+	var local:=FrontierShuttles.context(world,actor)
+	if not FrontierCrewSurface.landed(local):return 0.0
+	var solver: FrontierSurfaceWater=water_solvers.get(local.location)
+	return solver.sample(p) if solver!=null else 0.0
+func _step_water(delta: float) -> void:
+	if not world.has("surface_water"):world.surface_water={}
+	water_timer-=delta
+	if water_timer<=0:
+		water_timer=.5
+		var bodies: Dictionary={}
+		for actor in peers.values():
+			var local:=FrontierShuttles.context(world,actor)
+			if not FrontierCrewSurface.landed(local):continue
+			var id: String=local.location
+			if not bodies.has(id):bodies[id]={"world":local,"centers":[]}
+			bodies[id].centers.append(FrontierCrewWorld.vector(world.crew.members[actor].position))
+		for id in water_solvers:
+			if not bodies.has(id):water_solvers[id].interests.clear()
+		for id in bodies:
+			var local: Dictionary=bodies[id].world
+			var terrain:=FrontierCrewSurface.field(local)
+			if not water_solvers.has(id):
+				var solver:=FrontierSurfaceWater.new();solver.configure(terrain);water_solvers[id]=solver
+			if not world.surface_water.has(id):world.surface_water[id]=FrontierSurfaceWater.create()
+			var centers: Array[Vector3]=[]
+			for p in bodies[id].centers:centers.append(p)
+			water_solvers[id].bind(world.surface_water[id],terrain,world.terrain_edits.get(id,[]),centers,FrontierSurfaceRecovery.region(FrontierUniverse.body_from_id(world.manifest,id),world.get("business",{})))
+	var keys: Array=water_solvers.keys()
+	if keys.is_empty():return
+	water_cursor%=keys.size()
+	var id: String=keys[water_cursor];water_cursor+=1
+	var solver: FrontierSurfaceWater=water_solvers[id]
+	# Domain transactions replace world dictionaries. Rebind before every mutation.
+	solver.record=world.surface_water[id]
+	if not solver.interests.is_empty():solver.step(delta*keys.size())
+
 func step_surface(delta: float) -> void:
 	if stopped:return
+	_step_water(delta)
 	industry_timer+=delta
 	if industry_timer>=1.0:
 		industry_timer-=1.0

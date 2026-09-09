@@ -213,6 +213,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	return ""
 
 static func validate_world(world: Dictionary) -> String:
+	var water_error:=FrontierSurfaceWater.validate_world(world)
+	if not water_error.is_empty():return water_error
 	var shuttle_error:=FrontierShuttles.validate_world(world)
 	if not shuttle_error.is_empty():return shuttle_error
 	if landed(world):

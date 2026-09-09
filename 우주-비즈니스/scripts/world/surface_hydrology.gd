@@ -180,7 +180,7 @@ func _install(job: Dictionary) -> void:
  visual.visibility_range_end=float(cfg.visible_distance);visual.visibility_range_end_margin=60;visual.visibility_range_fade_mode=GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF;row.node.add_child(visual)
  visible_segments+=row.segments
 func nearest_water(p: Vector3) -> Dictionary:
- var result: Dictionary={"distance":INF,"position":p,"kind":""}
+ var result: Dictionary=surface.physical_water.nearest_water(p) if surface.physical_water!=null else {"distance":INF,"position":p,"kind":""}
  if native_liquid:
   for i in 12:
    var q:=p+Vector3(cos(i*TAU/12),0,sin(i*TAU/12))*12;q.y=float(cfg.sea_level)

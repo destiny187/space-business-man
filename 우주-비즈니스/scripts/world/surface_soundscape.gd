@@ -7,6 +7,7 @@ var gains: Dictionary={}
 var voices: Array[AudioStreamPlayer3D]=[]
 var event_left:=8.0
 var rng:=RandomNumberGenerator.new()
+var immersion_filter: AudioEffectLowPassFilter
 var reverb: AudioEffectReverb
 var bus_name: String
 var creature_sources: Array[Vector3]=[]
@@ -20,6 +21,7 @@ func configure(owner_presence: FrontierSurfacePresence) -> void:
  presence=owner_presence;library=FrontierAudio.new();add_child(library);rng.seed=int(presence.surface.body.seed)
  bus_name="SurfaceSpace_"+str(get_instance_id());AudioServer.add_bus();var index:=AudioServer.bus_count-1;AudioServer.set_bus_name(index,bus_name);AudioServer.set_bus_send(index,"Ambience")
  reverb=AudioEffectReverb.new();reverb.room_size=.65;reverb.wet=0;AudioServer.add_bus_effect(index,reverb)
+ immersion_filter=AudioEffectLowPassFilter.new();immersion_filter.cutoff_hz=20000;AudioServer.add_bus_effect(index,immersion_filter)
  for key in ["wind","nature","foliage","grit","water","thermal"]:
   var player:=AudioStreamPlayer.new();player.bus=bus_name;player.stream=library.stream(presence.cfg.sounds[key],true);player.volume_db=-80;add_child(player);layers[key]=player;gains[key]=0.0
  for i in 4:
@@ -31,7 +33,7 @@ func update(delta: float,blocked: bool) -> void:
   var source: AudioStreamPlayer3D=water_sources[key];source.stream_paused=blocked
   if blocked:continue
   var selected: Dictionary=presence.scenery.water
-  var target:=float(presence.surface.atmosphere.current.atmosphere)*(1-presence.cave) if selected.kind==key and float(selected.distance)<40 else 0.0
+  var target:=float(presence.surface.atmosphere.current.atmosphere)*(1.0 if selected.get("physical",false) else 1-presence.cave) if selected.kind==key and float(selected.distance)<40 else 0.0
   water_gains[key]=move_toward(float(water_gains[key]),target,delta*1.5)
   if selected.kind==key:source.global_position=selected.position+Vector3.UP*.15
   if water_gains[key]>.001:
@@ -41,7 +43,9 @@ func update(delta: float,blocked: bool) -> void:
  for player in machinery:player.stream_paused=blocked
  if not blocked:
   sample_left-=delta
-  if sample_left<=0:sample_left=.5;_sample()
+  if sample_left<=0:
+   sample_left=.5;_sample()
+   immersion_filter.cutoff_hz=650 if presence.surface.water_depth(presence.surface.viewer.position)>1.65 else 20000
   for i in machinery.size():
    var player: AudioStreamPlayer3D=machinery[i]
    if i>=presence.scenery.machines.size() or not is_instance_valid(presence.scenery.machines[i]):player.stop();continue

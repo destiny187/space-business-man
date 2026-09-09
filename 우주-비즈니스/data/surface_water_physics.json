@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "cell_meters": 1.0,
+  "compression": 0.02,
+  "maximum_mass": 6.0,
+  "maximum_cells_per_planet": 16384,
+  "active_radius": 80.0,
+  "cells_per_frame": 32,
+  "budget_usec": 1200,
+  "flow_per_step": 0.25,
+  "minimum_mass": 1e-05,
+  "seed_steps_per_frame": 8,
+  "snapshot_radius": 52.0,
+  "snapshot_cells": 4096,
+  "water_drag": 3.5,
+  "water_speed_multiplier": 0.48,
+  "buoyancy": 1.12,
+  "tick_seconds": 0.1
+}

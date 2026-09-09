@@ -30,6 +30,7 @@ var preferences: FrontierClientSettings
 var rendered_distance:=0.0
 var refits: FrontierVesselVisuals
 var business_view: FrontierBusinessSiteView
+var physical_water: FrontierSurfaceWaterView
 var hydrology: FrontierSurfaceHydrology
 var presence: FrontierSurfacePresence
 var surface_details: FrontierSurfaceDetails
@@ -53,6 +54,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	FrontierSurfaceMaterialLibrary.configure(mat,body)
 	terrain=FrontierTerrainStreamer.new();terrain.configure(int(body.streams.terrain),packet.edits,mat,config,body.get("terrain_traits",{}));add_child(terrain)
 	hydrology=FrontierSurfaceHydrology.new();add_child(hydrology);hydrology.configure(self);hydrology.accept(packet.get("business",{}))
+	physical_water=FrontierSurfaceWaterView.new();add_child(physical_water);physical_water.configure(self);physical_water.accept(packet.get("water",FrontierSurfaceWater.create()))
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)
 	distant=FrontierDistantTerrain.new();distant.material_override=mat;add_child(distant)
 	var ship: Node3D=load("res://assets/models/ships/kestrel.glb").instantiate();ship.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position);FrontierInkStyle.apply(ship,material_cache);add_child(ship)
@@ -97,6 +99,7 @@ func accept(packet: Dictionary) -> void:
 	atmosphere.accept(packet.get("business",{}));_update_shuttles()
 	if presence!=null:presence.accept(packet.get("business",{}))
 	if hydrology!=null:hydrology.accept(packet.get("business",{}))
+	if physical_water!=null:physical_water.accept(packet.get("water",FrontierSurfaceWater.create()))
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()
@@ -205,3 +208,10 @@ func seat_vessel() -> void:
 	seated_hull=refits.hull_id
 	var cfg: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/planet_arrival.json"))
 	if cfg.clearance.has(seated_hull):landing_ship.position.y=terrain.field.height(landing_ship.position.x,landing_ship.position.z)+float(cfg.clearance[seated_hull])
+
+func water_depth(p: Vector3) -> float:
+	if physical_water==null:return 0.0
+	var value:=FrontierSurfaceWater.depth(physical_water.state,p)
+	var base:=terrain.field.height(p.x,p.z)
+	if hydrology.native_liquid and base<float(hydrology.cfg.sea_level) and p.y>=base:value=maxf(value,float(hydrology.cfg.sea_level)-p.y)
+	return maxf(0,value)
