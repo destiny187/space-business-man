@@ -79,3 +79,11 @@ func _exit_tree() -> void:
 	for player in layers.values():player.stop();player.stream=null
 	for player in events:
 		if is_instance_valid(player):player.stop();player.stream=null
+
+func suspend() -> void:
+	for player in layers.values():player.stop()
+	for player in events:
+		if is_instance_valid(player):player.stop();player.queue_free()
+	events.clear()
+	for key in gains:gains[key]=0.0
+	initialized=false

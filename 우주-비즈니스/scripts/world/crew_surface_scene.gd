@@ -4,6 +4,8 @@ var presentation_points: Array[Vector3]=[]
 var presentation_ecology_refreshed:=false
 var shuttle_models: Dictionary={}
 var landing_ship: Node3D
+var landing_effects: FrontierLandingSurfaceEffects
+var seated_hull: String="kestrel"
 var session: FrontierCrewSession
 var viewer: Node3D
 var terrain: FrontierTerrainStreamer
@@ -58,6 +60,8 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		var bounds: AABB=(ship.global_transform.affine_inverse()*mesh.global_transform)*mesh.get_aabb()
 		bottom=minf(bottom,bounds.position.y)
 	ship.position.y=terrain.field.height(ship.position.x,ship.position.z)-bottom
+	var arrival_spawn:=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0])+Vector3(-4,0,0)
+	ship.rotation.y=atan2(arrival_spawn.x-ship.position.x,arrival_spawn.z-ship.position.z)
 	landing_ship=ship
 	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
@@ -125,6 +129,7 @@ func _process(delta: float) -> void:
 	if session==null or terrain==null or not session.active or not session.latest.has("crew"):return
 	if session.hosting and session.authority.world.has("ecology"):ecology.ecology=session.authority.world.ecology
 	refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
+	if refits.requested_hull.is_empty() and seated_hull!=refits.hull_id:seat_vessel()
 	_update_interest()
 	fallback_tick-=delta
 	if fallback_tick<=0 and (fallback_jobs!=terrain.completed_jobs or fallback_distant_builds!=distant.build_count):
@@ -198,3 +203,8 @@ func _update_shuttles() -> void:
 		var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad);point.x+=float(fleet[id].get("pad_slot",0))*7.0;point.y=terrain.field.height(point.x,point.z)
 		ship.position=point;shuttle_models[id]=ship
 		var label:=Label3D.new();label.text="FINCH · "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
+
+func seat_vessel() -> void:
+	seated_hull=refits.hull_id
+	var cfg: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/planet_arrival.json"))
+	if cfg.clearance.has(seated_hull):landing_ship.position.y=terrain.field.height(landing_ship.position.x,landing_ship.position.z)+float(cfg.clearance[seated_hull])

@@ -13,6 +13,7 @@ var ghosts: Node3D
 var restore_amount:=0.0
 var visual_temperature: float=NAN
 var presentation_points: Array[Vector3]=[]
+var labels_enabled:=true
 var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
@@ -118,7 +119,7 @@ func _process(dt: float) -> void:
 	_load_one_model()
 	for node in nodes.values():
 		var camera:=get_viewport().get_camera_3d()
-		if camera!=null:node.get_meta("label").visible=node.position.distance_to(camera.global_position)<18
+		if camera!=null:node.get_meta("label").visible=labels_enabled and node.position.distance_to(camera.global_position)<18
 		var previous: Vector3=node.position
 		if node.has_meta("destination"):
 			node.position=node.position.lerp(node.get_meta("destination"),minf(dt*8,1))

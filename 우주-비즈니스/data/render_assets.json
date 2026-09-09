@@ -367,14 +367,16 @@
     "name": "KESTREL · 공동 원정선",
     "group": "장비",
     "model": "res://assets/models/ships/kestrel.glb",
-    "source": "art/blender/ships/kestrel.blend",
+    "source": "art/blender/ships/kestrel_landing.blend",
     "geometry": "new",
     "foliage": false,
     "view_direction": [
       1.22,
       0.84,
       -1.7
-    ]
+    ],
+    "generator": "tools/build_landing_assembly.py",
+    "review": "docs/production/75-planet-entry-and-disembark.md"
   },
   {
     "id": "bio_lithic_01",

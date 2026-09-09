@@ -7,6 +7,7 @@ var camera: Camera3D
 var drive: FrontierVesselDriveEffects
 var refits: FrontierVesselVisuals
 var light: DirectionalLight3D
+var environment: Environment
 func configure(vessel: Dictionary) -> void:
  set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
  mouse_filter=Control.MOUSE_FILTER_IGNORE;stretch=true
@@ -14,7 +15,7 @@ func configure(vessel: Dictionary) -> void:
  viewport.msaa_3d=Viewport.MSAA_2X;viewport.screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
  viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(viewport)
  stage=Node3D.new();viewport.add_child(stage)
- var world:=WorldEnvironment.new();var environment:=Environment.new()
+ var world:=WorldEnvironment.new();environment=Environment.new()
  environment.background_mode=Environment.BG_CLEAR_COLOR
  environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
  environment.ambient_light_color=Color("a2b5c5");environment.ambient_light_energy=.28
@@ -30,7 +31,22 @@ func match_view(source: Node3D,source_camera: Camera3D) -> void:
  camera.transform=Transform3D(camera.basis.orthonormalized(),camera.position)
  camera.fov=source_camera.fov
 func set_entry_direction(downward: bool) -> void:
- for jet in drive.jets:jet.process_material.direction=Vector3.DOWN if downward else Vector3.BACK
+ drive.set_landing(downward)
 func release() -> void:
  viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED
  queue_free()
+
+func match_space_light(source: Node3D,delta: float) -> void:
+ var sunward:=source.global_basis.orthonormalized().inverse()*(-source.global_position).normalized()
+ var basis:=Basis.looking_at(-sunward,Vector3.UP)
+ light.quaternion=light.quaternion.slerp(basis.get_rotation_quaternion(),minf(1,delta*4))
+ light.light_energy=lerpf(light.light_energy,2.0,minf(1,delta*4));environment.ambient_light_energy=lerpf(environment.ambient_light_energy,.12,minf(1,delta*4))
+func match_surface_light(surface: FrontierCrewSurfaceScene,delta: float) -> void:
+ var source:=surface.landing_ship;var sun: DirectionalLight3D=surface.atmosphere.sun
+ var basis:=source.global_basis.orthonormalized().inverse()*sun.global_basis
+ var blend:=minf(1,delta*2)
+ light.quaternion=light.quaternion.slerp(basis.get_rotation_quaternion(),blend)
+ light.light_color=light.light_color.lerp(sun.light_color,blend);light.light_energy=lerpf(light.light_energy,sun.light_energy,blend)
+ environment.ambient_light_energy=lerpf(environment.ambient_light_energy,surface.environment.ambient_light_energy,blend)
+ environment.ambient_light_color=environment.ambient_light_color.lerp(surface.environment.ambient_light_color,blend)
+ refits.landing_override=surface.refits.landing_override.duplicate()

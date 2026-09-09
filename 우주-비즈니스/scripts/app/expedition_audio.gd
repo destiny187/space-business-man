@@ -23,6 +23,7 @@ func _process(delta: float) -> void:
 	var playing: bool=app.session.active and app.session.latest.get("phase","")=="playing"
 	var crew: Dictionary=app.session.latest.get("crew",{})
 	var on_planet: bool=playing and not crew.get("landing",{}).is_empty()
+	if app.arrival.active and app.arrival.phase in ["approach","loading","warming"]:on_planet=false
 	current_place=("planet" if on_planet else "space") if playing else ""
 	var paused: bool=not DisplayServer.window_is_focused() or app.any_menu_open()
 	var settings:=FrontierClientSettings.current(get_tree())
@@ -60,6 +61,7 @@ func _update_mood(delta: float,nav: Dictionary,on_planet: bool) -> void:
 		var p: float=nav.get("transit",{}).get("progress",0.0)
 		duck=.4 if p<.3 else (1.0-smoothstep(.90,.98,p)*.94)
 	elif not on_planet and discovery_left>float(config.discovery_seconds)-4:duck=.5
+	if app.arrival.active:duck=minf(duck,.5)
 	music_duck=move_toward(music_duck,duck,delta*3.0)
 func _exit_tree() -> void:
 	for player in music.values():player.stop();player.stream=null

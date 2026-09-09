@@ -1,0 +1,14 @@
+{
+  "source": "art/blender/ships/kestrel_landing.blend",
+  "previous_source_preserved": "art/blender/ships/kestrel.blend",
+  "model": "우주-비즈니스/assets/models/ships/kestrel.glb",
+  "generator": "tools/build_landing_assembly.py",
+  "articulation": [
+    "Anim_LandingLeg_*",
+    "Anim_Strut_*",
+    "Anim_Hatch",
+    "Anim_Ramp"
+  ],
+  "status": "blender_and_godot_rendered",
+  "review": "docs/production/75-planet-entry-and-disembark.md"
+}

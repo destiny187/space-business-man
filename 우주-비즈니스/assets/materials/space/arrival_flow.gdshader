@@ -1,4 +1,6 @@
 shader_type canvas_item;
+uniform float atmosphere=1.0;
+uniform float heat=0.0;
 uniform float strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec2 vessel_uv = vec2(0.5, 0.5);
 uniform vec4 tint : source_color = vec4(0.9, 0.75, 0.55, 1.0);
@@ -26,7 +28,8 @@ void fragment() {
  // No hull-clear mask here: irregular cloud banks pass in FRONT of the ship.
  float cloud=density*cloud_opacity;
  float wisps=streak*0.27*hull_clear+bow*front*0.16;
- float alpha=strength*min(0.65,1.0-(1.0-cloud)*(1.0-wisps));
- vec3 cloud_color=mix(tint.rgb*0.82,vec3(1.0,0.91,0.77),0.30+detail*0.18);
+ float alpha=atmosphere*strength*min(0.65,1.0-(1.0-cloud)*(1.0-wisps));
+ vec3 cloud_color=mix(tint.rgb*0.82,tint.rgb*1.18,0.30+detail*0.18);
+ cloud_color=mix(cloud_color,vec3(1.0,.42,.13),clamp(bow*front*heat*.7,0.0,.65));
  COLOR=vec4(cloud_color,alpha);
 }

@@ -684,7 +684,7 @@ func _sync_surface_view() -> void:
 	if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_DISABLED
 	if arrival.active and arrival.phase=="approach":
 		outside=true;exterior_view.show();space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS
-	reticle.show()
+	reticle.visible=not arrival.active
 	if session.surface.is_empty() or session.surface.body_id!=landing.body_id or int(session.surface.epoch)!=int(landing.epoch):surface_status.value="호스트의 지표 기록을 수신 중입니다.";return
 	if surface_world!=null and (surface_world.body.id!=landing.body_id or surface_world.epoch!=int(landing.epoch)):remove_child(surface_world);surface_world.queue_free();surface_world=null
 	if surface_world==null and actors.has(session.latest.self_id):

@@ -10,6 +10,9 @@ var target_boost:=false
 var thrust:=0.0
 var heat:=0.0
 var finch:=false
+var landing_mode:=false
+func set_landing(enabled: bool) -> void:
+	landing_mode=enabled;_layout()
 var steering:=Vector2.ZERO
 var braking:=0.0
 var blocked:=false
@@ -64,6 +67,8 @@ func _layout() -> void:
 	for i in jets.size():
 		var side:=float(i*2-1)
 		jets[i].position=Vector3(side*.79,1.49,2.7) if finch else Vector3(side*5,.12,7.48)
+		if landing_mode:jets[i].position=Vector3(side*.79,.70,.3) if finch else Vector3(side*2.3,-1.05,0)
+		jets[i].process_material.direction=Vector3.DOWN if landing_mode else Vector3.BACK
 		jets[i].scale=Vector3.ONE*(.3 if finch else 1.0)
 		lights[i].position=jets[i].position;lights[i].omni_range=3 if finch else 8
 	var points: Array[Vector3]=[Vector3(3.3,.7,-4.0),Vector3(-3.3,.7,-4.0),Vector3(0,2.6,-3.0),Vector3(0,-.55,-3.0),Vector3(2.3,.1,-5.9),Vector3(-2.3,.1,-5.9)]
