@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "lighting": {
+    "ambient_energy": 0.12,
+    "stellar_energy": 2.8,
+    "update_seconds": 0.08
+  },
+  "atmosphere": {
+    "pressure_scale": 0.65,
+    "maximum_density": 1.35,
+    "shell_height": 0.028
+  },
+  "clouds": {
+    "height": 0.012,
+    "shadow_strength": 0.36,
+    "wind_speed": 0.0008
+  },
+  "sky": {
+    "minimum_stars": 0.65,
+    "maximum_stars": 1.35,
+    "nebula_strength": 1.25
+  },
+  "debris": {
+    "max_fragments": 605,
+    "ring_activation_distance": 2400.0,
+    "fade_near": 1400.0,
+    "fade_far": 1800.0,
+    "cell_size": 360.0,
+    "rock_model": "res://assets/models/space/orbital_rock.glb",
+    "ice_model": "res://assets/models/space/orbital_ice.glb"
+  },
+  "drive": {
+    "response": 5.0,
+    "cooldown_seconds": 1.6,
+    "nozzle_model": "res://assets/models/space/attitude_nozzle.glb"
+  }
+}

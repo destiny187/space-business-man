@@ -1,4 +1,10 @@
 shader_type spatial;
+#define INK_SPACE_LIGHTING
+#include "res://assets/materials/space/illumination.gdshaderinc"
+#include "res://assets/materials/space/cloud_field.gdshaderinc"
+uniform bool separate_clouds=false;
+uniform float cloud_shadow_strength=.36;
+uniform vec3 local_sun_direction=vec3(0,1,0);
 #include "res://assets/materials/ink/cel_light.gdshaderinc"
 uniform vec4 land_color : source_color = vec4(.32,.24,.20,1);
 uniform vec4 sea_color : source_color = vec4(.06,.18,.23,1);
@@ -18,7 +24,7 @@ varying vec3 local_position;
 float hash3(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7))+seed_offset)*43758.5453);}
 float noise3(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash3(i),hash3(i+vec3(1,0,0)),f.x),mix(hash3(i+vec3(0,1,0)),hash3(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash3(i+vec3(0,0,1)),hash3(i+vec3(1,0,1)),f.x),mix(hash3(i+vec3(0,1,1)),hash3(i+vec3(1)),f.x),f.y),f.z);}
 float fbm(vec3 p){return .57*noise3(p)+.28*noise3(p*2.07)+.15*noise3(p*4.13);}
-void vertex(){local_position=VERTEX;}
+void vertex(){local_position=VERTEX;space_world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;}
 void fragment(){
  float cycle_time=visual_time<0.0?TIME:visual_time;
  vec3 p=normalize(local_position);float h=mix(fbm(p*4.3),COLOR.r,.45*float(authored_relief));
@@ -67,5 +73,11 @@ void fragment(){
   EMISSION=vec3(.4,.65,1.)*flash*.45;
  }
  if(molten){float fissure=1.-smoothstep(.02,.065,abs(fbm(p*12.)-.5));surface=mix(surface,vec3(.85,.14,.015),fissure*.8);EMISSION=vec3(1.,.15,.008)*fissure*1.4;}
+ if(separate_clouds){
+  float shade=cloud_field(normalize(p+normalize(local_sun_direction)*.018));
+  surface*=1.0-shade*cloud_shadow_strength;
+  float distance_fade=smoothstep(22.0,30.0,length(VERTEX)/max(length(MODEL_MATRIX[0].xyz),.01));
+  cloud*=distance_fade;
+ }
  ALBEDO=mix(surface,cloud_color.rgb,cloud*.84);ROUGHNESS=gas_bands?.92:mix(.42,.94,coast);
 }

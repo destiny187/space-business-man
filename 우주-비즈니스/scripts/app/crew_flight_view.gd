@@ -19,6 +19,7 @@ var transit_audio: FrontierAudio
 var soundscape: FrontierSpaceAudio
 var presentation_blocked:=false
 var engine: AudioStreamPlayer
+var vessel_sound: FrontierVesselSound
 var last_phase: String=""
 var station_excluded: int=-1
 var station_model: Node3D
@@ -27,6 +28,9 @@ var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
 var transit_geometry: Array[GeometryInstance3D]=[]
 var refits: FrontierVesselVisuals
+var orbital_debris: FrontierOrbitalDebris
+var engine_turn:=Vector2.ZERO
+var engine_brake:=0.0
 func _ready() -> void:
 	test_mode=true
 	flight_config=state.manifest.settings.flight
@@ -41,7 +45,7 @@ func _ready() -> void:
 	transit_overlay=load("res://scripts/ui/stellar_transit_overlay.gd").new();layer.add_child(transit_overlay)
 	transit_audio=FrontierAudio.new();add_child(transit_audio)
 	soundscape=FrontierSpaceAudio.new();add_child(soundscape)
-	engine=AudioStreamPlayer.new();engine.bus="SFX";engine.stream=transit_audio.stream("sfx_vessel_engine",true);engine.volume_db=-26;add_child(engine)
+	vessel_sound=FrontierVesselSound.new();add_child(vessel_sound);engine=vessel_sound.layers.turbine
 	set_physics_process(false);set_process_unhandled_input(false)
 func update_navigation(value: Dictionary) -> void:
 	var initial_view:=navigation.is_empty()
@@ -71,15 +75,19 @@ func update_navigation(value: Dictionary) -> void:
 		if not solar_start:transit_overlay.announce(system.star.name,"항성계 진입  ·  %s형 항성  ·  %d개 행성  ·  %s"%[system.star.spectral_type,system.body_ids.size(),theme_name])
 	var phase:=FrontierCrewNavigation.phase(value)
 	if phase!=last_phase:
-		if value.mode=="jump" and last_phase in ["궤도 대기","직접 조종"]:soundscape.transition("sfx_vessel_boost")
 		last_phase=phase
 	if float(value.get("hull",100))<previous_hull and not value.get("star_warning",false):transit_audio.play("sfx_build_invalid")
-	if value.get("boosting",false) and not navigation.get("boosting",false):soundscape.transition("sfx_vessel_boost")
 	var braking: bool=value.mode!="jump" and (value.get("proximity_braking",false) or (float(navigation.get("speed",0))>60 and float(value.speed)<float(navigation.get("speed",0))-5))
-	if braking and not previous_braking:soundscape.transition("sfx_vessel_brake")
 	previous_braking=braking
 	previous_hull=float(value.get("hull",100))
 	orbit_clock=float(value.get("orbit_time",0))
+	if not navigation.is_empty():
+		var dt:=maxf(.02,float(value.get("orbit_time",0))-float(navigation.get("orbit_time",0)))
+		var next_direction:=FrontierCrewWorld.vector(value.direction)
+		var local_turn:=_flight_basis(FrontierCrewWorld.vector(navigation.direction)).inverse()*next_direction
+		engine_turn=Vector2(clampf(local_turn.x/dt,-1,1),clampf(local_turn.y/dt,-1,1))
+		engine_brake=clampf((absf(float(navigation.speed))-absf(float(value.speed)))/dt/300.0,0,1)
+		if float(value.speed)<-1:engine_brake=maxf(engine_brake,clampf(absf(float(value.speed))/700.0,0,1))
 	navigation=value.duplicate(true)
 	transit_overlay.nav=navigation
 	transit_overlay.telemetry=FrontierFlightTelemetry.read(state.manifest,navigation)
@@ -112,6 +120,7 @@ func _process(delta: float) -> void:
 	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size))
 	_update_planet_scan(delta)
 	soundscape.update(delta,scan_target>=0 and scan_progress<1.0,scan_progress)
+	orbital_presentation.update(delta,orbit_clock)
 	_update_galactic_core()
 	var in_transit: bool=navigation.mode=="jump"
 	var p: float=navigation.get("transit",{}).get("progress",0.0)
@@ -120,12 +129,10 @@ func _process(delta: float) -> void:
 	var thrust: float=clampf(absf(float(navigation.speed))/700.0,0,1)
 	if in_transit:thrust=0.0 if p<float(FrontierUniverse.presentation().stellar_transition.departure_start) else maxf(.2,sin(p*PI))
 	var boosted: bool=in_transit or navigation.get("boosting",false)
+	if not in_transit:thrust*=1.0-engine_brake
 	drive.set_thrust(thrust,boosted)
-	if thrust>.02:
-		engine.pitch_scale=.65+thrust*(.8 if boosted else .4)
-		engine.volume_db=lerpf(-34,float(soundscape.config.engine_boost_db if boosted else soundscape.config.engine_normal_db),thrust)
-		if not engine.playing:engine.play()
-	elif engine.playing:engine.stop()
+	drive.set_motion(engine_turn,engine_brake,presentation_blocked)
+	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_blocked)
 
 func pick_planet(point: Vector2) -> int:
 	if navigation.get("mode","")=="jump":return -1
@@ -173,6 +180,8 @@ func _load_system(index: int) -> void:
 	if not station.is_empty():
 		station_model=load(FrontierSpaceStation.config().model).instantiate();station_model.position=FrontierCrewWorld.vector(station.position)
 		FrontierInkStyle.apply(station_model,cache);system_art.add_child(station_model)
+	orbital_presentation.collect(system_art)
+	orbital_debris=FrontierOrbitalDebris.new();system_art.add_child(orbital_debris);orbital_debris.configure(self)
 	for entry in planets.values():_collect_transit_geometry(entry.node)
 	if system_art!=null:_collect_transit_geometry(system_art)
 	# Names belong to the gaze scanner, not permanent labels across the sky.

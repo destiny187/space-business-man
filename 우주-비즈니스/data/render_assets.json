@@ -10202,5 +10202,41 @@
     "source": "art/blender/equipment/miner_probe.blend",
     "geometry": "ink-family-remodeled",
     "foliage": false
+  },
+  {
+    "id": "attitude_nozzle",
+    "title": "747   /   우주",
+    "name": "자세제어 노즐",
+    "group": "우주",
+    "model": "res://assets/models/space/attitude_nozzle.glb",
+    "source": "art/blender/space-polish/attitude_nozzle.blend",
+    "geometry": "blender-orbital-detail",
+    "foliage": false,
+    "generator": "tools/build_orbital_details.py",
+    "review": "docs/production/74-space-visuals-and-sound.md"
+  },
+  {
+    "id": "orbital_rock",
+    "title": "748   /   우주",
+    "name": "궤도 암석",
+    "group": "우주",
+    "model": "res://assets/models/space/orbital_rock.glb",
+    "source": "art/blender/space-polish/orbital_rock.blend",
+    "geometry": "blender-orbital-detail",
+    "foliage": false,
+    "generator": "tools/build_orbital_details.py",
+    "review": "docs/production/74-space-visuals-and-sound.md"
+  },
+  {
+    "id": "orbital_ice",
+    "title": "749   /   우주",
+    "name": "궤도 얼음",
+    "group": "우주",
+    "model": "res://assets/models/space/orbital_ice.glb",
+    "source": "art/blender/space-polish/orbital_ice.blend",
+    "geometry": "blender-orbital-detail",
+    "foliage": false,
+    "generator": "tools/build_orbital_details.py",
+    "review": "docs/production/74-space-visuals-and-sound.md"
   }
 ]

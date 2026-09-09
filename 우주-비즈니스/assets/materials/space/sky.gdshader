@@ -1,5 +1,9 @@
 shader_type sky;
 uniform float local_haze=0.;
+uniform vec3 core_direction=vec3(1,0,0);
+uniform float star_density=1.0;
+uniform float nebula_strength=1.0;
+uniform float sector_hue=0.0;
 uniform vec4 haze_color:source_color=vec4(.3,.4,.5,1);
 float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
 float noise3(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*f*(f*(f*6.-15.)+10.);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
@@ -33,14 +37,16 @@ float stars(vec3 d, float density, float threshold) {
 void sky(){
  vec3 d=normalize(EYEDIR);
  float latitude=dot(d,normalize(vec3(.28,1.,.38)));
- float belt=exp(-abs(latitude)*14.);
+ float core=pow(max(0.0,dot(d,core_direction)),5.0);
+ float belt=exp(-abs(latitude)*14.)*(.65+core*.8);
  float wisps=cloud(d*12.+vec3(17,4,9));
  float dust=cloud(d*28.+vec3(3,18,7));
  float nebula=pow(max(0.,wisps-.27),2.)*belt;
  vec3 deep=vec3(.0015,.003,.009);
  vec3 palette=mix(vec3(.09,.06,.21),vec3(.03,.18,.22),cloud(d*4.+21.));
- vec3 glow=palette*nebula*2.0+vec3(.13,.16,.20)*belt*.14;
+ palette=mix(palette,vec3(.19,.08,.11),sector_hue*.22);
+ vec3 glow=palette*nebula*2.0*nebula_strength+vec3(.13,.16,.20)*belt*.14;
  glow*=mix(.18,1.,smoothstep(.28,.62,dust));
- float fine=stars(d,320.,.985);float bright=stars(d,110.,.997);
+ float fine=stars(d,320.,1.0-.015*star_density);float bright=stars(d,110.,.997);
  COLOR=deep+glow+haze_color.rgb*local_haze*pow(max(0.,cloud(d*6.+31.)-.25),2.)+fine*vec3(.70,.83,1.)*2.5+bright*vec3(1.,.82,.60)*3.5;
 }

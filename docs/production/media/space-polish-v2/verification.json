@@ -1,0 +1,15 @@
+{
+  "audio": {
+    "mix_duration": 1.87733333333333,
+    "sfx_peak_db": -42.2983322143555
+  },
+  "checks": 15,
+  "failures": 0,
+  "note": "Final actual app rerun after event retirement and particle scale fixes: 15 checks passed, no script errors. Audio signal measured; subjective listening not performed.",
+  "targeted_one_shot_recheck": "passed_no_errors",
+  "local_light": {
+    "checks": 3,
+    "failures": 0
+  },
+  "exit_warning": "1 ObjectDB instance leaked; class and cause not identified"
+}

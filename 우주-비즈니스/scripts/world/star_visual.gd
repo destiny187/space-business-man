@@ -24,4 +24,4 @@ func configure(system: Dictionary,radius: float) -> void:
 	var glow:=ShaderMaterial.new();glow.shader=load("res://assets/materials/space/glow.gdshader")
 	glow.set_shader_parameter("mode",profile.mode);glow.set_shader_parameter("seed_offset",profile.seed);glow.set_shader_parameter("tint",Color(profile.tint));glow.set_shader_parameter("strength",profile.corona_strength)
 	corona.material_override=glow;corona.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(corona)
-	var sunlight:=OmniLight3D.new();sunlight.light_color=Color(profile.light_tint);sunlight.light_energy=2.4;sunlight.omni_range=90000;sunlight.omni_attenuation=.25;add_child(sunlight)
+	var sunlight:=OmniLight3D.new();sunlight.light_color=Color(profile.light_tint);sunlight.light_energy=float(FrontierOrbitalPresentation.config().lighting.stellar_energy);sunlight.omni_range=90000;sunlight.omni_attenuation=.25;add_child(sunlight)

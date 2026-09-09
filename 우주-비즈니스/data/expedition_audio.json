@@ -1,6 +1,13 @@
 {
-  "music": {"space":"music_stellar_v1","planet":"music_planet_v1"},
+  "music": {
+    "space": "music_stellar_v1",
+    "planet": "music_planet_v1",
+    "discovery": "music_discovery_v2",
+    "danger": "music_danger_v2"
+  },
   "crossfade_seconds": 2.5,
   "loop_fade_seconds": 0.45,
-  "level": 0.32
+  "level": 0.32,
+  "discovery_seconds": 28,
+  "danger_hold_seconds": 5
 }

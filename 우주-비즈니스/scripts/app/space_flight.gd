@@ -9,6 +9,7 @@ var planets := {}
 var landmarks: FrontierSystemLandmarks
 var sky_material: ShaderMaterial
 var system_art: Node3D
+var orbital_presentation: FrontierOrbitalPresentation
 var galactic_core: FrontierGalacticCore
 var orbit_time:=0.0
 var current_system := 0
@@ -62,7 +63,7 @@ func _setup_space() -> void:
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color("879caf")
-	env.ambient_light_energy = .45
+	env.ambient_light_energy = float(FrontierOrbitalPresentation.config().lighting.ambient_energy)
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env.glow_enabled=true;env.glow_intensity=.85;env.glow_bloom=0.0
 	world.environment = env
@@ -70,14 +71,14 @@ func _setup_space() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-28,-40,0)
 	sun.light_color = Color("ffedd6")
-	sun.light_energy = .35
+	sun.light_energy = 0.0
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 150
 	add_child(sun)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(15,140,0)
 	fill.light_color = Color("8cb9d3")
-	fill.light_energy = .25
+	fill.light_energy = 0.0
 	add_child(fill)
 	ship = Node3D.new()
 	ship.name = "Kestrel"
@@ -94,6 +95,7 @@ func _setup_space() -> void:
 	camera.current = true
 	FrontierInkStyle.attach(ship)
 	get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
+	orbital_presentation=FrontierOrbitalPresentation.new();add_child(orbital_presentation)
 
 func _load_system(index: int) -> void:
 	for entry in planets.values():
@@ -110,6 +112,7 @@ func _load_system(index: int) -> void:
 		else:planets[ordinal]=_create_planet(index,orbit)
 	_clear_prepared()
 	_build_system_art(s)
+	orbital_presentation.configure(self)
 	_refresh_candidates()
 	status.text = "%s · 항성계 %08d · 주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,FrontierUniverse.body_count(state.manifest,index)]
 
@@ -414,6 +417,7 @@ func update_orbits(elapsed: float) -> void:
 			node.material_override.set_shader_parameter("visual_time",fposmod(elapsed,100000.0))
 
 func _process(_delta: float) -> void:
+	if orbital_presentation!=null:orbital_presentation.update(_delta,orbit_time)
 	_update_galactic_core()
 
 func _update_galactic_core() -> void:

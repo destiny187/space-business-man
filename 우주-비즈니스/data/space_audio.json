@@ -10,5 +10,25 @@
   "scan_volume_db": -24,
   "engine_normal_db": -24,
   "engine_boost_db": -17,
-  "transition_cooldown_seconds": 2.0
+  "transition_cooldown_seconds": 2.0,
+  "drive": {
+    "layers": {
+      "reactor": "sfx_vessel_reactor_v2",
+      "turbine": "sfx_vessel_engine",
+      "finch": "sfx_finch_turbine_v2",
+      "exhaust": "sfx_vessel_exhaust_v2",
+      "attitude": "sfx_vessel_exhaust_v2"
+    },
+    "levels_db": {
+      "reactor": -14,
+      "turbine": -24,
+      "finch": -14,
+      "exhaust": -14,
+      "attitude": -20
+    },
+    "cabin_cutoff_hz": 1600,
+    "finch_bass": 0.32,
+    "attack_seconds": 0.22,
+    "release_seconds": 0.65
+  }
 }
