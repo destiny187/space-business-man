@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS saved flight ready
+PASS external view skips covered main 3D pass
+PASS external space viewport keeps rendering
+MAIN VIEWPORT draw calls: covered pass enabled=12 disabled=0
+PASS cabin return restores main 3D
+PASS arrival keeps main render available for warmup
+PASS static preview does not redraw while idle
+PASS drag rotates and refreshes cached image
+PASS direct camera framing change refreshes image
+PASS resize updates preview render size
+PASS hidden model replacement waits for display
+PASS show renders latest model
+PASS empty selection clears previous model image
+PASS animated research preview continues rendering
+PASS animated preview stops rendering when hidden
+PASS leaving expedition restores root viewport
+RENDER REUSE checks 15 failures 0

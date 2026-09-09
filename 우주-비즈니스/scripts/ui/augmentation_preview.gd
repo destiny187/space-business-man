@@ -32,6 +32,7 @@ func change_phase(value: String) -> void:
 	elif value=="error":effects.burst(Vector3(.95,1.16,.35),FrontierInterfaceStyle.WARNING,6)
 func _gui_input(_event: InputEvent) -> void:pass
 func _process(delta: float) -> void:
+	continuous_rendering=true
 	super._process(delta)
 	if not is_visible_in_tree():return
 	elapsed+=delta

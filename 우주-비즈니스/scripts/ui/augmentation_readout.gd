@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 	var own: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	identity.text=own.profile.name
 	equipment_stats.text="장비·숙련\n탐험복 Mk.%d · 가방 %d칸\n채집 빈도 +%d%% · 운송 숙련 %d단계"%[int(own.get("loadout",{}).get("suit_tier",1)),FrontierItemInventory.capacity(own),FrontierProgressionResearch.personal(own,"mining")*10,FrontierRovers.research(own)]
-	if tinted!=int(own.profile.tint):tinted=int(own.profile.tint);app._suit_color(preview.model,tinted)
+	if tinted!=int(own.profile.tint):tinted=int(own.profile.tint);app._suit_color(preview.model,tinted);preview.request_render()
 	for key in rows:
 		var level:=FrontierCrewAugmentation.level(own,key)
 		var value:=FrontierCrewAugmentation.multiplier(own,key)

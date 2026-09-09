@@ -15,6 +15,7 @@ func show_vessel(vessel: Dictionary) -> void:
 	var key:=str([vessel.get("hull","kestrel"),vessel.get("loadout",{}),vessel.get("modules",{})])
 	if signature==key:return
 	signature=key
+	view.request_render()
 	var hull:=FrontierSpaceStation.hull(vessel)
 	var path:=str(hull.model).trim_prefix("res://assets/models/").trim_suffix(".glb")
 	var changed:=view.model_path!=path

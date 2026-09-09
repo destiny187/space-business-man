@@ -5,6 +5,12 @@ var stage: Node3D
 var model: Node3D
 var camera: Camera3D
 var model_path: String=""
+# Animated subclasses opt in; static authored models reuse their last image.
+var continuous_rendering:=false
+var render_dirty:=true
+var render_state: Array=[]
+func request_render() -> void:
+	render_dirty=true
 func _ready() -> void:
 	stretch=true;mouse_default_cursor_shape=Control.CURSOR_DRAG;tooltip_text="드래그하여 장비 회전"
 	viewport=SubViewport.new();viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.size=Vector2i(480,480);viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(viewport)
@@ -13,9 +19,10 @@ func _ready() -> void:
 	var light:=DirectionalLight3D.new();light.rotation_degrees=Vector3(-38,-40,0);light.light_energy=1.4;stage.add_child(light)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.current=true;camera.near=.01;stage.add_child(camera)
 	var contour:=FrontierInkStyle.attach(stage,true);contour.set_shader_parameter("transparent_background",true)
+	visibility_changed.connect(request_render);resized.connect(request_render)
 func show_model(path: String) -> void:
 	if model_path==path:return
-	model_path=path
+	model_path=path;request_render()
 	if model!=null:stage.remove_child(model);model.queue_free();model=null
 	if path.is_empty():return
 	model=load("res://assets/models/"+path+".glb").instantiate();stage.add_child(model);FrontierInkStyle.apply(model,{})
@@ -25,8 +32,21 @@ func show_model(path: String) -> void:
 		bounds=box if first else bounds.merge(box);first=false
 	var center:=bounds.get_center();model.position-=center
 	camera.size=bounds.size.length()*1.16;camera.position=Vector3(1,.65,-1.5).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
-	viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+	request_render()
 func _gui_input(event: InputEvent) -> void:
-	if model!=null and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):model.rotate_y(event.relative.x*.012);viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+	if model!=null and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):model.rotate_y(event.relative.x*.012);request_render()
 func _process(_delta: float) -> void:
-	viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS if is_visible_in_tree() else SubViewport.UPDATE_DISABLED
+	if not is_visible_in_tree():
+		viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED
+		return
+	# Callers also adjust framing directly after model changes. Detect those
+	# inexpensive values, without walking meshes or hashing materials each frame.
+	var current: Array=[size,viewport.size,camera.transform,camera.size,camera.fov,camera.projection,model.transform if is_instance_valid(model) else Transform3D.IDENTITY]
+	if current!=render_state:render_state=current;render_dirty=true
+	if render_dirty or continuous_rendering:
+		render_dirty=false
+		viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
+		if not RenderingServer.frame_post_draw.is_connected(_rendered):RenderingServer.frame_post_draw.connect(_rendered,CONNECT_ONE_SHOT)
+	else:viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED
+func _rendered() -> void:
+	if is_instance_valid(viewport):viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED

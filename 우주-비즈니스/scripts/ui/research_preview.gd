@@ -28,6 +28,7 @@ func present(research_stage: String,resource: String) -> void:
 		var box: AABB=specimen.global_transform.affine_inverse()*mesh.global_transform*mesh.get_aabb();bounds=box if first else bounds.merge(box);first=false
 	var factor:=.30/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z));specimen.scale=Vector3.ONE*factor;specimen.position=Vector3.UP*.10-bounds.get_center()*factor
 func _process(delta: float) -> void:
+	continuous_rendering=true
 	super._process(delta)
 	if not is_visible_in_tree():return
 	elapsed+=delta

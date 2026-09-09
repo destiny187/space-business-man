@@ -1,5 +1,6 @@
 class_name FrontierStationMarketPanel
 extends PanelContainer
+var preview_dirty:=true
 signal command(kind: String,args: Dictionary)
 var data: Dictionary={}
 var mode: String="goods"
@@ -73,7 +74,7 @@ func _ready() -> void:
  audio=FrontierAudio.new();add_child(audio)
  hum=AudioStreamPlayer.new();hum.bus="Ambience";hum.stream=audio.stream(FrontierSpaceStation.config().audio.ambience,true);hum.volume_db=-32;add_child(hum)
  visibility_changed.connect(func():
-  preview.render_target_update_mode=SubViewport.UPDATE_ALWAYS if visible else SubViewport.UPDATE_DISABLED
+  preview_dirty=true;preview.render_target_update_mode=SubViewport.UPDATE_DISABLED
   if visible:audio.play(FrontierSpaceStation.config().audio.open);hum.play()
   else:hum.stop())
  hide()
@@ -154,6 +155,7 @@ func refresh_detail() -> void:
   title_label.text=def.name;role.text=def.role
   if preview_model==null or preview_model.get_meta("hull","")!=hull_id:
    if is_instance_valid(preview_model):preview_model.queue_free()
+   preview_dirty=true
    preview_model=load(def.model).instantiate();preview_model.set_meta("hull",hull_id);FrontierInkStyle.apply(preview_model,{});preview_root.add_child(preview_model)
   for row in [["항속거리",FrontierVesselRefit.stellar_range({"vessel":{"hull":hull_id}}),350.0],["추진",float(def.speed),1.5],["적재",float(def.maximum_mass)-float(def.mass),30.0],["격납고",float(def.hangar),6.0],["전력",float(def.reactor_power),16.0]]:
    var line:=HBoxContainer.new();bars.add_child(line);var name_label:=label(line,row[0],12);name_label.custom_minimum_size.x=58
@@ -166,7 +168,7 @@ func refresh_detail() -> void:
    var owned: bool=hull_id in vessel.get("hulls",["kestrel"])
    buy.text="보유 중" if owned else "선체 구매 · %d Cr"%int(station.prices[selected])
    buy.disabled=buy.disabled or owned or int(station.stock[selected])<=0 or int(station.credits)<int(station.prices[selected])
- preview.render_target_update_mode=SubViewport.UPDATE_ALWAYS if visible and mode!="goods" else SubViewport.UPDATE_DISABLED
+ if not visible or mode=="goods":preview.render_target_update_mode=SubViewport.UPDATE_DISABLED
 func send(kind: String) -> void:
  if pending:return
  pending=true;pending_kind=kind;pending_sequence=-1;message.text="교역 승인 중…";refresh_detail()
@@ -179,3 +181,13 @@ func response(sequence: int,value: Dictionary) -> void:
  var sounds: Dictionary=FrontierSpaceStation.config().audio
  audio.play(sounds.hull if ok and (pending_kind=="station_equip" or selected.begins_with("hull:")) else sounds.trade if ok else sounds.failure)
  refresh_detail()
+
+func _process(_delta: float) -> void:
+ if not is_visible_in_tree() or not picture.visible:
+  preview.render_target_update_mode=SubViewport.UPDATE_DISABLED
+  return
+ if preview_dirty:
+  preview_dirty=false;preview.render_target_update_mode=SubViewport.UPDATE_ONCE
+  if not RenderingServer.frame_post_draw.is_connected(_preview_rendered):RenderingServer.frame_post_draw.connect(_preview_rendered,CONNECT_ONE_SHOT)
+func _preview_rendered() -> void:
+ if is_instance_valid(preview):preview.render_target_update_mode=SubViewport.UPDATE_DISABLED

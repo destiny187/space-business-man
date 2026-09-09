@@ -50,6 +50,7 @@ var pitch:=0.0
 var mouse_steering:=Vector2.ZERO
 var cursor_released:=false
 var mouse_resume_guard:=false
+var main_render_suspended:=false
 var previous_accumulated_input:=true
 var outside:=false
 var movement_timer:=0.0
@@ -124,6 +125,7 @@ func _ready() -> void:
 	if get_tree().has_meta("startup_loader"):
 		await get_tree().get_meta("startup_loader").checkpoint(55, "탐험 장비와 화면 준비")
 	_build_ui();cabin_root.hide();spaces.configure(self)
+	RenderingServer.frame_pre_draw.connect(_sync_main_render)
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
 	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
 	stations=FrontierCrewStations.new();add_child(stations);stations.configure(self)
@@ -763,7 +765,19 @@ func surface_action(kind: String) -> void:
 	if not FrontierUpgradeAccess.station_for(kind,args).is_empty():args.station_id="ship:research"
 	session.send_request(kind,args)
 
+# The opaque external-flight texture covers the main camera completely. Keep
+# physics and independent SubViewports alive, but skip the covered 3D pass.
+# Arrival needs the main camera for terrain warmup and handover, even under cover.
+func _sync_main_render() -> void:
+	var covered: bool=session!=null and session.active and outside and surface_world==null and exterior_view.is_visible_in_tree() and not (arrival!=null and arrival.active)
+	if covered and not main_render_suspended and not get_viewport().disable_3d:
+		get_viewport().disable_3d=true;main_render_suspended=true
+	elif not covered and main_render_suspended:
+		get_viewport().disable_3d=false;main_render_suspended=false
+
 func _exit_tree() -> void:
+	if RenderingServer.frame_pre_draw.is_connected(_sync_main_render):RenderingServer.frame_pre_draw.disconnect(_sync_main_render)
+	if main_render_suspended:get_viewport().disable_3d=false
 	Input.use_accumulated_input=previous_accumulated_input
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
