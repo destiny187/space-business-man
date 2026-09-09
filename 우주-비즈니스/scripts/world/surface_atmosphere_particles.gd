@@ -29,7 +29,10 @@ func configure(owner_surface: Node3D,view: Camera3D) -> void:
 
 func _process(delta: float) -> void:
 	if surface==null:return
+	var app=surface.get_parent()
+	if app is FrontierCrewExpedition and (app.any_menu_open() or app.arrival.active or (not get_window().has_focus() and not app.test_mode)):return
 	timer-=delta;phase+=delta*.35
+	if surface.presence!=null:wind=surface.presence.wind
 	var refresh: bool=timer<=0
 	var center: Vector3=camera.global_position
 	if refresh:
@@ -47,7 +50,7 @@ func _process(delta: float) -> void:
 		if not layer.node.visible:continue
 		for index in layer.points.size():
 			var point: Vector3=layer.points[index]
-			point+=(wind*float(rule.speed)*(1.0+.25*sin(phase+float(index)))+Vector3.DOWN*float(rule.fall))*minf(delta,.1)
+			point+=(wind*float(rule.speed)*(.35+surface.presence.gust if surface.presence!=null else 1.0)*(1.0+.25*sin(phase+float(index)))+Vector3.DOWN*float(rule.fall))*minf(delta,.1)
 			point.x=center.x+wrapf(point.x-center.x,-radius,radius)
 			point.z=center.z+wrapf(point.z-center.z,-radius,radius)
 			point.y=center.y+wrapf(point.y-center.y,-2,float(cfg.height))

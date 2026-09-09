@@ -30,6 +30,8 @@ var preferences: FrontierClientSettings
 var rendered_distance:=0.0
 var refits: FrontierVesselVisuals
 var business_view: FrontierBusinessSiteView
+var hydrology: FrontierSurfaceHydrology
+var presence: FrontierSurfacePresence
 var surface_details: FrontierSurfaceDetails
 
 func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D,camera: Camera3D) -> void:
@@ -50,7 +52,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		mat.set_shader_parameter("biome_style",["oxidized","continental","cratered","fractured","tundra","frozen","volcanic","salt","ochre"].find(body.traits.id))
 	FrontierSurfaceMaterialLibrary.configure(mat,body)
 	terrain=FrontierTerrainStreamer.new();terrain.configure(int(body.streams.terrain),packet.edits,mat,config,body.get("terrain_traits",{}));add_child(terrain)
-	if not body.get("terrain_traits",{}).is_empty():_add_native_water()
+	hydrology=FrontierSurfaceHydrology.new();add_child(hydrology);hydrology.configure(self);hydrology.accept(packet.get("business",{}))
 	applied_edits=packet.edits.size();incoming=packet.edits.duplicate(true)
 	distant=FrontierDistantTerrain.new();distant.material_override=mat;add_child(distant)
 	var ship: Node3D=load("res://assets/models/ships/kestrel.glb").instantiate();ship.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position);FrontierInkStyle.apply(ship,material_cache);add_child(ship)
@@ -77,6 +79,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 		if not is_equal_approx(rendered_distance,float(preferences.values.view_distance)):_refresh_distant())
 	atmospheric_particles=load("res://scripts/world/surface_atmosphere_particles.gd").new()
 	add_child(atmospheric_particles);atmospheric_particles.configure(self,camera)
+	presence=FrontierSurfacePresence.new();add_child(presence);presence.configure(self)
 	_update_interest()
 	_update_shuttles()
 
@@ -92,13 +95,15 @@ func accept(packet: Dictionary) -> void:
 	business_view.accept(packet.get("business",{}))
 	surface_details.accept(packet.get("business",{}))
 	atmosphere.accept(packet.get("business",{}));_update_shuttles()
+	if presence!=null:presence.accept(packet.get("business",{}))
+	if hydrology!=null:hydrology.accept(packet.get("business",{}))
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()
 	environment.background_mode=Environment.BG_SKY
 	environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
 	environment.tonemap_mode=Environment.TONE_MAPPER_FILMIC;environment.fog_enabled=true;environment.fog_sky_affect=0.0
-	environment.ssao_enabled=true;environment.ssao_radius=1.2;environment.ssao_intensity=1.2;world.environment=environment;add_child(world)
+	environment.ssao_enabled=true;environment.ssao_radius=1.2;environment.ssao_intensity=1.2;environment.ssao_light_affect=.35;world.environment=environment;add_child(world)
 	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-35,-30,0);sun.light_color=Color("ffe1b5");sun.light_energy=1.8;sun.shadow_enabled=true;sun.directional_shadow_max_distance=180;add_child(sun)
 	atmosphere=load("res://scripts/world/surface_atmosphere.gd").new()
 	atmosphere.configure(body,environment,sun)
@@ -161,14 +166,6 @@ func ready_at(point: Vector3) -> bool:
 
 func _exit_tree() -> void:
 	if is_instance_valid(lamp):lamp.queue_free()
-
-func _add_native_water() -> void:
-	var t: Dictionary=body.terrain_traits
-	if float(t.water)<=15 or float(t.temperature)<=0:return
-	var water:=MeshInstance3D.new();water.name="NativeWater"
-	var plane:=PlaneMesh.new();plane.size=Vector2(16384,16384);water.mesh=plane;water.position.y=-4
-	var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/native_water.gdshader")
-	mat.set_shader_parameter("water_color",Color(t.sea));water.material_override=mat;add_child(water)
 
 func prepare_landing_view(points: Array[Vector3]) -> void:
 	presentation_points=points.duplicate();presentation_ecology_refreshed=false

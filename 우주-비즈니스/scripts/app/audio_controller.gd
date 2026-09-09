@@ -101,7 +101,8 @@ func update_world(p: Dictionary,paused: bool) -> void:
 		emitters.clear()
 		return
 	var key: String = "amb_restored_nature" if p.environment.ecology >= 35 else "amb_barren_wind"
-	if key != ambient_key:
+	if p.get("external_ambience",false):ambient.stop();ambient_key=""
+	elif key != ambient_key:
 		ambient_key = key
 		ambient.stream = stream(key,true)
 		if ambient.stream: ambient.play()

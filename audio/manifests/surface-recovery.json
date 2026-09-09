@@ -1,0 +1,92 @@
+{
+  "date": "2026-09-09",
+  "jobs": [
+    {
+      "id": "amb_surface_foliage_v1",
+      "provider": "ElevenLabs Sound Effects web",
+      "prompt": "Soft leaves and short grasses rustling in a gentle breeze, close textured foliage movement with tiny natural pauses, even four-second loop for a quiet restored alien meadow. No animals, birds, insects, voices, music, machinery or dramatic gusts.",
+      "source_url": "https://elevenlabs.io/app/sound-effects/history?id=Dc2FFSLHRMFJVGtfd4Rr",
+      "selected_variant": 1,
+      "duration_setting_seconds": 4,
+      "loop_setting": true,
+      "prompt_influence": 0.3,
+      "displayed_credits": 52,
+      "download_name": "Soft_leaves_and_shor_#1-1788920648319.wav",
+      "source": "audio/source/elevenlabs/amb_surface_foliage_v1.wav",
+      "game_file": "우주-비즈니스/assets/audio/amb_surface_foliage_v1.wav",
+      "source_sha256": "51f62b60932062fd212adce61bee2928d3856229d272ee03e9c521d6c7f43af7",
+      "sha256": "c50e08014df7ec818b2bf0b26ddbcf671495c44622f394a7f2450614dcb7ddf3",
+      "duration_seconds": 3.92,
+      "format": "PCM16 2ch 48000Hz",
+      "peak_dbfs": -4.0000883347026726,
+      "processing": "80ms loop crossfade",
+      "normalization": "RMS -21dBFS target, -4dBFS peak ceiling",
+      "status": "generated_integrated_game_signal_verified",
+      "imported_at": "2026-09-09T02:30:50.469849+00:00"
+    },
+    {
+      "id": "sfx_surface_ice_v1",
+      "provider": "ElevenLabs Sound Effects web",
+      "prompt": "A small natural ice sheet settling with two delicate crystalline cracks and a low rounded ice resonance, outdoors on a quiet frozen plain. Four seconds, isolated natural ice foley, no metal, machinery, explosion, voices, wind or music.",
+      "source_url": "https://elevenlabs.io/app/sound-effects/history?id=8rvG820h95N35PrghZqf",
+      "selected_variant": 1,
+      "duration_setting_seconds": 4,
+      "loop_setting": false,
+      "prompt_influence": 0.3,
+      "displayed_credits": 52,
+      "download_name": "A_small_natural_ice__#1-1788920769482.wav",
+      "source": "audio/source/elevenlabs/sfx_surface_ice_v1.wav",
+      "game_file": "우주-비즈니스/assets/audio/sfx_surface_ice_v1.wav",
+      "source_sha256": "036374a3a4b5882ca2a8eb36025785484639d6850a209c09fb541aef2270278a",
+      "sha256": "d4521a5b8175c1ab0ca0fce9e04fd491dd570d70edd55eb1ed8cd99f5cc85292",
+      "duration_seconds": 4.0,
+      "format": "PCM16 2ch 48000Hz",
+      "peak_dbfs": -4.0000883347026726,
+      "processing": "8ms edge fades",
+      "normalization": "RMS -21dBFS target, -4dBFS peak ceiling",
+      "status": "generated_integrated_game_signal_verified",
+      "imported_at": "2026-09-09T02:30:50.632434+00:00"
+    },
+    {
+      "id": "amb_surface_shallows_v1",
+      "provider": "ElevenLabs Sound Effects web",
+      "prompt": "Gentle shallow water lapping softly over small stones at the edge of a tiny pond, delicate close ripples and occasional small droplets. Even continuous four-second natural loop, no pump, machinery, stream roar, animals, birds, voices or music.",
+      "source_url": "https://elevenlabs.io/app/sound-effects/history?id=ftY2T9YR3OXDCB9QKjlJ",
+      "selected_variant": 1,
+      "duration_setting_seconds": 4,
+      "loop_setting": true,
+      "prompt_influence": 0.3,
+      "displayed_credits": 52,
+      "download_name": "Gentle_shallow_water_#1-1788920929949.wav",
+      "source": "audio/source/elevenlabs/amb_surface_shallows_v1.wav",
+      "game_file": "우주-비즈니스/assets/audio/amb_surface_shallows_v1.wav",
+      "source_sha256": "be4eb399b450764196cc8380fb60e5df4d5b2cd1f1f30bef5dce3e2e71d5a4bb",
+      "sha256": "e823809d48184d3a7e98f644ab754e4b0dd03b3e9263269661eb21a6687ff7bc",
+      "duration_seconds": 3.92,
+      "format": "PCM16 2ch 48000Hz",
+      "peak_dbfs": -4.0000883347026726,
+      "processing": "80ms loop crossfade",
+      "normalization": "RMS -21dBFS target, -4dBFS peak ceiling",
+      "status": "generated_integrated_game_signal_verified",
+      "imported_at": "2026-09-09T02:30:50.806739+00:00"
+    }
+  ],
+  "game_review": {
+    "renderer": "Godot 4.7.2 Forward+ Metal / Apple M2",
+    "output_recording_metrics": {
+      "duration_seconds": 25.813333333333333,
+      "peak_dbfs": -30.92068045211473,
+      "rms_dbfs": -46.86509506932039,
+      "clipped_samples": 0
+    },
+    "subjective_listening": false,
+    "scope": "actual surface scene; foliage and water proximity, ice emitter, menu pause"
+  },
+  "reused": [
+    "amb_barren_wind",
+    "amb_restored_nature",
+    "sfx_landing_grit_v2",
+    "sfx_thermal_loop",
+    "sfx_creature_call"
+  ]
+}

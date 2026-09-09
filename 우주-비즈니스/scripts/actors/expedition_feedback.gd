@@ -106,6 +106,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 	if value.get("code")=="mining_cooldown":return
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
+	if request.kind in ["business_mine","surface_dig"] and app.surface_world.presence!=null:app.surface_world.presence.mark(point,Vector3.FORWARD,1.0)
 	match request.kind:
 		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대 · 광맥 작업 지시")
 		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")
@@ -257,16 +258,23 @@ func _update_audio(active: bool) -> void:
 			var record: Dictionary=row.duplicate();record.position=[p.x,p.z]
 			if category=="robots" and record.status in ["창고로 운반","충전기 복귀"]:record.status="자원 운반"
 			state[category].append(record);heights[row.id]=p.y
+	state["external_ambience"]=app.surface_world.presence!=null
 	audio.update_world(state,blocked())
 	var atmosphere=app.surface_world.atmosphere
 	var particles=app.surface_world.atmospheric_particles
-	if particles!=null:
+	if particles!=null and app.surface_world.presence==null:
 		var air: Dictionary=atmosphere.current
 		var gain: float=float(air.atmosphere)*(.3+maxf(float(air.dust),float(air.ice)))*float(particles.exposure)
 		audio.ambient.stream_paused=blocked() or not DisplayServer.window_is_focused()
 		audio.ambient.volume_db=linear_to_db(maxf(.0001,gain*float(atmosphere.config().particles.wind_level)))
 	for id in audio.emitters:
 		if heights.has(id):audio.emitters[id].position.y=float(heights[id])+.8
+		if app.surface_world.presence!=null:
+			var speaker: AudioStreamPlayer3D=audio.emitters[id]
+			var hidden:=false
+			for ratio in [.25,.5,.75]:
+				if app.surface_world.terrain.field.density((player+Vector3.UP*1.6).lerp(speaker.global_position,ratio))>0:hidden=true;break
+			speaker.attenuation_filter_cutoff_hz=lerpf(speaker.attenuation_filter_cutoff_hz,900.0 if hidden else 18000.0,.4)
 	daylight_mix_db=lerpf(float(app.surface_world.atmosphere.cycles.get("night_wind_db",0)),0.0,app.surface_world.atmosphere.daylight)
 	audio.ambient.volume_db+=daylight_mix_db
 	# Match the existing rover playback fixture gate without changing normal focus muting.

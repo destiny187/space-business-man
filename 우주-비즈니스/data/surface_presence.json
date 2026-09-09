@@ -1,0 +1,32 @@
+{
+  "transition_seconds": 12.0,
+  "patch_count": 64,
+  "grass_per_patch": 9,
+  "visible_distance": 100.0,
+  "growth_seconds": 5.0,
+  "grass_model": "res://assets/models/ink-study/frontier_grass.glb",
+  "tree_model": "res://assets/models/tree.glb",
+  "grass_scale": 0.65,
+  "tree_scale": 2.0,
+  "patch_radius": 3.5,
+  "minimum_normal_y": 0.88,
+  "water_patch_radius": 2.8,
+  "water_patch_count": 10,
+  "trace_count": 40,
+  "trace_seconds": 45.0,
+  "wind_period_seconds": 23.0,
+  "event_interval_seconds": [
+    14.0,
+    29.0
+  ],
+  "sounds": {
+    "wind": "amb_barren_wind",
+    "nature": "amb_restored_nature",
+    "grit": "sfx_landing_grit_v2",
+    "water": "amb_surface_shallows_v1",
+    "ice": "sfx_surface_ice_v1",
+    "thermal": "sfx_thermal_loop",
+    "creature": "sfx_creature_call",
+    "foliage": "amb_surface_foliage_v1"
+  }
+}

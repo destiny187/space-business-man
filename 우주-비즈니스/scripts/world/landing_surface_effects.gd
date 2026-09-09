@@ -4,6 +4,7 @@ var surface: FrontierCrewSurfaceScene
 var emitters: Array[GPUParticles3D]=[]
 var finch:=false
 var ground_kind: String="dust"
+var marked:=false
 var lamp: SpotLight3D
 static func profile(body: Dictionary) -> Dictionary:
 	var traits: Dictionary=body.get("traits",{})
@@ -38,6 +39,9 @@ func update(height: float,thrust: float,hatch: float,blocked: bool) -> void:
 		dust.speed_scale=0 if blocked else 1;dust.emitting=response>.02;dust.amount_ratio=maxf(.05,response)
 		var motion: ParticleProcessMaterial=dust.process_material;motion.radial_velocity_max=3+response*12
 	lamp.light_energy=hatch*(1.5 if finch else 3.2)
+	if not blocked and not marked and height<.4 and surface.presence!=null:
+		marked=true
+		for dust in emitters:surface.presence.mark(dust.global_position,Vector3.FORWARD,3)
 func release() -> void:
 	if is_instance_valid(lamp):lamp.queue_free()
 	queue_free()

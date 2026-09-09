@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-09",
+  "jobs": [
+    {
+      "id": "amb_surface_river_v1",
+      "provider": "ElevenLabs Sound Effects web",
+      "prompt": "A small clear river flowing steadily downhill over rounded stones, textured gentle bubbling and flowing water, close natural recording, seamless four-second loop. No animals, birds, voices, music, machinery, rain or dramatic waterfall.",
+      "source_url": "https://elevenlabs.io/app/sound-effects/history",
+      "selected_variant": 1,
+      "duration_setting_seconds": 4,
+      "loop_setting": true,
+      "prompt_influence": 0.3,
+      "displayed_credits": 52,
+      "download_name": "A_small_clear_river__#1-1788922476537.wav",
+      "source": "audio/source/elevenlabs/amb_surface_river_v1.wav",
+      "game_file": "우주-비즈니스/assets/audio/amb_surface_river_v1.wav",
+      "source_sha256": "060bc61060dc640237861ad5a777f274f265d61e105f857dea9cfd22bb163155",
+      "sha256": "c8ca5565f20f327fbe4d8756d742add271891ac4ce697cc9b0d2e94deab760ee",
+      "duration_seconds": 3.92,
+      "format": "PCM16 2ch 48000Hz",
+      "peak_dbfs": -7.315996437232056,
+      "processing": "80ms loop crossfade",
+      "normalization": "RMS -21dBFS target, -4dBFS peak ceiling",
+      "status": "generated_integrated_game_signal_verified",
+      "imported_at": "2026-09-09T02:58:20.616474+00:00",
+      "observed_credit_delta": 53,
+      "usage": "Seeded river proximity AudioStreamPlayer3D on the current expedition surface; natural ocean shallows reuse amb_surface_shallows_v1."
+    }
+  ],
+  "game_review": {
+    "recording": "/tmp/surface-hydrology-mix.wav",
+    "duration_seconds": 8.170666666666667,
+    "peak_dbfs": -17.055730507713605,
+    "rms_dbfs": -37.197771663779804,
+    "clipped_samples": 0,
+    "subjective_listening": false,
+    "checks": "Actual Forward+ expedition river-bank player.playing, source proximity, and captured mixed PCM signal."
+  }
+}

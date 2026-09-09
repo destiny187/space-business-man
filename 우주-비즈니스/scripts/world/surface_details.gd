@@ -34,6 +34,11 @@ func configure(stream: FrontierTerrainStreamer,planet: Dictionary,observer: Node
 			var original: Material=source.get_active_material(i)
 			if original is StandardMaterial3D:mesh.surface_set_material(i,FrontierInkStyle.material(original,material_cache))
 		meshes.append(mesh);scene.free()
+	for mat in material_cache.values():
+		if mat is ShaderMaterial:
+			mat.set_shader_parameter("presence_grounded",true)
+			mat.set_shader_parameter("contact_color",Color(body.traits.dust))
+			mat.set_shader_parameter("contact_frost",1.0 if float(body.traits.temperature)<0 and float(body.traits.water)>5 else 0.0)
 	terrain.geometry_changed.connect(invalidate)
 
 func invalidate() -> void:
@@ -89,7 +94,10 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 		var roll: float=rng.randf()
 		var patch: float=smoothstep(-.35,.35,cluster.get_noise_2d(p.x,p.z))
 		var density: float=(.10+patch*patch*.85)*float(family.density)
-		var masks:=Vector3.ZERO
+		var masks:=FrontierSurfaceGeology.sample(p.x,p.z,FrontierSurfaceGeology.phase(body.traits))
+		var belt:=smoothstep(-.25,.35,cluster.get_noise_2d(p.x*.28,p.z*.28))
+		density*=lerpf(.12,1.25,belt)*(1.0-masks.z*.45)
+		yaw=lerp_angle(yaw,atan2(.4,1.0)+sin(p.z*.023)*.35,.7)
 		if family.get("geology_scatter",false):
 			masks=FrontierSurfaceGeology.sample(p.x,p.z,FrontierSurfaceGeology.phase(body.traits))
 			var edge: float=4.0*masks.x*(1.0-masks.x)
@@ -138,7 +146,10 @@ func _build(key: Vector2i) -> void:
 		instance_total-=int(previous.count)
 		remove_child(previous.node);previous.node.queue_free()
 	add_child(root)
-	tiles[key]={"node":root,"count":rows.size()};instance_total+=rows.size()
+	var sources: Array[Vector3]=[]
+	for row in rows:
+		if sources.size()<6:sources.append(row.transform.origin)
+	tiles[key]={"node":root,"count":rows.size(),"sources":sources};instance_total+=rows.size()
 	dirty_tiles.erase(key)
 
 func _process(_dt: float) -> void:

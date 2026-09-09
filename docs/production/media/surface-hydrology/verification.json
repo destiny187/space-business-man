@@ -1,0 +1,14 @@
+{
+  "body_id": "galaxy:galaxy-v3:71491:planet:8",
+  "catchments": 18,
+  "checks": 20,
+  "failures": 1,
+  "maximum_hydrology_step_ms": 7.202,
+  "note": "Hydrology scheduling, shoreline, tracing and mesh install; not whole-game FPS.",
+  "river_segments": 39,
+  "printed_total_checks": 21,
+  "followup": {
+    "report": "resume.json",
+    "reason": "The menu assertion required stream_paused on an already stopped river player. Follow-up starts a real source and verifies all active sources pause. Latest 14 checks pass with no engine errors."
+  }
+}
