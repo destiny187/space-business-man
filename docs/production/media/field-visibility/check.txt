@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS occlusion enabled per rendered field viewport
+PASS terrain hides actor from first camera
+PASS second independent camera still sees its actor
+PASS terrain hides facility motion
+PASS hidden actor advances clock without joint writes
+PASS hidden facility advances phase without part writes
+PASS hidden robot collision body still follows authoritative destination
+PASS hidden facility remains collidable and targetable
+PASS hidden attack presentation phases complete in order
+PASS native occlusion reduces actual model draw calls
+PASS opening terrain restores actor visibility
+PASS returning actor immediately uses current pose
+PASS returning facility resumes current motion
+PASS camera turn skips offscreen actor motion
+PASS camera return reactivates actor without unhiding hacks
+PASS inactive LOD receives no per-frame pose writes
+FIELD DRAW CALLS disabled=69 enabled=1
+PASS leaving one field restores only its own viewport
+FIELD VISIBILITY checks 17 failures 0

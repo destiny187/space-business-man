@@ -25,6 +25,10 @@ var max_visual_ms:=0.0
 var max_collision_ms:=0.0
 var max_commit_ms:=0.0
 var closed := false
+var occlusion_enabled:=false
+
+func _ready() -> void:
+	occlusion_enabled=FrontierFieldVisibility.acquire(get_viewport())
 
 func configure(seed_value: int,edits: Array,terrain_material: Material,settings: Dictionary={},traits: Dictionary={}) -> void:
 	config=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json")) if settings.is_empty() else settings.duplicate(true)
@@ -166,6 +170,9 @@ func _prepare_visual(data: Dictionary) -> Node3D:
 	if mesh.get_surface_count()>0:
 		var visual:=MeshInstance3D.new();visual.mesh=mesh;visual.material_override=material
 		node.add_child(visual)
+		# Reuse worker arrays, including caves and excavation holes. Install/remove
+		# with the visible chunk, so an old occluder cannot seal a newly opened tunnel.
+		if occlusion_enabled:node.add_child(FrontierFieldVisibility.terrain_occluder(data.vertices,data.indices))
 	return node
 
 func _prepare_collision(key: Vector3i,data: Dictionary,node: Node3D) -> void:
@@ -189,6 +196,7 @@ func _commit(key: Vector3i,data: Dictionary,node: Node3D) -> void:
 	max_commit_ms=maxf(max_commit_ms,last_install_ms)
 
 func _exit_tree() -> void:
+	if occlusion_enabled:FrontierFieldVisibility.release(get_viewport())
 	closed=true
 	for job in jobs.values():WorkerThreadPool.wait_for_task_completion(job.task)
 	jobs.clear()

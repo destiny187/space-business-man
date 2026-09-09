@@ -8,6 +8,7 @@ var cache: Dictionary={}
 var pending_models: Dictionary={}
 var requested_models: Dictionary={}
 var prepared_models: Dictionary={}
+var occluder_shapes: Dictionary={}
 var synchronous_resources:=DisplayServer.get_name()=="headless"
 var ghosts: Node3D
 var restore_amount:=0.0
@@ -20,6 +21,10 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	var root:=StaticBody3D.new();root.set_meta("business_kind",kind);root.set_meta("business_id",id);root.position=p
 	var visual: Node3D=prepared_models[model].instantiate();FrontierInkStyle.apply(visual,cache);root.add_child(visual)
 	if kind=="vein":FrontierMinerals.apply_appearance(visual,_vein_appearance(id,model))
+	if kind in ["building","base"] and terrain.occlusion_enabled:
+		if not occluder_shapes.has(model):occluder_shapes[model]=FrontierFieldVisibility.static_model_shape(visual)
+		if occluder_shapes[model]!=null:
+			var occluder:=OccluderInstance3D.new();occluder.occluder=occluder_shapes[model];root.add_child(occluder)
 	var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=2.0;collision.shape=shape;collision.position.y=1;root.add_child(collision)
 	var label:=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.004;label.position.y=3.0;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;label.render_priority=110;label.outline_render_priority=109;root.add_child(label)
 	root.set_meta("label",label);root.set_meta("visual",visual);root.set_meta("parts",visual.find_children("Anim_*","Node3D",true,false))
@@ -27,7 +32,8 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 		var rotor:=visual.find_child("ToolRotor",true,false)
 		if rotor!=null:root.get_meta("parts").append(rotor)
 		var intake:=Node3D.new();intake.name="DrillIntake";intake.position=Vector3(-.43,1.35,2.45);visual.add_child(intake);root.set_meta("intake",intake)
-	for part in root.get_meta("parts"):part.set_meta("rest_position",part.position)
+	for part in root.get_meta("parts"):
+		part.set_meta("rest_position",part.position);part.set_meta("rest_transform",part.transform)
 	add_child(root)
 	if kind=="building":
 		var top:=3.0
@@ -37,6 +43,7 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 				for y in [bounds.position.y,bounds.end.y]:
 					for z in [bounds.position.z,bounds.end.z]:top=maxf(top,root.to_local(mesh.to_global(Vector3(x,y,z))).y+.45)
 		label.position.y=top
+	root.set_meta("visibility_notifier",FrontierFieldVisibility.watch(root))
 	nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
@@ -117,22 +124,33 @@ func _process(dt: float) -> void:
 			var next:=Vector2i(floori(viewer.global_position.x/size),floori(viewer.global_position.z/size))
 			if next!=region_key:region_key=next;accept(ledger)
 	_load_one_model()
+	var camera:=get_viewport().get_camera_3d()
 	for node in nodes.values():
-		var camera:=get_viewport().get_camera_3d()
 		if camera!=null:node.get_meta("label").visible=labels_enabled and node.position.distance_to(camera.global_position)<18
 		var previous: Vector3=node.position
 		if node.has_meta("destination"):
 			node.position=node.position.lerp(node.get_meta("destination"),minf(dt*8,1))
+		var parts: Array=node.get_meta("parts")
+		if parts.is_empty():continue
+		# Keep collision/interpolation and phase clocks current for every peer.
+		# Only local model articulation sleeps while the renderer cannot see it.
+		var distance_value: float=node.position.distance_to(previous)
+		var travel: float=float(node.get_meta("visual_travel",0.0))+distance_value
+		var motion: float=float(node.get_meta("visual_motion",0.0))+(dt if node.get_meta("working",false) else 0.0)
+		node.set_meta("visual_travel",travel);node.set_meta("visual_motion",motion)
+		if not FrontierFieldVisibility.active(node.get_meta("visibility_notifier",null)):continue
+		if node.has_meta("destination"):
 			var direction: Vector3=node.position-previous
 			if node.get_meta("working",false) and node.get_meta("aim",Vector3.INF).is_finite():direction=node.get_meta("aim")-node.position
 			if direction.length()>.002:node.get_meta("visual").rotation.y=lerp_angle(node.get_meta("visual").rotation.y,atan2(direction.x,direction.z),minf(dt*8,1))
-		for part in node.get_meta("parts"):
+		for part in parts:
+			part.transform=part.get_meta("rest_transform")
 			if part.name.begins_with("Anim_Piston"):
 				part.position=part.get_meta("rest_position")+Vector3.UP*(sin(Time.get_ticks_msec()*.005)*.18 if node.get_meta("working",false) else 0.0)
-			elif part.name.begins_with("Anim_Agitator") and node.get_meta("working",false):part.rotate_y(dt*1.3)
-			if part.name.begins_with("Anim_Wheel") and node.position.distance_to(previous)>.001:part.rotate_object_local(Vector3.UP,-node.position.distance_to(previous)*4)
-			elif node.get_meta("working",false) and part.name=="ToolRotor":part.rotate_object_local(Vector3.UP,dt*18)
-			elif node.get_meta("working",false) and (part.name.begins_with("Anim_Fan") or part.name.begins_with("Anim_Drill")):part.rotate_y(dt*6)
+			elif part.name.begins_with("Anim_Agitator"):part.rotate_y(fmod(motion*1.3,TAU))
+			if part.name.begins_with("Anim_Wheel"):part.rotate_object_local(Vector3.UP,fmod(-travel*4,TAU))
+			elif part.name=="ToolRotor":part.rotate_object_local(Vector3.UP,fmod(motion*18,TAU))
+			elif part.name.begins_with("Anim_Fan") or part.name.begins_with("Anim_Drill"):part.rotate_y(fmod(motion*6,TAU))
 
 func _vein_appearance(id: String,model: String) -> Dictionary:
 	return FrontierMinerals.appearance(model.trim_prefix("ore_").trim_suffix("_b"),int(body.get("streams",{}).get("resource",body.get("seed",0))),id)
@@ -169,6 +187,7 @@ func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
 	if int(row.get("tier",1))==3 and not node.has_meta("tier3_visual"):
 		var core: Node3D=load("res://assets/models/products/control_circuit.glb").instantiate()
 		FrontierInkStyle.apply(core,cache);node.get_meta("visual").add_child(core);core.position=Vector3(1.12,2.0,1.34);core.rotation=Vector3(PI/2,0,0);core.scale=Vector3.ONE*.65;node.set_meta("tier3_visual",true)
+		FrontierFieldVisibility.fit(node,node.get_meta("visibility_notifier"))
 	if node.has_meta("tier2_visual"):return
 	var visual: Node3D=node.get_meta("visual")
 	var pack: Node3D=load("res://assets/models/products/retrofit_pack.glb").instantiate()
@@ -177,3 +196,4 @@ func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
 	pack.rotation.y=PI
 	pack.scale=Vector3.ONE*(.8 if robot else 1.25)
 	node.set_meta("tier2_visual",true)
+	FrontierFieldVisibility.fit(node,node.get_meta("visibility_notifier"))

@@ -66,6 +66,7 @@ func _process(delta: float) -> void:
 		actor.configure(FrontierEcologyCatalog.form(row.form_id),FrontierEcologyCatalog.look(row.form_id,row.look_id))
 		actor.position=row.point;actor.basis=FrontierEcologyPlacement.surface_basis(terrain.field.normal(row.point),float(row.yaw))
 		add_child(actor)
+		actor.enable_field_culling()
 		actor.set_state("dormant" if row.status=="dormant" else "idle")
 		actor.set_meta("encounter_id",row.id)
 		_add_collision(actor,row)

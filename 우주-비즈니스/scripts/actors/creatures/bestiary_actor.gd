@@ -24,6 +24,8 @@ var windup_seconds := .55
 var active_seconds := .30
 var recovery_seconds := .75
 var mouth_marker: Node3D
+var mouth_markers: Array[Node3D]=[]
+var visibility_notifier: VisibleOnScreenNotifier3D
 
 func configure(form: Dictionary, look: Dictionary = {}) -> void:
 	definition=form
@@ -41,6 +43,8 @@ func configure(form: Dictionary, look: Dictionary = {}) -> void:
 	joints.clear()
 	material_slots.clear()
 	effect_nodes.clear()
+	mouth_markers.clear()
+	visibility_notifier=null
 	var cache: Dictionary={}
 	var lod_names: Array=["near","far"] if load_far else ["near"]
 	for lod in lod_names:
@@ -48,6 +52,7 @@ func configure(form: Dictionary, look: Dictionary = {}) -> void:
 		add_child(model)
 		Ink.apply(model,cache)
 		models.append(model)
+		mouth_markers.append(model.find_child("FX_Mouth",true,false) as Node3D)
 		var row: Dictionary={}
 		for n in model.find_children("Anim_*","Node3D",true,false):
 			row[str(n.name)]={"node":n,"rest":n.transform}
@@ -78,6 +83,10 @@ func apply_appearance(look: Dictionary) -> void:
 
 func set_lod(distant: bool) -> void:
 	for i in range(models.size()): models[i].visible=(i==1 if distant and models.size()>1 else i==0)
+	if not mouth_markers.is_empty():mouth_marker=mouth_markers[1 if distant and models.size()>1 else 0]
+
+func enable_field_culling() -> void:
+	visibility_notifier=FrontierFieldVisibility.watch(self,2.0*base_scale)
 
 func set_state(value: String) -> bool:
 	if not value in ["idle","move","feed","dormant","stressed","attack"]: return false
@@ -85,20 +94,26 @@ func set_state(value: String) -> bool:
 	state=value
 	elapsed=0
 	attack_phase=""
-	pose()
+	if FrontierFieldVisibility.active(visibility_notifier):pose()
+	else:_update_attack_phase()
 	return true
 
 func _process(delta: float) -> void:
 	if not paused:
 		elapsed+=delta
-		pose()
+		_update_attack_phase()
+	if not FrontierFieldVisibility.active(visibility_notifier):return
 	var camera:=get_viewport().get_camera_3d()
 	if lod_override>=0: set_lod(lod_override==1)
 	elif camera: set_lod(camera.global_position.distance_to(global_position)>25.)
+	if not paused:pose(true)
 
-func pose() -> void:
+func pose(visible_lod_only: bool=false) -> void:
+	_update_attack_phase()
 	var t:=elapsed+motion_phase
-	for row in joints:
+	for lod_index in joints.size():
+		if visible_lod_only and not models[lod_index].visible:continue
+		var row: Dictionary=joints[lod_index]
 		for part in row.values(): part.node.transform=part.rest
 		var body: Node3D=row.get("Anim_Body",{}).get("node")
 		if body==null:continue
@@ -139,13 +154,14 @@ func pose() -> void:
 			if aquatic:body.position.y+=sin(t*1.6)*.055
 		if state=="attack":attack_pose(row,elapsed)
 	update_fx()
+
+func _update_attack_phase() -> void:
 	if state=="attack":
 		var phase: String="windup" if elapsed<windup_seconds else ("active" if elapsed<windup_seconds+active_seconds else "recovery")
 		if elapsed>=attack_duration:
 			state="idle"
 			elapsed=0
 			phase="complete"
-			pose()
 		if phase!=attack_phase:
 			attack_phase=phase
 			attack_cue.emit(phase)

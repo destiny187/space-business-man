@@ -1,0 +1,72 @@
+{
+  "business_objects": 20,
+  "checks": 8,
+  "creatures": 12,
+  "failures": 0,
+  "occluder_chunks": 33,
+  "samples": [
+    {
+      "callback_with_visibility_ms": 0.18245,
+      "callback_without_visibility_ms": 0.40453,
+      "samples": [
+        {
+          "draw_calls": 338.508333333333,
+          "frame_ms": 40.9416,
+          "hidden_creatures": 2,
+          "occlusion": false
+        },
+        {
+          "draw_calls": 339.808333333333,
+          "frame_ms": 32.1925666666667,
+          "hidden_creatures": 4,
+          "occlusion": true
+        },
+        {
+          "draw_calls": 352.358333333333,
+          "frame_ms": 27.6707333333333,
+          "hidden_creatures": 6,
+          "occlusion": true
+        },
+        {
+          "draw_calls": 416.658333333333,
+          "frame_ms": 25.5215833333333,
+          "hidden_creatures": 6,
+          "occlusion": false
+        }
+      ],
+      "yaw": 0.0
+    },
+    {
+      "callback_with_visibility_ms": 0.05492,
+      "callback_without_visibility_ms": 0.17698,
+      "samples": [
+        {
+          "draw_calls": 319.0,
+          "frame_ms": 24.1629833333333,
+          "hidden_creatures": 9,
+          "occlusion": false
+        },
+        {
+          "draw_calls": 298.0,
+          "frame_ms": 27.0605583333333,
+          "hidden_creatures": 9,
+          "occlusion": true
+        },
+        {
+          "draw_calls": 298.0,
+          "frame_ms": 25.020125,
+          "hidden_creatures": 9,
+          "occlusion": true
+        },
+        {
+          "draw_calls": 319.0,
+          "frame_ms": 23.8359916666667,
+          "hidden_creatures": 9,
+          "occlusion": false
+        }
+      ],
+      "yaw": 3.14159265358979
+    }
+  ],
+  "scope": "Same live session; ABBA toggles native occlusion only. Creature callback comparison separately bypasses visibility, keeping LOD optimization. Not a full old/new build benchmark."
+}
