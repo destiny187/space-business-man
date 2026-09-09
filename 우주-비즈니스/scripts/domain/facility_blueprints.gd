@@ -1,14 +1,16 @@
 class_name FrontierFacilityBlueprints
 extends RefCounted
 ## Host-internal bridge. Exploration/station content registers licenses; no grant RPC.
+static var _definitions: Dictionary={}
 static func definitions() -> Dictionary:
- return JSON.parse_string(FileAccess.get_file_as_string("res://data/facility_blueprints.json"))
+ if _definitions.is_empty():_definitions=JSON.parse_string(FileAccess.get_file_as_string("res://data/facility_blueprints.json"))
+ return _definitions
 static func required(row: Dictionary,next_tier: int) -> String:
  for id in definitions():
   if definitions()[id].building==row.get("type","") and int(definitions()[id].tier)==next_tier:return id
  return str(row.get("blueprint_id","")) if next_tier>=3 else ""
 static func owned(world: Dictionary,id: String) -> bool:
- if not world.get("manifest",{}).get("settings",{}).has("regional_rules"):return true
+ if id=="facility_factory_mk3" and not world.get("manifest",{}).get("settings",{}).has("regional_rules"):return true
  return id.is_empty() or world.get("expedition_research",{}).get("licenses",{}).has(id)
 static func reason(world: Dictionary,row: Dictionary,next_tier: int) -> String:
  var id:=required(row,next_tier)

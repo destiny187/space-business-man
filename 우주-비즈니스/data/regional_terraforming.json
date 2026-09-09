@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "region_span": 640,
   "cluster_slots": 12,
   "cluster_fraction": 0.8,
@@ -36,9 +36,70 @@
     "2": {
       "regions": 3,
       "distance": 520
+    },
+    "3": {
+      "regions": 4,
+      "distance": 720
     }
   },
   "stage_fraction": 0.2,
   "map_extent": 8192,
-  "map_resolution": 96
+  "map_resolution": 96,
+  "tier3": {
+    "version": 1,
+    "starting_pollution": 60.0,
+    "source_rate": 0.5,
+    "suppression": 0.98,
+    "source_radius": 48.0,
+    "transfer_fraction_per_second": 0.006,
+    "transfer_limit_per_second": 0.4,
+    "pollution_limit": 8.0,
+    "controlled_minimum": 0.9,
+    "stable_seconds": 45.0,
+    "source_pack_seconds": 120.0,
+    "treatment_pack_seconds": 60.0,
+    "treatment_rate": 1.0,
+    "culture_pack_seconds": 45.0,
+    "colonization_rate": 1.5,
+    "colonization_goal": 60.0,
+    "required_cells": 3,
+    "stage_fraction": 0.15,
+    "maximum_mass": 100000000.0,
+    "profiles": {
+      "acid_water": {
+        "name": "산성 수질 유입",
+        "item": "neutralizer_pack",
+        "treatment": "water",
+        "roles": [
+          "settlement",
+          "source",
+          "water",
+          "recovery"
+        ],
+        "names": [
+          "착륙 정착지",
+          "산성 유입원",
+          "수질 정화지",
+          "선구종 복원지"
+        ]
+      },
+      "reactive_gas": {
+        "name": "반응성 가스 유입",
+        "item": "sorbent_pack",
+        "treatment": "atmosphere",
+        "roles": [
+          "settlement",
+          "source",
+          "air",
+          "recovery"
+        ],
+        "names": [
+          "착륙 정착지",
+          "가스 유입원",
+          "대기 정화지",
+          "선구종 복원지"
+        ]
+      }
+    }
+  }
 }

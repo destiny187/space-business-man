@@ -15,6 +15,7 @@ var restore_amount:=0.0
 var visual_temperature: float=NAN
 var presentation_points: Array[Vector3]=[]
 var labels_enabled:=true
+var source_view: FrontierTerraformSourceView
 var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
@@ -47,6 +48,9 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
+	if FrontierTerraformTier3.enabled(body):
+		if source_view==null:source_view=FrontierTerraformSourceView.new();add_child(source_view);source_view.configure(terrain,body)
+		source_view.accept(value)
 	var registered: bool=value.get("sites",{}).has(body.id)
 	var site: Dictionary=value.get("sites",{}).get(body.id,{"remaining":{},"buildings":{},"robots":{},"center":[0,0,0],"environment":{"temperature":body.get("traits",{}).get("temperature",20)}})
 	var wanted: Dictionary={}
@@ -72,13 +76,13 @@ func accept(value: Dictionary) -> void:
 		wanted[row.id]=true
 		if not nodes.has(row.id):
 			_queue_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building");continue
-		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active
+		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active
 		var symbol: String="⊘ " if row.get("submerged",false) else ("▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! ")))
-		nodes[row.id].get_meta("label").text=symbol+FrontierCatalog.entry("buildings",row.type).name+"\n"+str(row.status)
+		nodes[row.id].get_meta("label").text=symbol+FrontierTerraformTier3.name(row)+"\n"+str(row.status)
 		nodes[row.id].get_meta("label").modulate=Color("9bc7ef") if row.get("submerged",false) else (Color("82f5d2") if working else Color("f2c077"))
 		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
 		_upgrade_visual(nodes[row.id],row,false)
-		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab"] else row.active)
+		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active)
 	for row in site.robots.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"miner",FrontierExpeditionBusiness.point(row.position),.7,"robot");continue
@@ -186,8 +190,17 @@ func _exit_tree() -> void:
 func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
 	if int(row.get("tier",1))<2:return
 	if int(row.get("tier",1))==3 and not node.has_meta("tier3_visual"):
-		var core: Node3D=load("res://assets/models/products/control_circuit.glb").instantiate()
-		FrontierInkStyle.apply(core,cache);node.get_meta("visual").add_child(core);core.position=Vector3(1.12,2.0,1.34);core.rotation=Vector3(PI/2,0,0);core.scale=Vector3.ONE*.65;node.set_meta("tier3_visual",true)
+		var specialized: Dictionary=FrontierTerraformTier3.config().upgrades.get(row.get("type",""),{})
+		if row.type=="source_control":node.set_meta("tier3_visual",true);return
+		var core: Node3D=load("res://assets/models/"+str(specialized.get("model","products/control_circuit"))+".glb").instantiate()
+		FrontierInkStyle.apply(core,cache);node.get_meta("visual").add_child(core)
+		if specialized.is_empty():core.position=Vector3(1.12,2.0,1.34);core.rotation=Vector3(PI/2,0,0);core.scale=Vector3.ONE*.65
+		else:core.position=Vector3(1.9,0,0)
+		for part in core.find_children("Anim_*","Node3D",true,false):
+			part.set_meta("rest_position",part.position);part.set_meta("rest_transform",part.transform);node.get_meta("parts").append(part)
+		for child in node.get_children():
+			if child is CollisionShape3D and child.shape is CylinderShape3D:child.shape.radius=FrontierTerraformTier3.radius(row)
+		node.set_meta("tier3_visual",true)
 		FrontierFieldVisibility.fit(node,node.get_meta("visibility_notifier"))
 	if node.has_meta("tier2_visual"):return
 	var visual: Node3D=node.get_meta("visual")

@@ -58,7 +58,7 @@ func update_site(site: Dictionary) -> void:
 	for id in site.get("buildings",{}):
 		if id!=panel.context_id:continue
 		var b: Dictionary=site.buildings[id]
-		if b.type!="factory" and not FrontierProductionTier2.config().facility_upgrades.has(b.type):continue
+		if b.type not in ["factory","source_control"] and not FrontierProductionTier2.config().facility_upgrades.has(b.type):continue
 		options[id]=FrontierCatalog.entry("buildings",b.type).name+"  Mk.%d  %s"%[int(b.get("tier",1)),b.status]
 	for id in site.get("robots",{}):
 		if id==panel.context_id:options[id]="M-01  Mk.%d  %s"%[int(site.robots[id].get("tier",1)),id]
@@ -80,8 +80,11 @@ func refresh() -> void:
 	if not manufacturing:
 		var target_def:=FrontierCatalog.entry("buildings",b.get("type",""))
 		preview.show_model("miner" if panel.context_kind=="robot" else target_def.get("model",""))
-		title.text="M-01 로봇" if panel.context_kind=="robot" else target_def.get("name","시설")
+		title.text="M-01 로봇" if panel.context_kind=="robot" else FrontierTerraformTier3.name(b)
 		description.text="Mk.%d  %s"%[int(b.get("tier",1)),b.get("status","")]
+		if current.has("tier3"):
+			var zone: Dictionary=current.regions.get(str(b.get("region_id","region:0")),{})
+			if not zone.is_empty():description.text+="\n"+FrontierTerraformTier3.detail(current,zone)
 	var job: Dictionary=b.get("production",{})
 	progress.value=0;progress.visible=not job.is_empty()
 	if not job.is_empty():progress.value=float(job.progress)/float(FrontierProductionTier2.product(job.product).seconds)*100

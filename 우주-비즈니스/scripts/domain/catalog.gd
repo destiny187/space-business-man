@@ -18,6 +18,7 @@ static func entry(category: String, key: String) -> Dictionary:
 	if category=="resources" and not table(category).has(key):
 		var product:=FrontierProductionTier2.product(key)
 		return product if not product.is_empty() else FrontierMinerals.entry(key)
+	if category=="buildings" and not table(category).has(key):return FrontierTerraformTier3.config().buildings.get(key,{})
 	return table(category).get(key, {})
 
 static func cost_text(cost: Dictionary) -> String:

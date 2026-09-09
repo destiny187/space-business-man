@@ -416,6 +416,10 @@ func refresh_building_cost() -> void:
 	for kind in building_cards:
 		var card: Button=building_cards[kind]
 		card.set_pressed_no_signal(kind==selected(building))
+		var tier: int=FrontierCatalog.entry("buildings",kind).get("tier",1)
+		if tier>=3:
+			var blueprint:=FrontierFacilityBlueprints.required({"type":kind},tier)
+			card.tooltip_text="공동 원정 설계도 필요" if blueprint not in ledger.get("facility_blueprints",[]) else FrontierCatalog.entry("buildings",kind).get("description","")
 		card.get_meta("cost_readout").show_cost(FrontierCatalog.entry("buildings",kind).cost,bag,false,22)
 	var cost: Dictionary=FrontierCatalog.entry("buildings",selected(building)).cost
 	building_cost.show_cost(cost,bag,true)

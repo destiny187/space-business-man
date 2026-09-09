@@ -314,10 +314,10 @@ func _industry_effects() -> void:
 		if building.type=="factory" and (not building.get("production",{}).is_empty() or building.get("working",false)):
 			var actor: Node3D=visuals[building.id]
 			if actor.global_position.distance_to(app.camera.global_position)<25:effects.burst(actor.global_position+Vector3.UP*1.5,Color("efb46f"),3)
-		if building.type not in ["atmosphere","thermal","water","biolab"] or not building.get("working",false):continue
+		if building.type not in ["atmosphere","thermal","water","biolab","source_control"] or not building.get("working",false):continue
 		var actor: Node3D=visuals[building.id]
 		if actor.global_position.distance_to(app.camera.global_position)>25:continue
-		var color: Color={"atmosphere":Color("c4e8e2"),"thermal":Color("ffc487"),"water":Color("71caf4"),"biolab":Color("8bdd82")}[building.type]
+		var color: Color={"atmosphere":Color("c4e8e2"),"thermal":Color("ffc487"),"water":Color("71caf4"),"biolab":Color("8bdd82"),"source_control":Color("c4e8e2")}[building.type]
 		effects.burst(actor.global_position+Vector3.UP*2,color,2)
 
 func _replace_tool(model: String) -> void:

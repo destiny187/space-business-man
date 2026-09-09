@@ -4,10 +4,12 @@ extends RefCounted
 static var _config: Dictionary={}
 static var _starter_veins: Array=[]
 static func config() -> Dictionary:
-	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json"))
+	if _config.is_empty():
+		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json"))
+		_config.buildings.append_array(FrontierTerraformTier3.config().buildings.keys())
 	return _config
 static func signature() -> String:
-	return FrontierUniverse.fingerprint(config())+FrontierUniverse.fingerprint(FrontierCatalog.all())
+	return FrontierUniverse.fingerprint(JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json")))+FrontierUniverse.fingerprint(FrontierCatalog.all())
 static func create() -> Dictionary:
 	return {"version":1,"rules_hash":signature(),"credits":int(config().starting_credits),"technologies":[],"active":"","counter":0,"sites":{},"hangar":{},"bags":{},"crates":{}}
 static func inventory() -> Dictionary:
@@ -90,13 +92,16 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	var def:=FrontierCatalog.entry("buildings",kind)
 	if def.is_empty() or kind not in config().buildings:return "건설 설계도를 확인하세요."
 	var radius: float=def.radius
+	if current.has("tier3"):
+		var source:=point(current.regions["region:1"].center)
+		if Vector2(p.x-source.x,p.z-source.z).length()<radius+4:return "유입원과 현장 처리 통로를 비워 두세요."
 	if FrontierLotusSupport.blocks(world,world.location,p,radius):return "Lotus 보급 상자와 투하 예정 공간을 비워 두세요."
 	if p.distance_to(point(current.center))>float(config().build_radius):return "개발 거점 65m 이내에 배치하세요."
 	if (current.get("base_deployed",true) and p.distance_to(point(current.center))<radius+4) or p.distance_to(point(FrontierCrewSurface.config().ship_position))<radius+13:return "착륙선과 창고의 진입로를 비워 두세요."
 	var floor:=ground(FrontierCrewSurface.field(world),p.x,p.z,radius)
 	if not floor.is_finite() or absf(floor.y-p.y)>.5:return "평탄하고 지지되는 지면이 필요합니다."
 	for building in current.buildings.values():
-		if point(building.position).distance_to(p)<radius+float(FrontierCatalog.entry("buildings",building.type).radius)+1.5:return "시설과 운반 통로가 겹칩니다."
+		if point(building.position).distance_to(p)<radius+FrontierTerraformTier3.radius(building)+1.5:return "시설과 운반 통로가 겹칩니다."
 	for id in active.values():
 		if point(world.crew.members[id].position).distance_to(p)<radius+1:return "승무원이 배치 구역 안에 있습니다."
 	for robot in current.robots.values():
@@ -121,6 +126,13 @@ static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3
 	if not error.is_empty():return error
 	if current.buildings.size()>=int(config().max_buildings):return "이 개발 구역의 시설 한도에 도달했습니다."
 	var def:=FrontierCatalog.entry("buildings",kind)
+	if int(def.get("tier",1))>=3:
+		var gate:=FrontierFacilityBlueprints.reason(world,{"type":kind},int(def.tier))
+		if not gate.is_empty():return gate
+		if kind=="source_control":
+			if not current.has("tier3"):return "T3 지역 사업의 유입원에서 사용하세요."
+			var center:=point(current.regions["region:1"].center)
+			if Vector2(p.x-center.x,p.z-center.z).length()>float(current.tier3.rules.source_radius):return "유입원 48m 이내에 배치하세요."
 	if not FrontierEarlyAccess.available(world.business,def.tech):return "시설 기술이 필요합니다."
 	var missing: Dictionary={}
 	for key in def.cost:
@@ -240,7 +252,7 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 		var error:=build_reason(world,actor,key,p,active)
 		if not error.is_empty():return error
 		transfer(bag(world,actor),FrontierCatalog.entry("buildings",key).cost,-1)
-		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"position":array(p),"yaw":0.0,"enabled":true,"active":false,"status":"전력 확인 중","work":0.0};return ""
+		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"tier":int(FrontierCatalog.entry("buildings",key).get("tier",1)),"position":array(p),"yaw":0.0,"enabled":true,"active":false,"status":"전력 확인 중","work":0.0};return ""
 	if kind in ["business_toggle","business_demolish","business_craft"]:
 		var id: String=str(args.get("building_id",""))
 		if not current.buildings.has(id):return "시설을 선택하세요."

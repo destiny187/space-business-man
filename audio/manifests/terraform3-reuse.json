@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "new_audio_generated": false,
+  "mapping": {
+    "source_control": "sfx_terraform_active",
+    "selective_air": "sfx_terraform_active",
+    "closed_water": "sfx_water_loop",
+    "regional_heat": "sfx_thermal_loop",
+    "pioneer": "sfx_biolab_loop",
+    "construction": "sfx_build_place",
+    "failure": "sfx_build_invalid",
+    "production": "sfx_factory_complete",
+    "settlement": "ui_planet_sold"
+  },
+  "verification": "Actual Godot source-controller emitter connection checked; existing host-confirmed cues reused. No subjective listening-quality approval."
+}

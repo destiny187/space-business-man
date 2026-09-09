@@ -1,0 +1,112 @@
+[
+  {
+    "id": "source_control",
+    "generator": "tools/build_terraform3.py",
+    "source": "art/blender/terraform3/source_control.blend",
+    "model": "terraform3/source_control",
+    "blender": "5.2.1 LTS",
+    "bounds_blender": [
+      [
+        -1.7999999523162842,
+        -1.5499999523162842,
+        0.0
+      ],
+      [
+        1.7999999523162842,
+        1.5499999523162842,
+        3.762993097305298
+      ]
+    ],
+    "motion": [
+      "Anim_Agitator_Source"
+    ]
+  },
+  {
+    "id": "atmosphere_module",
+    "generator": "tools/build_terraform3.py",
+    "source": "art/blender/terraform3/atmosphere_module.blend",
+    "model": "terraform3/atmosphere_module",
+    "blender": "5.2.1 LTS",
+    "bounds_blender": [
+      [
+        -0.675000011920929,
+        -0.6499999761581421,
+        0.0
+      ],
+      [
+        0.675000011920929,
+        0.6499999761581421,
+        2.007063388824463
+      ]
+    ],
+    "motion": [
+      "Anim_Fan_Selective"
+    ]
+  },
+  {
+    "id": "water_module",
+    "generator": "tools/build_terraform3.py",
+    "source": "art/blender/terraform3/water_module.blend",
+    "model": "terraform3/water_module",
+    "blender": "5.2.1 LTS",
+    "bounds_blender": [
+      [
+        -0.6965286135673523,
+        -0.6499999761581421,
+        0.0
+      ],
+      [
+        0.6750000715255737,
+        0.6744096279144287,
+        2.1172537803649902
+      ]
+    ],
+    "motion": [
+      "Anim_Agitator_Pump"
+    ]
+  },
+  {
+    "id": "thermal_module",
+    "generator": "tools/build_terraform3.py",
+    "source": "art/blender/terraform3/thermal_module.blend",
+    "model": "terraform3/thermal_module",
+    "blender": "5.2.1 LTS",
+    "bounds_blender": [
+      [
+        -0.7560546398162842,
+        -0.6499999761581421,
+        0.0
+      ],
+      [
+        0.7560545802116394,
+        0.6499999761581421,
+        2.2447147369384766
+      ]
+    ],
+    "motion": [
+      "Anim_Fan_Heat"
+    ]
+  },
+  {
+    "id": "biolab_module",
+    "generator": "tools/build_terraform3.py",
+    "source": "art/blender/terraform3/biolab_module.blend",
+    "model": "terraform3/biolab_module",
+    "blender": "5.2.1 LTS",
+    "bounds_blender": [
+      [
+        -0.7398253679275513,
+        -0.6499999761581421,
+        0.0
+      ],
+      [
+        0.675000011920929,
+        0.6634776592254639,
+        1.909999966621399
+      ]
+    ],
+    "motion": [
+      "Anim_Agitator_Culture"
+    ]
+  }
+]

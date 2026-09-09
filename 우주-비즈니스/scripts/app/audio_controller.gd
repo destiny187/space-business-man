@@ -129,9 +129,9 @@ func update_world(p: Dictionary,paused: bool) -> void:
 			var at:=Vector2(float(b.position[0]),float(b.position[1]))
 			if listener.distance_to(at)<35 and wanted.size()<12:wanted[b.id]=["sfx_robot_work",Vector3(at.x,1.5,at.y)]
 			continue
-		if b.type not in ["atmosphere","thermal","water","biolab"] or not b.get("working",b.active):continue
+		if b.type not in ["atmosphere","thermal","water","biolab","source_control"] or not b.get("working",b.active):continue
 		var location := Vector2(float(b.position[0]),float(b.position[1]))
-		if listener.distance_to(location) < 35 and wanted.size() < 12: wanted[b.id] = [{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop"}[b.type],Vector3(location.x,1.5,location.y)]
+		if listener.distance_to(location) < 35 and wanted.size() < 12: wanted[b.id] = [{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop","source_control":"sfx_terraform_active"}[b.type],Vector3(location.x,1.5,location.y)]
 	for id in emitters.keys():
 		if not wanted.has(id):
 			var retiring: AudioStreamPlayer3D=emitters[id]

@@ -48,9 +48,14 @@ func _process(delta: float) -> void:
 		return
 	title.text="환경 적합도 %.0f%%  [H]"%report.overall;bar.value=report.overall
 	state.text=(site.get("regions",{}).get(site.get("current_region",""),{}).get("name","지역 환경"))+"  "+("✓ 안정" if report.stable else "◷ 관찰 중  %.0f / %.0f초"%[report.stable_seconds,report.stable_required])
+	if site.has("tier3"):
+		var zone: Dictionary=site.regions.get(site.get("current_region","region:0"),{})
+		state.text=zone.name+"  "+("✓ 안정" if FrontierRegionalTerraform.ready(zone) else "T3 처리 중 · Tab 현장 상태")
+		if not FrontierRegionalTerraform.ready(zone):warning.text="유입 억제 %.0f%% · 보급 %.0f초"%[float(site.tier3.suppression)*100,float(site.tier3.supply_seconds)];warning.show()
 	if not report.limiting_factors.is_empty():warning.text="! "+str(report.limiting_factors[0].label);warning.show()
 	for key in bars:
 		bars[key].show();bars[key].value=report.scores[key];values[key].text="%.0f"%report.scores[key]
 	var e: Dictionary=site.environment
 	raw.text="%.1f°C  %.2f bar  산소 %.1f%%"%[float(e.temperature),float(e.pressure),float(e.oxygen)*100]
+	if site.has("tier3"):raw.text+="\n"+FrontierTerraformTier3.detail(site,site.regions[site.get("current_region","region:0")])
 	if site.has("restoration2"):raw.text+="\n염류 %.0f  토양 %.0f"%[float(site.restoration2.salinity),float(site.restoration2.soil)]

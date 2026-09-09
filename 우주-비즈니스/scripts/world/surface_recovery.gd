@@ -37,7 +37,8 @@ static func regions(body: Dictionary,ledger: Dictionary) -> Array:
   for cell in zone.cells:
    var values: Dictionary=cell.environment.duplicate()
    values.merge(cell.restoration2,true)
-   result.append({"center":FrontierCrewWorld.vector(cell.position),"radius":38.0 if zone.cells.size()>1 else float(zone.radius),"state":conditions(values),"environment":cell.environment,"restoration2":cell.restoration2})
+   values.toxicity=maxf(float(values.get("toxicity",0)),minf(100,float(cell.get("pollution",0))))
+   result.append({"center":FrontierCrewWorld.vector(cell.position),"radius":38.0 if zone.cells.size()>1 else float(zone.radius),"state":conditions(values),"environment":cell.environment,"restoration2":cell.restoration2,"pollution":float(cell.get("pollution",0))})
  return result
 static func sample_at(body: Dictionary,ledger: Dictionary,position: Vector3) -> Dictionary:
  return sample_regions(body,regions(body,ledger),position)
@@ -64,7 +65,7 @@ static func shader_regions(material: ShaderMaterial,body: Dictionary,ledger: Dic
  for area in areas:
   points.append(Vector4(area.center.x,area.center.y,area.center.z,area.radius))
   values.append(Vector4(float(area.environment.temperature),float(area.state.life),float(area.state.water),float(area.environment.pressure)))
-  extras.append(Vector4(float(area.get("restoration2",{}).get("salinity",0))/100,float(area.get("restoration2",{}).get("soil",0))/100,float(area.environment.ecology)/100,0))
+  extras.append(Vector4(float(area.get("restoration2",{}).get("salinity",0))/100,float(area.get("restoration2",{}).get("soil",0))/100,float(area.environment.ecology)/100,clampf(float(area.get("pollution",0))/60,0,1)))
  var count:=points.size()
- while points.size()<15:points.append(Vector4.ZERO);values.append(Vector4.ZERO);extras.append(Vector4.ZERO)
+ while points.size()<20:points.append(Vector4.ZERO);values.append(Vector4.ZERO);extras.append(Vector4.ZERO)
  material.set_shader_parameter("region_count",count);material.set_shader_parameter("region_points",points);material.set_shader_parameter("region_values",values);material.set_shader_parameter("region_extras",extras)

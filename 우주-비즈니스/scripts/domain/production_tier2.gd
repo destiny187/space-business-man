@@ -6,6 +6,7 @@ static func config() -> Dictionary:
 	if _config.is_empty():
 		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/production_tier2.json"))
 		_config.products.merge(FrontierPlanetSupply.config().products)
+		_config.products.merge(FrontierTerraformTier3.config().products)
 		_config.maximum_tier=3
 	return _config
 static func product(id: String) -> Dictionary:return config().products.get(id,{})
@@ -17,6 +18,7 @@ static func robot_gate(factory: Dictionary) -> String:
 	return "제작소를 Mk.2로 개조하면 채광 로봇이 해금됩니다." if int(factory.get("tier",1))<int(config().robot_creation.factory_tier) else ""
 static func factor(row: Dictionary) -> float:
 	if int(row.get("tier",1))==3 and row.get("type")=="factory":return float(FrontierPlanetSupply.config().factory_upgrade.factor)
+	if int(row.get("tier",1))==3 and FrontierTerraformTier3.config().upgrades.has(row.get("type","")):return float(FrontierTerraformTier3.config().upgrades[row.type].factor)
 	return float(config().facility_upgrades.get(row.get("type",""),{}).get("factor",1)) if int(row.get("tier",1))==2 else 1.0
 static func robot_capacity(row: Dictionary) -> int:
 	return int(config().robot_upgrade.capacity) if int(row.get("tier",1))==2 else int(FrontierExpeditionBusiness.config().robot_capacity)
@@ -67,16 +69,24 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if not row.get("production",{}).is_empty() or FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 제작·실험을 먼저 완료하세요."
 		for job in site.jobs.values():
 			if job.factory_id==id:return "로봇 제작을 먼저 완료하세요."
+	if not robot and next_tier==3 and FrontierTerraformTier3.config().upgrades.has(row.get("type","")):
+		var at:=FrontierCrewWorld.vector(row.position);var expanded: Dictionary=row.duplicate();expanded.tier=3
+		var radius:=FrontierTerraformTier3.radius(expanded)
+		if not FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),at.x,at.z,radius).is_finite():return "Mk.3 모듈을 지지할 평탄한 3m 토대가 필요합니다."
+		for neighbour in site.buildings.values():
+			if neighbour.id==row.id:continue
+			if at.distance_to(FrontierCrewWorld.vector(neighbour.position))<radius+FrontierTerraformTier3.radius(neighbour)+1.5:return "Mk.3 모듈과 인접 시설 사이에 작업 공간을 확보하세요."
 	if not FrontierExpeditionBusiness.affordable(site.inventory,def.cost):return "현장 창고의 개조 부품이 부족합니다."
 	FrontierExpeditionBusiness.transfer(site.inventory,def.cost,-1);row.tier=next_tier;return ""
 static func upgrade_definition(row: Dictionary) -> Dictionary:
 	var tier:=int(row.get("tier",1))
 	if tier==2 and row.get("type")=="factory":return FrontierPlanetSupply.config().factory_upgrade
+	if tier==2:return FrontierTerraformTier3.config().upgrades.get(row.get("type",""),{})
 	return config().facility_upgrades.get(row.get("type",""),{}) if tier==1 else {}
 static func upgrade_refund(row: Dictionary) -> Dictionary:
 	var result: Dictionary={}
 	if int(row.get("tier",1))>=2:FrontierExpeditionBusiness.transfer(result,config().facility_upgrades.get(row.get("type",""),{}).get("cost",{}),1)
-	if int(row.get("tier",1))==3:FrontierExpeditionBusiness.transfer(result,FrontierPlanetSupply.config().factory_upgrade.cost,1)
+	if int(row.get("tier",1))==3 and row.get("type")!="source_control":FrontierExpeditionBusiness.transfer(result,(FrontierPlanetSupply.config().factory_upgrade if row.type=="factory" else FrontierTerraformTier3.config().upgrades.get(row.type,{})).get("cost",{}),1)
 	return result
 static func tick(site: Dictionary,dt: float) -> void:
 	for row in site.buildings.values():
@@ -94,7 +104,7 @@ static func restoration_ready(site: Dictionary) -> bool:
 	var r: Dictionary=site.get("restoration2",{})
 	return r.is_empty() or (float(r.salinity)<=float(config().restoration.salinity_target) and float(r.soil)>=float(config().restoration.soil_target))
 static func restore(site: Dictionary,b: Dictionary,dt: float) -> void:
-	if int(b.get("tier",1))!=2:return
+	if int(b.get("tier",1))<2:return
 	var cfg: Dictionary=config().restoration
 	var r: Dictionary=site.get("restoration2",{})
 	var item: String="";var needed:=false
@@ -114,8 +124,9 @@ static func validate_building(b: Dictionary) -> bool:
 	if b.has("working") and not b.working is bool:return false
 	if b.has("submerged") and not b.submerged is bool:return false
 	if not FrontierExpeditionBusiness.integer(b.get("tier",1),1,3):return false
-	if int(b.get("tier",1))==3 and b.get("type")!="factory":return false
-	if int(b.get("tier",1))>=2 and not config().facility_upgrades.has(b.type):return false
+	if int(b.get("tier",1))==3 and b.get("type")!="factory" and b.get("type")!="source_control" and not FrontierTerraformTier3.config().upgrades.has(b.get("type")):return false
+	if int(b.get("tier",1))>=2 and b.get("type")!="source_control" and not config().facility_upgrades.has(b.type):return false
+	if not FrontierUniverse._finite(b.get("t3_fuel",0),0,120) or not FrontierUniverse._finite(b.get("t3_control_fraction",0),0,1):return false
 	if not FrontierUniverse._finite(b.get("treatment_work",0),0,10000000) or not FrontierExpeditionBusiness.integer(b.get("product_serial",0),0,100000000):return false
 	var job: Variant=b.get("production",{})
 	if not job is Dictionary:return false

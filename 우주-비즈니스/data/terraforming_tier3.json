@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "products": {
+    "corrosion_alloy": {
+      "name": "내식 합금",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "alloy_frame": 1,
+        "refined_copper": 2
+      },
+      "amount": 2,
+      "seconds": 12,
+      "model": "products/reinforced_frame",
+      "icon": "reinforced_frame",
+      "color": "#efb46f",
+      "use": "Mk.3 전문 설비의 내식 외피"
+    },
+    "exchange_membrane": {
+      "name": "선택 교환막",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "silicon": 4,
+        "mineral_filter": 2,
+        "refined_copper": 1
+      },
+      "amount": 2,
+      "seconds": 10,
+      "model": "products/mineral_filter",
+      "icon": "mineral_filter",
+      "color": "#efb46f",
+      "use": "가스·수질의 선택적 분리 장치"
+    },
+    "neutralizer_pack": {
+      "name": "수질 중화 팩",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "stone": 6,
+        "phosphate": 2,
+        "ice": 2
+      },
+      "amount": 4,
+      "seconds": 10,
+      "model": "products/soil_base",
+      "icon": "soil_base",
+      "color": "#efb46f",
+      "use": "산성 수질 유입 억제·잔류 오염 처리"
+    },
+    "sorbent_pack": {
+      "name": "가스 흡착 팩",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "stone": 6,
+        "mineral_filter": 2,
+        "silicon": 2
+      },
+      "amount": 4,
+      "seconds": 10,
+      "model": "products/mineral_filter",
+      "icon": "mineral_filter",
+      "color": "#efb46f",
+      "use": "반응성 가스 유입 억제·잔류 가스 포집"
+    },
+    "circulation_module": {
+      "name": "순환 모듈",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "cryo_cell": 1,
+        "exchange_membrane": 2,
+        "control_circuit": 1
+      },
+      "amount": 1,
+      "seconds": 14,
+      "model": "products/heat_transfer_unit",
+      "icon": "heat_transfer_unit",
+      "color": "#efb46f",
+      "use": "폐쇄 순환 설비의 펌프·회수부"
+    },
+    "regional_heat_module": {
+      "name": "지역 열교환 모듈",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "heat_transfer_unit": 2,
+        "corrosion_alloy": 1,
+        "control_circuit": 1
+      },
+      "amount": 1,
+      "seconds": 14,
+      "model": "products/heat_transfer_unit",
+      "icon": "heat_transfer_unit",
+      "color": "#efb46f",
+      "use": "온도 편차가 큰 현장의 열 교환"
+    },
+    "pioneer_culture": {
+      "name": "선구종 정착 팩",
+      "tier": 3,
+      "factory_tier": 3,
+      "cost": {
+        "soil_activation_pack": 1,
+        "ice": 4,
+        "phosphate": 2
+      },
+      "amount": 3,
+      "seconds": 12,
+      "model": "products/soil_base",
+      "icon": "soil_base",
+      "color": "#efb46f",
+      "use": "정화된 최종 복원지의 식생 정착"
+    }
+  },
+  "upgrades": {
+    "atmosphere": {
+      "name": "선택성 대기 처리기",
+      "cost": {
+        "corrosion_alloy": 2,
+        "exchange_membrane": 2,
+        "control_circuit": 2
+      },
+      "factor": 2.0,
+      "power": 7,
+      "effect": "반응성 가스 포집 · 흡착 팩 필요",
+      "model": "terraform3/atmosphere_module",
+      "support_radius": 3.0
+    },
+    "water": {
+      "name": "폐쇄 수자원 순환기",
+      "cost": {
+        "corrosion_alloy": 2,
+        "circulation_module": 1,
+        "exchange_membrane": 2
+      },
+      "factor": 2.0,
+      "power": 7,
+      "effect": "산성 수질 정화 · 투입한 얼음의 유효 급수량 증가",
+      "model": "terraform3/water_module",
+      "water_gain_factor": 1.5,
+      "support_radius": 3.0
+    },
+    "thermal": {
+      "name": "지역 열교환기",
+      "cost": {
+        "corrosion_alloy": 2,
+        "regional_heat_module": 2
+      },
+      "factor": 3.0,
+      "power": 8,
+      "effect": "넓은 온도 편차의 국소 열 교환",
+      "model": "terraform3/thermal_module",
+      "support_radius": 3.0
+    },
+    "biolab": {
+      "name": "선구종 정착기",
+      "cost": {
+        "corrosion_alloy": 1,
+        "circulation_module": 1,
+        "control_circuit": 2
+      },
+      "factor": 2.0,
+      "power": 8,
+      "effect": "정화된 구획의 표준 선구종 정착 · 배양 팩 필요",
+      "model": "terraform3/biolab_module",
+      "support_radius": 3.0
+    }
+  },
+  "buildings": {
+    "source_control": {
+      "name": "유입원 제어 장치",
+      "model": "terraform3/source_control",
+      "tier": 3,
+      "tech": "atmosphere",
+      "cost": {
+        "corrosion_alloy": 2,
+        "exchange_membrane": 2,
+        "industrial_core": 1
+      },
+      "power": 8,
+      "radius": 2.5,
+      "description": "유입원 48m 이내에서 가스 또는 수질 원인을 억제합니다. 문제별 처리 팩과 전력이 필요합니다."
+    }
+  },
+  "environment": {
+    "version": 1,
+    "starting_pollution": 60.0,
+    "source_rate": 0.5,
+    "suppression": 0.98,
+    "source_radius": 48.0,
+    "transfer_fraction_per_second": 0.006,
+    "transfer_limit_per_second": 0.4,
+    "pollution_limit": 8.0,
+    "controlled_minimum": 0.9,
+    "stable_seconds": 45.0,
+    "source_pack_seconds": 120.0,
+    "treatment_pack_seconds": 60.0,
+    "treatment_rate": 1.0,
+    "culture_pack_seconds": 45.0,
+    "colonization_rate": 1.5,
+    "colonization_goal": 60.0,
+    "required_cells": 3,
+    "stage_fraction": 0.15,
+    "maximum_mass": 100000000.0,
+    "profiles": {
+      "acid_water": {
+        "name": "산성 수질 유입",
+        "item": "neutralizer_pack",
+        "treatment": "water",
+        "roles": [
+          "settlement",
+          "source",
+          "water",
+          "recovery"
+        ],
+        "names": [
+          "착륙 정착지",
+          "산성 유입원",
+          "수질 정화지",
+          "선구종 복원지"
+        ]
+      },
+      "reactive_gas": {
+        "name": "반응성 가스 유입",
+        "item": "sorbent_pack",
+        "treatment": "atmosphere",
+        "roles": [
+          "settlement",
+          "source",
+          "air",
+          "recovery"
+        ],
+        "names": [
+          "착륙 정착지",
+          "가스 유입원",
+          "대기 정화지",
+          "선구종 복원지"
+        ]
+      }
+    }
+  }
+}

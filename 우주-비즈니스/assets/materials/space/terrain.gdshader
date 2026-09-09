@@ -7,9 +7,9 @@ uniform float salt_crust=0.;
 uniform float soil_recovery=0.;
 uniform float restoration=0.;
 uniform int region_count=0;
-uniform vec4 region_points[15];
-uniform vec4 region_values[15];
-uniform vec4 region_extras[15];
+uniform vec4 region_points[20];
+uniform vec4 region_values[20];
+uniform vec4 region_extras[20];
 uniform float recovery_water=-1.;
 uniform float recovery_pressure=0.;
 uniform float recovery_life=-1.;
@@ -68,16 +68,17 @@ void fragment(){
  float upward=smoothstep(.42,.90,n.y);float skin=upward*exposure;
  vec3 geo=geology(world_position.xz);
  float managed=1.-smoothstep(restoration_radius*.7,restoration_radius,distance(world_position.xz,restoration_center.xz));
- float local_temp_value=local_temperature;float local_water_value=recovery_water;float local_pressure_value=recovery_pressure;
+ float pollution_value=0.;float local_temp_value=local_temperature;float local_water_value=recovery_water;float local_pressure_value=recovery_pressure;
  float local_life_value=recovery_life;float local_salt_value=salt_crust;float local_soil_value=soil_recovery;float local_restore_value=restoration;
  if(region_count>0){
   managed=0.;
-  for(int i=0;i<15;i++){
+  for(int i=0;i<20;i++){
    if(i>=region_count){break;}
    float w=1.-smoothstep(region_points[i].w*.65,region_points[i].w,distance(world_position.xz,region_points[i].xz));
-   if(w>managed){managed=w;local_temp_value=region_values[i].x;local_life_value=region_values[i].y;local_water_value=region_values[i].z;local_pressure_value=region_values[i].w;local_salt_value=region_extras[i].x;local_soil_value=region_extras[i].y;local_restore_value=region_extras[i].z;}
+   if(w>managed){managed=w;local_temp_value=region_values[i].x;local_life_value=region_values[i].y;local_water_value=region_values[i].z;local_pressure_value=region_values[i].w;local_salt_value=region_extras[i].x;local_soil_value=region_extras[i].y;local_restore_value=region_extras[i].z;pollution_value=region_extras[i].w;}
   }
  }
+ local_life_value*=1.-pollution_value;local_restore_value*=1.-pollution_value;
  float near_detail=1.-smoothstep(detail_near,detail_far,distance(CAMERA_POSITION_WORLD,world_position));
  float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
  vec3 strata=mix(rock_color.rgb*.82,rock_color.rgb*1.09,smoothstep(.2,.8,terrace));
@@ -115,6 +116,7 @@ void fragment(){
   ALBEDO=mix(ALBEDO,vec3(.34,.58,.66),ice*.9);ALBEDO=mix(ALBEDO,vec3(.52,.62,.66),snow);
   roughness=mix(mix(roughness,.27,ice),.82,snow);
  }
+ ALBEDO=mix(ALBEDO,vec3(.39,.30,.20),pollution_value*managed*skin*.35);
  ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);
  float salt=local_salt_value*managed*skin*smoothstep(.25,.7,geo.z);
  ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt*.6);

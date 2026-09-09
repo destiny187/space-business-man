@@ -51,7 +51,7 @@ static func distribute(site: Dictionary,before: Dictionary,restoration_before: D
 static func valid(site: Dictionary,tier: int) -> bool:
 	if site.has("workload_eligible") and not site.workload_eligible is bool:return false
 	if not site.has("coop_workload"):return true
-	if tier not in [1,2] or site.has("workload_eligible") or site.get("state")=="exploration":return false
+	if (tier not in [1,2] and not site.has("tier3")) or site.has("workload_eligible") or site.get("state")=="exploration":return false
 	var value: Variant=site.coop_workload
 	if not value is Dictionary or value.get("version")!=1 or not FrontierExpeditionBusiness.integer(value.get("participant_count"),1,6):return false
 	if not FrontierUniverse._finite(value.get("coefficient"),1,2.5) or not is_equal_approx(float(value.coefficient),coefficient(tier,int(value.participant_count))):return false

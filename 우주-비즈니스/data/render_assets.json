@@ -10605,5 +10605,55 @@
     "geometry": "authored-incident-first-pass",
     "generator": "tools/build_exploration_incidents.py",
     "review": "docs/production/99-exploration-incidents-t2.md"
+  },
+  {
+    "id": "terraform3_source_control",
+    "title": "T3 / 지역 환경 설비",
+    "name": "유입원 제어 장치",
+    "group": "시설",
+    "model": "res://assets/models/terraform3/source_control.glb",
+    "source": "art/blender/terraform3/source_control.blend",
+    "status": "ink-family-remodeled",
+    "generator": "tools/build_terraform3.py"
+  },
+  {
+    "id": "terraform3_atmosphere_module",
+    "title": "T3 / 지역 환경 설비",
+    "name": "선택성 대기 모듈",
+    "group": "시설",
+    "model": "res://assets/models/terraform3/atmosphere_module.glb",
+    "source": "art/blender/terraform3/atmosphere_module.blend",
+    "status": "ink-family-remodeled",
+    "generator": "tools/build_terraform3.py"
+  },
+  {
+    "id": "terraform3_water_module",
+    "title": "T3 / 지역 환경 설비",
+    "name": "폐쇄 순환 모듈",
+    "group": "시설",
+    "model": "res://assets/models/terraform3/water_module.glb",
+    "source": "art/blender/terraform3/water_module.blend",
+    "status": "ink-family-remodeled",
+    "generator": "tools/build_terraform3.py"
+  },
+  {
+    "id": "terraform3_thermal_module",
+    "title": "T3 / 지역 환경 설비",
+    "name": "지역 열교환 모듈",
+    "group": "시설",
+    "model": "res://assets/models/terraform3/thermal_module.glb",
+    "source": "art/blender/terraform3/thermal_module.blend",
+    "status": "ink-family-remodeled",
+    "generator": "tools/build_terraform3.py"
+  },
+  {
+    "id": "terraform3_biolab_module",
+    "title": "T3 / 지역 환경 설비",
+    "name": "선구종 정착 모듈",
+    "group": "시설",
+    "model": "res://assets/models/terraform3/biolab_module.glb",
+    "source": "art/blender/terraform3/biolab_module.blend",
+    "status": "ink-family-remodeled",
+    "generator": "tools/build_terraform3.py"
   }
 ]

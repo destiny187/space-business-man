@@ -79,7 +79,8 @@ static func zones(body: Dictionary) -> Array:
  for i in int(tier.regions):
   var best:=Vector3(-4,f.height(-4,4),4)
   if i>0:
-   var angle:=float(FrontierUniverse.derive(int(body.streams.terrain),"restore-direction")%10000)/10000*TAU+float(i-1)*PI*.82
+   var angle:=float(FrontierUniverse.derive(int(body.streams.terrain),"restore-direction")%10000)/10000*TAU+float(i-1)*TAU/float(int(tier.regions)-1)
+   if int(tier.regions)==3:angle=float(FrontierUniverse.derive(int(body.streams.terrain),"restore-direction")%10000)/10000*TAU+float(i-1)*PI*.82
    var score:=INF
    for n in 80:
     var a:=angle+float(n%9-4)*.075;var distance:=float(tier.distance)+float(n/9)*14
@@ -87,6 +88,9 @@ static func zones(body: Dictionary) -> Array:
     var y:=f.height(at.x,at.y);var variation:=0.0
     for offset in [Vector2(12,0),Vector2(-12,0),Vector2(0,12),Vector2(0,-12)]:variation+=absf(f.height(at.x+offset.x,at.y+offset.y)-y)
     if variation<score:score=variation;best=Vector3(at.x,y,at.y)
-  result.append({"id":"region:%d"%i,"name":["착륙 정착지","급수 복원지","토양 복원지"][i],"center":[best.x,best.y,best.z],"radius":float(cfg.zone_radius),"role":["settlement","water","soil"][i]})
+  var names: Array=["착륙 정착지","급수 복원지","토양 복원지"];var roles: Array=["settlement","water","soil"]
+  if FrontierTerraformTier3.enabled(body):
+   var profile: Dictionary=cfg.tier3.profiles[FrontierTerraformTier3.profile_id(body)];names=profile.names;roles=profile.roles
+  result.append({"id":"region:%d"%i,"name":names[i],"center":[best.x,best.y,best.z],"radius":float(cfg.zone_radius),"role":roles[i]})
  if _zones.size()>64:_zones.clear()
  _zones[key]=result;return result

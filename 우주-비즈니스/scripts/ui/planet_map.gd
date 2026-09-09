@@ -132,12 +132,21 @@ func draw_map() -> void:
   if layers.selected==1:
    for cell in region.cells:
     var cell_pos:=at(Vector2(cell.position[0],cell.position[2]));var score:=FrontierEvaluator.environment_report(cell)
-    canvas.draw_circle(cell_pos,maxf(3,24/meters_per_pixel),Color(.22,.8,.56,.15+.55*float(score.overall)/100))
+    canvas.draw_circle(cell_pos,maxf(3,24/meters_per_pixel),Color(.22,.8,.56,.15+.55*float(score.overall)/100).lerp(Color(.85,.32,.18,.7),clampf(float(cell.get("pollution",0))/60,0,1)))
   text_at(pos+Vector2(maxf(18,float(region.radius)/meters_per_pixel)+8,-12),region.name,color)
   text_at(pos+Vector2(maxf(18,float(region.radius)/meters_per_pixel)+8,8),"✓ 안정" if FrontierRegionalTerraform.ready(region) else "복원 대기",color,14)
-  if region.id!="region:0":canvas.draw_dashed_line(at(Vector2(site.regions["region:0"].center[0],site.regions["region:0"].center[2])),pos,Color(.6,.8,.8,.3),1,6)
+  if not site.has("tier3") and region.id!="region:0":canvas.draw_dashed_line(at(Vector2(site.regions["region:0"].center[0],site.regions["region:0"].center[2])),pos,Color(.6,.8,.8,.3),1,6)
+ if site.has("tier3"):
+  for edge in [["region:1","region:2"],["region:2","region:3"]]:
+   var a: Array=site.regions[edge[0]].center;var b: Array=site.regions[edge[1]].center
+   var start:=at(Vector2(a[0],a[2]));var finish:=at(Vector2(b[0],b[2]));var direction: Vector2=(finish-start).normalized()
+   var tint:=Color("efb46f").lerp(Color("83d9c5"),float(site.tier3.suppression))
+   canvas.draw_dashed_line(start,finish,tint,2,8)
+   var tip:=start.lerp(finish,.55);canvas.draw_line(tip,tip-direction.rotated(.5)*14,tint,2);canvas.draw_line(tip,tip-direction.rotated(-.5)*14,tint,2)
+  text_at(Vector2(12,24),site.tier3.rules.profiles[site.tier3.profile].name+"  원인 → 영향 지역",Color("efb46f"),15)
  for row in site.get("buildings",{}).values():
   var pos:=at(Vector2(row.position[0],row.position[2]));canvas.draw_rect(Rect2(pos-Vector2(3,3),Vector2(6,6)),Color("83d9c5") if row.active else Color("efb46f"))
+  if layers.selected==2 and int(row.get("tier",1))==3:canvas.draw_arc(pos,48/meters_per_pixel,0,TAU,32,Color(.4,.8,.7,.3),1,true)
   if layers.selected==2 and meters_per_pixel<3:text_at(pos+Vector2(8,0),FrontierCatalog.entry("buildings",row.type).name,Color("e6e8df"),11)
  for id in app.session.latest.get("crew",{}).get("members",{}):
   var member: Dictionary=app.session.latest.crew.members[id]
@@ -156,3 +165,8 @@ func update_detail() -> void:
  for key in region.inventory:
   if int(region.inventory[key])>0:names.append(FrontierCatalog.entry("resources",key).name+" "+str(int(region.inventory[key])))
  detail.text="%s  적합도 %.0f%%   %s\n현장 재고: %s\n%s"%[region.name,report.overall,"✓ 안정" if FrontierRegionalTerraform.ready(region) else ({"settlement":"정착 환경", "water":"급수·염류", "soil":"토양 기반"}.get(region.role,"환경")+" 구획 %d곳 · 30초 안정"%mini(3,region.cells.size())),", ".join(names) if not names.is_empty() else "비어 있음",("중간 대금 지급 완료 %d Cr"%int(site.regional_paid[selected])) if site.get("regional_paid",{}).has(selected) else "원료는 직접 운반하고 이 현장의 창고에 보관하세요."]
+
+ if site.has("tier3"):
+  var item: String=site.tier3.rules.profiles[site.tier3.profile].item
+  var packs: int=5 if region.role=="source" else 10
+  detail.text="%s  %s\n%s\n%s · 10분 공급 참고 %s %d개%s"%[region.name,"✓ 안정" if FrontierRegionalTerraform.ready(region) else "목표 구획 3곳 · 45초 유지",FrontierTerraformTier3.detail(site,region),"현장 재고: "+", ".join(names.slice(0,4)) if not names.is_empty() else "현장 창고에 직접 공급",FrontierProductionTier2.product(item).name,packs," · 정착 팩 별도" if region.role=="recovery" else ""]

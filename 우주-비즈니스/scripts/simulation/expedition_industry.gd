@@ -40,22 +40,22 @@ static func power(world: Dictionary,site: Dictionary) -> void:
 		if FrontierFacilityFlooding.refresh(world,building):continue
 		var def:=FrontierCatalog.entry("buildings",building.type)
 		var p:=FrontierExpeditionBusiness.point(building.position)
-		var supported:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),p.x,p.z,float(def.radius)).is_finite()
+		var supported:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),p.x,p.z,FrontierTerraformTier3.radius(building)).is_finite()
 		building.active=false;building.working=false;building.status="정지" if not building.enabled else "전력 대기"
 		if not supported:building.status="토대 지지 필요";continue
 		if not building.enabled:continue
 		if float(def.power)<=0:building.active=true;building.status="발전 중" if def.power<0 else "사용 가능";supply-=float(def.power)*FrontierProductionTier2.factor(building)
-		else:demand+=float(def.power)
+		else:demand+=FrontierTerraformTier3.power(building)
 	var remaining:=supply
-	for kind in ["charger","factory","atmosphere","thermal","water","biolab"]:
+	for kind in ["source_control","charger","factory","atmosphere","thermal","water","biolab"]:
 		for building in site.buildings.values():
 			if building.type!=kind or not building.enabled or building.get("submerged",false) or building.status=="토대 지지 필요":continue
-			var consumption: float=FrontierCatalog.entry("buildings",kind).power
+			var consumption: float=FrontierTerraformTier3.power(building)
 			if remaining>=consumption:building.active=true;building.status="가동 중";remaining-=consumption
 	site.power_supply=supply;site.power_demand=demand
 static func obstacles(world: Dictionary) -> Array:
 	var result: Array=[]
-	for b in FrontierExpeditionBusiness.site(world).buildings.values():result.append({"position":b.position,"radius":float(FrontierCatalog.entry("buildings",b.type).radius)+.3})
+	for b in FrontierExpeditionBusiness.site(world).buildings.values():result.append({"position":b.position,"radius":FrontierTerraformTier3.radius(b)+.3})
 	return result
 static func clear(world: Dictionary,p: Vector3) -> bool:
 	for b in obstacles(world):
@@ -175,7 +175,7 @@ static func _process_facility(world: Dictionary,site: Dictionary,b: Dictionary,d
 			b.work+=dt
 			if b.work>=float(cfg.water_cycle_seconds)/engineering:
 				if site.inventory.ice<=0:b.status="얼음 보급 필요";b.work=minf(b.work,float(cfg.water_cycle_seconds)/engineering)
-				else:site.inventory.ice-=1;e.water=minf(100,float(e.water)+float(cfg.water_per_ice));b.work=maxf(0.0,float(b.work)-float(cfg.water_cycle_seconds)/engineering)
+				else:site.inventory.ice-=1;e.water=minf(100,float(e.water)+float(cfg.water_per_ice)*(float(FrontierTerraformTier3.config().upgrades.water.water_gain_factor) if int(b.get("tier",1))==3 else 1.0));b.work=maxf(0.0,float(b.work)-float(cfg.water_cycle_seconds)/engineering)
 		"biolab":
 			var score:=FrontierEvaluator.scores(e)
 			if minf(score.atmosphere,minf(score.temperature,score.water))<60:b.status="대기·온도·수질 안정화 필요";return

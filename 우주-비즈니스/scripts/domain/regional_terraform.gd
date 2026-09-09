@@ -17,6 +17,7 @@ static func initialize(site: Dictionary,body: Dictionary) -> void:
    var center: Array=region.center
    region.cells.append({"position":[center[0]+offset[0],center[1],center[2]+offset[1]],"environment":region.environment.duplicate(true),"restoration2":region.get("restoration2",{}).duplicate(true)})
   site.regions[zone.id]=region
+ FrontierTerraformTier3.initialize(site,body)
  home(site)
 static func home(site: Dictionary) -> void:
  if not enabled(site):return
@@ -67,6 +68,7 @@ static func tick(world: Dictionary,dt: float) -> void:
  var site:=FrontierExpeditionBusiness.site(world)
  for actor in world.crew.members:
   if FrontierShuttles.location(world,actor)==world.location and world.crew.members[actor].area=="surface":observe(site,FrontierCrewWorld.vector(world.crew.members[actor].position))
+ FrontierTerraformTier3.begin(world,site,dt)
  for id in site.regions:
   var local:=facade(site,id);world.business.sites[world.location]=local
   FrontierExpeditionIndustry.tick_local(world,dt)
@@ -77,7 +79,7 @@ static func tick(world: Dictionary,dt: float) -> void:
   for id in site.regions:
    if id=="region:0" or site.regional_paid.has(id) or not ready(site.regions[id]):continue
    var total:=FrontierCoopWorkload.reward(site,tier)
-   var amount:=floori(total*float(FrontierSurfaceRegions.config().stage_fraction))
+   var amount:=floori(total*stage_fraction(site))
    site.regional_paid[id]=amount;world.business.credits+=amount
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
  var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
@@ -97,12 +99,14 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
    FrontierCoopWorkload.distribute(target,before,previous)
    b.working=b.working or before!=cell.environment or previous!=cell.restoration2 or work!=float(b.work) or treatment!=float(b.get("treatment_work",0))
   if b.working:b.status="지역 처리 중" if "필요" not in str(b.status) else "부분 가동 · "+b.status
+ FrontierTerraformTier3.process(world,site,dt)
  for cell in site.cells:
   var scores:=FrontierEvaluator.scores(cell.environment)
   var role: String=site.regions[site.local_region].role
   var ok: bool=FrontierProductionTier2.restoration_ready(cell) and minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60 and float(cell.environment.ecology)>=20
   if role=="water":ok=float(scores.water)>=60 and float(cell.restoration2.get("salinity",0))<=20
   elif role=="soil":ok=float(cell.restoration2.get("soil",0))>=60
+  if site.has("tier3"):ok=FrontierTerraformTier3.stable(site,cell,ok)
   cell.environment.stable_seconds=minf(120,float(cell.environment.stable_seconds)+dt) if ok else 0.0
  # Preserve averages only as display values; contract readiness inspects cells.
  for key in site.environment:
@@ -117,12 +121,14 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 static func ready(region: Dictionary) -> bool:
  var count:=0
  for cell in region.get("cells",[]):
-  if float(cell.environment.stable_seconds)>=float(FrontierExpeditionBusiness.config().contract_stable_seconds):count+=1
+  if float(cell.environment.stable_seconds)>=float(region.get("tier3_stable_seconds",FrontierExpeditionBusiness.config().contract_stable_seconds)):count+=1
  return count>=mini(region.get("cells",[]).size(),int(FrontierSurfaceRegions.config().required_cells))
 static func settlement_reason(site: Dictionary) -> String:
  for region in site.get("regions",{}).values():
   if not ready(region):return region.name+"의 복원 구획 %d곳을 안정시켜야 합니다. Tab 지도를 확인하세요."%mini(region.cells.size(),int(FrontierSurfaceRegions.config().required_cells))
  return ""
+static func stage_fraction(site: Dictionary) -> float:
+ return float(site.tier3.rules.stage_fraction) if site.has("tier3") else float(FrontierSurfaceRegions.config().stage_fraction)
 static func paid(site: Dictionary) -> int:
  var amount:=0
  for value in site.get("regional_paid",{}).values():amount+=int(value)
@@ -139,6 +145,7 @@ static func local_public(site: Dictionary,position: Vector3) -> Dictionary:
  result.current_region=result.local_region;result.erase("local_region")
  return result
 static func valid(site: Dictionary,body: Dictionary) -> bool:
+ if not FrontierTerraformTier3.valid(site,body):return false
  if not enabled(site):return not body.has("regional_rules") or FrontierSurfaceRegions.zones(body).is_empty()
  if not site.regions is Dictionary or not site.get("regional_paid") is Dictionary or not site.get("regional_observed") is Dictionary:return false
  var expected:=FrontierSurfaceRegions.zones(body)
@@ -161,7 +168,7 @@ static func valid(site: Dictionary,body: Dictionary) -> bool:
    for key in ["salinity","soil"]:
     if cell.restoration2.has(key) and not FrontierUniverse._finite(cell.restoration2[key],0,100):return false
  for id in site.regional_paid:
-  if id=="region:0" or not site.regions.has(id) or int(site.regional_paid[id])!=floori(FrontierCoopWorkload.reward(site,int(body.planet_tier))*float(body.regional_rules.stage_fraction)):return false
+  if id=="region:0" or not site.regions.has(id) or int(site.regional_paid[id])!=floori(FrontierCoopWorkload.reward(site,int(body.planet_tier))*stage_fraction(site)):return false
  for key in ["buildings","robots","jobs"]:
   for row in site[key].values():
    if not site.regions.has(str(row.get("region_id",""))):return false
