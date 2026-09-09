@@ -26,12 +26,12 @@ void fragment(){
  float center=view_depth(SCREEN_UV,INV_PROJECTION_MATRIX);
  vec3 norm=texture(normal_tex,SCREEN_UV).xyz*2.-1.;
  float outline=0.;float crease=0.;float surface_support=0.;
- for(int i=0;i<8;i++){
-  float angle=float(i)*.7853981634;
-  vec2 dir=vec2(cos(angle),sin(angle));
+ const vec2 dirs[8]=vec2[8](vec2(1.,0.),vec2(.70710678,.70710678),vec2(0.,1.),vec2(-.70710678,.70710678),vec2(-1.,0.),vec2(-.70710678,-.70710678),vec2(0.,-1.),vec2(.70710678,-.70710678));
+ for(int i=0;i<4;i++){
+  vec2 dir=dirs[i];
   float d=view_depth(SCREEN_UV+pixel*dir*outer_width,INV_PROJECTION_MATRIX);
   float opposite=view_depth(SCREEN_UV-pixel*dir*outer_width,INV_PROJECTION_MATRIX);
-  surface_support += 1.-smoothstep(.015,.04,abs(d-center)/max(center,.5));
+  surface_support += 2.-smoothstep(.015,.04,abs(d-center)/max(center,.5))-smoothstep(.015,.04,abs(opposite-center)/max(center,.5));
   // Reciprocal depth is affine on a perspective-projected plane. Cancel its slope
   // so a continuous ground plane never becomes a black band near the horizon.
   float jump;
@@ -41,6 +41,10 @@ void fragment(){
    jump=abs(1./d+1./opposite-2./center)*min(center,min(d,opposite));
   }
   outline=max(outline,smoothstep(.018,.032,jump));
+ }
+ // Opposite outer samples describe the same edge; internal creases still use all eight directions.
+ for(int i=0;i<8;i++){
+  vec2 dir=dirs[i];
   vec3 nn=texture(normal_tex,SCREEN_UV+pixel*dir*inner_width).xyz*2.-1.;
   float nd=view_depth(SCREEN_UV+pixel*dir*inner_width,INV_PROJECTION_MATRIX);
   float normal_edge=length(norm-nn);

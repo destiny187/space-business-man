@@ -56,6 +56,7 @@ func _setup_space() -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
+	sky.radiance_size = Sky.RADIANCE_SIZE_512
 	var sky_mat := ShaderMaterial.new()
 	sky_mat.shader = load("res://assets/materials/space/sky.gdshader")
 	sky.sky_material = sky_mat

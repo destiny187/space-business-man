@@ -8,6 +8,13 @@ var queued: Dictionary={}
 var build_count:=0
 var rendered_anchor:=Vector3i.ZERO
 var has_rendered_anchor:=false
+# Only the serialized worker jobs access this cache. Edits change density, not height.
+var height_samples: Dictionary={}
+var height_identity:=""
+var fallback_samples: Dictionary={}
+var fallback_field: FrontierTerrainField
+var fallback_revision:=-1
+var fallback_cells: Array[Vector2i]=[]
 
 func request_rebuild(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,terrain_material: Material,view_distance: float) -> void:
 	var unique_edits: Dictionary={}
@@ -24,7 +31,14 @@ func _start_job() -> void:
 func _build_job(result: Dictionary,request: Dictionary) -> void:
 	var field:=FrontierTerrainField.new()
 	field.configure(request.seed,request.edits,request.span,request.traits)
-	result.arrays=_arrays(field,request.anchor,request.radius,request.distance)
+	var identity:=str([request.seed,request.span,request.traits])
+	if identity!=height_identity:height_samples.clear();height_identity=identity
+	var center:=Vector2((request.anchor.x+.5)*field.span,(request.anchor.z+.5)*field.span)
+	# Keep only the current view plus a small movement margin; long trips stay bounded.
+	var bounds:=Rect2(center-Vector2.ONE*(request.distance+96),Vector2.ONE*(request.distance+96)*2)
+	for key in height_samples.keys():
+		if not bounds.has_point(key):height_samples.erase(key)
+	result.arrays=_arrays(field,request.anchor,request.radius,request.distance,height_samples)
 
 func _process(_delta: float) -> void:
 	if task_id==-1 or not WorkerThreadPool.is_task_completed(task_id):return
@@ -43,7 +57,7 @@ func rebuild(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,ter
 	rendered_anchor=anchor;has_rendered_anchor=true
 	_install(_arrays(field,anchor,radius_chunks,view_distance),terrain_material)
 
-static func _arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,view_distance: float) -> Array:
+static func _arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,view_distance: float,samples: Dictionary={}) -> Array:
 	var center:=Vector2((anchor.x+.5)*field.span,(anchor.z+.5)*field.span)
 	var inner: float=(radius_chunks+.5)*field.span
 	var hole:=Rect2(center-Vector2.ONE*inner,Vector2.ONE*inner*2)
@@ -55,8 +69,8 @@ static func _arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: 
 	var outer_low: Vector2=((center-Vector2.ONE*view_distance)/coarse).floor()*coarse
 	var outer_high: Vector2=((center+Vector2.ONE*view_distance)/coarse).ceil()*coarse
 	var vertices:=PackedVector3Array();var normals:=PackedVector3Array();var indices:=PackedInt32Array()
-	_append_grid(field,join,hole,4.0,vertices,normals,indices,true)
-	_append_grid(field,Rect2(outer_low,outer_high-outer_low),join,coarse,vertices,normals,indices,false)
+	_append_grid(field,join,hole,4.0,vertices,normals,indices,true,samples)
+	_append_grid(field,Rect2(outer_low,outer_high-outer_low),join,coarse,vertices,normals,indices,false,samples)
 	# A short skirt seals the fine/coarse T junction without changing hilltops.
 	for side in 4:
 		var length: float=join.size.x if side%2==0 else join.size.y
@@ -79,16 +93,20 @@ static func _arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: 
 	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_INDEX]=indices
 	return arrays
 
-static func _append_grid(field: FrontierTerrainField,area: Rect2,hole: Rect2,step: float,vertices: PackedVector3Array,normals: PackedVector3Array,indices: PackedInt32Array,caves: bool) -> void:
+static func _append_grid(field: FrontierTerrainField,area: Rect2,hole: Rect2,step: float,vertices: PackedVector3Array,normals: PackedVector3Array,indices: PackedInt32Array,caves: bool,samples: Dictionary={}) -> void:
 	var nx:=roundi(area.size.x/step);var nz:=roundi(area.size.y/step)
 	var base:=vertices.size()
 	for z in range(nz+1):
 		for x in range(nx+1):
 			var px: float=area.position.x+x*step;var pz: float=area.position.y+z*step
-			vertices.append(Vector3(px,field.height(px,pz),pz))
-			var dx: float=field.height(px+.5,pz)-field.height(px-.5,pz)
-			var dz: float=field.height(px,pz+.5)-field.height(px,pz-.5)
-			normals.append(Vector3(-dx,1,-dz).normalized())
+			var key:=Vector2(px,pz)
+			if not samples.has(key):
+				var dx: float=field.height(px+.5,pz)-field.height(px-.5,pz)
+				var dz: float=field.height(px,pz+.5)-field.height(px,pz-.5)
+				var normal:=Vector3(-dx,1,-dz).normalized()
+				samples[key]=Vector4(field.height(px,pz),normal.x,normal.y,normal.z)
+			var sample: Vector4=samples[key]
+			vertices.append(Vector3(px,sample.x,pz));normals.append(Vector3(sample.y,sample.z,sample.w))
 	for z in nz:
 		for x in nx:
 			var xy:=area.position+Vector2((x+.5)*step,(z+.5)*step)
@@ -106,6 +124,10 @@ func rebuild_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 	var fallback:=get_node_or_null("StreamingFallback") as MeshInstance3D
 	if fallback==null:
 		fallback=MeshInstance3D.new();fallback.name="StreamingFallback";add_child(fallback)
+	if fallback_field!=field or fallback_revision!=field.revision:
+		fallback_samples.clear();fallback_cells.clear();fallback_field=field;fallback_revision=field.revision
+		fallback.mesh=null
+	var cells: Array[Vector2i]=[]
 	var vertices:=PackedVector3Array();var normals:=PackedVector3Array();var indices:=PackedInt32Array()
 	var current_low:=Vector2((anchor.x-radius_chunks)*field.span,(anchor.z-radius_chunks)*field.span)
 	var size:=Vector2.ONE*(radius_chunks*2+1)*field.span
@@ -117,13 +139,31 @@ func rebuild_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 			var origin:=Vector3(low.x+x*4,0,low.y+z*4)
 			var xy:=Vector2(origin.x+2,origin.z+2)
 			if not current_area.has_point(xy) and not previous_area.has_point(xy):continue
-			var probe:=origin+Vector3(2,0,2);probe.y=field.height(probe.x,probe.z)
-			if chunks.has(field.key_at(probe)) and chunks.has(field.key_at(probe-Vector3.UP*2)):continue
-			if field.density(probe-Vector3.UP*.5)<0:continue
-			var start:=vertices.size()
+			var key:=Vector2i(roundi(origin.x/4),roundi(origin.z/4))
+			if not fallback_samples.has(key):
+				var probe:=origin+Vector3(2,0,2);probe.y=field.height(probe.x,probe.z)
+				fallback_samples[key]={"probe":probe,"top":field.key_at(probe),"floor":field.key_at(probe-Vector3.UP*2)}
+			var sample: Dictionary=fallback_samples[key]
+			if chunks.has(sample.top) and chunks.has(sample.floor):continue
+			if not sample.has("supported"):sample.supported=field.density(sample.probe-Vector3.UP*.5)>=0
+			if sample.supported:cells.append(key)
+	if fallback_samples.size()>4096:
+		var retained:=Rect2(low-Vector2.ONE*24,high-low+Vector2.ONE*48)
+		for key in fallback_samples.keys():
+			if not retained.has_point(Vector2(key)*4):fallback_samples.erase(key)
+	if cells==fallback_cells:return
+	fallback_cells=cells
+	for key in cells:
+		var sample: Dictionary=fallback_samples[key]
+		if not sample.has("vertices"):
+			var points:=PackedVector3Array();var directions:=PackedVector3Array()
 			for offset in [Vector3.ZERO,Vector3(4,0,0),Vector3(4,0,4),Vector3(0,0,4)]:
-				var p: Vector3=origin+offset;p.y=field.height(p.x,p.z)-.15;vertices.append(p);normals.append(field.normal(p))
-			indices.append_array(PackedInt32Array([start,start+1,start+2,start,start+2,start+3]))
+				var p: Vector3=Vector3(key.x*4,0,key.y*4)+offset;p.y=field.height(p.x,p.z)-.15
+				points.append(p);directions.append(field.normal(p))
+			sample.vertices=points;sample.normals=directions
+		var start:=vertices.size()
+		vertices.append_array(sample.vertices);normals.append_array(sample.normals)
+		indices.append_array(PackedInt32Array([start,start+1,start+2,start,start+2,start+3]))
 	if vertices.is_empty():fallback.mesh=null;return
 	var arrays: Array=[];arrays.resize(Mesh.ARRAY_MAX)
 	var exposure:=PackedColorArray();exposure.resize(vertices.size());exposure.fill(Color.WHITE)

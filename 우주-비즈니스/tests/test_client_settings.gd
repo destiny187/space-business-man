@@ -12,15 +12,15 @@ func run() -> void:
 	check(settings!=null and title.find_child("Settings",true,false)!=null,"title exposes shared settings")
 	title.find_child("Settings",true,false).pressed.emit()
 	check(settings.is_open() and settings.tabs.get_tab_count()==3,"three accessible settings tabs")
-	settings.controls.view_distance.value=4800
-	settings.controls.scale.value=.75
+	settings.set_quality("view_distance",2)
+	settings.controls.scale.value=75
 	check(settings.values.preset==3 and is_equal_approx(root.scaling_3d_scale,.75),"custom controls immediately affect actual 3D viewport")
-	settings.controls.msaa.select(0);settings.controls.msaa.item_selected.emit(0)
+	settings.quality_controls.anti_aliasing.select(0);settings.quality_controls.anti_aliasing.item_selected.emit(0)
 	check(root.msaa_3d==Viewport.MSAA_DISABLED,"MSAA dropdown changes actual renderer")
-	settings.controls.ssao.button_pressed=false
-	settings.controls.shadows.button_pressed=false
-	settings.controls.local_shadows.button_pressed=false
-	settings.controls.fog.value=0
+	settings.set_quality("effects",0)
+	settings.set_option("shadows",false)
+	settings.set_option("local_shadows",false)
+	settings.set_option("fog",0)
 	settings.controls.volume.value=0
 	check(AudioServer.is_bus_mute(0),"zero volume really mutes audio")
 	settings.load_settings()
@@ -47,7 +47,7 @@ func run() -> void:
 	check(settings.display_previous.is_empty() and settings.values.window_mode==0,"unconfirmed display mode automatically rolls back")
 	DisplayServer.window_set_size(Vector2i(960,640));root.size=Vector2i(960,640)
 	await capture("settings-960")
-	check(settings.tabs.size.y>250 and settings.controls.view_distance.is_visible_in_tree(),"settings remain usable at 960 by 640")
+	check(settings.tabs.size.y>250 and settings.quality_controls.view_distance.is_visible_in_tree(),"settings remain usable at 960 by 640")
 	await key(KEY_ESCAPE);check(not settings.is_open(),"Escape closes settings")
 	future.queue_free()
 	title.find_child("SoloStart",true,false).pressed.emit()

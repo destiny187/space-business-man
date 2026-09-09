@@ -1,0 +1,57 @@
+{
+  "methods": [
+    {
+      "median_ms": 2.494,
+      "method": "modal_tree_scan",
+      "p95_ms": 2.728
+    },
+    {
+      "median_ms": 2.218,
+      "method": "feedback_blocked",
+      "p95_ms": 5.374
+    },
+    {
+      "median_ms": 0.011,
+      "method": "menu_visibility",
+      "p95_ms": 0.012
+    },
+    {
+      "median_ms": 0.249,
+      "method": "terrain_process_idle",
+      "p95_ms": 0.309
+    },
+    {
+      "median_ms": 0.031,
+      "method": "terrain_interests",
+      "p95_ms": 0.037
+    },
+    {
+      "median_ms": 0.533,
+      "method": "surface_details_idle",
+      "p95_ms": 0.668
+    },
+    {
+      "median_ms": 0.196,
+      "method": "surface_hud",
+      "p95_ms": 0.207
+    },
+    {
+      "median_ms": 0.02,
+      "method": "nearby_target",
+      "p95_ms": 0.033
+    },
+    {
+      "median_ms": 0.021,
+      "method": "spaces_sync",
+      "p95_ms": 0.027
+    },
+    {
+      "median_ms": 13.703,
+      "method": "fallback_rebuild",
+      "p95_ms": 16.133
+    }
+  ],
+  "nodes": 6159.0,
+  "note": "Direct synchronous calls in settled actual ground scene. Method cost only, not total contribution per frame.",
+  "windows": 44
+}

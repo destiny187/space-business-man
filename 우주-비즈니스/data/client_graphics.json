@@ -1,0 +1,120 @@
+{
+  "view_distance": {
+    "name": "시야거리",
+    "labels": [
+      "낮음",
+      "보통",
+      "높음"
+    ],
+    "levels": [
+      {
+        "view_distance": 1200.0,
+        "lod": 6.0
+      },
+      {
+        "view_distance": 2400.0,
+        "lod": 3.0
+      },
+      {
+        "view_distance": 4800.0,
+        "lod": 1.0
+      }
+    ]
+  },
+  "shadows": {
+    "name": "그림자 품질",
+    "labels": [
+      "낮음",
+      "보통",
+      "높음"
+    ],
+    "levels": [
+      {
+        "shadows": true,
+        "shadow_size": 1024,
+        "shadow_distance": 80.0,
+        "shadow_filter": 1,
+        "local_shadows": false,
+        "local_shadow_size": 1024
+      },
+      {
+        "shadows": true,
+        "shadow_size": 2048,
+        "shadow_distance": 120.0,
+        "shadow_filter": 2,
+        "local_shadows": true,
+        "local_shadow_size": 1024
+      },
+      {
+        "shadows": true,
+        "shadow_size": 4096,
+        "shadow_distance": 220.0,
+        "shadow_filter": 3,
+        "local_shadows": true,
+        "local_shadow_size": 2048
+      }
+    ]
+  },
+  "effects": {
+    "name": "효과 품질",
+    "labels": [
+      "낮음",
+      "보통",
+      "높음"
+    ],
+    "levels": [
+      {
+        "ssao": false,
+        "ssil": false,
+        "ssr": false,
+        "glow": false,
+        "fog": 1.0
+      },
+      {
+        "ssao": true,
+        "ssil": false,
+        "ssr": false,
+        "glow": true,
+        "fog": 1.0
+      },
+      {
+        "ssao": true,
+        "ssil": true,
+        "ssr": true,
+        "glow": true,
+        "fog": 1.0
+      }
+    ]
+  },
+  "anti_aliasing": {
+    "name": "안티앨리어싱",
+    "labels": [
+      "끔",
+      "낮음",
+      "보통",
+      "높음"
+    ],
+    "levels": [
+      {
+        "msaa": 0,
+        "fxaa": false,
+        "taa": false
+      },
+      {
+        "msaa": 0,
+        "fxaa": true,
+        "taa": false
+      },
+      {
+        "msaa": 1,
+        "fxaa": false,
+        "taa": false
+      },
+      {
+        "msaa": 2,
+        "fxaa": false,
+        "taa": false
+      }
+    ]
+  }
+}

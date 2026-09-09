@@ -10,8 +10,10 @@ var span := 24.0
 var seed_value := 0
 var traits: Dictionary={}
 var caves: FrontierSeededCaves
+var revision:=0
 
 func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, characteristics: Dictionary={}) -> void:
+	revision+=1
 	traits=characteristics.duplicate(true)
 	edits_by_chunk.clear()
 	seed_value=seed_number
@@ -38,6 +40,7 @@ func key_at(point: Vector3) -> Vector3i:
 	return Vector3i(floori(point.x/span),floori(point.y/span),floori(point.z/span))
 
 func add_edit(edit: Dictionary) -> Array[Vector3i]:
+	revision+=1
 	var center:=Vector3(edit.center[0],edit.center[1],edit.center[2])
 	var radius:=float(edit.radius)+.5
 	var low:=key_at(center-Vector3.ONE*radius)

@@ -10,6 +10,10 @@ var jobs: Dictionary = {}
 var revisions: Dictionary = {}
 var batch: Dictionary = {}
 var staged: Dictionary = {}
+var prepared: Dictionary = {}
+var ordered_candidates: Array=[]
+var candidates_dirty:=true
+const INSTALL_BUDGET_USEC:=3000
 var material: Material
 var seed_number := 0
 var span := 24.0
@@ -34,6 +38,7 @@ func update_interests(points: Array[Vector3]) -> void:
 	var signature:=str(anchors)
 	if signature==interest_signature:return
 	interest_signature=signature
+	candidates_dirty=true
 	wanted.clear()
 	var radius:=int(config.active_radius)
 	for anchor in anchors:
@@ -53,6 +58,7 @@ func update_interests(points: Array[Vector3]) -> void:
 func dig(center: Vector3,radius: float) -> Dictionary:
 	if not batch.is_empty():return {}
 	var edit: Dictionary={"center":[center.x,center.y,center.z],"radius":radius}
+	candidates_dirty=true
 	var affected: Array[Vector3i]=field.add_edit(edit)
 	for key in affected:
 		revisions[key]=int(revisions.get(key,0))+1
@@ -79,7 +85,10 @@ func ready_for(points: Array[Vector3]) -> bool:
 
 func _process(_delta: float) -> void:
 	if closed or config.is_empty():return
+	if jobs.is_empty() and batch.is_empty() and not candidates_dirty and chunks.size()==wanted.size():return
+	var deadline:=Time.get_ticks_usec()+INSTALL_BUDGET_USEC
 	for key in jobs.keys():
+		if Time.get_ticks_usec()>=deadline:break
 		var job: Dictionary=jobs[key]
 		if not WorkerThreadPool.is_task_completed(job.task):continue
 		WorkerThreadPool.wait_for_task_completion(job.task)
@@ -95,15 +104,25 @@ func _process(_delta: float) -> void:
 		for key in batch:
 			if wanted.has(key) and not staged.has(key):complete=false
 		if complete:
+			# Prepare expensive meshes and collision shapes over several frames.
+			# Keep the old batch visible/solid until every replacement is ready.
 			for key in staged:
-				if wanted.has(key):_install(key,staged[key])
-			batch.clear();staged.clear()
-			geometry_changed.emit()
-	var candidates: Array=wanted.keys()
-	candidates.sort_custom(func(a: Vector3i,b: Vector3i) -> bool:
-		if batch.has(a)!=batch.has(b):return batch.has(a)
-		return wanted[a]<wanted[b])
-	for key in candidates:
+				if wanted.has(key) and not prepared.has(key):
+					if Time.get_ticks_usec()>=deadline:complete=false;break
+					prepared[key]=_prepare(key,staged[key])
+			if complete:
+				for key in prepared:
+					if wanted.has(key):_commit(key,staged[key],prepared[key])
+					else:prepared[key].free()
+				batch.clear();staged.clear();prepared.clear();candidates_dirty=true
+				geometry_changed.emit()
+	if candidates_dirty:
+		ordered_candidates=wanted.keys()
+		ordered_candidates.sort_custom(func(a: Vector3i,b: Vector3i) -> bool:
+			if batch.has(a)!=batch.has(b):return batch.has(a)
+			return wanted[a]<wanted[b])
+		candidates_dirty=false
+	for key in ordered_candidates:
 		if jobs.size()>=int(config.worker_limit):break
 		if jobs.has(key) or staged.has(key):continue
 		if chunks.has(key) and chunks[key].revision==int(revisions.get(key,0)):continue
@@ -120,9 +139,12 @@ func _build_job(packet: Dictionary,key: Vector3i,edits: Array) -> void:
 
 func _install(key: Vector3i,data: Dictionary) -> void:
 	var start:=Time.get_ticks_usec()
+	var node:=_prepare(key,data)
+	_commit(key,data,node)
+	last_install_ms=(Time.get_ticks_usec()-start)/1000.0
+
+func _prepare(key: Vector3i,data: Dictionary) -> Node3D:
 	var node:=Node3D.new()
-	node.position=Vector3(key)*span
-	node.name="Chunk_%d_%d_%d" % [key.x,key.y,key.z]
 	var mesh:=FrontierTerrainMesher.mesh(data)
 	if mesh.get_surface_count()>0:
 		var visual:=MeshInstance3D.new()
@@ -135,14 +157,20 @@ func _install(key: Vector3i,data: Dictionary) -> void:
 		collision.shape=mesh.create_trimesh_shape()
 		body.add_child(collision)
 		node.add_child(body)
+	return node
+
+func _commit(key: Vector3i,data: Dictionary,node: Node3D) -> void:
+	node.position=Vector3(key)*span
+	node.name="Chunk_%d_%d_%d" % [key.x,key.y,key.z]
 	if chunks.has(key):
 		remove_child(chunks[key].node)
 		chunks[key].node.queue_free()
 	add_child(node)
 	chunks[key]={"node":node,"revision":int(revisions.get(key,0)),"triangles":data.indices.size()/3}
-	last_install_ms=(Time.get_ticks_usec()-start)/1000.0
 
 func _exit_tree() -> void:
 	closed=true
 	for job in jobs.values():WorkerThreadPool.wait_for_task_completion(job.task)
 	jobs.clear()
+	for node in prepared.values():node.free()
+	prepared.clear()

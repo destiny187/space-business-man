@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-09",
+  "head": "1754955ed6c2293d0704be9d03893efd0d7dd3aa",
+  "scope": "Dirty working tree with concurrent surface presentation work. No production optimization applied by this audit.",
+  "hashes_at_audit_end": {
+    "우주-비즈니스/scripts/ui/cursor_policy.gd": "6a485a48a26f6746e55f5158520e063d5b060f736e4520b673c522f98e1456e7",
+    "우주-비즈니스/scripts/world/terrain_streamer.gd": "e3e4474fd23bad70a3c4c7d597b950e8ff2333a9c3b765ab949f37c21bb184b6",
+    "우주-비즈니스/scripts/world/distant_terrain.gd": "78fa6214a3b89d30473550e0f9aa08c5aa9bd07c1cb3b65f2a25d9a94c23f83a",
+    "우주-비즈니스/scripts/ui/client_settings.gd": "627c84bdf53da503e6355f6e439472b1f3aa245ed4a188e014983eaa75c22213",
+    "우주-비즈니스/assets/materials/space/sky.gdshader": "b8607ab636fc1377e3d20a443d9a2cda767c503b2fb695a5f5732f9f9e9c31e0",
+    "우주-비즈니스/assets/materials/ink/contour.gdshader": "a5c9b3a700bb3cfeec724b96adf1362919e119f4dd0dd17368f2b9da2381583a"
+  },
+  "limitations": [
+    "Godot GPU timestamps returned zero; stored as null.",
+    "Wall frame intervals are primary evidence. Cached process/physics monitor readings are not per-frame exclusive CPU attribution.",
+    "Simulation and day/night continued; removal variants are exploratory, not strictly frozen A/B performance claims.",
+    "Initial combined run stopped after landing when system responsiveness fell; another Godot process was observed then. Ground and CPU probes were rerun separately."
+  ]
+}
