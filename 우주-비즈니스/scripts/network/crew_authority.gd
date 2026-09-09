@@ -51,6 +51,8 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	if world.crew.owner_id!=profile.character_id:error="이 세계를 만든 호스트의 개인 프로필이 필요합니다.";return false
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
+	FrontierExplorationDiscoveries.ensure(world)
+	FrontierExplorationIncidents.ensure(world)
 	FrontierExpeditionResearch.ensure(world)
 	FrontierSpecimenItems.ensure(world)
 	for id in world.crew.members:
@@ -133,7 +135,7 @@ func snapshot(viewer: int=1) -> Dictionary:
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
-	return {"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"local_shuttle":actor if local.has("local_shuttle") else "","rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":vessel_stats,"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"local_shuttle":actor if local.has("local_shuttle") else "","rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":vessel_stats,"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -199,7 +201,11 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		if solver!=null:
 			solver.record=draft.get("surface_water",{}).get(draft.crew.landing.body_id,FrontierSurfaceWater.create())
 			water_hit=solver.intersect(origin,aim,reach)
-	if envelope.kind=="suit_dye":reason=FrontierSuitDye.apply(draft,actor,envelope.args)
+	if envelope.kind in ["surface_incident","surface_incident_tool"]:
+		if envelope.kind=="surface_incident_tool" and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("도구가 준비 중입니다.")
+		reason=FrontierExplorationIncidents.apply(draft,actor,envelope.args,envelope.kind=="surface_incident_tool",shot_obstacle_provider)
+	elif envelope.kind=="surface_discovery":reason=FrontierExplorationDiscoveries.apply(draft,actor,envelope.args)
+	elif envelope.kind=="suit_dye":reason=FrontierSuitDye.apply(draft,actor,envelope.args)
 	elif envelope.kind=="augmentation_upgrade":
 		var station: Dictionary={}
 		if augmentation_station_provider.is_valid():
@@ -235,6 +241,11 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	FrontierShuttles.commit(canonical,draft,actor);draft=canonical
 	draft.crew.revision+=1;draft.crew.members[actor].last_sequence=sequence
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
+	if envelope.kind in ["surface_incident","surface_incident_tool"]:
+		result.incident={"id":envelope.args.id,"part":envelope.args.part}
+		var incident_row: Dictionary=draft.incidents.records[envelope.args.id]
+		if incident_row.claimed and envelope.args.part in ["cargo","delivery"]:result.incident.equipment=str(FrontierExplorationIncidents.definition(incident_row.template).get("equipment",{}).get(str(int(incident_row.tier)),""))
+	if envelope.kind=="surface_discovery":result.discovery={"id":envelope.args.id,"stage":int(envelope.args.stage)+1}
 	if envelope.kind=="surface_attack" and not water_hit.is_empty():result.water_hit=water_hit
 	if envelope.kind=="augmentation_upgrade":result.augmentation=FrontierCrewAugmentation.outcome(draft.crew.members[actor],envelope.args.field)
 	if envelope.kind=="research_contribute":result.research={"project":envelope.args.project,"stage":draft.expedition_research.projects[envelope.args.project].stage,"contributed":{envelope.args.resource:int(envelope.args.amount)}}
@@ -257,6 +268,11 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	FrontierSpecimenItems.prune(draft)
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
 	world=draft;rover_runtime=rover_draft
+	if envelope.kind=="surface_incident_tool":last_dig[actor]=now
+	if envelope.kind=="surface_discovery":
+		var body_id: String=FrontierShuttles.context(world,actor).location
+		if water_solvers.has(body_id):
+			for cell_key in world.get("surface_water",{}).get(body_id,{}).get("cells",{}):water_solvers[body_id]._wake(cell_key)
 	if envelope.kind=="surface_attack" and not water_hit.is_empty():
 		if not motions.has(actor):motions[actor]=FrontierCrewLocomotion.create()
 		motions[actor].water_shot={"serial":sequence,"point":water_hit.position,"entering":water_hit.entering}
@@ -361,8 +377,22 @@ func _step_water(delta: float) -> void:
 	solver.record=world.surface_water[id]
 	if not solver.interests.is_empty():solver.step(delta*keys.size())
 
+var incident_timer:=0.0
 func step_surface(delta: float) -> void:
 	if stopped:return
+	incident_timer+=delta
+	if incident_timer>=.25:
+		var active: Array=[]
+		for peer in peers:
+			if inputs.get(peer,{}).get("controls_enabled",true) and world.crew.members[peers[peer]].area=="surface" and not world.crew.members[peers[peer]].aboard:active.append(peers[peer])
+		if not active.is_empty():
+			var incident_draft:=world.duplicate(true)
+			var changed:=FrontierExplorationIncidents.tick(incident_draft,minf(incident_timer,.35),active,shot_obstacle_provider,peers.values())
+			if changed:
+				incident_draft.crew.revision+=1
+				if not save_world.call(incident_draft):stopped=true;error="탐험 사건 저장 실패";return
+			world=incident_draft
+		incident_timer=0.0
 	_step_water(delta)
 	industry_timer+=delta
 	if industry_timer>=1.0:
@@ -398,11 +428,15 @@ func step_surface(delta: float) -> void:
 		if not FrontierCrewSurface.landed(local) or world.crew.members[actor].aboard:scans.erase(peer);continue
 		var target:=FrontierSurfaceSurvey.target(local,actor,inputs[peer].aim)
 		if target.is_empty():scans.erase(peer);continue
-		if FrontierSurfaceSurvey.known(world,target):
-			scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(world,target,actor)};continue
-		var progress: float=float(scans.get(peer,{}).get("progress",0)) if scans.get(peer,{}).get("id","")==target.id else 0.0
-		progress=minf(1.0,progress+duration/float(FrontierCrewSurface.config().scan_seconds))
-		scans[peer]={"id":target.id,"progress":progress,"known":false,"point":[target.point.x,target.point.y,target.point.z]}
+		if FrontierSurfaceSurvey.known(local,target):
+			scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor)};continue
+		var progress: float=float(scans.get(peer,{}).get("progress",0)) if scans.get(peer,{}).get("id","")==target.id and int(scans.get(peer,{}).get("discovery_stage",0))==int(FrontierExplorationDiscoveries.stage(local,target) if target.kind=="discovery" else 0) else 0.0
+		var scan_seconds:=float(FrontierCrewSurface.config().scan_seconds)
+		if target.kind=="discovery":
+			var definition:=FrontierExplorationDiscoveries.definition(target.template)
+			scan_seconds=float(definition.stages[mini(FrontierExplorationDiscoveries.stage(local,target),definition.stages.size()-1)].seconds)
+		progress=minf(1.0,progress+duration/scan_seconds)
+		scans[peer]={"discovery_stage":FrontierExplorationDiscoveries.stage(local,target) if target.kind=="discovery" else 0,"id":target.id,"progress":progress,"known":false,"point":[target.point.x,target.point.y,target.point.z]}
 		if progress<1.0:continue
 		var draft:=world.duplicate(true)
 		var survey_local:=FrontierShuttles.context(draft,actor)
@@ -410,4 +444,4 @@ func step_surface(delta: float) -> void:
 		draft.crew.revision+=1
 		if not save_world.call(draft):stopped=true;error="스캔 저장 실패로 공동 세계를 정지했습니다.";return
 		world=draft
-		scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(world,target,actor)}
+		scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor)}

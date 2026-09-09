@@ -1,0 +1,945 @@
+{
+  "version": 1,
+  "tile_size": 320,
+  "density": {
+    "1": 4,
+    "2": 6,
+    "3": 6,
+    "4": 6,
+    "5": 6
+  },
+  "interaction_distance": 4.5,
+  "view_distance": 180,
+  "probe_distance": 10,
+  "water_release_cells": 12,
+  "sounds": {
+    "wind": "amb_discovery_resonance",
+    "grit": "amb_barren_wind",
+    "nature": "sfx_creature_call",
+    "water": "amb_surface_river_v1",
+    "thermal": "sfx_thermal_loop",
+    "crystal": "sfx_robot_charge",
+    "machine": "sfx_robot_work"
+  },
+  "items": {
+    "singing_stones": {
+      "id": "singing_stones",
+      "name": "노래하는 돌기둥",
+      "tier": 1,
+      "environment": "wind",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "풍상 틈 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "반대편 공명 관측",
+          "point": [
+            3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {},
+      "knowledge": "수동 환기 구조를 기록했습니다.",
+      "model": "discoveries/singing_stones",
+      "sound": "wind",
+      "radius": 5.5,
+      "sample": false,
+      "clue": false
+    },
+    "meteor_glass": {
+      "id": "meteor_glass",
+      "name": "운석 유리",
+      "tier": 1,
+      "environment": "any",
+      "mode": "miner",
+      "stages": [
+        {
+          "label": "충격층 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "유리 시료 채취",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "miner",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "crystal": 3
+      },
+      "knowledge": "충격 방향과 내마모 시료를 확보했습니다.",
+      "model": "discoveries/meteor_glass",
+      "sound": "grit",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "dew_basin": {
+      "id": "dew_basin",
+      "name": "이슬 돌그릇",
+      "tier": 1,
+      "environment": "wet",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "그늘 표면 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "양지 표면 비교",
+          "point": [
+            3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "ice": 4
+      },
+      "knowledge": "응결 표면과 집수 원리를 기록했습니다.",
+      "model": "discoveries/dew_basin",
+      "sound": "water",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "salt_bloom": {
+      "id": "salt_bloom",
+      "name": "소금꽃",
+      "tier": 1,
+      "environment": "wet",
+      "mode": "miner",
+      "stages": [
+        {
+          "label": "젖은 결정 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "마른 결정 채취",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "miner",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "stone": 5,
+        "crystal": 2
+      },
+      "knowledge": "수분별 결정 성장과 염분 분리 원리를 기록했습니다.",
+      "model": "discoveries/salt_bloom",
+      "sound": "grit",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "molting_trail": {
+      "id": "molting_trail",
+      "name": "탈피 흔적",
+      "tier": 1,
+      "environment": "life",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "첫 껍질 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "발자국 끝 추적",
+          "point": [
+            5,
+            0,
+            -3
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "외피 시료 회수",
+          "point": [
+            10,
+            0,
+            -6
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "phosphate": 4
+      },
+      "knowledge": "탈피터와 서식 방향을 기록했습니다.",
+      "model": "discoveries/molting_trail",
+      "sound": "grit",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "fossil_ripples": {
+      "id": "fossil_ripples",
+      "name": "화석 물결층",
+      "tier": 1,
+      "environment": "any",
+      "mode": "dig",
+      "stages": [
+        {
+          "label": "지층 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "덮인 퇴적층 걷어내기",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "terrain",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "발자국 판독",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "stone": 5
+      },
+      "knowledge": "과거 수역과 이동 흔적을 기록했습니다.",
+      "model": "discoveries/fossil_ripples",
+      "sound": "grit",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "seed_pockets": {
+      "id": "seed_pockets",
+      "name": "휴면 종자 주머니",
+      "tier": 1,
+      "environment": "life",
+      "mode": "sample",
+      "stages": [
+        {
+          "label": "원산지 관찰",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "종자 표본 채집",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {},
+      "knowledge": "원산지와 휴면 계통을 기록했습니다.",
+      "model": "discoveries/seed_pockets",
+      "sound": "nature",
+      "radius": 2.6,
+      "sample": true,
+      "clue": false
+    },
+    "iron_sand_ribbons": {
+      "id": "iron_sand_ribbons",
+      "name": "철모래 띠",
+      "tier": 1,
+      "environment": "any",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "모래 띠 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "입도·자성 비교",
+          "point": [
+            3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "iron": 6
+      },
+      "knowledge": "주변 철 광화대의 위치를 기록했습니다.",
+      "model": "discoveries/iron_sand_ribbons",
+      "sound": "grit",
+      "radius": 2.6,
+      "sample": false,
+      "clue": true
+    },
+    "shell_shelter": {
+      "id": "shell_shelter",
+      "name": "빈 껍질 피난처",
+      "tier": 1,
+      "environment": "life",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "외부 표면 관측",
+          "point": [
+            3.8,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "껍질 안 피난처 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {},
+      "knowledge": "껍질의 차광·피난 구조를 기록했습니다.",
+      "model": "discoveries/shell_shelter",
+      "sound": "nature",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "fallen_survey_pod": {
+      "id": "fallen_survey_pod",
+      "name": "추락 관측 캡슐",
+      "tier": 1,
+      "environment": "any",
+      "mode": "repair",
+      "stages": [
+        {
+          "label": "기록부 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "전원부 수리",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {
+            "copper": 2,
+            "iron": 2
+          },
+          "seconds": 3.0
+        },
+        {
+          "label": "지질 기록 회수",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "copper": 6
+      },
+      "knowledge": "잃어버린 탐사 기록과 주변 광맥 좌표를 회수했습니다.",
+      "model": "discoveries/fallen_survey_pod",
+      "sound": "machine",
+      "radius": 2.6,
+      "sample": false,
+      "clue": true
+    },
+    "hollow_geode": {
+      "id": "hollow_geode",
+      "name": "속 빈 수정암",
+      "tier": 2,
+      "environment": "any",
+      "mode": "dig",
+      "stages": [
+        {
+          "label": "외피 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "약한 외피 굴착",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "terrain",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "내부 결정 채취",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "sapphire": 1
+      },
+      "knowledge": "수정 공동을 개방하고 보석을 회수했습니다.",
+      "model": "discoveries/hollow_geode",
+      "sound": "crystal",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "luminous_tidepool": {
+      "id": "luminous_tidepool",
+      "name": "발광 얕은 수역",
+      "tier": 2,
+      "environment": "wet_life",
+      "mode": "shade",
+      "stages": [
+        {
+          "label": "밝은 수역 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "차광 덮개 펼치기",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "어둠 속 발광 비교",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {},
+      "knowledge": "밝음·차광 조건의 광반응 계통을 기록했습니다.",
+      "model": "discoveries/luminous_tidepool",
+      "sound": "water",
+      "radius": 2.6,
+      "sample": true,
+      "clue": false
+    },
+    "buried_aqueduct": {
+      "id": "buried_aqueduct",
+      "name": "매몰 수로",
+      "tier": 2,
+      "environment": "wet",
+      "mode": "water",
+      "stages": [
+        {
+          "label": "퇴적물 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "막힌 수로 굴착",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "terrain",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "저수문 개방",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "ice": 6
+      },
+      "knowledge": "수로를 열었습니다. 저장돼 있던 유한한 물이 흘러나옵니다.",
+      "model": "discoveries/buried_aqueduct",
+      "sound": "water",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "thermal_chimneys": {
+      "id": "thermal_chimneys",
+      "name": "열수 굴뚝 무리",
+      "tier": 2,
+      "environment": "hot",
+      "mode": "pulse",
+      "stages": [
+        {
+          "label": "분출 흔적 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "반대편 주기 관측",
+          "point": [
+            3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "잔열 시료 채취",
+          "point": [
+            -3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "sulfur": 5
+      },
+      "knowledge": "분출 간격과 열 교환 구조를 기록했습니다.",
+      "model": "discoveries/thermal_chimneys",
+      "sound": "thermal",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "spore_sails": {
+      "id": "spore_sails",
+      "name": "포자 돛",
+      "tier": 2,
+      "environment": "wind_life",
+      "mode": "sample",
+      "stages": [
+        {
+          "label": "포자 막 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "바람길 끝 추적",
+          "point": [
+            5,
+            0,
+            -3
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "휴면 표본 확보",
+          "point": [
+            10,
+            0,
+            -6
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {},
+      "knowledge": "포자의 분산 방향과 원산지 계통을 확보했습니다.",
+      "model": "discoveries/spore_sails",
+      "sound": "nature",
+      "radius": 2.6,
+      "sample": true,
+      "clue": false
+    },
+    "magnetic_arch": {
+      "id": "magnetic_arch",
+      "name": "자성 아치",
+      "tier": 2,
+      "environment": "any",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "아치 밖 자성 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "아치 안 입자 비교",
+          "point": [
+            3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "iron": 8
+      },
+      "knowledge": "자성 집진 구조와 주변 금속 분포를 기록했습니다.",
+      "model": "discoveries/magnetic_arch",
+      "sound": "crystal",
+      "radius": 5.5,
+      "sample": false,
+      "clue": true
+    },
+    "submerged_recorder": {
+      "id": "submerged_recorder",
+      "name": "수몰 기록기",
+      "tier": 2,
+      "environment": "wet",
+      "mode": "salvage",
+      "stages": [
+        {
+          "label": "물가에서 기록기 탐지",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "잠긴 저장부 회수",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "copper": 8
+      },
+      "knowledge": "물속에서 잃어버린 환경 기록을 회수했습니다.",
+      "model": "discoveries/submerged_recorder",
+      "sound": "machine",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "fossil_nest": {
+      "id": "fossil_nest",
+      "name": "화석 둥지",
+      "tier": 2,
+      "environment": "any",
+      "mode": "dig",
+      "stages": [
+        {
+          "label": "바깥 퇴적층 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "상부 퇴적물 굴착",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "terrain",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "알껍질 층 분리",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "phosphate": 9
+      },
+      "knowledge": "산란장과 과거 먹이망의 증거를 확보했습니다.",
+      "model": "discoveries/fossil_nest",
+      "sound": "grit",
+      "radius": 2.6,
+      "sample": false,
+      "clue": false
+    },
+    "mirror_canyon": {
+      "id": "mirror_canyon",
+      "name": "거울 협곡",
+      "tier": 2,
+      "environment": "any",
+      "mode": "observe",
+      "stages": [
+        {
+          "label": "그늘면 관측",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "반사면 반대편 관측",
+          "point": [
+            3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        },
+        {
+          "label": "반사 각도 비교",
+          "point": [
+            -3.8,
+            0,
+            -2.0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "crystal": 5
+      },
+      "knowledge": "선택 반사·차광 구조와 경관을 기록했습니다.",
+      "model": "discoveries/mirror_canyon",
+      "sound": "crystal",
+      "radius": 5.5,
+      "sample": false,
+      "clue": false
+    },
+    "abandoned_drill": {
+      "id": "abandoned_drill",
+      "name": "버려진 시추기",
+      "tier": 2,
+      "environment": "any",
+      "mode": "repair",
+      "stages": [
+        {
+          "label": "멈춘 구동부 조사",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 2.2
+        },
+        {
+          "label": "구동부 수리",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {
+            "copper": 2,
+            "iron": 2
+          },
+          "seconds": 3.0
+        },
+        {
+          "label": "시추 기록·부품 회수",
+          "point": [
+            0,
+            0,
+            0
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3.0
+        }
+      ],
+      "reward": {
+        "refined_iron": 3,
+        "refined_copper": 2
+      },
+      "knowledge": "시추 기록과 가공 부품을 회수했습니다.",
+      "model": "discoveries/abandoned_drill",
+      "sound": "machine",
+      "radius": 2.6,
+      "sample": false,
+      "clue": true
+    }
+  }
+}

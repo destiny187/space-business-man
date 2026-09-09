@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-09",
+  "engine": "Godot 4.7.2",
+  "renderer": "Forward+ / Metal",
+  "device": "Apple M2",
+  "authored_models": 20,
+  "blender_review": true,
+  "godot_catalog_review": 20,
+  "domain": {
+    "completed_templates": 20,
+    "failures": 0,
+    "scope": "Natural generation, tier limits, scan prerequisite, staged rewards, repeated request, save/reload"
+  },
+  "live": {
+    "checks": 17,
+    "failures": 0,
+    "scope": "Geode actual E scanner, F interaction, removed cover, gem receipt, SFX bus, 960x640 journal, menu blocking, disk readback"
+  },
+  "legacy_retirement": {
+    "checks": 5,
+    "failures": 0
+  },
+  "not_checked": [
+    "Full regression suite",
+    "Multi-client live interaction",
+    "All 20 individual gameplay scenes",
+    "Full auditory review",
+    "Long-duration performance"
+  ]
+}

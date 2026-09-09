@@ -36,6 +36,8 @@ var physical_water: FrontierSurfaceWaterView
 var hydrology: FrontierSurfaceHydrology
 var presence: FrontierSurfacePresence
 var surface_details: FrontierSurfaceDetails
+var incidents: FrontierIncidentView
+var discoveries: FrontierDiscoveryView
 
 func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D,camera: Camera3D) -> void:
 	session=connection;viewer=player;epoch=int(packet.epoch)
@@ -86,6 +88,8 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	add_child(atmospheric_particles);atmospheric_particles.configure(self,camera)
 	presence=FrontierSurfacePresence.new();add_child(presence);presence.configure(self)
 	water_interactions=FrontierWaterInteractions.new();add_child(water_interactions);water_interactions.configure(self)
+	discoveries=FrontierDiscoveryView.new();add_child(discoveries);discoveries.configure(self,camera)
+	incidents=FrontierIncidentView.new();add_child(incidents);incidents.configure(self,camera)
 	_update_interest()
 	_update_shuttles()
 

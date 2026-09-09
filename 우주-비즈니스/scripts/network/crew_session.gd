@@ -395,7 +395,7 @@ func _discoveries_request(epoch: String,serial: int,query: String,kind: String,b
 	if not hosting or epoch!=session_id:return
 	var peer:=multiplayer.get_remote_sender_id()
 	if not authority.peers.has(peer) or not _rate_allowed(peer):return
-	if query.length()>100 or kind not in ["all","mineral","biology"] or page_index<0:return
+	if query.length()>100 or kind not in ["all","mineral","biology","discovery","incident"] or page_index<0:return
 	if not body_id.is_empty() and FrontierUniverse.ordinal_of(manifest,body_id)<0:return
 	_discoveries_page.rpc_id(peer,epoch,serial,FrontierDiscoveryIndex.page(authority.world,query,kind,body_id,page_index))
 @rpc("authority","call_remote","reliable",0)

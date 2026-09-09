@@ -29,7 +29,7 @@ static func make(kind: String, planet_id: String, seed_value: int, round_number:
 		if kind == "sulfur" and resource == "crystal": amount = roundi(amount*1.8)
 		nodes.append({"id": "%s:n%d" % [planet_id, index], "resource": resource, "amount": amount, "initial": amount, "position": [point.x, point.y], "scale": rng.randf_range(0.85, 1.35)})
 	var events: Array = []
-	var types: Array = ["ruin", "microbe", "animal", "civilization"]
+	var types: Array = ["ruin", "microbe", "animal"]
 	for index in range(types.size()):
 		events.append({"id": "%s:e%d" % [planet_id, index], "kind": types[index], "position": locations[index], "discovered": false, "choice": "", "reward": "", "health": 100.0})
 	return {

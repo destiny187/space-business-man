@@ -31,6 +31,7 @@ func load_campaign() -> bool:
 	var loaded: Dictionary = store.read_state()
 	if loaded.is_empty():
 		return false
+	_retire_villages(loaded)
 	state = loaded
 	changed.emit()
 	return true
@@ -41,6 +42,7 @@ func save() -> String:
 	return ""
 
 func _commit(next: Dictionary) -> String:
+	_retire_villages(next)
 	FrontierOnboarding.sync(next)
 	var error: String = FrontierSaveStore.validate(next)
 	if not error.is_empty():
@@ -444,3 +446,16 @@ static func _reset_robot(robot: Dictionary, location: Array) -> void:
 	robot.work = 0.0
 	robot.enabled = true
 	robot.filter = robot.get("filter", "all")
+
+static func _retire_villages(value: Dictionary) -> void:
+	var p: Dictionary=value.get("planet",{})
+	if not p.is_empty():
+		var events: Array=p.get("events",[])
+		for event in events.duplicate():
+			if event.kind!="civilization":continue
+			if not p.has("retired_civilizations"):p.retired_civilizations=[]
+			p.retired_civilizations.append(event.duplicate(true));events.erase(event)
+			if p.get("conflict","")==event.id:p.conflict="";p.erase("conflict_order")
+		for robot in p.get("robots",[]):
+			if robot.get("status","") in ["전투 작전 중","작전 구역 이동"]:robot.status="기지 경비";robot.target=""
+	if not value.get("checkpoint",{}).is_empty():_retire_villages(value.checkpoint)

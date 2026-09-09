@@ -31,6 +31,13 @@ func refresh_contacts() -> void:
 	for row in app.surface_world.ecology.encounters.values():
 		if not app.session.surface.ecology.observations.has(body_id+":"+row.form_id):continue
 		contacts.append({"point":row.point,"kind":"life","color":FrontierInterfaceStyle.ACCENT})
+	if app.surface_world.discoveries!=null:
+		for row in app.surface_world.discoveries.rows.values():
+			var point:=FrontierCrewWorld.vector(row.position)
+			if point.distance_to(p)<55 or app.session.latest.get("discoveries",{}).get("records",{}).has(FrontierExplorationDiscoveries.record_key(row)):
+				contacts.append({"point":point,"kind":"discovery","color":Color("b8a4ec")})
+		for record in app.session.latest.get("discoveries",{}).get("records",{}).values():
+			if not record.clue.is_empty():contacts.append({"point":FrontierCrewWorld.vector(record.clue.position),"kind":"mineral","color":Color("efb46f")})
 	if not map_center.is_finite() or map_center.distance_to(p)>8:
 		map_center=p
 		var bitmap:=Image.create(32,32,false,Image.FORMAT_RGBA8)
@@ -55,6 +62,7 @@ func marker(point: Vector3,p: Vector3,kind: String,color: Color,edge: bool=false
 	match kind:
 		"ship":draw_texture_rect(load("res://assets/ui/interface/ship.svg"),Rect2(q-Vector2.ONE*7,Vector2.ONE*14),false,color)
 		"crew":draw_circle(q,4,color);draw_circle(q,6,color,false,1,true)
+		"discovery":draw_rect(Rect2(q-Vector2.ONE*4,Vector2.ONE*8),color,false,1.5);draw_circle(q,1.5,color)
 		"life":draw_arc(q,4,0,TAU,16,color,1.5,true)
 		_:draw_colored_polygon(PackedVector2Array([q+Vector2(0,-3),q+Vector2(3,0),q+Vector2(0,3),q+Vector2(-3,0)]),color)
 func _draw() -> void:

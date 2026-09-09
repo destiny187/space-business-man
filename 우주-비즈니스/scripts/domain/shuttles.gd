@@ -34,7 +34,7 @@ static func commit(world: Dictionary,local: Dictionary,actor: String) -> void:
 	ship.location=local.location;ship.navigation_target=local.navigation_target
 	for key in ["survey","combat"]:
 		if local.crew.has(key):world.crew[key]=local.crew[key]
-	for key in ["expedition_research","business","engineering","ecology","terrain_settings","terrain_settings_hash","celestial_regions"]:
+	for key in ["incidents","terrain_edits","discoveries","surface_water","expedition_research","business","engineering","ecology","terrain_settings","terrain_settings_hash","celestial_regions"]:
 		if local.has(key):world[key]=local[key]
 static func peer_group(world: Dictionary,actor: String,peers: Dictionary) -> Dictionary:
 	var result: Dictionary={}

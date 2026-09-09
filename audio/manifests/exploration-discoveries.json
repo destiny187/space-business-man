@@ -1,0 +1,51 @@
+{
+  "date": "2026-09-09",
+  "jobs": [
+    {
+      "id": "amb_discovery_resonance",
+      "provider": "ElevenLabs Sound Effects web",
+      "prompt": "Wind passing through hollow basalt pillars produces gentle low flute-like resonances with airy overtones, an unusual natural geological sound. Steady close soft wind resonance for a science fiction exploration game. No music, voice, melody, percussion or harsh whistle.",
+      "source_url": "https://elevenlabs.io/app/sound-effects/history",
+      "selected_variant": 1,
+      "duration_setting_seconds": 4,
+      "loop_setting": true,
+      "prompt_influence": 0.3,
+      "displayed_generation_credits": 52,
+      "source": "audio/source/elevenlabs/amb_discovery_resonance.wav",
+      "game_file": "우주-비즈니스/assets/audio/amb_discovery_resonance.wav",
+      "download_name": "Wind_passing_through_#1-1788943767985.wav",
+      "source_sha256": "af2ea25926e3d31758b0c1287dd4824cee35a5c3bbd138be382c77f938bf6c3f",
+      "sha256": "64ea9683ebc4c5a44d6a446125a6917d72f19ebc9b21586c68f189cad4d0d3e7",
+      "duration_seconds": 3.92,
+      "format": "PCM16 mono 48000Hz",
+      "peak_dbfs": -12.295103210146399,
+      "processing": "Stereo average to mono; 80ms loop crossfade; -21dBFS RMS target / -4dBFS peak ceiling",
+      "status": "integrated_game_stream_verified",
+      "generated_at": "2026-09-09T08:57:45.014847+00:00",
+      "review": "Both streams load in Godot; excavation emitted through game SFX bus. Full listening review pending."
+    },
+    {
+      "id": "sfx_discovery_excavate",
+      "provider": "ElevenLabs Sound Effects web",
+      "prompt": "A compact geology tool breaks a thin brittle mineral crust: three crisp stone cracks, small crystal fragments falling, soft dust settling, one short close dry excavation action. Science fiction exploration game foley. No explosion, music, voices, chime or distant ambience.",
+      "source_url": "https://elevenlabs.io/app/sound-effects/history",
+      "selected_variant": 1,
+      "duration_setting_seconds": 4,
+      "loop_setting": false,
+      "prompt_influence": 0.3,
+      "displayed_generation_credits": 52,
+      "source": "audio/source/elevenlabs/sfx_discovery_excavate.wav",
+      "game_file": "우주-비즈니스/assets/audio/sfx_discovery_excavate.wav",
+      "download_name": "A_compact_geology_to_#1-1788944019755.wav",
+      "source_sha256": "6edcf8601027525947739f8f72204245f0686c86b94f2f48ef5dd815d29f9b3e",
+      "sha256": "5de65994089889ae72862d7c4769249a9d4b8c6a93e2fe334ddfe5384f93163e",
+      "duration_seconds": 3.710875,
+      "format": "PCM16 mono 48000Hz",
+      "peak_dbfs": -4.0000883347026726,
+      "processing": "Stereo average to mono; trim edge silence, 8ms fades; -21dBFS RMS target / -4dBFS peak ceiling",
+      "status": "integrated_game_stream_verified",
+      "generated_at": "2026-09-09T08:57:45.198168+00:00",
+      "review": "Both streams load in Godot; excavation emitted through game SFX bus. Full listening review pending."
+    }
+  ]
+}

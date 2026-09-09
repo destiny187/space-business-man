@@ -112,6 +112,18 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대 · 광맥 작업 지시")
 		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")
 		"business_craft":audio.play("sfx_build_place");show_cue("로봇 조립 시작")
+		"surface_incident_tool":
+			work_left=.3;recoil=.5
+			var incident_tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
+			if incident_tool.get("kind")=="pulse":effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);audio.play("sfx_combat_pulse")
+			else:effects.burst(point,Color("87c6e7"),10);audio.play("sfx_discovery_excavate")
+		"surface_incident":
+			effects.burst(point,Color("82f5d2"),8);audio.play("sfx_lotus_open")
+			var recovered: String=value.get("incident",{}).get("equipment","")
+			if recovered!="":show_cue(str(FrontierEquipment.config().items[recovered].name)+" 회수 · I에서 장착")
+		"surface_discovery":
+			work_left=.28;recoil=.35;effects.burst(point,Color("cbb5ff"),8)
+			if FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id]).get("kind")=="terrain":effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point)
 		"surface_attack":
 			if value.has("water_hit"):point=FrontierCrewWorld.vector(value.water_hit.position)
 			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point,not value.has("water_hit"));audio.play("sfx_combat_pulse")

@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "tile_size": 640.0,
+  "density": {
+    "1": 2,
+    "2": 3,
+    "3": 3,
+    "4": 3,
+    "5": 3
+  },
+  "activation_distance": 170.0,
+  "view_distance": 220.0,
+  "action_distance": 3.8,
+  "tool_distance": 12.0,
+  "exclusion_radius": 55.0,
+  "robot": {
+    "health": 120,
+    "wake_distance": 17.0,
+    "wake_seconds": 3.0,
+    "aim_seconds": 2.4,
+    "fire_seconds": 0.3,
+    "cool_seconds": 3.0,
+    "range": 24.0,
+    "damage": 16.0,
+    "weak_factor": 1.8
+  },
+  "seismic": {
+    "warning_seconds": 4.0,
+    "period": 10.0,
+    "blast_warning": 2.2,
+    "blast_radius": 5.2,
+    "damage": 22.0,
+    "gems": 6,
+    "required_tier": 2
+  },
+  "tool": {
+    "hatch_hits": 3,
+    "ice_hits": 4,
+    "drone_hits": 3
+  },
+  "carrier_speed_factor": 0.65,
+  "items": {
+    "wreck_beacon_trail": {
+      "id": "wreck_beacon_trail",
+      "name": "끊어진 구조 신호",
+      "tier": 1,
+      "mode": "wreck",
+      "reward": {
+        "refined_iron": 4,
+        "copper": 8
+      },
+      "model": "incidents/wreck",
+      "hint": "신호가 강해지는 방향으로 이동하세요.\n지형 변환기로 난파선 해치를 파괴하세요.\nT2 전원 격실에는 배터리가 필요합니다.",
+      "equipment": {
+        "1": "terrain_1",
+        "2": "miner_2"
+      }
+    },
+    "scavenger_cache": {
+      "id": "scavenger_cache",
+      "name": "부품 수집 생물의 은닉처",
+      "tier": 1,
+      "mode": "scavenger",
+      "reward": {
+        "copper": 6,
+        "phosphate": 4
+      },
+      "model": "incidents/nest",
+      "hint": "부품을 물고 이동하는 생물을 따라가세요.\n생물의 은닉처에서 부품을 회수하세요."
+    },
+    "cliff_cargo": {
+      "id": "cliff_cargo",
+      "name": "절벽 운송 화물",
+      "tier": 1,
+      "mode": "carry",
+      "reward": {
+        "iron": 10,
+        "ice": 8
+      },
+      "model": "incidents/cliff",
+      "hint": "옛 운송 발판을 올라 화물을 드세요.\n화물을 회수 신호기로 운반하세요."
+    },
+    "illuti_dormant_combat_robot": {
+      "id": "illuti_dormant_combat_robot",
+      "name": "일루티 폐기 전투로봇",
+      "tier": 2,
+      "mode": "robot",
+      "reward": {
+        "refined_iron": 6,
+        "refined_copper": 4
+      },
+      "model": "incidents/robot",
+      "hint": "기동을 경계하고 조준선을 피하세요.\n냉각 중 노출된 코어가 약점입니다.",
+      "equipment": {
+        "2": "pulse_2"
+      }
+    },
+    "icebound_cargo": {
+      "id": "icebound_cargo",
+      "name": "빙결 운송함",
+      "tier": 2,
+      "mode": "ice",
+      "reward": {
+        "ice": 12,
+        "refined_copper": 5
+      },
+      "model": "incidents/ice",
+      "hint": "지형 변환기로 통로의 얼음을 깨세요.\n안쪽 화물을 회수하세요."
+    },
+    "buried_power_chain": {
+      "id": "buried_power_chain",
+      "name": "끊어진 매몰 전력선",
+      "tier": 2,
+      "mode": "power",
+      "reward": {
+        "refined_copper": 6,
+        "refined_iron": 5
+      },
+      "model": "incidents/wreck",
+      "hint": "전력선을 따라 발전기를 찾으세요.\n구리 2개로 발전기를 수리하세요.\n배터리를 소켓까지 운반하세요."
+    },
+    "roaming_cargo_drone": {
+      "id": "roaming_cargo_drone",
+      "name": "표류 화물 드론",
+      "tier": 2,
+      "mode": "drone",
+      "reward": {
+        "refined_copper": 5,
+        "iron": 10
+      },
+      "model": "incidents/drone",
+      "hint": "공격무기로 이동 드론을 정지시키세요.\n화물을 회수 신호기로 운반하세요."
+    },
+    "seismic_gem_chamber": {
+      "id": "seismic_gem_chamber",
+      "name": "지진 결정 공동",
+      "tier": 2,
+      "mode": "seismic",
+      "reward": {
+        "sapphire": 1
+      },
+      "model": "incidents/gems",
+      "hint": "동굴의 지진 뒤 새 통로가 열립니다.\n분출 경고를 피해 이동하세요.\nMk.2 채집기로 사파이어를 채굴하세요."
+    }
+  }
+}

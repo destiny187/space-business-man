@@ -74,6 +74,7 @@ static func fits(field: FrontierTerrainField,candidate: Dictionary,point: Vector
 	return true
 
 static func resolve_identity(body: Dictionary,record: Dictionary,id: String) -> Dictionary:
+	if id.begins_with("poi:"):return FrontierExplorationDiscoveries.sample_identity(body,record,id)
 	var parts:=id.split(":")
 	if parts.size()!=4 or parts[0] not in ["surface","cave"]:return {}
 	for i in range(1,4):

@@ -25,7 +25,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	search.text_changed.connect(func(_s):page_index=0;query_delay=.25)
 	var filters:=HBoxContainer.new();list.add_child(filters)
 	category=OptionButton.new();filters.add_child(category)
-	for title in ["전체","광물  보석","생물"]:category.add_item(title)
+	for title in ["전체","광물  보석","생물","탐험 장소","현장 사건"]:category.add_item(title)
 	location=OptionButton.new();filters.add_child(location)
 	for title in ["전체 발견","현재 행성"]:location.add_item(title)
 	for option in [category,location]:option.item_selected.connect(func(_i):page_index=0;refresh())
@@ -45,7 +45,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
 	grid.columns=clampi(int((get_viewport_rect().size.x-132)/2/92),1,6)
-	var signature:=str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
+	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
 	if not was_visible or signature!=last_signature:last_signature=signature;refresh()
 	was_visible=true
 	if query_delay>0:
@@ -53,7 +53,7 @@ func _process(delta: float) -> void:
 		if query_delay<=0:refresh()
 func refresh() -> void:
 	serial+=1
-	app.session.request_discoveries(serial,search.text,["all","mineral","biology"][category.selected],str(app.session.latest.get("location","")) if location.selected==1 else "",page_index)
+	app.session.request_discoveries(serial,search.text,["all","mineral","biology","discovery","incident"][category.selected],str(app.session.latest.get("location","")) if location.selected==1 else "",page_index)
 func _receive(reply_serial: int,value: Dictionary) -> void:
 	if reply_serial!=serial:return
 	for child in grid.get_children():grid.remove_child(child);child.queue_free()
@@ -62,7 +62,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	previous.disabled=page_index==0;next.disabled=(page_index+1)*24>=int(value.total)
 	var retained: Dictionary={}
 	for entry in value.entries:
-		var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(entry.icon);tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
+		var tile:=FrontierItemTile.new();tile.picture=load("res://assets/ui/discoveries/"+str(entry.row.template)+".png") if entry.kind in ["discovery","incident"] and ResourceLoader.exists("res://assets/ui/discoveries/"+str(entry.row.template)+".png") else FrontierResourceIcons.texture(entry.icon);tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
 		tile.pressed.connect(func():select(entry))
 		if entry.key==selected_entry.get("key",""):retained=entry
 	if retained.is_empty() and not value.entries.is_empty():retained=value.entries[0]
@@ -79,7 +79,32 @@ func select(entry: Dictionary) -> void:
 	var heading:=FrontierInterfaceStyle.label(details,entry.name,20);heading.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var source:=FrontierUniverse.body_from_id(app.session.manifest,entry.row.body_id)
 	FrontierInterfaceStyle.label(details,"발견  "+str(source.get("name",entry.row.body_id)),12,FrontierInterfaceStyle.MUTED)
-	if entry.kind=="biology":
+	if entry.kind=="discovery":
+		var d:=FrontierExplorationDiscoveries.definition(entry.row.template)
+		preview.show();preview.show_model(d.model)
+		var index:=int(entry.row.stage)
+		var text: String=d.knowledge if entry.row.claimed else "다음 조사  "+str(d.stages[index].label)
+		var label:=FrontierInterfaceStyle.label(details,text,14);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		FrontierInterfaceStyle.label(details,"T%d  조사 %d / %d"%[int(d.tier),index,d.stages.size()],13)
+		var at: Array=entry.row.position
+		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(at[0]),float(at[2])],13)
+		for resource in d.reward:
+			var line:=HBoxContainer.new();details.add_child(line);line.add_child(FrontierResourceIcons.view(resource,24));FrontierInterfaceStyle.label(line,str(int(d.reward[resource])),14)
+		if not entry.row.clue.is_empty():
+			var clue: Dictionary=entry.row.clue
+			FrontierInterfaceStyle.label(details,"광맥 단서  %s  %.0f / %.0f"%[FrontierCatalog.entry("resources",clue.resource).name,float(clue.position[0]),float(clue.position[2])],13)
+		if not entry.row.sample.is_empty():FrontierInterfaceStyle.label(details,"확보 계통  "+str(FrontierEcologyCatalog.form(entry.row.sample.form_id).name),13)
+	elif entry.kind=="incident":
+		var d:=FrontierExplorationIncidents.definition(entry.row.template)
+		preview.show();preview.show_model(d.model)
+		FrontierInterfaceStyle.label(details,"T%d  %s"%[int(d.tier),"회수 완료" if entry.row.claimed else "현장 진행 중"],13)
+		var equipment: String=d.get("equipment",{}).get(str(int(entry.row.tier)),"")
+		if equipment!="":FrontierInterfaceStyle.label(details,"회수 장비  "+str(FrontierEquipment.config().items[equipment].name),13)
+		var note:=FrontierInterfaceStyle.label(details,d.hint,14);note.autowrap_mode=TextServer.AUTOWRAP_ARBITRARY
+		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(entry.row.position[0]),float(entry.row.position[2])],13)
+		for resource in d.reward:
+			var line:=HBoxContainer.new();details.add_child(line);line.add_child(FrontierResourceIcons.view(resource,24));FrontierInterfaceStyle.label(line,str(int(d.reward[resource])),14)
+	elif entry.kind=="biology":
 		for index in app.form_options.item_count:
 			if app.form_options.get_item_metadata(index)==entry.row.form_id:app.form_options.select(index);break
 		var form:=FrontierEcologyCatalog.form(entry.row.form_id)
