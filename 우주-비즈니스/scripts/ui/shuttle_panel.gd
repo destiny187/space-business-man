@@ -25,4 +25,7 @@ func update_snapshot(value: Dictionary) -> void:
 	progress.visible=ship.get("state","")=="assembling";progress.value=float(ship.get("progress",0))
 	build_button.visible=ship.is_empty();build_button.disabled=panel.context_kind!="factory"
 	dock_button.visible=not value.get("local_shuttle","").is_empty()
-	info.text="가방에 부품을 준비하고 Mk.2 제작소에서 조립하세요." if ship.is_empty() else ("조립 중 · 제작소 전력이 필요합니다." if ship.state=="assembling" else ("출동 중 · 개인 화물 4칸 · 같은 항성계만 이동" if ship.state=="sortie" else "착륙선 옆 FINCH에 접근해 F로 출발하세요."))
+	info.text="가방에 부품을 준비하고 Mk.2 제작소에서 조립하세요." if ship.is_empty() else ("조립 중  제작소 전력이 필요합니다." if ship.state=="assembling" else ("출동 중  개인 화물 4칸  같은 항성계만 이동" if ship.state=="sortie" else "착륙선 옆 FINCH에 접근해 F로 출발하세요."))
+	if ship.is_empty():
+		for craft in value.crew.get("shuttles",{}).values():
+			if craft.get("company",false) and craft.state=="docked":info.text="Lotus 공용 FINCH가 대기 중입니다. 착륙선 옆에서 F로 탑승하세요.";break

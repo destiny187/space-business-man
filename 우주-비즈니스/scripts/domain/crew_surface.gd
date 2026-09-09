@@ -216,6 +216,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	return ""
 
 static func validate_world(world: Dictionary) -> String:
+	var lotus_error:=FrontierLotusSupport.validate(world)
+	if not lotus_error.is_empty():return lotus_error
 	var water_error:=FrontierSurfaceWater.validate_world(world)
 	if not water_error.is_empty():return water_error
 	var shuttle_error:=FrontierShuttles.validate_world(world)

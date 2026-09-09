@@ -110,11 +110,11 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	if r.phase=="return":
 		r.status="창고로 운반"
 		var destination:=FrontierExpeditionBusiness.point(site.center)
-		if site.get("base_submerged",false):
+		if not site.get("base_deployed",true) or site.get("base_submerged",false):
 			destination=Vector3.INF
 			for storage in site.buildings.values():
 				if storage.type=="storage" and not storage.get("submerged",false):destination=FrontierExpeditionBusiness.point(storage.position);break
-			if not destination.is_finite():r.status="침수 · 사용 가능한 창고 필요";return
+			if not destination.is_finite():r.status="사용 가능한 창고 필요";return
 		if _move(world,r,destination+Vector3(3,0,0),dt):
 			for resource in r.cargo:
 				var amount:=mini(int(r.cargo[resource]),FrontierItemInventory.warehouse_room(site,resource))

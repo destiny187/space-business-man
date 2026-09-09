@@ -294,6 +294,9 @@ func _update_context() -> void:
 	var pilot: bool=value.self_id==value.crew.pilot_id
 	if app.surface_world!=null and value.get("local_shuttle","").is_empty():
 		var ship: Dictionary=value.crew.get("shuttles",{}).get(value.self_id,{})
+		if ship.is_empty():
+			for candidate in value.crew.get("shuttles",{}).values():
+				if candidate.get("company",false) and candidate.state=="docked":ship=candidate;break
 		if ship.get("state","")=="docked":
 			var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad)
 			point.x+=float(ship.get("pad_slot",0))*7.0

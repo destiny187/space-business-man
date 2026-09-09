@@ -86,25 +86,17 @@ func sync_spaces() -> void:
 	if not is_instance_valid(cabin):cabin=build_set(cabin_parent,false)
 	elif cabin.get_parent()!=cabin_parent:cabin.reparent(cabin_parent,false)
 	cabin.visible=snapshot.get("local_shuttle","").is_empty() or cabin_parent!=app.cabin_root
-	var landing: Dictionary=app.session.authority.world.crew.get("landing",{}) if app.session.hosting else snapshot.get("main_landing",{})
-	var body_id:=str(landing.get("body_id",""))
-	var terrain: FrontierTerrainStreamer
-	var parent: Node3D
-	if not body_id.is_empty():
-		if app.session.hosting:
-			terrain=app.spaces.terrain_for_body(body_id);parent=app.spaces.root_for_body(body_id)
-		elif app.surface_world!=null and snapshot.get("local_shuttle","").is_empty() and app.surface_world.body.id==body_id:
-			terrain=app.surface_world.terrain;parent=app.surface_world
-	if is_instance_valid(surface) and (surface_body!=body_id or terrain==null or surface.get_parent()!=parent):surface.queue_free();surface=null
-	if terrain!=null and not is_instance_valid(surface):surface=build_set(parent,true,terrain);surface_body=body_id
+	# Ship devices stay aboard; do not duplicate buildings on unexplored ground.
+	if is_instance_valid(surface):surface.queue_free();surface=null
 func local_set() -> Node3D:
 	if not app.session.latest.get("local_shuttle","").is_empty():return null
-	if app.surface_world!=null:return surface if is_instance_valid(surface) and surface_body==app.surface_world.body.id else null
+	if app.surface_world!=null:return cabin
 	return cabin if app.cabin_root.is_visible_in_tree() else null
 func within(node: FrontierCrewStation) -> bool:
 	var actor: String=app.session.latest.self_id
-	return app.actors.has(actor) and app.actors[actor].position.distance_to(node.interaction_point())<=float(FrontierCrewAugmentation.config().interaction_range)
+	return app.actors.has(actor) and app.actors[actor].position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position) if app.surface_world!=null else node.interaction_point())<=(float(FrontierCrewSurface.config().boarding_distance) if app.surface_world!=null else float(FrontierCrewAugmentation.config().interaction_range))
 func target() -> String:
+	if app.surface_world!=null:return "" # Surface access is through the ship terminal.
 	var group:=local_set()
 	if group==null:return ""
 	for node in group.get_children():
@@ -128,8 +120,7 @@ func resolve(actor: String,station_id: String) -> Dictionary:
 	var group: Node3D=cabin
 	var area: String=world.crew.members[actor].area
 	if area=="surface":
-		if not is_instance_valid(surface) or surface.is_queued_for_deletion() or surface_body!=world.crew.get("landing",{}).get("body_id",""):return {}
-		group=surface
+		return {"ship_terminal":true,"enabled":true,"position":FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position),"area":"surface","body_id":world.crew.get("landing",{}).get("body_id","")}
 	if not is_instance_valid(group) or group.is_queued_for_deletion() or not group.is_inside_tree():return {}
 	var node: FrontierCrewStation=group.get_node_or_null("Station_augmentation" if station_id=="ship:augmentation" else "Station_research")
 	if not is_instance_valid(node) or node.is_queued_for_deletion():return {}
@@ -151,11 +142,11 @@ func navigate(key: String,page: int=0) -> void:
 	if group!=null:
 		var device: FrontierCrewStation=group.get_node_or_null("Station_"+key)
 		if device!=null and within(device):open_device(key,page);return
-	app.feedback.show_cue("착륙선 옆 "+str(definitions[key].name)+" · 가까이에서 F")
+	app.feedback.show_cue("착륙선 가까이에서 F  "+str(definitions[key].name))
 func work_reason(key: String) -> String:
 	var descriptor: Dictionary={}
 	var group:=local_set()
 	if group!=null:
 		var device: FrontierCrewStation=group.get_node_or_null("Station_"+key)
-		if device!=null:descriptor={"enabled":true,"position":device.interaction_point(),"area":"surface" if app.surface_world!=null else "cabin","body_id":surface_body}
+		if device!=null:descriptor={"ship_terminal":true,"enabled":true,"position":FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position) if app.surface_world!=null else device.interaction_point(),"area":"surface" if app.surface_world!=null else "cabin","body_id":app.surface_world.body.id if app.surface_world!=null else ""}
 	return FrontierUpgradeAccess.reason({"crew":app.session.latest.crew},app.session.latest.self_id,key,descriptor)

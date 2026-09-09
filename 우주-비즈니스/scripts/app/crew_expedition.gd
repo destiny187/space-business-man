@@ -83,6 +83,7 @@ var camera_correction:=Vector3.ZERO
 var local_direction:=Vector2.ZERO
 var local_sprint:=false
 var reticle: Label
+var lotus: FrontierLotusSupportController
 var stations: FrontierCrewStations
 var station_market: FrontierStationMarketPanel
 var shipyard_panel: FrontierShipyardPanel
@@ -129,6 +130,7 @@ func _ready() -> void:
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
 	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
 	stations=FrontierCrewStations.new();add_child(stations);stations.configure(self)
+	lotus=FrontierLotusSupportController.new();add_child(lotus);lotus.configure(self)
 	var probe_factory:=FrontierExpeditionResearchPanel.new();business_panel.tabs.add_child(probe_factory);probe_factory.configure(self,"factory")
 	var rover_factory:=FrontierRoverWorkshop.new();business_panel.tabs.add_child(rover_factory);rover_factory.configure(self,true)
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
@@ -604,7 +606,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			navigation_ui.start_route(flight.scan_target);return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
-			if not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
+			if not lotus.interact() and not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
 			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
@@ -791,6 +793,7 @@ func _exit_tree() -> void:
 func menu_frames() -> Array:
 	var frames: Array=[rovers.panel if rovers!=null else null,rovers.dock if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
 	if stations!=null:frames.append(stations.panel)
+	if lotus!=null:frames.append(lotus.panel)
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
 	return frames
 func any_menu_open() -> bool:
@@ -863,7 +866,7 @@ func open_warehouse_management() -> void:
 	var current: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{})
 	if current.is_empty():return
 	var position_value:=FrontierCrewWorld.vector(session.latest.crew.members[session.latest.self_id].position)
-	var closest: String="";var distance:=INF if current.get("base_submerged",false) else position_value.distance_to(FrontierCrewWorld.vector(current.center))
+	var closest: String="";var distance:=INF if not current.get("base_deployed",true) or current.get("base_submerged",false) else position_value.distance_to(FrontierCrewWorld.vector(current.center))
 	for id in current.get("buildings",{}):
 		var row: Dictionary=current.buildings[id]
 		if row.type!="storage" or row.get("submerged",false):continue
@@ -873,15 +876,15 @@ func open_warehouse_management() -> void:
 	open_station("base" if closest.is_empty() else "storage",closest,true)
 func station_action(kind: String) -> void:
 	match kind:
+		"lotus":lotus.toggle()
+		"augmentation":stations.navigate("augmentation")
 		"inventory":
 			open_menu(inventory_panel)
 		"storage":
 			open_station("base")
 		"cargo":
 			open_menu(inventory_panel);inventory_panel.warehouse_choice.select(1);inventory_panel.tabs.current_tab=2
-		"research":
-			close_menus();toggle_research()
-			for control in research_actions:control.show()
+		"research":stations.navigate("research")
 		"shipyard":toggle_shipyard()
 		"launch":
 			close_menus()
@@ -915,6 +918,7 @@ func _update_business_placement() -> void:
 	placement_ghost.position=placement_point;placement_ghost.show()
 	var packet: Dictionary=session.surface
 	var world: Dictionary=FrontierShuttles.context(session.authority.world,session.latest.self_id) if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
+	if not session.hosting:world["lotus"]=session.latest.get("lotus",{})
 	var current:=FrontierExpeditionBusiness.site(world)
 	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
 	if not on_surface:reason="지표의 평탄한 지면에 배치하세요 · Esc 취소"

@@ -50,8 +50,8 @@ func accept(value: Dictionary) -> void:
 	var registered: bool=value.get("sites",{}).has(body.id)
 	var site: Dictionary=value.get("sites",{}).get(body.id,{"remaining":{},"buildings":{},"robots":{},"center":[0,0,0],"environment":{"temperature":body.get("traits",{}).get("temperature",20)}})
 	var wanted: Dictionary={}
-	if registered:wanted["business-base"]=true
-	if registered and not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
+	if registered and site.get("base_deployed",true):wanted["business-base"]=true
+	if registered and site.get("base_deployed",true) and not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
 	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고 · 반납/인수"
 	var camera:=get_viewport().get_camera_3d()
 	var centers: Array[Vector3]=presentation_points.duplicate()

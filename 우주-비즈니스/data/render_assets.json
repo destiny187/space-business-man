@@ -10240,5 +10240,29 @@
     "foliage": false,
     "generator": "tools/build_orbital_details.py",
     "review": "docs/production/74-space-visuals-and-sound.md"
+  },
+  {
+    "id": "lotus_heron",
+    "title": "LOTUS   /   개척 지원",
+    "name": "Lotus HERON 보급선",
+    "group": "장비",
+    "model": "res://assets/models/lotus/heron.glb",
+    "source": "art/blender/lotus/heron.blend",
+    "geometry": "ink-family-authored",
+    "foliage": false,
+    "generator": "tools/build_lotus_support.py",
+    "review": "docs/production/91-lotus-start-and-airdrop.md"
+  },
+  {
+    "id": "lotus_crate",
+    "title": "LOTUS   /   개척 지원",
+    "name": "Lotus 보급 상자",
+    "group": "장비",
+    "model": "res://assets/models/lotus/supply_crate.glb",
+    "source": "art/blender/lotus/supply_crate.blend",
+    "geometry": "ink-family-authored",
+    "foliage": false,
+    "generator": "tools/build_lotus_support.py",
+    "review": "docs/production/91-lotus-start-and-airdrop.md"
   }
 ]

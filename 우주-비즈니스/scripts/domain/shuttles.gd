@@ -58,7 +58,7 @@ static func guard(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			var ordinal: Variant=args.get("ordinal",ship.navigation.target)
 			if not FrontierExpeditionBusiness.integer(ordinal,0,int(world.manifest.settings.planet_count)-1):return "행성 주소 오류"
 			if FrontierUniverse.system_index(world.manifest,int(ordinal))!=int(ship.system):return "소형선은 같은 항성계 안에서만 이동합니다. 성간 이동은 공동 원정선에 합류하세요."
-		if kind in ["research_contribute","augmentation_upgrade","business_robot_deploy","business_robot_recover","surface_collect","surface_analyze","surface_introduce","surface_restore","surface_resupply"]:return "FINCH는 자원 운송선입니다. 로봇 격납고·표본 연구·신체 증강은 공동 원정선을 이용하세요."
+		if kind in ["research_contribute","augmentation_upgrade","business_robot_deploy","business_robot_recover","surface_analyze","surface_introduce","surface_restore","surface_resupply"]:return "FINCH는 자원 운송선입니다. 로봇 격납고·표본 연구·신체 증강은 공동 원정선을 이용하세요."
 		if kind=="tutorial_depart" or kind.begins_with("vessel_") or kind.begins_with("station_") or kind.begins_with("rover_") or kind=="pilot":return "공동 원정선으로 복귀한 뒤 사용할 수 있습니다."
 		if kind=="depart" and FrontierUniverse.system_index(world.manifest,int(ship.navigation.target))!=int(ship.system):return "소형선에는 성간 추진기가 없습니다."
 	else:
@@ -111,6 +111,13 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		var nav: Dictionary=world.crew.navigation.duplicate(true)
 		fleet(world)[actor]={"state":"assembling","pad_slot":fleet(world).size(),"progress":0.0,"factory_id":factory.id,"system":int(nav.system),"location":world.location,"navigation_target":world.location,"navigation":nav,"landing":world.crew.landing.duplicate(),"cargo":{},"cargo_equipment":{},"rock":0}
 		return ""
+	if kind=="shuttle_board" and not fleet(world).has(actor):
+		for holder in fleet(world).keys():
+			var loan: Dictionary=fleet(world)[holder]
+			if not loan.get("company",false) or loan.state!="docked":continue
+			if not loan.cargo_equipment.is_empty():return "공용 FINCH의 개인 장비를 먼저 내려 주세요."
+			if not FrontierCrewSurface.landed(world) or member.aboard or FrontierCrewWorld.vector(member.position).distance_to(pad(world,holder))>float(config().interaction_distance):return "Lotus 공용 FINCH 가까이에서 탑승하세요."
+			fleet(world)[actor]=loan;fleet(world).erase(holder);break
 	var ship: Dictionary=fleet(world).get(actor,{})
 	if ship.is_empty() or ship.state=="assembling":return "소형선 조립을 먼저 완료하세요."
 	if kind=="shuttle_board":

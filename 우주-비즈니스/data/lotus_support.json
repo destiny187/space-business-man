@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "starting_cargo": {"iron": 50, "copper": 50, "stone": 50, "ice": 50},
+  "package_amount": 50,
+  "free_requests": 3,
+  "prices": {"iron": 5, "copper": 7, "stone": 3, "ice": 5},
+  "cooldown_seconds": 90,
+  "dispatch_seconds": 20,
+  "approach_seconds": 8,
+  "drop_seconds": 3,
+  "departure_seconds": 8,
+  "drop_radius_min": 18,
+  "drop_radius_max": 42,
+  "placement_samples": 128,
+  "crate_radius": 1.35,
+  "interaction_distance": 4.5,
+  "maximum_crates": 24,
+  "ship_model": "res://assets/models/lotus/heron.glb",
+  "crate_model": "res://assets/models/lotus/supply_crate.glb"
+}

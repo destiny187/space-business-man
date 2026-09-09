@@ -207,7 +207,7 @@ func _update_shuttles() -> void:
 		var ship: Node3D=load(FrontierShuttles.config().model).instantiate();add_child(ship);FrontierInkStyle.apply(ship,{})
 		var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad);point.x+=float(fleet[id].get("pad_slot",0))*7.0;point.y=terrain.field.height(point.x,point.z)
 		ship.position=point;shuttle_models[id]=ship
-		var label:=Label3D.new();label.text="FINCH · "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
+		var label:=Label3D.new();label.text="LOTUS 공용 FINCH" if fleet[id].get("company",false) else "FINCH · "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
 
 func seat_vessel() -> void:
 	seated_hull=refits.hull_id

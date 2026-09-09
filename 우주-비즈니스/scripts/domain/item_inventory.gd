@@ -98,7 +98,7 @@ static func deposit_all(world: Dictionary,actor: String,site: Dictionary) -> Str
 # A landing depot starts with ten shared slots; each built storage adds ten.
 static func warehouse_capacity(site: Dictionary) -> int:
 	if site.has("slot_capacity"):return int(site.slot_capacity)
-	var count:=1
+	var count:=1 if site.get("base_deployed",true) else 0
 	for building in site.get("buildings",{}).values():
 		if building.type=="storage":count+=1
 	return count*int(config().warehouse_slots)

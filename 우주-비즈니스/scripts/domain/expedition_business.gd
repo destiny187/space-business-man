@@ -72,7 +72,7 @@ static func bag(world: Dictionary,actor: String) -> Dictionary:
 	return world.get("business",{}).get("bags",{}).get(actor,inventory())
 static func near_warehouse(current: Dictionary,position: Vector3) -> bool:
 	if current.is_empty():return false
-	if not current.get("base_submerged",false) and position.distance_to(point(current.center))<=float(config().deposit_range):return true
+	if current.get("base_deployed",true) and not current.get("base_submerged",false) and position.distance_to(point(current.center))<=float(config().deposit_range):return true
 	for row in current.get("buildings",{}).values():
 		if row.type=="storage" and not row.get("submerged",false) and position.distance_to(point(row.position))<=float(config().deposit_range):return true
 	return false
@@ -89,8 +89,9 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	var def:=FrontierCatalog.entry("buildings",kind)
 	if def.is_empty() or kind not in config().buildings:return "건설 설계도를 확인하세요."
 	var radius: float=def.radius
+	if FrontierLotusSupport.blocks(world,world.location,p,radius):return "Lotus 보급 상자와 투하 예정 공간을 비워 두세요."
 	if p.distance_to(point(current.center))>float(config().build_radius):return "개발 거점 65m 이내에 배치하세요."
-	if p.distance_to(point(current.center))<radius+4 or p.distance_to(point(FrontierCrewSurface.config().ship_position))<radius+13:return "착륙선과 창고의 진입로를 비워 두세요."
+	if (current.get("base_deployed",true) and p.distance_to(point(current.center))<radius+4) or p.distance_to(point(FrontierCrewSurface.config().ship_position))<radius+13:return "착륙선과 창고의 진입로를 비워 두세요."
 	var floor:=ground(FrontierCrewSurface.field(world),p.x,p.z,radius)
 	if not floor.is_finite() or absf(floor.y-p.y)>.5:return "평탄하고 지지되는 지면이 필요합니다."
 	for building in current.buildings.values():
@@ -129,7 +130,7 @@ static func ensure_site(world: Dictionary) -> Dictionary:
 	var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
 	var center:=point(config().base_position);center.y=FrontierCrewSurface.field(world).height(center.x,center.z)
 	var source: Dictionary=body.get("traits",FrontierCatalog.entry("planets",body.kind))
-	ledger.sites[world.location]={"center":array(center),"state":"exploration","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
+	ledger.sites[world.location]={"base_deployed":false,"center":array(center),"state":"exploration","inventory":inventory(),"remaining":{},"buildings":{},"robots":{},"jobs":{},"environment":{"temperature":source.temperature,"pressure":source.pressure,"oxygen":source.oxygen,"toxicity":source.toxicity,"water":source.water,"ecology":0.0,"stable_seconds":0.0},"time":0.0,"delivered":0,"production_paid":false,"settlement":{},"power_supply":2.0,"power_demand":0.0}
 	if int(body.planet_tier) in [1,2] and body.get("origin","")!="solar_reference":ledger.sites[world.location].workload_eligible=true
 	if not FrontierMineralWorld.enabled(body):
 		for row in veins(body):ledger.sites[world.location].remaining[row.id]=row.capacity

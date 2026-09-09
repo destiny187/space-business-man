@@ -1,48 +1,189 @@
 {
-  "version": 2,
+  "version": 4,
   "intro_max_processing_seconds": 360,
   "near_resource_radius": 80,
   "starter": [
     {
-      "id": "landing2:iron:a",
+      "id": "landing2:iron:a:small:0",
       "resource": "iron",
-      "capacity": 310,
-      "radius": 26,
-      "angle": -2.3
+      "capacity": 40,
+      "radius": 24,
+      "angle": -3.0
     },
     {
-      "id": "landing2:copper",
+      "id": "landing2:iron:a:small:1",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 35,
+      "angle": -1.765
+    },
+    {
+      "id": "landing2:iron:a:small:2",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 46,
+      "angle": -0.53
+    },
+    {
+      "id": "landing2:iron:a:small:3",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 57,
+      "angle": 0.705
+    },
+    {
+      "id": "landing2:iron:a:small:4",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 68,
+      "angle": 1.94
+    },
+    {
+      "id": "landing2:copper:small:0",
       "resource": "copper",
-      "capacity": 205,
-      "radius": 32,
-      "angle": 1.4
+      "capacity": 30,
+      "radius": 31,
+      "angle": -2.753
     },
     {
-      "id": "landing2:iron:b",
+      "id": "landing2:copper:small:1",
+      "resource": "copper",
+      "capacity": 30,
+      "radius": 42,
+      "angle": -1.518
+    },
+    {
+      "id": "landing2:copper:small:2",
+      "resource": "copper",
+      "capacity": 30,
+      "radius": 53,
+      "angle": -0.283
+    },
+    {
+      "id": "landing2:copper:small:3",
+      "resource": "copper",
+      "capacity": 30,
+      "radius": 64,
+      "angle": 0.952
+    },
+    {
+      "id": "landing2:copper:small:4",
+      "resource": "copper",
+      "capacity": 30,
+      "radius": 75,
+      "angle": 2.187
+    },
+    {
+      "id": "landing2:iron:b:small:0",
       "resource": "iron",
-      "capacity": 300,
-      "radius": 48,
-      "angle": -1.9
+      "capacity": 40,
+      "radius": 38,
+      "angle": -2.506
     },
     {
-      "id": "landing2:stone",
+      "id": "landing2:iron:b:small:1",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 49,
+      "angle": -1.271
+    },
+    {
+      "id": "landing2:iron:b:small:2",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 60,
+      "angle": -0.036
+    },
+    {
+      "id": "landing2:iron:b:small:3",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 71,
+      "angle": 1.199
+    },
+    {
+      "id": "landing2:iron:b:small:4",
+      "resource": "iron",
+      "capacity": 40,
+      "radius": 30,
+      "angle": 2.434
+    },
+    {
+      "id": "landing2:stone:small:0",
       "resource": "stone",
-      "capacity": 195,
-      "radius": 52,
-      "angle": 2.0
+      "capacity": 30,
+      "radius": 45,
+      "angle": -2.259
     },
     {
-      "id": "landing2:ice",
+      "id": "landing2:stone:small:1",
+      "resource": "stone",
+      "capacity": 30,
+      "radius": 56,
+      "angle": -1.024
+    },
+    {
+      "id": "landing2:stone:small:2",
+      "resource": "stone",
+      "capacity": 30,
+      "radius": 67,
+      "angle": 0.211
+    },
+    {
+      "id": "landing2:stone:small:3",
+      "resource": "stone",
+      "capacity": 30,
+      "radius": 26,
+      "angle": 1.446
+    },
+    {
+      "id": "landing2:stone:small:4",
+      "resource": "stone",
+      "capacity": 30,
+      "radius": 37,
+      "angle": 2.681
+    },
+    {
+      "id": "landing2:ice:small:0",
       "resource": "ice",
-      "capacity": 150,
-      "radius": 66,
-      "angle": 0.7
+      "capacity": 30,
+      "radius": 52,
+      "angle": -2.012
+    },
+    {
+      "id": "landing2:ice:small:1",
+      "resource": "ice",
+      "capacity": 30,
+      "radius": 63,
+      "angle": -0.777
+    },
+    {
+      "id": "landing2:ice:small:2",
+      "resource": "ice",
+      "capacity": 30,
+      "radius": 74,
+      "angle": 0.458
+    },
+    {
+      "id": "landing2:ice:small:3",
+      "resource": "ice",
+      "capacity": 30,
+      "radius": 33,
+      "angle": 1.693
+    },
+    {
+      "id": "landing2:ice:small:4",
+      "resource": "ice",
+      "capacity": 30,
+      "radius": 44,
+      "angle": 2.928
     }
   ],
   "expedition": {
     "radius": 450,
-    "capacity": 160,
+    "capacity": 35,
     "samples": 160,
-    "radius_spread": 60
+    "radius_spread": 60,
+    "deposits_per_resource": 4
   }
 }

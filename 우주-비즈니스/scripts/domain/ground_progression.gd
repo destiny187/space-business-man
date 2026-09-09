@@ -16,13 +16,15 @@ static func intro_candidate(body: Dictionary) -> bool:
 	if not FrontierUniverse.landable(body) or int(body.planet_tier)!=1 or body.get("traits",{}).is_empty():return false
 	var t: Dictionary=body.traits
 	# Prefer a meaningful, bounded restoration task; never change the generated climate.
-	return float(t.temperature)>-55 and float(t.temperature)<65 and float(t.toxicity)<85 and processing_seconds(body)>=150 and processing_seconds(body)<=float(body.get("ground_rules",config()).intro_max_processing_seconds) and starter(body).size()==5
+	return float(t.temperature)>-55 and float(t.temperature)<65 and float(t.toxicity)<85 and processing_seconds(body)>=150 and processing_seconds(body)<=float(body.get("ground_rules",config()).intro_max_processing_seconds) and starter(body).size()>=5
 static func starter(body: Dictionary) -> Array:
 	var key: String=body.id+":"+FrontierUniverse.fingerprint(body.ground_rules)
 	if _starter_cache.has(key):return _starter_cache[key].duplicate(true)
 	var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 	var rows: Array=[]
+	var missing:=absent_starter(body)
 	for def in body.ground_rules.starter:
+		if def.resource==missing:continue
 		var best:=Vector3.INF
 		for i in 160:
 			var angle: float=float(def.angle)+float(i)*.17
@@ -38,9 +40,9 @@ static func starter(body: Dictionary) -> Array:
 	_starter_cache[key]=rows.duplicate(true);return rows
 
 static func valid(value: Variant) -> bool:
-	if not value is Dictionary or (value.get("version")!=1 and value.get("version")!=2):return false
+	if not value is Dictionary or (value.get("version")!=1 and value.get("version")!=2 and value.get("version")!=3 and value.get("version")!=4):return false
 	if not FrontierUniverse._finite(value.get("intro_max_processing_seconds"),120,1200) or not FrontierUniverse._finite(value.get("near_resource_radius"),20,200):return false
-	if not value.get("starter") is Array or value.starter.size()!=5:return false
+	if not value.get("starter") is Array or value.starter.size()!=(25 if int(value.version)>=3 else 5):return false
 	if int(value.version)>=2:
 		if not value.get("expedition") is Dictionary:return false
 		for field in ["radius","capacity","samples","radius_spread"]:
@@ -51,3 +53,13 @@ static func valid(value: Variant) -> bool:
 		if not FrontierExpeditionBusiness.integer(row.get("capacity"),1,10000) or not FrontierUniverse._finite(row.get("radius"),20,80) or not FrontierUniverse._finite(row.get("angle"),-TAU,TAU):return false
 		seen.append(row.id)
 	return true
+
+static func absent_starter(body: Dictionary) -> String:
+	if int(body.get("ground_rules",{}).get("version",0))<4:return ""
+	var profile: Dictionary=body.get("mineral_profile",{})
+	var pool: Array=profile.get("primary",[])+profile.get("secondary",[])
+	var absent: Array=[]
+	for id in ["iron","copper","ice"]:
+		if id not in pool:absent.append(id)
+	if absent.is_empty():return ""
+	return str(absent[FrontierUniverse.derive(int(body.streams.resource),"lotus-shortfall")%absent.size()])

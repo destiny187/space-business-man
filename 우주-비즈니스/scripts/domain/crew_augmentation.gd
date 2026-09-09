@@ -42,7 +42,7 @@ static func reason(world: Dictionary,actor: String,args: Dictionary,station: Dic
 	if member.area=="surface":
 		if not FrontierCrewSurface.landed(world) or station.get("body_id")!=world.crew.landing.body_id or member.aboard:return "같은 행성의 착륙선 증강 장치에 접근하세요."
 	elif FrontierCrewSurface.landed(world) or not member.aboard:return "공동 원정선의 증강 장치에 접근하세요."
-	if FrontierCrewWorld.vector(member.position).distance_to(station.position)>float(config().interaction_range):return "증강 장치 %.0fm 안에서 실행하세요."%float(config().interaction_range)
+	if FrontierCrewWorld.vector(member.position).distance_to(station.position)>(float(FrontierCrewSurface.config().boarding_distance) if station.get("ship_terminal",false) else float(config().interaction_range)):return "증강 장치 %.0fm 안에서 실행하세요."%float(config().interaction_range)
 	var current:=level(member,args.field)
 	if int(args.expected_level)!=current:return "증강 단계가 바뀌었습니다. 현재 능력을 다시 확인하세요."
 	if current>=int(config().maximum_level):return "최고 증강 단계입니다."

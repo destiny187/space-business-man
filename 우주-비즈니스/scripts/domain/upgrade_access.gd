@@ -13,5 +13,5 @@ static func reason(world: Dictionary,actor: String,key: String,station: Dictiona
 	var member: Dictionary=world.crew.members.get(actor,{})
 	if member.get("area")!="surface" or member.get("aboard",true):return "착륙선 밖 "+title+"에 접근하세요."
 	if station.get("enabled")!=true or not station.get("position") is Vector3 or station.get("area")!="surface" or station.get("body_id")!=world.crew.landing.body_id:return "사용 가능한 "+title+"가 없습니다."
-	if FrontierCrewWorld.vector(member.position).distance_to(station.position)>float(FrontierCrewAugmentation.config().interaction_range):return title+" 가까이에서 F로 작업하세요."
+	if FrontierCrewWorld.vector(member.position).distance_to(station.position)>(float(FrontierCrewSurface.config().boarding_distance) if station.get("ship_terminal",false) else float(FrontierCrewAugmentation.config().interaction_range)):return title+" 가까이에서 F로 작업하세요."
 	return ""

@@ -1,5 +1,8 @@
 # 게임 설계 문서 목차
 
+2026-09-09 [선박 단말·빈 첫 착륙지](production/93-ship-terminal-and-empty-landing.md): L 호출을 선박 F 메뉴로 옮기고 자동 현장 창고·지상 연구/증강 장치 배치를 제거했다. 직접 지은 시설과 사용 중인 기존 창고는 보존한다.
+2026-09-09 [Lotus 출항 지원·현장 보급](production/91-lotus-start-and-airdrop.md): 새 원정의 기초 원료 각 50개·공용 FINCH 1대, L 호출·보급선 투하·F 실물 수령·무인 행성 배송·저장을 구현했다. 기업 성장·독립·지구 구출은 [스토리 구상](game/19-lotus-story-and-support.md)으로 남긴다.
+
 2026-09-09 [수면 품질 옵션](production/88-water-quality-options.md): 낮음/보통/최상을 분리하고 규칙적인 흰 점을 카툰 물결·반사 띠로 교체했다. 실제 바다 비교, 메시 비용과 물리 판정 유지 범위는 제작 기록을 따른다.
 
 2026-09-09 [수영·물 상호작용](production/87-water-interactions-and-swimming.md): 기존 Blender 리그의 수영과 입·출수/보행/총격 물보라, ElevenLabs 5종, 수중 표현을 연결했다. 호스트 판정·고정 효과 한도와 실제 실행 확인 범위는 제작 기록을 따른다.
@@ -124,6 +127,7 @@
 | [게임 비전과 핵심 루프](game/01-vision-and-loop.md) | 세계관, 플레이어 역할, 재미의 중심, 한 회차의 흐름 |
 | [행성·자원·건축](game/02-planets-resources-and-building.md) | 행성 특성, 수동 채집, 자원, 시설 배치, 초반 경험·화면 |
 | [광물·보석·강화](game/14-minerals-gems-and-enhancement.md) | 행성별 광물·최고급 공통 소재·지하 보석·캐릭터/장비 강화 목표·미정 |
+| [Lotus 스토리·개척 지원](game/19-lotus-story-and-support.md) | 구현된 출항 화물·보급, 사용자 이야기 원안과 독립·지구 구출 미정 |
 | [로봇·자동화](game/03-robots-and-automation.md) | 제작, 랜덤 등급·특성, 작업·운반·전력·고장 |
 | [테라포밍·행성 판매](game/04-terraforming-and-sales.md) | 환경 상태, 설비 효과, 평가 등급, 매각 절차·가격 |
 | [경제·기술·계승](game/05-economy-and-progression.md) | 탐사 투자·계약·매각, 기술 상점, 자산 회수·수송 |
