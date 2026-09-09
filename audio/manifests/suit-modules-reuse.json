@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "date": "2026-09-09",
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "status": "existing_elevenlabs_assets_integrated_game_cues_checked",
+  "cues": [
+    {
+      "id": "sfx_build_place",
+      "use": "모듈 장착 체결 및 실드 타격의 짧은 전자 반응"
+    },
+    {
+      "id": "sfx_build_invalid",
+      "use": "실드 소진 경고"
+    },
+    {
+      "id": "ui_discovery",
+      "use": "호스트가 저장한 신규 랜덤 모듈 획득, 실드 소진 가속·새 분석 충전·처치 회복의 발동 알림"
+    }
+  ],
+  "new_generation": false,
+  "limitation": "실드 전용 신규 합성음이 아닌 기존 음원 재사용. 피격·파괴는 HUD 색/게이지/별도 알림과 함께 구분한다."
+}

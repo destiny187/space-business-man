@@ -24,7 +24,7 @@ static func used(stock: Dictionary,items: int=0) -> int:
 static func storage_slots() -> int:return int(config().max_slots)
 static func limit() -> int:return storage_slots()*int(config().resource_stack)
 static func capacity(member: Dictionary) -> int:
-	return mini(storage_slots(),int(member.get("loadout",{}).get("inventory_slots",config().slots))+FrontierProgressionResearch.personal(member,"logistics"))
+	return mini(storage_slots(),int(member.get("loadout",{}).get("inventory_slots",config().slots))+FrontierProgressionResearch.personal(member,"logistics")+int(FrontierSuitModules.bonus(member,"slots")))
 static func room(world: Dictionary,actor: String,resource: String) -> int:
 	var stock:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	stock.stone=int(stock.get("stone",0))+int(world.crew.members[actor].carried)

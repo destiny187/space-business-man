@@ -18,6 +18,7 @@ var refresh_time:=0.0
 var elapsed:=0.0
 var beep_time:=0.0
 var event_serial:=0
+var native_warning:=""
 func configure(owner_surface: FrontierCrewSurfaceScene,eye: Camera3D) -> void:
  surface=owner_surface;camera=eye;app=surface.session.get_parent() as FrontierCrewExpedition
  audio=FrontierAudio.new();add_child(audio)
@@ -52,9 +53,10 @@ func beam(a: Vector3,b: Vector3,color: Color,radius: float,parent_node: Node3D) 
  node.basis=Basis(right,up,right.cross(up)).orthonormalized();return node
 func make(row: Dictionary) -> Dictionary:
  var mode: String=FrontierExplorationIncidents.definition(row.template).mode
- var ids: Array=[{"wreck":"wreck","power":"wreck","carry":"cliff","ice":"ice","robot":"robot","drone":"drone","scavenger":"nest","seismic":"gems"}[mode],"cargo","beacon"]
+ var ids: Array=[{"wreck":"wreck","power":"wreck","carry":"cliff","ice":"ice","robot":"robot","drone":"drone","scavenger":"nest","native":"nest","seismic":"gems"}[mode],"cargo","beacon"]
  if mode in ["power","wreck"]:ids.append_array(["battery","generator"])
  if mode=="scavenger":ids.append("battery")
+ if row.has("native") and row.native.role!="scavenger":ids.append("gems")
  for id in ids:
   if scene_for(id)==null:return {}
  var root_node:=Node3D.new();add_child(root_node);root_node.position=FrontierCrewWorld.vector(row.position);root_node.rotation.y=float(row.yaw)
@@ -71,7 +73,9 @@ func make(row: Dictionary) -> Dictionary:
    for i in range(1,25):
     var p:=start.lerp(end,float(i)/24.0);p.y=surface.terrain.field.height(p.x,p.z)+.06
     beam(root_node.to_local(previous),root_node.to_local(p),Color("d58835"),.045,root_node);previous=p
- if mode=="scavenger":
+ if row.has("native"):
+  FrontierNativeIncidentView.build(self,row,result)
+ elif mode=="scavenger":
   var ecology: Dictionary={"planets":{}}
   var natives:=FrontierEcology.ensure_planet(ecology,surface.body)
   for lineage in natives.lineages:
@@ -80,6 +84,8 @@ func make(row: Dictionary) -> Dictionary:
    var creature:=Creature.new();creature.load_far=false;creature.configure(form,FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id));root_node.add_child(creature);creature.set_state("move");result.creature=creature
    result.stolen=add_model("battery",creature,Vector3(0,.6,-.3));result.stolen.scale=Vector3.ONE*.35;break
  if mode=="robot":
+  var bubble:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=1.15;sphere.height=3.0;bubble.mesh=sphere;root_node.add_child(bubble);bubble.position=Vector3(0,1.5,0)
+  var shield_material:=StandardMaterial3D.new();shield_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;shield_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;shield_material.albedo_color=Color(.2,.65,1,.12);shield_material.cull_mode=BaseMaterial3D.CULL_DISABLED;bubble.material_override=shield_material;result.shield=bubble
   var solid:=StaticBody3D.new();root_node.add_child(solid);var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.6;capsule.height=2.7;shape.shape=capsule;shape.position.y=1.35;solid.add_child(shape);result.robot_solid=solid
  if mode=="seismic":
   main.position=Vector3(0,-7.6,-1);cargo.hide();relay.hide()
@@ -104,6 +110,7 @@ func _process(delta: float) -> void:
  for speaker in audio.get_children():
   if speaker is AudioStreamPlayer or speaker is AudioStreamPlayer3D:speaker.stream_paused=stopped
  camera.h_offset=0;camera.v_offset=0;selected={}
+ native_warning=""
  var nearest:=float(FrontierExplorationIncidents.config().tool_distance);var signal_row: Dictionary={};var signal_distance:=150.0;var delivery: Dictionary={}
  var actor_id: String=surface.session.latest.self_id
  for id in models:
@@ -129,12 +136,15 @@ func _process(delta: float) -> void:
   if mode=="drone":
    main.global_position=main.global_position.lerp(FrontierExplorationIncidents.moving_point(row),1-exp(-delta*12)) if not row.open else FrontierExplorationIncidents.cargo_point(row)+Vector3.UP
    if not row.open:nodes.cargo.visible=true;nodes.cargo.global_position=main.global_position-Vector3.UP*1.0
-  if nodes.has("creature"):
+  if row.has("native"):
+   FrontierNativeIncidentView.update(self,row,nodes,delta,stopped)
+  elif nodes.has("creature"):
    var creature: Node3D=nodes.creature;var previous:=creature.global_position;creature.global_position=creature.global_position.lerp(FrontierExplorationIncidents.moving_point(row)-Vector3.UP*.35,1-exp(-delta*12))
    var motion:=creature.global_position-previous
    if motion.length()>.005:creature.rotation.y=atan2(-motion.x,-motion.z)-float(row.yaw)
    creature.paused=stopped;nodes.stolen.visible=not row.claimed
    if creature.mouth_marker!=null:nodes.stolen.global_position=creature.mouth_marker.global_position
+  if mode=="robot":nodes.shield.visible=float(row.get("shield",0))>0 and row.hp>0 and row.phase!="idle"
   for part in nodes.parts:
    if not part.has_meta("rest"):part.set_meta("rest",part.transform)
    var rest: Transform3D=part.get_meta("rest")
@@ -145,7 +155,7 @@ func _process(delta: float) -> void:
    elif str(part.name).begins_with("Anim_Rotor") and not stopped and not row.open:part.rotation.y+=delta*32
    elif str(part.name).begins_with("Anim_Torso"):
     var folded:=1.0 if row.phase in ["idle","destroyed"] else (1.0-clampf(float(row.time)/float(FrontierExplorationIncidents.config().robot.wake_seconds),0,1) if row.phase=="waking" else 0.0)
-    part.transform=rest;part.rotation.x+=folded*1.0;part.position.y-=folded*.4
+    part.transform=rest;part.rotation.x+=folded*1.0;part.position.y-=folded*.3
     if row.phase in ["aiming","firing"] and not row.aim.is_empty():
      var toward:=FrontierCrewWorld.vector(row.aim)-at;part.rotation.y=atan2(toward.x,toward.z)-float(row.yaw)
    elif str(part.name).begins_with("Anim_Weak"):part.visible=row.phase=="cooling"
@@ -169,7 +179,7 @@ func _process(delta: float) -> void:
   if int(row.serial)!=int(nodes.serial):
    if not stopped:
     if row.phase!=nodes.phase:
-     var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_combat_pulse" if row.phase=="firing" else "sfx_discovery_excavate"))
+     var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_combat_pulse" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
      audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
     app.feedback.effects.burst(at+Vector3.UP,Color("cbb5ff"),8);event_serial+=1
    nodes.serial=int(row.serial);nodes.phase=str(row.phase)
@@ -184,7 +194,10 @@ func _process(delta: float) -> void:
  var size:=get_viewport().get_visible_rect().size
  hint.size=Vector2(minf(520,size.x-40),72);hint.position=Vector2((size.x-hint.size.x)*.5,size.y*.59)
  hint.text="" if selected.is_empty() else str(FrontierExplorationIncidents.definition(selected.template).name)+"\n"+str(selected.action)
+ if not selected.is_empty() and rows[selected.id].has("native"):
+  hint.text=FrontierNativeIncidents.title(rows[selected.id].native)+"\n"+str(selected.action)
  if not selected.is_empty() and selected.part=="robot":hint.text+=" · 냉각 중 약점 노출" if rows[selected.id].phase=="cooling" else " · 조준선에서 벗어나기"
+ if not native_warning.is_empty():hint.text=native_warning
  signal_bar.position=Vector2(24,size.y*.4);signal_bar.size=Vector2(130,7);signal_label.position=Vector2(24,size.y*.4-28)
  signal_bar.visible=not signal_row.is_empty();signal_label.visible=signal_bar.visible
  if not signal_row.is_empty():

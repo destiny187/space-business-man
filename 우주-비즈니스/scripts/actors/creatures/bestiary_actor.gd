@@ -8,6 +8,7 @@ var models: Array[Node3D] = []
 var joints: Array[Dictionary] = []
 var material_slots: Dictionary = {}
 var base_scale := 1.0
+var movement_rate := 1.0
 var state := "idle"
 var elapsed := 0.0
 var paused := false
@@ -100,7 +101,7 @@ func set_state(value: String) -> bool:
 
 func _process(delta: float) -> void:
 	if not paused:
-		elapsed+=delta
+		elapsed+=delta*(movement_rate if state=="move" else 1.0)
 		_update_attack_phase()
 	if not FrontierFieldVisibility.active(visibility_notifier):return
 	var camera:=get_viewport().get_camera_3d()

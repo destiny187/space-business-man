@@ -163,7 +163,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","suit_module","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	if envelope.kind=="shuttle_recall":
 		var target: String=str(envelope.args.get("character_id",""))
 		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
@@ -184,7 +184,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	var rover_draft:=rover_runtime.duplicate(true)
 	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch"]:return failure("먼저 로버에서 내리세요.")
-	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit"]:FrontierItemInventory.merge_legacy(draft,actor)
+	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit","suit_module"]:FrontierItemInventory.merge_legacy(draft,actor)
 	if not envelope.kind.begins_with("lotus_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var flood_reason:=FrontierFacilityFlooding.guard(canonical,actor,envelope.kind,envelope.args)
 	if not flood_reason.is_empty():return failure(flood_reason)
@@ -201,7 +201,8 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		if solver!=null:
 			solver.record=draft.get("surface_water",{}).get(draft.crew.landing.body_id,FrontierSurfaceWater.create())
 			water_hit=solver.intersect(origin,aim,reach)
-	if envelope.kind in ["surface_incident","surface_incident_tool"]:
+	if envelope.kind=="suit_module":reason=FrontierSuitModules.apply(draft,actor,envelope.args)
+	elif envelope.kind in ["surface_incident","surface_incident_tool"]:
 		if envelope.kind=="surface_incident_tool" and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("도구가 준비 중입니다.")
 		reason=FrontierExplorationIncidents.apply(draft,actor,envelope.args,envelope.kind=="surface_incident_tool",shot_obstacle_provider)
 	elif envelope.kind=="surface_discovery":reason=FrontierExplorationDiscoveries.apply(draft,actor,envelope.args)
@@ -238,6 +239,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		reason=FrontierCrewSurface.apply(draft,actor,envelope.kind,envelope.args,group,water_hit)
 	else:reason=FrontierCrewWorld.apply(draft.crew,actor,envelope.kind,envelope.args,group)
 	if not reason.is_empty():return failure(reason)
+	if envelope.kind in ["surface_attack","surface_incident_tool"] and FrontierEquipment.active(draft.crew.members[actor]).get("kind")=="pulse":FrontierSuitModules.enter_combat(draft.crew.members[actor])
 	FrontierShuttles.commit(canonical,draft,actor);draft=canonical
 	draft.crew.revision+=1;draft.crew.members[actor].last_sequence=sequence
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
@@ -432,14 +434,16 @@ func step_surface(delta: float) -> void:
 			scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor)};continue
 		var progress: float=float(scans.get(peer,{}).get("progress",0)) if scans.get(peer,{}).get("id","")==target.id and int(scans.get(peer,{}).get("discovery_stage",0))==int(FrontierExplorationDiscoveries.stage(local,target) if target.kind=="discovery" else 0) else 0.0
 		var scan_seconds:=float(FrontierCrewSurface.config().scan_seconds)
+		if target.kind=="native_incident":scan_seconds=float(FrontierNativeIncidents.config().roles[world.incidents.records[target.id].native.role].watch)
 		if target.kind=="discovery":
 			var definition:=FrontierExplorationDiscoveries.definition(target.template)
 			scan_seconds=float(definition.stages[mini(FrontierExplorationDiscoveries.stage(local,target),definition.stages.size()-1)].seconds)
-		progress=minf(1.0,progress+duration/scan_seconds)
+		progress=minf(1.0,progress+duration*FrontierSuitModules.factor(world.crew.members[actor],"scan")/scan_seconds)
 		scans[peer]={"discovery_stage":FrontierExplorationDiscoveries.stage(local,target) if target.kind=="discovery" else 0,"id":target.id,"progress":progress,"known":false,"point":[target.point.x,target.point.y,target.point.z]}
 		if progress<1.0:continue
 		var draft:=world.duplicate(true)
 		var survey_local:=FrontierShuttles.context(draft,actor)
+		FrontierSuitModules.on_analysis(draft.crew.members[actor])
 		FrontierSurfaceSurvey.record(survey_local,target,actor);FrontierShuttles.commit(draft,survey_local,actor)
 		draft.crew.revision+=1
 		if not save_world.call(draft):stopped=true;error="스캔 저장 실패로 공동 세계를 정지했습니다.";return

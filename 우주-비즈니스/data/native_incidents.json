@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "roles": {
+    "scavenger": {
+      "name": "부품 수집 개체",
+      "tier": 1,
+      "layer": "surface",
+      "families": [
+        "runner",
+        "stalker",
+        "burrower",
+        "carapace",
+        "mantid",
+        "asym_pincer",
+        "manymouth",
+        "spiral_maw",
+        "crown_stalker"
+      ],
+      "scale": 1.0,
+      "max_height": 3.4,
+      "speed": 2.4,
+      "watch": 4.0,
+      "reward": {
+        "copper": 6,
+        "phosphate": 4
+      }
+    },
+    "giant": {
+      "name": "거대 이동 개체",
+      "tier": 3,
+      "layer": "surface",
+      "families": [
+        "lithic",
+        "grazer",
+        "burrower",
+        "carapace",
+        "tripod_bell"
+      ],
+      "scale": 4.0,
+      "max_height": 16.0,
+      "speed": 1.45,
+      "watch": 6.0,
+      "reward": {
+        "phosphate": 12,
+        "sapphire": 1
+      },
+      "max_length": 28.0
+    },
+    "guardian": {
+      "name": "둥지 보호 개체",
+      "tier": 2,
+      "layer": "surface",
+      "families": [
+        "lithic",
+        "grazer",
+        "stalker",
+        "carapace",
+        "mantid",
+        "asym_pincer",
+        "crown_stalker",
+        "manymouth",
+        "spiral_maw"
+      ],
+      "scale": 1.15,
+      "max_height": 4.0,
+      "speed": 1.75,
+      "watch": 5.0,
+      "reward": {
+        "phosphate": 8,
+        "refined_copper": 3
+      }
+    },
+    "cave": {
+      "name": "지하 성체",
+      "tier": 2,
+      "layer": "cave",
+      "families": [
+        "lithic",
+        "grazer",
+        "runner",
+        "stalker",
+        "burrower",
+        "carapace",
+        "mantid",
+        "coil",
+        "slug",
+        "blind_harp",
+        "spiral_maw",
+        "tripod_bell",
+        "eye_orchard",
+        "asym_pincer",
+        "ribbon_colony",
+        "window_sac",
+        "crown_stalker",
+        "manymouth"
+      ],
+      "scale": 1.3,
+      "max_height": 3.3,
+      "speed": 1.25,
+      "watch": 5.0,
+      "reward": {
+        "phosphate": 6,
+        "sapphire": 1
+      }
+    },
+    "rare": {
+      "name": "희귀 색 변이",
+      "tier": 3,
+      "layer": "surface",
+      "families": [
+        "lithic",
+        "grazer",
+        "runner",
+        "stalker",
+        "burrower",
+        "carapace",
+        "mantid",
+        "coil",
+        "slug",
+        "blind_harp",
+        "spiral_maw",
+        "tripod_bell",
+        "eye_orchard",
+        "asym_pincer",
+        "ribbon_colony",
+        "window_sac",
+        "crown_stalker",
+        "manymouth"
+      ],
+      "scale": 1.0,
+      "max_height": 4.0,
+      "speed": 2.1,
+      "watch": 7.0,
+      "reward": {
+        "phosphate": 10,
+        "ruby": 1
+      }
+    }
+  },
+  "variants": {
+    "ordinary": {
+      "name": "성체",
+      "scale": [
+        0.96,
+        1.06
+      ],
+      "reward": 1.0
+    },
+    "large": {
+      "name": "대형 성체",
+      "scale": [
+        1.25,
+        1.5
+      ],
+      "reward": 1.35
+    },
+    "rare": {
+      "name": "이색 개체",
+      "scale": [
+        1.05,
+        1.3
+      ],
+      "reward": 1.6
+    }
+  },
+  "weights": {
+    "1": [
+      85,
+      15,
+      0
+    ],
+    "2": [
+      55,
+      35,
+      10
+    ],
+    "3": [
+      30,
+      45,
+      25
+    ],
+    "4": [
+      20,
+      40,
+      40
+    ],
+    "5": [
+      10,
+      35,
+      55
+    ]
+  },
+  "max_length": 7.0,
+  "trigger_distance": 15.0,
+  "retreat_distance": 5.0,
+  "guard_warning": 2.0,
+  "guard_cooldown": 4.0,
+  "guard_damage": 12.0,
+  "track_spacing": 2.4,
+  "young_scale": 0.42
+}

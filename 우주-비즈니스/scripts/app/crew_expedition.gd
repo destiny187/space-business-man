@@ -496,21 +496,21 @@ func _physics_process(delta: float) -> void:
 			var motion: Dictionary=session.authority.motions.get(id,FrontierCrewLocomotion.create())
 			session.authority.motions[id]=motion
 			var wants_sprint: bool=enabled and input.get("sprinting",false) and direction.length_squared()>0
-			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1)
+			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1,actor.is_on_floor() and actor.velocity.length()<.05,FrontierExplorationIncidents.carriers(session.authority.world,id))
 			var speed:=float(FrontierCrewWorld.config().movement_speed)
 			var gravity:=float(FrontierCrewLocomotion.config().cabin_gravity)
 			if FrontierCrewSurface.landed(local):
 				var ground:=spaces.terrain_for(id)
 				if ground==null or not ground.ready_at(actor.position):
 					actor.velocity=Vector3.ZERO;motion.buffer=0.0;motion.takeoff=0.0;motion.jump_request=int(input.get("jump_request",0));continue
-				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier*FrontierCrewAugmentation.multiplier(member,"mobility");gravity=float(FrontierCrewSurface.config().gravity)
-				if FrontierExplorationIncidents.carriers(session.authority.world,id):speed*=float(FrontierExplorationIncidents.config().carrier_speed_factor)
+				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier*FrontierCrewAugmentation.multiplier(member,"mobility")*FrontierSuitModules.factor(member,"mobility");gravity=float(FrontierCrewSurface.config().gravity)
+				if FrontierExplorationIncidents.carriers(session.authority.world,id):speed*=(float(FrontierExplorationIncidents.config().carrier_speed_factor)+(1.0-float(FrontierExplorationIncidents.config().carrier_speed_factor))*FrontierSuitModules.bonus(member,"carry"))
 				var next:=actor.position+Vector3(direction.x,0,direction.y)*speed*delta
 				if not ground.ready_at(next):direction=Vector2.ZERO;enabled=false
 				if actor.position.y<float(ground.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(ground.config.region_half_extent):
 					actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO;motion=FrontierCrewLocomotion.create();session.authority.motions[id]=motion
 			var old_land: int=motion.land_serial
-			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)),FrontierCrewAugmentation.multiplier(member,"jump"))
+			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)),FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"))
 			motion.input_ack=int(session.authority.input_sequences.get(peer,0))
 			if member.area=="surface" and int(motion.land_serial)>old_land and FrontierCrewVitals.land(member,float(motion.impact)):
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
@@ -540,10 +540,10 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	var on_surface: bool=member.area=="surface"
 	var speed:=float(FrontierCrewSurface.config().movement_speed) if on_surface else float(FrontierCrewWorld.config().movement_speed)
 	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
-	if on_surface:speed*=FrontierCrewAugmentation.multiplier(member,"mobility")
-	if on_surface and FrontierExplorationIncidents.carriers(session.latest,str(session.latest.self_id)):speed*=float(FrontierExplorationIncidents.config().carrier_speed_factor)
+	if on_surface:speed*=FrontierCrewAugmentation.multiplier(member,"mobility")*FrontierSuitModules.factor(member,"mobility")
+	if on_surface and FrontierExplorationIncidents.carriers(session.latest,str(session.latest.self_id)):speed*=(float(FrontierExplorationIncidents.config().carrier_speed_factor)+(1.0-float(FrontierExplorationIncidents.config().carrier_speed_factor))*FrontierSuitModules.bonus(member,"carry"))
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
-	var frame: Dictionary={"jump_factor":FrontierCrewAugmentation.multiplier(member,"jump"),"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
+	var frame: Dictionary={"jump_factor":FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"),"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
 	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical),float(frame.jump_factor))
 	prediction_history.append(frame)
 	# Bounded replay: stale links cannot build an unbounded local simulation backlog.

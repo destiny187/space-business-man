@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "date": "2026-09-09",
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "new_generation": false,
+  "cues": [
+    {"id": "sfx_creature_call", "use": "거대/지하 개체의 이동 소리와 둥지 방어 공격, 몸집에 따른 피치 조정"},
+    {"id": "ui_discovery", "use": "호스트가 확정한 사건 모듈 획득의 기존 알림"}
+  ],
+  "limitation": "기존 ElevenLabs 음원의 재생 연결이다. 새로운 종별/거대 생물 음원 생성이나 사람의 청감 품질 평가를 의미하지 않는다."
+}

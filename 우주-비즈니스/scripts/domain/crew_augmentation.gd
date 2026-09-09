@@ -22,7 +22,7 @@ static func level(member: Dictionary,key: String) -> int:
 static func multiplier(member: Dictionary,key: String) -> float:
 	return 1.0+float(config().fields[key].increment)*level(member,key)
 static func maximum_health(member: Dictionary) -> float:
-	return float(FrontierCrewVitals.config().maximum_health)*multiplier(member,"vitality")
+	return float(FrontierCrewVitals.config().maximum_health)*multiplier(member,"vitality")+FrontierSuitModules.bonus(member,"health")
 static func validate(value: Variant) -> bool:
 	if not value is Dictionary or value.size()!=2 or (value.get("version")!=1 and value.get("version")!=2):return false
 	var levels: Variant=value.get("levels")

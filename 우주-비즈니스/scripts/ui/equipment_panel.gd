@@ -108,6 +108,7 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 		else:cargo=grid
 	augmentation_readout=FrontierAugmentationReadout.new();tabs.add_child(augmentation_readout);augmentation_readout.configure(app)
 	dye_panel=FrontierSuitDyePanel.new();tabs.add_child(dye_panel);dye_panel.configure(app)
+	var module_panel:=FrontierSuitModulePanel.new();tabs.add_child(module_panel);module_panel.configure(app)
 	tabs.resized.connect(_layout)
 	tabs.tab_changed.connect(func(index: int):
 		selected_resource="";selected_item=""

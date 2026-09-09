@@ -7,6 +7,7 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
 	if not FrontierCrewSurface.landed(world) or not world.crew.members.has(actor):return {}
 	var member: Dictionary=world.crew.members[actor]
 	if member.area!="surface" or not FrontierCrewSurface.owns(member,"survey_scanner"):return {}
+	var native:=FrontierNativeIncidents.scan_target(world,actor,aim)
 	var bio:=FrontierCrewSurface.target(world,actor,aim)
 	if not bio.is_empty():bio=bio.duplicate(true);bio.kind="biology"
 	var body:=FrontierUniverse.body_from_id(world.manifest,world.crew.landing.body_id)
@@ -26,14 +27,18 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
 		if along<=0 or delta.length()>nearest or (delta-aim*along).length()>1.25:continue
 		if not FrontierCrewSurface.visible_in_field(terrain,origin,center):continue
 		selected=vein.duplicate(true);selected.kind="mineral";selected.point=point;nearest=delta.length()
+	if not native.is_empty() and (selected.is_empty() or origin.distance_to(native.point)<origin.distance_to(selected.point)):
+		selected=native;nearest=origin.distance_to(native.point)
 	if not discovery.is_empty() and (selected.is_empty() or origin.distance_to(discovery.point)<nearest):return discovery
 	return selected
 static func known(world: Dictionary,row: Dictionary) -> bool:
+	if row.kind=="native_incident":return world.incidents.records[row.id].native_observed
 	if row.kind=="discovery":return FrontierExplorationDiscoveries.known(world,row)
 	var body_id: String=world.crew.landing.body_id
 	if row.kind=="biology":return world.ecology.observations.has(body_id+":"+row.form_id)
 	return world.crew.get("survey",{}).has(key(body_id,row))
 static func record(world: Dictionary,row: Dictionary,actor: String="") -> void:
+	if row.kind=="native_incident":FrontierNativeIncidents.observe(world,row.id);return
 	if row.kind=="discovery":FrontierExplorationDiscoveries.scan(world,row,actor);return
 	if row.kind=="biology":FrontierEcology.scan(world.ecology,world.crew.landing.body_id,row);return
 	if not world.crew.has("survey"):world.crew.survey={}
@@ -51,6 +56,7 @@ static func biology_info(form: Dictionary) -> Dictionary:
 	var habitat: Dictionary=c.habitats.get(form.environment,{})
 	return {"kind":"biology","name":form.name,"icon":FrontierResourceIcons.specimen_id(form),"subtitle":form.environment_label+" · "+form.habitat_note,"notes":notes,"condition":"정착 조건: %s · %.0f~%.0f°C"%[habitat.get("label",form.environment_label),float(habitat.get("temperature",[0,0])[0]),float(habitat.get("temperature",[0,0])[1])]}
 static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionary:
+	if row.kind=="native_incident":return FrontierNativeIncidents.info(world,row)
 	if row.kind=="discovery":return FrontierExplorationDiscoveries.result(world,row)
 	if row.kind=="biology":
 		var info:=biology_info(FrontierEcologyCatalog.form(row.form_id))

@@ -37,7 +37,7 @@ func show_specimen(sample: Dictionary) -> void:
 	var definition:=FrontierEcologyCatalog.form(sample.form_id)
 	var path: String="bestiary/"+str(definition.lods.near.path).get_file().trim_suffix(".glb")
 	show_model(path)
-	var look:=FrontierEcologyCatalog.look(sample.form_id,sample.look_id)
+	var look:=FrontierNativeIncidents.look(sample) if sample.has("variant") and sample.has("factor") else FrontierEcologyCatalog.look(sample.form_id,sample.look_id)
 	for node in model.find_children("*","MeshInstance3D",true,false):
 		if node.mesh==null:continue
 		for surface in node.mesh.get_surface_count():

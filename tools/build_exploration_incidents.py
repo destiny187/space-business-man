@@ -43,32 +43,8 @@ def build(id):
   label('LOTUS / 07',(0,5.48,2.6),.38,p)
   for y in [-1,0,1,2,3,4]:box('Deck anti-slip',(0,y,.28),(2.1,.15,.015),steel,p,.006)
  elif id=='robot':
-  for s in [-1,1]:
-   x=s*.48;box('Magnetic foot',(x,-.16,.13),(.65,.9,.26),dark,p,.08)
-   leg=empty('Anim_Leg_'+str(s),(x,0,.3),p)
-   cylinder('Shin ram',(x,0,.3),(x,0,.95),.18,steel,leg)
-   box('Shin armour',(x,-.15,.64),(.42,.32,.55),cream,leg,.09)
-   cylinder('Knee joint',(x-.22,0,1.02),(x+.22,0,1.02),.22,dark,leg)
-   cylinder('Upper leg',(x,0,1.08),(s*.3,0,1.48),.19,teal,leg)
-  torso=empty('Anim_Torso',(0,0,1.4),p)
-  box('Pelvis',(0,0,1.42),(.86,.57,.35),dark,torso,.1)
-  box('Chest',(0,0,1.96),(1.35,.74,.9),cream,torso,.18)
-  box('Chest inset',(0,-.39,1.96),(.78,.09,.5),dark,torso,.05)
-  for x in [-.25,-.125,0,.125,.25]:box('Cooling fin',(x,.42,1.93),(.05,.12,.55),steel,torso,.012)
-  weak=empty('Anim_Weak',(0,0,0),torso);cylinder('Exposed reactor',(0,-.45,1.98),(0,-.52,1.98),.17,screen,weak)
-  label('ILLUTI',(0,-.46,2.2),.15,torso)
-  cylinder('Neck',(0,0,2.38),(0,0,2.53),.16,dark,torso)
-  box('Sensor head',(0,-.03,2.7),(.64,.56,.43),teal,torso,.12)
-  box('Visor',(0,-.32,2.72),(.45,.07,.11),red,torso,.04)
-  for s in [-1,1]:
-   arm=empty('Anim_Arm_'+str(s),(s*.82,0,2.25),torso)
-   cylinder('Shoulder',(s*.65,0,2.26),(s*.98,0,2.26),.25,dark,arm)
-   box('Shoulder shell',(s*.86,0,2.3),(.45,.65,.5),orange,arm,.12)
-   cylinder('Upper arm',(s*.88,0,2.15),(s*.95,0,1.65),.14,steel,arm)
-   box('Forearm',(s*.95,-.13,1.43),(.35,.43,.5),teal,arm,.08)
-   if s==1:
-    cylinder('Pulse barrel',(s*.95,-.2,1.4),(s*.95,-1,1.4),.14,dark,arm)
-    for y in [-.5,-.68,-.86]:torus('Barrel ring',(s*.95,y,1.4),.15,.025,steel,arm,rot=(math.pi/2,0,0))
+  from illuti_robot import build_robot
+  build_robot(p,globals())
  elif id=='cliff':
   rock('Split cliff',(0,0,2),(2.5,2,2.35),rockmat,p)
   box('Old gantry',(0,0,4.6),(2.8,2.2,.2),steel,p,.05)
@@ -129,15 +105,24 @@ def build(id):
    shard('Sapphire prism',(math.cos(a)*.75,math.sin(a)*.65,.1),.75+i*.06,.22,sapphire,q)
  return p
 ids=['wreck','robot','cliff','ice','drone','generator','battery','beacon','cargo','nest','gems']
-for id in (["wreck","gems"] if "--update" in sys.argv else ids):
+exports=[] if "--render-only" in sys.argv else (["robot"] if "--robot-only" in sys.argv else (["wreck","gems"] if "--update" in sys.argv else ids))
+for id in exports:
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);build(id)
  bpy.context.scene.unit_settings.system='METRIC';bpy.ops.wm.save_as_mainfile(filepath=str(OUT/(id+'.blend')))
  ink.consolidate_static_surfaces();bpy.ops.export_scene.gltf(filepath=str(GAME/(id+'.glb')),export_format='GLB',export_cameras=False,export_lights=False)
  print('INCIDENT_EXPORTED',id,flush=True)
+if '--robot-only' in sys.argv:
+ REVIEW=ROOT/'docs/production/media/illuti-remodel';REVIEW.mkdir(parents=True,exist_ok=True)
+ ids=['robot']
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 for i,id in enumerate(ids):
- p=build(id);p.location=Vector(((i%4-1.5)*12,(i//4-1)*15,0))
+ p=build(id);p.location=Vector((0,0,0) if '--robot-only' in sys.argv else ((i%4-1.5)*12,(i//4-1)*15,0))
 bpy.ops.mesh.primitive_plane_add(size=150,location=(0,0,-.2));bpy.context.object.data.materials.append(dark)
 bpy.ops.object.camera_add(location=(32,-48,45));cam=bpy.context.object;cam.rotation_euler=(Vector((0,0,0))-cam.location).to_track_quat('-Z','Y').to_euler();cam.data.type='ORTHO';cam.data.ortho_scale=65;bpy.context.scene.camera=cam
 bpy.ops.object.light_add(type='AREA',location=(0,-10,25));bpy.context.object.data.energy=16000;bpy.context.object.data.size=25
-s=bpy.context.scene;s.world.color=(.3,.3,.3);s.render.engine='CYCLES';s.cycles.samples=16;s.render.resolution_x=1600;s.render.resolution_y=1100;s.render.resolution_percentage=100;s.render.filepath=str(REVIEW/'blender.png');bpy.ops.render.render(write_still=True)
+if '--robot-only' in sys.argv:
+ cam.location=(4,-7,3.5);cam.rotation_euler=(Vector((0,0,1.45))-cam.location).to_track_quat('-Z','Y').to_euler();cam.data.ortho_scale=4.5
+ bpy.context.object.data.energy=1500;bpy.context.object.data.size=5;bpy.context.object.location=(2,-4,7)
+s=bpy.context.scene;s.world.color=(.3,.3,.3);s.render.engine='CYCLES';s.cycles.samples=16;s.render.resolution_x=1600;s.render.resolution_y=1100;s.render.resolution_percentage=100;s.render.filepath=str(REVIEW/'blender.png')
+if '--robot-only' in sys.argv:s.render.resolution_x=1200;s.render.resolution_y=1200
+bpy.ops.render.render(write_still=True)

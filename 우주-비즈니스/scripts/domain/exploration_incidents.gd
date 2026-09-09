@@ -23,7 +23,8 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
  for id in config().items:
   var d:=definition(id)
   if int(d.tier)>int(body.planet_tier):continue
-  if d.mode=="seismic":continue
+  if d.mode=="seismic" or d.get("native_role","")=="cave":continue
+  if d.has("native_role") and FrontierNativeIncidents.candidates(body,d.native_role).is_empty():continue
   if d.mode=="ice" and float(profile.temperature)>0:continue
   if d.mode=="scavenger" and profile.origin!="established":continue
   pool.append({"id":id,"roll":rng.randf()})
@@ -49,6 +50,11 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
    row.path=[]
    for i in 13:
     var p: Vector3=at.lerp(relay,float(i)/12.0);p.y=f.height(p.x,p.z)+.35;row.path.append(array(p))
+   if definition(row.template).has("native_role"):
+    row.native=FrontierNativeIncidents.choose(body,row)
+    if row.native.is_empty():continue
+    for p in row.path:p[1]-=.35
+    if not FrontierNativeIncidents.walkable_surface(row,f):continue
    rows.append(row);break
  # A seismic pocket branches from an existing seeded chamber, never replaces its graph.
  if int(body.planet_tier)>=2 and f.caves!=null:
@@ -62,8 +68,26 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
     var end: Vector3=center+side*(float(chamber.radius)+12)-Vector3.UP*4
     var depth: float=f.base_height(end.x,end.z)-end.y
     if depth>8 and depth<185 and f.density(end)>0:
-     var yaw:=atan2(side.x,side.z)
+     var yaw:=fposmod(atan2(side.x,side.z),TAU)
      rows.append({"id":"incident:%d:%d:seismic_gem_chamber"%[cell.x,cell.y],"template":"seismic_gem_chamber","body_id":body.id,"position":array(end),"yaw":yaw,"tier":int(body.planet_tier),"relay":array(center),"battery_position":array(center),"path":[]})
+ if int(body.planet_tier)>=2 and f.caves!=null and not FrontierNativeIncidents.candidates(body,"cave").is_empty():
+  var cave:=f.caves.system_at(cell.x*span+span*.5,cell.y*span+span*.5)
+  if not cave.chambers.is_empty():
+   var chamber: Dictionary=cave.chambers[0];var center: Vector3=chamber.center
+   if floori(center.x/span)==cell.x and floori(center.z/span)==cell.y:
+    var row: Dictionary={"id":"incident:%d:%d:native_cave_presence"%[cell.x,cell.y],"template":"native_cave_presence","body_id":body.id,"position":array(center),"yaw":0.0,"tier":int(body.planet_tier),"path":[]}
+    row.native=FrontierNativeIncidents.choose(body,row)
+    var fits: bool=not row.native.is_empty() and maxf(float(row.native.height),maxf(float(row.native.width),float(row.native.length)))<float(chamber.radius)*.95
+    if fits:
+     for i in 13:
+      var p:=center+Vector3((float(i)/12.0-.5)*float(chamber.radius)*.8,0,0)
+      var steps:=0
+      while f.density(p)<=0 and steps<ceili(float(chamber.radius)*12):p.y-=.1;steps+=1
+      p.y+=.12
+      if steps==0 or f.density(p+Vector3.UP*float(row.native.height))>0:fits=false;break
+      row.path.append(array(p))
+     if fits:
+      row.position=row.path[0].duplicate();row.relay=row.path[-1].duplicate();row.battery_position=row.position.duplicate();rows.append(row)
  if _tiles.size()>128:_tiles.erase(_tiles.keys()[0])
  _tiles[cache_key]=rows;return rows
 static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array:
@@ -73,7 +97,10 @@ static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array
  return result
 static func create(row: Dictionary) -> Dictionary:
  var record:=row.duplicate(true)
+ if record.has("native"):FrontierNativeIncidents.initialize(record)
  record.phase="idle";record.time=0.0;record.age=0.0;record.hp=float(config().robot.health);record.hits=0;record.open=false;record.powered=false;record.claimed=false;record.carrier="";record.battery_carrier="";record.battery_installed=false;record.battery_ground=record.battery_position.duplicate();record.cargo_ground=[];record.gems=0;record.serial=0;record.aim=[];record.target="";record.discoverer="";record.seen=false;record.materialized=false
+ if definition(row.template).mode=="robot":
+  record.shield_max=float(config().robot.shield_tier3) if int(row.tier)>=3 else 0.0;record.shield=record.shield_max;record.shield_wait=0.0
  return record
 static func is_present(world: Dictionary,actor: String,row: Dictionary) -> bool:
  if not world.crew.members.has(actor):return false
@@ -84,6 +111,7 @@ static func carriers(world: Dictionary,actor: String) -> bool:
   if row.carrier==actor or row.battery_carrier==actor:return true
  return false
 static func moving_point(row: Dictionary) -> Vector3:
+ if row.has("native"):return FrontierNativeIncidents.position(row)
  var mode: String=definition(row.template).mode
  if mode=="scavenger":
   var points: Array=row.path
@@ -99,7 +127,7 @@ static func cargo_point(row: Dictionary) -> Vector3:
  match definition(row.template).mode:
   "wreck","power":return point(row,Vector3(0,.65,-4.4))
   "carry":return point(row,Vector3(0,5.15,0))
-  "scavenger":return point(row,Vector3(0,.45,-2))
+  "scavenger","native":return point(row,Vector3(0,.45,-2))
   "ice":return point(row,Vector3(0,.45,-2))
  return point(row,Vector3(0,.7,0))
 static func targets(row: Dictionary) -> Array:
@@ -115,7 +143,7 @@ static func targets(row: Dictionary) -> Array:
   if not row.open:result.append({"part":"hatch","point":point(row,Vector3(0,1.6,2.4)),"action":"도구로 해치 파괴"})
   if row.open:result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 회수"})
  elif mode=="robot":
-  if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,1.5,0)),"action":"공격무기로 교전"})
+  if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,1.5,0)),"action":"공격무기로 교전"+(" · 실드 %.0f / %.0f"%[float(row.get("shield",0)),float(row.get("shield_max",0))] if float(row.get("shield_max",0))>0 else "")})
   else:result.append({"part":"cargo","point":cargo_point(row),"action":"F 일루티 부품 회수"})
  elif mode=="ice":
   if not row.open:result.append({"part":"ice","point":point(row,Vector3(0,1.3,1.6)),"action":"지형 변환기로 얼음 굴착"})
@@ -123,6 +151,8 @@ static func targets(row: Dictionary) -> Array:
  elif mode=="seismic":
   if row.open and int(row.gems)<int(config().seismic.gems):result.append({"part":"gems","point":point(row,Vector3(0,-7.2,-1)),"action":"Mk.2 채집기로 보석 채굴"})
  elif mode=="drone" and not row.open:result.append({"part":"drone","point":moving_point(row),"action":"사격으로 드론 구동부 정지"})
+ elif row.has("native"):
+  result.append({"part":"cargo","point":cargo_point(row),"action":"F 탈락물·은닉품 회수" if FrontierNativeIncidents.available(row) else ("E로 현지 개체 분석" if not row.native_observed else "생물의 이동을 기다리세요")})
  else:
   if row.carrier=="":result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 들기" if mode in ["carry","drone"] else "F 은닉품 회수"})
  if row.carrier!="":result.append({"part":"delivery","point":FrontierCrewWorld.vector(row.relay)+Vector3.UP*.8,"action":"F 회수 지점에 화물 내려놓기"})
@@ -140,13 +170,9 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
    if not FrontierCrewSurface.visible_in_field(f,origin,part.point):continue
    result={"id":key(row),"part":part.part,"point":part.point,"action":part.action};best=delta.length()
  return result
-static func hurt(world: Dictionary,actor: String,amount: float) -> void:
- var member: Dictionary=world.crew.members[actor];var v:=FrontierCrewVitals.ensure(member)
- if v.protection>0:return
- v.health=maxf(0,float(v.health)-amount);v.hurt=FrontierCrewVitals.config().heal_delay;v.damage_serial+=1
- if v.health<=0:
-  v.health=FrontierCrewVitals.config().rescue_health;v.protection=FrontierCrewVitals.config().rescue_protection;v.rescue_serial+=1;v.sprinting=false
-  # Rescue uses the same host relocation that the locomotion scene consumes.
+static func hurt(world: Dictionary,actor: String,amount: float,kind: String="combat") -> void:
+ var member: Dictionary=world.crew.members[actor]
+ if FrontierCrewVitals.damage(member,amount,kind):
   member.position=FrontierCrewSurface.config().landing_spawn_positions[0].duplicate()
   member.incident_rescue=int(member.get("incident_rescue",0))+1
 static func set_phase(row: Dictionary,phase: String) -> void:row.phase=phase;row.time=0.0;row.serial+=1
@@ -184,7 +210,11 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
   row.age+=delta;row.time+=delta
   var p:=FrontierCrewWorld.vector(world.crew.members[present[0]].position);var mode: String=definition(row.template).mode
   if not row.seen and p.distance_to(FrontierCrewWorld.vector(row.position))<35:row.seen=true;row.discoverer=present[0];changed=true
-  if mode=="robot" and row.hp>0:
+  if row.has("native"):
+   if FrontierNativeIncidents.tick(world,row,present,delta,bodies[row.body_id]):changed=true
+  elif mode=="robot" and row.hp>0:
+   row.shield_wait=maxf(0,float(row.get("shield_wait",0))-delta)
+   if row.shield_wait<=0:row.shield=minf(float(row.get("shield_max",0)),float(row.get("shield",0))+float(config().robot.shield_rate)*delta)
    var robot_cfg: Dictionary=config().robot;var target_actor: String="";var nearest:=float(robot_cfg.range)
    for actor in present:
     var distance: float=FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(row.position))
@@ -214,7 +244,7 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
      var center:=point(row,Vector3(0,-6.5,0))
      for actor in present:
       var at:=FrontierCrewWorld.vector(world.crew.members[actor].position)+Vector3.UP
-      if at.distance_to(center)<float(config().seismic.blast_radius) and FrontierCrewSurface.visible_in_field(bodies[row.body_id],center,at):hurt(world,actor,float(config().seismic.damage))
+      if at.distance_to(center)<float(config().seismic.blast_radius) and FrontierCrewSurface.visible_in_field(bodies[row.body_id],center,at):hurt(world,actor,float(config().seismic.damage),"blast")
      set_phase(row,"blast");changed=true
     elif row.phase=="blast" and row.time>.5:set_phase(row,"quiet");changed=true
  return changed
@@ -241,8 +271,11 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
    "robot":
     var core_delta:=point(row,Vector3(0,1.98,.52))-origin
     var weak_hit: bool=row.phase=="cooling" and (core_delta-aim*core_delta.dot(aim)).length()<.4
-    row.hp=maxf(0,row.hp-float(tool.damage)*(float(config().robot.weak_factor) if weak_hit else 1.0))
-    if row.hp<=0:set_phase(row,"destroyed")
+    var split:=FrontierCrewVitals.split_shield_damage(float(row.get("shield",0)),float(tool.damage)*(float(config().robot.weak_factor) if weak_hit else 1.0),float(tool.get("shield_multiplier",1.0)))
+    row.shield=maxf(0,float(row.get("shield",0))-float(split.absorbed));row.shield_wait=float(config().robot.shield_delay)
+    row.hp=maxf(0,row.hp-float(split.health))
+    if row.hp<=0:
+     set_phase(row,"destroyed");FrontierSuitModules.on_kill(world.crew.members[actor])
    "drone":
     row.hits+=1
     if row.hits>=int(config().tool.drone_hits):
@@ -258,6 +291,9 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
     if row.hits>=int(config().tool.ice_hits):row.open=true;set_phase(row,"opened")
    "gems":
     if int(tool.get("tier",0))<int(config().seismic.required_tier):return "Mk.2 이상 채집기가 필요합니다."
+    if int(row.gems)+1>=int(config().seismic.gems):
+     var module_error:=FrontierSuitModules.drop(world,actor,key(row),int(row.tier),mode)
+     if not module_error.is_empty():return module_error
     var reason:=reward(world,actor,{"sapphire":1})
     if not reason.is_empty():return reason
     row.gems+=1
@@ -281,12 +317,12 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
      if carriers(world,actor):return "운반 중인 물건을 먼저 내려놓으세요."
      row.carrier=actor;row.carrier_rescue=int(world.crew.members[actor].get("vitals",{}).get("rescue_serial",0))
     else:
-     var reason:=reward(world,actor,definition(row.template).reward,str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))
+     var reason:=recover(world,actor,row)
      if not reason.is_empty():return reason
      row.claimed=true;set_phase(row,"recovered")
    "delivery":
     if row.carrier!=actor:return "이 화물을 운반하는 승무원이 내려놓아야 합니다."
-    var reason:=reward(world,actor,definition(row.template).reward,str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))
+    var reason:=recover(world,actor,row)
     if not reason.is_empty():return reason
     row.carrier="";row.claimed=true;set_phase(row,"recovered")
    _:return "도구를 사용하거나 사건에 직접 대응하세요."
@@ -324,6 +360,9 @@ static func validate(world: Dictionary) -> String:
   if not FrontierUniverse._finite(row.get("yaw"),0,TAU) or not FrontierExpeditionBusiness.integer(row.get("tier"),1,5):return "사건 생성 정보 오류"
   for field_name in ["time","age","hp","hits","gems","serial"]:
    if not FrontierUniverse._finite(row.get(field_name),0,9007199254740000):return "사건 진행 수치 오류"
+  for field_name in ["shield","shield_max","shield_wait"]:
+   if not FrontierUniverse._finite(row.get(field_name,0),0,float(config().robot.shield_tier3)):return "사건 실드 기록 오류"
+  if float(row.get("shield",0))>float(row.get("shield_max",0)):return "사건 실드 잔량 오류"
   if row.hp>float(config().robot.health) or row.gems>int(config().seismic.gems):return "사건 잔량 오류"
   for field_name in ["open","powered","claimed","battery_installed","seen","materialized"]:
    if not row.get(field_name) is bool:return "사건 상태 오류"
@@ -335,4 +374,11 @@ static func validate(world: Dictionary) -> String:
   if not row.get("path") is Array or row.path.size()>13:return "사건 이동 경로 오류"
   for p in row.path:
    if not FrontierUniverse._vector3_array(p):return "사건 이동 지점 오류"
+  if not FrontierNativeIncidents.validate(world,row):return "현지 생물 사건 기록 오류"
  return ""
+
+static func recover(world: Dictionary,actor: String,row: Dictionary) -> String:
+ if not FrontierNativeIncidents.available(row):return "생물을 분석하고 이동한 뒤 현장 보상을 회수하세요."
+ var error:=FrontierSuitModules.drop(world,actor,key(row),int(row.tier),str(definition(row.template).mode))
+ if not error.is_empty():return error
+ return reward(world,actor,FrontierNativeIncidents.reward(row),str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))

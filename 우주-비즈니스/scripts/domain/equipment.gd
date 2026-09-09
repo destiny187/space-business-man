@@ -34,6 +34,9 @@ static func active(member: Dictionary) -> Dictionary:
 		if tool.kind=="miner":tool.interval=float(tool.interval)/FrontierCrewAugmentation.multiplier(member,"mining")
 		elif tool.kind=="pulse":tool.interval=float(tool.interval)/FrontierCrewAugmentation.multiplier(member,"fire_rate")
 		elif tool.kind=="terrain":tool.radius=float(tool.radius)*FrontierCrewAugmentation.multiplier(member,"excavation")
+	if not tool.is_empty():
+		if tool.kind=="miner":tool.interval/=FrontierSuitModules.factor(member,"mining")
+		if tool.kind=="pulse":tool.damage=roundi(float(tool.damage)*FrontierSuitModules.factor(member,"combat")*FrontierSuitModules.full_shield_factor(member));tool.interval/=FrontierSuitModules.factor(member,"fire_rate");tool.shield_multiplier=FrontierSuitModules.shield_multiplier(member)
 	return tool
 static func validate(value: Variant) -> String:
 	if not value is Dictionary:return "장비 기록 형식"

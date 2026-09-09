@@ -142,6 +142,10 @@ static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
 			if not specimen_error.is_empty():return specimen_error
 		if d.clue:_clue(world,row,record)
 		if d.mode=="water":_release_water(world,row)
+		# Host rolls once from this world/place; reopening cannot change the result.
+		if FrontierUniverse.derive(int(world.manifest.seed),record_key(row)+":module")%100<35:
+			var module_error:=FrontierSuitModules.drop(world,actor,record_key(row),int(FrontierUniverse.body_from_id(world.manifest,row.body_id).planet_tier),"discovery")
+			if not module_error.is_empty():return module_error
 		record.claimed=true
 	record.stage=index+1
 	return ""

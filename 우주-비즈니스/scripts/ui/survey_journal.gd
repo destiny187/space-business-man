@@ -62,7 +62,9 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	previous.disabled=page_index==0;next.disabled=(page_index+1)*24>=int(value.total)
 	var retained: Dictionary={}
 	for entry in value.entries:
-		var tile:=FrontierItemTile.new();tile.picture=load("res://assets/ui/discoveries/"+str(entry.row.template)+".png") if entry.kind in ["discovery","incident"] and ResourceLoader.exists("res://assets/ui/discoveries/"+str(entry.row.template)+".png") else FrontierResourceIcons.texture(entry.icon);tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
+		var tile:=FrontierItemTile.new();tile.picture=load("res://assets/ui/discoveries/"+str(entry.row.template)+".png") if entry.kind in ["discovery","incident"] and ResourceLoader.exists("res://assets/ui/discoveries/"+str(entry.row.template)+".png") else FrontierResourceIcons.texture(entry.icon)
+		if entry.kind=="incident" and entry.row.has("native"):tile.picture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(entry.row.native.form_id)))
+		tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
 		tile.pressed.connect(func():select(entry))
 		if entry.key==selected_entry.get("key",""):retained=entry
 	if retained.is_empty() and not value.entries.is_empty():retained=value.entries[0]
@@ -96,14 +98,19 @@ func select(entry: Dictionary) -> void:
 		if not entry.row.sample.is_empty():FrontierInterfaceStyle.label(details,"확보 계통  "+str(FrontierEcologyCatalog.form(entry.row.sample.form_id).name),13)
 	elif entry.kind=="incident":
 		var d:=FrontierExplorationIncidents.definition(entry.row.template)
-		preview.show();preview.show_model(d.model)
+		preview.show()
+		if entry.row.has("native"):
+			preview.show_specimen(entry.row.native)
+			var individual:=FrontierInterfaceStyle.label(details,FrontierNativeIncidents.title(entry.row.native)+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		else:preview.show_model(d.model)
 		FrontierInterfaceStyle.label(details,"T%d  %s"%[int(d.tier),"회수 완료" if entry.row.claimed else "현장 진행 중"],13)
 		var equipment: String=d.get("equipment",{}).get(str(int(entry.row.tier)),"")
 		if equipment!="":FrontierInterfaceStyle.label(details,"회수 장비  "+str(FrontierEquipment.config().items[equipment].name),13)
 		var note:=FrontierInterfaceStyle.label(details,d.hint,14);note.autowrap_mode=TextServer.AUTOWRAP_ARBITRARY
 		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(entry.row.position[0]),float(entry.row.position[2])],13)
-		for resource in d.reward:
-			var line:=HBoxContainer.new();details.add_child(line);line.add_child(FrontierResourceIcons.view(resource,24));FrontierInterfaceStyle.label(line,str(int(d.reward[resource])),14)
+		var reward:=FrontierNativeIncidents.reward(entry.row)
+		for resource in reward:
+			var line:=HBoxContainer.new();details.add_child(line);line.add_child(FrontierResourceIcons.view(resource,24));FrontierInterfaceStyle.label(line,str(int(reward[resource])),14)
 	elif entry.kind=="biology":
 		for index in app.form_options.item_count:
 			if app.form_options.get_item_metadata(index)==entry.row.form_id:app.form_options.select(index);break

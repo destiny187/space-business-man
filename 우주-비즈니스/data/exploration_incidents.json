@@ -22,7 +22,10 @@
     "cool_seconds": 3.0,
     "range": 24.0,
     "damage": 16.0,
-    "weak_factor": 1.8
+    "weak_factor": 1.8,
+    "shield_tier3": 60.0,
+    "shield_delay": 6.0,
+    "shield_rate": 8.0
   },
   "seismic": {
     "warning_seconds": 4.0,
@@ -66,7 +69,8 @@
         "phosphate": 4
       },
       "model": "incidents/nest",
-      "hint": "부품을 물고 이동하는 생물을 따라가세요.\n생물의 은닉처에서 부품을 회수하세요."
+      "hint": "현지 생물의 발자국과 운반 중인 부품을 따라가세요.\nE를 유지해 특이 개체를 분석하고 은닉품을 회수하세요.",
+      "native_role": "scavenger"
     },
     "cliff_cargo": {
       "id": "cliff_cargo",
@@ -141,6 +145,58 @@
       },
       "model": "incidents/gems",
       "hint": "동굴의 지진 뒤 새 통로가 열립니다.\n분출 경고를 피해 이동하세요.\nMk.2 채집기로 사파이어를 채굴하세요."
+    },
+    "native_giant_passage": {
+      "id": "native_giant_passage",
+      "name": "거대 성체의 이동로",
+      "tier": 3,
+      "mode": "native",
+      "native_role": "giant",
+      "reward": {
+        "phosphate": 12,
+        "sapphire": 1
+      },
+      "model": "incidents/nest",
+      "hint": "큰 발자국을 따라 현지 거대 성체를 찾으세요.\nE로 분석한 뒤 개체가 지나가면 탈락물을 회수하세요."
+    },
+    "native_guarded_nest": {
+      "id": "native_guarded_nest",
+      "name": "현지 생물의 번식 둥지",
+      "tier": 2,
+      "mode": "native",
+      "native_role": "guardian",
+      "reward": {
+        "phosphate": 8,
+        "refined_copper": 3
+      },
+      "model": "incidents/nest",
+      "hint": "큰 보호 개체와 같은 종의 새끼를 관찰하세요.\n경고 범위 밖에서 E로 분석하면 먹이 활동 중 탈락물을 회수할 수 있습니다."
+    },
+    "native_cave_presence": {
+      "id": "native_cave_presence",
+      "name": "지하 진동의 주인",
+      "tier": 2,
+      "mode": "native",
+      "native_role": "cave",
+      "reward": {
+        "phosphate": 6,
+        "sapphire": 1
+      },
+      "model": "incidents/nest",
+      "hint": "기존 동굴 안의 흔적과 진동을 따라가세요.\nE로 지하 서식종의 성체를 분석하고 탈락물을 회수하세요."
+    },
+    "native_rare_sighting": {
+      "id": "native_rare_sighting",
+      "name": "낯선 빛깔의 현지 개체",
+      "tier": 3,
+      "mode": "native",
+      "native_role": "rare",
+      "reward": {
+        "phosphate": 10,
+        "ruby": 1
+      },
+      "model": "incidents/nest",
+      "hint": "주변 서식종과 다른 빛깔의 개체입니다.\n너무 접근하면 피하므로 거리를 두고 E로 분석하세요."
     }
   }
 }
