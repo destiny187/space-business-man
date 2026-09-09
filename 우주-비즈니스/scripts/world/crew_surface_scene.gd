@@ -30,6 +30,8 @@ var preferences: FrontierClientSettings
 var rendered_distance:=0.0
 var refits: FrontierVesselVisuals
 var business_view: FrontierBusinessSiteView
+var water_columns: Dictionary={}
+var water_interactions: FrontierWaterInteractions
 var physical_water: FrontierSurfaceWaterView
 var hydrology: FrontierSurfaceHydrology
 var presence: FrontierSurfacePresence
@@ -37,6 +39,7 @@ var surface_details: FrontierSurfaceDetails
 
 func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D,camera: Camera3D) -> void:
 	session=connection;viewer=player;epoch=int(packet.epoch)
+	water_columns=packet.get("water_columns",{})
 	body=FrontierUniverse.body_from_id(session.manifest,packet.body_id)
 	config=packet.terrain_settings
 	_setup_environment()
@@ -82,6 +85,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	atmospheric_particles=load("res://scripts/world/surface_atmosphere_particles.gd").new()
 	add_child(atmospheric_particles);atmospheric_particles.configure(self,camera)
 	presence=FrontierSurfacePresence.new();add_child(presence);presence.configure(self)
+	water_interactions=FrontierWaterInteractions.new();add_child(water_interactions);water_interactions.configure(self)
 	_update_interest()
 	_update_shuttles()
 
@@ -92,6 +96,7 @@ func accept(packet: Dictionary) -> void:
 	if packet.body_id!=body.id or int(packet.epoch)!=epoch:return
 	if packet.edits.size()!=incoming.size():ecology.invalidate()
 	incoming=packet.edits.duplicate(true)
+	water_columns=packet.get("water_columns",{})
 	ecology.ecology=_ecology(packet)
 	ecology.refresh_timer=0
 	business_view.accept(packet.get("business",{}))
@@ -214,4 +219,6 @@ func water_depth(p: Vector3) -> float:
 	var value:=FrontierSurfaceWater.depth(physical_water.state,p)
 	var base:=terrain.field.height(p.x,p.z)
 	if hydrology.native_liquid and base<float(hydrology.cfg.sea_level) and p.y>=base:value=maxf(value,float(hydrology.cfg.sea_level)-p.y)
+	var level:=float(water_columns.get("%d:%d"%[floori(p.x),floori(p.z)],-INF))
+	if p.y>=base-.1 and level>p.y and terrain.field.density(Vector3(p.x,base-.35,p.z))>=0:value=maxf(value,level-p.y)
 	return maxf(0,value)

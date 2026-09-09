@@ -20,5 +20,7 @@ func sample() -> Dictionary:
 	result.position=a.position.lerp(b.position,t)
 	if not a.motion.is_empty() and not b.motion.is_empty():
 		result.motion.phase=fposmod(lerp_angle(float(a.motion.phase),float(b.motion.phase),t),TAU)
+		result.motion.swim_phase=fposmod(lerp_angle(float(a.motion.get("swim_phase",0)),float(b.motion.get("swim_phase",0)),t),TAU)
+		result.motion.water_depth=lerpf(float(a.motion.get("water_depth",0)),float(b.motion.get("water_depth",0)),t)
 		result.motion.yaw=lerp_angle(float(a.motion.yaw),float(b.motion.yaw),t)
 	return result

@@ -17,6 +17,7 @@ var region: Dictionary={}
 var region_key:=""
 var occupied: Dictionary={}
 var shoreline: Node3D
+var water_quality:=1
 var source_requests: Array[Dictionary]=[]
 var foundations: Array[Vector4]=[]
 var foundation_key:=""
@@ -31,6 +32,8 @@ func configure(owner_surface: FrontierCrewSurfaceScene) -> void:
   var sea_material:=ShaderMaterial.new();sea_material.shader=load("res://assets/materials/space/native_water.gdshader");sea_material.set_shader_parameter("water_color",Color(surface.body.traits.sea));ocean.material_override=sea_material;add_child(ocean)
  if native_liquid:
   shoreline=load("res://scripts/world/surface_shoreline.gd").new();add_child(shoreline);shoreline.configure(self)
+ FrontierClientSettings.ensure(get_tree()).changed.connect(_quality_changed)
+ _quality_changed()
  surface.terrain.geometry_changed.connect(invalidate)
 func invalidate() -> void:
  # Removed support must not leave suspended water over a new excavation.
@@ -73,7 +76,9 @@ func _schedule() -> void:
      for n in int(cfg.sources_per_tile):
       var key: String="%d:%d:%d"%[x,z,n]
       if not tiles.has(key):source_requests.append({"key":key,"tile":tile,"index":n})
- if ocean!=null:ocean.position.x=anchor.x*span;ocean.position.z=anchor.y*span
+ if ocean!=null:
+  ocean.position.x=floorf(p.x/8)*8 if water_quality>0 else anchor.x*span
+  ocean.position.z=floorf(p.z/8)*8 if water_quality>0 else anchor.y*span
  var regional_wet: float=0.0 if region.is_empty() else float(region.state.wet)
  if surface.presence!=null and not region.is_empty():regional_wet=maxf(regional_wet,float(surface.presence.state.wet))
  var next_region: String="" if region.is_empty() or regional_wet<.02 else str(region.center)
@@ -191,3 +196,10 @@ func nearest_water(p: Vector3) -> Dictionary:
    var d:=p.distance_to(q)
    if d<float(result.distance):result={"distance":d,"position":q,"kind":"river"}
  return result
+
+func _quality_changed() -> void:
+ water_quality=FrontierWaterQuality.level(get_tree())
+ FrontierWaterQuality.apply(material,water_quality)
+ if ocean!=null:
+  ocean.mesh=FrontierWaterQuality.ocean_mesh(water_quality);ocean.extra_cull_margin=.2
+  FrontierWaterQuality.apply(ocean.material_override,water_quality)

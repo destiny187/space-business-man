@@ -38,6 +38,12 @@ static func packet(world: Dictionary,actor: String) -> Dictionary:
 
 static func validate(value: Variant,manifest: Dictionary) -> bool:
 	if not value is Dictionary or not FrontierSurfaceWater.valid(value.get("water",FrontierSurfaceWater.create()),int(FrontierSurfaceWater.config().snapshot_cells)):return false
+	var columns: Variant=value.get("water_columns",{})
+	if not columns is Dictionary or columns.size()>2401:return false
+	for key in columns:
+		if not key is String or key.length()>32:return false
+		var parts: PackedStringArray=key.split(":")
+		if parts.size()!=2 or not parts[0].is_valid_int() or not parts[1].is_valid_int() or not FrontierUniverse._finite(columns[key],-1000000,1000000):return false
 	if not value is Dictionary or value.get("version")!=1 or not value.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,value.body_id)<0:return false
 	if not FrontierUniverse._finite(value.get("epoch"),1,9007199254740000):return false
 	if FrontierPlanetaryCycles.enabled(manifest) and not FrontierPlanetaryCycles.valid_region(value.get("sky_region")):return false

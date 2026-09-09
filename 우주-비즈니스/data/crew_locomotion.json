@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "jump_speed": 6.0,
   "cabin_gravity": 18.0,
   "acceleration": 32.0,
@@ -14,5 +14,11 @@
   "foot_lift": 0.16,
   "foot_reach": 0.3,
   "remote_delay": 0.1,
-  "teleport_distance": 3.0
+  "teleport_distance": 3.0,
+  "swim_enter_depth": 1.18,
+  "swim_exit_depth": 0.92,
+  "swim_vertical_speed": 2.2,
+  "swim_stroke_seconds": 1.35,
+  "water_contact_depth": 0.055,
+  "water_leave_depth": 0.018
 }

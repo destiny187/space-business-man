@@ -88,7 +88,7 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
 		row.point=point;row.status=state;selected=row;distance_limit=delta.length()
 	return selected
 
-static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
+static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary,water_hit: Dictionary={}) -> String:
 	var crew: Dictionary=world.crew
 	var member: Dictionary=crew.members[actor]
 	if kind=="land":
@@ -169,6 +169,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var row:=target(world,actor,direction(args.get("aim")))
 		if direction(args.get("aim"))==Vector3.ZERO:return "조준 방향 오류"
 		if row.is_empty() or FrontierEcologyCatalog.form(row.form_id).category!="animal":return ""
+		if not water_hit.is_empty():
+			if (position+Vector3.UP*1.72).distance_to(row.point)>float(water_hit.distance):return ""
+			water_hit.clear()
 		if not crew.has("combat"):crew.combat={}
 		var key: String=body_id+"/"+str(row.id)
 		var hp: int=int(crew.combat.get(key,FrontierEquipment.config().animal_health))

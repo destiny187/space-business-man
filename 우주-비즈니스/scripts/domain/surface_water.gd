@@ -111,7 +111,7 @@ func bind(state: Dictionary,terrain: FrontierTerrainField,edits: Array,centers: 
  for p in centers:new_interest+=str(Vector2i(floori(p.x/32),floori(p.z/32)))
  if new_interest!=interest_key:
   interest_key=new_interest;cache.clear();faces.clear()
-  if river_tiles.size()>150:
+  if river_tiles.size()>150 or rivers.size()>=int(config().maximum_native_columns):
    river_tiles.clear();river_jobs.clear();rivers.clear()
   for bound in edit_bounds:
    var p:=Vector3(bound.x,bound.y,bound.z)
@@ -120,10 +120,10 @@ func bind(state: Dictionary,terrain: FrontierTerrainField,edits: Array,centers: 
    seed_jobs.append({"min":cell(p)-Vector3i.ONE*r,"size":2*r+1,"cursor":0})
  for p in centers:
   var tile:=Vector2i(floori(p.x/256),floori(p.z/256))
-  if native and not edit_bounds.is_empty():
-   for ox in [0,-1,1,-2,2]:
+  if native:
+   for ox in [0,-1,1]:
     var x:=tile.x+int(ox)
-    for oz in [0,-1,1,-2,2]:
+    for oz in [0,-1,1]:
      var z:=tile.y+int(oz)
      var k:="%d:%d"%[x,z]
      if river_tiles.has(k):continue
@@ -185,7 +185,7 @@ func _trace() -> void:
    var q: Vector3=lake.center.lerp(p,(i+1)/8.0)
    if original.height(q.x,q.z)>float(lake.level):height_value=INF;break
   if Vector2(p.x-lake.center.x,p.z-lake.center.z).length()<=radius and height_value<=float(lake.level):
-   var c:=cell(Vector3(p.x,float(lake.level),p.z));rivers["%d:%d"%[c.x,c.z]]=float(lake.level)
+   var c:=cell(Vector3(p.x,float(lake.level),p.z));_remember_river("%d:%d"%[c.x,c.z],float(lake.level))
    if _near(p):
     for bound in edit_bounds:
      if p.distance_squared_to(Vector3(bound.x,bound.y,bound.z))<bound.w*bound.w:_seed(c);break
@@ -199,10 +199,6 @@ func _trace() -> void:
  var at: Vector3=job.at
  var next:=FrontierSurfaceDrainage.advance(original,at,hydro)
  if next==at:
-  var needed:=false
-  for bound in edit_bounds:
-   if at.distance_to(Vector3(bound.x,bound.y,bound.z))<bound.w+float(hydro.lake_radius):needed=true;break
-  if not needed:river_jobs.pop_front();return
   lake_jobs.append({"center":at,"level":at.y+float(hydro.river_depth),"cursor":0});river_jobs.pop_front();return
  if job.step>=int(hydro.maximum_steps) or at.y<ocean_level or Vector2(at.x,at.z).length()<24:river_jobs.pop_front();return
  if job.get("managed",false) and (recovery.is_empty() or FrontierSurfaceRecovery.weight(next,recovery.center,recovery.radius)<.12):river_jobs.pop_front();return
@@ -210,7 +206,13 @@ func _trace() -> void:
  for n in 9:
   var p:=at.lerp(next,n/8.0);p.y=original.height(p.x,p.z)+float(hydro.river_depth)
   var c:=cell(p);var k:="%d:%d"%[c.x,c.z]
-  rivers[k]=p.y
+  _remember_river(k,p.y)
+  var lateral:=Vector3(-(next-at).z,0,(next-at).x).normalized()
+  for side in [-1,1]:
+   for width in [0.5,1.0,1.5,2.0]:
+    var q:=p+lateral*float(side)*float(width)
+    if original.height(q.x,q.z)>p.y-.02:break
+    _remember_river("%d:%d"%[floori(q.x),floori(q.z)],p.y)
   # Seed only actual excavations; untouched rivers keep their inexpensive analytic surface.
   if _near(p):
    for bound in edit_bounds:
@@ -289,5 +291,38 @@ func sample(p: Vector3) -> float:
  var base:=original.height(p.x,p.z)
  if native and base<ocean_level and p.y>=base:result=maxf(result,ocean_level-p.y)
  var level: float=rivers.get("%d:%d"%[floori(p.x),floori(p.z)],-INF)
- if p.y>=base-.1:result=maxf(result,level-p.y)
+ if p.y>=base-.1 and field.density(Vector3(p.x,base-.35,p.z))>=0:result=maxf(result,level-p.y)
  return maxf(0,result)
+
+# Analytic channels are a bounded transient replica, never additional fluid mass in the save.
+func columns_packet(p: Vector3) -> Dictionary:
+ var columns: Dictionary={}
+ var extent:=24
+ for x in range(floori(p.x)-extent,floori(p.x)+extent+1):
+  for z in range(floori(p.z)-extent,floori(p.z)+extent+1):
+   var k:="%d:%d"%[x,z]
+   if rivers.has(k):columns[k]=rivers[k]
+ return columns
+
+func intersect(start: Vector3,direction: Vector3,distance: float) -> Dictionary:
+ if direction.length_squared()<.9 or field.density(start)>0:return {}
+ var previous:=start
+ var wet:=sample(start)>.002
+ for i in range(1,ceili(distance/.08)+1):
+  var p:=start+direction*minf(i*.08,distance)
+  # Solid terrain has priority, including the floor under very shallow channels.
+  if field.density(p)>0:return {}
+  var next_wet:=sample(p)>.002
+  if next_wet!=wet:
+   var a:=previous;var b:=p
+   for n in 8:
+    var middle:=(a+b)*.5
+    if (sample(middle)>.002)==wet:a=middle
+    else:b=middle
+   var at:=(a+b)*.5
+   return {"position":[at.x,at.y,at.z],"distance":start.distance_to(at),"entering":not wet}
+  previous=p
+ return {}
+
+func _remember_river(k: String,level: float) -> void:
+ if rivers.has(k) or rivers.size()<int(config().maximum_native_columns):rivers[k]=level

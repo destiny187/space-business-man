@@ -2,6 +2,7 @@ class_name FrontierCrewPose
 extends Node3D
 ## Articulated armor, soft joint gaskets and terrain-aware two-bone legs.
 var model: Node3D
+var model_rest_y:=0.0
 var skeleton: Skeleton3D
 var bones: Dictionary={}
 var rest: Dictionary={}
@@ -9,6 +10,7 @@ var global_rest: Dictionary={}
 var phase:=0.0
 var blend:=0.0
 var air:=0.0
+var swim_blend:=0.0
 var compression:=0.0
 var foot_heights: Dictionary={"L":0.0,"R":0.0}
 var last_jump: int=-1
@@ -19,7 +21,7 @@ var elapsed:=0.0
 signal landed(point: Vector3,strength: float)
 
 func configure(value: Node3D) -> void:
-	model=value
+	model=value;model_rest_y=model.position.y
 	var found:=model.find_children("*","Skeleton3D",true,false)
 	if found.is_empty():push_error("Surveyor skeleton missing");return
 	skeleton=found[0]
@@ -28,7 +30,8 @@ func configure(value: Node3D) -> void:
 	for i in 3:
 		var player:=AudioStreamPlayer3D.new();player.bus="SFX";player.max_distance=22;player.unit_size=3;player.volume_db=-15;add_child(player);speakers.append(player)
 func reset() -> void:
-	last_jump=-1;last_land=-1;last_step=-1;compression=0;air=0;blend=0
+	last_jump=-1;last_land=-1;last_step=-1;compression=0;air=0;blend=0;swim_blend=0
+	if model!=null:model.rotation.x=0;model.position.y=model_rest_y
 	foot_heights={"L":0.0,"R":0.0}
 	if skeleton!=null:skeleton.reset_bone_poses()
 func _rotate(bone: String,angles: Vector3,weight: float) -> void:
@@ -54,6 +57,9 @@ func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=tr
 	var velocity:=FrontierCrewWorld.vector(motion.velocity)
 	var speed:=Vector2(velocity.x,velocity.z).length()
 	var weight:=1.0-exp(-delta*18)
+	var swimming: bool=motion.state in ["swim","tread"]
+	var wet: bool=float(motion.get("water_depth",0))>.018
+	swim_blend=lerpf(swim_blend,1.0 if swimming else 0.0,1-exp(-delta*6))
 	var grounded: bool=motion.grounded
 	var moving: bool=grounded and motion.state in ["walk","run"]
 	blend=lerpf(blend,clampf(speed/2.0,0,1) if moving else 0.0,weight)
@@ -61,15 +67,15 @@ func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=tr
 	phase=float(motion.phase)
 	model.rotation.y=lerp_angle(model.rotation.y,float(motion.yaw),weight)
 	var jump: int=int(motion.jump_serial);var land: int=int(motion.land_serial)
-	if last_jump>=0 and jump>last_jump and audible:_play("sfx_suit_jump")
+	if last_jump>=0 and jump>last_jump and audible and not wet:_play("sfx_suit_jump")
 	if last_land>=0 and land>last_land:
 		compression=clampf(float(motion.impact)/14,.22,.8)
-		if audible:_play("sfx_suit_land");landed.emit(global_position,compression)
+		if audible and not wet:_play("sfx_suit_land");landed.emit(global_position,compression)
 	last_jump=jump;last_land=land
 	compression=move_toward(compression,0,delta*3)
 	if motion.state=="takeoff":compression=maxf(compression,.35)
 	var step:=int(floor(fposmod(phase,TAU)/PI))
-	if last_step>=0 and step!=last_step and moving and audible:_play("sfx_suit_step",.96 if step==0 else 1.04)
+	if last_step>=0 and step!=last_step and moving and audible and not wet:_play("sfx_suit_step",.96 if step==0 else 1.04)
 	last_step=step
 	if not audible:
 		for player in speakers:player.stop()
@@ -101,9 +107,9 @@ func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=tr
 	var pelvis: int=bones.pelvis
 	var rest_position: Vector3=rest.pelvis.origin
 	skeleton.set_bone_pose_position(pelvis,rest_position+Vector3(0,-pelvis_drop*(1-air),0))
-	_rotate("pelvis",Vector3(0,sin(phase)*.045*blend,cos(phase)*.025*blend),weight)
-	_rotate("spine",Vector3(lean, -sin(phase)*.07*blend,0),weight)
-	_rotate("head",Vector3(-lean*.65,0,0),weight)
+	_rotate("pelvis",Vector3(0,sin(phase)*.045*blend,cos(phase)*.025*blend),weight*(1-swim_blend))
+	_rotate("spine",Vector3(lean, -sin(phase)*.07*blend,0),weight*(1-swim_blend))
+	_rotate("head",Vector3(-lean*.65,0,0),weight*(1-swim_blend))
 	for side in ["L","R"]:
 		var sign_value:=1.0 if side=="L" else -1.0
 		var swing:=sin(phase)*sign_value
@@ -117,14 +123,35 @@ func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=tr
 		thigh=lerpf(thigh,(.15 if falling else .35)+sign_value*.12,air)
 		knee=lerpf(knee,(-.38 if falling else -.72)-sign_value*.16,air)
 		ankle=lerpf(ankle,.18,air)
-		_rotate("thigh_"+side,Vector3(thigh,0,0),weight)
-		_rotate("shin_"+side,Vector3(knee,0,0),weight)
-		_rotate("foot_"+side,Vector3(ankle,0,0),weight)
-		_rotate("upper_arm_"+side,Vector3(-swing*.32*blend-air*.24,0,sign_value*(.055+air*.12)),weight)
-		_rotate("forearm_"+side,Vector3(.18+run*.38+air*.38+maxf(0,swing)*.15*blend,0,0),weight)
+		_rotate("thigh_"+side,Vector3(thigh,0,0),weight*(1-swim_blend))
+		_rotate("shin_"+side,Vector3(knee,0,0),weight*(1-swim_blend))
+		_rotate("foot_"+side,Vector3(ankle,0,0),weight*(1-swim_blend))
+		_rotate("upper_arm_"+side,Vector3(-swing*.32*blend-air*.24,0,sign_value*(.055+air*.12)),weight*(1-swim_blend))
+		_rotate("forearm_"+side,Vector3(.18+run*.38+air*.38+maxf(0,swing)*.15*blend,0,0),weight*(1-swim_blend))
+
+	# Rotate the existing Blender rig around the hips, keeping its head near the physical eye line.
+	var stroke:=float(motion.get("swim_phase",0))
+	var advance:=clampf(speed/2.0,0,1)
+	model.rotation.x=-swim_blend*(.18+advance*.66)
+	model.position.y=model_rest_y+swim_blend*(.18+advance*.35)
+	if swim_blend>.001:
+		var w:=weight*swim_blend
+		_rotate("pelvis",Vector3(0,sin(stroke)*.055*advance,cos(stroke)*.06*advance),w)
+		_rotate("spine",Vector3(-.12,0,0),w)
+		_rotate("head",Vector3(.38*advance,0,0),w)
+		for side in ["L","R"]:
+			var sign_value:=1.0 if side=="L" else -1.0
+			var cycle: float=stroke+(0.0 if side=="L" else PI)
+			var pull:=sin(cycle)
+			_rotate("upper_arm_"+side,Vector3(-.8+pull*.72*advance,cos(cycle)*.18,sign_value*(.65+.25*cos(cycle))),w)
+			_rotate("forearm_"+side,Vector3(.48+maxf(0,-pull)*.8,0,0),w)
+			_rotate("thigh_"+side,Vector3(sin(stroke*2+sign_value*PI/2)*(.15+.2*advance),0,sign_value*.10),w)
+			_rotate("shin_"+side,Vector3(-.22-maxf(0,-sin(stroke*2+sign_value*PI/2))*.32,0,0),w)
+			_rotate("foot_"+side,Vector3(-.22,0,0),w)
 
 func seated(yaw: float,driver: bool) -> void:
 	if skeleton==null:return
+	model.rotation.x=0;model.position.y=model_rest_y;swim_blend=0
 	model.rotation.y=yaw;skeleton.reset_bone_poses()
 	for side in ["L","R"]:
 		_rotate("thigh_"+side,Vector3(-1.25,0,0),1)

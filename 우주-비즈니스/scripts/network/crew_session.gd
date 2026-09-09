@@ -308,6 +308,8 @@ func _publish_surface() -> void:
 		if value.is_empty():
 			if peer==1:surface={}
 			surface_digests.erase(peer);continue
+		if authority.water_solvers.has(value.body_id):
+			value.water_columns=authority.water_solvers[value.body_id].columns_packet(FrontierCrewWorld.vector(local.crew.members[authority.peers[peer]].position))
 		var digest:=FrontierUniverse.fingerprint(value)
 		if surface_digests.get(peer,"")==digest:continue
 		surface_serial+=1

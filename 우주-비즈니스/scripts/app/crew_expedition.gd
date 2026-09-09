@@ -435,6 +435,7 @@ func _physics_process(delta: float) -> void:
 		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled))
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
+		session.authority.shot_obstacle_provider=_shot_obstacle_distance
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
@@ -462,7 +463,7 @@ func _physics_process(delta: float) -> void:
 				if actor.position.y<float(ground.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(ground.config.region_half_extent):
 					actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO;motion=FrontierCrewLocomotion.create();session.authority.motions[id]=motion
 			var old_land: int=motion.land_serial
-			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position))
+			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)))
 			motion.input_ack=int(session.authority.input_sequences.get(peer,0))
 			if member.area=="surface" and int(motion.land_serial)>old_land and FrontierCrewVitals.land(member,float(motion.impact)):
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
@@ -483,7 +484,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 		body.position=prediction_snapshot.position;body.velocity=FrontierCrewWorld.vector(confirmed.velocity)
 		predicted_motion=confirmed.duplicate(true)
 		for frame in prediction_history:
-			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled,float(frame.get("water",0)))
+			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled,float(frame.get("water",0)),float(frame.get("swim_vertical",0)))
 		var correction:=previous-body.position
 		camera_correction=(camera_correction+correction).limit_length(.3) if correction.length()<1.0 else Vector3.ZERO
 		prediction_snapshot.clear()
@@ -494,8 +495,8 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
 	if on_surface:speed*=FrontierCrewAugmentation.multiplier(member,"mobility")
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
-	var frame: Dictionary={"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
-	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water))
+	var frame: Dictionary={"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
+	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical))
 	prediction_history.append(frame)
 	# Bounded replay: stale links cannot build an unbounded local simulation backlog.
 	if prediction_history.size()>90:prediction_history.pop_front()
@@ -533,8 +534,11 @@ func _process(delta: float) -> void:
 		var presentation: Dictionary=motion.duplicate(true)
 		if own and not session.hosting:
 			var approved: Dictionary=session.latest.get("motion",{}).get(id,{})
-			for key in ["jump_serial","land_serial","impact"]:presentation[key]=approved.get(key,0)
+			for key in ["jump_serial","land_serial","impact","water_serial","water_kind","water_impact","water_shot"]:presentation[key]=approved.get(key,0)
 		visual.pose.animate(presentation,delta,not feedback.blocked() and not outside and members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and (test_mode or get_window().has_focus()),not arrival.active)
+		if surface_world!=null and surface_world.water_interactions!=null:
+			var confirmed: Dictionary=session.authority.motions.get(id,{}) if session.hosting else session.latest.get("motion",{}).get(id,{})
+			surface_world.water_interactions.observe(id,actor.position,confirmed,not feedback.blocked() and not outside and members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and members[id].get("connected",true))
 		var here: bool=members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and members[id].get("connected",true)
 		visual.model.visible=not own and not arrival.active and here;visual.label.visible=not own and not arrival.active and here
 		if not session.hosting:actor.collision_layer=2 if here else 0;actor.collision_mask=1 if here else 0
@@ -1007,3 +1011,14 @@ func approach_trade_station() -> void:
 	if session.latest.crew.navigation.mode!="idle":return
 	if session.offline:session.send_request("ready",{"value":true})
 	session.send_request("station_approach",{});close_menus()
+
+static func _swim_vertical(direction: Vector2,aim: Vector3) -> float:
+	return direction.dot(Vector2(aim.x,aim.z).normalized())*aim.y
+
+func _shot_obstacle_distance(id: String,origin: Vector3,aim: Vector3,reach: float) -> float:
+	if not actors.has(id) or aim.length_squared()<.9:return 0.0
+	var actor: CharacterBody3D=actors[id]
+	var query:=PhysicsRayQueryParameters3D.create(origin,origin+aim*reach,1)
+	query.exclude=[actor.get_rid()]
+	var hit:=actor.get_world_3d().direct_space_state.intersect_ray(query)
+	return origin.distance_to(hit.position) if not hit.is_empty() else reach

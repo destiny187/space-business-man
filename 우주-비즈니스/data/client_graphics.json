@@ -116,5 +116,24 @@
         "taa": false
       }
     ]
+  },
+  "water": {
+    "name": "수면 품질",
+    "labels": [
+      "낮음",
+      "보통",
+      "최상"
+    ],
+    "levels": [
+      {
+        "water_quality": 0
+      },
+      {
+        "water_quality": 1
+      },
+      {
+        "water_quality": 2
+      }
+    ]
   }
 }

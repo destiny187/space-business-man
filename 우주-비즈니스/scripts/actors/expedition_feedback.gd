@@ -10,6 +10,7 @@ var equipped_model: String="manual_tool"
 var handheld: Node3D
 var muzzle: OmniLight3D
 var parts: Array[Node]=[]
+var swim_lower:=0.0
 var pending: Dictionary={}
 var optics: FrontierFieldToolEffects
 var intake_strength:=0.0
@@ -112,7 +113,8 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")
 		"business_craft":audio.play("sfx_build_place");show_cue("로봇 조립 시작")
 		"surface_attack":
-			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point);audio.play("sfx_combat_pulse")
+			if value.has("water_hit"):point=FrontierCrewWorld.vector(value.water_hit.position)
+			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point,not value.has("water_hit"));audio.play("sfx_combat_pulse")
 		"equipment_upgrade","equipment_suit_upgrade":audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
 		"business_produce":audio.play("sfx_build_place");show_cue("제품 생산 예약")
 		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("시설·로봇 개조 완료")
@@ -196,8 +198,11 @@ func _process(delta: float) -> void:
 	muzzle.light_color=Color("8de8db") if tool.get("kind")=="miner" else Color("ffc07c")
 	muzzle.light_energy=intake_strength*.32+pow(recoil,3)*2.4
 	var moving: bool=active and app.actors[app.session.latest.self_id].velocity.length()>1
-	var bob: float=sin(elapsed*(9 if moving else 2))*(.018 if moving else .005)*(1-intake_strength*.75)
+	var swimming: bool=active and app.visuals[app.session.latest.self_id].get("motion",{}).get("state","") in ["swim","tread"]
+	swim_lower=lerpf(swim_lower,1.0 if swimming else 0.0,1-exp(-delta*6))
+	var bob: float=sin(elapsed*(4.65 if swimming else 9 if moving else 2))*(.018 if moving else .005)*(1-intake_strength*.75)
 	handheld.position=Vector3(.36-intake_strength*.035,-.30+bob+intake_strength*.015,-.92+recoil*.10-intake_strength*.025)
+	handheld.position.y-=swim_lower*.08;handheld.position.x+=sin(elapsed*4.65)*.018*swim_lower;handheld.position.y+=sin(elapsed*4.65)*.012*swim_lower
 	handheld.rotation=Vector3(recoil*.10+sin(elapsed*73)*intake_strength*.002,0,-.03+sin(elapsed*59)*intake_strength*.003)
 	for part in parts:
 		if part.name.begins_with("Anim_Fan"):part.rotate_z(delta*(2+intake_strength*65))

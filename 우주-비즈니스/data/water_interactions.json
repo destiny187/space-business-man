@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "view_distance": 38.0,
+  "ring_limit": 48,
+  "crown_limit": 16,
+  "droplet_limit": 192,
+  "audio_voices": 8,
+  "wake_interval": 0.42,
+  "event_cooldown": 0.25,
+  "sounds": {
+    "enter": "sfx_water_enter_v1",
+    "exit": "sfx_water_exit_v1",
+    "step": "sfx_water_step_v1",
+    "stroke": "sfx_water_stroke_v1",
+    "shot": "sfx_water_shot_v1"
+  }
+}

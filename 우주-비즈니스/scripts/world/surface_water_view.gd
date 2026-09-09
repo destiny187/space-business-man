@@ -26,6 +26,8 @@ func configure(owner_surface: FrontierCrewSurfaceScene) -> void:
  surface=owner_surface;visual=MeshInstance3D.new();add_child(visual);visual.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
  material=ShaderMaterial.new();material.shader=load("res://assets/materials/space/physical_water.gdshader");visual.material_override=material
  material.set_shader_parameter("water_color",Color(surface.body.get("traits",{}).get("sea","123d50")))
+ FrontierClientSettings.ensure(get_tree()).changed.connect(_quality_changed)
+ _quality_changed()
  if surface.hydrology.ocean!=null:
   mask_image=Image.create(128,128,false,Image.FORMAT_RF);mask_image.fill(Color(1,0,0,1));mask_texture=ImageTexture.create_from_image(mask_image)
   surface.hydrology.ocean.material_override.set_shader_parameter("terrain_mask",mask_texture)
@@ -108,3 +110,6 @@ func nearest_water(p: Vector3) -> Dictionary:
   var d:=q.distance_to(p)
   if d<float(result.distance):result.distance=d;result.position=q
  return result
+
+func _quality_changed() -> void:
+ FrontierWaterQuality.apply(material,FrontierWaterQuality.level(get_tree()))

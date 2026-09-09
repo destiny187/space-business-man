@@ -3,8 +3,8 @@ extends CanvasLayer
 ## Local presentation only: never stored in the host's simulation manifest.
 signal changed
 const BASE_MOUSE_SENSITIVITY:=0.0025
-const DEFAULTS={"tutorial_mode":0,"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":2400.0,"shadow_distance":120.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":3.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"music_volume":0.65,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":2,"local_shadow_size":1024}
-const LIMITS={"tutorial_mode":[0,2],"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,8000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"music_volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
+const DEFAULTS={"water_quality":1,"tutorial_mode":0,"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":2400.0,"shadow_distance":120.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":3.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"music_volume":0.65,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":2,"local_shadow_size":1024}
+const LIMITS={"water_quality":[0,2],"tutorial_mode":[0,2],"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,8000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"music_volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
 const RESOLUTIONS=[Vector2i(1280,800),Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080),Vector2i(2560,1440)]
 var values: Dictionary=DEFAULTS.duplicate()
 var path="user://client_settings.json"
@@ -37,7 +37,7 @@ func quality_level(group: String) -> int:
 func quality_preset() -> int:
 	var level:=quality_level("view_distance")
 	if level<0:return 3
-	for group in ["shadows","effects"]:
+	for group in ["shadows","effects","water"]:
 		if quality_level(group)!=level:return 3
 	return level if quality_level("anti_aliasing")==level+1 else 3
 
@@ -101,6 +101,7 @@ func load_settings() -> void:
 		elif (value is float or value is int) and is_finite(float(value)):
 			values[key]=clampf(float(value),LIMITS[key][0],LIMITS[key][1])
 			if DEFAULTS[key] is int:values[key]=int(values[key])
+	if not data.has("water_quality"):values.water_quality=clampi(int(values.preset),0,2) if int(values.preset)!=3 else 1
 	for key in ["shadow_size","local_shadow_size"]:
 		if int(values[key]) not in [1024,2048,4096]:values[key]=2048
 

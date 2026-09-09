@@ -54,10 +54,11 @@ func burst(position_value: Vector3,color: Color,count: int = 12) -> void:
 	for i in range(count): _spawn("spark",position_value,Vector3.ZERO,color,randf_range(0.25,0.65),randf_range(0.025,0.065))
 	_spawn("ring",position_value,Vector3.ZERO,color,0.32,0.18)
 
-func pulse(origin: Vector3,destination: Vector3) -> void:
+func pulse(origin: Vector3,destination: Vector3,solid_impact: bool=true) -> void:
 	emitted.pulse += 1
 	for i in range(5): _spawn("spark",origin,Vector3.ZERO,Color("ffcf83"),0.10,0.035)
-	_spawn("shot",origin,destination,Color("ffe0a2"),0.12,1)
+	var shot:=_spawn("shot",origin,destination,Color("ffe0a2"),0.12,1)
+	if not shot.is_empty():shot.solid_impact=solid_impact
 
 func construction(position_value: Vector3) -> void:
 	emitted.construction += 1
@@ -101,6 +102,6 @@ func _process(delta: float) -> void:
 			"ring":
 				node.scale = Vector3.ONE*(e.scale+t*(3.5 if e.get("construction",false) else 1.0))
 		if t >= 1:
-			if e.kind == "shot": impacts.append(e.end)
+			if e.kind == "shot" and e.get("solid_impact",true): impacts.append(e.end)
 			node.visible = false; pool.append(node); active.remove_at(i)
 	for point in impacts: burst(point,Color("ffc487"),14)

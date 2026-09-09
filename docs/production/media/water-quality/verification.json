@@ -1,0 +1,19 @@
+{
+  "checks": 17,
+  "failures": 0,
+  "mesh_levels": [
+    {
+      "ocean_vertices": 4,
+      "quality": 0
+    },
+    {
+      "ocean_vertices": 8193,
+      "quality": 2
+    },
+    {
+      "ocean_vertices": 2561,
+      "quality": 1
+    }
+  ],
+  "scope": "One Forward+ expedition: native ocean comparison, all three material bindings, isolated settings save, mean water depth, mesh reuse. No full-game FPS benchmark."
+}

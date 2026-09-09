@@ -5,6 +5,7 @@ var health: ProgressBar
 var stamina: ProgressBar
 var health_text: Label
 var stamina_text: Label
+var movement_hint: Label
 var vitals_box: VBoxContainer
 var radar: FrontierSurfaceRadar
 var pickups: VBoxContainer
@@ -25,7 +26,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		var label:=FrontierInterfaceStyle.label(row,"",11)
 		if kind=="health":health=bar;health_text=label
 		else:stamina=bar;stamina_text=label
-	FrontierInterfaceStyle.label(vitals_box,"Shift  달리기",10,FrontierInterfaceStyle.MUTED)
+	movement_hint=FrontierInterfaceStyle.label(vitals_box,"Shift  달리기",10,FrontierInterfaceStyle.MUTED)
 	radar=FrontierSurfaceRadar.new();radar.configure(app);add_child(radar)
 	pickups=VBoxContainer.new();pickups.custom_minimum_size.x=216;pickups.size.x=216;pickups.mouse_filter=Control.MOUSE_FILTER_IGNORE;pickups.add_theme_constant_override("separation",6);add_child(pickups)
 	notice=FrontierInterfaceStyle.label(self,"",14,FrontierInterfaceStyle.WARNING)
@@ -59,6 +60,8 @@ func _process(delta: float) -> void:
 		gains[resource].left-=delta
 		if gains[resource].left<=0:gains[resource].row.queue_free();gains.erase(resource)
 	if app.session.latest.is_empty():return
+	var motion: Dictionary=app.visuals.get(app.session.latest.self_id,{}).get("motion",{})
+	movement_hint.text="Space 상승 · 시선 방향으로 수영" if motion.get("state","") in ["swim","tread"] else "Shift  달리기"
 	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	var v: Dictionary=member.get("vitals",FrontierCrewVitals.create())
 	health.max_value=FrontierCrewAugmentation.maximum_health(member);health.value=v.health

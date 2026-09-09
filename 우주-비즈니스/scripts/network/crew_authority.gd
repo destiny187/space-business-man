@@ -4,6 +4,7 @@ extends RefCounted
 # Host scene resolves a live device descriptor (area/body/position/enabled); no RPC setter.
 var augmentation_station_provider: Callable
 var research_station_provider: Callable
+var shot_obstacle_provider: Callable
 var world: Dictionary={}
 var phase: String="lobby"
 var lobby_ready: Dictionary={}
@@ -179,6 +180,16 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
 	if not envelope.kind.begins_with("rover_") and (FrontierRovers.factory_busy(draft,facility_id) or (envelope.kind=="business_settle" and FrontierRovers.fleet(draft).jobs.values().any(func(job: Dictionary):return job.body_id==draft.location))):return failure("로버 조립이 끝난 뒤 실행하세요.")
 	var reason: String=""
+	var water_hit: Dictionary={}
+	if envelope.kind=="surface_attack" and FrontierCrewSurface.landed(draft):
+		var aim:=FrontierCrewSurface.direction(envelope.args.get("aim"))
+		var origin:=FrontierCrewWorld.vector(draft.crew.members[actor].position)+Vector3.UP*1.72
+		var reach:=12.0
+		if shot_obstacle_provider.is_valid():reach=minf(reach,float(shot_obstacle_provider.call(actor,origin,aim,reach)))
+		var solver: FrontierSurfaceWater=water_solvers.get(draft.crew.landing.body_id)
+		if solver!=null:
+			solver.record=draft.get("surface_water",{}).get(draft.crew.landing.body_id,FrontierSurfaceWater.create())
+			water_hit=solver.intersect(origin,aim,reach)
 	if envelope.kind=="augmentation_upgrade":
 		var station: Dictionary={}
 		if augmentation_station_provider.is_valid():
@@ -207,12 +218,13 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	elif envelope.kind in ["land","launch"] or envelope.kind.begins_with("surface_") or (envelope.kind in ["withdraw","deposit"] and FrontierCrewSurface.landed(draft)):
 		if envelope.kind=="surface_scan":return failure("스캔은 장비 입력을 유지해 완료하세요.")
 		if envelope.kind in ["surface_dig","surface_attack"] and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("굴착 도구가 준비 중입니다.")
-		reason=FrontierCrewSurface.apply(draft,actor,envelope.kind,envelope.args,group)
+		reason=FrontierCrewSurface.apply(draft,actor,envelope.kind,envelope.args,group,water_hit)
 	else:reason=FrontierCrewWorld.apply(draft.crew,actor,envelope.kind,envelope.args,group)
 	if not reason.is_empty():return failure(reason)
 	FrontierShuttles.commit(canonical,draft,actor);draft=canonical
 	draft.crew.revision+=1;draft.crew.members[actor].last_sequence=sequence
 	var result: Dictionary={"ok":true,"sequence":sequence,"revision":draft.crew.revision}
+	if envelope.kind=="surface_attack" and not water_hit.is_empty():result.water_hit=water_hit
 	if envelope.kind=="augmentation_upgrade":result.augmentation=FrontierCrewAugmentation.outcome(draft.crew.members[actor],envelope.args.field)
 	if envelope.kind=="research_contribute":result.research={"project":envelope.args.project,"stage":draft.expedition_research.projects[envelope.args.project].stage,"contributed":{envelope.args.resource:int(envelope.args.amount)}}
 	if envelope.kind=="equipment_research_prototype":result.research={"project":"deep_mining","stage":"prototyped","item_id":"crafted:"+str(int(draft.crew.members[actor].loadout.counter))}
@@ -238,6 +250,9 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		draft.crew.receipts.erase(oldest)
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
 	world=draft;rover_runtime=rover_draft
+	if envelope.kind=="surface_attack" and not water_hit.is_empty():
+		if not motions.has(actor):motions[actor]=FrontierCrewLocomotion.create()
+		motions[actor].water_shot={"serial":sequence,"point":water_hit.position,"entering":water_hit.entering}
 	if envelope.kind=="shuttle_recall":motions.erase(str(envelope.args.character_id))
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
