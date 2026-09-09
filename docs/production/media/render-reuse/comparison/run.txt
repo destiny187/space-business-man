@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS saved space ready
+PASS route preparation complete before measurements
+MEASURE {"all_draws":180.0,"fps":27.3908440625552,"frames":360,"main_draws":12.0,"max_ms":93.628,"mean_ms":36.50855,"median_ms":34.136,"optimized":false,"p95_ms":60.766,"primitives":114951.0,"scene":"external","target_draws":12.0,"target_render_cpu_ms":0.312463888815708,"target_render_gpu_ms":0.0}
+MEASURE {"all_draws":168.0,"fps":39.6370479559835,"frames":360,"main_draws":0.0,"max_ms":120.399,"mean_ms":25.2289222222222,"median_ms":17.16,"optimized":true,"p95_ms":53.019,"primitives":76853.0,"scene":"external","target_draws":0.0,"target_render_cpu_ms":0.109408333442277,"target_render_gpu_ms":0.0}
+MEASURE {"all_draws":168.0,"fps":53.3647117838622,"frames":360,"main_draws":0.0,"max_ms":75.006,"mean_ms":18.738975,"median_ms":16.399,"optimized":true,"p95_ms":31.982,"primitives":76853.0,"scene":"external","target_draws":0.0,"target_render_cpu_ms":0.100825000119706,"target_render_gpu_ms":0.0}
+MEASURE {"all_draws":180.0,"fps":15.6677762934011,"frames":360,"main_draws":12.0,"max_ms":208.131,"mean_ms":63.8252666666666,"median_ms":52.003,"optimized":false,"p95_ms":135.501,"primitives":115028.944444444,"scene":"external","target_draws":12.0,"target_render_cpu_ms":0.424872221342391,"target_render_gpu_ms":0.0}
+PASS cabin restored after comparison
+PASS real shipyard preview visible
+MEASURE {"all_draws":249.0,"fps":28.0129612859319,"frames":360,"main_draws":0.0,"max_ms":91.926,"mean_ms":35.6977611111111,"median_ms":33.303,"optimized":false,"p95_ms":63.709,"primitives":93673.4222222222,"scene":"shipyard","target_draws":37.0,"target_render_cpu_ms":0.359038888538877,"target_render_gpu_ms":0.0}
+MEASURE {"all_draws":212.0,"fps":38.6224736879034,"frames":360,"main_draws":0.0,"max_ms":68.659,"mean_ms":25.8916611111111,"median_ms":25.283,"optimized":true,"p95_ms":41.649,"primitives":79179.0,"scene":"shipyard","target_draws":37.0,"target_render_cpu_ms":0.282999992370605,"target_render_gpu_ms":0.0}
+MEASURE {"all_draws":212.0,"fps":31.4895970180051,"frames":360,"main_draws":0.0,"max_ms":101.419,"mean_ms":31.7565194444444,"median_ms":30.312,"optimized":true,"p95_ms":55.742,"primitives":79179.0,"scene":"shipyard","target_draws":37.0,"target_render_cpu_ms":0.282999992370605,"target_render_gpu_ms":0.0}
+MEASURE {"all_draws":249.0,"fps":28.241234744438,"frames":360,"main_draws":0.0,"max_ms":150.268,"mean_ms":35.4092166666666,"median_ms":31.779,"optimized":false,"p95_ms":68.669,"primitives":93585.0,"scene":"shipyard","target_draws":37.0,"target_render_cpu_ms":0.31833888846967,"target_render_gpu_ms":0.0}
+PASS preview returns to cached rendering
+PASS root render restored on exit
+RENDER COMPARISON failures 0
