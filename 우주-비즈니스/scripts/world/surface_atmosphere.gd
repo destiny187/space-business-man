@@ -6,6 +6,7 @@ var sun: DirectionalLight3D
 var material: ShaderMaterial
 var body: Dictionary
 var site: Dictionary={}
+var regional_ledger: Dictionary={}
 var current: Dictionary={}
 var refresh_timer:=0.0
 static func config() -> Dictionary:
@@ -40,9 +41,12 @@ func configure(planet: Dictionary,target: Environment,light: DirectionalLight3D)
 	paint()
 func accept(ledger: Dictionary) -> void:
 	var source: Dictionary=ledger.get("sites",{}).get(body.id,{})
+	regional_ledger=ledger
 	site={} if source.is_empty() else {"center":source.center.duplicate(),"environment":source.environment.duplicate()}
 func target_at(position: Vector3) -> Dictionary:
 	var native: Dictionary=body.get("traits",FrontierCatalog.entry("planets",body.kind)).duplicate(true)
+	if FrontierRegionalTerraform.enabled(regional_ledger.get("sites",{}).get(body.id,{})):
+		return appearance(body,FrontierSurfaceRecovery.sample_at(body,regional_ledger,position))
 	if not site.is_empty():
 		var center:=FrontierExpeditionBusiness.point(site.center)
 		var distance_from_site:=Vector2(position.x-center.x,position.z-center.z).length()

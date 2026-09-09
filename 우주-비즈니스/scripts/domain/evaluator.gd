@@ -63,7 +63,7 @@ static func environment_report(site: Dictionary,scope_id: String="") -> Dictiona
 		if not env.has(key) or not (env[key] is float or env[key] is int) or not is_finite(float(env[key])):return result
 	var s:=scores(env);s.erase("stability")
 	var restoration: Dictionary=site.get("restoration2",{})
-	if site.has("restoration2"):
+	if not restoration.is_empty():
 		for key in ["salinity","soil"]:
 			if not restoration.has(key) or not (restoration[key] is float or restoration[key] is int) or not is_finite(float(restoration[key])):return result
 		s.water=minf(float(s.water),clampf(100-float(restoration.salinity),0,100))

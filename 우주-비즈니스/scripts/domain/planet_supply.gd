@@ -28,6 +28,8 @@ static func apply(world: Dictionary,actor: String,kind: String) -> String:
 	if kind=="business_lease_release":
 		if not site.get("production_lease",false):return "반납할 생산 이용권이 없습니다."
 		if site.state=="active":return "진행 중인 복원 계약을 먼저 정산하세요."
+		for zone in site.get("regions",{}).values():
+			if not zone.get("stored_equipment",{}).is_empty() or FrontierExpeditionBusiness.total(zone.inventory)>0:return "모든 지역 창고의 재고·장비를 회수하세요."
 		if not site.buildings.is_empty() or not site.robots.is_empty() or not site.jobs.is_empty() or not site.get("stored_equipment",{}).is_empty() or FrontierExpeditionBusiness.total(site.inventory)>0:return "시설을 철거하고 로봇·창고 재고·장비를 모두 회수한 뒤 이용권을 반납하세요."
 		site.erase("production_lease");site.state="exploration" if site.settlement.is_empty() else "settled";return ""
 	if site.state=="settled":return "이미 인계한 시설·창고의 이용권은 되살릴 수 없습니다. 다른 행성을 선택하세요."
@@ -44,7 +46,7 @@ static func production_reason(body: Dictionary,building: Dictionary,recipe: Dict
 	return ""
 static func settlement_payment(site: Dictionary,tier: int,retain: bool) -> int:
 	var reward:=FrontierCoopWorkload.reward(site,tier)
-	return floori(reward*float(config().retained_reward_ratio)) if retain else reward
+	return maxi(0,(floori(reward*float(config().retained_reward_ratio)) if retain else reward)-FrontierRegionalTerraform.paid(site))
 static func summaries(world: Dictionary) -> Array:
 	var result: Array=[]
 	for id in world.get("business",{}).get("sites",{}):
@@ -56,7 +58,11 @@ static func summaries(world: Dictionary) -> Array:
 			var job: Dictionary=building.get("production",{})
 			if job.is_empty():continue
 			production.append({"product":job.product,"progress":float(job.progress),"status":str(building.get("status","")),"active":bool(building.get("active",false))})
-		result.append({"ordinal":FrontierUniverse.ordinal_of(world.manifest,id),"name":body.name,"role":role(body),"inventory":site.inventory.duplicate(),"production":production,"state":site.state,"paused":not operating(site),"remote":id!=world.location or not FrontierCrewSurface.landed(world)})
+		var stock: Dictionary=site.inventory.duplicate()
+		if FrontierRegionalTerraform.enabled(site):
+			stock={}
+			for zone in site.regions.values():FrontierExpeditionBusiness.transfer(stock,zone.inventory,1)
+		result.append({"ordinal":FrontierUniverse.ordinal_of(world.manifest,id),"name":body.name,"role":role(body),"inventory":stock,"production":production,"state":site.state,"paused":not operating(site),"remote":id!=world.location or not FrontierCrewSurface.landed(world)})
 	return result
 
 static func context(world: Dictionary,body_id: String) -> Dictionary:

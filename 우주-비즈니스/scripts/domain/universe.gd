@@ -11,6 +11,7 @@ static func config() -> Dictionary:
 	value.underground_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/underground.json"))
 	value.ground_rules=FrontierGroundProgression.config().duplicate(true)
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
+	value.regional_rules=FrontierSurfaceRegions.config().duplicate(true)
 	value.planetary_cycles=FrontierPlanetaryCycles.config()
 	return value
 
@@ -112,6 +113,7 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 		result.terrain_traits.underground.family=family
 	if cfg.has("ground_rules") and result.origin=="fictional" and int(result.planet_tier)<=2:result.ground_rules=cfg.ground_rules
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
+	if cfg.has("regional_rules") and result.origin=="fictional" and result.get("landable",true):result.regional_rules=cfg.regional_rules
 	if cfg.has("planetary_cycles"):result.astro=FrontierPlanetaryCycles.metadata(m,result)
 	return result
 
@@ -183,6 +185,10 @@ static func validate_world(value: Variant) -> String:
 		if not crew_error.is_empty():return crew_error
 		var landing_error: String=FrontierCrewSurface.validate_world(value)
 		if not landing_error.is_empty():return landing_error
+	var incident_error:=FrontierExplorationIncidents.validate(value)
+	if not incident_error.is_empty():return incident_error
+	var discovery_error:=FrontierExplorationDiscoveries.validate(value)
+	if not discovery_error.is_empty():return discovery_error
 	var research_error:=FrontierExpeditionResearch.validate(value)
 	if not research_error.is_empty():return research_error
 	if value.has("ecology"):

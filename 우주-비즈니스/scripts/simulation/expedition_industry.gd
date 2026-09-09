@@ -1,6 +1,10 @@
 class_name FrontierExpeditionIndustry
 extends RefCounted
 static func tick(world: Dictionary,dt: float) -> void:
+	var source:=FrontierExpeditionBusiness.site(world)
+	if FrontierRegionalTerraform.enabled(source):FrontierRegionalTerraform.tick(world,dt);return
+	tick_local(world,dt)
+static func tick_local(world: Dictionary,dt: float) -> void:
 	var site:=FrontierExpeditionBusiness.site(world)
 	if site.is_empty() or not FrontierPlanetSupply.operating(site):return
 	site.time=minf(10000000,site.time+dt)
@@ -27,11 +31,11 @@ static func tick(world: Dictionary,dt: float) -> void:
 	FrontierProductionTier2.tick(site,dt*efficiency)
 	FrontierFieldEngineering.tick(world,dt)
 	environment(world,site,dt)
-	if not site.production_paid and int(site.delivered)>=48 and not site.robots.is_empty():
+	if str(site.get("local_region","region:0"))=="region:0" and not site.production_paid and int(site.delivered)>=48 and not site.robots.is_empty():
 		site.production_paid=true;ledger.credits+=int(FrontierExpeditionBusiness.config().production_milestone)
 static func power(world: Dictionary,site: Dictionary) -> void:
 	FrontierFacilityFlooding.refresh_base(world,site)
-	var supply:=2.0;var demand:=0.0
+	var supply:=0.0 if str(site.get("local_region","region:0"))!="region:0" else 2.0;var demand:=0.0
 	for building in site.buildings.values():
 		if FrontierFacilityFlooding.refresh(world,building):continue
 		var def:=FrontierCatalog.entry("buildings",building.type)
@@ -139,6 +143,7 @@ static func _robot(world: Dictionary,site: Dictionary,r: Dictionary,dt: float) -
 	if FrontierExpeditionBusiness.total(r.cargo)>=FrontierProductionTier2.robot_capacity(r) or r.target.is_empty():r.phase="return";r.path=[]
 static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
 	if FrontierUniverse.body_from_id(world.manifest,world.location).get("origin","")=="solar_reference":return
+	if site.has("local_region"):FrontierRegionalTerraform.environment(world,site,dt);return
 	var e: Dictionary=site.environment;var cfg:=FrontierExpeditionBusiness.config()
 	for b in site.buildings.values():
 		if not b.active:continue

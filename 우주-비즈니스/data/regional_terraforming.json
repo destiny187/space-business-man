@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "region_span": 640,
+  "cluster_slots": 12,
+  "cluster_fraction": 0.8,
+  "zone_radius": 65,
+  "facility_radius": 48,
+  "cell_offsets": [
+    [
+      0,
+      0
+    ],
+    [
+      -28,
+      0
+    ],
+    [
+      28,
+      0
+    ],
+    [
+      0,
+      -28
+    ],
+    [
+      0,
+      28
+    ]
+  ],
+  "required_cells": 3,
+  "tiers": {
+    "1": {
+      "regions": 1,
+      "distance": 0
+    },
+    "2": {
+      "regions": 3,
+      "distance": 520
+    }
+  },
+  "stage_fraction": 0.2,
+  "map_extent": 8192,
+  "map_resolution": 96
+}

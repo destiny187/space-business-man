@@ -4,6 +4,7 @@ extends Node3D
 var surface: FrontierCrewSurfaceScene
 var cfg: Dictionary
 var region: Dictionary={}
+var recovery_areas: Array=[]
 var state: Dictionary={"grass":0.0,"trees":0.0,"wet":0.0,"life":0.0}
 var patches: Array[Dictionary]=[]
 var ponds: Array[Dictionary]=[]
@@ -39,7 +40,13 @@ func configure(owner_surface: FrontierCrewSurfaceScene) -> void:
  scenery=load("res://scripts/world/surface_scenery.gd").new();add_child(scenery);scenery.configure(self)
  accept(surface.business_view.ledger)
 func accept(ledger: Dictionary) -> void:
- region=FrontierSurfaceRecovery.region(surface.body,ledger)
+ recovery_areas=FrontierSurfaceRecovery.regions(surface.body,ledger)
+ var next_region:=FrontierSurfaceRecovery.nearest_region(surface.body,ledger,surface.viewer.position)
+ if not region.is_empty() and not next_region.is_empty() and region.center!=next_region.center:
+  for row in patches:row.node.queue_free()
+  for row in ponds:row.node.queue_free()
+  patches.clear();ponds.clear();assets_ready=false
+ region=next_region
  var next: String=surface.surface_details.building_signature
  if next!=signature:signature=next;sample_timer=0;_invalidate_ground()
 func _invalidate_ground() -> void:
@@ -156,11 +163,12 @@ func _process(delta: float) -> void:
    if not row.checked:_ground(row,true);break
  for row in patches:
   if not row.valid:continue
+  var local_state:=FrontierSurfaceRecovery.conditions(FrontierSurfaceRecovery.sample_regions(surface.body,recovery_areas,row.point))
   var weight_value:=0.0 if region.is_empty() else FrontierSurfaceRecovery.weight(row.point,region.center,region.radius)
-  var target:=smoothstep(row.threshold,row.threshold+.2,float(state.grass)*weight_value)
+  var target:=smoothstep(row.threshold,row.threshold+.2,float(local_state.grass)*weight_value)
   # Building and excavation invalidation rechecks support on the bounded sample tick.
   row.growth=move_toward(float(row.growth),target,delta/float(cfg.growth_seconds))
-  row.wood=move_toward(float(row.wood),smoothstep(row.threshold,row.threshold+.25,float(state.trees)*weight_value) if target>0 else 0,delta/(float(cfg.growth_seconds)*2))
+  row.wood=move_toward(float(row.wood),smoothstep(row.threshold,row.threshold+.25,float(local_state.trees)*weight_value) if target>0 else 0,delta/(float(cfg.growth_seconds)*2))
   row.node.visible=row.growth>.01 or row.wood>.01
   row.grass.scale=Vector3.ONE*maxf(.001,row.growth);row.tree.scale=row.tree_scale*maxf(.001,row.wood);row.tree.visible=row.wood>.02
  for row in ponds:

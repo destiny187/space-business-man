@@ -1,0 +1,158 @@
+class_name FrontierPlanetMap
+extends PanelContainer
+var app: FrontierCrewExpedition
+var canvas: Control
+var title: Label
+var detail: Label
+var layers: OptionButton
+var body: Dictionary={}
+var site: Dictionary={}
+var terrain: FrontierTerrainField
+var texture: ImageTexture
+var cached_id: String=""
+var map_key: String=""
+var map_min:=Vector2.ZERO
+var map_size:=Vector2.ONE
+var focus:=Vector2.ZERO
+var meters_per_pixel:=3.0
+var dragging:=false
+var selected: String=""
+var waypoint:=Vector2.INF
+var timer:=0.0
+var groups: Array=[]
+func configure(owner_app: FrontierCrewExpedition) -> void:
+ app=owner_app;name="PlanetMap";set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);offset_left=24;offset_top=28;offset_right=-24;offset_bottom=-28
+ theme=app.ui_theme
+ var column:=VBoxContainer.new();add_child(column)
+ var header:=HBoxContainer.new();column.add_child(header)
+ title=FrontierInterfaceStyle.label(header,"행성지도",22);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+ var system:=Button.new();system.text="항성계";header.add_child(system);system.pressed.connect(func():app.open_menu(app.navigation_frame))
+ var close:=Button.new();close.text="닫기  Tab / Esc";header.add_child(close);close.pressed.connect(app.close_menus)
+ var bar:=HBoxContainer.new();column.add_child(bar)
+ layers=OptionButton.new()
+ for text in ["자원·지질","환경·복원","시설·공급"]:layers.add_item(text)
+ bar.add_child(layers);layers.item_selected.connect(func(_i):canvas.queue_redraw())
+ var home:=Button.new();home.text="내 위치";bar.add_child(home);home.pressed.connect(func():focus=Vector2(app.camera.position.x,app.camera.position.z);canvas.queue_redraw())
+ for pair in [["−",1.4],["+",1.0/1.4]]:
+  var button:=Button.new();button.text=pair[0];bar.add_child(button);button.pressed.connect(func():zoom(float(pair[1])))
+ FrontierInterfaceStyle.label(bar,"드래그 이동   휠 확대   클릭 목적지",12,FrontierInterfaceStyle.MUTED)
+ canvas=Control.new();canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL;canvas.custom_minimum_size=Vector2(300,200);canvas.clip_contents=true;column.add_child(canvas)
+ canvas.draw.connect(draw_map);canvas.gui_input.connect(input_map)
+ detail=FrontierInterfaceStyle.label(column,"지도를 선택하면 공급·복원 정보를 확인합니다.",16);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.custom_minimum_size.y=78
+ hide()
+func refresh() -> void:
+ if app.surface_world==null:hide();return
+ body=app.surface_world.body;terrain=app.surface_world.terrain.field
+ site=app.session.surface.get("business",{}).get("sites",{}).get(body.id,{})
+ title.text=body.name+"  T%d  행성지도"%int(body.planet_tier)
+ if cached_id!=body.id:
+  cached_id=body.id;focus=Vector2(app.camera.position.x,app.camera.position.z);groups=[];waypoint=Vector2.INF;selected=""
+ var bake_key: String=body.id+str((focus/32).floor())+str(meters_per_pixel)+str(canvas.size)
+ if bake_key!=map_key and canvas.size.x>0:
+  map_key=bake_key;map_size=canvas.size*meters_per_pixel;map_min=focus-map_size*.5
+  var width:=160;var height:=100
+  var image:=Image.create(width,height,false,Image.FORMAT_RGBA8)
+  for z in height:
+   for x in width:
+    var point:=map_min+Vector2(float(x)/width,float(z)/height)*map_size
+    var h:=terrain.height(point.x,point.y)
+    var relief:=clampf((terrain.height(point.x+12,point.y)-h)*.035+(terrain.height(point.x,point.y+12)-h)*.02,-.25,.25)
+    var color:=Color("596051").lerp(Color("ad9d79"),clampf((h+30)/180,0,1))
+    if body.kind=="glacial":color=Color("607f91").lerp(Color("bed5d5"),clampf((h+40)/180,0,1))
+    if body.kind=="sulfur":color=Color("665947").lerp(Color("a89054"),clampf((h+40)/180,0,1))
+    color=color.lightened(relief) if relief>0 else color.darkened(-relief)
+    var contour:=fposmod(h,20.0)
+    if contour<.75:color=color.darkened(.20)
+    if h< -3.9 and float(body.get("traits",{}).get("water",0))>15 and float(body.get("traits",{}).get("temperature",-100))>0:color=Color("28545b")
+    if maxf(absf(point.x),absf(point.y))>8192:color=Color("10191f")
+    image.set_pixel(x,z,color)
+  texture=ImageTexture.create_from_image(image)
+ update_detail();canvas.queue_redraw()
+func _process(dt: float) -> void:
+ if not visible:return
+ timer-=dt
+ if timer<=0:timer=.5;refresh()
+func at(p: Vector2) -> Vector2:return canvas.size*.5+(p-focus)/meters_per_pixel
+func world(p: Vector2) -> Vector2:return focus+(p-canvas.size*.5)*meters_per_pixel
+func zoom(factor: float) -> void:
+ meters_per_pixel=clampf(meters_per_pixel*factor,.25,32);canvas.queue_redraw()
+func input_map(event: InputEvent) -> void:
+ if event is InputEventMouseButton:
+  if event.button_index==MOUSE_BUTTON_WHEEL_UP and event.pressed:zoom(1/1.2)
+  elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN and event.pressed:zoom(1.2)
+  elif event.button_index==MOUSE_BUTTON_LEFT:
+   dragging=event.pressed
+   if event.pressed:
+    waypoint=world(event.position);selected=""
+    for region in site.get("regions",{}).values():
+     if at(Vector2(region.center[0],region.center[2])).distance_to(event.position)<maxf(18,region.radius/meters_per_pixel):selected=region.id
+    update_detail();canvas.queue_redraw()
+ elif event is InputEventMouseMotion and dragging:
+  focus-=event.relative*meters_per_pixel;focus=focus.clamp(Vector2(-8192,-8192),Vector2(8192,8192));canvas.queue_redraw()
+ canvas.accept_event()
+func text_at(p: Vector2,text: String,color: Color=Color("e6e8df"),font_size: int=16) -> void:
+ canvas.draw_string(get_theme_default_font(),p,text,HORIZONTAL_ALIGNMENT_LEFT,-1,font_size,color)
+func draw_map() -> void:
+ if body.is_empty():return
+ canvas.draw_rect(Rect2(Vector2.ZERO,canvas.size),Color("10191f"))
+ if texture!=null:canvas.draw_texture_rect(texture,Rect2(at(map_min),map_size/meters_per_pixel),false,Color(1,1,1,.85))
+ var spacing:=1000.0 if meters_per_pixel>4 else 100.0
+ var minp:=world(Vector2.ZERO);var maxp:=world(canvas.size)
+ for x in range(floori(minp.x/spacing),ceili(maxp.x/spacing)+1):canvas.draw_line(at(Vector2(x*spacing,minp.y)),at(Vector2(x*spacing,maxp.y)),Color(1,1,1,.08))
+ for z in range(floori(minp.y/spacing),ceili(maxp.y/spacing)+1):canvas.draw_line(at(Vector2(minp.x,z*spacing)),at(Vector2(maxp.x,z*spacing)),Color(1,1,1,.08))
+ if layers.selected==0 and FrontierSurfaceRegions.enabled(body):
+  var span: float=body.regional_rules.region_span
+  for x in range(maxi(-13,floori(minp.x/span)),mini(13,ceili(maxp.x/span))+1):
+   for z in range(maxi(-13,floori(minp.y/span)),mini(13,ceili(maxp.y/span))+1):
+    var group:=FrontierSurfaceRegions.cluster(body,x,z);var pos:=at(group.center)
+    canvas.draw_circle(pos,maxf(3,span*.20/meters_per_pixel),Color(.78,.66,.39,.12))
+    canvas.draw_arc(pos,maxf(3,span*.20/meters_per_pixel),0,TAU,24,Color(.87,.74,.45,.4),1,true)
+    var icon:=FrontierResourceIcons.texture(group.resource)
+    if icon!=null:canvas.draw_texture_rect(icon,Rect2(pos-Vector2(14,14),Vector2(28,28)),false)
+    if meters_per_pixel<6:text_at(pos+Vector2(20,5),FrontierCatalog.entry("resources",group.resource).name+" ?",Color("e1bd74"),15)
+ if layers.selected==0:
+  var hints: Dictionary={}
+  for row in FrontierGroundExploration.deposits(body):
+   if not hints.has(row.resource):hints[row.resource]=Vector2(row.position[0],row.position[2])
+  for resource in hints:
+   var point:=at(hints[resource]);var icon:=FrontierResourceIcons.texture(resource)
+   canvas.draw_arc(point,16,0,TAU,20,Color("83d9c5"),1,true)
+   if icon!=null:canvas.draw_texture_rect(icon,Rect2(point-Vector2(12,12),Vector2(24,24)),false)
+   text_at(point+Vector2(20,4),FrontierCatalog.entry("resources",resource).name+" 공급 후보",Color("83d9c5"),15)
+  for observation in app.session.latest.crew.get("survey",{}).values():
+   if observation.body_id!=body.id:continue
+   var row:=FrontierExpeditionBusiness.find_vein(body,observation.vein_id)
+   if row.is_empty() or row.get("underground",false):continue
+   var point:=at(Vector2(row.position[0],row.position[2]));canvas.draw_circle(point,4,Color.WHITE)
+   if meters_per_pixel<2:text_at(point+Vector2(8,20),"확인 잔량 %d"%int(site.get("remaining",{}).get(row.id,row.capacity)),Color.WHITE,14)
+ for region in site.get("regions",{}).values():
+  var center:=Vector2(region.center[0],region.center[2]);var pos:=at(center)
+  var color:=Color("83d9c5") if FrontierRegionalTerraform.ready(region) else Color("efb46f")
+  canvas.draw_arc(pos,maxf(10,float(region.radius)/meters_per_pixel),0,TAU,40,color,2,true)
+  if layers.selected==1:
+   for cell in region.cells:
+    var cell_pos:=at(Vector2(cell.position[0],cell.position[2]));var score:=FrontierEvaluator.environment_report(cell)
+    canvas.draw_circle(cell_pos,maxf(3,24/meters_per_pixel),Color(.22,.8,.56,.15+.55*float(score.overall)/100))
+  text_at(pos+Vector2(maxf(18,float(region.radius)/meters_per_pixel)+8,-12),region.name,color)
+  text_at(pos+Vector2(maxf(18,float(region.radius)/meters_per_pixel)+8,8),"✓ 안정" if FrontierRegionalTerraform.ready(region) else "복원 대기",color,14)
+  if region.id!="region:0":canvas.draw_dashed_line(at(Vector2(site.regions["region:0"].center[0],site.regions["region:0"].center[2])),pos,Color(.6,.8,.8,.3),1,6)
+ for row in site.get("buildings",{}).values():
+  var pos:=at(Vector2(row.position[0],row.position[2]));canvas.draw_rect(Rect2(pos-Vector2(3,3),Vector2(6,6)),Color("83d9c5") if row.active else Color("efb46f"))
+  if layers.selected==2 and meters_per_pixel<3:text_at(pos+Vector2(8,0),FrontierCatalog.entry("buildings",row.type).name,Color("e6e8df"),11)
+ for id in app.session.latest.get("crew",{}).get("members",{}):
+  var member: Dictionary=app.session.latest.crew.members[id]
+  if member.get("place_key","")!=app.session.latest.crew.members[app.session.latest.self_id].get("place_key",""):continue
+  var pos:=at(Vector2(member.position[0],member.position[2]));canvas.draw_circle(pos,5,Color("83d9c5") if id==app.session.latest.self_id else Color("e6e8df"))
+ var ship: Array=FrontierCrewSurface.config().ship_position;text_at(at(Vector2(ship[0],ship[2]))+Vector2(8,20),"착륙선",Color("a5c9ff"))
+ if waypoint.is_finite():
+  var pos:=at(waypoint);canvas.draw_line(pos-Vector2(8,0),pos+Vector2(8,0),Color.WHITE,2);canvas.draw_line(pos-Vector2(0,8),pos+Vector2(0,8),Color.WHITE,2)
+ text_at(Vector2(12,canvas.size.y-12),"N ↑   후보 범위 ? / 실제 확인 전 잔량 미확정   ·   지원 지표 ±8.2km",Color("e6e8df"),12)
+func update_detail() -> void:
+ if selected.is_empty() or not site.get("regions",{}).has(selected):
+  detail.text="공급 후보는 지질 추정입니다. 현장에서 광맥과 잔량을 확인하세요.\n"+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "환경 탭에서 복원 구획, 시설 탭에서 현장 공급을 확인합니다.")
+  return
+ var region: Dictionary=site.regions[selected];var report:=FrontierEvaluator.environment_report(region)
+ var names: Array=[]
+ for key in region.inventory:
+  if int(region.inventory[key])>0:names.append(FrontierCatalog.entry("resources",key).name+" "+str(int(region.inventory[key])))
+ detail.text="%s  적합도 %.0f%%   %s\n현장 재고: %s\n%s"%[region.name,report.overall,"✓ 안정" if FrontierRegionalTerraform.ready(region) else ({"settlement":"정착 환경", "water":"급수·염류", "soil":"토양 기반"}.get(region.role,"환경")+" 구획 %d곳 · 30초 안정"%mini(3,region.cells.size())),", ".join(names) if not names.is_empty() else "비어 있음",("중간 대금 지급 완료 %d Cr"%int(site.regional_paid[selected])) if site.get("regional_paid",{}).has(selected) else "원료는 직접 운반하고 이 현장의 창고에 보관하세요."]

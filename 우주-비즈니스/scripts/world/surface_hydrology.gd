@@ -40,7 +40,7 @@ func invalidate() -> void:
  for row in tiles.values():row.node.queue_free()
  tiles.clear();jobs.clear();source_requests.clear();occupied.clear();anchor=Vector2i(99999,99999);region_key=""
 func accept(ledger: Dictionary) -> void:
- region=FrontierSurfaceRecovery.region(surface.body,ledger)
+ region=FrontierSurfaceRecovery.nearest_region(surface.body,ledger,surface.viewer.position)
  var buildings: Dictionary=ledger.get("sites",{}).get(surface.body.id,{}).get("buildings",{})
  var keys: Array=buildings.keys();keys.sort();var next_key:=""
  var next_foundations: Array[Vector4]=[]

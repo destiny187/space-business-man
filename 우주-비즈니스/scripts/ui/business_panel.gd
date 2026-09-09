@@ -339,12 +339,17 @@ func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dic
 		if current.has("restoration2"):
 			var restore_cfg: Dictionary=FrontierProductionTier2.config().restoration
 			environment_label.text+="\n염류 %.0f / 목표 ≤%.0f  토양 %.0f / 목표 ≥%.0f"%[float(current.restoration2.salinity),float(restore_cfg.salinity_target),float(current.restoration2.soil),float(restore_cfg.soil_target)]
+	if FrontierRegionalTerraform.enabled(current):
+		var completed:=0
+		for region in current.regions.values():
+			if FrontierRegionalTerraform.ready(region):completed+=1
+		environment_label.text+="\n지역 복원 %d / %d  ·  중간 지급 %d Cr\nTab 지도에서 남은 현장을 확인하세요."%[completed,current.regions.size(),FrontierRegionalTerraform.paid(current)]
 	guidance.text="계약 인계 완료  다음 목적지에서 재투자하세요." if current.state=="settled" else "F 상호작용  B 건설  I 아이템"
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행  %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement(retain: bool=false) -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
 	var payment:=FrontierPlanetSupply.settlement_payment(ledger.get("sites",{}).get(body_id,{}),planet_tier,retain)
-	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설 / 로봇 / 재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.dialog_text=("복원 대금 %d Cr (60%%)\n인계 대금 40%%를 포기하고 시설 / 로봇 / 재고와 생산 이용권을 유지합니다.\n호스트 세션 중에는 다른 행성에서도 생산합니다. 원료 / 전력 / 창고 조건에 따라 대기합니다."%payment) if retain else dialog.dialog_text;dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
+	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설 / 로봇 / 재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.dialog_text=("남은 복원 대금 %d Cr\n총대금의 60%%에서 중간 지급액을 제외합니다.\n인계 대금 40%%를 포기하고 시설 / 로봇 / 재고와 생산 이용권을 유지합니다.\n호스트 세션 중에는 다른 행성에서도 생산합니다. 원료 / 전력 / 창고 조건에 따라 대기합니다."%payment) if retain else dialog.dialog_text;dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
 
 func engineering_command(stage: String) -> void:
 	command.emit("business_research_"+stage,{"project":selected(research_project),"building_id":selected(research_facility)})

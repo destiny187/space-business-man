@@ -84,7 +84,10 @@ func _process(delta: float) -> void:
 		var a: Dictionary=app.surface_world.body.astro
 		location.tooltip_text="동주기 자전  같은 지역은 낮/밤 면 유지" if a.spin_state=="synchronous" else "현지 하루 약 %.1f시간  플레이 약 %.1f분"%[float(a.mean_solar_seconds)/3600.0,float(a.mean_solar_seconds)/float(a.time_scale)/60.0]
 	var ship:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)
-	return_label.text="%.0f m"%position.distance_to(ship)
+	return_label.text="착륙선 %.0f m"%position.distance_to(ship)
+	if app.planet_map!=null and app.planet_map.waypoint.is_finite():
+		var target:=app.planet_map.waypoint
+		return_label.text="지도 표식 %.0f m   착륙선 %.0f m"%[Vector2(position.x,position.z).distance_to(target),position.distance_to(ship)]
 	var tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	equipment_name.text=tool.get("name","I  장비 준비")
 	equipment_name.get_parent().visible=app.rovers==null or app.rovers.seat().is_empty()

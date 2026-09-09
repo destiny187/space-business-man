@@ -12,6 +12,7 @@ var navigation_journal: FrontierNavigationJournal
 var navigation_records: FrontierNavigationRecords
 var rovers: FrontierRoverController
 var navigation_ui: Control
+var planet_map: FrontierPlanetMap
 var chart: Control
 var inventory_panel: FrontierEquipmentPanel
 var field_hud: FrontierFieldHud
@@ -144,6 +145,7 @@ func _ready() -> void:
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
 	navigation_ui.get_parent().move_child(navigation_ui,-1)
+	planet_map=FrontierPlanetMap.new();ui.add_child(planet_map);planet_map.configure(self)
 	for frame in menu_frames()+[waiting_screen,onboarding.letter]:
 		frame.visibility_changed.connect(_menu_changed)
 	if get_tree().has_meta("startup_loader"):
@@ -829,7 +831,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(cabin_root) and cabin_root.get_parent()==null:cabin_root.free()
 
 func menu_frames() -> Array:
-	var frames: Array=[rovers.panel if rovers!=null else null,rovers.dock if rovers!=null else null,navigation_frame,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
+	var frames: Array=[rovers.panel if rovers!=null else null,rovers.dock if rovers!=null else null,navigation_frame,planet_map,inventory_panel,business_panel,shipyard_panel,research_frame,station_market]
 	if stations!=null:frames.append(stations.panel)
 	if lotus!=null:frames.append(lotus.panel)
 	if navigation_ui!=null:frames.append_array([navigation_ui.pause_frame,navigation_ui.crew_frame])
@@ -984,6 +986,10 @@ func travel_action(action: String) -> void:
 	get_viewport().gui_release_focus()
 func toggle_navigation() -> void:
 	if not session.active or session.latest.get("phase")!="playing":return
+	if surface_world!=null:
+		if planet_map==null:
+			planet_map=FrontierPlanetMap.new();ui.add_child(planet_map);planet_map.configure(self)
+		planet_map.refresh();open_menu(planet_map);return
 	open_menu(navigation_frame)
 	if navigation_frame.visible:navigation_ui.show_target(flight.scan_target if flight!=null and flight.scan_target>=0 else selected_ordinal)
 func toggle_research() -> void:

@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 		for key in bars:bars[key].hide();values[key].text="—"
 		return
 	title.text="환경 적합도 %.0f%%  [H]"%report.overall;bar.value=report.overall
-	state.text="지역 환경  "+("✓ 안정" if report.stable else "◷ 관찰 중  %.0f / %.0f초"%[report.stable_seconds,report.stable_required])
+	state.text=(site.get("regions",{}).get(site.get("current_region",""),{}).get("name","지역 환경"))+"  "+("✓ 안정" if report.stable else "◷ 관찰 중  %.0f / %.0f초"%[report.stable_seconds,report.stable_required])
 	if not report.limiting_factors.is_empty():warning.text="! "+str(report.limiting_factors[0].label);warning.show()
 	for key in bars:
 		bars[key].show();bars[key].value=report.scores[key];values[key].text="%.0f"%report.scores[key]

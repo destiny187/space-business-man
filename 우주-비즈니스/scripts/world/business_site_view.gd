@@ -97,6 +97,7 @@ func accept(value: Dictionary) -> void:
 		if not wanted.has(id):nodes[id].queue_free();nodes.erase(id)
 	for id in pending_models.keys():
 		if not wanted.has(id):pending_models.erase(id)
+	FrontierSurfaceRecovery.shader_regions(terrain.material,body,ledger)
 	if not registered:return
 	restore_amount=float(site.environment.ecology)/100.0
 	terrain.material.set_shader_parameter("restoration_center",FrontierExpeditionBusiness.point(site.center))

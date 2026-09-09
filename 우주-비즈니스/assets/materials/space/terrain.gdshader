@@ -6,6 +6,10 @@ uniform vec4 dust_color:source_color=vec4(.67,.53,.39,1);
 uniform float salt_crust=0.;
 uniform float soil_recovery=0.;
 uniform float restoration=0.;
+uniform int region_count=0;
+uniform vec4 region_points[15];
+uniform vec4 region_values[15];
+uniform vec4 region_extras[15];
 uniform float recovery_water=-1.;
 uniform float recovery_pressure=0.;
 uniform float recovery_life=-1.;
@@ -64,17 +68,27 @@ void fragment(){
  float upward=smoothstep(.42,.90,n.y);float skin=upward*exposure;
  vec3 geo=geology(world_position.xz);
  float managed=1.-smoothstep(restoration_radius*.7,restoration_radius,distance(world_position.xz,restoration_center.xz));
+ float local_temp_value=local_temperature;float local_water_value=recovery_water;float local_pressure_value=recovery_pressure;
+ float local_life_value=recovery_life;float local_salt_value=salt_crust;float local_soil_value=soil_recovery;float local_restore_value=restoration;
+ if(region_count>0){
+  managed=0.;
+  for(int i=0;i<15;i++){
+   if(i>=region_count){break;}
+   float w=1.-smoothstep(region_points[i].w*.65,region_points[i].w,distance(world_position.xz,region_points[i].xz));
+   if(w>managed){managed=w;local_temp_value=region_values[i].x;local_life_value=region_values[i].y;local_water_value=region_values[i].z;local_pressure_value=region_values[i].w;local_salt_value=region_extras[i].x;local_soil_value=region_extras[i].y;local_restore_value=region_extras[i].z;}
+  }
+ }
  float near_detail=1.-smoothstep(detail_near,detail_far,distance(CAMERA_POSITION_WORLD,world_position));
  float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
  vec3 strata=mix(rock_color.rgb*.82,rock_color.rgb*1.09,smoothstep(.2,.8,terrace));
  float deposit=skin*smoothstep(.18,.88,geo.z+geo.y*.75);
- float temp=mix(native_temperature,local_temperature,managed)+(geo.x-.5)*14.-max(0.,world_position.y-2.)*.012;
+ float temp=mix(native_temperature,local_temp_value,managed)+(geo.x-.5)*14.-max(0.,world_position.y-2.)*.012;
  float freeze=1.-smoothstep(freeze_start,freeze_end,temp);
- float supply=mix(volatile_supply,max(0.,recovery_water),managed*step(0.,recovery_water));
+ float supply=mix(volatile_supply,max(0.,local_water_value),managed*step(0.,local_water_value));
  float moisture=supply*(.60+.40*(1.-geo.x));
  float ice=freeze*moisture*(.28+.72*geo.y)*skin;
  float snow=freeze*moisture*smoothstep(.12,.76,geo.z+geo.y*.15)*skin;
- float wet=(1.-freeze)*moisture*(.15+.85*geo.y)*skin*max(float(liquid_allowed),managed*smoothstep(.05,.2,recovery_pressure));
+ float wet=(1.-freeze)*moisture*(.15+.85*geo.y)*skin*max(float(liquid_allowed),managed*smoothstep(.05,.2,local_pressure_value));
  vec3 bump=vec3(0.);float roughness=.94;
  vec4 rock=vec4(.5,.5,.5,.94);vec4 dirt=rock;
  vec3 br=vec3(0.);vec3 bd=vec3(0.);
@@ -102,12 +116,12 @@ void fragment(){
   roughness=mix(mix(roughness,.27,ice),.82,snow);
  }
  ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);
- float salt=salt_crust*managed*skin*smoothstep(.25,.7,geo.z);
+ float salt=local_salt_value*managed*skin*smoothstep(.25,.7,geo.z);
  ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt*.6);
- ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),soil_recovery*managed*skin*.30);
- ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),(recovery_life<0.?restoration:recovery_life)*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
+ ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),local_soil_value*managed*skin*.30);
+ ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),(local_life_value<0.?local_restore_value:local_life_value)*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
  vec3 perturbed=normalize(n+(bump-n*dot(n,bump))*normal_strength*near_detail);
  NORMAL=normalize((VIEW_MATRIX*vec4(perturbed,0.)).xyz);ROUGHNESS=roughness;
- if(molten){float heat=mix(1.,local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
+ if(molten){float heat=mix(1.,region_count>0?clamp((local_temp_value-80.)/max(1.,native_temperature-80.),0.,1.):local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
  float pulse=.85+.15*sin(TIME*1.3+world_position.z*.2);ALBEDO=mix(ALBEDO,vec3(.65,.07,.005),fissure*heat);EMISSION=vec3(1.,.12,.005)*fissure*heat*pulse*1.6;}
 }

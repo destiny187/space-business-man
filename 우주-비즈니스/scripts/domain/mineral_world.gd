@@ -45,6 +45,7 @@ static func region(body: Dictionary,x: int,z: int) -> Array:
 	var result: Array=[]
 	var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 	for slot in int(rules.surface_slots)+int(rules.underground_slots):
+		if body.has("regional_rules") and slot<int(rules.surface_slots):continue
 		var id: String="ore1:%d:%d:%d"%[x,z,slot]
 		var seed_value: int=FrontierUniverse.derive(int(body.streams.resource),id)
 		var below: bool=slot>=int(rules.surface_slots)
@@ -63,6 +64,7 @@ static func region(body: Dictionary,x: int,z: int) -> Array:
 		if int(rules.get("version",1))>=3 and FrontierMinerals.entry(resource).category!="gem":
 			capacity+=maxi(0,int(body.planet_tier)-1)*int(rules.capacity_per_tier)+mini(int(rules.capacity_distance_cap),floori(Vector2(px,pz).length()/1000.0)*int(rules.capacity_per_km))
 		result.append({"id":id,"resource":resource,"required_tier":int(rules.get("resource_tiers",rules().resource_tiers).get(resource,1)),"capacity":capacity,"position":[px,y,pz],"underground":below,"quality":1+FrontierUniverse.derive(seed_value,"quality")%int(rules.get("quality_levels",3))})
+	if body.has("regional_rules"):result.append_array(FrontierSurfaceRegions.surface(body,x,z))
 	return result
 static func nearby(body: Dictionary,point: Vector3=Vector3.ZERO) -> Array:
 	if not enabled(body):return []

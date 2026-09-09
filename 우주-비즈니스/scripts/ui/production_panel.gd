@@ -97,6 +97,9 @@ func refresh() -> void:
 	upgrade.text="제작소 Mk.%d 개조"%next_tier if manufacturing else "Mk.%d 개조"%next_tier
 	upgrade.tooltip_text=str(upgrade_def.get("effect","채광 18  적재 64  이동 +20%"))
 	upgrade.disabled=b.get("submerged",false) or b.is_empty() or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or not FrontierPlanetSupply.operating(current)
+	var blueprint:=FrontierFacilityBlueprints.required(b,next_tier) if not is_robot else ""
+	if not blueprint.is_empty() and blueprint not in panel.ledger.get("facility_blueprints",[]):
+		upgrade.disabled=true;upgrade.text="Mk.%d 설계도 필요"%next_tier;upgrade.tooltip_text="공동 원정 설계도 보유 상태를 확인하세요."
 	if upgrade_def.is_empty():upgrade.text="현재 최고 단계  Mk.%d"%int(b.get("tier",1));target_cost.value=""
 
 func production_reason(product_id: String) -> String:

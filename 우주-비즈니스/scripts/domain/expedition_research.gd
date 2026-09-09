@@ -112,8 +112,11 @@ static func validate(world: Dictionary) -> String:
 				stage="prototyped"
 		if project.stage!=stage:return "공동 연구 단계와 증거 불일치"
 	for license in value.licenses:
+		if FrontierFacilityBlueprints.valid(license,value.licenses[license]):continue
 		if license not in licenses or value.origin!="legacy" or value.licenses[license]!="legacy":return "공동 연구 사용권 오류"
-	if value.origin=="legacy" and value.licenses.size()!=licenses.size():return "이전 세계 사용권 누락"
+	if value.origin=="legacy":
+		for license in licenses:
+			if not value.licenses.has(license):return "이전 세계 사용권 누락"
 	return ""
 
 ## Assembly uses the participant's explicitly offered parts, never shared warehouse stock.

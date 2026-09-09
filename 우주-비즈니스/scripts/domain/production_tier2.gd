@@ -57,6 +57,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		row.production={"product":key,"progress":0.0};return ""
 	if kind not in ["business_facility_upgrade","business_robot_upgrade"]:return "지원하지 않는 생산 작업입니다."
 	var next_tier:=int(row.get("tier",1))+1
+	if not robot:
+		var blueprint_error:=FrontierFacilityBlueprints.reason(world,row,next_tier)
+		if not blueprint_error.is_empty():return blueprint_error
 	var def: Dictionary=config().robot_upgrade if robot and next_tier==2 else upgrade_definition(row)
 	if robot and next_tier>2:def={}
 	if def.is_empty():return "이 시설은 현재 개조 대상이 아닙니다."
