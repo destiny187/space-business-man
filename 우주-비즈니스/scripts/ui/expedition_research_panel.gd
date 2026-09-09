@@ -83,7 +83,7 @@ func responded(sequence: int,value: Dictionary) -> void:
 	if not value.get("ok",false):reject(str(value.get("error","작업을 완료하지 못했습니다.")));return
 	loaded=false;receipt_revision=int(value.revision);phase="success";phase_time=0
 	assembled_id=str(value.get("research",{}).get("item_id",""))
-	message.text="시험기 조립 완료 · I에서 장착 / 화물 보관" if mode=="factory" else ("분석 완료 · 시험기 조립 가능" if value.research.stage=="analyzed" else "표본 계측 완료")
+	message.text="시험기 조립 완료  I에서 장착 / 화물 보관" if mode=="factory" else ("분석 완료  시험기 조립 가능" if value.research.stage=="analyzed" else "표본 계측 완료")
 	play("sfx_factory_complete");refresh()
 func submit() -> void:
 	if busy() or mode=="journal" or action.disabled:return
@@ -91,7 +91,7 @@ func submit() -> void:
 	var args: Dictionary={"station_id":"ship:research","project":"deep_mining","resource":selected,"amount":int(quantity.value),"expected_stage":"discovered"}
 	if mode=="factory":
 		kind="equipment_research_prototype";args={"project":"deep_mining","building_id":app.business_panel.context_id,"expected_stage":project().stage}
-	sending=true;phase="waiting";phase_time=0;message.text="조립 결과 확인 중" if mode=="factory" else "표본 계측 · 결과 확인 중"
+	sending=true;phase="waiting";phase_time=0;message.text="조립 결과 확인 중" if mode=="factory" else "표본 계측  결과 확인 중"
 	process_sound.stream=app.feedback.audio.stream("sfx_robot_charge",true);process_sound.play();refresh()
 	var sent:=app.session.send_request(kind,args);sending=false
 	if not sent:pending_sequence=0;reject("연결 상태를 확인한 뒤 다시 실행하세요.")
@@ -106,9 +106,9 @@ func refresh() -> void:
 	flow.research_stage=state;flow.amount=count;flow.required=required;flow.phase=phase;preview.phase=phase
 	var inspected: String=selected if data.evidence.has(selected) else (str(data.evidence.keys()[0]) if not data.evidence.is_empty() else "")
 	preview.present(state,inspected if mode=="journal" or loaded or phase=="success" else "")
-	stage_label.text={"unseen":"발견되지 않은 표본","discovered":"표본 계측 · %d / %d"%[count,required],"analyzed":"분석 완료 · 조립 대기","prototyped":"시험기 준비 · 현장 시험 대기"}[state]
-	hint.text={"unseen":"지하에서 보석을 발견하면 단서가 연결됩니다.","discovered":"내 배낭의 표본을 연구대에 올려 계측합니다.","analyzed":"현장 제작소 Mk.2 · 내 부품으로 시험기 조립","prototyped":"T2 시험기 · 정식 Mk.3 설계는 현장 시험 후 개방"}[state]
-	if mode=="journal":hint.text="원정대 공동 기록 · 표본 계측은 원정선 연구대에서"
+	stage_label.text={"unseen":"발견되지 않은 표본","discovered":"표본 계측  %d / %d"%[count,required],"analyzed":"분석 완료  조립 대기","prototyped":"시험기 준비  현장 시험 대기"}[state]
+	hint.text={"unseen":"지하에서 보석을 발견하면 단서가 연결됩니다.","discovered":"내 배낭의 표본을 연구대에 올려 계측합니다.","analyzed":"현장 제작소 Mk.2  내 부품으로 시험기 조립","prototyped":"T2 시험기  정식 Mk.3 설계는 현장 시험 후 개방"}[state]
+	if mode=="journal":hint.text="원정대 공동 기록  표본 계측은 원정선 연구대에서"
 	for id in specimens:
 		var tile: FrontierItemTile=specimens[id];tile.visible=data.evidence.has(id) if mode=="journal" else int(stock.get(id,0))>0;tile.disabled=busy() or not data.evidence.has(id);tile.selected=id==selected;tile.amount=str(int(stock.get(id,0))) if mode!="journal" else ("발견" if data.evidence.has(id) else "?");tile.modulate=Color.WHITE if data.evidence.has(id) else Color(.3,.36,.4);tile.queue_redraw()
 	bag_row.visible=mode!="factory" and state in ["unseen","discovered"]
@@ -125,7 +125,7 @@ func refresh() -> void:
 			var col:=VBoxContainer.new();cost_row.add_child(col);col.add_child(FrontierResourceIcons.view(id,40));FrontierInterfaceStyle.label(col,"%d / %d"%[int(stock.get(id,0)),int(cost[id])],13)
 	action.visible=mode!="journal"
 	action.disabled=busy() or (not loaded if mode=="bench" else state not in ["analyzed","prototyped"] or not FrontierExpeditionBusiness.affordable(stock,cost))
-	action.text=("조립 완료" if mode=="factory" else "계측 완료") if phase=="success" else "결과 확인 중…" if busy() else ("시험기 조립 · 내 배낭 부품" if mode=="factory" else "표본 분석")
+	action.text=("조립 완료" if mode=="factory" else "계측 완료") if phase=="success" else "결과 확인 중…" if busy() else ("시험기 조립  내 배낭 부품" if mode=="factory" else "표본 분석")
 	if mode=="factory" and state in ["analyzed","prototyped"]:
 		var context: Dictionary={"crew":app.session.latest.crew,"business":app.business_panel.ledger.duplicate(),"location":app.business_panel.body_id,"expedition_research":app.session.latest.expedition_research}
 		context.business.bags={app.session.latest.self_id:stock}
@@ -140,5 +140,5 @@ func _process(delta: float) -> void:
 		pending_sequence=0;sending=false;receipt_revision=0;loaded=false;phase="ready";return
 	phase_time+=delta
 	if phase=="success" and phase_time>1.2 and int(app.session.latest.crew.revision)>=receipt_revision:phase="ready"
-	if phase=="waiting" and phase_time>8:message.text="응답 대기 중 · 창을 닫아도 결과는 기록됩니다."
+	if phase=="waiting" and phase_time>8:message.text="응답 대기 중  창을 닫아도 결과는 기록됩니다."
 	if is_visible_in_tree():refresh()

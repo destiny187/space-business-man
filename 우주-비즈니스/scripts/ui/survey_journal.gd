@@ -25,7 +25,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	search.text_changed.connect(func(_s):page_index=0;query_delay=.25)
 	var filters:=HBoxContainer.new();list.add_child(filters)
 	category=OptionButton.new();filters.add_child(category)
-	for title in ["전체","광물 · 보석","생물"]:category.add_item(title)
+	for title in ["전체","광물  보석","생물"]:category.add_item(title)
 	location=OptionButton.new();filters.add_child(location)
 	for title in ["전체 발견","현재 행성"]:location.add_item(title)
 	for option in [category,location]:option.item_selected.connect(func(_i):page_index=0;refresh())
@@ -58,7 +58,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	if reply_serial!=serial:return
 	for child in grid.get_children():grid.remove_child(child);child.queue_free()
 	page_index=int(value.page)
-	caption.text="%d개 · %d / %d"%[int(value.total),page_index+1,maxi(1,ceili(float(value.total)/24))]
+	caption.text="%d개  %d / %d"%[int(value.total),page_index+1,maxi(1,ceili(float(value.total)/24))]
 	previous.disabled=page_index==0;next.disabled=(page_index+1)*24>=int(value.total)
 	var retained: Dictionary={}
 	for entry in value.entries:
@@ -68,7 +68,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	if retained.is_empty() and not value.entries.is_empty():retained=value.entries[0]
 	select(retained)
 	if value.entries.is_empty():
-		var empty:=FrontierInterfaceStyle.label(grid,"E를 유지해 생물·광물을 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "조건에 맞는 발견이 없습니다.",14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		var empty:=FrontierInterfaceStyle.label(grid,"E를 유지해 생물 / 광물을 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "조건에 맞는 발견이 없습니다.",14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 func select(entry: Dictionary) -> void:
 	selected_entry=entry
 	for tile in grid.get_children():
@@ -78,7 +78,7 @@ func select(entry: Dictionary) -> void:
 	if entry.is_empty():return
 	var heading:=FrontierInterfaceStyle.label(details,entry.name,20);heading.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var source:=FrontierUniverse.body_from_id(app.session.manifest,entry.row.body_id)
-	FrontierInterfaceStyle.label(details,"발견 · "+str(source.get("name",entry.row.body_id)),12,FrontierInterfaceStyle.MUTED)
+	FrontierInterfaceStyle.label(details,"발견  "+str(source.get("name",entry.row.body_id)),12,FrontierInterfaceStyle.MUTED)
 	if entry.kind=="biology":
 		for index in app.form_options.item_count:
 			if app.form_options.get_item_metadata(index)==entry.row.form_id:app.form_options.select(index);break
@@ -92,11 +92,11 @@ func select(entry: Dictionary) -> void:
 			var label:=FrontierInterfaceStyle.label(details,note.text,13);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	else:
 		details.add_child(FrontierResourceIcons.view(entry.icon,72))
-		FrontierInterfaceStyle.label(details,"채집기 %d등급 · 매장량은 현장 재조사"%int(entry.row.tier),13)
+		FrontierInterfaceStyle.label(details,"채집기 %d등급  매장량은 현장 재조사"%int(entry.row.tier),13)
 		var uses: PackedStringArray=[]
 		for id in FrontierProductionTier2.config().products:
 			var recipe:=FrontierProductionTier2.product(id)
 			if int(recipe.tier)<=2 and recipe.cost.has(entry.row.resource):uses.append(recipe.name)
-		if FrontierMinerals.entry(entry.row.resource).get("category")=="gem":uses.append("개인 증강 · 우주선 증강 장치")
+		if FrontierMinerals.entry(entry.row.resource).get("category")=="gem":uses.append("개인 증강  우주선 증강 장치")
 		if not uses.is_empty():
-			var note:=FrontierInterfaceStyle.label(details,"사용처 · "+" · ".join(uses),13);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+			var note:=FrontierInterfaceStyle.label(details,"사용처  "+"  ".join(uses),13);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART

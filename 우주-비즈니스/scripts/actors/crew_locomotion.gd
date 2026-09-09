@@ -18,7 +18,7 @@ static func valid(value: Variant) -> bool:
 	if not shot is Dictionary:return false
 	if not shot.is_empty() and (not FrontierUniverse._finite(shot.get("serial"),0,9007199254740000) or not FrontierUniverse._vector3_array(shot.get("point")) or not shot.get("entering") is bool):return false
 	return FrontierUniverse._finite(value.get("yaw"),-TAU,TAU)
-static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0,swim_vertical: float=0.0) -> void:
+static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0,swim_vertical: float=0.0,jump_factor: float=1.0) -> void:
 	var c:=config()
 	var was_grounded: bool=motion.grounded
 	var old_depth:=float(motion.get("water_depth",0))
@@ -45,7 +45,7 @@ static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,spe
 	if motion.takeoff>0:
 		motion.takeoff=maxf(0,float(motion.takeoff)-delta)
 		if motion.takeoff<=0:
-			body.velocity.y=float(c.jump_speed);motion.jump_serial+=1;motion.landing=0.0;motion.coyote=0.0;launched=true
+			body.velocity.y=float(c.jump_speed)*sqrt(jump_factor);motion.jump_serial+=1;motion.landing=0.0;motion.coyote=0.0;launched=true
 	var immersion:=clampf(water_depth/1.5,0,1)
 	var water_cfg:=FrontierSurfaceWater.config()
 	if swimming:motion.takeoff=0.0

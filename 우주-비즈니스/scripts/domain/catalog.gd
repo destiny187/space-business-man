@@ -14,6 +14,7 @@ static func table(key: String) -> Dictionary:
 	return all()[key]
 
 static func entry(category: String, key: String) -> Dictionary:
+	if category=="resources" and FrontierSpecimenItems.is_item(key):return FrontierSpecimenItems.entry(key)
 	if category=="resources" and not table(category).has(key):
 		var product:=FrontierProductionTier2.product(key)
 		return product if not product.is_empty() else FrontierMinerals.entry(key)
@@ -23,7 +24,7 @@ static func cost_text(cost: Dictionary) -> String:
 	var parts: PackedStringArray = []
 	for key in cost:
 		parts.append("%s %d" % [entry("resources", key).get("name", key), cost[key]])
-	return " · ".join(parts)
+	return "  ".join(parts)
 
 static func stock_text(stock: Dictionary) -> String:
 	var present: Dictionary={}

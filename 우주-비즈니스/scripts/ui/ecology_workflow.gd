@@ -13,6 +13,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	for title in ["관측","분석","서식지","이식"]:
 		var step:=FrontierInterfaceStyle.label(strip,title,13);step.size_flags_horizontal=Control.SIZE_EXPAND_FILL;stages.append(step)
 	note=FrontierInterfaceStyle.label(self,"",13);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;move_child(note,1)
+	var inventory:=Button.new();inventory.text="아이템창에서 표본 관리";add_child(inventory);inventory.pressed.connect(app.toggle_inventory)
 	visit=Button.new();visit.text="표본 연구대에서 작업";add_child(visit);visit.pressed.connect(func():app.stations.navigate("research",2))
 	samples=HFlowContainer.new();add_child(samples);move_child(samples,2)
 func refresh(near: bool) -> void:
@@ -40,10 +41,10 @@ func refresh(near: bool) -> void:
 	var cost:=0
 	if not analyzed:
 		action=app.research_actions[0];cost=int(FrontierEcologyCatalog.config().analysis_rock_cost)
-		action.text="기초 분석 · 광물 %d"%cost
+		action.text="기초 분석  광물 %d"%cost
 	elif not established:
 		action=app.research_actions[1];cost=int(FrontierEcologyCatalog.config().plot_rock_cost)
-		action.text="서식지 시험 · 광물 %d"%cost
+		action.text="서식지 시험  광물 %d"%cost
 		var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 		var point:=FrontierCrewWorld.vector(member.position)
 		var underground: bool=app.surface_world!=null and app.surface_world.terrain.field.height(point.x,point.z)-point.y>6
@@ -51,18 +52,19 @@ func refresh(near: bool) -> void:
 		if form.environment!=environment:action.disabled=true;note.text="이 행성의 기질과 맞지 않습니다."
 	else:
 		action=app.research_actions[2];action.text="선택 표본 이식";action.disabled=not near or introduced
-		if introduced:note.text="이식 시험 중 · 생물량 %.1f%%"%float(plot.get("biomass",0))
+		if introduced:note.text="이식 시험 중  생물량 %.1f%%"%float(plot.get("biomass",0))
 		var refill: Button=app.research_actions[3]
 		refill.visible=float(plot.get("support_remaining",0))<=float(FrontierEcologyCatalog.config().plot_support_seconds)-60
-		refill.text="지원 팩 보충 · 광물 %d"%int(FrontierEcologyCatalog.config().plot_resupply_rock_cost)
+		refill.text="지원 팩 보충  광물 %d"%int(FrontierEcologyCatalog.config().plot_resupply_rock_cost)
 		refill.disabled=not near or int(app.session.latest.crew.rock)<int(FrontierEcologyCatalog.config().plot_resupply_rock_cost)
 	if action!=null:
 		action.show()
-		if cost>int(app.session.latest.crew.rock):action.disabled=true;note.text="착륙지 창고 · 실험용 광물 %d 필요"%cost
+		if cost>int(app.session.latest.crew.rock):action.disabled=true;note.text="착륙지 창고  실험용 광물 %d 필요"%cost
 	var candidates: Dictionary={}
+	var carried:=FrontierSpecimenItems.carried(app.session.latest.get("inventory",{}))
 	for id in ecology.specimens:
 		var sample: Dictionary=ecology.specimens[id]
-		if sample.state=="cargo" and sample.form_id==form.id and sample.source_body!=app.session.latest.location:candidates[id]=sample
+		if carried.has(id) and sample.state=="cargo" and sample.form_id==form.id and sample.source_body!=app.session.latest.location:candidates[id]=sample
 	samples.visible=established and not introduced
 	var signature:=str(candidates)+str(app.sample_options.selected)
 	if signature!=sample_signature:
@@ -78,7 +80,7 @@ func refresh(near: bool) -> void:
 	if established:
 		var selected: String=str(app.sample_options.get_item_metadata(app.sample_options.selected)) if app.sample_options.selected>=0 else ""
 		app.research_actions[2].disabled=app.research_actions[2].disabled or not candidates.has(selected)
-		if candidates.is_empty() and not introduced:note.text="다른 행성에서 확보한 이 생물의 실물 표본이 필요합니다."
+		if candidates.is_empty() and not introduced:note.text="다른 행성에서 확보한 이 생물의 표본을 아이템창에 가져오세요."
 		elif not introduced:
 			var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 			var point:=FrontierCrewWorld.vector(member.position)
@@ -90,5 +92,5 @@ func refresh(near: bool) -> void:
 
 	if not at_station:
 		for control in app.research_actions:control.hide()
-		samples.hide();note.text="기록 열람 · 착륙선 표본 연구대"
+		samples.hide();note.text="기록 열람  착륙선 표본 연구대"
 	else:visit.hide()

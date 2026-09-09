@@ -41,8 +41,8 @@ func refresh() -> void:
 	var reason: String=app.stations.work_reason("augmentation")
 	var target: Dictionary={}
 	if selected=="suit":
-		title.text="탐험복 · Mk.%d"%int(loadout.get("suit_tier",1));preview.show_model("crew/surveyor_suit")
-		detail.text="장비 효과 · 달리기 소모 −20% · 낙하 피해 −25%"
+		title.text="탐험복  Mk.%d"%int(loadout.get("suit_tier",1));preview.show_model("crew/surveyor_suit")
+		detail.text="장비 효과  달리기 소모 −20%  낙하 피해 −25%"
 		if int(loadout.get("suit_tier",1))<2:materials=FrontierProductionTier2.config().suit_upgrade.cost
 	else:
 		var definition: String=loadout.items[selected]
@@ -55,11 +55,11 @@ func refresh() -> void:
 			var gate:=FrontierExpeditionResearch.craft_reason(app.session.latest,id)
 			if reason.is_empty():reason=gate
 			break
-		detail.text="장비 ID와 번호 슬롯을 유지합니다."
+		detail.text="소유한 장비의 성능을 높입니다. 장착 위치는 유지됩니다."
 		if not target.is_empty():detail.text+="\n"+current.name+" → "+str(target.name)
 	if materials.is_empty():reason="최고 개조 단계입니다."
-	if reason.is_empty() and not FrontierExpeditionBusiness.affordable(app.session.latest.get("inventory",{}),materials):reason="내 배낭의 개조 부품이 부족합니다."
-	cost.value="내 배낭 · "+FrontierCatalog.cost_text(materials) if not materials.is_empty() else ""
+
+	cost.show_cost(materials,app.session.latest.get("inventory",{}),true)
 	action.disabled=not reason.is_empty();action.text="Mk.2로 개조" if reason.is_empty() else reason
 	for child in grid.get_children():child.selected=child.get_meta("item")==selected;child.queue_redraw()
 func add_item(id: String,caption: String,model: String) -> void:

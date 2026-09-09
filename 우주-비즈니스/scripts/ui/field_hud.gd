@@ -43,7 +43,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var weapon:=VBoxContainer.new();weapon.name="Weapon";weapon.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(weapon)
 	equipment_name=FrontierInterfaceStyle.label(weapon,"",14);cooldown=ProgressBar.new();cooldown.show_percentage=false;cooldown.custom_minimum_size=Vector2(170,3);weapon.add_child(cooldown)
 	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",5);add_child(navigation)
-	var rows: Array=[["inventory","I","아이템 · 장비",app.toggle_inventory],["build","B","건설",app.toggle_business],["scan","J","연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
+	var rows: Array=[["inventory","I","아이템  장비",app.toggle_inventory],["build","B","건설",app.toggle_business],["scan","J","연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
 	for entry in rows:
 		var button:=Button.new();button.custom_minimum_size=Vector2(46,46);button.tooltip_text=entry[2]+" ["+entry[1]+"]";button.pressed.connect(entry[3]);navigation.add_child(button)
 		var icon:=TextureRect.new();icon.texture=load("res://assets/ui/interface/"+entry[0]+".svg");icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;icon.position=Vector2(12,5);icon.size=Vector2(22,22);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;button.add_child(icon)
@@ -80,9 +80,9 @@ func _process(delta: float) -> void:
 	day_dial.visible=not air.cycles.is_empty()
 	if day_dial.visible:
 		day_dial.height=float(air.sky_state.sun_height);day_dial.queue_redraw()
-		location.text+=" · "+air.cycle_label()
+		location.text+="  "+air.cycle_label()
 		var a: Dictionary=app.surface_world.body.astro
-		location.tooltip_text="동주기 자전 · 같은 지역은 낮/밤 면 유지" if a.spin_state=="synchronous" else "현지 하루 약 %.1f시간 · 플레이 약 %.1f분"%[float(a.mean_solar_seconds)/3600.0,float(a.mean_solar_seconds)/float(a.time_scale)/60.0]
+		location.tooltip_text="동주기 자전  같은 지역은 낮/밤 면 유지" if a.spin_state=="synchronous" else "현지 하루 약 %.1f시간  플레이 약 %.1f분"%[float(a.mean_solar_seconds)/3600.0,float(a.mean_solar_seconds)/float(a.time_scale)/60.0]
 	var ship:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)
 	return_label.text="%.0f m"%position.distance_to(ship)
 	var tool:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
@@ -98,15 +98,15 @@ func _process(delta: float) -> void:
 		target_action.text="클릭 유지  채집" if usable else "채집기 %s 필요"%["I","II","III"][int(vein.required_tier)-1]
 		target_action.modulate=Color.WHITE if usable else FrontierInterfaceStyle.WARNING
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
-		if site.is_empty():target_action.text="광맥 조준 · 클릭 유지로 채집"
+		if site.is_empty():target_action.text="광맥 조준  클릭 유지로 채집"
 		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
-		target_action.text+=" · E 유지  조사\nR  로봇 1대 지시 · "+("고등급 자동 선정" if app.preferred_robot_id.is_empty() else app.preferred_robot_id+" 우선")
+		target_action.text+="  E 유지  조사\nR  로봇 1대 지시  "+("고등급 자동 선정" if app.preferred_robot_id.is_empty() else app.preferred_robot_id+" 우선")
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)
 		target_name.text=form.name;target_icon.texture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(form))
 		var known: bool=app.session.surface.ecology.observations.has(app.surface_world.body.id+":"+form.id)
-		target_action.text="Q  표본 채집 · E  활용 정보" if known else "E 유지  스캔";target_action.modulate=Color.WHITE;context.show()
+		target_action.text="Q  표본 채집  E  활용 정보" if known else "E 유지  스캔";target_action.modulate=Color.WHITE;context.show()
 		if form.category=="animal" and tool.get("kind")=="pulse":
 			target_bar.show();target_bar.max_value=FrontierEquipment.config().animal_health;target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
 			target_action.text="클릭  발사" if target_bar.value>0 else "무력화"
@@ -124,8 +124,8 @@ func _process(delta: float) -> void:
 	if not app.placement_kind.is_empty():
 		var def:=FrontierCatalog.entry("buildings",app.placement_kind)
 		target_icon.texture=FrontierInterfaceStyle.icon(def.model)
-		target_name.text=("✓ 건설 가능 · " if app.placement_valid else "× 건설 불가 · ")+str(def.name)
-		target_action.text="클릭 건설 · 가방 "+FrontierCatalog.cost_text(def.cost) if app.placement_valid else app.placement_reason
+		target_name.text=("✓ 건설 가능  " if app.placement_valid else "× 건설 불가  ")+str(def.name)
+		target_action.text="클릭 건설  가방 "+FrontierCatalog.cost_text(def.cost) if app.placement_valid else app.placement_reason
 		target_action.modulate=FrontierInterfaceStyle.ACCENT if app.placement_valid else FrontierInterfaceStyle.WARNING
 		target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
 		context.show();target_bar.hide()

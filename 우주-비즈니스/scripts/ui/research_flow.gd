@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	var font:=get_theme_default_font()
 	var stages: Array=[research_stage!="unseen",research_stage in ["analyzed","prototyped"],research_stage=="prototyped",false]
-	var labels: Array=["표본 · %d/%d"%[amount,required],"분석","시험기 · II","정식 설계 · III"]
+	var labels: Array=["표본  %d/%d"%[amount,required],"분석","시험기  II","정식 설계  III"]
 	var step: float=size.x/4
 	for i in 4:
 		var point:=Vector2(step*(i+.5),32)

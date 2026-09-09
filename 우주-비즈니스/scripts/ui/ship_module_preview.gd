@@ -27,7 +27,7 @@ func show_vessel(vessel: Dictionary) -> void:
 	for slot in FrontierVesselRefit.config().slots:
 		var id: String=vessel.get("loadout",{}).get(slot,"")
 		var anchor:=Node3D.new();view.model.add_child(anchor);anchor.position=FrontierCrewWorld.vector(FrontierVesselRefit.config().mounts[slot]);mounts[slot]=anchor
-		buttons[slot].text=("추진" if slot=="propulsion" else "공용")+(" · 비어 있음" if id.is_empty() else " · 장착됨")
+		buttons[slot].text=("추진" if slot=="propulsion" else "공용")+("  비어 있음" if id.is_empty() else "  장착됨")
 		if id.is_empty():continue
 		var module: Dictionary=vessel.modules[id];var def:=FrontierVesselRefit.definition(module.type)
 		var model: Node3D=load("res://assets/models/"+str(def.model)+".glb").instantiate();anchor.add_child(model);FrontierInkStyle.apply(model,{})

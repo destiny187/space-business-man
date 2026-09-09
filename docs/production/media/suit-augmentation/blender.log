@@ -1,0 +1,47 @@
+00:00.710  blend            | Read blend: "/Users/jskim/Documents/repository/space-business-man/art/blender/crew/surveyor_suit.blend"
+/Users/jskim/Documents/repository/space-business-man/tools/build_suit_augmentation.py:35: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new('CORE::'+branch);m.diffuse_color=(*color,1);m.use_nodes=True
+Info: Saved as "surveyor_augmented.blend"
+INFO Draco is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_draco_bridge.dylib
+INFO MeshOptimizer is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_meshopt_bridge.dylib
+16:19:58 | INFO: Starting glTF 2.0 export
+16:19:58 | INFO: Extracting primitive: Forearm face L
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Pauldron front L
+16:19:58 | INFO: Primitives created: 2
+16:19:58 | INFO: Extracting primitive: Cylinder.011
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Upper arm shell L
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Cylinder.014
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Shin outer shell L
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Toe guard L
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Cylinder
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Thigh exo rail L
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Calf power housing L
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Cylinder.024
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Split breast guard
+16:19:58 | INFO: Primitives created: 2
+16:19:58 | INFO: Extracting primitive: Cylinder.027
+16:19:58 | INFO: Primitives created: 6
+16:19:58 | INFO: Extracting primitive: Cylinder.029
+16:19:58 | INFO: Primitives created: 3
+16:19:58 | INFO: Extracting primitive: Cylinder.033
+16:19:58 | INFO: Primitives created: 7
+16:19:58 | INFO: Extracting primitive: Sphere
+16:19:58 | INFO: Primitives created: 16
+16:19:58 | INFO: Finished glTF 2.0 export in 0.2517688274383545 s
+00:04.029  blend            | Read blend: "/Users/jskim/Documents/repository/space-business-man/art/blender/crew/surveyor_augmented.blend"
+00:24.257  render           | Saved: '/Users/jskim/Documents/repository/space-business-man/docs/production/media/suit-augmentation/blender-rig.png'
+
+AUGMENTED_SUIT {"source": "art/blender/crew/surveyor_augmented.blend", "output": "\uc6b0\uc8fc-\ube44\uc988\ub2c8\uc2a4/assets/models/crew/surveyor_augmented.glb", "bones": 13, "meshes": 16, "triangles": 58032, "surfaces": 66, "layers": ["Base", "Aug_mobility_1", "Aug_mobility_2", "Aug_mobility_3", "Aug_mobility_4", "Aug_mobility_5", "Aug_combat_1", "Aug_combat_2", "Aug_combat_3", "Aug_combat_4", "Aug_combat_5", "Aug_vitality_1", "Aug_vitality_2", "Aug_vitality_3", "Aug_vitality_4", "Aug_vitality_5"], "dye_slots": ["DYE::backpack::primary", "DYE::belt::accent", "DYE::legs::primary", "DYE::chest::primary", "DYE::chest::secondary", "DYE::chest::accent", "DYE::helmet::secondary", "DYE::arms::secondary", "DYE::helmet::primary", "DYE::legs::accent", "DYE::backpack::secondary", "DYE::legs::secondary", "DYE::arms::primary", "DYE::belt::secondary", "DYE::arms::accent", "DYE::backpack::accent", "DYE::belt::primary", "DYE::helmet::accent"], "thresholds": [1, 4, 8, 12, 16]}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

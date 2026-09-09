@@ -18,7 +18,7 @@ func _ready() -> void:
 	for side in ["left","right","top","bottom"]:margin.add_theme_constant_override("margin_"+side,18)
 	var column:=VBoxContainer.new();margin.add_child(column)
 	caption=Label.new();column.add_child(caption)
-	search=LineEdit.new();search.placeholder_text="행성 이름 · 조사한 광물 · 거점 재고 검색";column.add_child(search);search.text_changed.connect(func(_v):page=0;refresh())
+	search=LineEdit.new();search.placeholder_text="행성 이름  조사한 광물  거점 재고 검색";column.add_child(search);search.text_changed.connect(func(_v):page=0;refresh())
 	filter=OptionButton.new();column.add_child(filter)
 	for label in ["전체 기록","★ 즐겨찾기","▣ 개발 중","▣ 생산 거점"]:filter.add_item(label)
 	filter.item_selected.connect(func(_v):page=0;refresh())
@@ -30,7 +30,7 @@ func _ready() -> void:
 	button(actions,"선택 항로 설정",func():
 		if not entries.get_selected_items().is_empty():selected.emit(int(entries.get_item_metadata(entries.get_selected_items()[0])));hide())
 	button(actions,"Earth 귀환",func():selected.emit(int(journal.manifest.settings.get("starting_ordinal",2)));hide())
-	var note:=Label.new();note.text="항로 선택 후 출발 · 상태는 마지막 확인 기록";column.add_child(note)
+	var note:=Label.new();note.text="항로 선택 후 출발  상태는 마지막 확인 기록";column.add_child(note)
 func button(parent: Node,label: String,action: Callable) -> void:
 	var b:=Button.new();b.text=label;parent.add_child(b);b.pressed.connect(action)
 func refresh() -> void:
@@ -42,20 +42,20 @@ func refresh() -> void:
 			pages.append(int(row.ordinal))
 	pages=pages.filter(func(ordinal):return matches(ordinal))
 	page=clampi(page,0,maxi(0,(pages.size()-1)/50))
-	caption.text="탐험한 항성계 %d  ·  행성 기록 %d  ·  %d / %d"%[journal.data.systems.size(),pages.size(),page+1,maxi(1,int(ceil(pages.size()/50.0)))]
+	caption.text="탐험한 항성계 %d    행성 기록 %d    %d / %d"%[journal.data.systems.size(),pages.size(),page+1,maxi(1,int(ceil(pages.size()/50.0)))]
 	if not journal.error.is_empty():caption.text=journal.error
 	for index in range(page*50,mini(pages.size(),(page+1)*50)):
 		var ordinal: int=pages[index];var body:=FrontierUniverse.body(journal.manifest,ordinal)
 		var supply: Dictionary={}
 		for row in supply_sites:
 			if int(row.ordinal)==ordinal:supply=row;break
-		var status:=journal.status(ordinal) if supply.is_empty() else FrontierPlanetSupply.role_name(supply.role)+(" · 운영 정지" if supply.paused else (" · 원격 운영" if supply.get("remote",false) else " · 현장 운영"))
+		var status:=journal.status(ordinal) if supply.is_empty() else FrontierPlanetSupply.role_name(supply.role)+("  운영 정지" if supply.paused else ("  원격 운영" if supply.get("remote",false) else "  현장 운영"))
 		var icon: Texture2D=null if supply.is_empty() else FrontierResourceIcons.menu_texture(FrontierPlanetSupply.config().roles.get(supply.role,{}).get("icon","stone"))
 		entries.add_item(body.name+"    "+status,icon);entries.set_item_metadata(entries.item_count-1,ordinal)
 		var minerals: PackedStringArray=[]
 		for resource in journal.known_resources(ordinal):minerals.append(FrontierCatalog.entry("resources",resource).name)
-		var detail: String="원격 관측 · "+" / ".join(minerals) if not minerals.is_empty() else "광물 미조사"
-		if not supply.is_empty():detail+="\n현장 창고 · "+FrontierCatalog.stock_text(supply.inventory)
+		var detail: String="원격 관측  "+" / ".join(minerals) if not minerals.is_empty() else "광물 미조사"
+		if not supply.is_empty():detail+="\n현장 창고  "+FrontierCatalog.stock_text(supply.inventory)
 		entries.set_item_tooltip(entries.item_count-1,detail)
 
 func _input(event: InputEvent) -> void:

@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 		if gains[resource].left<=0:gains[resource].row.queue_free();gains.erase(resource)
 	if app.session.latest.is_empty():return
 	var motion: Dictionary=app.visuals.get(app.session.latest.self_id,{}).get("motion",{})
-	movement_hint.text="Space 상승 · 시선 방향으로 수영" if motion.get("state","") in ["swim","tread"] else "Shift  달리기"
+	movement_hint.text="Space 상승  시선 방향으로 수영" if motion.get("state","") in ["swim","tread"] else "Shift  달리기"
 	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	var v: Dictionary=member.get("vitals",FrontierCrewVitals.create())
 	health.max_value=FrontierCrewAugmentation.maximum_health(member);health.value=v.health
@@ -71,7 +71,7 @@ func _process(delta: float) -> void:
 	stamina.modulate=FrontierInterfaceStyle.WARNING if v.exhausted else Color.WHITE
 	if last_damage>=0 and int(v.damage_serial)>last_damage:
 		damage_flash=.65;app.feedback.audio.play("sfx_build_invalid")
-	if last_rescue>=0 and int(v.rescue_serial)>last_rescue:notice.text="긴급 구조 · 장비와 화물 보존";notice_left=4
+	if last_rescue>=0 and int(v.rescue_serial)>last_rescue:notice.text="긴급 구조  장비와 화물 보존";notice_left=4
 	last_damage=int(v.damage_serial);last_rescue=int(v.rescue_serial)
 	damage_flash=maxf(0,damage_flash-delta);notice_left=maxf(0,notice_left-delta);notice.visible=notice_left>0
 	var viewport_size:=get_viewport().get_visible_rect().size

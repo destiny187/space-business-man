@@ -53,8 +53,8 @@ func refresh() -> void:
 	var def: Dictionary=FrontierProgressionResearch.config().fields[selected]
 	for id in cards:cards[id].selected=id==selected;cards[id].amount="%d / 5"%FrontierProgressionResearch.level(world,actor,id);cards[id].queue_redraw()
 	preview.show_model(def.model);title.text="%s %d / 5"%[def.name,level];progress.value=level
-	scope.text="공동 세계 · 호스트 구매" if selected=="industry" else "내 캐릭터 · 이 세계에 보존"
+	scope.text="공동 세계  호스트 구매" if selected=="industry" else "내 캐릭터  이 세계에 보존"
 	effect.text=def.effect+"\n현재 +%d%% → 다음 +%d%%"%[level*10,mini(5,level+1)*10]
 	if selected=="logistics":effect.text+="\n현재 가방 %d칸"%FrontierItemInventory.capacity(world.crew.members[actor])
-	cost.value="최고 단계" if level>=5 else ("공동 자금 %d Cr"%[int(def.price)*(level+1)] if selected=="industry" else "가방 · "+FrontierCatalog.cost_text(FrontierProgressionResearch.cost(selected,level)))
+	cost.value="최고 단계" if level>=5 else ("공동 자금 %d Cr"%[int(def.price)*(level+1)] if selected=="industry" else "가방  "+FrontierCatalog.cost_text(FrontierProgressionResearch.cost(selected,level)))
 	action.disabled=not reason.is_empty();action.text=reason if action.disabled else "다음 단계 개조"

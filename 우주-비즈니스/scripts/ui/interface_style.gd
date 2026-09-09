@@ -7,6 +7,7 @@ const TEXT:=Color("e6e8df")
 const MUTED:=Color("a4b5bd")
 const ACCENT:=Color("83d9c5")
 const WARNING:=Color("efb46f")
+const DANGER:=Color("ff7777")
 static func box(color: Color=PANEL,border: Color=LINE,padding: int=16) -> StyleBoxFlat:
 	var s:=StyleBoxFlat.new();s.bg_color=color;s.border_color=border;s.set_border_width_all(1);s.set_corner_radius_all(3);s.set_content_margin_all(padding);return s
 static func theme() -> Theme:

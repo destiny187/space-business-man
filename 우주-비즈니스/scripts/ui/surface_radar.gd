@@ -74,7 +74,7 @@ func _draw() -> void:
 		marker(point,p,"mineral",color,true)
 		var at:=Vector2(20,178+clue_index*22)
 		draw_texture_rect(FrontierResourceIcons.texture(clue.resource),Rect2(at,Vector2(18,18)),false)
-		draw_string(font,at+Vector2(23,14),"%s 단서 · %.0fm"%[FrontierCatalog.entry("resources",clue.resource).name,Vector2(point.x-p.x,point.z-p.z).length()],HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color.WHITE)
+		draw_string(font,at+Vector2(23,14),"%s 단서  %.0fm"%[FrontierCatalog.entry("resources",clue.resource).name,Vector2(point.x-p.x,point.z-p.z).length()],HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color.WHITE)
 		clue_index+=1
 	marker(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position),p,"ship",Color.WHITE,true)
 	for id in app.session.latest.crew.members:

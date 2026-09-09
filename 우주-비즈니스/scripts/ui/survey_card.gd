@@ -33,7 +33,7 @@ func present(info: Dictionary) -> void:
 		var row:=HBoxContainer.new();row.mouse_filter=Control.MOUSE_FILTER_IGNORE;facts.add_child(row)
 		var glyph:=TextureRect.new();glyph.texture=load("res://assets/ui/interface/"+str(note.icon)+".svg");glyph.custom_minimum_size=Vector2(20,20);glyph.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;glyph.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;glyph.mouse_filter=Control.MOUSE_FILTER_IGNORE;row.add_child(glyph)
 		var label:=FrontierInterfaceStyle.label(row,note.text,13);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.custom_minimum_size.x=280
-	condition.text=info.condition;action.text=info.get("action","")+" · J  조사 기록"
+	condition.text=info.condition;action.text=info.get("action","")+"  J  조사 기록"
 func _process(delta: float) -> void:
 	if app.session.latest.is_empty():hide();return
 	var scan: Dictionary=app.session.latest.get("scan",{})

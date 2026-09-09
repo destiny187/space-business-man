@@ -26,7 +26,7 @@ static func packet(world: Dictionary,actor: String) -> Dictionary:
 		var key: String=id+":"+row.form_id
 		if world.ecology.observations.has(key):observations[key]=world.ecology.observations[key].duplicate(true)
 	var cargo: Dictionary={}
-	for key in world.ecology.specimens:
+	for key in FrontierSpecimenItems.carried(FrontierExpeditionBusiness.bag(world,actor)):
 		var sample: Dictionary=world.ecology.specimens[key]
 		if sample.state!="cargo":continue
 		cargo[key]=sample.duplicate(true)
@@ -55,7 +55,7 @@ static func validate(value: Variant,manifest: Dictionary) -> bool:
 	if not ecology is Dictionary:return false
 	for key in ["planets","observations","research","specimens"]:
 		if not ecology.get(key) is Dictionary:return false
-	if ecology.planets.size()!=1 or not ecology.planets.has(value.body_id) or ecology.specimens.size()>int(FrontierEcologyCatalog.config().cargo_capacity) or ecology.research.size()>11 or ecology.observations.size()>80:return false
+	if ecology.planets.size()!=1 or not ecology.planets.has(value.body_id) or ecology.specimens.size()>FrontierItemInventory.storage_slots() or ecology.research.size()>11 or ecology.observations.size()>80:return false
 	var record: Variant=ecology.planets[value.body_id]
 	if not record is Dictionary:return false
 	for key in ["profile","plot","collected","introductions"]:

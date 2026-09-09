@@ -5,18 +5,20 @@ static var _config: Dictionary={}
 static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/inventory.json"))
 	return _config
+static func stack_size(resource: String) -> int:
+	return int(config().specimen_stack) if FrontierSpecimenItems.is_item(resource) else int(config().resource_stack)
 static func stacks(stock: Dictionary) -> Array:
 	var result: Array=[]
 	var ids:=stock.keys();ids.sort()
 	for id in ids:
 		var remaining:=int(stock[id])
 		while remaining>0:
-			var amount:=mini(remaining,int(config().resource_stack))
+			var amount:=mini(remaining,stack_size(id))
 			result.append({"resource":id,"amount":amount});remaining-=amount
 	return result
 static func used(stock: Dictionary,items: int=0) -> int:
 	var count:=items
-	for amount in stock.values():count+=ceili(float(amount)/float(config().resource_stack))
+	for id in stock:count+=ceili(float(stock[id])/float(stack_size(id)))
 	return count
 # Storage validation retains the former ceiling so an older save never loses cargo.
 static func storage_slots() -> int:return int(config().max_slots)
@@ -28,7 +30,7 @@ static func room(world: Dictionary,actor: String,resource: String) -> int:
 	stock.stone=int(stock.get("stone",0))+int(world.crew.members[actor].carried)
 	var slots:=used(stock,FrontierEquipment.state(world.crew.members[actor]).items.size())
 	var available:=capacity(world.crew.members[actor])
-	var existing:=int(stock.get(resource,0));var stack:=int(config().resource_stack)
+	var existing:=int(stock.get(resource,0));var stack:=stack_size(resource)
 	var partial:=0 if existing%stack==0 else stack-existing%stack
 	return maxi(0,available-slots)*stack+partial if slots<=available else 0
 static func fits(world: Dictionary,actor: String,incoming: Dictionary) -> bool:
@@ -111,7 +113,7 @@ static func warehouse_fits(site: Dictionary,incoming: Dictionary,slots_delta: in
 static func warehouse_room(site: Dictionary,resource: String) -> int:
 	var occupied:=warehouse_used(site);var available:=warehouse_capacity(site)
 	if occupied>available:return 0
-	var stack:=int(config().resource_stack);var existing:=int(site.inventory.get(resource,0))
+	var stack:=stack_size(resource);var existing:=int(site.inventory.get(resource,0))
 	return maxi(0,available-occupied)*stack+(0 if existing%stack==0 else stack-existing%stack)
 static func warehouse_equipment(world: Dictionary,actor: String,args: Dictionary,ship: Dictionary={}) -> String:
 	var site:=FrontierExpeditionBusiness.site(world) if ship.is_empty() else ship

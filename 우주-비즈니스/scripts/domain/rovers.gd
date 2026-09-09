@@ -33,7 +33,7 @@ static func stats(r: Dictionary) -> Dictionary:
 	var upgraded: bool=int(r.upgrade_level)>0
 	return {"speed":float(config().speed)*(float(config().upgrade.speed_multiplier) if upgraded else 1.0),"battery":float(config().upgrade.battery if upgraded else config().battery),"health":float(config().upgrade.health if upgraded else config().health)}
 static func room(r: Dictionary,resource: String) -> int:
-	var count:=FrontierItemInventory.used(r.cargo,r.equipment.size());var stack:=int(FrontierItemInventory.config().resource_stack);var old:=int(r.cargo.get(resource,0))
+	var count:=FrontierItemInventory.used(r.cargo,r.equipment.size());var stack:=FrontierItemInventory.stack_size(resource);var old:=int(r.cargo.get(resource,0))
 	return maxi(0,int(config().cargo_slots)-count)*stack+(0 if old%stack==0 else stack-old%stack)
 static func safe(world: Dictionary,p: Vector3,radius: float=2.3,ignore: String="") -> Vector3:
 	var field:=FrontierCrewSurface.field(world)

@@ -25,7 +25,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	panel.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,18))
 	var column:=VBoxContainer.new();panel.add_child(column)
 	var header:=HBoxContainer.new();column.add_child(header);title=FrontierInterfaceStyle.label(header,"",24);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	var close:=Button.new();close.text="닫기 · Esc";header.add_child(close);close.pressed.connect(panel.hide)
+	var close:=Button.new();close.text="닫기  Esc";header.add_child(close);close.pressed.connect(panel.hide)
 	research_tabs=TabContainer.new();research_tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;research_tabs.use_hidden_tabs_for_min_size=false;column.add_child(research_tabs)
 	research=FrontierExpeditionResearchPanel.new();research_tabs.add_child(research);research.configure(app);research.name="표본 분석"
 	var shared:=FrontierProgressionResearchPanel.new();research_tabs.add_child(shared);shared.configure(app,true)

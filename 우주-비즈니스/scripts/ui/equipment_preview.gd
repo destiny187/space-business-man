@@ -33,6 +33,21 @@ func show_model(path: String) -> void:
 	var center:=bounds.get_center();model.position-=center
 	camera.size=bounds.size.length()*1.16;camera.position=Vector3(1,.65,-1.5).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
 	request_render()
+func show_specimen(sample: Dictionary) -> void:
+	var definition:=FrontierEcologyCatalog.form(sample.form_id)
+	var path: String="bestiary/"+str(definition.lods.near.path).get_file().trim_suffix(".glb")
+	show_model(path)
+	var look:=FrontierEcologyCatalog.look(sample.form_id,sample.look_id)
+	for node in model.find_children("*","MeshInstance3D",true,false):
+		if node.mesh==null:continue
+		for surface in node.mesh.get_surface_count():
+			var material: Material=node.get_active_material(surface)
+			if not material is ShaderMaterial:continue
+			var role:=material.resource_name.trim_prefix("Bio_")
+			var index: int=["main","secondary","accent"].find(role)
+			if index>=0:material.set_shader_parameter("base_color",Color(look.palette[index]).linear_to_srgb())
+	request_render()
+
 func _gui_input(event: InputEvent) -> void:
 	if model!=null and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):model.rotate_y(event.relative.x*.012);request_render()
 func _process(_delta: float) -> void:

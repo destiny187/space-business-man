@@ -1,24 +1,150 @@
 {
-  "version": 1,
+  "version": 2,
   "maximum_level": 5,
   "fields": {
     "mobility": {
-      "name": "기동 증강",
+      "name": "보행 강화",
       "increment": 0.1,
       "gem": "sapphire",
-      "base_cost": 3
+      "base_cost": 3,
+      "stat": "이동속도",
+      "branch": "기동",
+      "icon": "stamina",
+      "parent": "",
+      "requires": 0,
+      "body": "mobility"
     },
     "combat": {
-      "name": "전투 증강",
+      "name": "근력 강화",
       "increment": 0.1,
       "gem": "ruby",
-      "base_cost": 3
+      "base_cost": 3,
+      "stat": "무기 피해",
+      "branch": "작업 / 전투",
+      "icon": "build",
+      "parent": "",
+      "requires": 0,
+      "body": "combat"
     },
     "vitality": {
-      "name": "생명 증강",
+      "name": "생체 강화",
       "increment": 0.2,
       "gem": "emerald",
-      "base_cost": 3
+      "base_cost": 3,
+      "stat": "최대 체력",
+      "branch": "생존",
+      "icon": "health",
+      "parent": "",
+      "requires": 0,
+      "body": "vitality"
+    },
+    "jump": {
+      "name": "도약",
+      "stat": "점프 높이",
+      "increment": 0.12,
+      "gem": "sapphire",
+      "base_cost": 4,
+      "parent": "mobility",
+      "requires": 1,
+      "body": "mobility",
+      "branch": "기동",
+      "icon": "augment_jump"
+    },
+    "endurance": {
+      "name": "지구력",
+      "stat": "달리기 소모",
+      "increment": -0.08,
+      "gem": "sapphire",
+      "base_cost": 4,
+      "parent": "mobility",
+      "requires": 1,
+      "body": "mobility",
+      "branch": "기동",
+      "icon": "augment_endurance"
+    },
+    "stamina_recovery": {
+      "name": "호흡 회복",
+      "stat": "스태미나 회복",
+      "increment": 0.15,
+      "gem": "sapphire",
+      "base_cost": 6,
+      "parent": "endurance",
+      "requires": 2,
+      "body": "mobility",
+      "branch": "기동",
+      "icon": "augment_stamina_recovery"
+    },
+    "fire_rate": {
+      "name": "속사",
+      "stat": "사격 빈도",
+      "increment": 0.08,
+      "gem": "ruby",
+      "base_cost": 4,
+      "parent": "combat",
+      "requires": 1,
+      "body": "combat",
+      "branch": "작업 / 전투",
+      "icon": "augment_fire_rate"
+    },
+    "mining": {
+      "name": "정밀 채집",
+      "stat": "채집 빈도",
+      "increment": 0.1,
+      "gem": "ruby",
+      "base_cost": 4,
+      "parent": "combat",
+      "requires": 1,
+      "body": "combat",
+      "branch": "작업 / 전투",
+      "icon": "augment_mining"
+    },
+    "excavation": {
+      "name": "굴착 제어",
+      "stat": "굴착 반경",
+      "increment": 0.06,
+      "gem": "ruby",
+      "base_cost": 6,
+      "parent": "mining",
+      "requires": 2,
+      "body": "combat",
+      "branch": "작업 / 전투",
+      "icon": "augment_excavation"
+    },
+    "fall_guard": {
+      "name": "충격 흡수",
+      "stat": "낙하 피해",
+      "increment": -0.12,
+      "gem": "emerald",
+      "base_cost": 4,
+      "parent": "vitality",
+      "requires": 1,
+      "body": "vitality",
+      "branch": "생존",
+      "icon": "augment_fall_guard"
+    },
+    "healing": {
+      "name": "재생 촉진",
+      "stat": "선박 체력 회복",
+      "increment": 0.2,
+      "gem": "emerald",
+      "base_cost": 4,
+      "parent": "vitality",
+      "requires": 1,
+      "body": "vitality",
+      "branch": "생존",
+      "icon": "augment_healing"
+    },
+    "recovery_delay": {
+      "name": "회복 적응",
+      "stat": "피격 후 회복 대기",
+      "increment": -0.12,
+      "gem": "emerald",
+      "base_cost": 6,
+      "parent": "healing",
+      "requires": 2,
+      "body": "vitality",
+      "branch": "생존",
+      "icon": "augment_recovery_delay"
     }
   },
   "interaction_range": 3.0

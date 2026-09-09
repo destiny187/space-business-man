@@ -12,6 +12,7 @@ var grade:=0
 var picture: Texture2D
 var selected:=false
 var unavailable:=false
+var compact_slot:=false
 func _init() -> void:
 	custom_minimum_size=Vector2(88,96);mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
 	mouse_entered.connect(queue_redraw);mouse_exited.connect(queue_redraw);focus_entered.connect(queue_redraw);focus_exited.connect(queue_redraw)
@@ -21,11 +22,13 @@ func _draw() -> void:
 	draw_style_box(FrontierInterfaceStyle.box(bg,edge,0),Rect2(Vector2.ZERO,size))
 	if selected:draw_rect(Rect2(0,0,3,size.y),FrontierInterfaceStyle.ACCENT)
 	var font:=get_theme_default_font()
-	var picture_size:=Vector2(size.x-18,size.y-40)
+	var picture_area:=Rect2(7,5,size.x-14,size.y-28)
+	if compact_slot:picture_area=Rect2(5,5,size.x-10,size.y-10)
+	var picture_size:=picture_area.size
 	if picture!=null:
 		var ratio:=minf(picture_size.x/picture.get_width(),picture_size.y/picture.get_height())
 		var dims:=picture.get_size()*ratio
-		draw_texture_rect(picture,Rect2(Vector2((size.x-dims.x)/2,8),dims),false,Color(1,1,1,.45 if unavailable else 1))
+		draw_texture_rect(picture,Rect2(picture_area.position+(picture_area.size-dims)*.5,dims),false,Color(1,1,1,.45 if unavailable else 1))
 	else:
 		draw_line(size*.5-Vector2(7,5),size*.5+Vector2(7,-5),FrontierInterfaceStyle.LINE,1)
 		draw_line(size*.5-Vector2(0,12),size*.5+Vector2(0,2),FrontierInterfaceStyle.LINE,1)
@@ -39,7 +42,7 @@ func _draw() -> void:
 		var width:=font.get_string_size(amount,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x
 		draw_style_box(FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,Color.TRANSPARENT,0),Rect2(size.x-width-14,3,width+10,21))
 		draw_string(font,Vector2(size.x-width-9,19),amount,HORIZONTAL_ALIGNMENT_LEFT,-1,14,FrontierInterfaceStyle.TEXT)
-	if not caption.is_empty():
+	if not caption.is_empty() and not compact_slot:
 		var label:=caption
 		while label.length()>1 and font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x>size.x-14:label=label.left(label.length()-2)+"…"
 		draw_string(font,Vector2(7,size.y-8),label,HORIZONTAL_ALIGNMENT_LEFT,size.x-14,12,FrontierInterfaceStyle.TEXT)

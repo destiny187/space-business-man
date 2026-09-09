@@ -1,8 +1,10 @@
 class_name FrontierAugmentationPreview
 extends FrontierEquipmentPreview
 ## Existing Blender suit and scanner; only diagnostic VFX are procedural.
+var artwork_mode:=false
 var station: FrontierCrewStation
 var character: Node3D
+var appearance: FrontierSuitAppearance
 var pose: FrontierCrewPose
 var gem: Node3D
 var effects: FrontierEffects
@@ -16,7 +18,8 @@ func _ready() -> void:
 	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	station=FrontierCrewStation.new();stage.add_child(station)
 	station.configure("augmentation",JSON.parse_string(FileAccess.get_file_as_string("res://data/crew_stations.json")).stations.augmentation)
-	character=load("res://assets/models/crew/surveyor_suit.glb").instantiate();stage.add_child(character);FrontierInkStyle.apply(character,{})
+	character=load("res://assets/models/"+str(FrontierSuitAppearance.config().model)+".glb").instantiate();stage.add_child(character);FrontierInkStyle.apply(character,{})
+	appearance=FrontierSuitAppearance.new();appearance.configure(character);appearance.sync({})
 	character.position=Vector3(0,.39,.04);character.rotation.y=PI
 	pose=FrontierCrewPose.new();stage.add_child(pose);pose.configure(character)
 	effects=FrontierEffects.new();stage.add_child(effects)
@@ -32,8 +35,9 @@ func change_phase(value: String) -> void:
 	elif value=="error":effects.burst(Vector3(.95,1.16,.35),FrontierInterfaceStyle.WARNING,6)
 func _gui_input(_event: InputEvent) -> void:pass
 func _process(delta: float) -> void:
-	continuous_rendering=true
-	super._process(delta)
+	continuous_rendering=not artwork_mode
+	if artwork_mode:viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED
+	else:super._process(delta)
 	if not is_visible_in_tree():return
 	elapsed+=delta
 	station.present(delta,phase in ["prepared","waiting","success"])

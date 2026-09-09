@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dye_costs": {"helmet": {"sapphire": 1}, "chest": {"diamond": 1}, "arms": {"ruby": 1}, "legs": {"sapphire": 1}, "backpack": {"emerald": 1}, "belt": {"ruby": 1}},
+  "model": "crew/surveyor_augmented",
+  "thresholds": [1, 4, 8, 12, 16],
+  "branches": {
+    "mobility": ["mobility", "jump", "endurance", "stamina_recovery"],
+    "combat": ["combat", "fire_rate", "mining", "excavation"],
+    "vitality": ["vitality", "fall_guard", "healing", "recovery_delay"]
+  },
+  "parts": {"helmet": "헬멧", "chest": "흉부", "arms": "팔", "legs": "다리", "backpack": "배낭", "belt": "벨트"},
+  "channels": ["primary", "secondary", "accent"],
+  "legacy_tints": ["175e61", "98552b", "385a77", "57654a", "7a6750", "784648"]
+}

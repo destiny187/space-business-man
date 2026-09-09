@@ -14,7 +14,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(140,145);add_child(preview)
 	preview.show_model("ships/finch")
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;add_child(column)
-	FrontierInterfaceStyle.label(column,"FINCH · 이탈 승무원 회수",18)
+	FrontierInterfaceStyle.label(column,"FINCH  이탈 승무원 회수",18)
 	choices=OptionButton.new();column.add_child(choices);choices.item_selected.connect(func(_i: int):refresh())
 	detail=FrontierInterfaceStyle.label(column,"",13,FrontierInterfaceStyle.MUTED);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	action=Button.new();action.text="공동 원정선으로 회수";column.add_child(action)
@@ -26,7 +26,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		if kind=="shuttle_recall":pending=sequence;outcome.text="회수 요청 중…";refresh())
 	app.session.response_received.connect(func(sequence: int,result: Dictionary):
 		if sequence!=pending:return
-		pending=-1;outcome.text="회수 완료 · 화물과 개인 장비 보존" if result.get("ok",false) else str(result.get("error","회수 실패"));refresh())
+		pending=-1;outcome.text="회수 완료  화물과 개인 장비 보존" if result.get("ok",false) else str(result.get("error","회수 실패"));refresh())
 func update_snapshot(value: Dictionary) -> void:
 	snapshot=value
 	var next: Array=[]
@@ -35,7 +35,7 @@ func update_snapshot(value: Dictionary) -> void:
 	if next!=ids:
 		var selected: String=str(ids[choices.selected]) if not ids.is_empty() and choices.selected>=0 else ""
 		ids=next;choices.clear()
-		for id in ids:choices.add_item(value.crew.members[id].profile.name+" · 연결 끊김")
+		for id in ids:choices.add_item(value.crew.members[id].profile.name+"  연결 끊김")
 		if selected in ids:choices.select(ids.find(selected))
 	refresh()
 func refresh() -> void:
@@ -47,5 +47,5 @@ func refresh() -> void:
 	var craft: Dictionary=snapshot.crew.shuttles[ids[choices.selected]]
 	var cargo: Dictionary=craft.cargo.duplicate();cargo.stone=int(craft.rock)
 	var used:=FrontierItemInventory.used(cargo,craft.cargo_equipment.size())
-	detail.text="화물 %d / %d칸 · 가방·장비·화물 그대로 복귀\n소유자가 다시 접속하면 공동 원정선에서 재개합니다."%[used,int(FrontierShuttles.config().cargo_slots)]
+	detail.text="화물 %d / %d칸  가방 / 장비 / 화물 그대로 복귀\n소유자가 다시 접속하면 공동 원정선에서 재개합니다."%[used,int(FrontierShuttles.config().cargo_slots)]
 	action.tooltip_text="호스트만 실행할 수 있습니다." if not app.session.hosting else "이탈한 승무원과 FINCH를 회수합니다. 자동 하역하지 않습니다."

@@ -65,7 +65,7 @@ func _ready() -> void:
 	visibility_changed.connect(func():
 		if core_view!=null:core_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if galaxy and is_visible_in_tree() else SubViewport.UPDATE_DISABLED
 	)
-	tooltip_text="외곽: 저티어 · 중심: 고티어 비중 증가\n별을 선택해 항로를 설정하세요. 내부 정보는 방문 후 공개됩니다.\n중앙 블랙홀은 위치 표식입니다."
+	tooltip_text="외곽: 저티어  중심: 고티어 비중 증가\n별을 선택해 항로를 설정하세요. 내부 정보는 방문 후 공개됩니다.\n중앙 블랙홀은 위치 표식입니다."
 	custom_minimum_size=Vector2(180,180) if compact else Vector2(280,340)
 	clip_contents=true
 	mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
@@ -114,7 +114,7 @@ func _draw() -> void:
 			var vessel:=center+Vector2(transit.galaxy_position[0],transit.galaxy_position[1])*factor
 			draw_line(source,destination,Color(.4,.85,1,.65),2,true)
 			draw_circle(vessel,5,Color.WHITE)
-		if not compact:draw_string(font,Vector2(12,24),"은하  ·  휠 확대 / 우클릭 끌기",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("e0ebe3"))
+		if not compact:draw_string(font,Vector2(12,24),"은하    휠 확대 / 우클릭 끌기",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("e0ebe3"))
 	else:
 		draw_circle(center,9,Color("ffe2a3"))
 		var count: int=FrontierUniverse.body_count(manifest,system_index)
@@ -252,8 +252,8 @@ func _draw_spatial() -> void:
 		draw_line(from,to,Color("7bebd0"),2,true);draw_circle(ship,6,Color.WHITE)
 		var distance:=Vector2(transit.from[0],transit.from[1]).distance_to(Vector2(transit.to[0],transit.to[1]))
 		draw_string(get_theme_default_font(),Vector2(18,54),"항해  %.1f / %.1f 항로 단위"%[distance*float(transit.progress),distance],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color.WHITE)
-	draw_string(get_theme_default_font(),Vector2(18,26),"은하 항로  ·  항속거리 %.0f"%stellar_range,HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color("b2f4e1"))
-	draw_string(get_theme_default_font(),Vector2(18,size.y-18),"휠 확대 · 우클릭 이동 · 휠 버튼 회전 · 별 선택",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("bccbd8"))
+	draw_string(get_theme_default_font(),Vector2(18,26),"은하 항로    항속거리 %.0f"%stellar_range,HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color("b2f4e1"))
+	draw_string(get_theme_default_font(),Vector2(18,size.y-18),"휠 확대  우클릭 이동  휠 버튼 회전  별 선택",HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("bccbd8"))
 
 func focus_nearby() -> void:
 	galaxy=true;nearby_only=true

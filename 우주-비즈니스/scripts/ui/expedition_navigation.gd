@@ -174,7 +174,7 @@ func refresh(value: Dictionary) -> void:
 	var members: Dictionary=value.crew.members
 	var lines: PackedStringArray=[]
 	for id in members:
-		lines.append(("✓  " if members[id].ready else "○  ")+members[id].profile.name+(" · 연결 끊김" if not members[id].get("connected",false) else "")+("  ◈ 조종" if id==value.crew.pilot_id else ""))
+		lines.append(("✓  " if members[id].ready else "○  ")+members[id].profile.name+("  연결 끊김" if not members[id].get("connected",false) else "")+("  ◈ 조종" if id==value.crew.pilot_id else ""))
 	app.roster.text="\n".join(lines)
 	shuttle_recovery.update_snapshot(value)
 	app.ready_button.visible=not app.session.offline
@@ -198,7 +198,7 @@ func show_target(ordinal: int) -> void:
 	var body:=FrontierUniverse.body(app.session.manifest,ordinal)
 	app.chart.target=ordinal;app.chart.system_index=int(body.system_ordinal);app.chart.queue_redraw();_map_mode()
 	target_name.text=body.name
-	target_kind.text=FrontierUniverse.kind_label(body)+" · T%d"%int(body.planet_tier)
+	target_kind.text=FrontierUniverse.kind_label(body)+"  T%d"%int(body.planet_tier)
 	if not FrontierUniverse.landable(body):target_kind.text+="\n"+FrontierUniverse.landing_restriction(body)
 	refresh_survey()
 	_update_preview(body)
@@ -221,16 +221,16 @@ func refresh_survey() -> void:
 	more.pressed.connect(func():
 		var stock: Dictionary={}
 		for id in report.resources:stock[id]=1
-		var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.configure(body.name+" · 원격 관측 광물",stock,false);dialog.popup_centered(Vector2i(510,400)))
+		var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.configure(body.name+"  원격 관측 광물",stock,false);dialog.popup_centered(Vector2i(510,400)))
 	var environment: Dictionary=body.traits.duplicate();environment.ecology=0;environment.stable_seconds=0
 	var scores:=FrontierEvaluator.scores(environment)
 	survey_bars.water.value=report.water
 	survey_bars.water.tooltip_text="수자원 %.0f%%"%report.water
 	survey_bars.air.value=report.air
-	survey_bars.air.tooltip_text="대기 적합 %.0f/100 · 기압 %.2f atm · 산소 %.1f%%"%[report.air,environment.pressure,float(environment.oxygen)*100]
+	survey_bars.air.tooltip_text="대기 적합 %.0f/100  기압 %.2f atm  산소 %.1f%%"%[report.air,environment.pressure,float(environment.oxygen)*100]
 	survey_bars.temperature.value=scores.temperature
-	survey_bars.temperature.tooltip_text="기온 %.0f°C · 적합도 %.0f/100"%[environment.temperature,scores.temperature]
-	survey_note.text=FrontierPlanetSupply.role_name(FrontierPlanetSupply.role(body))+" · 현지 가공 특화"
+	survey_bars.temperature.tooltip_text="기온 %.0f°C  적합도 %.0f/100"%[environment.temperature,scores.temperature]
+	survey_note.text=FrontierPlanetSupply.role_name(FrontierPlanetSupply.role(body))+"  현지 가공 특화"
 	if report.risk!="주의":survey_note.text+="\n△ "+str(report.risk);survey_note.modulate=FrontierInterfaceStyle.WARNING
 	else:survey_note.modulate=Color.WHITE
 
@@ -302,7 +302,7 @@ func _update_context() -> void:
 			point.x+=float(ship.get("pad_slot",0))*7.0
 			point.y=app.surface_world.terrain.field.height(point.x,point.z)
 			if FrontierCrewWorld.vector(own.position).distance_to(point)<=float(FrontierShuttles.config().interaction_distance):
-				context_kind="shuttle_board";context_ready=true;context.text="F  FINCH 탑승 · 항성계 운송 출발";context.disabled=false;context.reset_size();context.show();return
+				context_kind="shuttle_board";context_ready=true;context.text="F  FINCH 탑승  항성계 운송 출발";context.disabled=false;context.reset_size();context.show();return
 	if not app.outside:
 		for crate in value.crew.recovery.values():
 			if app._crate_here(crate) and crate.area==own.area and FrontierCrewWorld.vector(crate.position).distance_to(FrontierCrewWorld.vector(own.position))<=float(FrontierCrewWorld.config().interaction_distance):
@@ -317,7 +317,7 @@ func _update_context() -> void:
 		var nearby_target:=app.surface_world.business_view.target(app.camera,app.actors[value.self_id])
 		if not nearby_target.is_empty():return
 		context_kind="launch";context_ordinal=-1
-		context.text="F  FINCH · 화물 / 출항 / 합류" if not value.get("local_shuttle","").is_empty() else "F  착륙선 단말 · 정산 / 출항"
+		context.text="F  FINCH  화물 / 출항 / 합류" if not value.get("local_shuttle","").is_empty() else "F  착륙선 단말  정산 / 출항"
 	else:
 		if nav.mode!="idle" or not app.outside:return
 		var station: Dictionary=value.get("station",{})
@@ -326,7 +326,7 @@ func _update_context() -> void:
 			var near: bool=gap<=float(FrontierSpaceStation.config().trade_distance) and absf(float(nav.speed))<=5
 			if near or app.flight.looking_at_station():
 				context_kind="trade" if near else "station_approach";context_ready=true
-				context.text=station.name+" · "+("F  교역" if near else "F  정거장 접근")
+				context.text=station.name+"  "+("F  교역" if near else "F  정거장 접근")
 				context.disabled=false;context.reset_size();context.show();return
 		var gazed: int=app.flight.pick_planet(Vector2(app.space_view.size)*.5) if app.flight!=null else -1
 		var ordinal: int=gazed if gazed>=0 else int(nav.target)
@@ -339,9 +339,9 @@ func _update_context() -> void:
 		context_ordinal=ordinal;context_distance=gap
 		if gap>limit+(80 if retained else 0):return
 		context_kind="land";context_ready=gap<=limit and FrontierUniverse.landable(body)
-		context.text=body.name+"  ·  "+("F  착륙" if pilot else "F  착륙 준비")
-		if not FrontierUniverse.landable(body):context.text=body.name+" · "+FrontierUniverse.landing_restriction(body)
-		elif gap>limit:context.text=body.name+" · 조금 더 접근하세요"
+		context.text=body.name+"    "+("F  착륙" if pilot else "F  착륙 준비")
+		if not FrontierUniverse.landable(body):context.text=body.name+"  "+FrontierUniverse.landing_restriction(body)
+		elif gap>limit:context.text=body.name+"  조금 더 접근하세요"
 	if context_kind=="launch":context_ready=true
 	if not app.session.offline:
 		var ready_count:=0;var connected_count:=0
@@ -349,7 +349,7 @@ func _update_context() -> void:
 			if member.get("connected",true) and (value.get("local_shuttle","").is_empty() or member.get("shuttle_id","")==value.self_id):
 				connected_count+=1
 				if member.ready:ready_count+=1
-		context.text+="  ·  준비 %d/%d"%[ready_count,connected_count]
+		context.text+="    준비 %d/%d"%[ready_count,connected_count]
 		if pilot and not own.ready:context.text+="  [P]"
 	context.disabled=not context_ready;context.reset_size();context.show()
 func interact() -> bool:

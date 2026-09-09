@@ -95,11 +95,11 @@ static func collect(ecology: Dictionary,body_id: String,encounter: Dictionary) -
 	var count:=0
 	for sample in ecology.specimens.values():
 		if sample.state=="cargo":count+=1
-	if count>=int(FrontierEcologyCatalog.config().cargo_capacity):return "격리 화물칸이 가득 찼습니다."
+	if int(ecology.get("item_storage_version",0))==0 and count>=int(FrontierEcologyCatalog.config().cargo_capacity):return "표본 보관 공간이 가득 찼습니다."
 	var id: String=(body_id+":"+encounter.id).sha256_text()
 	ecology.specimens[id]={"id":id,"source_body":body_id,"source_encounter":encounter.id,"form_id":encounter.form_id,"look_id":encounter.look_id,"state":"cargo","destination":""}
 	record.collected[encounter.id]=id
-	return "생체 표본을 밀폐 격리함에 보관했습니다. 우주선의 정온·급이 지원으로 다음 행성까지 운송합니다."
+	return "생체 표본을 확보했습니다."
 
 static func restore_plot(ecology: Dictionary,body_id: String,environment_id: String,point: Vector3,layer: String,logistics: Dictionary) -> String:
 	var record: Dictionary=ecology.planets[body_id]
@@ -156,6 +156,7 @@ static func advance(ecology: Dictionary,body_id: String,seconds: float) -> void:
 static func validate(value: Variant,manifest: Dictionary) -> String:
 	if not value is Dictionary or value.get("version")!="ecology-v1":return "생태 저장 버전 오류"
 	if value.get("catalog_hash")!=FrontierEcologyCatalog.signature() or value.get("rules_hash")!=FrontierUniverse.fingerprint(FrontierEcologyCatalog.config()):return "생태 원형 또는 규칙 버전이 달라 원본 저장을 보존합니다."
+	if not FrontierExpeditionBusiness.integer(value.get("item_storage_version",0),0,1):return "표본 아이템 저장 버전 오류"
 	for key in ["planets","observations","research","specimens"]:
 		if not value.get(key) is Dictionary:return "생태 기록 형식 오류: "+key
 	for id in value.planets:
@@ -217,7 +218,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 			if sample.destination!="":return "화물과 이식 상태 중복"
 		else:
 			if sample.destination==sample.source_body or not value.planets.has(sample.destination) or not value.planets[sample.destination].introductions.has(id):return "이식 목적지 오류"
-	if cargo_count>int(FrontierEcologyCatalog.config().cargo_capacity):return "생태 격리 화물 용량 초과"
+	if int(value.get("item_storage_version",0))==0 and cargo_count>int(FrontierEcologyCatalog.config().cargo_capacity):return "표본 보관 용량 초과"
 	return ""
 
 static func _identity_valid(row: Dictionary) -> bool:

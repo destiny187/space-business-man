@@ -38,14 +38,14 @@ func _ready() -> void:
  add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,18))
  var column:=VBoxContainer.new();column.add_theme_constant_override("separation",8);add_child(column)
  var header:=HBoxContainer.new();column.add_child(header)
- heading=label(header,"WAYFARER · 교역",24);heading.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+ heading=label(header,"WAYFARER  교역",24);heading.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  money=label(header,"",18);money.autowrap_mode=TextServer.AUTOWRAP_OFF;money.custom_minimum_size.x=120;money.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
  button(header,"닫기  Esc",hide)
  var tabs:=HBoxContainer.new();column.add_child(tabs)
  for tab in [["goods","물자 거래"],["ships","선체 구매"],["owned","보유 선체"]]:
   var key: String=tab[0]
   button(tabs,tab[1],func():mode=key;selected="";rebuild())
- browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품 · 선체 이름 검색";browser.changed.connect(rebuild)
+ browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품  선체 이름 검색";browser.changed.connect(rebuild)
  sale_only=CheckButton.new();sale_only.text="내가 판매할 수 있는 물자";column.add_child(sale_only);sale_only.toggled.connect(func(_v):rebuild())
  var body:=HBoxContainer.new();body.add_theme_constant_override("separation",24);body.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(body)
  var list:=VBoxContainer.new();list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_child(list)
@@ -70,7 +70,7 @@ func _ready() -> void:
  quantity=SpinBox.new();quantity.min_value=1;quantity.max_value=1000;quantity.value=1;quantity.prefix="수량 ";quantity.value_changed.connect(func(_v: float):refresh_detail());detail.add_child(quantity)
  buy=button(detail,"구매",func():send("station_equip" if mode=="owned" else "station_buy"))
  sell=button(detail,"판매",func():send("station_sell"))
- message=label(column,"공동 자금 · 구매 물자는 내 아이템창으로 이동",13)
+ message=label(column,"공동 자금  구매 물자는 내 아이템창으로 이동",13)
  audio=FrontierAudio.new();add_child(audio)
  hum=AudioStreamPlayer.new();hum.bus="Ambience";hum.stream=audio.stream(FrontierSpaceStation.config().audio.ambience,true);hum.volume_db=-32;add_child(hum)
  visibility_changed.connect(func():
@@ -96,7 +96,7 @@ func rebuild() -> void:
  if grid==null:return
  for node in grid.get_children():grid.remove_child(node);node.queue_free()
  var station: Dictionary=data.get("station",{})
- heading.text=str(station.get("name","WAYFARER"))+" · 교역"
+ heading.text=str(station.get("name","WAYFARER"))+"  교역"
  money.text="%s Cr"%int(station.get("credits",0))
  var items: Array=[]
  if mode=="owned":items=data.get("vessel",{}).get("hulls",["kestrel"]).duplicate()
@@ -119,7 +119,7 @@ func rebuild() -> void:
  for id in items:
   var is_ship: bool=mode!="goods"
   var def: Dictionary=FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")] if is_ship else FrontierCatalog.entry("resources",id)
-  var caption: String=def.name+"\n"+(def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+(" · 내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
+  var caption: String=def.name+"\n"+(def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
   var key: String=id
   var card:=button(grid,caption,func():selected=key;refresh_detail())
   card.custom_minimum_size=Vector2(160,100);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -143,10 +143,10 @@ func refresh_detail() -> void:
  if mode=="goods":
   var price:=int(station.prices[selected]);var sale:=maxi(1,floori(price*float(FrontierSpaceStation.config().sale_ratio)))
   title_label.text=FrontierCatalog.entry("resources",selected).name
-  role.text=("상점 재고 %d"%int(station.stock[selected]) if int(station.stock[selected])>0 else "상점 품절")+(" · 내 가방 %d"%int(data.inventory[selected]) if int(data.get("inventory",{}).get(selected,0))>0 else "")
-  unit_price.text="개당 구매 %d Cr · 판매 %d Cr"%[price,sale]
+  role.text=("상점 재고 %d"%int(station.stock[selected]) if int(station.stock[selected])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[selected]) if int(data.get("inventory",{}).get(selected,0))>0 else "")
+  unit_price.text="개당 구매 %d Cr  판매 %d Cr"%[price,sale]
   icon.texture=FrontierResourceIcons.texture(selected)
-  buy.text="구매 · %d Cr"%(price*count);sell.text="판매 · %d Cr"%(sale*count)
+  buy.text="구매  %d Cr"%(price*count);sell.text="판매  %d Cr"%(sale*count)
   buy.disabled=buy.disabled or int(station.stock[selected])<count or int(station.credits)<price*count
   sell.disabled=sell.disabled or int(data.get("inventory",{}).get(selected,0))<count
  else:
@@ -166,7 +166,7 @@ func refresh_detail() -> void:
    buy.text="사용 중" if equipped else "이 선체로 교체";buy.disabled=buy.disabled or equipped
   else:
    var owned: bool=hull_id in vessel.get("hulls",["kestrel"])
-   buy.text="보유 중" if owned else "선체 구매 · %d Cr"%int(station.prices[selected])
+   buy.text="보유 중" if owned else "선체 구매  %d Cr"%int(station.prices[selected])
    buy.disabled=buy.disabled or owned or int(station.stock[selected])<=0 or int(station.credits)<int(station.prices[selected])
  if not visible or mode=="goods":preview.render_target_update_mode=SubViewport.UPDATE_DISABLED
 func send(kind: String) -> void:
@@ -177,7 +177,7 @@ func response(sequence: int,value: Dictionary) -> void:
  if not pending or sequence!=pending_sequence:return
  pending=false
  var ok: bool=value.get("ok",false)
- message.text=("선체 구매 완료 · 보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
+ message.text=("선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
  var sounds: Dictionary=FrontierSpaceStation.config().audio
  audio.play(sounds.hull if ok and (pending_kind=="station_equip" or selected.begins_with("hull:")) else sounds.trade if ok else sounds.failure)
  refresh_detail()

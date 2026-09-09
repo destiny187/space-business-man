@@ -59,7 +59,10 @@ static func region(body: Dictionary,x: int,z: int) -> Array:
 		if int(body.get("ground_rules",{}).get("version",0))>=2 and int(body.planet_tier)==2 and resource in ["silicon","phosphate"] and Vector2(px,pz).length()<float(body.ground_rules.expedition.radius):continue
 		var depth: float=float(rules.depth_min)+float(FrontierUniverse.derive(seed_value,"depth")%int(rules.depth_max-rules.depth_min+1)) if below else 0.0
 		var y: float=maxf(-64,field.height(px,pz)-depth) if below else 0.0
-		result.append({"id":id,"resource":resource,"required_tier":int(rules.get("resource_tiers",rules().resource_tiers).get(resource,1)),"capacity":int(rules.gem_capacity) if FrontierMinerals.entry(resource).category=="gem" else int(rules.base_capacity)+seed_value%int(rules.capacity_spread),"position":[px,y,pz],"underground":below,"quality":1+FrontierUniverse.derive(seed_value,"quality")%int(rules.get("quality_levels",3))})
+		var capacity:=int(rules.gem_capacity) if FrontierMinerals.entry(resource).category=="gem" else int(rules.base_capacity)+seed_value%int(rules.capacity_spread)
+		if int(rules.get("version",1))>=3 and FrontierMinerals.entry(resource).category!="gem":
+			capacity+=maxi(0,int(body.planet_tier)-1)*int(rules.capacity_per_tier)+mini(int(rules.capacity_distance_cap),floori(Vector2(px,pz).length()/1000.0)*int(rules.capacity_per_km))
+		result.append({"id":id,"resource":resource,"required_tier":int(rules.get("resource_tiers",rules().resource_tiers).get(resource,1)),"capacity":capacity,"position":[px,y,pz],"underground":below,"quality":1+FrontierUniverse.derive(seed_value,"quality")%int(rules.get("quality_levels",3))})
 	return result
 static func nearby(body: Dictionary,point: Vector3=Vector3.ZERO) -> Array:
 	if not enabled(body):return []

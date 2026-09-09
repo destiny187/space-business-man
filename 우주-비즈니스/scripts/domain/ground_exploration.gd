@@ -15,11 +15,14 @@ static func deposits(body: Dictionary) -> Array:
 	for resource in ["silicon","phosphate"]:
 		if resource not in materials:continue
 		var phase:=float(FrontierUniverse.derive(int(body.seed),"outer:"+resource)%6283)/1000.0
+		var found:=0
 		for i in int(cfg.samples):
 			var angle:=phase+float(i)*.11;var radius:=float(cfg.radius)+float(i%int(cfg.radius_spread))
 			var p:=FrontierExpeditionBusiness.ground(field,sin(angle)*radius,cos(angle)*radius,.7)
 			if not p.is_finite():continue
-			rows.append({"id":"expedition2:"+resource,"resource":resource,"required_tier":1,"capacity":int(cfg.capacity),"position":[p.x,0,p.z]});break
+			rows.append({"id":"expedition2:"+resource+((":small:"+str(found)) if int(body.ground_rules.version)>=3 else ""),"resource":resource,"required_tier":1,"capacity":int(cfg.capacity),"position":[p.x,0,p.z]})
+			found+=1
+			if found>=int(cfg.get("deposits_per_resource",1)):break
 	cache[key]=rows.duplicate(true);return rows
 static func inputs(body: Dictionary) -> Dictionary:
 	var result: Dictionary={}

@@ -52,6 +52,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
 	FrontierExpeditionResearch.ensure(world)
+	FrontierSpecimenItems.ensure(world)
 	for id in world.crew.members:
 		FrontierCrewAugmentation.ensure(world.crew.members[id])
 		FrontierExpeditionBusiness.release_carrier(world,id);FrontierCrewWorld.disconnect_member(world.crew,id);FrontierShuttles.resume(world,id)
@@ -107,6 +108,7 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 	FrontierCrewSurface.spawn_member(draft,draft.crew.members[id],peers.size())
 	draft.crew.members[id].erase("shuttle_recalled")
 	draft.crew.revision+=1
+	FrontierSpecimenItems.prune(draft)
 	if not save_world.call(draft):return failure("참가 상태 저장에 실패했습니다.")
 	world=draft;peers[peer]=id;pending.erase(peer)
 	return {"ok":true,"snapshot":snapshot(peer)}
@@ -159,7 +161,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	if envelope.kind=="shuttle_recall":
 		var target: String=str(envelope.args.get("character_id",""))
 		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
@@ -197,7 +199,8 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		if solver!=null:
 			solver.record=draft.get("surface_water",{}).get(draft.crew.landing.body_id,FrontierSurfaceWater.create())
 			water_hit=solver.intersect(origin,aim,reach)
-	if envelope.kind=="augmentation_upgrade":
+	if envelope.kind=="suit_dye":reason=FrontierSuitDye.apply(draft,actor,envelope.args)
+	elif envelope.kind=="augmentation_upgrade":
 		var station: Dictionary={}
 		if augmentation_station_provider.is_valid():
 			var offered: Variant=augmentation_station_provider.call(actor,str(envelope.args.get("station_id","")))
@@ -244,11 +247,6 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	for resource in new_bag:
 		var amount: int=int(new_bag[resource])-int(old_bag.get(resource,0))
 		if amount>0:gains[resource]=amount
-	if envelope.kind=="surface_collect":
-		for sample_id in draft.ecology.specimens:
-			if not world.ecology.specimens.has(sample_id):
-				var form:=FrontierEcologyCatalog.form(draft.ecology.specimens[sample_id].form_id)
-				gains[FrontierResourceIcons.specimen_id(form)]=1
 	result["gains"]=gains
 	draft.crew.receipts[key]={"digest":digest,"result":result.duplicate()}
 	if draft.crew.receipts.size()>128:
@@ -256,6 +254,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		for id in draft.crew.receipts:
 			if float(draft.crew.receipts[id].result.revision)<revision:revision=float(draft.crew.receipts[id].result.revision);oldest=id
 		draft.crew.receipts.erase(oldest)
+	FrontierSpecimenItems.prune(draft)
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
 	world=draft;rover_runtime=rover_draft
 	if envelope.kind=="surface_attack" and not water_hit.is_empty():

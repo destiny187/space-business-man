@@ -25,8 +25,8 @@ func _draw() -> void:
 	if nav.get("star_warning",false):
 		var danger: bool=nav.get("star_danger",false)
 		var color:=Color(1,.25,.12) if danger else Color(1,.7,.25)
-		var message: String="항성 열기 · 선체 손상! 즉시 이탈하세요" if danger else "항성 접근 경고 · 안전거리를 유지하세요"
-		if nav.get("emergency_escape",false):message="비상 추진 · 항성 위험 구간에서 이탈 중"
+		var message: String="항성 열기  선체 손상! 즉시 이탈하세요" if danger else "항성 접근 경고  안전거리를 유지하세요"
+		if nav.get("emergency_escape",false):message="비상 추진  항성 위험 구간에서 이탈 중"
 		var box:=Rect2(Vector2(size.x*.5-260,32),Vector2(520,52))
 		draw_rect(box,Color(.12,.025,.01,.85));draw_rect(box,color,false,2)
 		draw_string(font,box.position+Vector2(18,33),message,HORIZONTAL_ALIGNMENT_LEFT,484,19,color)
@@ -46,7 +46,7 @@ func _draw() -> void:
 		draw_rect(Rect2(origin,Vector2(width,4)),Color(.12,.25,.32))
 		draw_rect(Rect2(origin,Vector2(width*p,4)),Color(.4,.94,1))
 		draw_string(font,origin+Vector2(0,-15),FrontierCrewNavigation.phase(nav),HORIZONTAL_ALIGNMENT_LEFT,-1,22,Color(.8,.95,1))
-		draw_string(font,origin+Vector2(0,27),"%.0f%% · %.1f초 · 에너지 자동 공급" % [p*100,float(nav.jump_left)],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color(.7,.83,.9))
+		draw_string(font,origin+Vector2(0,27),"%.0f%%  %.1f초  에너지 자동 공급" % [p*100,float(nav.jump_left)],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color(.7,.83,.9))
 	else:
 		_draw_motion(font,center)
 		_draw_guidance(font)
@@ -72,10 +72,10 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	var origin:=box.position+Vector2(18,27)
 	draw_string(font,origin,"스캔 완료",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,cyan)
 	draw_string(font,origin+Vector2(0,33),scan_body.name,HORIZONTAL_ALIGNMENT_LEFT,width-36,27,Color(.88,.98,1))
-	var description:=FrontierUniverse.kind_label(scan_body)+" · T%d"%int(scan_body.planet_tier)
-	if scan_body.get("origin","")=="solar_reference":description="태양계 · 테라포밍 불가 행성"
-	elif not FrontierUniverse.landable(scan_body):description+=" · 착륙 불가"
-	else:description+=" · 테라포밍 가능"
+	var description:=FrontierUniverse.kind_label(scan_body)+"  T%d"%int(scan_body.planet_tier)
+	if scan_body.get("origin","")=="solar_reference":description="태양계  테라포밍 불가 행성"
+	elif not FrontierUniverse.landable(scan_body):description+="  착륙 불가"
+	else:description+="  테라포밍 가능"
 	draw_string(font,origin+Vector2(0,68),description,HORIZONTAL_ALIGNMENT_LEFT,width-36,17,Color(.7,.85,.9))
 	var report:=FrontierOrbitalSurvey.report(scan_body)
 	if report.available:
@@ -91,10 +91,10 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 			draw_string(font,point,("물 %.0f%%"%value if i==0 else "대기 적합 %.0f/100"%value),HORIZONTAL_ALIGNMENT_LEFT,-1,14,cyan)
 			draw_rect(Rect2(point+Vector2(0,8),Vector2((width-48)/2,3)),Color(.14,.3,.35))
 			draw_rect(Rect2(point+Vector2(0,8),Vector2((width-48)/2*value/100,3)),cyan)
-		var warning: String="위험: %s  ·  개선 %s"%[report.risk,report.difficulty]
+		var warning: String="위험: %s    개선 %s"%[report.risk,report.difficulty]
 		draw_string(font,origin+Vector2(0,190),warning,HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
 	else:draw_string(font,origin+Vector2(0,108),report.detail,HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
-	draw_string(font,origin+Vector2(0,224),"E 접근  ·  Tab 항성 지도",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
+	draw_string(font,origin+Vector2(0,224),"E 접근    Tab 항성 지도",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 
 func _draw_vitals(font: Font) -> void:
 	var start:=Vector2(26,size.y-100)
@@ -107,7 +107,7 @@ func _draw_vitals(font: Font) -> void:
 		draw_rect(Rect2(point+Vector2(0,8),Vector2(180,5)),Color(.12,.23,.3,.85))
 		draw_rect(Rect2(point+Vector2(0,8),Vector2(180*value/100,5)),color)
 	if nav.get("boosting",false):draw_string(font,start+Vector2(0,-22),"고속 추진",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(.5,.8,1))
-	elif float(nav.get("hull",100))<=0:draw_string(font,start+Vector2(0,-22),"추진 정지 · 응급 수리",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(1,.6,.3))
+	elif float(nav.get("hull",100))<=0:draw_string(font,start+Vector2(0,-22),"추진 정지  응급 수리",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(1,.6,.3))
 
 func announce(system_name_value: String,detail: String) -> void:
 	arrival_name=system_name_value;arrival_detail=detail;arrival_age=0.0
@@ -141,7 +141,7 @@ func _draw_motion(font: Font,center: Vector2) -> void:
 	var origin:=Vector2(size.x-width-24,size.y-91)
 	draw_string(font,origin,"%.0f m/s"%absf(float(nav.speed)),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
 	if not telemetry.is_empty():
-		var caption: String=FrontierFlightTelemetry.distance_label(float(telemetry.distance))+" · "+FrontierFlightTelemetry.eta_label(telemetry) if telemetry.same_system else "Tab · 성간 항로 설정"
+		var caption: String=FrontierFlightTelemetry.distance_label(float(telemetry.distance))+"  "+FrontierFlightTelemetry.eta_label(telemetry) if telemetry.same_system else "Tab  성간 항로 설정"
 		draw_string(font,origin+Vector2(0,27),caption,HORIZONTAL_ALIGNMENT_RIGHT,width,15,Color(.55,.77,.83))
 	if nav.get("proximity_braking",false):draw_string(font,origin+Vector2(0,-30),"근접 감속 보조",HORIZONTAL_ALIGNMENT_RIGHT,width,16,Color(1,.77,.4))
 

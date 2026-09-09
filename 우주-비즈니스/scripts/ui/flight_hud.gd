@@ -46,7 +46,7 @@ func refresh() -> void:
 	radar.queue_redraw()
 	var id: String = guide.get("id","")
 	if id != previous_step and not previous_step.is_empty() and previous_step in app.campaign.profile.get("onboarding",{}).get("completed",[]):
-		milestone_text = "완료 · "+FrontierOnboarding.TITLES[FrontierOnboarding.STEPS.find(previous_step)]
+		milestone_text = "완료  "+FrontierOnboarding.TITLES[FrontierOnboarding.STEPS.find(previous_step)]
 		milestone_time = 3.5
 	previous_step = id
 	queue_redraw()
@@ -111,17 +111,17 @@ func _draw() -> void:
 	_text(Vector2(617,118),"%03d°" % int(heading),13,MUTED)
 	if not guide.is_empty():
 		_panel(Rect2(24,96,330,167),Color(0.025,0.065,0.08,0.94),true)
-		_text(Vector2(42,121),"개척 가이드  /  %02d · %02d" % [guide.index+1,guide.total],11,MINT,true)
+		_text(Vector2(42,121),"개척 가이드  /  %02d  %02d" % [guide.index+1,guide.total],11,MINT,true)
 		_text(Vector2(42,151),guide.title,19,WHITE,true,294)
 		var detail: String = guide.detail
 		for key in ["build","robots","technology","interact","planet"]: detail = detail.replace(OS.get_keycode_string(FrontierInput.DEFAULTS[key]),FrontierInput.text(key))
 		_lines(Vector2(42,177),detail,294)
 		_bar(Rect2(42,232,294,3),guide.progress)
-		_text(Vector2(42,254),guide.counter if not guide.counter.is_empty() else FrontierInput.text("help")+"  ·  전체 단계 보기",12,MUTED,false,294)
+		_text(Vector2(42,254),guide.counter if not guide.counter.is_empty() else FrontierInput.text("help")+"    전체 단계 보기",12,MUTED,false,294)
 	else:
 		_panel(Rect2(24,96,285,77))
 		_text(Vector2(42,124),"자유 개척",18,WHITE,true)
-		_text(Vector2(42,151),FrontierInput.text("help")+" 안내서  ·  "+FrontierInput.text("planet")+" 행성 평가",13,MUTED)
+		_text(Vector2(42,151),FrontierInput.text("help")+" 안내서    "+FrontierInput.text("planet")+" 행성 평가",13,MUTED)
 	# Target marker projects the next useful destination, including off-screen guidance.
 	if not guide.is_empty() and guide.position != Vector2.INF and not app.world.orbit_mode:
 		var dest := Vector3(guide.position.x,2.5,guide.position.y)
@@ -131,7 +131,7 @@ func _draw() -> void:
 		if camera.is_position_behind(dest): uv = Vector2(640+signf((dest-camera.global_position).dot(camera.global_basis.x))*530,340)
 		uv = uv.clamp(Vector2(380,165),Vector2(1050,570))
 		draw_polyline(PackedVector2Array([uv+Vector2(0,-9),uv+Vector2(8,0),uv+Vector2(0,9),uv+Vector2(-8,0),uv+Vector2(0,-9)]),GOLD,2,true)
-		var marker_text: String = "%s · %.0fm" % [guide.target_label,dist]
+		var marker_text: String = "%s  %.0fm" % [guide.target_label,dist]
 		var label_width: float = font.get_string_size(marker_text,HORIZONTAL_ALIGNMENT_LEFT,-1,13).x
 		_text(uv+Vector2(-label_width-15 if uv.x > 900 else 15,5),marker_text,13,GOLD)
 	# Cargo and warehouse are separate, stable locations.
@@ -153,10 +153,10 @@ func _draw() -> void:
 	radar.position = offset+Vector2(1093,533)*scale_value
 	radar.size = Vector2(144,144)*scale_value
 	var report: Dictionary = assessment if not assessment.is_empty() else FrontierEvaluator.report(p)
-	_text(Vector2(1091,703),"%.0f°C  ·  O₂ %.1f%%" % [p.environment.temperature,p.environment.oxygen*100],12,WHITE)
+	_text(Vector2(1091,703),"%.0f°C    O₂ %.1f%%" % [p.environment.temperature,p.environment.oxygen*100],12,WHITE)
 	_text(Vector2(1091,725),"적합도 %s  /  %.0f점" % [report.grade,report.score],12,MUTED)
 	_panel(Rect2(884,748,372,34))
-	_text(Vector2(900,771),"M-02  /  과열 · 냉각 중" if app.overheated else "M-02  /  좌클릭 흡입 · 우클릭 펄스",13,GOLD if app.overheated else WHITE)
+	_text(Vector2(900,771),"M-02  /  과열  냉각 중" if app.overheated else "M-02  /  좌클릭 흡입  우클릭 펄스",13,GOLD if app.overheated else WHITE)
 	if app.get("tool_heat") != null: _bar(Rect2(1080,745,176,2),app.tool_heat/100,GOLD)
 	var keys: Array = ["build","robots","technology","journal","planet"]
 	for i in range(keys.size()):
@@ -176,18 +176,18 @@ func _draw() -> void:
 		if target.get("kind","") == "resource":
 			var ore: Dictionary = FrontierCampaign.find_by_id(p.nodes,target.id)
 			if not ore.is_empty():
-				label = "%s 광맥   ·   %d" % [FrontierCatalog.entry("resources",ore.resource).name,ore.amount]
+				label = "%s 광맥      %d" % [FrontierCatalog.entry("resources",ore.resource).name,ore.amount]
 				_bar(Rect2(585,444,110,3),float(ore.amount)/float(ore.initial))
 		elif target.get("kind","") == "building": label = FrontierInput.text("interact")+"  화물 반납 / 시설 관리"
 		elif target.get("kind","") == "event": label = FrontierInput.text("interact")+"  이상 신호 조사"
 		if not app.world.build_kind.is_empty():
 			var error: String = app.campaign.placement_error(app.world.build_kind,app.world.ghost_location)
-			label = "좌클릭 설치 · "+FrontierInput.text("rotate")+" 회전 · 우클릭 취소" if error.is_empty() else error
+			label = "좌클릭 설치  "+FrontierInput.text("rotate")+" 회전  우클릭 취소" if error.is_empty() else error
 		if not label.is_empty():
 			var width: float = font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x
 			_panel(Rect2(640-width/2-15,461,width+30,34))
 			_text(Vector2(640-width/2,484),label,14,WHITE)
-	else: _text(Vector2(501,600),"관찰 모드  ·  "+FrontierInput.text("camera")+" 원격 조종 복귀",15,MINT)
+	else: _text(Vector2(501,600),"관찰 모드    "+FrontierInput.text("camera")+" 원격 조종 복귀",15,MINT)
 	if pickup_time > 0:
 		var at := Vector2(679,383-(1.3-pickup_time)*18)
 		_panel(Rect2(at-Vector2(5,3),Vector2(108,42)))

@@ -1,7 +1,18 @@
 # 게임 설계 문서 목차
 
+2026-09-09 [부위별 보석 염색 메뉴](production/95-suit-dye-menu.md): I 염색, 부위당 보석 1개, 무료 기본색 복원과 세계 저장·승무원 색상 복제를 연결했다.
+
+2026-09-09 [점진적 탐험복 외장·염색 기반](production/94-progressive-suit-appearance.md): 3계열 5단계 실제 외장과 6부위 도색 채널을 연결했다. 염색 메뉴는 후속 범위다.
+
 2026-09-09 [선박 단말·빈 첫 착륙지](production/93-ship-terminal-and-empty-landing.md): L 호출을 선박 F 메뉴로 옮기고 자동 현장 창고·지상 연구/증강 장치 배치를 제거했다. 직접 지은 시설과 사용 중인 기존 창고는 보존한다.
+
+2026-09-09 [강화 이미지·SVG·건설 비용 정렬](production/92-augmentation-art-and-cost-alignment.md): ImageGen 3개 계열 그림, SVG 12종, 한 단계 효과 표시와 건설 재료 중앙 정렬을 적용했다.
+
+2026-09-09 [표본·일반 아이템 통합](production/90-unified-specimen-inventory.md): Q 채집을 I의 같은 배낭·화물로 연결하고 표본별 한 칸 수납과 실제 생물 상세를 제공한다. 기존 공동 표본과 연구/원산지를 보존한다.
+
 2026-09-09 [Lotus 출항 지원·현장 보급](production/91-lotus-start-and-airdrop.md): 새 원정의 기초 원료 각 50개·공용 FINCH 1대, L 호출·보급선 투하·F 실물 수령·무인 행성 배송·저장을 구현했다. 기업 성장·독립·지구 구출은 [스토리 구상](game/19-lotus-story-and-support.md)으로 남긴다.
+
+2026-09-09 [아이템 표시·강화 트리·작은 광맥](production/89-ui-growth-and-small-deposits.md): 슬롯 중앙 정렬/크기, 아이콘 비용과 빨간 부족 수량, I의 불필요한 개조 안내 제거, 12능력 트리와 새 은하의 광맥 분산을 적용했다. 기존 강화 단계와 기존 은하의 고갈 기록은 보존한다.
 
 2026-09-09 [수면 품질 옵션](production/88-water-quality-options.md): 낮음/보통/최상을 분리하고 규칙적인 흰 점을 카툰 물결·반사 띠로 교체했다. 실제 바다 비교, 메시 비용과 물리 판정 유지 범위는 제작 기록을 따른다.
 

@@ -47,7 +47,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		welcome_seen.set_value("read",checked_world,true);welcome_seen.save(welcome_path);letter.hide();app.cursor_released=false;app.get_viewport().gui_release_focus())
 	letter.z_index = 10
 	depart = Button.new()
-	depart.text = "G · 은하 지도"
+	depart.text = "G  은하 지도"
 	depart.custom_minimum_size = Vector2(180, 32)
 	depart.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	depart.offset_left = -208
@@ -79,7 +79,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	detail = FrontierInterfaceStyle.label(column, "", 13)
 	detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	detail.custom_minimum_size.x = 250
-	var footer := FrontierInterfaceStyle.label(column, "Esc → 설정 → 조작 · 소리에서 끄기", 10, FrontierInterfaceStyle.MUTED)
+	var footer := FrontierInterfaceStyle.label(column, "Esc → 설정 → 조작  소리에서 끄기", 10, FrontierInterfaceStyle.MUTED)
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.hide()
 	app.session.response_received.connect(_response)
@@ -126,7 +126,7 @@ func _response(_sequence: int, result: Dictionary) -> void:
 
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
 	step = id
-	counter.text = "플레이 가이드  ·  %02d / 06" % number
+	counter.text = "플레이 가이드    %02d / 06" % number
 	title.text = heading
 	detail.text = text
 	highlight = target
@@ -185,9 +185,9 @@ func _process(delta: float) -> void:
 	if app.surface_world != null:
 		var tool := FrontierEquipment.active(value.crew.members[value.self_id])
 		if not progress.get("inventory", false) or tool.get("kind") != "miner":
-			_hint("equipment", 5, "채집 장비 준비", "I  아이템에서 채집기를 제작·번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
+			_hint("equipment", 5, "채집 장비 준비", "I  아이템에서 채집기를 제작 / 번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
 		else:
-			_hint("mine", 6, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설 · F 대상 작업 · 자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
+			_hint("mine", 6, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설  F 대상 작업  자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
 	elif not value.get("local_shuttle", "").is_empty():
 		_hint("shuttle", 1, "공동 원정선으로 합류", "소형선은 같은 항성계 안에서 이동합니다.\n다음 항성계 항해는 공동 원정선에서 시작하세요.")
 	elif value.self_id != value.crew.pilot_id:
@@ -209,7 +209,7 @@ func _process(delta: float) -> void:
 			_hint("aim", 1, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n화면 가장자리 화살표는 뒤쪽 별의 방향입니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 	else:
 		var near: bool = nav_ui.context_kind == "land" and nav_ui.context_ready
-		_hint("land", 4, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인 · 가까이서 F", _target(nav_ui.context) if near else _planet_marker())
+		_hint("land", 4, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
 	queue_redraw()
 
 func _draw() -> void:

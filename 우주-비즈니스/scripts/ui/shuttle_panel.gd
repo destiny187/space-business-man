@@ -10,9 +10,9 @@ var preview: FrontierEquipmentPreview
 func configure(owner_panel: FrontierBusinessPanel) -> void:
 	panel=owner_panel;name="소형선"
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(270,200);preview.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;add_child(preview);preview.show_model("ships/finch");preview.camera.size*=.7
-	panel.label(self,"FINCH · 1인승 항성계 운송선",22)
-	var scope:=panel.label(self,"1인승  ·  화물 4칸  ·  항성계 내부 운송")
-	scope.tooltip_text="W/S 추진 · 마우스 조종 · Shift 가속 · Tab 행성 선택 · F 착륙. 성간 이동은 공동 원정선에 합류하세요."
+	panel.label(self,"FINCH  1인승 항성계 운송선",22)
+	var scope:=panel.label(self,"1인승    화물 4칸    항성계 내부 운송")
+	scope.tooltip_text="W/S 추진  마우스 조종  Shift 가속  Tab 행성 선택  F 착륙. 성간 이동은 공동 원정선에 합류하세요."
 	var cost:=FrontierResourceReadout.new();add_child(cost);cost.value=FrontierCatalog.cost_text(FrontierShuttles.config().cost)
 	info=panel.label(self,"")
 	progress=ProgressBar.new();progress.max_value=float(FrontierShuttles.config().seconds);add_child(progress)

@@ -196,15 +196,15 @@ func _build_ui() -> void:
 	waiting_panel=VBoxContainer.new();waiting_panel.custom_minimum_size=Vector2(380,0);waiting_panel.add_theme_constant_override("separation",18);center.add_child(waiting_panel)
 	_label(waiting_panel,"L O C U S",38)
 	_label(waiting_panel,"하나의 은하, 지구에서 시작하는 탐험",19)
-	waiting_info=_label(waiting_panel,"100만 행성 · 항성계와 공전 궤도\n암석 행성의 개척 · 가스 행성의 궤도 탐색",15)
+	waiting_info=_label(waiting_panel,"100만 행성  항성계와 공전 궤도\n암석 행성의 개척  가스 행성의 궤도 탐색",15)
 	waiting_roster=_label(waiting_panel,"오른쪽에서 혼자 시작하거나 방을 만들고 참가하세요.",17)
 	waiting_ready=_button(waiting_panel,"준비 완료",func():session.send_request("lobby_ready",{"value":not session.latest.get("lobby_ready",{}).get(session.latest.self_id,false)}));waiting_ready.hide()
-	waiting_start=_button(waiting_panel,"호스트 · 게임 시작",func():session.send_request("start_game",{}));waiting_start.hide()
-	_button(waiting_panel,"내 캐릭터 · 소유 장비",show_equipment)
+	waiting_start=_button(waiting_panel,"호스트  게임 시작",func():session.send_request("start_game",{}));waiting_start.hide()
+	_button(waiting_panel,"내 캐릭터  소유 장비",show_equipment)
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
 	_label(header,"L O C U S  /  우주 탐험",23)
 	status=_resource_label(header,"세계를 열고 준비한 뒤 지구에서 탐험을 시작하세요.",15)
-	help_text=_label(header,"WASD 이동 · Space 점프 · 마우스 시선 · C 외부 시점 · Tab 항해",13)
+	help_text=_label(header,"WASD 이동  Space 점프  마우스 시선  C 외부 시점  Tab 항해",13)
 	for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390)
 	get_viewport().size_changed.connect(func():
 		for child in header.get_children():child.custom_minimum_size.x=minf(740,get_viewport().get_visible_rect().size.x-390))
@@ -214,11 +214,11 @@ func _build_ui() -> void:
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",8);scroll.add_child(column)
 	lobby=VBoxContainer.new();lobby.add_theme_constant_override("separation",9);column.add_child(lobby)
 	_label(lobby,"함께하는 탐험",22)
-	_button(lobby,"혼자 게임 시작 · 연결 설정 없음",start_solo).name="SoloStart"
+	_button(lobby,"혼자 게임 시작  연결 설정 없음",start_solo).name="SoloStart"
 	name_input=LineEdit.new();name_input.placeholder_text="탐험가 이름";name_input.text="탐험가";name_input.max_length=24;lobby.add_child(name_input)
 	host_address=LineEdit.new();host_address.text="127.0.0.1";host_address.placeholder_text="호스트 주소";lobby.add_child(host_address)
 	port_input=SpinBox.new();port_input.min_value=1024;port_input.max_value=65535;port_input.value=24560;lobby.add_child(port_input)
-	_button(lobby,"세계 열기 · 최대 6명",host_world)
+	_button(lobby,"세계 열기  최대 6명",host_world)
 	_button(lobby,"새 은하로 방 만들기",func():world_store=FrontierWorldStore.new("user://crew_"+FrontierPlayerProfile.token()+".json");host_world())
 	_button(lobby,"주소로 참가",join_world)
 	if FileAccess.file_exists("user://crew_world.json"):
@@ -253,7 +253,7 @@ func _build_ui() -> void:
 		if business_panel.context_kind not in ["build","ship","base","robot"]:args["access_facility_id"]=business_panel.context_id
 		session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
-	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시 · "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
+	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시  "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
 	business_panel.station_action.connect(station_action)
 	station_market=FrontierStationMarketPanel.new();ui.add_child(station_market)
 	station_market.command.connect(func(kind: String,args: Dictionary):
@@ -300,12 +300,13 @@ func _setup_flight() -> void:
 func _spawn_actor(id: String,member: Dictionary) -> void:
 	var actor:=CharacterBody3D.new();actor.name="Crew_"+id;actor.collision_layer=2;actor.collision_mask=1;actor.floor_snap_length=.7;actor.position=FrontierCrewWorld.vector(member.position)
 	var collision:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.29;capsule.height=1.86;collision.shape=capsule;collision.position.y=.93;actor.add_child(collision);add_child(actor)
-	var visual: Node3D=load("res://assets/models/crew/surveyor_suit.glb").instantiate();actor.add_child(visual);FrontierInkStyle.apply(visual,cache);_suit_color(visual,int(member.profile.tint))
+	var visual: Node3D=load("res://assets/models/"+str(FrontierSuitAppearance.config().model)+".glb").instantiate();actor.add_child(visual);FrontierInkStyle.apply(visual,cache);_suit_color(visual,int(member.profile.tint))
 	var label:=Label3D.new();label.render_priority=110;label.outline_render_priority=109;label.outline_size=4;label.text=member.profile.name;label.font=ui_theme.default_font;label.font_size=52;label.pixel_size=.0035;label.position.y=2.2;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;actor.add_child(label)
+	var appearance:=FrontierSuitAppearance.new();appearance.configure(visual);appearance.sync(member)
 	var pose:=FrontierCrewPose.new();actor.add_child(pose);pose.configure(visual)
 	pose.landed.connect(func(point: Vector3,strength: float):
 		if surface_world!=null and not feedback.blocked():feedback.effects.burst(point+Vector3.UP*.06,Color("a99f88"),int(3+strength*5)))
-	actors[id]=actor;visuals[id]={"model":visual,"label":label,"last":actor.position,"pose":pose,"replica":FrontierCrewMotionReplica.new(),"area":member.area,"motion":FrontierCrewLocomotion.create()}
+	actors[id]=actor;visuals[id]={"appearance":appearance,"model":visual,"label":label,"last":actor.position,"pose":pose,"replica":FrontierCrewMotionReplica.new(),"area":member.area,"motion":FrontierCrewLocomotion.create()}
 	if session.hosting:session.authority.motions[id]=FrontierCrewLocomotion.create()
 var first_snapshot_pending: Dictionary = {}
 var preparing_first_snapshot := false
@@ -349,8 +350,8 @@ func _apply_snapshot(value: Dictionary) -> void:
 			var prepared: bool=value.lobby_ready.get(id,false)
 			lines.append(("호스트  " if is_host else ("✓ 준비  " if prepared else "○ 대기  "))+value.crew.members[id].profile.name)
 			if not is_host and not prepared:all_ready=false
-		waiting_roster.text="대기실 · %d / 6\n\n"%value.crew.members.size()+"\n".join(lines)
-		waiting_info.text="은하 시드 %d · 행성 1,000,000개\n시작/재개 위치: %s\n준비 후 호스트가 게임을 시작합니다."%[int(session.manifest.seed),FrontierUniverse.body_from_id(session.manifest,value.location).name]
+		waiting_roster.text="대기실  %d / 6\n\n"%value.crew.members.size()+"\n".join(lines)
+		waiting_info.text="은하 시드 %d  행성 1,000,000개\n시작/재개 위치: %s\n준비 후 호스트가 게임을 시작합니다."%[int(session.manifest.seed),FrontierUniverse.body_from_id(session.manifest,value.location).name]
 		waiting_ready.visible=not session.hosting;waiting_start.visible=session.hosting;waiting_start.disabled=not all_ready
 		waiting_ready.text="준비 취소" if value.lobby_ready.get(value.self_id,false) else "준비 완료"
 		return
@@ -384,9 +385,10 @@ func _apply_snapshot(value: Dictionary) -> void:
 		if not session.hosting:
 			visuals[id].replica.push(FrontierCrewWorld.vector(members[id].position),value.get("motion",{}).get(id,FrontierCrewLocomotion.create()))
 			if id==value.self_id and value.get("motion",{}).has(id):prediction_snapshot={"position":FrontierCrewWorld.vector(members[id].position),"motion":value.motion[id].duplicate(true)}
-		lines.append("%s %s%s" % ["✓" if members[id].ready else "○",members[id].profile.name," · 조종" if id==value.crew.pilot_id else ""])
+		visuals[id].appearance.sync(members[id])
+		lines.append("%s %s%s" % ["✓" if members[id].ready else "○",members[id].profile.name,"  조종" if id==value.crew.pilot_id else ""])
 	var own: Dictionary=members[value.self_id]
-	lines.append("창고 %d · 운반 %d" % [int(value.crew.rock),int(own.carried)])
+	lines.append("창고 %d  운반 %d" % [int(value.crew.rock),int(own.carried)])
 	var nav: Dictionary=value.crew.navigation
 	var on_surface: bool=not value.crew.get("landing",{}).is_empty()
 	if on_surface!=surface_transition:
@@ -465,7 +467,7 @@ func _physics_process(delta: float) -> void:
 				if actor.position.y<float(ground.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(ground.config.region_half_extent):
 					actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO;motion=FrontierCrewLocomotion.create();session.authority.motions[id]=motion
 			var old_land: int=motion.land_serial
-			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)))
+			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)),FrontierCrewAugmentation.multiplier(member,"jump"))
 			motion.input_ack=int(session.authority.input_sequences.get(peer,0))
 			if member.area=="surface" and int(motion.land_serial)>old_land and FrontierCrewVitals.land(member,float(motion.impact)):
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
@@ -486,7 +488,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 		body.position=prediction_snapshot.position;body.velocity=FrontierCrewWorld.vector(confirmed.velocity)
 		predicted_motion=confirmed.duplicate(true)
 		for frame in prediction_history:
-			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled,float(frame.get("water",0)),float(frame.get("swim_vertical",0)))
+			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled,float(frame.get("water",0)),float(frame.get("swim_vertical",0)),float(frame.get("jump_factor",1)))
 		var correction:=previous-body.position
 		camera_correction=(camera_correction+correction).limit_length(.3) if correction.length()<1.0 else Vector3.ZERO
 		prediction_snapshot.clear()
@@ -497,8 +499,8 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
 	if on_surface:speed*=FrontierCrewAugmentation.multiplier(member,"mobility")
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
-	var frame: Dictionary={"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
-	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical))
+	var frame: Dictionary={"jump_factor":FrontierCrewAugmentation.multiplier(member,"jump"),"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
+	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical),float(frame.jump_factor))
 	prediction_history.append(frame)
 	# Bounded replay: stale links cannot build an unbounded local simulation backlog.
 	if prediction_history.size()>90:prediction_history.pop_front()
@@ -653,10 +655,10 @@ func kick_selected() -> void:
 func show_equipment() -> void:
 	if surface_world!=null:toggle_inventory();return
 	if profile.data.is_empty():return
-	var dialog:=AcceptDialog.new();dialog.theme=ui_theme;dialog.title="내 캐릭터 · 소유 장비"
+	var dialog:=AcceptDialog.new();dialog.theme=ui_theme;dialog.title="내 캐릭터  소유 장비"
 	var lines: PackedStringArray=[profile.data.character.name]
 	for item in profile.data.character.equipment:
-		lines.append("%s · %s · %s" % [{"pressure_suit":"탐험복","survey_scanner":"조사 스캐너","rock_tool":"굴착 도구"}[item.definition],{"standard":"기본","improved":"개량","rare":"희귀"}[item.grade]," / ".join(item.traits.map(func(value: String):return {"efficient":"절전","sturdy":"내구 강화","expanded_cargo":"확장 적재"}[value])) if not item.traits.is_empty() else "기본 특성"])
+		lines.append("%s  %s  %s" % [{"pressure_suit":"탐험복","survey_scanner":"조사 스캐너","rock_tool":"굴착 도구"}[item.definition],{"standard":"기본","improved":"개량","rare":"희귀"}[item.grade]," / ".join(item.traits.map(func(value: String):return {"efficient":"절전","sturdy":"내구 강화","expanded_cargo":"확장 적재"}[value])) if not item.traits.is_empty() else "기본 특성"])
 	lines.append("\n이 장비는 다른 호스트의 원정에서도 유지됩니다.")
 	dialog.dialog_text="\n".join(lines);dialog.confirmed.connect(dialog.queue_free);dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(580,240))
 
@@ -667,7 +669,7 @@ func _sync_recovery(records: Dictionary) -> void:
 		if not _crate_here(records[id]) or recovery_models.has(id):continue
 		var crate: Node3D=load("res://assets/models/crew/recovery_crate.glb").instantiate()
 		crate.position=FrontierCrewWorld.vector(records[id].position);FrontierInkStyle.apply(crate,cache);add_child(crate)
-		var label:=Label3D.new();label.render_priority=110;label.outline_render_priority=109;label.outline_size=4;label.text="회수 화물 · 암석 %d" % int(records[id].rock);label.font=ui_theme.default_font;label.position.y=.95;label.font_size=42;label.pixel_size=.002;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;crate.add_child(label)
+		var label:=Label3D.new();label.render_priority=110;label.outline_render_priority=109;label.outline_size=4;label.text="회수 화물  암석 %d" % int(records[id].rock);label.font=ui_theme.default_font;label.position.y=.95;label.font_size=42;label.pixel_size=.002;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;crate.add_child(label)
 		recovery_models[id]=crate
 
 func _crate_here(record: Dictionary) -> bool:
@@ -713,25 +715,25 @@ func _update_surface_hud() -> void:
 			if hp<int(FrontierEquipment.config().animal_health):creature.set_state("dormant" if hp==0 else "stressed")
 	surface_target=surface_world.ecology.target(camera)
 	var position: Vector3=actors[session.latest.self_id].position
-	var text: String="%s · 깊이 %.1fm"%[surface_world.body.name,maxf(0,-position.y)]
+	var text: String="%s  깊이 %.1fm"%[surface_world.body.name,maxf(0,-position.y)]
 	var distance: float=position.distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))
-	text+=" · 우주선 %.0fm · 표본 %d / %d"%[distance,session.surface.ecology.specimens.size(),int(FrontierEcologyCatalog.config().cargo_capacity)]
+	text+="  우주선 %.0fm"%distance
 
 	if not surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(surface_target.form_id)
 		text+="\n"+str(form.name)
-		if form.category=="animal":text+=" · 체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierEquipment.config().animal_health)),int(FrontierEquipment.config().animal_health)]
+		if form.category=="animal":text+="  체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierEquipment.config().animal_health)),int(FrontierEquipment.config().animal_health)]
 		var progress: Dictionary=session.latest.get("scan",{})
 		var known: bool=session.surface.ecology.observations.has(surface_world.body.id+":"+form.id)
-		text+="\nQ 생체 표본" if known else "\nE 유지 · 스캔 %d%%"%int(float(progress.get("progress",0))*100)
-	else:text+="\nI 아이템·제작  ·  1–5 장비 전환  ·  E 내장 스캐너"
+		text+="\nQ 생체 표본" if known else "\nE 유지  스캔 %d%%"%int(float(progress.get("progress",0))*100)
+	else:text+="\nI 아이템 / 제작    1–5 장비 전환    E 내장 스캐너"
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
 	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
 	if not business_target.is_empty():
-		text+="\nF 현장 작업 · B 개발/건설"
+		text+="\nF 현장 작업  B 개발/건설"
 		if business_target.get("kind")=="vein":
 			var vein:=FrontierExpeditionBusiness.find_vein(surface_world.body,business_target.id)
-			text+=" · 채집기 %d등급 필요"%int(vein.get("required_tier",1))
+			text+="  채집기 %d등급 필요"%int(vein.get("required_tier",1))
 	surface_status.value=text
 	surface_status.visible=not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible
 
@@ -751,10 +753,11 @@ func _refresh_surface_options() -> void:
 		if ids.is_empty():form_options.add_item("스캔한 생명체 없음");form_options.set_item_metadata(0,"")
 	if not sample_options.get_popup().visible:
 		var selected: String=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
-		sample_options.clear();var ids: Array=ecological.specimens.keys().filter(func(id):return ecological.specimens[id].state=="cargo");ids.sort()
+		var carried_samples:=FrontierSpecimenItems.carried(session.latest.get("inventory",{}))
+		sample_options.clear();var ids: Array=ecological.specimens.keys().filter(func(id):return ecological.specimens[id].state=="cargo" and carried_samples.has(id));ids.sort()
 		for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
 		if selected in ids:sample_options.select(ids.find(selected))
-		if ids.is_empty():sample_options.add_item("격리 운송 표본 없음");sample_options.set_item_metadata(0,"")
+		if ids.is_empty():sample_options.add_item("내 아이템창에 표본 없음");sample_options.set_item_metadata(0,"")
 
 func surface_action(kind: String) -> void:
 	if not session.active or surface_world==null:return
@@ -910,7 +913,7 @@ func _update_business_placement() -> void:
 	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*12);query.exclude=[actors[session.latest.self_id].get_rid()]
 	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
 	placement_valid=false
-	if hit.is_empty():placement_ghost.hide();placement_reason="12m 안의 지면을 조준하세요 · Esc 취소";return
+	if hit.is_empty():placement_ghost.hide();placement_reason="12m 안의 지면을 조준하세요  Esc 취소";return
 	placement_point=hit.position
 	var ground_height: float=surface_world.terrain.field.height(placement_point.x,placement_point.z)
 	var on_surface: bool=absf(placement_point.y-ground_height)<1.5
@@ -921,14 +924,15 @@ func _update_business_placement() -> void:
 	if not session.hosting:world["lotus"]=session.latest.get("lotus",{})
 	var current:=FrontierExpeditionBusiness.site(world)
 	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
-	if not on_surface:reason="지표의 평탄한 지면에 배치하세요 · Esc 취소"
+	if not on_surface:reason="지표의 평탄한 지면에 배치하세요  Esc 취소"
 	if reason.is_empty() and not surface_world.ready_at(placement_point):reason="지면을 불러오는 중입니다."
 	placement_reason=reason
 	placement_valid=on_surface and reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
-	status.value=("클릭 건설 · "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason
+	status.value=("클릭 건설  "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason
 
 func start_solo(fresh: bool=false) -> void:
+	if network_busy:return
 	if not test_mode:world_store=FrontierWorldStore.new("user://solo_"+FrontierPlayerProfile.token()+".json" if fresh else selected_world_path(true))
 	if not profile.ensure(name_input.text):status.value=profile.error;return
 	if session.host(profile,world_store,24560,"*",true):

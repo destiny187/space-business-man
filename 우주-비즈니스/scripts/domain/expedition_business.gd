@@ -121,7 +121,7 @@ static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3
 	for key in def.cost:
 		var amount:=int(def.cost[key])-int(bag(world,actor).get(key,0))
 		if amount>0:missing[key]=amount
-	if not missing.is_empty():return "가방 부족 · "+FrontierCatalog.cost_text(missing)+" · 창고에서 직접 인수하세요."
+	if not missing.is_empty():return "재료가 부족합니다."
 	return ""
 static func ensure_site(world: Dictionary) -> Dictionary:
 	if not world.has("business"):world.business=create()
@@ -299,6 +299,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if current.robots.size()+current.jobs.size()>=int(config().max_robots):return "현장 로봇 한도에 도달했습니다."
 		var robot: Dictionary=ledger.hangar[id].duplicate(true);robot.position=array(point(current.center)+Vector3(3,0,0));robot.phase="idle";robot.target="";robot.path=[];robot.status="작업 선택 대기";robot.auto_enabled=false;robot.resource_filter="";robot.work_mode_version=2;robot.anchor=robot.position.duplicate();robot.manual_target="";robot.search_wait=0.0;current.robots[id]=robot;ledger.hangar.erase(id);return ""
 	if kind=="business_settle":
+		if not args.get("retain",false) and not FrontierSpecimenItems.carried(current.inventory).is_empty():return "표본을 배낭이나 우주선 창고로 옮긴 뒤 거점을 인계하세요."
 		if current.state!="active" or ledger.active!=world.location:return "진행 중인 복원 계약만 정산할 수 있습니다."
 		if not args.get("retain",false) is bool:return "정산 방식 오류"
 		var retain: bool=args.get("retain",false)
@@ -313,7 +314,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not current.jobs.is_empty():return "진행 중인 로봇 제작을 완료하세요."
 		if FrontierFieldEngineering.uses(world,world.location):return "진행 중인 현장 공학 실험을 완료하세요."
 		for id in ledger.bags:
-			if total(ledger.bags[id])>0:return "승무원의 사업 자원을 모두 창고에 반납하세요."
+			var supplies: Dictionary=ledger.bags[id].duplicate()
+			for key in supplies.keys():
+				if FrontierSpecimenItems.is_item(key):supplies.erase(key)
+			if total(supplies)>0:return "승무원의 사업 자원을 모두 창고에 반납하세요."
 		var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
 		var payment:=FrontierPlanetSupply.settlement_payment(current,int(body.planet_tier),retain)
 		current.settlement={"payment":payment,"scores":scores,"time":current.time,"retained":retain};current.state="supply" if retain else "settled";ledger.credits+=payment;ledger.active=""
@@ -360,7 +364,13 @@ static func visible_robot(source: Dictionary) -> Dictionary:
 	result.position=source.position.duplicate();result.cargo=source.cargo.duplicate()
 	return result
 static func valid_inventory(value: Variant,maximum: int=100000000) -> bool:
-	if not value is Dictionary or value.size()>19+FrontierProductionTier2.config().products.size():return false
+	if not value is Dictionary:return false
+	var ordinary:=0
+	for key in value:
+		if not key is String:return false
+		if not FrontierSpecimenItems.is_item(key):ordinary+=1
+		elif not integer(value[key],0,1):return false
+	if ordinary>19+FrontierProductionTier2.config().products.size():return false
 	for key in inventory():
 		if not value.has(key):return false
 	for key in value:

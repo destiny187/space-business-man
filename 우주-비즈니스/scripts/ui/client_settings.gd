@@ -50,7 +50,7 @@ func set_quality(group: String,index: int) -> void:
 	if rebuilding or index<0 or index>=graphics_groups()[group].levels.size():return
 	_merge_quality(group,index)
 	values.preset=quality_preset()
-	apply_all();notice.text="적용·저장했습니다." if save_settings() else "설정 저장에 실패했습니다."
+	apply_all();notice.text="적용 / 저장했습니다." if save_settings() else "설정 저장에 실패했습니다."
 	_sync()
 
 func _quality_choice(page: VBoxContainer,group: String) -> void:
@@ -136,7 +136,7 @@ func _input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	if keep_display_button!=null:keep_display_button.visible=not display_previous.is_empty()
 	fps_label.visible=values.show_fps
-	if fps_label.visible:fps_label.text="%d FPS · %.1f ms" % [Engine.get_frames_per_second(),1000.0/maxi(1,Engine.get_frames_per_second())]
+	if fps_label.visible:fps_label.text="%d FPS  %.1f ms" % [Engine.get_frames_per_second(),1000.0/maxi(1,Engine.get_frames_per_second())]
 	if not display_previous.is_empty():
 		var remaining:=display_deadline-Time.get_ticks_msec()
 		notice.text="화면이 보이면 ‘화면 변경 유지’를 누르세요. %d초 후 복구" % ceili(remaining/1000.0)
@@ -197,7 +197,7 @@ func set_option(key: String,value: Variant) -> void:
 		if key in ["scale","msaa","fxaa","taa","view_distance","shadow_distance","shadow_size","shadows","local_shadows","ssao","ssil","ssr","glow","fog","lod","upscaler","sharpness","shadow_filter","local_shadow_size"]:values.preset=3
 		apply_all()
 		if not save_settings():notice.text="설정 저장 실패: 디스크 공간과 쓰기 권한을 확인해 주세요."
-		else:notice.text="적용·저장했습니다. 온라인 세계는 설정 중에도 계속 진행됩니다."
+		else:notice.text="적용 / 저장했습니다. 온라인 세계는 설정 중에도 계속 진행됩니다."
 	_sync()
 func _preset(index: int) -> void:
 	if rebuilding or index==3:return
@@ -205,7 +205,7 @@ func _preset(index: int) -> void:
 		var level:=index+1 if group=="anti_aliasing" else index
 		_merge_quality(group,level)
 	values.preset=index
-	apply_all();notice.text="품질 설정을 적용·저장했습니다." if save_settings() else "설정 저장에 실패했습니다.";_sync()
+	apply_all();notice.text="품질 설정을 적용 / 저장했습니다." if save_settings() else "설정 저장에 실패했습니다.";_sync()
 
 func _sync() -> void:
 	rebuilding=true
@@ -244,7 +244,7 @@ func _sensitivity(page: VBoxContainer) -> void:
 	var row:=_row(page,"마우스 감도")
 	sensitivity_slider=HSlider.new();sensitivity_slider.min_value=LIMITS.sensitivity[0];sensitivity_slider.max_value=LIMITS.sensitivity[1];sensitivity_slider.step=.01;sensitivity_slider.custom_minimum_size.x=180;sensitivity_slider.size_flags_vertical=Control.SIZE_SHRINK_CENTER;row.add_child(sensitivity_slider)
 	var spin:=SpinBox.new();spin.min_value=LIMITS.sensitivity[0];spin.max_value=LIMITS.sensitivity[1];spin.step=.01;spin.custom_minimum_size.x=110;row.add_child(spin);controls.sensitivity=spin
-	spin.tooltip_text="기본 1.00 · 0.50은 절반, 2.00은 두 배 속도 · 숫자를 직접 입력할 수 있습니다."
+	spin.tooltip_text="기본 1.00  0.50은 절반, 2.00은 두 배 속도  숫자를 직접 입력할 수 있습니다."
 	sensitivity_slider.tooltip_text=spin.tooltip_text
 	sensitivity_slider.value_changed.connect(func(value: float):set_option("sensitivity",value))
 	spin.value_changed.connect(func(value: float):set_option("sensitivity",value))
@@ -275,7 +275,7 @@ func _build() -> void:
 	(controls.preset as OptionButton).set_item_disabled(3,true)
 	for group in graphics_groups():_quality_choice(graphics,group)
 	_render_scale(graphics)
-	_choice(graphics,"화면 선명도","upscaler",["기본","선명하게 · FSR"],[0,1])
+	_choice(graphics,"화면 선명도","upscaler",["기본","선명하게  FSR"],[0,1])
 
 	var display:=_page("화면")
 	_choice(display,"화면 모드","window_mode",["창 모드","최대화 창","전체 화면"],[0,1,2])
@@ -283,7 +283,7 @@ func _build() -> void:
 	_check(display,"수직 동기화","vsync")
 	_choice(display,"프레임 제한","fps",["무제한","30 FPS","60 FPS","90 FPS","120 FPS","144 FPS","240 FPS"],[0,30,60,90,120,144,240])
 	_check(display,"프레임 표시","show_fps")
-	var input:=_page("조작 · 소리")
+	var input:=_page("조작  소리")
 	_choice(input,"플레이 가이드","tutorial_mode",["처음 플레이어만","항상 표시","끄기"],[0,1,2])
 	_number(input,"시야각","fov",1,"°")
 	_sensitivity(input)
@@ -292,7 +292,7 @@ func _build() -> void:
 	_number(input,"배경음악 음량","music_volume",.05)
 	notice=Label.new();notice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;notice.text="프레임이 낮으면 전체 품질이나 렌더 해상도를 낮춰 보세요.";column.add_child(notice)
 	var buttons:=HBoxContainer.new();column.add_child(buttons)
-	for entry in [["닫기 · Esc / F10",close],["화면 변경 유지",func():display_previous.clear();notice.text="화면 설정을 저장했습니다." if save_settings() else "설정 저장 실패"],["기본값 복원",func():
+	for entry in [["닫기  Esc / F10",close],["화면 변경 유지",func():display_previous.clear();notice.text="화면 설정을 저장했습니다." if save_settings() else "설정 저장 실패"],["기본값 복원",func():
 		if not display_previous.is_empty():_revert_display()
 		var mode: Variant=values.window_mode;var resolution: Variant=values.resolution
 		values=DEFAULTS.duplicate();values.window_mode=mode;values.resolution=resolution;apply_all();notice.text="화면 모드를 제외한 기본값을 복원했습니다." if save_settings() else "설정 저장 실패";_sync()]]:

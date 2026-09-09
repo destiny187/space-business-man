@@ -181,11 +181,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="surface_collect":
 		var row:=target(world,actor,direction(args.get("aim")))
 		if row.is_empty() or row.id!=args.get("encounter_id") or position.distance_to(row.point)>float(config().sample_distance):return "스캔한 생명체를 4m 이내에서 직접 조준하세요."
-		var before: int=world.ecology.specimens.size()
-		var message:=FrontierEcology.collect(world.ecology,body_id,row)
-		return "" if world.ecology.specimens.size()>before else message
+		return FrontierSpecimenItems.collect(world,actor,row)
 	if kind not in ["surface_analyze","surface_restore","surface_introduce","surface_resupply"]:return "지원하지 않는 지표 작업입니다."
-	if not near_ship:return "우주선의 연구·격리 지원 범위로 돌아오세요."
+	if not near_ship:return "우주선의 표본 연구대 가까이 돌아오세요."
 	var supplies: Dictionary={"depot_rock":crew.rock}
 	var before: String=FrontierUniverse.fingerprint(world.ecology)
 	var result: String=""
@@ -200,17 +198,19 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			result=FrontierEcology.restore_plot(world.ecology,body_id,args.environment,position,layer,supplies)
 		"surface_resupply":result=FrontierEcology.resupply_plot(world.ecology,body_id,supplies)
 		"surface_introduce":
-			if not args.get("sample_id") is String or not world.ecology.specimens.has(args.sample_id):return "격리 표본 오류"
+			if not args.get("sample_id") is String or not world.ecology.specimens.has(args.sample_id):return "사용할 표본을 선택하세요."
 			var aim:=direction(args.get("aim"))
 			var forward:=Vector3(aim.x,0,aim.z).normalized()
 			if forward.length_squared()<.5:return "앞쪽의 평탄한 구획을 조준하세요."
 			var sample: Dictionary=world.ecology.specimens[args.sample_id]
+			if not FrontierSpecimenItems.owns(world,actor,sample):return "이식할 표본을 내 아이템창으로 가져오세요."
 			var candidate: Dictionary={"form_id":sample.form_id,"look_id":sample.look_id,"point":position+forward*3,"layer":layer,"yaw":0.0}
 			var point:=FrontierEcologyPlacement.ground(terrain,candidate)
 			if not point.is_finite():return "생명체가 설 수 있는 넓고 평탄한 장소가 필요합니다."
 			for id in active.values():
 				if FrontierCrewWorld.vector(crew.members[id].position).distance_to(point)<2:return "승무원과 거리를 두고 이식하세요."
 			result=FrontierEcology.introduce(world.ecology,body_id,args.sample_id,point,layer)
+			if sample.state=="introduced":FrontierSpecimenItems.consume(world,actor,sample)
 	if before==FrontierUniverse.fingerprint(world.ecology):return result
 	crew.rock=supplies.depot_rock
 	return ""

@@ -208,6 +208,8 @@ static func validate_world(value: Variant) -> String:
 	if not rover_error.is_empty():return rover_error
 	var sky_error:=FrontierPlanetaryCycles.validate_regions(value)
 	if not sky_error.is_empty():return sky_error
+	var specimens_error:=FrontierSpecimenItems.validate(value)
+	if not specimens_error.is_empty():return specimens_error
 	return _validate_terrain(value)
 
 static func _finite(value: Variant,low: float,high: float) -> bool:

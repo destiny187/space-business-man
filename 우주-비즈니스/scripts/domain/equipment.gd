@@ -29,6 +29,11 @@ static func active(member: Dictionary) -> Dictionary:
 		tool=tool.duplicate(true);tool.interval=float(tool.interval)/FrontierProgressionResearch.multiplier(level)
 	if tool.get("kind")=="pulse":
 		tool=tool.duplicate(true);tool.damage=roundi(float(tool.damage)*FrontierCrewAugmentation.multiplier(member,"combat"))
+	if not tool.is_empty():
+		tool=tool.duplicate(true)
+		if tool.kind=="miner":tool.interval=float(tool.interval)/FrontierCrewAugmentation.multiplier(member,"mining")
+		elif tool.kind=="pulse":tool.interval=float(tool.interval)/FrontierCrewAugmentation.multiplier(member,"fire_rate")
+		elif tool.kind=="terrain":tool.radius=float(tool.radius)*FrontierCrewAugmentation.multiplier(member,"excavation")
 	return tool
 static func validate(value: Variant) -> String:
 	if not value is Dictionary:return "장비 기록 형식"
@@ -67,7 +72,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if int(data.get("suit_tier",1))>=2:return "탐험복은 이미 Mk.2입니다."
 		var cost: Dictionary=FrontierProductionTier2.config().suit_upgrade.cost
 		var stock:=FrontierExpeditionBusiness.bag(world,actor)
-		if not FrontierExpeditionBusiness.affordable(stock,cost):return "배낭의 탐험복 개조 부품이 부족합니다."
+		if not FrontierExpeditionBusiness.affordable(stock,cost):return "재료가 부족합니다."
 		FrontierExpeditionBusiness.transfer(stock,cost,-1);data.suit_tier=2;return ""
 	if kind=="equipment_upgrade":
 		if member.area!="surface":return "착륙 후 장비를 개조하세요."
@@ -80,7 +85,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			var access:=FrontierExpeditionResearch.craft_reason(world,key)
 			if not access.is_empty():return access
 			var stock:=FrontierExpeditionBusiness.bag(world,actor)
-			if not FrontierExpeditionBusiness.affordable(stock,target.cost):return "배낭의 Mk.2 부품이 부족합니다."
+			if not FrontierExpeditionBusiness.affordable(stock,target.cost):return "재료가 부족합니다."
 			FrontierExpeditionBusiness.transfer(stock,target.cost,-1);data.items[id]=key;return ""
 		return "현재 최고 개조 단계입니다."
 	if kind!="equipment_craft":return "지원하지 않는 장비 작업"
@@ -91,6 +96,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	var recipe: Dictionary=config().items[definition]
 	var access:=FrontierExpeditionResearch.craft_reason(world,definition)
 	if not access.is_empty():return access
+	if definition!="miner_1" and not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),recipe.cost):return "재료가 부족합니다."
 	var after_cost:=FrontierExpeditionBusiness.bag(world,actor).duplicate()
 	FrontierExpeditionBusiness.transfer(after_cost,recipe.cost,-1)
 	if FrontierItemInventory.used(after_cost,data.items.size()+1)>FrontierItemInventory.capacity(member):return "아이템 보관 공간이 부족합니다."
@@ -99,7 +105,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		data.kit-=1
 	else:
 		var bag:=FrontierExpeditionBusiness.bag(world,actor)
-		if not FrontierExpeditionBusiness.affordable(bag,recipe.cost):return "내 배낭의 제작 재료가 부족합니다."
+		if not FrontierExpeditionBusiness.affordable(bag,recipe.cost):return "재료가 부족합니다."
 		FrontierExpeditionBusiness.transfer(bag,recipe.cost,-1)
 	data.counter+=1
 	data.items["crafted:"+str(int(data.counter))]=definition

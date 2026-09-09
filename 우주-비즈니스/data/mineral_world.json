@@ -1,13 +1,13 @@
 {
-  "version": 2,
+  "version": 3,
   "tile_size": 80,
   "tile_limit": 102,
-  "surface_slots": 4,
-  "underground_slots": 3,
+  "surface_slots": 12,
+  "underground_slots": 6,
   "view_radius": 1,
-  "base_capacity": 180,
-  "capacity_spread": 140,
-  "gem_capacity": 40,
+  "base_capacity": 18,
+  "capacity_spread": 28,
+  "gem_capacity": 8,
   "gem_chance_percent": 30,
   "exotic_chance_percent": 12,
   "exotic_min_tier": 4,
@@ -211,5 +211,8 @@
     "darkstone_ore"
   ],
   "quality_levels": 3,
-  "region_half_extent": 8192
+  "region_half_extent": 8192,
+  "capacity_per_tier": 8,
+  "capacity_per_km": 10,
+  "capacity_distance_cap": 50
 }

@@ -25,7 +25,7 @@ func configure(owner_app: FrontierCrewExpedition,owner_controller: FrontierRover
 	upgrade=action(column,"차량 적재 개조 I","rover_transport_upgrade")
 	unload=action(column,"표시된 위치로 하역","rover_unload")
 	cancel=action(column,"작업 취소","rover_cancel")
-	var close:=Button.new();close.text="닫기 · Esc";column.add_child(close);close.pressed.connect(hide)
+	var close:=Button.new();close.text="닫기  Esc";column.add_child(close);close.pressed.connect(hide)
 	var note:=FrontierInterfaceStyle.label(column,"로버의 화물은 차량 안에 그대로 보존됩니다.\n지상 차량은 착륙선 12m 내 정차 후 후방 화물함에서 적재하세요.",13);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	for i in app.business_panel.tabs.get_tab_count():
 		var tab:=app.business_panel.tabs.get_tab_control(i)
@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 	if terminal_row!=null:terminal_row.visible=app.session.latest.get("local_shuttle","").is_empty()
 	if app.session.latest.is_empty():return
 	var fleet:=controller.fleet();var aboard:=FrontierRoverTransport.ship(fleet)
-	if summary!=null:summary.text="선내 %d / 1대 · 이 행성에 남길 차량 %d대"%[0 if aboard.is_empty() else 1,controller.local().size()]
+	if summary!=null:summary.text="선내 %d / 1대  이 행성에 남길 차량 %d대"%[0 if aboard.is_empty() else 1,controller.local().size()]
 func refresh() -> void:
 	if app.session.latest.is_empty():return
 	var fleet:=controller.fleet();var aboard:=FrontierRoverTransport.ship(fleet);var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
@@ -57,14 +57,14 @@ func refresh() -> void:
 	for row in controller.runtime().get("tasks",{}).values():
 		if row.kind in ["load","unload"]:task=row;break
 	var level:=FrontierRoverTransport.level(fleet)
-	heading.text="차량 적재함 · %d / 1"%(0 if aboard.is_empty() else 1)
+	heading.text="차량 적재함  %d / 1"%(0 if aboard.is_empty() else 1)
 	var point: Array=controller.runtime().get("unload_point",[])
-	status.text="차량 적재 개조 I으로 한 대·6 운송 단위를 확보하세요." if level<1 else ("적재 공간이 비어 있습니다." if aboard.is_empty() else "%s · %.1f / 6 운송 단위\n%s"%[aboard,FrontierRoverTransport.units(fleet.vehicles[aboard]),"표시된 청록색 위치로 하역합니다." if point.size()==3 else "주변 하역 공간을 비워 주세요."])
+	status.text="차량 적재 개조 I으로 한 대 / 6 운송 단위를 확보하세요." if level<1 else ("적재 공간이 비어 있습니다." if aboard.is_empty() else "%s  %.1f / 6 운송 단위\n%s"%[aboard,FrontierRoverTransport.units(fleet.vehicles[aboard]),"표시된 청록색 위치로 하역합니다." if point.size()==3 else "주변 하역 공간을 비워 주세요."])
 	if not near:status.text+="\n착륙선 옆에서 작업할 수 있습니다."
-	if not task.is_empty():status.text="%s · %.1f / %.0f초"%["적재 중" if task.kind=="load" else "하역 중",task.progress,task.seconds]
-	cost.value="공동 창고 · "+FrontierCatalog.cost_text(FrontierRoverTransport.config().cost) if level<1 else "차량 화물과 장비 소유권 유지"
+	if not task.is_empty():status.text="%s  %.1f / %.0f초"%["적재 중" if task.kind=="load" else "하역 중",task.progress,task.seconds]
+	cost.value="공동 창고  "+FrontierCatalog.cost_text(FrontierRoverTransport.config().cost) if level<1 else "차량 화물과 장비 소유권 유지"
 	upgrade.visible=level<1;upgrade.disabled=not near or app.session.latest.self_id!=app.session.latest.crew.owner_id
-	unload.visible=level>0;unload.disabled=not near or aboard.is_empty() or point.size()!=3 or not task.is_empty();unload.text="표시 위치로 하역 · %.0f초"%FrontierRoverTransport.duration(member)
+	unload.visible=level>0;unload.disabled=not near or aboard.is_empty() or point.size()!=3 or not task.is_empty();unload.text="표시 위치로 하역  %.0f초"%FrontierRoverTransport.duration(member)
 	cancel.visible=not task.is_empty();cancel.disabled=task.get("actor")!=app.session.latest.self_id
 	progress.visible=not task.is_empty()
 	if progress.visible:progress.max_value=task.seconds;progress.value=task.progress

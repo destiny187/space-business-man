@@ -31,7 +31,7 @@ func _ready() -> void:
 	var column:=VBoxContainer.new();add_child(column)
 	var header:=HBoxContainer.new();column.add_child(header)
 	heading=label(header,"원정선 정비",24);heading.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	var close:=Button.new();close.text="닫기 · Esc";header.add_child(close);close.pressed.connect(hide)
+	var close:=Button.new();close.text="닫기  Esc";header.add_child(close);close.pressed.connect(hide)
 	summary=resource_label(column)
 	var body:=HBoxContainer.new();body.add_theme_constant_override("separation",18);body.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(body)
 	var left:=VBoxContainer.new();left.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_child(left)
@@ -55,7 +55,7 @@ func _ready() -> void:
 	for entry in [["vessel_build","표준 모듈 제작"],["vessel_draw","모듈 추첨…"],["vessel_equip","이 슬롯에 장착"],["vessel_upgrade","다음 등급 개량"],["vessel_unequip","장착 해제"],["vessel_salvage","모듈 분해…"]]:
 		var id: String=entry[0];var button:=Button.new();button.text=entry[1];button.custom_minimum_size.y=40;button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;actions_grid.add_child(button);actions.append(button);action_map[id]=button
 		button.pressed.connect(func():send(id))
-	outcome=label(column,"호스트 작업 · 공동 자금과 현장 창고 재료",13)
+	outcome=label(column,"호스트 작업  공동 자금과 현장 창고 재료",13)
 	hide()
 func label(parent: Node,text_value: String,size_value: int=15) -> Label:
 	var node:=FrontierInterfaceStyle.label(parent,text_value,size_value);node.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;return node
@@ -67,13 +67,13 @@ func update_snapshot(value: Dictionary,business: Dictionary) -> void:
 	if vessel.is_empty():vessel=FrontierVesselRefit.create(int(value.get("vessel_seed",0)),str(value.crew.world_id))
 	world={"crew":value.crew,"location":value.location,"manifest":{"seed":value.get("vessel_seed",0)},"business":business,"vessel":vessel,"engineering":get_meta("engineering",{})}
 	if heading==null or not visible:return
-	heading.text=FrontierSpaceStation.hull(vessel).name+" · 원정선 정비"
+	heading.text=FrontierSpaceStation.hull(vessel).name+"  원정선 정비"
 	var key:=str([vessel,business,value.crew.members[value.self_id].position,value.self_id])
 	if key==last_inventory:return
 	last_inventory=key;rebuild()
 	var draw: Dictionary=vessel.get("last_draw",{})
 	if int(draw.get("index",0))!=shown_draw:
-		shown_draw=int(draw.index);outcome.text="추첨 · "+FrontierVesselRefit.definition(draw.type).name+" · "+str({"standard":"표준","improved":"개량","rare":"희귀"}[draw.grade])+(" · 중복 → 연구 부품" if draw.duplicate else " · 획득")
+		shown_draw=int(draw.index);outcome.text="추첨  "+FrontierVesselRefit.definition(draw.type).name+"  "+str({"standard":"표준","improved":"개량","rare":"희귀"}[draw.grade])+("  중복 → 연구 부품" if draw.duplicate else "  획득")
 func rebuild() -> void:
 	if module_grid==null or world.is_empty():return
 	var old_kind:=selected(kind);var old_owned:=selected(owned)
@@ -109,8 +109,8 @@ func refresh_details() -> void:
 	preview.selected_slot=selected_slot;preview.show_vessel(draft.vessel if ghost.button_pressed and not module.is_empty() else vessel)
 	for card in module_grid.get_children():card.selected=int(card.get_meta("index"))==(owned.selected if tabs.current_tab==0 else kind.selected);card.disabled=pending;card.queue_redraw()
 	var stats:=FrontierVesselRefit.stats(world);var after:=FrontierVesselRefit.stats(draft)
-	summary.value="공동 자금 %d Cr · 질량 %.1f/%.1f t · 전력 %.1f/%.1f MW"%[int(world.business.get("credits",0)),stats.mass,stats.maximum_mass,stats.power,stats.reactor_power]
-	if int(vessel.get("parts",0))>0:summary.value+=" · 연구 부품 %d"%int(vessel.parts)
+	summary.value="공동 자금 %d Cr  질량 %.1f/%.1f t  전력 %.1f/%.1f MW"%[int(world.business.get("credits",0)),stats.mass,stats.maximum_mass,stats.power,stats.reactor_power]
+	if int(vessel.get("parts",0))>0:summary.value+="  연구 부품 %d"%int(vessel.parts)
 	for child in comparison.get_children():comparison.remove_child(child);child.queue_free()
 	for row in [["질량","mass","t"],["전력","power","MW"],["항속","stellar_range",""],["접근","speed","배"],["연구","research_speed","배"],["격납고","hangar","칸"]]:
 		var text: String="%s  %.2f → %.2f %s"%[row[0],stats[row[1]],after[row[1]],row[2]]
@@ -118,12 +118,12 @@ func refresh_details() -> void:
 	details.value=""
 	if not module.is_empty():
 		var def:=FrontierVesselRefit.definition(module.type)
-		details.value=def.name+" · "+["표준","개량","희귀"][FrontierVesselRefit.grade_index(module.grade)]+"\n"+def.description
-		if tabs.current_tab==1:details.value+="\n제작 %d Cr · %s\n추첨 %d Cr · %s"%[cfg.build_credits,FrontierCatalog.cost_text(cfg.build_materials),cfg.draw_credits,FrontierCatalog.cost_text(cfg.draw_materials)]
+		details.value=def.name+"  "+["표준","개량","희귀"][FrontierVesselRefit.grade_index(module.grade)]+"\n"+def.description
+		if tabs.current_tab==1:details.value+="\n제작 %d Cr  %s\n추첨 %d Cr  %s"%[cfg.build_credits,FrontierCatalog.cost_text(cfg.build_materials),cfg.draw_credits,FrontierCatalog.cost_text(cfg.draw_materials)]
 		else:
 			var grade:=FrontierVesselRefit.grade_index(module.grade)
-			if grade<2:details.value+="\n개량 %d Cr · %s"%[cfg.upgrade_credits[grade],FrontierCatalog.cost_text(FrontierProductionTier2.config().vessel_upgrade_cost if grade==0 else cfg.upgrade_materials)]
-			if grade==1:details.value+=" · 연구 부품 %d · 생물공학 인증"%int(cfg.upgrade_parts[grade])
+			if grade<2:details.value+="\n개량 %d Cr  %s"%[cfg.upgrade_credits[grade],FrontierCatalog.cost_text(FrontierProductionTier2.config().vessel_upgrade_cost if grade==0 else cfg.upgrade_materials)]
+			if grade==1:details.value+="  연구 부품 %d  생물공학 인증"%int(cfg.upgrade_parts[grade])
 		var constraint:=FrontierVesselRefit.constraints(draft)
 		if not constraint.is_empty():details.value+="\n"+constraint
 	for action in action_map:
@@ -139,7 +139,7 @@ func send(action: String) -> void:
 	if action in ["vessel_draw","vessel_salvage"]:
 		var dialog:=ConfirmationDialog.new();dialog.title="모듈 추첨" if action=="vessel_draw" else "모듈 분해";add_child(dialog)
 		var cfg:=FrontierVesselRefit.config()
-		if action=="vessel_draw":dialog.dialog_text="%d Cr · %s\n표준 %d%% · 개량 %d%% · 희귀 %d%%\n%d회 뒤 선택 종류의 개량 등급 확정\n중복은 연구 부품 %d개로 전환됩니다."%[cfg.draw_credits,FrontierCatalog.cost_text(cfg.draw_materials),cfg.weights[0],cfg.weights[1],cfg.weights[2],int(cfg.pity_interval)-int(vessel.get("draws",0))%int(cfg.pity_interval),cfg.duplicate_parts]
+		if action=="vessel_draw":dialog.dialog_text="%d Cr  %s\n표준 %d%%  개량 %d%%  희귀 %d%%\n%d회 뒤 선택 종류의 개량 등급 확정\n중복은 연구 부품 %d개로 전환됩니다."%[cfg.draw_credits,FrontierCatalog.cost_text(cfg.draw_materials),cfg.weights[0],cfg.weights[1],cfg.weights[2],int(cfg.pity_interval)-int(vessel.get("draws",0))%int(cfg.pity_interval),cfg.duplicate_parts]
 		else:dialog.dialog_text=FrontierVesselRefit.definition(vessel.modules[args.module_id].type).name+"을 분해하고 연구 부품 %d개를 받습니다."%int(cfg.salvage_parts[FrontierVesselRefit.grade_index(vessel.modules[args.module_id].grade)])
 		dialog.confirmed.connect(func():submit(action,args);dialog.queue_free());dialog.canceled.connect(dialog.queue_free);dialog.popup_centered(Vector2i(470,220));return
 	submit(action,args)

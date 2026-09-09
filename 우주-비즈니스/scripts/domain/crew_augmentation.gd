@@ -6,10 +6,15 @@ static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/crew_augmentation.json"))
 	return _config
 static func create(mobility: int=0) -> Dictionary:
-	return {"version":1,"levels":{"mobility":mobility,"combat":0,"vitality":0}}
+	var levels: Dictionary={}
+	for key in config().fields:levels[key]=mobility if key=="mobility" else 0
+	return {"version":2,"levels":levels}
 static func ensure(member: Dictionary) -> void:
 	# Run after save validation. Retain the paid speed once, independently of bag upgrades.
 	if not member.has("augmentation"):member.augmentation=create(FrontierProgressionResearch.personal(member,"logistics"))
+	for key in config().fields:
+		if not member.augmentation.levels.has(key):member.augmentation.levels[key]=0
+	member.augmentation.version=2
 static func level(member: Dictionary,key: String) -> int:
 	if not member.has("augmentation"):
 		return FrontierProgressionResearch.personal(member,"logistics") if key=="mobility" else 0
@@ -19,12 +24,29 @@ static func multiplier(member: Dictionary,key: String) -> float:
 static func maximum_health(member: Dictionary) -> float:
 	return float(FrontierCrewVitals.config().maximum_health)*multiplier(member,"vitality")
 static func validate(value: Variant) -> bool:
-	if not value is Dictionary or value.size()!=2 or value.get("version")!=1:return false
+	if not value is Dictionary or value.size()!=2 or (value.get("version")!=1 and value.get("version")!=2):return false
 	var levels: Variant=value.get("levels")
-	if not levels is Dictionary or levels.size()!=config().fields.size():return false
-	for key in config().fields:
+	if not levels is Dictionary:return false
+	var keys: Array=["mobility","combat","vitality"] if value.version==1 else config().fields.keys()
+	if levels.size()!=keys.size():return false
+	for key in keys:
 		if not FrontierExpeditionBusiness.integer(levels.get(key),0,int(config().maximum_level)):return false
+	# Old roots remain unrestricted; new branches must retain their paid prerequisite.
+	for key in keys:
+		var def: Dictionary=config().fields[key]
+		if int(levels[key])>0 and not str(def.parent).is_empty() and int(levels.get(def.parent,0))<int(def.requires):return false
 	return true
+
+static func unlock_reason(member: Dictionary,key: String) -> String:
+	var def: Dictionary=config().fields[key]
+	if not str(def.parent).is_empty() and level(member,def.parent)<int(def.requires):
+		return "%s %d단계 필요"%[config().fields[def.parent].name,int(def.requires)]
+	return ""
+
+static func stat_text(member: Dictionary,key: String,next: bool=false) -> String:
+	var def: Dictionary=config().fields[key]
+	var rank:=mini(level(member,key)+(1 if next else 0),int(config().maximum_level))
+	return "%s %+.0f%%"%[def.stat,float(def.increment)*rank*100]
 
 static func cost(key: String,current: int) -> Dictionary:
 	if not config().fields.has(key) or current<0 or current>=int(config().maximum_level):return {}
@@ -46,7 +68,9 @@ static func reason(world: Dictionary,actor: String,args: Dictionary,station: Dic
 	var current:=level(member,args.field)
 	if int(args.expected_level)!=current:return "증강 단계가 바뀌었습니다. 현재 능력을 다시 확인하세요."
 	if current>=int(config().maximum_level):return "최고 증강 단계입니다."
-	if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),cost(args.field,current)):return "자기 배낭의 보석이 부족합니다."
+	var gate:=unlock_reason(member,args.field)
+	if not gate.is_empty():return gate
+	if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),cost(args.field,current)):return "재료가 부족합니다."
 	return ""
 static func apply(world: Dictionary,actor: String,args: Dictionary,station: Dictionary) -> String:
 	var error:=reason(world,actor,args,station)

@@ -17,6 +17,7 @@ static func names() -> Dictionary:
 	return registry
 
 static func canonical(id: String) -> String:
+	if FrontierSpecimenItems.is_item(id):return str(FrontierSpecimenItems.entry(id).get("icon","bio_sample"))
 	names()
 	return str(id_aliases.get(id,id))
 
@@ -25,6 +26,7 @@ static var patterns: Dictionary = {}
 static var menu_textures: Dictionary = {}
 
 static func icon_path(id: String) -> String:
+	id=canonical(id)
 	id=str(FrontierProductionTier2.product(id).get("icon",id))
 	return ROOT+id+(".png" if FileAccess.file_exists(ROOT+id+".png") else ".svg")
 
@@ -46,7 +48,7 @@ static func menu_texture(id: String) -> Texture2D:
 
 static func markup(value: String, pixels: int = 26) -> String:
 	# Only numeric resource tokens are replaced; prose and unknown resources survive.
-	var result := value.replace("[", "[lb]")
+	var result := value.replace("[", "[lb]").replace(" · ","   ").replace("·"," ")
 	var aliases: Dictionary = {"광물":"stone", "부품":"research_parts"}
 	for id in names(): aliases[names()[id]] = id
 	var ordered: Array=aliases.keys();ordered.sort_custom(func(a: String,b: String):return a.length()>b.length())
