@@ -45,6 +45,10 @@ var pilot_choices: OptionButton
 var name_input: LineEdit
 var host_address: LineEdit
 var port_input: SpinBox
+var connection_options: FrontierCrewConnectionOptions
+var invite_copy: Button
+var waiting_leave: Button
+var network_busy:=false
 var yaw:=0.0
 var pitch:=0.0
 var mouse_steering:=Vector2.ZERO
@@ -116,6 +120,10 @@ func _ready() -> void:
 	session.snapshot_received.connect(_snapshot)
 	session.surface_received.connect(_surface_packet)
 	session.notice.connect(func(message: String):status.value=message)
+	session.connection_lost.connect(func(message: String):
+		status.value=message
+		# During play, preserve the frozen world until the player returns to title.
+		if waiting_screen.visible:lobby.show();waiting_ready.hide();waiting_start.hide();invite_copy.hide();waiting_leave.hide();waiting_roster.text=message)
 	session.response_received.connect(func(_sequence: int,value: Dictionary):
 		if value.get("code")=="mining_cooldown":return
 		if not value.get("ok",false):status.value=value.get("error","작업 실패")
@@ -200,6 +208,8 @@ func _build_ui() -> void:
 	waiting_roster=_label(waiting_panel,"오른쪽에서 혼자 시작하거나 방을 만들고 참가하세요.",17)
 	waiting_ready=_button(waiting_panel,"준비 완료",func():session.send_request("lobby_ready",{"value":not session.latest.get("lobby_ready",{}).get(session.latest.self_id,false)}));waiting_ready.hide()
 	waiting_start=_button(waiting_panel,"호스트  게임 시작",func():session.send_request("start_game",{}));waiting_start.hide()
+	invite_copy=_button(waiting_panel,"초대 코드 복사",func():DisplayServer.clipboard_set(session.invite_code);status.value="초대 코드를 복사했습니다.");invite_copy.hide()
+	waiting_leave=_button(waiting_panel,"방 나가기",leave_lobby);waiting_leave.name="LeaveLobby";waiting_leave.hide()
 	_button(waiting_panel,"내 캐릭터  소유 장비",show_equipment)
 	var header:=VBoxContainer.new();header.position=Vector2(24,22);ui.add_child(header)
 	_label(header,"L O C U S  /  우주 탐험",23)
@@ -216,18 +226,21 @@ func _build_ui() -> void:
 	_label(lobby,"함께하는 탐험",22)
 	_button(lobby,"혼자 게임 시작  연결 설정 없음",start_solo).name="SoloStart"
 	name_input=LineEdit.new();name_input.placeholder_text="탐험가 이름";name_input.text="탐험가";name_input.max_length=24;lobby.add_child(name_input)
+	connection_options=FrontierCrewConnectionOptions.new();lobby.add_child(connection_options)
 	host_address=LineEdit.new();host_address.text="127.0.0.1";host_address.placeholder_text="호스트 주소";lobby.add_child(host_address)
 	port_input=SpinBox.new();port_input.min_value=1024;port_input.max_value=65535;port_input.value=24560;lobby.add_child(port_input)
-	_button(lobby,"세계 열기  최대 6명",host_world)
+	connection_options.mode_changed.connect(func(direct: bool):host_address.visible=direct;port_input.visible=direct)
+	host_address.hide();port_input.hide()
+	_button(lobby,"방 만들기  최대 6명",host_world)
 	_button(lobby,"새 은하로 방 만들기",func():world_store=FrontierWorldStore.new("user://crew_"+FrontierPlayerProfile.token()+".json");host_world())
-	_button(lobby,"주소로 참가",join_world)
+	_button(lobby,"친구 방 참가",join_world)
 	if FileAccess.file_exists("user://crew_world.json"):
 		_button(lobby,"이전 공동 세계 이어하기",func():world_store=FrontierWorldStore.new("user://crew_world.json");host_world())
 	if FileAccess.file_exists("user://solo_world.json"):
 		_button(lobby,"이전 혼자 세계 이어하기",func():
 			if not profile.ensure(name_input.text):status.value=profile.error;return
 			if session.host(profile,FrontierWorldStore.new("user://solo_world.json"),24560,"*",true):session.send_request("start_game",{}))
-	_label(lobby,"현재 접속: 직접 UDP\n인터넷 원정에는 호스트 포트 접근이 필요합니다.",13)
+
 	panel=VBoxContainer.new();panel.add_theme_constant_override("separation",12);panel.hide();column.add_child(panel)
 	research_frame=load("res://scripts/ui/research_panel.gd").new();ui.add_child(research_frame);research_frame.configure(self)
 	survey_journal=FrontierSurveyJournal.new();survey_journal.configure(self);research_frame.ecology.add_child(survey_journal)
@@ -279,11 +292,30 @@ func _resource_label(parent: Node,value: String,size: int=15) -> FrontierResourc
 func _button(parent: Node,value: String,callback: Callable) -> Button:
 	var button:=Button.new();button.text=value;button.custom_minimum_size.y=35;button.pressed.connect(callback);parent.add_child(button);FrontierResourceIcons.button_caption(button);return button
 func host_world() -> void:
+	if network_busy:return
 	if not profile.ensure(name_input.text):status.value=profile.error;return
-	if session.host(profile,world_store,int(port_input.value)):remember_world(false);lobby.hide();panel.hide()
+	network_busy=true;connection_options.set_busy(true)
+	var connected:=false
+	if connection_options.direct():connected=session.host(profile,world_store,int(port_input.value))
+	else:connected=await session.connect_relay(profile,world_store,connection_options.endpoint(),true)
+	network_busy=false;connection_options.set_busy(false)
+	if connected:remember_world(false);lobby.hide();panel.hide()
 func join_world() -> void:
+	if network_busy:return
 	if not profile.ensure(name_input.text):status.value=profile.error;return
-	if session.join(profile,host_address.text.strip_edges(),int(port_input.value)):lobby.hide();panel.hide();waiting_roster.text="호스트에 연결 중입니다."
+	if not connection_options.direct() and connection_options.invitation().length()!=12:
+		status.value="12자리 초대 코드를 입력하세요.";return
+	network_busy=true;connection_options.set_busy(true)
+	var connected:=false
+	if connection_options.direct():connected=session.join(profile,host_address.text.strip_edges(),int(port_input.value))
+	else:connected=await session.connect_relay(profile,world_store,connection_options.endpoint(),false,connection_options.invitation())
+	network_busy=false;connection_options.set_busy(false)
+	if connected:lobby.hide();panel.hide();waiting_roster.text="호스트에 연결 중입니다."
+func leave_lobby() -> void:
+	if not await session.close_session():return
+	lobby.show();waiting_ready.hide();waiting_start.hide();invite_copy.hide();waiting_leave.hide()
+	waiting_roster.text="방을 만들거나 초대 코드로 참가하세요."
+
 func _setup_flight() -> void:
 	space_view=SubViewport.new();space_view.size=Vector2i(get_viewport().get_visible_rect().size);space_view.own_world_3d=true;space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;add_child(space_view)
 	get_viewport().size_changed.connect(func():
@@ -353,6 +385,9 @@ func _apply_snapshot(value: Dictionary) -> void:
 		waiting_roster.text="대기실  %d / 6\n\n"%value.crew.members.size()+"\n".join(lines)
 		waiting_info.text="은하 시드 %d  행성 1,000,000개\n시작/재개 위치: %s\n준비 후 호스트가 게임을 시작합니다."%[int(session.manifest.seed),FrontierUniverse.body_from_id(session.manifest,value.location).name]
 		waiting_ready.visible=not session.hosting;waiting_start.visible=session.hosting;waiting_start.disabled=not all_ready
+		waiting_leave.show()
+		invite_copy.visible=not session.invite_code.is_empty()
+		invite_copy.text="초대 코드  "+FrontierCrewConnectionOptions.display_code(session.invite_code)+"  복사"
 		waiting_ready.text="준비 취소" if value.lobby_ready.get(value.self_id,false) else "준비 완료"
 		return
 	waiting_screen.hide();cabin_root.show();help_text.show()

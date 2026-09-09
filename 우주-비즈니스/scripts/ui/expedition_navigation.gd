@@ -120,6 +120,7 @@ func _build_crew() -> void:
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",12);scroll.add_child(column)
 	FrontierInterfaceStyle.label(column,"승무원",24)
 	app.roster=FrontierInterfaceStyle.label(column,"",15)
+	var invite:=_button(column,"초대 코드 복사",func():DisplayServer.clipboard_set(app.session.invite_code);app.status.value="초대 코드를 복사했습니다.");invite.name="InviteCodeCopy";invite.hide()
 	app.ready_button=_button(column,"준비",app.toggle_ready)
 	app.pilot_choices=OptionButton.new();column.add_child(app.pilot_choices)
 	var transfer:=_button(column,"조종 권한 전달",app.assign_pilot);transfer.name="TransferPilot"
@@ -176,6 +177,9 @@ func refresh(value: Dictionary) -> void:
 	for id in members:
 		lines.append(("✓  " if members[id].ready else "○  ")+members[id].profile.name+("  연결 끊김" if not members[id].get("connected",false) else "")+("  ◈ 조종" if id==value.crew.pilot_id else ""))
 	app.roster.text="\n".join(lines)
+	var invite: Button=crew_frame.find_child("InviteCodeCopy",true,false)
+	invite.visible=not app.session.invite_code.is_empty()
+	invite.text="초대 코드  "+FrontierCrewConnectionOptions.display_code(app.session.invite_code)+"  복사"
 	shuttle_recovery.update_snapshot(value)
 	app.ready_button.visible=not app.session.offline
 	app.ready_button.text="준비 취소" if members[value.self_id].ready else "준비 완료"

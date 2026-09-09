@@ -10,7 +10,14 @@ var mine_sequence:=0
 var mine_ready_at:=0
 var mine_revision:=0
 var authority: FrontierCrewAuthority
-var enet: ENetMultiplayerPeer
+# MultiplayerPeer is the transport boundary for direct, local relay and future SDK peers.
+var enet: MultiplayerPeer
+var relay_pending: FrontierCrewRelayPeer
+var connecting:=false
+var closing:=false
+var connection_kind:="direct"
+var invite_code:=""
+signal connection_lost(message: String)
 var profile: FrontierPlayerProfile
 var store: FrontierWorldStore
 var latest: Dictionary={}
@@ -43,8 +50,8 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_peer_disconnected)
 	multiplayer.server_disconnected.connect(_server_disconnected)
 	multiplayer.connection_failed.connect(func():active=false;notice.emit("호스트에 연결하지 못했습니다. 주소와 UDP 포트를 확인하세요."))
-func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,port: int=24560,bind_ip: String="*",solo: bool=false) -> bool:
-	if enet!=null or hosting:notice.emit("현재 연결을 종료한 뒤 새 방을 열어 주세요.");return false
+func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,port: int=24560,bind_ip: String="*",solo: bool=false,transport: MultiplayerPeer=null) -> bool:
+	if connecting or enet!=null or hosting:notice.emit("현재 연결을 종료한 뒤 새 방을 열어 주세요.");return false
 	profile=local_profile;store=world_store
 	if profile.data.is_empty():notice.emit("개인 프로필을 먼저 열어 주세요.");return false
 	var state:=store.read_state()
@@ -54,25 +61,64 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 	authority=FrontierCrewAuthority.new()
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
 	offline=solo
+	connection_kind="local_relay" if transport is FrontierCrewRelayPeer else ("solo" if solo else "direct")
+	if transport==null:invite_code=""
 	if offline:multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	elif transport!=null:
+		enet=transport;multiplayer.multiplayer_peer=enet
 	else:
-		enet=ENetMultiplayerPeer.new();enet.set_bind_ip(bind_ip)
-		var result:=enet.create_server(port,11,4)
+		var direct:=ENetMultiplayerPeer.new();direct.set_bind_ip(bind_ip)
+		var result:=direct.create_server(port,11,4)
 		if result!=OK:notice.emit("이 UDP 포트로 방을 열 수 없습니다: "+str(result));enet=null;return false
-		multiplayer.multiplayer_peer=enet
+		enet=direct;multiplayer.multiplayer_peer=enet
 	hosting=true;active=true
 	session_id=authority.session_id;world_id=authority.world.crew.world_id;manifest=authority.world.manifest.duplicate(true)
 	next_sequence=int(authority.world.crew.members[profile.data.character.character_id].last_sequence)+1
 	_publish();notice.emit("세계를 열었습니다. 준비 후 시작하세요." if offline else "대기실을 열었습니다. 참가자 준비 후 호스트가 시작합니다.");return true
 func join(local_profile: FrontierPlayerProfile,address: String,port: int=24560) -> bool:
-	if enet!=null or hosting:notice.emit("현재 연결을 종료한 뒤 다시 참가하세요.");return false
-	profile=local_profile
+	if connecting or enet!=null or hosting:notice.emit("현재 연결을 종료한 뒤 다시 참가하세요.");return false
+	profile=local_profile;connection_kind="direct";invite_code=""
 	if profile.data.is_empty():notice.emit("개인 프로필을 먼저 열어 주세요.");return false
-	enet=ENetMultiplayerPeer.new()
-	var result:=enet.create_client(address,port,4)
+	var direct:=ENetMultiplayerPeer.new()
+	var result:=direct.create_client(address,port,4)
 	if result!=OK:notice.emit("접속을 시작할 수 없습니다: "+str(result));enet=null;return false
-	multiplayer.multiplayer_peer=enet;hosting=false;active=false;received_serial=-1
+	enet=direct;multiplayer.multiplayer_peer=enet;hosting=false;active=false;received_serial=-1
 	notice.emit("호스트에 연결 중입니다.");return true
+func connect_relay(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,url: String,create: bool,code: String="") -> bool:
+	if connecting or enet!=null or hosting:notice.emit("현재 연결을 종료한 뒤 다시 시도하세요.");return false
+	if local_profile.data.is_empty():notice.emit("개인 프로필을 먼저 열어 주세요.");return false
+	connecting=true;notice.emit("초대 방을 만드는 중입니다." if create else "초대 방에 연결 중입니다.")
+	if create:FrontierCrewLocalRelay.ensure_for(get_tree(),url)
+	var candidate:=FrontierCrewRelayPeer.new();relay_pending=candidate
+	var opened: bool=await candidate.open(get_tree(),url,create,code)
+	if relay_pending!=candidate:return false
+	relay_pending=null;connecting=false
+	if not opened:notice.emit(candidate.error);return false
+	connection_kind="local_relay";invite_code=candidate.room_code
+	candidate.failed.connect(func(message: String):call_deferred("_relay_lost",candidate,message))
+	if create:
+		if host(local_profile,world_store,24560,"*",false,candidate):return true
+		candidate.close();invite_code="";return false
+	return join_transport(local_profile,candidate)
+
+# Platform SDK adapters supply a peer with the host at ID 1. Platform identity
+# verification belongs to the adapter; crew admission and reconnect stay here.
+func join_transport(local_profile: FrontierPlayerProfile,transport: MultiplayerPeer) -> bool:
+	if connecting or enet!=null or hosting or local_profile.data.is_empty() or transport==null:return false
+	profile=local_profile;enet=transport;hosting=false;offline=false;active=false;received_serial=-1
+	multiplayer.multiplayer_peer=enet
+	notice.emit("호스트와 캐릭터를 확인 중입니다.");return true
+
+func _relay_lost(candidate: MultiplayerPeer,message: String) -> void:
+	if enet!=candidate:return
+	active=false
+	var unsaved:=hosting and authority!=null and not authority.close()
+	if unsaved:message+="\n"+authority.error+" 시작 화면으로 나갈 때 다시 저장합니다."
+	hosting=unsaved;enet.close();enet=null;invite_code="";latest={};surface={}
+	pending_connections.clear();closing_connections.clear();rate_windows.clear();surface_digests.clear()
+	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	notice.emit(message);connection_lost.emit(message)
+
 func _peer_connected(peer: int) -> void:
 	if not hosting:return
 	pending_connections[peer]=Time.get_ticks_msec()/1000.0+float(FrontierCrewWorld.config().handshake_seconds)
@@ -86,6 +132,7 @@ func _peer_disconnected(peer: int) -> void:
 	_publish()
 func _server_disconnected() -> void:
 	active=false;latest={};surface={};notice.emit("호스트 연결이 종료됐습니다. 개인 장비 원본은 유지됩니다.")
+	if enet is FrontierCrewRelayPeer:call_deferred("_relay_lost",enet,enet.error if not enet.error.is_empty() else "호스트 연결이 종료됐습니다.")
 func _process(delta: float) -> void:
 	if not hosting or (enet==null and not offline) or authority.stopped:return
 	var now:=Time.get_ticks_msec()/1000.0
@@ -239,19 +286,29 @@ func _leave() -> void:
 		var peer:=multiplayer.get_remote_sender_id()
 		if authority.disconnect_member(peer,false):_reject_peer(peer,"원정을 나갔습니다.")
 func close_session() -> bool:
+	if closing:return false
+	closing=true
+	if relay_pending!=null:relay_pending.close();relay_pending=null
+	connecting=false
 	if hosting:
-		if not authority.close():notice.emit(authority.error);return false
-		if not offline:_closed.rpc("호스트가 세계를 저장하고 종료했습니다.")
+		if not authority.close():closing=false;notice.emit(authority.error);return false
+		if not offline and enet!=null and enet.get_connection_status()==MultiplayerPeer.CONNECTION_CONNECTED:_closed.rpc("호스트가 세계를 저장하고 종료했습니다.")
 	elif enet!=null and enet.get_connection_status()==MultiplayerPeer.CONNECTION_CONNECTED:_leave.rpc_id(1)
 	active=false;mine_sequence=0;mine_ready_at=0;mine_revision=0
 	if enet!=null:
+		var closing_peer:=enet
 		await get_tree().create_timer(.25).timeout
-		enet.close();enet=null
-	hosting=false;offline=false;latest={};return true
+		closing_peer.close()
+		if enet==closing_peer:enet=null
+	hosting=false;offline=false;closing=false;invite_code="";latest={};surface={}
+	pending_connections.clear();closing_connections.clear();rate_windows.clear();surface_digests.clear()
+	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	return true
 @rpc("authority","call_remote","reliable",0)
 func _closed(message: String) -> void:
 	active=false;notice.emit(message)
 func _exit_tree() -> void:
+	if relay_pending!=null:relay_pending.close();relay_pending=null
 	if store!=null:store.finish_pending()
 	if hosting and authority!=null and not authority.stopped:authority.close()
 	if enet!=null:enet.close()

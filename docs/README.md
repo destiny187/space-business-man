@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-09 [초대 코드·게임 내장 서버](production/96-local-invite-and-embedded-relay.md): 방 만들기 시 별도 설치 없이 로컬 서버를 자동 시작한다. Python/Docker 선택 실행·입장/재접속·작은 대기실을 확인했으며 플랫폼 연동·외부망·Windows 실기는 미확인이다.
+
 2026-09-09 [부위별 보석 염색 메뉴](production/95-suit-dye-menu.md): I 염색, 부위당 보석 1개, 무료 기본색 복원과 세계 저장·승무원 색상 복제를 연결했다.
 
 2026-09-09 [점진적 탐험복 외장·염색 기반](production/94-progressive-suit-appearance.md): 3계열 5단계 실제 외장과 6부위 도색 채널을 연결했다. 염색 메뉴는 후속 범위다.

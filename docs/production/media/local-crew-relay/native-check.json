@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "host creates invitation",
+    "guest receives authoritative world",
+    "host confirms guest ready",
+    "host starts shared game",
+    "same character rejoins running world",
+    "host close ends guest session"
+  ],
+  "result": "passed",
+  "scope": "localhost two Godot processes; no internet/6-player performance claim"
+}

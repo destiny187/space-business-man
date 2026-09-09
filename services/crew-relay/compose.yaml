@@ -1,0 +1,18 @@
+name: locus-crew-relay
+services:
+  relay:
+    build: .
+    ports:
+      - "${CREW_RELAY_BIND:-127.0.0.1}:${CREW_RELAY_PORT:-24680}:24680"
+    environment:
+      CREW_RELAY_BIND: 0.0.0.0
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:24680/health', timeout=2)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3

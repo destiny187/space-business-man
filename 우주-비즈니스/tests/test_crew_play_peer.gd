@@ -16,11 +16,16 @@ func run() -> void:
 	root.size=Vector2i(1280,800)
 	app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app
 	app.profile=FrontierPlayerProfile.new(folder+"/profile.json");app.world_store=FrontierWorldStore.new(folder+"/world.json");app.port_input.value=int(options["--crew-port"]);app.name_input.text=role
+	app.connection_options.settings_path=folder+"/connection.cfg"
 	app.profile.ensure(role)
 	if role.begins_with("guest"):
 		app.profile.data.character.tint=int(role.trim_prefix("guest"))+1;app.profile.save()
 	app.session.notice.connect(func(message: String):messages.append(message))
 	app.session.response_received.connect(func(sequence: int,value: Dictionary):responses.append({"sequence":sequence,"result":value}))
+	if options.has("--crew-relay"):
+		app.connection_options.address.text=options["--crew-relay"]
+		app.connection_options.code.text=options.get("--crew-code","")
+	else:app.connection_options.selector.select(1)
 	if role=="host":app.host_world()
 	else:app.join_world()
 func _process(delta: float) -> bool:

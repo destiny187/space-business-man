@@ -18,7 +18,9 @@ func run() -> void:
 	crew=FrontierCrewSession.new();crew.name="Coop";root.add_child(crew)
 	crew.notice.connect(func(message: String):messages.append(message))
 	crew.response_received.connect(func(sequence: int,result: Dictionary):responses.append({"sequence":sequence,"result":result}))
-	if role=="host":crew.host(identity,FrontierWorldStore.new(folder+"/world.json"),int(options["--crew-port"]),"127.0.0.1")
+	if options.has("--crew-relay"):
+		await crew.connect_relay(identity,FrontierWorldStore.new(folder+"/world.json"),options["--crew-relay"],role=="host",options.get("--crew-code",""))
+	elif role=="host":crew.host(identity,FrontierWorldStore.new(folder+"/world.json"),int(options["--crew-port"]),"127.0.0.1")
 	else:crew.join(identity,"127.0.0.1",int(options["--crew-port"]))
 func _process(delta: float) -> bool:
 	if crew==null:return false
@@ -33,7 +35,7 @@ func _process(delta: float) -> bool:
 			"kick":crew.kick(command.character_id)
 			"input":crew.send_input(Vector2(command.direction[0],command.direction[1]))
 			"close":close_peer()
-	var state: Dictionary={"active":crew.active,"snapshot":crew.latest,"messages":messages,"responses":responses,"character":identity.data.character}
+	var state: Dictionary={"active":crew.active,"invite_code":crew.invite_code,"snapshot":crew.latest,"messages":messages,"responses":responses,"character":identity.data.character}
 	if crew.hosting:
 		state.slots=crew.authority.slots();state.saved=crew.authority.world.crew
 	var output:=FileAccess.open(folder+"/status.tmp",FileAccess.WRITE);output.store_string(JSON.stringify(state));output.close()

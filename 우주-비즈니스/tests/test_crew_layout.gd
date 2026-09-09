@@ -12,6 +12,7 @@ func run() -> void:
 	app.profile=FrontierPlayerProfile.new("user://test_crew_layout_profile.json");app.world_store=FrontierWorldStore.new("user://test_crew_layout_world.json")
 	for path in [app.profile.path,app.world_store.path]:
 		for suffix in ["",".bak",".tmp"]:DirAccess.remove_absolute(path+suffix)
+	app.connection_options.selector.select(1)
 	app.port_input.value=49152+Time.get_ticks_msec()%15000;app.host_world()
 	await create_timer(.7).timeout
 	check(app.session.active,"small viewport host opens")
