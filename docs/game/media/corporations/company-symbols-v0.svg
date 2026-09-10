@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="620" viewBox="0 0 1440 620" role="img" aria-labelledby="title desc">
+  <title id="title">Lotus, Space Y, Iluti, mine 회사 심볼 초안</title>
+  <desc id="desc">Lotus는 세 꽃잎, Space Y는 상승하는 Y, Iluti는 분리된 피라미드와 눈, mine은 두 채굴 아치 모양의 m이다. 게임에 적용하지 않은 벡터 형태 비교 시안이다.</desc>
+  <defs>
+    <g id="lotus">
+      <path d="M80 19C62 38 61 68 80 104C99 68 98 38 80 19Z" fill="currentColor"/>
+      <path d="M25 49C49 50 65 70 70 111C41 100 24 79 25 49Z" fill="currentColor"/>
+      <path d="M135 49C111 50 95 70 90 111C119 100 136 79 135 49Z" fill="currentColor"/>
+      <path d="M44 123H116L105 137H55Z" fill="currentColor"/>
+    </g>
+    <g id="space-y">
+      <path d="M20 26H50L80 73L110 26H140L94 98V145H66V98Z" fill="currentColor"/>
+      <path d="M14 14L50 14L39 2H14ZM110 14H146V2H121Z" fill="currentColor" opacity=".5"/>
+    </g>
+    <g id="iluti">
+      <path d="M80 10L99 44H61Z" fill="currentColor"/>
+      <path d="M53 60L15 139H145L107 60" fill="none" stroke="currentColor" stroke-width="12" stroke-linejoin="miter"/>
+      <path d="M42 98Q80 62 118 98Q80 132 42 98Z" fill="none" stroke="currentColor" stroke-width="8"/>
+      <circle cx="80" cy="98" r="13" fill="currentColor"/>
+    </g>
+    <g id="mine">
+      <path d="M9 129V58L38 28H60L80 50L100 28H122L151 58V129H123V69L111 57L94 77V111H66V77L49 57L37 69V129Z" fill="currentColor"/>
+      <path d="M9 139H37L31 151H15ZM66 121H94L88 133H72ZM123 139H151L145 151H129Z" fill="currentColor"/>
+    </g>
+  </defs>
+  <rect width="1440" height="620" rx="8" fill="#10191f"/>
+  <g font-family="Noto Sans KR, Apple SD Gothic Neo, sans-serif" fill="#e6e8df">
+    <text x="48" y="50" font-size="19" letter-spacing="3" fill="#a4b5bd">SPACE BUSINESS MAN / CORPORATE IDENTITY</text>
+    <text x="48" y="99" font-size="34" font-weight="600">회사 심볼 방향</text>
+    <text x="1392" y="96" font-size="23" text-anchor="end" fill="#a4b5bd">CONCEPT v0 · 2026.09.10</text>
+    <path d="M48 122H1392" stroke="#31434d"/>
+    <path d="M384 150V495M720 150V495M1056 150V495" stroke="#31434d"/>
+    <use href="#lotus" transform="translate(116 154) scale(1.25)" color="#efab67"/>
+    <use href="#space-y" transform="translate(452 160) scale(1.25)" color="#aacde4"/>
+    <use href="#iluti" transform="translate(788 150) scale(1.25)" color="#c9ad72"/>
+    <use href="#mine" transform="translate(1124 150) scale(1.25)" color="#e89451"/>
+    <g text-anchor="middle">
+      <text x="216" y="385" font-size="34" font-weight="600" letter-spacing="4">LOTUS</text>
+      <text x="552" y="385" font-size="34" font-weight="600" letter-spacing="2">SPACE Y</text>
+      <text x="888" y="385" font-size="34" font-weight="600" letter-spacing="3">ILUTI</text>
+      <text x="1224" y="385" font-size="38" font-weight="600">mine</text>
+      <g font-size="25">
+        <text x="216" y="430">개척 · 현장 지원</text>
+        <text x="552" y="430">테라포밍 · 행성 운영</text>
+        <text x="888" y="430">전투로봇 · 감시</text>
+        <text x="1224" y="430">자동 채집 · 산업 장비</text>
+      </g>
+      <g font-size="23" fill="#a4b5bd">
+        <text x="216" y="467">기존 세 꽃잎의 계승</text>
+        <text x="552" y="467">상승 궤적과 Y</text>
+        <text x="888" y="467">피라미드와 관측의 눈</text>
+        <text x="1224" y="467">채굴 이빨과 갱도 m</text>
+      </g>
+    </g>
+    <path d="M48 510H1392" stroke="#31434d"/>
+    <text x="48" y="556" font-size="23" fill="#a4b5bd">단색 실루엣</text>
+    <use href="#lotus" transform="translate(229 522) scale(.35)" color="#e6e8df"/>
+    <use href="#space-y" transform="translate(329 525) scale(.35)" color="#e6e8df"/>
+    <use href="#iluti" transform="translate(429 522) scale(.35)" color="#e6e8df"/>
+    <use href="#mine" transform="translate(529 522) scale(.35)" color="#e6e8df"/>
+    <text x="1392" y="555" text-anchor="end" font-size="23" fill="#a4b5bd">형태 비교용 초안 · 최종 로고 / 게임 렌더 아님</text>
+  </g>
+</svg>

@@ -1,5 +1,9 @@
 # 게임 설계 문서 목차
 
+2026-09-10 [기업·우주 공간 커밋 계획](planning/16-space-corporations-commits.md): 심볼 고도화와 화성·항만·선박·시드 활동·사건을 SP00~SP11로 분할한다. 실제 단계 상태와 최소 확인 범위는 계획을 따른다.
+
+2026-09-10 **설계 초안** — [기업과 살아 있는 우주 공간](game/23-corporations-and-space-presence.md): Lotus·Space Y·Iluti·mine의 역할/심볼, 복원된 Space Y 관리 화성과 시드별 거점·무역 항로·선박·사건을 정리했다. 문서·벡터 심볼 시안이며 게임 구현 기록이 아니다.
+
 2026-09-09 [현지 생물 사건 5유형](production/104-native-biological-incidents.md): 실제 서식종의 부품 수집·둥지 보호·지하·4배 거대·희귀 색 변이, 관찰/이동 조건과 보상·J 기록·저장을 연결했다. 실제 검수와 미확인 범위는 제작 기록을 따른다.
 
 2026-09-09 [일루티 전투로봇 외형](production/103-illuti-combat-appearance.md): 작은 위협 센서·경사 장갑·비대칭 무장으로 형태를 교체했다. INK 카툰과 기존 전투 규칙을 유지하며 실제 확인 범위는 제작 기록을 따른다.
@@ -165,6 +169,7 @@
 | [행성·자원·건축](game/02-planets-resources-and-building.md) | 행성 특성, 수동 채집, 자원, 시설 배치, 초반 경험·화면 |
 | [광물·보석·강화](game/14-minerals-gems-and-enhancement.md) | 행성별 광물·최고급 공통 소재·지하 보석·캐릭터/장비 강화 목표·미정 |
 | [Lotus 스토리·개척 지원](game/19-lotus-story-and-support.md) | 구현된 출항 화물·보급, 사용자 이야기 원안과 독립·지구 구출 미정 |
+| [기업과 살아 있는 우주 공간](game/23-corporations-and-space-presence.md) | 기업 심볼·정체성, 복원 화성·시드별 거점/항로/선박/사건의 설계 초안 |
 | [로봇·자동화](game/03-robots-and-automation.md) | 제작, 랜덤 등급·특성, 작업·운반·전력·고장 |
 | [테라포밍·행성 판매](game/04-terraforming-and-sales.md) | 환경 상태, 설비 효과, 평가 등급, 매각 절차·가격 |
 | [지역 테라포밍·지표 수급·행성지도](game/20-regional-terraforming-and-surface-supply.md) | T1~T3 지역 사업 구현·지표 군집·Tab 지도·설계도 접점; T4/T5 후속 설계 |
