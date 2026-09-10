@@ -10846,5 +10846,41 @@
     "generator": "tools/build_freight_salvage.py",
     "review": "docs/production/118-freight-salvage.md",
     "foliage": false
+  },
+  {
+    "id": "mine_service_pack",
+    "title": "mine 작업장 정비",
+    "name": "mine_service_pack",
+    "group": "우주선",
+    "model": "res://assets/models/ships/mine_service_pack.glb",
+    "source": "art/blender/ships/mine_service_pack.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_mine_maintenance.py",
+    "review": "docs/production/119-mine-maintenance.md",
+    "foliage": false
+  },
+  {
+    "id": "mine_supply_rack",
+    "title": "mine 작업장 정비",
+    "name": "mine_supply_rack",
+    "group": "우주선",
+    "model": "res://assets/models/ships/mine_supply_rack.glb",
+    "source": "art/blender/ships/mine_supply_rack.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_mine_maintenance.py",
+    "review": "docs/production/119-mine-maintenance.md",
+    "foliage": false
+  },
+  {
+    "id": "mine_repair_worksite",
+    "title": "mine 작업장 정비",
+    "name": "mine_repair_worksite",
+    "group": "우주선",
+    "model": "res://assets/models/ships/mine_repair_worksite.glb",
+    "source": "art/blender/ships/mine_repair_worksite.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_mine_maintenance.py",
+    "review": "docs/production/119-mine-maintenance.md",
+    "foliage": false
   }
 ]

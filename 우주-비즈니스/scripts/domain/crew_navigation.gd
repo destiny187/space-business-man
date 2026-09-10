@@ -10,6 +10,7 @@ static func validate(value: Variant) -> String:
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
 	if not FrontierUniverse._finite(value.get("orbit_time",0),0,1e12):return "궤도 시간 오류"
 	if value.has("traffic_patrols") and not FrontierSpacePatrol.valid_state(value.traffic_patrols):return "경비 편대 기록 오류"
+	if value.has("freight_anchor_source") and not value.freight_anchor_source is bool:return "부품 수령 기준 오류"
 	if value.has("freight_anchor") and (not value.freight_anchor is String or FrontierFreightSalvage.system_of(value.freight_anchor)<0):return "화물 상대 정지 기준 오류"
 	if value.has("traffic_observers"):
 		if not value.traffic_observers is Array or value.traffic_observers.size()>7:return "운항 관심 영역 오류"
@@ -328,9 +329,9 @@ static func departure_obstacles(manifest: Dictionary,index: int,elapsed: float,d
 		var drift:=FrontierCrewWorld.vector(trace.position).distance_to(FrontierCrewWorld.vector(later.position))
 		result.append({"point":FrontierCrewWorld.vector(trace.position),"radius":60.0+drift})
 	for freight in FrontierFreightSalvage.obstacles(manifest,index,elapsed):
-		var now_freight:=FrontierFreightSalvage.definition(manifest,FrontierFreightSalvage.address(index),elapsed)
+		var now_freight:=FrontierFreightSalvage.definition(manifest,freight.id,elapsed)
 		var later_freight:=FrontierFreightSalvage.definition(manifest,now_freight.id,elapsed+horizon)
-		var drift:=FrontierCrewWorld.vector(now_freight.receiver).distance_to(FrontierCrewWorld.vector(later_freight.receiver))
+		var drift:=FrontierCrewWorld.vector(now_freight[freight.field]).distance_to(FrontierCrewWorld.vector(later_freight[freight.field]))
 		result.append({"point":freight.point,"radius":float(freight.radius)+drift})
 	return result
 static func departure_clear(origin: Vector3,direction: Vector3,obstacles: Array) -> bool:

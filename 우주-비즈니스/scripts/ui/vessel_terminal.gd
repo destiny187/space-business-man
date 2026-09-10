@@ -50,7 +50,8 @@ func update_snapshot(value: Dictionary) -> void:
 	capacity.max_value=slots;capacity.value=used;capacity_label.text="화물  %d / %d칸"%[used,slots]
 	var freight:=FrontierFreightSalvage.carried(value.crew.get("freight_records",{}),"shuttle:"+str(value.local_shuttle) if personal else "crew")
 	freight_card.visible=not freight.is_empty()
-	freight_label.text="회수 거치대  1 / 1\n유실 화물 운반 중 · J" if not freight.is_empty() else ""
+	freight_label.text="회수 거치대  1 / 1\n"+("mine 교체 부품 운반 중 · J" if FrontierFreightSalvage.maintenance(freight) else "유실 화물 운반 중 · J") if not freight.is_empty() else ""
+	if not freight.is_empty():freight_card.get_child(0).texture=load(FrontierFreightSalvage.icon(freight))
 	for id in ["research","shipyard","augmentation"]:cards[id].visible=not personal
 	cards.rejoin.visible=personal
 	cards.launch.get_meta("hint").text="혼자 탑승하여 출발" if personal else "승무원 탑승 후 출항"

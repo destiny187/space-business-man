@@ -153,18 +153,22 @@ func _draw() -> void:
 	if compact:draw_string(font,Vector2(64,size.y-10),"Tab 지도",HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color("a4b5bd"))
 func _draw_freight(center: Vector2,extent: float) -> void:
 	if not can_inspect_system(system_index):return
-	var row:=FrontierFreightSalvage.definition(manifest,FrontierFreightSalvage.address(system_index),elapsed)
-	if row.is_empty():return
-	var stage:=int(journal.data.get("freight_stages",{}).get(row.id,0)) if journal!=null else 0
 	var count:=FrontierUniverse.body_count(manifest,system_index)
 	var factor:=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
-	var pos:=FrontierUniverse.position(manifest,int(row.body),elapsed)
-	var anchor:=center+Vector2(pos.x,pos.z)*factor;var point:=anchor+Vector2(30,34)
-	var tint:=Color("94edcf") if stage>0 else Color("ffc180")
-	draw_line(anchor,point,tint,1,true);draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),tint,false,1.5)
-	if stage==3:draw_line(point+Vector2(-4,0),point+Vector2(0,4),tint,2,true);draw_line(point+Vector2(0,4),point+Vector2(6,-4),tint,2,true)
-	if not compact:draw_string(get_theme_default_font(),point+Vector2(13,4),["SOS","유실 화물","인계 항만","화물 인계 완료"][stage],HORIZONTAL_ALIGNMENT_LEFT,-1,12,tint)
-	hits.append({"point":point,"ordinal":int(row.body)})
+	for row in FrontierFreightSalvage.all(manifest,system_index,elapsed):
+		var stage:=int(journal.data.get("freight_stages",{}).get(row.id,0)) if journal!=null else 0
+		var service:=FrontierFreightSalvage.maintenance(row.id)
+		var endpoints: Array=[int(row.body)]
+		if service and stage==1:endpoints.append(int(row.source_body))
+		for body in endpoints:
+			var pos:=FrontierUniverse.position(manifest,body,elapsed)
+			var anchor:=center+Vector2(pos.x,pos.z)*factor;var point:=anchor+Vector2(-58,48) if service else anchor+Vector2(30,34)
+			var tint:=Color("94edcf") if stage>0 else Color("ffc180")
+			draw_line(anchor,point,tint,1,true);draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),tint,false,1.5)
+			if stage==FrontierFreightSalvage.last_stage(row.id):draw_line(point+Vector2(-4,0),point+Vector2(0,4),tint,2,true);draw_line(point+Vector2(0,4),point+Vector2(6,-4),tint,2,true)
+			var label: String="교체 부품 수령" if service and body==int(row.source_body) and stage==1 else (FrontierMineMaintenance.STATES[stage] if service else ["SOS","유실 화물","인계 항만","화물 인계 완료"][stage])
+			if not compact:draw_string(get_theme_default_font(),point+Vector2(13,4),label,HORIZONTAL_ALIGNMENT_LEFT,-1,12,tint)
+			hits.append({"point":point,"ordinal":body})
 
 func _draw_corporate_sites(center: Vector2,extent: float) -> void:
 	if not can_inspect_system(system_index):return

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "mine_service_pack",
+    "source": "art/blender/ships/mine_service_pack.blend",
+    "model": "res://assets/models/ships/mine_service_pack.glb",
+    "generator": "tools/build_mine_maintenance.py",
+    "meshes": 5,
+    "triangles": 14660,
+    "sha256": "94940699ba1d1a793d78e22cc480492506b8385669e219455b4e6532d4fa8f91",
+    "pivots": []
+  },
+  {
+    "id": "mine_supply_rack",
+    "source": "art/blender/ships/mine_supply_rack.blend",
+    "model": "res://assets/models/ships/mine_supply_rack.glb",
+    "generator": "tools/build_mine_maintenance.py",
+    "meshes": 11,
+    "triangles": 10652,
+    "sha256": "b7ca4d3ea8cff6eeab6d2de53e9e67959b5dc48189d98fda75cb46660bfaaba7",
+    "pivots": [
+      "Anim_Clamp_-13_-10",
+      "Anim_Clamp_-13_10",
+      "Anim_Clamp_13_-10",
+      "Anim_Clamp_13_10"
+    ]
+  },
+  {
+    "id": "mine_repair_worksite",
+    "source": "art/blender/ships/mine_repair_worksite.blend",
+    "model": "res://assets/models/ships/mine_repair_worksite.glb",
+    "generator": "tools/build_mine_maintenance.py",
+    "meshes": 22,
+    "triangles": 33104,
+    "sha256": "2f1f9354e14da66edf3134db11e567b15e71be2f4220b63d816bc6867a0b7ecf",
+    "pivots": [
+      "Anim_Clamp_-13_-10",
+      "Anim_Clamp_-13_10",
+      "Anim_Clamp_13_-10",
+      "Anim_Clamp_13_10",
+      "Anim_DrillSlide",
+      "Anim_DrillRotor",
+      "Anim_OreTray",
+      "Anim_RepairArm",
+      "Anim_StatusLamp_-44",
+      "Anim_StatusLamp_-18"
+    ]
+  }
+]

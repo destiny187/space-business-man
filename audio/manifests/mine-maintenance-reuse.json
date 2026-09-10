@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "provider": "ElevenLabs (existing generated originals)",
+  "new_generation": false,
+  "sources": [
+    "audio/manifests/space-experience.json",
+    "audio/manifests/rover-sounds.json",
+    "audio/manifests/lotus-support.json",
+    "audio/manifests/exploration-incidents.json",
+    "audio/manifests/elevenlabs.json"
+  ],
+  "mapping": {
+    "unidentified_distress_beacon": "sfx_incident_beacon",
+    "held_manifest_identification": "sfx_orbital_scan",
+    "winch_during_authoritative_transfer": "sfx_rover_winch",
+    "persisted_clamp_lock": "sfx_lotus_touchdown",
+    "persisted_stage_change": "sfx_orbital_complete",
+    "interrupted_transfer_with_failure_reason": "sfx_build_invalid",
+    "repair_arm_motor": "sfx_robot_work"
+  },
+  "mix": "윈치 -24 dB, 정비 모터 -25 dB SFX. 메뉴/비행창 비활성 시 중지.",
+  "playback": "Forward+ 실제 E 부품 적재·설치·정비·재가동 및 메뉴 중단 확인.",
+  "listening": "Subjective listening not performed; no new voice or effect generated."
+}

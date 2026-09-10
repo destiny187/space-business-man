@@ -20,7 +20,7 @@ func valid(value: Variant) -> bool:
 	if value.has("freight_stages"):
 		if not value.freight_stages is Dictionary:return false
 		for id in value.freight_stages:
-			if not id is String or FrontierFreightSalvage.system_of(id)<0 or not FrontierExpeditionBusiness.integer(value.freight_stages[id],1,3):return false
+			if not id is String or FrontierFreightSalvage.system_of(id)<0 or not FrontierExpeditionBusiness.integer(value.freight_stages[id],1,FrontierFreightSalvage.last_stage(id)):return false
 	for key in value.systems:
 		if not str(key).is_valid_int() or int(key)<0 or int(key)>=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system):return false
 	for key in value.bodies:

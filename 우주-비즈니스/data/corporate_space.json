@@ -167,5 +167,13 @@
     "handover_seconds": 3,
     "max_speed": 120,
     "payment": 350
+  },
+  "maintenance": {
+    "version": 1,
+    "diagnose_distance": 650,
+    "diagnose_seconds": 3,
+    "repair_distance": 350,
+    "repair_seconds": 7,
+    "payment": 500
   }
 }
