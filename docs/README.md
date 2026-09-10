@@ -308,3 +308,5 @@
 2026-09-10 SP05: [Space Y 무역선 운항·제작·확인](production/113-space-y-freighters.md).
 
 2026-09-10 SP06: [Space Y 경비 편대·센서 확인·저장](production/114-space-y-patrol.md).
+
+2026-09-10 SP07: [시드 기업 진출권·회사별 거점·행성 간 운항](production/115-seeded-corporate-regions.md).

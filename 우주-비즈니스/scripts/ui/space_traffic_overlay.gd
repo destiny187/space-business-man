@@ -17,7 +17,7 @@ func _draw() -> void:
 	draw_texture_rect(mark,Rect2(origin+Vector2(14,13),Vector2(34,34)),false)
 	draw_string(font,origin+Vector2(58,31),row.call_sign,HORIZONTAL_ALIGNMENT_LEFT,width-68,18,Color(.91,.97,1))
 	draw_string(font,origin+Vector2(14,66),row.label+"   "+FrontierFlightTelemetry.distance_label(float(row.distance)),HORIZONTAL_ALIGNMENT_LEFT,width-28,16,cyan)
-	var destination: String="화성 Y-01" if row.to=="solar_mars_port" else "지구 Y-02"
+	var destination: String=row.get("destination","화성 Y-01" if row.to=="solar_mars_port" else "지구 Y-02")
 	draw_string(font,origin+Vector2(14,94),"→ "+destination,HORIZONTAL_ALIGNMENT_LEFT,width-28,15,Color(.75,.86,.91))
 	if row.kind=="fighter":
 		for side in [-1,1]:

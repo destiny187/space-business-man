@@ -28,6 +28,8 @@ var station_excluded: int=-1
 var station_model: Node3D
 var station_models: Dictionary={}
 var traffic: FrontierSpaceTrafficView
+var corporate_models: Dictionary={}
+var corporate_view: FrontierCorporateSiteView
 var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
@@ -111,6 +113,7 @@ func _process(delta: float) -> void:
 		if not visual_suspended:
 			visual_suspended=true;vessel_sound.suspend();soundscape.scan.stop();soundscape.arrival.stream_paused=true
 			if is_instance_valid(traffic):traffic.suspend()
+			if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,true)
 			scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
 		return
 	visual_suspended=false
@@ -144,8 +147,10 @@ func _process(delta: float) -> void:
 	if not navigation.get("star_warning",false):warning_clock=0
 	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size))
 	if is_instance_valid(traffic):traffic.update(delta,orbit_clock,presentation_blocked)
+	if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,presentation_blocked)
 	_update_planet_scan(delta)
-	soundscape.update(delta,scan_target>=0 and scan_progress<1.0,scan_progress)
+	var site_scanning: bool=is_instance_valid(corporate_view) and not corporate_view.selected.is_empty() and corporate_view.progress<1.0
+	soundscape.update(delta,(scan_target>=0 and scan_progress<1.0) or site_scanning,corporate_view.progress if site_scanning else scan_progress)
 	orbital_presentation.update(delta,orbit_clock)
 	_update_galactic_core()
 	var in_transit: bool=navigation.mode=="jump"
@@ -207,8 +212,13 @@ func _load_system(index: int) -> void:
 		model.position=FrontierCrewWorld.vector(station.position)
 		FrontierInkStyle.apply(model,cache);system_art.add_child(model);station_models[station.id]=model
 		if station_model==null:station_model=model
+	corporate_models.clear()
+	for site in FrontierCorporateSites.all(state.manifest,index,orbit_time):
+		var model: Node3D=load(site.model).instantiate();model.position=FrontierCrewWorld.vector(site.position)
+		FrontierInkStyle.apply(model,cache);system_art.add_child(model);corporate_models[site.id]=model
+	corporate_view=FrontierCorporateSiteView.new();system_art.add_child(corporate_view);corporate_view.configure(self)
 	traffic=null
-	if index==0 and FrontierSpaceTraffic.enabled(state.manifest):
+	if not FrontierSpaceTraffic.all(state.manifest,index,orbit_time).is_empty():
 		traffic=FrontierSpaceTrafficView.new();system_art.add_child(traffic);traffic.configure(self)
 	orbital_presentation.collect(system_art)
 	orbital_debris=FrontierOrbitalDebris.new();system_art.add_child(orbital_debris);orbital_debris.configure(self)
@@ -225,6 +235,7 @@ func _load_system(index: int) -> void:
 func _update_planet_scan(delta: float) -> void:
 	var target: int=pick_planet(Vector2(get_viewport().get_visible_rect().size)*.5) if scan_enabled and not presentation_blocked and transit_overlay.arrival_age>=float(FrontierCelestialNames.rules().arrival_seconds)-1.8 else -1
 	if is_instance_valid(traffic) and not traffic.selected.is_empty():target=-1
+	if is_instance_valid(corporate_view) and not corporate_view.selected.is_empty():target=-1
 	if target!=scan_target:scan_target=target;scan_progress=0.0
 	if target<0:
 		transit_overlay.scan_body={};return
@@ -241,6 +252,8 @@ func update_orbits(elapsed: float) -> void:
 	super.update_orbits(elapsed)
 	for station in FrontierSpaceStation.all(state.manifest,current_system,station_excluded,elapsed):
 		if station_models.has(station.id) and is_instance_valid(station_models[station.id]):station_models[station.id].position=FrontierCrewWorld.vector(station.position)
+	for site in FrontierCorporateSites.all(state.manifest,current_system,elapsed):
+		if corporate_models.has(site.id):corporate_models[site.id].position=FrontierCrewWorld.vector(site.position)
 func station_in_sight() -> String:
 	if navigation.is_empty() or navigation.mode!="idle":return ""
 	var best: String="";var alignment:=.992

@@ -93,5 +93,29 @@
       "return_seconds": 12,
       "rearm_seconds": 90
     }
+  },
+  "expansion": {
+    "version": 1,
+    "cell_size": 180,
+    "weights": [
+      23,
+      22,
+      22,
+      12,
+      8,
+      13
+    ],
+    "occupancy": {
+      "managed": 86,
+      "frontier": 67,
+      "industry": 78,
+      "restricted": 54,
+      "declining": 45,
+      "wild": 0
+    },
+    "port_clearance": 3600,
+    "leg_seconds": 840,
+    "near_step": 0.1,
+    "far_step": 1.0
   }
 }

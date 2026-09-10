@@ -74,7 +74,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	draw_string(font,origin,"스캔 완료",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,cyan)
 	draw_string(font,origin+Vector2(0,33),scan_body.name,HORIZONTAL_ALIGNMENT_LEFT,width-36,27,Color(.88,.98,1))
 	var description:=FrontierUniverse.kind_label(scan_body)+"  T%d"%int(scan_body.planet_tier)
-	if FrontierUniverse.restored_mars(scan_body):description="테라포밍 복원 완료"
+	if FrontierCorporateOrbital.restored(scan_body):description="테라포밍 복원 완료"
 	elif scan_body.get("origin","")=="solar_reference":description="태양계  테라포밍 불가 행성"
 	elif not FrontierUniverse.landable(scan_body):description+="  착륙 불가"
 	else:description+="  테라포밍 가능"
@@ -95,7 +95,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 			draw_rect(Rect2(point+Vector2(0,8),Vector2((width-48)/2*value/100,3)),cyan)
 		var warning: String="위험: %s    개선 %s"%[report.risk,report.difficulty]
 		draw_string(font,origin+Vector2(0,190),warning,HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
-	elif FrontierUniverse.restored_mars(scan_body):
+	elif FrontierCorporateOrbital.restored(scan_body):
 		draw_texture_rect(space_y_mark,Rect2(origin+Vector2(0,87),Vector2(38,38)),false)
 		draw_string(font,origin+Vector2(48,113),"Space Y 관리 행성",HORIZONTAL_ALIGNMENT_LEFT,width-84,18,cyan)
 		draw_string(font,origin+Vector2(0,157),"복원 수역  녹화 저지대  유지 중",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)

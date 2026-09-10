@@ -2,6 +2,7 @@ extends Control
 signal selected(ordinal: int)
 signal station_selected(index: int,station_id: String)
 signal route_selected(ordinal: int)
+var corporate_marks: Dictionary={}
 var stellar_range:=8.0
 var nearby_only:=false
 var scene_3d
@@ -118,6 +119,7 @@ func _draw() -> void:
 	else:
 		draw_circle(center,9,Color("ffe2a3"))
 		var count: int=FrontierUniverse.body_count(manifest,system_index)
+		_draw_corporate_sites(center,extent)
 		for station in FrontierSpaceStation.all(manifest,system_index,station_excluded,elapsed):
 			var factor: float=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
 			var point:=center+Vector2(station.position[0],station.position[2])*factor
@@ -148,6 +150,32 @@ func _draw() -> void:
 			if absf(ship_position.y)>100:draw_string(font,vessel+Vector2(8,10),"↑" if ship_position.y>0 else "↓",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 		if not compact:draw_string(font,Vector2(12,24),FrontierUniverse.system(manifest,system_index).star.name,HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color("e0ebe3"))
 	if compact:draw_string(font,Vector2(64,size.y-10),"Tab 지도",HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color("a4b5bd"))
+func _draw_corporate_sites(center: Vector2,extent: float) -> void:
+	if not can_inspect_system(system_index):return
+	var profile:=FrontierCorporateSites.profile(manifest,system_index)
+	var positions: Dictionary={};var known: Dictionary={}
+	var count:=FrontierUniverse.body_count(manifest,system_index)
+	var factor:=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
+	for site in profile.sites:
+		var body:=FrontierUniverse.body(manifest,int(site.body));var pos:=FrontierUniverse.position(manifest,int(site.body),elapsed)
+		positions[site.id]=center+Vector2(pos.x,pos.z)*factor+Vector2(-19,-24)
+		known[site.id]=journal!=null and journal.data.bodies.get(body.id,{}).get("scanned",false)
+	if not compact:
+		for route in profile.routes:
+			if known.get(route.ends[0],false) and known.get(route.ends[1],false):
+				draw_dashed_line(positions[route.ends[0]],positions[route.ends[1]],Color("567c88") if route.active else Color("525967"),1,6,true)
+	for site in profile.sites:
+		var point: Vector2=positions[site.id];var tint:=Color("8cdce1") if known[site.id] else Color("647c8e")
+		draw_line(point+Vector2(7,8),point+Vector2(19,24),tint,1,true)
+		if known[site.id] and not str(site.operator).is_empty():
+			if not corporate_marks.has(site.operator):corporate_marks[site.operator]=load("res://assets/ui/corporations/"+site.operator+".svg")
+			draw_texture_rect(corporate_marks[site.operator],Rect2(point-Vector2(10,10),Vector2(20,20)),false)
+		else:
+			var shape:=PackedVector2Array([point+Vector2(0,-7),point+Vector2(7,0),point+Vector2(0,7),point+Vector2(-7,0),point+Vector2(0,-7)])
+			draw_polyline(shape,tint,1.5,true)
+		if not compact:draw_string(get_theme_default_font(),point+Vector2(13,-9),site.short_name if known[site.id] else "미확인 거점",HORIZONTAL_ALIGNMENT_LEFT,-1,12,tint)
+		hits.append({"point":point,"ordinal":int(site.body)})
+
 func _background() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new();style.bg_color=Color("0b1d2b");style.set_corner_radius_all(6);return style
 func _gui_input(event: InputEvent) -> void:

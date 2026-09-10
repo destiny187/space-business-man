@@ -1,5 +1,6 @@
 class_name FrontierSpaceTrafficView
 extends Node3D
+var sampler:=FrontierTrafficSampler.new()
 var flight: FrontierCrewFlightView
 var models: Dictionary={}
 var rows: Array=[]
@@ -30,12 +31,13 @@ func configure(view: FrontierCrewFlightView) -> void:
 		for socket in near.find_children("Socket_Exhaust_*","Node3D",true,false):
 			var mesh:=MeshInstance3D.new();var shape:=CylinderMesh.new();shape.top_radius=2.0 if row.kind=="fighter" else 3.4;shape.bottom_radius=.15;shape.height=15;mesh.mesh=shape;mesh.rotation.x=-PI*.5;mesh.position.z=7.5
 			var mat:=StandardMaterial3D.new();mat.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;mat.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;mat.albedo_color=Color(.28,.75,1,.42);mesh.material_override=mat;mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;socket.add_child(mesh);plumes.append(mesh)
-		models[row.id]={"root":root,"near":near,"far":far,"pods":pods,"engines":engines,"plumes":plumes,"far_mode":false,"sensors":near.find_children("Anim_Sensor","Node3D",true,false)}
+		models[row.id]={"root":root,"near":near,"far":far,"pods":pods,"engines":engines,"plumes":plumes,"far_mode":false,"sensors":near.find_children("Anim_Sensor","Node3D",true,false),"geometry":near.find_children("*","GeometryInstance3D",true,false)+far.find_children("*","GeometryInstance3D",true,false)}
 func update(delta: float,t: float,blocked: bool) -> void:
 	var enabled: bool=not blocked and flight.navigation.get("mode","")!="jump"
+	var focus: String=selected.get("id","")
 	selected={};radio_cooldown=maxf(0,radio_cooldown-delta)
 	engine.stream_paused=not enabled;radio.stream_paused=not enabled
-	rows=FrontierSpaceTraffic.all(flight.state.manifest,flight.current_system,t,flight.navigation.get("traffic_observers",[]),flight.navigation.get("traffic_patrols",{}))
+	rows=sampler.sample(flight.state.manifest,flight.current_system,t,flight.camera.global_position,flight.navigation.get("traffic_observers",[]),flight.navigation.get("traffic_patrols",{}),focus)
 	var closest:=INF;var thrust:=0.0;var best:=.992
 	for row in rows:
 		if not models.has(row.id):continue
@@ -51,8 +53,7 @@ func update(delta: float,t: float,blocked: bool) -> void:
 		elif distance<float(cfg.near_distance):visual.far_mode=false
 		visual.near.visible=not visual.far_mode;visual.far.visible=visual.far_mode
 		# Keep stable objects through camera turns; fade only beyond useful silhouette scale.
-		for model in [visual.near,visual.far]:
-			for geometry in model.find_children("*","GeometryInstance3D",true,false):geometry.transparency=smoothstep(float(cfg.far_distance)*.8,float(cfg.far_distance),distance)
+		for geometry in visual.geometry:geometry.transparency=smoothstep(float(cfg.far_distance)*.8,float(cfg.far_distance),distance)
 		var power:=.6 if row.stage in ["ascend","cruise","patrol","inspect_approach","return"] else (.15 if row.stage in ["depart","dock","descend"] else 0.0)
 		for plume in visual.plumes:plume.visible=power>0;plume.scale.y=.3+power
 		for pivot in visual.engines:pivot.rotation.x=sin(t*1.2+int(row.index))*.045*power
@@ -81,8 +82,9 @@ func update(delta: float,t: float,blocked: bool) -> void:
 	overlay.row=selected;overlay.radio_text=last_radio if radio_cooldown>11 and enabled else "";overlay.queue_redraw()
 func _crane(row: Dictionary,t: float) -> void:
 	var id: String=row.from
-	if not flight.station_models.has(id):return
-	var node:=flight.station_models[id].find_child("Anim_Crane_"+str(row.side),true,false) as Node3D
+	var ports: Dictionary=flight.station_models if flight.station_models.has(id) else flight.corporate_models
+	if not ports.has(id):return
+	var node:=ports[id].find_child("Anim_Crane_"+str(row.side),true,false) as Node3D
 	if node!=null:node.rotation.y=sin(float(row.u)*TAU*2)*.35 if row.stage in ["load","unload"] else 0.0
 func suspend() -> void:
 	engine.stop();radio.stop();overlay.row={};overlay.radio_text="";overlay.queue_redraw()
@@ -92,4 +94,4 @@ func occluded(point: Vector3) -> bool:
 		var offset: Vector3=entry.node.global_position-origin;var along:=offset.dot(ray)
 		if along>0 and along<distance and (offset-ray*along).length()<float(entry.radius):return true
 	var along:=(-origin).dot(ray)
-	return along>0 and along<distance and (-origin-ray*along).length()<float(FrontierUniverse.star_settings(flight.state.manifest,0).star_radius)
+	return along>0 and along<distance and (-origin-ray*along).length()<float(FrontierUniverse.star_settings(flight.state.manifest,flight.current_system).star_radius)

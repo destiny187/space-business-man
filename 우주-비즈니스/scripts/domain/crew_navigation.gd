@@ -15,6 +15,7 @@ static func validate(value: Variant) -> String:
 		for observer in value.traffic_observers:
 			if not observer is Dictionary or not FrontierUniverse._vector3_array(observer.get("position")):return "운항 관심 위치 오류"
 			if observer.has("id") and (not observer.id is String or observer.id.length()>192):return "운항 관심 주소 오류"
+			if not FrontierExpeditionBusiness.integer(observer.get("system",0),0,124999):return "운항 관심 항성계 오류"
 	if not FrontierUniverse._finite(value.get("speed"),-10000,10000) or not FrontierUniverse._finite(value.get("jump_left"),0,120):return "공동 항해 속도 오류"
 	if value.has("first_stellar_system") and not FrontierExpeditionBusiness.integer(value.first_stellar_system,0,249999):return "첫 성간 목적지 오류"
 	if value.has("station_target") and not value.station_target is bool:return "정거장 항로 오류"
@@ -214,6 +215,8 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	var obstacles: Array=[{"point":Vector3.ZERO,"radius":float(FrontierUniverse.star_settings(world.manifest,int(nav.system)).star_radius)+150}]
 	for station in FrontierSpaceStation.all(world.manifest,int(nav.system),int(nav.get("first_stellar_system",-1)),float(nav.orbit_time)):
 		obstacles.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)+80})
+	for site in FrontierCorporateSites.all(world.manifest,int(nav.system),float(nav.orbit_time)):
+		obstacles.append({"point":FrontierCrewWorld.vector(site.position),"radius":360.0})
 	for i in FrontierUniverse.body_count(world.manifest,int(nav.system)):
 		var ordinal: int=FrontierUniverse.first_ordinal(world.manifest,int(nav.system))+i
 		var body:=FrontierUniverse.body(world.manifest,ordinal)
@@ -266,7 +269,7 @@ static func first_destination(manifest: Dictionary) -> int:
 	for candidate in candidates:
 		for orbit in FrontierUniverse.body_count(manifest,int(candidate.index)):
 			var ordinal: int=FrontierUniverse.first_ordinal(manifest,int(candidate.index))+orbit
-			var body:=FrontierUniverse.body(manifest,ordinal)
+			var body:=FrontierUniverse.body(manifest,ordinal,false)
 			if FrontierPlanetaryCycles.enabled(manifest) and not body.astro.intro_eligible:continue
 			if FrontierUniverse.landable(body) and int(body.planet_tier)==1 and (not manifest.settings.has("ground_rules") or FrontierGroundProgression.intro_candidate(body)):
 				departure_cache[cache_key]=ordinal;return ordinal
@@ -311,6 +314,10 @@ static func departure_obstacles(manifest: Dictionary,index: int,elapsed: float,d
 		var later:=FrontierSpaceStation.definition(manifest,index,-1,elapsed+horizon,station.id)
 		var drift:=FrontierCrewWorld.vector(station.position).distance_to(FrontierCrewWorld.vector(later.position))
 		result.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)+drift})
+	for site in FrontierCorporateSites.all(manifest,index,elapsed):
+		var later:=FrontierCorporateSites.definition(manifest,site.id,elapsed+horizon)
+		var drift:=FrontierCrewWorld.vector(site.position).distance_to(FrontierCrewWorld.vector(later.position))
+		result.append({"point":FrontierCrewWorld.vector(site.position),"radius":280.0+drift})
 	return result
 static func departure_clear(origin: Vector3,direction: Vector3,obstacles: Array) -> bool:
 	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition

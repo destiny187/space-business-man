@@ -26,7 +26,7 @@
 | SP04 | `feat: add the Mars orbital port and logistics endpoints` | 화성 항만과 지구 쪽 물류 목적지, 공전 추적·접근/정지·실제 교역·고정 예외 | SP03 | 구현 |
 | SP05 | `feat: run Space Y freighters between Earth and Mars` | 무역선 원본/GLB, 고유 ID·운항 위상·적재 표현·출발/가감속/대기/접안, 추진/관제음 | SP04 | 구현 |
 | SP06 | `feat: patrol managed orbits with Space Y fighters` | 경비기 모델·편대/순찰/센서 확인·복귀와 위험하지 않은 첫 항로 | SP05 | 구현 |
-| SP07 | `feat: seed corporate sites and shipping routes` | 진출권·운영 행성·거점/유효 항로·독립 시드·저장 버전·가벼운 먼 거리 운항 | SP05 | 예정 |
+| SP07 | `feat: seed corporate sites and shipping routes` | 진출권·운영 행성·거점/유효 항로·독립 시드·저장 버전·가벼운 먼 거리 운항 | SP05 | 구현 |
 | SP08 | `feat: reveal corporate activity through persistent traces` | Lotus 개척 비콘·mine 정비/집하 흔적·CooperTech 감시/봉인 표식, 실물 조사·지도/J 공개 단계 | SP02, SP07 | 예정 |
 | SP09 | `feat: recover lost freight from shipping incidents` | 실제 유실 포드·우주 접근/회수·화물 적재·항만 인계·단발 보상/저장 | SP05, SP07 | 예정 |
 | SP10 | `feat: restore mine work sites through repair deliveries` | 실제 멈춘 작업장·예비 부품 직접 운반·정비 조작·작업 재개·호스트 정산 | SP08, SP09 | 예정 |
@@ -81,3 +81,5 @@
 - **SP05 — 이 기록을 포함하는 구현 커밋:** 지구–화성 CARRIER 2척·선박 ID/게임 시간·8단계 왕복·화물 포드와 크레인·주시 정보·추진/관제 신호를 연결했다. [실제 범위와 검수](../production/113-space-y-freighters.md).
 
 - **SP06 — 이 기록을 포함하는 구현 커밋:** WARDEN 모델/LOD·항만별 2기 편대·선박 센서 확인/복귀·재접근 대기와 저장을 연결했다. [제작·호스트 운항·확인](../production/114-space-y-patrol.md). 우주 전투는 포함하지 않는다.
+
+- **SP07 — 이 기록을 포함하는 구현 커밋:** 여섯 시드 진출권·관리 행성·실제 기업 거점/왕복 항로·근/원거리 계산·식별 지도와 저장을 연결했다. 사용자 요청으로 회사별 용도를 구분하고 Lotus 격납고·mine 집하/정비 설비·CooperTech 장갑 시험시설을 서로 다른 구조로 제작했다. [구현·렌더·검사·경계](../production/115-seeded-corporate-regions.md). 정비/보상/시험 상호작용은 후속이다.

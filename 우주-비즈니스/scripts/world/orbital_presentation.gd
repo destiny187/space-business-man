@@ -36,7 +36,7 @@ func _decorate(node: Node3D,body: Dictionary,radius: float) -> void:
 	var ordinal:=int(body.ordinal) if solar else -1
 	var pressure: float=[0.0,8.0,1.0,.012,5.0,5.0,4.0,4.0][ordinal] if solar else float(t.get("pressure",0.0))
 	var coverage: float=(.65 if ordinal==2 else 0.0) if solar else float(t.get("cloud",0))
-	var restored:=FrontierUniverse.restored_mars(body)
+	var restored:=FrontierCorporateOrbital.restored(body)
 	if restored:pressure=float(body.management.pressure);coverage=float(body.management.cloud)
 	var density:=clampf(pressure*float(config().atmosphere.pressure_scale),0,float(config().atmosphere.maximum_density))
 	var surfaces: Array=[]

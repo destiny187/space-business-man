@@ -1,0 +1,70 @@
+[
+  {
+    "id": "relay_lotus",
+    "source": "art/blender/ships/relay_lotus.blend",
+    "model": "res://assets/models/ships/relay_lotus.glb",
+    "generator": "tools/build_corporate_relays.py",
+    "meshes": 14,
+    "triangles": 98732,
+    "sha256": "1ce6b3fc59c4a44cf6faa6d92ccbf6a6bb5dff824f9c7591be8324454932f576",
+    "pivots": [
+      "Anim_Crane_-1",
+      "Socket_Berth_-1",
+      "Anim_Crane_1",
+      "Socket_Berth_1"
+    ],
+    "design_revision": 2,
+    "purpose": "expedition supply and launch hangar"
+  },
+  {
+    "id": "relay_mine",
+    "source": "art/blender/ships/relay_mine.blend",
+    "model": "res://assets/models/ships/relay_mine.glb",
+    "generator": "tools/build_corporate_relays.py",
+    "meshes": 12,
+    "triangles": 103724,
+    "sha256": "95609f4ca36693e17f3fa1ed7ab1be59ab8ca2d47bdca93dd8ce87fc0f03b346",
+    "pivots": [
+      "Anim_Crane_-1",
+      "Socket_Berth_-1",
+      "Anim_Crane_1",
+      "Socket_Berth_1",
+      "Anim_Sorter"
+    ],
+    "design_revision": 2,
+    "purpose": "ore collection, sorting and machine service"
+  },
+  {
+    "id": "relay_coopertech",
+    "source": "art/blender/ships/relay_coopertech.blend",
+    "model": "res://assets/models/ships/relay_coopertech.glb",
+    "generator": "tools/build_corporate_relays.py",
+    "meshes": 12,
+    "triangles": 42520,
+    "sha256": "656bf0075a7369b5f94a4fd638b7da969b3d827ea38778a560bff9deab06aa31",
+    "pivots": [
+      "Anim_Crane_-1",
+      "Socket_Berth_-1",
+      "Anim_Crane_1",
+      "Socket_Berth_1",
+      "Anim_SecuritySensor"
+    ],
+    "design_revision": 2,
+    "purpose": "armored combat robotics calibration and sealed transfer"
+  },
+  {
+    "id": "relay_retired",
+    "source": "art/blender/ships/relay_retired.blend",
+    "model": "res://assets/models/ships/relay_retired.glb",
+    "generator": "tools/build_corporate_relays.py",
+    "meshes": 5,
+    "triangles": 28616,
+    "sha256": "e33677500a4b4044a15e5033388351c989291f8644b3c465f1cc8d7223adf275",
+    "pivots": [
+      "Socket_Berth_-1",
+      "Socket_Berth_1"
+    ],
+    "design_revision": 2,
+    "purpose": "withdrawn logistics remains"
+  }
+]

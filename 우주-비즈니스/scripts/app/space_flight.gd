@@ -477,7 +477,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	FrontierSurfaceMaterialLibrary.orbital(material,t)
 	material.set_shader_parameter("authored_relief",true)
 	material.set_shader_parameter("highlight_strength",.08)
-	material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
+	material.set_shader_parameter("gas_bands",not body.get("landable",true))
 	material.set_shader_parameter("land_color",Color(t.dust))
 	material.set_shader_parameter("sea_color",Color(t.sea))
 	material.set_shader_parameter("rock_color",Color(t.rock))
@@ -486,6 +486,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	material.set_shader_parameter("seed_offset",float(t.pattern_seed))
 	material.set_shader_parameter("molten",t.id=="volcanic")
 
+	FrontierCorporateOrbital.apply(material,body)
 	node.material_override = material
 	add_child(node)
 	var atmosphere := MeshInstance3D.new()

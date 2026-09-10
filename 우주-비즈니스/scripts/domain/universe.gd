@@ -73,7 +73,7 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 		"map_position": [cos(angle) * radius, sin(angle) * radius], "body_ids": ids,
 		"star": {"id":id+":star", "name":FrontierCelestialNames.system_name(seed_value,index), "spectral_type":"G" if index==0 else ["M","K","G","F","A"][derive(seed_value,"star")%5]}}
 
-static func body(m: Dictionary, ordinal: int) -> Dictionary:
+static func body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dictionary:
 	if ordinal < 0 or ordinal >= int(m.settings.planet_count): return {}
 	var cfg: Dictionary = m.settings
 	var s: Dictionary = system(m, system_index(m,ordinal))
@@ -119,13 +119,18 @@ static func body(m: Dictionary, ordinal: int) -> Dictionary:
 	# Fictional future management is separate from the unmodified reference/orbit data.
 	if result.reference_id=="solar:3" and cfg.has("corporate_space"):
 		result.management=cfg.corporate_space.mars.duplicate(true)
+	if corporate and int(s.ordinal)>0 and FrontierCorporateSites.enabled(m):
+		var site:=FrontierCorporateSites.body_info(m,ordinal)
+		if not site.is_empty():
+			result.corporate_activity=site.duplicate(true)
+			if site.managed:result.management={"operator":"space_y","state":"restored","access":"orbital_only","pressure":.9,"cloud":.42,"city_strength":.38}
 	return result
 
 static func restored_mars(value: Dictionary) -> bool:
 	return value.get("reference_id","")=="solar:3" and value.get("management",{}).get("state","")=="restored"
 
 static func landable(body_value: Dictionary) -> bool:
-	return body_value.get("origin","")!="solar_reference" and body_value.get("landable",true)
+	return body_value.get("origin","")!="solar_reference" and body_value.get("landable",true) and body_value.get("management",{}).get("access","")!="orbital_only"
 
 static func kind_label(body_value: Dictionary) -> String:
 	return {"basalt":"암석형", "glacial":"빙하 암석형", "sulfur":"황산 암석형", "gas_giant":"가스 거대행성", "ice_giant":"얼음 거대행성"}.get(body_value.kind,"미확인")
@@ -180,6 +185,7 @@ static func validate_world(value: Variant) -> String:
 			if not _finite(mars.get(field),0,1):return "화성 환경 표현 설정 오류"
 		if corporate.has("ports") and not FrontierOrbitalPorts.valid(corporate.ports):return "태양계 물류항 설정 오류"
 		if corporate.has("traffic") and (not corporate.has("ports") or not FrontierSpaceTraffic.valid(corporate.traffic)):return "기업 운항 설정 오류"
+		if corporate.has("expansion") and (not corporate.has("traffic") or not FrontierCorporateSites.valid(corporate.expansion)):return "기업 진출권 설정 오류"
 	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
 	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전·설정 오류"
 	if m.settings.has("system_rules"):
@@ -299,7 +305,7 @@ static func central_view(manifest: Dictionary,system_index: int,local_viewer: Ve
 	return {"id":core.id,"visible":distance/unit<=float(core.visible_within_galaxy_units),"direction":relative.normalized(),"distance_galaxy_units":distance/unit,"angular_scale":float(core.model_scale_galaxy_units)*unit/maxf(distance,1.0)}
 
 static func landing_restriction(body: Dictionary) -> String:
-	if restored_mars(body):return "Space Y 복원 완료 관리 구역입니다. 지표 착륙·채굴·건설은 제한됩니다."
+	if body.get("management",{}).get("access","")=="orbital_only":return "Space Y 복원 완료 관리 구역입니다. 지표 착륙·채굴·건설은 제한됩니다."
 	if body.get("origin","")=="solar_reference":return "태양계 · 테라포밍 불가 행성입니다. 착륙할 수 없습니다."
 	if not landable(body):return "착륙할 표면이 없습니다. 궤도 탐사만 가능합니다."
 	return ""

@@ -251,8 +251,9 @@ func _update_preview(body: Dictionary) -> void:
 		var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/planet.gdshader")
 		var t: Dictionary=body.traits
 		FrontierSurfaceMaterialLibrary.orbital(material,t)
-		material.set_shader_parameter("authored_relief",true);material.set_shader_parameter("highlight_strength",.08);material.set_shader_parameter("gas_bands",not FrontierUniverse.landable(body))
+		material.set_shader_parameter("authored_relief",true);material.set_shader_parameter("highlight_strength",.08);material.set_shader_parameter("gas_bands",not body.get("landable",true))
 		material.set_shader_parameter("land_color",Color(t.dust));material.set_shader_parameter("sea_color",Color(t.sea));material.set_shader_parameter("rock_color",Color(t.rock));material.set_shader_parameter("sea_level",lerpf(.20,.61,float(t.water)/100.0) if float(t.water)>0 else 0.0);material.set_shader_parameter("cloud_amount",float(t.cloud));material.set_shader_parameter("seed_offset",float(t.pattern_seed));material.set_shader_parameter("molten",t.id=="volcanic")
+		FrontierCorporateOrbital.apply(material,body)
 		mesh.material_override=material;preview_body=mesh;preview_root.add_child(mesh)
 
 func start_route(ordinal: int) -> void:

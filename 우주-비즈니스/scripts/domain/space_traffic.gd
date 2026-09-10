@@ -11,8 +11,12 @@ static func valid(v: Variant) -> bool:
 		if not FrontierUniverse._finite(v.get(e[0]),e[1],e[2]):return false
 	if v.has("patrol") and not FrontierSpacePatrol.valid_rules(v.patrol):return false
 	return true
-static func berth(m: Dictionary,port: String,t: float,side: int) -> Vector3:
-	return FrontierCrewWorld.vector(FrontierOrbitalPorts.definition(m,port,t).position)+Vector3(side*151,0,38)
+static func port(m: Dictionary,id: String,t: float) -> Dictionary:
+	return FrontierOrbitalPorts.definition(m,id,t) if id in PORTS else FrontierCorporateSites.definition(m,id,t)
+static func berth(m: Dictionary,id: String,t: float,side: int) -> Vector3:
+	return FrontierCrewWorld.vector(port(m,id,t).position)+Vector3(side*151,0,38)
+static func local_observers(observers: Array,system: int) -> Array:
+	return observers.filter(func(row):return int(row.get("system",0))==system)
 static func phase(m: Dictionary,index: int,t: float) -> Dictionary:
 	var cfg:=rules(m);var duration:=float(cfg.leg_seconds)
 	var offset:=float(FrontierUniverse.derive(int(m.seed),"space_y_freight_phase")%20)+75+index*duration*.5
@@ -62,11 +66,12 @@ static func sample(m: Dictionary,index: int,t: float,observers: Array=[]) -> Dic
 	if row.stage not in ["load","unload"]:row.position=avoid(point,observers,float(rules(m).avoidance_radius),sin(PI*clampf((float(row.p)-.1)/.9,0,1)))
 	return row
 static func all(m: Dictionary,system: int,t: float,observers: Array=[],patrols: Dictionary={}) -> Array:
-	if system!=0 or not enabled(m):return []
-	var freighters: Array=[sample(m,0,t,observers),sample(m,1,t,observers)]
+	if not enabled(m):return []
+	observers=local_observers(observers,system)
+	var freighters: Array=[sample(m,0,t,observers),sample(m,1,t,observers)] if system==0 else FrontierRegionalTraffic.freighters(m,system,t,observers)
 	var obstacles: Array=observers.duplicate()
 	for row in freighters:obstacles.append({"position":FrontierExpeditionBusiness.array(row.position)})
-	return freighters+FrontierSpacePatrol.all(m,t,obstacles,patrols)
+	return freighters+FrontierSpacePatrol.all(m,t,obstacles,patrols,system)
 static func observers(world: Dictionary) -> Array:
 	var result: Array=[];var navs: Array=[]
 	if world.crew.get("landing",{}).is_empty():navs.append({"id":"crew","navigation":world.crew.navigation})
@@ -75,5 +80,5 @@ static func observers(world: Dictionary) -> Array:
 		if ship.state=="sortie" and ship.landing.is_empty():navs.append({"id":"shuttle:"+str(id),"navigation":ship.navigation})
 	for entry in navs:
 		var nav: Dictionary=entry.navigation
-		if int(nav.system)==0 and nav.mode!="jump":result.append({"id":entry.id,"position":nav.position.duplicate()})
+		if (int(nav.system)==0 or FrontierCorporateSites.enabled(world.manifest)) and nav.mode!="jump":result.append({"id":entry.id,"position":nav.position.duplicate(),"system":int(nav.system)})
 	return result

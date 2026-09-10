@@ -10726,5 +10726,53 @@
     "generator": "tools/build_space_y_fighter.py",
     "review": "docs/production/114-space-y-patrol.md",
     "foliage": false
+  },
+  {
+    "id": "relay_lotus",
+    "title": "시드 기업 거점",
+    "name": "Lotus 개척 보급기지",
+    "group": "우주선",
+    "model": "res://assets/models/ships/relay_lotus.glb",
+    "source": "art/blender/ships/relay_lotus.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_relays.py",
+    "review": "docs/production/115-seeded-corporate-regions.md",
+    "foliage": false
+  },
+  {
+    "id": "relay_mine",
+    "title": "시드 기업 거점",
+    "name": "mine 광물 집하·정비소",
+    "group": "우주선",
+    "model": "res://assets/models/ships/relay_mine.glb",
+    "source": "art/blender/ships/relay_mine.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_relays.py",
+    "review": "docs/production/115-seeded-corporate-regions.md",
+    "foliage": false
+  },
+  {
+    "id": "relay_coopertech",
+    "title": "시드 기업 거점",
+    "name": "CooperTech 전투로봇 시험시설",
+    "group": "우주선",
+    "model": "res://assets/models/ships/relay_coopertech.glb",
+    "source": "art/blender/ships/relay_coopertech.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_relays.py",
+    "review": "docs/production/115-seeded-corporate-regions.md",
+    "foliage": false
+  },
+  {
+    "id": "relay_retired",
+    "title": "시드 기업 거점",
+    "name": "철수한 물류항",
+    "group": "우주선",
+    "model": "res://assets/models/ships/relay_retired.glb",
+    "source": "art/blender/ships/relay_retired.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_relays.py",
+    "review": "docs/production/115-seeded-corporate-regions.md",
+    "foliage": false
   }
 ]
