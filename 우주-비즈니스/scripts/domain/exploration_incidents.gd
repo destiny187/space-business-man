@@ -144,7 +144,7 @@ static func targets(row: Dictionary) -> Array:
   if row.open:result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 회수"})
  elif mode=="robot":
   if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,1.5,0)),"action":"공격무기로 교전"+(" · 실드 %.0f / %.0f"%[float(row.get("shield",0)),float(row.get("shield_max",0))] if float(row.get("shield_max",0))>0 else "")})
-  else:result.append({"part":"cargo","point":cargo_point(row),"action":"F 일루티 부품 회수"})
+  else:result.append({"part":"cargo","point":cargo_point(row),"action":"F 쿠퍼테크 부품 회수"})
  elif mode=="ice":
   if not row.open:result.append({"part":"ice","point":point(row,Vector3(0,1.3,1.6)),"action":"지형 변환기로 얼음 굴착"})
   else:result.append({"part":"cargo","point":cargo_point(row),"action":"F 보존 화물 회수"})

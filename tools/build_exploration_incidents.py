@@ -43,7 +43,7 @@ def build(id):
   label('LOTUS / 07',(0,5.48,2.6),.38,p)
   for y in [-1,0,1,2,3,4]:box('Deck anti-slip',(0,y,.28),(2.1,.15,.015),steel,p,.006)
  elif id=='robot':
-  from illuti_robot import build_robot
+  from coopertech_robot import build_robot
   build_robot(p,globals())
  elif id=='cliff':
   rock('Split cliff',(0,0,2),(2.5,2,2.35),rockmat,p)
@@ -112,7 +112,7 @@ for id in exports:
  ink.consolidate_static_surfaces();bpy.ops.export_scene.gltf(filepath=str(GAME/(id+'.glb')),export_format='GLB',export_cameras=False,export_lights=False)
  print('INCIDENT_EXPORTED',id,flush=True)
 if '--robot-only' in sys.argv:
- REVIEW=ROOT/'docs/production/media/illuti-remodel';REVIEW.mkdir(parents=True,exist_ok=True)
+ REVIEW=ROOT/'docs/production/media/coopertech-robot';REVIEW.mkdir(parents=True,exist_ok=True)
  ids=['robot']
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 for i,id in enumerate(ids):

@@ -1,5 +1,7 @@
 # 기업·우주 공간 — 커밋별 작업 계획
 
+2026-09-10 후속 변경: 제조회사·심볼·표시를 쿠퍼테크로 전환한다. [전환 기록](../production/106-coopertech-rebrand.md)은 SP01의 후속 교체이며 SP02의 전체 실물 표식 구현 완료가 아니다. 아래 미착수 항목도 쿠퍼테크 기준으로 진행한다.
+
 2026-09-10 사용자 후속 요청: 기존 기업/항로 아이디어를 바탕으로 **심볼 품질을 더 높이고 커밋 단위로 나누어 작업**한다. 세계관·배치 규칙의 원본은 [기업과 살아 있는 우주 공간](../game/23-corporations-and-space-presence.md)이다. 이 문서는 작업 순서·의존성·실제 완료 상태만 관리한다.
 
 이번 순서는 **SP00 기획 보존 → SP01 심볼 제작 → SP02 이후 게임 연결**이다. 각 행은 독립적으로 검토 가능한 커밋이며, 여러 행을 한 번에 완료로 기록하지 않는다. 현재 작업공간의 별도 T3 진행·멀티플레이 변경은 각 담당 작업에 남긴다.
@@ -7,9 +9,9 @@
 ## 개발 기본선
 
 - 화성은 모든 새 시드의 복원된 Space Y 관리 행성으로 만든다. 첫 범위는 우주 경관과 궤도 항만/교역이며 지표 도시 방문은 후속으로 둔다. 앞선 선택 질문에 별도 답변이 없는 상태에서 채택한 추천 기본선이며 새 사용자 확정 답변을 꾸며 기록하지 않는다.
-- Iluti는 일상 공간에서 기업으로 식별하고, 기존 폐기 전투로봇과 제한 시설/봉인 화물의 위험을 연결한다. 공개 전쟁·전체 함대의 무조건 적대는 별도 관계 설계로 둔다.
+- 쿠퍼테크(CooperTech)는 쿠퍼가 설립하고 사장으로 이끄는 전투로봇 기술회사다. 일상적인 산업 활동과 기존 폐기 전투로봇·제한 시험장/봉인 화물의 위험을 연결한다. 공개 전쟁·전체 함대의 무조건 적대는 별도 관계 설계로 둔다.
 - 새 심볼은 문양만이 아니라 비례·음각 여백·서체 조합·단색/소형 변형을 함께 제작한다. 기존 v0는 아이디어 이력으로 남긴다.
-- 제조사와 운영사를 따로 식별한다. `illuti` 저장 ID는 유지하고 표시명은 Iluti를 사용한다.
+- 제조사와 운영사를 따로 식별한다. 기존 로봇 사건의 `illuti_dormant_combat_robot` ID는 저장 호환용으로만 유지하고 새 회사 ID/표시는 `coopertech` / 쿠퍼테크(CooperTech)를 사용한다.
 - 기존 은하·저장·정거장/시장·플레이어 자산과 현재 사용자 변경을 보존한다. 구형 세계에 새 기업 운영권/화성 환경을 소급 덮어쓰지 않는다.
 - NPC 운송은 회사 간 활동이다. 플레이어의 자동 물류 대행과 상점 재입고/가격 시뮬레이션은 별도이며, 배가 오가는 것만으로 구현했다고 기록하지 않는다.
 
@@ -19,18 +21,18 @@
 | --- | --- | --- | --- | --- |
 | SP00 | `docs: plan corporate identity and space presence` | 기업/시드 설계·결정 기록·v0 이력·이 작업표 | 없음 | 완료 `319a0bee` |
 | SP01 | `art: refine corporation symbols and identity variants` | 네 기업 벡터 원본·주형/단색/소형 출력·비교판·사용 규격 | SP00 | 벡터 제작 완료 |
-| SP02 | `feat: identify corporation operators and manufacturers` | 기업 표시 데이터, 기존 Lotus 보급품·mine 로봇·Iluti 전투로봇의 실제 표식, 조사/기록 연결 | SP01 | 예정 |
+| SP02 | `feat: identify corporation operators and manufacturers` | 기업 표시 데이터, 기존 Lotus 보급품·mine 로봇·CooperTech 전투로봇의 실제 표식, 조사/기록 연결 | SP01 | 예정 |
 | SP03 | `feat: present restored Mars under Space Y management` | 신규 세계 화성 환경/운영 상태, Blender 화성 변형·LOD·스캔/출항 안내·기존 세계 분기 | SP02 | 예정 |
 | SP04 | `feat: add the Mars orbital port and logistics endpoints` | 화성 항만과 지구 쪽 물류 목적지, 공전 추적·접근/정지·실제 교역·고정 예외 | SP03 | 예정 |
 | SP05 | `feat: run Space Y freighters between Earth and Mars` | 무역선 원본/GLB, 고유 ID·운항 위상·적재 표현·출발/가감속/대기/접안, 추진/관제음 | SP04 | 예정 |
 | SP06 | `feat: patrol managed orbits with Space Y fighters` | 경비기 모델·편대/순찰/센서 확인·복귀와 위험하지 않은 첫 항로 | SP05 | 예정 |
 | SP07 | `feat: seed corporate sites and shipping routes` | 진출권·운영 행성·거점/유효 항로·독립 시드·저장 버전·가벼운 먼 거리 운항 | SP05 | 예정 |
-| SP08 | `feat: reveal corporate activity through persistent traces` | Lotus 개척 비콘·mine 정비/집하 흔적·Iluti 감시/봉인 표식, 실물 조사·지도/J 공개 단계 | SP02, SP07 | 예정 |
+| SP08 | `feat: reveal corporate activity through persistent traces` | Lotus 개척 비콘·mine 정비/집하 흔적·CooperTech 감시/봉인 표식, 실물 조사·지도/J 공개 단계 | SP02, SP07 | 예정 |
 | SP09 | `feat: recover lost freight from shipping incidents` | 실제 유실 포드·우주 접근/회수·화물 적재·항만 인계·단발 보상/저장 | SP05, SP07 | 예정 |
 | SP10 | `feat: restore mine work sites through repair deliveries` | 실제 멈춘 작업장·예비 부품 직접 운반·정비 조작·작업 재개·호스트 정산 | SP08, SP09 | 예정 |
-| SP11 | `feat: connect Iluti orbital clues to ground incidents` | 봉인 화물/신호→행성 좌표→기존 지상 로봇 사건의 동일 ID·발견/종결 기록 | SP08 | 예정 |
+| SP11 | `feat: connect CooperTech orbital clues to ground incidents` | 봉인 화물/신호→행성 좌표→기존 지상 로봇 사건의 동일 ID·발견/종결 기록 | SP08 | 예정 |
 
-순서는 번호를 따르는 것을 기본으로 한다. 의존성 표는 분할/재작업 범위를 알기 위한 것이며 병렬 에이전트 실행 지시가 아니다. 우주 교전·구조·Iluti/mine/Lotus 추가 전용 우주선·화성 도시·물류에 따른 재입고는 위 첫 묶음 뒤의 확장이다.
+순서는 번호를 따르는 것을 기본으로 한다. 의존성 표는 분할/재작업 범위를 알기 위한 것이며 병렬 에이전트 실행 지시가 아니다. 우주 교전·구조·CooperTech/mine/Lotus 추가 전용 우주선·화성 도시·물류에 따른 재입고는 위 첫 묶음 뒤의 확장이다.
 
 ## SP01 — 심볼 품질과 출력 계약
 
@@ -38,7 +40,7 @@
 | --- | --- | --- |
 | Lotus | 세 꽃잎·개척 지원 | 꽃잎 곡률/공간을 하나의 원리로 맞추고 중심의 상승감·바깥의 보호 형태를 정돈. 기존 상자 표식과 연속성 유지 |
 | Space Y | 상승 궤적·Y | 일반 글자 Y에서 벗어나 항로의 갈라짐·추진부를 읽는 비대칭 기하. 넓은 주형과 전용 워드마크 |
-| Iluti | 피라미드·분리된 정상·눈 | 피라미드 비례·관측 광학부·층의 간격을 정돈. 작은 크기에서 눈이 뭉개지지 않게 별도 단순형 |
+| 쿠퍼테크(CooperTech) | 쿠퍼의 전투로봇 기술회사 | 장갑 프레임 C·두꺼운 구조재 T, 강철·흑연·산화 적색. 소형에서 장갑 틈과 T 연결부를 보정 |
 | mine | 채굴 아치 m·채굴 이빨 | 공업 단면 같은 일관된 모서리/음각, 작은 이빨이 소멸하지 않는 단순형, 소문자 이름과 짝맞춤 |
 
 편집 원본은 `art/branding/corporations/`의 벡터/메타데이터로 보존한다. 주형은 선체/항만, 단색은 양각·음각/스텐실의 출발점, 소형은 HUD/제조 명판 용도로 준비한다. 색만 바꾼 것과 실제 소형 형태 보정을 구분한다. 게임용 SVG를 만들더라도 참조 코드/모델이 연결되기 전에는 게임 적용 완료로 기록하지 않는다.
@@ -66,3 +68,4 @@
 
 - **SP00 — `319a0bee`:** 기업/우주 설계·결정 기록·커밋 순서·v0 비교판을 보존했다. 혼재한 별도 T3/멀티플레이 변경은 포함하지 않았다.
 - **SP01 — 이 완료 기록을 포함하는 제작 커밋:** 네 원본·주형/단색/소형/서명 28 SVG와 재생성기·v1 비교판을 만들었다. 실제 SVG 렌더·24/32/48px·단색과 출력 일관성을 확인했다. [제작/사용 규격](../production/105-corporate-identity.md). 3D/게임 적용은 다음 SP02다.
+- **SP01 후속 교체:** 쿠퍼테크 설정·장갑 CT 심볼·현재 게임 표시를 반영하고 구 회사 문양을 활성 원본/출력에서 제외했다. 기존 사건 ID/진행을 보존한 최소 Godot 조회와 v2 벡터 렌더를 확인했다. [전환 범위](../production/106-coopertech-rebrand.md). 실제 CT 장착·통합 회사 식별은 SP02에 유지한다.

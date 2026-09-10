@@ -1,5 +1,7 @@
 # 기업 심볼 v1 — SP01 벡터 제작
 
+2026-09-10 명칭/설정 변경: 이 문서는 당시 제작·검수 이력이다. 현재 전투로봇 제조사는 **쿠퍼테크(CooperTech)**이며, 과거 회사명·심볼은 현재 제작 기준에서 제외한다. [현재 설정·표시·심볼과 호환 경계](106-coopertech-rebrand.md)를 우선한다.
+
 2026-09-10 사용자 요청에 따라 기존 v0의 아이디어를 유지하면서 심볼의 형태·여백·워드마크와 용도별 출력을 다듬었다. [커밋 계획 SP01](../planning/16-space-corporations-commits.md)의 **벡터 제작** 범위다. 실물 각인·UI 연결·Blender/Godot 검수는 SP02 이후이며 최종 로고에 대한 사용자 승인을 임의로 기록하지 않는다.
 
 ![기업 심볼 v1](../game/media/corporations/company-symbols-v1.svg)
