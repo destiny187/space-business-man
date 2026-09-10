@@ -3,6 +3,8 @@ extends Control
 ## Optional local teaching only. Every action uses the normal navigation/host path.
 var app: FrontierCrewExpedition
 var letter: ColorRect
+var welcome_text: Label
+var default_letter := ""
 var checked_world := ""
 var welcome_seen := ConfigFile.new()
 var welcome_path := "user://welcome_letters.cfg"
@@ -42,6 +44,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var stamp:=Label.new();stamp.text="LOTUS 개척사업부  /  지구 발신";stamp.add_theme_color_override("font_color",FrontierInterfaceStyle.ACCENT);stamp.add_theme_font_size_override("font_size",16);box.add_child(stamp)
 	var letter_title:=Label.new();letter_title.text="첫 개척 임무에 오신 것을 환영합니다.";letter_title.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);letter_title.add_theme_font_size_override("font_size",25);box.add_child(letter_title)
 	var text:=Label.new();text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;text.custom_minimum_size.x=panel.custom_minimum_size.x-60;text.text="안녕하세요, 개척자님.\nLotus와 함께 새로운 테라포밍 현장을 찾아보세요.\n\n먼저 태양계를 천천히 둘러보세요.\n태양계는 보호 대상이라 착륙 / 테라포밍할 수 없습니다.\n마우스로 시선을 돌리고 W/S로 비행할 수 있어요.\n행성을 잠시 바라보면 스캔 결과가 나타납니다.\n\n준비가 되면 우주 화면의 청록색 항성계 표식을 찾아보세요.\n표식을 조준하고 F 또는 왼쪽 클릭으로 이동할 수 있어요.\n재료가 부족하면 선박에 접근해 F → Lotus 보급을 여세요.\n착륙선 옆 공용 FINCH는 F로 탑승할 수 있습니다.\n\n— Lotus 개척 지원팀";text.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);text.add_theme_font_size_override("font_size",18);box.add_child(text)
+	welcome_text=text;default_letter=text.text
 	var close:=Button.new();close.text="편지 접기  태양계 둘러보기";close.custom_minimum_size.y=46;box.add_child(close)
 	close.pressed.connect(func():
 		welcome_seen.set_value("read",checked_world,true);welcome_seen.save(welcome_path);letter.hide();app.cursor_released=false;app.get_viewport().gui_release_focus())
@@ -88,6 +91,9 @@ func update_snapshot(value: Dictionary) -> void:
 	var welcome_key: String = value.galaxy_id + ":" + value.self_id
 	if checked_world != welcome_key:
 		checked_world = welcome_key
+		welcome_text.text=default_letter
+		if FrontierUniverse.restored_mars(FrontierUniverse.body(app.session.manifest,3)):
+			welcome_text.text=default_letter.replace("태양계는 보호 대상이라 착륙 / 테라포밍할 수 없습니다.","화성은 Space Y가 복원해 관리하고 있습니다.\n태양계 지표는 착륙·개발이 제한됩니다.")
 		if int(value.crew.navigation.system) == 0 and value.crew.get("landing", {}).is_empty() and not bool(welcome_seen.get_value("read", welcome_key, false)):
 			letter.show()
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

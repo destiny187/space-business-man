@@ -9,10 +9,12 @@ var clouds: Array[Node3D]=[]
 var body_radius:=1.0
 var index:=0
 var cache: Dictionary={}
-func configure(ordinal: int,radius: float) -> void:
+func configure(ordinal: int,radius: float,body: Dictionary={}) -> void:
 	index=ordinal;body_radius=radius
+	var restored:=FrontierUniverse.restored_mars(body)
+	var asset: String="mars_restored" if restored else ASSETS[index]
 	for suffix in ["","_lod1"]:
-		var model: Node3D=load("res://assets/models/solar-system/"+ASSETS[index]+suffix+".glb").instantiate()
+		var model: Node3D=load("res://assets/models/solar-system/"+asset+suffix+".glb").instantiate()
 		model.scale=Vector3.ONE*radius;add_child(model);FrontierInkStyle.apply(model,cache)
 		if suffix.is_empty():detail=model
 		else:distant=model;model.hide()
@@ -24,7 +26,7 @@ func configure(ordinal: int,radius: float) -> void:
 		for surface in surfaces:
 			var shell:=MeshInstance3D.new();shell.mesh=surface.mesh;shell.scale=Vector3.ONE*1.012
 			var air:=ShaderMaterial.new();air.shader=load("res://assets/materials/space/atmosphere.gdshader")
-			air.set_shader_parameter("tint",Color("679dd0") if index in [2,6,7] else Color("c7ab80"));shell.material_override=air;shell.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;surface.add_child(shell)
+			air.set_shader_parameter("tint",Color("679dd0") if restored or index in [2,6,7] else Color("c7ab80"));shell.material_override=air;shell.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;surface.add_child(shell)
 	for model in [detail,distant]:
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
 			for surface in mesh.mesh.get_surface_count():

@@ -10663,5 +10663,18 @@
     "source": "art/blender/terraform3/biolab_module.blend",
     "status": "ink-family-remodeled",
     "generator": "tools/build_terraform3.py"
+  },
+  {
+    "id": "solar_mars_restored",
+    "title": "화성 복원",
+    "name": "화성 / Space Y 관리",
+    "group": "천체",
+    "model": "res://assets/models/solar-system/mars_restored.glb",
+    "lod_model": "res://assets/models/solar-system/mars_restored_lod1.glb",
+    "source": "art/blender/solar-system/mars_restored.blend",
+    "geometry": "ink-authored",
+    "generator": "tools/build_restored_mars.py",
+    "review": "docs/production/110-restored-mars-sp03.md",
+    "foliage": false
   }
 ]

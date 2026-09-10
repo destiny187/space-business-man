@@ -243,7 +243,7 @@ func _update_preview(body: Dictionary) -> void:
 	preview_key=body.id
 	if is_instance_valid(preview_body):preview_body.queue_free()
 	if body.get("origin","")=="solar_reference":
-		preview_body=FrontierSolarPlanet.new();preview_root.add_child(preview_body);preview_body.configure(int(body.ordinal)-FrontierUniverse.first_ordinal(app.session.manifest,int(body.system_ordinal)),1.0)
+		preview_body=FrontierSolarPlanet.new();preview_root.add_child(preview_body);preview_body.configure(int(body.ordinal)-FrontierUniverse.first_ordinal(app.session.manifest,int(body.system_ordinal)),1.0,body)
 	else:
 		# Reuse the authored Blender mesh and the same planet material as the flight view.
 		var template: Node3D=load("res://assets/models/planet-variants/"+str(body.traits.id)+".glb").instantiate()

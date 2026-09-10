@@ -460,7 +460,7 @@ func _create_planet(index: int,orbit: int) -> Dictionary:
 	var body: Dictionary = FrontierUniverse.body(state.manifest,ordinal)
 	var radius: float = FrontierUniverse.radius(body)
 	if body.get("origin","")=="solar_reference":
-		var solar:=FrontierSolarPlanet.new();solar.name="Planet_%d"%ordinal;add_child(solar);solar.configure(orbit,radius)
+		var solar:=FrontierSolarPlanet.new();solar.name="Planet_%d"%ordinal;add_child(solar);solar.configure(orbit,radius,body)
 		solar.position=FrontierUniverse.position(state.manifest,ordinal,orbit_time);solar.set_epoch(orbit_time,body)
 		return {"node":solar,"radius":FrontierUniverse.navigation_radius(body),"body":body}
 	var node := MeshInstance3D.new()

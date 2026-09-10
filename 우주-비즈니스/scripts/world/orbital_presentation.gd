@@ -36,6 +36,8 @@ func _decorate(node: Node3D,body: Dictionary,radius: float) -> void:
 	var ordinal:=int(body.ordinal) if solar else -1
 	var pressure: float=[0.0,8.0,1.0,.012,5.0,5.0,4.0,4.0][ordinal] if solar else float(t.get("pressure",0.0))
 	var coverage: float=(.65 if ordinal==2 else 0.0) if solar else float(t.get("cloud",0))
+	var restored:=FrontierUniverse.restored_mars(body)
+	if restored:pressure=float(body.management.pressure);coverage=float(body.management.cloud)
 	var density:=clampf(pressure*float(config().atmosphere.pressure_scale),0,float(config().atmosphere.maximum_density))
 	var surfaces: Array=[]
 	if node is FrontierSolarPlanet:
@@ -51,7 +53,7 @@ func _decorate(node: Node3D,body: Dictionary,radius: float) -> void:
 			surface_material.set_shader_parameter("cloud_wind",config().clouds.wind_speed)
 			surface_material.set_shader_parameter("cloud_seed",float(t.get("pattern_seed",body.seed%1000)))
 			surface_material.set_shader_parameter("cloud_shadow_strength",config().clouds.shadow_strength)
-			surface_material.set_shader_parameter("city_strength",.7 if ordinal==2 else 0.0)
+			surface_material.set_shader_parameter("city_strength",float(body.management.city_strength) if restored else (.7 if ordinal==2 else 0.0))
 		for child in surface.get_children():
 			if child is MeshInstance3D and child.material_override is ShaderMaterial and child.material_override.shader==load("res://assets/materials/space/atmosphere.gdshader"):
 				child.name="OrbitalAtmosphere";child.visible=density>.005

@@ -22,7 +22,7 @@
 | SP00 | `docs: plan corporate identity and space presence` | 기업/시드 설계·결정 기록·v0 이력·이 작업표 | 없음 | 완료 `319a0bee` |
 | SP01 | `art: refine corporation symbols and identity variants` | 네 기업 벡터 원본·주형/단색/소형 출력·비교판·사용 규격 | SP00 | 벡터 제작 완료 |
 | SP02 | `feat: identify corporation operators and manufacturers` | 기업 표시 데이터, 기존 Lotus 보급품·mine 로봇·CooperTech 전투로봇의 실제 표식, 조사/기록 연결 | SP01 | 구현 완료 |
-| SP03 | `feat: present restored Mars under Space Y management` | 신규 세계 화성 환경/운영 상태, Blender 화성 변형·LOD·스캔/출항 안내·기존 세계 분기 | SP02 | 예정 |
+| SP03 | `feat: present restored Mars under Space Y management` | 신규 세계 화성 환경/운영 상태, Blender 화성 변형·LOD·스캔/출항 안내·기존 세계 분기 | SP02 | 구현 |
 | SP04 | `feat: add the Mars orbital port and logistics endpoints` | 화성 항만과 지구 쪽 물류 목적지, 공전 추적·접근/정지·실제 교역·고정 예외 | SP03 | 예정 |
 | SP05 | `feat: run Space Y freighters between Earth and Mars` | 무역선 원본/GLB, 고유 ID·운항 위상·적재 표현·출발/가감속/대기/접안, 추진/관제음 | SP04 | 예정 |
 | SP06 | `feat: patrol managed orbits with Space Y fighters` | 경비기 모델·편대/순찰/센서 확인·복귀와 위험하지 않은 첫 항로 | SP05 | 예정 |
@@ -72,4 +72,6 @@
 
 - **SP01 심볼 후속 수정:** 사용자 요청에 따라 CT 문양을 전투로봇 투구·어깨 장갑으로 교체했다. [v3 제작 기록](../production/107-coopertech-sentinel-symbol.md).
 
-- **SP02 — 이 기록을 포함하는 구현 커밋:** 4개 기존 모델에 표식을 붙이고 제조사·운영사를 분리했다. 3개 실물의 E 식별·J 기업 도감·저장/소형선 컨텍스트를 연결하고 실제 창에서 확인했다. [구현·검수·경계](../production/108-corporate-presence-sp02.md). 다음 단계는 SP03이다.
+- **SP02 — 이 기록을 포함하는 구현 커밋:** 4개 기존 모델에 표식을 붙이고 제조사·운영사를 분리했다. 3개 실물의 E 식별·J 기업 도감·저장/소형선 컨텍스트를 연결하고 실제 창에서 확인했다. [구현·검수·경계](../production/108-corporate-presence-sp02.md). SP03부터 복원 화성을 확장한다.
+
+- **SP03 — 이 기록을 포함하는 구현 커밋:** 신규 manifest의 Space Y 복원 화성·Blender 근/원거리 모델·대기/구름·스캔/지도/출항 안내를 연결했다. 기존 저장은 원래 화성을 유지한다. [구현·검수·경계](../production/110-restored-mars-sp03.md).

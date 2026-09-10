@@ -1,0 +1,18 @@
+{
+  "id": "solar_mars_restored",
+  "source": "art/blender/solar-system/mars_restored.blend",
+  "generator": "tools/build_restored_mars.py",
+  "interpretation": "Fictional future restoration over authored Mars relief; no observed future shoreline claim",
+  "lods": {
+    "near": {
+      "triangles": 166576,
+      "sha256": "de8bb98d85bc976ed8e263cd98522c5bf85849aaec978813738c0aee026c6df7",
+      "model": "res://assets/models/solar-system/mars_restored.glb"
+    },
+    "far": {
+      "triangles": 11102,
+      "sha256": "88ef88d3ee9ad33e1bd7a31602187da5431dfdd6bcc79993366c2d61ea9438ce",
+      "model": "res://assets/models/solar-system/mars_restored_lod1.glb"
+    }
+  }
+}

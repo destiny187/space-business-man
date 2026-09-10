@@ -300,3 +300,5 @@
 - [홈 UI/UX 개편](production/58-home-ui-remake.md): 버튼 정렬·간결한 문구·설정/종료 분리와 실제 시작 화면 확인.
 
 - [UI 밝은 배경 투명화·행성 티어 BGM](production/102-transparent-ui-and-planet-music.md): PNG 투명 재렌더·T1~T5 음악 제작·연결·확인 범위.
+
+- [SP03 Space Y 복원 화성](production/110-restored-mars-sp03.md) — 신규 세계 복원 외형·운영 정보, 기존 저장 보존.
