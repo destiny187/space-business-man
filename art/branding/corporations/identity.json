@@ -1,5 +1,5 @@
 {
-  "version": "corporate-identity-v2",
+  "version": "corporate-identity-v3",
   "status": "vector-production-proposal",
   "coordinate_size": 256,
   "color_space": "srgb",
@@ -11,7 +11,7 @@
   "companies": [
     {"id": "lotus", "name": "Lotus", "wordmark": "LOTUS", "color": "#B6E1CC", "source": "lotus.svg", "role_ko": "개척과 현장 지원", "concept_ko": "세 꽃잎 · 보호하는 선체", "tagline": "FRONTIER SUPPORT", "tracking": 9},
     {"id": "space_y", "name": "Space Y", "wordmark": "SPACE Y", "color": "#B7D4EF", "source": "space_y.svg", "role_ko": "테라포밍과 행성 운영", "concept_ko": "비대칭 Y · 상승 항로", "tagline": "PLANETARY OPERATIONS", "tracking": 5},
-    {"id": "coopertech", "name": "CooperTech", "name_ko": "쿠퍼테크", "founder_ceo": "쿠퍼", "wordmark": "COOPERTECH", "color": "#C8D6DE", "source": "coopertech.svg", "role_ko": "쿠퍼의 전투로봇 기술회사", "concept_ko": "장갑 프레임 C · 구조재 T", "tagline": "COMBAT ROBOTICS", "tracking": 5},
+    {"id": "coopertech", "name": "CooperTech", "name_ko": "쿠퍼테크", "founder_ceo": "쿠퍼", "wordmark": "CooperTech", "color": "#C8D6DE", "source": "coopertech.svg", "role_ko": "쿠퍼의 전투로봇 기술회사", "concept_ko": "전투로봇 투구 · 넓은 어깨 장갑", "tagline": "COMBAT ROBOTICS", "tracking": 5},
     {"id": "mine", "name": "mine", "wordmark": "mine", "color": "#EDA56A", "source": "mine.svg", "role_ko": "자동 채집과 산업 장비", "concept_ko": "정밀 절삭면 · 세 채굴 이빨", "tagline": "AUTONOMOUS EXTRACTION", "tracking": 5}
   ]
 }

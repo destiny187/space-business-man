@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "art/branding/corporations"
 OUTPUT = SOURCE / "exports"
-BOARD = ROOT / "docs/game/media/corporations/company-symbols-v2.svg"
+BOARD = ROOT / "docs/game/media/corporations/company-symbols-v3.svg"
 NS = "http://www.w3.org/2000/svg"
 ET.register_namespace("", NS)
 
@@ -36,6 +36,11 @@ GLYPHS = {
     "i": (12, "M6 16V44M6 0V1"),
     "n": (34, "M4 44V9M4 20Q4 8 17 8Q30 8 30 20V44"),
     "e": (36, "M4 26H32V21Q32 8 18 8Q4 8 4 22V31Q4 44 18 44Q28 44 32 39"),
+    "o": (36, "M4 22Q4 8 18 8Q32 8 32 22V30Q32 44 18 44Q4 44 4 30Z"),
+    "p": (36, "M4 58V9M4 21Q4 8 18 8Q32 8 32 22V30Q32 44 18 44Q4 44 4 31"),
+    "r": (25, "M4 44V9M4 24Q4 8 21 8"),
+    "c": (33, "M29 12Q25 8 18 8Q4 8 4 22V30Q4 44 18 44Q25 44 29 40"),
+    "h": (34, "M4 44V0M4 22Q4 8 17 8Q30 8 30 22V44"),
 }
 
 
@@ -107,7 +112,7 @@ def main():
     parts = [
         '<rect width="1600" height="1010" fill="#112128"/>',
         '<g font-family="Noto Sans KR, Apple SD Gothic Neo, sans-serif">',
-        '<text x="56" y="56" fill="#AEC3C8" font-size="18" letter-spacing="3">SPACE BUSINESS MAN / IDENTITY SYSTEM 02</text>',
+        '<text x="56" y="56" fill="#AEC3C8" font-size="18" letter-spacing="3">SPACE BUSINESS MAN / IDENTITY SYSTEM 03</text>',
         '<text x="56" y="114" fill="#F1F0E9" font-size="38" font-weight="600">네 회사, 네 가지 형태 언어</text>',
         '<text x="1544" y="111" fill="#AEC3C8" text-anchor="end" font-size="21">VECTOR MASTERS · 2026.09.10</text>',
         '<path d="M56 143H1544" stroke="#38515A"/>',
@@ -146,11 +151,11 @@ def main():
         parts.append(f'<g transform="translate({center-45} 816) scale(.35)" color="#14242B">{primary}</g>')
     parts.extend([
         '<text x="56" y="980" fill="#AEC3C8" font-size="19">주형 ≥ 48 px · 소형 ≥ 24 px · 보호 여백 ≥ 24/256 · 심볼과 서명 모두 벡터</text>',
-        '<text x="1544" y="980" text-anchor="end" fill="#AEC3C8" font-size="19">제작안 v2 / 3D 심볼 적용 전</text>',
+        '<text x="1544" y="980" text-anchor="end" fill="#AEC3C8" font-size="19">제작안 v3 / 3D 심볼 적용 전</text>',
         '</g>',
     ])
     BOARD.parent.mkdir(parents=True, exist_ok=True)
-    BOARD.write_text(svg(w, h, "\n".join(parts), "기업 심볼 제작안 v2 — 쿠퍼테크"))
+    BOARD.write_text(svg(w, h, "\n".join(parts), "기업 심볼 제작안 v3 — 쿠퍼테크"))
     (OUTPUT / "manifest.json").write_text(json.dumps({"version": cfg["version"], "generator": "tools/build_corporate_identity.py", "files": outputs, "board": str(BOARD.relative_to(ROOT))}, ensure_ascii=False, indent=2) + "\n")
     print(f"Generated {len(outputs)} SVGs and {BOARD.relative_to(ROOT)}")
 

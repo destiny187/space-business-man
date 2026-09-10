@@ -1,6 +1,6 @@
 # 우주 비즈니스맨 — 프로젝트 작업 지침
 
-2026-09-10 기업 교체 확정: 전투로봇 제조사는 **쿠퍼가 설립하고 사장으로 이끄는 쿠퍼테크(CooperTech)**다. 이전 일루티·일루미나티 신봉 설정과 그 심볼은 폐기했다. 현재 설정·장갑 CT 심볼은 [기업 소관](docs/game/23-corporations-and-space-presence.md), 기존 사건 ID를 유지하는 호환 경계는 [전환 기록](docs/production/106-coopertech-rebrand.md)을 따른다.
+2026-09-10 기업 교체 확정: 전투로봇 제조사는 **쿠퍼가 설립하고 사장으로 이끄는 쿠퍼테크(CooperTech)**다. 이전 일루티·일루미나티 신봉 설정과 그 심볼은 폐기했다. 현재 설정·전투로봇 심볼은 [기업 소관](docs/game/23-corporations-and-space-presence.md), 기존 사건 ID를 유지하는 호환 경계는 [전환 기록](docs/production/106-coopertech-rebrand.md)을 따른다.
 
 이 파일은 저장소 전체에 적용되는 작업 지침이자 게임 설계 문서의 진입점이다. 게임 프로젝트는 [`우주-비즈니스/`](우주-비즈니스/project.godot)에 있다. 사용자 지시가 이 문서보다 우선한다.
 
