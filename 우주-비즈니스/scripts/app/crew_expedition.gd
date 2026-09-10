@@ -489,6 +489,7 @@ func _physics_process(delta: float) -> void:
 		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
 			keyboard_turn=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A))
 			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
+		if flight_controls.any(func(value):return absf(float(value))>.01) or (outside and scanning):dismiss_stellar_arrival()
 		if onboarding!=null:onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
@@ -627,6 +628,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled();return
 		if solar_opening_active() or (onboarding!=null and onboarding.letter.visible):return
 		if not get_viewport().gui_get_focus_owner() is LineEdit:
+			if event.physical_keycode in [KEY_W,KEY_A,KEY_S,KEY_D,KEY_SHIFT,KEY_E,KEY_F]:dismiss_stellar_arrival()
 			match event.physical_keycode:
 				KEY_TAB:toggle_navigation()
 				KEY_I:toggle_inventory()
@@ -1051,6 +1053,9 @@ func use_equipped() -> void:
 func solar_opening_active() -> bool:
 	return session!=null and FrontierSolarOpening.active(session.latest.get("crew",{}).get("navigation",{}))
 
+func dismiss_stellar_arrival() -> void:
+	if outside and surface_world==null and flight!=null and not cursor_released and _mouse_look_allowed() and get_window().has_focus():flight.transit_overlay.dismiss_arrival()
+
 func _mouse_look_allowed() -> bool:
 	if solar_opening_active():return false
 	if session==null or not session.active or session.latest.get("phase")!="playing":return false
@@ -1066,6 +1071,7 @@ func _sync_mouse_capture() -> void:
 	if not capture:mouse_steering=Vector2.ZERO
 
 func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
+	if relative.length_squared()>=4:dismiss_stellar_arrival()
 	var motion:=relative*sensitivity
 	if invert_y:motion.y=-motion.y
 	if outside and flight!=null:

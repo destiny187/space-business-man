@@ -54,7 +54,14 @@
     "progress_lead_seconds": 0.2,
     "departure_clearance": 220,
     "departure_direction_steps": 12,
-    "departure_directions_per_ring": 16
+    "departure_directions_per_ring": 16,
+    "alignment_min_seconds": 0.4,
+    "alignment_max_seconds": 3.6,
+    "alignment_peak_degrees_per_second": 75.0,
+    "fov_gain": 20.0,
+    "fov_acceleration_end": 0.36,
+    "fov_deceleration_start": 0.72,
+    "fov_deceleration_end": 0.98
   },
   "solar_opening": {
     "duration": 8.0,
@@ -81,5 +88,9 @@
       110.0
     ],
     "fov": 72.0
+  },
+  "stellar_arrival": {
+    "revisit_seconds": 2.2,
+    "dismiss_seconds": 0.25
   }
 }

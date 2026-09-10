@@ -42,6 +42,8 @@ static func validate(value: Variant) -> String:
 			for key in ["departure_direction","initial_direction"]:
 				if not is_equal_approx(FrontierCrewWorld.vector(route[key]).length(),1.0):return "출발 방향 길이 오류"
 		if not FrontierUniverse._finite(route.get("duration"),1,120) or not FrontierUniverse._finite(route.get("progress"),0,1):return "성간 항로 진행 오류"
+		if route.has("alignment_seconds") and not FrontierUniverse._finite(route.alignment_seconds,.01,float(route.duration)-.01):return "성간 정렬 시간 오류"
+		if route.has("revisit") and not route.revisit is bool:return "항성계 재방문 기록 오류"
 	for key in ["hull","energy"]:
 		if value.has(key) and not FrontierUniverse._finite(value[key],0,100):return "우주선 상태 범위 오류"
 	if value.has("damage_cooldown") and not FrontierUniverse._finite(value.damage_cooldown,0,8):return "우주선 수리 시간 오류"
@@ -87,11 +89,15 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			if initial.length_squared()<.5:initial=Vector3.FORWARD
 			var route_offset:=Vector2(destination.map_position[0]-source.map_position[0],destination.map_position[1]-source.map_position[1])
 			var preferred:=Vector3(route_offset.x,0,route_offset.y).normalized()
-			var direction:=departure_direction(world.manifest,int(nav.system),origin,preferred,float(nav.orbit_time),float(nav.jump_left))
+			var direction:=departure_direction(world.manifest,int(nav.system),origin,preferred,float(nav.orbit_time),float(nav.jump_left)+float(FrontierUniverse.presentation().stellar_transition.alignment_max_seconds))
 			if direction==Vector3.ZERO:return "안전한 출발 방향을 찾지 못했습니다. 천체에서 조금 떨어진 뒤 다시 출발하세요."
 			nav.transit.departure_origin=nav.position.duplicate()
 			nav.transit.departure_direction=FrontierExpeditionBusiness.array(direction)
 			nav.transit.initial_direction=FrontierExpeditionBusiness.array(initial)
+			nav.transit.alignment_seconds=alignment_seconds(initial,direction)
+			nav.jump_left=float(nav.jump_left)*(1.0-float(FrontierUniverse.presentation().stellar_transition.departure_start))+float(nav.transit.alignment_seconds)
+			nav.transit.duration=nav.jump_left
+			nav.transit.revisit=visited_system(world,destination_system)
 			nav.direction=[direction.x,direction.y,direction.z]
 
 	else:return "지원하지 않는 항해 명령입니다."
@@ -133,7 +139,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 		nav.jump_left=maxf(0,float(nav.jump_left)-delta)
 		var progress: float=1.0-float(nav.jump_left)/float(nav.transit.duration)
 		nav.transit.progress=progress
-		var travel: float=smoothstep(float(FrontierUniverse.presentation().stellar_transition.departure_start),.90,progress)
+		var travel: float=smoothstep(float(FrontierUniverse.presentation().stellar_transition.departure_start),.90,transit_progress(nav))
 		var source:=Vector2(nav.transit.from[0],nav.transit.from[1])
 		var destination:=Vector2(nav.transit.to[0],nav.transit.to[1])
 		var galaxy_point:=source.lerp(destination,travel)
@@ -183,11 +189,37 @@ static func step(world: Dictionary,delta: float) -> bool:
 	if nav.mode!="idle":world.location=FrontierUniverse.body_id(world.manifest,FrontierUniverse.first_ordinal(world.manifest,int(nav.system)))
 	return nav.mode=="idle"
 
+## Map elapsed time onto the shared visual/audio phases; old saves keep their original timing.
+static func transit_progress(nav: Dictionary) -> float:
+	var route: Dictionary=nav.get("transit",{})
+	var progress:=float(route.get("progress",0))
+	if not route.has("alignment_seconds"):return progress
+	var start:=float(FrontierUniverse.presentation().stellar_transition.departure_start)
+	var split:=float(route.alignment_seconds)/float(route.duration)
+	return start*progress/split if progress<split else lerpf(start,1.0,(progress-split)/(1.0-split))
+
+static func elapsed_progress(route: Dictionary,phase_progress: float) -> float:
+	if not route.has("alignment_seconds"):return phase_progress
+	var start:=float(FrontierUniverse.presentation().stellar_transition.departure_start)
+	var split:=float(route.alignment_seconds)/float(route.duration)
+	return split*phase_progress/start if phase_progress<start else lerpf(split,1.0,(phase_progress-start)/(1.0-start))
+
+static func alignment_seconds(initial: Vector3,destination: Vector3) -> float:
+	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
+	# Cubic smoothstep peaks at 1.5 times its average angular speed.
+	return clampf(1.5*rad_to_deg(initial.angle_to(destination))/float(cfg.alignment_peak_degrees_per_second),float(cfg.alignment_min_seconds),float(cfg.alignment_max_seconds))
+
+static func visited_system(world: Dictionary,index: int) -> bool:
+	if index==0:return true
+	for id in world.visited:
+		if world.visited[id] and FrontierUniverse.system_index(world.manifest,FrontierUniverse.ordinal_of(world.manifest,id))==index:return true
+	return false
+
 static func phase(nav: Dictionary) -> String:
 	if nav.get("station_target",false) and nav.mode=="approach":return "정거장 접근"
-	if nav.mode=="jump" and float(nav.get("transit",{}).get("progress",0))<float(FrontierUniverse.presentation().stellar_transition.departure_start):return "성간 항해 · 안전 항로 정렬"
+	if nav.mode=="jump" and transit_progress(nav)<float(FrontierUniverse.presentation().stellar_transition.departure_start):return "성간 항해 · 안전 항로 정렬"
 	if nav.mode!="jump":return "행성 접근" if nav.mode=="approach" else ("직접 조종" if nav.get("manual",false) else "궤도 대기")
-	var p: float=nav.get("transit",{}).get("progress",0.0)
+	var p:=transit_progress(nav)
 	if p<.12:return "성간 항해 · 충전"
 	if p<.30:return "성간 항해 · 가속"
 	if p<.72:return "성간 항해 · 초고속 순항"

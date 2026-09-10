@@ -30,7 +30,7 @@ func update(delta: float,nav: Dictionary,thrust: float,turn: Vector2,brake: floa
 	for player in layers.values():player.stream_paused=blocked
 	if blocked:return
 	var jumping: bool=nav.get("mode","")=="jump"
-	var progress: float=nav.get("transit",{}).get("progress",0.0)
+	var progress: float=FrontierCrewNavigation.transit_progress(nav)
 	var boosting: bool=nav.get("boosting",false)
 	var running: bool=thrust>.04
 	var target_stage: String="cruise" if running else "idle"

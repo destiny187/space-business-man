@@ -60,7 +60,7 @@ func _update_mood(delta: float,nav: Dictionary,on_planet: bool) -> void:
 	if not music.has(current_mood) or music[current_mood].stream==null:current_mood=current_place
 	var duck:=1.0
 	if not on_planet and mode=="jump":
-		var p: float=nav.get("transit",{}).get("progress",0.0)
+		var p: float=FrontierCrewNavigation.transit_progress(nav)
 		duck=.4 if p<.3 else (1.0-smoothstep(.90,.98,p)*.94)
 	elif not on_planet and discovery_left>float(config.discovery_seconds)-4:duck=.5
 	if app.arrival.active:duck=minf(duck,.5)

@@ -96,7 +96,7 @@ func update_navigation(value: Dictionary) -> void:
 		transit_clock=maxf(transit_clock,float(value.get("transit",{}).get("duration",12))*float(value.get("transit",{}).get("progress",0)))
 		prepare_system(FrontierUniverse.system_index(state.manifest,int(value.target)))
 	var render_system: int=int(value.system)
-	if value.mode=="jump" and float(value.get("transit",{}).get("progress",0))>=float(FrontierUniverse.presentation().stellar_transition.swap_progress):render_system=FrontierUniverse.system_index(state.manifest,int(value.target))
+	if value.mode=="jump" and FrontierCrewNavigation.transit_progress(value)>=float(FrontierUniverse.presentation().stellar_transition.swap_progress):render_system=FrontierUniverse.system_index(state.manifest,int(value.target))
 	if navigation.is_empty() or render_system!=current_system:
 		_load_system(render_system);ship.position=_display_position(value)
 		if initial_view:
@@ -107,7 +107,7 @@ func update_navigation(value: Dictionary) -> void:
 		announced_system=render_system
 		var system:=FrontierUniverse.system(state.manifest,render_system)
 		if not solar_start or FrontierSolarOpening.active(value):soundscape.enter(int(system.band))
-		if FrontierSolarOpening.active(value) or not solar_start:transit_overlay.announce(system.star.name)
+		if FrontierSolarOpening.active(value) or not solar_start:transit_overlay.announce(system.star.name,not FrontierSolarOpening.active(value) and (initial_view or value.get("transit",{}).get("revisit",false)))
 	var phase:=FrontierCrewNavigation.phase(value)
 	if phase!=last_phase:
 		last_phase=phase
@@ -171,7 +171,9 @@ func _process(delta: float) -> void:
 		var local_camera:=camera.transform
 		camera.global_position=ship.position+follow_basis*local_camera.origin
 		camera.global_basis=follow_basis*local_camera.basis
-	camera.fov=lerpf(camera.fov,minf(110.0,float(FrontierClientSettings.ensure(get_tree()).values.fov)+20) if navigation.mode=="jump" or navigation.get("boosting",false) else float(FrontierClientSettings.ensure(get_tree()).values.fov),minf(delta*3,1))
+	var base_fov:=float(FrontierClientSettings.ensure(get_tree()).values.fov)
+	if navigation.mode=="jump":camera.fov=_transit_fov(presented,base_fov)
+	else:camera.fov=lerpf(camera.fov,minf(110.0,base_fov+20) if navigation.get("boosting",false) else base_fov,minf(delta*3,1))
 
 	if opening:
 		if not presentation_paused:opening_clock=minf(float(navigation.solar_opening.elapsed)+.2,opening_clock+delta)
@@ -201,7 +203,7 @@ func _process(delta: float) -> void:
 	orbital_presentation.update(delta,orbit_clock)
 	_update_galactic_core()
 	var in_transit: bool=navigation.mode=="jump"
-	var p: float=presented.get("transit",{}).get("progress",0.0)
+	var p: float=FrontierCrewNavigation.transit_progress(presented)
 	_apply_transit_visibility(presented)
 	if galactic_core!=null and in_transit:galactic_core.hide()
 	var thrust: float=clampf(absf(float(navigation.speed))/700.0,0,1)
@@ -226,7 +228,7 @@ func pick_planet(point: Vector2) -> int:
 func _display_position(value: Dictionary) -> Vector3:
 	if value.mode!="jump":return FrontierCrewWorld.vector(value.position)
 	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
-	var p: float=value.get("transit",{}).get("progress",0)
+	var p: float=FrontierCrewNavigation.transit_progress(value)
 	var midpoint: float=cfg.swap_progress
 	if p>=midpoint:
 		var elapsed: float=value.get("orbit_time",0)
@@ -244,14 +246,21 @@ func _transit_presentation(delta: float,paused: bool) -> Dictionary:
 	if not paused:transit_clock=minf(host_progress*duration+float(cfg.progress_lead_seconds),transit_clock+delta)
 	var progress:=minf(transit_clock/duration,1.0)
 	# Never display destination coordinates before the host swaps the loaded system.
-	if host_progress<float(cfg.swap_progress):progress=minf(progress,float(cfg.swap_progress)-.00001)
+	var swap:=FrontierCrewNavigation.elapsed_progress(route,float(cfg.swap_progress))
+	if host_progress<swap:progress=minf(progress,swap-.00001)
 	var result:=navigation.duplicate()
 	result.transit=route.duplicate();result.transit.progress=progress
 	return result
 
+func _transit_fov(value: Dictionary,base_fov: float) -> float:
+	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
+	var p:=FrontierCrewNavigation.transit_progress(value)
+	var gain:=smoothstep(float(cfg.departure_start),float(cfg.fov_acceleration_end),p)*(1.0-smoothstep(float(cfg.fov_deceleration_start),float(cfg.fov_deceleration_end),p))
+	return lerpf(base_fov,minf(110,base_fov+float(cfg.fov_gain)),gain)
+
 func _transit_rotation(value: Dictionary) -> Quaternion:
 	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
-	var progress:=float(value.get("transit",{}).get("progress",0))
+	var progress:=float(FrontierCrewNavigation.transit_progress(value))
 	var departure:=_flight_basis(departure_heading).get_rotation_quaternion()
 	if progress<float(cfg.departure_start):
 		return _flight_basis(departure_initial).get_rotation_quaternion().slerp(departure,smoothstep(0,float(cfg.departure_start),progress))
@@ -262,7 +271,7 @@ func _apply_transit_visibility(value: Dictionary) -> void:
 	var opacity:=1.0
 	if value.mode=="jump":
 		var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
-		var p: float=value.get("transit",{}).get("progress",0)
+		var p: float=FrontierCrewNavigation.transit_progress(value)
 		opacity=1.0-smoothstep(float(cfg.departure_fade_start),float(cfg.swap_progress),p) if p<float(cfg.swap_progress) else smoothstep(float(cfg.swap_progress),float(cfg.arrival_fade_end),p)
 	for geometry in transit_geometry:
 		geometry.transparency=1.0-opacity
@@ -305,7 +314,7 @@ func _load_system(index: int) -> void:
 			if node is Label3D:node.hide()
 
 func _update_planet_scan(delta: float) -> void:
-	var target: int=pick_planet(Vector2(get_viewport().get_visible_rect().size)*.5) if scan_enabled and not presentation_blocked and transit_overlay.arrival_age>=float(FrontierCelestialNames.rules().arrival_seconds)-1.8 else -1
+	var target: int=pick_planet(Vector2(get_viewport().get_visible_rect().size)*.5) if scan_enabled and not presentation_blocked and not transit_overlay.presenting_arrival() else -1
 	if is_instance_valid(traffic) and not traffic.selected.is_empty():target=-1
 	if is_instance_valid(corporate_view) and not corporate_view.selected.is_empty():target=-1
 	if is_instance_valid(trace_view) and not trace_view.selected.is_empty():target=-1

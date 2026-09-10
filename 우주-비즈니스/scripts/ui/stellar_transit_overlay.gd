@@ -6,6 +6,9 @@ var guidance: Array=[]
 var presentation_blocked:=false
 var arrival_name: String=""
 var arrival_age: float=100.0
+var arrival_compact:=false
+var arrival_dismissed:=false
+var arrival_fade:=1.0
 var clock:=0.0
 var scan_body: Dictionary={}
 var space_y_mark: Texture2D=preload("res://assets/ui/corporations/space_y.svg")
@@ -15,7 +18,9 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 func _process(delta: float) -> void:
 	clock+=delta
-	if not presentation_blocked and not opening:arrival_age+=delta
+	if not presentation_blocked and not opening:
+		arrival_age+=delta
+		if arrival_dismissed:arrival_fade=maxf(0,arrival_fade-delta/float(FrontierUniverse.presentation().stellar_arrival.dismiss_seconds))
 	queue_redraw()
 func _draw() -> void:
 	if nav.is_empty():return
@@ -33,7 +38,7 @@ func _draw() -> void:
 		draw_string(font,box.position+Vector2(18,33),message,HORIZONTAL_ALIGNMENT_LEFT,484,19,color)
 		if danger:draw_rect(Rect2(Vector2.ONE*3,size-Vector2.ONE*6),Color(1,.15,.03,.2+.15*sin(clock*5)),false,6)
 	if nav.mode=="jump":
-		var p: float=nav.get("transit",{}).get("progress",0.0)
+		var p:=FrontierCrewNavigation.transit_progress(nav)
 		var strength:=smoothstep(.10,.3,p)*(1.0-smoothstep(.72,1.0,p))
 		draw_rect(Rect2(Vector2.ZERO,size),Color(.015,.045,.09,strength*.40))
 		for i in 96:
@@ -42,12 +47,15 @@ func _draw() -> void:
 			var ray:=Vector2(cos(angle),sin(angle))
 			var point:=center+ray*radius*size.length()*.55
 			draw_line(point,point+ray*(12+strength*170)*radius,Color(.45,.85,1,strength*radius*.8),1.5,true)
+		var elapsed:=float(nav.get("transit",{}).get("progress",0.0))
 		var width:=minf(180,size.x*.24)
 		var origin:=Vector2(center.x-width*.5,size.y-48)
 		draw_line(origin,origin+Vector2(width,0),Color(.5,.7,.73,.22),2,true)
-		draw_line(origin,origin+Vector2(width*p,0),Color(FrontierInterfaceStyle.ACCENT,.7),2,true)
-		draw_circle(origin+Vector2(width*p,0),2.5,Color(FrontierInterfaceStyle.ACCENT,.85))
-	elif not presenting_arrival():
+		draw_line(origin,origin+Vector2(width*elapsed,0),Color(FrontierInterfaceStyle.ACCENT,.7),2,true)
+		draw_circle(origin+Vector2(width*elapsed,0),2.5,Color(FrontierInterfaceStyle.ACCENT,.85))
+		_draw_speed(font)
+	elif presenting_arrival():_draw_speed(font)
+	else:
 		_draw_vitals(font)
 		_draw_motion(font,center)
 		_draw_guidance(font)
@@ -116,24 +124,35 @@ func _draw_vitals(font: Font) -> void:
 	if nav.get("boosting",false):draw_string(font,start+Vector2(0,-22),"고속 추진",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(.5,.8,1))
 	elif float(nav.get("hull",100))<=0:draw_string(font,start+Vector2(0,-22),"추진 정지  응급 수리",HORIZONTAL_ALIGNMENT_LEFT,-1,14,Color(1,.6,.3))
 
-func announce(system_name_value: String) -> void:
-	arrival_name=system_name_value;arrival_age=0.0
+func announce(system_name_value: String,revisit: bool=false) -> void:
+	arrival_name=system_name_value;arrival_age=0.0;arrival_compact=revisit
+	arrival_dismissed=false;arrival_fade=1.0
 func presenting_arrival() -> bool:
-	return not arrival_name.is_empty() and arrival_age<float(FrontierCelestialNames.rules().arrival_seconds)
+	return not arrival_compact and not arrival_dismissed and not arrival_name.is_empty() and arrival_age<float(FrontierCelestialNames.rules().arrival_seconds)
+func dismiss_arrival() -> void:
+	if not opening and not presentation_blocked and nav.get("mode","")!="jump" and presenting_arrival():arrival_dismissed=true
 func _draw_arrival(font: Font) -> void:
-	var duration: float=FrontierCelestialNames.rules().arrival_seconds
-	if presentation_blocked or arrival_age>=duration or arrival_name.is_empty():return
-	var opacity: float=smoothstep(0.0,1.1,arrival_age)*(1.0-smoothstep(duration-1.8,duration,arrival_age))
-	var band: float=minf(110,size.y*.14)*opacity
-	draw_rect(Rect2(0,0,size.x,band),Color(.015,.027,.045,.75*opacity))
-	draw_rect(Rect2(0,size.y-band,size.x,band),Color(.015,.027,.045,.75*opacity))
-	var px:=int(clampf(size.x*.068,32,92))
-	while font.get_string_size(arrival_name,HORIZONTAL_ALIGNMENT_LEFT,-1,px).x>size.x*.84 and px>20:px-=1
-	var y:=size.y*.36
-	draw_string_outline(font,Vector2(size.x*.08,y),arrival_name,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,px,5,Color(0,.01,.02,opacity*.85))
+	var duration: float=FrontierUniverse.presentation().stellar_arrival.revisit_seconds if arrival_compact else FrontierCelestialNames.rules().arrival_seconds
+	if presentation_blocked or arrival_age>=duration or arrival_name.is_empty() or arrival_fade<=0:return
+	var fade_in:=.25 if arrival_compact else 1.1
+	var fade_out:=.6 if arrival_compact else 1.8
+	var opacity:=smoothstep(0.0,fade_in,arrival_age)*(1.0-smoothstep(duration-fade_out,duration,arrival_age))*arrival_fade
+	if not arrival_compact:
+		var band: float=minf(110,size.y*.14)*opacity
+		draw_rect(Rect2(0,0,size.x,band),Color(.015,.027,.045,.75*opacity))
+		draw_rect(Rect2(0,size.y-band,size.x,band),Color(.015,.027,.045,.75*opacity))
+	var px:=20 if arrival_compact else int(clampf(size.x*.068,32,92))
+	while font.get_string_size(arrival_name,HORIZONTAL_ALIGNMENT_LEFT,-1,px).x>size.x*.84 and px>16:px-=1
+	var y:=54.0 if arrival_compact else size.y*.36
+	draw_string_outline(font,Vector2(size.x*.08,y),arrival_name,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,px,3 if arrival_compact else 5,Color(0,.01,.02,opacity*.85))
 	draw_string(font,Vector2(size.x*.08,y),arrival_name,HORIZONTAL_ALIGNMENT_CENTER,size.x*.84,px,Color(.91,.97,1,opacity))
-	var reach:=size.x*.12*smoothstep(0.1,2.0,arrival_age)
-	draw_line(Vector2(size.x*.5-reach,y+26),Vector2(size.x*.5+reach,y+26),Color(.55,.88,.92,opacity*.7),1.5,true)
+	var reach: float=28.0 if arrival_compact else size.x*.12*smoothstep(0.1,2.0,arrival_age)
+	var line_y:=y+(12 if arrival_compact else 26)
+	draw_line(Vector2(size.x*.5-reach,line_y),Vector2(size.x*.5+reach,line_y),Color(.55,.88,.92,opacity*.7),1.5,true)
+
+func _draw_speed(font: Font) -> void:
+	var width:=minf(360,size.x*.43)
+	draw_string(font,Vector2(size.x-width-24,size.y-91),"%.0f m/s"%absf(float(nav.speed)),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
 
 func _draw_motion(font: Font,center: Vector2) -> void:
 	var cfg:=FrontierFlightTelemetry.config()
@@ -147,7 +166,7 @@ func _draw_motion(font: Font,center: Vector2) -> void:
 			draw_line(point,point+ray*(3+strength*30),Color(.6,.83,.9,strength*.36),1,true)
 	var width:=minf(360,size.x*.43)
 	var origin:=Vector2(size.x-width-24,size.y-91)
-	draw_string(font,origin,"%.0f m/s"%absf(float(nav.speed)),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
+	_draw_speed(font)
 	if not telemetry.is_empty():
 		var caption: String=FrontierFlightTelemetry.distance_label(float(telemetry.distance))+"  "+FrontierFlightTelemetry.eta_label(telemetry) if telemetry.same_system else "Tab  성간 항로 설정"
 		draw_string(font,origin+Vector2(0,27),caption,HORIZONTAL_ALIGNMENT_RIGHT,width,15,Color(.55,.77,.83))

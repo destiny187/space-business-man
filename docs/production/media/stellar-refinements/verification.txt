@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS isolated world prepared
+NOTICE 세계를 열었습니다. 준비 후 시작하세요.
+PASS flight ready
+PASS native window focused
+PASS reachable route ready
+ROUTE { "index": 137, "distance": 6.73848295211792, "offset": (-5.882843, -3.28623) } TARGET 1097 SYSTEM 137 RANGE 8.0 ACTUAL_DISTANCE 6.73848295211792
+PASS large-turn departure accepted
+PASS large turn receives time and first visit recorded
+PASS new in-flight state validates
+PASS old in-flight saves keep original timing
+PASS actual first arrival completes
+FLIGHT_METRICS fov=[76.0, 96.0, 79.6555709838867, 76.0] speed=[0.0, 484.81452282971, 0.00000000000009, 0.00000000000009] base=76.0 duration=13.199999553764
+PASS FOV stays normal at alignment and returns before arrival
+PASS sound follows movement with other transit HUD hidden
+PASS first visit has full introduction
+PASS W dismisses title and restores HUD immediately
+PASS mouse look also releases arrival scan presentation
+PASS return departure accepted
+PASS aligned return departs quickly and marks Sol revisited
+PASS actual return to Sol
+PASS revisit shows compact name with usable HUD
+PASS first destination remains visited for next journey
+PASS journey saves successfully
+PASS visit and adaptive timing survive saved world reload
+STELLAR_REFINEMENTS_RESULT checks=21 failures=0
