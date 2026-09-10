@@ -217,6 +217,8 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		obstacles.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)+80})
 	for site in FrontierCorporateSites.all(world.manifest,int(nav.system),float(nav.orbit_time)):
 		obstacles.append({"point":FrontierCrewWorld.vector(site.position),"radius":360.0})
+	for trace in FrontierCorporateTraces.all(world.manifest,int(nav.system),float(nav.orbit_time)):
+		obstacles.append({"point":FrontierCrewWorld.vector(trace.position),"radius":115.0})
 	for i in FrontierUniverse.body_count(world.manifest,int(nav.system)):
 		var ordinal: int=FrontierUniverse.first_ordinal(world.manifest,int(nav.system))+i
 		var body:=FrontierUniverse.body(world.manifest,ordinal)
@@ -318,6 +320,10 @@ static func departure_obstacles(manifest: Dictionary,index: int,elapsed: float,d
 		var later:=FrontierCorporateSites.definition(manifest,site.id,elapsed+horizon)
 		var drift:=FrontierCrewWorld.vector(site.position).distance_to(FrontierCrewWorld.vector(later.position))
 		result.append({"point":FrontierCrewWorld.vector(site.position),"radius":280.0+drift})
+	for trace in FrontierCorporateTraces.all(manifest,index,elapsed):
+		var later:=FrontierCorporateTraces.definition(manifest,trace.id,elapsed+horizon)
+		var drift:=FrontierCrewWorld.vector(trace.position).distance_to(FrontierCrewWorld.vector(later.position))
+		result.append({"point":FrontierCrewWorld.vector(trace.position),"radius":60.0+drift})
 	return result
 static func departure_clear(origin: Vector3,direction: Vector3,obstacles: Array) -> bool:
 	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition

@@ -117,5 +117,42 @@
     "leg_seconds": 840,
     "near_step": 0.1,
     "far_step": 1.0
+  },
+  "traces": {
+    "version": 1,
+    "identify_distance": 2600,
+    "inspect_distance": 650,
+    "identify_seconds": 1.5,
+    "inspect_seconds": 3.0,
+    "signal_distance": 12000,
+    "max_speed": 90,
+    "offset": [
+      1150,
+      850,
+      420
+    ],
+    "types": {
+      "lotus": {
+        "name": "Lotus 개척 비콘",
+        "model": "ships/trace_lotus",
+        "activity": "개척 항로 표지·보급 접근 유도",
+        "evidence": "공개 항로 표지와 보급 접근 로그를 확보했습니다. 꽃잎형 반사판이 진입 방향을 표시하고 인근 Lotus 보급기지로 이어집니다.",
+        "status": "항로 신호 정상"
+      },
+      "mine": {
+        "name": "mine 집하·정비 흔적",
+        "model": "ships/trace_mine",
+        "activity": "광물 집하·채집 장비 정비",
+        "evidence": "봉인된 광물통과 교체용 드릴의 정비 이력을 읽었습니다. 자동 채집 장비의 생산물이 이 집하대를 거쳐 인근 산업 거점으로 모입니다.",
+        "status": "광물통 잠금·공구 대기"
+      },
+      "coopertech": {
+        "name": "CooperTech 감시·봉인 화물",
+        "model": "ships/trace_coopertech",
+        "activity": "전투로봇 시험 장비 감시·봉인 운송",
+        "evidence": "외부 제조 명판과 봉인 점검 이력을 확보했습니다. CooperTech 전투로봇 시험 장비이며 감시 헤드가 주변을 확인합니다. 내부 장비는 봉인되어 있습니다.",
+        "status": "감시 작동·봉인 유지"
+      }
+    }
   }
 }

@@ -116,7 +116,8 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 	return {"ok":true,"snapshot":snapshot(peer)}
 func snapshot(viewer: int=1) -> Dictionary:
 	var data: Dictionary=world.crew.duplicate()
-	data.erase("survey");data=data.duplicate(true)
+	data.erase("survey");data.erase("corporate_traces");data=data.duplicate(true)
+	if world.crew.has("corporate_traces"):data.corporate_traces=world.crew.corporate_traces
 	if world.crew.has("survey"):data.survey=world.crew.survey
 	var visible: Dictionary=peers.duplicate()
 	if pending.has(viewer):
@@ -427,7 +428,11 @@ func step_surface(delta: float) -> void:
 		if not inputs.has(peer) or inputs[peer].expires<now or not inputs[peer].scanning:scans.erase(peer);continue
 		var actor: String=peers[peer]
 		var local:=FrontierShuttles.context(world,actor)
-		if not FrontierCrewSurface.landed(local) or world.crew.members[actor].aboard:scans.erase(peer);continue
+		if not FrontierCrewSurface.landed(local):
+			FrontierCorporateTraceSurvey.step(self,peer,local,duration)
+			if stopped:return
+			continue
+		if world.crew.members[actor].aboard:scans.erase(peer);continue
 		var target:=FrontierSurfaceSurvey.target(local,actor,inputs[peer].aim)
 		if target.is_empty():scans.erase(peer);continue
 		if FrontierSurfaceSurvey.known(local,target):

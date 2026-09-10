@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "provider": "ElevenLabs (existing generated originals)",
+  "new_generation": false,
+  "sources": ["audio/manifests/space-experience.json"],
+  "mapping": {
+    "held_orbital_identification_and_inspection": "sfx_orbital_scan",
+    "host_persisted_stage_change": "sfx_orbital_complete"
+  },
+  "mix": "Existing FrontierSpaceAudio scan gain/pitch and completion mix; scanner receiver feedback inside the player's vessel.",
+  "playback": "Actual Forward+ E input, scan loop, persisted completion and menu input block verified in check_corporate_traces_play.gd.",
+  "listening": "Subjective listening not performed; no new voice or effect generated."
+}

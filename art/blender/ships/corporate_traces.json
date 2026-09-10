@@ -1,0 +1,38 @@
+[
+  {
+    "id": "trace_lotus",
+    "source": "art/blender/ships/trace_lotus.blend",
+    "model": "res://assets/models/ships/trace_lotus.glb",
+    "generator": "tools/build_corporate_traces.py",
+    "meshes": 6,
+    "triangles": 22048,
+    "sha256": "826d8ad1aa2fd04c805681add6a0e562d600e37df69ceabcee708729a6015ccd",
+    "pivots": [
+      "Anim_Beacon"
+    ]
+  },
+  {
+    "id": "trace_mine",
+    "source": "art/blender/ships/trace_mine.blend",
+    "model": "res://assets/models/ships/trace_mine.glb",
+    "generator": "tools/build_corporate_traces.py",
+    "meshes": 9,
+    "triangles": 40568,
+    "sha256": "85beac3b8d3ddd0e0cea7130d9299a4ac4fd8104fbc2369d05537c1ac1bd345d",
+    "pivots": [
+      "Anim_ServiceArm"
+    ]
+  },
+  {
+    "id": "trace_coopertech",
+    "source": "art/blender/ships/trace_coopertech.blend",
+    "model": "res://assets/models/ships/trace_coopertech.glb",
+    "generator": "tools/build_corporate_traces.py",
+    "meshes": 7,
+    "triangles": 9600,
+    "sha256": "ab9e07b6e696a2412e77a9e6eec2af75f641b4e78a85f526b626e5e6eba3bbc1",
+    "pivots": [
+      "Anim_WatchHead"
+    ]
+  }
+]

@@ -186,6 +186,7 @@ static func validate_world(value: Variant) -> String:
 		if corporate.has("ports") and not FrontierOrbitalPorts.valid(corporate.ports):return "태양계 물류항 설정 오류"
 		if corporate.has("traffic") and (not corporate.has("ports") or not FrontierSpaceTraffic.valid(corporate.traffic)):return "기업 운항 설정 오류"
 		if corporate.has("expansion") and (not corporate.has("traffic") or not FrontierCorporateSites.valid(corporate.expansion)):return "기업 진출권 설정 오류"
+		if corporate.has("traces") and (not corporate.has("expansion") or not FrontierCorporateTraces.valid_rules(corporate.traces)):return "기업 활동 흔적 설정 오류"
 	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
 	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전·설정 오류"
 	if m.settings.has("system_rules"):

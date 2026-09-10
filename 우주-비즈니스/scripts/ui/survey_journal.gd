@@ -45,7 +45,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
 	grid.columns=clampi(int((get_viewport_rect().size.x-132)/2/92),1,6)
-	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
+	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
 	if not was_visible or signature!=last_signature:last_signature=signature;refresh()
 	was_visible=true
 	if query_delay>0:
@@ -65,6 +65,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 		var tile:=FrontierItemTile.new();tile.picture=load("res://assets/ui/discoveries/"+str(entry.row.template)+".png") if entry.kind in ["discovery","incident"] and ResourceLoader.exists("res://assets/ui/discoveries/"+str(entry.row.template)+".png") else FrontierResourceIcons.texture(entry.icon)
 		if entry.kind=="incident" and entry.row.has("native"):tile.picture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(entry.row.native.form_id)))
 		if entry.kind=="corporation":tile.picture=load(FrontierCorporations.icon_path(entry.company))
+		if entry.kind=="corporate_trace":tile.picture=load("res://assets/ui/corporations/trace_"+str(entry.company)+".png");tile.amount="%d / 2"%int(entry.row.stage)
 		tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
 		tile.pressed.connect(func():select(entry))
 		if entry.key==selected_entry.get("key",""):retained=entry
@@ -92,6 +93,14 @@ func select(entry: Dictionary) -> void:
 		FrontierCorporateIdentity.add_to(details,entry.row.asset)
 		var note:=FrontierInterfaceStyle.label(details,company.description,14);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		var source_label:=FrontierInterfaceStyle.label(details,"첫 식별  "+str(item.name),13);source_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	elif entry.kind=="corporate_trace":
+		preview.custom_minimum_size.y=150;preview.show();preview.show_model(entry.row.model)
+		FrontierCorporateIdentity.frame_trace_preview(preview)
+		var identity:=HBoxContainer.new();details.add_child(identity)
+		var mark:=TextureRect.new();mark.texture=load(FrontierCorporations.icon_path(entry.company));mark.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;mark.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;mark.custom_minimum_size=Vector2(40,40);identity.add_child(mark)
+		FrontierInterfaceStyle.label(identity,FrontierCorporations.company(entry.company).name,18)
+		for text in [entry.row.activity,entry.row.status,"공동 조사 %d / 2"%int(entry.row.stage),entry.row.evidence if int(entry.row.stage)==2 else "650m 이내로 접근해 E를 유지하면 활동 기록을 읽을 수 있습니다.","연결 거점  "+str(entry.row.site_name)]:
+			var line:=Label.new();line.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;line.text=text;line.add_theme_font_size_override("font_size",14);line.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);details.add_child(line)
 	elif entry.kind=="discovery":
 		var d:=FrontierExplorationDiscoveries.definition(entry.row.template)
 		preview.show();preview.show_model(d.model)

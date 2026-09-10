@@ -470,3 +470,5 @@ Blender Space Y 항만 2종·궤도 추적·주소별 접근/정지·독립 재�
 2026-09-10 SP06: WARDEN 경비기 원본/LOD·항만별 2기 편대·접근/센서 확인/복귀·호스트 저장과 관제 신호를 연결했다. 실제 원정 17항목, 후속 이동 대상/선박 간격 최소 확인을 수행했다. [제작과 한계](../production/114-space-y-patrol.md).
 
 2026-09-10 SP07: 새 manifest에 여섯 권역·회사별 거점·Space Y 관리 행성·실제 왕복 항로와 경비·저빈도 먼 운항·거점 식별/지도 공개를 연결했다. Lotus 열린 격납고, mine 광물 처리/정비 구조, CooperTech 장갑 시험시설, 철수 잔해를 Blender/INK와 실제 원정에서 확인했다. 기존 저장의 진출권은 보존한다. [실제 확인과 후속 범위](../production/115-seeded-corporate-regions.md).
+
+2026-09-10 [SP08 기업 활동 흔적](../production/117-corporate-activity-traces.md): 세 회사의 전용 Blender 실물·가동부, 호스트 E 조사·공동 원장·지도/J 단계 공개·FINCH 위치·저장 실패 처리를 연결했다. 단독/원정 INK 화면과 해당 조사 범위를 확인했다. 기존 세계에는 소급 배치하지 않으며 SP09~SP11 행동 사건은 후속이다.

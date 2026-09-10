@@ -160,6 +160,7 @@ func _draw_corporate_sites(center: Vector2,extent: float) -> void:
 		var body:=FrontierUniverse.body(manifest,int(site.body));var pos:=FrontierUniverse.position(manifest,int(site.body),elapsed)
 		positions[site.id]=center+Vector2(pos.x,pos.z)*factor+Vector2(-19,-24)
 		known[site.id]=journal!=null and journal.data.bodies.get(body.id,{}).get("scanned",false)
+		if journal!=null and int(journal.data.get("corporate_traces",{}).get("trace:"+str(site.id),0))>0:known[site.id]=true
 	if not compact:
 		for route in profile.routes:
 			if known.get(route.ends[0],false) and known.get(route.ends[1],false):
@@ -175,6 +176,20 @@ func _draw_corporate_sites(center: Vector2,extent: float) -> void:
 			draw_polyline(shape,tint,1.5,true)
 		if not compact:draw_string(get_theme_default_font(),point+Vector2(13,-9),site.short_name if known[site.id] else "미확인 거점",HORIZONTAL_ALIGNMENT_LEFT,-1,12,tint)
 		hits.append({"point":point,"ordinal":int(site.body)})
+	_draw_corporate_traces(positions)
+
+func _draw_corporate_traces(positions: Dictionary) -> void:
+	for trace in FrontierCorporateTraces.all(manifest,system_index,elapsed):
+		if not positions.has(trace.site):continue
+		var stage:=int(journal.data.get("corporate_traces",{}).get(trace.id,0)) if journal!=null else 0
+		var point: Vector2=positions[trace.site]+Vector2(0,43)
+		var color:=Color("94edcf") if stage>0 else Color("718795")
+		draw_arc(point,7,0,TAU,24,color,1.5,true)
+		if stage==2:
+			draw_line(point+Vector2(-3,0),point+Vector2(-1,3),color,1.5,true);draw_line(point+Vector2(-1,3),point+Vector2(4,-4),color,1.5,true)
+		elif stage==1:draw_circle(point,3,color)
+		if not compact:draw_string(get_theme_default_font(),point+Vector2(12,4),["미확인 신호","활동 표식","활동 기록 확보"][stage],HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
+		hits.append({"point":point,"ordinal":int(trace.body)})
 
 func _background() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new();style.bg_color=Color("0b1d2b");style.set_corner_radius_all(6);return style

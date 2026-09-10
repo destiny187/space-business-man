@@ -12,6 +12,13 @@ static func page(world: Dictionary,query: String,kind: String,body_id: String,pa
 			if not body_id.is_empty() and row.body_id!=body_id:continue
 			if not needle.is_empty() and not (str(company.name)+" "+str(company.get("name_ko",""))+" "+str(company.role)).to_lower().contains(needle):continue
 			entries.append({"key":"corporation:"+id,"kind":"corporation","company":id,"row":row.duplicate(true),"name":company.name,"icon":"scan"})
+		for id in FrontierCorporateTraces.records(world):
+			var row:=FrontierCorporateTraces.definition(world.manifest,id)
+			if row.is_empty() or (not body_id.is_empty() and row.body_id!=body_id):continue
+			if not needle.is_empty() and not (str(row.name)+" "+str(row.activity)+" "+str(FrontierCorporations.company(row.company).get("name_ko",""))).to_lower().contains(needle):continue
+			row.stage=int(FrontierCorporateTraces.records(world)[id])
+			if int(row.stage)<2:row.evidence=""
+			entries.append({"key":id,"kind":"corporate_trace","company":row.company,"row":row,"name":row.name,"icon":"scan"})
 	for category in ["mineral","biology"]:
 		if kind!="all" and kind!=category:continue
 		var source: Dictionary=world.crew.get("survey",{}) if category=="mineral" else world.ecology.observations

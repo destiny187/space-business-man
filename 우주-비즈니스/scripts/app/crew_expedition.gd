@@ -396,6 +396,8 @@ func _apply_snapshot(value: Dictionary) -> void:
 	if flight==null:_setup_flight()
 	onboarding.update_snapshot(value)
 	flight.transition_preparing=arrival.active
+	flight.trace_records=value.crew.get("corporate_traces",{}).duplicate()
+	flight.trace_scan=value.get("scan",{}).duplicate()
 	flight.update_navigation(value.crew.navigation)
 	navigation_journal.observe(value)
 	flight.refits.flight_mode=true
@@ -444,6 +446,9 @@ func _apply_snapshot(value: Dictionary) -> void:
 	lobby.hide();panel.show()
 	navigation_ui.refresh(value)
 	_sync_surface_view()
+func orbital_scan_allowed() -> bool:
+	return flight!=null and outside and surface_world==null and flight.scan_enabled and not flight.presentation_blocked and not cursor_released and _mouse_look_allowed() and not feedback.blocked() and not (onboarding!=null and onboarding.letter.visible) and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null
+
 func _physics_process(delta: float) -> void:
 	if preparing_first_snapshot:return
 	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":return
@@ -470,13 +475,17 @@ func _physics_process(delta: float) -> void:
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
 		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if feedback.blocked() or (onboarding!=null and onboarding.letter.visible):direction=Vector2.ZERO;scanning=false
+		var scan_aim: Vector3=-camera.global_basis.z
+		if orbital_scan_allowed():
+			scanning=test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)
+			scan_aim=-flight.camera.global_basis.z
 		var flight_controls: Array=[0.0,0.0,0.0]
 		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
 			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
-		session.send_input(direction,-camera.global_basis.z,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled))
+		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled))
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		session.authority.shot_obstacle_provider=_shot_obstacle_distance

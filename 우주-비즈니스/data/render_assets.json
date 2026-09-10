@@ -10774,5 +10774,41 @@
     "generator": "tools/build_corporate_relays.py",
     "review": "docs/production/115-seeded-corporate-regions.md",
     "foliage": false
+  },
+  {
+    "id": "trace_lotus",
+    "title": "기업 활동 흔적",
+    "name": "Lotus 개척 비콘",
+    "group": "우주선",
+    "model": "res://assets/models/ships/trace_lotus.glb",
+    "source": "art/blender/ships/trace_lotus.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_traces.py",
+    "review": "docs/production/117-corporate-activity-traces.md",
+    "foliage": false
+  },
+  {
+    "id": "trace_mine",
+    "title": "기업 활동 흔적",
+    "name": "mine 집하·정비대",
+    "group": "우주선",
+    "model": "res://assets/models/ships/trace_mine.glb",
+    "source": "art/blender/ships/trace_mine.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_traces.py",
+    "review": "docs/production/117-corporate-activity-traces.md",
+    "foliage": false
+  },
+  {
+    "id": "trace_coopertech",
+    "title": "기업 활동 흔적",
+    "name": "CooperTech 감시·봉인 화물",
+    "group": "우주선",
+    "model": "res://assets/models/ships/trace_coopertech.glb",
+    "source": "art/blender/ships/trace_coopertech.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_corporate_traces.py",
+    "review": "docs/production/117-corporate-activity-traces.md",
+    "foliage": false
   }
 ]

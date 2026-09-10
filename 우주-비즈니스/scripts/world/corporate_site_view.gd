@@ -19,7 +19,7 @@ func update(t: float,blocked: bool) -> void:
 		if mechanism.kind=="sorter":mechanism.node.rotation.x=fposmod(t*.6,TAU)
 		else:mechanism.node.rotation.y=sin(t*.3)*.8
 	if not blocked and flight.scan_enabled and flight.navigation.get("mode","")!="jump" and (not is_instance_valid(flight.traffic) or flight.traffic.selected.is_empty()):
-		var best:=.992
+		var best:=1.0 if is_instance_valid(flight.trace_view) and not flight.trace_view.selected.is_empty() else .992
 		for id in flight.corporate_models:
 			var model: Node3D=flight.corporate_models[id];var offset:=model.global_position-flight.camera.global_position
 			var dot:=offset.normalized().dot(-flight.camera.global_basis.z)

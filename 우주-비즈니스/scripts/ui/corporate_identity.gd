@@ -23,3 +23,14 @@ static func add_to(parent: Control,asset_id: String) -> void:
 		else:icon.texture=load("res://assets/ui/interface/crew.svg") if role.id=="crew" and ResourceLoader.exists("res://assets/ui/interface/crew.svg") else null
 		row.add_child(icon)
 		FrontierInterfaceStyle.label(row,role.role+"  "+role.name,14,FrontierInterfaceStyle.MUTED if role.id=="" else FrontierInterfaceStyle.TEXT)
+
+static func frame_trace_preview(preview: FrontierEquipmentPreview) -> void:
+	# Trace plaques face Godot +Z; the default equipment camera faces their rear.
+	var bounds:=AABB();var first:=true
+	for node in preview.model.find_children("*","MeshInstance3D",true,false):
+		var box: AABB=node.global_transform*node.get_aabb()
+		bounds=box if first else bounds.merge(box);first=false
+	var extent:=bounds.size.length()
+	preview.camera.size=extent*.85
+	preview.camera.position=Vector3(1,.65,1.5).normalized()*extent*3
+	preview.camera.look_at(Vector3.ZERO);preview.request_render()
