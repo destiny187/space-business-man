@@ -76,5 +76,13 @@
       }
     },
     "sale_ratio": 0.4
+  },
+  "traffic": {
+    "version": 1,
+    "leg_seconds": 600,
+    "lane_height": 60000,
+    "avoidance_radius": 650,
+    "near_distance": 4500,
+    "far_distance": 180000
   }
 }

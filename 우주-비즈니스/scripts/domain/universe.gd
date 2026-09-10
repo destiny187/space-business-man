@@ -179,6 +179,7 @@ static func validate_world(value: Variant) -> String:
 		for field in ["pressure","cloud","city_strength"]:
 			if not _finite(mars.get(field),0,1):return "화성 환경 표현 설정 오류"
 		if corporate.has("ports") and not FrontierOrbitalPorts.valid(corporate.ports):return "태양계 물류항 설정 오류"
+		if corporate.has("traffic") and (not corporate.has("ports") or not FrontierSpaceTraffic.valid(corporate.traffic)):return "기업 운항 설정 오류"
 	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
 	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전·설정 오류"
 	if m.settings.has("system_rules"):

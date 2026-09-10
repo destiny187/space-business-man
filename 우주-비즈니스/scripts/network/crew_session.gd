@@ -334,9 +334,14 @@ func _physics_process(delta: float) -> void:
 		var local:=FrontierShuttles.context(authority.world,actor)
 		var input: Dictionary=authority.inputs.get(peer,{})
 		var local_controls: Array=input.get("flight_controls",[0.0,0.0,0.0]) if float(input.get("expires",-1))>=authority.now else [0.0,0.0,0.0]
+		if FrontierSpaceTraffic.enabled(authority.world.manifest):local.crew.navigation.orbit_time=float(authority.world.crew.navigation.orbit_time)-minf(delta,.1)
 		FrontierCrewNavigation.steer(local,local_controls,minf(delta,.1))
 		if FrontierCrewNavigation.step(local,minf(delta,.1)):arrived=true
 		FrontierShuttles.commit(authority.world,local,actor)
+	if FrontierSpaceTraffic.enabled(authority.world.manifest):
+		var interests:=FrontierSpaceTraffic.observers(authority.world)
+		authority.world.crew.navigation.traffic_observers=interests
+		for craft in FrontierShuttles.fleet(authority.world).values():craft.navigation.traffic_observers=interests
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
 		checkpoint_timer=5.0
@@ -355,6 +360,10 @@ func _valid_manifest(value: Variant) -> bool:
 	else:
 		if not FrontierPlanetaryCycles.valid(value.settings.planetary_cycles):return false
 		settings.planetary_cycles=value.settings.planetary_cycles.duplicate(true)
+	# Saved corporate rules are immutable, including worlds created before traffic.
+	if value.settings.has("corporate_space"):
+		settings.corporate_space=value.settings.corporate_space.duplicate(true)
+	else:settings.erase("corporate_space")
 	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed),settings))
 
 func _publish_surface() -> void:

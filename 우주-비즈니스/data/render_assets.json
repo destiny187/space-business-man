@@ -10700,5 +10700,18 @@
     "generator": "tools/build_orbital_ports.py",
     "review": "docs/production/111-orbital-ports-sp04.md",
     "foliage": false
+  },
+  {
+    "id": "space_y_freighter",
+    "title": "항성계 운송",
+    "name": "Space Y CARRIER",
+    "group": "우주선",
+    "model": "res://assets/models/ships/space_y_freighter.glb",
+    "lod_model": "res://assets/models/ships/space_y_freighter_lod1.glb",
+    "source": "art/blender/ships/space_y_freighter.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_space_y_freighter.py",
+    "review": "docs/production/113-space-y-freighters.md",
+    "foliage": false
   }
 ]

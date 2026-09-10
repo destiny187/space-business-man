@@ -27,6 +27,7 @@ var last_phase: String=""
 var station_excluded: int=-1
 var station_model: Node3D
 var station_models: Dictionary={}
+var traffic: FrontierSpaceTrafficView
 var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
@@ -109,6 +110,7 @@ func _process(delta: float) -> void:
 	if _visual_hidden():
 		if not visual_suspended:
 			visual_suspended=true;vessel_sound.suspend();soundscape.scan.stop();soundscape.arrival.stream_paused=true
+			if is_instance_valid(traffic):traffic.suspend()
 			scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
 		return
 	visual_suspended=false
@@ -141,6 +143,7 @@ func _process(delta: float) -> void:
 		transit_audio.play("sfx_stellar_warning");warning_clock=2.2 if navigation.get("star_danger",false) else 4.0
 	if not navigation.get("star_warning",false):warning_clock=0
 	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size))
+	if is_instance_valid(traffic):traffic.update(delta,orbit_clock,presentation_blocked)
 	_update_planet_scan(delta)
 	soundscape.update(delta,scan_target>=0 and scan_progress<1.0,scan_progress)
 	orbital_presentation.update(delta,orbit_clock)
@@ -204,6 +207,9 @@ func _load_system(index: int) -> void:
 		model.position=FrontierCrewWorld.vector(station.position)
 		FrontierInkStyle.apply(model,cache);system_art.add_child(model);station_models[station.id]=model
 		if station_model==null:station_model=model
+	traffic=null
+	if index==0 and FrontierSpaceTraffic.enabled(state.manifest):
+		traffic=FrontierSpaceTrafficView.new();system_art.add_child(traffic);traffic.configure(self)
 	orbital_presentation.collect(system_art)
 	orbital_debris=FrontierOrbitalDebris.new();system_art.add_child(orbital_debris);orbital_debris.configure(self)
 	for entry in planets.values():_collect_transit_geometry(entry.node)
@@ -218,6 +224,7 @@ func _load_system(index: int) -> void:
 
 func _update_planet_scan(delta: float) -> void:
 	var target: int=pick_planet(Vector2(get_viewport().get_visible_rect().size)*.5) if scan_enabled and not presentation_blocked and transit_overlay.arrival_age>=float(FrontierCelestialNames.rules().arrival_seconds)-1.8 else -1
+	if is_instance_valid(traffic) and not traffic.selected.is_empty():target=-1
 	if target!=scan_target:scan_target=target;scan_progress=0.0
 	if target<0:
 		transit_overlay.scan_body={};return

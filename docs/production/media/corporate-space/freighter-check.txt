@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS saved SP04 world gains no traffic
+PASS no remote-system ship nodes or route sampling
+PASS one complete round trip clears celestial spheres and the other carrier; gap=1825.72290039062
+PASS moving endpoints and round-trip phase boundaries stay continuous
+PASS new traffic save valid
+PASS actual current flight
+PASS two near/LOD carriers in actual flight
+PASS natural host departure phase
+PASS natural loaded departure and synthesized sensor engine
+PASS acknowledged stage control signal
+PASS gaze identifies operator callsign mission and destination
+FAIL: menu blocks gaze and traffic sound
+PASS traffic world checkpoint
+PASS same vessel cargo phase and position after save reload
+PASS NPC trips do not restock markets
+SPACE_TRAFFIC_CHECKS 15 FAILURES 1

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "space_y_freighter",
+    "source": "art/blender/ships/space_y_freighter.blend",
+    "model": "res://assets/models/ships/space_y_freighter.glb",
+    "meshes": 32,
+    "triangles": 20748,
+    "sha256": "0b3bfd17943d9380a2a4e75e8181a4d55a964748c59453c5a7eaaf21f84b02d6",
+    "forward": "Blender +Y / Godot -Z",
+    "pivots": [
+      "Anim_Pod_-1_0",
+      "Anim_Pod_-1_1",
+      "Anim_Engine_-1",
+      "Socket_Exhaust_-1",
+      "Anim_Pod_1_0",
+      "Anim_Pod_1_1",
+      "Anim_Engine_1",
+      "Socket_Exhaust_1"
+    ]
+  },
+  {
+    "id": "space_y_freighter_lod1",
+    "source": "art/blender/ships/space_y_freighter_lod1.blend",
+    "model": "res://assets/models/ships/space_y_freighter_lod1.glb",
+    "meshes": 32,
+    "triangles": 1428,
+    "sha256": "45d89233189551c7d7091594a41cd55c2f640e491719d2d7983601102a38f037",
+    "forward": "Blender +Y / Godot -Z",
+    "pivots": [
+      "Anim_Pod_-1_0",
+      "Anim_Pod_-1_1",
+      "Anim_Engine_-1",
+      "Socket_Exhaust_-1",
+      "Anim_Pod_1_0",
+      "Anim_Pod_1_1",
+      "Anim_Engine_1",
+      "Socket_Exhaust_1"
+    ]
+  }
+]

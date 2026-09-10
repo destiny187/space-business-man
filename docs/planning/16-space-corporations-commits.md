@@ -24,7 +24,7 @@
 | SP02 | `feat: identify corporation operators and manufacturers` | 기업 표시 데이터, 기존 Lotus 보급품·mine 로봇·CooperTech 전투로봇의 실제 표식, 조사/기록 연결 | SP01 | 구현 완료 |
 | SP03 | `feat: present restored Mars under Space Y management` | 신규 세계 화성 환경/운영 상태, Blender 화성 변형·LOD·스캔/출항 안내·기존 세계 분기 | SP02 | 구현 |
 | SP04 | `feat: add the Mars orbital port and logistics endpoints` | 화성 항만과 지구 쪽 물류 목적지, 공전 추적·접근/정지·실제 교역·고정 예외 | SP03 | 구현 |
-| SP05 | `feat: run Space Y freighters between Earth and Mars` | 무역선 원본/GLB, 고유 ID·운항 위상·적재 표현·출발/가감속/대기/접안, 추진/관제음 | SP04 | 예정 |
+| SP05 | `feat: run Space Y freighters between Earth and Mars` | 무역선 원본/GLB, 고유 ID·운항 위상·적재 표현·출발/가감속/대기/접안, 추진/관제음 | SP04 | 구현 |
 | SP06 | `feat: patrol managed orbits with Space Y fighters` | 경비기 모델·편대/순찰/센서 확인·복귀와 위험하지 않은 첫 항로 | SP05 | 예정 |
 | SP07 | `feat: seed corporate sites and shipping routes` | 진출권·운영 행성·거점/유효 항로·독립 시드·저장 버전·가벼운 먼 거리 운항 | SP05 | 예정 |
 | SP08 | `feat: reveal corporate activity through persistent traces` | Lotus 개척 비콘·mine 정비/집하 흔적·CooperTech 감시/봉인 표식, 실물 조사·지도/J 공개 단계 | SP02, SP07 | 예정 |
@@ -77,3 +77,5 @@
 - **SP03 — 이 기록을 포함하는 구현 커밋:** 신규 manifest의 Space Y 복원 화성·Blender 근/원거리 모델·대기/구름·스캔/지도/출항 안내를 연결했다. 기존 저장은 원래 화성을 유지한다. [구현·검수·경계](../production/110-restored-mars-sp03.md).
 
 - **SP04 — 이 기록을 포함하는 구현 커밋:** 새 세계 화성·지구 항만의 실제 모델·궤도 추적·접근/정지·독립 재고 거래·지도 주소·Space Y 최초 식별을 연결했다. [제작·거래·저장·확인 범위](../production/111-orbital-ports-sp04.md). 무역선 운항은 SP05다.
+
+- **SP05 — 이 기록을 포함하는 구현 커밋:** 지구–화성 CARRIER 2척·선박 ID/게임 시간·8단계 왕복·화물 포드와 크레인·주시 정보·추진/관제 신호를 연결했다. [실제 범위와 검수](../production/113-space-y-freighters.md).

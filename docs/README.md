@@ -304,3 +304,5 @@
 - [SP03 Space Y 복원 화성](production/110-restored-mars-sp03.md) — 신규 세계 복원 외형·운영 정보, 기존 저장 보존.
 
 - [SP04 화성 항만·지구 물류항](production/111-orbital-ports-sp04.md) — 궤도 접근/정지·독립 기초 물자 교역·실제 Space Y 식별.
+
+2026-09-10 SP05: [Space Y 무역선 운항·제작·확인](production/113-space-y-freighters.md).

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "provider": "ElevenLabs (existing generated originals)",
+  "new_generation": false,
+  "sources": ["audio/manifests/space-experience.json"],
+  "mapping": {
+    "nearby_carrier_sensor_drive": {"id": "sfx_vessel_engine", "bus": "SFX", "max_db": -34, "range_m": 4000},
+    "control_acknowledgement": {"id": "sfx_orbital_complete", "bus": "UI", "db": -26, "cooldown_seconds": 15}
+  },
+  "meaning": "External traffic is synthesized by the ship sensor and control receiver; not sound propagating through vacuum.",
+  "playback": "Actual Forward+ departure and stage acknowledgement checked; menu pauses/stops emitters.",
+  "listening": "Subjective listening not performed; no new spoken controller voice generated."
+}
