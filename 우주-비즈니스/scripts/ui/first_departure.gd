@@ -187,7 +187,7 @@ func _response(_sequence: int, result: Dictionary) -> void:
 
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
 	step = id
-	counter.text = "플레이 가이드    %02d / 08" % number
+	counter.text = "플레이 가이드    %02d / 07" % number
 	title.text = heading
 	detail.text = text
 	highlight = target
@@ -234,7 +234,7 @@ func _process(delta: float) -> void:
 	if solar_step() == "scan" and _practice_allowed() and app.flight.scan_target == int(rules.scan_ordinal) and app.flight.scan_progress >= 1.0:
 		progress.solar_scan = true
 		_save()
-	depart.visible = not letter.visible and can_open_map() and not app.any_menu_open() and not app.feedback.blocked() and not FrontierClientSettings.ensure(get_tree()).is_open()
+	depart.visible = not letter.visible and can_open_map() and app.flight!=null and not app.flight.transit_overlay.presenting_arrival() and not app.any_menu_open() and not app.feedback.blocked() and not FrontierClientSettings.ensure(get_tree()).is_open()
 	clock += delta
 	if clock < .1:return
 	clock = 0
@@ -242,6 +242,7 @@ func _process(delta: float) -> void:
 	highlight = Rect2()
 	step = ""
 	if app.solar_opening_active() or letter.visible or not enabled() or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase") != "playing":queue_redraw();return
+	if app.session.latest.crew.navigation.mode=="jump" or (app.flight!=null and app.flight.transit_overlay.presenting_arrival()):queue_redraw();return
 	if get_tree().has_meta("startup_loader") or FrontierClientSettings.ensure(get_tree()).is_open() or (app.arrival != null and app.arrival.active):queue_redraw();return
 	# Record the equipment visit without drawing world guidance over item/body controls.
 	if app.surface_world != null and app.inventory_panel.visible and not progress.get("inventory", false):
@@ -256,15 +257,13 @@ func _process(delta: float) -> void:
 	if app.surface_world != null:
 		var tool := FrontierEquipment.active(value.crew.members[value.self_id])
 		if not progress.get("inventory", false) or tool.get("kind") != "miner":
-			_hint("equipment", 7, "채집 장비 준비", "I  아이템에서 채집기를 제작 / 번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
+			_hint("equipment", 6, "채집 장비 준비", "I  아이템에서 채집기를 제작 / 번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
 		else:
-			_hint("mine", 8, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설  F 대상 작업  자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
+			_hint("mine", 7, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설  F 대상 작업  자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
 	elif not value.get("local_shuttle", "").is_empty():
 		_hint("shuttle", 1, "공동 원정선으로 합류", "소형선은 같은 항성계 안에서 이동합니다.\n다음 항성계 항해는 공동 원정선에서 시작하세요.")
 	elif value.self_id != value.crew.pilot_id:
 		_hint("crew", 1, "승무원 항해 준비", "P  승무원에서 준비 상태를 켜세요.\n항로 선택과 출발은 조종사가 진행합니다.")
-	elif nav.mode == "jump":
-		_hint("transit", 5, "다음 항성계로 이동 중", "도착하면 행성을 바라보고 접근하세요.\n태양계 밖의 착륙 가능한 행성을 찾아보세요.")
 	elif app.navigation_frame.visible:
 		_hint("return_view", 1, "우주 화면에서 항해하기", "Tab으로 지도를 닫고 주변 항성계 표식을 찾아보세요.")
 	elif not app.outside:
@@ -284,12 +283,12 @@ func _process(delta: float) -> void:
 		if marker.is_empty():
 			_hint("finding", 4, "주변 항성계 탐색 중", "항속거리 안의 항성계 표식을 준비하고 있습니다.")
 		elif not stars.hovered.is_empty():
-			_hint("depart", 4, "이 별로 바로 이동", "태양계를 더 둘러본 뒤 출발해도 좋아요.\nF 또는 왼쪽 클릭으로 고속 항해를 시작합니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
+			_hint("depart", 4, "이 별로 바로 이동", "태양계를 더 둘러본 뒤 출발해도 좋아요.\nF 또는 왼쪽 클릭으로 출발합니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 		else:
 			_hint("aim", 4, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n화면 가장자리 화살표는 뒤쪽 별의 방향입니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 	else:
 		var near: bool = nav_ui.context_kind == "land" and nav_ui.context_ready
-		_hint("land", 6, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
+		_hint("land", 5, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
 	queue_redraw()
 
 func _draw() -> void:

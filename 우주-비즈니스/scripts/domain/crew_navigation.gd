@@ -85,7 +85,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			var origin:=FrontierCrewWorld.vector(nav.position)
 			var initial:=FrontierCrewWorld.vector(nav.direction).normalized()
 			if initial.length_squared()<.5:initial=Vector3.FORWARD
-			var direction:=departure_direction(world.manifest,int(nav.system),origin,initial,float(nav.orbit_time),float(nav.jump_left))
+			var route_offset:=Vector2(destination.map_position[0]-source.map_position[0],destination.map_position[1]-source.map_position[1])
+			var preferred:=Vector3(route_offset.x,0,route_offset.y).normalized()
+			var direction:=departure_direction(world.manifest,int(nav.system),origin,preferred,float(nav.orbit_time),float(nav.jump_left))
 			if direction==Vector3.ZERO:return "안전한 출발 방향을 찾지 못했습니다. 천체에서 조금 떨어진 뒤 다시 출발하세요."
 			nav.transit.departure_origin=nav.position.duplicate()
 			nav.transit.departure_direction=FrontierExpeditionBusiness.array(direction)

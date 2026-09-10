@@ -7,7 +7,7 @@ var selection: int=-1
 func configure(owner_app: FrontierCrewExpedition) -> void:
  app=owner_app;mouse_filter=Control.MOUSE_FILTER_IGNORE;set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 func available() -> bool:
- return app!=null and app.session.active and app.session.latest.get("phase")=="playing" and app.flight!=null and app.outside and app.surface_world==null and app._mouse_look_allowed() and app.session.latest.crew.navigation.mode=="idle"
+ return app!=null and app.session.active and app.session.latest.get("phase")=="playing" and app.flight!=null and not app.flight.transit_overlay.presenting_arrival() and app.outside and app.surface_world==null and app._mouse_look_allowed() and app.session.latest.crew.navigation.mode=="idle"
 func _process(_delta: float) -> void:
  visible=available()
  if not visible:hovered={};return

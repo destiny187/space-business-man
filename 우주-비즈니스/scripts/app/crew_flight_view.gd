@@ -43,6 +43,9 @@ var trace_scan: Dictionary={}
 var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
+var arrival_heading:=Vector3.FORWARD
+var transit_clock:=0.0
+var transit_camera_rotation:=Quaternion.IDENTITY
 var transit_geometry: Array[GeometryInstance3D]=[]
 var refits: FrontierVesselVisuals
 var orbital_debris: FrontierOrbitalDebris
@@ -84,22 +87,27 @@ func update_navigation(value: Dictionary) -> void:
 		departure_initial=FrontierCrewWorld.vector(route.get("initial_direction",value.direction)).normalized()
 		departure_heading=FrontierCrewWorld.vector(route.departure_direction) if route.has("departure_direction") else FrontierCrewNavigation.departure_direction(state.manifest,int(value.system),departure_origin,departure_initial,float(value.get("orbit_time",0)),float(route.get("duration",12)))
 		if departure_heading==Vector3.ZERO:departure_heading=departure_initial
+		var arrival_time:=float(value.get("orbit_time",0))+float(value.jump_left)
+		arrival_heading=(FrontierUniverse.entry_focus(state.manifest,int(value.target),arrival_time)-FrontierUniverse.entry_position(state.manifest,int(value.target),arrival_time)).normalized()
+		transit_clock=float(route.get("duration",12))*float(route.get("progress",0))
+		transit_camera_rotation=ship.quaternion if not initial_view else _flight_basis(departure_initial).get_rotation_quaternion()
 		transit_overlay.arrival_age=100.0
-	if value.mode=="jump":prepare_system(FrontierUniverse.system_index(state.manifest,int(value.target)))
+	if value.mode=="jump":
+		transit_clock=maxf(transit_clock,float(value.get("transit",{}).get("duration",12))*float(value.get("transit",{}).get("progress",0)))
+		prepare_system(FrontierUniverse.system_index(state.manifest,int(value.target)))
 	var render_system: int=int(value.system)
 	if value.mode=="jump" and float(value.get("transit",{}).get("progress",0))>=float(FrontierUniverse.presentation().stellar_transition.swap_progress):render_system=FrontierUniverse.system_index(state.manifest,int(value.target))
 	if navigation.is_empty() or render_system!=current_system:
 		_load_system(render_system);ship.position=_display_position(value)
-		if initial_view:ship.quaternion=_flight_basis(FrontierCrewWorld.vector(value.direction)).get_rotation_quaternion()
+		if initial_view:
+			ship.quaternion=_transit_rotation(value) if value.mode=="jump" else _flight_basis(FrontierCrewWorld.vector(value.direction)).get_rotation_quaternion()
+			transit_camera_rotation=ship.quaternion
 	_apply_transit_visibility(value)
 	if render_system!=announced_system and value.mode!="jump":
 		announced_system=render_system
 		var system:=FrontierUniverse.system(state.manifest,render_system)
 		if not solar_start or FrontierSolarOpening.active(value):soundscape.enter(int(system.band))
-		var layout:=FrontierUniverse.system_layout(state.manifest,render_system)
-		var theme_name: String={"satellites":"위성 군집","giant_court":"거대행성 군집","open":"넓은 항로","debris":"소행성 회랑"}.get(layout.theme,"미지의 탐사권")
-		if FrontierSolarOpening.active(value):transit_overlay.announce(system.star.name,"태양계  ·  8개 행성")
-		elif not solar_start:transit_overlay.announce(system.star.name,"항성계 진입  ·  %s형 항성  ·  %d개 행성  ·  %s"%[system.star.spectral_type,system.body_ids.size(),theme_name])
+		if FrontierSolarOpening.active(value) or not solar_start:transit_overlay.announce(system.star.name)
 	var phase:=FrontierCrewNavigation.phase(value)
 	if phase!=last_phase:
 		last_phase=phase
@@ -134,7 +142,8 @@ func _process(delta: float) -> void:
 	if not pending_navigation.is_empty():
 		update_navigation(pending_navigation)
 		ship.position=_display_position(navigation)
-		ship.quaternion=_flight_basis(FrontierCrewWorld.vector(navigation.direction)).get_rotation_quaternion()
+		ship.quaternion=_transit_rotation(navigation) if navigation.mode=="jump" else _flight_basis(FrontierCrewWorld.vector(navigation.direction)).get_rotation_quaternion()
+		transit_camera_rotation=ship.quaternion
 	if navigation.is_empty():return
 	if navigation.mode=="jump":step_preparation()
 	var presentation_paused:=presentation_blocked or get_tree().has_meta("startup_loader")
@@ -144,18 +153,24 @@ func _process(delta: float) -> void:
 	transit_overlay.opening=opening
 	engine.stream_paused=presentation_paused
 	orbit_clock+=delta;update_orbits(orbit_clock)
-	var previous_view:=camera.global_basis.get_rotation_quaternion()
-	ship.position=ship.position.lerp(_display_position(navigation),minf(delta*14,1))
+	var presented:=_transit_presentation(delta,presentation_paused)
+	transit_overlay.nav=presented
+	ship.position=_display_position(presented) if navigation.mode=="jump" else ship.position.lerp(_display_position(navigation),minf(delta*14,1))
 	var facing:=FrontierCrewWorld.vector(navigation.direction)
-	if navigation.mode=="jump" and float(navigation.get("transit",{}).get("progress",0))>=float(FrontierUniverse.presentation().stellar_transition.swap_progress):
-		facing=(FrontierUniverse.entry_focus(state.manifest,int(navigation.target),float(navigation.get("orbit_time",0)))-ship.position).normalized()
-	if navigation.mode=="jump" and float(navigation.get("transit",{}).get("progress",0))<float(FrontierUniverse.presentation().stellar_transition.swap_progress):
-		var align:=smoothstep(0,float(FrontierUniverse.presentation().stellar_transition.departure_start),float(navigation.transit.progress))
-		ship.quaternion=_flight_basis(departure_initial).get_rotation_quaternion().slerp(_flight_basis(departure_heading).get_rotation_quaternion(),align)
-	else:ship.quaternion=ship.quaternion.slerp(_flight_basis(facing).get_rotation_quaternion(),minf(delta*6,1))
+	if navigation.mode=="jump":
+		var previous_basis:=ship.basis
+		ship.quaternion=_transit_rotation(presented)
+		var local_turn:=previous_basis.inverse()*(-ship.basis.z)
+		engine_turn=Vector2(clampf(local_turn.x/maxf(delta,.001),-1,1),clampf(local_turn.y/maxf(delta,.001),-1,1))
+	else:ship.quaternion=ship.quaternion.slerp(_flight_basis(facing).get_rotation_quaternion(),1.0-exp(-delta*6.0))
 	camera.position=(Vector3(0,8,21) if refits.hull_id=="finch" else Vector3(0,16,57)) if exterior else (Vector3(0,5.3,-1.2) if refits.hull_id=="finch" else Vector3(0,2,-18))
 	camera.rotation=(Vector3(-.15,0,0) if exterior else Vector3.ZERO)+Vector3(look_offset.y,look_offset.x,0)
-	if navigation.mode=="jump":camera.global_basis=Basis(previous_view.slerp(camera.global_basis.get_rotation_quaternion(),minf(delta*6,1)))
+	if navigation.mode=="jump":
+		transit_camera_rotation=transit_camera_rotation.slerp(ship.quaternion,1.0-exp(-delta*float(FrontierUniverse.presentation().stellar_transition.camera_follow_speed)))
+		var follow_basis:=Basis(transit_camera_rotation)
+		var local_camera:=camera.transform
+		camera.global_position=ship.position+follow_basis*local_camera.origin
+		camera.global_basis=follow_basis*local_camera.basis
 	camera.fov=lerpf(camera.fov,minf(110.0,float(FrontierClientSettings.ensure(get_tree()).values.fov)+20) if navigation.mode=="jump" or navigation.get("boosting",false) else float(FrontierClientSettings.ensure(get_tree()).values.fov),minf(delta*3,1))
 
 	if opening:
@@ -186,8 +201,8 @@ func _process(delta: float) -> void:
 	orbital_presentation.update(delta,orbit_clock)
 	_update_galactic_core()
 	var in_transit: bool=navigation.mode=="jump"
-	var p: float=navigation.get("transit",{}).get("progress",0.0)
-	_apply_transit_visibility(navigation)
+	var p: float=presented.get("transit",{}).get("progress",0.0)
+	_apply_transit_visibility(presented)
 	if galactic_core!=null and in_transit:galactic_core.hide()
 	var thrust: float=clampf(absf(float(navigation.speed))/700.0,0,1)
 	if in_transit:thrust=0.0 if p<float(FrontierUniverse.presentation().stellar_transition.departure_start) else maxf(.2,sin(p*PI))
@@ -219,6 +234,29 @@ func _display_position(value: Dictionary) -> Vector3:
 		var focus:=FrontierUniverse.entry_focus(state.manifest,int(value.target),elapsed)
 		return entry+(entry-focus).normalized()*float(cfg.distant_offset)*(1.0-smoothstep(midpoint,1.0,p))
 	return departure_origin+departure_heading*float(cfg.distant_offset)*smoothstep(float(cfg.departure_start),midpoint,p)
+
+func _transit_presentation(delta: float,paused: bool) -> Dictionary:
+	if navigation.mode!="jump":return navigation
+	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
+	var route: Dictionary=navigation.get("transit",{})
+	var duration:=maxf(1.0,float(route.get("duration",12)))
+	var host_progress:=float(route.get("progress",0))
+	if not paused:transit_clock=minf(host_progress*duration+float(cfg.progress_lead_seconds),transit_clock+delta)
+	var progress:=minf(transit_clock/duration,1.0)
+	# Never display destination coordinates before the host swaps the loaded system.
+	if host_progress<float(cfg.swap_progress):progress=minf(progress,float(cfg.swap_progress)-.00001)
+	var result:=navigation.duplicate()
+	result.transit=route.duplicate();result.transit.progress=progress
+	return result
+
+func _transit_rotation(value: Dictionary) -> Quaternion:
+	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
+	var progress:=float(value.get("transit",{}).get("progress",0))
+	var departure:=_flight_basis(departure_heading).get_rotation_quaternion()
+	if progress<float(cfg.departure_start):
+		return _flight_basis(departure_initial).get_rotation_quaternion().slerp(departure,smoothstep(0,float(cfg.departure_start),progress))
+	# Carry the turn through the hidden system swap instead of changing facing at its boundary.
+	return departure.slerp(_flight_basis(arrival_heading).get_rotation_quaternion(),smoothstep(float(cfg.departure_fade_start),float(cfg.arrival_fade_end),progress))
 
 func _apply_transit_visibility(value: Dictionary) -> void:
 	var opacity:=1.0

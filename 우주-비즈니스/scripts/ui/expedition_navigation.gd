@@ -291,7 +291,7 @@ func _process(delta: float) -> void:
 		if int(app.session.latest.crew.navigation.target)==destination:
 			if FrontierUniverse.system_index(app.session.manifest,destination)==int(app.session.latest.crew.navigation.system):app.close_menus()
 			app.travel_action("depart")
-	mini.visible=active and not app.solar_opening_active() and app.surface_world==null and not app.feedback.blocked() and not app.onboarding.letter.visible
+	mini.visible=active and app.flight!=null and app.session.latest.crew.navigation.mode!="jump" and not app.solar_opening_active() and not app.flight.transit_overlay.presenting_arrival() and app.surface_world==null and not app.feedback.blocked() and not app.onboarding.letter.visible
 	preview.render_target_update_mode=SubViewport.UPDATE_ALWAYS if app.navigation_frame.is_visible_in_tree() and active else SubViewport.UPDATE_DISABLED
 	context.hide();context_kind=""
 	if not active or not app._mouse_look_allowed():return
