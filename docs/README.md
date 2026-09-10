@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-10 [기업 심볼 v1 · SP01](production/105-corporate-identity.md): 네 회사의 벡터 원본·워드마크·단색/소형 28개 출력과 실제 SVG 비교를 완료했다. 게임 실물/조사 연결은 SP02이며 Blender/Godot 적용 완료와 구분한다.
+
 2026-09-10 [기업·우주 공간 커밋 계획](planning/16-space-corporations-commits.md): 심볼 고도화와 화성·항만·선박·시드 활동·사건을 SP00~SP11로 분할한다. 실제 단계 상태와 최소 확인 범위는 계획을 따른다.
 
 2026-09-10 **설계 초안** — [기업과 살아 있는 우주 공간](game/23-corporations-and-space-presence.md): Lotus·Space Y·Iluti·mine의 역할/심볼, 복원된 Space Y 관리 화성과 시드별 거점·무역 항로·선박·사건을 정리했다. 문서·벡터 심볼 시안이며 게임 구현 기록이 아니다.

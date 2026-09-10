@@ -30,9 +30,9 @@ Iluti의 공개적인 적대 여부, 화성 지표 방문·궤도 거래의 첫 
 
 ## 3. 네 회사의 역할과 시각 언어 — 제안
 
-![네 회사 심볼 초안](media/corporations/company-symbols-v0.svg)
+![네 회사 심볼 제작안 v1](media/corporations/company-symbols-v1.svg)
 
-그림은 형태를 비교하는 **벡터 초안 v0**다. 최종 로고 승인·Blender 제작·게임 적용·INK 렌더 검수를 뜻하지 않는다. 색상은 제조사 식별 제안이며 게임의 선택·적대 상태 색상을 대체하지 않는다.
+그림은 SP01에서 형태·워드마크·소형/단색을 다듬은 **벡터 제작안 v1**이다. [v0](media/corporations/company-symbols-v0.svg)는 초기 이력으로 보존하고 [v1 제작/사용 규격](../production/105-corporate-identity.md)에 원본·출력·확인 범위를 둔다. 최종 로고 승인·Blender 제작·게임 적용·INK 렌더 검수를 뜻하지 않는다. 색상은 제조사 식별 제안이며 게임의 선택·적대 상태 색상을 대체하지 않는다.
 
 | 회사 | 플레이어가 기억할 한 문장 | 심볼과 도장 방향 | 장비의 형태·움직임 |
 | --- | --- | --- | --- |

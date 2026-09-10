@@ -17,8 +17,8 @@
 
 | ID | 커밋 주제 | 한 커밋에 연결할 결과 | 선행 | 상태 |
 | --- | --- | --- | --- | --- |
-| SP00 | `docs: plan corporate identity and space presence` | 기업/시드 설계·결정 기록·v0 이력·이 작업표 | 없음 | 작성 |
-| SP01 | `art: refine corporation symbols and identity variants` | 네 기업 벡터 원본·주형/단색/소형 출력·비교판·사용 규격 | SP00 | 다음 작업 |
+| SP00 | `docs: plan corporate identity and space presence` | 기업/시드 설계·결정 기록·v0 이력·이 작업표 | 없음 | 완료 `319a0bee` |
+| SP01 | `art: refine corporation symbols and identity variants` | 네 기업 벡터 원본·주형/단색/소형 출력·비교판·사용 규격 | SP00 | 벡터 제작 완료 |
 | SP02 | `feat: identify corporation operators and manufacturers` | 기업 표시 데이터, 기존 Lotus 보급품·mine 로봇·Iluti 전투로봇의 실제 표식, 조사/기록 연결 | SP01 | 예정 |
 | SP03 | `feat: present restored Mars under Space Y management` | 신규 세계 화성 환경/운영 상태, Blender 화성 변형·LOD·스캔/출항 안내·기존 세계 분기 | SP02 | 예정 |
 | SP04 | `feat: add the Mars orbital port and logistics endpoints` | 화성 항만과 지구 쪽 물류 목적지, 공전 추적·접근/정지·실제 교역·고정 예외 | SP03 | 예정 |
@@ -64,4 +64,5 @@
 
 ## 완료 기록
 
-현재 SP00은 기획 정리 단계다. 실제 커밋과 SP01 제작을 마치면 이 절에 해시/확인 범위를 기록한다. 이후 단계는 구현한 만큼만 상태를 바꾼다.
+- **SP00 — `319a0bee`:** 기업/우주 설계·결정 기록·커밋 순서·v0 비교판을 보존했다. 혼재한 별도 T3/멀티플레이 변경은 포함하지 않았다.
+- **SP01 — 이 완료 기록을 포함하는 제작 커밋:** 네 원본·주형/단색/소형/서명 28 SVG와 재생성기·v1 비교판을 만들었다. 실제 SVG 렌더·24/32/48px·단색과 출력 일관성을 확인했다. [제작/사용 규격](../production/105-corporate-identity.md). 3D/게임 적용은 다음 SP02다.

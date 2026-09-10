@@ -1,0 +1,17 @@
+{
+  "version": "corporate-identity-v1",
+  "status": "vector-production-proposal",
+  "coordinate_size": 256,
+  "color_space": "srgb",
+  "primary_minimum_px": 48,
+  "compact_minimum_px": 24,
+  "clear_space_units": 24,
+  "ink_positive": "#14242B",
+  "ink_reverse": "#F1F0E9",
+  "companies": [
+    {"id": "lotus", "name": "Lotus", "wordmark": "LOTUS", "color": "#B6E1CC", "source": "lotus.svg", "role_ko": "개척과 현장 지원", "concept_ko": "세 꽃잎 · 보호하는 선체", "tagline": "FRONTIER SUPPORT", "tracking": 9},
+    {"id": "space_y", "name": "Space Y", "wordmark": "SPACE Y", "color": "#B7D4EF", "source": "space_y.svg", "role_ko": "테라포밍과 행성 운영", "concept_ko": "비대칭 Y · 상승 항로", "tagline": "PLANETARY OPERATIONS", "tracking": 5},
+    {"id": "illuti", "name": "Iluti", "wordmark": "ILUTI", "color": "#D5BC83", "source": "illuti.svg", "role_ko": "전투로봇과 감시", "concept_ko": "분리된 정상 · 관측 광학부", "tagline": "SYSTEMS & SECURITY", "tracking": 15},
+    {"id": "mine", "name": "mine", "wordmark": "mine", "color": "#EDA56A", "source": "mine.svg", "role_ko": "자동 채집과 산업 장비", "concept_ko": "정밀 절삭면 · 세 채굴 이빨", "tagline": "AUTONOMOUS EXTRACTION", "tracking": 5}
+  ]
+}
