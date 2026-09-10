@@ -2,9 +2,15 @@ class_name FrontierCrewNavigation
 extends RefCounted
 static func create(world: Dictionary) -> Dictionary:
 	var ordinal:=FrontierUniverse.ordinal_of(world.manifest,world.location)
-	return {"system":FrontierUniverse.system_index(world.manifest,ordinal),"target":FrontierUniverse.ordinal_of(world.manifest,world.get("navigation_target",world.location)),"position":world.flight_position.duplicate(),"direction":[0.0,0.0,-1.0],"speed":0.0,"mode":"idle","jump_left":0.0,"orbit_time":0.0}
+	var nav: Dictionary={"system":FrontierUniverse.system_index(world.manifest,ordinal),"target":FrontierUniverse.ordinal_of(world.manifest,world.get("navigation_target",world.location)),"position":world.flight_position.duplicate(),"direction":[0.0,0.0,-1.0],"speed":0.0,"mode":"idle","jump_left":0.0,"orbit_time":0.0}
+	if world.has("solar_opening"):
+		nav.solar_opening=world.solar_opening.duplicate(true);world.erase("solar_opening")
+		var pose:=FrontierSolarOpening.pose(nav.solar_opening,float(nav.solar_opening.elapsed))
+		nav.position=FrontierExpeditionBusiness.array(pose.position);nav.direction=FrontierExpeditionBusiness.array(pose.direction);nav.manual=true
+	return nav
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.get("mode") not in ["idle","approach","jump"]:return "공동 항해 상태 오류"
+	if value.has("solar_opening") and not FrontierSolarOpening.valid(value.solar_opening):return "태양계 출항 연출 기록 오류"
 	for entry in [["system",249999],["target",999999]]:
 		if not FrontierUniverse._finite(value.get(entry[0]),0,entry[1]) or value[entry[0]]!=floorf(value[entry[0]]):return "공동 항로 주소 오류"
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
@@ -42,6 +48,7 @@ static func validate(value: Variant) -> String:
 	return ""
 static func center(ordinal: int,manifest: Dictionary={},elapsed: float=0.0) -> Vector3:return FrontierUniverse.position(manifest,ordinal,elapsed)
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
+	if FrontierSolarOpening.active(world.crew.navigation):return "태양계 출항 연출이 끝난 뒤 항해하세요."
 	if FrontierCrewSurface.landed(world):return "지표의 승무원들과 우주선으로 복귀한 뒤 항해하세요."
 	var crew: Dictionary=world.crew
 	if actor!=crew.pilot_id:return "현재 조종사만 항로를 조작할 수 있습니다."
@@ -88,6 +95,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	else:return "지원하지 않는 항해 명령입니다."
 	return ""
 static func step(world: Dictionary,delta: float) -> bool:
+	if FrontierSolarOpening.active(world.crew.navigation):
+		FrontierSolarOpening.step(world,delta)
+		return not FrontierSolarOpening.active(world.crew.navigation)
 	var nav: Dictionary=world.crew.navigation
 	var cfg_state: Dictionary=world.manifest.settings.flight
 	nav.hull=float(nav.get("hull",100.0));nav.energy=float(nav.get("energy",100.0))
@@ -184,6 +194,7 @@ static func phase(nav: Dictionary) -> String:
 
 ## Controls are transient network input, never persisted as held keys.
 static func steer(world: Dictionary,controls: Array,delta: float) -> void:
+	if FrontierSolarOpening.active(world.crew.navigation):return
 	var nav: Dictionary=world.crew.navigation
 	if nav.mode!="idle" or FrontierCrewSurface.landed(world):return
 	if float(controls[0])==0 and float(controls[1])==0 and float(controls[2])==0 and not nav.get("manual",false):return

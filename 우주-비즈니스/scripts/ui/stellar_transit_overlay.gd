@@ -1,5 +1,6 @@
 extends Control
 var nav: Dictionary={}
+var opening:=false
 var telemetry: Dictionary={}
 var guidance: Array=[]
 var presentation_blocked:=false
@@ -15,13 +16,14 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 func _process(delta: float) -> void:
 	clock+=delta
-	if not presentation_blocked:arrival_age+=delta
+	if not presentation_blocked and not opening:arrival_age+=delta
 	queue_redraw()
 func _draw() -> void:
 	if nav.is_empty():return
 	var font:=get_theme_default_font()
 	var center:=size*.5
 	_draw_arrival(font)
+	if opening:return
 	_draw_vitals(font)
 	if nav.get("star_warning",false):
 		var danger: bool=nav.get("star_danger",false)

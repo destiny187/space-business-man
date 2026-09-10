@@ -6,6 +6,7 @@ signal notice(message: String)
 signal surface_received(value: Dictionary)
 signal response_received(sequence: int,value: Dictionary)
 signal request_started(sequence: int,kind: String,args: Dictionary)
+var local_request_guard: Callable
 var mine_sequence:=0
 var mine_ready_at:=0
 var mine_revision:=0
@@ -236,6 +237,9 @@ func mining_ready() -> bool:
 	return mine_sequence==0 and Time.get_ticks_msec()>=mine_ready_at and not latest.is_empty() and int(latest.crew.revision)>=mine_revision
 func send_request(kind: String,args: Dictionary) -> bool:
 	if not active or latest.is_empty():notice.emit("참가 동기화가 끝난 뒤 실행하세요.");return false
+	if local_request_guard.is_valid():
+		var reason: String=local_request_guard.call(kind,args)
+		if not reason.is_empty():notice.emit(reason);return false
 	if kind=="business_mine":
 		if not mining_ready():return false
 		mine_sequence=next_sequence
@@ -327,7 +331,9 @@ func _physics_process(delta: float) -> void:
 		if authority.peers[peer]==authority.world.crew.pilot_id and authority.inputs.has(peer) and authority.inputs[peer].expires>=authority.now:
 			controls=authority.inputs[peer].get("flight_controls",controls)
 	FrontierCrewNavigation.steer(authority.world,controls,minf(delta,.1))
-	var arrived:=FrontierCrewNavigation.step(authority.world,minf(delta,.1))
+	var opening_wait: bool=FrontierSolarOpening.active(authority.world.crew.navigation) and (get_tree().has_meta("startup_loader") or (get_parent() is FrontierCrewExpedition and (get_parent().preparing_first_snapshot or (offline and (get_parent().any_menu_open() or not get_window().has_focus())))))
+	var arrived:=false
+	if not opening_wait:arrived=FrontierCrewNavigation.step(authority.world,minf(delta,.1))
 	for peer in authority.peers:
 		var actor: String=authority.peers[peer]
 		if not FrontierShuttles.aboard(authority.world,actor):continue

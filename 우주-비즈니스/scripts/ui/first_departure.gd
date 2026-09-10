@@ -1,11 +1,12 @@
 class_name FrontierFirstDeparture
 extends Control
-## Optional local teaching only. Every action uses the normal navigation/host path.
+## Personal teaching with an optional first-departure gate; actions use normal host paths.
 var app: FrontierCrewExpedition
 var letter: ColorRect
 var welcome_text: Label
 var default_letter := ""
 var checked_world := ""
+var welcome_pending := false
 var welcome_seen := ConfigFile.new()
 var welcome_path := "user://welcome_letters.cfg"
 var depart: Button
@@ -23,6 +24,10 @@ var highlight := Rect2()
 var step := ""
 var initial_system := -1
 var clock := 0.0
+var practice_time := 0.0
+var practice_step := ""
+var previous_direction := Vector3.ZERO
+var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/play_guide.json"))
 
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app = owner_app
@@ -38,14 +43,15 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	welcome_seen.load(welcome_path)
 	letter=ColorRect.new();letter.color=Color(.015,.035,.055,.72);letter.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);add_child(letter);letter.hide()
 	var center:=CenterContainer.new();center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);letter.add_child(center)
-	var panel:=PanelContainer.new();panel.custom_minimum_size=Vector2(minf(570,app.get_viewport().get_visible_rect().size.x-40),0);center.add_child(panel)
+	var panel:=PanelContainer.new();panel.custom_minimum_size=Vector2(minf(570,app.get_viewport().get_visible_rect().size.x-40),minf(600,app.get_viewport().get_visible_rect().size.y-40));center.add_child(panel)
 	var paper:=StyleBoxFlat.new();paper.bg_color=Color.TRANSPARENT;paper.border_color=Color("689b9d");paper.set_border_width_all(2);paper.set_corner_radius_all(8);paper.set_content_margin_all(30);panel.add_theme_stylebox_override("panel",paper)
 	var box:=VBoxContainer.new();box.add_theme_constant_override("separation",20);panel.add_child(box)
 	var stamp:=Label.new();stamp.text="LOTUS 개척사업부  /  지구 발신";stamp.add_theme_color_override("font_color",FrontierInterfaceStyle.ACCENT);stamp.add_theme_font_size_override("font_size",16);box.add_child(stamp)
-	var letter_title:=Label.new();letter_title.text="첫 개척 임무에 오신 것을 환영합니다.";letter_title.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);letter_title.add_theme_font_size_override("font_size",25);box.add_child(letter_title)
-	var text:=Label.new();text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;text.custom_minimum_size.x=panel.custom_minimum_size.x-60;text.text="안녕하세요, 개척자님.\nLotus와 함께 새로운 테라포밍 현장을 찾아보세요.\n\n먼저 태양계를 천천히 둘러보세요.\n태양계는 보호 대상이라 착륙 / 테라포밍할 수 없습니다.\n마우스로 시선을 돌리고 W/S로 비행할 수 있어요.\n행성을 잠시 바라보면 스캔 결과가 나타납니다.\n\n준비가 되면 우주 화면의 청록색 항성계 표식을 찾아보세요.\n표식을 조준하고 F 또는 왼쪽 클릭으로 이동할 수 있어요.\n재료가 부족하면 선박에 접근해 F → Lotus 보급을 여세요.\n착륙선 옆 공용 FINCH는 F로 탑승할 수 있습니다.\n\n— Lotus 개척 지원팀";text.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);text.add_theme_font_size_override("font_size",18);box.add_child(text)
+	var letter_title:=Label.new();letter_title.text="첫 원정 업무 안내";letter_title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;letter_title.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);letter_title.add_theme_font_size_override("font_size",25);box.add_child(letter_title)
+	var scroll:=ScrollContainer.new();scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;box.add_child(scroll)
+	var text:=Label.new();text.size_flags_horizontal=Control.SIZE_EXPAND_FILL;text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;text.custom_minimum_size.x=panel.custom_minimum_size.x-80;text.text="귀하를 Lotus 개척사업부 원정 담당으로 배정합니다.\n\n첫 임무는 태양계 밖의 행성을 조사하고,\n테라포밍에 적합한 개척 현장을 선정하는 것입니다.\n현장 선정과 작업 계획은 귀하의 판단에 맡깁니다.\n\n태양계는 당사 개척 대상에서 제외됩니다.\n\n추가 물자가 필요하면 회사 보급을 요청하십시오.\n\n— Lotus 개척사업부";text.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);text.add_theme_font_size_override("font_size",18);scroll.add_child(text)
 	welcome_text=text;default_letter=text.text
-	var close:=Button.new();close.text="편지 접기  태양계 둘러보기";close.custom_minimum_size.y=46;box.add_child(close)
+	var close:=Button.new();close.text="확인";close.custom_minimum_size.y=46;box.add_child(close)
 	close.pressed.connect(func():
 		welcome_seen.set_value("read",checked_world,true);welcome_seen.save(welcome_path);letter.hide();app.cursor_released=false;app.get_viewport().gui_release_focus())
 	letter.z_index = 10
@@ -86,6 +92,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.hide()
 	app.session.response_received.connect(_response)
+	app.session.local_request_guard = request_reason
 
 func update_snapshot(value: Dictionary) -> void:
 	var welcome_key: String = value.galaxy_id + ":" + value.self_id
@@ -93,14 +100,18 @@ func update_snapshot(value: Dictionary) -> void:
 		checked_world = welcome_key
 		welcome_text.text=default_letter
 		if FrontierUniverse.restored_mars(FrontierUniverse.body(app.session.manifest,3)):
-			welcome_text.text=default_letter.replace("태양계는 보호 대상이라 착륙 / 테라포밍할 수 없습니다.","화성은 Space Y가 복원해 관리하고 있습니다.\n태양계 지표는 착륙·개발이 제한됩니다.")
-			if not FrontierOrbitalPorts.rules(app.session.manifest).is_empty():welcome_text.text=welcome_text.text.replace("행성을 잠시 바라보면 스캔 결과가 나타납니다.","행성을 잠시 바라보면 스캔 결과가 나타납니다.\n지구·화성 항만은 Tab 지도에서 선택해 교역하세요.")
+			welcome_text.text=default_letter.replace("태양계는 당사 개척 대상에서 제외됩니다.","태양계는 당사 개척 대상에서 제외됩니다.\n화성은 Space Y가 복원해 관리하고 있습니다.")
 		if int(value.crew.navigation.system) == 0 and value.crew.get("landing", {}).is_empty() and not bool(welcome_seen.get_value("read", welcome_key, false)):
-			letter.show()
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			welcome_pending = true
+	if welcome_pending and not app.solar_opening_active():
+		welcome_pending = false
+		letter.show()
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var key: String = value.self_id
 	if player_key != key:
 		player_key = key
+		initial_system = -1
+		practice_time = 0.0
 		progress = seen.get_value("players", key, {"eligible":new_player, "travel":false, "inventory":false, "complete":false})
 		_save()
 	var nav: Dictionary = value.crew.navigation
@@ -119,7 +130,50 @@ func enabled() -> bool:
 	var mode: int = int(settings.values.get("tutorial_mode", 0)) if settings != null else 0
 	return mode == 1 or (mode == 0 and progress.get("eligible", false) and not progress.get("complete", false))
 
+func solar_step() -> String:
+	if not enabled() or progress.get("travel", false) or progress.get("complete", false) or app.session.latest.is_empty():return ""
+	var value: Dictionary = app.session.latest
+	if value.get("phase") != "playing" or int(value.crew.navigation.system) != 0 or not value.crew.get("landing", {}).is_empty() or not value.get("local_shuttle", "").is_empty():return ""
+	if not progress.get("solar_move", false):return "move"
+	if not progress.get("solar_boost", false):return "boost"
+	if not progress.get("solar_scan", false):return "scan"
+	return ""
+
+func departure_reason(ordinal: int) -> String:
+	var current := solar_step()
+	if current.is_empty() or FrontierUniverse.system_index(app.session.manifest, ordinal) == 0:return ""
+	return {"move":"WASD 이동 연습을 먼저 마치세요.", "boost":"W + Shift 가속 연습을 먼저 마치세요.", "scan":"화성을 바라보고 스캔을 마치세요."}[current]
+
+func request_reason(kind: String, args: Dictionary) -> String:
+	if kind not in ["navigate", "depart", "tutorial_depart"] or solar_step().is_empty():return ""
+	var ordinal := int(args.get("ordinal", app.session.latest.crew.navigation.target))
+	if kind == "tutorial_depart":ordinal = FrontierUniverse.first_ordinal(app.session.manifest, 1)
+	return departure_reason(ordinal)
+
+func observe_flight_input(controls: Array, keyboard_turn: float, delta: float) -> void:
+	var current := solar_step()
+	var nav: Dictionary = app.session.latest.crew.navigation
+	var direction := FrontierCrewWorld.vector(nav.direction)
+	var turned := previous_direction != Vector3.ZERO and not direction.is_equal_approx(previous_direction)
+	previous_direction = direction
+	if not _practice_allowed() or current not in ["move", "boost"]:return
+	if practice_step != current:practice_step = current;practice_time = 0.0
+	var moving := absf(float(controls[0])) > 0 and absf(float(nav.speed)) > 1.0
+	var practicing: bool = (moving or (keyboard_turn != 0 and turned)) if current == "move" else (moving and controls.size() > 3 and float(controls[3]) > .5 and nav.get("boosting", false))
+	if not practicing:return
+	practice_time += minf(delta, .1)
+	if practice_time >= float(rules[current + "_seconds"]):
+		progress["solar_" + current] = true
+		practice_time = 0.0
+		_save()
+
+func _practice_allowed() -> bool:
+	if app.session.latest.is_empty():return false
+	var value: Dictionary = app.session.latest
+	return app.session.active and value.self_id == value.crew.pilot_id and value.crew.navigation.mode == "idle" and app.orbital_scan_allowed() and not letter.visible and not app.any_menu_open() and not get_tree().has_meta("startup_loader")
+
 func can_open_map() -> bool:
+	if app.solar_opening_active():return false
 	if app.session.latest.is_empty() or not app.session.active:return false
 	var value: Dictionary = app.session.latest
 	return value.get("phase") == "playing" and value.crew.get("landing", {}).is_empty() and value.crew.navigation.mode == "idle" and value.get("local_shuttle", "").is_empty()
@@ -133,11 +187,15 @@ func _response(_sequence: int, result: Dictionary) -> void:
 
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
 	step = id
-	counter.text = "플레이 가이드    %02d / 06" % number
+	counter.text = "플레이 가이드    %02d / 08" % number
 	title.text = heading
 	detail.text = text
 	highlight = target
 	card.reset_size()
+	if target.has_area() and card.get_rect().grow(18).intersects(target):
+		var view_size := get_viewport().get_visible_rect().size
+		card.position.y = maxf(24, view_size.y - card.size.y - 130)
+		if card.get_rect().grow(18).intersects(target):card.position.x = maxf(28, view_size.x - card.size.x - 28)
 
 func _target(control: Control) -> Rect2:
 	return control.get_global_rect() if control != null and control.is_visible_in_tree() else Rect2()
@@ -162,6 +220,9 @@ func _planet_marker() -> Rect2:
 		var distance: float = app.flight.camera.global_position.distance_to(planet.node.global_position)
 		if distance < best:best = distance;point = planet.node.global_position
 	if best == INF:return Rect2()
+	return _world_marker(point)
+
+func _world_marker(point: Vector3) -> Rect2:
 	var viewport_size := Vector2(app.space_view.size)
 	var marker := FrontierSpaceGuidance.project(app.flight.camera, point, viewport_size)
 	var scale_factor := maxf(app.exterior_view.size.x/viewport_size.x, app.exterior_view.size.y/viewport_size.y)
@@ -170,6 +231,9 @@ func _planet_marker() -> Rect2:
 
 func _process(delta: float) -> void:
 	if app == null:return
+	if solar_step() == "scan" and _practice_allowed() and app.flight.scan_target == int(rules.scan_ordinal) and app.flight.scan_progress >= 1.0:
+		progress.solar_scan = true
+		_save()
 	depart.visible = not letter.visible and can_open_map() and not app.any_menu_open() and not app.feedback.blocked() and not FrontierClientSettings.ensure(get_tree()).is_open()
 	clock += delta
 	if clock < .1:return
@@ -177,7 +241,7 @@ func _process(delta: float) -> void:
 	card.hide()
 	highlight = Rect2()
 	step = ""
-	if letter.visible or not enabled() or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase") != "playing":queue_redraw();return
+	if app.solar_opening_active() or letter.visible or not enabled() or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase") != "playing":queue_redraw();return
 	if get_tree().has_meta("startup_loader") or FrontierClientSettings.ensure(get_tree()).is_open() or (app.arrival != null and app.arrival.active):queue_redraw();return
 	# Record the equipment visit without drawing world guidance over item/body controls.
 	if app.surface_world != null and app.inventory_panel.visible and not progress.get("inventory", false):
@@ -192,37 +256,47 @@ func _process(delta: float) -> void:
 	if app.surface_world != null:
 		var tool := FrontierEquipment.active(value.crew.members[value.self_id])
 		if not progress.get("inventory", false) or tool.get("kind") != "miner":
-			_hint("equipment", 5, "채집 장비 준비", "I  아이템에서 채집기를 제작 / 번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
+			_hint("equipment", 7, "채집 장비 준비", "I  아이템에서 채집기를 제작 / 번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
 		else:
-			_hint("mine", 6, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설  F 대상 작업  자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
+			_hint("mine", 8, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설  F 대상 작업  자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
 	elif not value.get("local_shuttle", "").is_empty():
 		_hint("shuttle", 1, "공동 원정선으로 합류", "소형선은 같은 항성계 안에서 이동합니다.\n다음 항성계 항해는 공동 원정선에서 시작하세요.")
 	elif value.self_id != value.crew.pilot_id:
 		_hint("crew", 1, "승무원 항해 준비", "P  승무원에서 준비 상태를 켜세요.\n항로 선택과 출발은 조종사가 진행합니다.")
 	elif nav.mode == "jump":
-		_hint("transit", 3, "다음 항성계로 이동 중", "도착하면 행성을 바라보고 접근하세요.\n태양계 밖의 착륙 가능한 행성을 찾아보세요.")
+		_hint("transit", 5, "다음 항성계로 이동 중", "도착하면 행성을 바라보고 접근하세요.\n태양계 밖의 착륙 가능한 행성을 찾아보세요.")
 	elif app.navigation_frame.visible:
 		_hint("return_view", 1, "우주 화면에서 항해하기", "Tab으로 지도를 닫고 주변 항성계 표식을 찾아보세요.")
 	elif not app.outside:
 		_hint("outside", 1, "우주를 둘러보세요", "C  우주선 바깥 시점으로 전환하세요.")
+	elif not solar_step().is_empty():
+		match solar_step():
+			"move":
+				_hint("move", 1, "태양계에서 움직여보세요", "W / S  전진 / 후진    A / D  좌우 선회\n마우스로 주위를 둘러보며 비행하세요.")
+			"boost":
+				_hint("boost", 2, "추진기를 가속해보세요", "W를 누른 채 Shift를 눌러 가속하세요.\n키를 놓으면 감속하며 에너지가 충전됩니다.")
+			"scan":
+				var mars: Dictionary = app.flight.planets.get(int(rules.scan_ordinal), {})
+				_hint("scan", 3, "화성을 스캔해보세요", "화성 표식으로 시선을 돌려보세요.\n가운데 스캔 원이 찰 때까지 바라보세요.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
 	elif not progress.get("travel", false) or int(nav.system) == 0:
 		var stars = nav_ui.nearby_stars
 		var marker := _star_marker()
 		if marker.is_empty():
-			_hint("finding", 1, "주변 항성계 탐색 중", "항속거리 안의 항성계 표식을 준비하고 있습니다.")
+			_hint("finding", 4, "주변 항성계 탐색 중", "항속거리 안의 항성계 표식을 준비하고 있습니다.")
 		elif not stars.hovered.is_empty():
-			_hint("depart", 2, "이 별로 바로 이동", "표식의 이름과 거리를 확인하세요.\nF 또는 왼쪽 클릭으로 고속 항해를 시작합니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
+			_hint("depart", 4, "이 별로 바로 이동", "태양계를 더 둘러본 뒤 출발해도 좋아요.\nF 또는 왼쪽 클릭으로 고속 항해를 시작합니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 		else:
-			_hint("aim", 1, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n화면 가장자리 화살표는 뒤쪽 별의 방향입니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
+			_hint("aim", 4, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n화면 가장자리 화살표는 뒤쪽 별의 방향입니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 	else:
 		var near: bool = nav_ui.context_kind == "land" and nav_ui.context_ready
-		_hint("land", 4, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
+		_hint("land", 6, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
 	queue_redraw()
 
 func _draw() -> void:
 	if not card.visible or not highlight.has_area():return
 	var box := highlight.grow(5)
 	draw_rect(box, FrontierInterfaceStyle.ACCENT, false, 2, true)
+	if step == "scan":draw_string(get_theme_default_font(), Vector2(clampf(box.position.x, 8, size.x - 45), maxf(18, box.position.y - 8)), "화성", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, FrontierInterfaceStyle.ACCENT)
 	var from := card.position + Vector2(card.size.x, card.size.y * .5)
 	var to := box.get_center()
 	if card.get_rect().grow(8).has_point(to):return

@@ -485,8 +485,11 @@ func _physics_process(delta: float) -> void:
 			scanning=test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)
 			scan_aim=-flight.camera.global_basis.z
 		var flight_controls: Array=[0.0,0.0,0.0]
+		var keyboard_turn:=0.0
 		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
-			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
+			keyboard_turn=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A))
+			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
+		if onboarding!=null:onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
@@ -622,7 +625,7 @@ func _input(event: InputEvent) -> void:
 			elif any_menu_open():close_menus()
 			else:open_menu(navigation_ui.pause_frame)
 			get_viewport().set_input_as_handled();return
-		if onboarding!=null and onboarding.letter.visible:return
+		if solar_opening_active() or (onboarding!=null and onboarding.letter.visible):return
 		if not get_viewport().gui_get_focus_owner() is LineEdit:
 			match event.physical_keycode:
 				KEY_TAB:toggle_navigation()
@@ -640,6 +643,7 @@ func _look_input(event: InputEvent) -> void:
 		_mouse_look(event.screen_relative,preferences.mouse_sensitivity(),bool(preferences.values.invert_y))
 		get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
+	if solar_opening_active():return
 	if arrival!=null and arrival.active:return
 	if event is InputEventMouseButton and mouse_resume_guard:return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and surface_world==null and _mouse_look_allowed() and not cursor_released and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and session.latest.get("self_id","")==session.latest.get("crew",{}).get("pilot_id",""):
@@ -1044,7 +1048,11 @@ func use_equipped() -> void:
 		"terrain":surface_action("surface_dig")
 		"pulse":surface_action("surface_attack")
 
+func solar_opening_active() -> bool:
+	return session!=null and FrontierSolarOpening.active(session.latest.get("crew",{}).get("navigation",{}))
+
 func _mouse_look_allowed() -> bool:
+	if solar_opening_active():return false
 	if session==null or not session.active or session.latest.get("phase")!="playing":return false
 	if waiting_screen!=null and waiting_screen.is_visible_in_tree():return false
 	if lobby!=null and lobby.is_visible_in_tree():return false

@@ -53,6 +53,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.request_started.connect(func(sequence: int,kind: String,_args: Dictionary):
 		if pending_route>=0 and kind=="navigate":pending_sequence=sequence)
 	app.session.response_received.connect(_response)
+	FrontierClientSettings.ensure(get_tree()).changed.connect(func():
+		if app.session.active and app.session.latest.get("phase")=="playing":refresh(app.session.latest))
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 
@@ -193,6 +195,7 @@ func refresh(value: Dictionary) -> void:
 	route.tooltip_text="지표에서는 우주선으로 돌아와 이륙하세요." if not value.crew.get("landing",{}).is_empty() else ("조종사만 항로를 설정할 수 있습니다." if value.self_id!=value.crew.pilot_id else "")
 
 	if selecting_route:_route_info()
+	elif selected_preview>=0:_access_info(selected_preview)
 
 func show_target(ordinal: int) -> void:
 	if ordinal<0 or app.session.manifest.is_empty():return
@@ -206,6 +209,7 @@ func show_target(ordinal: int) -> void:
 	if not FrontierUniverse.landable(body):target_kind.text+="\n"+FrontierUniverse.landing_restriction(body)
 	refresh_survey()
 	_update_preview(body)
+	_access_info(ordinal)
 
 func refresh_survey() -> void:
 	if selecting_route:return
@@ -258,6 +262,8 @@ func _update_preview(body: Dictionary) -> void:
 
 func start_route(ordinal: int) -> void:
 	if ordinal<0 or pending_route>=0:return
+	var guide_error:=app.onboarding.departure_reason(ordinal)
+	if not guide_error.is_empty():_notice(guide_error);return
 	pending_route=ordinal;pending_sequence=-1;pending_revision=-1
 	if not app.session.send_request("navigate",{"ordinal":ordinal}):pending_route=-1
 func _response(sequence: int,value: Dictionary) -> void:
@@ -285,7 +291,7 @@ func _process(delta: float) -> void:
 		if int(app.session.latest.crew.navigation.target)==destination:
 			if FrontierUniverse.system_index(app.session.manifest,destination)==int(app.session.latest.crew.navigation.system):app.close_menus()
 			app.travel_action("depart")
-	mini.visible=active and app.surface_world==null and not app.feedback.blocked() and not app.onboarding.letter.visible
+	mini.visible=active and not app.solar_opening_active() and app.surface_world==null and not app.feedback.blocked() and not app.onboarding.letter.visible
 	preview.render_target_update_mode=SubViewport.UPDATE_ALWAYS if app.navigation_frame.is_visible_in_tree() and active else SubViewport.UPDATE_DISABLED
 	context.hide();context_kind=""
 	if not active or not app._mouse_look_allowed():return
@@ -397,3 +403,10 @@ func _route_info() -> void:
 	route_distance.text="항로 거리  %.1f\n최대 항속거리  %.1f"%[distance,limit]
 	route.text="항속거리 초과" if distance>limit+.001 else ("현재 항성계" if index==int(nav.system) else "고속 항해 출발")
 	route.disabled=not app.session.latest.crew.get("landing",{}).is_empty() or app.session.latest.self_id!=app.session.latest.crew.pilot_id or nav.mode!="idle" or pending_route>=0 or distance>limit+.001 or index==int(nav.system)
+	_access_info(selected_preview)
+
+func _access_info(ordinal: int) -> void:
+	var guide_reason:=app.onboarding.departure_reason(ordinal)
+	route.tooltip_text=""
+	if not guide_reason.is_empty():route.disabled=true;route.text="태양계 가이드 진행 중";route.tooltip_text=guide_reason
+	elif not selecting_route:route.text="행성 접근";route.tooltip_text=""

@@ -5,6 +5,7 @@ var navigation: Dictionary={}
 var announced_system: int=-1
 var orbit_clock:=0.0
 var drive: FrontierVesselDriveEffects
+var opening_clock:=0.0
 var previous_hull:=100.0
 var previous_braking:=false
 var warning_clock:=0.0
@@ -94,10 +95,11 @@ func update_navigation(value: Dictionary) -> void:
 	if render_system!=announced_system and value.mode!="jump":
 		announced_system=render_system
 		var system:=FrontierUniverse.system(state.manifest,render_system)
-		if not solar_start:soundscape.enter(int(system.band))
+		if not solar_start or FrontierSolarOpening.active(value):soundscape.enter(int(system.band))
 		var layout:=FrontierUniverse.system_layout(state.manifest,render_system)
 		var theme_name: String={"satellites":"위성 군집","giant_court":"거대행성 군집","open":"넓은 항로","debris":"소행성 회랑"}.get(layout.theme,"미지의 탐사권")
-		if not solar_start:transit_overlay.announce(system.star.name,"항성계 진입  ·  %s형 항성  ·  %d개 행성  ·  %s"%[system.star.spectral_type,system.body_ids.size(),theme_name])
+		if FrontierSolarOpening.active(value):transit_overlay.announce(system.star.name,"태양계  ·  8개 행성")
+		elif not solar_start:transit_overlay.announce(system.star.name,"항성계 진입  ·  %s형 항성  ·  %d개 행성  ·  %s"%[system.star.spectral_type,system.body_ids.size(),theme_name])
 	var phase:=FrontierCrewNavigation.phase(value)
 	if phase!=last_phase:
 		last_phase=phase
@@ -114,6 +116,7 @@ func update_navigation(value: Dictionary) -> void:
 		engine_brake=clampf((absf(float(navigation.speed))-absf(float(value.speed)))/dt/300.0,0,1)
 		if float(value.speed)<-1:engine_brake=maxf(engine_brake,clampf(absf(float(value.speed))/700.0,0,1))
 	navigation=value.duplicate(true)
+	if FrontierSolarOpening.active(value):opening_clock=float(value.solar_opening.elapsed)
 	transit_overlay.nav=navigation
 	transit_overlay.telemetry=FrontierFlightTelemetry.read(state.manifest,navigation)
 	update_orbits(float(value.get("orbit_time",0)))
@@ -134,9 +137,12 @@ func _process(delta: float) -> void:
 		ship.quaternion=_flight_basis(FrontierCrewWorld.vector(navigation.direction)).get_rotation_quaternion()
 	if navigation.is_empty():return
 	if navigation.mode=="jump":step_preparation()
-	soundscape.blocked=presentation_blocked
-	transit_overlay.presentation_blocked=presentation_blocked
-	engine.stream_paused=presentation_blocked
+	var presentation_paused:=presentation_blocked or get_tree().has_meta("startup_loader")
+	var opening:=FrontierSolarOpening.active(navigation)
+	soundscape.blocked=presentation_paused
+	transit_overlay.presentation_blocked=presentation_paused
+	transit_overlay.opening=opening
+	engine.stream_paused=presentation_paused
 	orbit_clock+=delta;update_orbits(orbit_clock)
 	var previous_view:=camera.global_basis.get_rotation_quaternion()
 	ship.position=ship.position.lerp(_display_position(navigation),minf(delta*14,1))
@@ -152,16 +158,28 @@ func _process(delta: float) -> void:
 	if navigation.mode=="jump":camera.global_basis=Basis(previous_view.slerp(camera.global_basis.get_rotation_quaternion(),minf(delta*6,1)))
 	camera.fov=lerpf(camera.fov,minf(110.0,float(FrontierClientSettings.ensure(get_tree()).values.fov)+20) if navigation.mode=="jump" or navigation.get("boosting",false) else float(FrontierClientSettings.ensure(get_tree()).values.fov),minf(delta*3,1))
 
+	if opening:
+		if not presentation_paused:opening_clock=minf(float(navigation.solar_opening.elapsed)+.2,opening_clock+delta)
+		var shot:=FrontierSolarOpening.pose(navigation.solar_opening,opening_clock)
+		ship.position=shot.position;ship.quaternion=shot.rotation
+		camera.position=FrontierCrewWorld.vector(FrontierSolarOpening.config().camera_start).lerp(Vector3(0,16,57),shot.turn)
+		camera.rotation=Vector3(-.15*float(shot.turn),0,0)
+		var finish_fov:=float(FrontierClientSettings.ensure(get_tree()).values.fov)
+		camera.fov=lerpf(float(FrontierSolarOpening.config().fov),finish_fov,shot.turn)
+		transit_overlay.arrival_age=opening_clock
+		engine_brake=.65 if absf(float(navigation.speed))>1 else 0.0
+
 	warning_clock=maxf(0,warning_clock-delta)
 	if navigation.get("star_warning",false) and warning_clock<=0 and not presentation_blocked:
 		transit_audio.play("sfx_stellar_warning");warning_clock=2.2 if navigation.get("star_danger",false) else 4.0
 	if not navigation.get("star_warning",false):warning_clock=0
 	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size))
-	if is_instance_valid(traffic):traffic.update(delta,orbit_clock,presentation_blocked)
-	if is_instance_valid(trace_view):trace_view.update(orbit_clock,presentation_blocked)
-	if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,presentation_blocked)
-	if is_instance_valid(freight_view):freight_view.update(delta,orbit_clock,presentation_blocked)
-	_update_planet_scan(delta)
+	if is_instance_valid(traffic):traffic.update(delta,orbit_clock,presentation_paused or opening)
+	if is_instance_valid(trace_view):trace_view.update(orbit_clock,presentation_paused or opening)
+	if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,presentation_paused or opening)
+	if is_instance_valid(freight_view):freight_view.update(delta,orbit_clock,presentation_paused or opening)
+	if opening:scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
+	else:_update_planet_scan(delta)
 	var site_scanning: bool=is_instance_valid(corporate_view) and not corporate_view.selected.is_empty() and corporate_view.progress<1.0
 	var trace_scanning: bool=(is_instance_valid(trace_view) and trace_view.scanning) or (is_instance_valid(freight_view) and freight_view.scanning)
 	soundscape.update(delta,trace_scanning or (scan_target>=0 and scan_progress<1.0) or site_scanning,float(trace_scan.get("progress",0)) if trace_scanning else (corporate_view.progress if site_scanning else scan_progress))
@@ -176,8 +194,8 @@ func _process(delta: float) -> void:
 	var boosted: bool=in_transit or navigation.get("boosting",false)
 	if not in_transit:thrust*=1.0-engine_brake
 	drive.set_thrust(thrust,boosted)
-	drive.set_motion(engine_turn,engine_brake,presentation_blocked)
-	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_blocked)
+	drive.set_motion(engine_turn,engine_brake,presentation_paused)
+	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_paused)
 
 func pick_planet(point: Vector2) -> int:
 	if navigation.get("mode","")=="jump":return -1

@@ -162,10 +162,11 @@ static func body_from_id(m: Dictionary, id: String) -> Dictionary:
 static func new_world(seed_value: int) -> Dictionary:
 	var manifest: Dictionary = generate(seed_value)
 	var start: int=int(manifest.settings.get("starting_ordinal",0))
-	# A new game starts inside the Solar System beside Earth; interstellar entry_position is separate.
-	var point:=position(manifest,start)+Vector3(0,0,navigation_radius(body(manifest,start))+float(manifest.settings.flight.arrival_clearance))
+	# The opening path belongs only to this fresh world; existing saved positions remain intact.
+	var opening:=FrontierSolarOpening.create(manifest)
+	var point:=FrontierCrewWorld.vector(opening.start)
 	return {"version": 2, "expedition_research":FrontierExpeditionResearch.create(), "manifest": manifest, "manifest_hash": fingerprint(manifest),
-		"visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
+		"solar_opening":opening, "visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
 
 static func fingerprint(value: Dictionary) -> String:
 	return JSON.stringify(JSON.parse_string(JSON.stringify(value)), "", true).sha256_text()
@@ -202,6 +203,7 @@ static func validate_world(value: Variant) -> String:
 	if value.has("navigation_target") and (not value.navigation_target is String or ordinal_of(m,value.navigation_target)<0): return "항법 목표가 올바르지 않습니다."
 	for id in value.visited:
 		if not id is String or ordinal_of(m, id) < 0 or not value.visited[id] is bool: return "방문 기록이 올바르지 않습니다."
+	if value.has("solar_opening") and not FrontierSolarOpening.valid(value.solar_opening):return "태양계 출항 연출 기록 오류"
 	var position_value: Variant = value.get("flight_position")
 	if not position_value is Array or position_value.size() != 3: return "항해 위치 형식 오류"
 	for axis in position_value:

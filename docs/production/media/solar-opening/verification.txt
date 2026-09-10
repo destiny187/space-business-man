@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS new world saves opening path
+PASS real startup ready
+PASS opening waits for initial renderer
+PASS Sol arrival title
+PASS clean opening before briefing and tutorial
+PASS host rejects flight during opening
+PASS opening navigation validates
+PASS first shot faces Earth
+PASS opening hands off after eight seconds
+PASS existing arrival sound plays
+PASS ship and following camera pull back
+PASS view and ship turn toward planet panorama
+OVERVIEW_VISIBLE_PLANETS [0, 1, 2, 3, 4, 5, 6, 7] POSE { "system": 0, "target": 2, "position": [-9317.4853515625, 14000.0, -34773.328125], "direction": [0.56970798969269, -0.16924160718918, 0.80423283576965], "speed": 0.0, "mode": "idle", "jump_left": 0.0, "orbit_time": 8.01666666666664, &"solar_opening": { "duration": 8.0, "elapsed": 8.0, "finish": [-9317.4853515625, 14000.0, -34773.328125], "focus": [16466.40625, -784.671752929688, 1624.70300292969], "hold": 1.2, "move_end": 6.5, "start": [2272.00219726562, 1173.13720703125, -18645.4921875], "start_focus": [3154.36987304688, 196.561798095703, -17417.595703125], "turn_end": 7.4, "turn_start": 3.0, "version": 1.0 }, &"manual": true, &"traffic_observers": [{ "id": "crew", "position": [-9317.4853515625, 14000.0, -34773.328125], "system": 0 }], &"traffic_patrols": { "solar_earth_logistics": { "started": -1.0, "target": [0.0, 0.0, 0.0], "armed": true }, "solar_mars_port": { "started": -1.0, "target": [0.0, 0.0, 0.0], "armed": true } }, &"boosting": false }
+PASS panorama includes several actual planets
+PASS employee briefing follows opening
+PASS briefing shown
+PASS movement tutorial follows briefing
+PASS opening completion saved
+PASS resume completed world
+PASS resume does not replay opening or briefing
+PASS resume keeps actual starting position
+SOLAR_OPENING_RESULT checks=20 failures=0

@@ -158,6 +158,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		phase="playing";lobby_ready.clear()
 		return {"ok":true,"sequence":envelope.sequence}
 	if phase!="playing":return failure("호스트가 게임을 시작한 뒤 사용할 수 있습니다.")
+	if FrontierSolarOpening.active(world.crew.navigation) and envelope.kind!="ready":return failure("태양계 출항 연출이 끝난 뒤 조작하세요.")
 	var sequence:=int(envelope.sequence)
 	var key: String=actor+":"+str(sequence)
 	var digest:=JSON.stringify({"kind":envelope.kind,"args":envelope.args,"revision":envelope.get("revision")},"",true).sha256_text()

@@ -53,5 +53,31 @@
     "departure_clearance": 220,
     "departure_direction_steps": 12,
     "departure_directions_per_ring": 16
+  },
+  "solar_opening": {
+    "duration": 8.0,
+    "hold": 1.2,
+    "move_end": 6.5,
+    "turn_start": 3.0,
+    "turn_end": 7.4,
+    "start_distance": 1800.0,
+    "view_radii": [
+      26000.0,
+      36000.0
+    ],
+    "elevations": [
+      14000.0,
+      22000.0,
+      30000.0
+    ],
+    "view_samples": 48,
+    "focus_fraction": 0.65,
+    "clearance": 1200.0,
+    "camera_start": [
+      0.0,
+      28.0,
+      110.0
+    ],
+    "fov": 72.0
   }
 }
