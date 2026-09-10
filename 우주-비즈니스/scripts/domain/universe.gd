@@ -213,10 +213,10 @@ static func validate_world(value: Variant) -> String:
 			if FrontierFreightSalvage.definition(m,id).is_empty():return "운항 항로에 없는 화물 기록"
 		var landing_error: String=FrontierCrewSurface.validate_world(value)
 		if not landing_error.is_empty():return landing_error
-	var clue_error:=FrontierCooperTechClues.validate(value)
-	if not clue_error.is_empty():return clue_error
 	var incident_error:=FrontierExplorationIncidents.validate(value)
 	if not incident_error.is_empty():return incident_error
+	var clue_error:=FrontierCooperTechClues.validate(value)
+	if not clue_error.is_empty():return clue_error
 	var discovery_error:=FrontierExplorationDiscoveries.validate(value)
 	if not discovery_error.is_empty():return discovery_error
 	var research_error:=FrontierExpeditionResearch.validate(value)

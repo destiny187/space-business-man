@@ -48,3 +48,5 @@ ID는 `freight-v1:<system>`이다. 출처는 해당 항로의 첫 CARRIER이고,
 [유실 포드 INK](media/freight-salvage/lost_freight_pod-ink.png) · [회수 거치대 INK](media/freight-salvage/freight_cradle-ink.png) · [인계 설비 INK](media/freight-salvage/freight_receiver-ink.png)
 
 [윈치 회수](media/freight-salvage/freight-winch-hud.png) · [선체 적재](media/freight-salvage/freight-on-ship-game.png) · [항만 인계](media/freight-salvage/freight-received-game.png) · [J 도감](media/freight-salvage/freight-journal-960.png) · [인계 기록](media/freight-salvage/freight-journal-receipt-960.png)
+
+2026-09-10 후속: SP10·SP11 구현과 SP09~11의 3개 ENet 프로세스/재접속 확인은 [완료 기록](121-corporate-presence-completion.md)을 따른다. 위 제외·미확인 표기는 SP09 당시의 범위다.

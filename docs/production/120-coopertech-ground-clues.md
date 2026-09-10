@@ -20,3 +20,5 @@ SP02의 Blender 원본 `art/blender/incidents/robot.blend`, 내보낸 robot GLB�
 - `check_coopertech_clues_play.gd`: 실제 Forward+ 원정 22개 확인. J/960px·행성지도·방향 표식·동일 로봇 기동/조준·기존 음원 재생·장비 발사/실제 F 회수·원본 단서 종결·저장/재로드. 장거리 이동은 접근 위치를 설정했다.
 - 로봇 미리보기의 정면/크기를 보완한 후 J/지도만 재확인했다. 대표 캡처는 `media/coopertech-clues/`에 둔다.
 - 전체 지상 기본 루프·T4/T5·전체 시드/장시간 성능 검사는 수행하지 않았다. SP09~11 다중 클라이언트/재접속은 후속 통합 기록에 둔다.
+
+2026-09-10 후속: 실제 원격 승무원의 우주 조사·동일 로봇 교전/회수·공동 단서 종결·호스트 재로드를 [통합 완료 기록](121-corporate-presence-completion.md)에 연결했다.
