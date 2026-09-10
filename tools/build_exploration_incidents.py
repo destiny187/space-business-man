@@ -108,6 +108,9 @@ ids=['wreck','robot','cliff','ice','drone','generator','battery','beacon','cargo
 exports=[] if "--render-only" in sys.argv else (["robot"] if "--robot-only" in sys.argv else (["wreck","gems"] if "--update" in sys.argv else ids))
 for id in exports:
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);build(id)
+ if id=='robot':
+  import corporate_marks
+  corporate_marks.apply('robot')
  bpy.context.scene.unit_settings.system='METRIC';bpy.ops.wm.save_as_mainfile(filepath=str(OUT/(id+'.blend')))
  ink.consolidate_static_surfaces();bpy.ops.export_scene.gltf(filepath=str(GAME/(id+'.glb')),export_format='GLB',export_cameras=False,export_lights=False)
  print('INCIDENT_EXPORTED',id,flush=True)

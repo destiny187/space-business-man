@@ -35,6 +35,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(250,180);preview.size_flags_vertical=Control.SIZE_EXPAND_FILL;art.add_child(preview);preview.show_model("lotus/heron")
 	preview.camera.keep_aspect=Camera3D.KEEP_WIDTH
 	FrontierInterfaceStyle.label(art,"HERON  현장 보급선",18)
+	FrontierCorporateIdentity.add_to(art,"lotus_heron")
 	var summary:=FrontierInterfaceStyle.label(art,"신청 위치 주변에 상자를 투하합니다.\n떠나 있어도 물자는 현장에 남습니다.",13);summary.custom_minimum_size.x=250;summary.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var right:=VBoxContainer.new();right.size_flags_horizontal=Control.SIZE_EXPAND_FILL;content.add_child(right)
 	var selection:=HBoxContainer.new();selection.add_theme_constant_override("separation",8);right.add_child(selection)

@@ -337,6 +337,9 @@ def main():
     for kind in requested:
         reset()
         globals()[kind]()
+        if kind == 'miner':
+            import corporate_marks
+            corporate_marks.apply('miner')
         bpy.context.scene.unit_settings.system='METRIC'
         bpy.context.view_layer.update()
         source=SOURCE/(kind+'.blend')

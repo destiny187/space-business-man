@@ -151,7 +151,7 @@ def main():
         parts.append(f'<g transform="translate({center-45} 816) scale(.35)" color="#14242B">{primary}</g>')
     parts.extend([
         '<text x="56" y="980" fill="#AEC3C8" font-size="19">주형 ≥ 48 px · 소형 ≥ 24 px · 보호 여백 ≥ 24/256 · 심볼과 서명 모두 벡터</text>',
-        '<text x="1544" y="980" text-anchor="end" fill="#AEC3C8" font-size="19">제작안 v3 / 3D 심볼 적용 전</text>',
+        '<text x="1544" y="980" text-anchor="end" fill="#AEC3C8" font-size="19">제작안 v3 / 벡터 원본 규격</text>',
         '</g>',
     ])
     BOARD.parent.mkdir(parents=True, exist_ok=True)

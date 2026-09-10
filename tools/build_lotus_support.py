@@ -5,6 +5,8 @@ OUT=ROOT/'art/blender/lotus'; GAME=ROOT/'우주-비즈니스/assets/models/lotus
 for p in (OUT,GAME,REVIEW):p.mkdir(parents=True,exist_ok=True)
 
 def export(name):
+ import corporate_marks
+ corporate_marks.apply(name)
  bpy.context.scene.unit_settings.system='METRIC'
  bpy.ops.wm.save_as_mainfile(filepath=str(OUT/(name+'.blend')))
  ink.consolidate_static_surfaces()

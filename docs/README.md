@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-10 [SP02 기업 실물 식별](production/108-corporate-presence-sp02.md): Lotus 보급선·상자와 mine/CooperTech 로봇에 표식, 운영사/제조사 구분, E 조사·J 기업 기록·저장 호환을 연결했다. 실제 Blender/INK 렌더와 최소 지상 확인 범위는 제작 기록을 따른다.
+
 2026-09-10 [쿠퍼테크 전환](production/106-coopertech-rebrand.md): 쿠퍼가 설립하고 이끄는 전투로봇 기술회사로 설정·CT 심볼·게임 표시를 교체했다. 과거 신봉 설정은 폐기하고 기존 사건 ID/진행은 보존한다.
 
 2026-09-10 [기업 심볼 v1 · SP01](production/105-corporate-identity.md): 네 회사의 벡터 원본·워드마크·단색/소형 28개 출력과 실제 SVG 비교를 완료했다. 게임 실물/조사 연결은 SP02이며 Blender/Godot 적용 완료와 구분한다.

@@ -1,0 +1,63 @@
+{
+  "heron": {
+    "source": "art/blender/lotus/heron.blend",
+    "model": "우주-비즈니스/assets/models/lotus/heron.glb",
+    "preserved_pivots": [
+      "Anim_Rotor_-3_-1.7",
+      "Socket_Thrust_-3_-1.7",
+      "Anim_Rotor_3_-1.7",
+      "Socket_Thrust_3_-1.7",
+      "Anim_Rotor_-3_1.7",
+      "Socket_Thrust_-3_1.7",
+      "Anim_Rotor_3_1.7",
+      "Socket_Thrust_3_1.7",
+      "Anim_Clamp_-1.1",
+      "Anim_Clamp_1.1",
+      "Socket_Crate"
+    ],
+    "mesh_instances": 15,
+    "triangles": 21252,
+    "glb_bytes": 574660
+  },
+  "supply_crate": {
+    "source": "art/blender/lotus/supply_crate.blend",
+    "model": "우주-비즈니스/assets/models/lotus/supply_crate.glb",
+    "preserved_pivots": [
+      "Anim_Lid"
+    ],
+    "mesh_instances": 10,
+    "triangles": 7212,
+    "glb_bytes": 202576
+  },
+  "miner": {
+    "source": "art/blender/miner.blend",
+    "model": "우주-비즈니스/assets/models/miner.glb",
+    "preserved_pivots": [
+      "Anim_Wheel_-0.88_-0.74",
+      "Anim_Wheel_-0.88_0",
+      "Anim_Wheel_-0.88_0.74",
+      "Anim_Wheel_0.88_-0.74",
+      "Anim_Wheel_0.88_0",
+      "Anim_Wheel_0.88_0.74",
+      "ToolRotor"
+    ],
+    "mesh_instances": 33,
+    "triangles": 79192,
+    "glb_bytes": 1770588
+  },
+  "robot": {
+    "source": "art/blender/incidents/robot.blend",
+    "model": "우주-비즈니스/assets/models/incidents/robot.glb",
+    "preserved_pivots": [
+      "Anim_Leg_-1",
+      "Anim_Leg_1",
+      "Anim_Torso",
+      "Anim_Weak",
+      "Anim_Arm_-1",
+      "Anim_Arm_1"
+    ],
+    "mesh_instances": 30,
+    "triangles": 23372,
+    "glb_bytes": 582896
+  }
+}

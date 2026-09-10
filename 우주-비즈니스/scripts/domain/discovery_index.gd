@@ -5,6 +5,13 @@ const PAGE_SIZE:=24
 static func page(world: Dictionary,query: String,kind: String,body_id: String,page_index: int) -> Dictionary:
 	var entries: Array=[]
 	var needle:=query.strip_edges().to_lower()
+	if kind in ["all","corporation"]:
+		for id in FrontierCorporations.records(world):
+			var row: Dictionary=FrontierCorporations.records(world)[id]
+			var company:=FrontierCorporations.company(id)
+			if not body_id.is_empty() and row.body_id!=body_id:continue
+			if not needle.is_empty() and not (str(company.name)+" "+str(company.get("name_ko",""))+" "+str(company.role)).to_lower().contains(needle):continue
+			entries.append({"key":"corporation:"+id,"kind":"corporation","company":id,"row":row.duplicate(true),"name":company.name,"icon":"scan"})
 	for category in ["mineral","biology"]:
 		if kind!="all" and kind!=category:continue
 		var source: Dictionary=world.crew.get("survey",{}) if category=="mineral" else world.ecology.observations

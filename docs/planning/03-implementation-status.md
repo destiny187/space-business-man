@@ -1,5 +1,7 @@
 # 구현 현황과 검증
 
+2026-09-10 [SP02 기업 실물 식별](../production/108-corporate-presence-sp02.md): Lotus 보급선·상자와 mine/CooperTech 로봇에 표식, 운영사/제조사 구분, E 조사·J 기업 기록·저장 호환을 연결했다. 실제 Blender/INK 렌더와 최소 지상 확인 범위는 제작 기록을 따른다.
+
 2026-09-10 [쿠퍼테크 명칭·심볼 전환](../production/106-coopertech-rebrand.md): 사건명·회수 안내·장비 설명과 기업 벡터를 변경했다. 기존 사건 ID/보상·전투로봇 모델은 보존하며 실제 확인 범위는 전환 기록을 따른다.
 
 2026-09-10 **벡터 제작만 완료** — [기업 심볼 v1](../production/105-corporate-identity.md): 네 회사 원본·워드마크·소형/단색 출력과 SVG 렌더를 확인했다. SP02의 실제 게임 표식/조사·Blender/Godot 적용은 아직 하지 않았다.

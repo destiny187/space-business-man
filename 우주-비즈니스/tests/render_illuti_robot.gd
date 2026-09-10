@@ -1,6 +1,6 @@
 extends "res://scripts/showcase/ink_samples.gd"
 func _ready() -> void:
- samples=[{"id":"illuti_dormant_combat_robot","title":"COOPERTECH  /  COMBAT ROBOTICS","name":"폐기 전투로봇 · 경사 장갑 / 위협 센서 / 일체형 포신","model":"res://assets/models/incidents/robot.glb"}]
+ samples=[{"id":"illuti_dormant_combat_robot","title":"CooperTech  /  COMBAT ROBOTICS","name":"폐기 전투로봇 · 경사 장갑 / 위협 센서 / 일체형 포신","model":"res://assets/models/incidents/robot.glb"}]
  direction=Vector3(1.0,.45,1.9).normalized()
  super._ready()
 func capture_all() -> void:

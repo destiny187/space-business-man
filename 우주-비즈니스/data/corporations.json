@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "scan_radius": 0.8,
+  "companies": {
+    "lotus": {"name": "Lotus", "role": "개척과 현장 지원", "description": "개척 현장에 필요한 장비와 물자를 지원하는 회사. HERON 보급선으로 물자를 투하한다."},
+    "space_y": {"name": "Space Y", "role": "테라포밍과 행성 운영", "description": "행성을 복원하고 관리하는 테라포밍 기업."},
+    "coopertech": {"name": "CooperTech", "name_ko": "쿠퍼테크", "founder_ceo": "쿠퍼", "role": "전투로봇 개발·제조", "description": "쿠퍼가 설립하고 이끄는 전투로봇 기술회사. 경사 장갑과 견고한 동력부, 일체형 무장을 개발한다."},
+    "mine": {"name": "mine", "role": "자동 채집기계 제조", "description": "광물을 캐고 운반하는 자동 채집기계를 만드는 제조사. 기계의 소유·운영은 사용자가 맡는다."}
+  },
+  "assets": {
+    "lotus_crate": {"name": "Lotus 현장 보급 상자", "company": "lotus", "operator": "lotus", "manufacturer": "", "model": "lotus/supply_crate", "height": 0.8, "activity": "요청한 개척 물자를 현장에 보관", "action": "F  가까이에서 보급 수령"},
+    "lotus_heron": {"name": "HERON 현장 보급선", "company": "lotus", "operator": "lotus", "manufacturer": "", "model": "lotus/heron", "height": 3.4, "activity": "현장 접근 · 화물 투하 · 복귀", "action": "착륙 선박의 F 메뉴에서 보급 요청"},
+    "mine_miner": {"name": "mine 자동 채광로봇", "company": "mine", "operator": "crew", "manufacturer": "mine", "model": "miner", "height": 1.1, "activity": "원정대가 배정한 채집·운반 작업", "action": "로봇 관리에서 작업 배정"},
+    "coopertech_robot": {"name": "CooperTech 폐기 전투로봇", "company": "coopertech", "operator": "", "manufacturer": "coopertech", "model": "incidents/robot", "height": 1.65, "activity": "폐기 기체 · 기동과 무장에 주의", "action": "조준선을 피하고 냉각 중 코어를 공격"}
+  }
+}

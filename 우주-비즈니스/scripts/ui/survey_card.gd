@@ -27,8 +27,11 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	hide()
 func present(info: Dictionary) -> void:
 	displayed=info.duplicate(true)
+	z_index=5 if info.kind=="corporation" else 0
 	title.text=info.name;subtitle.text=info.subtitle;icon.texture=FrontierResourceIcons.texture(info.icon)
+	if info.kind=="corporation":icon.texture=load(FrontierCorporations.icon_path(info.company))
 	for child in facts.get_children():facts.remove_child(child);child.queue_free()
+	if info.has("asset"):FrontierCorporateIdentity.add_to(facts,info.asset)
 	for note in info.notes:
 		var row:=HBoxContainer.new();row.mouse_filter=Control.MOUSE_FILTER_IGNORE;facts.add_child(row)
 		var glyph:=TextureRect.new();glyph.texture=load("res://assets/ui/interface/"+str(note.icon)+".svg");glyph.custom_minimum_size=Vector2(20,20);glyph.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;glyph.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;glyph.mouse_filter=Control.MOUSE_FILTER_IGNORE;row.add_child(glyph)
@@ -50,6 +53,5 @@ func _process(delta: float) -> void:
 		timer=maxf(0,timer-delta)
 		if timer<=0:previous=""
 	visible=timer>0
-	var viewport_size:=get_viewport().get_visible_rect().size
-	position=Vector2(28,110)
-	if size.y>viewport_size.y-275:position.y=85
+	position=Vector2(28,194 if displayed.get("kind")=="corporation" else 110)
+	if displayed.get("kind")!="corporation" and size.y>get_viewport().get_visible_rect().size.y-275:position.y=85
