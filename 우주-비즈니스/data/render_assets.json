@@ -10676,5 +10676,29 @@
     "generator": "tools/build_restored_mars.py",
     "review": "docs/production/110-restored-mars-sp03.md",
     "foliage": false
+  },
+  {
+    "id": "solar_mars_port",
+    "title": "궤도 물류",
+    "name": "Space Y 화성 항만",
+    "group": "정거장",
+    "model": "res://assets/models/ships/solar_mars_port.glb",
+    "source": "art/blender/ships/solar_mars_port.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_orbital_ports.py",
+    "review": "docs/production/111-orbital-ports-sp04.md",
+    "foliage": false
+  },
+  {
+    "id": "solar_earth_logistics",
+    "title": "궤도 물류",
+    "name": "Space Y 지구 물류항",
+    "group": "정거장",
+    "model": "res://assets/models/ships/solar_earth_logistics.glb",
+    "source": "art/blender/ships/solar_earth_logistics.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_orbital_ports.py",
+    "review": "docs/production/111-orbital-ports-sp04.md",
+    "foliage": false
   }
 ]

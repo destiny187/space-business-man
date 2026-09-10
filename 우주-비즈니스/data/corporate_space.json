@@ -8,5 +8,73 @@
     "pressure": 0.92,
     "cloud": 0.38,
     "city_strength": 0.32
+  },
+  "ports": {
+    "version": 1,
+    "sites": {
+      "solar_mars_port": {
+        "name": "Space Y 화성 항만",
+        "short_name": "MARS Y-01",
+        "body": 3,
+        "clearance": 2600,
+        "phase": 0.7,
+        "period": 1800,
+        "altitude": 500,
+        "goods": {
+          "iron": {
+            "stock": 80,
+            "price": 10,
+            "capacity": 180
+          },
+          "copper": {
+            "stock": 60,
+            "price": 14,
+            "capacity": 140
+          },
+          "stone": {
+            "stock": 60,
+            "price": 6,
+            "capacity": 160
+          },
+          "ice": {
+            "stock": 100,
+            "price": 10,
+            "capacity": 200
+          }
+        }
+      },
+      "solar_earth_logistics": {
+        "name": "Space Y 지구 물류항",
+        "short_name": "EARTH Y-02",
+        "body": 2,
+        "clearance": 2800,
+        "phase": 2.2,
+        "period": 2100,
+        "altitude": 600,
+        "goods": {
+          "iron": {
+            "stock": 100,
+            "price": 10,
+            "capacity": 180
+          },
+          "copper": {
+            "stock": 80,
+            "price": 14,
+            "capacity": 140
+          },
+          "stone": {
+            "stock": 100,
+            "price": 6,
+            "capacity": 160
+          },
+          "ice": {
+            "stock": 60,
+            "price": 10,
+            "capacity": 200
+          }
+        }
+      }
+    },
+    "sale_ratio": 0.4
   }
 }

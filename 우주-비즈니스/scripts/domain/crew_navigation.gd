@@ -12,6 +12,8 @@ static func validate(value: Variant) -> String:
 	if not FrontierUniverse._finite(value.get("speed"),-10000,10000) or not FrontierUniverse._finite(value.get("jump_left"),0,120):return "공동 항해 속도 오류"
 	if value.has("first_stellar_system") and not FrontierExpeditionBusiness.integer(value.first_stellar_system,0,249999):return "첫 성간 목적지 오류"
 	if value.has("station_target") and not value.station_target is bool:return "정거장 항로 오류"
+	for key in ["station_id","station_docked"]:
+		if value.has(key) and (not value[key] is String or value[key].length()>48):return "항만 주소 형식 오류"
 	if value.has("transit"):
 		var route: Variant=value.transit
 		if not route is Dictionary:return "성간 항로 형식 오류"
@@ -58,7 +60,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if nav.mode=="jump" and float(nav.get("energy",100.0))<energy_cost:return "고속 추진 에너지를 충전 중입니다. 잠시 기다려 주세요."
 		if nav.mode=="jump" and not nav.has("first_stellar_system") and int(nav.system)==0:nav.first_stellar_system=FrontierUniverse.system_index(world.manifest,int(nav.target))
 		if nav.mode=="jump":nav.energy=float(nav.get("energy",100.0))-energy_cost
-		nav.station_target=false;nav.manual=false;nav.boundary=false;nav.boosting=false
+		nav.erase("station_docked");nav.station_target=false;nav.manual=false;nav.boundary=false;nav.boosting=false
 		nav.jump_left=float(world.manifest.settings.flight.get("transit_seconds",12.0)) if nav.mode=="jump" else 0.0
 		if nav.mode=="jump":
 			var source:=FrontierUniverse.system(world.manifest,int(nav.system))
@@ -87,6 +89,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 	var old_time: float=float(nav.get("orbit_time",0))
 	nav.orbit_time=old_time+delta
 	if nav.mode=="approach" and nav.get("station_target",false):return FrontierSpaceStation.step_approach(world,delta)
+	if FrontierSpaceStation.drift_docked(world,old_time):return false
 	if nav.mode=="idle" and nav.get("manual",false):return false
 	if nav.mode=="idle":
 		# Keep the vessel in its current body's reference frame even when another target is selected.
@@ -176,6 +179,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if float(controls[0])==0 and float(controls[1])==0 and float(controls[2])==0 and not nav.get("manual",false):return
 	for member in world.crew.members.values():
 		if member.get("connected",true) and not member.aboard:return
+	if float(controls[0])!=0:nav.erase("station_docked")
 	nav.manual=true
 	var cfg: Dictionary=world.manifest.settings.flight
 	var direction:=FrontierCrewWorld.vector(nav.direction).normalized()
@@ -202,8 +206,8 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if end.length()>boundary:end=end.limit_length(boundary);nav.speed=0
 	# Swept sphere checks stop even high speed frames before a celestial surface.
 	var obstacles: Array=[{"point":Vector3.ZERO,"radius":float(FrontierUniverse.star_settings(world.manifest,int(nav.system)).star_radius)+150}]
-	var station:=FrontierSpaceStation.definition(world.manifest,int(nav.system),int(nav.get("first_stellar_system",-1)))
-	if not station.is_empty():obstacles.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)+80})
+	for station in FrontierSpaceStation.all(world.manifest,int(nav.system),int(nav.get("first_stellar_system",-1)),float(nav.orbit_time)):
+		obstacles.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)+80})
 	for i in FrontierUniverse.body_count(world.manifest,int(nav.system)):
 		var ordinal: int=FrontierUniverse.first_ordinal(world.manifest,int(nav.system))+i
 		var body:=FrontierUniverse.body(world.manifest,ordinal)
@@ -297,8 +301,10 @@ static func departure_obstacles(manifest: Dictionary,index: int,elapsed: float,d
 			var offset:=FrontierUniverse.moon_offset(body,moon,elapsed)
 			var movement:=offset.distance_to(FrontierUniverse.moon_offset(body,moon,elapsed+horizon))
 			result.append({"point":center+offset,"radius":FrontierUniverse.moon_radius(body,moon)+drift+movement})
-	var station:=FrontierSpaceStation.definition(manifest,index)
-	if not station.is_empty():result.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)})
+	for station in FrontierSpaceStation.all(manifest,index,-1,elapsed):
+		var later:=FrontierSpaceStation.definition(manifest,index,-1,elapsed+horizon,station.id)
+		var drift:=FrontierCrewWorld.vector(station.position).distance_to(FrontierCrewWorld.vector(later.position))
+		result.append({"point":FrontierCrewWorld.vector(station.position),"radius":float(FrontierSpaceStation.config().radius)+drift})
 	return result
 static func departure_clear(origin: Vector3,direction: Vector3,obstacles: Array) -> bool:
 	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition

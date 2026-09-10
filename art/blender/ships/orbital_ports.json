@@ -1,0 +1,32 @@
+[
+  {
+    "id": "solar_mars_port",
+    "source": "art/blender/ships/solar_mars_port.blend",
+    "model": "res://assets/models/ships/solar_mars_port.glb",
+    "generator": "tools/build_orbital_ports.py",
+    "meshes": 14,
+    "triangles": 90000,
+    "sha256": "748f184f7819103786922d15d9c3aa066852a9b50fa3b2d68761f60848834380",
+    "pivots": [
+      "Anim_Crane_-1",
+      "Socket_Berth_-1",
+      "Anim_Crane_1",
+      "Socket_Berth_1"
+    ]
+  },
+  {
+    "id": "solar_earth_logistics",
+    "source": "art/blender/ships/solar_earth_logistics.blend",
+    "model": "res://assets/models/ships/solar_earth_logistics.glb",
+    "generator": "tools/build_orbital_ports.py",
+    "meshes": 14,
+    "triangles": 63664,
+    "sha256": "29b5b27c793ce347074bbbd09918be4ec3db38f467ae44ab694a15ee9203a25e",
+    "pivots": [
+      "Anim_Crane_-1",
+      "Socket_Berth_-1",
+      "Anim_Crane_1",
+      "Socket_Berth_1"
+    ]
+  }
+]

@@ -5,8 +5,10 @@ static var stations: Dictionary={}
 static func config() -> Dictionary:
  if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/space_stations.json"))
  return _config
-static func definition(m: Dictionary,index: int,excluded: int=-1) -> Dictionary:
+static func definition(m: Dictionary,index: int,excluded: int=-1,elapsed: float=0.0,station_id: String="") -> Dictionary:
  if index==excluded:return {}
+ if index==0:return FrontierOrbitalPorts.definition(m,"solar_mars_port" if station_id.is_empty() else station_id,elapsed)
+ if not station_id.is_empty() and station_id!=str(index):return {}
  var key: String=m.id+":"+str(index)
  if stations.has(key):return stations[key]
  var result: Dictionary={}
@@ -18,9 +20,23 @@ static func definition(m: Dictionary,index: int,excluded: int=-1) -> Dictionary:
   result={"id":str(index),"name":"WAYFARER %03d"%(seed_value%1000),"position":[point.x,point.y,point.z],"seed":seed_value}
  stations[key]=result
  return result
-static func market(m: Dictionary,index: int) -> Dictionary:
- var station:=definition(m,index)
+static func all(m: Dictionary,index: int,excluded: int=-1,elapsed: float=0.0) -> Array:
+ if index==excluded:return []
+ if index==0:return FrontierOrbitalPorts.all(m,elapsed)
+ var station:=definition(m,index,excluded,elapsed)
+ return [] if station.is_empty() else [station]
+static func current(m: Dictionary,nav: Dictionary,station_id: String="") -> Dictionary:
+ if station_id.is_empty() and (nav.get("station_target",false) or not str(nav.get("station_docked","")).is_empty()):station_id=str(nav.get("station_id",nav.get("station_docked","")))
+ if not station_id.is_empty():return definition(m,int(nav.system),int(nav.get("first_stellar_system",-1)),float(nav.orbit_time),station_id)
+ var best: Dictionary={};var distance:=INF
+ for station in all(m,int(nav.system),int(nav.get("first_stellar_system",-1)),float(nav.orbit_time)):
+  var gap:=FrontierCrewWorld.vector(nav.position).distance_squared_to(FrontierCrewWorld.vector(station.position))
+  if gap<distance:best=station;distance=gap
+ return best
+static func market(m: Dictionary,index: int,station_id: String="") -> Dictionary:
+ var station:=definition(m,index,-1,0.0,station_id)
  if station.is_empty():return {}
+ if station.get("fixed_port",false):return FrontierOrbitalPorts.market(station)
  var stock: Dictionary={};var prices: Dictionary={}
  for id in config().goods:
   var row: Dictionary=config().goods[id]
@@ -34,30 +50,34 @@ static func market(m: Dictionary,index: int) -> Dictionary:
  return {"stock":stock,"prices":prices}
 static func snapshot(world: Dictionary) -> Dictionary:
  var index:=int(world.crew.navigation.system)
- var station:=definition(world.manifest,index,int(world.crew.navigation.get("first_stellar_system",-1))).duplicate(true)
+ var station:=current(world.manifest,world.crew.navigation).duplicate(true)
  if station.is_empty():return {}
- var offers:=market(world.manifest,index)
- station.stock=world.get("station_markets",{}).get(str(index),offers.stock).duplicate(true)
+ var offers:=market(world.manifest,index,station.id)
+ station.stock=world.get("station_markets",{}).get(station.id,offers.stock).duplicate(true)
  station.prices=offers.prices
+ station.sale_ratio=offers.get("sale_ratio",config().sale_ratio)
+ station.capacities=offers.get("capacities",{})
+ station.services={"goods":true,"ships":not station.get("fixed_port",false),"blueprints":not station.get("fixed_port",false),"owned":true}
+ if station.get("fixed_port",false):station.blueprints=[]
  station.credits=int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits))
  return station
 static func hull(vessel: Dictionary) -> Dictionary:return config().hulls.get(vessel.get("hull","kestrel"),config().hulls.kestrel)
-static func available(world: Dictionary) -> bool:
+static func available(world: Dictionary,station: Dictionary={}) -> bool:
  if FrontierCrewSurface.landed(world) or world.crew.navigation.mode!="idle" or absf(float(world.crew.navigation.speed))>5:return false
- var station:=definition(world.manifest,int(world.crew.navigation.system),int(world.crew.navigation.get("first_stellar_system",-1)))
+ if station.is_empty():station=current(world.manifest,world.crew.navigation)
  return not station.is_empty() and FrontierCrewWorld.vector(world.crew.navigation.position).distance_to(FrontierCrewWorld.vector(station.position))<=float(config().trade_distance)
 static func apply(world: Dictionary,actor: String,action: String,args: Dictionary,active: Dictionary) -> String:
  var nav: Dictionary=world.crew.navigation
- var station:=definition(world.manifest,int(nav.system),int(nav.get("first_stellar_system",-1)))
+ var station:=current(world.manifest,nav,str(args.get("station","")))
  if station.is_empty() or FrontierCrewSurface.landed(world):return "이 항성계에는 교역 가능한 정거장이 없습니다."
  if action=="station_approach":
   if actor!=world.crew.pilot_id or nav.mode!="idle":return "대기 중인 조종사만 정거장 접근을 시작할 수 있습니다."
   for id in active.values():
    if not world.crew.members[id].aboard or not world.crew.members[id].ready:return "승무원 모두 승선·준비한 뒤 접근하세요."
-  nav.station_target=true;nav.mode="approach";nav.manual=false;nav.boosting=false
+  nav.station_id=station.id;nav.erase("station_docked");nav.station_target=true;nav.mode="approach";nav.manual=false;nav.boosting=false
   return ""
  if actor!=world.crew.owner_id:return "공동 자금 거래와 선체 교체는 호스트가 확정합니다."
- if not available(world):return "정거장 가까이 접근한 뒤 정지하세요."
+ if not available(world,station):return "정거장 가까이 접근한 뒤 정지하세요."
  for id in active.values():
   if not world.crew.members[id].aboard:return "승무원이 모두 승선한 상태에서 거래하세요."
  if not world.has("business"):world.business=FrontierExpeditionBusiness.create()
@@ -65,7 +85,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
  if not world.has("vessel"):world.vessel=FrontierVesselRefit.create(int(world.manifest.seed),world.crew.world_id)
  var vessel: Dictionary=world.vessel
  if not vessel.has("hulls"):vessel.hulls=["kestrel"];vessel.hull="kestrel"
- var offers:=market(world.manifest,int(nav.system))
+ var offers:=market(world.manifest,int(nav.system),station.id)
  if not world.has("station_markets"):world.station_markets={}
  if not world.station_markets.has(station.id):world.station_markets[station.id]=offers.stock.duplicate()
  var stock: Dictionary=world.station_markets[station.id]
@@ -73,6 +93,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
  var amount: Variant=args.get("amount",1)
  if not FrontierExpeditionBusiness.integer(amount,1,1000):return "거래 수량을 확인하세요."
  var count:=int(amount)
+ if station.get("fixed_port",false) and action not in ["station_buy","station_sell","station_equip"]:return "이 물류항은 기초 물자만 거래합니다."
  match action:
   "station_equip":
    if id not in vessel.hulls:return "먼저 구매한 선체를 선택하세요."
@@ -97,17 +118,22 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
      world.business.credits-=price*count;stock[id]-=count;bag[id]=int(bag.get(id,0))+count
     else:
      if int(bag.get(id,0))<count:return "판매할 개인 화물이 부족합니다."
-     if int(stock[id])+count>int(config().max_stock):return "정거장이 해당 물품을 더 매입할 수 없습니다."
-     bag[id]-=count;stock[id]+=count;world.business.credits+=maxi(1,floori(price*float(config().sale_ratio)))*count
+     if int(stock[id])+count>int(offers.get("capacities",{}).get(id,config().max_stock)):return "정거장이 해당 물품을 더 매입할 수 없습니다."
+     bag[id]-=count;stock[id]+=count;world.business.credits+=maxi(1,floori(price*float(offers.get("sale_ratio",config().sale_ratio))))*count
   _:return "지원하지 않는 정거장 거래입니다."
+ if station.get("fixed_port",false):
+  nav.station_id=station.id;nav.station_docked=station.id;identify(world,station)
  for member in world.crew.members.values():member.ready=false
  return ""
 static func step_approach(world: Dictionary,delta: float) -> bool:
  var nav: Dictionary=world.crew.navigation
- var station:=definition(world.manifest,int(nav.system),int(nav.get("first_stellar_system",-1)))
+ var station:=current(world.manifest,nav)
  if station.is_empty():nav.mode="idle";nav.station_target=false;return true
  var target:=FrontierCrewWorld.vector(station.position)
  var point:=FrontierCrewWorld.vector(nav.position)
+ if station.get("fixed_port",false):
+  var previous:=definition(world.manifest,int(nav.system),-1,maxf(0,float(nav.orbit_time)-delta),station.id)
+  point+=target-FrontierCrewWorld.vector(previous.position)
  var direction: Vector3=(target-point).normalized()
  # Route above the orbital plane and stellar hazard instead of crossing the star.
  var segment:=target-point
@@ -136,16 +162,41 @@ static func step_approach(world: Dictionary,delta: float) -> bool:
  nav.position=FrontierExpeditionBusiness.array(point);nav.direction=FrontierExpeditionBusiness.array(direction);world.flight_position=nav.position.duplicate()
  if gap>3:return false
  nav.mode="idle";nav.manual=true;nav.station_target=false;nav.speed=0
+ if station.get("fixed_port",false):nav.station_docked=station.id;identify(world,station)
  for member in world.crew.members.values():member.ready=false
  return true
+static func identify(world: Dictionary,station: Dictionary) -> void:
+ if not station.get("fixed_port",false):return
+ var row:=FrontierCorporations.candidate("space_y_port" if int(station.body)==3 else "space_y_earth_port",station.id,station.position,FrontierUniverse.body_id(world.manifest,int(station.body)))
+ FrontierCorporations.record(world,row)
+static func drift_docked(world: Dictionary,old_time: float) -> bool:
+ var nav: Dictionary=world.crew.navigation
+ var id: String=nav.get("station_docked","")
+ if id.is_empty() or nav.mode!="idle":return false
+ var station:=definition(world.manifest,int(nav.system),-1,float(nav.orbit_time),id)
+ if station.is_empty():nav.erase("station_docked");return false
+ var previous:=definition(world.manifest,int(nav.system),-1,old_time,id)
+ var point:=FrontierCrewWorld.vector(nav.position)+FrontierCrewWorld.vector(station.position)-FrontierCrewWorld.vector(previous.position)
+ nav.position=FrontierExpeditionBusiness.array(point);world.flight_position=nav.position.duplicate();nav.speed=0
+ return true
 static func validate(world: Dictionary) -> String:
+ var nav: Dictionary=world.get("crew",{}).get("navigation",{})
+ if not str(nav.get("station_docked","")).is_empty():
+  var id: String=nav.station_docked
+  if nav.get("mode")!="idle" or nav.get("station_id")!=id or not FrontierOrbitalPorts.BODIES.has(id):return "접안 기준 주소 오류"
+  var station:=current(world.manifest,nav,id)
+  if station.is_empty() or not available(world,station):return "접안 위치 오류"
  var markets: Variant=world.get("station_markets",{})
- if not markets is Dictionary or markets.size()>125000:return "정거장 장부 구조 오류"
+ if not markets is Dictionary or markets.size()>125002:return "정거장 장부 구조 오류"
  for key in markets:
-  if not key is String or not key.is_valid_int() or str(int(key))!=key or int(key)<0 or int(key)>FrontierUniverse.system_index(world.manifest,int(world.manifest.settings.planet_count)-1):return "정거장 주소 오류"
-  var original:=market(world.manifest,int(key))
+  if not key is String:return "정거장 주소 오류"
+  var index:=0
+  if not FrontierOrbitalPorts.BODIES.has(key):
+   if not key.is_valid_int() or str(int(key))!=key or int(key)<0 or int(key)>FrontierUniverse.system_index(world.manifest,int(world.manifest.settings.planet_count)-1):return "정거장 주소 오류"
+   index=int(key)
+  var original:=market(world.manifest,index,key)
   var stock: Variant=markets[key]
-  if definition(world.manifest,int(key),int(world.get("crew",{}).get("navigation",{}).get("first_stellar_system",-1))).is_empty() or original.is_empty() or not stock is Dictionary or stock.size()!=original.stock.size():return "정거장 재고 구조 오류"
+  if definition(world.manifest,index,int(nav.get("first_stellar_system",-1)),0,key).is_empty() or original.is_empty() or not stock is Dictionary or stock.size()!=original.stock.size():return "정거장 재고 구조 오류"
   for id in stock:
-   if not original.stock.has(id) or not FrontierExpeditionBusiness.integer(stock[id],0,1 if id.begins_with("hull:") else int(config().max_stock)):return "정거장 재고 수량 오류"
+   if not original.stock.has(id) or not FrontierExpeditionBusiness.integer(stock[id],0,1 if id.begins_with("hull:") else int(original.get("capacities",{}).get(id,config().max_stock))):return "정거장 재고 수량 오류"
  return ""

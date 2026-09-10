@@ -94,6 +94,7 @@ func update_snapshot(value: Dictionary) -> void:
 		welcome_text.text=default_letter
 		if FrontierUniverse.restored_mars(FrontierUniverse.body(app.session.manifest,3)):
 			welcome_text.text=default_letter.replace("태양계는 보호 대상이라 착륙 / 테라포밍할 수 없습니다.","화성은 Space Y가 복원해 관리하고 있습니다.\n태양계 지표는 착륙·개발이 제한됩니다.")
+			if not FrontierOrbitalPorts.rules(app.session.manifest).is_empty():welcome_text.text=welcome_text.text.replace("행성을 잠시 바라보면 스캔 결과가 나타납니다.","행성을 잠시 바라보면 스캔 결과가 나타납니다.\n지구·화성 항만은 Tab 지도에서 선택해 교역하세요.")
 		if int(value.crew.navigation.system) == 0 and value.crew.get("landing", {}).is_empty() and not bool(welcome_seen.get_value("read", welcome_key, false)):
 			letter.show()
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

@@ -11,6 +11,8 @@
     "lotus_crate": {"name": "Lotus 현장 보급 상자", "company": "lotus", "operator": "lotus", "manufacturer": "", "model": "lotus/supply_crate", "height": 0.8, "activity": "요청한 개척 물자를 현장에 보관", "action": "F  가까이에서 보급 수령"},
     "lotus_heron": {"name": "HERON 현장 보급선", "company": "lotus", "operator": "lotus", "manufacturer": "", "model": "lotus/heron", "height": 3.4, "activity": "현장 접근 · 화물 투하 · 복귀", "action": "착륙 선박의 F 메뉴에서 보급 요청"},
     "mine_miner": {"name": "mine 자동 채광로봇", "company": "mine", "operator": "crew", "manufacturer": "mine", "model": "miner", "height": 1.1, "activity": "원정대가 배정한 채집·운반 작업", "action": "로봇 관리에서 작업 배정"},
-    "coopertech_robot": {"name": "CooperTech 폐기 전투로봇", "company": "coopertech", "operator": "", "manufacturer": "coopertech", "model": "incidents/robot", "height": 1.65, "activity": "폐기 기체 · 기동과 무장에 주의", "action": "조준선을 피하고 냉각 중 코어를 공격"}
+    "coopertech_robot": {"name": "CooperTech 폐기 전투로봇", "company": "coopertech", "operator": "", "manufacturer": "coopertech", "model": "incidents/robot", "height": 1.65, "activity": "폐기 기체 · 기동과 무장에 주의", "action": "조준선을 피하고 냉각 중 코어를 공격"},
+    "space_y_port": {"name": "Space Y 화성 항만", "company": "space_y", "operator": "space_y", "manufacturer": "", "model": "ships/solar_mars_port", "height": 0.0, "activity": "복원된 화성의 환경 유지와 지구 물자 교역을 지원합니다.", "action": "태양계 항만에 접근·정지한 뒤 F로 교역합니다."},
+    "space_y_earth_port": {"name": "Space Y 지구 물류항", "company": "space_y", "operator": "space_y", "manufacturer": "", "model": "ships/solar_earth_logistics", "height": 0.0, "activity": "복원된 화성의 환경 유지와 지구 물자 교역을 지원합니다.", "action": "태양계 항만에 접근·정지한 뒤 F로 교역합니다."}
   }
 }

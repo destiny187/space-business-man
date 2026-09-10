@@ -1,6 +1,6 @@
 extends Control
 signal selected(ordinal: int)
-signal station_selected(index: int)
+signal station_selected(index: int,station_id: String)
 signal route_selected(ordinal: int)
 var stellar_range:=8.0
 var nearby_only:=false
@@ -118,13 +118,12 @@ func _draw() -> void:
 	else:
 		draw_circle(center,9,Color("ffe2a3"))
 		var count: int=FrontierUniverse.body_count(manifest,system_index)
-		var station:=FrontierSpaceStation.definition(manifest,system_index,station_excluded)
-		if not station.is_empty():
+		for station in FrontierSpaceStation.all(manifest,system_index,station_excluded,elapsed):
 			var factor: float=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
 			var point:=center+Vector2(station.position[0],station.position[2])*factor
 			draw_rect(Rect2(point-Vector2(5,5),Vector2(10,10)),Color("ffc180"),false,2)
-			if not compact:draw_string(font,point+Vector2(9,0),"정거장",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ffc180"))
-			hits.append({"point":point,"station":system_index,"ordinal":-1})
+			if not compact:draw_string(font,point+Vector2(9,-12),station.get("short_name","정거장"),HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ffc180"))
+			hits.append({"point":point,"station":system_index,"station_id":station.id,"ordinal":-1})
 		for i in count:
 			var ordinal:=FrontierUniverse.first_ordinal(manifest,system_index)+i
 			var body:=FrontierUniverse.body(manifest,ordinal)
@@ -178,7 +177,7 @@ func _gui_input(event: InputEvent) -> void:
 			if galaxy:
 				route_system=FrontierUniverse.system_index(manifest,int(best.ordinal));route_selected.emit(int(best.ordinal));queue_redraw();accept_event();return
 			galaxy=false;reset_view()
-			if best.has("station"):station_selected.emit(int(best.station))
+			if best.has("station"):station_selected.emit(int(best.station),str(best.station_id))
 			else:selected.emit(int(best.ordinal))
 			queue_redraw();accept_event()
 

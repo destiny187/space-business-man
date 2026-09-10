@@ -302,3 +302,5 @@
 - [UI 밝은 배경 투명화·행성 티어 BGM](production/102-transparent-ui-and-planet-music.md): PNG 투명 재렌더·T1~T5 음악 제작·연결·확인 범위.
 
 - [SP03 Space Y 복원 화성](production/110-restored-mars-sp03.md) — 신규 세계 복원 외형·운영 정보, 기존 저장 보존.
+
+- [SP04 화성 항만·지구 물류항](production/111-orbital-ports-sp04.md) — 궤도 접근/정지·독립 기초 물자 교역·실제 Space Y 식별.

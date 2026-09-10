@@ -178,6 +178,7 @@ static func validate_world(value: Variant) -> String:
 		if mars.get("operator")!="space_y" or mars.get("state")!="restored" or mars.get("access")!="orbital_only" or mars.get("visual")!="mars_restored":return "화성 관리 설정 오류"
 		for field in ["pressure","cloud","city_strength"]:
 			if not _finite(mars.get(field),0,1):return "화성 환경 표현 설정 오류"
+		if corporate.has("ports") and not FrontierOrbitalPorts.valid(corporate.ports):return "태양계 물류항 설정 오류"
 	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
 	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전·설정 오류"
 	if m.settings.has("system_rules"):
@@ -209,7 +210,7 @@ static func validate_world(value: Variant) -> String:
 		var ecology_error: String=FrontierEcology.validate(value.ecology,m)
 		if not ecology_error.is_empty():return ecology_error
 	if value.has("engineering") and not value.engineering is Dictionary:return "현장 연구 형식 오류"
-	if value.has("station_markets"):
+	if value.has("station_markets") or value.get("crew",{}).get("navigation",{}).has("station_docked"):
 		var station_error:=FrontierSpaceStation.validate(value)
 		if not station_error.is_empty():return station_error
 	if value.has("vessel"):

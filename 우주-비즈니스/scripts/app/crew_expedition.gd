@@ -1065,10 +1065,11 @@ func _refresh_scan_detail() -> void:
 func open_trade_station() -> void:
 	station_market.update_snapshot(session.latest)
 	if station_market.in_range():open_menu(station_market)
-func approach_trade_station() -> void:
+func approach_trade_station(station_id: String="") -> void:
 	if session.latest.crew.navigation.mode!="idle":return
 	if session.offline:session.send_request("ready",{"value":true})
-	session.send_request("station_approach",{});close_menus()
+	if station_id.is_empty() and flight!=null:station_id=flight.station_in_sight()
+	session.send_request("station_approach",{"station":station_id});close_menus()
 
 static func _swim_vertical(direction: Vector2,aim: Vector3) -> float:
 	return direction.dot(Vector2(aim.x,aim.z).normalized())*aim.y

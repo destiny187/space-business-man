@@ -11,8 +11,8 @@ static func read(manifest: Dictionary,nav: Dictionary) -> Dictionary:
 	result.name=body.name
 	result.same_system=FrontierUniverse.system_index(manifest,ordinal)==int(nav.system)
 	if nav.mode=="jump":result.eta=float(nav.jump_left);return result
-	if nav.get("station_target",false):
-		var station:=FrontierSpaceStation.definition(manifest,int(nav.system),int(nav.get("first_stellar_system",-1)))
+	if nav.get("station_target",false) or not str(nav.get("station_docked","")).is_empty():
+		var station:=FrontierSpaceStation.current(manifest,nav)
 		if not station.is_empty():
 			var offset:=FrontierCrewWorld.vector(station.position)-FrontierCrewWorld.vector(nav.position)
 			result.name=station.name;result.same_system=true

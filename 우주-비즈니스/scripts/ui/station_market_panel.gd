@@ -9,6 +9,8 @@ var pending:=false
 var pending_sequence: int=-1
 var pending_kind: String=""
 var heading: Label
+var operator_mark: TextureRect
+var service_tabs: Dictionary={}
 var money: Label
 var message: Label
 var browser: FrontierItemBrowser
@@ -38,13 +40,14 @@ func _ready() -> void:
  add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,18))
  var column:=VBoxContainer.new();column.add_theme_constant_override("separation",8);add_child(column)
  var header:=HBoxContainer.new();column.add_child(header)
+ operator_mark=TextureRect.new();operator_mark.custom_minimum_size=Vector2(32,32);operator_mark.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;operator_mark.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;header.add_child(operator_mark);operator_mark.hide()
  heading=label(header,"WAYFARER  교역",24);heading.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  money=label(header,"",18);money.autowrap_mode=TextServer.AUTOWRAP_OFF;money.custom_minimum_size.x=120;money.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
  button(header,"닫기  Esc",hide)
  var tabs:=HBoxContainer.new();column.add_child(tabs)
  for tab in [["goods","물자 거래"],["ships","선체 구매"],["owned","보유 선체"]]:
   var key: String=tab[0]
-  button(tabs,tab[1],func():mode=key;selected="";rebuild())
+  service_tabs[key]=button(tabs,tab[1],func():mode=key;selected="";rebuild())
  browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품  선체 이름 검색";browser.changed.connect(rebuild)
  sale_only=CheckButton.new();sale_only.text="내가 판매할 수 있는 물자";column.add_child(sale_only);sale_only.toggled.connect(func(_v):rebuild())
  var body:=HBoxContainer.new();body.add_theme_constant_override("separation",24);body.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(body)
@@ -84,7 +87,8 @@ func button(parent: Node,text_value: String,callback: Callable) -> Button:
  var node:=Button.new();node.text=text_value;node.custom_minimum_size.y=38;node.pressed.connect(callback);parent.add_child(node);return node
 func update_snapshot(value: Dictionary) -> void:
  data=value
- var next:=FrontierUniverse.fingerprint({"station":value.get("station",{}),"inventory":value.get("inventory",{}),"vessel":value.get("vessel",{})})
+ var signature: Dictionary=value.get("station",{}).duplicate(true);signature.erase("position")
+ var next:=FrontierUniverse.fingerprint({"station":signature,"inventory":value.get("inventory",{}),"vessel":value.get("vessel",{})})
  if next!=last_state:last_state=next;rebuild()
  # The host can move while another crew member is inspecting the market.
  if visible and (value.get("station",{}).is_empty() or not in_range()):hide()
@@ -96,6 +100,12 @@ func rebuild() -> void:
  if grid==null:return
  for node in grid.get_children():grid.remove_child(node);node.queue_free()
  var station: Dictionary=data.get("station",{})
+ var services: Dictionary=station.get("services",{})
+ for key in service_tabs:service_tabs[key].visible=services.get(key,true)
+ if not services.get(mode,true):mode="goods";selected=""
+ var operator: String=station.get("operator","")
+ operator_mark.visible=not operator.is_empty()
+ if operator_mark.visible:operator_mark.texture=load(FrontierCorporations.icon_path(operator));operator_mark.tooltip_text=FrontierCorporations.name_of(operator)+" 운영"
  heading.text=str(station.get("name","WAYFARER"))+"  교역"
  money.text="%s Cr"%int(station.get("credits",0))
  var items: Array=[]
@@ -141,14 +151,15 @@ func refresh_detail() -> void:
  buy.show()
  var count:=int(quantity.value)
  if mode=="goods":
-  var price:=int(station.prices[selected]);var sale:=maxi(1,floori(price*float(FrontierSpaceStation.config().sale_ratio)))
+  var price:=int(station.prices[selected]);var sale:=maxi(1,floori(price*float(station.get("sale_ratio",FrontierSpaceStation.config().sale_ratio))))
   title_label.text=FrontierCatalog.entry("resources",selected).name
   role.text=("상점 재고 %d"%int(station.stock[selected]) if int(station.stock[selected])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[selected]) if int(data.get("inventory",{}).get(selected,0))>0 else "")
   unit_price.text="개당 구매 %d Cr  판매 %d Cr"%[price,sale]
+  if station.get("fixed_port",false):unit_price.text+="\n항만 추가 매입 가능 %d개"%maxi(0,int(station.capacities[selected])-int(station.stock[selected]))
   icon.texture=FrontierResourceIcons.texture(selected)
   buy.text="구매  %d Cr"%(price*count);sell.text="판매  %d Cr"%(sale*count)
   buy.disabled=buy.disabled or int(station.stock[selected])<count or int(station.credits)<price*count
-  sell.disabled=sell.disabled or int(data.get("inventory",{}).get(selected,0))<count
+  sell.disabled=sell.disabled or int(data.get("inventory",{}).get(selected,0))<count or int(station.stock[selected])+count>int(station.get("capacities",{}).get(selected,FrontierSpaceStation.config().max_stock))
  else:
   unit_price.text=""
   var hull_id:=selected.trim_prefix("hull:");var def: Dictionary=FrontierSpaceStation.config().hulls[hull_id]
@@ -172,7 +183,7 @@ func refresh_detail() -> void:
 func send(kind: String) -> void:
  if pending:return
  pending=true;pending_kind=kind;pending_sequence=-1;message.text="교역 승인 중…";refresh_detail()
- command.emit(kind,{"item":selected,"amount":int(quantity.value) if mode=="goods" else 1})
+ command.emit(kind,{"station":data.get("station",{}).get("id",""),"item":selected,"amount":int(quantity.value) if mode=="goods" else 1})
 func response(sequence: int,value: Dictionary) -> void:
  if not pending or sequence!=pending_sequence:return
  pending=false

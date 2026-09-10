@@ -74,8 +74,8 @@ func _build_map() -> void:
 	app.chart=load("res://scripts/ui/galaxy_chart.gd").new();app.chart.size_flags_horizontal=Control.SIZE_EXPAND_FILL;app.chart.size_flags_vertical=Control.SIZE_EXPAND_FILL;body.add_child(app.chart)
 	app.chart.selected.connect(show_target)
 	app.chart.route_selected.connect(show_route)
-	app.chart.station_selected.connect(func(index: int):
-		if index==int(app.session.latest.crew.navigation.system):app.approach_trade_station()
+	app.chart.station_selected.connect(func(index: int,station_id: String):
+		if index==int(app.session.latest.crew.navigation.system):app.approach_trade_station(station_id)
 		else:_notice("해당 항성계로 이동한 뒤 정거장에 접근하세요."))
 	card=VBoxContainer.new();card.custom_minimum_size.x=240;card.add_theme_constant_override("separation",12);body.add_child(card)
 	preview=SubViewport.new();preview.size=Vector2i(320,240);preview.own_world_3d=true;preview.transparent_bg=true;preview.render_target_update_mode=SubViewport.UPDATE_DISABLED;add_child(preview)
@@ -325,6 +325,8 @@ func _update_context() -> void:
 	else:
 		if nav.mode!="idle" or not app.outside:return
 		var station: Dictionary=value.get("station",{})
+		var sighted:=app.flight.station_in_sight()
+		if not sighted.is_empty():station=FrontierSpaceStation.current(app.session.manifest,nav,sighted)
 		if not station.is_empty():
 			var gap:=FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewWorld.vector(station.position))
 			var near: bool=gap<=float(FrontierSpaceStation.config().trade_distance) and absf(float(nav.speed))<=5

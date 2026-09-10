@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-10",
+  "scope": "SP04 Mars and Earth orbital trade ports",
+  "source": "audio/manifests/space-station-reuse.json",
+  "provider": "ElevenLabs existing generated assets",
+  "mapping": {
+    "open": "ui_discovery",
+    "trade_success": "sfx_pickup_resource",
+    "owned_hull_change": "sfx_factory_complete",
+    "failure": "sfx_build_invalid",
+    "market_ambience": "sfx_robot_move"
+  },
+  "verification": "Godot Forward+ actual market ambience playback and host-success trade events; no new generation or listening review",
+  "new_control_voice": "SP05 follow-up"
+}

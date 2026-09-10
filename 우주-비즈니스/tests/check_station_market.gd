@@ -18,7 +18,8 @@ func run() -> void:
  check(core.start(FrontierUniverse.new_world(61739),FrontierPlayerProfile.new_character("정거장 검사"),persist),"world start")
  check(request("start_game").ok,"playing")
  var m: Dictionary=core.world.manifest
- check(FrontierSpaceStation.definition(m,0).is_empty(),"no solar station")
+ var legacy: Dictionary=m.duplicate(true);legacy.settings.erase("corporate_space")
+ check(FrontierSpaceStation.definition(legacy,0).is_empty(),"legacy solar exclusion")
  check(FrontierSpaceStation.definition(m,FrontierUniverse.system_index(m,FrontierCrewNavigation.first_destination(m))).is_empty(),"no tutorial station")
  var index: int=-1
  for i in range(1,100):

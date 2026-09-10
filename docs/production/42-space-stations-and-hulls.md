@@ -46,3 +46,7 @@ Blender에서 WAYFARER 링 정거장과 SWIFT/MULE 선체를 제작했다. 정�
 - 테스트 실행 시 `tools/godot.sh --script res://tests/check_station_interface.gd -- --crew-ui-test --crew-folder=/tmp/새로운-검증-폴더`로 별도 세계를 사용한다. 실제 사용자 저장은 수정하지 않았다.
 
 전체 회귀·실제 다중 클라이언트·Windows·장기 성능 검사는 수행하지 않았다. 선체별 전용 내부 공간, 정거장 도보 탐험, 선체 판매·시간 기반 재입고, 장비 개체 거래는 후속 범위다.
+
+## 2026-09-10 — 태양계 고정 물류항 예외
+
+새 은하에 한해 Space Y 화성 항만과 지구 물류항을 추가했다. 기존 무작위 정거장·첫 성간 목적지 제외는 유지한다. 고정 주소·궤도 대기·유한 기초 물자 거래·이전 저장 보존은 [SP04 구현](../production/111-orbital-ports-sp04.md)을 따른다.

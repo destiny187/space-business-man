@@ -26,6 +26,7 @@ var vessel_sound: FrontierVesselSound
 var last_phase: String=""
 var station_excluded: int=-1
 var station_model: Node3D
+var station_models: Dictionary={}
 var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
@@ -197,11 +198,12 @@ func _collect_transit_geometry(node: Node) -> void:
 func _load_system(index: int) -> void:
 	transit_geometry.clear()
 	super._load_system(index)
-	station_model=null
-	var station:=FrontierSpaceStation.definition(state.manifest,index,station_excluded)
-	if not station.is_empty():
-		station_model=load(FrontierSpaceStation.config().model).instantiate();station_model.position=FrontierCrewWorld.vector(station.position)
-		FrontierInkStyle.apply(station_model,cache);system_art.add_child(station_model)
+	station_model=null;station_models.clear()
+	for station in FrontierSpaceStation.all(state.manifest,index,station_excluded,orbit_time):
+		var model: Node3D=load(station.get("model",FrontierSpaceStation.config().model)).instantiate()
+		model.position=FrontierCrewWorld.vector(station.position)
+		FrontierInkStyle.apply(model,cache);system_art.add_child(model);station_models[station.id]=model
+		if station_model==null:station_model=model
 	orbital_presentation.collect(system_art)
 	orbital_debris=FrontierOrbitalDebris.new();system_art.add_child(orbital_debris);orbital_debris.configure(self)
 	for entry in planets.values():_collect_transit_geometry(entry.node)
@@ -228,7 +230,25 @@ func _update_planet_scan(delta: float) -> void:
 	transit_overlay.scan_body=body
 	transit_overlay.scan_progress=scan_progress
 
-func looking_at_station() -> bool:
-	if navigation.is_empty() or navigation.mode!="idle" or station_model==null:return false
-	var offset:=station_model.global_position-camera.global_position
-	return offset.length()>1 and offset.normalized().dot(-camera.global_basis.z)>.992
+func update_orbits(elapsed: float) -> void:
+	super.update_orbits(elapsed)
+	for station in FrontierSpaceStation.all(state.manifest,current_system,station_excluded,elapsed):
+		if station_models.has(station.id) and is_instance_valid(station_models[station.id]):station_models[station.id].position=FrontierCrewWorld.vector(station.position)
+func station_in_sight() -> String:
+	if navigation.is_empty() or navigation.mode!="idle":return ""
+	var best: String="";var alignment:=.992
+	for id in station_models:
+		var node: Node3D=station_models[id]
+		if not is_instance_valid(node):continue
+		var offset:=node.global_position-camera.global_position
+		var dot:=offset.normalized().dot(-camera.global_basis.z)
+		if offset.length()>1 and dot>alignment:
+			# A planet must not become transparent to an occluded port interaction.
+			var hidden:=false
+			for entry in planets.values():
+				var delta: Vector3=entry.node.global_position-camera.global_position
+				var along:=delta.dot(offset.normalized())
+				if along>0 and along<offset.length() and (delta-offset.normalized()*along).length()<float(entry.radius):hidden=true;break
+			if not hidden:best=id;alignment=dot
+	return best
+func looking_at_station() -> bool:return not station_in_sight().is_empty()

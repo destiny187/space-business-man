@@ -8,8 +8,8 @@ static func frame_preview(preview: FrontierEquipmentPreview,asset_id: String) ->
 		var box: AABB=node.global_transform*node.get_aabb()
 		bounds=box if first else bounds.merge(box);first=false
 	extent=bounds.size.length()
-	preview.camera.size=extent*.82
-	preview.camera.position=Vector3(1,.55,1.65 if asset_id in ["mine_miner","coopertech_robot"] else -1.65).normalized()*extent*3
+	preview.camera.size=extent*(.50 if asset_id in ["space_y_port","space_y_earth_port"] else .82)
+	preview.camera.position=Vector3(1,.55,1.65 if asset_id in ["mine_miner","coopertech_robot","space_y_port","space_y_earth_port"] else -1.65).normalized()*extent*3
 	preview.camera.look_at(Vector3.ZERO)
 	var weak:=preview.model.find_child("Anim_Weak",true,false)
 	if weak!=null:weak.hide()
