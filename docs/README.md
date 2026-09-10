@@ -316,3 +316,5 @@
 2026-09-10 [SP09 유실 화물 회수·선체 적재·항만 인계](production/118-freight-salvage.md): 실제 윈치/거치대·공동 저장과 단발 정산·지도/J 공개.
 
 - [SP10 mine 작업장 정비·재가동](production/119-mine-maintenance.md) — 구현·모델·직접 운반·저장·확인.
+
+- [SP11 CooperTech 우주 단서·지상 로봇 연결](production/120-coopertech-ground-clues.md) — 동일 ID·지도·실제 교전/회수·저장.

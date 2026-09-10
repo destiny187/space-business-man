@@ -36,6 +36,11 @@ static func page(world: Dictionary,query: String,kind: String,body_id: String,pa
 			if not needle.is_empty() and not str(d.name).to_lower().contains(needle):continue
 			entries.append({"key":"discovery:"+key,"kind":"discovery","row":row.duplicate(true),"name":d.name,"icon":"scan"})
 	if kind in ["all","incident"]:
+		for id in FrontierCooperTechClues.records(world):
+			var clue:=FrontierCooperTechClues.describe(world,id)
+			if clue.is_empty() or (not body_id.is_empty() and clue.body_id!=body_id):continue
+			if not needle.is_empty() and not (str(clue.name)+" 쿠퍼테크").to_lower().contains(needle):continue
+			entries.append({"key":"clue:"+id,"kind":"coopertech_clue","row":clue,"name":clue.name,"icon":"scan"})
 		for id in FrontierFreightSalvage.records(world):
 			var row:=FrontierFreightSalvage.definition(world.manifest,id)
 			if row.is_empty() or (not body_id.is_empty() and row.body_id!=body_id):continue

@@ -93,6 +93,8 @@ func input_map(event: InputEvent) -> void:
     waypoint=world(event.position);selected=""
     for region in site.get("regions",{}).values():
      if at(Vector2(region.center[0],region.center[2])).distance_to(event.position)<maxf(18,region.radius/meters_per_pixel):selected=region.id
+    for clue in app.session.latest.get("coopertech_clues",{}).values():
+     if clue.body_id==body.id and at(Vector2(clue.position[0],clue.position[2])).distance_to(event.position)<22:selected=clue.id;waypoint=Vector2(clue.position[0],clue.position[2])
     update_detail();canvas.queue_redraw()
  elif event is InputEventMouseMotion and dragging:
   focus-=event.relative*meters_per_pixel;focus=focus.clamp(Vector2(-8192,-8192),Vector2(8192,8192));canvas.queue_redraw()
@@ -160,10 +162,20 @@ func draw_map() -> void:
   if member.get("place_key","")!=app.session.latest.crew.members[app.session.latest.self_id].get("place_key",""):continue
   var pos:=at(Vector2(member.position[0],member.position[2]));canvas.draw_circle(pos,5,Color("83d9c5") if id==app.session.latest.self_id else Color("e6e8df"))
  var ship: Array=FrontierCrewSurface.config().ship_position;text_at(at(Vector2(ship[0],ship[2]))+Vector2(8,20),"착륙선",Color("a5c9ff"))
+ for clue in app.session.latest.get("coopertech_clues",{}).values():
+  if clue.body_id!=body.id:continue
+  var pos:=at(Vector2(clue.position[0],clue.position[2]));var tint:=Color("94edcf") if int(clue.stage)==2 else Color("ffb16e")
+  canvas.draw_texture_rect(load(FrontierCorporations.icon_path("coopertech")),Rect2(pos-Vector2(16,16),Vector2(32,32)),false)
+  canvas.draw_arc(pos,20,0,TAU,24,tint,2,true);text_at(pos+Vector2(25,5),FrontierCooperTechClues.STATES[int(clue.stage)],tint,14)
  if waypoint.is_finite():
   var pos:=at(waypoint);canvas.draw_line(pos-Vector2(8,0),pos+Vector2(8,0),Color.WHITE,2);canvas.draw_line(pos-Vector2(0,8),pos+Vector2(0,8),Color.WHITE,2)
  text_at(Vector2(12,canvas.size.y-12),"N ↑   후보 범위 ? / 실제 확인 전 잔량 미확정   ·   지원 지표 ±8.2km",Color("e6e8df"),12)
+func show_clue(clue: Dictionary) -> void:
+ modes.current_tab=0;refresh();selected=clue.id;waypoint=Vector2(clue.position[0],clue.position[2]);focus=waypoint;app.open_menu(self);refresh();update_detail()
 func update_detail() -> void:
+ var clue: Dictionary=app.session.latest.get("coopertech_clues",{}).get(selected,{})
+ if not clue.is_empty() and clue.body_id==body.id:
+  detail.text="CooperTech  ·  "+FrontierCooperTechClues.STATES[int(clue.stage)]+"\n좌표 %.0f, %.0f · 현장까지 %.0fm"%[clue.position[0],clue.position[2],Vector2(clue.position[0],clue.position[2]).distance_to(Vector2(app.camera.position.x,app.camera.position.z))];return
  if FrontierFreeTerraform.active(site):detail.text=FrontierFreeTerraform.detail(site)+"\n대기·수질·토양·오염 분포는 테라포밍 탭에서 확인하세요.";return
  if selected.is_empty() or not site.get("regions",{}).has(selected):
   detail.text="공급 후보는 지질 추정입니다. 현장에서 광맥과 잔량을 확인하세요.\n"+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "환경 탭에서 복원 구획, 시설 탭에서 현장 공급을 확인합니다.")

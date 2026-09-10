@@ -23,6 +23,7 @@ func configure(owner_surface: FrontierCrewSurfaceScene,eye: Camera3D) -> void:
  surface=owner_surface;camera=eye;app=surface.session.get_parent() as FrontierCrewExpedition
  audio=FrontierAudio.new();add_child(audio)
  var layer:=CanvasLayer.new();add_child(layer)
+ var clue_overlay: Control=load("res://scripts/ui/coopertech_clue_overlay.gd").new();clue_overlay.incident=self;layer.add_child(clue_overlay)
  hint=Label.new();hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;hint.mouse_filter=Control.MOUSE_FILTER_IGNORE
  hint.add_theme_color_override("font_shadow_color",Color.BLACK);hint.add_theme_constant_override("shadow_offset_x",2);hint.add_theme_constant_override("shadow_offset_y",2);layer.add_child(hint)
  signal_bar=ProgressBar.new();signal_bar.show_percentage=false;signal_bar.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(signal_bar)

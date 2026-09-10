@@ -30,7 +30,7 @@
 | SP08 | `feat: reveal corporate activity through persistent traces` | Lotus 개척 비콘·mine 정비/집하 흔적·CooperTech 감시/봉인 표식, 실물 조사·지도/J 공개 단계 | SP02, SP07 | 구현 |
 | SP09 | `feat: recover lost freight from shipping incidents` | 실제 유실 포드·우주 접근/회수·화물 적재·항만 인계·단발 보상/저장 | SP05, SP07 | 구현 |
 | SP10 | `feat: restore mine work sites through repair deliveries` | 실제 멈춘 작업장·예비 부품 직접 운반·정비 조작·작업 재개·호스트 정산 | SP08, SP09 | 구현 |
-| SP11 | `feat: connect CooperTech orbital clues to ground incidents` | 봉인 화물/신호→행성 좌표→기존 지상 로봇 사건의 동일 ID·발견/종결 기록 | SP08 | 예정 |
+| SP11 | `feat: connect CooperTech orbital clues to ground incidents` | 봉인 화물/신호→행성 좌표→기존 지상 로봇 사건의 동일 ID·발견/종결 기록 | SP08 | 구현 |
 
 순서는 번호를 따르는 것을 기본으로 한다. 의존성 표는 분할/재작업 범위를 알기 위한 것이며 병렬 에이전트 실행 지시가 아니다. 우주 교전·구조·CooperTech/mine/Lotus 추가 전용 우주선·화성 도시·물류에 따른 재입고는 위 첫 묶음 뒤의 확장이다.
 
@@ -89,3 +89,5 @@
 - **SP09 — 이 기록을 포함하는 구현 커밋:** 실제 유실 포드·회수 윈치/거치대·항만 인계 설비, 호스트 E 유지·선박별 적재·상대 정지·단발 대금과 저장·지도/J를 연결했다. [제작·확인·기존 저장 경계](../production/118-freight-salvage.md). SP10 mine 정비는 후속이다.
 
 - **SP10 — 이 기록을 포함하는 구현 커밋:** 실제 멈춘 mine 작업장·다른 행성에서 카트리지 수령/직접 운반·설치·정비 팔·드릴 재가동·단발 정산을 연결했다. [제작·저장·확인](../production/119-mine-maintenance.md).
+
+- **SP11 — 이 기록을 포함하는 구현 커밋:** CooperTech 봉인 기록→같은 항성계의 실제 시드 지상 로봇 좌표→발견·교전·부품 회수 종결을 동일 사건 ID로 연결했다. [제작·화면·저장·확인](../production/120-coopertech-ground-clues.md).

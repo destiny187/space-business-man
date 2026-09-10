@@ -45,7 +45,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
 	grid.columns=clampi(int((get_viewport_rect().size.x-132)/2/92),1,6)
-	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.latest.get("crew",{}).get("freight_records",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
+	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("coopertech_clues",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.latest.get("crew",{}).get("freight_records",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
 	if not was_visible or signature!=last_signature:last_signature=signature;refresh()
 	was_visible=true
 	if query_delay>0:
@@ -66,6 +66,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 		if entry.kind=="incident" and entry.row.has("native"):tile.picture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(entry.row.native.form_id)))
 		if entry.kind=="corporation":tile.picture=load(FrontierCorporations.icon_path(entry.company))
 		if entry.kind=="freight_incident":tile.picture=load(FrontierFreightSalvage.icon(entry.row.id));tile.amount="%d / %d"%[int(entry.row.stage),FrontierFreightSalvage.last_stage(entry.row.id)]
+		if entry.kind=="coopertech_clue":tile.picture=load(FrontierCorporations.icon_path("coopertech"));tile.amount="%d / 2"%int(entry.row.stage)
 		if entry.kind=="corporate_trace":tile.picture=load("res://assets/ui/corporations/trace_"+str(entry.company)+".png");tile.amount="%d / 2"%int(entry.row.stage)
 		tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
 		tile.pressed.connect(func():select(entry))
@@ -94,6 +95,16 @@ func select(entry: Dictionary) -> void:
 		FrontierCorporateIdentity.add_to(details,entry.row.asset)
 		var note:=FrontierInterfaceStyle.label(details,company.description,14);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		var source_label:=FrontierInterfaceStyle.label(details,"첫 식별  "+str(item.name),13);source_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	elif entry.kind=="coopertech_clue":
+		preview.custom_minimum_size.y=170;preview.show();preview.show_model(entry.row.model);FrontierCorporateIdentity.frame_trace_preview(preview)
+		FrontierCorporateIdentity.add_to(details,"coopertech_robot")
+		for text in [FrontierCooperTechClues.STATES[int(entry.row.stage)],"출처  "+str(entry.row.source),"지상 좌표  %.0f, %.0f"%[entry.row.position[0],entry.row.position[2]],"착륙 후 Tab 지도와 현장 표식을 따라 이동하세요. 실제 전투로봇을 제압하고 부품을 회수하면 이 기록도 종결됩니다." if int(entry.row.stage)<2 else "동일한 현장 로봇의 부품 회수가 확인되었습니다. 단서 자체는 별도 보상을 지급하지 않습니다."]:
+			var line:=Label.new();line.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;line.text=text;details.add_child(line)
+		var locate:=Button.new();locate.text="현장 지도에서 좌표 보기" if app.surface_world!=null and app.surface_world.body.id==entry.row.body_id else "항성계에서 목적 행성 보기";details.add_child(locate)
+		locate.pressed.connect(func():
+			app.close_menus()
+			if app.surface_world!=null and app.surface_world.body.id==entry.row.body_id:app.planet_map.show_clue(entry.row)
+			else:app.navigation_ui.show_target(int(entry.row.body)))
 	elif entry.kind=="freight_incident":
 		preview.custom_minimum_size.y=150;preview.show();preview.show_model(entry.row.model);FrontierCorporateIdentity.frame_trace_preview(preview)
 		var stage:=int(entry.row.stage)
@@ -114,6 +125,10 @@ func select(entry: Dictionary) -> void:
 		FrontierInterfaceStyle.label(identity,FrontierCorporations.company(entry.company).name,18)
 		for text in [entry.row.activity,entry.row.status,"공동 조사 %d / 2"%int(entry.row.stage),entry.row.evidence if int(entry.row.stage)==2 else "650m 이내로 접근해 E를 유지하면 활동 기록을 읽을 수 있습니다.","연결 거점  "+str(entry.row.site_name)]:
 			var line:=Label.new();line.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;line.text=text;line.add_theme_font_size_override("font_size",14);line.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);details.add_child(line)
+		var clue: Dictionary=app.session.latest.get("coopertech_clues",{}).get(entry.row.id,{})
+		if not clue.is_empty():
+			var ground:=Button.new();ground.text="폐기 로봇 좌표 · "+FrontierCooperTechClues.STATES[int(clue.stage)];details.add_child(ground)
+			ground.pressed.connect(func():app.close_menus();app.navigation_ui.show_target(int(clue.body)))
 	elif entry.kind=="discovery":
 		var d:=FrontierExplorationDiscoveries.definition(entry.row.template)
 		preview.show();preview.show_model(d.model)

@@ -19,6 +19,7 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 	if not draft.crew.has("corporate_traces"):draft.crew.corporate_traces={}
 	# Reinsert so bounded snapshots retain the latest updated record, not only new IDs.
 	draft.crew.corporate_traces.erase(target.id);draft.crew.corporate_traces[target.id]=stage+1
+	if stage+1==2:FrontierCooperTechClues.capture(draft,target)
 	draft.crew.revision+=1
 	if not authority.save_world.call(draft):
 		authority.scans.erase(peer);authority.stopped=true;authority.error="기업 활동 조사 저장 실패로 공동 세계를 정지했습니다.";return
