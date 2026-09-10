@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS SP05 saved fleet stays two freighters
+PASS nearby crew ship triggers one host sensor visit
+PASS approach scan return patrol preserve celestial clearance and 180m pairs
+PASS loitering does not retrigger inspection
+PASS departure and cooldown rearm next arrival
+PASS invalid saved patrol target rejected
+PASS patrol save valid
+PASS current expedition loads guard fleet
+PASS two carriers and four near/LOD guards
+PASS host time enters actual sensor check
+PASS one control cue on sensor phase transition
+PASS inspection neither damages nor locks crew navigation
+PASS fighter gaze uses formation detail
+PASS far guard switches to authored LOD
+PASS menu clears sensor HUD and control audio
+PASS patrol checkpoint saved
+PASS same guard ID position inspection phase after reload
+SPACE_PATROL_CHECKS 17 FAILURES 0

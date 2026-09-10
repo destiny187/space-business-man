@@ -306,3 +306,5 @@
 - [SP04 화성 항만·지구 물류항](production/111-orbital-ports-sp04.md) — 궤도 접근/정지·독립 기초 물자 교역·실제 Space Y 식별.
 
 2026-09-10 SP05: [Space Y 무역선 운항·제작·확인](production/113-space-y-freighters.md).
+
+2026-09-10 SP06: [Space Y 경비 편대·센서 확인·저장](production/114-space-y-patrol.md).

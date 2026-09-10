@@ -19,6 +19,10 @@ func _draw() -> void:
 	draw_string(font,origin+Vector2(14,66),row.label+"   "+FrontierFlightTelemetry.distance_label(float(row.distance)),HORIZONTAL_ALIGNMENT_LEFT,width-28,16,cyan)
 	var destination: String="화성 Y-01" if row.to=="solar_mars_port" else "지구 Y-02"
 	draw_string(font,origin+Vector2(14,94),"→ "+destination,HORIZONTAL_ALIGNMENT_LEFT,width-28,15,Color(.75,.86,.91))
+	if row.kind=="fighter":
+		for side in [-1,1]:
+			var p:=origin+Vector2(40+side*17,116);draw_colored_polygon(PackedVector2Array([p+Vector2(0,-8),p+Vector2(9,8),p+Vector2(0,4),p+Vector2(-9,8)]),cyan)
+		draw_string(font,origin+Vector2(86,123),"2기 항로 경비",HORIZONTAL_ALIGNMENT_LEFT,width-100,13,Color(.75,.86,.91));return
 	for i in 4:
 		var p:=origin+Vector2(14+i*16,108);draw_rect(Rect2(p,Vector2(11,16)),Color(.3,.65,.8) if float(row.pods)*4>i else Color(.08,.15,.2));draw_rect(Rect2(p,Vector2(11,16)),cyan,false,1)
 	draw_string(font,origin+Vector2(86,123),row.cargo,HORIZONTAL_ALIGNMENT_LEFT,width-100,13,Color(.75,.86,.91))

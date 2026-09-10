@@ -83,6 +83,15 @@
     "lane_height": 60000,
     "avoidance_radius": 650,
     "near_distance": 4500,
-    "far_distance": 180000
+    "far_distance": 180000,
+    "patrol": {
+      "version": 1,
+      "period": 90,
+      "arrival_radius": 3500,
+      "out_seconds": 12,
+      "scan_seconds": 6,
+      "return_seconds": 12,
+      "rearm_seconds": 90
+    }
   }
 }

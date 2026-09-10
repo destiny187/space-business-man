@@ -9,10 +9,12 @@ static func validate(value: Variant) -> String:
 		if not FrontierUniverse._finite(value.get(entry[0]),0,entry[1]) or value[entry[0]]!=floorf(value[entry[0]]):return "공동 항로 주소 오류"
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
 	if not FrontierUniverse._finite(value.get("orbit_time",0),0,1e12):return "궤도 시간 오류"
+	if value.has("traffic_patrols") and not FrontierSpacePatrol.valid_state(value.traffic_patrols):return "경비 편대 기록 오류"
 	if value.has("traffic_observers"):
 		if not value.traffic_observers is Array or value.traffic_observers.size()>7:return "운항 관심 영역 오류"
 		for observer in value.traffic_observers:
 			if not observer is Dictionary or not FrontierUniverse._vector3_array(observer.get("position")):return "운항 관심 위치 오류"
+			if observer.has("id") and (not observer.id is String or observer.id.length()>192):return "운항 관심 주소 오류"
 	if not FrontierUniverse._finite(value.get("speed"),-10000,10000) or not FrontierUniverse._finite(value.get("jump_left"),0,120):return "공동 항해 속도 오류"
 	if value.has("first_stellar_system") and not FrontierExpeditionBusiness.integer(value.first_stellar_system,0,249999):return "첫 성간 목적지 오류"
 	if value.has("station_target") and not value.station_target is bool:return "정거장 항로 오류"

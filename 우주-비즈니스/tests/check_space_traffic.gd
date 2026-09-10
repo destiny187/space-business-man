@@ -38,7 +38,7 @@ func run() -> void:
 	app.onboarding.letter.hide();app.close_menus();FrontierClientSettings.ensure(self).values.tutorial_mode=2
 	app.outside=true;app.exterior_view.show();app.if_flight_view();app.flight.transit_overlay.arrival_age=100
 	app.set_process(false);app.flight.scan_enabled=true;app.flight.presentation_blocked=false;app.flight.exterior=false;root.grab_focus()
-	check(app.flight.traffic.models.size()==2,"two near/LOD carriers in actual flight")
+	check(app.flight.traffic.models.values().filter(func(visual):return str(visual.root.name).begins_with("CARRIER")).size()==2,"two near/LOD carriers in actual flight")
 	# Observe a real game-clock transition and its audio, then inspect representative later phases.
 	await place(600+60-offset-1.5)
 	await until(func():return app.flight.traffic.rows[0].stage=="depart","natural host departure phase",10)

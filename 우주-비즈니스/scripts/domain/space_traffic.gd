@@ -9,6 +9,7 @@ static func valid(v: Variant) -> bool:
 	if not v is Dictionary or v.get("version")!=1:return false
 	for e in [["leg_seconds",600,2400],["lane_height",40000,200000],["avoidance_radius",350,1000],["near_distance",1500,10000],["far_distance",20000,500000]]:
 		if not FrontierUniverse._finite(v.get(e[0]),e[1],e[2]):return false
+	if v.has("patrol") and not FrontierSpacePatrol.valid_rules(v.patrol):return false
 	return true
 static func berth(m: Dictionary,port: String,t: float,side: int) -> Vector3:
 	return FrontierCrewWorld.vector(FrontierOrbitalPorts.definition(m,port,t).position)+Vector3(side*151,0,38)
@@ -60,14 +61,19 @@ static func sample(m: Dictionary,index: int,t: float,observers: Array=[]) -> Dic
 	# Berths are reserved physical machinery space; their cargo may not detach from the crane.
 	if row.stage not in ["load","unload"]:row.position=avoid(point,observers,float(rules(m).avoidance_radius),sin(PI*clampf((float(row.p)-.1)/.9,0,1)))
 	return row
-static func all(m: Dictionary,system: int,t: float,observers: Array=[]) -> Array:
+static func all(m: Dictionary,system: int,t: float,observers: Array=[],patrols: Dictionary={}) -> Array:
 	if system!=0 or not enabled(m):return []
-	return [sample(m,0,t,observers),sample(m,1,t,observers)]
+	var freighters: Array=[sample(m,0,t,observers),sample(m,1,t,observers)]
+	var obstacles: Array=observers.duplicate()
+	for row in freighters:obstacles.append({"position":FrontierExpeditionBusiness.array(row.position)})
+	return freighters+FrontierSpacePatrol.all(m,t,obstacles,patrols)
 static func observers(world: Dictionary) -> Array:
 	var result: Array=[];var navs: Array=[]
-	if world.crew.landing.is_empty():navs.append(world.crew.navigation)
-	for ship in FrontierShuttles.fleet(world).values():
-		if ship.state=="sortie" and ship.landing.is_empty():navs.append(ship.navigation)
-	for nav in navs:
-		if int(nav.system)==0 and nav.mode!="jump":result.append({"position":nav.position.duplicate()})
+	if world.crew.get("landing",{}).is_empty():navs.append({"id":"crew","navigation":world.crew.navigation})
+	for id in FrontierShuttles.fleet(world):
+		var ship: Dictionary=FrontierShuttles.fleet(world)[id]
+		if ship.state=="sortie" and ship.landing.is_empty():navs.append({"id":"shuttle:"+str(id),"navigation":ship.navigation})
+	for entry in navs:
+		var nav: Dictionary=entry.navigation
+		if int(nav.system)==0 and nav.mode!="jump":result.append({"id":entry.id,"position":nav.position.duplicate()})
 	return result

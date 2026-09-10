@@ -28,14 +28,14 @@ func configure(view: FrontierCrewFlightView) -> void:
 			for n in model.find_children("Anim_Engine_*","Node3D",true,false):engines.append(n)
 		var plumes: Array=[]
 		for socket in near.find_children("Socket_Exhaust_*","Node3D",true,false):
-			var mesh:=MeshInstance3D.new();var shape:=CylinderMesh.new();shape.top_radius=3.4;shape.bottom_radius=.15;shape.height=15;mesh.mesh=shape;mesh.rotation.x=-PI*.5;mesh.position.z=7.5
+			var mesh:=MeshInstance3D.new();var shape:=CylinderMesh.new();shape.top_radius=2.0 if row.kind=="fighter" else 3.4;shape.bottom_radius=.15;shape.height=15;mesh.mesh=shape;mesh.rotation.x=-PI*.5;mesh.position.z=7.5
 			var mat:=StandardMaterial3D.new();mat.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;mat.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;mat.albedo_color=Color(.28,.75,1,.42);mesh.material_override=mat;mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;socket.add_child(mesh);plumes.append(mesh)
-		models[row.id]={"root":root,"near":near,"far":far,"pods":pods,"engines":engines,"plumes":plumes,"far_mode":false}
+		models[row.id]={"root":root,"near":near,"far":far,"pods":pods,"engines":engines,"plumes":plumes,"far_mode":false,"sensors":near.find_children("Anim_Sensor","Node3D",true,false)}
 func update(delta: float,t: float,blocked: bool) -> void:
 	var enabled: bool=not blocked and flight.navigation.get("mode","")!="jump"
 	selected={};radio_cooldown=maxf(0,radio_cooldown-delta)
 	engine.stream_paused=not enabled;radio.stream_paused=not enabled
-	rows=FrontierSpaceTraffic.all(flight.state.manifest,flight.current_system,t,flight.navigation.get("traffic_observers",[]))
+	rows=FrontierSpaceTraffic.all(flight.state.manifest,flight.current_system,t,flight.navigation.get("traffic_observers",[]),flight.navigation.get("traffic_patrols",{}))
 	var closest:=INF;var thrust:=0.0;var best:=.992
 	for row in rows:
 		if not models.has(row.id):continue
@@ -53,9 +53,11 @@ func update(delta: float,t: float,blocked: bool) -> void:
 		# Keep stable objects through camera turns; fade only beyond useful silhouette scale.
 		for model in [visual.near,visual.far]:
 			for geometry in model.find_children("*","GeometryInstance3D",true,false):geometry.transparency=smoothstep(float(cfg.far_distance)*.8,float(cfg.far_distance),distance)
-		var power:=.6 if row.stage in ["ascend","cruise"] else (.15 if row.stage in ["depart","dock","descend"] else 0.0)
+		var power:=.6 if row.stage in ["ascend","cruise","patrol","inspect_approach","return"] else (.15 if row.stage in ["depart","dock","descend"] else 0.0)
 		for plume in visual.plumes:plume.visible=power>0;plume.scale.y=.3+power
 		for pivot in visual.engines:pivot.rotation.x=sin(t*1.2+int(row.index))*.045*power
+		for sensor in visual.sensors:sensor.rotation.y=sin(t*2.0)*.55 if row.stage=="inspect" else 0.0
+		if row.kind=="fighter":root.rotate_object_local(Vector3.FORWARD,float(row.bank)*delta*2.5)
 		for i in visual.pods.size():
 			var pod: Dictionary=visual.pods[i];var transfer:=0.0
 			if row.stage=="unload":transfer=smoothstep(float(i%4)*.18,float(i%4)*.18+.4,float(row.u))
@@ -68,8 +70,8 @@ func update(delta: float,t: float,blocked: bool) -> void:
 		var dot:=offset.normalized().dot(-flight.camera.global_basis.z)
 		if enabled and flight.scan_enabled and distance<11000 and dot>best and not occluded(root.global_position):best=dot;selected=row.duplicate();selected.distance=distance
 		var key: String=row.stage+":"+str(row.leg)
-		if last_stages.has(row.id) and last_stages[row.id]!=key and enabled and distance<6500 and radio_cooldown<=0 and row.stage in ["depart","wait","unload"]:
-			last_radio=row.call_sign+" · "+row.label;radio_cooldown=15
+		if last_stages.has(row.id) and last_stages[row.id]!=key and enabled and distance<6500 and radio_cooldown<=0 and row.stage in ["depart","wait","unload","inspect","return"]:
+			last_radio=row.call_sign+"  "+row.label;radio_cooldown=15
 			if radio.stream!=null:radio.play()
 		last_stages[row.id]=key
 	var gain:=thrust*(1.0-smoothstep(300,4000,closest)) if enabled else 0.0

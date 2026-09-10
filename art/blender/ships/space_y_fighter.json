@@ -1,0 +1,38 @@
+[
+  {
+    "id": "space_y_fighter",
+    "source": "art/blender/ships/space_y_fighter.blend",
+    "model": "res://assets/models/ships/space_y_fighter.glb",
+    "meshes": 15,
+    "triangles": 12016,
+    "sha256": "d587205f88cc4c46966ffc71f980156bd7b4e4b3c115fc4ccb0a2a597d7607e1",
+    "forward": "Blender +Y / Godot -Z",
+    "pivots": [
+      "Anim_Engine_-1",
+      "Socket_Exhaust_-1",
+      "Socket_Weapon_-1",
+      "Anim_Engine_1",
+      "Socket_Exhaust_1",
+      "Socket_Weapon_1",
+      "Anim_Sensor"
+    ]
+  },
+  {
+    "id": "space_y_fighter_lod1",
+    "source": "art/blender/ships/space_y_fighter_lod1.blend",
+    "model": "res://assets/models/ships/space_y_fighter_lod1.glb",
+    "meshes": 14,
+    "triangles": 852,
+    "sha256": "2d54e645ecdb1388c0e4c4dd8aaf3d06096971cbdb602366a3d1d1a38b2db1f9",
+    "forward": "Blender +Y / Godot -Z",
+    "pivots": [
+      "Anim_Engine_-1",
+      "Socket_Exhaust_-1",
+      "Socket_Weapon_-1",
+      "Anim_Engine_1",
+      "Socket_Exhaust_1",
+      "Socket_Weapon_1",
+      "Anim_Sensor"
+    ]
+  }
+]

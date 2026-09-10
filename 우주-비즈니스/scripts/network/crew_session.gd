@@ -342,6 +342,7 @@ func _physics_process(delta: float) -> void:
 		var interests:=FrontierSpaceTraffic.observers(authority.world)
 		authority.world.crew.navigation.traffic_observers=interests
 		for craft in FrontierShuttles.fleet(authority.world).values():craft.navigation.traffic_observers=interests
+		FrontierSpacePatrol.step(authority.world)
 	checkpoint_timer-=delta
 	if arrived or checkpoint_timer<=0:
 		checkpoint_timer=5.0

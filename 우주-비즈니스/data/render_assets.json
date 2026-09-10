@@ -10713,5 +10713,18 @@
     "generator": "tools/build_space_y_freighter.py",
     "review": "docs/production/113-space-y-freighters.md",
     "foliage": false
+  },
+  {
+    "id": "space_y_fighter",
+    "title": "항만 경비",
+    "name": "Space Y WARDEN",
+    "group": "우주선",
+    "model": "res://assets/models/ships/space_y_fighter.glb",
+    "lod_model": "res://assets/models/ships/space_y_fighter_lod1.glb",
+    "source": "art/blender/ships/space_y_fighter.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_space_y_fighter.py",
+    "review": "docs/production/114-space-y-patrol.md",
+    "foliage": false
   }
 ]
