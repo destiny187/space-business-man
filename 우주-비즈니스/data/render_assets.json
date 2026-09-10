@@ -10810,5 +10810,41 @@
     "generator": "tools/build_corporate_traces.py",
     "review": "docs/production/117-corporate-activity-traces.md",
     "foliage": false
+  },
+  {
+    "id": "lost_freight_pod",
+    "title": "유실 화물 회수",
+    "name": "CARRIER 유실 포드",
+    "group": "우주선",
+    "model": "res://assets/models/ships/lost_freight_pod.glb",
+    "source": "art/blender/ships/lost_freight_pod.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_freight_salvage.py",
+    "review": "docs/production/118-freight-salvage.md",
+    "foliage": false
+  },
+  {
+    "id": "freight_cradle",
+    "title": "유실 화물 회수",
+    "name": "선박 회수 거치대",
+    "group": "우주선",
+    "model": "res://assets/models/ships/freight_cradle.glb",
+    "source": "art/blender/ships/freight_cradle.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_freight_salvage.py",
+    "review": "docs/production/118-freight-salvage.md",
+    "foliage": false
+  },
+  {
+    "id": "freight_receiver",
+    "title": "유실 화물 회수",
+    "name": "Space Y 화물 인계 설비",
+    "group": "우주선",
+    "model": "res://assets/models/ships/freight_receiver.glb",
+    "source": "art/blender/ships/freight_receiver.blend",
+    "geometry": "ink-family-authored",
+    "generator": "tools/build_freight_salvage.py",
+    "review": "docs/production/118-freight-salvage.md",
+    "foliage": false
   }
 ]

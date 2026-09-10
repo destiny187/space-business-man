@@ -30,6 +30,12 @@ var station_models: Dictionary={}
 var traffic: FrontierSpaceTrafficView
 var corporate_models: Dictionary={}
 var corporate_view: FrontierCorporateSiteView
+var freight_view: FrontierFreightSalvageView
+var freight_records: Dictionary={}
+var freight_activity: Array=[]
+var freight_vessels: Array=[]
+var freight_carrier: String="crew"
+var freight_pilot:=false
 var trace_view: FrontierCorporateTraceView
 var trace_records: Dictionary={}
 var trace_scan: Dictionary={}
@@ -118,6 +124,7 @@ func _process(delta: float) -> void:
 			if is_instance_valid(traffic):traffic.suspend()
 			if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,true)
 			if is_instance_valid(trace_view):trace_view.update(orbit_clock,true)
+			if is_instance_valid(freight_view):freight_view.update(0,orbit_clock,true)
 			scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
 		return
 	visual_suspended=false
@@ -153,9 +160,10 @@ func _process(delta: float) -> void:
 	if is_instance_valid(traffic):traffic.update(delta,orbit_clock,presentation_blocked)
 	if is_instance_valid(trace_view):trace_view.update(orbit_clock,presentation_blocked)
 	if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,presentation_blocked)
+	if is_instance_valid(freight_view):freight_view.update(delta,orbit_clock,presentation_blocked)
 	_update_planet_scan(delta)
 	var site_scanning: bool=is_instance_valid(corporate_view) and not corporate_view.selected.is_empty() and corporate_view.progress<1.0
-	var trace_scanning: bool=is_instance_valid(trace_view) and trace_view.scanning
+	var trace_scanning: bool=(is_instance_valid(trace_view) and trace_view.scanning) or (is_instance_valid(freight_view) and freight_view.scanning)
 	soundscape.update(delta,trace_scanning or (scan_target>=0 and scan_progress<1.0) or site_scanning,float(trace_scan.get("progress",0)) if trace_scanning else (corporate_view.progress if site_scanning else scan_progress))
 	orbital_presentation.update(delta,orbit_clock)
 	_update_galactic_core()
@@ -224,6 +232,7 @@ func _load_system(index: int) -> void:
 		FrontierInkStyle.apply(model,cache);system_art.add_child(model);corporate_models[site.id]=model
 	corporate_view=FrontierCorporateSiteView.new();system_art.add_child(corporate_view);corporate_view.configure(self)
 	trace_view=FrontierCorporateTraceView.new();system_art.add_child(trace_view);trace_view.configure(self)
+	freight_view=FrontierFreightSalvageView.new();system_art.add_child(freight_view);freight_view.configure(self)
 	traffic=null
 	if not FrontierSpaceTraffic.all(state.manifest,index,orbit_time).is_empty():
 		traffic=FrontierSpaceTrafficView.new();system_art.add_child(traffic);traffic.configure(self)
@@ -244,6 +253,7 @@ func _update_planet_scan(delta: float) -> void:
 	if is_instance_valid(traffic) and not traffic.selected.is_empty():target=-1
 	if is_instance_valid(corporate_view) and not corporate_view.selected.is_empty():target=-1
 	if is_instance_valid(trace_view) and not trace_view.selected.is_empty():target=-1
+	if is_instance_valid(freight_view) and not freight_view.selected.is_empty():target=-1
 	if target!=scan_target:scan_target=target;scan_progress=0.0
 	if target<0:
 		transit_overlay.scan_body={};return

@@ -46,3 +46,5 @@ ID는 `trace:corp_<system>_0`이고 위치는 저장한 거점 상대 오프셋�
 [Lotus INK](media/corporate-traces/trace_lotus-ink.png) · [mine INK](media/corporate-traces/trace_mine-ink.png) · [CooperTech INK](media/corporate-traces/trace_coopertech-ink.png)
 
 [미확인 지도](media/corporate-traces/trace-map-unknown.png) · [회사 식별 지도](media/corporate-traces/trace-map-identified.png) · [기록 확보 지도](media/corporate-traces/trace-map-recorded.png) · [실제 조사 HUD](media/corporate-traces/trace-progress-hud.png) · [J 카드](media/corporate-traces/trace-journal-960.png) · [J 상세](media/corporate-traces/trace-journal-detail-960.png)
+
+2026-09-10 후속: SP09 유실 포드 회수·실제 적재·항만 인계는 [별도 구현 기록](118-freight-salvage.md)에 연결했다. 위 후속 미구현 표기는 SP08 커밋 당시의 범위다.

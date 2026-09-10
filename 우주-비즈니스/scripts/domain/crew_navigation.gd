@@ -10,6 +10,7 @@ static func validate(value: Variant) -> String:
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
 	if not FrontierUniverse._finite(value.get("orbit_time",0),0,1e12):return "궤도 시간 오류"
 	if value.has("traffic_patrols") and not FrontierSpacePatrol.valid_state(value.traffic_patrols):return "경비 편대 기록 오류"
+	if value.has("freight_anchor") and (not value.freight_anchor is String or FrontierFreightSalvage.system_of(value.freight_anchor)<0):return "화물 상대 정지 기준 오류"
 	if value.has("traffic_observers"):
 		if not value.traffic_observers is Array or value.traffic_observers.size()>7:return "운항 관심 영역 오류"
 		for observer in value.traffic_observers:
@@ -96,6 +97,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 	var old_time: float=float(nav.get("orbit_time",0))
 	nav.orbit_time=old_time+delta
 	if nav.mode=="approach" and nav.get("station_target",false):return FrontierSpaceStation.step_approach(world,delta)
+	if FrontierFreightSalvage.drift(world,old_time):return false
 	if FrontierSpaceStation.drift_docked(world,old_time):return false
 	if nav.mode=="idle" and nav.get("manual",false):return false
 	if nav.mode=="idle":
@@ -186,7 +188,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if float(controls[0])==0 and float(controls[1])==0 and float(controls[2])==0 and not nav.get("manual",false):return
 	for member in world.crew.members.values():
 		if member.get("connected",true) and not member.aboard:return
-	if float(controls[0])!=0:nav.erase("station_docked")
+	if float(controls[0])!=0:nav.erase("station_docked");nav.erase("freight_anchor")
 	nav.manual=true
 	var cfg: Dictionary=world.manifest.settings.flight
 	var direction:=FrontierCrewWorld.vector(nav.direction).normalized()
@@ -219,6 +221,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		obstacles.append({"point":FrontierCrewWorld.vector(site.position),"radius":360.0})
 	for trace in FrontierCorporateTraces.all(world.manifest,int(nav.system),float(nav.orbit_time)):
 		obstacles.append({"point":FrontierCrewWorld.vector(trace.position),"radius":115.0})
+	obstacles.append_array(FrontierFreightSalvage.obstacles(world.manifest,int(nav.system),float(nav.orbit_time),FrontierFreightSalvage.records(world)))
 	for i in FrontierUniverse.body_count(world.manifest,int(nav.system)):
 		var ordinal: int=FrontierUniverse.first_ordinal(world.manifest,int(nav.system))+i
 		var body:=FrontierUniverse.body(world.manifest,ordinal)
@@ -324,6 +327,11 @@ static func departure_obstacles(manifest: Dictionary,index: int,elapsed: float,d
 		var later:=FrontierCorporateTraces.definition(manifest,trace.id,elapsed+horizon)
 		var drift:=FrontierCrewWorld.vector(trace.position).distance_to(FrontierCrewWorld.vector(later.position))
 		result.append({"point":FrontierCrewWorld.vector(trace.position),"radius":60.0+drift})
+	for freight in FrontierFreightSalvage.obstacles(manifest,index,elapsed):
+		var now_freight:=FrontierFreightSalvage.definition(manifest,FrontierFreightSalvage.address(index),elapsed)
+		var later_freight:=FrontierFreightSalvage.definition(manifest,now_freight.id,elapsed+horizon)
+		var drift:=FrontierCrewWorld.vector(now_freight.receiver).distance_to(FrontierCrewWorld.vector(later_freight.receiver))
+		result.append({"point":freight.point,"radius":float(freight.radius)+drift})
 	return result
 static func departure_clear(origin: Vector3,direction: Vector3,obstacles: Array) -> bool:
 	var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition

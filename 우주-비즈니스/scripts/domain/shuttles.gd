@@ -46,6 +46,7 @@ static func factory_busy(world: Dictionary,body_id: String,id: String) -> bool:
 		if ship.state=="assembling" and ship.location==body_id and ship.factory_id==id:return true
 	return false
 static func guard(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
+	if kind=="land" and not FrontierFreightSalvage.carried(FrontierFreightSalvage.records(world),FrontierFreightSalvage.carrier(context(world,actor))).is_empty():return "외부 회수 포드를 지정 항만에 인계한 뒤 착륙하세요."
 	var body_id:=location(world,actor)
 	var facility_id:=str(args.get("factory_id",args.get("building_id",args.get("facility_id",""))))
 	if kind in ["business_craft","business_produce","business_facility_upgrade","business_research_prototype","business_research_trial","business_demolish","rover_craft"] and factory_busy(world,body_id,facility_id):return "소형선 조립이 끝난 뒤 제작소를 사용하세요."
@@ -117,6 +118,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			if not loan.get("company",false) or loan.state!="docked":continue
 			if not loan.cargo_equipment.is_empty():return "공용 FINCH의 개인 장비를 먼저 내려 주세요."
 			if not FrontierCrewSurface.landed(world) or member.aboard or FrontierCrewWorld.vector(member.position).distance_to(pad(world,holder))>float(config().interaction_distance):return "Lotus 공용 FINCH 가까이에서 탑승하세요."
+			FrontierFreightSalvage.reassign(world,holder,actor)
 			fleet(world)[actor]=loan;fleet(world).erase(holder);break
 	var ship: Dictionary=fleet(world).get(actor,{})
 	if ship.is_empty() or ship.state=="assembling":return "소형선 조립을 먼저 완료하세요."

@@ -396,6 +396,11 @@ func _apply_snapshot(value: Dictionary) -> void:
 	if flight==null:_setup_flight()
 	onboarding.update_snapshot(value)
 	flight.transition_preparing=arrival.active
+	flight.freight_records=value.crew.get("freight_records",{}).duplicate(true)
+	flight.freight_activity=value.get("freight_activity",[]).duplicate(true)
+	flight.freight_vessels=value.get("freight_vessels",[]).duplicate(true)
+	flight.freight_carrier="crew" if value.get("local_shuttle","").is_empty() else "shuttle:"+str(value.local_shuttle)
+	flight.freight_pilot=value.crew.pilot_id==value.self_id
 	flight.trace_records=value.crew.get("corporate_traces",{}).duplicate()
 	flight.trace_scan=value.get("scan",{}).duplicate()
 	flight.update_navigation(value.crew.navigation)

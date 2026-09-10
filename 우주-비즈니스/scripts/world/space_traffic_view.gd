@@ -59,11 +59,12 @@ func update(delta: float,t: float,blocked: bool) -> void:
 		for pivot in visual.engines:pivot.rotation.x=sin(t*1.2+int(row.index))*.045*power
 		for sensor in visual.sensors:sensor.rotation.y=sin(t*2.0)*.55 if row.stage=="inspect" else 0.0
 		if row.kind=="fighter":root.rotate_object_local(Vector3.FORWARD,float(row.bank)*delta*2.5)
+		var lost_pod:=FrontierFreightSalvage.missing_pod(flight.state.manifest,row)
 		for i in visual.pods.size():
 			var pod: Dictionary=visual.pods[i];var transfer:=0.0
 			if row.stage=="unload":transfer=smoothstep(float(i%4)*.18,float(i%4)*.18+.4,float(row.u))
 			elif row.stage=="load":transfer=1.0-smoothstep(float(i%4)*.18,float(i%4)*.18+.4,float(row.u))
-			pod.node.visible=transfer<.995
+			pod.node.visible=transfer<.995 and not (i%4==0 and lost_pod)
 			pod.node.position=pod.home+Vector3(signf(pod.home.x)*60*smoothstep(.45,1,transfer),38*sin(transfer*PI*.5),0)
 		if row.kind=="freighter":_crane(row,t)
 		if distance<closest:closest=distance;thrust=power

@@ -45,7 +45,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
 	grid.columns=clampi(int((get_viewport_rect().size.x-132)/2/92),1,6)
-	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
+	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.latest.get("crew",{}).get("freight_records",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
 	if not was_visible or signature!=last_signature:last_signature=signature;refresh()
 	was_visible=true
 	if query_delay>0:
@@ -65,6 +65,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 		var tile:=FrontierItemTile.new();tile.picture=load("res://assets/ui/discoveries/"+str(entry.row.template)+".png") if entry.kind in ["discovery","incident"] and ResourceLoader.exists("res://assets/ui/discoveries/"+str(entry.row.template)+".png") else FrontierResourceIcons.texture(entry.icon)
 		if entry.kind=="incident" and entry.row.has("native"):tile.picture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(entry.row.native.form_id)))
 		if entry.kind=="corporation":tile.picture=load(FrontierCorporations.icon_path(entry.company))
+		if entry.kind=="freight_incident":tile.picture=load(FrontierFreightSalvage.ICON);tile.amount="%d / 3"%int(entry.row.stage)
 		if entry.kind=="corporate_trace":tile.picture=load("res://assets/ui/corporations/trace_"+str(entry.company)+".png");tile.amount="%d / 2"%int(entry.row.stage)
 		tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
 		tile.pressed.connect(func():select(entry))
@@ -93,6 +94,14 @@ func select(entry: Dictionary) -> void:
 		FrontierCorporateIdentity.add_to(details,entry.row.asset)
 		var note:=FrontierInterfaceStyle.label(details,company.description,14);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		var source_label:=FrontierInterfaceStyle.label(details,"첫 식별  "+str(item.name),13);source_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	elif entry.kind=="freight_incident":
+		preview.custom_minimum_size.y=150;preview.show();preview.show_model(entry.row.model);FrontierCorporateIdentity.frame_trace_preview(preview)
+		var stage:=int(entry.row.stage)
+		for text in [FrontierFreightSalvage.STATES[stage],"운송선  "+str(entry.row.call_sign),"봉인 화물  "+str(entry.row.cargo),"인계 항만  "+str(entry.row.port_name),"공동 원정선 거치대에 적재" if stage==2 and entry.row.carrier=="crew" else ("FINCH 회수 거치대에 적재" if stage==2 else ""),("인계 대금  %d C 지급 완료" if stage==3 else "인계 후 공동 자금  +%d C")%int(entry.row.payment),"E를 유지해 포드를 회수하고 지정 항만 인계 설비까지 직접 운반하세요. 외부 거치대는 선박마다 포드 한 개를 고정합니다. 착륙 전 화물을 인계하세요." if stage<3 else "지정 항만에 인계했습니다. 이 송장의 보상은 다시 지급되지 않습니다."]:
+			if str(text).is_empty():continue
+			var line:=Label.new();line.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;line.text=text;line.add_theme_font_size_override("font_size",14);details.add_child(line)
+		var locate:=Button.new();locate.text="지도에서 인계 행성 보기";details.add_child(locate)
+		locate.pressed.connect(func():app.close_menus();app.navigation_ui.show_target(int(entry.row.body)))
 	elif entry.kind=="corporate_trace":
 		preview.custom_minimum_size.y=150;preview.show();preview.show_model(entry.row.model)
 		FrontierCorporateIdentity.frame_trace_preview(preview)

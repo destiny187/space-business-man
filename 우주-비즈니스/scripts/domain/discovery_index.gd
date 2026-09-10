@@ -36,6 +36,12 @@ static func page(world: Dictionary,query: String,kind: String,body_id: String,pa
 			if not needle.is_empty() and not str(d.name).to_lower().contains(needle):continue
 			entries.append({"key":"discovery:"+key,"kind":"discovery","row":row.duplicate(true),"name":d.name,"icon":"scan"})
 	if kind in ["all","incident"]:
+		for id in FrontierFreightSalvage.records(world):
+			var row:=FrontierFreightSalvage.definition(world.manifest,id)
+			if row.is_empty() or (not body_id.is_empty() and row.body_id!=body_id):continue
+			if not needle.is_empty() and not (str(row.name)+" Space Y "+str(row.port_name)+" "+str(row.cargo)).to_lower().contains(needle):continue
+			row.merge(FrontierFreightSalvage.records(world)[id],true)
+			entries.append({"key":id,"kind":"freight_incident","row":row,"name":row.name,"icon":"scan"})
 		for key in FrontierExplorationIncidents.records(world):
 			var row: Dictionary=FrontierExplorationIncidents.records(world)[key]
 			var d:=FrontierExplorationIncidents.definition(row.template)

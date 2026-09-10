@@ -116,8 +116,9 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 	return {"ok":true,"snapshot":snapshot(peer)}
 func snapshot(viewer: int=1) -> Dictionary:
 	var data: Dictionary=world.crew.duplicate()
-	data.erase("survey");data.erase("corporate_traces");data=data.duplicate(true)
+	data.erase("survey");data.erase("corporate_traces");data.erase("freight_records");data=data.duplicate(true)
 	if world.crew.has("corporate_traces"):data.corporate_traces=world.crew.corporate_traces
+	if world.crew.has("freight_records"):data.freight_records=world.crew.freight_records
 	if world.crew.has("survey"):data.survey=world.crew.survey
 	var visible: Dictionary=peers.duplicate()
 	if pending.has(viewer):
@@ -136,7 +137,7 @@ func snapshot(viewer: int=1) -> Dictionary:
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
-	return {"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"local_shuttle":actor if local.has("local_shuttle") else "","rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":vessel_stats,"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"freight_vessels":FrontierFreightSalvageSurvey.vessels(world),"freight_activity":FrontierFreightSalvageSurvey.activity(scans),"shared_credits":int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits)),"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"local_shuttle":actor if local.has("local_shuttle") else "","rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"navigation_site":{"state":site.get("state","")},"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"vessel_stats":vessel_stats,"session_id":session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":world.manifest.id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -429,7 +430,7 @@ func step_surface(delta: float) -> void:
 		var actor: String=peers[peer]
 		var local:=FrontierShuttles.context(world,actor)
 		if not FrontierCrewSurface.landed(local):
-			FrontierCorporateTraceSurvey.step(self,peer,local,duration)
+			if not FrontierFreightSalvageSurvey.step(self,peer,local,duration):FrontierCorporateTraceSurvey.step(self,peer,local,duration)
 			if stopped:return
 			continue
 		if world.crew.members[actor].aboard:scans.erase(peer);continue

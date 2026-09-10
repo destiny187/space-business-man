@@ -1,0 +1,42 @@
+[
+  {
+    "id": "lost_freight_pod",
+    "source": "art/blender/ships/lost_freight_pod.blend",
+    "model": "res://assets/models/ships/lost_freight_pod.glb",
+    "generator": "tools/build_freight_salvage.py",
+    "meshes": 6,
+    "triangles": 13348,
+    "sha256": "c33c0ded196052de00a58c131d8496bba9203c38628489cd3a0a0367d0fcf622",
+    "pivots": []
+  },
+  {
+    "id": "freight_cradle",
+    "source": "art/blender/ships/freight_cradle.blend",
+    "model": "res://assets/models/ships/freight_cradle.glb",
+    "generator": "tools/build_freight_salvage.py",
+    "meshes": 12,
+    "triangles": 11332,
+    "sha256": "636cf86d03bd3f3caff234154a5f305a68b947030b79760b394462be3d0ea438",
+    "pivots": [
+      "Anim_Clamp_-13_-10",
+      "Anim_Clamp_-13_10",
+      "Anim_Clamp_13_-10",
+      "Anim_Clamp_13_10"
+    ]
+  },
+  {
+    "id": "freight_receiver",
+    "source": "art/blender/ships/freight_receiver.blend",
+    "model": "res://assets/models/ships/freight_receiver.glb",
+    "generator": "tools/build_freight_salvage.py",
+    "meshes": 13,
+    "triangles": 12452,
+    "sha256": "b450e149e3a041e0b385a83d716a2a6021d87a3a207cfe93bd354bf8a1106bb9",
+    "pivots": [
+      "Anim_Clamp_-13_-10",
+      "Anim_Clamp_-13_10",
+      "Anim_Clamp_13_-10",
+      "Anim_Clamp_13_10"
+    ]
+  }
+]

@@ -154,5 +154,18 @@
         "status": "감시 작동·봉인 유지"
       }
     }
+  },
+  "salvage": {
+    "version": 1,
+    "chance": 28,
+    "signal_distance": 12000,
+    "identify_distance": 2600,
+    "recover_distance": 220,
+    "handover_distance": 400,
+    "identify_seconds": 1.5,
+    "recover_seconds": 5,
+    "handover_seconds": 3,
+    "max_speed": 120,
+    "payment": 350
   }
 }

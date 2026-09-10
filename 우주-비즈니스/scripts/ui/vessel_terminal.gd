@@ -6,6 +6,8 @@ var heading: Label
 var owner_label: Label
 var capacity: ProgressBar
 var capacity_label: Label
+var freight_card: HBoxContainer
+var freight_label: Label
 var cards: Dictionary={}
 static func model_path(hull_id: String) -> String:
 	if hull_id in ["kestrel","finch"]:return "ships/"+hull_id
@@ -18,6 +20,9 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(230,220);hull.add_child(preview)
 	capacity_label=FrontierInterfaceStyle.label(hull,"화물",14)
 	capacity=ProgressBar.new();capacity.show_percentage=false;capacity.custom_minimum_size.y=6;hull.add_child(capacity)
+	freight_card=HBoxContainer.new();hull.add_child(freight_card)
+	var pod:=TextureRect.new();pod.texture=load(FrontierFreightSalvage.ICON);pod.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;pod.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;pod.custom_minimum_size=Vector2(64,52);freight_card.add_child(pod)
+	freight_label=Label.new();freight_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;freight_label.size_flags_horizontal=Control.SIZE_EXPAND_FILL;freight_label.add_theme_font_size_override("font_size",13);freight_card.add_child(freight_label);freight_card.hide()
 	var grid:=GridContainer.new();grid.columns=2;grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL;grid.add_theme_constant_override("h_separation",12);grid.add_theme_constant_override("v_separation",12);add_child(grid)
 	for row in [["lotus","Lotus 보급","기초 물자  현장 투하","ice"],["augmentation","신체 증강","선내 장치  강화","reinforced_frame"],["cargo","화물창","배낭 ↔ 선박","stone"],["inventory","내 아이템","장비  번호 슬롯","reinforced_frame"],["research","연구","설계도  생태 분석","crystal"],["shipyard","정비","선체  모듈","control_circuit"],["launch","탑승  이륙","승무원 탑승 후 출항","ship_module"],["rejoin","원정선 합류","화물은 먼저 직접 하역","ship_module"]]:
 		var button:=Button.new();button.custom_minimum_size=Vector2(180,100);button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;grid.add_child(button)
@@ -43,6 +48,9 @@ func update_snapshot(value: Dictionary) -> void:
 	var slots:=int(FrontierShuttles.config().cargo_slots) if personal else FrontierItemInventory.warehouse_capacity(site)
 	var used:=FrontierItemInventory.warehouse_used(site)
 	capacity.max_value=slots;capacity.value=used;capacity_label.text="화물  %d / %d칸"%[used,slots]
+	var freight:=FrontierFreightSalvage.carried(value.crew.get("freight_records",{}),"shuttle:"+str(value.local_shuttle) if personal else "crew")
+	freight_card.visible=not freight.is_empty()
+	freight_label.text="회수 거치대  1 / 1\n유실 화물 운반 중 · J" if not freight.is_empty() else ""
 	for id in ["research","shipyard","augmentation"]:cards[id].visible=not personal
 	cards.rejoin.visible=personal
 	cards.launch.get_meta("hint").text="혼자 탑승하여 출발" if personal else "승무원 탑승 후 출항"

@@ -120,6 +120,7 @@ func _draw() -> void:
 		draw_circle(center,9,Color("ffe2a3"))
 		var count: int=FrontierUniverse.body_count(manifest,system_index)
 		_draw_corporate_sites(center,extent)
+		_draw_freight(center,extent)
 		for station in FrontierSpaceStation.all(manifest,system_index,station_excluded,elapsed):
 			var factor: float=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
 			var point:=center+Vector2(station.position[0],station.position[2])*factor
@@ -150,6 +151,21 @@ func _draw() -> void:
 			if absf(ship_position.y)>100:draw_string(font,vessel+Vector2(8,10),"↑" if ship_position.y>0 else "↓",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 		if not compact:draw_string(font,Vector2(12,24),FrontierUniverse.system(manifest,system_index).star.name,HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color("e0ebe3"))
 	if compact:draw_string(font,Vector2(64,size.y-10),"Tab 지도",HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color("a4b5bd"))
+func _draw_freight(center: Vector2,extent: float) -> void:
+	if not can_inspect_system(system_index):return
+	var row:=FrontierFreightSalvage.definition(manifest,FrontierFreightSalvage.address(system_index),elapsed)
+	if row.is_empty():return
+	var stage:=int(journal.data.get("freight_stages",{}).get(row.id,0)) if journal!=null else 0
+	var count:=FrontierUniverse.body_count(manifest,system_index)
+	var factor:=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
+	var pos:=FrontierUniverse.position(manifest,int(row.body),elapsed)
+	var anchor:=center+Vector2(pos.x,pos.z)*factor;var point:=anchor+Vector2(30,34)
+	var tint:=Color("94edcf") if stage>0 else Color("ffc180")
+	draw_line(anchor,point,tint,1,true);draw_rect(Rect2(point-Vector2(7,7),Vector2(14,14)),tint,false,1.5)
+	if stage==3:draw_line(point+Vector2(-4,0),point+Vector2(0,4),tint,2,true);draw_line(point+Vector2(0,4),point+Vector2(6,-4),tint,2,true)
+	if not compact:draw_string(get_theme_default_font(),point+Vector2(13,4),["SOS","유실 화물","인계 항만","화물 인계 완료"][stage],HORIZONTAL_ALIGNMENT_LEFT,-1,12,tint)
+	hits.append({"point":point,"ordinal":int(row.body)})
+
 func _draw_corporate_sites(center: Vector2,extent: float) -> void:
 	if not can_inspect_system(system_index):return
 	var profile:=FrontierCorporateSites.profile(manifest,system_index)

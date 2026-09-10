@@ -312,3 +312,5 @@
 2026-09-10 SP07: [시드 기업 진출권·회사별 거점·행성 간 운항](production/115-seeded-corporate-regions.md).
 
 2026-09-10 [SP08 기업 활동 흔적](production/117-corporate-activity-traces.md): Lotus 비콘·mine 집하/정비대·CooperTech 감시/봉인 실물, E 조사·공동 저장·지도/J 공개를 연결했다. 기존 은하 보존과 실제 확인 범위는 제작 기록을 따른다.
+
+2026-09-10 [SP09 유실 화물 회수·선체 적재·항만 인계](production/118-freight-salvage.md): 실제 윈치/거치대·공동 저장과 단발 정산·지도/J 공개.

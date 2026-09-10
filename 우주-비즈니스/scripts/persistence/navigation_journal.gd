@@ -17,6 +17,10 @@ func valid(value: Variant) -> bool:
 	for key in ["systems","bodies","favorites"]:
 		if not value.get(key) is Dictionary:return false
 	if value.has("corporate_traces") and not FrontierCorporateTraces.valid(value.corporate_traces):return false
+	if value.has("freight_stages"):
+		if not value.freight_stages is Dictionary:return false
+		for id in value.freight_stages:
+			if not id is String or FrontierFreightSalvage.system_of(id)<0 or not FrontierExpeditionBusiness.integer(value.freight_stages[id],1,3):return false
 	for key in value.systems:
 		if not str(key).is_valid_int() or int(key)<0 or int(key)>=int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system):return false
 	for key in value.bodies:
@@ -53,6 +57,10 @@ func observe(snapshot: Dictionary) -> void:
 		if not data.has("corporate_traces"):data.corporate_traces={}
 		var stage:=int(snapshot.crew.corporate_traces[id])
 		if stage>int(data.corporate_traces.get(id,0)):data.corporate_traces[id]=stage;changed=true
+	for id in snapshot.crew.get("freight_records",{}):
+		if not data.has("freight_stages"):data.freight_stages={}
+		var stage:=int(snapshot.crew.freight_records[id].stage)
+		if stage>int(data.freight_stages.get(id,0)):data.freight_stages[id]=stage;changed=true
 	for row in snapshot.crew.get("survey",{}).values():
 		var known: Array=data.bodies.get(row.body_id,{}).get("resources",[]).duplicate()
 		if row.resource not in known:

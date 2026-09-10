@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "provider": "ElevenLabs (existing generated originals)",
+  "new_generation": false,
+  "sources": [
+    "audio/manifests/space-experience.json",
+    "audio/manifests/rover-sounds.json",
+    "audio/manifests/lotus-support.json",
+    "audio/manifests/exploration-incidents.json",
+    "audio/manifests/elevenlabs.json"
+  ],
+  "mapping": {
+    "unidentified_distress_beacon": "sfx_incident_beacon",
+    "held_manifest_identification": "sfx_orbital_scan",
+    "winch_during_authoritative_transfer": "sfx_rover_winch",
+    "persisted_clamp_lock": "sfx_lotus_touchdown",
+    "persisted_stage_change": "sfx_orbital_complete",
+    "interrupted_transfer_with_failure_reason": "sfx_build_invalid"
+  },
+  "mix": "Receiver sounds aboard the vessel. Winch -24 dB on SFX, existing scan gain/pitch, six second distress cue cooldown. Menu or hidden flight viewport stops winch.",
+  "playback": "Current Forward+ expedition: held E winch/scan, persisted cargo lock and completion, menu input/audio stop verified.",
+  "listening": "Subjective listening not performed; no new voice or effect generated."
+}

@@ -33,6 +33,7 @@ static func validate(value: Variant) -> String:
 	if value.has("survey") and not FrontierSurfaceSurvey.valid(value.survey):return "광물 조사 기록 오류"
 	if value.has("corporations") and not FrontierCorporations.valid(value.corporations):return "기업 식별 기록 오류"
 	if value.has("corporate_traces") and not FrontierCorporateTraces.valid(value.corporate_traces):return "기업 활동 조사 기록 오류"
+	if value.has("freight_records") and not FrontierFreightSalvage.valid(value.freight_records,value):return "유실 화물 적재 기록 오류"
 	if value.has("combat"):
 		if not value.combat is Dictionary:return "전투 기록 형식 오류"
 		for target_id in value.combat:
@@ -65,9 +66,10 @@ static func validate(value: Variant) -> String:
 	return ""
 static func public_snapshot(value: Dictionary,active: Dictionary) -> Dictionary:
 	var result:=value.duplicate()
-	result.erase("survey");result.erase("receipts");result.erase("corporate_traces");result=result.duplicate(true)
+	result.erase("survey");result.erase("receipts");result.erase("corporate_traces");result.erase("freight_records");result=result.duplicate(true)
 	if value.has("corporate_traces"):
 		result.corporate_traces=FrontierCorporateTraces.snapshot(value.corporate_traces,int(value.navigation.system))
+	if value.has("freight_records"):result.freight_records=FrontierFreightSalvage.snapshot(value.freight_records,int(value.navigation.system))
 	# Keep movement snapshots bounded; the full saved history is queried on demand.
 	if value.has("survey"):
 		result.survey={}
