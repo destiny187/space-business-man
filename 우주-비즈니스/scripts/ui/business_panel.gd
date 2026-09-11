@@ -70,6 +70,7 @@ var research_trial_button: Button
 var research_install_button: Button
 var research_cancel_button: Button
 func _ready() -> void:
+	visibility_changed.connect(_flush_paint)
 	theme=FrontierInterfaceStyle.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE);offset_left=24;offset_right=minf(900,get_viewport().get_visible_rect().size.x-24);offset_top=26;offset_bottom=-24
 	get_viewport().size_changed.connect(func():offset_right=minf(900,get_viewport().get_visible_rect().size.x-24))
@@ -282,7 +283,19 @@ func context_in_range(position: Vector3) -> bool:
 	if context_kind=="base":return site.get("base_deployed",true) and not site.get("base_submerged",false) and position.distance_to(FrontierCrewWorld.vector(site.center))<=float(FrontierExpeditionBusiness.config().deposit_range)
 	var row: Dictionary=site.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 	return not row.is_empty() and not row.get("submerged",false) and position.distance_to(FrontierCrewWorld.vector(row.position))<=float(FrontierExpeditionBusiness.config().deposit_range if context_kind=="storage" else FrontierExpeditionBusiness.config().interaction_range)
+# Keep authoritative data current while expensive card/layout work sleeps.
+var pending_paint:=false
+var paint_arguments: Array=[]
 func update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
+	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;planet_body=planet;engineering=research;knowledge=ecology
+	paint_arguments=[value,id,actor,tier,research,ecology,planet,viewer,participant_count]
+	pending_paint=true
+	_flush_paint()
+func _flush_paint() -> void:
+	if not is_visible_in_tree() or not pending_paint:return
+	pending_paint=false
+	_paint_update.callv(paint_arguments)
+func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
 	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
 	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경 / 계약"
 	register_button.hide();guidance.show()
