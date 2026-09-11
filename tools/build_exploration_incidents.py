@@ -19,6 +19,8 @@ def build(id):
  if id in ['wreck','power']:
   # +Y in Blender exports to -Z: entrance at -2.4 and cargo at +4.4.
   box('Deck',(0,1.3,.13),(6,9,.26),dark,p,.08)
+  # Bridge the 26 cm deck lip so the opened hatch is reachable without a jump.
+  panel('Boarding ramp',[(-1.1,-4.7,.025),(1.1,-4.7,.025),(1.1,-3.0,.28),(-1.1,-3.0,.28)],steel,p)
   for s in [-1,1]:
    box('Hull side',(s*3,1.3,1.8),(.35,9,3.6),cream,p,.17)
    box('Hull band',(s*3.19,1.3,1.5),(.08,8.2,.8),teal,p,.03)

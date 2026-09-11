@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "id": "storm_archive_wreck",
+  "tile_chance": 0.35,
+  "radius": 18.0,
+  "period": 12.0,
+  "warning_start": 8.0,
+  "strike_at": 10.5,
+  "strike_seconds": 0.45,
+  "damage": 18.0,
+  "duplicate_reward": {
+    "refined_copper": 4
+  },
+  "blueprints": [
+    "facility_factory_mk3",
+    "facility_atmosphere_mk3",
+    "facility_water_mk3",
+    "facility_thermal_mk3",
+    "facility_biolab_mk3",
+    "facility_source_control_mk3"
+  ],
+  "roof_min": [
+    -3.05,
+    0,
+    -5.8
+  ],
+  "roof_max": [
+    -0.75,
+    3.38,
+    3.2
+  ]
+}

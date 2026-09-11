@@ -92,12 +92,14 @@ func make(row: Dictionary) -> Dictionary:
   main.position=Vector3(0,-7.6,-1);cargo.hide();relay.hide()
   var ring:=MeshInstance3D.new();var torus:=TorusMesh.new();torus.inner_radius=float(FrontierExplorationIncidents.config().seismic.blast_radius)-.08;torus.outer_radius=torus.inner_radius+.16;torus.rings=48;torus.ring_segments=6;ring.mesh=torus
   var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_color=Color("ff762c");ring.material_override=material;root_node.add_child(ring);ring.position=Vector3(0,-7.5,0);result.danger_ring=ring
+ if preload("res://scripts/domain/storm_archive.gd").enabled(row):preload("res://scripts/world/storm_archive_view.gd").build(self,row,result)
  return result
 func refresh() -> void:
  rows=surface.session.latest.get("incidents",{}).get("records",{})
  for id in models.keys():
   if rows.has(id):continue
   if models[id].beam!=null:models[id].beam.queue_free()
+  preload("res://scripts/world/storm_archive_view.gd").dispose(models[id])
   models[id].root.queue_free();models.erase(id)
  for id in rows:
   if models.has(id):continue
@@ -145,6 +147,9 @@ func _process(delta: float) -> void:
    if motion.length()>.005:creature.rotation.y=atan2(-motion.x,-motion.z)-float(row.yaw)
    creature.paused=stopped;nodes.stolen.visible=not row.claimed
    if creature.mouth_marker!=null:nodes.stolen.global_position=creature.mouth_marker.global_position
+  if nodes.has("storm_ring"):
+   var warning: String=preload("res://scripts/world/storm_archive_view.gd").update(self,row,nodes,stopped)
+   if not warning.is_empty():native_warning=warning
   if mode=="robot":nodes.shield.visible=float(row.get("shield",0))>0 and row.hp>0 and row.phase!="idle"
   for part in nodes.parts:
    if not part.has_meta("rest"):part.set_meta("rest",part.transform)

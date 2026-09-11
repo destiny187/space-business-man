@@ -22,6 +22,7 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
  var pool: Array=[];var profile:=FrontierEcology.profile(body)
  for id in config().items:
   var d:=definition(id)
+  if d.get("generation","")=="independent":continue
   if int(d.tier)>int(body.planet_tier):continue
   if d.mode=="seismic" or d.get("native_role","")=="cave":continue
   if d.has("native_role") and FrontierNativeIncidents.candidates(body,d.native_role).is_empty():continue
@@ -88,6 +89,8 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
       row.path.append(array(p))
      if fits:
       row.position=row.path[0].duplicate();row.relay=row.path[-1].duplicate();row.battery_position=row.position.duplicate();rows.append(row)
+ var storm: Dictionary=preload("res://scripts/domain/storm_archive.gd").spawn(body,f,cell,rows)
+ if not storm.is_empty():rows.append(storm)
  if _tiles.size()>128:_tiles.erase(_tiles.keys()[0])
  _tiles[cache_key]=rows;return rows
 static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array:
@@ -155,6 +158,10 @@ static func targets(row: Dictionary) -> Array:
   result.append({"part":"cargo","point":cargo_point(row),"action":"F 탈락물·은닉품 회수" if FrontierNativeIncidents.available(row) else ("E로 현지 개체 분석" if not row.native_observed else "생물의 이동을 기다리세요")})
  else:
   if row.carrier=="":result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 들기" if mode in ["carry","drone"] else "F 은닉품 회수"})
+ if preload("res://scripts/domain/storm_archive.gd").enabled(row):
+  for target in result:
+   if target.part=="repair":target.action="F 구리 2개로 피뢰 회로 수리"
+   elif target.part=="socket":target.action="F 피뢰 배터리 연결"
  if row.carrier!="":result.append({"part":"delivery","point":FrontierCrewWorld.vector(row.relay)+Vector3.UP*.8,"action":"F 회수 지점에 화물 내려놓기"})
  return result
 static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
@@ -210,6 +217,7 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
   row.age+=delta;row.time+=delta
   var p:=FrontierCrewWorld.vector(world.crew.members[present[0]].position);var mode: String=definition(row.template).mode
   if not row.seen and p.distance_to(FrontierCrewWorld.vector(row.position))<35:row.seen=true;row.discoverer=present[0];changed=true
+  if preload("res://scripts/domain/storm_archive.gd").tick(world,row,delta,present,obstacle):changed=true
   if row.has("native"):
    if FrontierNativeIncidents.tick(world,row,present,delta,bodies[row.body_id]):changed=true
   elif mode=="robot" and row.hp>0:
@@ -374,6 +382,7 @@ static func validate(world: Dictionary) -> String:
   if not row.get("path") is Array or row.path.size()>13:return "사건 이동 경로 오류"
   for p in row.path:
    if not FrontierUniverse._vector3_array(p):return "사건 이동 지점 오류"
+  if not preload("res://scripts/domain/storm_archive.gd").validate(world,row):return "폭풍 기록고의 복원 결과 오류"
   if not FrontierNativeIncidents.validate(world,row):return "현지 생물 사건 기록 오류"
  return ""
 
@@ -381,4 +390,7 @@ static func recover(world: Dictionary,actor: String,row: Dictionary) -> String:
  if not FrontierNativeIncidents.available(row):return "생물을 분석하고 이동한 뒤 현장 보상을 회수하세요."
  var error:=FrontierSuitModules.drop(world,actor,key(row),int(row.tier),str(definition(row.template).mode))
  if not error.is_empty():return error
- return reward(world,actor,FrontierNativeIncidents.reward(row),str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))
+ var result:=reward(world,actor,FrontierNativeIncidents.reward(row),str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))
+ if not result.is_empty():return result
+ if preload("res://scripts/domain/storm_archive.gd").enabled(row):return preload("res://scripts/domain/storm_archive.gd").recover(world,actor,row)
+ return ""

@@ -197,6 +197,20 @@
       },
       "model": "incidents/nest",
       "hint": "주변 서식종과 다른 빛깔의 개체입니다.\n너무 접근하면 피하므로 거리를 두고 E로 분석하세요."
+    },
+    "storm_archive_wreck": {
+      "id": "storm_archive_wreck",
+      "name": "폭풍 속 연구선 기록고",
+      "tier": 3,
+      "mode": "power",
+      "generation": "independent",
+      "reward": {
+        "refined_iron": 5,
+        "refined_copper": 4
+      },
+      "model": "incidents/wreck",
+      "hint": "주황색 방전 예고에는 표시 범위 밖이나 선체 지붕 아래로 피하세요.\n피뢰 회로를 수리하고 배터리를 직접 운반해 접지를 복구하세요.\n해치를 열고 연구 기록을 회수하면 T3 설계도를 얻습니다.",
+      "icon": "wreck_beacon_trail"
     }
   }
 }

@@ -68,6 +68,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 		if entry.kind=="freight_incident":tile.picture=load(FrontierFreightSalvage.icon(entry.row.id));tile.amount="%d / %d"%[int(entry.row.stage),FrontierFreightSalvage.last_stage(entry.row.id)]
 		if entry.kind=="coopertech_clue":tile.picture=load(FrontierCorporations.icon_path("coopertech"));tile.amount="%d / 2"%int(entry.row.stage)
 		if entry.kind=="corporate_trace":tile.picture=load("res://assets/ui/corporations/trace_"+str(entry.company)+".png");tile.amount="%d / 2"%int(entry.row.stage)
+		if entry.kind=="incident" and FrontierExplorationIncidents.definition(entry.row.template).has("icon"):tile.picture=load("res://assets/ui/discoveries/"+str(FrontierExplorationIncidents.definition(entry.row.template).icon)+".png")
 		tile.caption=entry.name;tile.tooltip_text=entry.name;tile.set_meta("key",entry.key);grid.add_child(tile)
 		tile.pressed.connect(func():select(entry))
 		if entry.key==selected_entry.get("key",""):retained=entry
@@ -153,6 +154,9 @@ func select(entry: Dictionary) -> void:
 			var individual:=FrontierInterfaceStyle.label(details,FrontierNativeIncidents.title(entry.row.native)+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		else:preview.show_model(d.model)
 		FrontierInterfaceStyle.label(details,"T%d  %s"%[int(d.tier),"회수 완료" if entry.row.claimed else "현장 진행 중"],13)
+		if entry.row.has("blueprint"):
+			var license: Dictionary=FrontierFacilityBlueprints.definitions().get(entry.row.blueprint,{})
+			FrontierInterfaceStyle.label(details,("중복 설계  부품으로 회수" if entry.row.get("blueprint_duplicate",false) else "공동 설계 해금")+"  "+str(license.get("name",entry.row.blueprint)),13,FrontierInterfaceStyle.ACCENT)
 		var equipment: String=d.get("equipment",{}).get(str(int(entry.row.tier)),"")
 		if equipment!="":FrontierInterfaceStyle.label(details,"회수 장비  "+str(FrontierEquipment.config().items[equipment].name),13)
 		var note:=FrontierInterfaceStyle.label(details,d.hint,14);note.autowrap_mode=TextServer.AUTOWRAP_ARBITRARY
