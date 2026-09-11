@@ -92,10 +92,14 @@ void fragment(){
   local_temp_value=fv.x;local_life_value=fv.y;local_water_value=fv.z;local_pressure_value=fv.w;local_salt_value=fe.x;local_soil_value=fe.y;local_restore_value=fe.z;pollution_value=fe.w;
  }
  local_life_value*=1.-pollution_value;local_restore_value*=1.-pollution_value;
- float near_detail=1.-smoothstep(detail_near,detail_far,distance(CAMERA_POSITION_WORLD,world_position));
+ float surface_distance=distance(CAMERA_POSITION_WORLD,world_position);
+ float near_detail=1.-smoothstep(detail_near,detail_far,surface_distance);
+ float lava_detail=molten?1.-smoothstep(70.,140.,surface_distance):0.;
  float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
  vec3 strata=mix(rock_color.rgb*.82,rock_color.rgb*1.09,smoothstep(.2,.8,terrace));
  float deposit=skin*smoothstep(.18,.88,geo.z+geo.y*.75);
+ // Basalt plates remain legible under the thin volcanic ash deposits.
+ if(molten){deposit*=.35;}
  float temp=mix(native_temperature,local_temp_value,managed)+(geo.x-.5)*14.-max(0.,world_position.y-2.)*.012;
  float freeze=1.-smoothstep(freeze_start,freeze_end,temp);
  float supply=mix(volatile_supply,max(0.,local_water_value),managed*step(0.,local_water_value));
@@ -106,10 +110,10 @@ void fragment(){
  vec3 bump=vec3(0.);float roughness=.94;
  vec4 rock=vec4(.5,.5,.5,.94);vec4 dirt=rock;
  vec3 br=vec3(0.);vec3 bd=vec3(0.);
- if(textured_surface && near_detail>.001){
+ if(textured_surface && max(near_detail,lava_detail)>.001){
   vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
   rock=layer(rock_layer,rock_meters,world_position,n,weights,br);
-  dirt=layer(deposit_layer,deposit_meters,world_position,n,weights,bd);
+  if(near_detail>.001){dirt=layer(deposit_layer,deposit_meters,world_position,n,weights,bd);}
   // Raised bedrock breaks through soil; only the local boundary receives height contrast.
   float height_bias=(dirt.b-rock.b)*.65*near_detail;
   deposit=clamp(deposit+height_bias*4.*deposit*(1.-deposit),0.,1.);
@@ -137,6 +141,21 @@ void fragment(){
  ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),(local_life_value<0.?local_restore_value:local_life_value)*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
  vec3 perturbed=normalize(n+(bump-n*dot(n,bump))*normal_strength*near_detail);
  NORMAL=normalize((VIEW_MATRIX*vec4(perturbed,0.)).xyz);ROUGHNESS=roughness;
- if(molten){float heat=mix(1.,(region_count>0||free_enabled)?clamp((local_temp_value-80.)/max(1.,native_temperature-80.),0.,1.):local_heat,managed);float fissure=1.-smoothstep(.025,.1,abs(sin(world_position.x*.17+sin(world_position.z*.13)*2.)));
- float pulse=.85+.15*sin(TIME*1.3+world_position.z*.2);ALBEDO=mix(ALBEDO,vec3(.65,.07,.005),fissure*heat);EMISSION=vec3(1.,.12,.005)*fissure*heat*pulse*1.6;}
+ if(molten){
+  float heat=mix(1.,(region_count>0||free_enabled)?clamp((local_temp_value-80.)/max(1.,native_temperature-80.),0.,1.):local_heat,managed);
+  // The packed roughness shares the height field's fissures: no extra heat map.
+  // Mip filtering and a distant fade prevent bright subpixel seams from crawling.
+  float edge_width=min(.12,fwidth(rock.a));
+  float fissure=(1.-smoothstep(.40-edge_width,.72+edge_width,rock.a))*lava_detail;
+  float core=1.-smoothstep(.25-edge_width,.43+edge_width,rock.a);
+  vec3 ember=mix(vec3(.30,.017,.004),vec3(1.,.13,.005),smoothstep(.2,.85,fissure));
+  ember=mix(ember,vec3(1.,.42,.035),core*core*.55);
+  float pulse=.94+.06*sin(TIME*.65+world_position.x*.37+world_position.z*.29+rock.b*5.);
+  float activity=.22+.78*smoothstep(.12,.72,geo.x+geo.y*.3);
+  ALBEDO*=mix(1.,.70+smoothstep(.30,.60,rock.b)*.55,near_detail);
+  ALBEDO*=1.-fissure*.42;
+  ALBEDO=mix(ALBEDO,ember*.26,fissure*heat*activity);
+  EMISSION=ember*fissure*heat*pulse*activity*.85;
+  ROUGHNESS=mix(max(.84,roughness),roughness,fissure*heat);
+ }
 }

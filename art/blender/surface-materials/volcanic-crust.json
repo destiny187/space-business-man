@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "blender": "5.2.1 LTS",
+  "seed": 71503,
+  "resolution": 1024,
+  "tile_meters": 4,
+  "plates_per_tile": 20,
+  "channels": "linear normal XY / height / roughness; low roughness marks fissure floor",
+  "lighting_baked": false,
+  "texture": "우주-비즈니스/assets/textures/surfaces/lava_crust.png",
+  "sha256": "a1b51e349151f94d3471fbe28d65d9f124826765bf65af3a9a28441ad31c5644",
+  "seamless": "periodic Fourier distortion and wrapped Voronoi",
+  "preview_only_displacement": true
+}
