@@ -34,8 +34,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  modes=TabBar.new();modes.add_tab("행성지도");modes.add_tab("테라포밍");column.add_child(modes)
  var bar:=HBoxContainer.new();column.add_child(bar);map_bar=bar
  layers=OptionButton.new()
- for text in ["자원·지질","환경·복원","시설·공급"]:layers.add_item(text)
- bar.add_child(layers);layers.item_selected.connect(func(_i):canvas.queue_redraw())
+ for text in ["자원·지질","환경·복원","시설·공급","기상·대피"]:layers.add_item(text)
+ bar.add_child(layers);layers.item_selected.connect(func(_i):update_detail();canvas.queue_redraw())
  var home:=Button.new();home.text="내 위치";bar.add_child(home);home.pressed.connect(func():focus=Vector2(app.camera.position.x,app.camera.position.z);canvas.queue_redraw())
  for pair in [["−",1.4],["+",1.0/1.4]]:
   var button:=Button.new();button.text=pair[0];bar.add_child(button);button.pressed.connect(func():zoom(float(pair[1])))
@@ -157,6 +157,16 @@ func draw_map() -> void:
   var pos:=at(Vector2(row.position[0],row.position[2]));canvas.draw_rect(Rect2(pos-Vector2(3,3),Vector2(6,6)),Color("83d9c5") if row.active else Color("efb46f"))
   if layers.selected==2 and int(row.get("tier",1))==3:canvas.draw_arc(pos,48/meters_per_pixel,0,TAU,32,Color(.4,.8,.7,.3),1,true)
   if layers.selected==2 and meters_per_pixel<3:text_at(pos+Vector2(8,0),FrontierCatalog.entry("buildings",row.type).name,Color("e6e8df"),11)
+ if layers.selected==3:
+  var weather: Dictionary=app.session.latest.get("weather",{});var front: Dictionary=weather.get("event",{})
+  if not front.is_empty():
+   var center:=at(Vector2(front.center[0],front.center[2]));var radius:=float(FrontierPlanetWeather.config().front_radius)/meters_per_pixel
+   canvas.draw_circle(center,radius,Color(.7,.55,.25,.12));canvas.draw_arc(center,radius,0,TAU,64,Color("edbe81"),2,true)
+   text_at(center+Vector2(12,-14),{"rain":"雨 · 비","acid":"산성비","thunder":"뇌우"}.get(front.kind,"기상"),Color("edbe81"),14)
+  for row in site.get("buildings",{}).values():
+   var point:=at(Vector2(row.position[0],row.position[2]))
+   if row.type=="grounding_mast":canvas.draw_arc(point,float(FrontierPlanetWeather.config().mast_radius)/meters_per_pixel,0,TAU,32,Color("8ae0bb"),2,true);text_at(point+Vector2(8,-8),"접지",Color("8ae0bb"),13)
+   elif row.type=="field_canopy":canvas.draw_rect(Rect2(point-Vector2(6,5),Vector2(12,10)),Color("8ad6df"),false,2);text_at(point+Vector2(9,0),"차양",Color("8ad6df"),13)
  for id in app.session.latest.get("crew",{}).get("members",{}):
   var member: Dictionary=app.session.latest.crew.members[id]
   if member.get("place_key","")!=app.session.latest.crew.members[app.session.latest.self_id].get("place_key",""):continue
@@ -173,6 +183,11 @@ func draw_map() -> void:
 func show_clue(clue: Dictionary) -> void:
  modes.current_tab=0;refresh();selected=clue.id;waypoint=Vector2(clue.position[0],clue.position[2]);focus=waypoint;app.open_menu(self);refresh();update_detail()
 func update_detail() -> void:
+ if layers.selected==3:
+  var weather: Dictionary=app.session.latest.get("weather",{});var front: Dictionary=weather.get("event",{})
+  detail.text="기상 관측이 없는 기존 세계" if weather.is_empty() else str(weather.profile.name)+" · 차양은 비, 접지봉은 18m 안 자연 낙뢰를 차단합니다."
+  if not front.is_empty():detail.text+="\n"+("도착까지 %.0f초"%maxf(0,float(front.start)-float(weather.clock)) if float(weather.clock)<float(front.start) else "소강까지 %.0f초"%maxf(0,float(front.end)-float(weather.clock)))+" · E로 하늘 관측 / J 발견 기록"
+  return
  var clue: Dictionary=app.session.latest.get("coopertech_clues",{}).get(selected,{})
  if not clue.is_empty() and clue.body_id==body.id:
   detail.text="CooperTech  ·  "+FrontierCooperTechClues.STATES[int(clue.stage)]+"\n좌표 %.0f, %.0f · 현장까지 %.0fm"%[clue.position[0],clue.position[2],Vector2(clue.position[0],clue.position[2]).distance_to(Vector2(app.camera.position.x,app.camera.position.z))];return

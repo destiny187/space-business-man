@@ -7,6 +7,9 @@ const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 var augmentation_station_provider: Callable
 var research_station_provider: Callable
 var shot_obstacle_provider: Callable
+var weather_ready_provider: Callable
+var weather_presence: Dictionary={}
+var weather_timer:=0.0
 var lotus_clearance_provider: Callable
 var world: Dictionary={}
 var phase: String="lobby"
@@ -32,6 +35,7 @@ var rover_spawn_validator: Callable
 var rover_runtime: Dictionary={"seats":{},"exits":{},"tasks":{},"status":{}}
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
+	weather_presence.clear();weather_timer=0.0
 	error=FrontierPlayerProfile.validate_character(profile)
 	if not error.is_empty():return false
 	error=FrontierExpeditionResearch.validate(source)
@@ -144,7 +148,7 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
-	return {"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
@@ -292,7 +296,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
-func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[]) -> bool:
+func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[],weather_ready: bool=false) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
@@ -307,7 +311,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	if not seat.is_empty() and int(seat.seat)==0:scanning=false
 	var aim: Vector3=Vector3.FORWARD if aim_value is Array and aim_value.is_empty() else FrontierCrewSurface.direction(aim_value)
 	if aim==Vector3.ZERO:return false
-	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled,"vehicle_controls":vehicle_controls.duplicate()}
+	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled,"vehicle_controls":vehicle_controls.duplicate(),"weather_ready":weather_ready}
 	return true
 func direction_for(peer: int) -> Vector2:
 	if not inputs.has(peer) or inputs[peer].expires<now:return Vector2.ZERO
@@ -392,6 +396,13 @@ func _step_water(delta: float) -> void:
 var incident_timer:=0.0
 func step_surface(delta: float) -> void:
 	if stopped:return
+	weather_timer+=delta
+	if weather_timer>=.25:
+		var weather_draft:=WorldSnapshot.copy(world)
+		var weather_changed:=FrontierPlanetWeather.tick(weather_draft,minf(weather_timer,.35),peers.values(),shot_obstacle_provider,weather_ready_provider,weather_presence)
+		weather_timer=0.0
+		if weather_changed and not save_world.call(weather_draft):stopped=true;error="기상 저장 실패로 세계를 정지했습니다.";return
+		world=weather_draft
 	incident_timer+=delta
 	if incident_timer>=.25:
 		var active: Array=[]

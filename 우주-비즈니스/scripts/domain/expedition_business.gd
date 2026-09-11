@@ -7,6 +7,7 @@ static func config() -> Dictionary:
 	if _config.is_empty():
 		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json"))
 		_config.buildings.append_array(FrontierTerraformTier3.config().buildings.keys())
+		_config.buildings.append_array(FrontierPlanetWeather.config().buildings.keys())
 	return _config
 static func signature() -> String:
 	return FrontierUniverse.fingerprint(JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json")))+FrontierUniverse.fingerprint(FrontierCatalog.all())
@@ -116,6 +117,7 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 		if Vector2(vein.position[0]-p.x,vein.position[2]-p.z).length()<radius+2:return "광맥과 채광 접근로를 비워 두세요."
 	return ""
 static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3,active: Dictionary) -> String:
+	if kind in FrontierPlanetWeather.config().buildings and int(FrontierUniverse.body_from_id(world.manifest,world.location).get("planet_tier",1))<2:return "T2 행성부터 사용할 수 있는 현장 기상 설비입니다."
 	var current:=site(world)
 	if FrontierRegionalTerraform.enabled(current) and not current.has("local_region"):
 		var preview: Dictionary=world.duplicate(false);preview.business=world.business.duplicate(false);preview.business.sites=world.business.sites.duplicate(false)
@@ -265,6 +267,7 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 		var building: Dictionary=current.buildings[id]
 		if position.distance_to(point(building.position))>float(config().interaction_range):return "시설 8m 이내로 접근하세요."
 		if kind=="business_toggle":
+			if building.type in FrontierPlanetWeather.config().buildings:return "이 설비는 전력·소모품 없이 항상 보호합니다."
 			building.enabled=not building.enabled
 			if not building.enabled:building.active=false;building.working=false;building.status="정지"
 			return ""

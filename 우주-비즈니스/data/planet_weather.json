@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "quiet_seconds": [1500, 2400],
+  "hazard_chance": 0.25,
+  "warning_seconds": 35,
+  "hazard_seconds": [45, 60],
+  "rain_interval": [420, 900],
+  "rain_seconds": [100, 150],
+  "front_radius": 320,
+  "entry_grace": 15,
+  "acid_grace": 12,
+  "acid_damage": 0.5,
+  "acid_clean_toxicity": 12,
+  "acid_full_toxicity": 45,
+  "strike_warning": 3,
+  "strike_interval": [12, 17],
+  "strike_radius": 3,
+  "strike_damage": 12,
+  "mast_radius": 18,
+  "acid_profiles": ["ochre", "salt"],
+  "buildings": {
+    "field_canopy": {"name":"현장 차양","description":"지붕 아래의 비·산성비를 막는 개방형 차양. 전력·소모품 없이 사용합니다.","cost":{"iron":8,"stone":4},"tech":"","power":0,"radius":3.7,"model":"field_canopy","minimum_planet_tier":2},
+    "grounding_mast": {"name":"접지봉","description":"18m 안의 자연 낙뢰를 접지합니다. 전력·소모품 없이 사용하며 사건 장치에는 영향을 주지 않습니다.","cost":{"iron":5,"copper":5,"stone":3},"tech":"","power":0,"radius":0.95,"model":"grounding_mast","minimum_planet_tier":2}
+  }
+}

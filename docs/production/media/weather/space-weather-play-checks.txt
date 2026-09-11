@@ -1,0 +1,35 @@
+PASS isolated weather world
+PASS seeded acid chemistry on a natural T2 planet
+WEATHER_BODY galaxy:galaxy-v3:71491:planet:204 ochre
+PASS T1 has no weather hazard
+PASS vacuum has no precipitation
+PASS T2 landing
+PASS actual build request field_canopy
+PASS placement and resource cost field_canopy
+PASS actual build request grounding_mast
+PASS placement and resource cost grounding_mast
+PASS first hazard at least 25 minutes away
+PASS roof covers underneath, not rooftop
+PASS mast protection radius
+PASS weather round trip
+PASS old worlds not migrated by ticking
+PASS lightning consumes shield first
+PASS acid bypasses shield
+PASS fixture save
+PASS Forward+ landing ready
+PASS rain geometry and ElevenLabs loop run
+PASS correct loop duration despite WAV compression
+PASS weather warning remains visible over menu
+PASS actual canopy interior blocks exposure
+PASS open canopy does not provide lightning immunity
+FAIL: host acid exposure reduces health
+PASS restored atmosphere turns acid front into harmless rain
+PASS E sky survey records weather once
+PASS journal includes weather observation
+PASS mast protects live player
+PASS ElevenLabs thunder plays on host strike
+PASS host ungrounded lightning damage after fixed warning
+PASS save in-progress front
+PASS saved front is unchanged
+PASS active front and strikes validate
+WEATHER_CHECKS 33 FAILURES 1

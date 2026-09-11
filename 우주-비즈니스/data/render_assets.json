@@ -16093,5 +16093,29 @@
     "floor_y": 0.0,
     "catalogue": "xenoflora",
     "review_status": "Godot INK near/far and five states; 20 family sheets; Blender source representatives"
+  },
+  {
+    "id": "field_canopy",
+    "title": "현장 기상 설비",
+    "name": "현장 차양",
+    "group": "시설",
+    "model": "res://assets/models/field_canopy.glb",
+    "source": "art/blender/buildings/field_canopy.blend",
+    "geometry": "weather-shelter-authored",
+    "foliage": false,
+    "generator": "tools/build_weather_shelters.py",
+    "review": "docs/production/135-planet-weather.md"
+  },
+  {
+    "id": "grounding_mast",
+    "title": "현장 기상 설비",
+    "name": "접지봉",
+    "group": "시설",
+    "model": "res://assets/models/grounding_mast.glb",
+    "source": "art/blender/buildings/grounding_mast.blend",
+    "geometry": "weather-shelter-authored",
+    "foliage": false,
+    "generator": "tools/build_weather_shelters.py",
+    "review": "docs/production/135-planet-weather.md"
   }
 ]

@@ -55,6 +55,12 @@ static func page(world: Dictionary,query: String,kind: String,body_id: String,pa
 			if not row.seen or (not body_id.is_empty() and row.body_id!=body_id):continue
 			if not needle.is_empty() and not str(d.name).to_lower().contains(needle):continue
 			entries.append({"key":"incident:"+key,"kind":"incident","row":row.duplicate(true),"name":d.name,"icon":"scan"})
+	if kind in ["all","weather"]:
+		for key in world.get("weather",{}).get("observations",{}):
+			var row: Dictionary=world.weather.observations[key];var info:=FrontierPlanetWeather.info(row)
+			if not body_id.is_empty() and row.body_id!=body_id:continue
+			if not needle.is_empty() and not str(info.name).contains(needle):continue
+			entries.append({"key":key,"kind":"weather","row":row.duplicate(),"name":info.name,"icon":"scan"})
 	entries.sort_custom(func(a,b):return a.key<b.key if a.name==b.name else a.name.naturalnocasecmp_to(b.name)<0)
 	var index:=clampi(page_index,0,maxi(0,(entries.size()-1)/PAGE_SIZE))
 	return {"entries":entries.slice(index*PAGE_SIZE,(index+1)*PAGE_SIZE),"total":entries.size(),"page":index}

@@ -84,6 +84,22 @@ static func split_shield_damage(shield: float,damage_amount: float,multiplier: f
 	var absorbed:=minf(maxf(0,shield),maxf(0,damage_amount)*multiplier)
 	return {"absorbed":absorbed,"health":maxf(0,damage_amount-absorbed/multiplier)}
 
+static func weather_damage(member: Dictionary,amount: float,acid: bool) -> bool:
+	var v:=ensure(member)
+	if amount<=0 or v.protection>0:return false
+	# Exposure is chemical; electric discharges use shields without combat/weapon procs.
+	if not acid:
+		var absorbed:=minf(float(v.shield),amount);amount-=absorbed;v.shield-=absorbed
+		if absorbed>0:
+			v.shield_serial+=1
+			if v.shield<=0:v.shield_break_serial+=1
+		v.shield_wait=FrontierSuitModules.shield_delay(member)
+	if amount>0:v.health=maxf(0,v.health-amount);v.damage_serial+=1
+	v.hurt=float(config().heal_delay)
+	if v.health>0:return false
+	v.health=config().rescue_health;v.protection=config().rescue_protection;v.rescue_serial+=1;v.sprinting=false;v.shield=0.0
+	return true
+
 static func heal(member: Dictionary,amount: float) -> void:
 	var v:=ensure(member);var maximum:=FrontierCrewAugmentation.maximum_health(member)
 	var overflow:=maxf(0,v.health+amount-maximum);v.health=minf(maximum,v.health+maxf(0,amount))

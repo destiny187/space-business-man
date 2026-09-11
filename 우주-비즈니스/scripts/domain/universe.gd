@@ -189,13 +189,14 @@ static func new_world(seed_value: int) -> Dictionary:
 	var opening:=FrontierSolarOpening.create(manifest)
 	var point:=FrontierCrewWorld.vector(opening.start)
 	return {"version": 2, "expedition_research":FrontierExpeditionResearch.create(), "manifest": manifest, "manifest_hash": fingerprint(manifest),
-		"solar_opening":opening, "visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
+		"weather":FrontierPlanetWeather.create(), "solar_opening":opening, "visited": {}, "terrain_edits": {}, "location": body_id(manifest, start), "flight_position": [point.x,point.y,point.z]}
 
 static func fingerprint(value: Dictionary) -> String:
 	return JSON.stringify(JSON.parse_string(JSON.stringify(value)), "", true).sha256_text()
 
 static func validate_world(value: Variant) -> String:
 	if not value is Dictionary or value.get("version") != 2: return "지원하지 않는 탐험 저장 버전입니다. 원본을 보존하세요."
+	if value.has("weather") and not FrontierPlanetWeather.valid(value.weather):return "기상 기록이 손상됐습니다. 원본을 보존하세요."
 	if not value.get("manifest") is Dictionary: return "은하 생성 기록이 없습니다."
 	var m: Dictionary = value.manifest
 	if not m.get("settings") is Dictionary or m.settings.get("generator_version") not in ["galaxy-v2","galaxy-v3"]: return "호환되는 은하 생성기가 필요합니다."

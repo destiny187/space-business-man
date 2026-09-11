@@ -106,7 +106,7 @@ func _ready() -> void:
 		var kind:=str(building.get_item_metadata(index))
 		var def:=FrontierCatalog.entry("buildings",kind)
 		var card:=Button.new();card.custom_minimum_size=Vector2(145,168);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;card.toggle_mode=true
-		card.tooltip_text=def.name+"  "+FrontierCatalog.cost_text(def.cost)
+		card.tooltip_text=def.name+"  "+FrontierCatalog.cost_text(def.cost)+"\n"+str(def.get("description",""))
 		var content:=VBoxContainer.new();content.add_theme_constant_override("separation",3);content.mouse_filter=Control.MOUSE_FILTER_IGNORE;card.add_child(content);content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);content.offset_top=4;content.offset_bottom=-4
 		var preview:=TextureRect.new();preview.texture=load("res://assets/ui/previews/"+def.model+".png");preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;preview.custom_minimum_size.y=78;preview.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(preview)
 		var title:=Label.new();title.text=def.name;title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;title.add_theme_font_size_override("font_size",14);title.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(title)
@@ -273,7 +273,7 @@ func refresh_context(current: Dictionary) -> void:
 		var row: Dictionary=current.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 		if context_kind!="robot" and not row.is_empty():
 			facility_picture.show_model(FrontierCatalog.entry("buildings",row.type).model)
-			facility_status.text="Mk.%d  %s"%[int(row.get("tier",1)),row.get("status","")]
+			facility_status.text=FrontierCatalog.entry("buildings",row.type).description if row.type in FrontierPlanetWeather.config().buildings else "Mk.%d  %s"%[int(row.get("tier",1)),row.get("status","")]
 		if row.is_empty() or not FrontierPlanetSupply.operating(current):hide()
 func context_in_range(position: Vector3) -> bool:
 	if context_kind=="build":return true

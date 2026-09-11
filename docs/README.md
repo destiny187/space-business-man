@@ -1,5 +1,7 @@
 # 게임 설계 문서 목차
 
+2026-09-11 [행성 날씨·드문 자연재해](production/135-planet-weather.md): 새 원정에 물비·T2 이상 산성비/뇌우, 차양·접지봉, 관측·지도·정화 연결을 추가했다. 위험 추첨은 25~40분 간격·25%, 위험 지속은 45~60초다. 기존 세계의 날씨는 소급 변경하지 않는다.
+
 2026-09-11 [UI 공통화·실드 아이콘 정돈](production/131-ui-consistency.md): 상태 선 아이콘·게이지·수치 정렬과 공통 컨트롤, 모듈 희귀도/비용 표현을 정리했다. 적용 화면과 실제 확인 범위는 제작 기록을 따른다.
 
 2026-09-11 [최적화·콘텐츠 순차 작업](production/128-performance-and-content-commits.md): 사용자 승인에 따라 단계별 구현·확인·개별 커밋을 진행한다. 현재 완료 범위는 소관 기록을 따른다.
@@ -197,6 +199,7 @@
 | [탐험·이벤트·문명](game/06-exploration-and-civilizations.md) | 발견 종류, 보상, 선택과 장기 결과 |
 | [우주 탐험·우주선](game/07-space-exploration-and-ships.md) | 항해·후보 선정·개발 권한·선체/모듈 성장·해적·사건 |
 | [오픈월드·지하](game/08-open-world-and-underground.md) | 지역·수직 탐험·굴착·발견 밀도·위험·재방문 |
+| [행성 날씨와 자연재해](game/26-weather-and-natural-hazards.md) | T2 위험 기상·낮은 빈도·차양/접지·정화와 첫 구현/후속 후보 경계 |
 | [발견·연구·생태](game/09-discovery-research-and-ecology.md) | 원리 연구·고유 생물 출현·표본·이식·생물 모방·열 사례 |
 | [외계문명·외교](game/10-alien-civilizations-and-diplomacy.md) | 문명 단계·접촉·환경 목표·협약·교역·갈등 |
 | [은하·티어·시드](game/11-galaxy-tiers-and-seeds.md) | 단일 은하·중심 방향 진행·티어 분포·시드 계층·생물 사례 선택 |

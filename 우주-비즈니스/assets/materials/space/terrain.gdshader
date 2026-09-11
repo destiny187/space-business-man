@@ -1,4 +1,5 @@
 shader_type spatial;
+uniform float weather_wet : hint_range(0.0,1.0)=0.0;
 #define INK_SURFACE_ROUGHNESS
 #include "res://assets/materials/ink/cel_light.gdshaderinc"
 uniform vec4 rock_color:source_color=vec4(.43,.32,.25,1);
@@ -211,7 +212,7 @@ void fragment(){
   roughness=mix(mix(roughness,.27,ice),.82,snow);
  }
  ALBEDO=mix(ALBEDO,vec3(.39,.30,.20),pollution_value*managed*skin*.35);
- ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);
+ wet=max(wet,weather_wet*skin);ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);
  float salt=local_salt_value*managed*skin*smoothstep(.25,.7,geo.z);
  ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt*.6);
  if(!recovery_surface_enabled){

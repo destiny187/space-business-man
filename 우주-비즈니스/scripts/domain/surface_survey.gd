@@ -33,8 +33,9 @@ static func target(world: Dictionary,actor: String,aim: Vector3,wildlife_observe
 	if not discovery.is_empty() and (selected.is_empty() or origin.distance_to(discovery.point)<nearest):
 		selected=discovery;nearest=origin.distance_to(discovery.point)
 	if not corporation.is_empty() and (selected.is_empty() or origin.distance_to(corporation.point)<nearest):return corporation
-	return selected
+	return FrontierPlanetWeather.target(world,actor,aim) if selected.is_empty() else selected
 static func known(world: Dictionary,row: Dictionary) -> bool:
+	if row.kind=="weather":return world.weather.observations.has(row.id)
 	if row.kind=="corporation":return FrontierCorporations.known(world,row)
 	if row.kind=="native_incident":return world.incidents.records[row.id].native_observed
 	if row.kind=="discovery":return FrontierExplorationDiscoveries.known(world,row)
@@ -42,6 +43,7 @@ static func known(world: Dictionary,row: Dictionary) -> bool:
 	if row.kind=="biology":return world.ecology.observations.has(body_id+":"+row.form_id)
 	return world.crew.get("survey",{}).has(key(body_id,row))
 static func record(world: Dictionary,row: Dictionary,actor: String="") -> void:
+	if row.kind=="weather":FrontierPlanetWeather.observe(world,row);return
 	if row.kind=="corporation":FrontierCorporations.record(world,row);return
 	if row.kind=="native_incident":FrontierNativeIncidents.observe(world,row.id);return
 	if row.kind=="discovery":FrontierExplorationDiscoveries.scan(world,row,actor);return
@@ -62,6 +64,7 @@ static func biology_info(form: Dictionary) -> Dictionary:
 	var habitat:=FrontierEcologyCatalog.habitat(form)
 	return {"kind":"biology","name":form.name,"icon":FrontierResourceIcons.specimen_id(form),"subtitle":form.environment_label+" · "+form.habitat_note,"notes":notes,"condition":"정착 조건: %s · %.0f~%.0f°C"%[habitat.get("label",form.environment_label),float(habitat.get("temperature",[0,0])[0]),float(habitat.get("temperature",[0,0])[1])]}
 static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionary:
+	if row.kind=="weather":return FrontierPlanetWeather.info(row)
 	if row.kind=="corporation":return FrontierCorporations.info(row)
 	if row.kind=="native_incident":return FrontierNativeIncidents.info(world,row)
 	if row.kind=="discovery":return FrontierExplorationDiscoveries.result(world,row)

@@ -8,6 +8,7 @@ var body: Dictionary
 var site: Dictionary={}
 var regional_ledger: Dictionary={}
 var current: Dictionary={}
+var weather_strength:=0.0
 var refresh_timer:=0.0
 static func config() -> Dictionary:
 	if rules.is_empty():rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/surface_atmosphere.json"))
@@ -101,7 +102,7 @@ func update_cycles() -> void:
 	sky_state=FrontierPlanetaryCycles.sky_state(body,clock_seconds,sky_region);daylight=float(sky_state.daylight)
 	var direction: Vector3=sky_state.sun_direction
 	sun.basis=Basis.looking_at(-direction,Vector3.RIGHT if absf(direction.y)>.99 else Vector3.UP)
-	sun.light_energy=float(cycles.sun_energy)*smoothstep(-.02,.10,direction.y)
+	sun.light_energy=float(cycles.sun_energy)*smoothstep(-.02,.10,direction.y)*(1.0-weather_strength*.3)
 	material.set_shader_parameter("celestial_active",true)
 	material.set_shader_parameter("sun_direction",direction)
 	material.set_shader_parameter("stars_basis",sky_state.local_to_inertial)
@@ -112,13 +113,14 @@ func update_cycles() -> void:
 	var distance: float=a.a_au*(1.0-a.eccentricity*a.eccentricity)/(1.0+a.eccentricity*cos(angle))
 	material.set_shader_parameter("sun_radius",clampf(float(cycles.sun_angular_radius)*float(a.star.radius_solar)/distance,.001,.12))
 func paint_cycles() -> void:
+	material.set_shader_parameter("cloud_amount",maxf(float(current.cloud_amount),weather_strength*.86))
 	if cycles.is_empty():return
 	var night_top:=Color(cycles.night_zenith);var night_rim:=Color(cycles.night_horizon)
 	var dusk: float=(1.0-smoothstep(.03,.24,absf(sky_state.sun_height)))*current.atmosphere
 	var rim: Color=night_rim.lerp(current.horizon,daylight).lerp(Color(cycles.twilight_color),dusk*.5)
 	material.set_shader_parameter("zenith",night_top.lerp(current.zenith,daylight))
 	material.set_shader_parameter("horizon",rim)
-	material.set_shader_parameter("cloud_color",Color("192838").lerp(current.cloud_color,daylight).lerp(Color("986a66"),dusk*.35))
+	material.set_shader_parameter("cloud_color",Color("192838").lerp(current.cloud_color,daylight).lerp(Color("986a66"),dusk*.35).lerp(Color("667d89"),weather_strength*.7))
 	environment.fog_light_color=rim
 	environment.ambient_light_color=Color("8197bc").lerp(current.horizon.lerp(Color("b5cbd4"),.65),daylight)
 	sun.light_color=current.light.lerp(Color("ffb77e"),dusk*.8)

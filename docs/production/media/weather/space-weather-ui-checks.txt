@@ -1,0 +1,9 @@
+PASS read isolated weather save
+PASS resume Forward+ ready
+PASS resume keeps front identity and fixed location
+PASS resume does not reroll cooldown
+PASS resume protects player while warning and terrain become ready
+PASS both authored facility cards available
+PASS mast placement includes visual protection footprint
+PASS placement ghost visible on actual ground ray
+WEATHER_UI_CHECKS 8 FAILURES 0

@@ -494,10 +494,11 @@ func _physics_process(delta: float) -> void:
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
-		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled))
+		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled),surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position) and not arrival.active)
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		session.authority.shot_obstacle_provider=_shot_obstacle_distance
+		session.authority.weather_ready_provider=_weather_ready
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
 			if not actors.has(id):continue
@@ -1110,3 +1111,11 @@ func _shot_obstacle_distance(id: String,origin: Vector3,aim: Vector3,reach: floa
 	query.exclude=[actor.get_rid()]
 	var hit:=actor.get_world_3d().direct_space_state.intersect_ray(query)
 	return origin.distance_to(hit.position) if not hit.is_empty() else reach
+
+func _weather_ready(id: String) -> bool:
+	if not actors.has(id) or spaces==null:return false
+	var acknowledged:=false
+	for peer in session.authority.peers:
+		if session.authority.peers[peer]==id:acknowledged=session.authority.inputs.get(peer,{}).get("weather_ready",false) and float(session.authority.inputs.get(peer,{}).get("expires",-1))>=session.authority.now
+	var ground:=spaces.terrain_for(id)
+	return acknowledged and ground!=null and ground.ready_at(actors[id].position)

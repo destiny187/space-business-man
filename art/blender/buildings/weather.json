@@ -1,0 +1,24 @@
+[
+  {
+    "id": "field_canopy",
+    "source": "art/blender/buildings/field_canopy.blend",
+    "model": "우주-비즈니스/assets/models/field_canopy.glb",
+    "editable_meshes": 42,
+    "triangles": 26512,
+    "blender": "5.2.1 LTS",
+    "generator": "tools/build_weather_shelters.py",
+    "motion": "passive fixed structure",
+    "axis": "Blender Z up to Godot Y up"
+  },
+  {
+    "id": "grounding_mast",
+    "source": "art/blender/buildings/grounding_mast.blend",
+    "model": "우주-비즈니스/assets/models/grounding_mast.glb",
+    "editable_meshes": 25,
+    "triangles": 18080,
+    "blender": "5.2.1 LTS",
+    "generator": "tools/build_weather_shelters.py",
+    "motion": "passive fixed structure",
+    "axis": "Blender Z up to Godot Y up"
+  }
+]

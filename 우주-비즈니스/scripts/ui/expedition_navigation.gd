@@ -206,6 +206,7 @@ func show_target(ordinal: int) -> void:
 	app.chart.target=ordinal;app.chart.system_index=int(body.system_ordinal);app.chart.queue_redraw();_map_mode()
 	target_name.text=body.name
 	target_kind.text=FrontierUniverse.kind_label(body)+"  T%d"%int(body.planet_tier)
+	if not app.session.latest.get("weather",{}).is_empty():target_kind.text+="\n기상  "+str(FrontierPlanetWeather.profile(body).name)+(" · 드문 위험 기상" if not str(FrontierPlanetWeather.profile(body).hazard).is_empty() else "")
 	if not FrontierUniverse.landable(body):target_kind.text+="\n"+FrontierUniverse.landing_restriction(body)
 	refresh_survey()
 	_update_preview(body)

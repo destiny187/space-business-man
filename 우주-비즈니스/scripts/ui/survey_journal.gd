@@ -26,7 +26,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	search.text_changed.connect(func(_s):page_index=0;query_delay=.25)
 	var filters:=HBoxContainer.new();list.add_child(filters)
 	category=OptionButton.new();filters.add_child(category)
-	for title in ["전체","광물  보석","생물","탐험 장소","현장 사건","기업"]:category.add_item(title)
+	for title in ["전체","광물  보석","생물","탐험 장소","현장 사건","기업","기상"]:category.add_item(title)
 	location=OptionButton.new();filters.add_child(location)
 	for title in ["전체 발견","현재 행성"]:location.add_item(title)
 	for option in [category,location]:option.item_selected.connect(func(_i):page_index=0;refresh())
@@ -47,7 +47,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
 	grid.columns=clampi(int((get_viewport_rect().size.x-132)/2/92),1,6)
-	var signature:=str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("coopertech_clues",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.latest.get("crew",{}).get("freight_records",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
+	var signature:=str(app.session.latest.get("weather",{}).get("observed",0))+str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("coopertech_clues",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.latest.get("crew",{}).get("freight_records",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
 	if not was_visible or signature!=last_signature:last_signature=signature;refresh()
 	was_visible=true
 	if query_delay>0:
@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 		if query_delay<=0:refresh()
 func refresh() -> void:
 	serial+=1
-	app.session.request_discoveries(serial,search.text,["all","mineral","biology","discovery","incident","corporation"][category.selected],str(app.session.latest.get("location","")) if location.selected==1 else "",page_index)
+	app.session.request_discoveries(serial,search.text,["all","mineral","biology","discovery","incident","corporation","weather"][category.selected],str(app.session.latest.get("location","")) if location.selected==1 else "",page_index)
 func _receive(reply_serial: int,value: Dictionary) -> void:
 	if reply_serial!=serial:return
 	for child in grid.get_children():grid.remove_child(child);child.queue_free()
@@ -91,6 +91,12 @@ func select(entry: Dictionary) -> void:
 	var heading:=FrontierInterfaceStyle.label(details,entry.name,20);heading.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var source:=FrontierUniverse.body_from_id(app.session.manifest,entry.row.body_id)
 	FrontierInterfaceStyle.label(details,"발견  "+str(source.get("name",entry.row.body_id)),12,FrontierInterfaceStyle.MUTED)
+	if entry.kind=="weather":
+		var info:=FrontierPlanetWeather.info(entry.row)
+		var glyph:=FrontierInterfaceStyle.interface_icon("weather_"+str(entry.row.weather_kind),72);details.add_child(glyph)
+		for note in info.notes:
+			var line:=FrontierInterfaceStyle.label(details,note.text,15);line.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		return
 	if entry.kind=="corporation":
 		var company:=FrontierCorporations.company(entry.company)
 		var item:=FrontierCorporations.asset(entry.row.asset)
