@@ -1,5 +1,7 @@
 class_name FrontierBusinessSiteView
 extends Node3D
+const MineralBatch=preload("res://scripts/actors/static_mineral_batch.gd")
+var mineral_meshes: Dictionary={}
 var terrain: FrontierTerrainStreamer
 var body: Dictionary
 var ledger: Dictionary={}
@@ -26,7 +28,9 @@ func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terra
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
 	var root:=StaticBody3D.new();root.set_meta("business_kind",kind);root.set_meta("business_id",id);root.position=p
 	var visual: Node3D=prepared_models[model].instantiate();FrontierInkStyle.apply(visual,cache);root.add_child(visual)
-	if kind=="vein":FrontierMinerals.apply_appearance(visual,_vein_appearance(id,model))
+	if kind=="vein":
+		MineralBatch.apply(visual,mineral_meshes,model)
+		FrontierMinerals.apply_appearance(visual,_vein_appearance(id,model))
 	if kind in ["building","base"] and terrain.occlusion_enabled:
 		if not occluder_shapes.has(model):occluder_shapes[model]=FrontierFieldVisibility.static_model_shape(visual)
 		if occluder_shapes[model]!=null:
