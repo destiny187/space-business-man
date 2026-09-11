@@ -90,7 +90,7 @@ func {method}(_audit_delta: float) -> void:
     for relative, method, arguments, passed, result_type, label in [
         ('scripts/persistence/world_store.gd', 'write', 'state: Dictionary', 'state', 'bool', 'world_store.write'),
         ('scripts/persistence/world_store.gd', '_read', 'candidate: String', 'candidate', 'Dictionary', 'world_store._read'),
-        ('scripts/network/crew_authority.gd', 'snapshot', 'viewer: int=1', 'viewer', 'Dictionary', 'authority.snapshot'),
+        ('scripts/network/crew_authority.gd', 'snapshot', 'viewer: int=1,shared: Dictionary={}', 'viewer,shared', 'Dictionary', 'authority.snapshot'),
     ]:
         path = project / relative
         text = path.read_text().replace('func ' + method + '(', 'func _audit_core_' + method + '(', 1)
