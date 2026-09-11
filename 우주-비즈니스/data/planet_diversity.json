@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "archetypes": {
     "oxidized": {
       "kind": "basalt",
@@ -29,6 +29,14 @@
           "version": 1,
           "shelf_height": 0.32,
           "wash_depth": 0.48
+        },
+        "landscape": {
+          "version": 1,
+          "mode": "mesa",
+          "height": 58,
+          "scale": 750,
+          "step": 12,
+          "roughness": 0.12
         }
       }
     },
@@ -55,7 +63,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "rolling",
+          "height": 55,
+          "scale": 850,
+          "aspect": 1.2,
+          "roughness": 0.22
+        }
       }
     },
     "cratered": {
@@ -81,7 +97,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "impact",
+          "height": 27,
+          "scale": 520,
+          "rim": 10,
+          "roughness": 0.25
+        }
       }
     },
     "fractured": {
@@ -107,7 +131,14 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "crevasse",
+          "height": 24,
+          "scale": 370,
+          "roughness": 0.15
+        }
       }
     },
     "tundra": {
@@ -133,7 +164,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "rolling",
+          "height": 34,
+          "scale": 450,
+          "aspect": 2.6,
+          "roughness": 0.15
+        }
       }
     },
     "frozen": {
@@ -159,7 +198,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "shelves",
+          "height": 46,
+          "scale": 1000,
+          "step": 13,
+          "roughness": 0.07
+        }
       }
     },
     "volcanic": {
@@ -186,7 +233,14 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "volcanic",
+          "height": 90,
+          "scale": 760,
+          "roughness": 0.2
+        }
       }
     },
     "salt": {
@@ -212,7 +266,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "basin",
+          "height": 8,
+          "scale": 700,
+          "rim": 3,
+          "roughness": 0.07
+        }
       }
     },
     "ochre": {
@@ -238,7 +300,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "shelves",
+          "height": 35,
+          "scale": 490,
+          "step": 4,
+          "roughness": 0.1
+        }
       }
     },
     "banded": {
@@ -348,7 +418,15 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "mesa",
+          "height": 46,
+          "scale": 640,
+          "step": 6,
+          "roughness": 0.09
+        }
       }
     },
     "crystalline": {
@@ -374,7 +452,14 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "spire",
+          "height": 110,
+          "scale": 470,
+          "roughness": 0.12
+        }
       }
     },
     "alkaline": {
@@ -400,7 +485,14 @@
         "landing_inner": 40.0,
         "landing_outer": 85.0,
         "basin_threshold": -0.18,
-        "basin_transition": 0.16
+        "basin_transition": 0.16,
+        "landscape": {
+          "version": 1,
+          "mode": "karst",
+          "height": 32,
+          "scale": 430,
+          "roughness": 0.14
+        }
       }
     }
   }

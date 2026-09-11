@@ -10,6 +10,7 @@ var span := 24.0
 var seed_value := 0
 var traits: Dictionary={}
 var caves: FrontierSeededCaves
+var landscape: RefCounted
 var revision:=0
 # Exact per-field samples: no quantization, no sharing across terrain workers.
 const SAMPLE_LIMIT:=8192
@@ -40,6 +41,11 @@ func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, ch
 	plateau.seed=FrontierUniverse.derive(seed_number,"plateau-v2")
 	plateau.frequency=.0012
 	plateau.fractal_octaves=2
+	landscape=null
+	var landscape_rules: Dictionary=traits.get("terrain_layout",{}).get("landscape",{})
+	if int(landscape_rules.get("version",0))==1:
+		landscape=preload("res://scripts/world/planet_landscape.gd").new()
+		landscape.configure(seed_number,landscape_rules)
 	caves=null
 	if int(traits.get("underground",{}).get("version",0)) in [1,2]:
 		caves=FrontierSeededCaves.new()
@@ -93,6 +99,7 @@ func base_height(x: float,z: float) -> float:
 		var level: float=plateau.get_noise_2d(x,z)*float(layout.plateau_relief)+detail.get_noise_2d(x,z)*float(layout.plain_detail)
 		rough=lerpf(rough,level,plains)
 		inner=float(layout.landing_inner);outer=float(layout.landing_outer)
+	if landscape!=null:rough=landscape.apply(rough,x,z)
 	var base: float=2.0+rough*smoothstep(inner,outer,distance)
 	var geology: Dictionary=layout.get("surface_geology",{})
 	if int(geology.get("version",0))==1:
