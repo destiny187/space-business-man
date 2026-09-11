@@ -1,5 +1,6 @@
 class_name FrontierUniverse
 extends RefCounted
+const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 ## A bounded logical address space. No planet list is allocated or saved.
 const CONFIG_PATH := "res://data/galaxy.json"
 const STREAMS := ["terrain", "resource", "discovery", "ecology", "civilization", "tier"]
@@ -176,7 +177,7 @@ static func validate_world(value: Variant) -> String:
 	if not value.get("manifest") is Dictionary: return "은하 생성 기록이 없습니다."
 	var m: Dictionary = value.manifest
 	if not m.get("settings") is Dictionary or m.settings.get("generator_version") not in ["galaxy-v2","galaxy-v3"]: return "호환되는 은하 생성기가 필요합니다."
-	if value.get("manifest_hash") != fingerprint(m): return "은하 원형 기록이 손상됐습니다."
+	if value.get("manifest_hash") != WorldSnapshot.manifest_fingerprint(m): return "은하 원형 기록이 손상됐습니다."
 	if m.settings.has("corporate_space"):
 		var corporate: Variant=m.settings.corporate_space
 		if not corporate is Dictionary or corporate.get("version")!=1 or not corporate.get("mars") is Dictionary:return "기업 우주 배치 버전 오류"

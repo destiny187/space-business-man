@@ -1,5 +1,6 @@
 class_name FrontierCrewAuthority
 extends RefCounted
+const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 ## Host-only admission, immutable profile references and durable transactions.
 # Host scene resolves a live device descriptor (area/body/position/enabled); no RPC setter.
 var augmentation_station_provider: Callable
@@ -35,6 +36,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	error=FrontierExpeditionResearch.validate(source)
 	if not error.is_empty():return false
 	world=source.duplicate(true);save_world=persist
+	world.manifest=WorldSnapshot.own_manifest(world.manifest)
 	rover_runtime={"seats":{},"exits":{},"tasks":{},"status":{}}
 	FrontierRovers.brake_all(world)
 	for site in world.get("business",{}).get("sites",{}).values():
@@ -100,7 +102,7 @@ func admit(peer: int,profile: Variant,capability: String,protocol: int,content: 
 func acknowledge(peer: int,received_session: String) -> Dictionary:
 	if stopped or received_session!=session_id or not pending.has(peer):return failure("유효한 참가 준비 응답이 아닙니다.")
 	var entry: Dictionary=pending[peer]
-	var draft:=world.duplicate(true)
+	var draft:=WorldSnapshot.copy(world)
 	var id: String=entry.profile.character_id
 	if not draft.crew.members.has(id):draft.crew.members[id]=FrontierCrewWorld.member(entry.profile,entry.token.sha256_text(),peers.size())
 	else:
@@ -182,7 +184,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var descriptor: Dictionary=provider.call(actor,"ship:"+work_station) if provider.is_valid() else {}
 		var access:=FrontierUpgradeAccess.reason(FrontierShuttles.context(world,actor),actor,work_station,descriptor)
 		if not access.is_empty():return failure(access)
-	var canonical:=world.duplicate(true)
+	var canonical:=WorldSnapshot.copy(world)
 	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	var rover_draft:=rover_runtime.duplicate(true)
@@ -315,7 +317,7 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	_drop_pending(peer);inputs.erase(peer);input_sequences.erase(peer);scans.erase(peer)
 	if not peers.has(peer):return true
 	var id: String=peers[peer]
-	var draft:=world.duplicate(true)
+	var draft:=WorldSnapshot.copy(world)
 	var rover_draft:=rover_runtime.duplicate(true)
 	FrontierRovers.release(draft,rover_draft,id)
 	FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id);FrontierShuttles.resume(draft,id);draft.crew.revision+=1
@@ -327,7 +329,7 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	return true
 func close() -> bool:
 	stopped=true
-	var draft:=world.duplicate(true)
+	var draft:=WorldSnapshot.copy(world)
 	FrontierRovers.brake_all(draft)
 	for id in peers.values():
 		FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id)
@@ -391,7 +393,7 @@ func step_surface(delta: float) -> void:
 		for peer in peers:
 			if inputs.get(peer,{}).get("controls_enabled",true) and world.crew.members[peers[peer]].area=="surface" and not world.crew.members[peers[peer]].aboard:active.append(peers[peer])
 		if not active.is_empty():
-			var incident_draft:=world.duplicate(true)
+			var incident_draft:=WorldSnapshot.copy(world)
 			var changed:=FrontierExplorationIncidents.tick(incident_draft,minf(incident_timer,.35),active,shot_obstacle_provider,peers.values())
 			if changed:
 				incident_draft.crew.revision+=1
@@ -402,7 +404,7 @@ func step_surface(delta: float) -> void:
 	industry_timer+=delta
 	if industry_timer>=1.0:
 		industry_timer-=1.0
-		var draft:=world.duplicate(true)
+		var draft:=WorldSnapshot.copy(world)
 		var operated:=FrontierLotusSupport.tick(draft,1.0,lotus_clearance_provider)
 		for body_id in draft.get("business",{}).get("sites",{}):
 			if not FrontierPlanetSupply.operating(draft.business.sites[body_id]):continue
@@ -448,7 +450,7 @@ func step_surface(delta: float) -> void:
 		progress=minf(1.0,progress+duration*FrontierSuitModules.factor(world.crew.members[actor],"scan")/scan_seconds)
 		scans[peer]={"discovery_stage":FrontierExplorationDiscoveries.stage(local,target) if target.kind=="discovery" else 0,"id":target.id,"progress":progress,"known":false,"point":[target.point.x,target.point.y,target.point.z]}
 		if progress<1.0:continue
-		var draft:=world.duplicate(true)
+		var draft:=WorldSnapshot.copy(world)
 		var survey_local:=FrontierShuttles.context(draft,actor)
 		FrontierSuitModules.on_analysis(draft.crew.members[actor])
 		FrontierSurfaceSurvey.record(survey_local,target,actor);FrontierShuttles.commit(draft,survey_local,actor)

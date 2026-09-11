@@ -1,5 +1,7 @@
 # 데이터·세이브 설계
 
+2026-09-11: 현재 협동 원정은 세션 소유 은하 원형을 내부까지 읽기 전용으로 고정해 거래 초안과 공유한다. 진행·재고·영수증의 독립 복사, 전체 도메인 검증과 저장 후 확정은 유지한다. JSON 버전은 바꾸지 않는다. [구현·실제 확인·한계](../production/128-performance-and-content-commits.md#o03--거래-초안의-은하-원형-공유).
+
 2026-09-09: 현재 원정의 `ecology.item_storage_version=1`은 생체 표본 실물을 일반 수납 원장에 연결한다. 채집 원본은 `ecology.specimens`에 보존하고 개체별 아이템은 배낭·창고·운송/회수 화물 중 정확히 한 위치에만 존재한다. 예전 공동 표본은 우주선 창고로 한 번 이전하며 용량 초과도 삭제하지 않는다. 이식은 배낭 소비와 생태 상태를 같은 거래에 저장한다. [형식·이행·확인](../production/90-unified-specimen-inventory.md).
 
 2026-09-08 A05: 세계 최상위 `expedition_research` v1에 `origin`, `licenses`, `projects`를 저장한다. 누락된 이전 세계만 검증 뒤 legacy 이행하고 기존 스캔 증거를 가져온다. 새 세계는 처음부터 빈 연구 상태를 가지며 기여/보석 차감/영수증을 원자적으로 저장한다. 개인 프로필과 분리한 [형식·이행·검증 계약](../production/66-shared-expedition-research.md)을 따른다.

@@ -1,5 +1,6 @@
 class_name FrontierWorldStore
 extends RefCounted
+const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 
 var path: String
 var last_error := ""
@@ -16,7 +17,7 @@ func write(state: Dictionary) -> bool:
 	if not finish_pending():return false
 	last_error=FrontierUniverse.validate_world(state)
 	if not last_error.is_empty():return false
-	return _accept_write(_write_snapshot(path,state,verified_digest))
+	return _accept_write(_write_snapshot(path,state,verified_digest,WorldSnapshot.manifest_json(state)))
 
 func begin_checkpoint(state: Dictionary) -> bool:
 	if checkpoint_thread!=null:
@@ -24,9 +25,9 @@ func begin_checkpoint(state: Dictionary) -> bool:
 		if not finish_pending():return false
 	last_error=FrontierUniverse.validate_world(state)
 	if not last_error.is_empty():return false
-	var frozen:=state.duplicate(true)
+	var frozen:=WorldSnapshot.copy(state)
 	checkpoint_thread=Thread.new()
-	var result:=checkpoint_thread.start(_write_snapshot.bind(path,frozen,verified_digest))
+	var result:=checkpoint_thread.start(_write_snapshot.bind(path,frozen,verified_digest,WorldSnapshot.manifest_json(state)))
 	if result!=OK:
 		checkpoint_thread=null;last_error="체크포인트 저장 작업을 시작할 수 없습니다.";return false
 	return true
@@ -48,9 +49,9 @@ func _accept_write(result: Dictionary) -> bool:
 	return true
 
 # Pure JSON/file work only. Domain validation and mutable configuration caches
-# stay on the main thread; the worker owns a deep snapshot and no scene objects.
-static func _write_snapshot(save_path: String,state: Dictionary,previous_digest: String) -> Dictionary:
-	var encoded:=JSON.stringify(state,"",true,true)
+# stay on the main thread; the worker owns mutable data and captured immutable manifest bytes, with no scene objects.
+static func _write_snapshot(save_path: String,state: Dictionary,previous_digest: String,manifest_text: String="") -> Dictionary:
+	var encoded:=WorldSnapshot.encode(state,manifest_text)
 	var file:=FileAccess.open(save_path+".tmp",FileAccess.WRITE)
 	if file==null:return {"error":"탐험 저장 파일을 열 수 없습니다."}
 	file.store_string(encoded);file.flush()
