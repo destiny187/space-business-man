@@ -257,25 +257,8 @@ static func visual_regions(site: Dictionary) -> Array:
   var e: Dictionary=cell.environment.duplicate();e.merge(cell.restoration2,true);e.toxicity=maxf(float(e.toxicity),float(cell.pollution))
   result.append({"center":FrontierCrewWorld.vector(cell.position),"radius":float(rules(site).cell_size)*.72,"state":FrontierSurfaceRecovery.conditions(e),"environment":cell.environment,"restoration2":cell.restoration2,"pollution":float(cell.pollution)})
  return result
-static var _visual_cache: Dictionary={}
 static func shader(material: ShaderMaterial,body: Dictionary,site: Dictionary) -> void:
- var id: String=body.id;var revision: int=site.free_terraform.revision
- if not _visual_cache.has(id) or int(_visual_cache[id].revision)!=revision:
-  var cell_size: float=rules(site).cell_size;var half:=ceili(float(rules(site).extent)/cell_size);var width:=half*2
-  var values:=Image.create(width,width,false,Image.FORMAT_RGBAF);var extras:=Image.create(width,width,false,Image.FORMAT_RGBAF);var mask:=Image.create(width,width,false,Image.FORMAT_R8)
-  values.fill(Color(0,0,0,0));extras.fill(Color(0,0,0,0));mask.fill(Color.BLACK)
-  for cell in site.free_terraform.cells.values():
-   var x:=floori(float(cell.position[0])/cell_size)+half;var z:=floori(float(cell.position[2])/cell_size)+half
-   if x<0 or z<0 or x>=width or z>=width:continue
-   var e: Dictionary=cell.environment;var r: Dictionary=cell.restoration2;var state: Dictionary=e.duplicate();state.merge(r,true)
-   var conditions:=FrontierSurfaceRecovery.conditions(state)
-   values.set_pixel(x,z,Color(float(e.temperature),float(conditions.life),float(conditions.water),float(e.pressure)))
-   extras.set_pixel(x,z,Color(float(r.salinity)/100,float(r.soil)/100,float(e.ecology)/100,clampf(float(cell.pollution)/60,0,1)))
-   mask.set_pixel(x,z,Color.WHITE)
-  if _visual_cache.size()>4:_visual_cache.clear()
-  _visual_cache[id]={"revision":revision,"values":ImageTexture.create_from_image(values),"extras":ImageTexture.create_from_image(extras),"mask":ImageTexture.create_from_image(mask),"extent":half*cell_size}
- var data: Dictionary=_visual_cache[id]
- material.set_shader_parameter("free_enabled",true);material.set_shader_parameter("free_values",data.values);material.set_shader_parameter("free_extras",data.extras);material.set_shader_parameter("free_mask",data.mask);material.set_shader_parameter("free_extent",data.extent);material.set_shader_parameter("region_count",0)
+ preload("res://scripts/world/terraform_texture_atlas.gd").apply(material,str(body.id),site.free_terraform)
 static func spread(cells: Array,table: String,key: String,budget: float,target: float) -> float:
  var pending: Array=cells.duplicate();var used:=0.0
  # Redistribution after clamping uses only remaining demand; total output stays bounded.

@@ -10,7 +10,8 @@ uniform bool free_enabled=false;
 uniform sampler2D free_values : filter_nearest, repeat_disable;
 uniform sampler2D free_extras : filter_nearest, repeat_disable;
 uniform sampler2D free_mask : filter_nearest, repeat_disable;
-uniform float free_extent=8208.;
+uniform vec2 free_origin=vec2(-8208.);
+uniform vec2 free_size=vec2(16416.);
 uniform int region_count=0;
 uniform vec4 region_points[20];
 uniform vec4 region_values[20];
@@ -84,9 +85,9 @@ void fragment(){
   }
  }
  if(free_enabled){
-  vec2 uv=(world_position.xz+vec2(free_extent))/(2.*free_extent);
+  vec2 uv=(world_position.xz-free_origin)/free_size;
   managed=texture(free_mask,uv).r;
-  if(any(lessThan(uv,vec2(0.)))||any(greaterThan(uv,vec2(1.)))){managed=0.;}
+  if(any(lessThan(uv,vec2(0.)))||any(greaterThanEqual(uv,vec2(1.)))){managed=0.;}
   vec4 fv=texture(free_values,uv);vec4 fe=texture(free_extras,uv);
   local_temp_value=fv.x;local_life_value=fv.y;local_water_value=fv.z;local_pressure_value=fv.w;local_salt_value=fe.x;local_soil_value=fe.y;local_restore_value=fe.z;pollution_value=fe.w;
  }
