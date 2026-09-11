@@ -24,7 +24,6 @@ void fragment(){
  if(transparent_background && textureLod(depth_tex,SCREEN_UV,0.).r<=0.000001){discard;}
  vec2 pixel=(1./VIEWPORT_SIZE)*(VIEWPORT_SIZE.y/reference_height);
  float center=view_depth(SCREEN_UV,INV_PROJECTION_MATRIX);
- vec3 norm=texture(normal_tex,SCREEN_UV).xyz*2.-1.;
  float outline=0.;float crease=0.;float surface_support=0.;
  const vec2 dirs[8]=vec2[8](vec2(1.,0.),vec2(.70710678,.70710678),vec2(0.,1.),vec2(-.70710678,.70710678),vec2(-1.,0.),vec2(-.70710678,-.70710678),vec2(0.,-1.),vec2(.70710678,-.70710678));
  for(int i=0;i<4;i++){
@@ -43,14 +42,18 @@ void fragment(){
   outline=max(outline,smoothstep(.018,.032,jump));
  }
  // Opposite outer samples describe the same edge; internal creases still use all eight directions.
- for(int i=0;i<8;i++){
-  vec2 dir=dirs[i];
-  vec3 nn=texture(normal_tex,SCREEN_UV+pixel*dir*inner_width).xyz*2.-1.;
-  float nd=view_depth(SCREEN_UV+pixel*dir*inner_width,INV_PROJECTION_MATRIX);
-  float normal_edge=length(norm-nn);
-  crease=max(crease,smoothstep(.45,.68,normal_edge)*step(abs(nd-center)/max(center,.5),.03)*step(crease_depth_floor,abs(nd-center)));
+ // Creases have no contribution beyond the fade; keep the outer silhouette pass.
+ if(center<crease_fade.y){
+  vec3 norm=texture(normal_tex,SCREEN_UV).xyz*2.-1.;
+  for(int i=0;i<8;i++){
+   vec2 dir=dirs[i];
+   vec3 nn=texture(normal_tex,SCREEN_UV+pixel*dir*inner_width).xyz*2.-1.;
+   float nd=view_depth(SCREEN_UV+pixel*dir*inner_width,INV_PROJECTION_MATRIX);
+   float normal_edge=length(norm-nn);
+   crease=max(crease,smoothstep(.45,.68,normal_edge)*step(abs(nd-center)/max(center,.5),.03)*step(crease_depth_floor,abs(nd-center)));
+  }
+  crease *= 1.-smoothstep(crease_fade.x,crease_fade.y,center);
  }
- crease *= 1.-smoothstep(crease_fade.x,crease_fade.y,center);
  float distance_ink=mix(1.,distant_ink_strength,smoothstep(outline_fade.x,outline_fade.y,center));
  // Subpixel twigs, pebbles and narrow gaps retain ink without becoming solid black.
  float small_ink=mix(small_feature_strength,1.,smoothstep(.16,.55,surface_support/8.));
