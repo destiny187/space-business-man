@@ -9,8 +9,8 @@ static func ids_for(profile: Dictionary) -> Array[String]:
   if not ids.has(id):ids.append(id)
  ids.sort()
  return ids
-static func texture(ids: Array[String],catalog: Array) -> Texture2DArray:
- var key:="|".join(ids)
+static func texture(ids: Array[String],catalog: Array,resolution: int=1024) -> Texture2DArray:
+ var key:=str(resolution)+":"+"|".join(ids)
  if palettes.has(key):
   var live=palettes[key].get_ref()
   if live!=null:return live
@@ -24,6 +24,8 @@ static func texture(ids: Array[String],catalog: Array) -> Texture2DArray:
   var picture:=source.get_image()
   if picture.is_compressed():picture.decompress()
   picture.convert(Image.FORMAT_RGBA8)
+  if picture.get_width()!=resolution:
+   picture.clear_mipmaps();picture.resize(resolution,resolution,Image.INTERPOLATE_LANCZOS)
   if not picture.has_mipmaps():picture.generate_mipmaps()
   images.append(picture)
  var result:=Texture2DArray.new();var error:=result.create_from_images(images)

@@ -1,0 +1,138 @@
+{
+  "body": "galaxy:galaxy-v3:91723:planet:433",
+  "checks": 12,
+  "failures": 0,
+  "scope": "Prepared T2 climate/installations/stock; stages from production local_machine; actual CrewSurfaceScene; Medium 1280x800; shader-only ABBA comparison",
+  "stages": {
+    "0-barren": {
+      "environment": {
+        "ecology": 0.0,
+        "oxygen": 0.21,
+        "pressure": 1.0,
+        "stable_seconds": 0.0,
+        "temperature": 18.0,
+        "toxicity": 0.0,
+        "water": 0.0
+      },
+      "inventory": {
+        "copper": 0,
+        "crystal": 0,
+        "ice": 5000,
+        "iron": 0,
+        "mineral_filter": 5000,
+        "soil_base": 5000,
+        "stone": 0
+      },
+      "restoration": {
+        "salinity": 65.0,
+        "soil": 10.0
+      },
+      "revision": 0
+    },
+    "1-hydrated": {
+      "environment": {
+        "ecology": 0.0,
+        "oxygen": 0.21,
+        "pressure": 1.0,
+        "stable_seconds": 0.0,
+        "temperature": 18.0,
+        "toxicity": 0.0,
+        "water": 36.5781955154601
+      },
+      "inventory": {
+        "copper": 0,
+        "crystal": 0,
+        "ice": 4952,
+        "iron": 0,
+        "mineral_filter": 4985,
+        "soil_base": 5000,
+        "stone": 0
+      },
+      "restoration": {
+        "salinity": 0.0,
+        "soil": 10.0
+      },
+      "revision": 1
+    },
+    "2-amended": {
+      "environment": {
+        "ecology": 9.6,
+        "oxygen": 0.21,
+        "pressure": 1.0,
+        "stable_seconds": 0.0,
+        "temperature": 18.0,
+        "toxicity": 0.0,
+        "water": 57.1534304929064
+      },
+      "inventory": {
+        "copper": 0,
+        "crystal": 0,
+        "ice": 4924,
+        "iron": 0,
+        "mineral_filter": 4985,
+        "soil_base": 4989,
+        "stone": 0
+      },
+      "restoration": {
+        "salinity": 0.0,
+        "soil": 67.678830131888
+      },
+      "revision": 2
+    },
+    "3-established": {
+      "environment": {
+        "ecology": 82.0701624185034,
+        "oxygen": 0.21,
+        "pressure": 1.0,
+        "stable_seconds": 1.0,
+        "temperature": 18.0,
+        "toxicity": 0.0,
+        "water": 100.0
+      },
+      "inventory": {
+        "copper": 0,
+        "crystal": 0,
+        "ice": 4806,
+        "iron": 0,
+        "mineral_filter": 4985,
+        "soil_base": 4979,
+        "stone": 0
+      },
+      "restoration": {
+        "salinity": 0.0,
+        "soil": 100.0
+      },
+      "revision": 3
+    }
+  },
+  "timing": [
+    {
+      "draw_calls": 1121.0,
+      "enabled": false,
+      "gpu_ms": null,
+      "median_ms": 25.497,
+      "p95_ms": 30.002
+    },
+    {
+      "draw_calls": 1121.0,
+      "enabled": true,
+      "gpu_ms": null,
+      "median_ms": 25.614,
+      "p95_ms": 27.581
+    },
+    {
+      "draw_calls": 1121.0,
+      "enabled": true,
+      "gpu_ms": null,
+      "median_ms": 25.78,
+      "p95_ms": 29.37
+    },
+    {
+      "draw_calls": 1121.0,
+      "enabled": false,
+      "gpu_ms": null,
+      "median_ms": 25.711,
+      "p95_ms": 27.772
+    }
+  ]
+}

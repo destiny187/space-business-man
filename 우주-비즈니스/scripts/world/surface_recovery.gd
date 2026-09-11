@@ -66,6 +66,7 @@ static func nearest_region(body: Dictionary,ledger: Dictionary,position: Vector3
  return {"center":FrontierCrewWorld.vector(zone.center),"radius":float(zone.radius),"state":conditions(values),"environment":zone.environment,"id":zone.id}
 static func shader_regions(material: ShaderMaterial,body: Dictionary,ledger: Dictionary) -> void:
  var source: Dictionary=ledger.get("sites",{}).get(body.id,{})
+ preload("res://scripts/world/terraform_surface_material.gd").bind(material,body,source)
  if FrontierFreeTerraform.active(source):FrontierFreeTerraform.shader(material,body,source);return
  material.set_shader_parameter("free_enabled",false)
  var areas: Array=regions(body,ledger) if FrontierRegionalTerraform.enabled(source) else []

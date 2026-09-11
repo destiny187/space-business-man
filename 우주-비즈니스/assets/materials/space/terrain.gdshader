@@ -7,9 +7,9 @@ uniform float salt_crust=0.;
 uniform float soil_recovery=0.;
 uniform float restoration=0.;
 uniform bool free_enabled=false;
-uniform sampler2D free_values : filter_nearest, repeat_disable;
-uniform sampler2D free_extras : filter_nearest, repeat_disable;
-uniform sampler2D free_mask : filter_nearest, repeat_disable;
+uniform sampler2D free_values : filter_linear, repeat_disable;
+uniform sampler2D free_extras : filter_linear, repeat_disable;
+uniform sampler2D free_mask : filter_linear, repeat_disable;
 uniform vec2 free_origin=vec2(-8208.);
 uniform vec2 free_size=vec2(16416.);
 uniform int region_count=0;
@@ -56,6 +56,12 @@ uniform vec3 regional_deposit=vec3(1.,.55,.15);
 uniform vec3 regional_low_tint=vec3(.87,.95,1.04);
 uniform vec3 regional_high_tint=vec3(1.16,1.08,.94);
 uniform vec3 regional_lava=vec3(0.);
+uniform bool recovery_surface_enabled=false;
+uniform sampler2DArray recovery_textures:filter_linear_mipmap_anisotropic,repeat_enable;
+uniform vec2 recovery_meters=vec2(2.8,2.6);
+uniform vec4 original_surface_state=vec4(1.,0.,0.,0.);
+uniform vec4 recovery_soil_color:source_color=vec4(.46,.38,.29,1.);
+uniform vec4 recovery_life_color:source_color=vec4(.41,.51,.30,1.);
 varying vec3 world_position;
 varying vec3 world_normal;
 varying vec3 geological_regions;
@@ -72,12 +78,17 @@ vec3 geology(vec2 p){
  return vec3(rock,wash,(1.-rock)*(1.-wash));
 }
 
+// A restored deposit replaces the native deposit fetch; it never adds a layer blend.
+vec4 packed_surface(bool recovering,vec3 at){
+ if(recovering){return texture(recovery_textures,at);}
+ return texture(surface_textures,at);
+}
 // One packed fetch per contributing axis; linear data, no lighting baked into tone.
-vec4 layer(int id,float meters,vec3 p,vec3 n,vec3 weights,out vec3 bump){
+vec4 layer(bool recovering,int id,float meters,vec3 p,vec3 n,vec3 weights,out vec3 bump){
  vec3 q=p/meters;vec3 s=sign(n);vec4 value=vec4(0.);bump=vec3(0.);
- if(weights.x>.001){vec4 t=texture(surface_textures,vec3(q.zy*vec2(s.x,1.),float(id)));value+=t*weights.x;bump+=vec3(0.,t.g*2.-1.,(t.r*2.-1.)*s.x)*weights.x;}
- if(weights.y>.001){vec4 t=texture(surface_textures,vec3(q.xz*vec2(1.,-s.y),float(id)));value+=t*weights.y;bump+=vec3(t.r*2.-1.,0.,-(t.g*2.-1.)*s.y)*weights.y;}
- if(weights.z>.001){vec4 t=texture(surface_textures,vec3(q.xy*vec2(-s.z,1.),float(id)));value+=t*weights.z;bump+=vec3(-(t.r*2.-1.)*s.z,t.g*2.-1.,0.)*weights.z;}
+ if(weights.x>.001){vec4 t=packed_surface(recovering,vec3(q.zy*vec2(s.x,1.),float(id)));value+=t*weights.x;bump+=vec3(0.,t.g*2.-1.,(t.r*2.-1.)*s.x)*weights.x;}
+ if(weights.y>.001){vec4 t=packed_surface(recovering,vec3(q.xz*vec2(1.,-s.y),float(id)));value+=t*weights.y;bump+=vec3(t.r*2.-1.,0.,-(t.g*2.-1.)*s.y)*weights.y;}
+ if(weights.z>.001){vec4 t=packed_surface(recovering,vec3(q.xy*vec2(-s.z,1.),float(id)));value+=t*weights.z;bump+=vec3(-(t.r*2.-1.)*s.z,t.g*2.-1.,0.)*weights.z;}
  return value;
 }
 void vertex(){
@@ -115,8 +126,9 @@ void fragment(){
   // Unmanaged pixels use native conditions: avoid three irrelevant texture reads.
   if(all(greaterThanEqual(uv,vec2(0.)))&&all(lessThan(uv,vec2(1.)))){
    managed=texture(free_mask,uv).r;
-   if(managed>0.){
-    vec4 fv=texture(free_values,uv);vec4 fe=texture(free_extras,uv);
+   if(managed>.001){
+    // Normalize filtered occupied cells so empty atlas pixels cannot invent cold/wet edges.
+    vec4 fv=texture(free_values,uv)/managed;vec4 fe=texture(free_extras,uv)/managed;
     local_temp_value=fv.x;local_life_value=fv.y;local_water_value=fv.z;local_pressure_value=fv.w;local_salt_value=fe.x;local_soil_value=fe.y;local_restore_value=fe.z;pollution_value=fe.w;
    }
   }
@@ -142,6 +154,18 @@ void fragment(){
  float ice=freeze*moisture*(.28+.72*geo.y)*skin;
  float snow=freeze*moisture*smoothstep(.12,.76,geo.z+geo.y*.15)*skin;
  float wet=(1.-freeze)*moisture*(.15+.85*geo.y)*skin*max(float(liquid_allowed),managed*smoothstep(.05,.2,local_pressure_value));
+ float soil_patch=0.;float pioneer_patch=0.;
+ if(recovery_surface_enabled && managed>.001){
+  float soil_gain=clamp((local_soil_value-original_surface_state.x)/max(.2,1.-original_surface_state.x),0.,1.);
+  float water_gain=clamp((local_water_value-original_surface_state.y)/max(.2,1.-original_surface_state.y),0.,1.);
+  float salt_gain=max(0.,original_surface_state.z-local_salt_value);
+  float life=max(0.,local_life_value<0.?local_restore_value:local_life_value);
+  float life_gain=clamp((life-original_surface_state.w)/max(.2,1.-original_surface_state.w),0.,1.)*(1.-freeze)*smoothstep(.08,.35,supply);
+  float progress=max(max(soil_gain,water_gain*.8),max(salt_gain*.7,life_gain));
+  soil_patch=smoothstep(.10,.65,progress-geo.x*.22+geo.y*.08)*managed;
+  pioneer_patch=smoothstep(.12,.72,life_gain-geo.x*.18+geo.z*.08)*managed;
+  deposit=max(deposit,soil_patch*skin*(.72+.20*geo.z));
+ }
  vec3 bump=vec3(0.);float roughness=.94;
  vec4 rock=vec4(.5,.5,.5,.94);vec4 dirt=rock;
  vec3 br=vec3(0.);vec3 bd=vec3(0.);
@@ -155,19 +179,29 @@ void fragment(){
    int zone=geological_regions.x>contact?0:(geological_regions.z>contact?2:1);
    selected_rock=regional_layers[zone];selected_meters=regional_meters[zone];
   }
-  rock=layer(selected_rock,selected_meters,world_position,n,weights,br);
-  if(near_detail>.001){dirt=layer(deposit_layer,deposit_meters,world_position,n,weights,bd);}
+  rock=layer(false,selected_rock,selected_meters,world_position,n,weights,br);
+  if(near_detail>.001){
+   bool recovering=recovery_surface_enabled && soil_patch>(.32+.30*geo.z);
+   int deposit_id=deposit_layer;float meters=deposit_meters;
+   if(recovering){deposit_id=pioneer_patch>(.38+.22*geo.x)?1:0;meters=recovery_meters[deposit_id];}
+   // Reuse broad geology to bend repeated soil motifs without another noise/map read.
+   vec3 deposit_position=world_position;
+   if(recovering){deposit_position+=vec3(geo.z-geo.x,0.,geo.y-.5)*meters*1.8;}
+   dirt=layer(recovering,deposit_id,meters,deposit_position,n,weights,bd);
+  }
   // Raised bedrock breaks through soil; only the local boundary receives height contrast.
   float height_bias=(dirt.b-rock.b)*.65*near_detail;
   deposit=clamp(deposit+height_bias*4.*deposit*(1.-deposit),0.,1.);
  }
- ALBEDO=mix(strata,dust_color.rgb,deposit);
+ vec3 deposit_color=mix(dust_color.rgb,recovery_soil_color.rgb,soil_patch);
+ deposit_color=mix(deposit_color,recovery_life_color.rgb,pioneer_patch);
+ ALBEDO=mix(strata,deposit_color,deposit);
  float tone=mix(rock.b,dirt.b,deposit);
  ALBEDO*=mix(1.,.69+tone*.65,near_detail);
  roughness=mix(rock.a,dirt.a,deposit);bump=mix(br,bd,deposit);
  if(textured_surface && near_detail>.001 && max(ice,snow)>.01){
   vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
-  vec3 bi;vec3 bs;vec4 ti=layer(ice_layer,ice_meters,world_position,n,weights,bi);vec4 ts=layer(snow_layer,snow_meters,world_position,n,weights,bs);
+  vec3 bi;vec3 bs;vec4 ti=layer(false,ice_layer,ice_meters,world_position,n,weights,bi);vec4 ts=layer(false,snow_layer,snow_meters,world_position,n,weights,bs);
   ice=clamp(ice+(ti.b-tone)*ice*(1.-ice)*near_detail,0.,1.);
   ALBEDO=mix(ALBEDO,vec3(.33,.57,.66)*(.68+ti.b*.64),ice*.9);
   ALBEDO=mix(ALBEDO,vec3(.52,.62,.66)*(.70+ts.b*.55),snow);
@@ -180,8 +214,10 @@ void fragment(){
  ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);
  float salt=local_salt_value*managed*skin*smoothstep(.25,.7,geo.z);
  ALBEDO=mix(ALBEDO,vec3(.72,.70,.58),salt*.6);
- ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),local_soil_value*managed*skin*.30);
- ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),(local_life_value<0.?local_restore_value:local_life_value)*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
+ if(!recovery_surface_enabled){
+  ALBEDO=mix(ALBEDO,vec3(.23,.18,.12),local_soil_value*managed*skin*.30);
+  ALBEDO=mix(ALBEDO,vec3(.22,.35,.22),(local_life_value<0.?local_restore_value:local_life_value)*managed*skin*(1.-freeze)*(.2+.8*moisture)*.72);
+ }
  vec3 perturbed=normalize(n+(bump-n*dot(n,bump))*normal_strength*near_detail);
  NORMAL=normalize((VIEW_MATRIX*vec4(perturbed,0.)).xyz);ROUGHNESS=roughness;
  if(molten){
