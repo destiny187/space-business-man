@@ -1,0 +1,158 @@
+{
+  "alkaline": {
+    "active_maps": [
+      "desiccated_clay",
+      "ice",
+      "salt_polygons",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "salt",
+      "desiccated_clay"
+    ]
+  },
+  "continental": {
+    "active_maps": [
+      "alluvial_pebbles",
+      "ice",
+      "impact_breccia",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "stony_loam",
+      "alluvial_pebbles"
+    ]
+  },
+  "cratered": {
+    "active_maps": [
+      "basalt_columns",
+      "ice",
+      "snow",
+      "talus_fragments"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "talus_fragments",
+      "gravel"
+    ]
+  },
+  "crystalline": {
+    "active_maps": [
+      "crystal",
+      "gravel",
+      "ice",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "gravel",
+      "talus_fragments"
+    ]
+  },
+  "fractured": {
+    "active_maps": [
+      "basalt_columns",
+      "ice",
+      "snow",
+      "talus_fragments"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "alluvial_pebbles",
+      "talus_fragments"
+    ]
+  },
+  "frozen": {
+    "active_maps": [
+      "frost_fracture",
+      "ice",
+      "snow",
+      "wind_scoured"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "regolith",
+      "wind_scoured"
+    ]
+  },
+  "ochre": {
+    "active_maps": [
+      "ash_drift",
+      "ice",
+      "porous_tuff",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "desiccated_clay",
+      "ash_drift"
+    ]
+  },
+  "oxidized": {
+    "active_maps": [
+      "desiccated_clay",
+      "ice",
+      "impact_breccia",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "desiccated_clay",
+      "wind_scoured"
+    ]
+  },
+  "salt": {
+    "active_maps": [
+      "ice",
+      "porous_tuff",
+      "salt",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "salt",
+      "desiccated_clay"
+    ]
+  },
+  "sedimentary": {
+    "active_maps": [
+      "alluvial_pebbles",
+      "ice",
+      "sediment",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "alluvial_pebbles",
+      "stony_loam"
+    ]
+  },
+  "tundra": {
+    "active_maps": [
+      "desiccated_clay",
+      "folded_slate",
+      "ice",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "stony_loam",
+      "desiccated_clay"
+    ]
+  },
+  "volcanic": {
+    "active_maps": [
+      "ash_drift",
+      "ice",
+      "lava",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_deposits": [
+      "talus_fragments",
+      "ash_drift"
+    ]
+  }
+}

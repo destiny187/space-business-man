@@ -30,6 +30,9 @@ static func profile_for(body: Dictionary) -> Dictionary:
 	if profile.has("rock_variants") and body.has("seed"):
 		var choice:=FrontierUniverse.derive(int(body.seed),"surface-rock-v1:"+str(traits.get("id","")))
 		profile.rock=profile.rock_variants[choice%profile.rock_variants.size()]
+	if profile.has("deposit_variants") and body.has("seed"):
+		var choice:=FrontierUniverse.derive(int(body.seed),"surface-deposit-v1:"+str(traits.get("id","")))
+		profile.deposit=profile.deposit_variants[choice%profile.deposit_variants.size()]
 	var regions:=preload("res://scripts/world/surface_regions.gd").definition(body.get("terrain_traits",traits))
 	if not regions.is_empty():
 		profile.regions=regions;profile.region_rocks=[]

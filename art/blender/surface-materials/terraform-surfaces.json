@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "blender": "5.2.1 LTS",
+  "resolution": 1024,
+  "channels": "linear normal XY / height / roughness",
+  "materials": [
+    {
+      "id": "desiccated_clay",
+      "texture": "우주-비즈니스/assets/textures/surfaces/desiccated_clay.png",
+      "sha256": "d7c637be4e929035c4e1aeed2685b8b9c03a26454b51f4f6bc886b827f90f821",
+      "height_amplitude_m": 0.045,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "stony_loam",
+      "texture": "우주-비즈니스/assets/textures/surfaces/stony_loam.png",
+      "sha256": "708eda49201039eb157301eff8169e7032f9dab1b127c6d54b67c6f1352de388",
+      "height_amplitude_m": 0.055,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "talus_fragments",
+      "texture": "우주-비즈니스/assets/textures/surfaces/talus_fragments.png",
+      "sha256": "f8648373c2a57bcff4e6ea63f86f9e7e70556e04e7b6fced438efc91c8147fe8",
+      "height_amplitude_m": 0.09,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "alluvial_pebbles",
+      "texture": "우주-비즈니스/assets/textures/surfaces/alluvial_pebbles.png",
+      "sha256": "144dfbd0066a58e8d3956e27d20899d8a2264512b1ff51173ac68ac06ee1a277",
+      "height_amplitude_m": 0.065,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "wind_scoured",
+      "texture": "우주-비즈니스/assets/textures/surfaces/wind_scoured.png",
+      "sha256": "ad14b2a31ceae089b79c11fa63dc86092f50061c4f3aa2709c7fea4f7b6d953f",
+      "height_amplitude_m": 0.035,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "ash_drift",
+      "texture": "우주-비즈니스/assets/textures/surfaces/ash_drift.png",
+      "sha256": "d754aa496801d15df6e49d1320d96aa123a83782ce898cf3892f5a6d611ba6b6",
+      "height_amplitude_m": 0.04,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "humus_crumb",
+      "texture": "우주-비즈니스/assets/textures/surfaces/humus_crumb.png",
+      "sha256": "43dbc663b3236c7431001098fa5e1e2648e80acff572b3ed4cf32b685c5969f4",
+      "height_amplitude_m": 0.045,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "pioneer_mat",
+      "texture": "우주-비즈니스/assets/textures/surfaces/pioneer_mat.png",
+      "sha256": "77daef39a3d12048e4e8ffdee2aa802e24113439fecec040f033b2232012de21",
+      "height_amplitude_m": 0.035,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    }
+  ]
+}

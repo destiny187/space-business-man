@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "resolution": 1024,
   "channels": "linear R/G signed tangent normal XY; B height/tone; A roughness",
   "materials": [
@@ -70,6 +70,38 @@
     {
       "id": "folded_slate",
       "texture": "res://assets/textures/surfaces/folded_slate.png"
+    },
+    {
+      "id": "desiccated_clay",
+      "texture": "res://assets/textures/surfaces/desiccated_clay.png"
+    },
+    {
+      "id": "stony_loam",
+      "texture": "res://assets/textures/surfaces/stony_loam.png"
+    },
+    {
+      "id": "talus_fragments",
+      "texture": "res://assets/textures/surfaces/talus_fragments.png"
+    },
+    {
+      "id": "alluvial_pebbles",
+      "texture": "res://assets/textures/surfaces/alluvial_pebbles.png"
+    },
+    {
+      "id": "wind_scoured",
+      "texture": "res://assets/textures/surfaces/wind_scoured.png"
+    },
+    {
+      "id": "ash_drift",
+      "texture": "res://assets/textures/surfaces/ash_drift.png"
+    },
+    {
+      "id": "humus_crumb",
+      "texture": "res://assets/textures/surfaces/humus_crumb.png"
+    },
+    {
+      "id": "pioneer_mat",
+      "texture": "res://assets/textures/surfaces/pioneer_mat.png"
     }
   ],
   "profiles": {
@@ -82,6 +114,10 @@
       "rock_variants": [
         "sandstone_bedded",
         "impact_breccia"
+      ],
+      "deposit_variants": [
+        "wind_scoured",
+        "desiccated_clay"
       ]
     },
     "continental": {
@@ -92,6 +128,10 @@
       "rock_variants": [
         "folded_slate",
         "impact_breccia"
+      ],
+      "deposit_variants": [
+        "stony_loam",
+        "alluvial_pebbles"
       ]
     },
     "cratered": {
@@ -102,6 +142,10 @@
       "rock_variants": [
         "impact_breccia",
         "basalt_columns"
+      ],
+      "deposit_variants": [
+        "talus_fragments",
+        "gravel"
       ]
     },
     "fractured": {
@@ -112,6 +156,10 @@
       "rock_variants": [
         "frost_fracture",
         "basalt_columns"
+      ],
+      "deposit_variants": [
+        "talus_fragments",
+        "alluvial_pebbles"
       ]
     },
     "tundra": {
@@ -122,6 +170,10 @@
       "rock_variants": [
         "folded_slate",
         "frost_fracture"
+      ],
+      "deposit_variants": [
+        "stony_loam",
+        "desiccated_clay"
       ]
     },
     "frozen": {
@@ -132,6 +184,10 @@
       "rock_variants": [
         "frost_fracture",
         "ice"
+      ],
+      "deposit_variants": [
+        "wind_scoured",
+        "regolith"
       ]
     },
     "volcanic": {
@@ -141,6 +197,10 @@
       "deposit_meters": 3,
       "rock_variants": [
         "lava"
+      ],
+      "deposit_variants": [
+        "ash_drift",
+        "talus_fragments"
       ]
     },
     "salt": {
@@ -151,6 +211,10 @@
       "rock_variants": [
         "salt_polygons",
         "porous_tuff"
+      ],
+      "deposit_variants": [
+        "salt",
+        "desiccated_clay"
       ]
     },
     "ochre": {
@@ -161,6 +225,10 @@
       "rock_variants": [
         "porous_tuff",
         "sandstone_bedded"
+      ],
+      "deposit_variants": [
+        "desiccated_clay",
+        "ash_drift"
       ]
     },
     "sedimentary": {
@@ -171,6 +239,10 @@
       "rock_variants": [
         "sandstone_bedded",
         "sediment"
+      ],
+      "deposit_variants": [
+        "stony_loam",
+        "alluvial_pebbles"
       ]
     },
     "crystalline": {
@@ -182,6 +254,10 @@
       "rock_variants": [
         "crystal",
         "basalt_columns"
+      ],
+      "deposit_variants": [
+        "talus_fragments",
+        "gravel"
       ]
     },
     "alkaline": {
@@ -192,6 +268,10 @@
       "rock_variants": [
         "salt_polygons",
         "impact_breccia"
+      ],
+      "deposit_variants": [
+        "desiccated_clay",
+        "salt"
       ]
     }
   },
@@ -203,5 +283,16 @@
   "freeze_start": -3.0,
   "freeze_end": 3.0,
   "transition_seconds": 18.0,
-  "highlight_strength": 0.24
+  "highlight_strength": 0.24,
+  "recovery": {
+    "materials": [
+      "humus_crumb",
+      "pioneer_mat"
+    ],
+    "resolution": 512,
+    "soil_meters": 2.8,
+    "life_meters": 2.6,
+    "soil_color": "76624a",
+    "life_color": "69834c"
+  }
 }
