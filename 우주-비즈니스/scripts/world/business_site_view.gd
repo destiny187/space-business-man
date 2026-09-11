@@ -16,8 +16,13 @@ var visual_temperature: float=NAN
 var presentation_points: Array[Vector3]=[]
 var labels_enabled:=true
 var source_view: FrontierTerraformSourceView
+# Per-view derived data; never cache depletion, temperature or host decisions.
+var vein_regions: Dictionary={}
+var vein_rows: Dictionary={}
+var vein_points: Dictionary={}
+var point_revision:=-1
 var region_key:=Vector2i(99999,99999)
-func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet
+func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet;vein_regions.clear();vein_points.clear();point_revision=-1
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
 	var root:=StaticBody3D.new();root.set_meta("business_kind",kind);root.set_meta("business_id",id);root.position=p
 	var visual: Node3D=prepared_models[model].instantiate();FrontierInkStyle.apply(visual,cache);root.add_child(visual)
@@ -48,6 +53,8 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	nodes[id]=root;return root
 func accept(value: Dictionary) -> void:
 	ledger=value
+	if point_revision!=terrain.field.revision:
+		vein_points.clear();point_revision=terrain.field.revision
 	if FrontierTerraformTier3.enabled(body):
 		if source_view==null:source_view=FrontierTerraformSourceView.new();add_child(source_view);source_view.configure(terrain,body)
 		source_view.accept(value)
@@ -62,41 +69,33 @@ func accept(value: Dictionary) -> void:
 	if centers.is_empty():centers.append(camera.global_position if camera!=null else Vector3.ZERO)
 	var veins: Dictionary={}
 	for center in centers:
-		for row in FrontierExpeditionBusiness.veins(body,center):veins[row.id]=row
+		for row in FrontierExpeditionBusiness.veins(body,center,vein_regions):veins[row.id]=row
+	vein_rows=veins
+	for id in vein_points.keys():
+		if not veins.has(id):vein_points.erase(id)
+	_prune_regions(centers)
 	for row in veins.values():
 		if site.remaining.get(row.id,row.capacity)<=0:continue
-		var p:=FrontierMineralWorld.point(terrain.field,row)
+		var p:=_vein_point(row)
 		if not p.is_finite():continue
 		if FrontierExpeditionBusiness.thermal_locked(body,site,row):continue
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"ore_"+row.resource,p,1.1,"vein");continue
-		nodes[row.id].get_meta("label").text="%s · %d\n%s"%[FrontierCatalog.entry("resources",row.resource).name,int(site.remaining.get(row.id,row.capacity)),"F 채광"]
-		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.remaining.get(row.id,row.capacity))/float(row.capacity))
+		_update_entity(row.id)
 	for row in site.buildings.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):
 			_queue_entity(row.id,FrontierCatalog.entry("buildings",row.type).model,FrontierExpeditionBusiness.point(row.position),.5 if row.type=="solar" else float(FrontierCatalog.entry("buildings",row.type).radius),"building");continue
-		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active
-		var symbol: String="⊘ " if row.get("submerged",false) else ("▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! ")))
-		nodes[row.id].get_meta("label").text=symbol+FrontierTerraformTier3.name(row)+"\n"+str(row.status)
-		nodes[row.id].get_meta("label").modulate=Color("9bc7ef") if row.get("submerged",false) else (Color("82f5d2") if working else Color("f2c077"))
-		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
-		_upgrade_visual(nodes[row.id],row,false)
-		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active)
+		_update_entity(row.id)
 	for row in site.robots.values():
 		wanted[row.id]=true
 		if not nodes.has(row.id):_queue_entity(row.id,"miner",FrontierExpeditionBusiness.point(row.position),.7,"robot");continue
-		nodes[row.id].set_meta("destination",FrontierExpeditionBusiness.point(row.position))
-		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
-		_upgrade_visual(nodes[row.id],row,true)
-		nodes[row.id].set_meta("working",row.status=="채광 중")
-		var vein:=FrontierExpeditionBusiness.find_vein(body,str(row.target))
-		nodes[row.id].set_meta("aim",FrontierMineralWorld.point(terrain.field,vein) if not vein.is_empty() else Vector3.INF)
+		_update_entity(row.id)
 	for id in value.get("crates",{}):
 		var row: Dictionary=value.crates[id]
 		wanted[id]=true
 		if not nodes.has(id):_queue_entity(id,"crew/recovery_crate",FrontierExpeditionBusiness.point(row.position),.5,"crate");continue
-		nodes[id].get_meta("label").text="사업 회수 화물 · F\n"+FrontierCatalog.stock_text(row.inventory)
+		_update_entity(id)
 	for id in nodes.keys():
 		if not wanted.has(id):nodes[id].queue_free();nodes.erase(id)
 	for id in pending_models.keys():
@@ -180,8 +179,59 @@ func _load_one_model() -> void:
 				ResourceLoader.load_threaded_request(path,"PackedScene");requested_models[model]=true
 		if not prepared_models.has(model):continue
 		_entity(id,model,row.point,row.radius,row.kind)
-		pending_models.erase(id);accept(ledger)
+		pending_models.erase(id);_update_entity(id)
 		break
+func _vein_point(row: Dictionary) -> Vector3:
+	if not vein_points.has(row.id):vein_points[row.id]=FrontierMineralWorld.point(terrain.field,row)
+	return vein_points[row.id]
+
+func _prune_regions(centers: Array[Vector3]) -> void:
+	if not FrontierMineralWorld.enabled(body):return
+	var size: float=body.mineral_profile.rules.tile_size
+	var radius: int=int(body.mineral_profile.rules.view_radius)+1
+	for key in vein_regions.keys():
+		if not key is Vector2i:continue
+		var keep:=false
+		for center in centers:
+			var anchor:=Vector2i(floori(center.x/size),floori(center.z/size))
+			if absi(key.x-anchor.x)<=radius and absi(key.y-anchor.y)<=radius:keep=true;break
+		if not keep:vein_regions.erase(key)
+
+func _update_entity(id: String) -> void:
+	if not nodes.has(id):return
+	var node: Node3D=nodes[id]
+	var site: Dictionary=ledger.get("sites",{}).get(body.id,{})
+	var kind: String=node.get_meta("business_kind")
+	if kind=="base":
+		node.get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고 · 반납/인수"
+	elif kind=="crate":
+		if ledger.get("crates",{}).has(id):node.get_meta("label").text="사업 회수 화물 · F\n"+FrontierCatalog.stock_text(ledger.crates[id].inventory)
+	elif kind=="vein":
+		if not vein_rows.has(id):return
+		var row: Dictionary=vein_rows[id]
+		nodes[row.id].get_meta("label").text="%s · %d\n%s"%[FrontierCatalog.entry("resources",row.resource).name,int(site.get("remaining",{}).get(row.id,row.capacity)),"F 채광"]
+		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.get("remaining",{}).get(row.id,row.capacity))/float(row.capacity))
+	elif kind=="building":
+		if not site.get("buildings",{}).has(id):return
+		var row: Dictionary=site.get("buildings",{})[id]
+		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active
+		var symbol: String="⊘ " if row.get("submerged",false) else ("▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! ")))
+		nodes[row.id].get_meta("label").text=symbol+FrontierTerraformTier3.name(row)+"\n"+str(row.status)
+		nodes[row.id].get_meta("label").modulate=Color("9bc7ef") if row.get("submerged",false) else (Color("82f5d2") if working else Color("f2c077"))
+		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
+		_upgrade_visual(nodes[row.id],row,false)
+		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active)
+	elif kind=="robot":
+		if not site.get("robots",{}).has(id):return
+		var row: Dictionary=site.get("robots",{})[id]
+		nodes[row.id].set_meta("destination",FrontierExpeditionBusiness.point(row.position))
+		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
+		_upgrade_visual(nodes[row.id],row,true)
+		nodes[row.id].set_meta("working",row.status=="채광 중")
+		var vein: Dictionary=vein_rows.get(str(row.target),{})
+		if vein.is_empty() and not str(row.target).is_empty():vein=FrontierExpeditionBusiness.find_vein(body,str(row.target))
+		nodes[row.id].set_meta("aim",_vein_point(vein) if not vein.is_empty() else Vector3.INF)
+
 func _exit_tree() -> void:
 	for model in requested_models:
 		var path: String="res://assets/models/"+model+".glb"

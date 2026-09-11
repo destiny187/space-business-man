@@ -28,10 +28,12 @@ static func transfer(stock: Dictionary,cost: Dictionary,multiplier: int) -> void
 	for key in cost:stock[key]=int(stock.get(key,0))+int(cost[key])*multiplier
 static func identifier(business: Dictionary,prefix: String) -> String:
 	business.counter+=1;return prefix+":"+str(int(business.counter))
-static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
+static func veins(body: Dictionary,center: Vector3=Vector3.ZERO,cache: Variant=null) -> Array:
 	var values: Array=[]
 	if body.kind in ["gas_giant","ice_giant"]:return values
-	if FrontierMineralWorld.enabled(body):values=FrontierMineralWorld.nearby(body,center)
+	if FrontierMineralWorld.enabled(body):values=FrontierMineralWorld.nearby(body,center,cache)
+	if cache!=null and cache.has("fixed"):values.append_array(cache.fixed);return values
+	var fixed_start:=values.size()
 	var types: Array=config().veins
 	if FrontierMineralWorld.enabled(body) and body.get("reference_id","")!="solar:2":types=body.mineral_profile.primary+body.mineral_profile.secondary+["stone"]
 	if body.has("ground_rules"):types=[]
@@ -55,6 +57,7 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO) -> Array:
 				var gem: String=body.mineral_profile.gems[0]
 				values.append({"id":"cave:gem:0","resource":gem,"required_tier":FrontierMineralWorld.tier(gem),"capacity":35,"position":[p.x,p.y,p.z],"underground":true,"quality":1})
 				break
+	if cache!=null:cache.fixed=values.slice(fixed_start)
 	return values
 static func starter_veins(body: Dictionary={}) -> Array:
 	if body.has("ground_rules"):return FrontierGroundProgression.starter(body)

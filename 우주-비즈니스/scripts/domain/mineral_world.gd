@@ -67,13 +67,18 @@ static func region(body: Dictionary,x: int,z: int) -> Array:
 	if body.has("regional_rules"):result.append_array(FrontierSurfaceRegions.surface(body,x,z))
 	result.append_array(preload("res://scripts/domain/deep_deposits.gd").region(body,field,x,z))
 	return result
-static func nearby(body: Dictionary,point: Vector3=Vector3.ZERO) -> Array:
+static func nearby(body: Dictionary,point: Vector3=Vector3.ZERO,cache: Variant=null) -> Array:
 	if not enabled(body):return []
 	var rules: Dictionary=body.mineral_profile.rules
 	var x: int=floori(point.x/float(rules.tile_size));var z: int=floori(point.z/float(rules.tile_size))
 	var result: Array=[]
 	for dx in range(-int(rules.view_radius),int(rules.view_radius)+1):
-		for dz in range(-int(rules.view_radius),int(rules.view_radius)+1):result.append_array(region(body,x+dx,z+dz))
+		for dz in range(-int(rules.view_radius),int(rules.view_radius)+1):
+			var key:=Vector2i(x+dx,z+dz)
+			if cache==null:result.append_array(region(body,key.x,key.y))
+			else:
+				if not cache.has(key):cache[key]=region(body,key.x,key.y)
+				result.append_array(cache[key])
 	return result
 static func find(body: Dictionary,id: String) -> Dictionary:
 	var parts: PackedStringArray=id.split(":")
