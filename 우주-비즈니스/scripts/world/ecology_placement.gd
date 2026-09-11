@@ -79,7 +79,8 @@ static func resolve_identity(body: Dictionary,record: Dictionary,id: String) -> 
 	if parts.size()!=4 or parts[0] not in ["surface","cave"]:return {}
 	for i in range(1,4):
 		if not parts[i].is_valid_int() or str(int(parts[i]))!=parts[i]:return {}
-	if absi(int(parts[1]))>274 or absi(int(parts[2]))>274 or int(parts[3]) not in [0,1] or record.profile.origin=="sterile":return {}
+	var limit:=preload("res://scripts/domain/surface_content_bounds.gd").identity_cells(body)
+	if absi(int(parts[1]))>limit or absi(int(parts[2]))>limit or int(parts[3]) not in [0,1] or record.profile.origin=="sterile":return {}
 	var pool: Array=[]
 	for lineage in record.lineages:
 		if (FrontierEcologyCatalog.form(lineage.form_id).environment=="cave")== (parts[0]=="cave"):pool.append(lineage)

@@ -91,6 +91,8 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
       row.position=row.path[0].duplicate();row.relay=row.path[-1].duplicate();row.battery_position=row.position.duplicate();rows.append(row)
  var storm: Dictionary=preload("res://scripts/domain/storm_archive.gd").spawn(body,f,cell,rows)
  if not storm.is_empty():rows.append(storm)
+ var remote: Dictionary=preload("res://scripts/domain/remote_incidents.gd").spawn(body,f,cell,rows)
+ if not remote.is_empty():rows.append(remote)
  if _tiles.size()>128:_tiles.erase(_tiles.keys()[0])
  _tiles[cache_key]=rows;return rows
 static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array:
