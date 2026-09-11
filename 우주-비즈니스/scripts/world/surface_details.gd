@@ -15,9 +15,13 @@ var dirty:=true
 var dirty_tiles: Dictionary={}
 var instance_total:=0
 var material_cache: Dictionary={}
+var region_settings: Dictionary={}
+var region_phase:=0.0
 
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary,observer: Node3D) -> void:
 	terrain=stream;body=planet;viewer=observer
+	region_settings=preload("res://scripts/world/surface_regions.gd").definition(body.get("terrain_traits",body.get("traits",{})))
+	region_phase=FrontierSurfaceGeology.phase(body.get("traits",{}))
 	settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/surface_details.json"))
 	var family: String=body.get("traits",{}).get("id","")
 	if not settings.families.has(family):set_process(false);return
@@ -107,6 +111,13 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 			elif masks.x>.65 and variant==3:scale_value*=1.5
 		if roll>density:continue
 		p.y=terrain.field.height(p.x,p.z)
+		if not region_settings.is_empty():
+			var zone:=preload("res://scripts/world/surface_regions.gd").weights(p,region_settings,region_phase)
+			var density_weights: Array=region_settings.density
+			if roll>density*zone.dot(Vector3(density_weights[0],density_weights[1],density_weights[2])):continue
+			# Keep the same four Blender meshes and candidate RNG stream.
+			if zone.x>.65:variant=0;scale_value*=.65
+			elif zone.z>.65:variant=2+variant%2;scale_value*=1.2
 		var traits: Dictionary=terrain.field.traits
 		if float(traits.get("water",0))>15 and float(traits.get("temperature",-100))>0 and p.y<float(settings.water_height)+.15:continue
 		if _blocked(p):continue

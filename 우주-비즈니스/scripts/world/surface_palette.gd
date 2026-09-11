@@ -3,7 +3,9 @@ extends RefCounted
 static var palettes: Dictionary={}
 static func ids_for(profile: Dictionary) -> Array[String]:
  var ids: Array[String]=[]
- for id in [str(profile.rock),str(profile.deposit),"snow","ice"]:
+ var required: Array=profile.get("region_rocks",[str(profile.rock)]).duplicate()
+ required.append_array([str(profile.deposit),"snow","ice"])
+ for id in required:
   if not ids.has(id):ids.append(id)
  ids.sort()
  return ids

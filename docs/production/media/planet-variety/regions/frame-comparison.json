@@ -1,0 +1,105 @@
+{
+  "checks": 14,
+  "failures": 0,
+  "lighting": "fixed review daylight; actual streamed scene, settled static shader comparison",
+  "profiles": {
+    "oxidized": {
+      "distant_builds": 1,
+      "distant_tiles": 100,
+      "geology": "metallic",
+      "position": [
+        910.0,
+        13.95152759552,
+        940.0
+      ],
+      "profile": "oxidized",
+      "scatter": 149,
+      "seed": 1256389452,
+      "terrain_jobs": 75,
+      "timings": [
+        {
+          "draw_calls": 337.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 16.905,
+          "p95_ms": 33.257,
+          "regions": false
+        },
+        {
+          "draw_calls": 337.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 20.921,
+          "p95_ms": 24.933,
+          "regions": true
+        },
+        {
+          "draw_calls": 337.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 22.123,
+          "p95_ms": 27.899,
+          "regions": true
+        },
+        {
+          "draw_calls": 337.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 21.559,
+          "p95_ms": 25.016,
+          "regions": false
+        }
+      ]
+    },
+    "volcanic": {
+      "distant_builds": 1,
+      "distant_tiles": 100,
+      "geology": "volcanic",
+      "position": [
+        490.0,
+        36.6876907348633,
+        400.0
+      ],
+      "profile": "volcanic",
+      "scatter": 290,
+      "seed": 2104257125,
+      "terrain_jobs": 75,
+      "timings": [
+        {
+          "draw_calls": 293.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 23.131,
+          "p95_ms": 32.33,
+          "regions": false
+        },
+        {
+          "draw_calls": 293.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 22.875,
+          "p95_ms": 27.847,
+          "regions": true
+        },
+        {
+          "draw_calls": 293.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 23.0,
+          "p95_ms": 26.574,
+          "regions": true
+        },
+        {
+          "draw_calls": 293.0,
+          "frames": 120,
+          "gpu_ms": null,
+          "median_ms": 22.253,
+          "p95_ms": 29.42,
+          "regions": false
+        }
+      ]
+    }
+  },
+  "renderer": "forward_plus",
+  "settings": "Medium; 1280x800; uncapped; off/on/on/off, 120 frames each; not gameplay FPS"
+}

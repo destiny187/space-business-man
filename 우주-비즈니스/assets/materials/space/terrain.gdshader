@@ -45,8 +45,20 @@ uniform float volatile_supply=0.;
 uniform bool liquid_allowed=false;
 uniform float freeze_start=-3.;
 uniform float freeze_end=3.;
+uniform bool regional_enabled=false;
+uniform ivec3 regional_layers=ivec3(0);
+uniform vec3 regional_meters=vec3(5.);
+uniform vec4 regional_edges=vec4(-8.,0.,18.,26.);
+uniform float regional_frequency=.008;
+uniform float regional_relief=14.;
+uniform float regional_phase=0.;
+uniform vec3 regional_deposit=vec3(1.,.55,.15);
+uniform vec3 regional_low_tint=vec3(.87,.95,1.04);
+uniform vec3 regional_high_tint=vec3(1.16,1.08,.94);
+uniform vec3 regional_lava=vec3(0.);
 varying vec3 world_position;
 varying vec3 world_normal;
+varying vec3 geological_regions;
 float ground_hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float ground_noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(ground_hash(i),ground_hash(i+vec2(1,0)),f.x),mix(ground_hash(i+vec2(0,1)),ground_hash(i+vec2(1)),f.x),f.y);}
 // Kept in metre coordinates with FrontierSurfaceGeology.sample (CPU placement).
@@ -68,7 +80,20 @@ vec4 layer(int id,float meters,vec3 p,vec3 n,vec3 weights,out vec3 bump){
  if(weights.z>.001){vec4 t=texture(surface_textures,vec3(q.xy*vec2(-s.z,1.),float(id)));value+=t*weights.z;bump+=vec3(-(t.r*2.-1.)*s.z,t.g*2.-1.,0.)*weights.z;}
  return value;
 }
-void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.)).xyz;world_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);}
+void vertex(){
+ world_position=(MODEL_MATRIX*vec4(VERTEX,1.)).xyz;world_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);
+ geological_regions=vec3(0.,1.,0.);
+ if(regional_enabled){
+  // Broad geological bands are evaluated per vertex, never as per-pixel noise.
+  // Same metre-space definition as surface_regions.gd for cosmetic scatter.
+  vec2 q=world_position.xz*regional_frequency;
+  float band=.55*sin(q.x+sin(q.y*.73+regional_phase)*1.6+regional_phase)+.45*sin(q.y*.83+regional_phase*1.3);
+  float level=world_position.y+band*regional_relief;
+  float low=1.-smoothstep(regional_edges.x,regional_edges.y,level);
+  float high=smoothstep(regional_edges.z,regional_edges.w,level);
+  geological_regions=vec3(low,1.-low-high,high);
+ }
+}
 void fragment(){
  vec3 n=normalize(world_normal);float exposure=clamp(COLOR.r,0.,1.);
  float upward=smoothstep(.42,.90,n.y);float skin=upward*exposure;
@@ -99,10 +124,15 @@ void fragment(){
  local_life_value*=1.-pollution_value;local_restore_value*=1.-pollution_value;
  float surface_distance=distance(CAMERA_POSITION_WORLD,world_position);
  float near_detail=1.-smoothstep(detail_near,detail_far,surface_distance);
- float lava_detail=molten?1.-smoothstep(70.,140.,surface_distance):0.;
+ float lava_coverage=regional_enabled?dot(geological_regions,regional_lava):1.;
+ float lava_detail=(molten&&lava_coverage>.001)?1.-smoothstep(70.,140.,surface_distance):0.;
  float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
  vec3 strata=mix(rock_color.rgb*.82,rock_color.rgb*1.09,smoothstep(.2,.8,terrace));
  float deposit=skin*smoothstep(.18,.88,geo.z+geo.y*.75);
+ if(regional_enabled){
+  strata*=regional_low_tint*geological_regions.x+vec3(geological_regions.y)+regional_high_tint*geological_regions.z;
+  deposit*=dot(geological_regions,regional_deposit);
+ }
  // Basalt plates remain legible under the thin volcanic ash deposits.
  if(molten){deposit*=.35;}
  float temp=mix(native_temperature,local_temp_value,managed)+(geo.x-.5)*14.-max(0.,world_position.y-2.)*.012;
@@ -117,7 +147,15 @@ void fragment(){
  vec3 br=vec3(0.);vec3 bd=vec3(0.);
  if(textured_surface && max(near_detail,lava_detail)>.001){
   vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
-  rock=layer(rock_layer,rock_meters,world_position,n,weights,br);
+  int selected_rock=rock_layer;float selected_meters=rock_meters;
+  if(regional_enabled){
+   // A geological contact chooses one microtexture, even at region boundaries.
+   // Existing outcrop masks break up its edge; broad tint/deposit still blend.
+   float contact=.35+.30*geo.x;
+   int zone=geological_regions.x>contact?0:(geological_regions.z>contact?2:1);
+   selected_rock=regional_layers[zone];selected_meters=regional_meters[zone];
+  }
+  rock=layer(selected_rock,selected_meters,world_position,n,weights,br);
   if(near_detail>.001){dirt=layer(deposit_layer,deposit_meters,world_position,n,weights,bd);}
   // Raised bedrock breaks through soil; only the local boundary receives height contrast.
   float height_bias=(dirt.b-rock.b)*.65*near_detail;
@@ -152,6 +190,7 @@ void fragment(){
   // Mip filtering and a distant fade prevent bright subpixel seams from crawling.
   float edge_width=min(.12,fwidth(rock.a));
   float fissure=(1.-smoothstep(.40-edge_width,.72+edge_width,rock.a))*lava_detail;
+  fissure*=lava_coverage;
   float core=1.-smoothstep(.25-edge_width,.43+edge_width,rock.a);
   vec3 ember=mix(vec3(.30,.017,.004),vec3(1.,.13,.005),smoothstep(.2,.85,fissure));
   ember=mix(ember,vec3(1.,.42,.035),core*core*.55);

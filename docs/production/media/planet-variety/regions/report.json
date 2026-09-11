@@ -1,0 +1,354 @@
+{
+  "alkaline": {
+    "names": [
+      "알칼리 염지",
+      "다공질 암반",
+      "용식 탑지"
+    ],
+    "palette": [
+      "crystal",
+      "ice",
+      "porous_tuff",
+      "salt",
+      "salt_polygons",
+      "snow"
+    ],
+    "points": {
+      "0": "(640.0, 2.216112, 1270.0)",
+      "1": "(430.0, 1.903481, 955.0)",
+      "2": "(255.0, 32.26907, 220.0)"
+    },
+    "rocks": [
+      "salt",
+      "salt_polygons",
+      "porous_tuff"
+    ],
+    "sample_counts": [
+      520,
+      520,
+      113
+    ]
+  },
+  "continental": {
+    "names": [
+      "퇴적 저지",
+      "암반 구릉",
+      "노출 능선"
+    ],
+    "palette": [
+      "basalt_columns",
+      "ice",
+      "impact_breccia",
+      "regolith",
+      "sediment",
+      "snow"
+    ],
+    "points": {
+      "0": "(850.0, -40.71735, 1585.0)",
+      "1": "(1585.0, 5.811766, 290.0)",
+      "2": "(1480.0, 24.38128, 395.0)"
+    },
+    "rocks": [
+      "sediment",
+      "impact_breccia",
+      "basalt_columns"
+    ],
+    "sample_counts": [
+      416,
+      481,
+      409
+    ]
+  },
+  "cratered": {
+    "names": [
+      "충돌 분지",
+      "파편 평원",
+      "분화구 테두리"
+    ],
+    "palette": [
+      "basalt_columns",
+      "folded_slate",
+      "gravel",
+      "ice",
+      "regolith",
+      "snow"
+    ],
+    "points": {
+      "0": "(1305.0, -26.77731, 815.0)",
+      "1": "(1515.0, 0.63867, 920.0)",
+      "2": "(640.0, 8.043373, 885.0)"
+    },
+    "rocks": [
+      "regolith",
+      "basalt_columns",
+      "folded_slate"
+    ],
+    "sample_counts": [
+      94,
+      1268,
+      54
+    ]
+  },
+  "crystalline": {
+    "names": [
+      "파편 평원",
+      "결정 기질",
+      "결정 첨탑"
+    ],
+    "palette": [
+      "crystal",
+      "frost_fracture",
+      "gravel",
+      "ice",
+      "snow"
+    ],
+    "points": {
+      "0": "(745.0, 2.810091, 1375.0)",
+      "1": "(1445.0, 1.989136, 430.0)",
+      "2": "(255.0, 22.71264, 710.0)"
+    },
+    "rocks": [
+      "gravel",
+      "crystal",
+      "frost_fracture"
+    ],
+    "sample_counts": [
+      605,
+      610,
+      41
+    ]
+  },
+  "fractured": {
+    "names": [
+      "빙하 균열",
+      "파쇄 빙암",
+      "노출 암릉"
+    ],
+    "palette": [
+      "basalt_columns",
+      "folded_slate",
+      "gravel",
+      "ice",
+      "snow"
+    ],
+    "points": {
+      "0": "(1235.0, -14.00636, 220.0)",
+      "1": "(920.0, 8.024802, 430.0)",
+      "2": "(640.0, 8.977569, 990.0)"
+    },
+    "rocks": [
+      "ice",
+      "basalt_columns",
+      "folded_slate"
+    ],
+    "sample_counts": [
+      191,
+      321,
+      659
+    ]
+  },
+  "frozen": {
+    "names": [
+      "설원",
+      "빙상 단구",
+      "노출 암봉"
+    ],
+    "palette": [
+      "basalt_columns",
+      "frost_fracture",
+      "ice",
+      "regolith",
+      "snow"
+    ],
+    "points": {
+      "0": "(605.0, -18.88554, 500.0)",
+      "1": "(920.0, 6.751575, 430.0)",
+      "2": "(640.0, 46.1962, 990.0)"
+    },
+    "rocks": [
+      "snow",
+      "frost_fracture",
+      "basalt_columns"
+    ],
+    "sample_counts": [
+      454,
+      233,
+      819
+    ]
+  },
+  "ochre": {
+    "names": [
+      "황토 저지",
+      "침식 단구",
+      "풍화 암릉"
+    ],
+    "palette": [
+      "folded_slate",
+      "ice",
+      "porous_tuff",
+      "regolith",
+      "sediment",
+      "snow"
+    ],
+    "points": {
+      "0": "(430.0, -13.60901, 1165.0)",
+      "1": "(500.0, 6.387881, 1095.0)",
+      "2": "(640.0, 14.43491, 1270.0)"
+    },
+    "rocks": [
+      "regolith",
+      "porous_tuff",
+      "folded_slate"
+    ],
+    "sample_counts": [
+      420,
+      284,
+      720
+    ]
+  },
+  "oxidized": {
+    "names": [
+      "퇴적 평원",
+      "절리 암반",
+      "풍화 고원"
+    ],
+    "palette": [
+      "folded_slate",
+      "ice",
+      "impact_breccia",
+      "sand",
+      "snow"
+    ],
+    "points": {
+      "0": "(1585.0, -23.67502, 605.0)",
+      "1": "(605.0, 11.36602, 325.0)",
+      "2": "(920.0, 35.85745, 1585.0)"
+    },
+    "rocks": [
+      "sand",
+      "impact_breccia",
+      "folded_slate"
+    ],
+    "sample_counts": [
+      326,
+      296,
+      853
+    ]
+  },
+  "salt": {
+    "names": [
+      "염류 분지",
+      "건조 염피",
+      "침식 테두리"
+    ],
+    "palette": [
+      "ice",
+      "porous_tuff",
+      "salt",
+      "sandstone_bedded",
+      "snow"
+    ],
+    "points": {
+      "0": "(360.0, -5.505654, 360.0)",
+      "1": "(640.0, 2.129437, 1270.0)",
+      "2": "(745.0, 2.091668, 1585.0)"
+    },
+    "rocks": [
+      "salt",
+      "porous_tuff",
+      "sandstone_bedded"
+    ],
+    "sample_counts": [
+      289,
+      772,
+      62
+    ]
+  },
+  "sedimentary": {
+    "names": [
+      "모래 퇴적지",
+      "층상 암반",
+      "노출 고원"
+    ],
+    "palette": [
+      "folded_slate",
+      "ice",
+      "sand",
+      "sediment",
+      "snow"
+    ],
+    "points": {
+      "0": "(1130.0, -11.27887, 1025.0)",
+      "1": "(640.0, -0.61605, 1270.0)",
+      "2": "(535.0, 29.4046, 1200.0)"
+    },
+    "rocks": [
+      "sand",
+      "sediment",
+      "folded_slate"
+    ],
+    "sample_counts": [
+      414,
+      289,
+      759
+    ]
+  },
+  "tundra": {
+    "names": [
+      "서리 저지",
+      "동토 구릉",
+      "빙결 능선"
+    ],
+    "palette": [
+      "folded_slate",
+      "ice",
+      "regolith",
+      "snow"
+    ],
+    "points": {
+      "0": "(675.0, -1.726233, 780.0)",
+      "1": "(1550.0, 2.465679, 570.0)",
+      "2": "(220.0, 23.04193, 1445.0)"
+    },
+    "rocks": [
+      "regolith",
+      "folded_slate",
+      "ice"
+    ],
+    "sample_counts": [
+      444,
+      585,
+      208
+    ]
+  },
+  "volcanic": {
+    "names": [
+      "화산재 평원",
+      "냉각 현무암",
+      "고온 화산구"
+    ],
+    "palette": [
+      "basalt_columns",
+      "gravel",
+      "ice",
+      "lava",
+      "porous_tuff",
+      "snow"
+    ],
+    "points": {
+      "0": "(920.0, 0.43307, 430.0)",
+      "1": "(1270.0, 3.177596, 220.0)",
+      "2": "(430.0, 40.86388, 500.0)"
+    },
+    "rocks": [
+      "porous_tuff",
+      "basalt_columns",
+      "lava"
+    ],
+    "sample_counts": [
+      998,
+      203,
+      138
+    ]
+  }
+}

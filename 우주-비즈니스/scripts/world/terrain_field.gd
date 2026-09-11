@@ -99,7 +99,7 @@ func base_height(x: float,z: float) -> float:
 		var level: float=plateau.get_noise_2d(x,z)*float(layout.plateau_relief)+detail.get_noise_2d(x,z)*float(layout.plain_detail)
 		rough=lerpf(rough,level,plains)
 		inner=float(layout.landing_inner);outer=float(layout.landing_outer)
-	if landscape!=null:rough=landscape.apply(rough,x,z)
+	if landscape!=null:rough=landscape.apply(rough,x,z,distance)
 	var base: float=2.0+rough*smoothstep(inner,outer,distance)
 	var geology: Dictionary=layout.get("surface_geology",{})
 	if int(geology.get("version",0))==1:

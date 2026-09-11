@@ -8,9 +8,11 @@ var mode:=""
 var height:=0.0
 var span:=600.0
 var retained_roughness:=.15
+var needs_noise:=false
 func configure(seed_number: int,definition: Dictionary) -> void:
  rules=definition;seed_value=seed_number;mode=str(rules.mode)
  height=float(rules.height);span=float(rules.scale);retained_roughness=float(rules.roughness)
+ needs_noise=mode in ["mesa","shelves","crevasse"]
  noise.seed=FrontierUniverse.derive(seed_number,"landscape-v1")
  noise.frequency=1.0/span;noise.fractal_octaves=2
  sites.clear()
@@ -22,10 +24,9 @@ func site_at(x: float,z: float) -> Vector4:
  if sites.size()>=128:sites.erase(sites.keys()[0])
  sites[key]=site
  return site
-func apply(rough: float,x: float,z: float) -> float:
- var distance:=Vector2(x,z).length()
+func apply(rough: float,x: float,z: float,distance: float) -> float:
  if distance<=110.0:return rough
- var n: float=noise.get_noise_2d(x,z) if mode in ["mesa","shelves","crevasse"] else 0.0
+ var n: float=noise.get_noise_2d(x,z) if needs_noise else 0.0
  var value:=rough*retained_roughness
  match mode:
   "mesa","shelves":

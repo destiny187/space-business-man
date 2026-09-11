@@ -30,6 +30,10 @@ static func profile_for(body: Dictionary) -> Dictionary:
 	if profile.has("rock_variants") and body.has("seed"):
 		var choice:=FrontierUniverse.derive(int(body.seed),"surface-rock-v1:"+str(traits.get("id","")))
 		profile.rock=profile.rock_variants[choice%profile.rock_variants.size()]
+	var regions:=preload("res://scripts/world/surface_regions.gd").definition(body.get("terrain_traits",traits))
+	if not regions.is_empty():
+		profile.regions=regions;profile.region_rocks=[]
+		for id in regions.materials:profile.region_rocks.append(str(profile.rock) if id=="@rock" else str(id))
 	return profile
 static func configure(material: ShaderMaterial,body: Dictionary) -> void:
 	var cfg:=config();var traits: Dictionary=body.get("traits",{})
@@ -40,6 +44,16 @@ static func configure(material: ShaderMaterial,body: Dictionary) -> void:
 	material.set_shader_parameter("surface_textures",preload("res://scripts/world/surface_palette.gd").texture(ids,cfg.materials));material.set_shader_parameter("textured_surface",true)
 	material.set_shader_parameter("rock_layer",ids.find(str(profile.rock)));material.set_shader_parameter("deposit_layer",ids.find(str(profile.deposit)))
 	material.set_shader_parameter("rock_meters",float(profile.rock_meters));material.set_shader_parameter("deposit_meters",float(profile.deposit_meters))
+	material.set_shader_parameter("regional_enabled",profile.has("regions"))
+	if profile.has("regions"):
+		var r: Dictionary=profile.regions;var rocks: Array=profile.region_rocks
+		material.set_shader_parameter("regional_layers",Vector3i(ids.find(rocks[0]),ids.find(rocks[1]),ids.find(rocks[2])))
+		material.set_shader_parameter("regional_meters",Vector3(r.meters[0],r.meters[1],r.meters[2]))
+		material.set_shader_parameter("regional_edges",Vector4(r.thresholds[0],r.thresholds[1],r.thresholds[2],r.thresholds[3]))
+		material.set_shader_parameter("regional_frequency",float(r.frequency));material.set_shader_parameter("regional_relief",float(r.relief))
+		material.set_shader_parameter("regional_phase",FrontierSurfaceGeology.phase(traits))
+		for key in ["deposit","low_tint","high_tint"]:material.set_shader_parameter("regional_"+key,Vector3(r[key][0],r[key][1],r[key][2]))
+		material.set_shader_parameter("regional_lava",Vector3(float(rocks[0]=="lava"),float(rocks[1]=="lava"),float(rocks[2]=="lava")))
 	for key in ["normal_strength","detail_near","detail_far","snow_meters","ice_meters","freeze_start","freeze_end"]:material.set_shader_parameter(key,float(cfg[key]))
 	material.set_shader_parameter("snow_layer",ids.find("snow"));material.set_shader_parameter("ice_layer",ids.find("ice"))
 	material.set_shader_parameter("native_temperature",float(traits.get("temperature",20)))
