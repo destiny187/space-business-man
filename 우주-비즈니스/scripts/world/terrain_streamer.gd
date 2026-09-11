@@ -11,6 +11,9 @@ var revisions: Dictionary = {}
 var batch: Dictionary = {}
 var staged: Dictionary = {}
 var prepared: Dictionary = {}
+var retired: Array[Node3D]=[]
+var retire_keys: Array[Vector3i]=[]
+const RETIRE_PER_FRAME:=2
 var ordered_candidates: Array=[]
 var candidates_dirty:=true
 const INSTALL_BUDGET_USEC:=3000
@@ -56,11 +59,10 @@ func update_interests(points: Array[Vector3]) -> void:
 					var key:=Vector3i(x,y,z)
 					var priority: float=Vector3(key-anchor).length_squared()
 					wanted[key]=minf(priority,float(wanted.get(key,INF)))
-	for key in chunks.keys():
-		if not wanted.has(key):
-			remove_child(chunks[key].node)
-			chunks[key].node.queue_free()
-			chunks.erase(key)
+	# Leaving many chunks must not destroy all render/physics resources in the input frame.
+	retire_keys.clear()
+	for key in chunks:
+		if not wanted.has(key):retire_keys.append(key)
 
 func dig(center: Vector3,radius: float) -> Dictionary:
 	if not batch.is_empty():return {}
@@ -100,8 +102,9 @@ func _process(_delta: float) -> void:
 
 func _stream() -> void:
 	if closed or config.is_empty():return
-	if jobs.is_empty() and staged.is_empty() and batch.is_empty() and not candidates_dirty and chunks.size()==wanted.size():return
+	if retired.is_empty() and retire_keys.is_empty() and jobs.is_empty() and staged.is_empty() and batch.is_empty() and not candidates_dirty and chunks.size()==wanted.size():return
 	var deadline:=Time.get_ticks_usec()+INSTALL_BUDGET_USEC
+	_drain_retired(deadline)
 	for key in jobs.keys():
 		if Time.get_ticks_usec()>=deadline:break
 		var job: Dictionary=jobs[key]
@@ -117,7 +120,7 @@ func _stream() -> void:
 		if Time.get_ticks_usec()>=deadline:break
 		var data: Dictionary=staged[key]
 		if not wanted.has(key) or int(data.revision)!=int(revisions.get(key,0)):
-			if prepared.has(key):prepared[key].free();prepared.erase(key)
+			if prepared.has(key):retired.append(prepared[key]);prepared.erase(key)
 			staged.erase(key);continue
 		if not prepared.has(key):
 			var started:=Time.get_ticks_usec()
@@ -129,17 +132,18 @@ func _stream() -> void:
 			var started:=Time.get_ticks_usec()
 			_prepare_collision(key,data,node)
 			max_collision_ms=maxf(max_collision_ms,(Time.get_ticks_usec()-started)/1000.0)
+		if Time.get_ticks_usec()>=deadline:break
 		if not batch.has(key):
 			_commit(key,data,node);staged.erase(key);prepared.erase(key)
 	if not batch.is_empty():
 		var complete:=true
 		for key in batch:
 			if wanted.has(key) and (not prepared.has(key) or not prepared[key].get_meta("collision_ready",false)):complete=false
-		if complete:
+		if complete and Time.get_ticks_usec()<deadline:
 			for key in batch:
 				if not prepared.has(key):continue
 				if wanted.has(key):_commit(key,staged[key],prepared[key])
-				else:prepared[key].free()
+				else:retired.append(prepared[key])
 				prepared.erase(key);staged.erase(key)
 			batch.clear();candidates_dirty=true
 			geometry_changed.emit()
@@ -189,11 +193,25 @@ func _commit(key: Vector3i,data: Dictionary,node: Node3D) -> void:
 	node.name="Chunk_%d_%d_%d" % [key.x,key.y,key.z]
 	if chunks.has(key):
 		remove_child(chunks[key].node)
-		chunks[key].node.queue_free()
+		retired.append(chunks[key].node)
 	add_child(node)
 	chunks[key]={"node":node,"revision":int(revisions.get(key,0)),"triangles":data.indices.size()/3}
 	last_install_ms=(Time.get_ticks_usec()-started)/1000.0
 	max_commit_ms=maxf(max_commit_ms,last_install_ms)
+
+# Nodes replaced by excavation are detached atomically, but their resources can retire later.
+func _drain_retired(deadline: int) -> void:
+	var remaining:=RETIRE_PER_FRAME
+	while remaining>0 and not retired.is_empty() and Time.get_ticks_usec()<deadline:
+		retired.pop_back().free()
+		remaining-=1
+	while remaining>0 and not retire_keys.is_empty() and Time.get_ticks_usec()<deadline:
+		var key: Vector3i=retire_keys.pop_back()
+		if wanted.has(key) or not chunks.has(key):continue
+		var node: Node3D=chunks[key].node
+		remove_child(node);chunks.erase(key)
+		retired.append(node)
+		remaining-=1
 
 func _exit_tree() -> void:
 	if occlusion_enabled:FrontierFieldVisibility.release(get_viewport())
@@ -202,3 +220,5 @@ func _exit_tree() -> void:
 	jobs.clear()
 	for node in prepared.values():node.free()
 	prepared.clear()
+	for node in retired:node.free()
+	retired.clear();retire_keys.clear()
