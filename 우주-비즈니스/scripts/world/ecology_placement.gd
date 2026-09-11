@@ -7,14 +7,16 @@ static func candidates(body: Dictionary,record: Dictionary,center: Vector3) -> A
 	var anchor:=Vector2i(floori(center.x/span),floori(center.z/span))
 	var extent:=ceili(float(cfg.active_radius)/span)+1
 	var result: Array[Dictionary]=[]
+	# A lineage's habitat is invariant across all cells in this selection.
+	var pools: Dictionary={"surface":[],"cave":[]}
+	for lineage in record.lineages:
+		var layer: String="cave" if FrontierEcologyCatalog.form(lineage.form_id).environment=="cave" else "surface"
+		pools[layer].append(lineage)
 	if record.profile.origin!="sterile":
 		for x in range(anchor.x-extent,anchor.x+extent+1):
 			for z in range(anchor.y-extent,anchor.y+extent+1):
 				for layer in ["surface","cave"]:
-					var pool: Array=[]
-					for lineage in record.lineages:
-						var form:=FrontierEcologyCatalog.form(lineage.form_id)
-						if (form.environment=="cave")== (layer=="cave"):pool.append(lineage)
+					var pool: Array=pools[layer]
 					if pool.is_empty():continue
 					for slot in 2:
 						var id: String="%s:%d:%d:%d"%[layer,x,z,slot]
@@ -38,16 +40,16 @@ static func ground(field: FrontierTerrainField,candidate: Dictionary) -> Vector3
 	var point: Vector3=candidate.point
 	var surface: float=field.height(point.x,point.z)
 	var start: float=surface+4 if candidate.layer=="surface" else surface-7
-	var previous:=field.density(Vector3(point.x,start,point.z))
+	var previous:=field.density_at_height(Vector3(point.x,start,point.z),surface)
 	var top:=start
 	for step in range(1,100):
 		var bottom: float=start-float(step)
 		if bottom<-68:break
-		var current:=field.density(Vector3(point.x,bottom,point.z))
+		var current:=field.density_at_height(Vector3(point.x,bottom,point.z),surface)
 		if previous<0 and current>=0:
 			for iteration in 9:
 				var mid: float=(top+bottom)*.5
-				if field.density(Vector3(point.x,mid,point.z))>0:bottom=mid
+				if field.density_at_height(Vector3(point.x,mid,point.z),surface)>0:bottom=mid
 				else:top=mid
 			point.y=(top+bottom)*.5+.06
 			if candidate.layer=="surface" and surface-point.y>4:return Vector3.INF

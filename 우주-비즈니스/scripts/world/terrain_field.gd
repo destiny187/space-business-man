@@ -11,9 +11,19 @@ var seed_value := 0
 var traits: Dictionary={}
 var caves: FrontierSeededCaves
 var revision:=0
+# Exact per-field samples: no quantization, no sharing across terrain workers.
+const SAMPLE_LIMIT:=8192
+var height_samples: Dictionary={}
+var height_keys: Array[Vector2]=[]
+var height_cursor:=0
+var normal_samples: Dictionary={}
+var normal_keys: Array[Vector3]=[]
+var normal_cursor:=0
 
 func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, characteristics: Dictionary={}) -> void:
 	revision+=1
+	height_samples.clear();height_keys.clear();height_cursor=0
+	normal_samples.clear();normal_keys.clear();normal_cursor=0
 	traits=characteristics.duplicate(true)
 	edits_by_chunk.clear()
 	seed_value=seed_number
@@ -41,6 +51,8 @@ func key_at(point: Vector3) -> Vector3i:
 
 func add_edit(edit: Dictionary) -> Array[Vector3i]:
 	revision+=1
+	# Digging changes density/normals, but never the original surface height.
+	normal_samples.clear();normal_keys.clear();normal_cursor=0
 	var center:=Vector3(edit.center[0],edit.center[1],edit.center[2])
 	var radius:=float(edit.radius)+.5
 	var low:=key_at(center-Vector3.ONE*radius)
@@ -56,8 +68,19 @@ func add_edit(edit: Dictionary) -> Array[Vector3i]:
 	return affected
 
 func height(x: float,z: float) -> float:
+	var key:=Vector2(x,z)
+	# Vector keys are float32; bypass caching rather than alias float64 inputs.
+	var exact: bool=float(key.x)==x and float(key.y)==z
+	if exact and height_samples.has(key):return height_samples[key]
 	var base:=base_height(x,z)
-	return caves.roof(x,z,base) if caves!=null else base
+	var value: float=caves.roof(x,z,base) if caves!=null else base
+	if not exact:return value
+	if height_keys.size()<SAMPLE_LIMIT:height_keys.append(key)
+	else:
+		height_samples.erase(height_keys[height_cursor]);height_keys[height_cursor]=key
+		height_cursor=(height_cursor+1)%SAMPLE_LIMIT
+	height_samples[key]=value
+	return value
 
 func base_height(x: float,z: float) -> float:
 	var distance: float=Vector2(x,z).length()
@@ -116,10 +139,19 @@ func legacy_cave_density(p: Vector3,value: float) -> float:
 	return value
 
 func normal(p: Vector3,surface_height: float=NAN) -> Vector3:
+	var reusable:=is_nan(surface_height)
+	if reusable and normal_samples.has(p):return normal_samples[p]
 	var e:=.15
-	if is_nan(surface_height):surface_height=height(p.x,p.z)
+	if reusable:surface_height=height(p.x,p.z)
 	var gradient:=Vector3(density(p+Vector3(e,0,0))-density(p-Vector3(e,0,0)),density_at_height(p+Vector3(0,e,0),surface_height)-density_at_height(p-Vector3(0,e,0),surface_height),density(p+Vector3(0,0,e))-density(p-Vector3(0,0,e)))
-	return -gradient.normalized() if gradient.length_squared()>.000001 else Vector3.UP
+	var result: Vector3=-gradient.normalized() if gradient.length_squared()>.000001 else Vector3.UP
+	if reusable:
+		if normal_keys.size()<SAMPLE_LIMIT:normal_keys.append(p)
+		else:
+			normal_samples.erase(normal_keys[normal_cursor]);normal_keys[normal_cursor]=p
+			normal_cursor=(normal_cursor+1)%SAMPLE_LIMIT
+		normal_samples[p]=result
+	return result
 
 func is_bedrock(p: Vector3) -> bool:
 	return caves!=null and height(p.x,p.z)-p.y>=float(traits.underground.maximum_depth)-.1

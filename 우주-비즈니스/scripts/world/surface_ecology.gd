@@ -144,7 +144,7 @@ func refresh() -> void:
 	var placement_rules:=FrontierEcologyCatalog.placement_config(body)
 	var refresh_start:=Time.get_ticks_usec()
 	var selected: Dictionary={}
-	if ground_cache.size()>384:ground_cache.clear()
+	var considered: Dictionary={}
 	pending.clear();active_count=0;dormant_count=0
 	var interests: Array[Vector3]=[]
 	if observers.is_empty():interests.append(viewer.position)
@@ -153,6 +153,7 @@ func refresh() -> void:
 		var observer_count:=0
 		for candidate in FrontierEcologyPlacement.candidates(body,record,observer):
 			if observer_count>=int(placement_rules.max_actors):break
+			considered[candidate.id]=true
 			if not ground_cache.has(candidate.id):ground_cache[candidate.id]=FrontierEcologyPlacement.ground(terrain.field,candidate)
 			var point: Vector3=ground_cache[candidate.id]
 			if not point.is_finite() or not terrain.ready_at(point+Vector3.UP):continue
@@ -166,6 +167,11 @@ func refresh() -> void:
 			candidate.point=point;candidate.home_point=point;candidate.status=status_value
 			observer_count+=1
 			selected[candidate.id]=candidate
+	# Retain recent failed placements too; they are expensive and remain valid
+	# until geometry_changed. Do not repeatedly flush the whole nearby cache.
+	if ground_cache.size()>1024:
+		for id in ground_cache.keys():
+			if not considered.has(id) and not selected.has(id):ground_cache.erase(id)
 	for row in selected.values():
 		if row.status=="active":active_count+=1
 		else:dormant_count+=1
