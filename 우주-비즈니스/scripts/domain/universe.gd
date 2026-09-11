@@ -14,6 +14,14 @@ static func config() -> Dictionary:
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	value.regional_rules=FrontierSurfaceRegions.config().duplicate(true)
 	value.planetary_cycles=FrontierPlanetaryCycles.config()
+	value.ecology_rules=FrontierEcologyCatalog.expansion().duplicate(true)
+	value.ecology_rules.catalog_hash=FrontierEcologyCatalog.extension_signature()
+	value.ecology_rules.flora_catalog_hash=FrontierEcologyCatalog.flora_signature()
+	if not FrontierEcologyCatalog.biota_signature().is_empty():
+		var native_rules: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/native_biota.json"))
+		if FrontierEcologyCatalog.all_forms().size()==int(native_rules.required_base_forms):
+			value.ecology_rules.native_biota=native_rules
+			value.ecology_rules.biota_catalog_hash=FrontierEcologyCatalog.biota_signature()
 	value.corporate_space=JSON.parse_string(FileAccess.get_file_as_string("res://data/corporate_space.json"))
 	return value
 
@@ -30,12 +38,17 @@ static func pick_tier(seed_value: int, weights: Array) -> int:
 static func generate(seed_value: int, settings: Dictionary = {}) -> Dictionary:
 	var cfg: Dictionary = config() if settings.is_empty() else settings.duplicate(true)
 	var catalog_path: String = "res://data/astronomy/%s/catalog.json" % cfg.catalog_version
-	return {"schema_version": 2, "id": "galaxy:%s:%d" % [cfg.generator_version, seed_value],
+	var result: Dictionary={"schema_version": 2, "id": "galaxy:%s:%d" % [cfg.generator_version, seed_value],
 		"seed": seed_value, "settings": cfg,
 		"catalog": JSON.parse_string(FileAccess.get_file_as_string(catalog_path))}
+	if FrontierNativeBiota.enabled(result):result.native_biota=FrontierNativeBiota.create(result)
+	return result
 
 static func body_id(m: Dictionary, ordinal: int) -> String:
 	return m.id + ":planet:%d" % ordinal
+
+static func planet_count_label(count: int) -> String:
+	return "%d만"%(count/10000) if count%10000==0 else str(count)
 
 static func ordinal_of(m: Dictionary, id: String) -> int:
 	var prefix: String = m.id + ":planet:"
@@ -53,7 +66,12 @@ static func map_position(m: Dictionary,index: int) -> Vector2:
 	var fraction:=float(derive(seed_value,"radius")%1000000)/1000000.0
 	var radius:=lerpf(float(cfg.outer_radius),float(cfg.inner_radius),(float(band)+fraction)/float(cfg.tier_weights.size()))
 	var angle:=float(derive(seed_value,"angle")%1000000)/1000000.0*TAU
+	if cfg.get("galaxy_layout",{}).get("orient_sol_east",false):angle-=solar_map_rotation(m)
 	return Vector2(cos(angle)*radius,sin(angle)*radius)
+
+static func solar_map_rotation(m: Dictionary) -> float:
+	var seed_value:=derive(int(m.seed),m.id+":system:0")
+	return float(derive(seed_value,"angle")%1000000)/1000000.0*TAU
 
 static func system(m: Dictionary, index: int) -> Dictionary:
 	var cfg: Dictionary = m.settings
@@ -67,6 +85,7 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 	var progress: float = (float(band) + fraction) / float(cfg.tier_weights.size())
 	var radius: float = lerpf(float(cfg.outer_radius), float(cfg.inner_radius), progress)
 	var angle: float = float(derive(seed_value, "angle") % 1000000) / 1000000.0 * TAU
+	if cfg.get("galaxy_layout",{}).get("orient_sol_east",false):angle-=solar_map_rotation(m)
 	var ids: Array = []
 	for orbit in body_count(m,index): ids.append(body_id(m, first_ordinal(m,index) + orbit))
 	return {"id": id, "ordinal": index, "seed": seed_value, "band": band, "progress": progress,
@@ -106,6 +125,8 @@ static func body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dictionar
 		result.moons=1+derive(seed_value,"moons")%2 if layout.theme=="satellites" or result.kind in ["gas_giant","ice_giant"] else 0
 	if result.origin=="fictional":result.traits=FrontierPlanetTraits.make(result,cfg.get("planet_rules",{}))
 	result.terrain_traits=result.get("traits",{}) if cfg.has("planet_rules") else {}
+	if cfg.has("ecology_rules") and result.origin=="fictional":result.ecology_rules=cfg.ecology_rules
+	if m.has("native_biota") and result.origin=="fictional":result.native_ecology=m.native_biota.planets.get(str(ordinal),{"origin":"sterile","lineages":[]})
 	if cfg.has("underground_rules") and result.get("landable",true):
 		var underground: Dictionary=cfg.underground_rules
 		var family: String=underground.archetypes.get(result.terrain_traits.get("id",""),"fracture")
@@ -198,7 +219,10 @@ static func validate_world(value: Variant) -> String:
 	if m.settings.has("system_rules"):
 		var rules: Variant=m.settings.system_rules
 		if not rules is Dictionary or rules.get("version")!=1 or rules.get("pair_planets")!=16 or rules.get("minimum_planets")!=4 or rules.get("maximum_planets")!=12:return "항성계 배치 규칙이 올바르지 않습니다."
-	if m.settings.get("planet_count") != 1000000 or m.settings.get("planets_per_system") != (8 if m.settings.generator_version=="galaxy-v3" else 4): return "은하 주소 범위가 올바르지 않습니다."
+	var valid_count: bool=m.settings.get("planet_count")==1000000 or (m.settings.get("planet_count")==500000 and m.settings.generator_version=="galaxy-v3" and m.settings.get("galaxy_layout",{}).get("version")==2)
+	if not valid_count or m.settings.get("planets_per_system") != (8 if m.settings.generator_version=="galaxy-v3" else 4): return "은하 주소 범위가 올바르지 않습니다."
+	var native_error:=FrontierNativeBiota.validate(m)
+	if not native_error.is_empty():return native_error
 	if not m.get("id") is String or not m.get("catalog") is Dictionary: return "은하 형식이 올바르지 않습니다."
 	if not value.get("visited") is Dictionary or not value.get("terrain_edits") is Dictionary: return "세계 변경 기록 형식이 올바르지 않습니다."
 	if not value.get("location") is String or ordinal_of(m, value.location) < 0: return "저장 위치를 찾을 수 없습니다."
@@ -336,7 +360,7 @@ static func presentation() -> Dictionary:
 	if _presentation.is_empty():_presentation=JSON.parse_string(FileAccess.get_file_as_string("res://data/space_presentation.json"))
 	return _presentation
 
-# Paired variable-length systems preserve all one million contiguous addresses.
+# Paired variable-length systems preserve the manifest's contiguous planet addresses.
 # Solar system and its pair remain eight bodies each; no prefix table is allocated.
 static func _pair_first_count(m: Dictionary,pair: int) -> int:
 	if pair==0:return 8

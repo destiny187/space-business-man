@@ -1,0 +1,93 @@
+{
+  "id": "bio_rib_sled_09",
+  "name": "겹늑활주수",
+  "family": "rib_sled",
+  "family_name": "늑골활주류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "열린 갈비뼈 우리와 바닥을 짚는 굵은 양측 주행근 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_rib_sled_09.blend",
+  "editable_meshes": 15,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_rib_sled_09_near.glb",
+      "triangles": 7824,
+      "sha256": "fc7cff712ee15e28de356f26dd36001583881a9060cd54b2a46aba05c60a3634"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_rib_sled_09_far.glb",
+      "triangles": 2180,
+      "sha256": "ec3e9552cd877cc0cac5f64cf68ee52f6f28f868b9a91b47ca621d409b2194b6"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9591994881629944,
+        0.0,
+        -1.2099997997283936
+      ],
+      "max": [
+        0.9591994881629944,
+        1.2959136962890625,
+        1.166575312614441
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.2959136962890625,
+      "vertices": 4014
+    },
+    "far": {
+      "min": [
+        -0.9592268466949463,
+        -0.0011011604219675064,
+        -1.2114810943603516
+      ],
+      "max": [
+        0.9592268466949463,
+        1.2922899723052979,
+        1.1663570404052734
+      ],
+      "floor_y": -0.0011011604219675064,
+      "ceiling_y": 1.2922899723052979,
+      "vertices": 1180
+    }
+  },
+  "mesh_nodes": 14
+}

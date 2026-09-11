@@ -1,0 +1,95 @@
+{
+  "id": "bio_lantern_root_03",
+  "name": "삼등뿌리수",
+  "family": "lantern_root",
+  "family_name": "현수근낭류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "temperate",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "아치형 뿌리 아래에 매달린 낭과 위쪽의 집수 잎 / 다중 기관·넓은 외곽",
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "width": 1.12,
+    "height": 0.92,
+    "branch_mode": 2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_lantern_root_03.blend",
+  "editable_meshes": 34,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_lantern_root_03_near.glb",
+      "triangles": 13356,
+      "sha256": "78a21057de010fa45628c3b219be024eadbb0f453cb0a1496ef7701a4386ca97"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_lantern_root_03_far.glb",
+      "triangles": 3987,
+      "sha256": "100030d6fa6d87de33cbb049d8b3d08ec5eccec46dc487f211ec03e69327cd3d"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7949231863021851,
+        0.0,
+        -0.9216879606246948
+      ],
+      "max": [
+        0.9595815539360046,
+        1.727347731590271,
+        0.9216879606246948
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.727347731590271,
+      "vertices": 6946
+    },
+    "far": {
+      "min": [
+        -0.7913636565208435,
+        -5.69075345993042e-05,
+        -0.9173006415367126
+      ],
+      "max": [
+        0.9577568173408508,
+        1.7274928092956543,
+        0.9189119338989258
+      ],
+      "floor_y": -5.69075345993042e-05,
+      "ceiling_y": 1.7274928092956543,
+      "vertices": 2212
+    }
+  },
+  "mesh_nodes": 15
+}

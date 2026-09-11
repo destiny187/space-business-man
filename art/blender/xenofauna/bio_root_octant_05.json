@@ -1,0 +1,94 @@
+{
+  "id": "bio_root_octant_05",
+  "name": "칠분지근수",
+  "family": "root_octant",
+  "family_name": "분지근체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "anatomy_note": "중앙 머리 없이 굵게 분지하는 몸통의 끝이 발과 입을 겸함 / 높고 좁은 칠방 골격",
+  "sensory_type": "방사 화학수용기",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_root_octant_05.blend",
+  "editable_meshes": 37,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_R",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_R",
+    "Anim_Leg_6_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_root_octant_05_near.glb",
+      "triangles": 18296,
+      "sha256": "f820fe9e2f62e9439a652531601df1db948f24878255849eed6a7bb79a1222a3"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_root_octant_05_far.glb",
+      "triangles": 5112,
+      "sha256": "f2158b2e75f78a39704700a831ff87d4b1c6d97e7a4673f63afcf3b2c396e40c"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9216321110725403,
+        -7.450580596923828e-09,
+        -0.912692129611969
+      ],
+      "max": [
+        0.8643999099731445,
+        1.2009999752044678,
+        0.9126920700073242
+      ],
+      "floor_y": -7.450580596923828e-09,
+      "ceiling_y": 1.2009999752044678,
+      "vertices": 9386
+    },
+    "far": {
+      "min": [
+        -0.9221670031547546,
+        4.1961669921875e-05,
+        -0.9125352501869202
+      ],
+      "max": [
+        0.8643692135810852,
+        1.2009999752044678,
+        0.9126019477844238
+      ],
+      "floor_y": 4.1961669921875e-05,
+      "ceiling_y": 1.2009999752044678,
+      "vertices": 2794
+    }
+  },
+  "mesh_nodes": 22
+}

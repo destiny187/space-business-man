@@ -1,0 +1,28 @@
+{
+  "status": "resolved",
+  "resolved_on": "2026-09-11",
+  "previous": {
+    "status": "requires_foreground_check",
+    "reason": "Mac 잠금 상태여서 실제 게임 창이 활성화되지 않는다. 오프라인 동물 일시정지 규칙을 우회하지 않았다.",
+    "confirmed": "동일 최종 모델의 T2 자연 원산지 E/Q/J·기존 확인음·표본 저장과 재열기, 별도 두 LOD·다섯 자세·전체 관절 검사",
+    "pending": "잠금 해제 후 활성 창에서 T2 지상 동물의 골격 운동 확인",
+    "last_full_play_result": "t2-surface-check.json"
+  },
+  "resolution": "사용자 테스트 재개 요청 후 실제 활성 Godot Forward+ 창에서 T2 지상 동물의 골격 포즈 변화와 E/Q/J·기존 완료음·표본 저장/재열기를 확인했다. 비활성 창의 오프라인 일시정지 규칙은 보존했다.",
+  "midpoint_result": {
+    "path": "t2-surface-check.json",
+    "checks": 27,
+    "failures": 0,
+    "body": 109808,
+    "form": "biota_spindle_mandibles_25"
+  },
+  "general_t2_result": {
+    "path": "../../t2-surface-check.json",
+    "checks": 40,
+    "failures": 0,
+    "body": 107972
+  },
+  "related_fix": "960×640 도감의 모델/설명/연구 메뉴를 함께 스크롤해 전체 미리보기와 표본 메뉴 접근을 확인했다.",
+  "scope": "대표 원산지의 준비된 접근 위치. 전체 종의 현장 탐험이나 6인 접속 검사는 아니다.",
+  "followup": "이동 표적 준비를 고정 지연에서 실제 클라이언트/호스트 조준 일치·4m 이내 확인으로 변경했다. 한 번의 Q로 채집·저장까지 통과했으며, 종료 노드 해제를 한 프레임 더 기다린 최종 상세 로그에서 ObjectDB 경고가 재현되지 않았다."
+}

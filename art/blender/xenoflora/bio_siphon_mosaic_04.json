@@ -1,0 +1,95 @@
+{
+  "id": "bio_siphon_mosaic_04",
+  "name": "이층흡관군",
+  "family": "siphon_mosaic",
+  "family_name": "흡관모자이크군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "thermal",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "넓은 점액 기질에서 크기가 다른 열린 대사관이 반복되는 군락 / 연결 수 증가·상하 전개",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_siphon_mosaic_04.blend",
+  "editable_meshes": 23,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5",
+    "Anim_Appendage_6",
+    "Anim_Appendage_7"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_siphon_mosaic_04_near.glb",
+      "triangles": 27968,
+      "sha256": "ee3bb5db85cedc299b920b13a827b9b32dde5fa8812fdb168c0241d1835624f1"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_siphon_mosaic_04_far.glb",
+      "triangles": 7826,
+      "sha256": "1798105c10f706d9a3be4353b17ea378c6ce19952928ef1e9c7217f0e28307a7"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9199997186660767,
+        0.0,
+        -0.6764764785766602
+      ],
+      "max": [
+        0.919999897480011,
+        0.718999981880188,
+        0.6764765977859497
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.718999981880188,
+      "vertices": 13998
+    },
+    "far": {
+      "min": [
+        -0.919417142868042,
+        5.111098289489746e-05,
+        -0.6764764785766602
+      ],
+      "max": [
+        0.9194173812866211,
+        0.7191813588142395,
+        0.6764765977859497
+      ],
+      "floor_y": 5.111098289489746e-05,
+      "ceiling_y": 0.7191813588142395,
+      "vertices": 3927
+    }
+  },
+  "mesh_nodes": 18
+}

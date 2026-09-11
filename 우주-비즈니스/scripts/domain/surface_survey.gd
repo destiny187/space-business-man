@@ -56,9 +56,10 @@ static func record(world: Dictionary,row: Dictionary,actor: String="") -> void:
 static func biology_info(form: Dictionary) -> Dictionary:
 	var c:=FrontierEcologyCatalog.config()
 	var notes: Array=[{"icon":"scan","text":"관찰 → 기초 분석 → 서식지 복원"},{"icon":"inventory","text":"실물 표본 → 다른 행성 시험 구획 이식"}]
+	if form.get("locomotion_medium","")=="atmosphere":notes=[{"icon":"scan","text":"궤도 관측 → 대기층 생리 분석"}]
 	for project in FrontierFieldEngineering.config().projects.values():
 		if form.environment in project.environments:notes.append({"icon":"build","text":project.name+" · 연구·설치 후 처리 속도 +%d%%"%roundi((float(project.factor)-1)*100)})
-	var habitat: Dictionary=c.habitats.get(form.environment,{})
+	var habitat:=FrontierEcologyCatalog.habitat(form)
 	return {"kind":"biology","name":form.name,"icon":FrontierResourceIcons.specimen_id(form),"subtitle":form.environment_label+" · "+form.habitat_note,"notes":notes,"condition":"정착 조건: %s · %.0f~%.0f°C"%[habitat.get("label",form.environment_label),float(habitat.get("temperature",[0,0])[0]),float(habitat.get("temperature",[0,0])[1])]}
 static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionary:
 	if row.kind=="corporation":return FrontierCorporations.info(row)

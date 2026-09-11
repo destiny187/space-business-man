@@ -1,0 +1,92 @@
+{
+  "id": "bio_spiral_cup_tree_03",
+  "name": "다섯잔나무",
+  "family": "spiral_cup_tree",
+  "family_name": "나선배상류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "thermal",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "나선 줄기의 서로 다른 높이에 열린 집수 잎이 자리함 / 다중 기관·넓은 외곽",
+  "motion_profile": "spiral",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "width": 1.12,
+    "height": 0.92,
+    "branch_mode": 2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_spiral_cup_tree_03.blend",
+  "editable_meshes": 22,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Petal_4"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_spiral_cup_tree_03_near.glb",
+      "triangles": 18344,
+      "sha256": "c6893c6079be3eb0643349880e8a67750f5c6b8b2743e12f7f756355c796e028"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_spiral_cup_tree_03_far.glb",
+      "triangles": 5126,
+      "sha256": "334e3bc5dfb673860db6b781ab4fc708866fe90f579cba90cb677606a641b828"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8215457201004028,
+        0.0,
+        -0.9142894148826599
+      ],
+      "max": [
+        0.9142894148826599,
+        2.01505184173584,
+        0.9165875315666199
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.01505184173584,
+      "vertices": 9284
+    },
+    "far": {
+      "min": [
+        -0.8214826583862305,
+        -5.69075345993042e-05,
+        -0.9139807820320129
+      ],
+      "max": [
+        0.9139807820320129,
+        2.015327215194702,
+        0.9168132543563843
+      ],
+      "floor_y": -5.69075345993042e-05,
+      "ceiling_y": 2.015327215194702,
+      "vertices": 2675
+    }
+  },
+  "mesh_nodes": 11
+}

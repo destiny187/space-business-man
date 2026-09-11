@@ -1,0 +1,88 @@
+{
+  "id": "bio_loop_frond_01",
+  "name": "홑환리본초",
+  "family": "loop_frond",
+  "family_name": "반전환엽류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "basalt",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "줄기에서 나와 뒤집히며 닫히는 두꺼운 띠 잎 / 기초 기관 배열",
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "width": 1,
+    "height": 1,
+    "branch_mode": 0
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_loop_frond_01.blend",
+  "editable_meshes": 7,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_loop_frond_01_near.glb",
+      "triangles": 4960,
+      "sha256": "39c0125acf08d7f69a1228c8784c504011f36a83f780608cdf4de2888c627398"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_loop_frond_01_far.glb",
+      "triangles": 1384,
+      "sha256": "cbd6056ad2cc08aaabcfc3ebb50545515d517878442a98974d372c93c91b8660"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.4499995708465576,
+        0.0,
+        -0.6525765657424927
+      ],
+      "max": [
+        0.811403214931488,
+        1.7157464027404785,
+        0.6525765657424927
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.7157464027404785,
+      "vertices": 2534
+    },
+    "far": {
+      "min": [
+        -0.4499995708465576,
+        -5.62816858291626e-05,
+        -0.6529540419578552
+      ],
+      "max": [
+        0.8125960826873779,
+        1.7157535552978516,
+        0.6529540419578552
+      ],
+      "floor_y": -5.62816858291626e-05,
+      "ceiling_y": 1.7157535552978516,
+      "vertices": 746
+    }
+  },
+  "mesh_nodes": 3
+}

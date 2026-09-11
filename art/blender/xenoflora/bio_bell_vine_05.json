@@ -1,0 +1,103 @@
+{
+  "id": "bio_bell_vine_05",
+  "name": "관종덩굴",
+  "family": "bell_vine",
+  "family_name": "현수종등류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "basalt",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "기어 올라간 굽은 덩굴의 아래로 처진 열린 종형 잎 / 조밀한 기관·높은 외곽",
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "width": 0.9,
+    "height": 1.32,
+    "branch_mode": 4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_bell_vine_05.blend",
+  "editable_meshes": 36,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0",
+    "Bell downward orientation",
+    "Anim_Petal_1",
+    "Bell downward orientation.001",
+    "Anim_Petal_2",
+    "Bell downward orientation.002",
+    "Anim_Petal_3",
+    "Bell downward orientation.003",
+    "Anim_Petal_4",
+    "Bell downward orientation.004",
+    "Anim_Petal_5",
+    "Bell downward orientation.005",
+    "Anim_Petal_6",
+    "Bell downward orientation.006",
+    "Anim_Petal_7",
+    "Bell downward orientation.007"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_bell_vine_05_near.glb",
+      "triangles": 28986,
+      "sha256": "fa3f79144c380b8231708afd5f283f9d207cbfb528ad8d2a6db8bd69d6cb3c25"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_bell_vine_05_far.glb",
+      "triangles": 8802,
+      "sha256": "753be6fd40e18e32d2df0c1c266a0ac6958835355ec927d9ad22d597baae388a"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8559168577194214,
+        0.0,
+        -0.6500900387763977
+      ],
+      "max": [
+        0.7981500029563904,
+        2.0308187007904053,
+        0.6500900387763977
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.0308187007904053,
+      "vertices": 14677
+    },
+    "far": {
+      "min": [
+        -0.8559440970420837,
+        -5.558133125305176e-05,
+        -0.6500765681266785
+      ],
+      "max": [
+        0.7979963421821594,
+        2.0308187007904053,
+        0.6500765681266785
+      ],
+      "floor_y": -5.558133125305176e-05,
+      "ceiling_y": 2.0308187007904053,
+      "vertices": 4585
+    }
+  },
+  "mesh_nodes": 26
+}

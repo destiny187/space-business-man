@@ -1,0 +1,91 @@
+{
+  "id": "bio_nested_pod_03",
+  "name": "사중협초",
+  "family": "nested_pod",
+  "family_name": "중첩개협류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "cave",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "속이 드러나는 꼬투리 안에 더 작은 꼬투리와 씨방이 중첩 / 다중 기관·넓은 외곽",
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "width": 1.12,
+    "height": 0.92,
+    "branch_mode": 2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_nested_pod_03.blend",
+  "editable_meshes": 27,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_nested_pod_03_near.glb",
+      "triangles": 15864,
+      "sha256": "c57f1eaf9e30cfdc6dd8744a98722736a1f90cfcb6e68f01368a65fc7b43016e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_nested_pod_03_far.glb",
+      "triangles": 4428,
+      "sha256": "4a10cef3eb7a67bf537224294006ef031d848725ddf21dbc76d982d703e4aec2"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9082530736923218,
+        0.0,
+        -0.787380039691925
+      ],
+      "max": [
+        0.908253014087677,
+        1.18045175075531,
+        0.787380039691925
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.18045175075531,
+      "vertices": 8098
+    },
+    "far": {
+      "min": [
+        -0.9083268046379089,
+        -5.69075345993042e-05,
+        -0.7873688340187073
+      ],
+      "max": [
+        0.9083738327026367,
+        1.18045175075531,
+        0.7873688340187073
+      ],
+      "floor_y": -5.69075345993042e-05,
+      "ceiling_y": 1.18045175075531,
+      "vertices": 2380
+    }
+  },
+  "mesh_nodes": 9
+}

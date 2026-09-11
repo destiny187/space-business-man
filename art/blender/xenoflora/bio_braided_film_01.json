@@ -1,0 +1,89 @@
+{
+  "id": "bio_braided_film_01",
+  "name": "두겹편막군",
+  "family": "braided_film",
+  "family_name": "편조생물막군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "temperate",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "지지점 사이로 두꺼운 막이 뒤틀려 엮인 대형 미생물 군락 / 기초 기관 배열",
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "width": 1,
+    "height": 1,
+    "branch_mode": 0
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_braided_film_01.blend",
+  "editable_meshes": 7,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_braided_film_01_near.glb",
+      "triangles": 9632,
+      "sha256": "2822b14325416caa43b1a0dab96a49c3f4690ad5b824385992166e39f1270584"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_braided_film_01_far.glb",
+      "triangles": 2690,
+      "sha256": "fba40d15adddb9a5fb4c150822b5d42533da8c01159c052670456f688a2b427d"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8199992179870605,
+        0.0,
+        -0.6556918621063232
+      ],
+      "max": [
+        0.8899999260902405,
+        0.800000011920929,
+        0.6556919813156128
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.800000011920929,
+      "vertices": 4830
+    },
+    "far": {
+      "min": [
+        -0.8183507919311523,
+        5.111098289489746e-05,
+        -0.6556918621063232
+      ],
+      "max": [
+        0.8894174098968506,
+        0.8012327551841736,
+        0.6556919813156128
+      ],
+      "floor_y": 5.111098289489746e-05,
+      "ceiling_y": 0.8012327551841736,
+      "vertices": 1359
+    }
+  },
+  "mesh_nodes": 5
+}

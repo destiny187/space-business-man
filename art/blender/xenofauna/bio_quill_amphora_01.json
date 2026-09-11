@@ -1,0 +1,93 @@
+{
+  "id": "bio_quill_amphora_01",
+  "name": "삼공호수",
+  "family": "quill_amphora",
+  "family_name": "유공호체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "anatomy_note": "항아리형 외피의 큰 구멍과 안쪽을 보호하는 곡선 가시 / 삼방 열린 골격",
+  "sensory_type": "피부 진동공",
+  "eye_count": 0,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 3,
+    "branch_mode": 0,
+    "width": 1,
+    "height": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_quill_amphora_01.blend",
+  "editable_meshes": 17,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_quill_amphora_01_near.glb",
+      "triangles": 11976,
+      "sha256": "b2950543460ca419aeb2cbfe4189bd66920c20ed38d844a5f9c224d75a8fb0ba"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_quill_amphora_01_far.glb",
+      "triangles": 3344,
+      "sha256": "02744b9f5b864dac912fe7c1a208da103a342fb8e565843c5d06e6854b38bd2a"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.5499998331069946,
+        0.0,
+        -0.8554995656013489
+      ],
+      "max": [
+        0.9399999380111694,
+        1.6917630434036255,
+        0.8554996848106384
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.6917630434036255,
+      "vertices": 6068
+    },
+    "far": {
+      "min": [
+        -0.5499998331069946,
+        0.00013214349746704102,
+        -0.8571717739105225
+      ],
+      "max": [
+        0.943314790725708,
+        1.692106008529663,
+        0.8551369309425354
+      ],
+      "floor_y": 0.00013214349746704102,
+      "ceiling_y": 1.692106008529663,
+      "vertices": 1743
+    }
+  },
+  "mesh_nodes": 14
+}

@@ -1,0 +1,96 @@
+{
+  "id": "bio_mirror_fork_10",
+  "name": "손갈래수",
+  "family": "mirror_fork",
+  "family_name": "분기대칭류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "temperate",
+  "morphology": 9,
+  "anatomy": 9,
+  "attack": "none",
+  "anatomy_note": "중심에서 두 갈래로 나뉜 몸통 끝에 서로 다른 감각기관 / 다층 방사 골격",
+  "sensory_type": "분지 촉각수염",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "limb_count": 6,
+    "branch_mode": 9,
+    "width": 1,
+    "height": 1.16
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_mirror_fork_10.blend",
+  "editable_meshes": 52,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_mirror_fork_10_near.glb",
+      "triangles": 56928,
+      "sha256": "84558c2fb3f4e32bc2c7db252ca7d7a0776c9f5dad4d52359a5db0e448bef334"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_mirror_fork_10_far.glb",
+      "triangles": 15924,
+      "sha256": "eeaa10f405e029d2616ecfc64ab0ad56e3d1c8446ff649ba950d9dc5c7e3f000"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0099998712539673,
+        0.0,
+        -0.9806478023529053
+      ],
+      "max": [
+        1.137387752532959,
+        1.5061233043670654,
+        1.2119998931884766
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.5061233043670654,
+      "vertices": 28588
+    },
+    "far": {
+      "min": [
+        -1.0098142623901367,
+        4.2051076889038086e-05,
+        -0.9810730218887329
+      ],
+      "max": [
+        1.1374051570892334,
+        1.506455898284912,
+        1.2123520374298096
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.506455898284912,
+      "vertices": 8080
+    }
+  },
+  "mesh_nodes": 22
+}

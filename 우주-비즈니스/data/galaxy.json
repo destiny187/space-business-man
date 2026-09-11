@@ -1,11 +1,11 @@
 {
   "generator_version": "galaxy-v3",
   "catalog_version": "nasa-ps-20260906",
-  "planet_count": 1000000,
+  "planet_count": 500000,
   "planets_per_system": 8,
   "systems_per_sector": 5000,
-  "outer_radius": 500.0,
-  "inner_radius": 100.0,
+  "outer_radius": 353.5533905932738,
+  "inner_radius": 70.71067811865476,
   "band_names": [
     "외곽 개척권",
     "외곽 항로",
@@ -113,5 +113,11 @@
     "galaxy_units_to_flight_units": 100000,
     "model_scale_galaxy_units": 1.4,
     "visible_within_galaxy_units": 180
+  },
+  "galaxy_layout": {
+    "version": 2,
+    "orient_sol_east": true,
+    "spacing_reference_planets": 1000000,
+    "radius_scale": 0.7071067811865476
   }
 }

@@ -8,15 +8,22 @@ static func config() -> Dictionary:
  if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/native_incidents.json"))
  return _config
 static func role(template: String) -> String:return str(FrontierExplorationIncidents.definition(template).get("native_role",""))
+static func habitat_key(body: Dictionary) -> String:
+ return body.id+":"+FrontierUniverse.fingerprint({"tier":body.planet_tier,"rules":body.get("ecology_rules",{}),"native":body.get("native_ecology",{})})
 static func candidates(body: Dictionary,kind: String) -> Array:
- var id: String=body.id+":"+kind
+ var id: String=habitat_key(body)+":"+kind
  if _candidates.has(id):return _candidates[id]
  var result: Array=[];var rule: Dictionary=config().roles[kind]
  if FrontierEcology.profile(body).origin=="established":
   var ecology: Dictionary={"planets":{}}
   for lineage in FrontierEcology.ensure_planet(ecology,body).lineages:
    var form:=FrontierEcologyCatalog.form(lineage.form_id)
-   if form.category!="animal" or form.family not in rule.families:continue
+   if form.category!="animal":continue
+   if form.get("locomotion_medium","")=="surface_air":continue # Ground incident paths do not model avian flight.
+   var expanded: bool=body.has("ecology_rules") and form.get("collection","") in ["xenofauna-300","biota-7000"]
+   if form.family not in rule.families and not expanded:continue
+   if not FrontierEcologyCatalog.ground_form(form) or not form.has("geometry"):continue
+   if kind=="guardian" and expanded and form.attack=="none":continue
    if (form.environment=="cave")!=(rule.layer=="cave"):continue
    var look:=FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id)
    var height: float=(float(form.geometry.near.ceiling_y)-float(form.geometry.near.floor_y))*float(look.scale)
@@ -29,7 +36,7 @@ static func candidates(body: Dictionary,kind: String) -> Array:
  if _candidates.size()>128:_candidates.clear()
  _candidates[id]=result;return result
 static func choose(body: Dictionary,row: Dictionary) -> Dictionary:
- var kind:=role(row.template);var cache: String=body.id+":"+row.id
+ var kind:=role(row.template);var cache: String=habitat_key(body)+":"+row.id
  if _picks.has(cache):return _picks[cache].duplicate(true)
  var pool:=candidates(body,kind)
  if pool.is_empty():return {}
@@ -55,6 +62,7 @@ static func choose(body: Dictionary,row: Dictionary) -> Dictionary:
    var color:=Color(palette[i]);palette[i]=Color.from_hsv(fmod(color.h+.15,.999),clampf(color.s+.12,0,1),clampf(color.v*1.10,0,1)).to_html(false)
  var result:=selected.duplicate(true)
  result["track"]="groove" if form.family in ["coil","slug","ribbon_colony"] else ("claw" if form.family in ["carapace","mantid","asym_pincer","burrower"] else "paw")
+ if form.get("collection","")=="biota-7000" and form.construction in ["spiral","ribbon"]:result.track="groove"
  result.merge({"version":1,"role":kind,"variant":variant,"factor":factor,"seed":seed_value,"palette":palette,"height":snappedf(dimensions.y*float(base.scale)*factor,.001),"width":snappedf(dimensions.x*float(base.scale)*factor,.001),"length":snappedf(dimensions.z*float(base.scale)*factor,.001),"speed":snappedf(float(rule.speed)/sqrt(factor),.001)})
  if _picks.size()>256:_picks.clear()
  _picks[cache]=result;return result.duplicate(true)

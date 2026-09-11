@@ -1,0 +1,97 @@
+{
+  "id": "bio_torus_loom_09",
+  "name": "교차환수",
+  "family": "torus_loom",
+  "family_name": "환공직조류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "arid",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "몸통 가운데가 뚫린 근육 고리와 안쪽 여과실 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "environment_label": "건조 사구·협곡",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_torus_loom_09.blend",
+  "editable_meshes": 40,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_torus_loom_09_near.glb",
+      "triangles": 21824,
+      "sha256": "b742d838505169ccc017c79ec2583496165084a3a44821dbc195ffc5c81db860"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_torus_loom_09_far.glb",
+      "triangles": 6098,
+      "sha256": "cb61bc607f8f496fdabffde5140d087db020c46cf40542c31fd2fa995945323f"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.110399842262268,
+        0.0,
+        -1.1303998231887817
+      ],
+      "max": [
+        1.1103999614715576,
+        1.8161022663116455,
+        1.1303998231887817
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.8161022663116455,
+      "vertices": 11144
+    },
+    "far": {
+      "min": [
+        -1.110399842262268,
+        0.00013211369514465332,
+        -1.1320719718933105
+      ],
+      "max": [
+        1.1103999614715576,
+        1.817662000656128,
+        1.1320719718933105
+      ],
+      "floor_y": 0.00013211369514465332,
+      "ceiling_y": 1.817662000656128,
+      "vertices": 3280
+    }
+  },
+  "mesh_nodes": 22
+}

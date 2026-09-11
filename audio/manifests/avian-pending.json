@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "status": "not_generated",
+  "reason": "이 세션에 ElevenLabs API 키/연결 도구가 없으며 브라우저의 로그인된 생성 페이지를 확인하지 못했다. 기존 E/Q 확인음은 재사용한다.",
+  "jobs": [
+    {
+      "id": "sfx_avian_wingbeat",
+      "duration": 2,
+      "loop": false,
+      "prompt": "Two restrained wing beats of a medium alien bird: layered feather flutter and a soft muscular air whoosh. Dry close recording, no chirps, no speech, no music, no background. Clearly separated downstrokes, short natural decay.",
+      "use": "가까운 활성 조류의 하강 날갯짓, 거리 감쇠와 동시 재생 제한"
+    },
+    {
+      "id": "sfx_avian_contact_call",
+      "duration": 3,
+      "loop": false,
+      "prompt": "One short unfamiliar bird contact call, hollow paired whistles with a delicate rattling overtone, organic and believable. Dry isolated recording, no human voice, no music, no background animals.",
+      "use": "착지 휴식 중 드문 연락음, 개체별 시드 간격"
+    }
+  ]
+}

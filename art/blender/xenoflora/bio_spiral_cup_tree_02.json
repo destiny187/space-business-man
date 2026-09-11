@@ -1,0 +1,91 @@
+{
+  "id": "bio_spiral_cup_tree_02",
+  "name": "네잔나무",
+  "family": "spiral_cup_tree",
+  "family_name": "나선배상류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "crystal",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "나선 줄기의 서로 다른 높이에 열린 집수 잎이 자리함 / 기관 추가·좁고 높은 외곽",
+  "motion_profile": "spiral",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "width": 0.86,
+    "height": 1.2,
+    "branch_mode": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_spiral_cup_tree_02.blend",
+  "editable_meshes": 18,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_spiral_cup_tree_02_near.glb",
+      "triangles": 15104,
+      "sha256": "5925dbe60000e059f9ca3aa59c0976f5f98b62cfd595e8225130887ac1443df2"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_spiral_cup_tree_02_far.glb",
+      "triangles": 4220,
+      "sha256": "e44f7133c2c7318f92dbc4fd7201b3a00bc3ed0597a9420bba2379f4e0ce58a6"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7694126963615417,
+        0.0,
+        -0.7694126963615417
+      ],
+      "max": [
+        0.7694126963615417,
+        2.350228786468506,
+        0.7694126963615417
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.350228786468506,
+      "vertices": 7644
+    },
+    "far": {
+      "min": [
+        -0.7692214846611023,
+        -5.5208802223205566e-05,
+        -0.7692214846611023
+      ],
+      "max": [
+        0.7692214250564575,
+        2.3504574298858643,
+        0.7692214250564575
+      ],
+      "floor_y": -5.5208802223205566e-05,
+      "ceiling_y": 2.3504574298858643,
+      "vertices": 2202
+    }
+  },
+  "mesh_nodes": 9
+}

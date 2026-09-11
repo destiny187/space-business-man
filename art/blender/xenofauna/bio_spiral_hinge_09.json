@@ -1,0 +1,97 @@
+{
+  "id": "bio_spiral_hinge_09",
+  "name": "톱니와선수",
+  "family": "spiral_hinge",
+  "family_name": "와선경첩류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cold",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "좌우 나선 디스크가 중앙 관절을 사이에 두고 벌어짐 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_spiral_hinge_09.blend",
+  "editable_meshes": 39,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_spiral_hinge_09_near.glb",
+      "triangles": 27456,
+      "sha256": "924f885ca7020077970dcd4dd3120bd58ccf6759339548570ccb5b9de111b9f3"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_spiral_hinge_09_far.glb",
+      "triangles": 7672,
+      "sha256": "7f32fcc958bf7db07b355d5c65275fd4d8227f3f9725102aeb63211203ece3fe"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.1319998502731323,
+        0.0,
+        -1.1519997119903564
+      ],
+      "max": [
+        1.1319999694824219,
+        1.441598653793335,
+        1.1519999504089355
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.441598653793335,
+      "vertices": 13886
+    },
+    "far": {
+      "min": [
+        -1.1319998502731323,
+        -0.000555574893951416,
+        -1.151637077331543
+      ],
+      "max": [
+        1.1319999694824219,
+        1.4426472187042236,
+        1.151637077331543
+      ],
+      "floor_y": -0.000555574893951416,
+      "ceiling_y": 1.4426472187042236,
+      "vertices": 3994
+    }
+  },
+  "mesh_nodes": 21
+}

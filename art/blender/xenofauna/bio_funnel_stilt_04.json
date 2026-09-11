@@ -1,0 +1,93 @@
+{
+  "id": "bio_funnel_stilt_04",
+  "name": "육각누두수",
+  "family": "funnel_stilt",
+  "family_name": "누두장각류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "anatomy_note": "큰 깔때기 몸통의 바깥 벽에서 바로 이어지는 긴 다리 / 낮고 넓은 육방 골격",
+  "sensory_type": "빛을 모으는 틈",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 6,
+    "branch_mode": 3,
+    "width": 1.3,
+    "height": 0.73
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_funnel_stilt_04.blend",
+  "editable_meshes": 26,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_R",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_funnel_stilt_04_near.glb",
+      "triangles": 27744,
+      "sha256": "38de941f32f0ecd7a3fdbf894864a83976a225818803230608498f9c016f2119"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_funnel_stilt_04_far.glb",
+      "triangles": 7758,
+      "sha256": "d44134528b3996088a28ed992e46db404dd339ec8683bc1eb2bb1fbb5dc5e976"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.335999846458435,
+        -7.450580596923828e-09,
+        -1.1757662296295166
+      ],
+      "max": [
+        1.3359999656677246,
+        1.0888999700546265,
+        1.1757662296295166
+      ],
+      "floor_y": -7.450580596923828e-09,
+      "ceiling_y": 1.0888999700546265,
+      "vertices": 13944
+    },
+    "far": {
+      "min": [
+        -1.335665225982666,
+        7.7858567237854e-05,
+        -1.1754825115203857
+      ],
+      "max": [
+        1.336148738861084,
+        1.0894771814346313,
+        1.1754316091537476
+      ],
+      "floor_y": 7.7858567237854e-05,
+      "ceiling_y": 1.0894771814346313,
+      "vertices": 3935
+    }
+  },
+  "mesh_nodes": 20
+}

@@ -62,6 +62,7 @@ static func target(world: Dictionary,actor: String,aim: Vector3,wildlife_observe
 	var id: String=world.crew.landing.body_id
 	var body:=FrontierUniverse.body_from_id(world.manifest,id)
 	var record: Dictionary=world.ecology.planets[id]
+	var placement_rules:=FrontierEcologyCatalog.placement_config(body)
 	var terrain:=field(world)
 	var position:=FrontierCrewWorld.vector(member.position)
 	if wildlife_observers.is_empty():wildlife_observers=[position]
@@ -78,13 +79,15 @@ static func target(world: Dictionary,actor: String,aim: Vector3,wildlife_observe
 		var state: String=FrontierEcology.status(record,form,point,row.layer)
 		if row.introduced:state="active" if FrontierEcology.climate_at(record,point,row.layer).get("restored",false) else "dormant"
 		if state=="absent" or (state=="dormant" and form.category=="animal" and not row.introduced):continue
-		if point.distance_to(position)>float(FrontierEcologyCatalog.config().active_radius):continue
+		if point.distance_to(position)>float(placement_rules.active_radius):continue
 		population+=1
-		if population>int(FrontierEcologyCatalog.config().max_actors):break
+		if population>int(placement_rules.max_actors):break
 		var height: float=(float(form.geometry.near.max[1])-float(form.geometry.near.floor_y))*float(FrontierEcologyCatalog.look(form.id,row.look_id).scale)
+		row.status=state
+		var motion:=FrontierEcologyPlacement.flight_pose(terrain,row,point,float(world.crew.navigation.orbit_time)) if form.get("locomotion_medium","")=="surface_air" else {}
 		var up:=terrain.normal(point)
+		if not motion.is_empty():point=motion.point;up=motion.basis.y
 		if Wildlife.eligible(form,row):
-			row.status=state
 			var behavior:=Wildlife.pose(terrain,row,point,float(world.crew.navigation.orbit_time),wildlife_observers,Wildlife.stopped(world.crew,id,row,point))
 			point=behavior.point;up=behavior.basis.y;row.behavior_yaw=behavior.basis.get_euler().y
 		var center:=point+up*maxf(.35,height*.5)

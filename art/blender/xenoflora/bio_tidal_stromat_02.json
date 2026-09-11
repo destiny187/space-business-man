@@ -1,0 +1,91 @@
+{
+  "id": "bio_tidal_stromat_02",
+  "name": "네층파문군",
+  "family": "tidal_stromat",
+  "family_name": "층상파문군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "temperate",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "수분을 모으는 주름진 층과 얕은 중앙 분지가 쌓인 군락 / 기관 추가·좁고 높은 외곽",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "width": 0.86,
+    "height": 1.2,
+    "branch_mode": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_tidal_stromat_02.blend",
+  "editable_meshes": 11,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_tidal_stromat_02_near.glb",
+      "triangles": 11520,
+      "sha256": "eb75704866ba1b0c8b059ff3860290f9fc5005fd4c7b5b8642e6dd0692731e9a"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_tidal_stromat_02_far.glb",
+      "triangles": 3222,
+      "sha256": "9ed73189915c543e4eff1ce345e9547a6de79b1a234a36627a029f6d9409e54b"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8059996962547302,
+        0.0,
+        -0.6527997255325317
+      ],
+      "max": [
+        0.8059998750686646,
+        0.5053545832633972,
+        0.6527998447418213
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.5053545832633972,
+      "vertices": 5810
+    },
+    "far": {
+      "min": [
+        -0.8054172396659851,
+        0.0,
+        -0.6527997255325317
+      ],
+      "max": [
+        0.8054174184799194,
+        0.5071058869361877,
+        0.6527998447418213
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.5071058869361877,
+      "vertices": 1653
+    }
+  },
+  "mesh_nodes": 7
+}

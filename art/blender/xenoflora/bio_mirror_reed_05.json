@@ -1,0 +1,95 @@
+{
+  "id": "bio_mirror_reed_05",
+  "name": "관막갈대",
+  "family": "mirror_reed",
+  "family_name": "대향막경류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "cave",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "갈라진 줄기의 좌우에 마주 보는 두꺼운 부채막 / 조밀한 기관·높은 외곽",
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "width": 0.9,
+    "height": 1.32,
+    "branch_mode": 4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_mirror_reed_05.blend",
+  "editable_meshes": 28,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0_-1",
+    "Anim_Frond_0_1",
+    "Anim_Frond_1_-1",
+    "Anim_Frond_1_1",
+    "Anim_Frond_2_-1",
+    "Anim_Frond_2_1",
+    "Anim_Frond_3_-1",
+    "Anim_Frond_3_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_mirror_reed_05_near.glb",
+      "triangles": 15696,
+      "sha256": "4b900e8fac9c077ffbfd9ac65dda7ac92fd97f0cec4558e9647580b4c6e53a6f"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_mirror_reed_05_far.glb",
+      "triangles": 4376,
+      "sha256": "9a329b7bbefa16ddfeb41e3fce1f05c95d552db151672ba8168e4ea17110f45e"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0435020923614502,
+        0.0,
+        -0.6500900387763977
+      ],
+      "max": [
+        1.0435020923614502,
+        2.12947940826416,
+        0.6500900387763977
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.12947940826416,
+      "vertices": 8056
+    },
+    "far": {
+      "min": [
+        -1.043518304824829,
+        -5.558133125305176e-05,
+        -0.650580883026123
+      ],
+      "max": [
+        1.0435237884521484,
+        2.12947940826416,
+        0.6505808234214783
+      ],
+      "floor_y": -5.558133125305176e-05,
+      "ceiling_y": 2.12947940826416,
+      "vertices": 2363
+    }
+  },
+  "mesh_nodes": 17
+}

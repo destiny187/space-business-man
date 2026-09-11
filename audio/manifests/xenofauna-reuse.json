@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "collection": "xenofauna-300",
+  "new_audio_generated": false,
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "mapping": {
+    "passive_ground_animal": "sfx_creature_call"
+  },
+  "asset": {
+    "id": "sfx_creature_call",
+    "duration": 1.5,
+    "loop": false,
+    "status": "generated_integrated",
+    "prompt": "A small friendly alien herbivore softly chirping and purring, endearing organic vocalization with a slightly unusual resonant tone. One short animal call, no words, no music, no background.",
+    "history": "https://elevenlabs.io/app/sound-effects/history?id=WnlOLGjHSZz5iGAfwB5b",
+    "provider": "ElevenLabs web Sound Effects",
+    "take": 1,
+    "generated_at": "2026-09-06",
+    "original_filename": "A_small_friendly_ali_#1-1788645218636.wav",
+    "source": "audio/source/elevenlabs/sfx_creature_call.wav",
+    "game_file": "우주-비즈니스/assets/audio/sfx_creature_call.wav",
+    "duration_actual": 1.48,
+    "sample_rate": 48000,
+    "channels": 2,
+    "sha256": "1fce9fee71ad2f70bdac02b5f3390b1352186c7703c7d0bdf836a459e2718579",
+    "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
+    "qa": "Signal and runtime playback checked; final listening review remains subjective"
+  },
+  "verification": {
+    "method": "Existing surface soundscape emitted the creature call at the naturally loaded new animal during the actual Forward+ play check. Audio bus peak measured; no per-species voice generation.",
+    "form": "bio_double_vault_09",
+    "audio_peak_db": -36.0176696777344,
+    "record": "docs/production/media/xenofauna/play-check.json"
+  }
+}

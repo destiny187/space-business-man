@@ -123,9 +123,9 @@
 
 공통 INK 조명의 지역 광원은 거리 감쇠를 연속 적용한다. 방향광에 사용하는 그림자 경계 임계값을 손전등에 적용하면 멀리 있는 면이 불연속적으로 꺼졌다. [Godot 공간 셰이더 문서](https://docs.godotengine.org/en/stable/tutorials/shaders/shader_reference/spatial_shader.html)의 `LIGHT_IS_DIRECTIONAL`과 `ATTENUATION` 정의를 따라 분기하며, 별도 실제 GPU 검사에서 거리별 밝기와 소등을 확인한다.
 
-## galaxy-v3 현재 구조
+## galaxy-v3 주소와 항해 구조
 
-[은하 생성 소관](../game/11-galaxy-tiers-and-seeds.md)의 125,000 항성계·100만 행성 주소를 사용한다. `system()`은 항성 ID·유형을 반환하고 `body()`는 항성 소유·종류·착륙 여부·게임 원궤도 반경/위상/주기를 반환한다. `position(manifest, ordinal, elapsed)`를 호스트 항해와 실제 렌더가 함께 사용한다. `navigation.orbit_time`은 세계 저장과 스냅샷에 포함한다. 대기 중 선체는 현재 행성의 이동분을 따라가며, 다른 목적지를 선택해도 원래 위치 기준을 유지한다.
+[은하 생성 소관](../game/11-galaxy-tiers-and-seeds.md)의 manifest 설정으로 주소 범위를 정한다. 최신 새 설정은 62,500 항성계·50만 행성이며 기존 125,000 항성계·100만 행성 저장은 그 설정을 유지한다. `system()`은 항성 ID·유형을 반환하고 `body()`는 항성 소유·종류·착륙 여부·게임 원궤도 반경/위상/주기를 반환한다. `position(manifest, ordinal, elapsed)`를 호스트 항해와 실제 렌더가 함께 사용한다. `navigation.orbit_time`은 세계 저장과 스냅샷에 포함한다. 대기 중 선체는 현재 행성의 이동분을 따라가며, 다른 목적지를 선택해도 원래 위치 기준을 유지한다.
 
 행성 반지름 판정은 공통 `radius()`를 사용한다. 성간 도약은 항성 위의 안전 위치로 진입하고 항성 중심을 가로지르는 접근 경로는 상부를 우회한다. 이는 항성 회피용 경로이며 모든 행성·선박 충돌을 다루는 완전한 우주 물리계가 아니다. 은하 지도는 일부 대표 항성계만 그리며 주소 입력으로 전체 범위에 접근한다. 100만 개의 실제 Node나 동시 시뮬레이션을 생성하지 않는다.
 

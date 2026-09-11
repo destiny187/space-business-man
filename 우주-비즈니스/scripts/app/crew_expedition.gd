@@ -206,7 +206,7 @@ func _build_ui() -> void:
 	waiting_panel=VBoxContainer.new();waiting_panel.custom_minimum_size=Vector2(380,0);waiting_panel.add_theme_constant_override("separation",18);center.add_child(waiting_panel)
 	_label(waiting_panel,"L O C U S",38)
 	_label(waiting_panel,"하나의 은하, 지구에서 시작하는 탐험",19)
-	waiting_info=_label(waiting_panel,"100만 행성  항성계와 공전 궤도\n암석 행성의 개척  가스 행성의 궤도 탐색",15)
+	waiting_info=_label(waiting_panel,"50만 행성  항성계와 공전 궤도\n암석 행성의 개척  가스 행성의 궤도 탐색",15)
 	waiting_roster=_label(waiting_panel,"오른쪽에서 혼자 시작하거나 방을 만들고 참가하세요.",17)
 	waiting_ready=_button(waiting_panel,"준비 완료",func():session.send_request("lobby_ready",{"value":not session.latest.get("lobby_ready",{}).get(session.latest.self_id,false)}));waiting_ready.hide()
 	waiting_start=_button(waiting_panel,"호스트  게임 시작",func():session.send_request("start_game",{}));waiting_start.hide()
@@ -385,7 +385,7 @@ func _apply_snapshot(value: Dictionary) -> void:
 			lines.append(("호스트  " if is_host else ("✓ 준비  " if prepared else "○ 대기  "))+value.crew.members[id].profile.name)
 			if not is_host and not prepared:all_ready=false
 		waiting_roster.text="대기실  %d / 6\n\n"%value.crew.members.size()+"\n".join(lines)
-		waiting_info.text="은하 시드 %d  행성 1,000,000개\n시작/재개 위치: %s\n준비 후 호스트가 게임을 시작합니다."%[int(session.manifest.seed),FrontierUniverse.body_from_id(session.manifest,value.location).name]
+		waiting_info.text="은하 시드 %d  행성 %s개\n시작/재개 위치: %s\n준비 후 호스트가 게임을 시작합니다."%[int(session.manifest.seed),FrontierUniverse.planet_count_label(int(session.manifest.settings.planet_count)),FrontierUniverse.body_from_id(session.manifest,value.location).name]
 		waiting_ready.visible=not session.hosting;waiting_start.visible=session.hosting;waiting_start.disabled=not all_ready
 		waiting_leave.show()
 		invite_copy.visible=not session.invite_code.is_empty()
@@ -669,7 +669,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 		if event.physical_keycode==KEY_G and onboarding.can_open_map() and _mouse_look_allowed():navigation_ui.open_galaxy();return
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
-			navigation_ui.start_route(flight.scan_target);return
+			if flight.atmosphere_target.is_empty():navigation_ui.start_route(flight.scan_target)
+			return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
 			if not (surface_world!=null and surface_world.incidents!=null and surface_world.incidents.interact()) and not (surface_world!=null and surface_world.discoveries!=null and surface_world.discoveries.interact()) and not lotus.interact() and not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()

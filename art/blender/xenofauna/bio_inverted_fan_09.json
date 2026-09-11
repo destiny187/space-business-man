@@ -1,0 +1,96 @@
+{
+  "id": "bio_inverted_fan_09",
+  "name": "갈림역선수",
+  "family": "inverted_fan",
+  "family_name": "역선체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "thermal",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "한쪽에 치우친 부채 몸통과 반대쪽의 접지 다발 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_inverted_fan_09.blend",
+  "editable_meshes": 43,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L",
+    "Anim_Head"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_inverted_fan_09_near.glb",
+      "triangles": 22546,
+      "sha256": "ced0eebffbafe6766245eadfe9ef967f418f82d467421e46fbd005e302f62792"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_inverted_fan_09_far.glb",
+      "triangles": 6296,
+      "sha256": "a17ff091de9796daa495345b8db5a65cc5911af0d3cf32c4bb933e4aecb94979"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.023999810218811,
+        0.0,
+        -1.0439997911453247
+      ],
+      "max": [
+        1.0239999294281006,
+        1.7348021268844604,
+        1.0439999103546143
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.7348021268844604,
+      "vertices": 11519
+    },
+    "far": {
+      "min": [
+        -1.023999810218811,
+        4.2051076889038086e-05,
+        -1.0456719398498535
+      ],
+      "max": [
+        1.0239999294281006,
+        1.73480224609375,
+        1.0436371564865112
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.73480224609375,
+      "vertices": 3394
+    }
+  },
+  "mesh_nodes": 21
+}

@@ -1,0 +1,95 @@
+{
+  "id": "bio_funnel_stilt_10",
+  "name": "좁은누두수",
+  "family": "funnel_stilt",
+  "family_name": "누두장각류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cold",
+  "morphology": 9,
+  "anatomy": 9,
+  "attack": "none",
+  "anatomy_note": "큰 깔때기 몸통의 바깥 벽에서 바로 이어지는 긴 다리 / 다층 방사 골격",
+  "sensory_type": "분지 촉각수염",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "limb_count": 6,
+    "branch_mode": 9,
+    "width": 1,
+    "height": 1.16
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_funnel_stilt_10.blend",
+  "editable_meshes": 34,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_R",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_R",
+    "Anim_Leg_6_R",
+    "Anim_Leg_7_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_funnel_stilt_10_near.glb",
+      "triangles": 36032,
+      "sha256": "7ce97a91f7f19f5bcd468a837137eee1d99e7327a59c262c19ad0dc93422a451"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_funnel_stilt_10_far.glb",
+      "triangles": 10073,
+      "sha256": "56f31e33321458650dfc932ca800f6982252b69ff6185c1ac503cb5d4587e169"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.2099997997283936,
+        5.21540641784668e-08,
+        -1.2099997997283936
+      ],
+      "max": [
+        1.209999918937683,
+        1.703800082206726,
+        1.2099997997283936
+      ],
+      "floor_y": 5.21540641784668e-08,
+      "ceiling_y": 1.703800082206726,
+      "vertices": 18112
+    },
+    "far": {
+      "min": [
+        -1.2096651792526245,
+        7.79181718826294e-05,
+        -1.2097160816192627
+      ],
+      "max": [
+        1.2101486921310425,
+        1.7032243013381958,
+        1.2096651792526245
+      ],
+      "floor_y": 7.79181718826294e-05,
+      "ceiling_y": 1.7032243013381958,
+      "vertices": 5102
+    }
+  },
+  "mesh_nodes": 26
+}

@@ -11,6 +11,7 @@ var arrival_dismissed:=false
 var arrival_fade:=1.0
 var clock:=0.0
 var scan_body: Dictionary={}
+var atmosphere_ready:=false
 var space_y_mark: Texture2D=preload("res://assets/ui/corporations/space_y.svg")
 var scan_progress:=0.0
 func _ready() -> void:
@@ -68,6 +69,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	var cyan:=Color(.45,.94,1,.95)
 	draw_arc(center,22,-PI*.5,TAU-PI*.5,64,Color(.2,.5,.6,.35),3,true)
 	draw_arc(center,22,-PI*.5,TAU*scan_progress-PI*.5,64,cyan,3,true)
+	if atmosphere_ready:return
 	if scan_progress<1.0:
 		draw_string(font,center+Vector2(-38,44),"분석 중",HORIZONTAL_ALIGNMENT_LEFT,-1,15,cyan);return
 	var width:=minf(440,size.x*.48)
@@ -109,7 +111,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 		draw_string(font,origin+Vector2(0,157),"복원 수역  녹화 저지대  유지 중",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 		draw_string(font,origin+Vector2(0,190),"관리 구역  지표 착륙·개발 제한",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
 	else:draw_string(font,origin+Vector2(0,108),report.detail,HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
-	draw_string(font,origin+Vector2(0,224),"E 접근    Tab 항성 지도",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
+	draw_string(font,origin+Vector2(0,224),("E 유지  대기층 관측    Tab 항성 지도" if atmosphere_ready else "E 접근    Tab 항성 지도"),HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 
 func _draw_vitals(font: Font) -> void:
 	var start:=Vector2(26,size.y-100)

@@ -1,0 +1,92 @@
+{
+  "id": "bio_gyre_tower_02",
+  "name": "두바퀴탑수",
+  "family": "gyre_tower",
+  "family_name": "나선탑류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cold",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "anatomy_note": "속이 빈 나선형 몸통을 다리와 대사낭이 지탱 / 사방 연결 골격",
+  "sensory_type": "분산 감광점",
+  "eye_count": 0,
+  "motion_profile": "spiral",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_gyre_tower_02.blend",
+  "editable_meshes": 17,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_gyre_tower_02_near.glb",
+      "triangles": 11968,
+      "sha256": "85ea320b8116b9bece837428ff78d9bcd1c5acb259ade836c093c62b3e0d8ce3"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_gyre_tower_02_far.glb",
+      "triangles": 3348,
+      "sha256": "54e9b78e9631fad33cd608f4997fca06e0308bad8ddd7c4752cd72797dcb8fc9"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8994998931884766,
+        0.0,
+        -0.9194998741149902
+      ],
+      "max": [
+        0.8995000123977661,
+        2.2175962924957275,
+        0.9194999933242798
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.2175962924957275,
+      "vertices": 6058
+    },
+    "far": {
+      "min": [
+        -0.899314284324646,
+        4.208087921142578e-05,
+        -0.921172022819519
+      ],
+      "max": [
+        0.8995000123977661,
+        2.2175962924957275,
+        0.9191372394561768
+      ],
+      "floor_y": 4.208087921142578e-05,
+      "ceiling_y": 2.2175962924957275,
+      "vertices": 1742
+    }
+  },
+  "mesh_nodes": 10
+}

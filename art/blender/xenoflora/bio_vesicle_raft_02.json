@@ -1,0 +1,92 @@
+{
+  "id": "bio_vesicle_raft_02",
+  "name": "오포뗏막군",
+  "family": "vesicle_raft",
+  "family_name": "기포뗏막군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "thermal",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "끈끈한 생물막에 다수의 가스 저장 소낭이 연결된 군락 / 기관 추가·좁고 높은 외곽",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "width": 0.86,
+    "height": 1.2,
+    "branch_mode": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_vesicle_raft_02.blend",
+  "editable_meshes": 16,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_vesicle_raft_02_near.glb",
+      "triangles": 15520,
+      "sha256": "4b489093d5dfcb84673d14e12319cd896bfa024ad5be71482f21104bd0c0f40e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_vesicle_raft_02_far.glb",
+      "triangles": 4338,
+      "sha256": "21969ed7e83f5c78d7cf11baa11fcd20813dc2fcedff4b9e2136065b765d7312"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8059996962547302,
+        0.0,
+        -0.6527997255325317
+      ],
+      "max": [
+        0.8059998750686646,
+        0.621999979019165,
+        0.6527998447418213
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.621999979019165,
+      "vertices": 7790
+    },
+    "far": {
+      "min": [
+        -0.8054172396659851,
+        0.0,
+        -0.6527997255325317
+      ],
+      "max": [
+        0.8054174184799194,
+        0.621999979019165,
+        0.6527998447418213
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.621999979019165,
+      "vertices": 2194
+    }
+  },
+  "mesh_nodes": 13
+}

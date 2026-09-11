@@ -1,0 +1,89 @@
+{
+  "id": "bio_quorum_spires_01",
+  "name": "두탑천공군",
+  "family": "quorum_spires",
+  "family_name": "천공첨탑군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "basalt",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "다수의 통기 구멍과 연결 기저막을 가진 화학 대사 탑 군락 / 기초 기관 배열",
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "width": 1,
+    "height": 1,
+    "branch_mode": 0
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_quorum_spires_01.blend",
+  "editable_meshes": 16,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_quorum_spires_01_near.glb",
+      "triangles": 13856,
+      "sha256": "1991427ed25482493a937040ac3ebb717ed4a388d51a2082401ad188e9430325"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_quorum_spires_01_far.glb",
+      "triangles": 3874,
+      "sha256": "af604cd8a17afb9966cf6e0cf5528801f10186b91a38893f3113e48ddc638a3d"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8199992179870605,
+        0.0,
+        -0.6556918621063232
+      ],
+      "max": [
+        0.8899999260902405,
+        0.9127404689788818,
+        0.6556919813156128
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.9127404689788818,
+      "vertices": 6996
+    },
+    "far": {
+      "min": [
+        -0.8183507919311523,
+        5.111098289489746e-05,
+        -0.6556918621063232
+      ],
+      "max": [
+        0.8894174098968506,
+        0.9128813743591309,
+        0.6556919813156128
+      ],
+      "floor_y": 5.111098289489746e-05,
+      "ceiling_y": 0.9128813743591309,
+      "vertices": 2005
+    }
+  },
+  "mesh_nodes": 6
+}

@@ -1,0 +1,97 @@
+{
+  "id": "bio_mirror_fork_09",
+  "name": "긴갈래수",
+  "family": "mirror_fork",
+  "family_name": "분기대칭류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "중심에서 두 갈래로 나뉜 몸통 끝에 서로 다른 감각기관 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_mirror_fork_09.blend",
+  "editable_meshes": 37,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_mirror_fork_09_near.glb",
+      "triangles": 20464,
+      "sha256": "7bd7fb1f3073f80d8fa0224c4a475e2967cb596de13ba1b75bedf8dd1bef73a6"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_mirror_fork_09_far.glb",
+      "triangles": 5710,
+      "sha256": "bb9c38401e39f29fe9970598e725cda6e7b616fbb68d13d68fd6e67f00801cc4"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0779998302459717,
+        0.0,
+        -1.0979998111724854
+      ],
+      "max": [
+        1.0779999494552612,
+        1.1605939865112305,
+        1.2119998931884766
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.1605939865112305,
+      "vertices": 10434
+    },
+    "far": {
+      "min": [
+        -1.0778142213821411,
+        4.2051076889038086e-05,
+        -1.0996719598770142
+      ],
+      "max": [
+        1.0779999494552612,
+        1.1605591773986816,
+        1.2123520374298096
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.1605591773986816,
+      "vertices": 3057
+    }
+  },
+  "mesh_nodes": 23
+}

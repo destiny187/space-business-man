@@ -1,0 +1,93 @@
+{
+  "id": "bio_quorum_spires_05",
+  "name": "관탑천공군",
+  "family": "quorum_spires",
+  "family_name": "천공첨탑군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "temperate",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "다수의 통기 구멍과 연결 기저막을 가진 화학 대사 탑 군락 / 조밀한 기관·높은 외곽",
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "width": 0.9,
+    "height": 1.32,
+    "branch_mode": 4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_quorum_spires_05.blend",
+  "editable_meshes": 44,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_quorum_spires_05_near.glb",
+      "triangles": 38752,
+      "sha256": "1b2c8f2ec7cee9ddd05da22fdbc5959124e0706646ead8cb3bc7861e4ece5fda"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_quorum_spires_05_far.glb",
+      "triangles": 10838,
+      "sha256": "8a1fd0b7bb0f28f5172784857da341562f767c820e1becd4e6a5ae57d9677024"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7765229344367981,
+        0.0,
+        -0.6611685752868652
+      ],
+      "max": [
+        0.8299999237060547,
+        1.240740418434143,
+        0.6611686944961548
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.240740418434143,
+      "vertices": 19572
+    },
+    "far": {
+      "min": [
+        -0.775940477848053,
+        5.111098289489746e-05,
+        -0.6611685752868652
+      ],
+      "max": [
+        0.8294174671173096,
+        1.240881323814392,
+        0.6611686944961548
+      ],
+      "floor_y": 5.111098289489746e-05,
+      "ceiling_y": 1.240881323814392,
+      "vertices": 5615
+    }
+  },
+  "mesh_nodes": 14
+}

@@ -1,0 +1,93 @@
+{
+  "id": "bio_hinge_book_02",
+  "name": "삼서판수",
+  "family": "hinge_book",
+  "family_name": "개폐서판류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "anatomy_note": "책장처럼 벌어지는 한 쌍의 골격판과 안쪽 감각엽 / 사방 연결 골격",
+  "sensory_type": "분산 감광점",
+  "eye_count": 8,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_hinge_book_02.blend",
+  "editable_meshes": 45,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Petal_0",
+    "Anim_Petal_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_hinge_book_02_near.glb",
+      "triangles": 27568,
+      "sha256": "34d707ff892132ef87e3f9459289c0083aee7d4c5a7717569849c91067735570"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_hinge_book_02_far.glb",
+      "triangles": 7709,
+      "sha256": "f91b91ca3973298dbe5a614a0db81ef62d0533de4d3b83813eee44b7b6c95319"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0856508016586304,
+        0.0,
+        -0.8996464610099792
+      ],
+      "max": [
+        1.0856508016586304,
+        1.5725218057632446,
+        0.8996464610099792
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.5725218057632446,
+      "vertices": 13978
+    },
+    "far": {
+      "min": [
+        -1.0847588777542114,
+        4.2051076889038086e-05,
+        -0.899700403213501
+      ],
+      "max": [
+        1.0847588777542114,
+        1.5730104446411133,
+        0.899700403213501
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.5730104446411133,
+      "vertices": 4042
+    }
+  },
+  "mesh_nodes": 19
+}

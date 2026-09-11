@@ -1,0 +1,93 @@
+{
+  "id": "bio_coral_scroll_04",
+  "name": "겹권분지초",
+  "family": "coral_scroll",
+  "family_name": "분지권엽류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "cold",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "고리로 말린 끝잎을 가진 넓게 분기하는 산호형 줄기 / 연결 수 증가·상하 전개",
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_coral_scroll_04.blend",
+  "editable_meshes": 38,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_coral_scroll_04_near.glb",
+      "triangles": 41816,
+      "sha256": "bc28dcfe30aa659928bcc73fd467e93fdc88d3b53b071fff2c35dec12644674f"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_coral_scroll_04_far.glb",
+      "triangles": 11696,
+      "sha256": "245b4cf9890b98c588da54f162f826c0319c8b59825e15a580c463f5b5e83182"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8132045269012451,
+        0.0,
+        -0.8152111768722534
+      ],
+      "max": [
+        0.8132045269012451,
+        1.7796857357025146,
+        0.8152111768722534
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.7796857357025146,
+      "vertices": 21184
+    },
+    "far": {
+      "min": [
+        -0.8141452670097351,
+        -5.657970905303955e-05,
+        -0.815300464630127
+      ],
+      "max": [
+        0.8141452670097351,
+        1.7791900634765625,
+        0.815300464630127
+      ],
+      "floor_y": -5.657970905303955e-05,
+      "ceiling_y": 1.7791900634765625,
+      "vertices": 6124
+    }
+  },
+  "mesh_nodes": 13
+}

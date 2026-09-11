@@ -17,7 +17,7 @@ static func entry(id: String) -> Dictionary:
 	var sample:=decode(id)
 	if sample.is_empty():return {}
 	var form:=FrontierEcologyCatalog.form(sample.form_id)
-	var definition: Dictionary={"id":id,"name":str(form.name)+" 표본","category":"specimen","model":"bestiary/"+str(form.lods.near.path).get_file().trim_suffix(".glb"),"icon":str(form.category)+"_sample","sample":sample}
+	var definition: Dictionary={"id":id,"name":str(form.name)+" 표본","category":"specimen","model":FrontierEcologyCatalog.model_key(form),"icon":str(form.category)+"_sample","sample":sample}
 	definitions[id]=definition
 	return definition
 static func ensure(world: Dictionary) -> void:

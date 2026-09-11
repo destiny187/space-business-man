@@ -1,0 +1,92 @@
+{
+  "id": "bio_channel_rosette_03",
+  "name": "오로장미군",
+  "family": "channel_rosette",
+  "family_name": "유로장미군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "temperate",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "낮은 방사형 유로와 말린 끝단이 모이는 대사막 군락 / 다중 기관·넓은 외곽",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "width": 1.12,
+    "height": 0.92,
+    "branch_mode": 2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_channel_rosette_03.blend",
+  "editable_meshes": 23,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_channel_rosette_03_near.glb",
+      "triangles": 19724,
+      "sha256": "ce13756e0375d3fad7d7cc363a30574edb4f6ccf03d766140be225e1b62ee9d0"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_channel_rosette_03_far.glb",
+      "triangles": 5506,
+      "sha256": "d7eab610449ee8271fb73dd491e2c0323ec6cc73ea3a7dfb9afa4f359ff2a9de"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9183990955352783,
+        0.0,
+        -0.8676793575286865
+      ],
+      "max": [
+        0.9619998931884766,
+        0.3488311171531677,
+        0.8672440648078918
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.3488311171531677,
+      "vertices": 9984
+    },
+    "far": {
+      "min": [
+        -0.9183990955352783,
+        0.0,
+        -0.8700220584869385
+      ],
+      "max": [
+        0.9614174365997314,
+        0.34902238845825195,
+        0.8671219348907471
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.34902238845825195,
+      "vertices": 2845
+    }
+  },
+  "mesh_nodes": 13
+}

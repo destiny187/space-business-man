@@ -1,0 +1,90 @@
+{
+  "id": "bio_bladder_cactus_01",
+  "name": "삼낭선인",
+  "family": "bladder_cactus",
+  "family_name": "공낭연경류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "basalt",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "서로 떨어진 물 저장 낭을 줄기와 살아 있는 가교가 연결 / 기초 기관 배열",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "width": 1,
+    "height": 1,
+    "branch_mode": 0
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_bladder_cactus_01.blend",
+  "editable_meshes": 20,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_bladder_cactus_01_near.glb",
+      "triangles": 16616,
+      "sha256": "ac0300b385e4a47f127b50425ca7f16f3d1ee34daa8c6217029a9ad93a816734"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_bladder_cactus_01_far.glb",
+      "triangles": 4646,
+      "sha256": "bb1628631082a3be69976247c0b8fddbfb56f34fa4bac57781687b98d3156b9f"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.542937159538269,
+        0.0,
+        -0.6525765657424927
+      ],
+      "max": [
+        0.7326865792274475,
+        1.6607463359832764,
+        0.6525765657424927
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.6607463359832764,
+      "vertices": 8386
+    },
+    "far": {
+      "min": [
+        -0.5424362421035767,
+        0.0017022639513015747,
+        -0.6529540419578552
+      ],
+      "max": [
+        0.732678234577179,
+        1.6607463359832764,
+        0.6529540419578552
+      ],
+      "floor_y": 0.0017022639513015747,
+      "ceiling_y": 1.6607463359832764,
+      "vertices": 2401
+    }
+  },
+  "mesh_nodes": 10
+}

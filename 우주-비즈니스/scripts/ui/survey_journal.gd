@@ -4,6 +4,7 @@ var app: FrontierCrewExpedition
 var grid: GridContainer
 var details: VBoxContainer
 var detail_column: VBoxContainer
+var detail_scroll: ScrollContainer
 var preview: FrontierEquipmentPreview
 var search: LineEdit
 var category: OptionButton
@@ -36,11 +37,12 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	caption=FrontierInterfaceStyle.label(pages,"",12);caption.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	next=Button.new();next.text="›";pages.add_child(next);next.pressed.connect(func():page_index+=1;refresh())
 	var reload:=Button.new();reload.text="↻";reload.tooltip_text="발견 기록 새로고침";pages.add_child(reload);reload.pressed.connect(refresh)
-	detail_column=VBoxContainer.new();detail_column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail_column.custom_minimum_size.x=320;add_child(detail_column)
-	var detail_scroll:=ScrollContainer.new();detail_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;detail_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail_column.add_child(detail_scroll)
-	var content:=VBoxContainer.new();content.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail_scroll.add_child(content)
-	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size.y=120;content.add_child(preview);preview.hide()
-	details=VBoxContainer.new();content.add_child(details)
+	# The model, description and ecology workflow share the available scroll area.
+	# A fixed workflow below it otherwise leaves only a clipped sliver of the model.
+	detail_scroll=ScrollContainer.new();detail_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;detail_scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail_scroll.custom_minimum_size.x=320;add_child(detail_scroll)
+	detail_column=VBoxContainer.new();detail_column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail_scroll.add_child(detail_column)
+	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size.y=120;detail_column.add_child(preview);preview.hide()
+	details=VBoxContainer.new();detail_column.add_child(details)
 	app.session.discoveries_received.connect(_receive)
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
@@ -63,6 +65,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	var retained: Dictionary={}
 	for entry in value.entries:
 		var tile:=FrontierItemTile.new();tile.picture=load("res://assets/ui/discoveries/"+str(entry.row.template)+".png") if entry.kind in ["discovery","incident"] and ResourceLoader.exists("res://assets/ui/discoveries/"+str(entry.row.template)+".png") else FrontierResourceIcons.texture(entry.icon)
+		if entry.kind=="biology" and ResourceLoader.exists("res://assets/ui/previews/"+str(entry.row.form_id)+".png"):tile.picture=load("res://assets/ui/previews/"+str(entry.row.form_id)+".png")
 		if entry.kind=="incident" and entry.row.has("native"):tile.picture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(entry.row.native.form_id)))
 		if entry.kind=="corporation":tile.picture=load(FrontierCorporations.icon_path(entry.company))
 		if entry.kind=="freight_incident":tile.picture=load(FrontierFreightSalvage.icon(entry.row.id));tile.amount="%d / %d"%[int(entry.row.stage),FrontierFreightSalvage.last_stage(entry.row.id)]
@@ -77,6 +80,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	if value.entries.is_empty():
 		var empty:=FrontierInterfaceStyle.label(grid,"E를 유지해 현장의 생물·광물·장비를 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "장비의 표식을 E로 조사하면 기업이 기록됩니다." if category.selected==5 and search.text.is_empty() else "조건에 맞는 발견이 없습니다.",14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 func select(entry: Dictionary) -> void:
+	if entry.get("key","")!=selected_entry.get("key",""):detail_scroll.scroll_vertical=0
 	selected_entry=entry
 	for tile in grid.get_children():
 		if tile is FrontierItemTile:tile.selected=tile.get_meta("key","")==entry.get("key","");tile.queue_redraw()
@@ -168,8 +172,12 @@ func select(entry: Dictionary) -> void:
 		for index in app.form_options.item_count:
 			if app.form_options.get_item_metadata(index)==entry.row.form_id:app.form_options.select(index);break
 		var form:=FrontierEcologyCatalog.form(entry.row.form_id)
-		var model_path: String="bestiary/"+str(form.lods.near.path).get_file().trim_suffix(".glb")
-		preview.show();preview.show_model(model_path);preview.tooltip_text="드래그하여 회전"
+		var model_path: String=FrontierEcologyCatalog.model_key(form)
+		preview.custom_minimum_size.y=170;preview.show();preview.show_specimen(entry.row);preview.tooltip_text="드래그하여 회전"
+		if entry.row.get("observed_layer","")=="atmosphere":
+			FrontierInterfaceStyle.label(details,"대기층 관측  실물 표본 미채집",13,FrontierInterfaceStyle.ACCENT)
+		if form.has("adaptation_note"):
+			var adaptation:=FrontierInterfaceStyle.label(details,form.adaptation_note,13);adaptation.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		var info:=FrontierSurfaceSurvey.biology_info(form)
 		var condition:=FrontierInterfaceStyle.label(details,info.condition,13,FrontierInterfaceStyle.ACCENT);condition.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		for note in info.notes:

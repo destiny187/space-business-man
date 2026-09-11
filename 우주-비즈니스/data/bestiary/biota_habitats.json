@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "profiles": {
+    "oxidized": {
+      "temperature": [
+        8.0,
+        48.0
+      ],
+      "pressure": [
+        15.399999999999999,
+        30.799999999999997
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "산화 사막 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "basalt",
+      "fictional_physiology": true
+    },
+    "continental": {
+      "temperature": [
+        -2.0,
+        38.0
+      ],
+      "pressure": [
+        70.0,
+        140.0
+      ],
+      "moisture": [
+        0.5,
+        0.8
+      ],
+      "label": "습윤 대륙 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "basalt",
+      "fictional_physiology": true
+    },
+    "cratered": {
+      "temperature": [
+        -50.0,
+        -10.0
+      ],
+      "pressure": [
+        8.399999999999999,
+        16.799999999999997
+      ],
+      "moisture": [
+        0,
+        0.22999999999999998
+      ],
+      "label": "충돌 고원 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "basalt",
+      "fictional_physiology": true
+    },
+    "fractured": {
+      "temperature": [
+        -68.0,
+        -28.0
+      ],
+      "pressure": [
+        38.5,
+        77.0
+      ],
+      "moisture": [
+        0.19999999999999998,
+        0.5
+      ],
+      "label": "균열 빙원 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "glacial",
+      "fictional_physiology": true
+    },
+    "tundra": {
+      "temperature": [
+        -28.0,
+        12.0
+      ],
+      "pressure": [
+        62.99999999999999,
+        125.99999999999999
+      ],
+      "moisture": [
+        0.32999999999999996,
+        0.63
+      ],
+      "label": "해빙 툰드라 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "glacial",
+      "fictional_physiology": true
+    },
+    "frozen": {
+      "temperature": [
+        -130.0,
+        -90.0
+      ],
+      "pressure": [
+        12.6,
+        25.2
+      ],
+      "moisture": [
+        0,
+        0.27
+      ],
+      "label": "극저온 설원 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "glacial",
+      "fictional_physiology": true
+    },
+    "volcanic": {
+      "temperature": [
+        300.0,
+        340.0
+      ],
+      "pressure": [
+        125.99999999999999,
+        251.99999999999997
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "불타는 화산 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "sulfur",
+      "fictional_physiology": true
+    },
+    "salt": {
+      "temperature": [
+        22.0,
+        62.0
+      ],
+      "pressure": [
+        80.49999999999999,
+        160.99999999999997
+      ],
+      "moisture": [
+        0.13000000000000003,
+        0.43000000000000005
+      ],
+      "label": "염류 분지 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "sulfur",
+      "fictional_physiology": true
+    },
+    "ochre": {
+      "temperature": [
+        40.0,
+        80.0
+      ],
+      "pressure": [
+        59.49999999999999,
+        118.99999999999999
+      ],
+      "moisture": [
+        0.03,
+        0.32999999999999996
+      ],
+      "label": "황토 열수대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "sulfur",
+      "fictional_physiology": true
+    },
+    "banded": {
+      "temperature": [
+        -100.0,
+        -60.0
+      ],
+      "pressure": [
+        560.0,
+        1120.0
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "다층 구름대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "gas_giant",
+      "fictional_physiology": true
+    },
+    "storm": {
+      "temperature": [
+        -80.0,
+        -40.0
+      ],
+      "pressure": [
+        630.0,
+        1260.0
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "거대 폭풍대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "gas_giant",
+      "fictional_physiology": true
+    },
+    "pale": {
+      "temperature": [
+        -130.0,
+        -90.0
+      ],
+      "pressure": [
+        489.99999999999994,
+        979.9999999999999
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "담황 제트대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "gas_giant",
+      "fictional_physiology": true
+    },
+    "azure": {
+      "temperature": [
+        -170.0,
+        -130.0
+      ],
+      "pressure": [
+        489.99999999999994,
+        979.9999999999999
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "청색 폭풍대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "ice_giant",
+      "fictional_physiology": true
+    },
+    "turquoise": {
+      "temperature": [
+        -200.0,
+        -160.0
+      ],
+      "pressure": [
+        560.0,
+        1120.0
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "청록 구름대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "ice_giant",
+      "fictional_physiology": true
+    },
+    "violet": {
+      "temperature": [
+        -190.0,
+        -150.0
+      ],
+      "pressure": [
+        630.0,
+        1260.0
+      ],
+      "moisture": [
+        0,
+        0.15
+      ],
+      "label": "보랏빛 극대기 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "ice_giant",
+      "fictional_physiology": true
+    },
+    "sedimentary": {
+      "temperature": [
+        -8.0,
+        32.0
+      ],
+      "pressure": [
+        54.599999999999994,
+        109.19999999999999
+      ],
+      "moisture": [
+        0.09,
+        0.39
+      ],
+      "label": "퇴적 분지 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "basalt",
+      "fictional_physiology": true
+    },
+    "crystalline": {
+      "temperature": [
+        -42.0,
+        -2.0
+      ],
+      "pressure": [
+        12.6,
+        25.2
+      ],
+      "moisture": [
+        0,
+        0.24
+      ],
+      "label": "결정질 고원 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "basalt",
+      "fictional_physiology": true
+    },
+    "alkaline": {
+      "temperature": [
+        12.0,
+        52.0
+      ],
+      "pressure": [
+        33.599999999999994,
+        67.19999999999999
+      ],
+      "moisture": [
+        0,
+        0.29000000000000004
+      ],
+      "label": "알칼리 광화대 적응",
+      "principle": "고유 행성의 기질·열·대기 적응",
+      "kind": "basalt",
+      "fictional_physiology": true
+    },
+    "gas_cloud": {
+      "temperature": [
+        -220,
+        0
+      ],
+      "pressure": [
+        100,
+        1400
+      ],
+      "moisture": [
+        0,
+        1
+      ],
+      "label": "가상 대기층 생태",
+      "principle": "부력·평형막·대기 여과",
+      "kind": "atmosphere",
+      "fictional_physiology": true
+    }
+  }
+}

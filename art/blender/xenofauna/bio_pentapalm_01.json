@@ -1,0 +1,90 @@
+{
+  "id": "bio_pentapalm_01",
+  "name": "세손바닥수",
+  "family": "pentapalm",
+  "family_name": "방사수장류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "thermal",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "anatomy_note": "머리 없이 손바닥처럼 갈라진 방사형 몸통과 손끝 입 / 삼방 열린 골격",
+  "sensory_type": "피부 진동공",
+  "eye_count": 0,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 3,
+    "branch_mode": 0,
+    "width": 1,
+    "height": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_pentapalm_01.blend",
+  "editable_meshes": 16,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_pentapalm_01_near.glb",
+      "triangles": 11744,
+      "sha256": "cd158ab2b8d31ae4e25d551fa036f54bf730fc8d7b228401e0288bd9ca4fa0be"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_pentapalm_01_far.glb",
+      "triangles": 3281,
+      "sha256": "fdb49c29d391845feebc003e1b21e045552ae9cfa8482273b4eb9e7e96fc1221"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8988848924636841,
+        0.0,
+        -1.4494426250457764
+      ],
+      "max": [
+        1.6294220685958862,
+        0.903231143951416,
+        1.4494426250457764
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.903231143951416,
+      "vertices": 5964
+    },
+    "far": {
+      "min": [
+        -0.8988848328590393,
+        -0.011216223239898682,
+        -1.4494426250457764
+      ],
+      "max": [
+        1.6294220685958862,
+        0.9120295643806458,
+        1.4494426250457764
+      ],
+      "floor_y": -0.011216223239898682,
+      "ceiling_y": 0.9120295643806458,
+      "vertices": 1730
+    }
+  },
+  "mesh_nodes": 10
+}

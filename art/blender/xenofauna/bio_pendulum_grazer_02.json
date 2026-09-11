@@ -1,0 +1,95 @@
+{
+  "id": "bio_pendulum_grazer_02",
+  "name": "쌍추섭식수",
+  "family": "pendulum_grazer",
+  "family_name": "현수섭식류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "thermal",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "anatomy_note": "골격 아치 안에서 식도와 입이 진자처럼 매달림 / 사방 연결 골격",
+  "sensory_type": "분산 감광점",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_pendulum_grazer_02.blend",
+  "editable_meshes": 30,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_pendulum_grazer_02_near.glb",
+      "triangles": 18992,
+      "sha256": "349d1c0b1b82ff0485bf4799f5475f05389f635702bdb2c009d847062345afb1"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_pendulum_grazer_02_far.glb",
+      "triangles": 5306,
+      "sha256": "f5a2fdeda6a1ce42d34f41d1418b7acc0cb8e4b43112eacc5e2badf120cbe156"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8311492204666138,
+        0.0,
+        -1.0659472942352295
+      ],
+      "max": [
+        0.8311492204666138,
+        2.0165750980377197,
+        1.0659472942352295
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.0165750980377197,
+      "vertices": 9652
+    },
+    "far": {
+      "min": [
+        -0.831757664680481,
+        0.00013214349746704102,
+        -1.0634129047393799
+      ],
+      "max": [
+        0.831757664680481,
+        2.0131285190582275,
+        1.0557821989059448
+      ],
+      "floor_y": 0.00013214349746704102,
+      "ceiling_y": 2.0131285190582275,
+      "vertices": 2795
+    }
+  },
+  "mesh_nodes": 18
+}

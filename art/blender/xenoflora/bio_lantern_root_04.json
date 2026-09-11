@@ -1,0 +1,97 @@
+{
+  "id": "bio_lantern_root_04",
+  "name": "분지등수",
+  "family": "lantern_root",
+  "family_name": "현수근낭류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "crystal",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "아치형 뿌리 아래에 매달린 낭과 위쪽의 집수 잎 / 연결 수 증가·상하 전개",
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_lantern_root_04.blend",
+  "editable_meshes": 43,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3",
+    "Anim_Frond_4",
+    "Anim_Frond_5"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_lantern_root_04_near.glb",
+      "triangles": 16600,
+      "sha256": "2c1f688684458ad643aa800205de627fd52796544b680a2e425edd8e6c78af53"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_lantern_root_04_far.glb",
+      "triangles": 4978,
+      "sha256": "6581a825923d808b3677107db1dd3ceddd1e3f596a3c34767237614844c12da4"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9067156910896301,
+        0.0,
+        -0.7999171614646912
+      ],
+      "max": [
+        0.9067156910896301,
+        2.0819029808044434,
+        0.7999171614646912
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.0819029808044434,
+      "vertices": 8642
+    },
+    "far": {
+      "min": [
+        -0.9067156910896301,
+        -5.657970905303955e-05,
+        -0.7999171614646912
+      ],
+      "max": [
+        0.9067156910896301,
+        2.0821022987365723,
+        0.7999171614646912
+      ],
+      "floor_y": -5.657970905303955e-05,
+      "ceiling_y": 2.0821022987365723,
+      "vertices": 2765
+    }
+  },
+  "mesh_nodes": 19
+}

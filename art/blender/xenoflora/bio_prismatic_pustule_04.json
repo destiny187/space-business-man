@@ -1,0 +1,94 @@
+{
+  "id": "bio_prismatic_pustule_04",
+  "name": "이중광막군",
+  "family": "prismatic_pustule",
+  "family_name": "다낭광막군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "cold",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "기질 위의 타원 소낭을 유색 격막이 나누고 연결하는 군락 / 연결 수 증가·상하 전개",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_prismatic_pustule_04.blend",
+  "editable_meshes": 35,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5",
+    "Anim_Appendage_6"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_prismatic_pustule_04_near.glb",
+      "triangles": 14896,
+      "sha256": "3735144c66f9d8fdeac9362f2b1636d3c6e96e655f5c0be9300ba91a17596d45"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_prismatic_pustule_04_far.glb",
+      "triangles": 4150,
+      "sha256": "619489ea4deffdb5eefa425e73d92ae47eb9c2e2ab75024c0b6f883e6ce718f8"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9199997186660767,
+        0.0,
+        -0.7185573577880859
+      ],
+      "max": [
+        0.919999897480011,
+        0.49789541959762573,
+        0.6764765977859497
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.49789541959762573,
+      "vertices": 7686
+    },
+    "far": {
+      "min": [
+        -0.919417142868042,
+        5.111098289489746e-05,
+        -0.7178438901901245
+      ],
+      "max": [
+        0.9194173812866211,
+        0.500578761100769,
+        0.6764765977859497
+      ],
+      "floor_y": 5.111098289489746e-05,
+      "ceiling_y": 0.500578761100769,
+      "vertices": 2208
+    }
+  },
+  "mesh_nodes": 16
+}

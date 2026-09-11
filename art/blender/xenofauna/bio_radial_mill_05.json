@@ -1,0 +1,94 @@
+{
+  "id": "bio_radial_mill_05",
+  "name": "칠노보행수",
+  "family": "radial_mill",
+  "family_name": "방사노체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "anatomy_note": "중앙 배를 둘러싼 두꺼운 노 모양 사지와 말단 흡착판 / 높고 좁은 칠방 골격",
+  "sensory_type": "방사 화학수용기",
+  "eye_count": 0,
+  "motion_profile": "spiral",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_radial_mill_05.blend",
+  "editable_meshes": 23,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_R",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_R",
+    "Anim_Leg_6_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_radial_mill_05_near.glb",
+      "triangles": 17480,
+      "sha256": "bdf298ee6a9b08ed2332e1ceddfd7437fc30215b53f92a550e3b7bd59574fe95"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_radial_mill_05_far.glb",
+      "triangles": 4872,
+      "sha256": "4ab31b818d2f722e299a935019acd13bc30ba2d70b35b856c5da7bb12e896f74"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9938329458236694,
+        1.4901161193847656e-08,
+        -0.9553486704826355
+      ],
+      "max": [
+        1.0135999917984009,
+        0.9661456942558289,
+        1.0265554189682007
+      ],
+      "floor_y": 1.4901161193847656e-08,
+      "ceiling_y": 0.9661456942558289,
+      "vertices": 8840
+    },
+    "far": {
+      "min": [
+        -0.9934135675430298,
+        4.8100948333740234e-05,
+        -0.9543491005897522
+      ],
+      "max": [
+        1.0154109001159668,
+        0.9719247817993164,
+        1.0255558490753174
+      ],
+      "floor_y": 4.8100948333740234e-05,
+      "ceiling_y": 0.9719247817993164,
+      "vertices": 2508
+    }
+  },
+  "mesh_nodes": 23
+}

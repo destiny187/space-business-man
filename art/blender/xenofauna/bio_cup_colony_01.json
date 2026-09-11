@@ -1,0 +1,93 @@
+{
+  "id": "bio_cup_colony_01",
+  "name": "삼완군수",
+  "family": "cup_colony",
+  "family_name": "보행다완류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "anatomy_note": "여러 개의 큰 입그릇이 하나의 이동성 몸통을 공유 / 삼방 열린 골격",
+  "sensory_type": "피부 진동공",
+  "eye_count": 0,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 3,
+    "branch_mode": 0,
+    "width": 1,
+    "height": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_cup_colony_01.blend",
+  "editable_meshes": 25,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_cup_colony_01_near.glb",
+      "triangles": 23288,
+      "sha256": "e7ba3f1d6ea62d5030cded27f1d6afd1817b0ab4bd5c9c51f859bfb124ba93e2"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_cup_colony_01_far.glb",
+      "triangles": 6508,
+      "sha256": "f568ecb8545164829ed8d2a471727170f38c1a45e7fe1d23cdbc6163f36406a2"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.6299993991851807,
+        0.0,
+        -0.9247816801071167
+      ],
+      "max": [
+        1.0199999809265137,
+        1.225000023841858,
+        0.9247817397117615
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.225000023841858,
+      "vertices": 11718
+    },
+    "far": {
+      "min": [
+        -0.6284935474395752,
+        0.00013214349746704102,
+        -0.9264538288116455
+      ],
+      "max": [
+        1.0199999809265137,
+        1.2251051664352417,
+        0.9244189858436584
+      ],
+      "floor_y": 0.00013214349746704102,
+      "ceiling_y": 1.2251051664352417,
+      "vertices": 3328
+    }
+  },
+  "mesh_nodes": 16
+}

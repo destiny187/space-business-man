@@ -1,0 +1,97 @@
+{
+  "id": "bio_hinge_book_09",
+  "name": "빗살서판수",
+  "family": "hinge_book",
+  "family_name": "개폐서판류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "책장처럼 벌어지는 한 쌍의 골격판과 안쪽 감각엽 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_hinge_book_09.blend",
+  "editable_meshes": 61,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L",
+    "Anim_Petal_0",
+    "Anim_Petal_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_hinge_book_09_near.glb",
+      "triangles": 30512,
+      "sha256": "1702b019011cd215997224c1aab2da93c9fdd0448dd5b28b53b020bcb107d583"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_hinge_book_09_far.glb",
+      "triangles": 8522,
+      "sha256": "de1758b56d58b316f116b064c1ecd98263942bec0fba327908578640b5a9a077"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0632553100585938,
+        0.0,
+        -1.0439997911453247
+      ],
+      "max": [
+        1.0632553100585938,
+        1.4307698011398315,
+        1.0439997911453247
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.4307698011398315,
+      "vertices": 15642
+    },
+    "far": {
+      "min": [
+        -1.062724232673645,
+        4.2051076889038086e-05,
+        -1.0456719398498535
+      ],
+      "max": [
+        1.062724232673645,
+        1.4313136339187622,
+        1.0456719398498535
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.4313136339187622,
+      "vertices": 4639
+    }
+  },
+  "mesh_nodes": 25
+}

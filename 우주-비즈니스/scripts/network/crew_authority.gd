@@ -438,7 +438,10 @@ func step_surface(delta: float) -> void:
 		var actor: String=peers[peer]
 		var local:=FrontierShuttles.context(world,actor)
 		if not FrontierCrewSurface.landed(local):
-			if not FrontierFreightSalvageSurvey.step(self,peer,local,duration):FrontierCorporateTraceSurvey.step(self,peer,local,duration)
+			# Nearby objects keep the same priority as the visible interaction card.
+			if not FrontierFreightSalvageSurvey.step(self,peer,local,duration):
+				if not FrontierCorporateTraces.target(local.manifest,local.crew.navigation,inputs[peer].aim).is_empty():FrontierCorporateTraceSurvey.step(self,peer,local,duration)
+				elif not FrontierAtmosphereSurvey.step(self,peer,local,duration):scans.erase(peer)
 			if stopped:return
 			continue
 		if world.crew.members[actor].aboard:scans.erase(peer);continue

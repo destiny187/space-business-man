@@ -1,0 +1,93 @@
+{
+  "id": "bio_mirror_fork_06",
+  "name": "엇갈래수",
+  "family": "mirror_fork",
+  "family_name": "분기대칭류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 5,
+  "anatomy": 5,
+  "attack": "none",
+  "anatomy_note": "중심에서 두 갈래로 나뉜 몸통 끝에 서로 다른 감각기관 / 비대칭 분기 골격",
+  "sensory_type": "주름형 압력막",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_mirror_fork_06.blend",
+  "editable_meshes": 21,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_mirror_fork_06_near.glb",
+      "triangles": 12912,
+      "sha256": "0cd6a3fc6a208bd41684c7f8f2a5464f681a0fd6b0e9fe4a1751535a9afc058f"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_mirror_fork_06_far.glb",
+      "triangles": 3602,
+      "sha256": "b2c8edd2a15efb7f7a03186efc3eee73faf82f6d2f83c03ff2aabea17e91a7e8"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.1374998092651367,
+        0.0,
+        -1.1574997901916504
+      ],
+      "max": [
+        1.1374999284744263,
+        1.2581939697265625,
+        1.2119998931884766
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.2581939697265625,
+      "vertices": 6562
+    },
+    "far": {
+      "min": [
+        -1.1373142004013062,
+        4.2051076889038086e-05,
+        -1.1591719388961792
+      ],
+      "max": [
+        1.1374999284744263,
+        1.2581591606140137,
+        1.2123520374298096
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.2581591606140137,
+      "vertices": 1907
+    }
+  },
+  "mesh_nodes": 15
+}

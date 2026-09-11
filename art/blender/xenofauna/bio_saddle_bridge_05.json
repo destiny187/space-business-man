@@ -1,0 +1,101 @@
+{
+  "id": "bio_saddle_bridge_05",
+  "name": "넓은안장수",
+  "family": "saddle_bridge",
+  "family_name": "안장교각류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cold",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "anatomy_note": "앞뒤 몸통 사이가 비어 있는 안장 등뼈와 복부 현수기관 / 높고 좁은 칠방 골격",
+  "sensory_type": "방사 화학수용기",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_saddle_bridge_05.blend",
+  "editable_meshes": 39,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5",
+    "Anim_Appendage_6",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_saddle_bridge_05_near.glb",
+      "triangles": 20272,
+      "sha256": "20ec1afbed268d379f16e68e05e5ef22e7598c269fbf6e38eba642e3910d7413"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_saddle_bridge_05_far.glb",
+      "triangles": 5655,
+      "sha256": "0a2b6ab3f550e443f73ada020f9a6e995094d1f9954524c9eec9a14fb2abff48"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7702427506446838,
+        0.0,
+        -1.0699994564056396
+      ],
+      "max": [
+        0.842255711555481,
+        2.351139545440674,
+        1.0699996948242188
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.351139545440674,
+      "vertices": 10342
+    },
+    "far": {
+      "min": [
+        -0.7700586915016174,
+        4.208087921142578e-05,
+        -1.0735931396484375
+      ],
+      "max": [
+        0.8462225198745728,
+        2.351590871810913,
+        1.0735931396484375
+      ],
+      "floor_y": 4.208087921142578e-05,
+      "ceiling_y": 2.351590871810913,
+      "vertices": 3014
+    }
+  },
+  "mesh_nodes": 30
+}

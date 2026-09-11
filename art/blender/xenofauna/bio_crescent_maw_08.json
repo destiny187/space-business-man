@@ -1,0 +1,92 @@
+{
+  "id": "bio_crescent_maw_08",
+  "name": "옆월아수",
+  "family": "crescent_maw",
+  "family_name": "월아구강류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 7,
+  "anatomy": 7,
+  "attack": "none",
+  "anatomy_note": "초승달 모양 몸통의 열린 두 끝이 서로 마주 보는 입 / 편심 장축 골격",
+  "sensory_type": "이중 감각고리",
+  "eye_count": 5,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "limb_count": 4,
+    "branch_mode": 7,
+    "width": 1.1,
+    "height": 1.2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_crescent_maw_08.blend",
+  "editable_meshes": 23,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Jaw",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_crescent_maw_08_near.glb",
+      "triangles": 15232,
+      "sha256": "f3b7be09cc04d03c3af06b4d6b67f1115a6edcfc0754a47485ddb860500834f1"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_crescent_maw_08_far.glb",
+      "triangles": 4256,
+      "sha256": "0a3af01736d79e2820bb9387f41adc7a221a7d43768bfd6c64d27f622995831e"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.1499998569488525,
+        0.0,
+        -1.1699998378753662
+      ],
+      "max": [
+        1.149999976158142,
+        2.3911190032958984,
+        1.1699998378753662
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.3911190032958984,
+      "vertices": 7702
+    },
+    "far": {
+      "min": [
+        -1.1499998569488525,
+        0.000540614128112793,
+        -1.171671986579895
+      ],
+      "max": [
+        1.149999976158142,
+        2.392219066619873,
+        1.1696372032165527
+      ],
+      "floor_y": 0.000540614128112793,
+      "ceiling_y": 2.392219066619873,
+      "vertices": 2214
+    }
+  },
+  "mesh_nodes": 11
+}

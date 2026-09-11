@@ -1,0 +1,94 @@
+{
+  "id": "bio_crown_anchor_06",
+  "name": "벌어진관수",
+  "family": "crown_anchor",
+  "family_name": "관묘류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 5,
+  "anatomy": 5,
+  "attack": "none",
+  "anatomy_note": "납작한 복판과 위로 휘어 맞물리는 닻 모양 돌기 / 비대칭 분기 골격",
+  "sensory_type": "주름형 압력막",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_crown_anchor_06.blend",
+  "editable_meshes": 21,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_crown_anchor_06_near.glb",
+      "triangles": 11536,
+      "sha256": "d5dca2014a5bd7b9a60420ada4ffa01a1e2b232bd8e55e1a58257200ee6b4b99"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_crown_anchor_06_far.glb",
+      "triangles": 3218,
+      "sha256": "68bcc4654226868ddc6db189a52b99736bab69d4e21e887e089dd07986cd0ba7"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.2754998207092285,
+        0.0,
+        -1.2954998016357422
+      ],
+      "max": [
+        1.275499939918518,
+        1.6751203536987305,
+        1.2954998016357422
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.6751203536987305,
+      "vertices": 5886
+    },
+    "far": {
+      "min": [
+        -1.2754998207092285,
+        4.2051076889038086e-05,
+        -1.297171950340271
+      ],
+      "max": [
+        1.275499939918518,
+        1.677643060684204,
+        1.2951371669769287
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.677643060684204,
+      "vertices": 1721
+    }
+  },
+  "mesh_nodes": 17
+}

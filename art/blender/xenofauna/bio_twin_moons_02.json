@@ -1,0 +1,93 @@
+{
+  "id": "bio_twin_moons_02",
+  "name": "수직쌍낭수",
+  "family": "twin_moons",
+  "family_name": "이중낭체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "anatomy_note": "떨어진 두 장기낭이 굵은 신경목으로 연결된 비대칭 체형 / 사방 연결 골격",
+  "sensory_type": "분산 감광점",
+  "eye_count": 2,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_twin_moons_02.blend",
+  "editable_meshes": 27,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_twin_moons_02_near.glb",
+      "triangles": 23736,
+      "sha256": "9fc303d44277925512136e5b633c37f75ea6db720fe243d371104f558e6ef784"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_twin_moons_02_far.glb",
+      "triangles": 6724,
+      "sha256": "3d73ab8efaff72f492313329b75920d580b0a4869b739dfea7a7d2309d26f2ca"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9759998321533203,
+        0.0,
+        -0.9959997534751892
+      ],
+      "max": [
+        0.9759999513626099,
+        1.8380000591278076,
+        0.9959998726844788
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.8380000591278076,
+      "vertices": 11946
+    },
+    "far": {
+      "min": [
+        -0.9758142828941345,
+        4.202127456665039e-05,
+        -0.9976719617843628
+      ],
+      "max": [
+        0.9759999513626099,
+        1.8380000591278076,
+        0.9976719617843628
+      ],
+      "floor_y": 4.202127456665039e-05,
+      "ceiling_y": 1.8380000591278076,
+      "vertices": 3432
+    }
+  },
+  "mesh_nodes": 17
+}

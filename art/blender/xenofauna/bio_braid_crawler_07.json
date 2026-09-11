@@ -1,0 +1,96 @@
+{
+  "id": "bio_braid_crawler_07",
+  "name": "갈래편조수",
+  "family": "braid_crawler",
+  "family_name": "편조보행류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 6,
+  "anatomy": 6,
+  "attack": "none",
+  "anatomy_note": "서로 꼬인 여러 근육줄기 사이로 장기가 드러나는 체형 / 이중 배열 골격",
+  "sensory_type": "말단 감각패드",
+  "eye_count": 0,
+  "motion_profile": "spiral",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 6,
+    "branch_mode": 6,
+    "width": 0.95,
+    "height": 1.05
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_braid_crawler_07.blend",
+  "editable_meshes": 25,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_braid_crawler_07_near.glb",
+      "triangles": 20384,
+      "sha256": "889b98e45a949db2794761e2c41bb0224402e208bf4e332bbc68635ab50e7822"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_braid_crawler_07_far.glb",
+      "triangles": 5702,
+      "sha256": "0a6a5c5be5e63cc8454d133e61666f2a8a6d545d7033c564aec861b0e648d286"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.900999903678894,
+        0.0,
+        -1.2030290365219116
+      ],
+      "max": [
+        0.9010000228881836,
+        1.121652603149414,
+        1.200097918510437
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.121652603149414,
+      "vertices": 10314
+    },
+    "far": {
+      "min": [
+        -0.900999903678894,
+        4.2051076889038086e-05,
+        -1.2030290365219116
+      ],
+      "max": [
+        0.9010000228881836,
+        1.1220237016677856,
+        1.200097918510437
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.1220237016677856,
+      "vertices": 2964
+    }
+  },
+  "mesh_nodes": 16
+}

@@ -21,13 +21,13 @@ static var generated:=0
 static var restored:=0
 static var cache_root: String=""
 static func identity(manifest: Dictionary) -> String:
- return FrontierUniverse.fingerprint({"version":CACHE_VERSION,"id":manifest.id,"seed":manifest.seed,"count":manifest.settings.planet_count,"per_system":manifest.settings.planets_per_system,"outer":manifest.settings.outer_radius,"inner":manifest.settings.inner_radius,"bands":manifest.settings.tier_weights.size()})
+ return FrontierUniverse.fingerprint({"version":CACHE_VERSION,"id":manifest.id,"seed":manifest.seed,"count":manifest.settings.planet_count,"per_system":manifest.settings.planets_per_system,"outer":manifest.settings.outer_radius,"inner":manifest.settings.inner_radius,"bands":manifest.settings.tier_weights.size(),"layout":manifest.settings.get("galaxy_layout",{})})
 static func reset() -> void:
  key="";built=0;points.clear();ready.clear();insertion_order.clear();cells.clear();nearby_cache.clear();page_order.clear();finished.clear();active_page=-1;page_offset=0;page_values.clear();focus_band=-1;generated=0;restored=0
 static func build(manifest: Dictionary,current_system: int=0,budget_usec: int=1500) -> void:
  if manifest.is_empty():return
  # Avoid hashing the manifest on every frame. Identity changes on world replacement/settings change.
- var session_key:=str([manifest.id,manifest.seed,manifest.settings.planet_count,manifest.settings.planets_per_system,manifest.settings.outer_radius,manifest.settings.inner_radius,manifest.settings.tier_weights.size()])
+ var session_key:=str([manifest.id,manifest.seed,manifest.settings.planet_count,manifest.settings.planets_per_system,manifest.settings.outer_radius,manifest.settings.inner_radius,manifest.settings.tier_weights.size(),manifest.settings.get("galaxy_layout",{})])
  if key!=session_key:
   reset();key=session_key
   points.resize(int(manifest.settings.planet_count)/int(manifest.settings.planets_per_system));ready.resize(points.size());ready.fill(0)

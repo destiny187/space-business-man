@@ -4,6 +4,10 @@
 
 2026-09-10 [간결한 항성계 이동과 연속 선회](production/45-stellar-flight-transition.md): 이동 중 단계명·남은 시간·중복 HUD를 줄이고 도착 이름만 표시한다. 목적 방향 안전 정렬과 항성계 교체 전후 선체·카메라 회전을 연결했다. 실제 확인 범위는 제작 기록을 따른다.
 
+2026-09-10 [특이 식물·미생물 100종](production/123-xenoflora-100.md): 식물 60개·미생물 군락 40개를 추가해 동물 700 + 식물 185 + 미생물 115 = 기본형 1,000개로 확장했다. Blender·두 LOD·도감·자연 출현·스캔/표본·저장을 연결했다. [전체 추가 목록](game/25-xenoflora-catalogue.md)과 [티어별 확률 해석](game/09-discovery-research-and-ecology.md)을 따르며 기존 은하의 분포를 보존한다.
+
+2026-09-10 [동물 300종·티어별 생물권](production/122-xenofauna-300.md): 30개 구조군의 Blender 기본형 300개·두 LOD·도감·스캔/채집을 연결했다. 새 은하에서 무생물 행성을 유지하며 티어별 정착 가중치를 높이고 기존 저장의 계통을 보존한다. [전체 구조 목록](game/24-xenofauna-catalogue.md), 실제 확인과 이동 AI의 경계는 제작 기록을 따른다.
+
 2026-09-10 [지구 주시·Sol 시작 연출](production/20-galaxy-start-and-lobby.md): 새 원정의 실제 선체·카메라 후진과 여러 행성이 보이는 전경 선회, 연출 뒤 업무 안내·튜토리얼, 완료 저장과 이어하기 미반복을 연결했다. 실제 1인 창에서 확인했으며 다중 접속·전체 회귀는 실행하지 않았다.
 
 2026-09-10 [SP02 기업 실물 식별](production/108-corporate-presence-sp02.md): Lotus 보급선·상자와 mine/CooperTech 로봇에 표식, 운영사/제조사 구분, E 조사·J 기업 기록·저장 호환을 연결했다. 실제 Blender/INK 렌더와 최소 지상 확인 범위는 제작 기록을 따른다.
@@ -328,3 +332,9 @@
 - [SP11 CooperTech 우주 단서·지상 로봇 연결](production/120-coopertech-ground-clues.md) — 동일 ID·지도·실제 교전/회수·저장.
 
 - [기업 우주 잔여 범위 완료·협동 확인](production/121-corporate-presence-completion.md) — SP10/11 커밋·3개 프로세스·재접속·동일 사건 종결.
+
+- [8,000종·행성 독점 생태·50만 행성 작업](production/124-biota-8000-work.md) — 완성 카탈로그·유형별 리깅·원산지 배정과 T1/T2 현장·조류·가스 관측의 실제 확인 범위.
+- [생물 형태 연구·유형별 리깅](production/125-biota-research-and-rigging.md) — 실제 생물 자료와 가상 생태의 구분, 구조별 골격·가중치·모션 제작 기준.
+- [신규 생물 유형 색인](production/126-biota-type-index.md) — 동물 몸 조직·기관계, 식물 성장형, 미생물 군락형과 18개 환경별 제작 레시피 수량.
+
+- [중앙 체형·눈과 얼굴 교체](production/129-biota-midpoint-silhouettes.md) — 교체 196종의 형태·얼굴·관절, T2 현장 검수와 작은 도감 표시 수정.

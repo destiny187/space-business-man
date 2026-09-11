@@ -1,0 +1,95 @@
+{
+  "id": "bio_petal_mantis_10",
+  "name": "뿔판절지수",
+  "family": "petal_mantis",
+  "family_name": "판엽절지류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "thermal",
+  "morphology": 9,
+  "anatomy": 9,
+  "attack": "none",
+  "anatomy_note": "넓은 판 모양 몸마디가 관절마다 접히는 절지형 / 다층 방사 골격",
+  "sensory_type": "분지 촉각수염",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "limb_count": 6,
+    "branch_mode": 9,
+    "width": 1,
+    "height": 1.16
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_petal_mantis_10.blend",
+  "editable_meshes": 35,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6",
+    "Anim_Segment_7"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_petal_mantis_10_near.glb",
+      "triangles": 23600,
+      "sha256": "12a3d59eed8890d19e252fbe07630d8453d483abfd719f87f4f5be3186bcca9f"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_petal_mantis_10_far.glb",
+      "triangles": 6594,
+      "sha256": "e73db836671dcc803f19a21dfee6ef5f2dbc9b0612d01c2bbe5091b24390d776"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8308166265487671,
+        0.0,
+        -1.1599175930023193
+      ],
+      "max": [
+        0.8308166265487671,
+        0.9804086685180664,
+        1.1565845012664795
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.9804086685180664,
+      "vertices": 12002
+    },
+    "far": {
+      "min": [
+        -0.8279690742492676,
+        -0.001589745283126831,
+        -1.1600220203399658
+      ],
+      "max": [
+        0.8279690742492676,
+        0.9804438352584839,
+        1.1567093133926392
+      ],
+      "floor_y": -0.001589745283126831,
+      "ceiling_y": 0.9804438352584839,
+      "vertices": 3467
+    }
+  },
+  "mesh_nodes": 18
+}

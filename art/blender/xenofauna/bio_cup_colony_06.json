@@ -1,0 +1,94 @@
+{
+  "id": "bio_cup_colony_06",
+  "name": "층완군수",
+  "family": "cup_colony",
+  "family_name": "보행다완류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 5,
+  "anatomy": 5,
+  "attack": "none",
+  "anatomy_note": "여러 개의 큰 입그릇이 하나의 이동성 몸통을 공유 / 비대칭 분기 골격",
+  "sensory_type": "주름형 압력막",
+  "eye_count": 0,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_cup_colony_06.blend",
+  "editable_meshes": 25,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_cup_colony_06_near.glb",
+      "triangles": 16056,
+      "sha256": "94f7f2ffbf26b7d127a350c535441f8e4b9b74d0aee312c5a89291e8907970c1"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_cup_colony_06_far.glb",
+      "triangles": 4478,
+      "sha256": "3a445e1b4c9e865acc73a1d31a290564e709e686dab7118cd88dc44db6e1bf64"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.148999810218811,
+        0.0,
+        -1.1689997911453247
+      ],
+      "max": [
+        1.1489999294281006,
+        1.1974000930786133,
+        1.1689999103546143
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.1974000930786133,
+      "vertices": 8146
+    },
+    "far": {
+      "min": [
+        -1.148999810218811,
+        0.00013214349746704102,
+        -1.1706719398498535
+      ],
+      "max": [
+        1.1489999294281006,
+        1.197448492050171,
+        1.1706719398498535
+      ],
+      "floor_y": 0.00013214349746704102,
+      "ceiling_y": 1.197448492050171,
+      "vertices": 2357
+    }
+  },
+  "mesh_nodes": 18
+}

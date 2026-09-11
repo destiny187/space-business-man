@@ -1,0 +1,94 @@
+{
+  "id": "bio_rib_sled_05",
+  "name": "칠늑활주수",
+  "family": "rib_sled",
+  "family_name": "늑골활주류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "anatomy_note": "열린 갈비뼈 우리와 바닥을 짚는 굵은 양측 주행근 / 높고 좁은 칠방 골격",
+  "sensory_type": "방사 화학수용기",
+  "eye_count": 1,
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_rib_sled_05.blend",
+  "editable_meshes": 18,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5",
+    "Anim_Appendage_6"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_rib_sled_05_near.glb",
+      "triangles": 10176,
+      "sha256": "fb8d574b5132783995afb57587ad191d301b8bc522163defce24b51c195752e5"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_rib_sled_05_far.glb",
+      "triangles": 2836,
+      "sha256": "d3b92eea959765c6637285e3793bf9c80fac5dd00a71c90b3542d3e21becf388"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.6927998065948486,
+        0.0,
+        -1.2099997997283936
+      ],
+      "max": [
+        0.6927998065948486,
+        1.8783738613128662,
+        1.162978172302246
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.8783738613128662,
+      "vertices": 5196
+    },
+    "far": {
+      "min": [
+        -0.6914759874343872,
+        -0.001106414943933487,
+        -1.2114810943603516
+      ],
+      "max": [
+        0.6914759874343872,
+        1.872718095779419,
+        1.1628392934799194
+      ],
+      "floor_y": -0.001106414943933487,
+      "ceiling_y": 1.872718095779419,
+      "vertices": 1512
+    }
+  },
+  "mesh_nodes": 17
+}

@@ -1,0 +1,93 @@
+{
+  "id": "bio_knuckle_chain_09",
+  "name": "낮은연쇄수",
+  "family": "knuckle_chain",
+  "family_name": "관절연쇄류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "개별 장기 마디가 큰 아치형 사슬을 만드는 몸통 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_knuckle_chain_09.blend",
+  "editable_meshes": 25,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_knuckle_chain_09_near.glb",
+      "triangles": 9144,
+      "sha256": "5631c64cb2a324c4b3928525e0216f1fe2dd75de43d3aa652c876fbadffb9238"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_knuckle_chain_09_far.glb",
+      "triangles": 2542,
+      "sha256": "31e1cccaf1b96ad4cb2fa3b8cb21e86ff7046e8409c9fb3258d23bf49a67bc54"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7585501670837402,
+        0.0,
+        -1.3999996185302734
+      ],
+      "max": [
+        0.7585501670837402,
+        1.3932368755340576,
+        1.420987844467163
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.3932368755340576,
+      "vertices": 4774
+    },
+    "far": {
+      "min": [
+        -0.7655558586120605,
+        0.0,
+        -1.398681402206421
+      ],
+      "max": [
+        0.7655559182167053,
+        1.3932368755340576,
+        1.4213517904281616
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.3932368755340576,
+      "vertices": 1434
+    }
+  },
+  "mesh_nodes": 19
+}

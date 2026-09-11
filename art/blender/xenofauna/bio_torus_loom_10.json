@@ -1,0 +1,95 @@
+{
+  "id": "bio_torus_loom_10",
+  "name": "십자직조수",
+  "family": "torus_loom",
+  "family_name": "환공직조류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cold",
+  "morphology": 9,
+  "anatomy": 9,
+  "attack": "none",
+  "anatomy_note": "몸통 가운데가 뚫린 근육 고리와 안쪽 여과실 / 다층 방사 골격",
+  "sensory_type": "분지 촉각수염",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "limb_count": 6,
+    "branch_mode": 9,
+    "width": 1,
+    "height": 1.16
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_torus_loom_10.blend",
+  "editable_meshes": 54,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_torus_loom_10_near.glb",
+      "triangles": 67168,
+      "sha256": "26924e2821fab399ca3097006752b4afc462a5ad66f86adec18585e8c7a06815"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_torus_loom_10_far.glb",
+      "triangles": 18798,
+      "sha256": "c51ca73fadb7787fcb80aac25e4cf220bd23cf2c9cefbfd039ec7371db7a0c85"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0399998426437378,
+        0.0,
+        -0.9421021938323975
+      ],
+      "max": [
+        1.0481735467910767,
+        2.3419902324676514,
+        0.9421021938323975
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.3419902324676514,
+      "vertices": 33668
+    },
+    "far": {
+      "min": [
+        -1.0399998426437378,
+        0.00013211369514465332,
+        -0.9437743425369263
+      ],
+      "max": [
+        1.0499764680862427,
+        2.3437767028808594,
+        0.9417394399642944
+      ],
+      "floor_y": 0.00013211369514465332,
+      "ceiling_y": 2.3437767028808594,
+      "vertices": 9483
+    }
+  },
+  "mesh_nodes": 18
+}

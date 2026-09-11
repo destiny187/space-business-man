@@ -1,0 +1,91 @@
+{
+  "id": "bio_channel_rosette_02",
+  "name": "사로장미군",
+  "family": "channel_rosette",
+  "family_name": "유로장미군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "cave",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "낮은 방사형 유로와 말린 끝단이 모이는 대사막 군락 / 기관 추가·좁고 높은 외곽",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "width": 0.86,
+    "height": 1.2,
+    "branch_mode": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_channel_rosette_02.blend",
+  "editable_meshes": 19,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_channel_rosette_02_near.glb",
+      "triangles": 16568,
+      "sha256": "5f688d9987d7b495e529b5d5810019a6e321927576faab1e42c7b3567d217d63"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_channel_rosette_02_far.glb",
+      "triangles": 4630,
+      "sha256": "fc5a6ca1e4269a330c1b503bb578c990f38a97087b611bdcd4df870a3bfbccf4"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8059996962547302,
+        0.0,
+        -0.6964084506034851
+      ],
+      "max": [
+        0.8059998750686646,
+        0.3493736982345581,
+        0.6964084506034851
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.3493736982345581,
+      "vertices": 8382
+    },
+    "far": {
+      "min": [
+        -0.8054172396659851,
+        0.0,
+        -0.6945099830627441
+      ],
+      "max": [
+        0.8054174184799194,
+        0.3500116467475891,
+        0.6945099830627441
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.3500116467475891,
+      "vertices": 2393
+    }
+  },
+  "mesh_nodes": 11
+}

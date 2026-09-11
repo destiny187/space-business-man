@@ -8,26 +8,46 @@ static func create() -> Dictionary:
 
 static func profile(body: Dictionary) -> Dictionary:
 	var cfg:=FrontierEcologyCatalog.config()
-	var climate: Dictionary=cfg.world_climate[body.kind]
+	var climate: Dictionary=cfg.world_climate.get(body.kind,cfg.world_climate.basalt)
 	var seed_value: int=int(body.streams.ecology)
 	var roll:=FrontierUniverse.derive(seed_value,"native-origin")%100
 	var weights: Dictionary=cfg.native_origin_weights
-	var result: Dictionary={"environment":cfg.surface_environments[body.kind],
+	var result: Dictionary={"environment":cfg.surface_environments.get(body.kind,"gas_cloud"),
 		"origin":"sterile" if roll<int(weights.sterile) else ("dormant" if roll<int(weights.sterile)+int(weights.dormant) else "established"),
 		"temperature":lerpf(climate.temperature[0],climate.temperature[1],float(FrontierUniverse.derive(seed_value,"temperature")%1001)/1000.0),
 		"pressure":lerpf(climate.pressure[0],climate.pressure[1],float(FrontierUniverse.derive(seed_value,"pressure")%1001)/1000.0),
 		"moisture":climate.moisture}
 	if not body.get("terrain_traits",{}).is_empty():
 		result.temperature=body.traits.temperature;result.pressure=body.traits.pressure;result.moisture=float(body.traits.water)/100.0
+	var expansion: Dictionary=body.get("ecology_rules",{})
+	if int(expansion.get("version",0))>=2:
+		var tier:=str(clampi(int(body.planet_tier),1,5))
+		weights=expansion.native_origin_by_tier[tier]
+		result.origin="sterile" if roll<int(weights.sterile) else ("dormant" if roll<int(weights.sterile)+int(weights.dormant) else "established")
+		result.environment=expansion.archetype_environments.get(body.get("traits",{}).get("id",""),result.environment)
+		if not body.get("terrain_traits",{}).is_empty():result.pressure=float(result.pressure)*100.0
+		result.pressure_unit="kPa";result.rules_version=2
+	if body.has("native_ecology"):
+		result.origin=body.native_ecology.origin;result.rules_version=3
+		result.native_archetype=body.get("traits",{}).get("id","")
 	return result
 
 static func ensure_planet(ecology: Dictionary,body: Dictionary) -> Dictionary:
 	if ecology.planets.has(body.id):return ecology.planets[body.id]
 	var p:=profile(body)
 	var lineages: Array=[]
+	if body.has("native_ecology"):
+		var native: Dictionary={"profile":p,"lineages":body.native_ecology.lineages.duplicate(true),"collected":{},"plot":{},"introductions":{}}
+		ecology.planets[body.id]=native
+		return native
 	for environment in [p.environment,"cave"]:
 		if p.origin=="sterile":break
 		for category in ["microbe","plant","animal"]:
+			if int(p.get("rules_version",0))>=2:
+				var count:=int(body.ecology_rules.get("non_animal_lineages_per_layer",{}).get(category,1))
+				if category=="animal":count=int(body.ecology_rules.animals_by_tier[str(clampi(int(body.planet_tier),1,5))]["cave" if environment=="cave" else "surface"])
+				lineages.append_array(FrontierEcologyCatalog.choose_diverse(FrontierUniverse.derive(int(body.streams.ecology),environment+":"+category),environment,category,count,body.ecology_rules.has("flora_catalog_hash")))
+				continue
 			for slot in (2 if category=="animal" else 1):
 				var selected:=FrontierEcologyCatalog.choose(FrontierUniverse.derive(int(body.streams.ecology),"%s:%s:%d"%[environment,category,slot]),environment,category)
 				if not selected.is_empty() and selected not in lineages:lineages.append(selected)
@@ -37,21 +57,31 @@ static func ensure_planet(ecology: Dictionary,body: Dictionary) -> Dictionary:
 
 static func climate_at(record: Dictionary,point: Vector3,layer: String) -> Dictionary:
 	var p: Dictionary=record.profile.duplicate(true)
+	# Older planet traits were stored in bar while habitat limits are kPa. Keep the
+	# saved profile/ancestry intact and correct the unit only at the climate boundary.
+	if not p.has("pressure_unit") and float(p.pressure)<10.0:p.pressure=float(p.pressure)*100.0
 	if layer=="cave":
 		p.environment="cave";p.temperature=12.0;p.moisture=.5
 	if not record.plot.is_empty() and float(record.plot.support_remaining)>0 and point.distance_to(Vector3(record.plot.center[0],record.plot.center[1],record.plot.center[2]))<=float(FrontierEcologyCatalog.config().plot_radius):
 		var habitat: Dictionary=FrontierEcologyCatalog.config().habitats[record.plot.environment]
+		if int(p.get("rules_version",0))>=3 and not str(p.get("native_archetype","")).is_empty():
+			habitat=FrontierEcologyCatalog.habitat({"environment":record.plot.environment,"adaptation_id":p.native_archetype})
 		p.environment=record.plot.environment
 		for key in ["temperature","pressure","moisture"]:p[key]=(float(habitat[key][0])+float(habitat[key][1]))*.5
 		p["restored"]=true
 	return p
 
 static func unsuitable(form: Dictionary,climate: Dictionary,layer: String) -> String:
-	if form.family not in FrontierEcologyCatalog.config().ground_families:return "수중 또는 공중 이동 서식처가 필요합니다."
-	if form.environment!=climate.environment:return "서식 기질이 다릅니다: "+str(form.environment_label)
+	var aerial: bool=form.get("locomotion_medium","")=="atmosphere"
+	if not FrontierEcologyCatalog.ground_form(form) and not aerial:return "수중 또는 공중 이동 서식처가 필요합니다."
+	if aerial and (climate.environment!="gas_cloud" or layer!="surface"):return "거대행성의 대기층 서식처가 필요합니다."
+	if form.get("locomotion_medium","")=="surface_air":
+		if layer!="surface" or climate.environment=="gas_cloud":return "대기가 있는 지상 비행 서식처가 필요합니다."
+		if float(climate.pressure)<float(form.flight.minimum_pressure_kpa):return "날개 비행에 필요한 대기 압력이 부족합니다."
+	if form.environment!=climate.environment:return "서식 기질이 다릅니다: "+str(form.get("environment_label",form.environment))
 	if form.environment=="cave" and layer!="cave":return "빛을 차단한 지하 서식처가 필요합니다."
 	if form.environment!="cave" and layer=="cave":return "지표의 빛과 기질이 필요합니다."
-	var habitat: Dictionary=FrontierEcologyCatalog.config().habitats[form.environment]
+	var habitat:=FrontierEcologyCatalog.habitat(form)
 	for key in ["temperature","pressure","moisture"]:
 		if float(climate[key])<float(habitat[key][0]) or float(climate[key])>float(habitat[key][1]):
 			return {"temperature":"온도","pressure":"압력","moisture":"기질 수분"}[key]+" 조건이 맞지 않습니다."
@@ -85,9 +115,11 @@ static func analyze(ecology: Dictionary,form_id: String,logistics: Dictionary) -
 	if int(logistics.depot_rock)<cost:return "실험용 광물 %d개가 착륙지 창고에 필요합니다."%cost
 	logistics.depot_rock-=cost
 	ecology.research[form.environment]={"form_id":form_id,"stage":"analyzed"}
-	return "대조 실험 완료 · "+str(FrontierEcologyCatalog.config().habitats[form.environment].principle)+" · 국소 서식지 복원 장치 해금"
+	if form.get("locomotion_medium","")=="atmosphere":return "대기층 생리 분석 완료 · 부유 구조와 기질 교환 기록"
+	return "대조 실험 완료 · "+str(FrontierEcologyCatalog.habitat(form).principle)+" · 국소 서식지 복원 장치 해금"
 
 static func collect(ecology: Dictionary,body_id: String,encounter: Dictionary) -> String:
+	if FrontierEcologyCatalog.form(encounter.form_id).get("locomotion_medium","")=="atmosphere":return "대기층 생명체는 궤도에서 관측합니다. 지상 표본 채집 대상이 아닙니다."
 	var record: Dictionary=ecology.planets[body_id]
 	if encounter.get("introduced",false):return "이식한 개체군은 현장에 보존합니다."
 	if not ecology.observations.has(body_id+":"+encounter.form_id):return "생태 안전을 위해 먼저 스캔하세요."
@@ -102,6 +134,7 @@ static func collect(ecology: Dictionary,body_id: String,encounter: Dictionary) -
 	return "생체 표본을 확보했습니다."
 
 static func restore_plot(ecology: Dictionary,body_id: String,environment_id: String,point: Vector3,layer: String,logistics: Dictionary) -> String:
+	if environment_id=="gas_cloud":return "대기층에는 지상 실험 구획을 설치할 수 없습니다."
 	var record: Dictionary=ecology.planets[body_id]
 	if not ecology.research.has(environment_id):return "해당 서식 환경의 기초 분석이 필요합니다."
 	if environment_id!=("cave" if layer=="cave" else record.profile.environment):return "이곳의 기질에 맞는 서식지 복원 기술을 선택하세요."
@@ -156,6 +189,8 @@ static func advance(ecology: Dictionary,body_id: String,seconds: float) -> void:
 static func validate(value: Variant,manifest: Dictionary) -> String:
 	if not value is Dictionary or value.get("version")!="ecology-v1":return "생태 저장 버전 오류"
 	if value.get("catalog_hash")!=FrontierEcologyCatalog.signature() or value.get("rules_hash")!=FrontierUniverse.fingerprint(FrontierEcologyCatalog.config()):return "생태 원형 또는 규칙 버전이 달라 원본 저장을 보존합니다."
+	if manifest.settings.has("ecology_rules") and manifest.settings.ecology_rules.get("catalog_hash","")!=FrontierEcologyCatalog.extension_signature():return "추가 생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
+	if manifest.settings.get("ecology_rules",{}).has("flora_catalog_hash") and manifest.settings.ecology_rules.flora_catalog_hash!=FrontierEcologyCatalog.flora_signature():return "추가 식물·미생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
 	if not FrontierExpeditionBusiness.integer(value.get("item_storage_version",0),0,1):return "표본 아이템 저장 버전 오류"
 	for key in ["planets","observations","research","specimens"]:
 		if not value.get(key) is Dictionary:return "생태 기록 형식 오류: "+key
@@ -166,7 +201,8 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		for key in ["profile","collected","plot","introductions"]:
 			if not record.get(key) is Dictionary:return "행성 생태 필드 오류"
 		if FrontierUniverse.fingerprint(record.profile)!=FrontierUniverse.fingerprint(profile(FrontierUniverse.body_from_id(manifest,id))):return "행성 고유 생태 원형 오류"
-		if not record.get("lineages") is Array or record.lineages.size()>8:return "고유 생명 계통 오류"
+		var lineage_limit: int=int(manifest.settings.get("ecology_rules",{}).get("native_biota",{}).get("max_lineages_per_planet",24 if manifest.settings.has("ecology_rules") else 8))
+		if not record.get("lineages") is Array or record.lineages.size()>lineage_limit:return "고유 생명 계통 오류"
 		var expected: Dictionary={"planets":{}}
 		if ensure_planet(expected,FrontierUniverse.body_from_id(manifest,id)).lineages!=record.lineages:return "고유 생명 계통이 시드와 다릅니다."
 		if not record.plot.is_empty():

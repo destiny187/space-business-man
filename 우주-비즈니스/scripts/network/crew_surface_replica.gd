@@ -59,7 +59,7 @@ static func validate(value: Variant,manifest: Dictionary) -> bool:
 	if not ecology is Dictionary:return false
 	for key in ["planets","observations","research","specimens"]:
 		if not ecology.get(key) is Dictionary:return false
-	if ecology.planets.size()!=1 or not ecology.planets.has(value.body_id) or ecology.specimens.size()>FrontierItemInventory.storage_slots() or ecology.research.size()>11 or ecology.observations.size()>80:return false
+	if ecology.planets.size()!=1 or not ecology.planets.has(value.body_id) or ecology.specimens.size()>FrontierItemInventory.storage_slots() or ecology.research.size()>12 or ecology.observations.size()>80:return false
 	var record: Variant=ecology.planets[value.body_id]
 	if not record is Dictionary:return false
 	for key in ["profile","plot","collected","introductions"]:

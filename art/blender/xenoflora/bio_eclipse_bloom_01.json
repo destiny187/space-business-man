@@ -1,0 +1,88 @@
+{
+  "id": "bio_eclipse_bloom_01",
+  "name": "단환일식화",
+  "family": "eclipse_bloom",
+  "family_name": "환공차광류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "temperate",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "큰 구멍이 있는 꽃판 둘레에서 안팎으로 접히는 빛 수집 잎 / 기초 기관 배열",
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "width": 1,
+    "height": 1,
+    "branch_mode": 0
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_eclipse_bloom_01.blend",
+  "editable_meshes": 10,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_eclipse_bloom_01_near.glb",
+      "triangles": 6886,
+      "sha256": "a031ba68dda9b152afc3dccb1dc7ebfe26c221cddfecfe271abebf019d25d8e7"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_eclipse_bloom_01_far.glb",
+      "triangles": 1926,
+      "sha256": "75cae8a9df9147c3be835b973ca872e11b4093accdeac2e18c21a1593c67f33e"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.626137912273407,
+        0.0,
+        -0.6525765657424927
+      ],
+      "max": [
+        0.8825634121894836,
+        1.9486656188964844,
+        0.6525765657424927
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.9486656188964844,
+      "vertices": 3501
+    },
+    "far": {
+      "min": [
+        -0.627507746219635,
+        -5.62816858291626e-05,
+        -0.6529540419578552
+      ],
+      "max": [
+        0.8825973272323608,
+        1.9486191272735596,
+        0.6529540419578552
+      ],
+      "floor_y": -5.62816858291626e-05,
+      "ceiling_y": 1.9486191272735596,
+      "vertices": 1021
+    }
+  },
+  "mesh_nodes": 3
+}

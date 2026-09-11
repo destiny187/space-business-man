@@ -1,0 +1,93 @@
+{
+  "id": "bio_mirror_reed_04",
+  "name": "엇막갈대",
+  "family": "mirror_reed",
+  "family_name": "대향막경류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "cold",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "갈라진 줄기의 좌우에 마주 보는 두꺼운 부채막 / 연결 수 증가·상하 전개",
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_mirror_reed_04.blend",
+  "editable_meshes": 22,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0_-1",
+    "Anim_Frond_0_1",
+    "Anim_Frond_1_-1",
+    "Anim_Frond_1_1",
+    "Anim_Frond_2_-1",
+    "Anim_Frond_2_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_mirror_reed_04_near.glb",
+      "triangles": 12320,
+      "sha256": "52d04b5dcfc69affae0a580d6a9709080b953810ff38fb064c736ceb8b91dfe6"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_mirror_reed_04_far.glb",
+      "triangles": 3443,
+      "sha256": "21aeac3a54bba574671bdb5637a44c16e9c4278350fac68e1b8430445f8bf208"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9847235083580017,
+        0.0,
+        -0.6834478378295898
+      ],
+      "max": [
+        0.9847235083580017,
+        1.8105000257492065,
+        0.6834478378295898
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.8105000257492065,
+      "vertices": 6324
+    },
+    "far": {
+      "min": [
+        -0.9847559332847595,
+        -5.657970905303955e-05,
+        -0.6838077902793884
+      ],
+      "max": [
+        0.9847680926322937,
+        1.8104321956634521,
+        0.6838077902793884
+      ],
+      "floor_y": -5.657970905303955e-05,
+      "ceiling_y": 1.8104321956634521,
+      "vertices": 1863
+    }
+  },
+  "mesh_nodes": 13
+}

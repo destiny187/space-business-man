@@ -1,0 +1,93 @@
+{
+  "id": "bio_twin_moons_08",
+  "name": "현수낭수",
+  "family": "twin_moons",
+  "family_name": "이중낭체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "temperate",
+  "morphology": 7,
+  "anatomy": 7,
+  "attack": "none",
+  "anatomy_note": "떨어진 두 장기낭이 굵은 신경목으로 연결된 비대칭 체형 / 편심 장축 골격",
+  "sensory_type": "이중 감각고리",
+  "eye_count": 2,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "limb_count": 4,
+    "branch_mode": 7,
+    "width": 1.1,
+    "height": 1.2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_twin_moons_08.blend",
+  "editable_meshes": 29,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_twin_moons_08_near.glb",
+      "triangles": 26936,
+      "sha256": "f06d85ef625d37f2942acf8b7f824170b3b4ed3c8a03bce238bc907cc4b691d6"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_twin_moons_08_far.glb",
+      "triangles": 7619,
+      "sha256": "1d98054b3882b5b2a2f0771f6f0fbc6daf4e8f6cf50836170120960d421f3a06"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.2159998416900635,
+        0.0,
+        -1.2359998226165771
+      ],
+      "max": [
+        1.215999960899353,
+        1.9700000286102295,
+        1.2359998226165771
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.9700000286102295,
+      "vertices": 13546
+    },
+    "far": {
+      "min": [
+        -1.2159998416900635,
+        4.202127456665039e-05,
+        -1.2356369495391846
+      ],
+      "max": [
+        1.215999960899353,
+        1.9700000286102295,
+        1.2356371879577637
+      ],
+      "floor_y": 4.202127456665039e-05,
+      "ceiling_y": 1.9700000286102295,
+      "vertices": 3884
+    }
+  },
+  "mesh_nodes": 17
+}

@@ -2,7 +2,7 @@ class_name FrontierEcologyPlacement
 extends RefCounted
 ## Stable candidates are independent of view order, actor cap, and terrain edits.
 static func candidates(body: Dictionary,record: Dictionary,center: Vector3) -> Array[Dictionary]:
-	var cfg:=FrontierEcologyCatalog.config()
+	var cfg:=FrontierEcologyCatalog.placement_config(body)
 	var span: float=cfg.cell_span
 	var anchor:=Vector2i(floori(center.x/span),floori(center.z/span))
 	var extent:=ceili(float(cfg.active_radius)/span)+1
@@ -24,7 +24,7 @@ static func candidates(body: Dictionary,record: Dictionary,center: Vector3) -> A
 						var point:=Vector3((float(x)+.18+.64*float(FrontierUniverse.derive(seed_value,"x")%1000)/1000.0)*span,0,(float(z)+.18+.64*float(FrontierUniverse.derive(seed_value,"z")%1000)/1000.0)*span)
 						if Vector2(point.x,point.z).length()<13 or Vector2(point.x+12,point.z-12).length()<24:continue # clear lander hull, ramp and transport depot
 						if Vector2(point.x-center.x,point.z-center.z).length()>float(cfg.active_radius):continue
-						result.append({"id":id,"form_id":chosen.form_id,"look_id":chosen.look_id,"point":point,"layer":layer,"yaw":float(FrontierUniverse.derive(seed_value,"yaw")%1000)/1000.0*TAU,"introduced":false})
+						result.append({"id":id,"form_id":chosen.form_id,"look_id":chosen.look_id,"point":point,"layer":layer,"yaw":float(FrontierUniverse.derive(seed_value,"yaw")%1000)/1000.0*TAU,"introduced":false,"terrestrial":body.has("ecology_rules")})
 	for row in record.introductions.values():
 		var point:=Vector3(row.position[0],row.position[1],row.position[2])
 		if point.distance_to(center)<=float(cfg.active_radius):result.append({"id":row.id,"form_id":row.form_id,"look_id":row.look_id,"point":point,"layer":row.layer,"yaw":0.0,"introduced":true})
@@ -57,6 +57,7 @@ static func ground(field: FrontierTerrainField,candidate: Dictionary) -> Vector3
 	return Vector3.INF
 
 static func fits(field: FrontierTerrainField,candidate: Dictionary,point: Vector3) -> bool:
+	if candidate.get("terrestrial",false) and candidate.layer=="surface" and FrontierSurfaceDrainage.liquid(field.traits) and point.y< -2.5:return false
 	var form:=FrontierEcologyCatalog.form(candidate.form_id)
 	var look:=FrontierEcologyCatalog.look(candidate.form_id,candidate.look_id)
 	var geometry: Dictionary=form.geometry.near
@@ -72,6 +73,35 @@ static func fits(field: FrontierTerrainField,candidate: Dictionary,point: Vector
 		for fraction in [.2,.5,1.0]:
 			if field.density(p+up*maxf(.6,height*fraction))>0:return false
 	return true
+
+static func flight_pose(field: FrontierTerrainField,candidate: Dictionary,home: Vector3,time: float) -> Dictionary:
+	var form:=FrontierEcologyCatalog.form(candidate.form_id)
+	var grounded:=surface_basis(field.normal(home),float(candidate.yaw))
+	var result: Dictionary={"point":home,"basis":grounded,"blend":0.0,"clock":time,"phase":"rest"}
+	if form.get("locomotion_medium","")!="surface_air" or candidate.get("status","active")!="active":return result
+	# Introduced specimens stay inside the supported isolation plot.
+	if candidate.get("introduced",false):return result
+	var cfg: Dictionary=form.flight
+	var seed_phase: float=float(FrontierUniverse.derive(int(field.seed_value),"flight:"+str(candidate.id))%48000)/1000.0
+	var cycle: float=float(cfg.cycle_seconds);var rest: float=float(cfg.rest_seconds);var transition: float=float(cfg.transition_seconds)
+	var phase:=fposmod(time+seed_phase,cycle);result.clock=time+seed_phase
+	if phase<rest:return result
+	var air_time: float=phase-rest
+	var airborne: float=cycle-rest
+	var blend: float=smoothstep(0.0,transition,air_time)*(1.0-smoothstep(airborne-transition,airborne,air_time))
+	var u: float=clampf((air_time-transition)/(airborne-transition*2.0),0.0,1.0)
+	var angle: float=u*TAU;var radius: float=cfg.patrol_radius
+	var offset:=Vector3(radius*(1.0-cos(angle)),0,radius*sin(angle))
+	var yaw_basis:=Basis(Vector3.UP,float(candidate.yaw))
+	var point:=home+yaw_basis*offset
+	var safe_floor: float=maxf(home.y,field.height(point.x,point.z)+.08)
+	point.y=lerpf(home.y,safe_floor+float(cfg.cruise_height),blend)
+	var direction:=yaw_basis*Vector3(sin(angle),0,cos(angle))
+	var heading: float=atan2(-direction.x,-direction.z)
+	var basis_value:=surface_basis(Vector3.UP,heading)
+	result.point=point;result.basis=grounded.slerp(basis_value,blend).orthonormalized();result.blend=blend
+	result.phase="takeoff" if air_time<transition else ("landing" if air_time>airborne-transition else "flight")
+	return result
 
 static func resolve_identity(body: Dictionary,record: Dictionary,id: String) -> Dictionary:
 	if id.begins_with("poi:"):return FrontierExplorationDiscoveries.sample_identity(body,record,id)

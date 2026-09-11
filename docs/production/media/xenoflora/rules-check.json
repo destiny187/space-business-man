@@ -1,0 +1,48 @@
+{
+  "categories": {
+    "animal": 700,
+    "microbe": 115,
+    "plant": 185
+  },
+  "checks": 151,
+  "failures": [],
+  "fixtures": {
+    "microbe": {
+      "body_id": "galaxy:galaxy-v3:71491:planet:8",
+      "encounter": {
+        "form_id": "bio_lace_colony_04",
+        "id": "surface:3:2:0",
+        "introduced": false,
+        "layer": "surface",
+        "look_id": "bio_lace_colony_04_p03_s00",
+        "point": [
+          107.092796325684,
+          6.61003112792969,
+          67.9151992797852
+        ],
+        "terrestrial": true,
+        "yaw": 5.30929158456675
+      },
+      "ordinal": 8
+    },
+    "plant": {
+      "body_id": "galaxy:galaxy-v3:71491:planet:8",
+      "encounter": {
+        "form_id": "bio_lantern_root_03",
+        "id": "surface:2:1:1",
+        "introduced": false,
+        "layer": "surface",
+        "look_id": "bio_lantern_root_03_p02_s02",
+        "point": [
+          68.7407989501953,
+          5.4469313621521,
+          47.976001739502
+        ],
+        "terrestrial": true,
+        "yaw": 2.04831841014055
+      },
+      "ordinal": 8
+    }
+  },
+  "new_species": 100
+}

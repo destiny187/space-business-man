@@ -1,0 +1,97 @@
+{
+  "id": "bio_walking_calyx_07",
+  "name": "주머니입수",
+  "family": "walking_calyx",
+  "family_name": "개화구강류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "arid",
+  "morphology": 6,
+  "anatomy": 6,
+  "attack": "none",
+  "anatomy_note": "꽃받침 같은 두꺼운 구강판이 벌어지는 보행 동물 / 이중 배열 골격",
+  "sensory_type": "말단 감각패드",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 6,
+    "branch_mode": 6,
+    "width": 0.95,
+    "height": 1.05
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "environment_label": "건조 사구·협곡",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_walking_calyx_07.blend",
+  "editable_meshes": 32,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_walking_calyx_07_near.glb",
+      "triangles": 30384,
+      "sha256": "9703257a9e3342d4e93a96b147bae4dcd3564d4c01cdc2d7d173b00a1af3b7fb"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_walking_calyx_07_far.glb",
+      "triangles": 8500,
+      "sha256": "5f84e885ba59b2a193407515c18e999a6bb47fa08c0b7e5b58ebe19ad31acd52"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.25299072265625,
+        0.0,
+        -1.25299072265625
+      ],
+      "max": [
+        1.25299072265625,
+        1.299708604812622,
+        1.25299072265625
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.299708604812622,
+      "vertices": 15284
+    },
+    "far": {
+      "min": [
+        -1.2529467344284058,
+        4.2051076889038086e-05,
+        -1.2529467344284058
+      ],
+      "max": [
+        1.2529468536376953,
+        1.299708604812622,
+        1.2529467344284058
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.299708604812622,
+      "vertices": 4333
+    }
+  },
+  "mesh_nodes": 22
+}

@@ -1,0 +1,88 @@
+{
+  "id": "bio_eclipse_bloom_02",
+  "name": "협환일식화",
+  "family": "eclipse_bloom",
+  "family_name": "환공차광류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "crystal",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "큰 구멍이 있는 꽃판 둘레에서 안팎으로 접히는 빛 수집 잎 / 기관 추가·좁고 높은 외곽",
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "width": 0.86,
+    "height": 1.2,
+    "branch_mode": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_eclipse_bloom_02.blend",
+  "editable_meshes": 12,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_eclipse_bloom_02_near.glb",
+      "triangles": 8516,
+      "sha256": "aa5d86675ff8003dd49ae4c2e783020bd1d46ba868fe96e4ea8a2100dc97d10e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_eclipse_bloom_02_far.glb",
+      "triangles": 2382,
+      "sha256": "43d852838fa9432e9832c1341e52a3217bc6e2aafbc7624e07987fd46c333b77"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7766525745391846,
+        0.0,
+        -0.6338014006614685
+      ],
+      "max": [
+        0.7766525745391846,
+        2.4785470962524414,
+        0.6338014006614685
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.4785470962524414,
+      "vertices": 4328
+    },
+    "far": {
+      "min": [
+        -0.7766634225845337,
+        -5.5208802223205566e-05,
+        -0.633795440196991
+      ],
+      "max": [
+        0.7766748666763306,
+        2.4785492420196533,
+        0.6337918639183044
+      ],
+      "floor_y": -5.5208802223205566e-05,
+      "ceiling_y": 2.4785492420196533,
+      "vertices": 1261
+    }
+  },
+  "mesh_nodes": 3
+}

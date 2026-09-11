@@ -1,0 +1,95 @@
+{
+  "id": "bio_offset_halo_04",
+  "name": "낮은편심수",
+  "family": "offset_halo",
+  "family_name": "편심환체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cave",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "anatomy_note": "서로 다른 축의 고리 장기가 편심 관절로 맞물림 / 낮고 넓은 육방 골격",
+  "sensory_type": "빛을 모으는 틈",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 6,
+    "branch_mode": 3,
+    "width": 1.3,
+    "height": 0.73
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_offset_halo_04.blend",
+  "editable_meshes": 25,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_offset_halo_04_near.glb",
+      "triangles": 19608,
+      "sha256": "9989682a02272fc3a87de3f002da32c9f57cc495e9d4736846cf32d43dba79e9"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_offset_halo_04_far.glb",
+      "triangles": 5568,
+      "sha256": "e45708b5bc4718010c1320f6eae73c40ce9892465618d3d7b6f9b046a8126084"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.3299999237060547,
+        0.0,
+        -1.1932495832443237
+      ],
+      "max": [
+        1.3299999237060547,
+        1.263506293296814,
+        1.1932497024536133
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.263506293296814,
+      "vertices": 9898
+    },
+    "far": {
+      "min": [
+        -1.3298144340515137,
+        -0.0007343292236328125,
+        -1.1949217319488525
+      ],
+      "max": [
+        1.3299999237060547,
+        1.26423978805542,
+        1.1928869485855103
+      ],
+      "floor_y": -0.0007343292236328125,
+      "ceiling_y": 1.26423978805542,
+      "vertices": 2878
+    }
+  },
+  "mesh_nodes": 17
+}

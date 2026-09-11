@@ -1,0 +1,93 @@
+{
+  "id": "bio_double_vault_02",
+  "name": "삼궁낙수",
+  "family": "double_vault",
+  "family_name": "쌍궁보행류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "temperate",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "anatomy_note": "나란한 두 등뼈 아치 아래에 매달린 신경기관 / 사방 연결 골격",
+  "sensory_type": "분산 감광점",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_double_vault_02.blend",
+  "editable_meshes": 30,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_double_vault_02_near.glb",
+      "triangles": 15104,
+      "sha256": "030705fb7aebc091a056d94010ba30576be4a802785c76160e638253c91b242e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_double_vault_02_far.glb",
+      "triangles": 4220,
+      "sha256": "cf241cdc5b6333c3b72d8bf021e2d3fae64da41e908ececfbf84959b6abbf32c"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0099997520446777,
+        0.0,
+        -1.066916584968567
+      ],
+      "max": [
+        1.0099999904632568,
+        2.0456106662750244,
+        1.0648319721221924
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.0456106662750244,
+      "vertices": 7724
+    },
+    "far": {
+      "min": [
+        -1.0098142623901367,
+        4.2051076889038086e-05,
+        -1.0601780414581299
+      ],
+      "max": [
+        1.0098145008087158,
+        2.0514731407165527,
+        1.0565004348754883
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 2.0514731407165527,
+      "vertices": 2242
+    }
+  },
+  "mesh_nodes": 14
+}

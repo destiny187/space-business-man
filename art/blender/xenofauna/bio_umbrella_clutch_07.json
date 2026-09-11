@@ -1,0 +1,94 @@
+{
+  "id": "bio_umbrella_clutch_07",
+  "name": "접힌산개수",
+  "family": "umbrella_clutch",
+  "family_name": "산개포옹류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 6,
+  "anatomy": 6,
+  "attack": "none",
+  "anatomy_note": "층층이 겹친 우산형 장기판 아래에 모인 집게 다발 / 이중 배열 골격",
+  "sensory_type": "말단 감각패드",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 6,
+    "branch_mode": 6,
+    "width": 0.95,
+    "height": 1.05
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_umbrella_clutch_07.blend",
+  "editable_meshes": 29,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_umbrella_clutch_07_near.glb",
+      "triangles": 24608,
+      "sha256": "c5d0044bdd00e8c6f03dcac45cea55e21c47fd37e33c7250b411f375fc1c847b"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_umbrella_clutch_07_far.glb",
+      "triangles": 6886,
+      "sha256": "b41e3e3520907e9f0a87a951afa51ed89647417e1c4af4d685ed43ec83a94518"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8914998769760132,
+        0.0,
+        -0.862500011920929
+      ],
+      "max": [
+        0.8914999961853027,
+        1.1674705743789673,
+        0.862500011920929
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.1674705743789673,
+      "vertices": 12396
+    },
+    "far": {
+      "min": [
+        -0.8914998769760132,
+        4.208087921142578e-05,
+        -0.8621151447296143
+      ],
+      "max": [
+        0.8914999961853027,
+        1.1672728061676025,
+        0.8630490303039551
+      ],
+      "floor_y": 4.208087921142578e-05,
+      "ceiling_y": 1.1672728061676025,
+      "vertices": 3520
+    }
+  },
+  "mesh_nodes": 15
+}

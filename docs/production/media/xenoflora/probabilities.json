@@ -1,0 +1,200 @@
+{
+  "scope": "새 은하의 초기 기원 가중치. 휴면 동물은 숨기고 식물/미생물 휴면체는 표시한다. 기후·지형·거리·표시 상한을 적용한 실제 목격률과 구분한다. 배치 비중은 세 범주의 계통 풀이 모두 있을 때의 셀 후보 선택 비중.",
+  "tiers": [
+    {
+      "before_climate_and_placement": {
+        "animal_active_origin_weight": 25.0,
+        "microbe_including_dormant_origin_weight": 40.0,
+        "plant_including_dormant_origin_weight": 40.0
+      },
+      "layers": {
+        "cave": {
+          "candidate_share_percent": {
+            "animal": 50.0,
+            "microbe": 25.0,
+            "plant": 25.0
+          },
+          "lineages": {
+            "animal": 2,
+            "microbe": 1,
+            "plant": 1
+          }
+        },
+        "surface": {
+          "candidate_share_percent": {
+            "animal": 60.0,
+            "microbe": 20.0,
+            "plant": 20.0
+          },
+          "lineages": {
+            "animal": 3,
+            "microbe": 1,
+            "plant": 1
+          }
+        }
+      },
+      "origin": {
+        "dormant": 15.0,
+        "established": 25.0,
+        "sterile": 60.0
+      },
+      "tier": 1
+    },
+    {
+      "before_climate_and_placement": {
+        "animal_active_origin_weight": 40.0,
+        "microbe_including_dormant_origin_weight": 55.0,
+        "plant_including_dormant_origin_weight": 55.0
+      },
+      "layers": {
+        "cave": {
+          "candidate_share_percent": {
+            "animal": 60.0,
+            "microbe": 20.0,
+            "plant": 20.0
+          },
+          "lineages": {
+            "animal": 3,
+            "microbe": 1,
+            "plant": 1
+          }
+        },
+        "surface": {
+          "candidate_share_percent": {
+            "animal": 71.4285714285714,
+            "microbe": 14.2857142857143,
+            "plant": 14.2857142857143
+          },
+          "lineages": {
+            "animal": 5,
+            "microbe": 1,
+            "plant": 1
+          }
+        }
+      },
+      "origin": {
+        "dormant": 15.0,
+        "established": 40.0,
+        "sterile": 45.0
+      },
+      "tier": 2
+    },
+    {
+      "before_climate_and_placement": {
+        "animal_active_origin_weight": 55.0,
+        "microbe_including_dormant_origin_weight": 70.0,
+        "plant_including_dormant_origin_weight": 70.0
+      },
+      "layers": {
+        "cave": {
+          "candidate_share_percent": {
+            "animal": 66.6666666666667,
+            "microbe": 16.6666666666667,
+            "plant": 16.6666666666667
+          },
+          "lineages": {
+            "animal": 4,
+            "microbe": 1,
+            "plant": 1
+          }
+        },
+        "surface": {
+          "candidate_share_percent": {
+            "animal": 77.7777777777778,
+            "microbe": 11.1111111111111,
+            "plant": 11.1111111111111
+          },
+          "lineages": {
+            "animal": 7,
+            "microbe": 1,
+            "plant": 1
+          }
+        }
+      },
+      "origin": {
+        "dormant": 15.0,
+        "established": 55.0,
+        "sterile": 30.0
+      },
+      "tier": 3
+    },
+    {
+      "before_climate_and_placement": {
+        "animal_active_origin_weight": 70.0,
+        "microbe_including_dormant_origin_weight": 82.0,
+        "plant_including_dormant_origin_weight": 82.0
+      },
+      "layers": {
+        "cave": {
+          "candidate_share_percent": {
+            "animal": 71.4285714285714,
+            "microbe": 14.2857142857143,
+            "plant": 14.2857142857143
+          },
+          "lineages": {
+            "animal": 5,
+            "microbe": 1,
+            "plant": 1
+          }
+        },
+        "surface": {
+          "candidate_share_percent": {
+            "animal": 81.8181818181818,
+            "microbe": 9.09090909090909,
+            "plant": 9.09090909090909
+          },
+          "lineages": {
+            "animal": 9,
+            "microbe": 1,
+            "plant": 1
+          }
+        }
+      },
+      "origin": {
+        "dormant": 12.0,
+        "established": 70.0,
+        "sterile": 18.0
+      },
+      "tier": 4
+    },
+    {
+      "before_climate_and_placement": {
+        "animal_active_origin_weight": 85.0,
+        "microbe_including_dormant_origin_weight": 92.0,
+        "plant_including_dormant_origin_weight": 92.0
+      },
+      "layers": {
+        "cave": {
+          "candidate_share_percent": {
+            "animal": 75.0,
+            "microbe": 12.5,
+            "plant": 12.5
+          },
+          "lineages": {
+            "animal": 6,
+            "microbe": 1,
+            "plant": 1
+          }
+        },
+        "surface": {
+          "candidate_share_percent": {
+            "animal": 84.6153846153846,
+            "microbe": 7.69230769230769,
+            "plant": 7.69230769230769
+          },
+          "lineages": {
+            "animal": 11,
+            "microbe": 1,
+            "plant": 1
+          }
+        }
+      },
+      "origin": {
+        "dormant": 7.0,
+        "established": 85.0,
+        "sterile": 8.0
+      },
+      "tier": 5
+    }
+  ]
+}

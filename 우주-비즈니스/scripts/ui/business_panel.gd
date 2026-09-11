@@ -369,7 +369,7 @@ func update_engineering() -> void:
 	for environment in def.environments:
 		if knowledge.get("research",{}).has(environment):analyzed=true;form_id=knowledge.research[environment].form_id;break
 	for card in engineering_cards.get_children():card.selected=card.get_meta("project")==key;card.queue_redraw()
-	engineering_preview.show_model(FrontierCatalog.entry("buildings",def.building).model if form_id.is_empty() else "bestiary/"+str(FrontierEcologyCatalog.form(form_id).lods.near.path).get_file().trim_suffix(".glb"))
+	engineering_preview.show_model(FrontierCatalog.entry("buildings",def.building).model if form_id.is_empty() else FrontierEcologyCatalog.model_key(FrontierEcologyCatalog.form(form_id)))
 	var stage: String=str(row.get("stage",""))
 	var installed: bool=not current.get("buildings",{}).get(context_id,{}).get("engineering","").is_empty()
 	var done: Array=[analyzed,stage in ["prototype_ready","trial","certified"],stage=="certified",installed]

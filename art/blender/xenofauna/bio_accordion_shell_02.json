@@ -1,0 +1,91 @@
+{
+  "id": "bio_accordion_shell_02",
+  "name": "사주름갑수",
+  "family": "accordion_shell",
+  "family_name": "주름갑체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "arid",
+  "morphology": 1,
+  "anatomy": 1,
+  "attack": "none",
+  "anatomy_note": "중심 축을 따라 압축되는 큰 외골격 주름과 측면 발 / 사방 연결 골격",
+  "sensory_type": "분산 감광점",
+  "eye_count": 1,
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "environment_label": "건조 사구·협곡",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_accordion_shell_02.blend",
+  "editable_meshes": 15,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_accordion_shell_02_near.glb",
+      "triangles": 9968,
+      "sha256": "8c3dca4b04153f7e19baf65e7e158a67d5c7465e1f6607de542cb3e46653bbe2"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_accordion_shell_02_far.glb",
+      "triangles": 2786,
+      "sha256": "b896ffb9a3166e3da3d4c25998390e41173b82d5548c1c041eb867b15487563a"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7056061029434204,
+        0.0,
+        -1.0500000715255737
+      ],
+      "max": [
+        0.7056061029434204,
+        1.4723261594772339,
+        1.1029999256134033
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.4723261594772339,
+      "vertices": 5118
+    },
+    "far": {
+      "min": [
+        -0.7052370309829712,
+        0.0004234910011291504,
+        -1.0502026081085205
+      ],
+      "max": [
+        0.7052370309829712,
+        1.4729193449020386,
+        1.1028811931610107
+      ],
+      "floor_y": 0.0004234910011291504,
+      "ceiling_y": 1.4729193449020386,
+      "vertices": 1527
+    }
+  },
+  "mesh_nodes": 11
+}

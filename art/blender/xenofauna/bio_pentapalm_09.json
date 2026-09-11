@@ -1,0 +1,93 @@
+{
+  "id": "bio_pentapalm_09",
+  "name": "이중손수",
+  "family": "pentapalm",
+  "family_name": "방사수장류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "머리 없이 손바닥처럼 갈라진 방사형 몸통과 손끝 입 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_pentapalm_09.blend",
+  "editable_meshes": 37,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_0_R",
+    "Anim_Leg_1_R",
+    "Anim_Leg_2_R",
+    "Anim_Leg_3_R",
+    "Anim_Leg_4_R",
+    "Anim_Leg_5_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_pentapalm_09_near.glb",
+      "triangles": 6464,
+      "sha256": "70d015c5c8b7653fac58c7a2457b9e07b5308cfc25476a72da1eb9856759ae23"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_pentapalm_09_far.glb",
+      "triangles": 1793,
+      "sha256": "ab92cae9dc48711373febbaa241a81bf6942133600203a9896307e37e9b3521b"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.7167061567306519,
+        0.0,
+        -1.5339982509613037
+      ],
+      "max": [
+        1.7167061567306519,
+        0.8825783133506775,
+        1.5339982509613037
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.8825783133506775,
+      "vertices": 3594
+    },
+    "far": {
+      "min": [
+        -1.7167061567306519,
+        -0.011535286903381348,
+        -1.5339982509613037
+      ],
+      "max": [
+        1.7167061567306519,
+        0.8883477449417114,
+        1.5339982509613037
+      ],
+      "floor_y": -0.011535286903381348,
+      "ceiling_y": 0.8883477449417114,
+      "vertices": 1258
+    }
+  },
+  "mesh_nodes": 19
+}

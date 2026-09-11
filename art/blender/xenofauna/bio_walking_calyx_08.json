@@ -1,0 +1,96 @@
+{
+  "id": "bio_walking_calyx_08",
+  "name": "겹꽃입수",
+  "family": "walking_calyx",
+  "family_name": "개화구강류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "cold",
+  "morphology": 7,
+  "anatomy": 7,
+  "attack": "none",
+  "anatomy_note": "꽃받침 같은 두꺼운 구강판이 벌어지는 보행 동물 / 편심 장축 골격",
+  "sensory_type": "이중 감각고리",
+  "eye_count": 5,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "limb_count": 4,
+    "branch_mode": 7,
+    "width": 1.1,
+    "height": 1.2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "699ea9"
+  ],
+  "environment_label": "한랭·빙하",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_walking_calyx_08.blend",
+  "editable_meshes": 29,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Petal_0",
+    "Anim_Petal_1",
+    "Anim_Petal_2",
+    "Anim_Petal_3",
+    "Anim_Petal_4",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_walking_calyx_08_near.glb",
+      "triangles": 22372,
+      "sha256": "68bf562a22f302d26b0d28b86e81a7dc5189db6db2dd6259215d59fa4bac8057"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_walking_calyx_08_far.glb",
+      "triangles": 6246,
+      "sha256": "bd130157ab01b187948c0b3222b7ca1bdd31d8dd6b46802b0132a597d3031f46"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.3702386617660522,
+        0.0,
+        -1.4397989511489868
+      ],
+      "max": [
+        1.386307954788208,
+        1.481114387512207,
+        1.2944343090057373
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.481114387512207,
+      "vertices": 11272
+    },
+    "far": {
+      "min": [
+        -1.3703981637954712,
+        4.2051076889038086e-05,
+        -1.439794659614563
+      ],
+      "max": [
+        1.3873257637023926,
+        1.481114387512207,
+        1.2944343090057373
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.481114387512207,
+      "vertices": 3209
+    }
+  },
+  "mesh_nodes": 25
+}

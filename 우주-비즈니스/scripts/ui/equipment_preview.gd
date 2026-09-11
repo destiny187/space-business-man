@@ -9,6 +9,7 @@ var model_path: String=""
 var continuous_rendering:=false
 var render_dirty:=true
 var render_state: Array=[]
+var specimen_bounds:=AABB()
 func request_render() -> void:
 	render_dirty=true
 func _ready() -> void:
@@ -22,6 +23,7 @@ func _ready() -> void:
 	visibility_changed.connect(request_render);resized.connect(request_render)
 func show_model(path: String) -> void:
 	if model_path==path:return
+	specimen_bounds=AABB()
 	model_path=path;request_render()
 	if model!=null:stage.remove_child(model);model.queue_free();model=null
 	if path.is_empty():return
@@ -35,8 +37,13 @@ func show_model(path: String) -> void:
 	request_render()
 func show_specimen(sample: Dictionary) -> void:
 	var definition:=FrontierEcologyCatalog.form(sample.form_id)
-	var path: String="bestiary/"+str(definition.lods.near.path).get_file().trim_suffix(".glb")
+	var path: String=FrontierEcologyCatalog.model_key(definition)
 	show_model(path)
+	var geometry: Dictionary=definition.get("geometry",{}).get("near",{})
+	if geometry.has("min") and geometry.has("max"):
+		var low:=Vector3(geometry.min[0],geometry.min[1],geometry.min[2]);var high:=Vector3(geometry.max[0],geometry.max[1],geometry.max[2])
+		model.position=-(low+high)*.5
+		frame_specimen(AABB(low,high-low))
 	var look:=FrontierNativeIncidents.look(sample) if sample.has("variant") and sample.has("factor") else FrontierEcologyCatalog.look(sample.form_id,sample.look_id)
 	for node in model.find_children("*","MeshInstance3D",true,false):
 		if node.mesh==null:continue
@@ -48,12 +55,29 @@ func show_specimen(sample: Dictionary) -> void:
 			if index>=0:material.set_shader_parameter("base_color",Color(look.palette[index]).linear_to_srgb())
 	request_render()
 
+func frame_specimen(bounds: AABB) -> void:
+	specimen_bounds=AABB(-bounds.size*.5,bounds.size)
+	camera.position=Vector3(1,.45,-1.4).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
+	_fit_specimen()
+
+func _fit_specimen() -> void:
+	if not specimen_bounds.has_volume():return
+	var projected:=AABB();var first:=true
+	for i in 8:
+		var point:=camera.global_basis.inverse()*specimen_bounds.get_endpoint(i)
+		projected=AABB(point,Vector3.ZERO) if first else projected.expand(point);first=false
+	var aspect:=maxf(size.x,1.0)/maxf(size.y,1.0)
+	# Fit the projected anatomy to this panel's aspect, including flat colonies.
+	camera.keep_aspect=Camera3D.KEEP_HEIGHT
+	camera.size=maxf(projected.size.y,projected.size.x/aspect)*1.2
+
 func _gui_input(event: InputEvent) -> void:
 	if model!=null and event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):model.rotate_y(event.relative.x*.012);request_render()
 func _process(_delta: float) -> void:
 	if not is_visible_in_tree():
 		viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED
 		return
+	_fit_specimen()
 	# Callers also adjust framing directly after model changes. Detect those
 	# inexpensive values, without walking meshes or hashing materials each frame.
 	var current: Array=[size,viewport.size,camera.transform,camera.size,camera.fov,camera.projection,model.transform if is_instance_valid(model) else Transform3D.IDENTITY]

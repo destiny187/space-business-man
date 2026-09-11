@@ -1,0 +1,97 @@
+{
+  "id": "bio_split_keel_07",
+  "name": "벌어진쌍골수",
+  "family": "split_keel",
+  "family_name": "쌍용골류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "basalt",
+  "morphology": 6,
+  "anatomy": 6,
+  "attack": "none",
+  "anatomy_note": "두 개의 긴 몸통이 가로 근육으로 결합된 지상 동물 / 이중 배열 골격",
+  "sensory_type": "말단 감각패드",
+  "eye_count": 0,
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 6,
+    "branch_mode": 6,
+    "width": 0.95,
+    "height": 1.05
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_split_keel_07.blend",
+  "editable_meshes": 32,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_split_keel_07_near.glb",
+      "triangles": 20544,
+      "sha256": "1712cd9dd411723dba1d6c1ca19e51ce8e7c38e0e757df583eb6781e635158a9"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_split_keel_07_far.glb",
+      "triangles": 5744,
+      "sha256": "e20ce2dfe58fdba59abbf11a6262a0baa6b96d5574fe3bb3065b7a9f4f9b631d"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0434998273849487,
+        0.0,
+        -1.121286392211914
+      ],
+      "max": [
+        1.0434999465942383,
+        1.0100951194763184,
+        1.2335400581359863
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.0100951194763184,
+      "vertices": 10424
+    },
+    "far": {
+      "min": [
+        -1.0434998273849487,
+        4.2051076889038086e-05,
+        -1.119718313217163
+      ],
+      "max": [
+        1.0434999465942383,
+        1.0108036994934082,
+        1.2336105108261108
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.0108036994934082,
+      "vertices": 3013
+    }
+  },
+  "mesh_nodes": 22
+}

@@ -32,8 +32,8 @@ var light_index:=0
 var light_button: Button
 
 func _ready() -> void:
-	forms=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/forms.json")).forms
-	appearances=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/appearances.json")).appearances
+	forms=FrontierEcologyCatalog.all_forms()
+	appearances=FrontierEcologyCatalog.all_appearances()
 	film="--film" in OS.get_cmdline_user_args()
 	aberrant_only="--aberrant" in OS.get_cmdline_user_args()
 	eye_revisions="--eye-revisions" in OS.get_cmdline_user_args()
@@ -94,7 +94,11 @@ func _ready() -> void:
 	for i in range(forms.size()):
 		if not eye_revisions or forms[i].has("eye_design"):filtered.append(i)
 		if forms[i].attack!="none" and (eye_revisions or i==0 or forms[i-1].family!=forms[i].family) and (not aberrant_only or forms[i].get("collection","")=="aberrant") and (not eye_revisions or forms[i].has("eye_design")): film_choices.append(i)
-	select_form(15 if eye_revisions else (500 if aberrant_only else 0))
+	var initial:=15 if eye_revisions else (500 if aberrant_only else 0)
+	if "--biota" in OS.get_cmdline_user_args():
+		for i in forms.size():
+			if forms[i].get("collection","")=="biota-7000":initial=i;break
+	select_form(initial)
 	print("BESTIARY_GALLERY_READY forms=",forms.size()," appearances=",appearances.size())
 	if "--attack-captures" in OS.get_cmdline_user_args():capture_attacks()
 	if "--film-captures" in OS.get_cmdline_user_args():capture_film()
@@ -174,7 +178,7 @@ func build_ui() -> void:
 	light_button=button(panel,"조명 · 주광",Vector2(24,650),Vector2(153,46),cycle_light)
 	button(panel,"효과 켜기/끄기",Vector2(189,650),Vector2(153,46),func():actor.show_effects=not actor.show_effects;actor.update_fx())
 	button(panel,"근거리 / 원거리 모델",Vector2(24,710),Vector2(318,46),func():actor.lod_override=1-actor.lod_override)
-	text(panel,"서식 조건을 고려한 외형 시연\n실제 출현·생존·피해 계산은 연결 전",Vector2(24,780),16,"52665f")
+	text(panel,"모델·기관 동작과 조명 검수\n실제 서식은 행성 고유 생태를 따름",Vector2(24,780),16,"52665f")
 	status=text(ui,"",Vector2(54,883),20)
 	text(ui,"← → 모델   ·   ↑ ↓ 변형   ·   1–4 동작   ·   Space 정지   ·   R 회전   ·   드래그/휠   ·   Esc 종료",Vector2(54,950),16)
 
@@ -215,9 +219,13 @@ func frame_subject() -> void:
 	camera.look_at(target)
 
 func update_labels() -> void:
+	info.add_theme_font_size_override("font_size",17);info.tooltip_text=""
 	info.text="%s\n\n모델 %03d / %d · 변형 %02d / 20\n공격 유형: %s"%[forms[selected].habitat_note,selected+1,forms.size(),variant+1,{"none":"없음","ram":"돌진","bite":"물기","kick":"차기","claw":"집게","scythe":"베기","slam":"내려치기","dive":"급강하","spit":"분사"}.get(forms[selected].attack,"")]
 	if forms[selected].has("sensory_type"):
 		info.text="눈 %d개 · %s\n모델 %03d / %d · 변형 %02d / 20"%[forms[selected].eye_count,forms[selected].sensory_type,selected+1,forms.size(),variant+1]
+	if forms[selected].get("collection","")=="biota-7000":
+		info.add_theme_font_size_override("font_size",14);info.tooltip_text=forms[selected].anatomy_note
+		info.text="%s · 주요 기관 %d개\n%s\n유형 골격 %d개 본\n모델 %04d / %d · 변형 %02d / 20"%[forms[selected].family_name,int(forms[selected].body_plan.radial_count),forms[selected].adaptation_note,int(forms[selected].rig.bone_count),selected+1,forms.size(),variant+1]
 	status.text=appearances[selected*20+variant].id+"   /   "+str(appearances.size())+"개 외형 프로필"
 
 func step_variant(direction: int) -> void:

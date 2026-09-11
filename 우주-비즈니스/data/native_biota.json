@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "required_base_forms": 8000,
+  "planet_budget_by_tier": [
+    30,
+    80,
+    160,
+    300,
+    550
+  ],
+  "species_budget_weight_by_tier": [
+    1,
+    3,
+    10,
+    26,
+    60
+  ],
+  "established_percent_by_tier": [
+    65,
+    72,
+    80,
+    86,
+    92
+  ],
+  "corridor_width": 4.0,
+  "coreward_weight": 120.0,
+  "off_corridor_weight": 0.12,
+  "outward_weight": 0.01,
+  "candidate_system_limit": 4800,
+  "max_lineages_per_planet": 64,
+  "notes": "새 은하만 적용하는 초기 밸런스. 자연 기본종은 행성 하나에만 소속한다. 생명권 행성 수와 그 안의 정착 비율은 별개이며 방문 순서에 의존하지 않는다.",
+  "atmosphere_survey": {
+    "scan_seconds": 3.0,
+    "range_above_envelope": 1400.0,
+    "aim_dot": 0.985
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "id": "bio_inverted_fan_07",
+  "name": "접힌역선수",
+  "family": "inverted_fan",
+  "family_name": "역선체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "temperate",
+  "morphology": 6,
+  "anatomy": 6,
+  "attack": "none",
+  "anatomy_note": "한쪽에 치우친 부채 몸통과 반대쪽의 접지 다발 / 이중 배열 골격",
+  "sensory_type": "말단 감각패드",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 4,
+    "limb_count": 6,
+    "branch_mode": 6,
+    "width": 0.95,
+    "height": 1.05
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_inverted_fan_07.blend",
+  "editable_meshes": 35,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Head"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_inverted_fan_07_near.glb",
+      "triangles": 28144,
+      "sha256": "046a69f4526c7378d6a8639556675747a6367067002ab8ad4c51a66ebfcdd77e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_inverted_fan_07_far.glb",
+      "triangles": 7871,
+      "sha256": "d2d420f4767fe19314a2a3c9452c85410f2d2666b784a491d1879b3008b7e6fb"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.9199998378753662,
+        0.0,
+        -0.8381790518760681
+      ],
+      "max": [
+        0.9199999570846558,
+        1.9530510902404785,
+        0.8381791710853577
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.9530510902404785,
+      "vertices": 14206
+    },
+    "far": {
+      "min": [
+        -0.9199998378753662,
+        4.2051076889038086e-05,
+        -0.8398512601852417
+      ],
+      "max": [
+        0.9199999570846558,
+        1.9530518054962158,
+        0.8398512601852417
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.9530518054962158,
+      "vertices": 4068
+    }
+  },
+  "mesh_nodes": 16
+}

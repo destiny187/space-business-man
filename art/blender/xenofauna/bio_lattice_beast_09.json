@@ -1,0 +1,107 @@
+{
+  "id": "bio_lattice_beast_09",
+  "name": "분지격자수",
+  "family": "lattice_beast",
+  "family_name": "격자골수류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "살덩어리 대신 빈 공간을 둘러싼 격자 골격과 마디 장기 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_lattice_beast_09.blend",
+  "editable_meshes": 54,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5",
+    "Anim_Appendage_6",
+    "Anim_Appendage_7",
+    "Anim_Appendage_8",
+    "Anim_Appendage_9",
+    "Anim_Appendage_10",
+    "Anim_Appendage_11",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_lattice_beast_09_near.glb",
+      "triangles": 23792,
+      "sha256": "be96028f8f6c4ca94614cec689605dd99e9ba53fc9e677959fb5a360fa2ae20b"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_lattice_beast_09_far.glb",
+      "triangles": 6642,
+      "sha256": "8fea6c6d24bce07bda95f5b6840f838a956ac0f54da24cfd021332df3e6e2b08"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0455998182296753,
+        0.0,
+        -1.065599799156189
+      ],
+      "max": [
+        1.0455999374389648,
+        1.0928000211715698,
+        1.065599799156189
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.0928000211715698,
+      "vertices": 12212
+    },
+    "far": {
+      "min": [
+        -1.0455998182296753,
+        4.2051076889038086e-05,
+        -1.0672719478607178
+      ],
+      "max": [
+        1.0455999374389648,
+        1.0928000211715698,
+        1.0672719478607178
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.0928000211715698,
+      "vertices": 3625
+    }
+  },
+  "mesh_nodes": 30
+}

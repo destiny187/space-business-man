@@ -1,0 +1,99 @@
+{
+  "id": "bio_comb_tendril_04",
+  "name": "쌍빗촉초",
+  "family": "comb_tendril",
+  "family_name": "빗살촉엽류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "crystal",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "길게 휜 줄기 양옆에 교대로 달린 숟가락형 잎 / 연결 수 증가·상하 전개",
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_comb_tendril_04.blend",
+  "editable_meshes": 21,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0_-1",
+    "Anim_Frond_0_1",
+    "Anim_Frond_1_-1",
+    "Anim_Frond_1_1",
+    "Anim_Frond_2_-1",
+    "Anim_Frond_2_1",
+    "Anim_Frond_3_-1",
+    "Anim_Frond_3_1",
+    "Anim_Frond_4_-1",
+    "Anim_Frond_4_1",
+    "Anim_Frond_5_-1",
+    "Anim_Frond_5_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_comb_tendril_04_near.glb",
+      "triangles": 21560,
+      "sha256": "862ea55a3e2e2e7be7368d820457f1d0a650489c860a88ff71acbab893f3da3e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_comb_tendril_04_far.glb",
+      "triangles": 6028,
+      "sha256": "2a1666b5314d61614a52d752398516703b50d615f2ac41208c95b321ec8eed2e"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.976908802986145,
+        0.0,
+        -0.7467658519744873
+      ],
+      "max": [
+        1.1922911405563354,
+        1.7870433330535889,
+        0.7467657327651978
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.7870433330535889,
+      "vertices": 10886
+    },
+    "far": {
+      "min": [
+        -0.9770745635032654,
+        -5.657970905303955e-05,
+        -0.7468547821044922
+      ],
+      "max": [
+        1.1922999620437622,
+        1.7869184017181396,
+        0.7468649744987488
+      ],
+      "floor_y": -5.657970905303955e-05,
+      "ceiling_y": 1.7869184017181396,
+      "vertices": 3120
+    }
+  },
+  "mesh_nodes": 13
+}

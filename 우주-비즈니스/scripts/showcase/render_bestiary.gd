@@ -13,8 +13,8 @@ var stage_filter:="all"
 func _initialize() -> void:call_deferred("run")
 
 func run() -> void:
-	forms=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/forms.json")).forms
-	appearances=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/appearances.json")).appearances
+	forms=FrontierEcologyCatalog.all_forms()
+	appearances=FrontierEcologyCatalog.all_appearances()
 	destination=ProjectSettings.globalize_path("res://../docs/production/media/bestiary/")
 	for folder in ["models","variants","lighting","lod","records","boards"]:DirAccess.make_dir_recursive_absolute(destination+folder)
 	for arg in OS.get_cmdline_user_args():

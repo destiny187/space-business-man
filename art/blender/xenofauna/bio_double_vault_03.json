@@ -1,0 +1,94 @@
+{
+  "id": "bio_double_vault_03",
+  "name": "갈퀴궁수",
+  "family": "double_vault",
+  "family_name": "쌍궁보행류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 2,
+  "anatomy": 2,
+  "attack": "none",
+  "anatomy_note": "나란한 두 등뼈 아치 아래에 매달린 신경기관 / 오방 분절 골격",
+  "sensory_type": "깊은 감각구",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "limb_count": 5,
+    "branch_mode": 2,
+    "width": 1.05,
+    "height": 0.93
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_double_vault_03.blend",
+  "editable_meshes": 37,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_double_vault_03_near.glb",
+      "triangles": 18640,
+      "sha256": "2d3618f99b9c2c56be61b9f075ea37854b6a74d264a3b27a410cfbb3b43763dc"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_double_vault_03_far.glb",
+      "triangles": 5206,
+      "sha256": "01d67f5f05f6817ed8bf404c4707e619a52f45d8e4979fedf18349d1fa0d6e6a"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8476642966270447,
+        0.0,
+        -1.0666223764419556
+      ],
+      "max": [
+        1.0099999904632568,
+        1.7510206699371338,
+        1.0642081499099731
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.7510206699371338,
+      "vertices": 9530
+    },
+    "far": {
+      "min": [
+        -0.8476642966270447,
+        4.2051076889038086e-05,
+        -1.0607895851135254
+      ],
+      "max": [
+        1.0098145008087158,
+        1.7562620639801025,
+        1.0570822954177856
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.7562620639801025,
+      "vertices": 2764
+    }
+  },
+  "mesh_nodes": 16
+}

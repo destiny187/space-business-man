@@ -74,7 +74,7 @@ func refresh() -> void:
 func update_detail() -> void:
 	var form:=FrontierEcologyCatalog.form(selected_form())
 	if form.is_empty():detail.text="육안 관측 → 스캔 → 기초 분석 → 생체 표본 운송 → 관리 구획 이식\n\n스캔 기록에는 실물 표본이 포함되지 않습니다.";return
-	var habitat: Dictionary=FrontierEcologyCatalog.config().habitats[form.environment]
+	var habitat:=FrontierEcologyCatalog.habitat(form)
 	detail.text="%s  %s\n온도 %.0f–%.0f°C / 압력 %.0f–%.0f kPa\n%s\n연구: %s%s\n외계 생리와 범위는 게임 설정입니다."%[form.family_name,form.environment_label,habitat.temperature[0],habitat.temperature[1],habitat.pressure[0],habitat.pressure[1],form.habitat_note,habitat.principle,"  분석 완료" if app.state.ecology.research.has(form.environment) else "  미분석"]
 
 func _process(delta: float) -> void:

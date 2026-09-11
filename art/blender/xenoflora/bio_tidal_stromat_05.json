@@ -1,0 +1,94 @@
+{
+  "id": "bio_tidal_stromat_05",
+  "name": "관층파문군",
+  "family": "tidal_stromat",
+  "family_name": "층상파문군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "basalt",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "수분을 모으는 주름진 층과 얕은 중앙 분지가 쌓인 군락 / 조밀한 기관·높은 외곽",
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "width": 0.9,
+    "height": 1.32,
+    "branch_mode": 4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "596c70",
+    "839594",
+    "ba6d34"
+  ],
+  "environment_label": "광물성 암반",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_tidal_stromat_05.blend",
+  "editable_meshes": 17,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Segment_0",
+    "Anim_Segment_1",
+    "Anim_Segment_2",
+    "Anim_Segment_3",
+    "Anim_Segment_4",
+    "Anim_Segment_5",
+    "Anim_Segment_6"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_tidal_stromat_05_near.glb",
+      "triangles": 17472,
+      "sha256": "0200aa94e4467b0df2d8d15da60f17af60114bf7f10551858666753874de8f96"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_tidal_stromat_05_far.glb",
+      "triangles": 4883,
+      "sha256": "8742869c3bc56aaa975ca84d32521c68a9ed152750ca533e6c945842e13c6af0"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7802270650863647,
+        0.0,
+        -0.6611685752868652
+      ],
+      "max": [
+        0.8299999237060547,
+        0.8728656768798828,
+        0.6611686944961548
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 0.8728656768798828,
+      "vertices": 8822
+    },
+    "far": {
+      "min": [
+        -0.775940477848053,
+        5.111098289489746e-05,
+        -0.6611685752868652
+      ],
+      "max": [
+        0.8294174671173096,
+        0.8715428113937378,
+        0.6611686944961548
+      ],
+      "floor_y": 5.111098289489746e-05,
+      "ceiling_y": 0.8715428113937378,
+      "vertices": 2498
+    }
+  },
+  "mesh_nodes": 10
+}

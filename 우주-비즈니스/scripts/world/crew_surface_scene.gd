@@ -161,6 +161,7 @@ func _process(delta: float) -> void:
 	var underground: float=clampf((terrain.field.height(viewer.position.x,viewer.position.z)-viewer.position.y-2.0)/10.0,0,1)
 	atmosphere.sync_clock(float(session.latest.crew.navigation.orbit_time))
 	_sync_wildlife()
+	ecology.sync_clock(float(session.latest.crew.navigation.orbit_time))
 	atmosphere.step(delta,viewer.position,underground,float(preferences.values.fog))
 	tick-=delta
 	if tick<=0:

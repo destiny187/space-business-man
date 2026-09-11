@@ -1,0 +1,97 @@
+{
+  "id": "bio_double_vault_09",
+  "name": "천막궁수",
+  "family": "double_vault",
+  "family_name": "쌍궁보행류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "temperate",
+  "morphology": 8,
+  "anatomy": 8,
+  "attack": "none",
+  "anatomy_note": "나란한 두 등뼈 아치 아래에 매달린 신경기관 / 교차 연결 골격",
+  "sensory_type": "빗살 감각엽",
+  "eye_count": 0,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_double_vault_09.blend",
+  "editable_meshes": 50,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R",
+    "Anim_Leg_07_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_double_vault_09_near.glb",
+      "triangles": 25472,
+      "sha256": "47b56da744717254e158a65f0c5d8a2d6edffbc3dec16fbbb35564484bda5f50"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_double_vault_09_far.glb",
+      "triangles": 7117,
+      "sha256": "393f885cd902abac805a95479993ac0a4d96d04487ea3c8183fcd29f6741488c"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0099997520446777,
+        0.0,
+        -1.0664061307907104
+      ],
+      "max": [
+        1.0099999904632568,
+        1.673464298248291,
+        1.0639774799346924
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.673464298248291,
+      "vertices": 13012
+    },
+    "far": {
+      "min": [
+        -1.0099997520446777,
+        4.2051076889038086e-05,
+        -1.0608391761779785
+      ],
+      "max": [
+        1.0098145008087158,
+        1.6785290241241455,
+        1.057193398475647
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.6785290241241455,
+      "vertices": 3779
+    }
+  },
+  "mesh_nodes": 22
+}

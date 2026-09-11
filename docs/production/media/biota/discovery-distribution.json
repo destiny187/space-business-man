@@ -1,0 +1,338 @@
+{
+  "seed": 71491,
+  "catalogue_hash": "46eb97ab5f9825e74bc95c258ed95d610871ba8adf761f53de4008d0a34e4b7e",
+  "catalogue_source": "biota_forms",
+  "planet_count": 500000,
+  "corridor_definition": "0 <= x <= Sun.x, abs(y) <= 4.0, after rotating Sun east",
+  "meaning": "Natural home presence per uniformly selected planet of the same tier. Animals on dormant worlds are hidden until restoration; plant/microbial dormant colonies remain observable. Terrain reachability and time spent exploring are not included.",
+  "assigned_categories": {
+    "animal": 5409,
+    "plant": 1525,
+    "microbe": 780
+  },
+  "regions": {
+    "galaxy": {
+      "1": {
+        "planets": 100288,
+        "native_home": 30,
+        "animal_home": 27,
+        "observable_home": 25,
+        "animal_observable": 14,
+        "plant_home": 18,
+        "plant_observable": 18,
+        "microbe_home": 2,
+        "microbe_observable": 2,
+        "percent": {
+          "native_home": 0.0299,
+          "observable_home": 0.0249,
+          "animal_observable": 0.014,
+          "plant_observable": 0.0179,
+          "microbe_observable": 0.002
+        }
+      },
+      "2": {
+        "planets": 99689,
+        "native_home": 80,
+        "observable_home": 67,
+        "animal_home": 78,
+        "animal_observable": 53,
+        "plant_home": 35,
+        "plant_observable": 35,
+        "microbe_home": 16,
+        "microbe_observable": 16,
+        "percent": {
+          "native_home": 0.0802,
+          "observable_home": 0.0672,
+          "animal_observable": 0.0532,
+          "plant_observable": 0.0351,
+          "microbe_observable": 0.016
+        }
+      },
+      "3": {
+        "planets": 100145,
+        "native_home": 160,
+        "observable_home": 155,
+        "plant_home": 100,
+        "animal_home": 159,
+        "plant_observable": 100,
+        "animal_observable": 125,
+        "microbe_home": 66,
+        "microbe_observable": 66,
+        "percent": {
+          "native_home": 0.1598,
+          "observable_home": 0.1548,
+          "animal_observable": 0.1248,
+          "plant_observable": 0.0999,
+          "microbe_observable": 0.0659
+        }
+      },
+      "4": {
+        "planets": 99835,
+        "native_home": 300,
+        "observable_home": 297,
+        "plant_home": 222,
+        "animal_home": 300,
+        "plant_observable": 222,
+        "animal_observable": 255,
+        "microbe_home": 153,
+        "microbe_observable": 153,
+        "percent": {
+          "native_home": 0.3005,
+          "observable_home": 0.2975,
+          "animal_observable": 0.2554,
+          "plant_observable": 0.2224,
+          "microbe_observable": 0.1533
+        }
+      },
+      "5": {
+        "planets": 100043,
+        "native_home": 550,
+        "observable_home": 547,
+        "animal_home": 550,
+        "microbe_home": 333,
+        "animal_observable": 515,
+        "microbe_observable": 333,
+        "plant_home": 464,
+        "plant_observable": 464,
+        "percent": {
+          "native_home": 0.5498,
+          "observable_home": 0.5468,
+          "animal_observable": 0.5148,
+          "plant_observable": 0.4638,
+          "microbe_observable": 0.3329
+        }
+      }
+    },
+    "coreward_corridor": {
+      "1": {
+        "planets": 188,
+        "native_home": 12,
+        "observable_home": 9,
+        "plant_home": 7,
+        "animal_home": 11,
+        "plant_observable": 7,
+        "microbe_home": 2,
+        "animal_observable": 4,
+        "microbe_observable": 2,
+        "percent": {
+          "native_home": 6.383,
+          "observable_home": 4.7872,
+          "animal_observable": 2.1277,
+          "plant_observable": 3.7234,
+          "microbe_observable": 1.0638
+        }
+      },
+      "2": {
+        "planets": 424,
+        "native_home": 42,
+        "observable_home": 38,
+        "plant_home": 18,
+        "animal_home": 41,
+        "plant_observable": 18,
+        "animal_observable": 34,
+        "microbe_home": 10,
+        "microbe_observable": 10,
+        "percent": {
+          "native_home": 9.9057,
+          "observable_home": 8.9623,
+          "animal_observable": 8.0189,
+          "plant_observable": 4.2453,
+          "microbe_observable": 2.3585
+        }
+      },
+      "3": {
+        "planets": 659,
+        "native_home": 111,
+        "observable_home": 107,
+        "plant_home": 64,
+        "animal_home": 110,
+        "microbe_home": 50,
+        "plant_observable": 64,
+        "animal_observable": 87,
+        "microbe_observable": 50,
+        "percent": {
+          "native_home": 16.8437,
+          "observable_home": 16.2367,
+          "animal_observable": 13.2018,
+          "plant_observable": 9.7117,
+          "microbe_observable": 7.5873
+        }
+      },
+      "4": {
+        "planets": 851,
+        "native_home": 184,
+        "observable_home": 183,
+        "plant_home": 135,
+        "animal_home": 184,
+        "plant_observable": 135,
+        "animal_observable": 153,
+        "microbe_home": 103,
+        "microbe_observable": 103,
+        "percent": {
+          "native_home": 21.6216,
+          "observable_home": 21.5041,
+          "animal_observable": 17.9788,
+          "plant_observable": 15.8637,
+          "microbe_observable": 12.1034
+        }
+      },
+      "5": {
+        "planets": 1238,
+        "native_home": 321,
+        "observable_home": 320,
+        "animal_home": 321,
+        "microbe_home": 192,
+        "animal_observable": 302,
+        "microbe_observable": 192,
+        "plant_home": 274,
+        "plant_observable": 274,
+        "percent": {
+          "native_home": 25.9289,
+          "observable_home": 25.8481,
+          "animal_observable": 24.3942,
+          "plant_observable": 22.1325,
+          "microbe_observable": 15.5089
+        }
+      }
+    },
+    "outside_corridor": {
+      "1": {
+        "planets": 100100,
+        "native_home": 18,
+        "animal_home": 16,
+        "observable_home": 16,
+        "animal_observable": 10,
+        "plant_home": 11,
+        "plant_observable": 11,
+        "percent": {
+          "native_home": 0.018,
+          "observable_home": 0.016,
+          "animal_observable": 0.01,
+          "plant_observable": 0.011,
+          "microbe_observable": 0.0
+        }
+      },
+      "2": {
+        "planets": 99265,
+        "native_home": 38,
+        "observable_home": 29,
+        "animal_home": 37,
+        "animal_observable": 19,
+        "plant_home": 17,
+        "plant_observable": 17,
+        "microbe_home": 6,
+        "microbe_observable": 6,
+        "percent": {
+          "native_home": 0.0383,
+          "observable_home": 0.0292,
+          "animal_observable": 0.0191,
+          "plant_observable": 0.0171,
+          "microbe_observable": 0.006
+        }
+      },
+      "3": {
+        "planets": 99486,
+        "native_home": 49,
+        "observable_home": 48,
+        "plant_home": 36,
+        "animal_home": 49,
+        "plant_observable": 36,
+        "animal_observable": 38,
+        "microbe_home": 16,
+        "microbe_observable": 16,
+        "percent": {
+          "native_home": 0.0493,
+          "observable_home": 0.0482,
+          "animal_observable": 0.0382,
+          "plant_observable": 0.0362,
+          "microbe_observable": 0.0161
+        }
+      },
+      "4": {
+        "planets": 98984,
+        "native_home": 116,
+        "observable_home": 114,
+        "plant_home": 87,
+        "animal_home": 116,
+        "plant_observable": 87,
+        "animal_observable": 102,
+        "microbe_home": 50,
+        "microbe_observable": 50,
+        "percent": {
+          "native_home": 0.1172,
+          "observable_home": 0.1152,
+          "animal_observable": 0.103,
+          "plant_observable": 0.0879,
+          "microbe_observable": 0.0505
+        }
+      },
+      "5": {
+        "planets": 98805,
+        "native_home": 229,
+        "observable_home": 227,
+        "plant_home": 190,
+        "animal_home": 229,
+        "microbe_home": 141,
+        "plant_observable": 190,
+        "animal_observable": 213,
+        "microbe_observable": 141,
+        "percent": {
+          "native_home": 0.2318,
+          "observable_home": 0.2297,
+          "animal_observable": 0.2156,
+          "plant_observable": 0.1923,
+          "microbe_observable": 0.1427
+        }
+      }
+    },
+    "outward_of_sun": {
+      "1": {
+        "planets": 5243,
+        "percent": {
+          "native_home": 0.0,
+          "observable_home": 0.0,
+          "animal_observable": 0.0,
+          "plant_observable": 0.0,
+          "microbe_observable": 0.0
+        }
+      },
+      "2": {
+        "planets": 933,
+        "percent": {
+          "native_home": 0.0,
+          "observable_home": 0.0,
+          "animal_observable": 0.0,
+          "plant_observable": 0.0,
+          "microbe_observable": 0.0
+        }
+      },
+      "3": {
+        "percent": {
+          "native_home": 0.0,
+          "observable_home": 0.0,
+          "animal_observable": 0.0,
+          "plant_observable": 0.0,
+          "microbe_observable": 0.0
+        }
+      },
+      "4": {
+        "percent": {
+          "native_home": 0.0,
+          "observable_home": 0.0,
+          "animal_observable": 0.0,
+          "plant_observable": 0.0,
+          "microbe_observable": 0.0
+        }
+      },
+      "5": {
+        "percent": {
+          "native_home": 0.0,
+          "observable_home": 0.0,
+          "animal_observable": 0.0,
+          "plant_observable": 0.0,
+          "microbe_observable": 0.0
+        }
+      }
+    }
+  }
+}

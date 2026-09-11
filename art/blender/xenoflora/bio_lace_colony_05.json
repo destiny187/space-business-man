@@ -1,0 +1,95 @@
+{
+  "id": "bio_lace_colony_05",
+  "name": "관문망막군",
+  "family": "lace_colony",
+  "family_name": "투공망막군",
+  "category": "microbe",
+  "collection": "xenoflora-100",
+  "environment": "crystal",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "군락의 화학 농도 반응",
+  "anatomy_note": "큰 통로가 관통하는 돔형 생물막과 다공성 기저층 / 조밀한 기관·높은 외곽",
+  "motion_profile": "compress",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 8,
+    "width": 0.9,
+    "height": 1.32,
+    "branch_mode": 4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "visible_microbial_colony",
+  "habitat_note": "단일 세포 확대물이 아닌 눈에 보이는 미생물 군락·생물막.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_lace_colony_05.blend",
+  "editable_meshes": 20,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Appendage_5",
+    "Anim_Appendage_6",
+    "Anim_Appendage_7"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_lace_colony_05_near.glb",
+      "triangles": 14976,
+      "sha256": "849eef5ecc8bb2f7e3c3d228ce04e44b22a2cb3db6c9719bdd9a44bda4eba38c"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_lace_colony_05_far.glb",
+      "triangles": 4186,
+      "sha256": "8d4c48e8f8a9b116bda5873ce999775c20b5a1d917b87ab69c89ff25fbb58365"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7765229344367981,
+        0.0,
+        -0.6611685752868652
+      ],
+      "max": [
+        0.8299999237060547,
+        1.064084529876709,
+        0.6611686944961548
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.064084529876709,
+      "vertices": 7586
+    },
+    "far": {
+      "min": [
+        -0.775940477848053,
+        5.1118433475494385e-05,
+        -0.6611685752868652
+      ],
+      "max": [
+        0.8294174671173096,
+        1.063446044921875,
+        0.6611686944961548
+      ],
+      "floor_y": 5.1118433475494385e-05,
+      "ceiling_y": 1.063446044921875,
+      "vertices": 2175
+    }
+  },
+  "mesh_nodes": 11
+}

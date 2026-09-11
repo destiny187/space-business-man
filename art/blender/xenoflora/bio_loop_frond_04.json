@@ -1,0 +1,91 @@
+{
+  "id": "bio_loop_frond_04",
+  "name": "교차리본초",
+  "family": "loop_frond",
+  "family_name": "반전환엽류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "cave",
+  "morphology": 3,
+  "anatomy": 3,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "줄기에서 나와 뒤집히며 닫히는 두꺼운 띠 잎 / 연결 수 증가·상하 전개",
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 6,
+    "width": 1.05,
+    "height": 1.12,
+    "branch_mode": 3
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "71bdb5"
+  ],
+  "environment_label": "동굴·지하수",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_loop_frond_04.blend",
+  "editable_meshes": 16,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2",
+    "Anim_Frond_3"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_loop_frond_04_near.glb",
+      "triangles": 15568,
+      "sha256": "eef89b3c39ff49de3038143047b57a62716d044d3b3fe79663dc222897bfdfaa"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_loop_frond_04_far.glb",
+      "triangles": 4346,
+      "sha256": "94855afd647347b16703f915fcd2c50e129d62654176fad886211d9741d60ab8"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.8509450554847717,
+        0.0,
+        -0.8509450554847717
+      ],
+      "max": [
+        0.8509450554847717,
+        1.9042856693267822,
+        0.8509450554847717
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.9042856693267822,
+      "vertices": 7904
+    },
+    "far": {
+      "min": [
+        -0.8518173694610596,
+        -5.657970905303955e-05,
+        -0.8518173694610596
+      ],
+      "max": [
+        0.8518173694610596,
+        1.9042879343032837,
+        0.8518173694610596
+      ],
+      "floor_y": -5.657970905303955e-05,
+      "ceiling_y": 1.9042879343032837,
+      "vertices": 2293
+    }
+  },
+  "mesh_nodes": 9
+}

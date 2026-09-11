@@ -1,0 +1,91 @@
+{
+  "id": "bio_inverted_fan_01",
+  "name": "삼살역선수",
+  "family": "inverted_fan",
+  "family_name": "역선체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "anatomy_note": "한쪽에 치우친 부채 몸통과 반대쪽의 접지 다발 / 삼방 열린 골격",
+  "sensory_type": "피부 진동공",
+  "eye_count": 0,
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 3,
+    "branch_mode": 0,
+    "width": 1,
+    "height": 1
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_inverted_fan_01.blend",
+  "editable_meshes": 22,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Head"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_inverted_fan_01_near.glb",
+      "triangles": 19272,
+      "sha256": "36509a37931743651b242336ddc62af9cfaf5e968d55b220bbb489eac6ca61d8"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_inverted_fan_01_far.glb",
+      "triangles": 5388,
+      "sha256": "50fcd3ce0a21cba1239364e049ae3453fc647c6305b80d12e57d7662bfa6ede2"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.920163631439209,
+        0.0,
+        -0.8728200793266296
+      ],
+      "max": [
+        0.9599999189376831,
+        1.8713252544403076,
+        0.8728201985359192
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.8713252544403076,
+      "vertices": 9716
+    },
+    "far": {
+      "min": [
+        -0.9203075170516968,
+        4.2051076889038086e-05,
+        -0.8724573850631714
+      ],
+      "max": [
+        0.9598143100738525,
+        1.871329665184021,
+        0.8744922876358032
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.871329665184021,
+      "vertices": 2774
+    }
+  },
+  "mesh_nodes": 10
+}

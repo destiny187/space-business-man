@@ -16,6 +16,8 @@ var viewer: Node3D
 var actors: Dictionary={}
 var encounters: Dictionary={}
 var pending: Array[Dictionary]=[]
+var flight_time:=0.0
+var last_flight_stamp:=-1.0
 var refresh_timer:=0.0
 var last_center:=Vector3.INF
 var max_load_ms:=0.0
@@ -35,6 +37,10 @@ func configure(world_ecology: Dictionary,planet: Dictionary,stream: FrontierTerr
 func invalidate() -> void:
 	last_center=Vector3.INF;refresh_timer=0;ground_cache.clear()
 
+func sync_clock(value: float) -> void:
+	if value==last_flight_stamp:return
+	last_flight_stamp=value;flight_time=value
+
 func sync_behavior(time: float,points: Array[Vector3],stopped: bool=false,crew: Dictionary={}) -> void:
 	behavior_observers=points;behavior_stopped=stopped;behavior_crew=crew
 	if time!=behavior_stamp:
@@ -42,6 +48,7 @@ func sync_behavior(time: float,points: Array[Vector3],stopped: bool=false,crew: 
 
 func _process(delta: float) -> void:
 	if not behavior_stopped:behavior_elapsed=minf(.1,behavior_elapsed+delta)
+	flight_time+=delta
 	refresh_timer-=delta
 	if refresh_timer<=0:
 		refresh_timer=.8
@@ -98,6 +105,21 @@ func _process(delta: float) -> void:
 
 	_update_wildlife(delta)
 
+	_update_flights()
+
+func _update_flights() -> void:
+	for id in actors:
+		var actor: Node3D=actors[id]
+		if actor.definition.get("locomotion_medium","")!="surface_air":continue
+		var row: Dictionary=encounters[id]
+		var home: Vector3=row.get("home_point",row.point)
+		var motion:=FrontierEcologyPlacement.flight_pose(terrain.field,row,home,flight_time)
+		actor.position=motion.point;actor.basis=motion.basis
+		actor.flight_blend=motion.blend;actor.flight_clock=motion.clock
+		var desired: String="move" if motion.blend>0.01 else ("dormant" if row.status=="dormant" else "idle")
+		if actor.state!=desired:actor.set_state(desired)
+		row.point=motion.point;row.flight_phase=motion.phase
+
 func _update_wildlife(delta: float) -> void:
 	for id in actors:
 		var actor: Node3D=actors[id]
@@ -119,6 +141,7 @@ func _update_wildlife(delta: float) -> void:
 func refresh() -> void:
 	if ecology.is_empty() or not ecology.planets.has(body.id):return
 	var record: Dictionary=ecology.planets[body.id]
+	var placement_rules:=FrontierEcologyCatalog.placement_config(body)
 	var refresh_start:=Time.get_ticks_usec()
 	var selected: Dictionary={}
 	if ground_cache.size()>384:ground_cache.clear()
@@ -129,11 +152,11 @@ func refresh() -> void:
 	for observer in interests:
 		var observer_count:=0
 		for candidate in FrontierEcologyPlacement.candidates(body,record,observer):
-			if observer_count>=int(FrontierEcologyCatalog.config().max_actors):break
+			if observer_count>=int(placement_rules.max_actors):break
 			if not ground_cache.has(candidate.id):ground_cache[candidate.id]=FrontierEcologyPlacement.ground(terrain.field,candidate)
 			var point: Vector3=ground_cache[candidate.id]
 			if not point.is_finite() or not terrain.ready_at(point+Vector3.UP):continue
-			if point.distance_to(observer)>float(FrontierEcologyCatalog.config().active_radius):continue
+			if point.distance_to(observer)>float(placement_rules.active_radius):continue
 			var form:=FrontierEcologyCatalog.form(candidate.form_id)
 			var status_value: String=FrontierEcology.status(record,form,point,candidate.layer)
 			if candidate.introduced:status_value="active" if FrontierEcology.climate_at(record,point,candidate.layer).get("restored",false) else "dormant"
@@ -203,8 +226,9 @@ func _add_collision(actor: Node3D,row: Dictionary) -> void:
 	var bounds: Dictionary=form.geometry.near
 	var height: float=maxf(.25,(float(bounds.max[1])-float(bounds.floor_y))*float(look.scale))
 	var radius: float=minf(height*.5,maxf(.18,minf(float(bounds.max[0])-float(bounds.min[0]),float(bounds.max[2])-float(bounds.min[2]))*float(look.scale)*.32))
-	var collision_body: PhysicsBody3D=AnimatableBody3D.new() if Wildlife.eligible(form,row) else StaticBody3D.new()
-	if collision_body is AnimatableBody3D:collision_body.sync_to_physics=false;collision_body.set_meta("encounter_id",row.id)
+	var collision_body: PhysicsBody3D=AnimatableBody3D.new() if form.get("locomotion_medium","")=="surface_air" or Wildlife.eligible(form,row) else StaticBody3D.new()
+	if collision_body is AnimatableBody3D:collision_body.sync_to_physics=false
+	collision_body.set_meta("encounter_id",row.id)
 	var shape:=CapsuleShape3D.new();shape.radius=radius;shape.height=height
 	var collider:=CollisionShape3D.new();collider.shape=shape;collider.position.y=height*.5
 	collision_body.add_child(collider);actor.add_child(collision_body)

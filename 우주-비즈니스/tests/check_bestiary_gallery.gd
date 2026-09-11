@@ -13,7 +13,7 @@ func key(code: Key) -> void:
 func run() -> void:
  var gallery: Node3D=load("res://scenes/showcase/bestiary.tscn").instantiate();root.add_child(gallery)
  await process_frame
- check(gallery.forms.size()==600 and gallery.appearances.size()==12000,"Catalogue counts")
+ check(gallery.forms.size()==8000 and gallery.appearances.size()==160000,"8,000 base species and 160,000 separate appearance profiles")
  await key(KEY_RIGHT);check(gallery.selected==1,"Keyboard selects next form")
  await key(KEY_UP);check(gallery.variant==1,"Keyboard selects next appearance")
  gallery.family_picker.select(10);gallery.family_picker.item_selected.emit(10)
@@ -55,8 +55,21 @@ func run() -> void:
  gallery.cycle_light()
  await process_frame
  await process_frame
- var dest:=ProjectSettings.globalize_path("res://../docs/production/media/bestiary/")
+ var dest:=ProjectSettings.globalize_path("res://../docs/production/media/biota/")
+ DirAccess.make_dir_recursive_absolute(dest)
  RenderingServer.force_draw(false)
- root.get_texture().get_image().save_png(dest+"gallery-ui.png")
+ root.get_texture().get_image().save_png(dest+"gallery-existing-model.png")
+ for id in ["biota_radial_siphons_09","biota_plant_fenestrate_50","biota_microbe_scroll_50","biota_bilateral_sails_35"]:
+  var found: int=gallery.forms.find_custom(func(row):return row.id==id)
+  check(found>=1000,"new biological construction selectable: "+id)
+  if found<0:continue
+  gallery.select_form(found)
+  if gallery.forms[found].get("construction","")=="avian":gallery.change_state("move")
+  await process_frame;await process_frame
+  check(gallery.actor.anatomical_skeletons.size()==2 and gallery.info.text.contains("유형 골격"),"gallery displays real type rig and its information: "+id)
+  for button in gallery.find_children("*","Button",true,false):
+   if button.text=="1 · 대기":check(gallery.info.get_global_rect().end.y<=button.get_global_rect().position.y,"anatomy information fits above motion controls: "+id)
+  RenderingServer.force_draw(false)
+  root.get_texture().get_image().save_png(dest+"gallery-"+("avian" if gallery.forms[found].get("construction","")=="avian" else str(gallery.forms[found].category))+".png")
  FileAccess.open(dest+"gallery-verification.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"  "))
  print("BESTIARY_GALLERY_CHECKS ",checks," FAILURES ",failures.size());quit(0 if failures.is_empty() else 1)

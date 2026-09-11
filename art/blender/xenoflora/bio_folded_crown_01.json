@@ -1,0 +1,90 @@
+{
+  "id": "bio_folded_crown_01",
+  "name": "삼주름관초",
+  "family": "folded_crown",
+  "family_name": "접선관엽류",
+  "category": "plant",
+  "collection": "xenoflora-100",
+  "environment": "crystal",
+  "morphology": 0,
+  "anatomy": 0,
+  "attack": "none",
+  "eye_count": 0,
+  "sensory_type": "분산된 광·수분 반응 조직",
+  "anatomy_note": "방사형 줄기 위에 접힌 부채 주름과 겹쳐진 잎집 / 기초 기관 배열",
+  "motion_profile": "bloom",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "width": 1,
+    "height": 1,
+    "branch_mode": 0
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "representation": "rooted_plant",
+  "habitat_note": "고정 지지면의 가상 식물. 환경에 맞는 현지 계통으로 출현.",
+  "art_revision": "xenoflora-ink-1",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenoflora.py",
+  "source": "art/blender/xenoflora/bio_folded_crown_01.blend",
+  "editable_meshes": 14,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Frond_0",
+    "Anim_Frond_1",
+    "Anim_Frond_2"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_folded_crown_01_near.glb",
+      "triangles": 9044,
+      "sha256": "675dac265114dd68d56586ec7b4dd11d3049153d41e13ce8cec0a01a787fff56"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenoflora/bio_folded_crown_01_far.glb",
+      "triangles": 2526,
+      "sha256": "dc2b2033ebfc2cfbd3d95f8383b977bcaafba44b8b74089cfcb3a633318c33b3"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.672917366027832,
+        0.0,
+        -0.9236955642700195
+      ],
+      "max": [
+        0.9932753443717957,
+        1.3094279766082764,
+        0.9236956238746643
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.3094279766082764,
+      "vertices": 4606
+    },
+    "far": {
+      "min": [
+        -0.6730018258094788,
+        -5.62816858291626e-05,
+        -0.9236624240875244
+      ],
+      "max": [
+        0.9930543303489685,
+        1.3095276355743408,
+        0.9236450791358948
+      ],
+      "floor_y": -5.62816858291626e-05,
+      "ceiling_y": 1.3095276355743408,
+      "vertices": 1347
+    }
+  },
+  "mesh_nodes": 7
+}

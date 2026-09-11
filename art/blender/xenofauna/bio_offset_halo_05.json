@@ -1,0 +1,97 @@
+{
+  "id": "bio_offset_halo_05",
+  "name": "높은편심수",
+  "family": "offset_halo",
+  "family_name": "편심환체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "temperate",
+  "morphology": 4,
+  "anatomy": 4,
+  "attack": "none",
+  "anatomy_note": "서로 다른 축의 고리 장기가 편심 관절로 맞물림 / 높고 좁은 칠방 골격",
+  "sensory_type": "방사 화학수용기",
+  "eye_count": 3,
+  "motion_profile": "sway",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "657849",
+    "adbc72",
+    "bb9357"
+  ],
+  "environment_label": "인간 거주에 적합한 온대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_offset_halo_05.blend",
+  "editable_meshes": 32,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Leg_04_R",
+    "Anim_Leg_05_L",
+    "Anim_Leg_06_R"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_offset_halo_05_near.glb",
+      "triangles": 20800,
+      "sha256": "d10b91b81e15ee017cf7da6f273eab3878a837fdfa8cf62444ed1d1ef1170a69"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_offset_halo_05_far.glb",
+      "triangles": 5813,
+      "sha256": "7c91f16aab2af9b963ee6257dfa11fe0d33096ed49142c8773d38230d4a7e332"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -0.7514337301254272,
+        0.0,
+        -0.8117531538009644
+      ],
+      "max": [
+        0.8079999685287476,
+        2.6196372509002686,
+        0.8117532134056091
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 2.6196372509002686,
+      "vertices": 10530
+    },
+    "far": {
+      "min": [
+        -0.750445544719696,
+        4.2051076889038086e-05,
+        -0.8113903999328613
+      ],
+      "max": [
+        0.8079999685287476,
+        2.620729923248291,
+        0.8134253025054932
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 2.620729923248291,
+      "vertices": 3026
+    }
+  },
+  "mesh_nodes": 24
+}

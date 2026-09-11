@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "collection": "xenofauna-300",
+  "non_animal_lineages_per_layer": {"plant": 1, "microbe": 1},
+  "native_origin_by_tier": {
+    "1": {"sterile": 60, "dormant": 15, "established": 25},
+    "2": {"sterile": 45, "dormant": 15, "established": 40},
+    "3": {"sterile": 30, "dormant": 15, "established": 55},
+    "4": {"sterile": 18, "dormant": 12, "established": 70},
+    "5": {"sterile": 8, "dormant": 7, "established": 85}
+  },
+  "animals_by_tier": {
+    "1": {"surface": 3, "cave": 2},
+    "2": {"surface": 5, "cave": 3},
+    "3": {"surface": 7, "cave": 4},
+    "4": {"surface": 9, "cave": 5},
+    "5": {"surface": 11, "cave": 6}
+  },
+  "archetype_environments": {
+    "oxidized": "arid", "continental": "temperate", "cratered": "basalt",
+    "fractured": "cold", "tundra": "cold", "frozen": "cold",
+    "volcanic": "thermal", "salt": "arid", "ochre": "thermal",
+    "sedimentary": "basalt", "crystalline": "crystal", "alkaline": "crystal"
+  },
+  "active_radius": 66.0,
+  "max_actors": 16,
+  "notes": "새 은하에만 고정하는 초기 밸런스. 정착 가중치와 실제 활동 개체 목격률은 다르며 기압·온도·수분·접지 조건을 추가 판정한다. 무생명 행성은 모든 티어에 남는다. 종별 색/크기 변형은 기본 종 수에 포함하지 않는다."
+}

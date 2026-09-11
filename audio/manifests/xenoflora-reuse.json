@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "collection": "xenoflora-100",
+  "new_audio_generated": false,
+  "source_manifest": "audio/manifests/elevenlabs.json",
+  "mapping": {
+    "accepted_scan": "ui_discovery",
+    "accepted_specimen": "sfx_pickup_resource"
+  },
+  "assets": [
+    {
+      "id": "sfx_pickup_resource",
+      "duration": 0.6,
+      "loop": false,
+      "status": "generated_integrated",
+      "prompt": "A subtle futuristic cargo inventory pickup, small clean electronic tick and mechanical click. Soft, short and unobtrusive for frequent game use. No music or voice.",
+      "history": "https://elevenlabs.io/app/sound-effects/history?id=3GKzfXBnMbwtKmMo5g4t",
+      "provider": "ElevenLabs web Sound Effects",
+      "take": 1,
+      "generated_at": "2026-09-06",
+      "original_filename": "A_subtle_futuristic__#1-1788644162703.wav",
+      "source": "audio/source/elevenlabs/sfx_pickup_resource.wav",
+      "game_file": "우주-비즈니스/assets/audio/sfx_pickup_resource.wav",
+      "duration_actual": 0.6,
+      "sample_rate": 48000,
+      "channels": 2,
+      "sha256": "519140878cc64d09d52ef53eb70352943ebb233a6b07560fbbb6a2bdf5edec20",
+      "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
+      "qa": "Signal and runtime playback checked; final listening review remains subjective"
+    },
+    {
+      "id": "ui_discovery",
+      "duration": 2.0,
+      "loop": false,
+      "status": "generated_integrated",
+      "prompt": "A mysterious ancient signal being decoded, a few delicate glassy electronic tones resolving into a warm discovery chime. Short original sci-fi game notification. No voice or background music.",
+      "history": "https://elevenlabs.io/app/sound-effects/history?id=ENWMin5zelMtkmTYAXlI",
+      "provider": "ElevenLabs web Sound Effects",
+      "take": 1,
+      "generated_at": "2026-09-06",
+      "original_filename": "A_mysterious_ancient_#1-1788644964983.wav",
+      "source": "audio/source/elevenlabs/ui_discovery.wav",
+      "game_file": "우주-비즈니스/assets/audio/ui_discovery.wav",
+      "duration_actual": 2.0,
+      "sample_rate": 48000,
+      "channels": 2,
+      "sha256": "18af86476099fd5e1108472cfe59d1e15296b35b85b5d2e2aee75e398d13edbb",
+      "edits": "PCM16; peak normalization; 45ms loop crossfade or 2ms/12ms edge fades",
+      "qa": "Signal and runtime playback checked; final listening review remains subjective"
+    }
+  ],
+  "verification": {
+    "method": "실제 T1 자연 식물/군락의 호스트 스캔 수락 시 재생 기록과 표본 획득 시 SFX 버스 출력을 확인했다. 새 종별 음원 생성이나 주관적 청음 평가는 포함하지 않는다.",
+    "played": [
+      {
+        "audio_peak_db": -18.6086330413818,
+        "category": "plant",
+        "form": "bio_lantern_root_03"
+      },
+      {
+        "audio_peak_db": -20.8526458740234,
+        "category": "microbe",
+        "form": "bio_lace_colony_04"
+      }
+    ],
+    "record": "docs/production/media/xenoflora/play-check.json"
+  }
+}

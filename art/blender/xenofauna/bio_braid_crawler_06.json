@@ -1,0 +1,93 @@
+{
+  "id": "bio_braid_crawler_06",
+  "name": "벌어진편조수",
+  "family": "braid_crawler",
+  "family_name": "편조보행류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "thermal",
+  "morphology": 5,
+  "anatomy": 5,
+  "attack": "none",
+  "anatomy_note": "서로 꼬인 여러 근육줄기 사이로 장기가 드러나는 체형 / 비대칭 분기 골격",
+  "sensory_type": "주름형 압력막",
+  "eye_count": 0,
+  "motion_profile": "spiral",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "4e525a",
+    "99805e",
+    "d67a37"
+  ],
+  "environment_label": "열수·온토",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_braid_crawler_06.blend",
+  "editable_meshes": 17,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_braid_crawler_06_near.glb",
+      "triangles": 13824,
+      "sha256": "2f321a7d86c6262459b25a83641b55808b57e4e65af73425a270502a48472a3e"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_braid_crawler_06_far.glb",
+      "triangles": 3862,
+      "sha256": "480bd1fc827de1bc0f57708f7dc63a25bec45ab65d4cd93f28b91df1682820e8"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.056999921798706,
+        0.0,
+        -1.2199110984802246
+      ],
+      "max": [
+        1.056999921798706,
+        1.0370194911956787,
+        1.221328616142273
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.0370194911956787,
+      "vertices": 6994
+    },
+    "far": {
+      "min": [
+        -1.056999921798706,
+        4.2051076889038086e-05,
+        -1.2199110984802246
+      ],
+      "max": [
+        1.056999921798706,
+        1.0390470027923584,
+        1.221328616142273
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.0390470027923584,
+      "vertices": 2013
+    }
+  },
+  "mesh_nodes": 11
+}

@@ -1,0 +1,93 @@
+{
+  "id": "bio_spiral_hinge_08",
+  "name": "삼축와선수",
+  "family": "spiral_hinge",
+  "family_name": "와선경첩류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "arid",
+  "morphology": 7,
+  "anatomy": 7,
+  "attack": "none",
+  "anatomy_note": "좌우 나선 디스크가 중앙 관절을 사이에 두고 벌어짐 / 편심 장축 골격",
+  "sensory_type": "이중 감각고리",
+  "eye_count": 0,
+  "motion_profile": "flex",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "limb_count": 4,
+    "branch_mode": 7,
+    "width": 1.1,
+    "height": 1.2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "725849"
+  ],
+  "environment_label": "건조 사구·협곡",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_spiral_hinge_08.blend",
+  "editable_meshes": 25,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_spiral_hinge_08_near.glb",
+      "triangles": 19456,
+      "sha256": "2df1b2d9650f43c850ab267a3bf9e9b9ea652ecce0d4bf719284ac58d7f8172a"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_spiral_hinge_08_far.glb",
+      "triangles": 5436,
+      "sha256": "1d8d2b076b05fd885daa00eb3fff17ea648a65245ecfef4f27b2f7467284c632"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.1499998569488525,
+        0.0,
+        -1.1699998378753662
+      ],
+      "max": [
+        1.149999976158142,
+        1.8257914781570435,
+        1.1699998378753662
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.8257914781570435,
+      "vertices": 9826
+    },
+    "far": {
+      "min": [
+        -1.1499998569488525,
+        4.2051076889038086e-05,
+        -1.171671986579895
+      ],
+      "max": [
+        1.149999976158142,
+        1.8262039422988892,
+        1.171671986579895
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.8262039422988892,
+      "vertices": 2816
+    }
+  },
+  "mesh_nodes": 13
+}

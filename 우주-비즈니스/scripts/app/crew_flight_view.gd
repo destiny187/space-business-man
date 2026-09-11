@@ -40,6 +40,9 @@ var freight_pilot:=false
 var trace_view: FrontierCorporateTraceView
 var trace_records: Dictionary={}
 var trace_scan: Dictionary={}
+var atmosphere_target: Dictionary={}
+var atmosphere_overlay: Control
+var atmosphere_clock:=0.0
 var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
@@ -197,8 +200,9 @@ func _process(delta: float) -> void:
 	if is_instance_valid(freight_view):freight_view.update(delta,orbit_clock,presentation_paused or opening)
 	if opening:scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
 	else:_update_planet_scan(delta)
+	var atmosphere_blocked:=_update_atmosphere(delta,presentation_paused or opening)
 	var site_scanning: bool=is_instance_valid(corporate_view) and not corporate_view.selected.is_empty() and corporate_view.progress<1.0
-	var trace_scanning: bool=(is_instance_valid(trace_view) and trace_view.scanning) or (is_instance_valid(freight_view) and freight_view.scanning)
+	var trace_scanning: bool=(trace_scan.get("kind","")=="atmosphere" and float(trace_scan.get("progress",0))>0 and float(trace_scan.get("progress",0))<1 and not atmosphere_blocked) or (is_instance_valid(trace_view) and trace_view.scanning) or (is_instance_valid(freight_view) and freight_view.scanning)
 	soundscape.update(delta,trace_scanning or (scan_target>=0 and scan_progress<1.0) or site_scanning,float(trace_scan.get("progress",0)) if trace_scanning else (corporate_view.progress if site_scanning else scan_progress))
 	orbital_presentation.update(delta,orbit_clock)
 	_update_galactic_core()
@@ -312,6 +316,20 @@ func _load_system(index: int) -> void:
 	if system_art!=null:
 		for node in system_art.get_children():
 			if node is Label3D:node.hide()
+
+func _update_atmosphere(delta: float,paused: bool) -> bool:
+	if atmosphere_overlay==null:
+		var layer:=CanvasLayer.new();add_child(layer)
+		atmosphere_overlay=load("res://scripts/ui/atmosphere_observation.gd").new();layer.add_child(atmosphere_overlay);atmosphere_overlay.configure(self)
+	atmosphere_clock-=delta
+	if atmosphere_clock<=0:
+		atmosphere_clock=.15
+		atmosphere_target=FrontierAtmosphereSurvey.target(state.manifest,navigation,-camera.global_basis.z) if scan_enabled and not paused else {}
+	var atmosphere_blocked: bool=not scan_enabled or paused
+	if (is_instance_valid(freight_view) and not freight_view.selected.is_empty()) or (is_instance_valid(trace_view) and not trace_view.selected.is_empty()):atmosphere_blocked=true
+	atmosphere_overlay.update(atmosphere_target,trace_scan,atmosphere_blocked)
+	transit_overlay.atmosphere_ready=not atmosphere_target.is_empty() and not atmosphere_blocked
+	return atmosphere_blocked
 
 func _update_planet_scan(delta: float) -> void:
 	var target: int=pick_planet(Vector2(get_viewport().get_visible_rect().size)*.5) if scan_enabled and not presentation_blocked and not transit_overlay.presenting_arrival() else -1

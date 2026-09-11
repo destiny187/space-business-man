@@ -1,0 +1,96 @@
+{
+  "id": "bio_quill_amphora_08",
+  "name": "높은호수",
+  "family": "quill_amphora",
+  "family_name": "유공호체류",
+  "category": "animal",
+  "collection": "xenofauna-300",
+  "environment": "crystal",
+  "morphology": 7,
+  "anatomy": 7,
+  "attack": "none",
+  "anatomy_note": "항아리형 외피의 큰 구멍과 안쪽을 보호하는 곡선 가시 / 편심 장축 골격",
+  "sensory_type": "이중 감각고리",
+  "eye_count": 0,
+  "motion_profile": "pulse",
+  "locomotion_medium": "ground",
+  "body_plan": {
+    "radial_count": 5,
+    "limb_count": 4,
+    "branch_mode": 7,
+    "width": 1.1,
+    "height": 1.2
+  },
+  "variant_count": 20,
+  "spawn_enabled": false,
+  "habitat_note": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "art_revision": "xenofauna-ink-2",
+  "form_schema": 1,
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "5cabac"
+  ],
+  "environment_label": "결정 광맥 지대",
+  "render_status": "exported-awaiting-game-review",
+  "generator": "tools/build_xenofauna.py",
+  "source": "art/blender/xenofauna/bio_quill_amphora_08.blend",
+  "editable_meshes": 24,
+  "pivots": [
+    "Anim_Body",
+    "Anim_Appendage_0",
+    "Anim_Appendage_1",
+    "Anim_Appendage_2",
+    "Anim_Appendage_3",
+    "Anim_Appendage_4",
+    "Anim_Leg_00_R",
+    "Anim_Leg_01_L",
+    "Anim_Leg_02_R",
+    "Anim_Leg_03_L"
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_quill_amphora_08_near.glb",
+      "triangles": 18416,
+      "sha256": "471970c55ec737657411eb53d16715e405a8b7a0475ff12aa1e007cfead41913"
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/xenofauna/bio_quill_amphora_08_far.glb",
+      "triangles": 5134,
+      "sha256": "70117c350a3b98f1aeb159afc856a3b7b96d2e19aff2371ea4820fafc22c092e"
+    }
+  },
+  "geometry": {
+    "near": {
+      "min": [
+        -1.0179998874664307,
+        0.0,
+        -1.0379998683929443
+      ],
+      "max": [
+        1.0252102613449097,
+        1.9547994136810303,
+        1.0379999876022339
+      ],
+      "floor_y": 0.0,
+      "ceiling_y": 1.9547994136810303,
+      "vertices": 9326
+    },
+    "far": {
+      "min": [
+        -1.0179998874664307,
+        4.2051076889038086e-05,
+        -1.0396720170974731
+      ],
+      "max": [
+        1.0313166379928589,
+        1.9570043087005615,
+        1.0396720170974731
+      ],
+      "floor_y": 4.2051076889038086e-05,
+      "ceiling_y": 1.9570043087005615,
+      "vertices": 2665
+    }
+  },
+  "mesh_nodes": 20
+}
