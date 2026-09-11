@@ -32,7 +32,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var local_row:=HBoxContainer.new();heading.add_child(local_row)
 	day_dial=DayDial.new();local_row.add_child(day_dial)
 	location=FrontierInterfaceStyle.label(local_row,"",12,Color("d0d6ce"))
-	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=TextureRect.new();ship_direction.texture=load("res://assets/ui/interface/ship.svg");ship_direction.custom_minimum_size=Vector2(22,22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
+	var compass:=HBoxContainer.new();compass.name="Compass";compass.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(compass);ship_direction=FrontierInterfaceStyle.interface_icon("ship",22);compass.add_child(ship_direction);return_label=FrontierInterfaceStyle.label(compass,"",13)
 	saved=FrontierInterfaceStyle.label(self,"✓",16,FrontierInterfaceStyle.ACCENT)
 	context=PanelContainer.new();context.mouse_filter=Control.MOUSE_FILTER_IGNORE;context.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color("10191fdb"),Color("31434d00"),10));add_child(context)
 	var row:=HBoxContainer.new();row.mouse_filter=Control.MOUSE_FILTER_IGNORE;context.add_child(row)
@@ -42,11 +42,11 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	target_bar=ProgressBar.new();target_bar.show_percentage=false;target_bar.custom_minimum_size=Vector2(190,3);labels.add_child(target_bar)
 	var weapon:=VBoxContainer.new();weapon.name="Weapon";weapon.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(weapon)
 	equipment_name=FrontierInterfaceStyle.label(weapon,"",14);cooldown=ProgressBar.new();cooldown.show_percentage=false;cooldown.custom_minimum_size=Vector2(170,3);weapon.add_child(cooldown)
-	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",5);add_child(navigation)
+	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",FrontierInterfaceStyle.SPACE);add_child(navigation)
 	var rows: Array=[["inventory","I","아이템  장비",app.toggle_inventory],["build","B","건설",app.toggle_business],["scan","J","연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
 	for entry in rows:
 		var button:=Button.new();button.custom_minimum_size=Vector2(46,46);button.tooltip_text=entry[2]+" ["+entry[1]+"]";button.pressed.connect(entry[3]);navigation.add_child(button)
-		var icon:=TextureRect.new();icon.texture=load("res://assets/ui/interface/"+entry[0]+".svg");icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;icon.position=Vector2(12,5);icon.size=Vector2(22,22);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;button.add_child(icon)
+		var icon:=FrontierInterfaceStyle.interface_icon(entry[0],22);icon.position=Vector2(12,5);icon.size=Vector2(22,22);button.add_child(icon)
 		var key:=FrontierInterfaceStyle.label(button,entry[1],10,FrontierInterfaceStyle.MUTED);key.position=Vector2(0,29);key.size.x=46;key.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	app.session.response_received.connect(func(_seq: int,result: Dictionary):
 		if result.get("ok",false):save_left=.7;toast_left=0)
@@ -56,7 +56,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		if result.get("code")=="mining_cooldown":return
 		if not result.get("ok",false):toast_label.text=str(result.get("error","실행할 수 없습니다."));toast_left=4)
 	for label in [place,location,return_label,equipment_name]:
-		label.add_theme_color_override("font_shadow_color",Color("081218e0"));label.add_theme_constant_override("shadow_offset_y",1);label.add_theme_constant_override("shadow_offset_x",1)
+		FrontierInterfaceStyle.hud_shadow(label)
 	get_viewport().size_changed.connect(_layout);_layout()
 func _layout() -> void:
 	var size:=get_viewport().get_visible_rect().size

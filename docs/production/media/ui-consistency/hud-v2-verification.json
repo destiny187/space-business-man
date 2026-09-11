@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-11",
+  "renderer": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "viewports": [
+    [
+      1280,
+      800
+    ],
+    [
+      960,
+      640
+    ]
+  ],
+  "scope": "상태 HUD 표시 변경의 실제 창 촬영. 격리한 상태 데이터 사용.",
+  "geometry": [
+    "HUD_GEOMETRY ShieldMeter icon=83d9c5ff value_bottom=450.0 bar_top=454.0",
+    "HUD_GEOMETRY HealthMeter icon=83d9c5ff value_bottom=485.0 bar_top=489.0",
+    "HUD_GEOMETRY StaminaMeter icon=83d9c5ff value_bottom=520.0 bar_top=524.0",
+    "HUD_BOTTOM 554.0 SHORTCUT_TOP 572.0"
+  ],
+  "complete": true,
+  "runtime_errors": [],
+  "exit_warnings": [
+    "WARNING: 1 ObjectDB instance was leaked at exit (run with `--verbose` for details)."
+  ],
+  "not_run": "전체 회귀, 조립/장착 반복, 다중 클라이언트"
+}

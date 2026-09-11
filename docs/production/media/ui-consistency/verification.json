@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-11",
+  "renderer": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "viewports": [
+    [
+      1280,
+      800
+    ],
+    [
+      960,
+      640
+    ]
+  ],
+  "fixture": "격리된 기존 검수 세계의 모듈·재료·상태를 준비한 장면",
+  "checks": [
+    "isolated UI fixture saved",
+    "Forward+ ground ready",
+    "menu blocks ground HUD and actions",
+    "module actions fit small window",
+    "shield assembly uses host result",
+    "module equip uses host result",
+    "status meters stay above shortcuts",
+    "unequipped shield has no misleading capacity",
+    "review session saves"
+  ],
+  "result": "UI_REVIEW_CHECKS 9 FAILURES 0",
+  "final_capture": "FINAL_STATES 충전 중 / 위험 / 회복 중",
+  "runtime_errors": [],
+  "not_checked": [
+    "전체 회귀",
+    "다중 클라이언트",
+    "Windows",
+    "전 화면/전 해상도 접근성",
+    "신규 모델/음원 제작",
+    "사람의 청감 평가"
+  ]
+}
