@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "products": {
+    "thermal_sink_pack": {
+      "name": "극열 흡수 팩",
+      "tier": 4,
+      "factory_tier": 3,
+      "cost": {
+        "stellarite_ore": 2,
+        "cryo_cell": 1,
+        "corrosion_alloy": 1
+      },
+      "amount": 4,
+      "seconds": 16,
+      "model": "products/heat_transfer_unit",
+      "icon": "heat_transfer_unit",
+      "color": "#a6cce0",
+      "use": "T4 고열 유입 차단·전문 열교환"
+    },
+    "thermal_buffer_pack": {
+      "name": "극저온 완충 팩",
+      "tier": 4,
+      "factory_tier": 3,
+      "cost": {
+        "darkstone_ore": 2,
+        "regional_heat_module": 1,
+        "exchange_membrane": 1
+      },
+      "amount": 4,
+      "seconds": 16,
+      "model": "products/heat_transfer_unit",
+      "icon": "heat_transfer_unit",
+      "color": "#a6cce0",
+      "use": "T4 극저온 유입 차단·전문 열교환"
+    }
+  }
+}

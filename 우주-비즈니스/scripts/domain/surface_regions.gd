@@ -90,7 +90,7 @@ static func zones(body: Dictionary) -> Array:
     if variation<score:score=variation;best=Vector3(at.x,y,at.y)
   var names: Array=["착륙 정착지","급수 복원지","토양 복원지"];var roles: Array=["settlement","water","soil"]
   if FrontierTerraformTier3.enabled(body):
-   var profile: Dictionary=cfg.tier3.profiles[FrontierTerraformTier3.profile_id(body)];names=profile.names;roles=profile.roles
+   var profile: Dictionary=FrontierTerraformTier3.rules_for(body).profiles[FrontierTerraformTier3.profile_id(body)];names=profile.names;roles=profile.roles
   result.append({"id":"region:%d"%i,"name":names[i],"center":[best.x,best.y,best.z],"radius":float(cfg.zone_radius),"role":roles[i]})
  if _zones.size()>64:_zones.clear()
  _zones[key]=result;return result

@@ -27,7 +27,7 @@ func accept(ledger: Dictionary) -> void:
   var quad:=QuadMesh.new();quad.size=Vector2(.8,.8);var smoke:=StandardMaterial3D.new();smoke.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;smoke.billboard_mode=BaseMaterial3D.BILLBOARD_PARTICLES;smoke.vertex_color_use_as_albedo=true;smoke.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;smoke.albedo_color=Color(1,1,1,.28);quad.material=smoke;plume.draw_pass_1=quad
   label=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.008;label.position=Vector3(0,4,0);label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;marker.add_child(label)
  var record: Dictionary=site.tier3
- var tint:=Color("b5bf51") if record.profile=="acid_water" else Color("bc91ce")
+ var tint:=Color(record.rules.profiles[record.profile].get("color","b5bf51" if record.profile=="acid_water" else "bc91ce"))
  material.albedo_color=tint.lerp(Color("638f8a"),float(record.suppression));plume.process_material.color=tint
  plume.amount_ratio=maxf(.05,1-float(record.suppression));plume.emitting=true
  label.text=record.rules.profiles[record.profile].name+"\n유입 억제 %.0f%% · %s"%[float(record.suppression)*100,record.source_status]

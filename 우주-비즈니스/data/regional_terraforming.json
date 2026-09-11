@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "region_span": 640,
   "cluster_slots": 12,
   "cluster_fraction": 0.8,
@@ -40,6 +40,10 @@
     "3": {
       "regions": 4,
       "distance": 720
+    },
+    "4": {
+      "regions": 4,
+      "distance": 900
     }
   },
   "stage_fraction": 0.2,
@@ -126,6 +130,10 @@
       "3": {
         "area": 55296.0,
         "stable": 45.0
+      },
+      "4": {
+        "area": 73728,
+        "stable": 60
       }
     },
     "air_columns": 64,
@@ -147,5 +155,67 @@
     "specialized_rate_factor": 6.0,
     "surface_capacity": 4.0,
     "intro_radius": 32.0
+  },
+  "tier4": {
+    "version": 1,
+    "starting_pollution": 60.0,
+    "source_rate": 0.8,
+    "suppression": 0.98,
+    "source_radius": 48.0,
+    "transfer_fraction_per_second": 0.006,
+    "transfer_limit_per_second": 0.4,
+    "pollution_limit": 8.0,
+    "controlled_minimum": 0.9,
+    "stable_seconds": 60,
+    "source_pack_seconds": 120.0,
+    "treatment_pack_seconds": 60.0,
+    "treatment_rate": 1.0,
+    "culture_pack_seconds": 45.0,
+    "colonization_rate": 1.5,
+    "colonization_goal": 60.0,
+    "required_cells": 3,
+    "stage_fraction": 0.15,
+    "maximum_mass": 100000000.0,
+    "profiles": {
+      "heat_inflow": {
+        "name": "극한 고열 유입",
+        "item": "thermal_sink_pack",
+        "treatment": "thermal",
+        "temperature": 120,
+        "color": "ef985b",
+        "roles": [
+          "settlement",
+          "source",
+          "thermal",
+          "recovery"
+        ],
+        "names": [
+          "착륙 정착지",
+          "극한 고열 유입원",
+          "열평형 복원지",
+          "선구종 복원지"
+        ]
+      },
+      "cryo_inflow": {
+        "name": "극저온 유입",
+        "item": "thermal_buffer_pack",
+        "treatment": "thermal",
+        "temperature": -80,
+        "color": "82d3df",
+        "roles": [
+          "settlement",
+          "source",
+          "thermal",
+          "recovery"
+        ],
+        "names": [
+          "착륙 정착지",
+          "극저온 유입원",
+          "열평형 복원지",
+          "선구종 복원지"
+        ]
+      }
+    },
+    "thermal_drift": 0.12
   }
 }

@@ -5,12 +5,14 @@ static var _config: Dictionary={}
 static func config() -> Dictionary:
  if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/terraforming_tier3.json"))
  return _config
-static func enabled(body: Dictionary) -> bool:return int(body.get("planet_tier",0))==3 and body.get("regional_rules",{}).has("tier3")
+static func enabled(body: Dictionary) -> bool:return int(body.get("planet_tier",0)) in [3,4] and body.get("regional_rules",{}).has("tier"+str(int(body.get("planet_tier",0))))
+static func rules_for(body: Dictionary) -> Dictionary:return body.regional_rules["tier"+str(int(body.planet_tier))]
 static func profile_id(body: Dictionary) -> String:
+ if int(body.planet_tier)==4:return "heat_inflow" if float(body.traits.temperature)>18 else "cryo_inflow"
  return ["acid_water","reactive_gas"][FrontierUniverse.derive(int(body.streams.terrain),"terraform3-profile")%2]
 static func initialize(site: Dictionary,body: Dictionary) -> void:
  if not enabled(body):return
- var rules: Dictionary=body.regional_rules.tier3.duplicate(true)
+ var rules: Dictionary=rules_for(body).duplicate(true)
  site.tier3={"version":1,"profile":profile_id(body),"rules":rules,"suppression":0.0,"controlled_seconds":0.0,"supply_seconds":0.0,"source_status":"유입원 제어 장치 필요","created":0.0,"removed":0.0,"initial_mass":0.0,"trend":0.0}
  site.workload_eligible=true
  for region in site.regions.values():
@@ -140,7 +142,7 @@ static func valid(site: Dictionary,body: Dictionary) -> bool:
  if not enabled(body):return not site.has("tier3")
  var r: Variant=site.get("tier3")
  if not r is Dictionary or r.get("version")!=1 or r.get("profile")!=profile_id(body) or not r.get("rules") is Dictionary:return false
- if FrontierUniverse.fingerprint(r.rules)!=FrontierUniverse.fingerprint(body.regional_rules.tier3):return false
+ if FrontierUniverse.fingerprint(r.rules)!=FrontierUniverse.fingerprint(rules_for(body)):return false
  for key in ["created","removed","initial_mass","supply_seconds","controlled_seconds","suppression"]:
   if not FrontierUniverse._finite(r.get(key),0,float(r.rules.maximum_mass)):return false
  if not FrontierUniverse._finite(r.get("trend"),-1000000,1000000) or not r.get("source_status") is String:return false

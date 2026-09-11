@@ -7,6 +7,7 @@ static func config() -> Dictionary:
 		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/production_tier2.json"))
 		_config.products.merge(FrontierPlanetSupply.config().products)
 		_config.products.merge(FrontierTerraformTier3.config().products)
+		_config.products.merge(preload("res://scripts/domain/terraform_tier4.gd").config().products)
 		_config.maximum_tier=3
 	return _config
 static func product(id: String) -> Dictionary:return config().products.get(id,{})

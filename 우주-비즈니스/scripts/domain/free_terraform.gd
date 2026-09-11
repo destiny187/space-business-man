@@ -1,25 +1,27 @@
 class_name FrontierFreeTerraform
 extends RefCounted
+const Tier4=preload("res://scripts/domain/terraform_tier4.gd")
 ## Sparse fixed surface cells, independent supply districts, equal-area atmospheric globe.
 static func enabled(body: Dictionary) -> bool:
- return int(body.get("planet_tier",0)) in [1,2,3] and body.get("regional_rules",{}).has("free_placement")
+ var tier:=int(body.get("planet_tier",0));var cfg: Dictionary=body.get("regional_rules",{})
+ return cfg.has("free_placement") and (tier in [1,2,3] or (tier==4 and cfg.has("tier4") and cfg.free_placement.targets.has("4")))
 static func active(site: Dictionary) -> bool:return site.has("free_terraform")
 static func rules(site: Dictionary) -> Dictionary:return site.free_terraform.rules
 static func initialize(site: Dictionary,body: Dictionary) -> void:
  var cfg: Dictionary=body.regional_rules.free_placement.duplicate(true)
  var base: Dictionary=site.environment.duplicate(true)
  var restoration: Dictionary=site.get("restoration2",{"salinity":0.0,"soil":60.0}).duplicate(true)
- if int(body.planet_tier)==3:restoration={"salinity":35.0,"soil":10.0}
+ if FrontierTerraformTier3.enabled(body):restoration={"salinity":35.0,"soil":10.0}
  var air: Array=[]
  for i in int(cfg.air_columns)*int(cfg.air_rows):air.append([float(base.oxygen),float(base.pressure),float(base.toxicity)])
  site.free_terraform={"version":1,"rules":cfg,"tier":int(body.planet_tier),"base":base,"restoration":restoration,"cells":{},"air":air,"revision":0,"area":0.0,"created":0.0,"removed":0.0,"initial_mass":0.0,"source":[],"soil_winners":{}}
  site.regions={};site.regional_paid={};site.regional_observed={};site.regional_version=2
  site.regions["region:0"]=district(site,"region:0");FrontierRegionalTerraform.home(site)
  site.workload_eligible=true
- if int(body.planet_tier)==3:
+ if FrontierTerraformTier3.enabled(body):
   var center: Array=FrontierSurfaceRegions.zones(body)[1].center
   site.free_terraform.source=center.duplicate()
-  var t: Dictionary=body.regional_rules.tier3.duplicate(true)
+  var t: Dictionary=FrontierTerraformTier3.rules_for(body).duplicate(true)
   site.tier3={"version":1,"profile":FrontierTerraformTier3.profile_id(body),"rules":t,"suppression":0.0,"controlled_seconds":0.0,"supply_seconds":0.0,"source_status":"오염 구역 내부에 제어 장치 배치","created":0.0,"removed":0.0,"initial_mass":0.0,"trend":0.0}
   ensure_cells(site,body,Vector2(center[0],center[2]),float(cfg.pollution_radius))
 static func district_id(site: Dictionary,p: Vector3) -> String:
@@ -107,9 +109,14 @@ static func process(world: Dictionary,site: Dictionary,dt: float) -> void:
    a[0]=target.environment.oxygen;a[1]=target.environment.pressure;a[2]=target.environment.toxicity
    b.working=before!=target.environment or old!=float(b.get("treatment_work",0))
   elif b.type!="source_control":
+   if Tier4.protected_machine(site,b):
+    var used:=Tier4.thermal_seconds(site,b,dt*speed)
+    local_machine(world,site,body,b,cells,used)
+    specialized(site,b,cells,used,true)
+    continue
    local_machine(world,site,body,b,cells,dt*speed)
   if site.has("tier3"):specialized(site,b,cells,dt*speed)
-static func specialized(site: Dictionary,b: Dictionary,cells: Array,dt: float) -> void:
+static func specialized(site: Dictionary,b: Dictionary,cells: Array,dt: float,paid: bool=false) -> void:
  if int(b.get("tier",1))<3:return
  var record: Dictionary=site.tier3;var r: Dictionary=record.rules;var profile: Dictionary=r.profiles[record.profile]
  var coefficient: float=site.get("coop_workload",{}).get("coefficient",1)
@@ -120,7 +127,7 @@ static func specialized(site: Dictionary,b: Dictionary,cells: Array,dt: float) -
   for pair in cells:quantity+=float(pair[0].pollution)
   if quantity<=0 and b.type!="source_control":return
   var seconds: float=r.source_pack_seconds if b.type=="source_control" else r.treatment_pack_seconds
-  var used:=FrontierTerraformTier3.fuel(site,b,profile.item,dt,seconds)
+  var used:=dt if paid else FrontierTerraformTier3.fuel(site,b,profile.item,dt,seconds)
   var budget:=used*float(r.treatment_rate)*float(rules(site).specialized_rate_factor)/coefficient
   for pair in cells:
    var c: Dictionary=pair[0];var amount:=minf(float(c.pollution),budget*float(c.pollution)/quantity) if quantity>0 else 0.0
@@ -156,10 +163,11 @@ static func finish(site: Dictionary,dt: float) -> void:
   var source_cells: Array=[]
   for c in site.free_terraform.cells.values():
    if in_pollution(site,Vector2(c.position[0],c.position[2])):source_cells.append(c)
-  var quantity:=float(cfg.pollution_rate)*(1-float(site.tier3.suppression))*dt
+  var quantity: float=(float(site.tier3.rules.source_rate) if Tier4.active(site) else float(cfg.pollution_rate))*(1-float(site.tier3.suppression))*dt
   for c in source_cells:c.pollution+=quantity/maxi(1,source_cells.size())
   site.free_terraform.created+=quantity
   site.tier3.controlled_seconds=minf(120,float(site.tier3.controlled_seconds)+dt) if float(site.tier3.suppression)>=.9 else 0.0
+ Tier4.drift(site,dt)
  var area:=0.0;var duration: float=cfg.targets[str(int(site.free_terraform.tier))].stable
  for c in site.free_terraform.cells.values():
   air_to_cell(site,c)
@@ -188,7 +196,7 @@ static func pollution_average(site: Dictionary) -> float:
  return value/maxi(1,count)
 static func settlement_reason(site: Dictionary) -> String:
  if float(site.free_terraform.area)<goal(site):return "생활권 복원 면적 %.0f / %.0f m² · 테라포밍 탭을 확인하세요."%[float(site.free_terraform.area),goal(site)]
- if site.has("tier3") and (pollution_average(site)>float(rules(site).pollution_target) or float(site.tier3.controlled_seconds)<float(rules(site).targets["3"].stable)):return "오염 구역 내부에서 잔류 오염을 처리하고 유입 억제를 유지하세요."
+ if site.has("tier3") and (pollution_average(site)>float(rules(site).pollution_target) or float(site.tier3.controlled_seconds)<float(rules(site).targets[str(int(site.free_terraform.tier))].stable)):return "오염 구역 내부에서 잔류 오염을 처리하고 유입 억제를 유지하세요."
  return ""
 static func detail(site: Dictionary) -> String:
  var result: String="생활권 %.0f / %.0f m² · %.0f초 유지"%[float(site.free_terraform.area),goal(site),float(rules(site).targets[str(int(site.free_terraform.tier))].stable)]
@@ -229,10 +237,10 @@ static func valid(site: Dictionary,body: Dictionary) -> bool:
  if not site.get("regional_paid") is Dictionary:return false
  for id in site.regional_paid:
   if id not in ["area:0","area:1"] or int(site.regional_paid[id])!=floori(FrontierCoopWorkload.reward(site,int(body.planet_tier))*float(f.rules.stage_fraction)):return false
- if int(body.planet_tier)==3:
+ if FrontierTerraformTier3.enabled(body):
   var r: Variant=site.get("tier3")
   if not r is Dictionary or r.get("profile")!=FrontierTerraformTier3.profile_id(body) or not r.get("rules") is Dictionary:return false
-  if FrontierUniverse.fingerprint(r.rules)!=FrontierUniverse.fingerprint(body.regional_rules.tier3) or not FrontierUniverse._vector3_array(f.get("source")):return false
+  if FrontierUniverse.fingerprint(r.rules)!=FrontierUniverse.fingerprint(FrontierTerraformTier3.rules_for(body)) or not FrontierUniverse._vector3_array(f.get("source")):return false
   if FrontierCrewWorld.vector(f.source).distance_to(FrontierCrewWorld.vector(FrontierSurfaceRegions.zones(body)[1].center))>.001:return false
   if not FrontierUniverse._finite(r.get("suppression"),0,1) or not FrontierUniverse._finite(r.get("controlled_seconds"),0,120) or not FrontierUniverse._finite(r.get("supply_seconds"),0,1e12) or not r.get("source_status") is String:return false
  elif site.has("tier3"):return false

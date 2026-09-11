@@ -74,6 +74,7 @@ func refresh() -> void:
  elif layer==1:info.text+="선택 지점 급수 %.0f · 염류 %.0f · 저지대 효율 ×%.2f · 실제 수면은 현장 확인"%[float(cell.environment.water),float(cell.restoration2.salinity),FrontierFreeTerraform.water_gain(site,body,p)]
  elif layer==2:info.text+="선택 지점 토양 %.0f · 생태 %.0f · 정착 %.0f%%"%[float(cell.restoration2.soil),float(cell.environment.ecology),float(cell.colonization)]
  else:info.text+="선택 지점 "+("오염 작업 구역 내부" if FrontierFreeTerraform.in_pollution(site,p) else "오염 작업 구역 외부")+" · 잔류 %.1f"%float(cell.pollution)
+ if int(site.free_terraform.tier)==4 and layer==3:info.text+=" · %.1f°C · "%float(cell.environment.temperature)+site.tier3.rules.profiles[site.tier3.profile].name
  canvas.queue_redraw()
 func local_rect() -> Rect2:return Rect2(Vector2(canvas.size.x*.43,38),Vector2(canvas.size.x*.57-16,maxf(40,canvas.size.y-72)))
 func globe_center() -> Vector2:return Vector2(canvas.size.x*.215,canvas.size.y*.50)
