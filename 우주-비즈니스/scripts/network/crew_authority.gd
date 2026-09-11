@@ -1,5 +1,6 @@
 class_name FrontierCrewAuthority
 extends RefCounted
+const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
 const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 ## Host-only admission, immutable profile references and durable transactions.
 # Host scene resolves a live device descriptor (area/body/position/enabled); no RPC setter.
@@ -244,7 +245,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	elif envelope.kind in ["land","launch"] or envelope.kind.begins_with("surface_") or (envelope.kind in ["withdraw","deposit"] and FrontierCrewSurface.landed(draft)):
 		if envelope.kind=="surface_scan":return failure("스캔은 장비 입력을 유지해 완료하세요.")
 		if envelope.kind in ["surface_dig","surface_attack"] and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("굴착 도구가 준비 중입니다.")
-		reason=FrontierCrewSurface.apply(draft,actor,envelope.kind,envelope.args,group,water_hit)
+		reason=FrontierCrewSurface.apply(draft,actor,envelope.kind,envelope.args,group,water_hit,Wildlife.observers(world,peers,draft.location))
 	else:reason=FrontierCrewWorld.apply(draft.crew,actor,envelope.kind,envelope.args,group)
 	if not reason.is_empty():return failure(reason)
 	if envelope.kind in ["surface_attack","surface_incident_tool"] and FrontierEquipment.active(draft.crew.members[actor]).get("kind")=="pulse":FrontierSuitModules.enter_combat(draft.crew.members[actor])
@@ -440,7 +441,7 @@ func step_surface(delta: float) -> void:
 			if stopped:return
 			continue
 		if world.crew.members[actor].aboard:scans.erase(peer);continue
-		var target:=FrontierSurfaceSurvey.target(local,actor,inputs[peer].aim)
+		var target:=FrontierSurfaceSurvey.target(local,actor,inputs[peer].aim,Wildlife.observers(world,peers,local.location))
 		if target.is_empty():scans.erase(peer);continue
 		if FrontierSurfaceSurvey.known(local,target):
 			scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor)};continue

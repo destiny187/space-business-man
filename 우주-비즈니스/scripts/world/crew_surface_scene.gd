@@ -1,5 +1,6 @@
 class_name FrontierCrewSurfaceScene
 extends Node3D
+const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
 var presentation_points: Array[Vector3]=[]
 var presentation_ecology_refreshed:=false
 var shuttle_models: Dictionary={}
@@ -74,6 +75,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	landing_ship=ship
 	refits=FrontierVesselVisuals.new();ship.add_child(refits);refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
 	ecology=FrontierSurfaceEcology.new();ecology.configure(_ecology(packet),body,terrain,viewer);add_child(ecology)
+	ecology.wildlife_cue.connect(_wildlife_cue)
 	lamp=SpotLight3D.new();lamp.light_cull_mask=((1 << 20)-1)^FrontierExpeditionFeedback.HANDHELD_LAYER;lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():
 		_refresh_distant();ecology.invalidate()
@@ -157,6 +159,7 @@ func _process(delta: float) -> void:
 		terrain.dig(FrontierCrewWorld.vector(edit.center),float(edit.radius));applied_edits+=1
 	var underground: float=clampf((terrain.field.height(viewer.position.x,viewer.position.z)-viewer.position.y-2.0)/10.0,0,1)
 	atmosphere.sync_clock(float(session.latest.crew.navigation.orbit_time))
+	_sync_wildlife()
 	atmosphere.step(delta,viewer.position,underground,float(preferences.values.fog))
 	tick-=delta
 	if tick<=0:
@@ -226,3 +229,26 @@ func water_depth(p: Vector3) -> float:
 	var level:=float(water_columns.get("%d:%d"%[floori(p.x),floori(p.z)],-INF))
 	if p.y>=base-.1 and level>p.y and terrain.field.density(Vector3(p.x,base-.35,p.z))>=0:value=maxf(value,level-p.y)
 	return maxf(0,value)
+
+func _sync_wildlife() -> void:
+	var points: Array[Vector3]=[]
+	var time: float=session.latest.crew.navigation.orbit_time
+	if session.hosting:
+		points=Wildlife.observers(session.authority.world,session.authority.peers,str(body.id))
+		var local:=FrontierShuttles.context(session.authority.world,session.latest.self_id)
+		time=float(local.crew.navigation.orbit_time)
+	else:
+		var ids: Array=session.latest.crew.members.keys();ids.sort()
+		for id in ids:
+			var member: Dictionary=session.latest.crew.members[id]
+			if member.get("connected",false) and member.area=="surface" and not member.aboard and member.get("place_key","")=="surface:"+str(body.id):points.append(FrontierCrewWorld.vector(member.position))
+	var app:=session.get_parent() as FrontierCrewExpedition
+	var stopped: bool=session.offline and app!=null and (app.any_menu_open() or not app.get_window().has_focus())
+	ecology.sync_behavior(time,points,stopped,session.authority.world.crew if session.hosting else session.latest.crew)
+
+func _wildlife_cue(point: Vector3,kind: String) -> void:
+	var app:=session.get_parent() as FrontierCrewExpedition
+	if app==null or app.feedback==null or app.any_menu_open() or app.feedback.blocked() or not app.get_window().has_focus():return
+	if app.onboarding!=null and app.onboarding.letter.visible:return
+	if kind=="alert":app.feedback.audio.play("sfx_creature_call",point)
+	else:app.feedback.effects.burst(point,Color("a89677"),2)

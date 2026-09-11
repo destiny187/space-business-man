@@ -1,5 +1,13 @@
 class_name FrontierSurfaceEcology
 extends Node3D
+const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
+signal wildlife_cue(point: Vector3,kind: String)
+var behavior_time:=0.0
+var behavior_stamp:=-1.0
+var behavior_elapsed:=0.0
+var behavior_observers: Array[Vector3]=[]
+var behavior_stopped:=false
+var behavior_crew: Dictionary={}
 const Actor=preload("res://scripts/actors/creatures/bestiary_actor.gd")
 var body: Dictionary
 var ecology: Dictionary
@@ -27,7 +35,13 @@ func configure(world_ecology: Dictionary,planet: Dictionary,stream: FrontierTerr
 func invalidate() -> void:
 	last_center=Vector3.INF;refresh_timer=0;ground_cache.clear()
 
+func sync_behavior(time: float,points: Array[Vector3],stopped: bool=false,crew: Dictionary={}) -> void:
+	behavior_observers=points;behavior_stopped=stopped;behavior_crew=crew
+	if time!=behavior_stamp:
+		behavior_stamp=time;behavior_time=time;behavior_elapsed=0.0
+
 func _process(delta: float) -> void:
+	if not behavior_stopped:behavior_elapsed=minf(.1,behavior_elapsed+delta)
 	refresh_timer-=delta
 	if refresh_timer<=0:
 		refresh_timer=.8
@@ -82,6 +96,26 @@ func _process(delta: float) -> void:
 		actors[row.id]=actor;encounters[row.id]=row
 		max_load_ms=maxf(max_load_ms,float(Time.get_ticks_usec()-start)/1000.0)
 
+	_update_wildlife(delta)
+
+func _update_wildlife(delta: float) -> void:
+	for id in actors:
+		var actor: Node3D=actors[id]
+		var row: Dictionary=encounters[id]
+		if not Wildlife.eligible(actor.definition,row):continue
+		var home: Vector3=row.get("home_point",row.point)
+		var motion:=Wildlife.pose(terrain.field,row,home,behavior_time+behavior_elapsed,behavior_observers,Wildlife.stopped(behavior_crew,str(body.id),row,home))
+		var previous:=actor.position
+		actor.position=motion.point;actor.basis=motion.basis;actor.paused=behavior_stopped
+		if actor.state!=motion.state:actor.set_state(motion.state)
+		if not behavior_stopped and viewer.position.distance_to(motion.point)<float(Wildlife.config().cue_range):
+			if motion.alert and row.get("behavior_phase","")!="avoid":wildlife_cue.emit(motion.point,"alert")
+			var step: float=float(row.get("step_elapsed",0.0))+delta
+			if previous.distance_to(actor.position)>.002 and step>1.8:
+				wildlife_cue.emit(motion.point,"step");step=0.0
+			row.step_elapsed=step
+		row.point=motion.point;row.behavior_phase=motion.phase
+
 func refresh() -> void:
 	if ecology.is_empty() or not ecology.planets.has(body.id):return
 	var record: Dictionary=ecology.planets[body.id]
@@ -106,7 +140,7 @@ func refresh() -> void:
 			if status_value=="absent":continue
 			# A dormant animal lineage is a hidden seed-bank/refugium, not a full adult conjured from barren rock.
 			if status_value=="dormant" and form.category=="animal" and not candidate.introduced:continue
-			candidate.point=point;candidate.status=status_value
+			candidate.point=point;candidate.home_point=point;candidate.status=status_value
 			observer_count+=1
 			selected[candidate.id]=candidate
 	for row in selected.values():
@@ -116,8 +150,10 @@ func refresh() -> void:
 		if not selected.has(id):actors[id].queue_free();actors.erase(id);encounters.erase(id)
 	for row in selected.values():
 		if actors.has(row.id):
-			actors[row.id].position=row.point
-			actors[row.id].basis=FrontierEcologyPlacement.surface_basis(terrain.field.normal(row.point),float(row.yaw))
+			if not Wildlife.eligible(actors[row.id].definition,row):
+				actors[row.id].position=row.point
+				actors[row.id].basis=FrontierEcologyPlacement.surface_basis(terrain.field.normal(row.point),float(row.yaw))
+			for key in ["behavior_phase","step_elapsed"]:row[key]=encounters[row.id].get(key,"" if key=="behavior_phase" else 0.0)
 			if encounters[row.id].status!=row.status:actors[row.id].set_state("dormant" if row.status=="dormant" else "idle")
 			encounters[row.id]=row
 		else:pending.append(row)
@@ -167,7 +203,8 @@ func _add_collision(actor: Node3D,row: Dictionary) -> void:
 	var bounds: Dictionary=form.geometry.near
 	var height: float=maxf(.25,(float(bounds.max[1])-float(bounds.floor_y))*float(look.scale))
 	var radius: float=minf(height*.5,maxf(.18,minf(float(bounds.max[0])-float(bounds.min[0]),float(bounds.max[2])-float(bounds.min[2]))*float(look.scale)*.32))
-	var collision_body:=StaticBody3D.new();collision_body.set_meta("encounter_id",row.id)
+	var collision_body: PhysicsBody3D=AnimatableBody3D.new() if Wildlife.eligible(form,row) else StaticBody3D.new()
+	if collision_body is AnimatableBody3D:collision_body.sync_to_physics=false;collision_body.set_meta("encounter_id",row.id)
 	var shape:=CapsuleShape3D.new();shape.radius=radius;shape.height=height
 	var collider:=CollisionShape3D.new();collider.shape=shape;collider.position.y=height*.5
 	collision_body.add_child(collider);actor.add_child(collision_body)

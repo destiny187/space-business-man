@@ -3,12 +3,12 @@ extends RefCounted
 ## A shared host-authored inspection result. No client-provided discovery or reward.
 static func key(body_id: String,row: Dictionary) -> String:
 	return body_id+"/"+str(row.kind)+"/"+str(row.get("form_id",row.get("resource","")))
-static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
+static func target(world: Dictionary,actor: String,aim: Vector3,wildlife_observers: Array[Vector3]=[]) -> Dictionary:
 	if not FrontierCrewSurface.landed(world) or not world.crew.members.has(actor):return {}
 	var member: Dictionary=world.crew.members[actor]
 	if member.area!="surface" or not FrontierCrewSurface.owns(member,"survey_scanner"):return {}
 	var native:=FrontierNativeIncidents.scan_target(world,actor,aim)
-	var bio:=FrontierCrewSurface.target(world,actor,aim)
+	var bio:=FrontierCrewSurface.target(world,actor,aim,wildlife_observers)
 	if not bio.is_empty():bio=bio.duplicate(true);bio.kind="biology"
 	var body:=FrontierUniverse.body_from_id(world.manifest,world.crew.landing.body_id)
 	var origin:=FrontierCrewWorld.vector(member.position)+Vector3.UP*1.72

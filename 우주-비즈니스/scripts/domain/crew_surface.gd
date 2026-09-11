@@ -1,5 +1,6 @@
 class_name FrontierCrewSurface
 extends RefCounted
+const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
 ## Shared surface rules execute only on the host, against host-owned positions.
 static var _config: Dictionary={}
 static var _field:=FrontierTerrainField.new()
@@ -54,7 +55,7 @@ static func visible_in_field(terrain: FrontierTerrainField,start: Vector3,end: V
 		if terrain.density(start.lerp(end,float(step)/maxi(steps,1)))>0:return false
 	return true
 
-static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
+static func target(world: Dictionary,actor: String,aim: Vector3,wildlife_observers: Array[Vector3]=[]) -> Dictionary:
 	if not landed(world) or not world.crew.members.has(actor) or aim.length_squared()<.9:return {}
 	var member: Dictionary=world.crew.members[actor]
 	if member.area!="surface" or not owns(member,"survey_scanner"):return {}
@@ -63,6 +64,7 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
 	var record: Dictionary=world.ecology.planets[id]
 	var terrain:=field(world)
 	var position:=FrontierCrewWorld.vector(member.position)
+	if wildlife_observers.is_empty():wildlife_observers=[position]
 	var origin:=position+Vector3.UP*1.72
 	var distance_limit: float=config().scan_distance
 	var selected: Dictionary={}
@@ -80,7 +82,12 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
 		population+=1
 		if population>int(FrontierEcologyCatalog.config().max_actors):break
 		var height: float=(float(form.geometry.near.max[1])-float(form.geometry.near.floor_y))*float(FrontierEcologyCatalog.look(form.id,row.look_id).scale)
-		var center:=point+terrain.normal(point)*maxf(.35,height*.5)
+		var up:=terrain.normal(point)
+		if Wildlife.eligible(form,row):
+			row.status=state
+			var behavior:=Wildlife.pose(terrain,row,point,float(world.crew.navigation.orbit_time),wildlife_observers,Wildlife.stopped(world.crew,id,row,point))
+			point=behavior.point;up=behavior.basis.y;row.behavior_yaw=behavior.basis.get_euler().y
+		var center:=point+up*maxf(.35,height*.5)
 		var delta:=center-origin
 		var along:=delta.dot(aim)
 		if along<=0 or delta.length()>distance_limit or (delta-aim*along).length()>clampf(height*.5,.65,2.2):continue
@@ -88,7 +95,7 @@ static func target(world: Dictionary,actor: String,aim: Vector3) -> Dictionary:
 		row.point=point;row.status=state;selected=row;distance_limit=delta.length()
 	return selected
 
-static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary,water_hit: Dictionary={}) -> String:
+static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary,water_hit: Dictionary={},wildlife_observers: Array[Vector3]=[]) -> String:
 	var crew: Dictionary=world.crew
 	var member: Dictionary=crew.members[actor]
 	if kind=="land":
@@ -166,7 +173,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="surface_attack":
 		var weapon:=FrontierEquipment.active(member)
 		if weapon.get("kind")!="pulse":return "공격무기를 장착하세요."
-		var row:=target(world,actor,direction(args.get("aim")))
+		var row:=target(world,actor,direction(args.get("aim")),wildlife_observers)
 		if direction(args.get("aim"))==Vector3.ZERO:return "조준 방향 오류"
 		if row.is_empty() or FrontierEcologyCatalog.form(row.form_id).category!="animal":return ""
 		if not water_hit.is_empty():
@@ -177,11 +184,16 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var hp: int=int(crew.combat.get(key,FrontierEquipment.config().animal_health))
 		if hp<=0:return "이미 무력화된 개체입니다."
 		crew.combat[key]=maxi(0,hp-int(weapon.damage))
+		if int(crew.combat[key])==0:
+			if not crew.has("wildlife_stops"):crew.wildlife_stops={}
+			crew.wildlife_stops[key]={"position":[row.point.x,row.point.y,row.point.z],"yaw":float(row.get("behavior_yaw",row.yaw))}
 		return ""
 	if kind=="surface_collect":
-		var row:=target(world,actor,direction(args.get("aim")))
+		var row:=target(world,actor,direction(args.get("aim")),wildlife_observers)
 		if row.is_empty() or row.id!=args.get("encounter_id") or position.distance_to(row.point)>float(config().sample_distance):return "스캔한 생명체를 4m 이내에서 직접 조준하세요."
-		return FrontierSpecimenItems.collect(world,actor,row)
+		var collected:=FrontierSpecimenItems.collect(world,actor,row)
+		if collected.is_empty():crew.get("wildlife_stops",{}).erase(body_id+"/"+str(row.id))
+		return collected
 	if kind not in ["surface_analyze","surface_restore","surface_introduce","surface_resupply"]:return "지원하지 않는 지표 작업입니다."
 	if not near_ship:return "우주선의 표본 연구대 가까이 돌아오세요."
 	var supplies: Dictionary={"depot_rock":crew.rock}
