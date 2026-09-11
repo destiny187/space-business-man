@@ -25,6 +25,12 @@ var fallback_samples: Dictionary={}
 var fallback_field: FrontierTerrainField
 var fallback_revision:=-1
 var fallback_cells: Array[Vector2i]=[]
+var fallback_task: int=-1
+var fallback_queue: Dictionary={}
+var fallback_packet: Dictionary={}
+var fallback_worker_samples: Dictionary={}
+var fallback_worker_version:=""
+var max_fallback_upload_ms:=0.0
 
 func request_rebuild(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,terrain_material: Material,view_distance: float) -> void:
 	var unique_edits: Dictionary={}
@@ -79,6 +85,7 @@ var last_main_ms:=0.0
 var max_main_ms:=0.0
 func _process(_delta: float) -> void:
 	var started:=Time.get_ticks_usec()
+	_stream_fallback()
 	_stream()
 	last_main_ms=(Time.get_ticks_usec()-started)/1000.0
 	max_main_ms=maxf(max_main_ms,last_main_ms)
@@ -100,6 +107,11 @@ func _stream() -> void:
 		row.erase("arrays");upload_index+=1
 		max_upload_ms=maxf(max_upload_ms,(Time.get_ticks_usec()-started)/1000.0)
 		if Time.get_ticks_usec()>=deadline:return
+	# Obsolete rings must not cut a hole outside the latest fallback footprint.
+	if not queued.is_empty():
+		prepared_tiles.clear();task_id=-1;packet={};_start_job();return
+	# Keep the old, covered ring until its temporary replacement is ready.
+	if fallback_task!=-1 or not fallback_queue.is_empty():return
 	# Swap the near ring and its clipped coarse tiles together. Until this point
 	# the old ring, old cutouts and streaming fallback continue to cover the ground.
 	var started:=Time.get_ticks_usec()
@@ -202,6 +214,7 @@ static func _append_grid(field: FrontierTerrainField,area: Rect2,hole: Rect2,ste
 			indices.append_array(PackedInt32Array([a,b,c,a,c,d]))
 
 func _exit_tree() -> void:
+	if fallback_task!=-1:WorkerThreadPool.wait_for_task_completion(fallback_task)
 	if task_id!=-1 and not packet.get("harvested",false):WorkerThreadPool.wait_for_task_completion(task_id)
 
 ## Temporary surface tiles cover not-yet-built fine chunks, then disappear.
@@ -213,11 +226,59 @@ func rebuild_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 	if fallback_field!=field or fallback_revision!=field.revision:
 		fallback_samples.clear();fallback_cells.clear();fallback_field=field;fallback_revision=field.revision
 		fallback.mesh=null
+	var data:=_fallback_arrays(field,anchor,radius_chunks,chunks,fallback_samples,rendered_anchor,has_rendered_anchor,fallback_cells)
+	_install_fallback(data)
+
+func _install_fallback(data: Dictionary) -> void:
+	if data.unchanged:return
+	fallback_cells=data.cells
+	var fallback:=get_node("StreamingFallback") as MeshInstance3D
+	if data.arrays.is_empty():fallback.mesh=null;return
+	var start:=Time.get_ticks_usec()
+	var result:=ArrayMesh.new();result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
+	fallback.mesh=result;fallback.material_override=material_override
+	max_fallback_upload_ms=maxf(max_fallback_upload_ms,(Time.get_ticks_usec()-start)/1000.0)
+
+func request_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,chunks: Dictionary) -> void:
+	var fallback:=get_node_or_null("StreamingFallback") as MeshInstance3D
+	if fallback==null:
+		fallback=MeshInstance3D.new();fallback.name="StreamingFallback";add_child(fallback)
+	if fallback_field!=field or fallback_revision!=field.revision:
+		fallback_field=field;fallback_revision=field.revision;fallback_cells.clear()
+		# Never keep an old lid over a newly excavated opening.
+		fallback.mesh=null
+	var edits: Dictionary={}
+	for chunk_edits in field.edits_by_chunk.values():
+		for edit in chunk_edits:edits[str(edit.center)+str(edit.radius)]=edit
+	var loaded: Dictionary={}
+	for key in chunks:loaded[key]=true
+	fallback_queue={"seed":field.seed_value,"traits":field.traits.duplicate(true),"span":field.span,"edits":edits.values().duplicate(true),"anchor":anchor,"radius":radius_chunks,"loaded":loaded,"previous":rendered_anchor,"has_previous":has_rendered_anchor,"cells":fallback_cells.duplicate(),"revision":field.revision,"version":str(field.get_instance_id())+":"+str(field.revision)}
+	_start_fallback()
+
+func _start_fallback() -> void:
+	if fallback_task!=-1 or fallback_queue.is_empty():return
+	var request:=fallback_queue;fallback_queue={}
+	fallback_packet={"revision":request.revision}
+	fallback_task=WorkerThreadPool.add_task(_build_fallback.bind(fallback_packet,request),false,"surface coverage")
+
+func _build_fallback(result: Dictionary,request: Dictionary) -> void:
+	var field:=FrontierTerrainField.new();field.configure(request.seed,request.edits,request.span,request.traits)
+	if fallback_worker_version!=request.version:
+		fallback_worker_samples.clear();fallback_worker_version=request.version
+	result.data=_fallback_arrays(field,request.anchor,request.radius,request.loaded,fallback_worker_samples,request.previous,request.has_previous,request.cells)
+
+func _stream_fallback() -> void:
+	if fallback_task==-1 or not WorkerThreadPool.is_task_completed(fallback_task):return
+	WorkerThreadPool.wait_for_task_completion(fallback_task)
+	if fallback_queue.is_empty() and fallback_field!=null and fallback_packet.revision==fallback_field.revision:_install_fallback(fallback_packet.data)
+	fallback_task=-1;fallback_packet={};_start_fallback()
+
+static func _fallback_arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,chunks: Dictionary,samples: Dictionary,previous_anchor: Vector3i,has_previous: bool,previous_cells: Array[Vector2i]) -> Dictionary:
 	var cells: Array[Vector2i]=[]
 	var vertices:=PackedVector3Array();var normals:=PackedVector3Array();var indices:=PackedInt32Array()
 	var current_low:=Vector2((anchor.x-radius_chunks)*field.span,(anchor.z-radius_chunks)*field.span)
 	var size:=Vector2.ONE*(radius_chunks*2+1)*field.span
-	var previous_low:=Vector2((rendered_anchor.x-radius_chunks)*field.span,(rendered_anchor.z-radius_chunks)*field.span) if has_rendered_anchor else current_low
+	var previous_low:=Vector2((previous_anchor.x-radius_chunks)*field.span,(previous_anchor.z-radius_chunks)*field.span) if has_previous else current_low
 	var low:=current_low.min(previous_low);var high: Vector2=(current_low+size).max(previous_low+size)
 	var current_area:=Rect2(current_low,size);var previous_area:=Rect2(previous_low,size)
 	for x in int((high.x-low.x)/4):
@@ -226,21 +287,20 @@ func rebuild_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 			var xy:=Vector2(origin.x+2,origin.z+2)
 			if not current_area.has_point(xy) and not previous_area.has_point(xy):continue
 			var key:=Vector2i(roundi(origin.x/4),roundi(origin.z/4))
-			if not fallback_samples.has(key):
+			if not samples.has(key):
 				var probe:=origin+Vector3(2,0,2);probe.y=field.height(probe.x,probe.z)
-				fallback_samples[key]={"probe":probe,"top":field.key_at(probe),"floor":field.key_at(probe-Vector3.UP*2)}
-			var sample: Dictionary=fallback_samples[key]
+				samples[key]={"probe":probe,"top":field.key_at(probe),"floor":field.key_at(probe-Vector3.UP*2)}
+			var sample: Dictionary=samples[key]
 			if chunks.has(sample.top) and chunks.has(sample.floor):continue
 			if not sample.has("supported"):sample.supported=field.density(sample.probe-Vector3.UP*.5)>=0
 			if sample.supported:cells.append(key)
-	if fallback_samples.size()>4096:
+	if samples.size()>4096:
 		var retained:=Rect2(low-Vector2.ONE*24,high-low+Vector2.ONE*48)
-		for key in fallback_samples.keys():
-			if not retained.has_point(Vector2(key)*4):fallback_samples.erase(key)
-	if cells==fallback_cells:return
-	fallback_cells=cells
+		for key in samples.keys():
+			if not retained.has_point(Vector2(key)*4):samples.erase(key)
+	if cells==previous_cells:return {"unchanged":true,"cells":cells}
 	for key in cells:
-		var sample: Dictionary=fallback_samples[key]
+		var sample: Dictionary=samples[key]
 		if not sample.has("vertices"):
 			var points:=PackedVector3Array();var directions:=PackedVector3Array()
 			for offset in [Vector3.ZERO,Vector3(4,0,0),Vector3(4,0,4),Vector3(0,0,4)]:
@@ -250,10 +310,9 @@ func rebuild_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 		var start:=vertices.size()
 		vertices.append_array(sample.vertices);normals.append_array(sample.normals)
 		indices.append_array(PackedInt32Array([start,start+1,start+2,start,start+2,start+3]))
-	if vertices.is_empty():fallback.mesh=null;return
+	if vertices.is_empty():return {"unchanged":false,"cells":cells,"arrays":[]}
 	var arrays: Array=[];arrays.resize(Mesh.ARRAY_MAX)
 	var exposure:=PackedColorArray();exposure.resize(vertices.size());exposure.fill(Color.WHITE)
 	arrays[Mesh.ARRAY_COLOR]=exposure
 	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_INDEX]=indices
-	var result:=ArrayMesh.new();result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
-	fallback.mesh=result;fallback.material_override=material_override
+	return {"unchanged":false,"cells":cells,"arrays":arrays}
