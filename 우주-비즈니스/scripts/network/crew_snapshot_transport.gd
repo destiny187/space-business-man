@@ -1,15 +1,16 @@
 class_name FrontierCrewSnapshotTransport
 extends RefCounted
-## Each full snapshot is independently compressed. Partial frames never reach gameplay.
+## Each packet is independently compressed. Partial frames never reach gameplay.
 const MAX_IN_FLIGHT:=3
 const EXPIRY_MS:=1000
 var frames: Dictionary={}
 var received_serial: int=-1
 static func fragments(value: Dictionary) -> Array[PackedByteArray]:
+	return fragments_raw(var_to_bytes(value))
+static func fragments_raw(raw: PackedByteArray) -> Array[PackedByteArray]:
 	var result: Array[PackedByteArray]=[]
 	var config:=FrontierCrewWorld.config()
-	var raw:=var_to_bytes(value)
-	if raw.size()>int(config.snapshot_maximum_bytes):return result
+	if raw.is_empty() or raw.size()>int(config.snapshot_maximum_bytes):return result
 	var packed:=raw.compress(FileAccess.COMPRESSION_DEFLATE)
 	if packed.size()>int(config.snapshot_maximum_compressed_bytes):return result
 	var size:=int(config.snapshot_fragment_bytes)

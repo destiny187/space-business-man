@@ -1,5 +1,6 @@
 class_name FrontierCrewSession
 extends Node
+const SnapshotDelta=preload("res://scripts/network/crew_snapshot_delta.gd")
 signal discoveries_received(serial: int,value: Dictionary)
 signal snapshot_received(value: Dictionary)
 signal notice(message: String)
@@ -34,6 +35,8 @@ var movement_sequence:=0
 var snapshot_serial:=0
 var received_serial:=-1
 var snapshot_transport:=FrontierCrewSnapshotTransport.new()
+var snapshot_delta:=SnapshotDelta.new()
+var peer_snapshot_deltas: Dictionary={}
 var snapshot_bytes_sent:=0
 var snapshot_largest_fragment:=0
 var snapshot_timer:=0.0
@@ -72,6 +75,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 		var result:=direct.create_server(port,11,4)
 		if result!=OK:notice.emit("이 UDP 포트로 방을 열 수 없습니다: "+str(result));enet=null;return false
 		enet=direct;multiplayer.multiplayer_peer=enet
+	peer_snapshot_deltas.clear()
 	hosting=true;active=true
 	session_id=authority.session_id;world_id=authority.world.crew.world_id;manifest=authority.world.manifest.duplicate(true)
 	next_sequence=int(authority.world.crew.members[profile.data.character.character_id].last_sequence)+1
@@ -126,7 +130,7 @@ func _peer_connected(peer: int) -> void:
 	_offer.rpc_id(peer,session_id,world_id,int(FrontierCrewWorld.config().protocol),FrontierCrewWorld.content_hash())
 func _peer_disconnected(peer: int) -> void:
 	if not hosting:return
-	pending_connections.erase(peer);closing_connections.erase(peer);rate_windows.erase(peer);surface_digests.erase(peer)
+	pending_connections.erase(peer);closing_connections.erase(peer);rate_windows.erase(peer);surface_digests.erase(peer);peer_snapshot_deltas.erase(peer)
 	if not authority.disconnect_member(peer):
 		active=false;notice.emit(authority.error)
 		if not offline:_closed.rpc(authority.error);return
@@ -152,11 +156,16 @@ func _process(delta: float) -> void:
 func _publish() -> void:
 	if not hosting or authority==null or authority.stopped:return
 	snapshot_serial+=1
-	latest=authority.snapshot(1);snapshot_received.emit(latest)
+	var shared:=authority.snapshot_shared()
+	latest=authority.snapshot(1,shared);snapshot_received.emit(latest)
 	for peer in authority.peers:
 		if peer==1:continue
-		var parts:=FrontierCrewSnapshotTransport.fragments(authority.snapshot(peer))
+		if not peer_snapshot_deltas.has(peer):peer_snapshot_deltas[peer]=SnapshotDelta.new()
+		var encoder: RefCounted=peer_snapshot_deltas[peer]
+		var value:=authority.snapshot(peer,shared)
+		var parts:=FrontierCrewSnapshotTransport.fragments_raw(encoder.encode(value))
 		if parts.is_empty():notice.emit("승무원 상태 전송 한도를 초과했습니다.");continue
+		encoder.remember(snapshot_serial,value)
 		for index in parts.size():
 			snapshot_bytes_sent+=parts[index].size();snapshot_largest_fragment=maxi(snapshot_largest_fragment,parts[index].size())
 			_snapshot_fragment.rpc_id(peer,session_id,snapshot_serial,index,parts.size(),parts[index])
@@ -175,7 +184,7 @@ func _offer(epoch: String,realm: String,protocol: int,content: String) -> void:
 	if hosting:return
 	if protocol!=int(FrontierCrewWorld.config().protocol) or content!=FrontierCrewWorld.content_hash() or not FrontierPlayerProfile.identifier(epoch) or not FrontierPlayerProfile.identifier(realm):
 		notice.emit("호스트의 게임 버전과 현재 버전이 다릅니다.");enet.close();return
-	session_id=epoch;world_id=realm;received_serial=-1;received_surface_serial=-1;snapshot_transport.reset()
+	session_id=epoch;world_id=realm;received_serial=-1;received_surface_serial=-1;snapshot_transport.reset();snapshot_delta.reset()
 	_hello.rpc_id(1,epoch,protocol,content,profile.data.character,profile.data.sessions.get(realm,""))
 @rpc("any_peer","call_remote","reliable",0)
 func _hello(epoch: String,protocol: int,content: String,character: Dictionary,capability: String) -> void:
@@ -224,12 +233,19 @@ func _valid_snapshot(value: Variant) -> bool:
 func _snapshot_fragment(epoch: String,serial: int,index: int,count: int,data: PackedByteArray) -> void:
 	if hosting or epoch!=session_id:return
 	var value:=snapshot_transport.accept(serial,index,count,data,Time.get_ticks_msec())
-	if not value.is_empty():_snapshot(serial,value)
-func _snapshot(serial: int,value: Dictionary) -> void:
-	if hosting or serial<=received_serial or not _valid_snapshot(value):return
+	if not value.is_empty() and _snapshot(serial,snapshot_delta.decode(value)):_snapshot_ack.rpc_id(1,session_id,serial)
+func _snapshot(serial: int,value: Dictionary) -> bool:
+	if hosting or serial<=received_serial or not _valid_snapshot(value):return false
+	snapshot_delta.remember(serial,value)
 	received_serial=serial;latest=value;active=value.active
 	next_sequence=maxi(next_sequence,int(value.crew.members[value.self_id].last_sequence)+1)
 	snapshot_received.emit(value)
+	return true
+@rpc("any_peer","call_remote","unreliable",2)
+func _snapshot_ack(epoch: String,serial: int) -> void:
+	if not hosting or epoch!=session_id:return
+	var peer:=multiplayer.get_remote_sender_id()
+	if authority.peers.has(peer) and peer_snapshot_deltas.has(peer):peer_snapshot_deltas[peer].acknowledge(serial)
 @rpc("authority","call_remote","reliable",0)
 func _rejected(message: String) -> void:
 	active=false;notice.emit(message)
