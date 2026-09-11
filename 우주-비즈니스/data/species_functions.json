@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "study_rock_cost": 4,
+  "facility_radius": 24.0,
+  "strengths": [
+    0.06,
+    0.08,
+    0.1
+  ],
+  "categories": {
+    "animal": [
+      "mixing",
+      "thermal"
+    ],
+    "plant": [
+      "retention",
+      "succession"
+    ],
+    "microbe": [
+      "filtration",
+      "culture"
+    ]
+  },
+  "roles": {
+    "mixing": {
+      "name": "기질 순환",
+      "building": "biolab"
+    },
+    "thermal": {
+      "name": "축열 공생",
+      "building": "thermal"
+    },
+    "retention": {
+      "name": "수분 보유",
+      "building": "water"
+    },
+    "succession": {
+      "name": "천이 촉진",
+      "building": "biolab"
+    },
+    "filtration": {
+      "name": "미세 여과",
+      "building": "water"
+    },
+    "culture": {
+      "name": "배양 보조",
+      "building": "biolab"
+    }
+  }
+}

@@ -22,6 +22,8 @@ static func uses(world: Dictionary,body_id: String,facility_id: String="") -> bo
 		if row.stage in ["prototype","trial"] and row.body_id==body_id and (facility_id.is_empty() or row.facility_id==facility_id):return true
 	return false
 static func factor(world: Dictionary,building: Dictionary) -> float:
+	return upgrade_factor(world,building)*preload("res://scripts/domain/species_functions.gd").factor(world,building)
+static func upgrade_factor(world: Dictionary,building: Dictionary) -> float:
 	var key: String=building.get("engineering","")
 	var row: Dictionary=world.get("engineering",{}).get("projects",{}).get(key,{})
 	if row.get("stage")!="certified" or definition(key).get("building")!=building.type:return 1.0

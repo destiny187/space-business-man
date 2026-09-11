@@ -831,7 +831,7 @@ func surface_action(kind: String) -> void:
 	if kind=="surface_collect":
 		if surface_target.is_empty():status.value="생명체를 가까이서 조준하세요.";return
 		args.encounter_id=surface_target.id
-	elif kind in ["surface_analyze","surface_restore"]:
+	elif kind in ["surface_study","surface_analyze","surface_restore"]:
 		var id: String=str(survey_journal.selected_entry.get("row",{}).get("form_id",""))
 		var form:=FrontierEcologyCatalog.form(id)
 		if form.is_empty():status.value="스캔한 생명체를 먼저 선택하세요.";return

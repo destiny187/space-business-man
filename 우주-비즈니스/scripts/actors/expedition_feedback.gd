@@ -149,7 +149,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 			show_cue("건설 완료")
 		"business_register","business_lease","business_lease_release","business_toggle","business_demolish":
 			effects.construction(point);audio.play("sfx_build_place",point)
-		"surface_analyze","surface_restore","surface_introduce","business_research_install":
+		"surface_study","surface_analyze","surface_restore","surface_introduce","business_research_install":
 			effects.construction(point);audio.play("ui_discovery");show_cue("연구 · 생태 기록 갱신")
 		"business_settle":audio.play("ui_planet_sold");show_cue("복원 계약 정산 완료")
 		_:audio.play("sfx_pickup_resource")

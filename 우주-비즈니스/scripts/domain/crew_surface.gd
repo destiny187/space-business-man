@@ -194,8 +194,11 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		var collected:=FrontierSpecimenItems.collect(world,actor,row)
 		if collected.is_empty():crew.get("wildlife_stops",{}).erase(body_id+"/"+str(row.id))
 		return collected
-	if kind not in ["surface_analyze","surface_restore","surface_introduce","surface_resupply"]:return "지원하지 않는 지표 작업입니다."
+	if kind not in ["surface_study","surface_analyze","surface_restore","surface_introduce","surface_resupply"]:return "지원하지 않는 지표 작업입니다."
 	if not near_ship:return "우주선의 표본 연구대 가까이 돌아오세요."
+	if kind=="surface_study":
+		if not args.get("form_id") is String:return "연구 대상 오류"
+		return preload("res://scripts/domain/species_functions.gd").study(world,actor,args.form_id)
 	var supplies: Dictionary={"depot_rock":crew.rock}
 	var before: String=FrontierUniverse.fingerprint(world.ecology)
 	var result: String=""

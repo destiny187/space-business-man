@@ -32,9 +32,13 @@ static func packet(world: Dictionary,actor: String) -> Dictionary:
 		cargo[key]=sample.duplicate(true)
 		var observation: String=sample.source_body+":"+sample.form_id
 		if world.ecology.observations.has(observation):observations[observation]=world.ecology.observations[observation].duplicate(true)
+	var studies: Dictionary={}
+	for group in [source.lineages,record.introductions.values(),observations.values(),cargo.values()]:
+		for row in group:
+			if world.ecology.get("species_research",{}).has(row.form_id):studies[row.form_id]=true
 	return {"water":FrontierSurfaceWater.packet(world.get("surface_water",{}).get(id,FrontierSurfaceWater.create()),position),"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
 		"edits":world.terrain_edits.get(id,[]).duplicate(true),"rules_hash":world.ecology.rules_hash,"catalog_hash":world.ecology.catalog_hash,
-		"ecology":{"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo}}
+		"ecology":{"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo,"species_research":studies}}
 
 static func validate(value: Variant,manifest: Dictionary) -> bool:
 	if not value is Dictionary or not FrontierSurfaceWater.valid(value.get("water",FrontierSurfaceWater.create()),int(FrontierSurfaceWater.config().snapshot_cells)):return false
@@ -80,6 +84,10 @@ static func validate(value: Variant,manifest: Dictionary) -> bool:
 		var row: Variant=ecology.specimens[key]
 		if not row is Dictionary or not FrontierEcology._identity_valid(row) or row.get("state")!="cargo" or row.get("id")!=key or not row.get("source_body") is String or not row.get("source_encounter") is String:return false
 		if FrontierUniverse.ordinal_of(manifest,row.source_body)<0 or key!=(row.source_body+":"+row.source_encounter).sha256_text():return false
+	var studies: Variant=ecology.get("species_research",{})
+	if not studies is Dictionary or studies.size()>720:return false
+	for id in studies:
+		if not id is String or studies[id]!=true or preload("res://scripts/domain/species_functions.gd").definition(FrontierEcologyCatalog.form(id)).is_empty():return false
 	if value.has("business") and (not value.business is Dictionary or (not value.business.is_empty() and not FrontierExpeditionBusiness.validate(value.business,manifest).is_empty())):return false
 	if value.has("engineering") and not FrontierFieldEngineering.validate(value.engineering,manifest).is_empty():return false
 	for site in value.get("business",{}).get("sites",{}).values():

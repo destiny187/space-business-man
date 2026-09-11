@@ -219,7 +219,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		else:
 			if sample.destination==sample.source_body or not value.planets.has(sample.destination) or not value.planets[sample.destination].introductions.has(id):return "이식 목적지 오류"
 	if int(value.get("item_storage_version",0))==0 and cargo_count>int(FrontierEcologyCatalog.config().cargo_capacity):return "표본 보관 용량 초과"
-	return ""
+	return preload("res://scripts/domain/species_functions.gd").validate(value)
 
 static func _identity_valid(row: Dictionary) -> bool:
 	if not row.get("form_id") is String or not row.get("look_id") is String:return false

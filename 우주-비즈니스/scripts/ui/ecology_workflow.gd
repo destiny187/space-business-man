@@ -7,6 +7,7 @@ var samples: HFlowContainer
 var sample_signature:=""
 var at_station:=false
 var visit: Button
+var function_card: VBoxContainer
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app
 	var strip:=HBoxContainer.new();add_child(strip);move_child(strip,0)
@@ -16,6 +17,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var inventory:=Button.new();inventory.text="아이템창에서 표본 관리";add_child(inventory);inventory.pressed.connect(app.toggle_inventory)
 	visit=Button.new();visit.text="표본 연구대에서 작업";add_child(visit);visit.pressed.connect(func():app.stations.navigate("research",2))
 	samples=HFlowContainer.new();add_child(samples);move_child(samples,2)
+	function_card=preload("res://scripts/ui/species_function_card.gd").new();add_child(function_card);function_card.configure(app)
 func refresh(near: bool) -> void:
 	var entry: Dictionary=app.survey_journal.selected_entry
 	visible=not entry.is_empty() and entry.kind=="biology"
@@ -23,6 +25,7 @@ func refresh(near: bool) -> void:
 	visit.visible=not at_station
 	var ecology: Dictionary=app.session.surface.ecology
 	var form:=FrontierEcologyCatalog.form(entry.row.form_id)
+	function_card.refresh(form,ecology,near,at_station)
 	var record: Dictionary=ecology.planets.get(app.session.latest.location,{})
 	var plot: Dictionary=record.get("plot",{})
 	var analyzed: bool=ecology.research.has(form.environment)

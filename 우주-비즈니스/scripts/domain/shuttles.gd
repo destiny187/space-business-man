@@ -59,7 +59,7 @@ static func guard(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			var ordinal: Variant=args.get("ordinal",ship.navigation.target)
 			if not FrontierExpeditionBusiness.integer(ordinal,0,int(world.manifest.settings.planet_count)-1):return "행성 주소 오류"
 			if FrontierUniverse.system_index(world.manifest,int(ordinal))!=int(ship.system):return "소형선은 같은 항성계 안에서만 이동합니다. 성간 이동은 공동 원정선에 합류하세요."
-		if kind in ["research_contribute","augmentation_upgrade","business_robot_deploy","business_robot_recover","surface_analyze","surface_introduce","surface_restore","surface_resupply"]:return "FINCH는 자원 운송선입니다. 로봇 격납고·표본 연구·신체 증강은 공동 원정선을 이용하세요."
+		if kind in ["research_contribute","augmentation_upgrade","business_robot_deploy","business_robot_recover","surface_study","surface_analyze","surface_introduce","surface_restore","surface_resupply"]:return "FINCH는 자원 운송선입니다. 로봇 격납고·표본 연구·신체 증강은 공동 원정선을 이용하세요."
 		if kind=="tutorial_depart" or kind.begins_with("vessel_") or kind.begins_with("station_") or kind.begins_with("rover_") or kind=="pilot":return "공동 원정선으로 복귀한 뒤 사용할 수 있습니다."
 		if kind=="depart" and FrontierUniverse.system_index(world.manifest,int(ship.navigation.target))!=int(ship.system):return "소형선에는 성간 추진기가 없습니다."
 	else:

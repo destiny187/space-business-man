@@ -27,7 +27,9 @@ static func page(world: Dictionary,query: String,kind: String,body_id: String,pa
 			if not body_id.is_empty() and row.body_id!=body_id:continue
 			var title: String=FrontierCatalog.entry("resources",row.resource).name if category=="mineral" else FrontierEcologyCatalog.form(row.form_id).name
 			if not needle.is_empty() and not title.to_lower().contains(needle):continue
-			entries.append({"key":category+":"+str(key),"kind":category,"row":row.duplicate(true),"name":title,"icon":row.resource if category=="mineral" else FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(row.form_id))})
+			var view:=row.duplicate(true)
+			if category=="biology":view.species_studied=world.ecology.get("species_research",{}).has(row.form_id)
+			entries.append({"key":category+":"+str(key),"kind":category,"row":view,"name":title,"icon":row.resource if category=="mineral" else FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(row.form_id))})
 	if kind in ["all","discovery"]:
 		for key in FrontierExplorationDiscoveries.records(world):
 			var row: Dictionary=FrontierExplorationDiscoveries.records(world)[key]
