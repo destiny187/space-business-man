@@ -65,6 +65,7 @@ static func starter_veins(body: Dictionary={}) -> Array:
 	return result
 static func find_vein(body: Dictionary,id: String) -> Dictionary:
 	if id.begins_with("surf1:"):return FrontierSurfaceRegions.find(body,id)
+	if id.begins_with("deep1:"):return preload("res://scripts/domain/deep_deposits.gd").find(body,id)
 	if id.begins_with("ore1:"):return FrontierMineralWorld.find(body,id)
 	for row in veins(body):
 		if row.id==id:return row

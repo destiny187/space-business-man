@@ -47,6 +47,7 @@ func system_at(x: float,z: float) -> Dictionary:
 			result.chambers.append({"center":branch,"radius":rng.randf_range(9,13)})
 		previous=next
 	result.chambers.append({"center":previous,"radius":rng.randf_range(10,14)})
+	result.deep=preload("res://scripts/world/deep_caves.gd").build(result,key,rules,surface,seed_value)
 	# All geometry stays inside its owner region with a rock border; chunks share this graph.
 	if cache.size()>32:cache.clear()
 	cache[key]=result
@@ -92,7 +93,7 @@ func density(p: Vector3) -> float:
 		value=minf(value,offset.length()-float(room.radius))
 	# Clip the union once: branch caps cannot cut steps into the main passage floor.
 	if not system.segments.is_empty():value=maxf(value,floor_height(p,system.floor_a,system.floor_b)-float(system.floor_offset)-p.y)
-	return value
+	return minf(value,preload("res://scripts/world/deep_caves.gd").density(system.get("deep",{}),p))
 
 func floor_height(p: Vector3,a: Vector3,b: Vector3) -> float:
 	var flat:=Vector3(b.x-a.x,0,b.z-a.z)

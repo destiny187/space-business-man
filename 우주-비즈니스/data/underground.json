@@ -1,17 +1,73 @@
 {
-  "version": 1,
+  "version": 2,
   "region_size": 768.0,
   "occupancy": 0.7,
   "maximum_depth": 200.0,
   "archetypes": {
-    "oxidized": "sediment", "continental": "sediment", "salt": "sediment",
-    "volcanic": "lava", "ochre": "lava",
-    "fractured": "ice", "tundra": "ice", "frozen": "ice"
+    "oxidized": "sediment",
+    "continental": "sediment",
+    "salt": "sediment",
+    "volcanic": "lava",
+    "ochre": "lava",
+    "fractured": "ice",
+    "tundra": "ice",
+    "frozen": "ice"
   },
   "profiles": {
-    "fracture": {"radius": [4.8, 5.4], "ceiling_scale": 1.25, "step": 32.0, "bend": 12.0, "slope": 0.20},
-    "sediment": {"radius": [5.6, 6.5], "ceiling_scale": 0.85, "step": 32.0, "bend": 18.0, "slope": 0.16},
-    "lava": {"radius": [5.0, 6.0], "ceiling_scale": 1.0, "step": 32.0, "bend": 9.0, "slope": 0.23},
-    "ice": {"radius": [4.8, 5.6], "ceiling_scale": 1.35, "step": 32.0, "bend": 14.0, "slope": 0.18}
+    "fracture": {
+      "radius": [
+        4.8,
+        5.4
+      ],
+      "ceiling_scale": 1.25,
+      "step": 32.0,
+      "bend": 12.0,
+      "slope": 0.2
+    },
+    "sediment": {
+      "radius": [
+        5.6,
+        6.5
+      ],
+      "ceiling_scale": 0.85,
+      "step": 32.0,
+      "bend": 18.0,
+      "slope": 0.16
+    },
+    "lava": {
+      "radius": [
+        5.0,
+        6.0
+      ],
+      "ceiling_scale": 1.0,
+      "step": 32.0,
+      "bend": 9.0,
+      "slope": 0.23
+    },
+    "ice": {
+      "radius": [
+        4.8,
+        5.6
+      ],
+      "ceiling_scale": 1.35,
+      "step": 32.0,
+      "bend": 14.0,
+      "slope": 0.18
+    }
+  },
+  "deep": {
+    "version": 1,
+    "occupancy": 0.45,
+    "radius": 76.0,
+    "segments": 28,
+    "drop_per_segment": 3.6,
+    "width": 5.2,
+    "ceiling": 1.2,
+    "floor_offset": 4.2,
+    "room_radius": 15.0,
+    "maximum_floor_depth": 175.0,
+    "minimum_floor_depth": 70.0,
+    "gem_chance": 35,
+    "ore_capacity_factor": 1.5
   }
 }

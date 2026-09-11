@@ -31,7 +31,7 @@ func configure(seed_number: int, edits: Array = [], chunk_span: float = 24.0, ch
 	plateau.frequency=.0012
 	plateau.fractal_octaves=2
 	caves=null
-	if int(traits.get("underground",{}).get("version",0))==1:
+	if int(traits.get("underground",{}).get("version",0)) in [1,2]:
 		caves=FrontierSeededCaves.new()
 		caves.configure(seed_number,traits.underground,base_height)
 	for edit in edits:add_edit(edit)

@@ -112,6 +112,7 @@ static func body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dictionar
 		result.terrain_traits=result.terrain_traits.duplicate(true)
 		result.terrain_traits.underground=underground.profiles[family].duplicate(true)
 		for key in ["version","region_size","occupancy","maximum_depth"]:result.terrain_traits.underground[key]=underground[key]
+		if underground.has("deep"):result.terrain_traits.underground.deep=underground.deep
 		result.terrain_traits.underground.family=family
 	if cfg.has("ground_rules") and result.origin=="fictional" and int(result.planet_tier)<=2:result.ground_rules=cfg.ground_rules
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)

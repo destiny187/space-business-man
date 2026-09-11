@@ -10882,5 +10882,16 @@
     "generator": "tools/build_mine_maintenance.py",
     "review": "docs/production/119-mine-maintenance.md",
     "foliage": false
+  },
+  {
+    "id": "deep_strata",
+    "title": "심층 / 층리 공동",
+    "name": "심층 층리 아치",
+    "group": "발견·환경",
+    "model": "res://assets/models/underground/deep_strata.glb",
+    "source": "art/blender/underground/deep_strata.blend",
+    "geometry": "authored-deep-strata-first-pass",
+    "generator": "tools/build_deep_strata.py",
+    "review": "docs/production/128-performance-and-content-commits.md"
   }
 ]

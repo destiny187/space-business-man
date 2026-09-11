@@ -10,7 +10,7 @@ static func config() -> Dictionary:
  return _config
 static func enabled(body: Dictionary) -> bool:return body.has("regional_rules")
 static func field(body: Dictionary) -> FrontierTerrainField:
- var key: String=str(body.id)
+ var key: String=str(body.id)+":"+str(body.get("terrain_traits",{}).get("underground",{}).get("version",0))
  if _fields.has(key):return _fields[key]
  var f:=FrontierTerrainField.new();f.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
  if _fields.size()>8:_fields.clear()

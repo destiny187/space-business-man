@@ -92,6 +92,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	water_interactions=FrontierWaterInteractions.new();add_child(water_interactions);water_interactions.configure(self)
 	discoveries=FrontierDiscoveryView.new();add_child(discoveries);discoveries.configure(self,camera)
 	incidents=FrontierIncidentView.new();add_child(incidents);incidents.configure(self,camera)
+	var deep_gallery=preload("res://scripts/world/deep_cave_view.gd").new();deep_gallery.name="DeepGallery";add_child(deep_gallery);deep_gallery.configure(self)
 	_update_interest()
 	_update_shuttles()
 
