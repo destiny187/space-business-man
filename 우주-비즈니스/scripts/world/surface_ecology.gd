@@ -11,6 +11,7 @@ var pending: Array[Dictionary]=[]
 var refresh_timer:=0.0
 var last_center:=Vector3.INF
 var max_load_ms:=0.0
+var max_lod_ms:=0.0
 var dormant_count:=0
 var active_count:=0
 var resource_requests: Dictionary={}
@@ -47,6 +48,13 @@ func _process(delta: float) -> void:
 			for path in paths:scenes.append(load(path))
 		resource_requests[row.id]={"paths":paths,"scenes":scenes}
 	var budget: int=int(FrontierEcologyCatalog.config().load_per_frame)
+	# Complete one deferred model within the same creation budget as new actors.
+	for actor in actors.values():
+		if budget<=0:break
+		if actor.deferred_far_scene==null:continue
+		var start:=Time.get_ticks_usec()
+		actor.finish_lods();budget-=1
+		max_lod_ms=maxf(max_lod_ms,(Time.get_ticks_usec()-start)/1000.0)
 	for row in pending.duplicate():
 		if budget<=0:break
 		if actors.has(row.id) or not resource_requests.has(row.id):continue
@@ -63,7 +71,8 @@ func _process(delta: float) -> void:
 		resource_requests.erase(row.id);pending.erase(row);budget-=1
 		var start:=Time.get_ticks_usec()
 		var actor:=Actor.new()
-		actor.configure(FrontierEcologyCatalog.form(row.form_id),FrontierEcologyCatalog.look(row.form_id,row.look_id))
+		actor.defer_far=true
+		actor.configure(FrontierEcologyCatalog.form(row.form_id),FrontierEcologyCatalog.look(row.form_id,row.look_id),retained)
 		actor.position=row.point;actor.basis=FrontierEcologyPlacement.surface_basis(terrain.field.normal(row.point),float(row.yaw))
 		add_child(actor)
 		actor.enable_field_culling()

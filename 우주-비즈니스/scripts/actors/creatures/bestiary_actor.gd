@@ -17,6 +17,12 @@ var fx: Node3D
 var effect_nodes: Array[Node3D] = []
 var lod_override := -1
 var load_far := true
+var defer_far:=false
+var deferred_far_scene: PackedScene
+var deferred_material_cache: Dictionary={}
+var desired_distant:=false
+var visible_model:=-1
+static var attack_timing: Dictionary={}
 var motion_phase := 0.0
 var effect_color := Color("e4b065")
 var show_effects := true
@@ -28,9 +34,11 @@ var mouth_marker: Node3D
 var mouth_markers: Array[Node3D]=[]
 var visibility_notifier: VisibleOnScreenNotifier3D
 
-func configure(form: Dictionary, look: Dictionary = {}) -> void:
+func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -> void:
 	definition=form
-	var timing: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/attack_presentation.json")).timing_seconds
+	deferred_far_scene=null;deferred_material_cache.clear();visible_model=-1;desired_distant=false
+	if attack_timing.is_empty():attack_timing=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/attack_presentation.json")).timing_seconds
+	var timing: Dictionary=attack_timing
 	windup_seconds=float(timing.windup)
 	active_seconds=float(timing.active)
 	recovery_seconds=float(timing.recovery)
@@ -47,26 +55,47 @@ func configure(form: Dictionary, look: Dictionary = {}) -> void:
 	mouth_markers.clear()
 	visibility_notifier=null
 	var cache: Dictionary={}
-	var lod_names: Array=["near","far"] if load_far else ["near"]
+	var lod_names: Array=["near","far"] if load_far and not defer_far else ["near"]
 	for lod in lod_names:
-		var model: Node3D=load("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/")).instantiate()
-		add_child(model)
-		Ink.apply(model,cache)
-		models.append(model)
-		mouth_markers.append(model.find_child("FX_Mouth",true,false) as Node3D)
-		var row: Dictionary={}
-		for n in model.find_children("Anim_*","Node3D",true,false):
-			row[str(n.name)]={"node":n,"rest":n.transform}
-		joints.append(row)
+		var scene: PackedScene=ready_scenes[0 if lod=="near" else 1] if ready_scenes.size()>=(1 if lod=="near" else 2) else load("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"))
+		_install_model(scene,cache)
+	if load_far and defer_far:
+		deferred_far_scene=ready_scenes[1] if ready_scenes.size()>1 else load("res://"+str(form.lods.far.path).trim_prefix("우주-비즈니스/"))
+		deferred_material_cache=cache
 	for mat in cache.values():
 		var slot: String=mat.resource_name.trim_prefix("Bio_")
 		if not material_slots.has(slot): material_slots[slot]=[]
 		material_slots[slot].append(mat)
 	apply_appearance(look)
-	mouth_marker=models[0].find_child("FX_Mouth",true,false) as Node3D
+	mouth_marker=mouth_markers[0]
 	build_fx()
 	set_lod(false)
 	pose()
+
+func _install_model(scene: PackedScene,cache: Dictionary) -> void:
+	var model: Node3D=scene.instantiate()
+	add_child(model)
+	Ink.apply(model,cache)
+	models.append(model)
+	mouth_markers.append(model.find_child("FX_Mouth",true,false) as Node3D)
+	var row: Dictionary={}
+	for n in model.find_children("Anim_*","Node3D",true,false):
+		row[str(n.name)]={"node":n,"rest":n.transform}
+	joints.append(row)
+
+func finish_lods() -> bool:
+	if deferred_far_scene==null:return false
+	_install_model(deferred_far_scene,deferred_material_cache)
+	deferred_far_scene=null
+	material_slots.clear()
+	for mat in deferred_material_cache.values():
+		var slot: String=mat.resource_name.trim_prefix("Bio_")
+		if not material_slots.has(slot):material_slots[slot]=[]
+		material_slots[slot].append(mat)
+	deferred_material_cache={}
+	apply_appearance(appearance)
+	visible_model=-1;set_lod(desired_distant);pose(true)
+	return true
 
 func apply_appearance(look: Dictionary) -> void:
 	appearance=look
@@ -83,8 +112,12 @@ func apply_appearance(look: Dictionary) -> void:
 		model.position.y=-float(definition.get("geometry",{}).get(lod,{}).get("floor_y",0))*base_scale
 
 func set_lod(distant: bool) -> void:
-	for i in range(models.size()): models[i].visible=(i==1 if distant and models.size()>1 else i==0)
-	if not mouth_markers.is_empty():mouth_marker=mouth_markers[1 if distant and models.size()>1 else 0]
+	desired_distant=distant
+	var index:=1 if distant and models.size()>1 else 0
+	if visible_model==index:return
+	visible_model=index
+	for i in range(models.size()):models[i].visible=i==index
+	if not mouth_markers.is_empty():mouth_marker=mouth_markers[index]
 
 func enable_field_culling() -> void:
 	visibility_notifier=FrontierFieldVisibility.watch(self,2.0*base_scale)
