@@ -23,12 +23,15 @@ void sky() {
   float distance_to_star=length(fract(q)-center);
   float stars=step(.989,star_hash(cell))*exp(-distance_to_star*distance_to_star*180.0);
   color+=stars*max(1.0-atmosphere,night_mix*.92)*smoothstep(0.,.12,altitude)*vec3(.8,.88,1.);
+  // No cloud contribution exists at zero coverage (e.g. airless worlds).
+  if(cloud_amount>0.0) {
   vec2 p=d.xz/(altitude+.23)*1.8+vec2(seed_phase,seed_phase*.37)+cloud_offset;
   float n=smoke_density(p,0.0);
   float cloud=smoothstep(.60-cloud_amount*.24,.83-cloud_amount*.15,n);
   cloud*=cloud_amount*smoothstep(.02,.20,altitude);
   float shade=smoothstep(.32,.65,n);
   color=mix(color,cloud_color.rgb*mix(.72,1.,shade),cloud*.86);
+  }
  }
  if(celestial_active && d.y>0.0) {
   float alignment=max(dot(d,sun_direction),0.0);
