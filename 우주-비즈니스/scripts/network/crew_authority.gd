@@ -64,6 +64,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.spawn_member(world,world.crew.members[profile.character_id],0)
 	world.crew.pilot_id=world.crew.owner_id
 	world.crew.members[profile.character_id].profile=profile.duplicate(true)
+	FrontierSpaceStation.Economy.ensure(world)
 	if not save_world.call(world):error="호스트 세계를 저장할 수 없습니다.";return false
 	session_id=FrontierPlayerProfile.token();peers={1:profile.character_id};pending.clear();reserved.clear();stopped=false
 	return true

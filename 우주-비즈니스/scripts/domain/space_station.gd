@@ -1,5 +1,6 @@
 class_name FrontierSpaceStation
 extends RefCounted
+const Economy=preload("res://scripts/domain/station_economy.gd")
 static var _config: Dictionary={}
 static var stations: Dictionary={}
 static func config() -> Dictionary:
@@ -52,8 +53,9 @@ static func snapshot(world: Dictionary) -> Dictionary:
  var index:=int(world.crew.navigation.system)
  var station:=current(world.manifest,world.crew.navigation).duplicate(true)
  if station.is_empty():return {}
- var offers:=market(world.manifest,index,station.id)
- station.stock=world.get("station_markets",{}).get(station.id,offers.stock).duplicate(true)
+ var offers:=Economy.project(world,station,market(world.manifest,index,station.id))
+ station.stock=offers.stock
+ for key in ["demand","base_stock","market_epoch","cycle_seconds","refresh_seconds"]:station[key]=offers[key]
  station.prices=offers.prices
  station.sale_ratio=offers.get("sale_ratio",config().sale_ratio)
  station.capacities=offers.get("capacities",{})
@@ -85,10 +87,8 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
  if not world.has("vessel"):world.vessel=FrontierVesselRefit.create(int(world.manifest.seed),world.crew.world_id)
  var vessel: Dictionary=world.vessel
  if not vessel.has("hulls"):vessel.hulls=["kestrel"];vessel.hull="kestrel"
- var offers:=market(world.manifest,int(nav.system),station.id)
- if not world.has("station_markets"):world.station_markets={}
- if not world.station_markets.has(station.id):world.station_markets[station.id]=offers.stock.duplicate()
- var stock: Dictionary=world.station_markets[station.id]
+ var offers:=Economy.project(world,station,market(world.manifest,int(nav.system),station.id))
+ var stock: Dictionary=offers.stock
  var id: String=str(args.get("item",""))
  var amount: Variant=args.get("amount",1)
  if not FrontierExpeditionBusiness.integer(amount,1,1000):return "거래 수량을 확인하세요."
@@ -103,6 +103,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
    if not error.is_empty():return error
   "station_buy", "station_sell":
    if not offers.prices.has(id):return "이 정거장에서 취급하지 않는 상품입니다."
+   if not id.begins_with("hull:") and args.has("quote") and args.quote!=offers.market_epoch:return "시세가 갱신되었습니다. 새 가격을 확인한 뒤 다시 거래하세요."
    var price:=int(offers.prices[id])
    if id.begins_with("hull:"):
     var chosen:=id.trim_prefix("hull:")
@@ -121,6 +122,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
      if int(stock[id])+count>int(offers.get("capacities",{}).get(id,config().max_stock)):return "정거장이 해당 물품을 더 매입할 수 없습니다."
      bag[id]-=count;stock[id]+=count;world.business.credits+=maxi(1,floori(price*float(offers.get("sale_ratio",config().sale_ratio))))*count
   _:return "지원하지 않는 정거장 거래입니다."
+ Economy.commit(world,station.id,offers)
  if station.get("fixed_port",false):
   nav.station_id=station.id;nav.station_docked=station.id;identify(world,station)
  for member in world.crew.members.values():member.ready=false
@@ -199,4 +201,4 @@ static func validate(world: Dictionary) -> String:
   if definition(world.manifest,index,int(nav.get("first_stellar_system",-1)),0,key).is_empty() or original.is_empty() or not stock is Dictionary or stock.size()!=original.stock.size():return "정거장 재고 구조 오류"
   for id in stock:
    if not original.stock.has(id) or not FrontierExpeditionBusiness.integer(stock[id],0,1 if id.begins_with("hull:") else int(original.get("capacities",{}).get(id,config().max_stock))):return "정거장 재고 수량 오류"
- return ""
+ return Economy.validate(world)

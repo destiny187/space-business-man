@@ -33,6 +33,11 @@ var icon: TextureRect
 var audio: FrontierAudio
 var hum: AudioStreamPlayer
 var last_state: String=""
+var market_cycle:HBoxContainer
+var demand_icon:TextureRect
+var demand_label:Label
+var refresh_bar:ProgressBar
+var refresh_label:Label
 func _ready() -> void:
  theme=FrontierInterfaceStyle.theme()
  set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -50,6 +55,11 @@ func _ready() -> void:
   service_tabs[key]=button(tabs,tab[1],func():mode=key;selected="";rebuild())
  browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품  선체 이름 검색";browser.changed.connect(rebuild)
  sale_only=CheckButton.new();sale_only.text="내가 판매할 수 있는 물자";column.add_child(sale_only);sale_only.toggled.connect(func(_v):rebuild())
+ market_cycle=HBoxContainer.new();market_cycle.add_theme_constant_override("separation",10);column.add_child(market_cycle)
+ demand_icon=TextureRect.new();demand_icon.custom_minimum_size=Vector2(28,28);demand_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;demand_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;market_cycle.add_child(demand_icon)
+ demand_label=label(market_cycle,"",14);demand_label.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+ refresh_bar=ProgressBar.new();refresh_bar.custom_minimum_size=Vector2(100,9);refresh_bar.show_percentage=false;refresh_bar.size_flags_vertical=Control.SIZE_SHRINK_CENTER;market_cycle.add_child(refresh_bar)
+ refresh_label=label(market_cycle,"",13);refresh_label.autowrap_mode=TextServer.AUTOWRAP_OFF;refresh_label.custom_minimum_size.x=112
  var body:=HBoxContainer.new();body.add_theme_constant_override("separation",24);body.size_flags_vertical=Control.SIZE_EXPAND_FILL;column.add_child(body)
  var list:=VBoxContainer.new();list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_child(list)
  var scroll:=ScrollContainer.new();scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;list.add_child(scroll)
@@ -87,9 +97,10 @@ func button(parent: Node,text_value: String,callback: Callable) -> Button:
  var node:=Button.new();node.text=text_value;node.custom_minimum_size.y=38;node.pressed.connect(callback);parent.add_child(node);return node
 func update_snapshot(value: Dictionary) -> void:
  data=value
- var signature: Dictionary=value.get("station",{}).duplicate(true);signature.erase("position")
+ var signature: Dictionary=value.get("station",{}).duplicate(true);signature.erase("position");signature.erase("refresh_seconds")
  var next:=FrontierUniverse.fingerprint({"station":signature,"inventory":value.get("inventory",{}),"vessel":value.get("vessel",{})})
  if next!=last_state:last_state=next;rebuild()
+ update_cycle()
  # The host can move while another crew member is inspecting the market.
  if visible and (value.get("station",{}).is_empty() or not in_range()):hide()
 func in_range() -> bool:
@@ -100,6 +111,7 @@ func rebuild() -> void:
  if grid==null:return
  for node in grid.get_children():grid.remove_child(node);node.queue_free()
  var station: Dictionary=data.get("station",{})
+ market_cycle.visible=mode=="goods"
  var services: Dictionary=station.get("services",{})
  for key in service_tabs:service_tabs[key].visible=services.get(key,true)
  if not services.get(mode,true):mode="goods";selected=""
@@ -120,7 +132,7 @@ func rebuild() -> void:
   if not query.is_empty() and not title.to_lower().contains(query):return false
   if mode=="goods":
    var count:=int(data.get("inventory",{}).get(id,0))
-   if count<=0 and (sale_only.button_pressed or int(station.stock[id])<=0):return false
+   if count<=0 and sale_only.button_pressed:return false
    if not browser.matches(title,FrontierItemBrowser.kind(id)):return false
   elif mode=="ships" and int(station.stock[id])<=0:return false
   return true)
@@ -130,11 +142,13 @@ func rebuild() -> void:
   var is_ship: bool=mode!="goods"
   var def: Dictionary=FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")] if is_ship else FrontierCatalog.entry("resources",id)
   var caption: String=def.name+"\n"+(def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
+  if mode=="goods" and id==station.get("demand",""):caption+="\n↑ 수요 증가"
   var key: String=id
   var card:=button(grid,caption,func():selected=key;refresh_detail())
   card.custom_minimum_size=Vector2(160,100);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL
   card.icon=load("res://assets/ui/interface/ship.svg") if is_ship else FrontierResourceIcons.texture(id)
   card.expand_icon=true;card.add_theme_constant_override("icon_max_width",40)
+  if mode=="goods" and id==station.get("demand",""):card.add_theme_color_override("font_color",FrontierInterfaceStyle.ACCENT)
   card.clip_text=true;card.tooltip_text=caption;card.set_meta("item",id);card.toggle_mode=true;card.disabled=pending
  refresh_detail()
 func refresh_detail() -> void:
@@ -156,6 +170,9 @@ func refresh_detail() -> void:
   role.text=("상점 재고 %d"%int(station.stock[selected]) if int(station.stock[selected])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[selected]) if int(data.get("inventory",{}).get(selected,0))>0 else "")
   unit_price.text="개당 구매 %d Cr  판매 %d Cr"%[price,sale]
   if station.get("fixed_port",false):unit_price.text+="\n항만 추가 매입 가능 %d개"%maxi(0,int(station.capacities[selected])-int(station.stock[selected]))
+  if selected==station.get("demand",""):unit_price.text+="\n↑ 이번 주기 수요 증가"
+  label(bars,"재고 / 평상시 재고 %d"%int(station.get("base_stock",{}).get(selected,0)),12)
+  var stock_bar:=ProgressBar.new();stock_bar.max_value=maxi(1,int(station.get("base_stock",{}).get(selected,1)));stock_bar.value=int(station.stock[selected]);stock_bar.show_percentage=false;stock_bar.custom_minimum_size.y=9;bars.add_child(stock_bar)
   icon.texture=FrontierResourceIcons.texture(selected)
   buy.text="구매  %d Cr"%(price*count);sell.text="판매  %d Cr"%(sale*count)
   buy.disabled=buy.disabled or int(station.stock[selected])<count or int(station.credits)<price*count
@@ -183,7 +200,7 @@ func refresh_detail() -> void:
 func send(kind: String) -> void:
  if pending:return
  pending=true;pending_kind=kind;pending_sequence=-1;message.text="교역 승인 중…";refresh_detail()
- command.emit(kind,{"station":data.get("station",{}).get("id",""),"item":selected,"amount":int(quantity.value) if mode=="goods" else 1})
+ command.emit(kind,{"station":data.get("station",{}).get("id",""),"item":selected,"amount":int(quantity.value) if mode=="goods" else 1,"quote":data.get("station",{}).get("market_epoch",0)})
 func response(sequence: int,value: Dictionary) -> void:
  if not pending or sequence!=pending_sequence:return
  pending=false
@@ -202,3 +219,16 @@ func _process(_delta: float) -> void:
   if not RenderingServer.frame_post_draw.is_connected(_preview_rendered):RenderingServer.frame_post_draw.connect(_preview_rendered,CONNECT_ONE_SHOT)
 func _preview_rendered() -> void:
  if is_instance_valid(preview):preview.render_target_update_mode=SubViewport.UPDATE_DISABLED
+
+func update_cycle()->void:
+ if market_cycle==null:return
+ var station:Dictionary=data.get("station",{})
+ var demand:String=station.get("demand","")
+ market_cycle.visible=mode=="goods" and not demand.is_empty()
+ if not market_cycle.visible:return
+ demand_icon.texture=FrontierResourceIcons.texture(demand)
+ demand_label.text="↑ "+FrontierCatalog.entry("resources",demand).name+" 수요 증가"
+ var remaining:=int(station.get("refresh_seconds",0))
+ refresh_bar.max_value=int(station.get("cycle_seconds",600));refresh_bar.value=refresh_bar.max_value-remaining
+ refresh_label.text="갱신 %02d:%02d"%[remaining/60,remaining%60]
+ market_cycle.tooltip_text="주기마다 선호 물자와 시세가 바뀝니다. 부족 재고는 평상시 재고의 %d%%씩 보충하고 초과 재고는 같은 양만큼 매입 여유로 돌아옵니다."%roundi(float(FrontierSpaceStation.Economy.config().restock_fraction)*100)
