@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "blender": "5.2.1 LTS",
+  "resolution": 1024,
+  "channels": "linear normal XY / height / roughness",
+  "materials": [
+    {
+      "id": "basalt_columns",
+      "texture": "우주-비즈니스/assets/textures/surfaces/basalt_columns.png",
+      "sha256": "49027514b28bd56ef33f58e1442f1b0a7e98a5072c3a341328a16529c22c717b",
+      "height_amplitude_m": 0.11,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "porous_tuff",
+      "texture": "우주-비즈니스/assets/textures/surfaces/porous_tuff.png",
+      "sha256": "275ff3e92a4297457ac99f0d9424f23aa19e4199b040be2556d3fde4f5cdd07c",
+      "height_amplitude_m": 0.09,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "sandstone_bedded",
+      "texture": "우주-비즈니스/assets/textures/surfaces/sandstone_bedded.png",
+      "sha256": "894e5f82951a8b8cf9e4ba17d548d0bf5029d212328db6140c0f0099c46cbbc1",
+      "height_amplitude_m": 0.085,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "frost_fracture",
+      "texture": "우주-비즈니스/assets/textures/surfaces/frost_fracture.png",
+      "sha256": "a569d4f7d50c7f058c87b44e5a4eb7913d090fd5640a96aeadf3ad20b11fafd3",
+      "height_amplitude_m": 0.08,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "salt_polygons",
+      "texture": "우주-비즈니스/assets/textures/surfaces/salt_polygons.png",
+      "sha256": "f78a6508e7049d7e5a6ffb57b9e0a519f8367c457a462212be78b63fbe95609d",
+      "height_amplitude_m": 0.08,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "impact_breccia",
+      "texture": "우주-비즈니스/assets/textures/surfaces/impact_breccia.png",
+      "sha256": "8c03b82a09d1de89c6d45f6fa0af36b295294d5a8327270c7aa8e64196c3d9b2",
+      "height_amplitude_m": 0.11,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    },
+    {
+      "id": "folded_slate",
+      "texture": "우주-비즈니스/assets/textures/surfaces/folded_slate.png",
+      "sha256": "88b386329d0e60acac5cea2d747873849a2af5314116344f8a049f5224e8ca85",
+      "height_amplitude_m": 0.075,
+      "seamless": "periodic Fourier fields and wrapped Voronoi cells"
+    }
+  ]
+}

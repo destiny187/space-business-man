@@ -24,16 +24,24 @@ static func index(id: String) -> int:
 	for i in config().materials.size():
 		if config().materials[i].id==id:return i
 	return 0
+static func profile_for(body: Dictionary) -> Dictionary:
+	var traits: Dictionary=body.get("traits",{})
+	var profile: Dictionary=config().profiles.get(traits.get("id",""),config().profiles.cratered).duplicate(true)
+	if profile.has("rock_variants") and body.has("seed"):
+		var choice:=FrontierUniverse.derive(int(body.seed),"surface-rock-v1:"+str(traits.get("id","")))
+		profile.rock=profile.rock_variants[choice%profile.rock_variants.size()]
+	return profile
 static func configure(material: ShaderMaterial,body: Dictionary) -> void:
 	var cfg:=config();var traits: Dictionary=body.get("traits",{})
-	var profile: Dictionary=cfg.profiles.get(traits.get("id",""),cfg.profiles.cratered)
+	var profile:=profile_for(body)
+	var ids:=preload("res://scripts/world/surface_palette.gd").ids_for(profile)
 	if profile.has("deposit_color"):
 		material.set_shader_parameter("dust_color",Color(profile.deposit_color).lerp(Color(traits.get("dust",profile.deposit_color)),.2))
-	material.set_shader_parameter("surface_textures",textures());material.set_shader_parameter("textured_surface",true)
-	material.set_shader_parameter("rock_layer",index(profile.rock));material.set_shader_parameter("deposit_layer",index(profile.deposit))
+	material.set_shader_parameter("surface_textures",preload("res://scripts/world/surface_palette.gd").texture(ids,cfg.materials));material.set_shader_parameter("textured_surface",true)
+	material.set_shader_parameter("rock_layer",ids.find(str(profile.rock)));material.set_shader_parameter("deposit_layer",ids.find(str(profile.deposit)))
 	material.set_shader_parameter("rock_meters",float(profile.rock_meters));material.set_shader_parameter("deposit_meters",float(profile.deposit_meters))
 	for key in ["normal_strength","detail_near","detail_far","snow_meters","ice_meters","freeze_start","freeze_end"]:material.set_shader_parameter(key,float(cfg[key]))
-	material.set_shader_parameter("snow_layer",index("snow"));material.set_shader_parameter("ice_layer",index("ice"))
+	material.set_shader_parameter("snow_layer",ids.find("snow"));material.set_shader_parameter("ice_layer",ids.find("ice"))
 	material.set_shader_parameter("native_temperature",float(traits.get("temperature",20)))
 	material.set_shader_parameter("local_temperature",float(traits.get("temperature",20)))
 	# Environment water is an index; glacial geology supplies additional retained ice.

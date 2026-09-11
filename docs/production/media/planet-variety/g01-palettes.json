@@ -1,0 +1,157 @@
+{
+  "alkaline": {
+    "active_maps": [
+      "crystal",
+      "ice",
+      "salt_polygons",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "salt_polygons",
+      "impact_breccia"
+    ]
+  },
+  "continental": {
+    "active_maps": [
+      "ice",
+      "impact_breccia",
+      "regolith",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "impact_breccia",
+      "folded_slate"
+    ]
+  },
+  "cratered": {
+    "active_maps": [
+      "basalt_columns",
+      "gravel",
+      "ice",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "basalt_columns",
+      "impact_breccia"
+    ]
+  },
+  "crystalline": {
+    "active_maps": [
+      "crystal",
+      "gravel",
+      "ice",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "crystal",
+      "basalt_columns"
+    ]
+  },
+  "fractured": {
+    "active_maps": [
+      "basalt_columns",
+      "gravel",
+      "ice",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "frost_fracture",
+      "basalt_columns"
+    ]
+  },
+  "frozen": {
+    "active_maps": [
+      "frost_fracture",
+      "ice",
+      "regolith",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "ice",
+      "frost_fracture"
+    ]
+  },
+  "ochre": {
+    "active_maps": [
+      "ice",
+      "porous_tuff",
+      "sediment",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "sandstone_bedded",
+      "porous_tuff"
+    ]
+  },
+  "oxidized": {
+    "active_maps": [
+      "ice",
+      "impact_breccia",
+      "sand",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "sandstone_bedded",
+      "impact_breccia"
+    ]
+  },
+  "salt": {
+    "active_maps": [
+      "ice",
+      "porous_tuff",
+      "salt",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "porous_tuff",
+      "salt_polygons"
+    ]
+  },
+  "sedimentary": {
+    "active_maps": [
+      "ice",
+      "sand",
+      "sediment",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "sediment",
+      "sandstone_bedded"
+    ]
+  },
+  "tundra": {
+    "active_maps": [
+      "folded_slate",
+      "ice",
+      "regolith",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "folded_slate",
+      "frost_fracture"
+    ]
+  },
+  "volcanic": {
+    "active_maps": [
+      "gravel",
+      "ice",
+      "lava",
+      "snow"
+    ],
+    "layers": 4,
+    "seeded_rocks": [
+      "lava"
+    ]
+  }
+}

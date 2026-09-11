@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "resolution": 1024,
   "channels": "linear R/G signed tangent normal XY; B height/tone; A roughness",
   "materials": [
@@ -42,6 +42,34 @@
     {
       "id": "crystal",
       "texture": "res://assets/textures/surfaces/crystal.png"
+    },
+    {
+      "id": "basalt_columns",
+      "texture": "res://assets/textures/surfaces/basalt_columns.png"
+    },
+    {
+      "id": "porous_tuff",
+      "texture": "res://assets/textures/surfaces/porous_tuff.png"
+    },
+    {
+      "id": "sandstone_bedded",
+      "texture": "res://assets/textures/surfaces/sandstone_bedded.png"
+    },
+    {
+      "id": "frost_fracture",
+      "texture": "res://assets/textures/surfaces/frost_fracture.png"
+    },
+    {
+      "id": "salt_polygons",
+      "texture": "res://assets/textures/surfaces/salt_polygons.png"
+    },
+    {
+      "id": "impact_breccia",
+      "texture": "res://assets/textures/surfaces/impact_breccia.png"
+    },
+    {
+      "id": "folded_slate",
+      "texture": "res://assets/textures/surfaces/folded_slate.png"
     }
   ],
   "profiles": {
@@ -50,74 +78,121 @@
       "deposit": "sand",
       "rock_meters": 4.8,
       "deposit_meters": 3.2,
-      "deposit_color": "b08a63"
+      "deposit_color": "b08a63",
+      "rock_variants": [
+        "sandstone_bedded",
+        "impact_breccia"
+      ]
     },
     "continental": {
       "rock": "bedrock",
       "deposit": "regolith",
       "rock_meters": 4.8,
-      "deposit_meters": 3.4
+      "deposit_meters": 3.4,
+      "rock_variants": [
+        "folded_slate",
+        "impact_breccia"
+      ]
     },
     "cratered": {
       "rock": "bedrock",
       "deposit": "gravel",
       "rock_meters": 5.5,
-      "deposit_meters": 3.5
+      "deposit_meters": 3.5,
+      "rock_variants": [
+        "impact_breccia",
+        "basalt_columns"
+      ]
     },
     "fractured": {
       "rock": "bedrock",
       "deposit": "gravel",
       "rock_meters": 5,
-      "deposit_meters": 5
+      "deposit_meters": 5,
+      "rock_variants": [
+        "frost_fracture",
+        "basalt_columns"
+      ]
     },
     "tundra": {
       "rock": "bedrock",
       "deposit": "regolith",
       "rock_meters": 5,
-      "deposit_meters": 3.4
+      "deposit_meters": 3.4,
+      "rock_variants": [
+        "folded_slate",
+        "frost_fracture"
+      ]
     },
     "frozen": {
       "rock": "bedrock",
       "deposit": "regolith",
       "rock_meters": 5,
-      "deposit_meters": 4
+      "deposit_meters": 4,
+      "rock_variants": [
+        "frost_fracture",
+        "ice"
+      ]
     },
     "volcanic": {
       "rock": "lava",
       "deposit": "gravel",
       "rock_meters": 4,
-      "deposit_meters": 3
+      "deposit_meters": 3,
+      "rock_variants": [
+        "lava"
+      ]
     },
     "salt": {
       "rock": "bedrock",
       "deposit": "salt",
       "rock_meters": 5,
-      "deposit_meters": 4
+      "deposit_meters": 4,
+      "rock_variants": [
+        "salt_polygons",
+        "porous_tuff"
+      ]
     },
     "ochre": {
       "rock": "bedrock",
       "deposit": "sediment",
       "rock_meters": 5,
-      "deposit_meters": 4
+      "deposit_meters": 4,
+      "rock_variants": [
+        "porous_tuff",
+        "sandstone_bedded"
+      ]
     },
     "sedimentary": {
       "rock": "sediment",
       "deposit": "sand",
       "rock_meters": 6,
-      "deposit_meters": 4
+      "deposit_meters": 4,
+      "rock_variants": [
+        "sandstone_bedded",
+        "sediment"
+      ]
     },
     "crystalline": {
       "rock": "crystal",
       "deposit": "gravel",
       "rock_meters": 5,
       "deposit_meters": 3.6,
-      "deposit_color": "828e9e"
+      "deposit_color": "828e9e",
+      "rock_variants": [
+        "crystal",
+        "basalt_columns"
+      ]
     },
     "alkaline": {
       "rock": "bedrock",
       "deposit": "crystal",
       "rock_meters": 5,
-      "deposit_meters": 4.5
+      "deposit_meters": 4.5,
+      "rock_variants": [
+        "salt_polygons",
+        "impact_breccia"
+      ]
     }
   },
   "normal_strength": 0.42,
