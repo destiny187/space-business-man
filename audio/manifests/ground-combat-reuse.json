@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-11",
+  "new_generation_status": "Carbine variants generated on ElevenLabs web; download blocked by locked Mac. These game cues reuse existing ElevenLabs sources, not the undownloaded generation.",
+  "jobs": [
+    {
+      "id": "sfx_gun_carbine",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "source_sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_carbine.wav",
+      "duration_seconds": 0.34,
+      "pitch_factor": 1.0,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    },
+    {
+      "id": "sfx_gun_smg",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "source_sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_smg.wav",
+      "duration_seconds": 0.18,
+      "pitch_factor": 1.23,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    },
+    {
+      "id": "sfx_gun_shotgun",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "source_sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_shotgun.wav",
+      "duration_seconds": 0.55,
+      "pitch_factor": 0.72,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    },
+    {
+      "id": "sfx_gun_coil",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "source_sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_coil.wav",
+      "duration_seconds": 0.45,
+      "pitch_factor": 1.1,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    },
+    {
+      "id": "sfx_gun_reload",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_lotus_open.wav",
+      "source_sha256": "cdd480720d845d07e35bd3eb696f0cad1a997a4acbff797fb375fe1c0c59bcfc",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_reload.wav",
+      "duration_seconds": 1.4,
+      "pitch_factor": 1.0,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    },
+    {
+      "id": "sfx_gun_impact",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_mine_hit_metal.wav",
+      "source_sha256": "868462fd9470d0c1cb82d2e0072673e4e52989c8e3a4c0034284eca8ac42db80",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_impact.wav",
+      "duration_seconds": 0.2,
+      "pitch_factor": 1.18,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    },
+    {
+      "id": "sfx_shield_break",
+      "provider": "ElevenLabs existing asset reuse",
+      "source": "우주-비즈니스/assets/audio/sfx_mine_break.wav",
+      "source_sha256": "6670eb4d1ef1514d90d8d8e06fd45d579c06b2a480db65c726d3dca094977810",
+      "game_file": "우주-비즈니스/assets/audio/sfx_shield_break.wav",
+      "duration_seconds": 0.42,
+      "pitch_factor": 1.28,
+      "processing": "onset trim, mono resampling, 2ms/15ms edge fades, -19dBFS RMS / -5dBFS ceiling",
+      "status": "integrated_reuse_pending_listening"
+    }
+  ]
+}

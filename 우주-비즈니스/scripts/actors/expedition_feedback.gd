@@ -70,7 +70,7 @@ func blocked() -> bool:
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
 	if kind in ["deposit","withdraw"] or kind.begins_with("shuttle_"):
 		pending[sequence]={"kind":kind};return
-	if app.surface_world==null:return
+	if app.surface_world==null or kind in ["surface_fire","surface_reload","surface_stance"]:return
 	# Keep the point at request time, including when the client turns while awaiting the host.
 	var point:=app.camera.global_position-app.camera.global_basis.z*4
 	var query:=PhysicsRayQueryParameters3D.create(app.camera.global_position,app.camera.global_position-app.camera.global_basis.z*12)
@@ -188,6 +188,7 @@ func _process(delta: float) -> void:
 	if app==null:return
 	elapsed+=delta;work_left=maxf(0,work_left-delta);cue_left=maxf(0,cue_left-delta)
 	var active: bool=app.session.active and app.surface_world!=null
+	if blocked() or (not app.test_mode and not app.get_window().has_focus()):audio.stop_wildlife_cues()
 	var enabled: bool=active and not blocked() and app.placement_kind.is_empty() and (app.rovers==null or app.rovers.seat().is_empty())
 	var tool: Dictionary={}
 	if active:tool=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])

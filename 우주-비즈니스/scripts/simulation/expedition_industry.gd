@@ -8,6 +8,7 @@ static func tick_local(world: Dictionary,dt: float) -> void:
 	var site:=FrontierExpeditionBusiness.site(world)
 	if site.is_empty() or not FrontierPlanetSupply.operating(site):return
 	site.time=minf(10000000,site.time+dt)
+	FrontierCombatCover.tick(site,dt)
 	power(world,site)
 	var efficiency:=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world))
 	var ledger: Dictionary=world.business
@@ -42,6 +43,7 @@ static func power(world: Dictionary,site: Dictionary) -> void:
 		var p:=FrontierExpeditionBusiness.point(building.position)
 		var supported:=FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),p.x,p.z,FrontierTerraformTier3.radius(building)).is_finite()
 		building.active=false;building.working=false;building.status="정지" if not building.enabled else "전력 대기"
+		if FrontierCombatCover.is_cover(building):building.active=FrontierCombatCover.ready(building);building.status=FrontierCombatCover.status(building);continue
 		if not supported:building.status="토대 지지 필요";continue
 		if not building.enabled:continue
 		if float(def.power)<=0:building.active=true;building.status="발전 중" if def.power<0 else "사용 가능";supply-=float(def.power)*FrontierProductionTier2.factor(building)

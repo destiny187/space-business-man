@@ -32,7 +32,7 @@ static func commit(world: Dictionary,local: Dictionary,actor: String) -> void:
 	var ship: Dictionary=fleet(world)[actor]
 	for key in ["navigation","landing","cargo","cargo_equipment","rock"]:ship[key]=local.crew[key]
 	ship.location=local.location;ship.navigation_target=local.navigation_target
-	for key in ["survey","combat","wildlife_stops","corporations"]:
+	for key in ["survey","combat","wildlife_stops","wildlife_encounters","corporations"]:
 		if local.crew.has(key):world.crew[key]=local.crew[key]
 	for key in ["incidents","terrain_edits","discoveries","surface_water","expedition_research","business","engineering","ecology","terrain_settings","terrain_settings_hash","celestial_regions"]:
 		if local.has(key):world[key]=local[key]

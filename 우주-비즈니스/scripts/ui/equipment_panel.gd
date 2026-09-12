@@ -178,6 +178,7 @@ func _visibility() -> void:
 		tabs.current_tab=0
 		get_viewport().gui_release_focus()
 func _response(_sequence: int,value: Dictionary) -> void:
+	if value.has("firearm_action"):return
 	var cargo_response:=storage_pending.has(_sequence)
 	storage_pending.erase(_sequence)
 	if not visible or (tabs.current_tab==2 and not cargo_response):return
@@ -230,6 +231,10 @@ func _process(delta: float) -> void:
 	for i in data.slots.size():
 		var def: Dictionary=FrontierEquipment.config().items.get(data.items.get(data.slots[i],""),{})
 		var tile:=hotbuttons[i];tile.picture=null if def.is_empty() else FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.get("tier",0));tile.selected=i==int(data.selected);tile.caption="";tile.tooltip_text=str(i+1)+"  "+str(def.get("name","빈 슬롯"));tile.queue_redraw()
+		if def.has("firearm"):
+			var rarity: String=str(data.get("weapon_rolls",{}).get(data.slots[i],{}).get("rarity","standard"))
+			tile.rarity_color=Color(str(FrontierFirearms.config().rarities[rarity].color))
+		else:tile.rarity_color=Color.TRANSPARENT
 	for grid in [owned,recipes,cargo,storage_owned]:
 		for child in grid.get_children():grid.remove_child(child);child.queue_free()
 	tiles.clear()
@@ -255,6 +260,10 @@ func _process(delta: float) -> void:
 func _tile(parent: Node,id: String,definition: String) -> void:
 	var def: Dictionary=FrontierEquipment.config().items[definition]
 	var tile:=FrontierItemTile.new();tile.item_id=id;tile.set_meta("definition",definition);tile.picture=FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.tier);tile.caption=def.name;tile.tooltip_text=def.name;FrontierItemBrowser.tag(tile,def.name,"equipment")
+	if def.has("firearm"):
+		var rarity: String=str(data.get("weapon_rolls",{}).get(id,{}).get("rarity","standard"))
+		var quality: Dictionary=FrontierFirearms.config().rarities[rarity]
+		tile.rarity_color=Color(str(quality.color));tile.rarity_label=str(quality.name);tile.tooltip_text+=" · "+str(quality.name)
 	if parent==owned:tile.custom_minimum_size=Vector2(84,96)
 	if parent==recipes:
 		tile.unavailable=int(data.kit)<=0 if definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost)
@@ -320,11 +329,19 @@ func _refresh_details() -> void:
 		title.text="아이템 선택";category.text="내 아이템";preview.show_model("");action.hide();message.text="";return
 	action.show()
 	var def: Dictionary=FrontierEquipment.config().items[selected_definition]
+	if tabs.current_tab==0 and not selected_item.is_empty():def=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],selected_item)
 	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환"}[def.kind]
+	if def.has("firearm"):category.text+=" · "+str(FrontierFirearms.config().rarities[def.get("rarity","standard")].name)
 	preview.show_model(def.model)
 	_metric("장비 등급","%s"%["I","II","III"][int(def.tier)-1],float(def.tier)/3,FrontierInterfaceStyle.WARNING)
 	if def.kind=="miner":_metric("채집량","%d개"%int(def.amount),float(def.amount)/5);_metric("작업 간격","%.2f초"%float(def.interval),.3/float(def.interval))
-	elif def.kind=="pulse":_metric("타격 피해",str(int(def.damage)),float(def.damage)/40)
+	elif def.kind=="pulse":
+		_metric("단발 피해",str(int(def.damage)),float(def.damage)/80)
+		if def.has("firearm"):
+			var family: Dictionary=FrontierFirearms.config().families[def.firearm]
+			_metric("탄창 / 사거리","%d발 / %dm"%[int(family.magazine),int(family.range)],float(family.magazine)/60)
+			var rarity: Dictionary=FrontierFirearms.config().rarities[def.get("rarity","standard")]
+			var identity:=FrontierInterfaceStyle.label(stats,str(rarity.name)+" · "+str(family.identity),12,Color(rarity.color));identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	else:_metric("굴착 반경","%.1fm"%float(def.radius),float(def.radius)/1.7)
 	var current:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	if not current.is_empty() and current.kind==def.kind and current.tier!=def.tier:

@@ -232,12 +232,17 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
    if row.phase=="idle" and nearest<float(robot_cfg.wake_distance):set_phase(row,"waking");changed=true
    elif row.phase=="waking" and row.time>=robot_cfg.wake_seconds:set_phase(row,"cooling");changed=true
    elif row.phase=="cooling" and row.time>=robot_cfg.cool_seconds and target_actor!="":
-    row.aim=world.crew.members[target_actor].position.duplicate();row.target=target_actor;set_phase(row,"aiming");changed=true
+    row.aim=array(FrontierCrewWorld.vector(world.crew.members[target_actor].position)+Vector3.UP*(FrontierFirearms.eye(world.crew.members[target_actor])-1.0));row.target=target_actor;set_phase(row,"aiming");changed=true
    elif row.phase=="aiming" and row.time>=robot_cfg.aim_seconds:
     var start:=point(row,Vector3(0,1.5,0));var end:=FrontierCrewWorld.vector(row.aim)+Vector3.UP
+    var flight: Vector3=(end-start).normalized();var cover:=FrontierCombatCover.intercept(world,row.body_id,start,flight,start.distance_to(end))
+    if not cover.is_empty() and FrontierCrewSurface.visible_in_field(bodies[row.body_id],start,cover.point):
+     var distance:=float(obstacle.call(target_actor if target_actor!="" else present[0],start,flight,float(cover.distance)+.1)) if obstacle.is_valid() else float(cover.distance)
+     if distance>=float(cover.distance)-.15:FrontierCombatCover.damage(cover,float(robot_cfg.damage));row.aim=FrontierExplorationIncidents.array(cover.point-Vector3.UP)
+     set_phase(row,"firing");changed=true;continue
     for actor in present:
-     var at:=FrontierCrewWorld.vector(world.crew.members[actor].position)+Vector3.UP;var line:=end-start;var t:=clampf((at-start).dot(line)/maxf(.01,line.length_squared()),0,1)
-     if at.distance_to(start+line*t)>.8:continue
+     var at:=FrontierCrewWorld.vector(world.crew.members[actor].position)+Vector3.UP*(.8 if world.crew.members[actor].loadout.get("crouched",false) else 1.3);var line:=end-start;var t:=clampf((at-start).dot(line)/maxf(.01,line.length_squared()),0,1)
+     if at.distance_to(start+line*t)>(.4 if world.crew.members[actor].loadout.get("crouched",false) else .65):continue
      if not FrontierCrewSurface.visible_in_field(bodies[row.body_id],start,at):continue
      if obstacle.is_valid() and float(obstacle.call(actor,start,(at-start).normalized(),start.distance_to(at)))<start.distance_to(at)-.5:continue
      hurt(world,actor,float(robot_cfg.damage))
@@ -394,5 +399,7 @@ static func recover(world: Dictionary,actor: String,row: Dictionary) -> String:
  if not error.is_empty():return error
  var result:=reward(world,actor,FrontierNativeIncidents.reward(row),str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))
  if not result.is_empty():return result
+ var firearm_error:=FrontierFirearms.drop(world,actor,row)
+ if not firearm_error.is_empty():return firearm_error
  if preload("res://scripts/domain/storm_archive.gd").enabled(row):return preload("res://scripts/domain/storm_archive.gd").recover(world,actor,row)
  return ""

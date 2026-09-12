@@ -67,9 +67,9 @@ func stream(id: String,looped: bool = false) -> AudioStream:
 	streams[key] = audio
 	return audio
 
-func play(id: String,location: Vector3 = Vector3.INF) -> void:
+func play(id: String,location: Vector3 = Vector3.INF,pitch: float = 1.0) -> void:
 	var now: int = Time.get_ticks_msec()
-	var cooldown: int = 8000 if id == "sfx_creature_call" else (500 if id == "sfx_combat_pulse" else 100)
+	var cooldown: int = 30 if id.begins_with("sfx_gun_") else 8000 if id == "sfx_creature_call" else (500 if id == "sfx_combat_pulse" else 100)
 	if now-int(last_played.get(id,-10000)) < cooldown: return
 	var audio: AudioStream = stream(id)
 	if audio == null: return
@@ -77,6 +77,8 @@ func play(id: String,location: Vector3 = Vector3.INF) -> void:
 	if location == Vector3.INF:
 		var speaker := AudioStreamPlayer.new()
 		speaker.stream = audio
+		speaker.pitch_scale=clampf(pitch,.25,4.0)
+		speaker.set_meta("cue",id)
 		speaker.bus = "UI" if id.begins_with("ui_") else "SFX"
 		speaker.volume_db = -10
 		add_child(speaker)
@@ -85,6 +87,8 @@ func play(id: String,location: Vector3 = Vector3.INF) -> void:
 	else:
 		var speaker := AudioStreamPlayer3D.new()
 		speaker.stream = audio
+		speaker.pitch_scale=clampf(pitch,.25,4.0)
+		speaker.set_meta("cue",id)
 		speaker.bus = "SFX"
 		speaker.volume_db = -8
 		speaker.max_distance = 30
@@ -92,6 +96,12 @@ func play(id: String,location: Vector3 = Vector3.INF) -> void:
 		speaker.global_position = location
 		speaker.finished.connect(speaker.queue_free)
 		speaker.play()
+
+func stop_firearm_cues() -> void:
+	for speaker in get_children():
+		var cue: String=speaker.get_meta("cue","")
+		if cue.begins_with("sfx_gun_") or cue=="sfx_shield_break":
+			speaker.stop();speaker.queue_free()
 
 func update_world(p: Dictionary,paused: bool) -> void:
 	if p.is_empty():
@@ -160,3 +170,8 @@ func update_world(p: Dictionary,paused: bool) -> void:
 				create_tween().tween_property(emitter,"volume_db",level,.22)
 		emitter.global_position = value[1]
 		emitter.stream_paused = paused
+
+func stop_wildlife_cues() -> void:
+	for speaker in get_children():
+		if str(speaker.get_meta("cue","")).begins_with("sfx_wildlife_") and speaker.playing:
+			speaker.stop();speaker.queue_free()

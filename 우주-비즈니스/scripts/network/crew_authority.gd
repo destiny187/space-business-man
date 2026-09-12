@@ -7,9 +7,13 @@ const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 var augmentation_station_provider: Callable
 var research_station_provider: Callable
 var shot_obstacle_provider: Callable
+var standing_allowed_provider: Callable
 var weather_ready_provider: Callable
 var weather_presence: Dictionary={}
 var weather_timer:=0.0
+var wildlife_combat:=FrontierWildlifeCombat.new()
+var wildlife_timer:=0.0
+var wildlife_obstacle_provider: Callable
 var lotus_clearance_provider: Callable
 var world: Dictionary={}
 var phase: String="lobby"
@@ -35,7 +39,7 @@ var rover_spawn_validator: Callable
 var rover_runtime: Dictionary={"seats":{},"exits":{},"tasks":{},"status":{}}
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
-	weather_presence.clear();weather_timer=0.0
+	weather_presence.clear();weather_timer=0.0;wildlife_combat.cache.clear();wildlife_timer=0.0
 	error=FrontierPlayerProfile.validate_character(profile)
 	if not error.is_empty():return false
 	error=FrontierExpeditionResearch.validate(source)
@@ -58,6 +62,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	if world.crew.owner_id!=profile.character_id:error="이 세계를 만든 호스트의 개인 프로필이 필요합니다.";return false
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
+	FrontierWildlifeCombat.resume(world.crew)
 	FrontierExplorationDiscoveries.ensure(world)
 	FrontierExplorationIncidents.ensure(world)
 	FrontierExpeditionResearch.ensure(world)
@@ -170,6 +175,10 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		return {"ok":true,"sequence":envelope.sequence}
 	if phase!="playing":return failure("호스트가 게임을 시작한 뒤 사용할 수 있습니다.")
 	if FrontierSolarOpening.active(world.crew.navigation) and envelope.kind!="ready":return failure("태양계 출항 연출이 끝난 뒤 조작하세요.")
+	if envelope.kind in ["surface_fire","surface_reload","surface_stance"]:
+		var outcome:=firearm_command(peer,envelope);outcome.firearm_action=envelope.kind;return outcome
+	if envelope.kind in ["surface_attack","surface_incident_tool"] and FrontierEquipment.active(world.crew.members[actor]).has("firearm"):
+		return failure("현재 총기의 발사 입력을 사용하세요.")
 	var sequence:=int(envelope.sequence)
 	var key: String=actor+":"+str(sequence)
 	var digest:=JSON.stringify({"kind":envelope.kind,"args":envelope.args,"revision":envelope.get("revision")},"",true).sha256_text()
@@ -296,6 +305,44 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
 	return result
+var gun_checkpoint:=0.0
+var gun_dirty:=false
+var gun_receipts: Dictionary={}
+func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
+	var actor: String=peers[peer]
+	var member: Dictionary=world.crew.members[actor]
+	var sequence:=int(envelope.sequence)
+	var digest:=FrontierUniverse.fingerprint({"kind":envelope.kind,"args":envelope.args})
+	var receipt: Dictionary=gun_receipts.get(actor,{})
+	if sequence==int(receipt.get("sequence",-1)):
+		return receipt.result.duplicate(true) if receipt.digest==digest else failure("발사 순번이 중복됐습니다.")
+	if sequence<=int(member.last_sequence):return failure("지난 발사 요청입니다.")
+	var local:=FrontierShuttles.context(world,actor)
+	if not FrontierCrewSurface.landed(local) or member.area!="surface" or member.aboard or not FrontierRovers.seated(rover_runtime,actor).is_empty():return failure("지상에서 장비를 사용하세요.")
+	var input_state: Dictionary=inputs.get(peer,{})
+	if not input_state.get("controls_enabled",false) or float(input_state.get("expires",0))<now:
+		return {"ok":false,"code":"weapon_blocked"}
+	var result: Dictionary={}
+	if envelope.kind=="surface_stance":
+		if not envelope.args.get("crouched") is bool:return failure("자세 입력 오류")
+		if not envelope.args.crouched and standing_allowed_provider.is_valid() and not standing_allowed_provider.call(actor):return {"ok":false,"code":"headroom","crouched":true}
+		member.loadout.crouched=envelope.args.crouched
+		result={"ok":true,"stance":true,"crouched":member.loadout.crouched}
+	else:
+		var tool:=FrontierEquipment.active(member)
+		if not tool.has("firearm") or envelope.args.get("item_id")!=tool.item_id:return {"ok":false,"code":"weapon_changed"}
+		if envelope.kind=="surface_reload":result=FrontierFirearms.begin_reload(member,tool)
+		else:
+			var args: Dictionary=envelope.args.duplicate(true);args.serial=sequence
+			result=FrontierFirearms.fire(local,actor,args,shot_obstacle_provider)
+			FrontierShuttles.commit(world,local,actor)
+	if result.get("ok",false):
+		member=world.crew.members[actor]
+		member.last_sequence=sequence;member.weapon_event=result.duplicate(true);member.weapon_event.serial=sequence
+		result.sequence=sequence;result.revision=world.crew.revision
+		gun_receipts[actor]={"sequence":sequence,"digest":digest,"result":result.duplicate(true)}
+		gun_dirty=true
+	return result
 func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[],weather_ready: bool=false) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
@@ -396,6 +443,18 @@ func _step_water(delta: float) -> void:
 var incident_timer:=0.0
 func step_surface(delta: float) -> void:
 	if stopped:return
+	for member in world.crew.members.values():FrontierFirearms.tick(member,delta)
+	gun_checkpoint+=delta
+	if gun_dirty and gun_checkpoint>=float(FrontierFirearms.config().checkpoint_seconds):
+		if not checkpoint():return
+		gun_dirty=false;gun_checkpoint=0.0
+	wildlife_timer+=delta
+	if wildlife_timer>=float(FrontierWildlifeCombat.config().tick_seconds):
+		var active_wildlife: Array=[]
+		for peer in peers:
+			if inputs.get(peer,{}).get("controls_enabled",false) and float(inputs.get(peer,{}).get("expires",-1))>=now and FrontierRovers.seated(rover_runtime,peers[peer]).is_empty():active_wildlife.append(peers[peer])
+		if wildlife_combat.tick(world,minf(wildlife_timer,.15),active_wildlife,wildlife_obstacle_provider,weather_ready_provider,peers.values()):gun_dirty=true;world.crew.revision+=1
+		wildlife_timer=0.0
 	weather_timer+=delta
 	if weather_timer>=.25:
 		var weather_draft:=WorldSnapshot.copy(world)

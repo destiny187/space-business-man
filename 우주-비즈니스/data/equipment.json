@@ -58,32 +58,37 @@
       "name": "펄스 카빈 Mk.1",
       "kind": "pulse",
       "tier": 1,
-      "model": "equipment/pulse_carbine",
-      "preview": "pulse_carbine",
+      "model": "equipment/gun_carbine",
+      "preview": "gun_carbine",
       "cost": {
         "iron": 6,
         "copper": 4
       },
-      "interval": 0.45,
-      "amount": 3,
-      "damage": 20,
-      "radius": 1.4
+      "interval": 0.14,
+      "amount": 1,
+      "damage": 13,
+      "radius": 1.4,
+      "firearm": "carbine",
+      "identity": "안정화 레일 · 연속 사격의 탄착이 서서히 모입니다."
     },
     "pulse_2": {
       "name": "펄스 카빈 Mk.2",
       "kind": "pulse",
       "tier": 2,
-      "model": "equipment/pulse_mk2",
-      "preview": "pulse_carbine",
+      "model": "equipment/gun_carbine",
+      "preview": "gun_carbine",
       "cost": {
         "reinforced_frame": 1,
-        "control_circuit": 2
+        "control_circuit": 2,
+        "heat_transfer_unit": 1
       },
-      "interval": 0.3,
-      "amount": 4,
-      "damage": 40,
-      "radius": 1.7,
-      "upgrade_from": "pulse_1"
+      "interval": 0.14,
+      "amount": 1,
+      "damage": 20,
+      "radius": 1.4,
+      "upgrade_from": "pulse_1",
+      "firearm": "carbine",
+      "identity": "안정화 레일 · 연속 사격의 탄착이 서서히 모입니다."
     },
     "terrain_1": {
       "name": "지형 변환기 Mk.1",
@@ -131,6 +136,245 @@
       "damage": 40,
       "radius": 1.7,
       "craftable": false
+    },
+    "pulse_3": {
+      "name": "펄스 카빈 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_carbine",
+      "preview": "gun_carbine",
+      "interval": 0.14,
+      "damage": 27,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "carbine",
+      "identity": "안정화 레일 · 연속 사격의 탄착이 서서히 모입니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      },
+      "upgrade_from": "pulse_2"
+    },
+    "pistol_1": {
+      "name": "니들 권총 Mk.1",
+      "kind": "pulse",
+      "tier": 1,
+      "model": "equipment/gun_pistol",
+      "preview": "gun_pistol",
+      "interval": 0.27,
+      "damage": 25,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "pistol",
+      "identity": "초탄 집중 · 잠깐 조준을 멈춘 뒤 첫 발이 강합니다.",
+      "cost": {
+        "iron": 6,
+        "copper": 4
+      }
+    },
+    "pistol_2": {
+      "name": "니들 권총 Mk.2",
+      "kind": "pulse",
+      "tier": 2,
+      "model": "equipment/gun_pistol",
+      "preview": "gun_pistol",
+      "interval": 0.27,
+      "damage": 38,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "pistol",
+      "identity": "초탄 집중 · 잠깐 조준을 멈춘 뒤 첫 발이 강합니다.",
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 2,
+        "heat_transfer_unit": 1
+      },
+      "upgrade_from": "pistol_1"
+    },
+    "pistol_3": {
+      "name": "니들 권총 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_pistol",
+      "preview": "gun_pistol",
+      "interval": 0.27,
+      "damage": 51,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "pistol",
+      "identity": "초탄 집중 · 잠깐 조준을 멈춘 뒤 첫 발이 강합니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      },
+      "upgrade_from": "pistol_2"
+    },
+    "smg_2": {
+      "name": "스파크 기관단총 Mk.2",
+      "kind": "pulse",
+      "tier": 2,
+      "model": "equipment/gun_smg",
+      "preview": "gun_smg",
+      "interval": 0.082,
+      "damage": 12,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "smg",
+      "identity": "실드 추격 · 실드 파괴 후 다음 재장전이 빨라집니다.",
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 2,
+        "heat_transfer_unit": 1
+      }
+    },
+    "smg_3": {
+      "name": "스파크 기관단총 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_smg",
+      "preview": "gun_smg",
+      "interval": 0.082,
+      "damage": 16,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "smg",
+      "identity": "실드 추격 · 실드 파괴 후 다음 재장전이 빨라집니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      },
+      "upgrade_from": "smg_2"
+    },
+    "shotgun_2": {
+      "name": "브레이커 산탄총 Mk.2",
+      "kind": "pulse",
+      "tier": 2,
+      "model": "equipment/gun_shotgun",
+      "preview": "gun_shotgun",
+      "interval": 0.82,
+      "damage": 15,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "shotgun",
+      "identity": "부채꼴 산탄 · 가까이 붙을수록 여러 탄이 함께 적중합니다.",
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 2,
+        "heat_transfer_unit": 1
+      }
+    },
+    "shotgun_3": {
+      "name": "브레이커 산탄총 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_shotgun",
+      "preview": "gun_shotgun",
+      "interval": 0.82,
+      "damage": 20,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "shotgun",
+      "identity": "부채꼴 산탄 · 가까이 붙을수록 여러 탄이 함께 적중합니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      },
+      "upgrade_from": "shotgun_2"
+    },
+    "lmg_2": {
+      "name": "앵커 경기관총 Mk.2",
+      "kind": "pulse",
+      "tier": 2,
+      "model": "equipment/gun_lmg",
+      "preview": "gun_lmg",
+      "interval": 0.125,
+      "damage": 18,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "lmg",
+      "identity": "고정 사격 · 낮은 자세에서는 반동과 탄퍼짐이 줄어듭니다.",
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 2,
+        "heat_transfer_unit": 1
+      }
+    },
+    "lmg_3": {
+      "name": "앵커 경기관총 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_lmg",
+      "preview": "gun_lmg",
+      "interval": 0.125,
+      "damage": 24,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "lmg",
+      "identity": "고정 사격 · 낮은 자세에서는 반동과 탄퍼짐이 줄어듭니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      },
+      "upgrade_from": "lmg_2"
+    },
+    "marksman_3": {
+      "name": "트레이서 지정사수총 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_marksman",
+      "preview": "gun_marksman",
+      "interval": 0.43,
+      "damage": 65,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "marksman",
+      "identity": "약점 연계 · 약점 연속 명중의 세 번째 발이 강화됩니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      }
+    },
+    "sniper_3": {
+      "name": "랜스 저격총 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_sniper",
+      "preview": "gun_sniper",
+      "interval": 1.25,
+      "damage": 139,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "sniper",
+      "identity": "냉각 코어 관측 · 정조준한 약점에 높은 정밀 피해를 줍니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      }
+    },
+    "plasma_3": {
+      "name": "오브 플라스마 발사기 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_plasma",
+      "preview": "gun_plasma",
+      "interval": 1.15,
+      "damage": 86,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "plasma",
+      "identity": "집속 파열 · 충돌 지점 주변에 엄폐로 차단되는 폭발을 만듭니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      }
     }
   }
 }

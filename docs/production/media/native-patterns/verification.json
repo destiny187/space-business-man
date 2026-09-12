@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-12",
+  "renderer": "Godot 4.7.2 Metal Forward+ / Apple M2",
+  "coverage": {
+    "charge": 71,
+    "melee": 126,
+    "shockwave": 35,
+    "double_sweep": 42,
+    "leap": 7
+  },
+  "checks": {
+    "base-rules.txt": {
+      "checks": 24,
+      "failures": 0
+    },
+    "rules.txt": {
+      "checks": 20,
+      "failures": 0
+    },
+    "felid-play.txt": {
+      "checks": 16,
+      "failures": 0
+    },
+    "charge-play.txt": {
+      "checks": 15,
+      "failures": 0
+    }
+  },
+  "rendered_frames": 13,
+  "audio_output": [
+    {
+      "file": "felid-runtime.wav",
+      "seconds": 18.912,
+      "rate": 48000,
+      "channels": 2,
+      "peak_dbfs": -5.288407928716295,
+      "rms_dbfs": -27.938475931488863,
+      "clipped_samples": 0,
+      "sha256": "2a0b598289906807ef76777551fae6397f8097668ab21c2c05f16e3a32441057"
+    },
+    {
+      "file": "charge-runtime.wav",
+      "seconds": 21.408,
+      "rate": 48000,
+      "channels": 2,
+      "peak_dbfs": -4.749025815188591,
+      "rms_dbfs": -26.357291737462635,
+      "clipped_samples": 0,
+      "sha256": "cc8417494fba75ce22cc6567f6b372a9daa45fc310edafd677a4bab4d3255234"
+    }
+  ],
+  "subjective_audio_review": "not performed",
+  "six_client_review": "not performed",
+  "source_sha256": {
+    "data/wildlife_combat.json": "5b37dad42f572e811cb552240a930dd1de411809754ae0dc1f65c9b37c6edecb",
+    "scripts/domain/wildlife_combat.gd": "fda7f7f20952b56c4811c3c209b2ff500589280501409a766293ec8dc7cf40fe",
+    "scripts/domain/wildlife_attacks.gd": "e2f97a09e5850769faaafd70c25e7132dcfbbd8bf1c650d0d2ab720c2820be6f",
+    "scripts/domain/combat_cover.gd": "629ea8b6745481c0450c37e1ed8d4e0b15493d3fd7d73bf6f0b32267ac86b997",
+    "scripts/actors/creatures/bestiary_actor.gd": "1376474b0561bb7e09eca5c2f58c50e5bdaef76d41ea186cecdda52d6bebd922",
+    "scripts/world/surface_ecology.gd": "90fac435d8d8d08834005812acf15e13c1690eb4b0d3a8ef391f6d750515b0a2",
+    "scripts/world/crew_spaces.gd": "dd4024ac794f1bcb7183939899cccdbcfd7a765956300b942536c18582a88457",
+    "scripts/world/crew_surface_scene.gd": "2fbcd3eaddc89634fe5ad5d327f6e7896b3aac76ccfafd5bfbdc994351d3af6b",
+    "scripts/ui/field_hud.gd": "f9a0b67019782284a36a0116300ee240210aa7ac8c885d50e3bc296b3fbf4ca8"
+  }
+}

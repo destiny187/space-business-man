@@ -1,0 +1,34 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS start isolated host
+PASS land fixture: 
+PASS save play fixture: 
+PASS Forward+ ground loaded
+PASS robot and ground streamed
+PASS local trigger receives host ammo outcome
+PASS ElevenLabs shot cue loaded
+PASS reload animation and progress visible
+PASS valid cover placement combat_barrier
+PASS build commits combat_barrier
+PASS Blender cover and collision present combat_barrier
+PASS assembly completes combat_barrier
+PASS broken cover collapses combat_barrier
+PASS F ray selects nonblocking wreck combat_barrier
+PASS paid repair restores cover combat_barrier
+PASS valid cover placement combat_barricade
+PASS build commits combat_barricade
+PASS Blender cover and collision present combat_barricade
+PASS assembly completes combat_barricade
+PASS broken cover collapses combat_barricade
+PASS F ray selects nonblocking wreck combat_barricade
+PASS paid repair restores cover combat_barricade
+PASS Ctrl posture reaches host
+PASS low collision follows posture
+PLAY_REJECTION { "ok": false, "code": "weapon_blocked" }
+PASS F points at physical weapon loot
+PASS F adds owned gun
+PASS save actual ground play
+GROUND_COMBAT_PLAY_CHECKS 27 FAILURES 0
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

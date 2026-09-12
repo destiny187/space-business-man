@@ -31,6 +31,8 @@ static func ensure(world: Dictionary) -> void:
 	world.ecology.item_storage_version=1
 static func collect(world: Dictionary,actor: String,encounter: Dictionary) -> String:
 	ensure(world)
+	var combat:=FrontierWildlifeCombat.state(world.crew,world.location,encounter)
+	if combat.get("phase","") in ["warning","chase","attack","hurt","flee"] and int(world.crew.get("combat",{}).get(FrontierWildlifeCombat.key(world.location,encounter),1))>0:return "경계 중인 생물은 먼저 거리를 벌리거나 무력화하세요."
 	var sample: Dictionary={"id":(world.location+":"+str(encounter.id)).sha256_text(),"source_body":world.location,"form_id":encounter.form_id,"look_id":encounter.look_id}
 	var key:=resource(sample)
 	if FrontierItemInventory.room(world,actor,key)<1:return "아이템창이 가득 찼습니다. 창고에 물건을 옮겨 공간을 확보하세요."

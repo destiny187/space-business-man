@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS natural native home landing 
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:486659","ordinal":486659,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:486659","form_id":"biota_lobopod_armor_26","home_point":"(14.2704, 2.060977, 10.4304)","id":"surface:0:0:0","introduced":false,"layer":"surface","look_id":"biota_lobopod_armor_26_p02_s02","point":"(14.2704, 2.060977, 10.4304)","status":"active","terrestrial":true,"yaw":3.42433599241287}}
+PASS naturally assigned proactive rigged felid
+PASS play fixture saved 
+PASS native field Forward+ ready
+PASS natural rigged animal loaded
+NATIVE_PATTERN_FRAME felid windup {"aim":[0.00791942328214645,0.0,0.999968588352203],"attack":{"blocked":false,"goal":[14.2677555084229,2.06097650527954,18.0964450836182],"hits":{},"mode":"leap","origin":[14.2202386856079,2.06097650527954,12.0966329574585],"pulses":0,"travel":0.0},"body_id":"galaxy:galaxy-v3:71503:planet:486659","encounter_id":"surface:0:0:0","flinch":0.0,"form_id":"biota_lobopod_armor_26","home":[14.2704000473022,2.06097650527954,10.4303998947144],"hurt_serial":0,"look_id":"biota_lobopod_armor_26_p02_s02","lost":0.0,"phase":"attack","position":[14.2202386856079,2.06097650527954,12.0966329574585],"provoked":false,"serial":3,"struck":false,"target":"ce2205ec38c433af351d21a33a8a152d","time":0.7,"yaw":0.00791950603032439}
+NATIVE_PATTERN_FRAME felid motion {"aim":[0.00791942328214645,0.0,0.999968588352203],"air_height":1.64538626534895,"attack":{"blocked":false,"goal":[14.2677555084229,2.06097650527954,18.0964450836182],"hits":{},"mode":"leap","origin":[14.2202386856079,2.06097650527954,12.0966329574585],"pulses":1,"travel":0.476190476190476},"body_id":"galaxy:galaxy-v3:71503:planet:486659","cue_serial":1,"encounter_id":"surface:0:0:0","flinch":0.0,"form_id":"biota_lobopod_armor_26","home":[14.2704000473022,2.06097650527954,10.4303998947144],"hurt_serial":0,"look_id":"biota_lobopod_armor_26_p02_s02","lost":0.0,"phase":"attack","position":[14.242865562439,2.06097650527954,14.9536867141724],"provoked":false,"serial":3,"struck":true,"target":"ce2205ec38c433af351d21a33a8a152d","time":1.28333333333333,"yaw":0.00791950603032439}
+PASS committed motion matches elevated visible collider
+PASS natural felid visibly airborne
+PASS unprovoked warning pursuit and attack in real world
+PASS real native attack reaches player
+PASS visible collider and host combat stay together
+PASS solo menu pauses retained encounter
+NATIVE_PATTERN_FRAME felid recovery {"aim":[0.00791942328214645,0.0,0.999968588352203],"air_height":0.0,"attack":{"blocked":false,"goal":[14.2677555084229,2.06097650527954,18.0964450836182],"hits":{"ce2205ec38c433af351d21a33a8a152d":1},"mode":"leap","origin":[14.2202386856079,2.06097650527954,12.0966329574585],"pulses":2,"travel":1.0},"body_id":"galaxy:galaxy-v3:71503:planet:486659","cue_serial":2,"encounter_id":"surface:0:0:0","flinch":0.0,"form_id":"biota_lobopod_armor_26","home":[14.2704000473022,2.06097650527954,10.4303998947144],"hurt_serial":0,"look_id":"biota_lobopod_armor_26_p02_s02","lost":0.0,"phase":"attack","position":[14.2677555084229,2.06097650527954,18.0964450836182],"provoked":false,"serial":3,"struck":true,"target":"ce2205ec38c433af351d21a33a8a152d","time":1.75,"yaw":0.00791950603032439}
+PASS equipped firearm defeats real moving native animal
+PASS actual last position saved
+NATIVE_AUDIO { "sfx_creature_call": 17606, "sfx_wildlife_warning": 35391, "sfx_wildlife_strike": 33995, "sfx_build_invalid": 34045, "sfx_gun_carbine": 36112, "sfx_wildlife_hurt": 36112 }
+PASS native sound cues played through live SFX bus
+PASS native encounter save and close
+PASS incapacitation reloads
+NATIVE_COMBAT_PLAY 16 FAILURES 0

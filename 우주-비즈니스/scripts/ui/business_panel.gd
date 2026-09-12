@@ -117,8 +117,8 @@ func _ready() -> void:
 	facility_picture=FrontierEquipmentPreview.new();facility_picture.custom_minimum_size=Vector2(150,150);facility_picture.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;facility_tab.add_child(facility_picture)
 	facility_status=label(facility_tab,"")
 	facility=option(facility_tab)
-	button(facility_tab,"선택 시설 가동 / 정지",func():command.emit("business_toggle",{"building_id":selected(facility)}))
-	button(facility_tab,"선택 시설 철거  건설 재료 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
+	button(facility_tab,"가동 / 정지 · 엄폐물 수리",func():command.emit("business_toggle",{"building_id":selected(facility)}))
+	button(facility_tab,"시설 철거 · 엄폐물은 남은 내구도만큼 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
 	label(build_tab,"Esc  배치 취소",12)
 	var research_tab:=VBoxContainer.new();research_tab.name="기술";tabs.add_child(research_tab)
 	technology=option(research_tab)
@@ -274,6 +274,7 @@ func refresh_context(current: Dictionary) -> void:
 		if context_kind!="robot" and not row.is_empty():
 			facility_picture.show_model(FrontierCatalog.entry("buildings",row.type).model)
 			facility_status.text=FrontierCatalog.entry("buildings",row.type).description if row.type in FrontierPlanetWeather.config().buildings else "Mk.%d  %s"%[int(row.get("tier",1)),row.get("status","")]
+		if FrontierCombatCover.is_cover(row):facility_status.text=FrontierCombatCover.status(row)+"\n수리: "+FrontierCatalog.cost_text(FrontierCombatCover.config().buildings[row.type].repair)
 		if row.is_empty() or not FrontierPlanetSupply.operating(current):hide()
 func context_in_range(position: Vector3) -> bool:
 	if context_kind=="build":return true

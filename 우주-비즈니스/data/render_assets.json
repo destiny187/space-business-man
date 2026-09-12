@@ -16117,5 +16117,166 @@
     "foliage": false,
     "generator": "tools/build_weather_shelters.py",
     "review": "docs/production/135-planet-weather.md"
+  },
+  {
+    "id": "gun_carbine",
+    "name": "펄스 카빈",
+    "source": "art/blender/equipment/gun_carbine.blend",
+    "model": "res://assets/models/equipment/gun_carbine.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "펄스 카빈",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_pistol",
+    "name": "니들 권총",
+    "source": "art/blender/equipment/gun_pistol.blend",
+    "model": "res://assets/models/equipment/gun_pistol.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "니들 권총",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_smg",
+    "name": "스파크 기관단총",
+    "source": "art/blender/equipment/gun_smg.blend",
+    "model": "res://assets/models/equipment/gun_smg.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "스파크 기관단총",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_shotgun",
+    "name": "브레이커 산탄총",
+    "source": "art/blender/equipment/gun_shotgun.blend",
+    "model": "res://assets/models/equipment/gun_shotgun.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "브레이커 산탄총",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_lmg",
+    "name": "앵커 경기관총",
+    "source": "art/blender/equipment/gun_lmg.blend",
+    "model": "res://assets/models/equipment/gun_lmg.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "앵커 경기관총",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_marksman",
+    "name": "트레이서 지정사수총",
+    "source": "art/blender/equipment/gun_marksman.blend",
+    "model": "res://assets/models/equipment/gun_marksman.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "트레이서 지정사수총",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_sniper",
+    "name": "랜스 저격총",
+    "source": "art/blender/equipment/gun_sniper.blend",
+    "model": "res://assets/models/equipment/gun_sniper.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "랜스 저격총",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "gun_plasma",
+    "name": "오브 플라스마 발사기",
+    "source": "art/blender/equipment/gun_plasma.blend",
+    "model": "res://assets/models/equipment/gun_plasma.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1",
+    "title": "오브 플라스마 발사기",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false
+  },
+  {
+    "id": "combat_barrier",
+    "title": "전투 / 엄폐",
+    "name": "combat_barrier",
+    "group": "장비",
+    "model": "res://assets/models/combat_barrier.glb",
+    "source": "art/blender/equipment/combat_barrier.blend",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "generator": "tools/build_combat_cover.py"
+  },
+  {
+    "id": "combat_barricade",
+    "title": "전투 / 엄폐",
+    "name": "combat_barricade",
+    "group": "장비",
+    "model": "res://assets/models/combat_barricade.glb",
+    "source": "art/blender/equipment/combat_barricade.blend",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "generator": "tools/build_combat_cover.py"
+  },
+  {
+    "id": "combat_cover_kit",
+    "title": "전투 / 엄폐",
+    "name": "combat_cover_kit",
+    "group": "장비",
+    "model": "res://assets/models/products/combat_cover_kit.glb",
+    "source": "art/blender/equipment/combat_cover_kit.blend",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "generator": "tools/build_combat_cover.py"
   }
 ]

@@ -80,8 +80,8 @@ func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=tr
 	if not audible:
 		for player in speakers:player.stop()
 	var run:=1.0 if motion.state=="run" else 0.0
-	var pelvis_drop:=.012+.12*compression+.068*blend
-	var lean:=.055*blend+.10*run+.16*compression
+	var pelvis_drop:=.012+.12*compression+.068*blend+(.46 if motion.get("crouched",false) and not swimming else 0.0)
+	var lean:=.055*blend+.10*run+.16*compression+(.18 if motion.get("crouched",false) and not swimming else 0.0)
 	var offsets: Dictionary={}
 	var slopes: Dictionary={}
 	for side in ["L","R"]:

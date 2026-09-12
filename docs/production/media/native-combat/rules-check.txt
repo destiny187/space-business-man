@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS natural native home landing 
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:305183","ordinal":305183,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:305183","form_id":"biota_lobopod_siphons_25","home_point":"(37.4736, 2.031343, 20.76)","id":"surface:1:0:0","introduced":false,"layer":"surface","look_id":"biota_lobopod_siphons_25_p00_s03","point":"(37.4736, 2.031343, 20.76)","status":"active","terrestrial":true,"yaw":0.433539786195391}}
+PASS naturally assigned proactive rigged canid
+PASS proactive creature detects player without being shot
+PASS warning gives time before damage
+PASS in-range pursuit starts attack
+PASS telegraphed strike damages existing vitals
+PASS one attack hits at most once
+PASS sidestep escapes locked attack arc
+PASS solid obstruction blocks melee damage
+PASS crafted cover blocks native strike using real cover bounds
+PASS native attack consumes equipped shield before health
+PASS leash abandons chase
+PASS gun impact interrupts and provokes native animal
+PASS rapid fire cannot repeatedly restart stagger
+PASS host and model use same combat position
+PASS combat state validates for saves
+PASS active threat cannot bypass combat through specimen capture
+PASS retaliatory nature does not initiate a fight
+PASS noncombat anatomy flees after being shot
+PASS disabled controls preserve and pause nearby encounter
+PASS reconnect cancels unfinished attacks
+PASS incapacitation preserves final position
+PASS native combat save 
+PASS native health and stopped pose reload
+NATIVE_COMBAT_RULES 24 FAILURES 0

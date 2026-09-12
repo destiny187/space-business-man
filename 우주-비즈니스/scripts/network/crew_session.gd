@@ -264,7 +264,8 @@ func send_request(kind: String,args: Dictionary) -> bool:
 	request_started.emit(int(request.sequence),kind,args)
 	if hosting:
 		authority.now=Time.get_ticks_msec()/1000.0
-		var result:=authority.request(1,request);_complete_request(int(request.sequence),result);_publish();_publish_surface()
+		var result:=authority.request(1,request);_complete_request(int(request.sequence),result)
+		if kind not in ["surface_fire","surface_reload","surface_stance"]:_publish();_publish_surface()
 	else:_request.rpc_id(1,request)
 	return true
 @rpc("any_peer","call_remote","reliable",0)
@@ -274,7 +275,8 @@ func _request(value: Dictionary) -> void:
 	if not _rate_allowed(peer):return
 	authority.now=Time.get_ticks_msec()/1000.0
 	var result:=authority.request(peer,value)
-	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result);_publish();_publish_surface()
+	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result)
+	if value.get("kind","") not in ["surface_fire","surface_reload","surface_stance"]:_publish();_publish_surface()
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:_complete_request(sequence,value)

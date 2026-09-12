@@ -1,0 +1,73 @@
+{
+  "provider": "ElevenLabs web Sound Effects",
+  "generated_at": "2026-09-12",
+  "duration_requested": 2.0,
+  "prompt_influence": 0.3,
+  "loop": false,
+  "jobs": [
+    {
+      "id": "sfx_wildlife_warning",
+      "source": "audio/source/elevenlabs/native-combat/warning_v1.wav",
+      "original_filename": "One_territorial_alie_#1-1789172812453.wav",
+      "trim_max": 1.2,
+      "prompt": "One territorial alien animal warning growl. Organic chest rumble rises into a short rough double bark with aOne territorial alien animal warning growl. Organic chest rumble rises into a short rough double bark with an unusual resonant throat, threatening but natural, clearly sign unusual resonant throat, threatening but natural, clearly signaling an approaching attack. One creature, dry close recording, two seconds, no words, music or background.",
+      "take": 1,
+      "game_file": "우주-비즈니스/assets/audio/sfx_wildlife_warning.wav",
+      "source_sha256": "b98f3a899c949b55dd4d60bbe0845303aef03c270e6d64415b37836aee73939b",
+      "sha256": "df0918bd86dd6878d69adf58cbe75c5f94ca1fe27a2884f449424b8b13cf814c",
+      "source_duration": 2.0,
+      "duration_seconds": 1.2,
+      "trim_start_seconds": 0.0,
+      "format": "PCM16 mono 48000Hz",
+      "peak_dbfs": -7.925201057971028,
+      "rms_dbfs": -18.999997082596927,
+      "processing": "Stereo average; trim onset/tail; 2ms/15ms fades; -19dBFS RMS target / -5dBFS peak ceiling",
+      "status": "generated_integrated_runtime_verified_listening_pending"
+    },
+    {
+      "id": "sfx_wildlife_strike",
+      "source": "audio/source/elevenlabs/native-combat/strike_v1.wav",
+      "original_filename": "A_single_alien_preda_#1-1789172862074.wav",
+      "trim_max": 0.85,
+      "prompt": "A single alien predator melee strike. A short forceful throaty snarl and sharp jaw snap with a fast organic body whoosh, followed by a soft heavy paw thump. Immediate strong transient, dry close sound, under one second then silence. No human voice, blood, music, ambience or reverb.",
+      "take": 1,
+      "game_file": "우주-비즈니스/assets/audio/sfx_wildlife_strike.wav",
+      "source_sha256": "141fa1098bb4e8e9f44a4164e6d86a7601742950773c88d5a5a4b655f872920d",
+      "sha256": "ad44a348a9c21185da83a3e34745a719d6b8b7bb7f10bf17a9d911cfb93a6364",
+      "source_duration": 2.0,
+      "duration_seconds": 0.85,
+      "trim_start_seconds": 0.0,
+      "format": "PCM16 mono 48000Hz",
+      "peak_dbfs": -5.465129582745271,
+      "rms_dbfs": -19.000016652053855,
+      "processing": "Stereo average; trim onset/tail; 2ms/15ms fades; -19dBFS RMS target / -5dBFS peak ceiling",
+      "status": "generated_integrated_runtime_verified_listening_pending"
+    },
+    {
+      "id": "sfx_wildlife_hurt",
+      "source": "audio/source/elevenlabs/native-combat/hurt_v1.wav",
+      "original_filename": "One_alien_wildlife_h_#1-1789172939954.wav",
+      "trim_max": 0.65,
+      "prompt": "One alien wildlife hurt reaction: a brief startled raspy yelp and choked organic grunt, low-mid pitch with a subtle rattling throat. Short and readable in combat, dry isolated creature sound, under one second then quiet. No human speech, music, ambience or reverb.",
+      "take": 1,
+      "game_file": "우주-비즈니스/assets/audio/sfx_wildlife_hurt.wav",
+      "source_sha256": "a9cbfe9eee764a3788044a1b74e52a8e4170fd323ed8adfa7daf339f92e6742a",
+      "sha256": "b3e2b9b4662f04a57204d01cb54d059c2b2f5f43a014ffecc3c5ec46c8a0215c",
+      "source_duration": 2.0,
+      "duration_seconds": 0.65,
+      "trim_start_seconds": 0.0,
+      "format": "PCM16 mono 48000Hz",
+      "peak_dbfs": -7.950321998401529,
+      "rms_dbfs": -18.999997772828404,
+      "processing": "Stereo average; trim onset/tail; 2ms/15ms fades; -19dBFS RMS target / -5dBFS peak ceiling",
+      "status": "generated_integrated_runtime_verified_listening_pending"
+    }
+  ],
+  "review": "Godot Forward+ live warning/strike/hurt playback and SFX bus capture verified; subjective listening not performed (audio input unavailable).",
+  "runtime_recording": "audio/review/native-combat/native-runtime.wav",
+  "runtime_signal_check": "audio/review/native-combat/signal-check.json",
+  "reuse": {
+    "windup": "warning clip pitch 1.2",
+    "down": "hurt clip pitch 0.7"
+  }
+}

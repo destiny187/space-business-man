@@ -8,6 +8,7 @@ static func config() -> Dictionary:
 		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json"))
 		_config.buildings.append_array(FrontierTerraformTier3.config().buildings.keys())
 		_config.buildings.append_array(FrontierPlanetWeather.config().buildings.keys())
+		_config.buildings.append_array(FrontierCombatCover.config().buildings.keys())
 	return _config
 static func signature() -> String:
 	return FrontierUniverse.fingerprint(JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json")))+FrontierUniverse.fingerprint(FrontierCatalog.all())
@@ -259,14 +260,18 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 		var p:=point(args.position);var key: String=str(args.get("building",""))
 		var error:=build_reason(world,actor,key,p,active)
 		if not error.is_empty():return error
+		if not FrontierUniverse._finite(args.get("yaw",0.0),-TAU,TAU):return "배치 방향 오류"
 		transfer(bag(world,actor),FrontierCatalog.entry("buildings",key).cost,-1)
-		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"tier":int(FrontierCatalog.entry("buildings",key).get("tier",1)),"position":array(p),"yaw":0.0,"enabled":true,"active":false,"status":"전력 확인 중","work":0.0};return ""
+		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"tier":int(FrontierCatalog.entry("buildings",key).get("tier",1)),"position":array(p),"yaw":0.0,"enabled":true,"active":false,"status":"전력 확인 중","work":0.0}
+		if FrontierCombatCover.is_cover(current.buildings[id]):FrontierCombatCover.create(current.buildings[id],float(args.get("yaw",0.0)))
+		return ""
 	if kind in ["business_toggle","business_demolish","business_craft"]:
 		var id: String=str(args.get("building_id",""))
 		if not current.buildings.has(id):return "시설을 선택하세요."
 		var building: Dictionary=current.buildings[id]
 		if position.distance_to(point(building.position))>float(config().interaction_range):return "시설 8m 이내로 접근하세요."
 		if kind=="business_toggle":
+			if FrontierCombatCover.is_cover(building):return FrontierCombatCover.repair(world,actor,building)
 			if building.type in FrontierPlanetWeather.config().buildings:return "이 설비는 전력·소모품 없이 항상 보호합니다."
 			building.enabled=not building.enabled
 			if not building.enabled:building.active=false;building.working=false;building.status="정지"
@@ -279,8 +284,10 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 			var refund: Dictionary=FrontierCatalog.entry("buildings",building.type).cost.duplicate()
 			transfer(refund,FrontierProductionTier2.upgrade_refund(building),1)
 			if not FrontierItemInventory.warehouse_fits(current,refund,-int(FrontierItemInventory.config().warehouse_slots) if building.type=="storage" else 0):return "철거 후 창고 용량과 반환 재료 공간이 부족합니다."
-			transfer(current.inventory,FrontierProductionTier2.upgrade_refund(building),1)
-			transfer(current.inventory,FrontierCatalog.entry("buildings",building.type).cost,1);current.buildings.erase(id);return ""
+			if FrontierCombatCover.is_cover(building):
+				var ratio:=float(building.cover_hp)/float(FrontierCombatCover.config().buildings[building.type].health)
+				for resource in refund:refund[resource]=floori(float(refund[resource])*ratio)
+			transfer(current.inventory,refund,1);current.buildings.erase(id);return ""
 		for job in current.jobs.values():
 			if job.factory_id==id:return "이 제작소는 로봇을 제작 중입니다."
 		if not building.active or not building.enabled:return "전력이 공급되는 가동 제작소가 필요합니다."
@@ -503,6 +510,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		for key in current.buildings:
 			var b: Variant=current.buildings[key]
 			if not b is Dictionary or b.get("id")!=key or b.get("type") not in config().buildings or not FrontierUniverse._vector3_array(b.get("position")) or not FrontierUniverse._finite(b.get("yaw"),-TAU,TAU):return "시설 정의·위치 오류"
+			if not FrontierCombatCover.valid(b):return "엄폐물 내구도 오류"
 			if not FrontierProductionTier2.validate_building(b):return "생산·개조 기록 오류"
 			if not b.get("engineering","") is String or (not b.get("engineering","").is_empty() and FrontierFieldEngineering.definition(b.engineering).get("building")!=b.type):return "시설 개조 정의 오류"
 			if not b.get("enabled") is bool or not b.get("active") is bool or not b.get("status") is String or not FrontierUniverse._finite(b.get("work"),0,10000000):return "시설 운영 기록 오류"

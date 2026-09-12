@@ -21,7 +21,7 @@ func sync() -> void:
 		if not spaces.has(key):
 			var viewport:=SubViewport.new();viewport.size=Vector2i(16,16);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED;app.add_child(viewport)
 			var stage:=Node3D.new();viewport.add_child(stage)
-			var entry: Dictionary={"viewport":viewport,"root":stage,"terrain":null,"edits":0,"business":null}
+			var entry: Dictionary={"viewport":viewport,"root":stage,"terrain":null,"edits":0,"business":null,"wildlife":{}}
 			if key.begins_with("surface:"):
 				var body_id:=key.trim_prefix("surface:");var body:=FrontierUniverse.body_from_id(world.manifest,body_id)
 				var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/terrain.gdshader")
@@ -48,6 +48,7 @@ func sync() -> void:
 			if FrontierShuttles.area_key(world,id)==key and app.actors.has(id):points.append(app.actors[id].position)
 		entry.terrain.update_interests(points)
 		entry.business.accept(world.get("business",{}))
+		_sync_wildlife(entry,world,body_id)
 func terrain_for(actor: String) -> FrontierTerrainStreamer:
 	var key:=FrontierShuttles.area_key(app.session.authority.world,actor)
 	if spaces.has(key):return spaces[key].terrain
@@ -59,3 +60,18 @@ func terrain_for_body(body_id: String) -> FrontierTerrainStreamer:
 	return app.surface_world.terrain if app.surface_world!=null and app.surface_world.body.id==body_id else null
 func root_for_body(body_id: String) -> Node3D:
 	return spaces["surface:"+body_id].root if spaces.has("surface:"+body_id) else app
+
+func _sync_wildlife(entry: Dictionary,world: Dictionary,body_id: String) -> void:
+	var retained: Dictionary={}
+	for row in world.crew.get("wildlife_encounters",{}).values():
+		if row.body_id!=body_id:continue
+		retained[row.encounter_id]=true
+		if not entry.wildlife.has(row.encounter_id):
+			var solid:=AnimatableBody3D.new();solid.sync_to_physics=false;solid.set_meta("encounter_id",row.encounter_id)
+			var shape:=CapsuleShape3D.new();var profile:=FrontierWildlifeCombat.profile(row)
+			shape.radius=minf(profile.radius,profile.height*.5);shape.height=profile.height
+			var collision:=CollisionShape3D.new();collision.shape=shape;collision.position.y=profile.height*.5
+			solid.add_child(collision);entry.root.add_child(solid);entry.wildlife[row.encounter_id]=solid
+		entry.wildlife[row.encounter_id].position=FrontierWildlifeCombat.body_position(row)
+	for id in entry.wildlife.keys():
+		if not retained.has(id):entry.wildlife[id].queue_free();entry.wildlife.erase(id)

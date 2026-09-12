@@ -126,12 +126,26 @@ func _update_wildlife(delta: float) -> void:
 		var row: Dictionary=encounters[id]
 		if not Wildlife.eligible(actor.definition,row):continue
 		var home: Vector3=row.get("home_point",row.point)
-		var motion:=Wildlife.pose(terrain.field,row,home,behavior_time+behavior_elapsed,behavior_observers,Wildlife.stopped(behavior_crew,str(body.id),row,home))
+		var motion:=FrontierWildlifeCombat.pose(terrain.field,row,home,behavior_time+behavior_elapsed,behavior_observers,behavior_crew,str(body.id))
 		var previous:=actor.position
 		actor.position=motion.point;actor.basis=motion.basis;actor.paused=behavior_stopped
-		if actor.state!=motion.state:actor.set_state(motion.state)
+		var combat: Dictionary=motion.get("combat",{})
+		if not combat.is_empty():
+			actor.apply_combat(combat,FrontierWildlifeCombat.profile(row),behavior_stopped)
+			var serial: int=int(combat.serial)
+			if int(row.get("combat_serial",serial))!=serial and not behavior_stopped:
+				var cue: String={"warning":"warning","attack":"windup","hurt":"hurt","down":"down"}.get(combat.phase,"")
+				if cue!="":wildlife_cue.emit(motion.point,cue)
+			var pulse:=int(combat.get("cue_serial",0))
+			if pulse>int(row.get("combat_pulse",pulse)) and not behavior_stopped:
+				wildlife_cue.emit(motion.point,str(combat.get("attack",{}).get("mode","strike")) if combat.get("attack",{}).get("mode","melee")!="melee" else "strike")
+			row.combat_pulse=pulse
+			row.combat_serial=serial;row.combat_struck=bool(combat.struck)
+		else:
+			actor.combat_override=false
+			if actor.state!=motion.state:actor.set_state(motion.state)
 		if not behavior_stopped and viewer.position.distance_to(motion.point)<float(Wildlife.config().cue_range):
-			if motion.alert and row.get("behavior_phase","")!="avoid":wildlife_cue.emit(motion.point,"alert")
+			if combat.is_empty() and motion.alert and row.get("behavior_phase","")!="avoid":wildlife_cue.emit(motion.point,"alert")
 			var step: float=float(row.get("step_elapsed",0.0))+delta
 			if previous.distance_to(actor.position)>.002 and step>1.8:
 				wildlife_cue.emit(motion.point,"step");step=0.0
@@ -182,7 +196,7 @@ func refresh() -> void:
 			if not Wildlife.eligible(actors[row.id].definition,row):
 				actors[row.id].position=row.point
 				actors[row.id].basis=FrontierEcologyPlacement.surface_basis(terrain.field.normal(row.point),float(row.yaw))
-			for key in ["behavior_phase","step_elapsed"]:row[key]=encounters[row.id].get(key,"" if key=="behavior_phase" else 0.0)
+			for key in ["behavior_phase","step_elapsed","combat_serial","combat_struck","combat_pulse"]:row[key]=encounters[row.id].get(key,"" if key=="behavior_phase" else (-1 if key=="combat_serial" else (false if key=="combat_struck" else 0.0)))
 			if encounters[row.id].status!=row.status:actors[row.id].set_state("dormant" if row.status=="dormant" else "idle")
 			encounters[row.id]=row
 		else:pending.append(row)

@@ -5,6 +5,7 @@ static var _config: Dictionary={}
 static func config() -> Dictionary:
 	if _config.is_empty():
 		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/production_tier2.json"))
+		_config.products.merge(FrontierCombatCover.config().products)
 		_config.products.merge(FrontierPlanetSupply.config().products)
 		_config.products.merge(FrontierTerraformTier3.config().products)
 		_config.products.merge(preload("res://scripts/domain/terraform_tier4.gd").config().products)
@@ -126,7 +127,7 @@ static func validate_building(b: Dictionary) -> bool:
 	if b.has("submerged") and not b.submerged is bool:return false
 	if not FrontierExpeditionBusiness.integer(b.get("tier",1),1,3):return false
 	if int(b.get("tier",1))==3 and b.get("type")!="factory" and b.get("type")!="source_control" and not FrontierTerraformTier3.config().upgrades.has(b.get("type")):return false
-	if int(b.get("tier",1))>=2 and b.get("type")!="source_control" and not config().facility_upgrades.has(b.type):return false
+	if int(b.get("tier",1))>=2 and b.get("type")!="source_control" and not FrontierCombatCover.is_cover(b) and not config().facility_upgrades.has(b.type):return false
 	if not FrontierUniverse._finite(b.get("bio_fuel",0),0,10) or not FrontierUniverse._finite(b.get("t3_fuel",0),0,120) or not FrontierUniverse._finite(b.get("t3_control_fraction",0),0,1):return false
 	if not FrontierUniverse._finite(b.get("treatment_work",0),0,10000000) or not FrontierExpeditionBusiness.integer(b.get("product_serial",0),0,100000000):return false
 	var job: Variant=b.get("production",{})

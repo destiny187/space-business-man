@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS start isolated host
+PASS land fixture: 
+PASS blocked muzzle neither fires nor spends ammo
+PASS clear muzzle fires normally
+PASS combat success has its own feedback context
+PASS transient rejection keeps combat feedback context
+MUZZLE_CHECKS 6 FAILURES 0

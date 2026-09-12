@@ -1,0 +1,98 @@
+[
+  {
+    "id": "gun_carbine",
+    "name": "펄스 카빈",
+    "source": "art/blender/equipment/gun_carbine.blend",
+    "model": "res://assets/models/equipment/gun_carbine.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_pistol",
+    "name": "니들 권총",
+    "source": "art/blender/equipment/gun_pistol.blend",
+    "model": "res://assets/models/equipment/gun_pistol.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_smg",
+    "name": "스파크 기관단총",
+    "source": "art/blender/equipment/gun_smg.blend",
+    "model": "res://assets/models/equipment/gun_smg.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_shotgun",
+    "name": "브레이커 산탄총",
+    "source": "art/blender/equipment/gun_shotgun.blend",
+    "model": "res://assets/models/equipment/gun_shotgun.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_lmg",
+    "name": "앵커 경기관총",
+    "source": "art/blender/equipment/gun_lmg.blend",
+    "model": "res://assets/models/equipment/gun_lmg.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_marksman",
+    "name": "트레이서 지정사수총",
+    "source": "art/blender/equipment/gun_marksman.blend",
+    "model": "res://assets/models/equipment/gun_marksman.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_sniper",
+    "name": "랜스 저격총",
+    "source": "art/blender/equipment/gun_sniper.blend",
+    "model": "res://assets/models/equipment/gun_sniper.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  },
+  {
+    "id": "gun_plasma",
+    "name": "오브 플라스마 발사기",
+    "source": "art/blender/equipment/gun_plasma.blend",
+    "model": "res://assets/models/equipment/gun_plasma.glb",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "generator": "tools/build_firearms.py",
+    "style": "INK v1"
+  }
+]

@@ -1,0 +1,41 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS start isolated host
+PASS land fixture: 
+FIRST_SHOT { "ok": true, "weapon": { "ammo": 23, "reload_left": 0.0, "cooldown": 0.14, "idle": 0.0, "streak": 1, "weak_streak": 0, "breach": false }, "hits": { "damage": 0.0, "shield": 20.0, "broken": false, "weak": false, "killed": false }, "rays": [[-1049.50903320312, 18.3519496917725, 395.708038330078]], "origin": [-1049.52368164062, 19.4721202850342, 406.86181640625], "family": "carbine", "effect": "steady", "serial": 1, "item_id": "fixture:pulse_2", &"sequence": 1, &"revision": 0 }
+PASS host consumes one round
+PASS ranged robot shield hit
+PASS same request replays without second shot
+PASS early fire rejected
+PASS solid obstacle blocks damage
+PASS host starts reload
+PASS cannot fire while reloading
+PASS reload restores magazine
+PASS legacy action cannot bypass magazine
+PASS low stance is authoritative
+PASS blocked headroom prevents standing
+PASS valid production ingredients pulse_1
+PASS valid production ingredients pulse_2
+PASS valid production ingredients pulse_3
+PASS valid production ingredients pistol_1
+PASS valid production ingredients pistol_2
+PASS valid production ingredients pistol_3
+PASS valid production ingredients smg_2
+PASS valid production ingredients smg_3
+PASS valid production ingredients shotgun_2
+PASS valid production ingredients shotgun_3
+PASS valid production ingredients lmg_2
+PASS valid production ingredients lmg_3
+PASS valid production ingredients marksman_3
+PASS valid production ingredients sniper_3
+PASS valid production ingredients plasma_3
+PASS low barrier intercepts chest ray
+PASS standing fire clears low barrier
+PASS broken cover stops protecting
+PASS repair consumes personal materials
+PASS seeded weapon drop enters inventory
+PASS loot cannot be claimed twice
+PASS weapon state save validation
+PASS combat/cover world save: 
+PASS weapon rarity survives reload
+GROUND_COMBAT_CHECKS 37 FAILURES 0

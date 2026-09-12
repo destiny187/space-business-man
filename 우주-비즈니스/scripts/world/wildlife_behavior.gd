@@ -19,7 +19,7 @@ static func route(field: FrontierTerrainField,row: Dictionary,home: Vector3)->Ar
  for turn in [0.0,PI*.5,-PI*.5,PI]:
   var points: Array[Vector3]=[home]
   var forward:=Vector3(sin(heading+turn),0,cos(heading+turn))
-  var facing:=atan2(-forward.x,-forward.z)
+  var facing:=atan2(forward.x,forward.z)
   var start:=row.duplicate();start.yaw=facing
   if not FrontierEcologyPlacement.fits(field,start,home):continue
   for step in range(1,1+floori(float(cfg.route_length)/float(cfg.route_step))):
@@ -80,7 +80,7 @@ static func pose(field: FrontierTerrainField,row: Dictionary,home: Vector3,time:
  var at: Vector3=points[index].lerp(points[index+1],progress-float(index))
  var direction: Vector3=(points[index+1]-points[index])*(1.0 if forward else -1.0)
  result.point=at
- result.basis=FrontierEcologyPlacement.surface_basis(field.normal(at),atan2(-direction.x,-direction.z))
+ result.basis=FrontierEcologyPlacement.surface_basis(field.normal(at),atan2(direction.x,direction.z))
  return result
 
 static func observers(world: Dictionary,active: Dictionary,body_id: String)->Array[Vector3]:

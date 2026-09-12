@@ -1,0 +1,80 @@
+[
+	{
+		"behavior": "shockwave",
+		"file": "slam-windup.png",
+		"form_id": "bio_burrower_01",
+		"stage": "windup"
+	},
+	{
+		"behavior": "shockwave",
+		"file": "slam-motion.png",
+		"form_id": "bio_burrower_01",
+		"stage": "motion"
+	},
+	{
+		"behavior": "shockwave",
+		"file": "slam-recovery.png",
+		"form_id": "bio_burrower_01",
+		"stage": "recovery"
+	},
+	{
+		"behavior": "leap",
+		"file": "felid-windup.png",
+		"form_id": "biota_lobopod_armor_26",
+		"stage": "windup"
+	},
+	{
+		"behavior": "leap",
+		"file": "felid-motion.png",
+		"form_id": "biota_lobopod_armor_26",
+		"stage": "motion"
+	},
+	{
+		"behavior": "leap",
+		"file": "felid-recovery.png",
+		"form_id": "biota_lobopod_armor_26",
+		"stage": "recovery"
+	},
+	{
+		"behavior": "charge",
+		"file": "bovid-windup.png",
+		"form_id": "biota_saddle_armor_26",
+		"stage": "windup"
+	},
+	{
+		"behavior": "charge",
+		"file": "bovid-motion.png",
+		"form_id": "biota_saddle_armor_26",
+		"stage": "motion"
+	},
+	{
+		"behavior": "charge",
+		"file": "bovid-recovery.png",
+		"form_id": "biota_saddle_armor_26",
+		"stage": "recovery"
+	},
+	{
+		"behavior": "double_sweep",
+		"file": "mantid-windup.png",
+		"form_id": "biota_branch_armor_25",
+		"stage": "windup"
+	},
+	{
+		"behavior": "double_sweep",
+		"file": "mantid-motion.png",
+		"form_id": "biota_branch_armor_25",
+		"stage": "motion"
+	},
+	{
+		"behavior": "double_sweep",
+		"file": "mantid-second.png",
+		"form_id": "biota_branch_armor_25",
+		"stage": "second"
+	},
+	{
+		"behavior": "double_sweep",
+		"file": "mantid-recovery.png",
+		"form_id": "biota_branch_armor_25",
+		"stage": "recovery"
+	}
+]

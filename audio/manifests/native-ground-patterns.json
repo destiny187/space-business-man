@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "date": "2026-09-12",
+  "source_manifest": "audio/manifests/native-combat.json",
+  "newly_generated_sounds": 0,
+  "reuse_cues": {
+    "warning": "sfx_wildlife_warning",
+    "windup": "sfx_wildlife_warning",
+    "strike": "sfx_wildlife_strike",
+    "hurt": "sfx_wildlife_hurt",
+    "down": "sfx_wildlife_hurt",
+    "charge": "sfx_wildlife_strike",
+    "leap": "sfx_wildlife_strike",
+    "shockwave": "sfx_wildlife_strike",
+    "double_sweep": "sfx_wildlife_strike"
+  },
+  "pitch": {
+    "windup": 1.2,
+    "down": 0.7,
+    "charge": 0.78,
+    "leap": 1.18,
+    "shockwave": 0.65,
+    "double_sweep": 1.08
+  },
+  "runtime_recordings": "docs/production/media/native-patterns/verification.json",
+  "qa": "Live SFX playback and signal measurements verified; subjective listening pending."
+}

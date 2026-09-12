@@ -124,6 +124,7 @@ func _process(delta: float) -> void:
   if mode in ["wreck","power"] and not row.claimed and distance_value<signal_distance:signal_distance=distance_value;signal_row=row
   var main: Node3D=nodes.main
   nodes.cargo.visible=not row.claimed and mode!="seismic" and (row.open if mode in ["wreck","power","ice","drone"] else (row.hp<=0 if mode=="robot" else true))
+  FrontierFirearmLootView.update(self,nodes,row)
   nodes.cargo.scale=Vector3.ONE
   nodes.cargo.global_position=FrontierExplorationIncidents.cargo_point(row)-Vector3.UP*.35
   if row.carrier!="" and app.actors.has(row.carrier):nodes.cargo.global_position=app.actors[row.carrier].position+Vector3(0,1,-.75).rotated(Vector3.UP,app.actors[row.carrier].rotation.y)
@@ -203,6 +204,9 @@ func _process(delta: float) -> void:
  if not selected.is_empty() and rows[selected.id].has("native"):
   hint.text=FrontierNativeIncidents.title(rows[selected.id].native)+"\n"+str(selected.action)
  if not selected.is_empty() and selected.part=="robot":hint.text+=" · 냉각 중 약점 노출" if rows[selected.id].phase=="cooling" else " · 조준선에서 벗어나기"
+ if not selected.is_empty() and selected.part=="cargo":
+  var reward:=FrontierFirearmLootView.description(models[selected.id])
+  if not reward.is_empty():hint.text+="\n"+reward
  if not native_warning.is_empty():hint.text=native_warning
  signal_bar.position=Vector2(24,size.y*.4);signal_bar.size=Vector2(130,7);signal_label.position=Vector2(24,size.y*.4-28)
  signal_bar.visible=not signal_row.is_empty();signal_label.visible=signal_bar.visible

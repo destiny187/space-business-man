@@ -16,6 +16,7 @@ var planet_map: FrontierPlanetMap
 var chart: Control
 var inventory_panel: FrontierEquipmentPanel
 var field_hud: FrontierFieldHud
+var firearm: FrontierFirearmView
 var feedback: FrontierExpeditionFeedback
 var soundtrack: Node
 var session: FrontierCrewSession
@@ -126,6 +127,7 @@ func _ready() -> void:
 		# During play, preserve the frozen world until the player returns to title.
 		if waiting_screen.visible:lobby.show();waiting_ready.hide();waiting_start.hide();invite_copy.hide();waiting_leave.hide();waiting_roster.text=message)
 	session.response_received.connect(func(_sequence: int,value: Dictionary):
+		if value.has("firearm_action"):return
 		if value.get("code")=="mining_cooldown":return
 		if not value.get("ok",false):status.value=value.get("error","작업 실패")
 		else:status.value="원정 기록을 저장했습니다.")
@@ -137,6 +139,7 @@ func _ready() -> void:
 	_build_ui();cabin_root.hide();spaces.configure(self)
 	RenderingServer.frame_pre_draw.connect(_sync_main_render)
 	feedback=FrontierExpeditionFeedback.new();add_child(feedback);feedback.configure(self)
+	firearm=FrontierFirearmView.new();add_child(firearm);firearm.configure(self)
 	rovers=FrontierRoverController.new();add_child(rovers);rovers.configure(self)
 	stations=FrontierCrewStations.new();add_child(stations);stations.configure(self)
 	lotus=FrontierLotusSupportController.new();add_child(lotus);lotus.configure(self)
@@ -463,7 +466,7 @@ func _physics_process(delta: float) -> void:
 	dig_timer=maxf(0,dig_timer-delta)
 	if rovers.seat().is_empty() and surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
-		if tool.get("kind")=="miner":use_equipped()
+		if tool.get("kind")=="miner" or tool.get("auto",false):use_equipped()
 	var controls_enabled:=_locomotion_enabled()
 	if surface_world!=null and actors.has(session.latest.self_id):
 		var incident_at: Vector3=actors[session.latest.self_id].position
@@ -498,6 +501,8 @@ func _physics_process(delta: float) -> void:
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		session.authority.shot_obstacle_provider=_shot_obstacle_distance
+		session.authority.wildlife_obstacle_provider=_wildlife_clear
+		session.authority.standing_allowed_provider=_standing_allowed
 		session.authority.weather_ready_provider=_weather_ready
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
@@ -514,7 +519,7 @@ func _physics_process(delta: float) -> void:
 				actor.velocity=Vector3.ZERO;continue
 			var motion: Dictionary=session.authority.motions.get(id,FrontierCrewLocomotion.create())
 			session.authority.motions[id]=motion
-			var wants_sprint: bool=enabled and input.get("sprinting",false) and direction.length_squared()>0
+			var wants_sprint: bool=enabled and not member.loadout.get("crouched",false) and input.get("sprinting",false) and direction.length_squared()>0
 			var multiplier:=FrontierCrewVitals.step(member,delta,wants_sprint,actor.is_on_floor() and Vector2(actor.velocity.x,actor.velocity.z).length()>.1,actor.is_on_floor() and actor.velocity.length()<.05,FrontierExplorationIncidents.carriers(session.authority.world,id))
 			var speed:=float(FrontierCrewWorld.config().movement_speed)
 			var gravity:=float(FrontierCrewLocomotion.config().cabin_gravity)
@@ -528,6 +533,9 @@ func _physics_process(delta: float) -> void:
 				if not ground.ready_at(next):direction=Vector2.ZERO;enabled=false
 				if actor.position.y<float(ground.config.minimum_depth)+2 or maxf(absf(actor.position.x),absf(actor.position.z))>float(ground.config.region_half_extent):
 					actor.position=Vector3(0,4,0);actor.velocity=Vector3.ZERO;motion=FrontierCrewLocomotion.create();session.authority.motions[id]=motion
+			var low: bool=member.area=="surface" and member.loadout.get("crouched",false)
+			_crouch_body(actor,low)
+			if low:speed*=.55
 			var old_land: int=motion.land_serial
 			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)),FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"))
 			motion.input_ack=int(session.authority.input_sequences.get(peer,0))
@@ -558,9 +566,11 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	var member: Dictionary=session.latest.crew.members[id]
 	var on_surface: bool=member.area=="surface"
 	var speed:=float(FrontierCrewSurface.config().movement_speed) if on_surface else float(FrontierCrewWorld.config().movement_speed)
-	if on_surface and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
+	if on_surface and not firearm.crouched and local_sprint and predicted_motion.grounded and float(member.get("vitals",{}).get("stamina",0))>0 and not member.get("vitals",{}).get("exhausted",false):speed*=float(FrontierCrewVitals.config().sprint_multiplier)
 	if on_surface:speed*=FrontierCrewAugmentation.multiplier(member,"mobility")*FrontierSuitModules.factor(member,"mobility")
 	if on_surface and FrontierExplorationIncidents.carriers(session.latest,str(session.latest.self_id)):speed*=(float(FrontierExplorationIncidents.config().carrier_speed_factor)+(1.0-float(FrontierExplorationIncidents.config().carrier_speed_factor))*FrontierSuitModules.bonus(member,"carry"))
+	_crouch_body(body,on_surface and firearm.crouched)
+	if on_surface and firearm.crouched:speed*=.55
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
 	var frame: Dictionary={"jump_factor":FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"),"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
 	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical),float(frame.jump_factor))
@@ -602,6 +612,7 @@ func _process(delta: float) -> void:
 		if own and not session.hosting:
 			var approved: Dictionary=session.latest.get("motion",{}).get(id,{})
 			for key in ["jump_serial","land_serial","impact","water_serial","water_kind","water_impact","water_shot"]:presentation[key]=approved.get(key,0)
+		presentation.crouched=members[id].area=="surface" and members[id].get("loadout",{}).get("crouched",false)
 		visual.pose.animate(presentation,delta,not feedback.blocked() and not outside and members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and (test_mode or get_window().has_focus()),not arrival.active)
 		if surface_world!=null and surface_world.water_interactions!=null:
 			var confirmed: Dictionary=session.authority.motions.get(id,{}) if session.hosting else session.latest.get("motion",{}).get(id,{})
@@ -610,7 +621,7 @@ func _process(delta: float) -> void:
 		visual.model.visible=not own and not arrival.active and here;visual.label.visible=not own and not arrival.active and here
 		if not session.hosting:actor.collision_layer=2 if here else 0;actor.collision_mask=1 if here else 0
 	camera_correction=camera_correction.lerp(Vector3.ZERO,1-exp(-delta*18))
-	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.72,0)+camera_correction
+	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.15 if firearm.crouched else 1.72,0)+camera_correction
 	if test_mode and test_camera_position!=Vector3.ZERO:camera.position=test_camera_position
 	camera.rotation=Vector3(pitch,yaw,0)
 	_update_surface_hud()
@@ -666,7 +677,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
 		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
-		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():order_robot();return
+		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():
+			if FrontierEquipment.active(session.latest.crew.members[session.latest.self_id]).has("firearm"):firearm.reload()
+			else:order_robot()
+			return
 		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 		if event.physical_keycode==KEY_G and onboarding.can_open_map() and _mouse_look_allowed():navigation_ui.open_galaxy();return
 		if event.physical_keycode==KEY_E and outside and surface_world==null and _mouse_look_allowed() and flight.scan_target>=0 and flight.scan_progress>=1.0:
@@ -677,7 +691,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not (surface_world!=null and surface_world.incidents!=null and surface_world.incidents.interact()) and not (surface_world!=null and surface_world.discoveries!=null and surface_world.discoveries.interact()) and not lotus.interact() and not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
-			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)});cancel_placement()
+			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point),"yaw":placement_ghost.rotation.y});cancel_placement()
 			else:feedback.reject(placement_reason)
 			return
 		if inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
@@ -773,12 +787,6 @@ func _sync_surface_view() -> void:
 
 func _update_surface_hud() -> void:
 	if surface_world==null or session.surface.is_empty() or arrival.active:return
-	for id in surface_world.ecology.actors:
-		var creature: Node3D=surface_world.ecology.actors[id]
-		var hp: int=int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(id),FrontierEquipment.config().animal_health))
-		if creature.get_meta("combat_hp",-1)!=hp:
-			creature.set_meta("combat_hp",hp)
-			if hp<int(FrontierEquipment.config().animal_health):creature.set_state("dormant" if hp==0 else "stressed")
 	surface_target=surface_world.ecology.target(camera)
 	var position: Vector3=actors[session.latest.self_id].position
 	var text: String="%s  깊이 %.1fm"%[surface_world.body.name,maxf(0,-position.y)]
@@ -788,7 +796,7 @@ func _update_surface_hud() -> void:
 	if not surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(surface_target.form_id)
 		text+="\n"+str(form.name)
-		if form.category=="animal":text+="  체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierEquipment.config().animal_health)),int(FrontierEquipment.config().animal_health)]
+		if form.category=="animal":text+="  체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierWildlifeCombat.health(surface_target))),FrontierWildlifeCombat.health(surface_target)]
 		var progress: Dictionary=session.latest.get("scan",{})
 		var known: bool=session.surface.ecology.observations.has(surface_world.body.id+":"+form.id)
 		text+="\nQ 생체 표본" if known else "\nE 유지  스캔 %d%%"%int(float(progress.get("progress",0))*100)
@@ -986,6 +994,7 @@ func _update_business_placement() -> void:
 	var on_surface: bool=absf(placement_point.y-ground_height)<1.5
 	if on_surface:placement_point.y=ground_height
 	placement_ghost.position=placement_point;placement_ghost.show()
+	if FrontierCombatCover.config().buildings.has(placement_kind):placement_ghost.rotation.y=yaw
 	var packet: Dictionary=session.surface
 	var world: Dictionary=FrontierShuttles.context(session.authority.world,session.latest.self_id) if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
 	if not session.hosting:world["lotus"]=session.latest.get("lotus",{})
@@ -1042,6 +1051,7 @@ func use_equipped() -> void:
 	var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 제작한 장비를 장착하세요.");return
 	if tool.kind=="miner" and not session.mining_ready():return
+	if tool.has("firearm"):firearm.shoot();return
 	dig_timer=float(tool.interval)
 	if surface_world!=null and surface_world.incidents!=null and surface_world.incidents.use_tool():return
 	match tool.kind:
@@ -1104,6 +1114,17 @@ func approach_trade_station(station_id: String="") -> void:
 static func _swim_vertical(direction: Vector2,aim: Vector3) -> float:
 	return direction.dot(Vector2(aim.x,aim.z).normalized())*aim.y
 
+func _crouch_body(actor: CharacterBody3D,low: bool) -> void:
+	for child in actor.get_children():
+		if child is CollisionShape3D and child.shape is CapsuleShape3D:
+			child.shape.height=1.30 if low else 1.86;child.position.y=child.shape.height*.5
+func _standing_allowed(id: String) -> bool:
+	if not actors.has(id):return false
+	var actor: CharacterBody3D=actors[id]
+	var query:=PhysicsShapeQueryParameters3D.new();var shape:=SphereShape3D.new();shape.radius=.285
+	query.shape=shape;query.transform.origin=actor.position+Vector3.UP*1.57;query.collision_mask=1;query.exclude=[actor.get_rid()]
+	return actor.get_world_3d().direct_space_state.intersect_shape(query,1).is_empty()
+
 func _shot_obstacle_distance(id: String,origin: Vector3,aim: Vector3,reach: float) -> float:
 	if not actors.has(id) or aim.length_squared()<.9:return 0.0
 	var actor: CharacterBody3D=actors[id]
@@ -1119,3 +1140,26 @@ func _weather_ready(id: String) -> bool:
 		if session.authority.peers[peer]==id:acknowledged=session.authority.inputs.get(peer,{}).get("weather_ready",false) and float(session.authority.inputs.get(peer,{}).get("expires",-1))>=session.authority.now
 	var ground:=spaces.terrain_for(id)
 	return acknowledged and ground!=null and ground.ready_at(actors[id].position)
+
+func _wildlife_clear(id: String,encounter_id: String,from: Vector3,to: Vector3,radius: float,height: float) -> bool:
+	if not actors.has(id) or spaces==null:return false
+	var actor: CharacterBody3D=actors[id]
+	var terrain:=spaces.terrain_for(id)
+	if terrain==null or not terrain.ready_at(to+Vector3.UP):return false
+	var excluded: Array[RID]=[actor.get_rid()]
+	# Read the actor's own World3D so independently landed FINCH crews stay isolated.
+	var surface: Node=terrain.get_parent()
+	if surface is FrontierCrewSurfaceScene and surface.ecology.actors.has(encounter_id):
+		for body_node in surface.ecology.actors[encounter_id].get_children():
+			if body_node is CollisionObject3D:excluded.append(body_node.get_rid())
+	var space_key:=FrontierShuttles.area_key(session.authority.world,id)
+	if spaces.spaces.has(space_key) and spaces.spaces[space_key].get("wildlife",{}).has(encounter_id):excluded.append(spaces.spaces[space_key].wildlife[encounter_id].get_rid())
+	var space:=actor.get_world_3d().direct_space_state
+	if radius<=0:
+		var ray:=PhysicsRayQueryParameters3D.create(from,to,1);ray.exclude=excluded
+		return space.intersect_ray(ray).is_empty()
+	var shape:=CapsuleShape3D.new();shape.radius=minf(radius,height*.5);shape.height=maxf(height,shape.radius*2)
+	var query:=PhysicsShapeQueryParameters3D.new();query.shape=shape;query.collision_mask=1;query.exclude=excluded
+	query.transform.origin=from+Vector3.UP*(height*.5+.12);query.motion=to-from
+	var fractions:=space.cast_motion(query)
+	return fractions.is_empty() or fractions[0]>=.99

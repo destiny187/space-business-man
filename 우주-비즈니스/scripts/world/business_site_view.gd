@@ -35,7 +35,8 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 		if not occluder_shapes.has(model):occluder_shapes[model]=FrontierFieldVisibility.static_model_shape(visual)
 		if occluder_shapes[model]!=null:
 			var occluder:=OccluderInstance3D.new();occluder.occluder=occluder_shapes[model];root.add_child(occluder)
-	if model in ["field_canopy","grounding_mast"]:FrontierWeatherShelters.collision(root,model)
+	if FrontierCombatCover.config().buildings.has(model):FrontierCombatCover.collision(root,model)
+	elif model in ["field_canopy","grounding_mast"]:FrontierWeatherShelters.collision(root,model)
 	else:
 		var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=2.0;collision.shape=shape;collision.position.y=1;root.add_child(collision)
 	var label:=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.004;label.position.y=3.0;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;label.render_priority=110;label.outline_render_priority=109;root.add_child(label)
@@ -225,6 +226,7 @@ func _update_entity(id: String) -> void:
 		nodes[row.id].get_meta("label").text=symbol+FrontierTerraformTier3.name(row)+"\n"+str(row.status)
 		nodes[row.id].get_meta("label").modulate=Color("9bc7ef") if row.get("submerged",false) else (Color("82f5d2") if working else Color("f2c077"))
 		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
+		if FrontierCombatCover.is_cover(row):FrontierCombatCover.present(nodes[row.id],row);return
 		_upgrade_visual(nodes[row.id],row,false)
 		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active)
 	elif kind=="robot":

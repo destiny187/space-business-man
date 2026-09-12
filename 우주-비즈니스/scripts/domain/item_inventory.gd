@@ -126,11 +126,18 @@ static func warehouse_equipment(world: Dictionary,actor: String,args: Dictionary
 		if not site.stored_equipment.has(key):return "내가 보관한 장비를 선택하세요."
 		if data.items.has(id):return "이미 소지한 장비입니다."
 		if used(FrontierExpeditionBusiness.bag(world,actor),data.items.size()+1)>capacity(world.crew.members[actor]):return "배낭 공간이 부족합니다."
-		data.items[id]=site.stored_equipment[key].definition;site.stored_equipment.erase(key)
+		data.items[id]=site.stored_equipment[key].definition
+		for field in ["weapon_states","weapon_rolls"]:
+			if site.stored_equipment[key].has(field):
+				if not data.has(field):data[field]={}
+				data[field][id]=site.stored_equipment[key][field].duplicate(true)
+		site.stored_equipment.erase(key)
 	else:
 		if not data.items.has(id):return "내 장비를 선택하세요."
 		if warehouse_used(site)>=warehouse_capacity(site):return "창고 공간이 부족합니다."
 		site.stored_equipment[key]={"owner":actor,"item_id":id,"definition":data.items[id]}
+		for field in ["weapon_states","weapon_rolls"]:
+			if data.get(field,{}).has(id):site.stored_equipment[key][field]=data[field][id].duplicate(true);data[field].erase(id)
 		data.items.erase(id)
 		for i in data.slots.size():
 			if data.slots[i]==id:data.slots[i]=""

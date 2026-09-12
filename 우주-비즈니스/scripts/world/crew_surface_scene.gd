@@ -247,12 +247,15 @@ func _sync_wildlife() -> void:
 			var member: Dictionary=session.latest.crew.members[id]
 			if member.get("connected",false) and member.area=="surface" and not member.aboard and member.get("place_key","")=="surface:"+str(body.id):points.append(FrontierCrewWorld.vector(member.position))
 	var app:=session.get_parent() as FrontierCrewExpedition
-	var stopped: bool=session.offline and app!=null and (app.any_menu_open() or not app.get_window().has_focus())
+	var stopped: bool=session.offline and app!=null and (app.any_menu_open() or (not app.test_mode and not app.get_window().has_focus()))
 	ecology.sync_behavior(time,points,stopped,session.authority.world.crew if session.hosting else session.latest.crew)
 
 func _wildlife_cue(point: Vector3,kind: String) -> void:
 	var app:=session.get_parent() as FrontierCrewExpedition
-	if app==null or app.feedback==null or app.any_menu_open() or app.feedback.blocked() or not app.get_window().has_focus():return
+	if app==null or app.feedback==null or app.any_menu_open() or app.feedback.blocked() or (not app.test_mode and not app.get_window().has_focus()):return
 	if app.onboarding!=null and app.onboarding.letter.visible:return
-	if kind=="alert":app.feedback.audio.play("sfx_creature_call",point)
+	if FrontierWildlifeCombat.config().audio.has(kind):
+		app.feedback.audio.play(FrontierWildlifeCombat.config().audio[kind],point,float(FrontierWildlifeCombat.config().audio_pitch.get(kind,1.0)))
+		if kind in ["hurt","down"]:app.feedback.effects.burst(point+Vector3.UP*.6,Color("cdb994"),4)
+	elif kind=="alert":app.feedback.audio.play("sfx_creature_call",point)
 	else:app.feedback.effects.burst(point,Color("a89677"),2)

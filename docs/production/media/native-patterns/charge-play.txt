@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS natural native home landing 
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:311384","ordinal":311384,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:311384","form_id":"biota_saddle_sails_26","home_point":"(69.7392, 2.475203, 42.312)","id":"surface:2:1:1","introduced":false,"layer":"surface","look_id":"biota_saddle_sails_26_p03_s00","point":"(69.7392, 2.475203, 42.312)","status":"active","terrestrial":true,"yaw":2.14884937505542}}
+PASS naturally assigned proactive rigged bovid
+PASS play fixture saved 
+PASS native field Forward+ ready
+PASS natural rigged animal loaded
+NATIVE_PATTERN_FRAME bovid windup {"aim":[-0.605977296829224,0.0,0.79548192024231],"attack":{"blocked":false,"goal":[67.7639923095703,2.49067330360413,52.2554512023926],"hits":{},"mode":"charge","origin":[73.2177886962891,2.49067330360413,45.0961151123047],"pulses":0,"travel":0.0},"body_id":"galaxy:galaxy-v3:71503:planet:311384","encounter_id":"surface:2:1:1","flinch":0.0,"form_id":"biota_saddle_sails_26","home":[69.7391967773438,2.47520279884338,42.3120002746582],"hurt_serial":0,"look_id":"biota_saddle_sails_26_p03_s00","lost":0.0,"phase":"attack","position":[73.2177886962891,2.49067330360413,45.0961151123047],"provoked":false,"serial":3,"struck":false,"target":"ff797a19f85744fe03f94295b4beab80","time":0.7,"yaw":-0.65099384161665}
+NATIVE_PATTERN_FRAME bovid motion {"aim":[-0.529166340827942,0.0,0.848518133163452],"attack":{"blocked":false,"goal":[67.8079833984375,2.49210643768311,52.3797836303711],"hits":{},"mode":"charge","origin":[72.5704803466797,2.49210643768311,44.7431182861328],"pulses":1,"travel":3.4},"body_id":"galaxy:galaxy-v3:71503:planet:311384","cue_serial":1,"encounter_id":"surface:2:1:1","flinch":0.0,"form_id":"biota_saddle_sails_26","home":[69.7391967773438,2.47520279884338,42.3120002746582],"hurt_serial":0,"look_id":"biota_saddle_sails_26_p03_s00","lost":0.0,"phase":"attack","position":[70.7712860107422,2.47402811050415,47.6280708312988],"provoked":false,"serial":3,"struck":true,"target":"ff797a19f85744fe03f94295b4beab80","time":1.28333333333333,"yaw":-0.55761778909164}
+PASS committed motion matches elevated visible collider
+PASS unprovoked warning pursuit and attack in real world
+PASS real native attack reaches player
+PASS visible collider and host combat stay together
+PASS solo menu pauses retained encounter
+NATIVE_PATTERN_FRAME bovid recovery {"aim":[-0.529166340827942,0.0,0.848518133163452],"attack":{"blocked":true,"goal":[67.8079833984375,2.49210643768311,52.3797836303711],"hits":{"ff797a19f85744fe03f94295b4beab80":1},"mode":"charge","origin":[72.5704803466797,2.49210643768311,44.7431182861328],"pulses":2,"travel":5.5},"body_id":"galaxy:galaxy-v3:71503:planet:311384","cue_serial":2,"encounter_id":"surface:2:1:1","flinch":0.0,"form_id":"biota_saddle_sails_26","home":[69.7391967773438,2.47520279884338,42.3120002746582],"hurt_serial":0,"look_id":"biota_saddle_sails_26_p03_s00","lost":0.0,"phase":"attack","position":[69.6600189208984,2.45209288597107,49.4099502563477],"provoked":false,"serial":3,"struck":true,"target":"ff797a19f85744fe03f94295b4beab80","time":1.86666666666667,"yaw":-0.55761778909164}
+PASS equipped firearm defeats real moving native animal
+PASS actual last position saved
+NATIVE_AUDIO { "sfx_creature_call": 17166, "sfx_wildlife_warning": 38185, "sfx_wildlife_strike": 35050, "sfx_build_invalid": 37527, "sfx_gun_carbine": 39035, "sfx_wildlife_hurt": 39035 }
+PASS native sound cues played through live SFX bus
+PASS native encounter save and close
+PASS incapacitation reloads
+NATIVE_COMBAT_PLAY 15 FAILURES 0

@@ -49,10 +49,12 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		var icon:=FrontierInterfaceStyle.interface_icon(entry[0],22);icon.position=Vector2(12,5);icon.size=Vector2(22,22);button.add_child(icon)
 		var key:=FrontierInterfaceStyle.label(button,entry[1],10,FrontierInterfaceStyle.MUTED);key.position=Vector2(0,29);key.size.x=46;key.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	app.session.response_received.connect(func(_seq: int,result: Dictionary):
+		if result.has("firearm_action"):return
 		if result.get("ok",false):save_left=.7;toast_left=0)
 	toast=PanelContainer.new();toast.theme=theme;toast.mouse_filter=Control.MOUSE_FILTER_IGNORE;toast.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.WARNING,12));get_parent().add_child(toast)
 	toast_label=FrontierInterfaceStyle.label(toast,"",13,FrontierInterfaceStyle.WARNING);toast_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;toast_label.custom_minimum_size.x=360;toast.hide()
 	app.session.response_received.connect(func(_seq: int,result: Dictionary):
+		if result.has("firearm_action"):return
 		if result.get("code")=="mining_cooldown":return
 		if not result.get("ok",false):toast_label.text=str(result.get("error","실행할 수 없습니다."));toast_left=4)
 	for label in [place,location,return_label,equipment_name]:
@@ -111,8 +113,20 @@ func _process(delta: float) -> void:
 		var known: bool=app.session.surface.ecology.observations.has(app.surface_world.body.id+":"+form.id)
 		target_action.text="Q  표본 채집  E  활용 정보" if known else "E 유지  스캔";target_action.modulate=Color.WHITE;context.show()
 		if form.category=="animal" and tool.get("kind")=="pulse":
-			target_bar.show();target_bar.max_value=FrontierEquipment.config().animal_health;target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
+			target_bar.show();target_bar.max_value=FrontierWildlifeCombat.health(app.surface_target);target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
 			target_action.text="클릭  발사" if target_bar.value>0 else "무력화"
+			var behavior:=FrontierWildlifeCombat.state(app.session.latest.crew,app.surface_world.body.id,app.surface_target)
+			if behavior.get("phase","")=="warning":target_action.text="경계 중  거리 확보";target_action.modulate=Color("f0ae75")
+			elif behavior.get("phase","")=="attack":
+				var info:=FrontierWildlifeCombat.profile(app.surface_target)
+				var clock:=float(behavior.time)
+				var mode: String=info.get("behavior","melee")
+				if clock>=float(info.windup)+float(info.active):
+					target_action.text="빈틈  반격 기회";target_action.modulate=Color("83d9c8")
+				else:
+					target_action.text={"charge":"돌진  옆으로 회피","leap":"도약  착지점 이탈","shockwave":"내려치기  범위 이탈·점프","double_sweep":"두 번 베기  거리 유지"}.get(mode,"공격 준비  거리 확보")
+					target_action.modulate=Color("f0ae75")
+			elif behavior.get("phase","")=="flee":target_action.text="도주 중"
 	elif not target.is_empty():
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		var row: Dictionary=site.get("buildings",{}).get(target.id,{})

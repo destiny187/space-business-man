@@ -1,0 +1,9 @@
+{
+  "version":1,
+  "assembly_seconds":2,
+  "buildings":{
+    "combat_barrier":{"name":"낮은 방벽","description":"몸을 낮춰 숨고 일어서서 사격하는 1.35m 엄폐물. 적의 사격으로 파손됩니다.","tier":1,"cost":{"iron":8,"stone":6},"tech":"","power":0,"radius":1.6,"model":"combat_barrier","health":140,"repair":{"iron":4,"stone":3},"boxes":[[[0,0.675,0],[2.8,1.35,0.30]], [[-1.18,0.12,0],[0.38,0.24,1.05]], [[1.18,0.12,0],[0.38,0.24,1.05]]]},
+    "combat_barricade":{"name":"장갑 엄폐벽","description":"Mk.2 제작소에서 생산한 키트를 배치합니다. 1.95m 전면을 막고 양옆으로 나와 사격합니다.","tier":2,"cost":{"combat_cover_kit":1},"tech":"","power":0,"radius":1.85,"model":"combat_barricade","health":420,"repair":{"reinforced_frame":1,"iron":4},"boxes":[[[0,0.975,0],[3.2,1.95,0.48]], [[-1.35,0.14,0],[0.44,0.28,1.4]], [[1.35,0.14,0],[0.44,0.28,1.4]]]}
+  },
+  "products":{"combat_cover_kit":{"name":"장갑 엄폐벽 키트","tier":2,"cost":{"reinforced_frame":2,"refined_iron":3},"amount":1,"seconds":12,"model":"products/combat_cover_kit","color":"#e4aa68","use":"장갑 엄폐벽을 현장에 배치"}}
+}
