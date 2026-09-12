@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-12",
+  "provider": "ElevenLabs original recordings reused",
+  "jobs": [
+    {
+      "id": "sfx_ship_missile_launch",
+      "source": "우주-비즈니스/assets/audio/sfx_vessel_boost.wav",
+      "source_manifest": "audio/manifests/space-experience.json",
+      "source_sha256": "3a76047144fdff9e60c49976e6bd91c2f3fd1b5a3a717b8724c5ada84c3dd668",
+      "start": 0.1,
+      "duration": 0.4799791666666667,
+      "processing": "ElevenLabs existing source, mono trim, 3ms/50ms edge fades, peak .56; no new synthesis",
+      "game_file": "우주-비즈니스/assets/audio/sfx_ship_missile_launch.wav",
+      "sha256": "7dc07aefa02064d0c979ad791b7e5b1f6d1b0565a5c24a947b2468ae9646c26a"
+    },
+    {
+      "id": "sfx_ship_missile_blast",
+      "source": "우주-비즈니스/assets/audio/sfx_gun_plasma.wav",
+      "source_manifest": "audio/manifests/ground-combat.json",
+      "source_sha256": "f35c6539627cea232b2a90ba55d1ce6321450248774c86b5f6fa584b99ca542e",
+      "start": 0,
+      "duration": 0.3023958333333333,
+      "processing": "ElevenLabs existing source, mono trim, 3ms/50ms edge fades, peak .56; no new synthesis",
+      "game_file": "우주-비즈니스/assets/audio/sfx_ship_missile_blast.wav",
+      "sha256": "9e15c29af0bbcf724e049e1f78cfc3aa502064b6bed9f5c04f58e37a106586c4"
+    }
+  ]
+}

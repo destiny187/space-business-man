@@ -23,6 +23,19 @@ func run()->void:
  var encoded:=Snapshot.encode(draft,Snapshot.manifest_json(draft))
  check(JSON.parse_string(encoded)==JSON.parse_string(JSON.stringify(draft,"",true,true)),"cached encoding preserves the complete JSON state")
  check(FrontierUniverse.validate_world(draft).is_empty(),"shared draft passes normal domain validation")
+ var body:=FrontierUniverse.body(world.manifest,8000)
+ var expected:=FrontierUniverse._make_body(original,8000)
+ check(body==expected,"cached planet preserves generated geology, ecology and corporate activity")
+ body.orbit.radius=-1;body.streams.terrain=-1
+ check(FrontierUniverse.body(world.manifest,8000)==expected,"editing a returned planet cannot corrupt the shared definition")
+ var time:=932.5
+ check(FrontierUniverse.position(world.manifest,8000,time).is_equal_approx(FrontierUniverse.position(original,8000,time)),"cached orbit preserves the exact current-time position")
+ var altered:=original.duplicate(true);altered.seed+=31
+ check(FrontierUniverse.body(altered,8000)!=expected,"mutable generation changes bypass the session cache")
+ var native_tampered:=original.duplicate(true)
+ if native_tampered.has("native_biota"):
+  native_tampered.native_biota.assigned_species=-1
+  check(not FrontierNativeBiota.validate(native_tampered).is_empty(),"native validation cache cannot approve modified mutable data")
  var tampered:=draft.duplicate(true)
  tampered.manifest=original.duplicate(true);tampered.manifest.seed+=1
  check(not FrontierUniverse.validate_world(tampered).is_empty(),"mutable replacement cannot reuse a cached hash")

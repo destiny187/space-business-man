@@ -16314,5 +16314,41 @@
     "foliage": false,
     "generator": "tools/build_pirate_craft.py",
     "review": "docs/production/139-pirate-flight-combat.md"
+  },
+  {
+    "id": "pirate_gunship",
+    "title": "항해 전투",
+    "name": "해적 미사일함",
+    "group": "우주선",
+    "model": "res://assets/models/ships/pirate_gunship.glb",
+    "source": "art/blender/ships/pirate_gunship.blend",
+    "geometry": "ink-authored",
+    "foliage": false,
+    "generator": "tools/build_pirate_missiles.py",
+    "review": "docs/production/144-pirate-missiles-and-breakout.md"
+  },
+  {
+    "id": "expedition_missile_mount",
+    "title": "항해 전투",
+    "name": "원정선 미사일 발사대",
+    "group": "우주선",
+    "model": "res://assets/models/ships/expedition_missile_mount.glb",
+    "source": "art/blender/ships/expedition_missile_mount.blend",
+    "geometry": "ink-authored",
+    "foliage": false,
+    "generator": "tools/build_pirate_missiles.py",
+    "review": "docs/production/144-pirate-missiles-and-breakout.md"
+  },
+  {
+    "id": "ship_missile",
+    "title": "항해 전투",
+    "name": "선박 유도 미사일",
+    "group": "우주선",
+    "model": "res://assets/models/ships/ship_missile.glb",
+    "source": "art/blender/ships/ship_missile.blend",
+    "geometry": "ink-authored",
+    "foliage": false,
+    "generator": "tools/build_pirate_missiles.py",
+    "review": "docs/production/144-pirate-missiles-and-breakout.md"
   }
 ]

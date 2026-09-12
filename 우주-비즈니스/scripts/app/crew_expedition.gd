@@ -498,6 +498,7 @@ func _physics_process(delta: float) -> void:
 			scan_aim=-flight.camera.global_basis.z
 			flight_controls.append(float(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not mouse_resume_guard and flight.combat_view!=null and flight.combat_view.armed()))
 			flight_controls.append(float(not flight.navigation.is_empty() and flight.navigation.mode!="jump" and not get_tree().has_meta("startup_loader")))
+			flight_controls.append(float(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and not mouse_resume_guard and flight.combat_view!=null and flight.combat_view.armed()))
 		if flight_controls.slice(0,4).any(func(value):return absf(float(value))>.01) or (outside and scanning):dismiss_stellar_arrival()
 		if onboarding!=null:onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
 		mouse_steering=Vector2.ZERO
@@ -666,7 +667,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if solar_opening_active():return
 	if arrival!=null and arrival.active:return
 	if event is InputEventMouseButton and mouse_resume_guard:return
-	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and flight!=null and flight.combat_view!=null and flight.combat_view.armed():
+	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT] and outside and flight!=null and flight.combat_view!=null and flight.combat_view.armed():
 		get_viewport().set_input_as_handled();return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and surface_world==null and _mouse_look_allowed() and not cursor_released and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and session.latest.get("self_id","")==session.latest.get("crew",{}).get("pilot_id",""):
 		var scale_factor: float=maxf(exterior_view.size.x/space_view.size.x,exterior_view.size.y/space_view.size.y)

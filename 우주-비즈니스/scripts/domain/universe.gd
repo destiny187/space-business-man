@@ -94,6 +94,28 @@ static func system(m: Dictionary, index: int) -> Dictionary:
 		"star": {"id":id+":star", "name":FrontierCelestialNames.system_name(seed_value,index), "spectral_type":"G" if index==0 else ["M","K","G","F","A"][derive(seed_value,"star")%5]}}
 
 static func body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dictionary:
+	var owned:=WorldSnapshot._entry(m)
+	if owned.is_empty():return _make_body(m,ordinal,corporate)
+	# Only session-owned, recursively frozen manifests qualify. Callers still own
+	# mutable body results; orbital queries can read the private definition directly.
+	return _cached_body(m,ordinal,corporate,owned).duplicate(true)
+
+static func body_definition(m: Dictionary,ordinal: int,corporate: bool=true) -> Dictionary:
+	# Read-only consumers such as navigation need no private editable copy.
+	var owned:=WorldSnapshot._entry(m)
+	return _make_body(m,ordinal,corporate) if owned.is_empty() else _cached_body(m,ordinal,corporate,owned)
+
+static func _cached_body(m: Dictionary,ordinal: int,corporate: bool,owned: Dictionary) -> Dictionary:
+	if not owned.has("bodies"):owned.bodies={}
+	var key:=ordinal*2+int(corporate)
+	if not owned.bodies.has(key):
+		var generated:=_make_body(m,ordinal,corporate)
+		if owned.bodies.size()>=128:owned.bodies.erase(owned.bodies.keys()[0])
+		owned.bodies[key]=generated.duplicate(true)
+		WorldSnapshot._freeze(owned.bodies[key])
+	return owned.bodies[key]
+
+static func _make_body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dictionary:
 	if ordinal < 0 or ordinal >= int(m.settings.planet_count): return {}
 	var cfg: Dictionary = m.settings
 	var s: Dictionary = system(m, system_index(m,ordinal))
@@ -174,7 +196,8 @@ static func navigation_radius(body_value: Dictionary) -> float:
 static func position(m: Dictionary,ordinal: int,elapsed: float=0.0) -> Vector3:
 	if m.is_empty() or m.settings.generator_version=="galaxy-v2":
 		return [Vector3(-620,-130,-2400),Vector3(1150,340,-3600),Vector3(-2100,450,-4900),Vector3(2400,-500,-6000)][ordinal%4]
-	var b:=body(m,ordinal)
+	var owned:=WorldSnapshot._entry(m)
+	var b:=_make_body(m,ordinal) if owned.is_empty() else _cached_body(m,ordinal,true,owned)
 	if FrontierPlanetaryCycles.enabled(m):return FrontierPlanetaryCycles.orbit_position(b,elapsed)
 	var angle: float=float(b.orbit.phase)+elapsed/float(b.orbit.period)*TAU
 	return orbit_point(b,angle)

@@ -1,0 +1,17 @@
+{
+  "checks": 12,
+  "end_frame": 1417,
+  "failures": 0,
+  "fixture": "actual crew expedition with host input; first homing salvo fired during warning; then live three-ship combat",
+  "fps": 60,
+  "maximum_visible_missiles": 2,
+  "missile_blasts": 4,
+  "missile_trails": 78,
+  "start_frame": 13,
+  "start_seconds": 0.21666666666666667,
+  "duration_seconds": 23.4,
+  "game_scene": "res://scenes/app/crew_expedition.tscn",
+  "capture_script": "res://tests/render_pirate_missiles.gd",
+  "render": "Godot 4.7.2 Forward+ / Metal; Movie Maker fixed 60 FPS",
+  "note": "Scripted pilot inputs through the actual host; offline rendering, not a real-time FPS benchmark; original mixed audio retained"
+}

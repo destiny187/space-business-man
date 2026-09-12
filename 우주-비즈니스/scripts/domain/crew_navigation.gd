@@ -50,6 +50,8 @@ static func validate(value: Variant) -> String:
 	return ""
 static func center(ordinal: int,manifest: Dictionary={},elapsed: float=0.0) -> Vector3:return FrontierUniverse.position(manifest,ordinal,elapsed)
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,active: Dictionary) -> String:
+	var combat_reason:=FrontierSpaceCombat.guard(world,actor,kind,args)
+	if not combat_reason.is_empty():return combat_reason
 	if FrontierSolarOpening.active(world.crew.navigation):return "태양계 출항 연출이 끝난 뒤 항해하세요."
 	if FrontierCrewSurface.landed(world):return "지표의 승무원들과 우주선으로 복귀한 뒤 항해하세요."
 	var crew: Dictionary=world.crew
@@ -73,9 +75,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if float(nav.get("hull",100))<=0:return "선체 응급 수리가 끝날 때까지 기다려 주세요."
 		for id in active.values():
 			if not crew.members[id].aboard or not crew.members[id].ready:return "연결된 승무원 모두 승선하고 준비해야 출항할 수 있습니다."
-		nav.mode="approach" if FrontierUniverse.system_index(world.manifest,int(nav.target))==int(nav.system) else "jump"
+		var next_mode: String="approach" if destination_system==int(nav.system) else "jump"
 		var energy_cost: float=world.manifest.settings.flight.get("transit_energy_cost",30.0)
-		if nav.mode=="jump" and float(nav.get("energy",100.0))<energy_cost:return "고속 추진 에너지를 충전 중입니다. 잠시 기다려 주세요."
+		if next_mode=="jump" and float(nav.get("energy",100.0))<energy_cost:return "고속 추진 에너지를 충전 중입니다. 잠시 기다려 주세요."
+		nav.mode=next_mode
 		if nav.mode=="jump" and not nav.has("first_stellar_system") and int(nav.system)==0:nav.first_stellar_system=FrontierUniverse.system_index(world.manifest,int(nav.target))
 		if nav.mode=="jump":nav.energy=float(nav.get("energy",100.0))-energy_cost
 		nav.erase("station_docked");nav.station_target=false;nav.manual=false;nav.boundary=false;nav.boosting=false
@@ -99,6 +102,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			nav.transit.duration=nav.jump_left
 			nav.transit.revisit=visited_system(world,destination_system)
 			nav.direction=[direction.x,direction.y,direction.z]
+			FrontierSpaceCombat.departed(world)
 
 	else:return "지원하지 않는 항해 명령입니다."
 	return ""
@@ -151,7 +155,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 		if nav.jump_left<=0:
 			nav.transit.galaxy_position=nav.transit.to.duplicate()
 			nav.system=FrontierUniverse.system_index(world.manifest,int(nav.target))
-			var body:=FrontierUniverse.body(world.manifest,int(nav.target))
+			var body:=FrontierUniverse.body_definition(world.manifest,int(nav.target))
 			var target:=FrontierUniverse.entry_focus(world.manifest,int(nav.target),float(nav.orbit_time))
 			position=FrontierUniverse.entry_position(world.manifest,int(nav.target),float(nav.orbit_time))
 			direction=(target-position).normalized()
@@ -160,7 +164,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 			for id in world.crew.members:world.crew.members[id].ready=false
 
 	else:
-		var body:=FrontierUniverse.body(world.manifest,int(nav.target))
+		var body:=FrontierUniverse.body_definition(world.manifest,int(nav.target))
 		var target:=center(int(nav.target),world.manifest,float(nav.get("orbit_time",0)))
 		var radius:=FrontierUniverse.navigation_radius(body)
 		var separation:=position.distance_to(target)-radius
@@ -246,11 +250,13 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		var pitched:=direction.rotated(right,float(controls[2])*float(cfg.get("turn_speed",1.0))*delta)
 		if absf(pitched.y)<.98:direction=pitched
 	var boost_requested: bool=controls.size()>3 and float(controls[3])>.5 and float(controls[0])>0
-	if not boost_requested or float(nav.get("energy",100))>=25:nav.boost_depleted=false
-	nav.boosting=boost_requested and not nav.get("boost_depleted",false) and float(nav.get("energy",100))>0 and float(nav.get("hull",100))>0
+	var reserve: float=float(cfg.get("transit_energy_cost",30)) if nav.get("combat_active",false) and not world.has("local_shuttle") else 0.0
+	if not boost_requested or float(nav.get("energy",100))>=reserve+25:nav.boost_depleted=false
+	nav.boosting=boost_requested and not nav.get("boost_depleted",false) and float(nav.get("energy",100))>reserve and float(nav.get("hull",100))>0
 	if nav.boosting:
-		nav.energy=maxf(0,float(nav.get("energy",100))-float(cfg.get("boost_drain",22))*delta)
-		if nav.energy<=0:nav.boost_depleted=true;nav.boosting=false
+		var drain: float=float(FrontierSpaceCombat.config().combat_boost_drain) if nav.get("combat_active",false) else float(cfg.get("boost_drain",22))
+		nav.energy=maxf(reserve,float(nav.get("energy",100))-drain*delta)
+		if nav.energy<=reserve:nav.boost_depleted=true;nav.boosting=false
 	var maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
 	if nav.get("combat_active",false):maximum=minf(maximum,float(FrontierSpaceCombat.config().combat_speed)*(2.2 if nav.boosting else 1.0))
 	if float(nav.get("hull",100))<=0:maximum=0
@@ -272,7 +278,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	obstacles.append_array(FrontierFreightSalvage.obstacles(world.manifest,int(nav.system),float(nav.orbit_time),FrontierFreightSalvage.records(world)))
 	for i in FrontierUniverse.body_count(world.manifest,int(nav.system)):
 		var ordinal: int=FrontierUniverse.first_ordinal(world.manifest,int(nav.system))+i
-		var body:=FrontierUniverse.body(world.manifest,ordinal)
+		var body:=FrontierUniverse.body_definition(world.manifest,ordinal)
 		obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time)),"radius":FrontierUniverse.navigation_radius(body)+80})
 		for moon in int(body.get("moons",0)):
 			obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time))+FrontierUniverse.moon_offset(body,moon,float(nav.orbit_time)),"radius":FrontierUniverse.moon_radius(body,moon)+50})
@@ -322,7 +328,7 @@ static func first_destination(manifest: Dictionary) -> int:
 	for candidate in candidates:
 		for orbit in FrontierUniverse.body_count(manifest,int(candidate.index)):
 			var ordinal: int=FrontierUniverse.first_ordinal(manifest,int(candidate.index))+orbit
-			var body:=FrontierUniverse.body(manifest,ordinal,false)
+			var body:=FrontierUniverse.body_definition(manifest,ordinal,false)
 			if FrontierPlanetaryCycles.enabled(manifest) and not body.astro.intro_eligible:continue
 			if FrontierUniverse.landable(body) and int(body.planet_tier)==1 and (not manifest.settings.has("ground_rules") or FrontierGroundProgression.intro_candidate(body)):
 				departure_cache[cache_key]=ordinal;return ordinal
@@ -355,7 +361,7 @@ static func departure_obstacles(manifest: Dictionary,index: int,elapsed: float,d
 	var horizon: float=duration*float(FrontierUniverse.presentation().stellar_transition.swap_progress)
 	for i in FrontierUniverse.body_count(manifest,index):
 		var ordinal:=FrontierUniverse.first_ordinal(manifest,index)+i
-		var body:=FrontierUniverse.body(manifest,ordinal)
+		var body:=FrontierUniverse.body_definition(manifest,ordinal)
 		var center:=FrontierUniverse.position(manifest,ordinal,elapsed)
 		var drift:=center.distance_to(FrontierUniverse.position(manifest,ordinal,elapsed+horizon))
 		result.append({"point":center,"radius":FrontierUniverse.navigation_radius(body)+drift})

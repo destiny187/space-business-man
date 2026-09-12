@@ -2,6 +2,20 @@ class_name FrontierSpaceCombat
 extends RefCounted
 ## Host-owned ship combat. No surface combat or peaceful traffic state is reused.
 static var _config: Dictionary={}
+static var _obstacle_manifest: Dictionary={}
+static var _obstacle_system:=-1
+static var _obstacle_time:=-INF
+static var _obstacle_sets: Dictionary={}
+static func obstacles(world: Dictionary,system: int,horizon: float) -> Array:
+	var m: Dictionary=world.manifest;var epoch:=float(world.crew.navigation.get("orbit_time",0))
+	if preload("res://scripts/persistence/world_snapshot.gd")._entry(m).is_empty():
+		return FrontierCrewNavigation.departure_obstacles(m,system,epoch,horizon)
+	# Reuse only within the exact same orbital instant and immutable world.
+	# The next host step recomputes moving planets, stations and freight.
+	if not is_same(m,_obstacle_manifest) or system!=_obstacle_system or epoch!=_obstacle_time:
+		_obstacle_manifest=m;_obstacle_system=system;_obstacle_time=epoch;_obstacle_sets.clear()
+	if not _obstacle_sets.has(horizon):_obstacle_sets[horizon]=FrontierCrewNavigation.departure_obstacles(m,system,epoch,horizon)
+	return _obstacle_sets[horizon]
 static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/space_combat.json"))
 	return _config
@@ -27,8 +41,26 @@ static func guard(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if not engagement(world,id):return ""
 	# The authority permits recall only for an offline pilot; successful recall settles this encounter.
 	if kind=="shuttle_recall":return ""
-	if kind in ["navigate","depart","tutorial_depart","land","shuttle_recall","shuttle_dock"] or kind.begins_with("station_") or kind.begins_with("vessel_"):return "추격 범위를 벗어나거나 해적을 격퇴한 뒤 항해하세요."
+	if id=="crew" and kind in ["navigate","depart"]:
+		var nav: Dictionary=world.crew.navigation
+		var target: Variant=args.get("ordinal",nav.target) if kind=="navigate" else nav.target
+		if not FrontierExpeditionBusiness.integer(target,0,int(world.manifest.settings.planet_count)-1):return "행성 주소가 올바르지 않습니다."
+		if FrontierUniverse.system_index(world.manifest,int(target))==int(nav.system):return "추격 중에는 다른 항성계로 이탈해야 합니다."
+		if kind=="navigate" or can_jump(world):return ""
+		return "가속해 해적과 거리를 벌린 뒤 성간 출발하세요."
+	if kind in ["navigate","depart","tutorial_depart","land","shuttle_dock"] or kind.begins_with("station_") or kind.begins_with("vessel_"):return "추격을 따돌리거나 해적 편대를 격퇴한 뒤 접근하세요."
 	return ""
+static func nearest_enemy(e: Dictionary,position: Vector3) -> float:
+	var nearest:=INF
+	for enemy in e.get("enemies",[]):
+		if float(enemy.hull)>0:nearest=minf(nearest,position.distance_to(point(enemy.position)))
+	return nearest
+static func can_jump(world: Dictionary) -> bool:
+	var e: Dictionary=record(world).get("encounter",{})
+	if e.is_empty() or e.carrier!="crew" or e.phase!="combat":return false
+	return float(e.escape)>=float(config().escape_seconds) and nearest_enemy(e,point(world.crew.navigation.position))>=float(config().escape_relock_distance)
+static func departed(world: Dictionary) -> void:
+	if engagement(world,"crew") and world.crew.navigation.mode=="jump":finish(world,"escaped")
 static func recalled(world: Dictionary,actor: String) -> void:
 	var r:=record(world)
 	if r.is_empty() or r.encounter.is_empty() or r.encounter.carrier!="shuttle:"+actor:return
@@ -47,9 +79,8 @@ static func emit(r: Dictionary,kind: String,system: int,origin: Vector3,target: 
 	r.event_serial+=1;r.events.append({"serial":r.event_serial,"kind":kind,"system":system,"origin":arr(origin),"target":arr(target),"id":id})
 	while r.events.size()>32:r.events.pop_front()
 static func clear_position(world: Dictionary,system: int,p: Vector3,radius: float=160.0) -> bool:
-	var elapsed:=float(world.crew.navigation.get("orbit_time",0))
 	if p.length()+radius>float(FrontierUniverse.system_layout(world.manifest,system).boundary):return false
-	for obstacle in FrontierCrewNavigation.departure_obstacles(world.manifest,system,elapsed,8.0):
+	for obstacle in obstacles(world,system,8.0):
 		if p.distance_to(obstacle.point)<float(obstacle.radius)+radius:return false
 	return true
 static func tier(world: Dictionary,system: int) -> int:
@@ -73,9 +104,9 @@ static func begin(world: Dictionary,id: String,variant: String) -> bool:
 	var right:=heading.cross(Vector3.UP).normalized()
 	if right.length_squared()<.5:right=Vector3.RIGHT
 	var enemies: Array=[]
-	var kinds: Array=["raider","interdictor"] if id=="crew" else ["raider"]
+	var kinds: Array=config().formation if id=="crew" else ["raider"]
 	for i in kinds.size():
-		var p:=origin+heading*(270.0+i*75)+right*(-105.0+i*215)+Vector3.UP*50
+		var p: Vector3=origin+heading*(270.0+i*55)+right*[-105.0,95.0,175.0][i]+Vector3.UP*(50.0+i*12)
 		if not clear_position(world,int(nav.system),p,100):return false
 		var cfg: Dictionary=config().enemy[kinds[i]]
 		enemies.append({"id":str(r.serial)+":"+str(i),"kind":kinds[i],"position":arr(p),"direction":arr(-heading),"hull":float(cfg.hull),"shield":float(cfg.shield),"cooldown":1.0+i,"windup":0.0,"aim":arr(origin),"age":float(i)*2,"hit_age":100.0})
@@ -114,7 +145,8 @@ static func finish(world: Dictionary,outcome: String) -> void:
 	var local:=local_world(world,e.carrier);var nav: Dictionary=local.crew.navigation
 	nav.combat_active=false;nav.combat_recovery=false
 	for enemy in e.enemies:enemy.windup=0.0
-	e.phase=outcome;e.elapsed=0.0;e.projectiles=[]
+	e.phase=outcome;e.elapsed=0.0
+	e.projectiles=e.get("projectiles",[]).filter(func(bolt):return bolt.get("side","pirate")=="crew") if outcome=="victory" else []
 	r.cooldown=float(config().cooldown_seconds);r.safe_journeys=int(config().safe_journeys)
 	commit(world,local,e.carrier);emit(r,"escaped",int(e.system),point(nav.position),point(nav.position),e.carrier)
 	if outcome=="escaped":transmit(world,"radio_withdraw")
@@ -125,7 +157,7 @@ static func transmit(world: Dictionary,kind: String) -> void:
 			emit(r,kind,int(e.system),point(enemy.position),point(local_world(world,e.carrier).crew.navigation.position),str(enemy.id))
 			return
 static func blocked_distance(world: Dictionary,system: int,origin: Vector3,direction: Vector3,reach: float) -> float:
-	for obstacle in FrontierCrewNavigation.departure_obstacles(world.manifest,system,float(world.crew.navigation.get("orbit_time",0)),0):
+	for obstacle in obstacles(world,system,0.0):
 		var offset: Vector3=obstacle.point-origin;var along:=offset.dot(direction)
 		var side2:=offset.length_squared()-along*along;var radius:=float(obstacle.radius)
 		if along>0 and side2<radius*radius:reach=minf(reach,maxf(0,along-sqrt(radius*radius-side2)))
@@ -162,14 +194,50 @@ static func fire(world: Dictionary,actor: String,aim: Vector3) -> bool:
 	stats.cooldown=float(config().fire_interval);stats.heat=minf(1,stats.heat+float(config().fire_heat));stats.overheated=stats.heat>=1.0
 	emit(r,"shot",int(nav.system),origin,origin+ray*reach,id)
 	if not selected.is_empty():
-		var amount:=float(config().fire_damage);var absorbed:=minf(float(selected.shield),amount)
-		selected.shield-=absorbed;selected.hull=maxf(0,selected.hull-(amount-absorbed));selected.hit_age=0.0
-		emit(r,"break" if absorbed>0 and selected.shield<=0 else "impact",int(nav.system),origin,origin+ray*reach,selected.id)
-		if selected.hull<=0:
-			r.wrecks.append({"id":str(e.id)+"/"+str(selected.id),"system":int(e.system),"position":selected.position.duplicate(),"kind":selected.kind,"loot":config().enemy[selected.kind].loot.duplicate(true)})
-			while r.wrecks.size()>int(config().maximum_wrecks):r.wrecks.pop_front()
-			emit(r,"destroy",int(nav.system),point(selected.position),point(selected.position),selected.id)
+		damage_enemy(world,selected,float(config().fire_damage),origin,origin+ray*reach)
 	return true
+static func damage_enemy(world: Dictionary,enemy: Dictionary,amount: float,source: Vector3,at: Vector3) -> void:
+	if float(enemy.hull)<=0:return
+	var r:=record(world);var e: Dictionary=r.encounter
+	var absorbed:=minf(float(enemy.shield),amount)
+	enemy.shield-=absorbed;enemy.hull=maxf(0,enemy.hull-(amount-absorbed));enemy.hit_age=0.0
+	emit(r,"break" if absorbed>0 and enemy.shield<=0 else "impact",int(e.system),source,at,enemy.id)
+	if enemy.hull<=0:
+		r.wrecks.append({"id":str(e.id)+"/"+str(enemy.id),"system":int(e.system),"position":enemy.position.duplicate(),"kind":enemy.kind,"loot":config().enemy[enemy.kind].loot.duplicate(true)})
+		while r.wrecks.size()>int(config().maximum_wrecks):r.wrecks.pop_front()
+		emit(r,"destroy",int(e.system),point(enemy.position),point(enemy.position),enemy.id)
+static func launch_missile(world: Dictionary,actor: String,aim: Vector3) -> bool:
+	var r:=record(world);var e: Dictionary=r.get("encounter",{})
+	if not same_space(world,actor,e) or e.phase not in ["warning","combat"] or float(e.resume)>0:return false
+	if carrier(world,actor)!="crew" or actor!=world.crew.pilot_id or world.crew.navigation.mode!="idle":return false
+	var stats:=ship_state(world,"crew");var cfg: Dictionary=config().missile
+	if float(stats.get("missile_cooldown",0))>0 or e.get("projectiles",[]).size()+int(cfg.salvo_count)>int(config().presentation.projectile_limit):return false
+	var nav: Dictionary=world.crew.navigation;var heading:=point(nav.direction).normalized()
+	if not aim.is_finite() or aim.dot(heading)<float(config().aim_dot):return false
+	var frame:=FrontierSpaceCombatPilot.basis(heading);var origin:=point(nav.position)+frame*point(cfg.muzzle)
+	var camera:=point(nav.position)+frame*point(config().presentation.camera)
+	var selected:=missile_target(e,camera,aim)
+	if selected.is_empty():return false
+	var target:=point(selected.position);var offset:=target-origin
+	if blocked_distance(world,int(e.system),origin,offset.normalized(),offset.length())<offset.length()-float(config().enemy[selected.kind].radius):return false
+	stats.missile_cooldown=float(cfg.cooldown)
+	for i in int(cfg.salvo_count):
+		var side: float=-1.0 if i%2==0 else 1.0
+		var muzzle:=point(cfg.muzzle);muzzle.x=absf(muzzle.x)*side
+		var source:=point(nav.position)+frame*muzzle
+		var ray: Vector3=(heading+frame.x*side*float(cfg.fan_side)+frame.y*(float(cfg.fan_up)+i*.12)).normalized()
+		emit(r,"missile_launch",int(e.system),source,target,"crew")
+		e.projectiles.append({"id":str(r.event_serial),"owner":"crew","side":"crew","kind":"missile","target_id":str(selected.id),"position":arr(source),"velocity":arr(ray*float(cfg.initial_speed)),"life":float(cfg.life),"age":0.0,"damage":float(cfg.damage),"radius":float(cfg.radius)})
+	return true
+static func missile_target(e: Dictionary,origin: Vector3,aim: Vector3) -> Dictionary:
+	var best:=float(config().missile.lock_dot);var target: Dictionary={}
+	for enemy in e.get("enemies",[]):
+		var offset:=point(enemy.position)-origin
+		if float(enemy.hull)<=0 or offset.length()>float(config().missile.range):continue
+		var alignment:=offset.normalized().dot(aim)
+		if alignment>best:target=enemy;best=alignment
+	return target
+
 static func damage_ship(world: Dictionary,id: String,amount: float,source: Vector3=Vector3.INF) -> void:
 	var local:=local_world(world,id);var stats:=ship_state(world,id);var nav: Dictionary=local.crew.navigation
 	var absorbed:=minf(float(stats.shield),amount);stats.shield-=absorbed;stats.hit_age=0.0
@@ -186,6 +254,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if actor==local_world(world,id).crew.pilot_id:pilots[id]={"actor":actor,"peer":peer}
 	for id in r.ships:
 		var stats: Dictionary=r.ships[id];stats.cooldown=maxf(0,stats.cooldown-delta);stats.hit_age+=delta
+		stats.missile_cooldown=maxf(0,float(stats.get("missile_cooldown",0))-delta)
 		stats.heat=maxf(0,stats.heat-float(cfg.heat_cooling)*delta)
 		if stats.heat<=.2:stats.overheated=false
 		if stats.hit_age>=float(cfg.shield_delay):stats.shield=minf(float(cfg.shield if id=="crew" else cfg.finch_shield),stats.shield+float(cfg.shield_rate)*delta)
@@ -195,7 +264,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if not r.flights.has(id):r.flights[id]={"mode":str(nav.mode),"route":"","seconds":0.0,"distance":0.0,"position":nav.position.duplicate()}
 		var f: Dictionary=r.flights[id];var input: Dictionary=inputs.get(pilots[id].peer,{})
 		var control: Array=input.get("flight_controls",[])
-		var ready:=float(input.get("expires",-1))>=now and control.size()==6 and float(control[5])>.5
+		var ready:=float(input.get("expires",-1))>=now and control.size()>=6 and float(control[5])>.5
 		var pos:=point(nav.position)
 		if str(nav.mode)=="jump" and str(f.mode)!="jump":
 			f.route="pending";f.seconds=0.0;f.distance=0.0
@@ -226,7 +295,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		var local:=local_world(world,id);var nav: Dictionary=local.crew.navigation
 		var input: Dictionary=inputs.get(pilots[id].peer,{})
 		var buttons: Array=input.get("flight_controls",[])
-		if engagement(world,id) or nav.mode!="idle" or absf(float(nav.speed))>20 or float(input.get("expires",-1))<now or buttons.size()!=6 or float(buttons[5])<.5:
+		if engagement(world,id) or nav.mode!="idle" or absf(float(nav.speed))>20 or float(input.get("expires",-1))<now or buttons.size()<6 or float(buttons[5])<.5:
 			stats.operation={};changed=true;continue
 		op.elapsed+=delta
 		if op.elapsed>=float(cfg.salvage_seconds):
@@ -238,7 +307,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 	if not pilots.has(e.carrier):return changed
 	var pilot: Dictionary=pilots[e.carrier];var local:=local_world(world,e.carrier);var nav: Dictionary=local.crew.navigation
 	var input: Dictionary=inputs.get(pilot.peer,{});var controls: Array=input.get("flight_controls",[])
-	var ready:=float(input.get("expires",-1))>=now and controls.size()==6 and float(controls[5])>.5
+	var ready:=float(input.get("expires",-1))>=now and controls.size()>=6 and float(controls[5])>.5
 	# Menus do not pause combat; loading/disconnection holds only the initial/resume warning.
 	if e.resume>0:
 		if ready:e.resume=maxf(0,e.resume-delta)
@@ -248,7 +317,8 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if e.warning<=0:e.phase="combat";transmit(world,"radio_contact");changed=true
 	elif e.phase in ["escaped","victory","recovered"]:
 		e.elapsed+=delta
-		if e.elapsed>4:r.encounter={};return true
+		if e.phase=="victory" and not e.get("projectiles",[]).is_empty():FrontierSpaceCombatPilot.projectiles(world,delta)
+		if e.elapsed>4 and e.get("projectiles",[]).is_empty():r.encounter={};return true
 		return changed
 	else:e.elapsed+=delta
 	if e.phase=="recovering":
@@ -256,7 +326,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if e.recovery>=float(cfg.recovery_seconds):nav.hull=float(cfg.recovery_hull);ship_state(world,e.carrier).shield=float(cfg.shield if e.carrier=="crew" else cfg.finch_shield)*.5;finish(world,"recovered");changed=true
 		commit(world,local,e.carrier);return changed
 	if float(nav.get("hull",100))<=0:
-		e.phase="recovering";nav.combat_recovery=true;nav.speed=0.0
+		e.phase="recovering";e.projectiles=[];nav.combat_recovery=true;nav.speed=0.0
 		var destination:=point(nav.position)
 		for i in 12:
 			var p:=point(nav.position)+Vector3(cos(i*TAU/12),.3,sin(i*TAU/12))*1000
@@ -265,23 +335,31 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		e.recovery_point=arr(destination);commit(world,local,e.carrier);emit(r,"recover",int(e.system),point(nav.position),destination,e.carrier);return true
 	for id in pilots:
 		var member_input: Dictionary=inputs.get(pilots[id].peer,{});var buttons: Array=member_input.get("flight_controls",[])
-		if float(member_input.get("expires",-1))>=now and buttons.size()==6 and float(buttons[4])>.5 and float(buttons[5])>.5:
+		if float(member_input.get("expires",-1))>=now and buttons.size()>=6 and float(buttons[5])>.5:
 			var wreck_count: int=r.wrecks.size()
-			fire(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
+			if float(buttons[4])>.5:fire(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
+			if buttons.size()==7 and float(buttons[6])>.5:launch_missile(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
 			if r.wrecks.size()!=wreck_count:changed=true
 	if not e.has("projectiles"):e.projectiles=[]
-	var living:=0;var jammed:=false;var pos:=point(nav.position)
+	var living:=0;var pos:=point(nav.position)
 	for enemy in e.enemies:
 		enemy.hit_age+=delta
 		if enemy.hull<=0:continue
 		living+=1
-		if enemy.kind=="interdictor" and pos.distance_to(point(enemy.position))<float(cfg.escape_radius):jammed=true
 		FrontierSpaceCombatPilot.step(world,enemy,delta)
-	if e.phase=="combat":FrontierSpaceCombatPilot.projectiles(world,delta)
+	FrontierSpaceCombatPilot.projectiles(world,delta)
+	living=0
+	for enemy in e.enemies:
+		if float(enemy.hull)>0:living+=1
 	if living==0:finish(world,"victory");return true
-	var escaped:=pos.distance_to(point(e.origin))>float(cfg.escape_radius) and not jammed
-	e.escape=minf(float(cfg.escape_seconds),e.escape+delta) if escaped else maxf(0,e.escape-delta*.5)
-	if e.escape>=float(cfg.escape_seconds) or e.elapsed>=float(cfg.pursuit_seconds if e.carrier!="crew" else cfg.combat_seconds):finish(world,"escaped");return true
+	var nearest:=nearest_enemy(e,pos);e.nearest=nearest
+	var clear:=pos.distance_to(point(e.origin))>float(cfg.escape_radius) and nearest>float(cfg.escape_separation)
+	if clear:e.escape=minf(float(cfg.escape_seconds),e.escape+delta)
+	elif nearest<float(cfg.escape_relock_distance):e.escape=0.0
+	else:e.escape=maxf(0,e.escape-delta*.5)
+	if e.carrier!="crew" and e.escape>=float(cfg.escape_seconds):finish(world,"escaped");return true
+	if can_jump(world) and not e.get("jump_notified",false):
+		e.jump_notified=true;emit(r,"radio_jump_ready",int(e.system),pos,pos,"crew");changed=true
 	return changed
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
 	var r:=record(world)
@@ -327,6 +405,7 @@ static func valid(r: Variant) -> bool:
 		for key in ["shield","heat","cooldown","hit_age"]:
 			if not FrontierUniverse._finite(s.get(key),0,1e12):return false
 		if not s.get("overheated") is bool or not s.get("operation",{}) is Dictionary or not s.get("operation_error","") is String:return false
+		if not FrontierUniverse._finite(s.get("missile_cooldown",0),0,100):return false
 		var op: Dictionary=s.get("operation",{})
 		if not op.is_empty() and (op.get("kind") not in ["space_repair","space_salvage"] or not op.get("id") is String or not FrontierUniverse._finite(op.get("elapsed"),0,100)):return false
 	for f in r.flights.values():
@@ -361,6 +440,8 @@ static func valid(r: Variant) -> bool:
 		if not e.get("projectiles",[]) is Array or e.get("projectiles",[]).size()>int(config().presentation.projectile_limit):return false
 		for bolt in e.get("projectiles",[]):
 			if not bolt is Dictionary or not bolt.get("id") is String or not bolt.get("owner") is String:return false
+			if bolt.get("kind","pulse") not in ["pulse","missile"] or bolt.get("side","pirate") not in ["crew","pirate"] or not bolt.get("target_id","") is String:return false
+			if not FrontierUniverse._finite(bolt.get("age",0),0,100):return false
 			for key in ["position","velocity"]:
 				if not FrontierUniverse._vector3_array(bolt.get(key)):return false
 			for key in ["life","damage","radius"]:

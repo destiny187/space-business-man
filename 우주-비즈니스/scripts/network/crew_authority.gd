@@ -26,6 +26,7 @@ var input_sequences: Dictionary={}
 var motions: Dictionary={}
 var session_id: String
 var save_world: Callable
+var save_flight_checkpoint: Callable
 var stopped:=false
 var error:=""
 var now:=0.0
@@ -356,7 +357,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if jump_request<0 or jump_request>9007199254740000:return false
-	if flight_controls.size() not in [3,4,6]:return false
+	if flight_controls.size() not in [3,4,6,7]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if vehicle_controls.size() not in [0,4]:return false
@@ -417,7 +418,8 @@ func step_flight_combat(delta: float) -> void:
 	flight_combat_timer=0.0
 	if changed or (not FrontierSpaceCombat.record(world).get("encounter",{}).is_empty() and flight_combat_checkpoint>=2):
 		world.crew.revision+=1;flight_combat_checkpoint=0.0
-		checkpoint()
+		if changed or not save_flight_checkpoint.is_valid():checkpoint()
+		elif not save_flight_checkpoint.call(world):stopped=true;error="비행 전투 체크포인트 저장 실패로 세계를 정지했습니다."
 
 var water_solvers: Dictionary={}
 var water_timer:=0.0

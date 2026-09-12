@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS host starts
+PASS local ambush starts
+PASS formation consists of combat ships
+PASS secondary input launches a real missile without instant damage
+PASS missile reload prevents repeated launch
+PASS paired missiles leave in visibly different outward directions
+PASS homing salvo collides and emits an impact explosion
+PASS second missile launches
+PASS missile curves toward its locked target after fan-out
+PASS guided attack follows the original target and resolves through collision
+PASS missile cooldown and results serialize
+PASS no target consumes neither missiles nor cooldown
+PASS a surviving salvo projectile keeps flying after its last target dies
+PASS post-victory missile expires before encounter cleanup
+PASS destroying the missile ship does not end its living escorts' pursuit
+PASS standing still never grants a timed escape
+PASS close-range departure is blocked
+PASS actual boost movement opens a jump window away from pursuing fighters
+PASS boost preserves the energy needed for escape jump
+PASS distance alone leaves the encounter active
+PASS closing pursuit invalidates a stale jump window
+PASS reachable alternate stellar route exists
+PASS alternate system can be selected
+PASS failed save cannot publish jump or escape
+PASS committed interstellar departure confirms escape
+PASS escaped route shares the encounter cooldown
+MISSILE_BREAKOUT_CHECKS 26 FAILURES 0 BOOST_SECONDS 5.1

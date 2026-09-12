@@ -1,9 +1,9 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, cull_disabled, depth_draw_never, fog_disabled;
 // Camera-facing plasma, flash and ejecta. No opaque sphere or rigid shock ring.
-uniform float age : hint_range(0.0,1.0) = 0.0;
-uniform float variation = 0.0;
-uniform int kind = 0;
+instance uniform float age : hint_range(0.0,1.0) = 0.0;
+instance uniform float variation = 0.0;
+instance uniform int kind = 0;
 float hash21(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
 float noise(vec2 p) {
  vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);

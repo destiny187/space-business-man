@@ -37,7 +37,7 @@ func run() -> void:
 	app.test_mode=false;app.cursor_released=false;app.mouse_resume_guard=false;app.movement_timer=0;root.grab_focus()
 	var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;Input.parse_input_event(press)
 	await process_frame;Input.flush_buffered_events();app._physics_process(.06)
-	if root.has_focus():check(authority.inputs[1].flight_controls.size()==6 and authority.inputs[1].flight_controls[4]>.5,"ordinary mouse input collects the ship firing flag")
+	if root.has_focus():check(authority.inputs[1].flight_controls.size()==7 and authority.inputs[1].flight_controls[4]>.5,"ordinary mouse input collects the ship firing flag")
 	else:
 		print("SKIP focused mouse input: native window focus unavailable")
 		check(authority.inputs[1].flight_controls.size()<6,"unfocused window prevents weapon-ready input")
@@ -117,7 +117,7 @@ func preview_radio(authority: FrontierCrewAuthority) -> void:
 	var record: Dictionary=FrontierSpaceCombat.record(authority.world)
 	authority.world.crew.navigation.position=FrontierSpaceCombat.arr(FrontierSpaceCombat.point(record.encounter.origin)+Vector3(2500,0,0))
 	for i in 43:send_controls(Vector3.FORWARD,false);await create_timer(.1).timeout
-	check(view.radio.get("receiver","")=="해적 편대","escape sends a short withdrawal to the pirate formation")
+	check(view.radio.get("sender","")=="원정선 항법","breakout opens a jump window through ship radio")
 	root.size=Vector2i(960,640);root.content_scale_size=root.size
 	await capture("radio-withdrawal-960")
 	view.update(.1,true);check(view.radio.is_empty(),"opening a menu clears current radio")

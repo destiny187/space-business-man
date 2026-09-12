@@ -2,6 +2,9 @@ extends Control
 var presentation: FrontierSpaceCombatView
 var font: Font
 var key_style: StyleBox
+var status_column: VBoxContainer
+var weapon_column: VBoxContainer
+var meters: Dictionary={}
 const MINT=FrontierInterfaceStyle.ACCENT
 const WHITE=FrontierInterfaceStyle.TEXT
 const WARN=FrontierInterfaceStyle.WARNING
@@ -9,6 +12,25 @@ func _ready() -> void:
 	mouse_filter=Control.MOUSE_FILTER_IGNORE;set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	font=FrontierInterfaceStyle.theme().default_font
 	key_style=FrontierInterfaceStyle.box(Color.TRANSPARENT,MINT,0)
+	status_column=VBoxContainer.new();status_column.mouse_filter=Control.MOUSE_FILTER_IGNORE;status_column.add_theme_constant_override("separation",12);add_child(status_column)
+	weapon_column=VBoxContainer.new();weapon_column.mouse_filter=Control.MOUSE_FILTER_IGNORE;weapon_column.add_theme_constant_override("separation",12);add_child(weapon_column)
+	for entry in [["shield","실드"],["health","선체"],["stamina","추진"],["ship_cannon","함포"],["ship_missile","유도 미사일"]]:
+		var meter:=FrontierStatusMeter.new();meter.configure(entry[0],entry[1]);meters[entry[0]]=meter
+		(weapon_column if entry[0] in ["ship_cannon","ship_missile"] else status_column).add_child(meter)
+func refresh_meters() -> void:
+	if status_column==null or presentation==null:return
+	var v:=presentation.view;var id:=presentation.id();var stats: Dictionary=presentation.data().get("ships",{}).get(id,{})
+	status_column.visible=not stats.is_empty();weapon_column.visible=not stats.is_empty() and id=="crew" and presentation.relevant()
+	status_column.position=Vector2(28,size.y-170);weapon_column.position=Vector2(size.x-220,size.y-250)
+	if stats.is_empty():return
+	meters.shield.update_value(float(stats.shield),float(FrontierSpaceCombat.config().shield if id=="crew" else FrontierSpaceCombat.config().finch_shield))
+	meters.health.update_value(float(v.navigation.get("hull",100)),100,float(v.navigation.get("hull",100))<35)
+	meters.stamina.update_value(float(v.navigation.get("energy",100)),100,float(v.navigation.get("energy",100))<25)
+	meters.ship_cannon.update_value(float(stats.heat)*100,100,stats.overheated)
+	meters.ship_cannon.value_label.text="LMB   %d%%"%roundi(float(stats.heat)*100)
+	var cooldown:=float(stats.get("missile_cooldown",0));var maximum:=float(FrontierSpaceCombat.config().missile.cooldown)
+	meters.ship_missile.update_value(maximum-cooldown,maximum)
+	meters.ship_missile.value_label.text="RMB   "+("%.1fs"%cooldown if cooldown>0 else ("2" if not presentation.locked_target.is_empty() else "—"))
 func label_at(p: Vector2,text: String,color: Color=WHITE,px: int=15) -> void:
 	draw_string_outline(font,p,text,HORIZONTAL_ALIGNMENT_LEFT,-1,px,4,Color(.02,.04,.06,.8*color.a));draw_string(font,p,text,HORIZONTAL_ALIGNMENT_LEFT,-1,px,color)
 func bar(p: Vector2,value: float,maximum: float,width: float,color: Color=MINT) -> void:
@@ -23,6 +45,10 @@ func work_icon(p: Vector2,repair: bool) -> void:
 	else:
 		draw_line(p,p+Vector2(22,0),MINT,2,true);draw_line(p+Vector2(13,0),p+Vector2(13,14),MINT,2,true)
 		draw_arc(p+Vector2(9,14),4,0,PI,12,MINT,2,true)
+func missile_icon(p: Vector2,color: Color) -> void:
+	draw_polyline(PackedVector2Array([p+Vector2(0,-10),p+Vector2(4,-4),p+Vector2(4,7),p+Vector2(-4,7),p+Vector2(-4,-4),p+Vector2(0,-10)]),color,1.5,true)
+	for side in [-1,1]:draw_polyline(PackedVector2Array([p+Vector2(side*4,1),p+Vector2(side*8,8),p+Vector2(side*4,7)]),color,1.5,true)
+	draw_line(p+Vector2(0,10),p+Vector2(0,14),color,1.5,true)
 func draw_radio() -> void:
 	if presentation.radio.is_empty():return
 	var total:=float(FrontierSpaceCombat.config().radio.seconds)
@@ -38,11 +64,6 @@ func _draw() -> void:
 	var v:=presentation.view;var data:=presentation.data();var id:=presentation.id();var center:=size*.5
 	var stats: Dictionary=data.get("ships",{}).get(id,{})
 	if not stats.is_empty():
-		var p:=Vector2(28,size.y-142)
-		label_at(p,"실드",MINT,13);label_at(p+Vector2(145,0),str(roundi(stats.shield)),WHITE,14);bar(p+Vector2(0,9),float(stats.shield),float(FrontierSpaceCombat.config().shield if id=="crew" else FrontierSpaceCombat.config().finch_shield),180)
-		label_at(p+Vector2(0,38),"선체",MINT,13);label_at(p+Vector2(145,38),str(roundi(v.navigation.get("hull",100))),WARN if float(v.navigation.get("hull",100))<35 else WHITE,14);bar(p+Vector2(0,47),float(v.navigation.get("hull",100)),100,180)
-		if id=="crew":label_at(p+Vector2(0,76),"함포",MINT,13);bar(p+Vector2(0,86),float(stats.heat),1,180,WARN if stats.overheated else MINT)
-		label_at(p+Vector2(0,110),"추진",MINT,13);label_at(p+Vector2(145,110),str(roundi(v.navigation.get("energy",100))),WHITE,14);bar(p+Vector2(0,120),float(v.navigation.get("energy",100)),100,180)
 		var op: Dictionary=stats.get("operation",{})
 		if not op.is_empty():
 			work_icon(Vector2(260,size.y-146),op.kind=="space_repair")
@@ -61,6 +82,9 @@ func _draw() -> void:
 			var loc:=v.camera.unproject_position(target) if not v.camera.is_position_behind(target) else center-Vector2(0,260)
 			loc=Vector2(clampf(loc.x,50,size.x-190),clampf(loc.y,135,size.y-185));draw_circle(loc,8,MINT,false,2,true)
 			bar(Vector2(center.x-70,118),float(e.escape),float(FrontierSpaceCombat.config().escape_seconds),140)
+			if id=="crew" and float(e.escape)>=float(FrontierSpaceCombat.config().escape_seconds):
+				draw_polyline(PackedVector2Array([Vector2(center.x-11,92),Vector2(center.x,82),Vector2(center.x+11,92)]),MINT,2,true)
+				label_at(Vector2(center.x+24,96),"Tab",MINT,13)
 		if presentation.armed():
 			draw_arc(center,7,0,TAU,24,MINT,1.5,true)
 			for side in [-1,1]:draw_line(center+Vector2(side*12,0),center+Vector2(side*20,0),MINT,1.5,true)
@@ -79,6 +103,8 @@ func _draw() -> void:
 					draw_colored_polygon(PackedVector2Array([edge+ray*10,edge-ray*6+ray.orthogonal()*5,edge-ray*6-ray.orthogonal()*5]),WARN)
 				continue
 			var cfg: Dictionary=FrontierSpaceCombat.config().enemy[enemy.kind]
+			if str(enemy.id)==presentation.locked_target:
+				draw_arc(at,14,0,TAU,32,MINT,2,true);missile_icon(at+Vector2(0,-35),MINT)
 			var radius:=clampf(v.camera.unproject_position(p+v.camera.global_basis.x*float(cfg.radius)).distance_to(at)+8,20,110)
 			for side in [-1,1]:
 				var x: float=radius*side

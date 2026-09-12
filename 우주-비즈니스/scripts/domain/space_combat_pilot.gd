@@ -15,11 +15,12 @@ static func launch(world: Dictionary,enemy: Dictionary,def: Dictionary) -> void:
 	var r:=FrontierSpaceCombat.record(world);var e: Dictionary=r.encounter
 	if e.projectiles.size()>=int(FrontierSpaceCombat.config().presentation.projectile_limit):return
 	var facing:=basis(FrontierSpaceCombat.point(enemy.direction))
-	var source:=FrontierSpaceCombat.point(enemy.position)+facing*Vector3(0,-1.3,-16)
+	var missile: bool=def.get("weapon","pulse")=="missile"
+	var source:=FrontierSpaceCombat.point(enemy.position)+facing*(Vector3(-11.3 if int(enemy.burst)%2==0 else 11.3,2.0,-7.94) if missile else Vector3(0,-1.3,-16))
 	var direction: Vector3=(FrontierSpaceCombat.point(enemy.aim)-source).normalized()
 	if facing.z.dot(direction)>-.6:return
-	FrontierSpaceCombat.emit(r,"enemy_shot",int(e.system),source,source+direction*float(def.range),enemy.id)
-	e.projectiles.append({"id":str(r.event_serial),"owner":str(enemy.id),"position":FrontierSpaceCombat.arr(source),"velocity":FrontierSpaceCombat.arr(direction*float(def.projectile_speed)),"life":float(def.range)/float(def.projectile_speed),"damage":float(def.damage),"radius":float(def.projectile_radius)})
+	FrontierSpaceCombat.emit(r,"missile_launch" if missile else "enemy_shot",int(e.system),source,source+direction*float(def.range),enemy.id)
+	e.projectiles.append({"id":str(r.event_serial),"owner":str(enemy.id),"side":"pirate","kind":"missile" if missile else "pulse","position":FrontierSpaceCombat.arr(source),"velocity":FrontierSpaceCombat.arr(direction*(110.0 if missile else float(def.projectile_speed))),"life":3.2 if missile else float(def.range)/float(def.projectile_speed),"age":0.0,"damage":float(def.damage),"radius":float(def.projectile_radius)})
 	enemy.recoil=1.0
 static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 	initialize(enemy)
@@ -53,7 +54,7 @@ static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 				phase(enemy,"strike",float(def.strike_seconds));enemy.windup=0.0
 		"strike":
 			desired=FrontierSpaceCombat.point(enemy.pass_end)
-			if enemy.kind=="interdictor":speed*=.12
+			if enemy.kind in ["interdictor","gunship"]:speed*=.12
 			if int(enemy.burst)<int(def.burst_count) and age>=float(enemy.burst)*float(def.burst_interval):
 				launch(world,enemy,def);enemy.burst+=1
 			if age>=duration:
@@ -80,25 +81,51 @@ static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 		if enemy.maneuver!="approach":phase(enemy,"approach",float(def.approach_seconds))
 	var facing:=FrontierSpaceCombat.point(enemy.direction)
 	var direction:=velocity.normalized() if velocity.length()>8 else (target-next).normalized()
-	if enemy.maneuver=="align" or (enemy.kind=="interdictor" and enemy.maneuver=="strike"):direction=(FrontierSpaceCombat.point(enemy.aim)-next).normalized()
+	if enemy.maneuver=="align" or (enemy.kind in ["interdictor","gunship"] and enemy.maneuver=="strike"):direction=(FrontierSpaceCombat.point(enemy.aim)-next).normalized()
 	if direction.length_squared()>.5:
 		var turn:=facing.cross(direction).dot(up)
 		enemy.roll=lerpf(float(enemy.roll),clampf(-turn*2.5,-.85,.85),1-exp(-dt*4))
 		enemy.direction=FrontierSpaceCombat.arr(facing.slerp(direction,1-exp(-dt*float(def.turn_speed))).normalized())
 	enemy.velocity=FrontierSpaceCombat.arr(velocity);enemy.throttle=clampf(velocity.length()/float(def.speed),.12,1)
 static func projectiles(world: Dictionary,delta: float) -> void:
-	var e: Dictionary=FrontierSpaceCombat.record(world).encounter
+	var r:=FrontierSpaceCombat.record(world);var e: Dictionary=r.encounter
 	var nav: Dictionary=FrontierSpaceCombat.local_world(world,e.carrier).crew.navigation
-	var target:=FrontierSpaceCombat.point(nav.position)
 	for bolt in e.projectiles.duplicate():
 		var start:=FrontierSpaceCombat.point(bolt.position);var velocity:=FrontierSpaceCombat.point(bolt.velocity)
-		var distance:=velocity.length()*delta;var ray:=velocity.normalized()
+		var missile: bool=bolt.get("kind","pulse")=="missile"
+		var friendly: bool=bolt.get("side","pirate")=="crew"
+		var ray:=velocity.normalized()
+		# Player missiles fan out before steering toward the locked enemy. Enemy rockets retain their readable straight firing lane.
+		if missile:
+			var cfg: Dictionary=FrontierSpaceCombat.config().missile
+			if friendly and float(bolt.get("age",0))>=float(cfg.fan_seconds):
+				for enemy in e.enemies:
+					if enemy.id!=bolt.get("target_id","") or float(enemy.hull)<=0:continue
+					var desired: Vector3=(FrontierSpaceCombat.point(enemy.position)-start).normalized()
+					var angle:=ray.angle_to(desired)
+					if angle>.001:ray=ray.slerp(desired,minf(1,float(cfg.turn_speed)*delta/angle)).normalized()
+					break
+			velocity=ray*move_toward(velocity.length(),float(cfg.speed) if friendly else 340.0,float(cfg.acceleration)*delta)
+			bolt.velocity=FrontierSpaceCombat.arr(velocity)
+		var distance:=velocity.length()*minf(delta,float(bolt.life))
 		var reach:=FrontierSpaceCombat.blocked_distance(world,int(e.system),start,ray,distance)
-		var offset:=target-start;var along:=clampf(offset.dot(ray),0,reach)
-		var radius:=float(bolt.radius)+(13.0 if e.carrier!="crew" else 22.0)
-		bolt.life-=delta
-		if (offset-ray*along).length()<radius:
-			FrontierSpaceCombat.damage_ship(world,e.carrier,float(bolt.damage),start)
+		var hit: Dictionary={};var hit_distance:=reach
+		var targets: Array=e.enemies if friendly else [{"id":e.carrier,"position":nav.position,"hull":nav.get("hull",100),"radius":13.0 if e.carrier!="crew" else 22.0}]
+		for candidate in targets:
+			if float(candidate.hull)<=0:continue
+			var radius:=float(bolt.radius)+float(FrontierSpaceCombat.config().enemy[candidate.kind].radius if friendly else candidate.radius)
+			var offset:=FrontierSpaceCombat.point(candidate.position)-start
+			var along:=offset.dot(ray);var side2:=offset.length_squared()-along*along
+			if side2>radius*radius or along+radius<0:continue
+			var contact:=maxf(0,along-sqrt(maxf(0,radius*radius-side2)))
+			if contact<=hit_distance:hit_distance=contact;hit=candidate
+		bolt.life=maxf(0,bolt.life-delta);bolt.age=float(bolt.get("age",0))+delta
+		var at:=start+ray*hit_distance
+		if not hit.is_empty():
+			if friendly:FrontierSpaceCombat.damage_enemy(world,hit,float(bolt.damage),start,at)
+			else:FrontierSpaceCombat.damage_ship(world,e.carrier,float(bolt.damage),start)
+		if not hit.is_empty() or bolt.life<=0 or reach<distance:
+			if missile:FrontierSpaceCombat.emit(r,"missile_blast",int(e.system),start,at,str(bolt.id))
+			elif hit.is_empty() and reach<distance:FrontierSpaceCombat.emit(r,"impact",int(e.system),start,at,"obstacle")
 			e.projectiles.erase(bolt)
-		elif bolt.life<=0 or reach<distance:e.projectiles.erase(bolt)
 		else:bolt.position=FrontierSpaceCombat.arr(start+velocity*delta)

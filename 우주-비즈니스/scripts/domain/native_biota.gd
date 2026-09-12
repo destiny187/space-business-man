@@ -3,6 +3,7 @@ extends RefCounted
 ## A species has one natural home planet, including within a stellar system.
 ## Assignment is complete at galaxy creation and independent of visit order.
 static var _validated: Dictionary={}
+const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 
 static func enabled(m: Dictionary) -> bool:
 	return m.settings.get("ecology_rules",{}).has("native_biota")
@@ -94,7 +95,8 @@ static func validate(m: Dictionary) -> String:
 	var value: Variant=m.get("native_biota")
 	if not value is Dictionary or value.get("version")!=1 or not value.get("planets") is Dictionary or not value.get("unassigned_species") is Array:return "행성 고유 생태 배정 형식 오류"
 	if value.get("catalog_hash")!=FrontierEcologyCatalog.biota_signature():return "8,000종 생태 카탈로그 버전이 달라 원본 저장을 보존합니다."
-	var signature:=FrontierUniverse.fingerprint({"biota":value,"settings":m.settings,"seed":m.seed,"id":m.id})
+	var owned:=WorldSnapshot._entry(m)
+	var signature: String="owned:"+str(owned.digest) if not owned.is_empty() else FrontierUniverse.fingerprint({"biota":value,"settings":m.settings,"seed":m.seed,"id":m.id})
 	if _validated.has(signature):return ""
 	var seen: Dictionary={};var limit:=int(m.settings.ecology_rules.native_biota.max_lineages_per_planet)
 	for id in value.planets:

@@ -94,14 +94,15 @@ def mount():
     F.box('Rear service hatch',(0,-1.85,.1),(1.8,.2,.6),'safety_orange',cradle)
     for x in [-.7,0,.7]:F.box('Breech cooling slots',(x,-.7,.85),(.28,1.1,.1),'structural_dark',cradle)
 
-records=[]
-for name,build,framing in [('pirate_raider',raider,58),('pirate_interdictor',interdictor,69),('expedition_pulse_mount',mount,12)]:
-    for distant in ([False,True] if name!='expedition_pulse_mount' else [False]):
-        bpy.ops.wm.read_factory_settings(use_empty=True);F.LOD=distant;build()
-        def frame(scene):scene.camera.data.ortho_scale=framing
-        bpy.app.handlers.render_pre.append(frame)
-        row=F.export(name+('_lod1' if distant else ''));row['revision']=2;row['motion']='Host-driven mechanical pivots; no baked skeletal clip'
-        records.append(row);bpy.app.handlers.render_pre.remove(frame)
-        bpy.ops.wm.open_mainfile(filepath=str(ROOT/row['source']));bpy.context.scene.camera.data.ortho_scale=framing
-        bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/row['source']))
-(F.SRC/'pirate_craft.json').write_text(json.dumps(records,indent=2)+'\n')
+if __name__ == '__main__':
+    records=[]
+    for name,build,framing in [('pirate_raider',raider,58),('pirate_interdictor',interdictor,69),('expedition_pulse_mount',mount,12)]:
+        for distant in ([False,True] if name!='expedition_pulse_mount' else [False]):
+            bpy.ops.wm.read_factory_settings(use_empty=True);F.LOD=distant;build()
+            def frame(scene):scene.camera.data.ortho_scale=framing
+            bpy.app.handlers.render_pre.append(frame)
+            row=F.export(name+('_lod1' if distant else ''));row['revision']=2;row['motion']='Host-driven mechanical pivots; no baked skeletal clip'
+            records.append(row);bpy.app.handlers.render_pre.remove(frame)
+            bpy.ops.wm.open_mainfile(filepath=str(ROOT/row['source']));bpy.context.scene.camera.data.ortho_scale=framing
+            bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/row['source']))
+    (F.SRC/'pirate_craft.json').write_text(json.dumps(records,indent=2)+'\n')

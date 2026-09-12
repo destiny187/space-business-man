@@ -37,8 +37,8 @@ func run() -> void:
 	check(FrontierSpaceCombat.valid(r),"new combat record valid")
 	var legacy:=world.duplicate(true);legacy.crew.erase("space_combat")
 	check(not FrontierSpaceCombat.tick(legacy,.1,{},authority.peers,0) and not legacy.crew.has("space_combat"),"old save does not gain ambushes")
-	check(FrontierSpaceCombat.begin(world,"crew","stellar_arrival"),"stellar arrival intercept creates two real enemy states")
-	check(r.encounter.enemies.size()==2 and world.crew.navigation.mode=="idle","combat grants manual control")
+	check(FrontierSpaceCombat.begin(world,"crew","stellar_arrival"),"stellar arrival intercept creates the combat formation")
+	check(r.encounter.enemies.size()==3 and world.crew.navigation.mode=="idle","combat grants manual control")
 	check(not FrontierSpaceCombat.guard(world,actor,"land",{}).is_empty(),"cannot land through active interception")
 	step(8.2);check(r.encounter.phase=="combat","host warning completes after ready input")
 	var enemy: Dictionary=r.encounter.enemies[0]
@@ -59,7 +59,10 @@ func run() -> void:
 	check(enemy.hull==0 and r.wrecks.size()==1,"destroyed craft leaves one physical salvage record")
 	check(FrontierSpaceCombat.valid(r),"combat and wreck state validate")
 	world.crew.navigation.position=FrontierSpaceCombat.arr(FrontierSpaceCombat.point(r.encounter.origin)+Vector3(2500,0,0));step(4.2)
-	check(r.encounter.phase=="escaped","escape without killing interdictor")
+	check(r.encounter.phase=="combat" and FrontierSpaceCombat.can_jump(world),"distance opens departure without ending pursuit")
+	for remaining in r.encounter.enemies:remaining.hull=0
+	step(.1)
+	check(r.encounter.phase=="victory","all enemies must be defeated to salvage in the same system")
 	check(r.cooldown>590 and r.safe_journeys==2,"both routes share cooldown")
 	var w: Dictionary=r.wrecks[0];world.crew.navigation.position=w.position.duplicate();world.crew.navigation.speed=0
 	var iron:=int(world.crew.get("cargo",{}).get("iron",0))

@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS caller manifest remains independently mutable
+PASS nested generation rules are frozen
+PASS draft shares immutable generation data
+PASS draft mutation cannot change live progress
+PASS cached encoding preserves the complete JSON state
+PASS shared draft passes normal domain validation
+PASS cached planet preserves generated geology, ecology and corporate activity
+PASS editing a returned planet cannot corrupt the shared definition
+PASS cached orbit preserves the exact current-time position
+PASS mutable generation changes bypass the session cache
+PASS native validation cache cannot approve modified mutable data
+PASS mutable replacement cannot reuse a cached hash
+PASS unregistered data keeps deep-copy isolation
+PASS session adopts immutable manifest and saves
+PASS acknowledged transaction is already durable
+PASS failed save leaves live state and receipts unchanged
+PASS immutable checkpoint queued
+PASS checkpoint owns mutable progress despite manifest sharing
+COPY_30_USEC original=197863 shared=325 manifest_bytes=807113
+PASS cache eviction safely falls back to independent copy
+WORLD SNAPSHOT failures 0

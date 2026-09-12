@@ -11,8 +11,8 @@
   "resume_seconds": 5.0,
   "combat_seconds": 100.0,
   "pursuit_seconds": 32.0,
-  "escape_radius": 1150.0,
-  "escape_seconds": 4.0,
+  "escape_radius": 900.0,
+  "escape_seconds": 2.5,
   "combat_speed": 230.0,
   "recovery_seconds": 6.0,
   "recovery_hull": 35.0,
@@ -38,7 +38,7 @@
       "hull": 100.0,
       "shield": 32.0,
       "radius": 17.0,
-      "speed": 190,
+      "speed": 240,
       "orbit": 270.0,
       "damage": 14,
       "interval": 2.8,
@@ -59,7 +59,8 @@
       "burst_interval": 0.24,
       "projectile_speed": 390,
       "projectile_radius": 2.5,
-      "pass_clearance": 85
+      "pass_clearance": 85,
+      "weapon": "pulse"
     },
     "interdictor": {
       "name": "해적 교란선",
@@ -90,6 +91,37 @@
       "projectile_speed": 285,
       "projectile_radius": 5,
       "pass_clearance": 110
+    },
+    "gunship": {
+      "name": "해적 미사일함",
+      "model": "res://assets/models/ships/pirate_gunship.glb",
+      "lod": "res://assets/models/ships/pirate_gunship_lod1.glb",
+      "hull": 170.0,
+      "shield": 65.0,
+      "radius": 28.0,
+      "speed": 165,
+      "orbit": 430.0,
+      "damage": 28,
+      "interval": 4.5,
+      "windup": 1.6,
+      "range": 650.0,
+      "loot": {
+        "iron": 12,
+        "copper": 8
+      },
+      "engagement_distance": 360,
+      "flank_distance": 90,
+      "acceleration": 115,
+      "turn_speed": 2.8,
+      "approach_seconds": 3.2,
+      "strike_seconds": 1.0,
+      "break_seconds": 2.4,
+      "burst_count": 2,
+      "burst_interval": 0.55,
+      "projectile_speed": 340,
+      "projectile_radius": 2.5,
+      "pass_clearance": 110,
+      "weapon": "missile"
     }
   },
   "audio": {
@@ -101,7 +133,9 @@
     "escaped": "ui_discovery",
     "salvage": "sfx_pickup_resource",
     "recover": "sfx_vessel_brake",
-    "enemy_shot": "sfx_combat_pulse"
+    "enemy_shot": "sfx_combat_pulse",
+    "missile_launch": "sfx_ship_missile_launch",
+    "missile_blast": "sfx_ship_missile_blast"
   },
   "radio": {
     "seconds": 4.0,
@@ -113,6 +147,10 @@
       "radio_withdraw": {
         "receiver": "해적 편대",
         "text": "추격 중지. 전 기체 복귀."
+      },
+      "radio_jump_ready": {
+        "receiver": "승무원",
+        "text": "추격권을 벗어났어. 다른 항성계로 출발할 수 있어."
       }
     }
   },
@@ -132,7 +170,54 @@
     "projectile_limit": 24,
     "corpse_seconds": 1.1,
     "debris_seconds": 3.2,
-    "explosion": {"size": 30.0, "flash_seconds": 0.16, "plasma_seconds": 0.62, "plumes": 5, "streaks": 22, "debris_limit": 16, "debris_seconds": 3.2},
+    "explosion": {
+      "size": 30.0,
+      "flash_seconds": 0.16,
+      "plasma_seconds": 0.62,
+      "plumes": 5,
+      "streaks": 22,
+      "debris_limit": 16,
+      "debris_seconds": 3.2
+    },
     "camera_pitch": -0.06
+  },
+  "formation": [
+    "raider",
+    "gunship",
+    "raider"
+  ],
+  "escape_separation": 650.0,
+  "escape_relock_distance": 480.0,
+  "combat_boost_drain": 10.0,
+  "missile": {
+    "model": "res://assets/models/ships/ship_missile.glb",
+    "mount": "res://assets/models/ships/expedition_missile_mount.glb",
+    "cooldown": 4.5,
+    "damage": 42.0,
+    "initial_speed": 110.0,
+    "speed": 420.0,
+    "acceleration": 330.0,
+    "life": 4.5,
+    "radius": 2.5,
+    "range": 1150.0,
+    "muzzle": [
+      -3.45,
+      4.55,
+      -1.8
+    ],
+    "mount_position": [
+      0,
+      3.8,
+      3.6
+    ],
+    "mount_scale": 1.5,
+    "blast_size": 15.0,
+    "trail_interval": 0.035,
+    "lock_dot": 0.985,
+    "salvo_count": 2,
+    "fan_seconds": 0.24,
+    "fan_side": 0.72,
+    "fan_up": 0.32,
+    "turn_speed": 2.6
   }
 }

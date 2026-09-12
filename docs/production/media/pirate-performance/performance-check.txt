@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS host starts with immutable generation data
+PASS cached collision includes the full current obstacle set
+PASS orbital movement invalidates old collision positions
+PASS changing system and forecast horizon preserves departure safety
+PASS mutable world cannot reuse an immutable world's collision cache
+PASS encounter starts
+PASS routine combat checkpoint uses the bounded worker path
+PASS confirmed combat outcome retains a synchronous durable save
+PASS checkpoint submission failure stops the host explicitly
+PIRATE_PERFORMANCE_CHECKS 9 FAILURES 0

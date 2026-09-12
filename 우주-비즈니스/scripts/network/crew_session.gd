@@ -64,6 +64,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 		state=FrontierUniverse.new_world(int(Crypto.new().generate_random_bytes(4).decode_u32(0)&0x7fffffff))
 	authority=FrontierCrewAuthority.new()
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
+	authority.save_flight_checkpoint=store.begin_checkpoint
 	offline=solo
 	connection_kind="local_relay" if transport is FrontierCrewRelayPeer else ("solo" if solo else "direct")
 	if transport==null:invite_code=""
@@ -77,7 +78,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 		enet=direct;multiplayer.multiplayer_peer=enet
 	peer_snapshot_deltas.clear()
 	hosting=true;active=true
-	session_id=authority.session_id;world_id=authority.world.crew.world_id;manifest=authority.world.manifest.duplicate(true)
+	session_id=authority.session_id;world_id=authority.world.crew.world_id;manifest=authority.world.manifest
 	next_sequence=int(authority.world.crew.members[profile.data.character.character_id].last_sequence)+1
 	_publish();notice.emit("세계를 열었습니다. 준비 후 시작하세요." if offline else "대기실을 열었습니다. 참가자 준비 후 호스트가 시작합니다.");return true
 func join(local_profile: FrontierPlayerProfile,address: String,port: int=24560) -> bool:
@@ -201,7 +202,7 @@ func _admitted(value: Dictionary) -> void:
 	if hosting or value.get("session_id")!=session_id or value.get("world_id")!=world_id:return
 	if not _valid_snapshot(value.get("snapshot")):notice.emit("초기 세계 상태가 올바르지 않습니다.");enet.close();return
 	if not _valid_manifest(value.get("manifest")) or value.manifest.id!=value.snapshot.get("galaxy_id"):notice.emit("은하 생성 정의 오류");enet.close();return
-	manifest=value.manifest.duplicate(true)
+	manifest=preload("res://scripts/persistence/world_snapshot.gd").own_manifest(value.manifest)
 	if not value.get("token") is String or not profile.remember(world_id,value.token):notice.emit(profile.error);enet.close();return
 	latest=value.snapshot;snapshot_received.emit(latest)
 	_acknowledge.rpc_id(1,session_id)

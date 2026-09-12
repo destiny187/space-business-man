@@ -28,11 +28,20 @@ var preloaded: Dictionary={}
 var radio: Dictionary={}
 var radio_left:=0.0
 var warned_encounters: Dictionary={}
+var locked_target: String=""
+var missile_mount: Node3D
+var missile_parts: Array=[]
+var missile_flash:=0.0
+var rockets: Dictionary={}
+var missile_trails:=0
+var missile_blasts:=0
 func configure(owner_view: FrontierCrewFlightView) -> void:
 	view=owner_view
 	for cfg in FrontierSpaceCombat.config().enemy.values():
 		for path in [cfg.model,cfg.lod]:preloaded[path]=load(path)
 	preloaded["mount"]=load("res://assets/models/ships/expedition_pulse_mount.glb")
+	preloaded["missile_mount"]=load(FrontierSpaceCombat.config().missile.mount)
+	preloaded["missile"]=load(FrontierSpaceCombat.config().missile.model)
 	preloaded["pod"]=load("res://assets/models/ships/lost_freight_pod.glb")
 	fx=FrontierSpaceCombatEffects.new();add_child(fx)
 	key_light=DirectionalLight3D.new();key_light.light_cull_mask=COMBAT_LAYER;key_light.light_color=Color("e1edff");add_child(key_light)
@@ -57,13 +66,18 @@ func suspend() -> void:
 		if player is AudioStreamPlayer or player is AudioStreamPlayer3D:player.stop()
 	last_serial=int(data().get("event_serial",0));fx.clear();key_light.light_energy=0;rim_light.light_energy=0;light_blend=0
 	if is_instance_valid(mount):mount.hide()
+	if is_instance_valid(missile_mount):missile_mount.hide()
+	for rocket in rockets.values():rocket.node.queue_free()
+	rockets.clear()
 func update(delta: float,paused: bool) -> void:
 	blocked=paused;hit_flash=maxf(0,hit_flash-delta);shot_flash=maxf(0,shot_flash-delta);hit_confirm=maxf(0,hit_confirm-delta)
+	missile_flash=maxf(0,missile_flash-delta)
 	if paused:suspend();return
 	radio_left=maxf(0,radio_left-delta)
 	if radio_left<=0 or not relevant():radio={}
 	show();hud.visible=view.exterior and not data().is_empty()
-	visible_enemies=[];visible_wrecks=[];selected_wreck=""
+	visible_enemies=[];visible_wrecks=[];selected_wreck="";locked_target=""
+	if armed():locked_target=str(FrontierSpaceCombat.missile_target(encounter(),view.camera.global_position,-view.camera.global_basis.z).get("id",""))
 	if relevant() and encounter().phase=="warning" and encounter().carrier==id() and not warned_encounters.has(encounter().id):
 		warned_encounters[encounter().id]=true
 		audio.play(FrontierSpaceCombat.config().audio.warning)
@@ -79,6 +93,13 @@ func update(delta: float,paused: bool) -> void:
 			mount=preloaded.mount.instantiate();FrontierInkStyle.apply(mount,cache);view.ship.add_child(mount);mount.position=Vector3(0,3.1,3);mount.scale=Vector3.ONE*2
 			mount_parts=parts(mount)
 		mount.visible=view.exterior
+		if not is_instance_valid(missile_mount):
+			missile_mount=preloaded.missile_mount.instantiate();FrontierInkStyle.apply(missile_mount,cache);view.ship.add_child(missile_mount)
+			missile_mount.position=FrontierSpaceCombat.point(FrontierSpaceCombat.config().missile.mount_position)
+			missile_mount.scale=Vector3.ONE*float(FrontierSpaceCombat.config().missile.mount_scale);missile_parts=parts(missile_mount)
+		missile_mount.visible=view.exterior
+		for part in missile_parts:
+			if str(part.node.name).begins_with("Anim_LaunchDoor_"):part.node.rotation.x=lerpf(part.node.rotation.x,-1.5 if missile_flash>0 else 0.0,1-exp(-delta*15))
 		for part in mount_parts:
 			if str(part.node.name).begins_with("Anim_Barrel_"):part.node.position=part.rest.origin+Vector3(0,0,shot_flash*5)
 			if shot_target!=Vector3.ZERO:
@@ -86,6 +107,7 @@ func update(delta: float,paused: bool) -> void:
 				if part.node.name=="Anim_Yaw":part.node.rotation.y=lerpf(part.node.rotation.y,clampf(atan2(-aim.x,-aim.z),-.36,.36),1-exp(-delta*18))
 				if part.node.name=="Anim_Elevation":part.node.rotation.x=lerpf(part.node.rotation.x,clampf(asin(aim.y),-.3,.4),1-exp(-delta*18))
 	elif is_instance_valid(mount):mount.queue_free();mount=null;mount_parts=[]
+	if id()!="crew" and is_instance_valid(missile_mount):missile_mount.queue_free();missile_mount=null;missile_parts=[]
 	if relevant():
 		var e:=encounter()
 		for enemy in e.enemies:
@@ -107,8 +129,10 @@ func update(delta: float,paused: bool) -> void:
 			animate(row,enemy,delta)
 			visible_enemies.append(enemy)
 		for bolt in e.get("projectiles",[]):
+			if bolt.get("kind","pulse")=="missile":continue
 			var p:=FrontierSpaceCombat.point(bolt.position);var velocity:=FrontierSpaceCombat.point(bolt.velocity)
 			fx.line(p-velocity.normalized()*18,p,Color("ff9e68"),float(bolt.radius)*.45,delta*1.2)
+	update_rockets(delta)
 	for wreck in data().get("wrecks",[]):
 		var dying_key: String="enemy:"+str(wreck.id).replace("/",":")
 		if models.has(dying_key) and models[dying_key].death_age>0 and not models[dying_key].destroyed:continue
@@ -132,7 +156,13 @@ func update(delta: float,paused: bool) -> void:
 		var source:=FrontierSpaceCombat.point(event.origin);var target:=FrontierSpaceCombat.point(event.target)
 		if source.distance_to(view.ship.position)>4500 and target.distance_to(view.ship.position)>4500:continue
 		if FrontierSpaceCombat.config().get("radio",{}).get("lines",{}).has(event.kind):receive_radio(event)
-		if event.kind in ["shot","enemy_shot"]:
+		if event.kind=="missile_blast":
+			fx.missile_burst(target,source,int(event.serial));missile_blasts+=1
+			if rockets.has(str(event.id)):rockets[str(event.id)].node.queue_free();rockets.erase(str(event.id))
+		elif event.kind=="missile_launch":
+			if event.id==id():missile_flash=.85
+			fx.blast(source,Vector2(9,5),.16,(target-source).normalized()*20,1,float(event.serial))
+		elif event.kind in ["shot","enemy_shot"]:
 			var muzzle:=source
 			if event.kind=="shot" and event.id==id() and is_instance_valid(mount):
 				shot_flash=.12;shot_target=target
@@ -165,16 +195,20 @@ func update(delta: float,paused: bool) -> void:
 			if shielded or event.kind=="break":fx.shield(center,source,radius,event.kind=="break",shield_anchor)
 			else:fx.impact(target,source,int(event.serial))
 		var cue: String=FrontierSpaceCombat.config().audio.get("enemy_shot" if event.kind=="enemy_shot" else event.kind,"")
-		if not cue.is_empty() and event.kind not in ["destroy","warning"]:sound(cue,target if event.kind in ["impact","break"] else source,event.id==id(),.85 if event.kind=="enemy_shot" else 1.0)
+		if not cue.is_empty() and event.kind not in ["destroy","warning"]:sound(cue,target if event.kind in ["impact","break","missile_blast"] else source,event.id==id(),1.3 if event.kind=="missile_launch" else (.85 if event.kind=="enemy_shot" else 1.0))
 	last_serial=event_serial
 	var operation: Dictionary=data().get("ships",{}).get(id(),{}).get("operation",{})
 	if not operation.is_empty() and operation.kind=="space_salvage":
 		for w in visible_wrecks:
 			if w.id==operation.id:fx.line(view.ship.position+Vector3.UP*4,FrontierSpaceCombat.point(w.position),Color("83d9c5"),.25,delta*1.2);break
 	fx.step(delta)
+	hud.refresh_meters()
 	hud.queue_redraw()
 func receive_radio(event: Dictionary) -> void:
 	if not relevant():return
+	if event.kind=="radio_jump_ready":
+		var line: Dictionary=FrontierSpaceCombat.config().radio.lines[event.kind]
+		radio={"sender":"원정선 항법","receiver":line.receiver,"text":line.text};radio_left=float(FrontierSpaceCombat.config().radio.seconds);return
 	for enemy in encounter().enemies:
 		if str(enemy.id)!=str(event.id) or float(enemy.hull)<=0:continue
 		var cfg: Dictionary=FrontierSpaceCombat.config().radio
@@ -214,6 +248,7 @@ func animate(row: Dictionary,enemy: Dictionary,delta: float) -> void:
 		elif name.begins_with("Anim_Nozzle_"):rotation.y=-float(enemy.get("roll",0))*.28;rotation.x=.15 if maneuver=="break" else 0
 		elif name.begins_with("Anim_Jammer_"):rotation.z=side*(.08 if maneuver in ["align","strike"] else .65)
 		elif name.begins_with("Anim_Vane_"):rotation.x=-.25-charge*.45 if maneuver=="align" else .15
+		elif name.begins_with("Anim_LaunchDoor_"):rotation.x=-1.5 if maneuver in ["align","strike"] else 0.0
 		elif name.begins_with("Anim_Barrel_"):node.position=part.rest.origin+Vector3(0,0,float(enemy.get("recoil",0))*.85)
 		node.rotation=node.rotation.lerp(rotation,1-exp(-delta*10))
 	for jet in row.jets:
@@ -229,7 +264,29 @@ func animate(row: Dictionary,enemy: Dictionary,delta: float) -> void:
 	row.charge+=delta
 	if charge>0 and row.charge>.06:
 		row.charge=0.0
-		for socket in row.near.find_children("Socket_Muzzle_*","Node3D",true,false):fx.spark(socket.global_position,Color("ffb268"),.4+charge*1.4,.085)
+		for socket in row.near.find_children("Socket_Missile_*" if enemy.kind=="gunship" else "Socket_Muzzle_*","Node3D",true,false):fx.spark(socket.global_position,Color("ffb268"),.4+charge*1.4,.085)
+func update_rockets(delta: float) -> void:
+	var active: Dictionary={}
+	if relevant():
+		for bolt in encounter().get("projectiles",[]):
+			if bolt.get("kind","pulse")!="missile":continue
+			var key:=str(bolt.id);active[key]=true
+			var position:=FrontierSpaceCombat.point(bolt.position);var velocity:=FrontierSpaceCombat.point(bolt.velocity)
+			if not rockets.has(key):
+				var node: Node3D=preloaded.missile.instantiate();add_child(node);FrontierInkStyle.apply(node,cache);combat_layer(node)
+				node.position=position
+				rockets[key]={"node":node,"snapshot":position,"clock":0.0,"trail":0.0}
+			var row: Dictionary=rockets[key]
+			if row.snapshot!=position:row.snapshot=position;row.clock=0.0
+			row.clock=minf(.10,float(row.clock)+delta)
+			row.node.position=position+velocity*row.clock
+			row.node.basis=FrontierSpaceCombatPilot.basis(velocity)
+			row.trail+=delta
+			if row.trail>=float(FrontierSpaceCombat.config().missile.trail_interval):
+				row.trail=0.0;missile_trails+=1
+				fx.rocket_trail(row.node.position-velocity.normalized()*2.4,velocity,missile_trails)
+	for key in rockets.keys():
+		if not active.has(key):rockets[key].node.queue_free();rockets.erase(key)
 func dying(row: Dictionary,enemy: Dictionary,delta: float) -> void:
 	if is_instance_valid(row.get("charge_voice")):row.charge_voice.stop()
 	row.death_age+=delta
