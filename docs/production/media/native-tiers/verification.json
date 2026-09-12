@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-12",
+  "rules": {
+    "checks": 16,
+    "failures": 0
+  },
+  "play": {
+    "checks": 14,
+    "failures": 0,
+    "engine": "Godot 4.7.2",
+    "renderer": "Forward+ / Metal",
+    "planet_tier": 4,
+    "planet_ordinal": 311384,
+    "seed": 71503,
+    "form_id": "biota_saddle_sails_26",
+    "health": 360,
+    "remaining_health": 333,
+    "damage": 35.52,
+    "charge_speed": 15.6,
+    "charge_distance": 11.07
+  },
+  "scope": "T1/T5 comparison uses isolated profiles. Actual expedition verification is natural T4 charge only. Six clients and long-term balance are unverified.",
+  "sha256": {
+    "우주-비즈니스/data/wildlife_combat.json": "8994d3a41329d890467dbc76280983de957ebe0e51f9642cc4a64dc2db97e8b7",
+    "우주-비즈니스/scripts/domain/wildlife_combat.gd": "744bc15cade16183a0be27d6a4909a819917ced9f10d72bc4726c07c0dbc948e",
+    "우주-비즈니스/scripts/world/ecology_placement.gd": "3485dd692cd219391977615be4d7669fd2ae95291293ae151de5187ccdf55b55",
+    "우주-비즈니스/tests/check_wildlife_tiers.gd": "044c76900ecc2b3c11cef7f92668a9b501937136145739a81e76fb9705443865",
+    "우주-비즈니스/scripts/ui/field_hud.gd": "12eaad73ca733835b715c294040bd3a0136f3fb52247f7d24c04aa98d677789a"
+  }
+}

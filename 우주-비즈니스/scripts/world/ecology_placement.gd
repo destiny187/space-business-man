@@ -26,7 +26,7 @@ static func candidates(body: Dictionary,record: Dictionary,center: Vector3) -> A
 						var point:=Vector3((float(x)+.18+.64*float(FrontierUniverse.derive(seed_value,"x")%1000)/1000.0)*span,0,(float(z)+.18+.64*float(FrontierUniverse.derive(seed_value,"z")%1000)/1000.0)*span)
 						if Vector2(point.x,point.z).length()<13 or Vector2(point.x+12,point.z-12).length()<24:continue # clear lander hull, ramp and transport depot
 						if Vector2(point.x-center.x,point.z-center.z).length()>float(cfg.active_radius):continue
-						result.append({"id":id,"form_id":chosen.form_id,"look_id":chosen.look_id,"point":point,"layer":layer,"yaw":float(FrontierUniverse.derive(seed_value,"yaw")%1000)/1000.0*TAU,"introduced":false,"terrestrial":body.has("ecology_rules")})
+						result.append({"id":id,"form_id":chosen.form_id,"look_id":chosen.look_id,"point":point,"layer":layer,"yaw":float(FrontierUniverse.derive(seed_value,"yaw")%1000)/1000.0*TAU,"introduced":false,"terrestrial":body.has("ecology_rules"),"combat_tier":int(body.get("planet_tier",1))})
 	for row in record.introductions.values():
 		var point:=Vector3(row.position[0],row.position[1],row.position[2])
 		if point.distance_to(center)<=float(cfg.active_radius):result.append({"id":row.id,"form_id":row.form_id,"look_id":row.look_id,"point":point,"layer":row.layer,"yaw":0.0,"introduced":true})

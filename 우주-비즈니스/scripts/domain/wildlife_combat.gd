@@ -27,6 +27,16 @@ static func profile(row: Dictionary) -> Dictionary:
 	result.radius=maxf(.18,minf(float(bounds.max[0])-float(bounds.min[0]),float(bounds.max[2])-float(bounds.min[2]))*scale_value*.32)
 	result.attack_front=maxf(0,float(bounds.max[2]))*scale_value
 	result.reach+=minf(1.6,maxf(absf(float(bounds.min[2])),absf(float(bounds.max[2])))*scale_value*.35)
+	result.tier=clampi(int(row.get("combat_tier",1)),1,5) if Wildlife.eligible(form,row) else 1
+	var tier_index: int=result.tier-1
+	var scaling: Dictionary=config().tier_scaling
+	result.health=roundi(float(result.health)*float(scaling.health[tier_index]))
+	if result.has("damage"):result.damage=float(result.damage)*float(scaling.damage[tier_index])
+	var modifiers: Dictionary=scaling.behaviors.get(result.get("behavior","flee"),{})
+	for stat in modifiers:
+		if result.has(stat):result[stat]=float(result[stat])*float(modifiers[stat][tier_index])
+	# The preview distance must also be reachable within the committed movement time.
+	if result.get("behavior","")=="charge":result.active=float(result.charge_distance)/float(result.charge_speed)
 	return result
 static func health(row: Dictionary) -> int:return int(profile(row).health)
 static func key(body_id: String,row: Dictionary) -> String:return body_id+"/"+str(row.id)
@@ -38,6 +48,7 @@ static func ensure(crew: Dictionary,body_id: String,row: Dictionary) -> Dictiona
 		if crew.wildlife_encounters.size()>=int(config().maximum_encounters):return {}
 		var at: Vector3=row.point;var home: Vector3=row.get("home_point",at)
 		crew.wildlife_encounters[id]={"body_id":body_id,"encounter_id":row.id,"form_id":row.form_id,"look_id":row.look_id,"home":FrontierExplorationIncidents.array(home),"position":FrontierExplorationIncidents.array(at),"yaw":wrapf(float(row.get("behavior_yaw",row.yaw)),-PI,PI),"phase":"calm","time":0.0,"target":"","provoked":false,"aim":[0,0,-1],"struck":false,"serial":0,"hurt_serial":0,"flinch":0.0,"lost":0.0}
+	crew.wildlife_encounters[id].combat_tier=clampi(int(row.get("combat_tier",1)),1,5)
 	return crew.wildlife_encounters[id]
 static func set_phase(row: Dictionary,value: String) -> void:
 	row.phase=value;row.time=0.0;row.serial+=1;row.erase("attack")
@@ -86,6 +97,7 @@ static func valid(crew: Dictionary) -> bool:
 		for field_name in ["time","serial","hurt_serial","flinch","lost"]:
 			if not FrontierUniverse._finite(r.get(field_name),0,9007199254740000):return false
 		if r.has("attack") and not Attacks.valid(r.attack,crew):return false
+		if r.has("combat_tier") and not FrontierExpeditionBusiness.integer(r.combat_tier,1,5):return false
 		if r.has("air_height") and not FrontierUniverse._finite(r.air_height,0,4):return false
 		for extra in ["cue_serial"]:
 			if r.has(extra) and not FrontierUniverse._finite(r[extra],0,9007199254740000):return false
@@ -155,6 +167,7 @@ func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callab
 			live=ensure(world.crew,row.body_id,row)
 			if live.is_empty():continue
 			live.target=chosen;set_phase(live,"warning")
+		live.combat_tier=info.tier
 		changed=true
 		_step(world,row,live,info,nearby,field,delta,obstacle)
 	for id in world.crew.get("wildlife_encounters",{}).keys():

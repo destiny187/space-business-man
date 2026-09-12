@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS natural native home landing 
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:311384","ordinal":311384,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:311384","combat_tier":4,"form_id":"biota_saddle_sails_26","home_point":"(69.7392, 2.475203, 42.312)","id":"surface:2:1:1","introduced":false,"layer":"surface","look_id":"biota_saddle_sails_26_p03_s00","point":"(69.7392, 2.475203, 42.312)","status":"active","terrestrial":true,"yaw":2.14884937505542}}
+PASS native planet fixture
+NATIVE_TIER_PLANET 4 galaxy:galaxy-v3:71503:planet:311384
+PASS tier play fixture saved
+PASS tier field ready
+PASS tier native model loaded
+PASS render and host share planet-scaled attack profile
+PASS ground telegraph matches increased charge distance
+PASS T4 HUD shows scaled health without tactical text
+PASS natural T4 charge moves in real expedition
+PASS natural T4 strike applies scaled damage
+PASS equipped firearm subtracts from scaled native health
+PASS scaled attack retains native sound cues
+PASS scaled encounter saved
+PASS actual T4 damage and tier reload
+TIER_PLAY_STATS {"charge_distance":11.07,"charge_speed":15.6,"damage":35.52,"health":360,"remaining":333,"tier":4}
+NATIVE_TIER_PLAY 14 FAILURES 0

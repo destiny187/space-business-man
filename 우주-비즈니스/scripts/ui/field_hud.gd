@@ -115,18 +115,6 @@ func _process(delta: float) -> void:
 		if form.category=="animal" and tool.get("kind")=="pulse":
 			target_bar.show();target_bar.max_value=FrontierWildlifeCombat.health(app.surface_target);target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
 			target_action.text="클릭  발사" if target_bar.value>0 else "무력화"
-			var behavior:=FrontierWildlifeCombat.state(app.session.latest.crew,app.surface_world.body.id,app.surface_target)
-			if behavior.get("phase","")=="warning":target_action.text="경계 중  거리 확보";target_action.modulate=Color("f0ae75")
-			elif behavior.get("phase","")=="attack":
-				var info:=FrontierWildlifeCombat.profile(app.surface_target)
-				var clock:=float(behavior.time)
-				var mode: String=info.get("behavior","melee")
-				if clock>=float(info.windup)+float(info.active):
-					target_action.text="빈틈  반격 기회";target_action.modulate=Color("83d9c8")
-				else:
-					target_action.text={"charge":"돌진  옆으로 회피","leap":"도약  착지점 이탈","shockwave":"내려치기  범위 이탈·점프","double_sweep":"두 번 베기  거리 유지"}.get(mode,"공격 준비  거리 확보")
-					target_action.modulate=Color("f0ae75")
-			elif behavior.get("phase","")=="flee":target_action.text="도주 중"
 	elif not target.is_empty():
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		var row: Dictionary=site.get("buildings",{}).get(target.id,{})
