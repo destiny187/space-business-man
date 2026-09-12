@@ -2,6 +2,10 @@ extends Node3D
 ## Presentation only: attack events identify visual timing, never deal damage.
 signal attack_cue(phase: String)
 const GroundMotion=preload("res://scripts/actors/creatures/ground_locomotion.gd")
+const RemodelRegistry=preload("res://scripts/actors/creatures/remodel_registry.gd")
+const RemodelMotion=preload("res://scripts/actors/creatures/remodel_motion.gd")
+var remodel: Dictionary={}
+var remodel_colors: Dictionary={}
 var ground_motion: RefCounted
 var visual_root: Node3D
 const Ink = preload("res://scripts/actors/ink_style.gd")
@@ -49,8 +53,8 @@ var mouth_marker: Node3D
 var mouth_markers: Array[Node3D]=[]
 var visibility_notifier: VisibleOnScreenNotifier3D
 
-func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -> void:
-	definition=form;combat_override=false;combat_pattern="none";combat_phase="";combat_clock=0.0
+func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[],allow_remodel: bool=true) -> void:
+	definition=form;remodel=RemodelRegistry.entry(form) if allow_remodel else {};remodel_colors.clear();combat_override=false;combat_pattern="none";combat_phase="";combat_clock=0.0
 	deferred_far_scene=null;deferred_material_cache.clear();visible_model=-1;desired_distant=false
 	if attack_timing.is_empty():attack_timing=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/attack_presentation.json")).timing_seconds
 	var timing: Dictionary=attack_timing
@@ -64,7 +68,7 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -
 	attack_phase=""
 	for child in get_children(): child.free()
 	visual_root=Node3D.new();visual_root.name="LocomotionVisual";add_child(visual_root)
-	ground_motion=GroundMotion.new()
+	ground_motion=GroundMotion.new() if remodel.is_empty() else RemodelMotion.new()
 	models.clear()
 	joints.clear()
 	anatomical_skeletons.clear()
@@ -75,10 +79,10 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -
 	var cache: Dictionary={}
 	var lod_names: Array=["near","far"] if load_far and not defer_far else ["near"]
 	for lod in lod_names:
-		var scene: PackedScene=ready_scenes[0 if lod=="near" else 1] if ready_scenes.size()>=(1 if lod=="near" else 2) else load("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"))
+		var scene: PackedScene=ready_scenes[0 if lod=="near" else 1] if ready_scenes.size()>=(1 if lod=="near" else 2) else load("res://"+str((remodel if not remodel.is_empty() else form).lods[lod].path).trim_prefix("우주-비즈니스/"))
 		_install_model(scene,cache)
 	if load_far and defer_far:
-		deferred_far_scene=ready_scenes[1] if ready_scenes.size()>1 else load("res://"+str(form.lods.far.path).trim_prefix("우주-비즈니스/"))
+		deferred_far_scene=ready_scenes[1] if ready_scenes.size()>1 else load("res://"+str((remodel if not remodel.is_empty() else form).lods.far.path).trim_prefix("우주-비즈니스/"))
 		deferred_material_cache=cache
 	for mat in cache.values():
 		var slot: String=mat.resource_name.trim_prefix("Bio_")
@@ -107,6 +111,7 @@ func _install_model(scene: PackedScene,cache: Dictionary) -> void:
 func finish_lods() -> bool:
 	if deferred_far_scene==null:return false
 	_install_model(deferred_far_scene,deferred_material_cache)
+	if not remodel.is_empty():ground_motion.install(models.size()-1)
 	deferred_far_scene=null
 	material_slots.clear()
 	for mat in deferred_material_cache.values():
@@ -125,12 +130,27 @@ func apply_appearance(look: Dictionary) -> void:
 		var key: String=["main","secondary","accent"][i]
 		# Palette numbers are Blender's linear base-color values; source_color expects sRGB.
 		for mat in material_slots.get(key,[]): mat.set_shader_parameter("base_color",Color(colors[i]).linear_to_srgb())
+	if not remodel.is_empty():_remodel_palette(look)
 	base_scale=float(look.get("scale",1.0))
 	for i in range(models.size()):
 		var model: Node3D=models[i]
 		model.scale=Vector3.ONE*base_scale
 		var lod: String="near" if i==0 else "far"
-		model.position.y=-float(definition.get("geometry",{}).get(lod,{}).get("floor_y",0))*base_scale
+		var floor_y: float=remodel.lods[lod].min[1] if not remodel.is_empty() else definition.get("geometry",{}).get(lod,{}).get("floor_y",0)
+		model.position.y=-floor_y*base_scale
+
+func _remodel_palette(look: Dictionary) -> void:
+	var colors: Array=look.get("palette",definition.palette)
+	for materials in material_slots.values():
+		for mat in materials:
+			var key:=str(mat.resource_name)
+			if not remodel_colors.has(key):remodel_colors[key]=mat.get_shader_parameter("base_color")
+			var index:=0 if key in ["Study_skin_vertex_paint","Study_skin"] else (1 if key=="Study_ventral" else (2 if key=="Study_shell" else -1))
+			if index<0:continue
+			var before:=Color(definition.palette[index]);var after:=Color(colors[index])
+			var multiplier:=Color(after.r/maxf(.001,before.r),after.g/maxf(.001,before.g),after.b/maxf(.001,before.b))
+			var original: Color=remodel_colors[key]
+			mat.set_shader_parameter("base_color",(original.srgb_to_linear()*multiplier).linear_to_srgb())
 
 func set_lod(distant: bool) -> void:
 	desired_distant=distant
@@ -162,9 +182,14 @@ func _process(delta: float) -> void:
 	var camera:=get_viewport().get_camera_3d()
 	if lod_override>=0: set_lod(lod_override==1)
 	elif camera: set_lod(camera.global_position.distance_to(global_position)>25.)
-	if not paused:pose(true)
+	if not paused:
+		if not remodel.is_empty():ground_motion.tick(delta)
+		pose(true)
 
 func pose(visible_lod_only: bool=false) -> void:
+	if not remodel.is_empty():
+		if is_inside_tree():ground_motion.pose_authored(visible_lod_only)
+		return
 	if not combat_override:_update_attack_phase()
 	var t:=flight_clock if definition.get("construction","")=="avian" and flight_clock>=0 else elapsed+motion_phase
 	if ground_motion!=null and ground_motion.enabled:t=ground_motion.idle_clock+motion_phase

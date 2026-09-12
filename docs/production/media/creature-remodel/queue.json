@@ -7326,8 +7326,8 @@
       "batch": "R01",
       "asset_id": "annulus",
       "art_status": "rendered-r01",
-      "runtime_status": "pending",
-      "individual_review": "flat-stage locomotion and contact reviewed; native terrain pending"
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far rigs, real-speed gait, slope IK, pause, turn, variant, feed, live mouth socket; full campaign session pending"
     },
     {
       "species_id": "bio_torus_loom_02",
@@ -7722,8 +7722,8 @@
       "batch": "R01",
       "asset_id": "pentafold",
       "art_status": "rendered-r01",
-      "runtime_status": "pending",
-      "individual_review": "flat-stage locomotion and contact reviewed; native terrain pending"
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far rigs, real-speed gait, slope IK, pause, turn, variant, feed, live mouth socket; full campaign session pending"
     },
     {
       "species_id": "bio_pentapalm_04",
@@ -10566,8 +10566,8 @@
       "batch": "R01",
       "asset_id": "tethermaw",
       "art_status": "rendered-r01",
-      "runtime_status": "pending",
-      "individual_review": "flat-stage locomotion and contact reviewed; native terrain pending"
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far rigs, real-speed gait, slope IK, pause, turn, variant, feed, live mouth socket; full campaign session pending"
     },
     {
       "species_id": "bio_pendulum_grazer_02",
@@ -11826,8 +11826,8 @@
       "batch": "R01",
       "asset_id": "pressureurn",
       "art_status": "approved-reference",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far rigs, real-speed gait, slope IK, pause, turn, variant, feed, live mouth socket; full campaign session pending"
     },
     {
       "species_id": "bio_quill_amphora_02",
@@ -13158,8 +13158,8 @@
       "batch": "R01",
       "asset_id": "sailhorn",
       "art_status": "approved-reference",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "runtime_status": "pending-host-attack-adaptation",
+      "individual_review": "Authored field locomotion reviewed; campaign charge/leap animation adaptation pending"
     },
     {
       "species_id": "biota_spindle_armor_26",
@@ -19476,8 +19476,8 @@
       "batch": "R01",
       "asset_id": "shearprowler",
       "art_status": "approved-reference",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "runtime_status": "pending-host-attack-adaptation",
+      "individual_review": "Authored field locomotion reviewed; campaign charge/leap animation adaptation pending"
     },
     {
       "species_id": "biota_lobopod_armor_27",
@@ -63576,8 +63576,8 @@
       "batch": "R01",
       "asset_id": "vaulthopper",
       "art_status": "approved-reference",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far rigs, real-speed gait, slope IK, pause, turn, variant, feed, live mouth socket; full campaign session pending"
     },
     {
       "species_id": "biota_chain_armor_27",
@@ -88776,8 +88776,8 @@
       "batch": "R01",
       "asset_id": "reedserpent",
       "art_status": "approved-reference",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far rigs, real-speed gait, slope IK, pause, turn, variant, feed, live mouth socket; full campaign session pending"
     },
     {
       "species_id": "biota_ribbon_armor_27",
@@ -100915,7 +100915,8 @@
   "progress": {
     "approved_references": 6,
     "additional_anatomies_rendered": 3,
-    "campaign_replacements": 0,
-    "other_animal_ids": 5591
+    "campaign_replacements": 6,
+    "other_animal_ids": 5591,
+    "ground_locomotion_rendered": 8
   }
 }

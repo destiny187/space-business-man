@@ -62,7 +62,7 @@ func _process(delta: float) -> void:
 		var form:=FrontierEcologyCatalog.form(row.form_id)
 		var paths: Array[String]=[]
 		for lod in ["near","far"]:
-			var path: String="res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/")
+			var path: String=Actor.RemodelRegistry.path(form,lod)
 			paths.append(path)
 			if not synchronous_resources:ResourceLoader.load_threaded_request(path,"PackedScene")
 		# The dummy renderer has no render-thread queue; keep RID creation on one thread.
@@ -224,7 +224,8 @@ func target(camera: Camera3D) -> Dictionary:
 	for id in actors:
 		var actor: Node3D=actors[id]
 		var form:=FrontierEcologyCatalog.form(encounters[id].form_id)
-		var height: float=(float(form.geometry.near.max[1])-float(form.geometry.near.floor_y))*float(FrontierEcologyCatalog.look(form.id,encounters[id].look_id).scale)
+		var visual_bounds: Dictionary=Actor.RemodelRegistry.bounds(form)
+		var height: float=(float(visual_bounds.max[1])-float(visual_bounds.floor_y))*float(FrontierEcologyCatalog.look(form.id,encounters[id].look_id).scale)
 		var point:=actor.global_position+actor.global_basis.y*maxf(.35,height*.5)
 		var displacement:=point-camera.global_position
 		var distance:=displacement.length()
@@ -248,7 +249,7 @@ func _exit_tree() -> void:
 func _add_collision(actor: Node3D,row: Dictionary) -> void:
 	var form:=FrontierEcologyCatalog.form(row.form_id)
 	var look:=FrontierEcologyCatalog.look(row.form_id,row.look_id)
-	var bounds: Dictionary=form.geometry.near
+	var bounds: Dictionary=Actor.RemodelRegistry.bounds(form)
 	var height: float=maxf(.25,(float(bounds.max[1])-float(bounds.floor_y))*float(look.scale))
 	var radius: float=minf(height*.5,maxf(.18,minf(float(bounds.max[0])-float(bounds.min[0]),float(bounds.max[2])-float(bounds.min[2]))*float(look.scale)*.32))
 	var collision_body: PhysicsBody3D=AnimatableBody3D.new() if form.get("locomotion_medium","")=="surface_air" or Wildlife.eligible(form,row) else StaticBody3D.new()

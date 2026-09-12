@@ -1,10 +1,11 @@
 class_name FrontierNativeIncidentView
 extends RefCounted
+## Saved incident dimensions and attack timing retain their matching assets until that adapter is reviewed.
 const Creature=preload("res://scripts/actors/creatures/bestiary_actor.gd")
 static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) -> void:
  var native: Dictionary=row.native;var root: Node3D=nodes.root
  nodes.relay.hide()
- var creature:=Creature.new();creature.load_far=false;creature.configure(FrontierEcologyCatalog.form(native.form_id),FrontierNativeIncidents.look(native));root.add_child(creature);creature.set_state("idle");nodes.creature=creature
+ var creature:=Creature.new();creature.load_far=false;creature.configure(FrontierEcologyCatalog.form(native.form_id),FrontierNativeIncidents.look(native),[],false);root.add_child(creature);creature.set_state("idle");nodes.creature=creature
  creature.global_position=FrontierNativeIncidents.position(row)
  nodes.ground_probe=func(at: Vector3,reach: float):return Creature.GroundMotion.sample(view.surface.terrain.field,at,reach)
  nodes.native_attack=int(row.native_attack);nodes.native_footstep=0.0
@@ -22,7 +23,7 @@ static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) 
   nodes.young=[]
   for side in [-1,1]:
    var young:=Creature.new();young.load_far=false;var look:=FrontierNativeIncidents.look(native);look.scale*=float(FrontierNativeIncidents.config().young_scale)
-   young.configure(FrontierEcologyCatalog.form(native.form_id),look);root.add_child(young);young.position=Vector3(side*float(native.width)*.35,0,.8);young.set_state("feed");nodes.young.append(young)
+   young.configure(FrontierEcologyCatalog.form(native.form_id),look,[],false);root.add_child(young);young.position=Vector3(side*float(native.width)*.35,0,.8);young.set_state("feed");nodes.young.append(young)
  # Authored creature geometry supplies scale; sparse ground marks are temporary field cues.
  var track_mat:=StandardMaterial3D.new();track_mat.albedo_color=Color("45423b");track_mat.roughness=1.0
  var track_radius:=clampf(FrontierNativeIncidents.radius(native)*.15,.07,.35)

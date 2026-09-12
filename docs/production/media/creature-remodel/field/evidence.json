@@ -1,0 +1,955 @@
+{
+  "actor": "bestiary_actor.gd",
+  "renderer": "forward_plus",
+  "species": [
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 1.51255073281936,
+      "bones": 23,
+      "footfalls": 19,
+      "id": "sailhorn",
+      "lods": 2,
+      "max_foot_target_error": 0.000806174939498305,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 5.93994002429099e-07,
+          "lod": 0,
+          "phase": 2.0508463790839e-10,
+          "second": 0.0,
+          "speed": 5.97158210380311e-09
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 1.35363006847911e-05,
+          "lod": 0,
+          "phase": 0.959993384306259,
+          "second": 1.0,
+          "speed": 0.970591306686401
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 5.87277900194749e-05,
+          "lod": 0,
+          "phase": 1.97372570722129,
+          "second": 2.0,
+          "speed": 1.1349667981267
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 2.92312779492931e-05,
+          "lod": 0,
+          "phase": 3.32463800771106,
+          "second": 3.0,
+          "speed": 2.42645144462585
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.000212048224057071,
+          "lod": 0,
+          "phase": 4.83444144059951,
+          "second": 4.0,
+          "speed": 2.42647647857666
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.000553513062186539,
+          "lod": 0,
+          "phase": 6.14528399894973,
+          "second": 5.0,
+          "speed": 0.727243423461914
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.55372619925448,
+          "second": 6.0,
+          "speed": 0.49863494038328
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.68942702247904,
+          "second": 7.0,
+          "speed": 0.488955053565672
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.00058381783310324,
+          "lod": 1,
+          "phase": 7.67819053920646,
+          "second": 8.0,
+          "speed": 1.94117568433285
+        },
+        {
+          "clip": "feed",
+          "contact_error": 1.36961045882344e-06,
+          "lod": 0,
+          "phase": 8.24185064096457,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "biota_spindle_armor_25"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 2.57999177277088,
+      "bones": 33,
+      "footfalls": 20,
+      "id": "shearprowler",
+      "lods": 2,
+      "max_foot_target_error": 0.0038227264303714,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 3.47871122130528e-07,
+          "lod": 0,
+          "phase": 7.67119616760749e-10,
+          "second": 0.0,
+          "speed": 1.70958086020967e-08
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.000796973239630461,
+          "lod": 0,
+          "phase": 0.959993441138413,
+          "second": 1.0,
+          "speed": 0.742857456207275
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.000552237266674638,
+          "lod": 0,
+          "phase": 1.973725707106,
+          "second": 2.0,
+          "speed": 0.868667364120483
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 1.07453800524127e-07,
+          "lod": 0,
+          "phase": 3.28082529868263,
+          "second": 3.0,
+          "speed": 1.85712575912476
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0011100061237812,
+          "lod": 0,
+          "phase": 4.73642315363196,
+          "second": 4.0,
+          "speed": 1.8571400642395
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 4.95113340548414e-07,
+          "lod": 0,
+          "phase": 6.00788015064486,
+          "second": 5.0,
+          "speed": 0.556612014770508
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.38591222843296,
+          "second": 6.0,
+          "speed": 0.337136457489725
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.50732799372142,
+          "second": 7.0,
+          "speed": 0.339001405058511
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.00119991402607411,
+          "lod": 1,
+          "phase": 7.46336199919772,
+          "second": 8.0,
+          "speed": 1.48570653051138
+        },
+        {
+          "clip": "feed",
+          "contact_error": 2.14576721191406e-06,
+          "lod": 0,
+          "phase": 8.00678558879981,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "biota_lobopod_armor_26"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 0.913836582796648,
+      "bones": 17,
+      "footfalls": 23,
+      "id": "pressureurn",
+      "lods": 2,
+      "max_foot_target_error": 1.33313358219311e-06,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 2.82041639820818e-07,
+          "lod": 0,
+          "phase": 3.93539641985186e-10,
+          "second": 0.0,
+          "speed": 4.66033786561404e-09
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 3.9198835111165e-07,
+          "lod": 0,
+          "phase": 0.95999337871487,
+          "second": 1.0,
+          "speed": 0.394735336303711
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 3.99840104137184e-07,
+          "lod": 0,
+          "phase": 1.97372589150682,
+          "second": 2.0,
+          "speed": 0.46159029006958
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 3.74164557115364e-07,
+          "lod": 0,
+          "phase": 3.44034743671233,
+          "second": 3.0,
+          "speed": 0.986833870410919
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 5.81718097691919e-07,
+          "lod": 0,
+          "phase": 5.09330739815647,
+          "second": 4.0,
+          "speed": 0.986841917037964
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 7.27567396552331e-07,
+          "lod": 0,
+          "phase": 6.50816912690415,
+          "second": 5.0,
+          "speed": 0.295768976211548
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 7.12347669323373,
+          "second": 6.0,
+          "speed": 0.367383754622086
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 7.372471252234,
+          "second": 7.0,
+          "speed": 0.369431618928346
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 1.68587391158326e-07,
+          "lod": 1,
+          "phase": 8.44767420775688,
+          "second": 8.0,
+          "speed": 0.789474528282881
+        },
+        {
+          "clip": "feed",
+          "contact_error": 1.0545138593443e-06,
+          "lod": 0,
+          "phase": 9.06477942604787,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "bio_quill_amphora_01"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 5.47751495242119,
+      "bones": 22,
+      "footfalls": 9,
+      "id": "vaulthopper",
+      "lods": 2,
+      "max_foot_target_error": 0.000290239084279165,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 1.79433740754575e-07,
+          "lod": 0,
+          "phase": 3.8650888239955e-10,
+          "second": 0.0,
+          "speed": 1.10431109257014e-08
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 2.66976257989882e-07,
+          "lod": 0,
+          "phase": 0.95999343433884,
+          "second": 1.0,
+          "speed": 0.952380895614624
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 2.42229816649342e-07,
+          "lod": 0,
+          "phase": 1.97372569368688,
+          "second": 2.0,
+          "speed": 1.11367575824261
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.000290239084279165,
+          "lod": 0,
+          "phase": 3.25898020287511,
+          "second": 3.0,
+          "speed": 2.38093614578247
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 4.68755097409246,
+          "second": 4.0,
+          "speed": 2.38094329833984
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 5.23028631960187e-07,
+          "lod": 0,
+          "phase": 5.93936960717198,
+          "second": 5.0,
+          "speed": 0.713596343994141
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.33466667195564,
+          "second": 6.0,
+          "speed": 0.463600751426984
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.46299053982737,
+          "second": 7.0,
+          "speed": 0.45290677949631
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 1,
+          "phase": 7.4027053144099,
+          "second": 8.0,
+          "speed": 1.90475821495056
+        },
+        {
+          "clip": "feed",
+          "contact_error": 1.02720787253929e-06,
+          "lod": 0,
+          "phase": 7.93603865171688,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "biota_chain_armor_26"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 4.24693335359916,
+      "bones": 16,
+      "footfalls": 8,
+      "id": "reedserpent",
+      "lods": 2,
+      "max_foot_target_error": 0.0,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 0.0,
+          "second": 0.0,
+          "speed": 0.0
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 0.959993433952331,
+          "second": 1.0,
+          "speed": 0.71428656578064
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 1.97372566461563,
+          "second": 2.0,
+          "speed": 0.835255980491638
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 3.29294108573128,
+          "second": 3.0,
+          "speed": 1.78570032119751
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 4.76352896339753,
+          "second": 4.0,
+          "speed": 1.78571462631226
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.0458772483994,
+          "second": 5.0,
+          "speed": 0.535211563110352
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.44895221999967,
+          "second": 6.0,
+          "speed": 0.360563172815285
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.58395647483154,
+          "second": 7.0,
+          "speed": 0.36224896863075
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 1,
+          "phase": 7.54904134606493,
+          "second": 8.0,
+          "speed": 1.42856553196907
+        },
+        {
+          "clip": "feed",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 8.09806116307308,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "biota_ribbon_armor_26"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 0.764782444108278,
+      "bones": 22,
+      "footfalls": 23,
+      "id": "annulus",
+      "lods": 2,
+      "max_foot_target_error": 0.00466358242556453,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 3.05382940268828e-07,
+          "lod": 0,
+          "phase": 1.00122130194456e-09,
+          "second": 0.0,
+          "speed": 1.27655715997932e-08
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.000854475249070674,
+          "lod": 0,
+          "phase": 0.959993251231001,
+          "second": 1.0,
+          "speed": 0.425001382827759
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00186827394645661,
+          "lod": 0,
+          "phase": 1.97372576869783,
+          "second": 2.0,
+          "speed": 0.496977567672729
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.000900829210877419,
+          "lod": 0,
+          "phase": 3.44401632416094,
+          "second": 3.0,
+          "speed": 1.06249183416367
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.000359256169758737,
+          "lod": 0,
+          "phase": 5.10151581856454,
+          "second": 4.0,
+          "speed": 1.06249988079071
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.000129910273244604,
+          "lod": 0,
+          "phase": 6.51967581224112,
+          "second": 5.0,
+          "speed": 0.318446159362793
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 7.06499293301639,
+          "second": 6.0,
+          "speed": 0.335866750354811
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 7.27641315130827,
+          "second": 7.0,
+          "speed": 0.337707715987122
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.00383989373221993,
+          "lod": 1,
+          "phase": 8.35435739136556,
+          "second": 8.0,
+          "speed": 0.850000195205212
+        },
+        {
+          "clip": "feed",
+          "contact_error": 2.57354736277193e-06,
+          "lod": 0,
+          "phase": 8.97315732920699,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "bio_torus_loom_01"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 2.46792071894743,
+      "bones": 33,
+      "footfalls": 34,
+      "id": "pentafold",
+      "lods": 2,
+      "max_foot_target_error": 0.0124352462589741,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {
+        "clip": "idle_loop",
+        "excess": 0.00835350155830383,
+        "fraction": 0.8,
+        "hip": "(0.364111, 0.571938, -0.50182)",
+        "length": 1.04077288508415,
+        "limb": "ray2",
+        "phase": 0.0,
+        "target": "(0.855596, -0.029684, -1.206915)"
+      },
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 0.00938369054347277,
+          "lod": 0,
+          "phase": 0.0,
+          "second": 0.0,
+          "speed": 0.0
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00260310061275959,
+          "lod": 0,
+          "phase": 0.95999333517892,
+          "second": 1.0,
+          "speed": 0.460524559020996
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00220076832920313,
+          "lod": 0,
+          "phase": 1.97372563225882,
+          "second": 2.0,
+          "speed": 0.538519620895386
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.00404513766989112,
+          "lod": 0,
+          "phase": 3.2595041507277,
+          "second": 3.0,
+          "speed": 1.15130692720413
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 4.68872328462272,
+          "second": 4.0,
+          "speed": 1.15131497383118
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00190886401105672,
+          "lod": 0,
+          "phase": 5.94101277994992,
+          "second": 5.0,
+          "speed": 0.3450608253479
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.46816693242361,
+          "second": 6.0,
+          "speed": 0.347657619372052
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.66997349985723,
+          "second": 7.0,
+          "speed": 0.348926666941047
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.00141071190591902,
+          "lod": 1,
+          "phase": 7.61007949947071,
+          "second": 8.0,
+          "speed": 0.921053756028414
+        },
+        {
+          "clip": "feed",
+          "contact_error": 1.44318346428918e-06,
+          "lod": 0,
+          "phase": 8.14365493435072,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "bio_pentapalm_03"
+    },
+    {
+      "authored_clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle",
+        "move",
+        "run",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "bone_motion": 0.871857543475926,
+      "bones": 18,
+      "footfalls": 26,
+      "id": "tethermaw",
+      "lods": 2,
+      "max_foot_target_error": 0.00932463817298412,
+      "mouth_follows_live_skeleton": true,
+      "pause_held": true,
+      "phases": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "stop",
+        "turn_right",
+        "feed"
+      ],
+      "reach_debug": {},
+      "root_error": 0.0,
+      "samples": [
+        {
+          "clip": "idle_loop",
+          "contact_error": 3.48827228435766e-07,
+          "lod": 0,
+          "phase": 5.48263692316346e-10,
+          "second": 0.0,
+          "speed": 1.03881541702044e-08
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00164479005616158,
+          "lod": 0,
+          "phase": 0.959993303370376,
+          "second": 1.0,
+          "speed": 0.631577968597412
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00140216201543808,
+          "lod": 0,
+          "phase": 1.97372572178831,
+          "second": 2.0,
+          "speed": 0.738542675971985
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.000986660947091877,
+          "lod": 0,
+          "phase": 3.43521962901855,
+          "second": 3.0,
+          "speed": 1.57893598079681
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.00120478181634098,
+          "lod": 0,
+          "phase": 5.08183560766823,
+          "second": 4.0,
+          "speed": 1.57894134521484
+        },
+        {
+          "clip": "move_loop",
+          "contact_error": 0.00022126229305286,
+          "lod": 0,
+          "phase": 6.49208749644291,
+          "second": 5.0,
+          "speed": 0.4732346534729
+        },
+        {
+          "clip": "stop",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 6.98365164623568,
+          "second": 6.0,
+          "speed": 0.430409316840446
+        },
+        {
+          "clip": "turn_right",
+          "contact_error": 0.0,
+          "lod": 0,
+          "phase": 7.16412479008503,
+          "second": 7.0,
+          "speed": 0.424129220565774
+        },
+        {
+          "clip": "run_loop",
+          "contact_error": 0.0,
+          "lod": 1,
+          "phase": 8.23549703913785,
+          "second": 8.0,
+          "speed": 1.26315515488386
+        },
+        {
+          "clip": "feed",
+          "contact_error": 2.721002601902e-06,
+          "lod": 0,
+          "phase": 8.85023391158826,
+          "second": 9.0,
+          "speed": 0.0
+        }
+      ],
+      "species_id": "bio_pendulum_grazer_01"
+    }
+  ],
+  "terrain": "8 degree average slope with local undulations",
+  "campaign_species": [
+    "bio_pendulum_grazer_01",
+    "bio_pentapalm_03",
+    "bio_quill_amphora_01",
+    "bio_torus_loom_01",
+    "biota_chain_armor_26",
+    "biota_ribbon_armor_26"
+  ],
+  "campaign_count": 6,
+  "pending_host_attack_adaptation": {
+    "biota_spindle_armor_25": "Host anatomical ram is a 12 m/s root charge; requires charge locomotion/attack blending.",
+    "biota_lobopod_armor_26": "Host anatomical claw uses one leap landing; approved clip is a two-forelimb slash study."
+  },
+  "native_incidents": "Original matching models retained for saved incident dimensions and attack timelines",
+  "scope": "Actual imported campaign actors on controlled GPU-rendered terrain; full campaign session and multiplayer not exercised",
+  "audio": "Video is silent. Existing campaign footfall cue return is preserved; no new audio generated.",
+  "catalog_hashes_unchanged": true,
+  "source_mesh_hashes_unchanged": true,
+  "video_sha256": "bc2122ab9aee3047508386a4c2bb946707836df17cedc8ea1eb35200f0d6df21"
+}

@@ -62,7 +62,7 @@ static func fits(field: FrontierTerrainField,candidate: Dictionary,point: Vector
 	if candidate.get("terrestrial",false) and candidate.layer=="surface" and FrontierSurfaceDrainage.liquid(field.traits) and point.y< -2.5:return false
 	var form:=FrontierEcologyCatalog.form(candidate.form_id)
 	var look:=FrontierEcologyCatalog.look(candidate.form_id,candidate.look_id)
-	var geometry: Dictionary=form.geometry.near
+	var geometry: Dictionary=preload("res://scripts/actors/creatures/remodel_registry.gd").bounds(form)
 	var height: float=(float(geometry.max[1])-float(geometry.floor_y))*float(look.scale)
 	var rx: float=maxf(absf(geometry.min[0]),absf(geometry.max[0]))*float(look.scale)
 	var rz: float=maxf(absf(geometry.min[2]),absf(geometry.max[2]))*float(look.scale)
