@@ -1,6 +1,9 @@
 extends Node3D
 ## Presentation only: attack events identify visual timing, never deal damage.
 signal attack_cue(phase: String)
+const GroundMotion=preload("res://scripts/actors/creatures/ground_locomotion.gd")
+var ground_motion: RefCounted
+var visual_root: Node3D
 const Ink = preload("res://scripts/actors/ink_style.gd")
 var definition: Dictionary = {}
 var appearance: Dictionary = {}
@@ -60,6 +63,8 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -
 	elapsed=0
 	attack_phase=""
 	for child in get_children(): child.free()
+	visual_root=Node3D.new();visual_root.name="LocomotionVisual";add_child(visual_root)
+	ground_motion=GroundMotion.new()
 	models.clear()
 	joints.clear()
 	anatomical_skeletons.clear()
@@ -80,6 +85,7 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -
 		if not material_slots.has(slot): material_slots[slot]=[]
 		material_slots[slot].append(mat)
 	apply_appearance(look)
+	ground_motion.configure(self,visual_root)
 	mouth_marker=mouth_markers[0]
 	build_fx()
 	set_lod(false)
@@ -87,7 +93,7 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[]) -
 
 func _install_model(scene: PackedScene,cache: Dictionary) -> void:
 	var model: Node3D=scene.instantiate()
-	add_child(model)
+	visual_root.add_child(model)
 	Ink.apply(model,cache)
 	models.append(model)
 	mouth_markers.append(model.find_child("FX_Mouth",true,false) as Node3D)
@@ -148,6 +154,7 @@ func set_state(value: String) -> bool:
 	return true
 
 func _process(delta: float) -> void:
+	if ground_motion!=null:ground_motion.preview(delta)
 	if not paused and not combat_override:
 		elapsed+=delta*(movement_rate if state=="move" else 1.0)
 		_update_attack_phase()
@@ -160,6 +167,7 @@ func _process(delta: float) -> void:
 func pose(visible_lod_only: bool=false) -> void:
 	if not combat_override:_update_attack_phase()
 	var t:=flight_clock if definition.get("construction","")=="avian" and flight_clock>=0 else elapsed+motion_phase
+	if ground_motion!=null and ground_motion.enabled:t=ground_motion.idle_clock+motion_phase
 	for lod_index in joints.size():
 		if visible_lod_only and not models[lod_index].visible:continue
 		var row: Dictionary=joints[lod_index]
@@ -169,6 +177,7 @@ func pose(visible_lod_only: bool=false) -> void:
 		if definition.get("collection","")=="biota-7000":
 			_biota_organ_pose(row,t)
 			if combat_override:_combat_pose(row)
+			if ground_motion.enabled:ground_motion.pose(row,lod_index)
 			_anatomical_pose(lod_index,row,t)
 			continue
 		var head: Node3D=row.get("Anim_Head",{}).get("node")
@@ -189,7 +198,7 @@ func pose(visible_lod_only: bool=false) -> void:
 				body.scale.y=.95
 			for key in row:
 				var n: Node3D=row[key].node
-				if key.begins_with("Anim_Leg") and state=="move":
+				if key.begins_with("Anim_Leg") and state=="move" and not ground_motion.enabled:
 					var phase: float=t*3.3+float(key.hash()%10)
 					n.rotation.y=.17*sin(phase)
 					# Newly authored limbs rotate at their attached hip. Translating the
@@ -202,8 +211,9 @@ func pose(visible_lod_only: bool=false) -> void:
 					if definition.get("locomotion_medium","")=="atmosphere":n.rotation.z=sign_value*sin(t*.7)*(.055 if state=="idle" else .09)
 				elif key.begins_with("Anim_Segment"):
 					var index:=int(key.trim_prefix("Anim_Segment_"))
-					n.position.x+=sin(t*2.2+index*.55)*(.11 if state=="move" else .025)
-					n.rotation.y=sin(t*2.2+index*.55)*.11
+					var wave_clock: float=ground_motion.phase*TAU if ground_motion.enabled else t*2.2
+					n.position.x+=sin(wave_clock+index*.55)*(.11 if state=="move" else .025)
+					n.rotation.y=sin(wave_clock+index*.55)*.11
 				elif key.begins_with("Anim_Petal"):
 					n.rotation.z=sin(t*1.3+float(key.hash()%17))*(.09 if state=="feed" else .035)
 				elif key.begins_with("Anim_Frond") or key.begins_with("Anim_Appendage"):
@@ -214,8 +224,14 @@ func pose(visible_lod_only: bool=false) -> void:
 		elif state=="attack":attack_pose(row,elapsed)
 		if definition.get("collection","") in ["xenofauna-300","xenoflora-100","biota-7000"]:_organic_pose(row,t)
 		if definition.get("locomotion_medium","")=="atmosphere":body.position.y+=sin(t*.65+motion_phase)*.06;body.rotation.z+=sin(t*.4)*.025
+		if ground_motion.enabled:ground_motion.pose(row,lod_index)
 		if definition.get("rig",{}).get("skinned",false):_anatomical_pose(lod_index,row,t)
 	update_fx()
+
+func drive_ground(at: Vector3,facing: Basis,delta: float,sampler: Callable,stopped: bool) -> void:
+	if ground_motion!=null and ground_motion.enabled:
+		ground_motion.drive(Transform3D(facing,at),delta,sampler,stopped)
+	else:global_transform=Transform3D(facing,at)
 
 func apply_combat(live: Dictionary,profile: Dictionary,stopped: bool) -> void:
 	combat_override=true;combat_pattern=profile.pattern;combat_phase=live.phase;combat_clock=float(live.time)
@@ -247,13 +263,13 @@ func _combat_pose(row: Dictionary) -> void:
 		energy=sin(clampf(swing/.20,0,1)*PI)
 		strike=clampf(swing/.20,0,1)
 	# These Blender animals face Godot-local +Z. Preserve each Blender hinge's rest frame and attachment.
-	body.position.z+=-.13*hold+.42*energy
+	body.position.z+=(-.13*hold if waiting or combat_clock<windup_seconds else 0.0) if mode=="charge" else -.13*hold+.42*energy
 	if combat_pattern=="slam":body.position.y+=.22*hold-.12*energy
 	if mode=="leap":
 		body.position.y-=.20*hold if waiting or combat_clock<windup_seconds else .10*energy
 		body.rotation.x+=.12*hold-.22*energy
 	if mode=="charge" and not waiting and combat_clock>=windup_seconds and combat_clock<windup_seconds+active_seconds:
-		body.rotation.x+=.12;body.position.y+=absf(sin(combat_clock*24))*.06
+		body.rotation.x+=.12;body.position.y+=absf(sin((ground_motion.phase*TAU) if ground_motion.enabled else combat_clock*24))*.06
 	if combat_live.get("attack",{}).get("blocked",false):body.rotation.z+=sin(recover*PI*5)*.10*(1-recover)
 	for key in row:
 		if key=="Anim_Body":continue
@@ -268,7 +284,7 @@ func _combat_pose(row: Dictionary) -> void:
 		elif key.begins_with("Anim_GaitHip_F") and combat_pattern in ["claw","scythe"]:angle.x=-.4*hold+.9*energy
 		elif key.begins_with("Anim_Leg_0") and combat_pattern=="kick":angle.x=-.35*hold+.95*energy
 		elif key.begins_with("Anim_Flex_Sting"):angle.x=.10*hold-.16*energy
-		if mode=="charge" and combat_clock>=windup_seconds and combat_clock<windup_seconds+active_seconds and (key.begins_with("Anim_GaitHip") or key.begins_with("Anim_Leg")):
+		if not ground_motion.enabled and mode=="charge" and combat_clock>=windup_seconds and combat_clock<windup_seconds+active_seconds and (key.begins_with("Anim_GaitHip") or key.begins_with("Anim_Leg")):
 			angle.x+=sin(combat_clock*24+(0 if key.ends_with("L") else PI))*.55
 		if mode=="leap" and key.begins_with("Anim_GaitHip"):
 			angle.x+=(-.5 if "_F" in key else .5)*hold*(1-energy)
@@ -288,7 +304,7 @@ func _biota_organ_pose(row: Dictionary,t: float) -> void:
 		var phase: float=float(key.hash()%31)
 		if definition.get("construction","")=="avian" and (key.begins_with("Anim_Wing") or key.begins_with("Anim_Avian")):
 			angle=_avian_hinge_angle(key,t)
-		elif key.begins_with("Anim_Leg") and state=="move":
+		elif key.begins_with("Anim_Leg") and state=="move" and not ground_motion.enabled:
 			angle.x=.12*sin(t*3.3+phase)
 			angle.z=.10*cos(t*3.3+phase)
 		elif key.begins_with("Anim_Head"):
@@ -331,7 +347,7 @@ func _midpoint_pose(row: Dictionary,t: float,gain: float) -> void:
 		var angle:=Vector3.ZERO
 		angle[0 if data.axis=="x" else (1 if data.axis=="y" else 2)]=amount
 		row[key].node.transform=row[key].rest*Transform3D(Basis.from_euler(angle),Vector3.ZERO)
-	if state!="move":return
+	if state!="move" or ground_motion.enabled:return
 	var gait: Dictionary=definition.get("gait",{})
 	for data in gait.get("limbs",{}).values():
 		var upper:=Vector3(data.upper[0],data.upper[1],data.upper[2])
@@ -387,8 +403,12 @@ func _anatomical_pose(lod_index: int,row: Dictionary,t: float) -> void:
 	for index in rig.scaffold.size():
 		var bone:=skeleton.find_bone(rig.scaffold[index])
 		if bone<0:continue
-		var phase: float=t*float(motion.speed)+float(index)*(.85 if layout in ["metameric","undulating","helical"] else .4)
+		var clock_value: float=ground_motion.phase*TAU/float(motion.speed) if ground_motion.enabled and ground_motion.kind in ["slither","crawl"] else t
+		var phase: float=clock_value*float(motion.speed)+float(index)*(.85 if layout in ["metameric","undulating","helical"] else .4)
 		var wave: float=sin(phase)*gain if index>0 else 0.0
+		if ground_motion.enabled:
+			if not ground_motion.limbs.is_empty():wave=0.0
+			else:wave*=ground_motion.intensity
 		var angle:=wave*float(motion.angle);var offset:=Vector3.ZERO;var rotation:=Vector3.ZERO
 		match layout:
 			"axial","metameric":rotation.y=angle;offset.y=wave*float(motion.translation)
@@ -407,6 +427,7 @@ func _anatomical_pose(lod_index: int,row: Dictionary,t: float) -> void:
 		skeleton.set_bone_pose_rotation(bone,pose.basis.orthonormalized().get_rotation_quaternion())
 		skeleton.set_bone_pose_position(bone,pose.origin)
 	skeleton.force_update_all_bone_transforms()
+	if ground_motion.enabled:ground_motion.skin(skeleton,row,lod_index)
 
 func _organic_pose(row: Dictionary,t: float) -> void:
 	var kind: String=definition.get("motion_profile","pulse")

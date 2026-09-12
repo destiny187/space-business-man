@@ -1,0 +1,309 @@
+{
+	"cases": [
+		{
+			"footfalls": 11,
+			"id": "biota_saddle_sails_26",
+			"kind": "quadruped",
+			"maximum_contact_error": 0.000166225348948501,
+			"phase": 3.24402240255455,
+			"planted_frame_drift": 0.000155871253809892,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.230361, -0.027701, 1.923071)",
+				"duration": 0.253435295035822,
+				"foot": 0,
+				"frame": 136,
+				"marker_error": 0.000166325175086968,
+				"rest": "(-0.230354, -0.037714, 2.003927)",
+				"swing": false,
+				"target": "(-0.230354, -0.027642, 1.923226)"
+			}
+		},
+		{
+			"footfalls": 8,
+			"id": "biota_saddle_sails_26",
+			"kind": "quadruped",
+			"maximum_contact_error": 0.0162148475646973,
+			"phase": 7.88935539724296,
+			"planted_frame_drift": 0.00635321950539947,
+			"scale": 1.0,
+			"speed": 4.0,
+			"worst_contact": {
+				"actual": "(-0.229724, -0.012724, 12.38507)",
+				"duration": 0.246247529315269,
+				"foot": 0,
+				"frame": 176,
+				"marker_error": 0.0162148363888264,
+				"rest": "(-0.230354, -0.037714, 12.11453)",
+				"swing": false,
+				"target": "(-0.230354, -0.027642, 12.39139)"
+			}
+		},
+		{
+			"footfalls": 15,
+			"id": "biota_saddle_sails_26",
+			"kind": "quadruped",
+			"maximum_contact_error": 0.0188345070928335,
+			"phase": 14.9166666666667,
+			"planted_frame_drift": 0.00813834182918072,
+			"scale": 1.0,
+			"speed": 17.4,
+			"worst_contact": {
+				"actual": "(-0.229849, -0.010657, 3.876276)",
+				"duration": 0.164,
+				"foot": 0,
+				"frame": 11,
+				"marker_error": 0.018834637477994,
+				"rest": "(-0.230354, -0.037714, 3.5712)",
+				"swing": false,
+				"target": "(-0.230354, -0.027642, 3.884399)"
+			}
+		},
+		{
+			"footfalls": 8,
+			"id": "bio_grazer_01",
+			"kind": "quadruped",
+			"maximum_contact_error": 0.037424948066473,
+			"phase": 2.30310756454299,
+			"planted_frame_drift": 0.000000245756240246919,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.462212, 0.0683, 1.978495)",
+				"duration": 0.35,
+				"foot": 0,
+				"frame": 111,
+				"marker_error": 0.037424948066473,
+				"rest": "(-0.455111, -0.054613, 2.074503)",
+				"swing": true,
+				"target": "(-0.455112, 0.104483, 1.972093)"
+			}
+		},
+		{
+			"footfalls": 9,
+			"id": "bio_runner_01",
+			"kind": "biped",
+			"maximum_contact_error": 0.0762384086847305,
+			"phase": 3.82726271954579,
+			"planted_frame_drift": 0.00962827354669571,
+			"scale": 1.0,
+			"speed": 2.0,
+			"worst_contact": {
+				"actual": "(-0.2146, 0.104335, 1.910557)",
+				"duration": 0.35,
+				"foot": 0,
+				"frame": 63,
+				"marker_error": 0.0762384086847305,
+				"rest": "(-0.210745, -0.025289, 1.995826)",
+				"swing": true,
+				"target": "(-0.210745, 0.17983, 1.900661)"
+			}
+		},
+		{
+			"footfalls": 6,
+			"id": "biota_branch_armor_26",
+			"kind": "many",
+			"maximum_contact_error": 0.00027776398928836,
+			"phase": 3.32778393698614,
+			"planted_frame_drift": 0.000145124475238845,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.54033, -0.064599, 0.948231)",
+				"duration": 0.264701653941133,
+				"foot": 4,
+				"frame": 140,
+				"marker_error": 0.000281008542515337,
+				"rest": "(-0.54037, -0.098081, 1.09404)",
+				"swing": false,
+				"target": "(-0.54037, -0.064844, 0.948106)"
+			}
+		},
+		{
+			"footfalls": 10,
+			"id": "biota_radial_armor_01",
+			"kind": "radial",
+			"maximum_contact_error": 0.0440318696200848,
+			"phase": 5.70753794986254,
+			"planted_frame_drift": 0.00776236038655043,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.239809, -0.002122, -0.84347)",
+				"duration": 0,
+				"foot": 2,
+				"frame": 25,
+				"marker_error": 0.0440312772989273,
+				"rest": "(-0.249814, -0.050121, -0.635827)",
+				"swing": false,
+				"target": "(-0.249814, -0.029978, -0.87607)"
+			}
+		},
+		{
+			"footfalls": 3,
+			"id": "biota_chain_armor_25",
+			"kind": "hop",
+			"maximum_contact_error": 0.000000477767571283039,
+			"phase": 3.55934190298929,
+			"planted_frame_drift": 0.000000491512480493839,
+			"scale": 1.0,
+			"speed": 1.0,
+			"worst_contact": {
+				"actual": "(0.573082, 0.235022, 2.81165)",
+				"duration": 0.35,
+				"foot": 1,
+				"frame": 178,
+				"marker_error": 0.000000281154541426076,
+				"rest": "(0.573082, 0.023447, 3.04022)",
+				"swing": true,
+				"target": "(0.573082, 0.235022, 2.81165)"
+			}
+		},
+		{
+			"footfalls": 3,
+			"id": "biota_ribbon_armor_26",
+			"kind": "slither",
+			"maximum_contact_error": 0.0,
+			"phase": 3.27135330473049,
+			"planted_frame_drift": 0.0,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {}
+		},
+		{
+			"footfalls": 9,
+			"id": "biota_chain_armor_01",
+			"kind": "crawl",
+			"maximum_contact_error": 0.0,
+			"phase": 9.40501720050282,
+			"planted_frame_drift": 0.0,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {}
+		},
+		{
+			"footfalls": 10,
+			"id": "biota_spindle_armor_01",
+			"kind": "quadruped",
+			"maximum_contact_error": 0.0307701248675585,
+			"phase": 2.98950439759369,
+			"planted_frame_drift": 0.00000213248063118954,
+			"scale": 4.0,
+			"speed": 2.6,
+			"worst_contact": {
+				"actual": "(-2.454103, 0.182669, -3.16208)",
+				"duration": 0.35,
+				"foot": 2,
+				"frame": 10,
+				"marker_error": 0.030761880800128,
+				"rest": "(-2.438035, -0.292564, -3.583179)",
+				"swing": true,
+				"target": "(-2.438035, 0.208908, -3.162394)"
+			}
+		},
+		{
+			"footfalls": 13,
+			"id": "bio_accordion_shell_01",
+			"kind": "many",
+			"maximum_contact_error": 0.0269422717392445,
+			"phase": 6.55103705131601,
+			"planted_frame_drift": 0.00421509146690369,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.463507, -0.021894, -0.766332)",
+				"duration": 0.135525784437547,
+				"foot": 4,
+				"frame": 18,
+				"marker_error": 0.0269422717392445,
+				"rest": "(-0.454933, -0.054592, -0.702356)",
+				"swing": true,
+				"target": "(-0.454933, 0.003396, -0.769906)"
+			}
+		},
+		{
+			"footfalls": 9,
+			"id": "bio_knuckle_chain_01",
+			"kind": "many",
+			"maximum_contact_error": 0.0609185583889484,
+			"phase": 4.67470213463261,
+			"planted_frame_drift": 0.0118464920669794,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(0.746792, 0.120282, -0.35588)",
+				"duration": 0.188434414264597,
+				"foot": 5,
+				"frame": 61,
+				"marker_error": 0.0609185583889484,
+				"rest": "(0.799603, 0.127205, -0.469773)",
+				"swing": false,
+				"target": "(0.799603, 0.095952, -0.337711)"
+			}
+		},
+		{
+			"footfalls": 8,
+			"id": "bio_petal_mantis_01",
+			"kind": "many",
+			"maximum_contact_error": 0.0257044807076454,
+			"phase": 4.3368719178567,
+			"planted_frame_drift": 0.00225295196287334,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.514388, 0.015421, -0.284909)",
+				"duration": 0.203112929153852,
+				"foot": 4,
+				"frame": 69,
+				"marker_error": 0.0257044807076454,
+				"rest": "(-0.498887, -0.059866, -0.275127)",
+				"swing": true,
+				"target": "(-0.498887, 0.035688, -0.281793)"
+			}
+		},
+		{
+			"footfalls": 10,
+			"id": "bio_corkscrew_spine_01",
+			"kind": "many",
+			"maximum_contact_error": 0.022861871868372,
+			"phase": 4.94219623038307,
+			"planted_frame_drift": 0.000000509262292780477,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(-0.359884, 0.020365, -0.448823)",
+				"duration": 0.17823548834132,
+				"foot": 4,
+				"frame": 61,
+				"marker_error": 0.022861871868372,
+				"rest": "(-0.351008, -0.042121, -0.427263)",
+				"swing": true,
+				"target": "(-0.351008, 0.041319, -0.446626)"
+			}
+		},
+		{
+			"footfalls": 12,
+			"id": "bio_window_sac_01",
+			"kind": "radial",
+			"maximum_contact_error": 0.0291116163134575,
+			"phase": 4.40050981269925,
+			"planted_frame_drift": 0.00579030299559236,
+			"scale": 1.0,
+			"speed": 0.65,
+			"worst_contact": {
+				"actual": "(0.252557, 0.065308, 1.544545)",
+				"duration": 0.120105369072312,
+				"foot": 0,
+				"frame": 65,
+				"marker_error": 0.0291116163134575,
+				"rest": "(0.249996, 0.03003, 1.71632)",
+				"swing": true,
+				"target": "(0.249996, 0.086352, 1.524593)"
+			}
+		}
+	],
+	"checks": 87,
+	"coverage": 5130,
+	"failures": 0
+}

@@ -5,7 +5,9 @@ static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) 
  var native: Dictionary=row.native;var root: Node3D=nodes.root
  nodes.relay.hide()
  var creature:=Creature.new();creature.load_far=false;creature.configure(FrontierEcologyCatalog.form(native.form_id),FrontierNativeIncidents.look(native));root.add_child(creature);creature.set_state("idle");nodes.creature=creature
- creature.global_position=FrontierNativeIncidents.position(row);nodes.native_attack=int(row.native_attack);nodes.native_footstep=0.0
+ creature.global_position=FrontierNativeIncidents.position(row)
+ nodes.ground_probe=func(at: Vector3,reach: float):return Creature.GroundMotion.sample(view.surface.terrain.field,at,reach)
+ nodes.native_attack=int(row.native_attack);nodes.native_footstep=0.0
  var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=minf(FrontierNativeIncidents.radius(native),float(native.height)*.45);capsule.height=maxf(float(native.height),capsule.radius*2)
  var solid:=StaticBody3D.new();root.add_child(solid);solid.add_child(shape);shape.shape=capsule;shape.position.y=float(native.height)*.5;nodes.native_solid=solid;solid.global_position=creature.global_position
  if native.role=="giant":
@@ -31,30 +33,34 @@ static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) 
    mark.global_position=b+side*sign_value*float(native.width)*.25+Vector3.UP*.018;mark.scale.z=3.0 if native.track=="groove" else 1.6;mark.rotation.y=atan2(forward.x,forward.z)
 static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,delta: float,stopped: bool) -> void:
  var native: Dictionary=row.native;var creature: Node3D=nodes.creature;var previous:=creature.global_position;var goal:=FrontierNativeIncidents.position(row)
- creature.global_position=creature.global_position.lerp(goal,1-exp(-delta*12));var motion:=creature.global_position-previous
- if motion.length()>.002:creature.rotation.y=atan2(motion.x,motion.z)-float(row.yaw)
- creature.paused=stopped;creature.movement_rate=clampf(float(native.speed)/maxf(1.0,float(native.length)*.45),.4,1.5)
+ var motion:=goal-previous
+ var facing: Basis=creature.global_basis
+ if motion.length()>.002:facing=FrontierEcologyPlacement.surface_basis(view.surface.terrain.field.normal(goal),atan2(motion.x,motion.z))
+ creature.paused=stopped
  if int(row.native_attack)>int(nodes.native_attack):
   creature.set_state("attack");creature.elapsed=creature.windup_seconds;creature.pose();nodes.native_attack=int(row.native_attack)
   if not stopped:voice(view,creature.global_position,native)
  elif creature.state!="attack":
   var wanted: String="stressed" if float(row.native_alert)>0 else ("move" if motion.length()>.002 else "feed")
   if creature.state!=wanted:creature.set_state(wanted)
+ creature.drive_ground(goal,facing,delta,nodes.ground_probe,stopped)
  nodes.native_solid.global_position=creature.global_position
  nodes.native_solid.global_rotation=creature.global_rotation
  if nodes.has("young"):
-  for young in nodes.young:young.paused=stopped
+  for young in nodes.young:
+   young.paused=stopped;young.drive_ground(young.global_position,young.global_basis,delta,nodes.ground_probe,stopped)
  if nodes.has("stolen"):
   nodes.stolen.visible=not row.claimed
   if creature.mouth_marker!=null:nodes.stolen.global_position=creature.mouth_marker.global_position
  if nodes.has("native_sample"):nodes.native_sample.visible=FrontierNativeIncidents.available(row) and not row.claimed
  nodes.cargo.visible=native.role=="scavenger" and FrontierNativeIncidents.available(row) and not row.claimed
- nodes.native_footstep+=delta
+ if not stopped:nodes.native_footstep+=delta
  if not stopped and motion.length()>.002 and nodes.native_footstep>1.8:
   nodes.native_footstep=0.0
-  if view.surface.viewer.position.distance_to(goal)<20:
-   view.app.feedback.effects.burst(goal,Color("a89677"),3)
-   if native.role in ["giant","cave"]:voice(view,goal,native)
+  if native.role in ["giant","cave"] and view.surface.viewer.position.distance_to(goal)<20:voice(view,goal,native)
+ var footfall: Vector3=creature.ground_motion.take_footfall()
+ if not stopped and footfall.is_finite() and view.surface.viewer.position.distance_to(footfall)<20:
+  view.surface._wildlife_cue(footfall,"step")
  if not stopped and float(row.native_alert)>0 and view.surface.viewer.position.distance_to(goal)<FrontierNativeIncidents.radius(native)+6:
   view.native_warning="둥지 보호 개체가 경고합니다 · 뒤로 물러나세요"
 

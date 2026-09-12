@@ -1,0 +1,90 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS biota_saddle_sails_26 settles lifted feet on stopping
+PASS biota_saddle_sails_26 pause freezes gait and visual origin
+PASS biota_saddle_sails_26 actual skin or rigid sole remains near its contact 0.0
+PASS biota_saddle_sails_26 planted sole avoids framewise sliding 0.0
+PASS biota_saddle_sails_26 footfall follows contact
+PASS biota_saddle_sails_26 settles lifted feet on stopping
+PASS biota_saddle_sails_26 pause freezes gait and visual origin
+PASS biota_saddle_sails_26 actual skin or rigid sole remains near its contact 0.016
+PASS biota_saddle_sails_26 planted sole avoids framewise sliding 0.006
+PASS biota_saddle_sails_26 footfall follows contact
+PASS biota_saddle_sails_26 settles lifted feet on stopping
+PASS biota_saddle_sails_26 pause freezes gait and visual origin
+PASS biota_saddle_sails_26 actual skin or rigid sole remains near its contact 0.019
+PASS biota_saddle_sails_26 planted sole avoids framewise sliding 0.008
+PASS biota_saddle_sails_26 footfall follows contact
+PASS bio_grazer_01 settles lifted feet on stopping
+PASS bio_grazer_01 pause freezes gait and visual origin
+PASS bio_grazer_01 actual skin or rigid sole remains near its contact 0.037
+PASS bio_grazer_01 planted sole avoids framewise sliding 0.0
+PASS bio_grazer_01 footfall follows contact
+PASS bio_runner_01 settles lifted feet on stopping
+PASS bio_runner_01 pause freezes gait and visual origin
+PASS bio_runner_01 actual skin or rigid sole remains near its contact 0.076
+PASS bio_runner_01 planted sole avoids framewise sliding 0.01
+PASS bio_runner_01 footfall follows contact
+PASS biota_branch_armor_26 settles lifted feet on stopping
+PASS biota_branch_armor_26 pause freezes gait and visual origin
+PASS biota_branch_armor_26 actual skin or rigid sole remains near its contact 0.0
+PASS biota_branch_armor_26 planted sole avoids framewise sliding 0.0
+PASS biota_branch_armor_26 footfall follows contact
+PASS biota_radial_armor_01 settles lifted feet on stopping
+PASS biota_radial_armor_01 pause freezes gait and visual origin
+PASS biota_radial_armor_01 actual skin or rigid sole remains near its contact 0.044
+PASS biota_radial_armor_01 planted sole avoids framewise sliding 0.008
+PASS biota_radial_armor_01 footfall follows contact
+PASS biota_chain_armor_25 settles lifted feet on stopping
+PASS biota_chain_armor_25 pause freezes gait and visual origin
+PASS biota_chain_armor_25 actual skin or rigid sole remains near its contact 0.0
+PASS biota_chain_armor_25 planted sole avoids framewise sliding 0.0
+PASS biota_chain_armor_25 footfall follows contact
+PASS biota_ribbon_armor_26 settles lifted feet on stopping
+PASS biota_ribbon_armor_26 pause freezes gait and visual origin
+PASS biota_ribbon_armor_26 actual skin or rigid sole remains near its contact 0.0
+PASS biota_ribbon_armor_26 planted sole avoids framewise sliding 0.0
+PASS biota_chain_armor_01 settles lifted feet on stopping
+PASS biota_chain_armor_01 pause freezes gait and visual origin
+PASS biota_chain_armor_01 actual skin or rigid sole remains near its contact 0.0
+PASS biota_chain_armor_01 planted sole avoids framewise sliding 0.0
+PASS biota_spindle_armor_01 settles lifted feet on stopping
+PASS biota_spindle_armor_01 pause freezes gait and visual origin
+PASS biota_spindle_armor_01 actual skin or rigid sole remains near its contact 0.031
+PASS biota_spindle_armor_01 planted sole avoids framewise sliding 0.0
+PASS biota_spindle_armor_01 footfall follows contact
+PASS bio_accordion_shell_01 settles lifted feet on stopping
+PASS bio_accordion_shell_01 pause freezes gait and visual origin
+PASS bio_accordion_shell_01 actual skin or rigid sole remains near its contact 0.027
+PASS bio_accordion_shell_01 planted sole avoids framewise sliding 0.004
+PASS bio_accordion_shell_01 footfall follows contact
+PASS bio_knuckle_chain_01 settles lifted feet on stopping
+PASS bio_knuckle_chain_01 pause freezes gait and visual origin
+PASS bio_knuckle_chain_01 actual skin or rigid sole remains near its contact 0.061
+PASS bio_knuckle_chain_01 planted sole avoids framewise sliding 0.012
+PASS bio_knuckle_chain_01 footfall follows contact
+PASS bio_petal_mantis_01 settles lifted feet on stopping
+PASS bio_petal_mantis_01 pause freezes gait and visual origin
+PASS bio_petal_mantis_01 actual skin or rigid sole remains near its contact 0.026
+PASS bio_petal_mantis_01 planted sole avoids framewise sliding 0.002
+PASS bio_petal_mantis_01 footfall follows contact
+PASS bio_corkscrew_spine_01 settles lifted feet on stopping
+PASS bio_corkscrew_spine_01 pause freezes gait and visual origin
+PASS bio_corkscrew_spine_01 actual skin or rigid sole remains near its contact 0.023
+PASS bio_corkscrew_spine_01 planted sole avoids framewise sliding 0.0
+PASS bio_corkscrew_spine_01 footfall follows contact
+PASS bio_window_sac_01 settles lifted feet on stopping
+PASS bio_window_sac_01 pause freezes gait and visual origin
+PASS bio_window_sac_01 actual skin or rigid sole remains near its contact 0.029
+PASS bio_window_sac_01 planted sole avoids framewise sliding 0.006
+PASS bio_window_sac_01 footfall follows contact
+PASS faster travel advances the same creature gait faster
+PASS direction reversal respects visual turn speed
+PASS snapshot root stays authoritative
+PASS snapshot smoothing keeps a bounded visual offset
+PASS host snapshot cadence does not stretch planted feet excessively
+PASS LOD switch shares the existing stride phase
+PASS relocation rebinds feet without stretching across the world
+PASS foot probe keeps the nearby cave floor instead of the surface above
+PASS all current ground forms have source-derived locomotion contacts: 5130
+GROUND_LOCOMOTION 87 FAILURES 0

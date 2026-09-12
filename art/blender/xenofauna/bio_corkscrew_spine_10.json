@@ -39,24 +39,40 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
     "Anim_Segment_2",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
     "Anim_Segment_3",
+    "Anim_Leg_3_L",
+    "Anim_Leg_3_R",
     "Anim_Segment_4",
+    "Anim_Leg_4_L",
+    "Anim_Leg_4_R",
     "Anim_Segment_5",
+    "Anim_Leg_5_L",
+    "Anim_Leg_5_R",
     "Anim_Segment_6",
-    "Anim_Segment_7"
+    "Anim_Leg_6_L",
+    "Anim_Leg_6_R",
+    "Anim_Segment_7",
+    "Anim_Leg_7_L",
+    "Anim_Leg_7_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_corkscrew_spine_10_near.glb",
       "triangles": 12672,
-      "sha256": "ca6a96d20aaca875315f31d526a7cdefda6188bdc3ef696c5dbffb6d55a58b71"
+      "sha256": "512ade9e0f90bc0b09a7b2a774ce62d9007b9854d86a30e809f54b4550e1ecdf"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_corkscrew_spine_10_far.glb",
-      "triangles": 3536,
-      "sha256": "5f8d10458e4410365ac1279a9b6928a3578599bacbdea13256c253dff2d46678"
+      "triangles": 3520,
+      "sha256": "ea69e0594c92e1e48c032b257a7874133071e21eb5ea57e4d483d93973706604"
     }
   },
   "geometry": {
@@ -78,7 +94,7 @@
     "far": {
       "min": [
         -0.7435472011566162,
-        -5.805492401123047e-05,
+        -5.799531936645508e-05,
         -1.3129738569259644
       ],
       "max": [
@@ -86,10 +102,10 @@
         1.4393603801727295,
         1.321725606918335
       ],
-      "floor_y": -5.805492401123047e-05,
+      "floor_y": -5.799531936645508e-05,
       "ceiling_y": 1.4393603801727295,
-      "vertices": 1954
+      "vertices": 1946
     }
   },
-  "mesh_nodes": 17
+  "mesh_nodes": 25
 }

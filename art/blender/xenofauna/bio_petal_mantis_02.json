@@ -39,20 +39,28 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
     "Anim_Segment_2",
-    "Anim_Segment_3"
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Segment_3",
+    "Anim_Leg_3_L",
+    "Anim_Leg_3_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_petal_mantis_02_near.glb",
       "triangles": 12288,
-      "sha256": "578a9213acaffae1e3348c61181ae8906f6b298cf35ec9449203a0070fad55bf"
+      "sha256": "1385d0db622f2aa48004c9ca63a3afeea690f26739367e58d0899fe5b8627d92"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_petal_mantis_02_far.glb",
       "triangles": 3434,
-      "sha256": "c0f9aa9fdd17e487cd274660450f7a9bb667d464946020398d06edda311583b3"
+      "sha256": "51339f2cdcb37e18a076d87d8bd8de24d17d001a0e1edc6491409a879b1f0443"
     }
   },
   "geometry": {
@@ -64,17 +72,17 @@
       ],
       "max": [
         0.7147634625434875,
-        0.960875391960144,
+        0.9608754515647888,
         1.156569004058838
       ],
       "floor_y": 0.0,
-      "ceiling_y": 0.960875391960144,
+      "ceiling_y": 0.9608754515647888,
       "vertices": 6254
     },
     "far": {
       "min": [
         -0.7119753956794739,
-        -0.0005949139595031738,
+        -0.0005948543548583984,
         -1.1585476398468018
       ],
       "max": [
@@ -82,10 +90,10 @@
         0.9609074592590332,
         1.1567213535308838
       ],
-      "floor_y": -0.0005949139595031738,
+      "floor_y": -0.0005948543548583984,
       "ceiling_y": 0.9609074592590332,
       "vertices": 1823
     }
   },
-  "mesh_nodes": 11
+  "mesh_nodes": 15
 }

@@ -2,6 +2,7 @@ class_name FrontierSurfaceEcology
 extends Node3D
 const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
 signal wildlife_cue(point: Vector3,kind: String)
+var ground_probe: Callable
 var behavior_time:=0.0
 var behavior_stamp:=-1.0
 var behavior_elapsed:=0.0
@@ -32,6 +33,7 @@ var synchronous_resources:=DisplayServer.get_name()=="headless"
 
 func configure(world_ecology: Dictionary,planet: Dictionary,stream: FrontierTerrainStreamer,player: Node3D) -> void:
 	ecology=world_ecology;body=planet;terrain=stream;viewer=player
+	ground_probe=func(at: Vector3,reach: float):return Actor.GroundMotion.sample(terrain.field,at,reach)
 	terrain.geometry_changed.connect(invalidate)
 
 func invalidate() -> void:
@@ -124,11 +126,14 @@ func _update_wildlife(delta: float) -> void:
 	for id in actors:
 		var actor: Node3D=actors[id]
 		var row: Dictionary=encounters[id]
-		if not Wildlife.eligible(actor.definition,row):continue
+		if not Wildlife.eligible(actor.definition,row):
+			if actor.ground_motion.enabled:
+				actor.paused=behavior_stopped
+				actor.drive_ground(actor.global_position,actor.global_basis,delta,ground_probe,behavior_stopped)
+			continue
 		var home: Vector3=row.get("home_point",row.point)
 		var motion:=FrontierWildlifeCombat.pose(terrain.field,row,home,behavior_time+behavior_elapsed,behavior_observers,behavior_crew,str(body.id))
-		var previous:=actor.position
-		actor.position=motion.point;actor.basis=motion.basis;actor.paused=behavior_stopped
+		actor.paused=behavior_stopped
 		var combat: Dictionary=motion.get("combat",{})
 		if not combat.is_empty():
 			actor.apply_combat(combat,FrontierWildlifeCombat.profile(row),behavior_stopped)
@@ -144,12 +149,12 @@ func _update_wildlife(delta: float) -> void:
 		else:
 			actor.combat_override=false
 			if actor.state!=motion.state:actor.set_state(motion.state)
+		var destination: Transform3D=global_transform*Transform3D(motion.basis,motion.point)
+		actor.drive_ground(destination.origin,destination.basis,delta,ground_probe,behavior_stopped)
+		var footfall: Vector3=actor.ground_motion.take_footfall()
 		if not behavior_stopped and viewer.position.distance_to(motion.point)<float(Wildlife.config().cue_range):
 			if combat.is_empty() and motion.alert and row.get("behavior_phase","")!="avoid":wildlife_cue.emit(motion.point,"alert")
-			var step: float=float(row.get("step_elapsed",0.0))+delta
-			if previous.distance_to(actor.position)>.002 and step>1.8:
-				wildlife_cue.emit(motion.point,"step");step=0.0
-			row.step_elapsed=step
+			if footfall.is_finite():wildlife_cue.emit(footfall,"step")
 		row.point=motion.point;row.behavior_phase=motion.phase
 
 func refresh() -> void:

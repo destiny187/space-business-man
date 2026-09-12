@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "position_seconds": 0.055,
+  "turn_radians_per_second": 6.5,
+  "combat_turn_radians_per_second": 12.0,
+  "pose_seconds": 0.10,
+  "speed_seconds": 0.10,
+  "teleport_lengths": 5.0,
+  "maximum_visual_offset": 0.18,
+  "maximum_hz": 5.0,
+  "footstep_seconds": 0.14,
+  "minimum_speed": 0.035,
+  "single_limb_compression": 0.84,
+  "single_limb_extension": 1.12,
+  "heavy_types": ["lithic", "proboscid", "rhinocerid", "bovid", "chelonian", "armadillo", "tower", "amphora", "gyre_tower", "double_vault"],
+  "kinds": {
+    "quadruped": {"stride": 1.25, "stance": 0.72, "lift": 0.16, "run_speed": 2.6, "bob": 0.025, "roll": 0.025},
+    "biped": {"stride": 1.10, "stance": 0.64, "lift": 0.20, "run_speed": 2.4, "bob": 0.045, "roll": 0.045},
+    "many": {"stride": 0.85, "stance": 0.70, "lift": 0.12, "run_speed": 2.2, "bob": 0.012, "roll": 0.012},
+    "radial": {"stride": 0.65, "stance": 0.82, "lift": 0.13, "run_speed": 2.0, "bob": 0.012, "roll": 0.025},
+    "hop": {"stride": 1.35, "stance": 0.45, "lift": 0.26, "run_speed": 2.2, "bob": 0.10, "roll": 0.010},
+    "slither": {"stride": 0.60, "stance": 1.0, "lift": 0.0, "run_speed": 1.8, "bob": 0.0, "roll": 0.0},
+    "crawl": {"stride": 0.40, "stance": 1.0, "lift": 0.0, "run_speed": 1.5, "bob": 0.005, "roll": 0.008}
+  }
+}

@@ -39,24 +39,40 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
     "Anim_Segment_2",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
     "Anim_Segment_3",
+    "Anim_Leg_3_L",
+    "Anim_Leg_3_R",
     "Anim_Segment_4",
+    "Anim_Leg_4_L",
+    "Anim_Leg_4_R",
     "Anim_Segment_5",
+    "Anim_Leg_5_L",
+    "Anim_Leg_5_R",
     "Anim_Segment_6",
-    "Anim_Segment_7"
+    "Anim_Leg_6_L",
+    "Anim_Leg_6_R",
+    "Anim_Segment_7",
+    "Anim_Leg_7_L",
+    "Anim_Leg_7_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_petal_mantis_10_near.glb",
       "triangles": 23600,
-      "sha256": "12a3d59eed8890d19e252fbe07630d8453d483abfd719f87f4f5be3186bcca9f"
+      "sha256": "cf1f795fb1027f3e86faebf4b8c2bf0acd36033d2e9dc6e282ea310f651bb7ab"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_petal_mantis_10_far.glb",
-      "triangles": 6594,
-      "sha256": "e73db836671dcc803f19a21dfee6ef5f2dbc9b0612d01c2bbe5091b24390d776"
+      "triangles": 6578,
+      "sha256": "e5bb77054fa8655946b70796d87c82fc0bc276cb682e338a3abb25a88424e1fb"
     }
   },
   "geometry": {
@@ -68,28 +84,28 @@
       ],
       "max": [
         0.8308166265487671,
-        0.9804086685180664,
+        0.9804087281227112,
         1.1565845012664795
       ],
       "floor_y": 0.0,
-      "ceiling_y": 0.9804086685180664,
+      "ceiling_y": 0.9804087281227112,
       "vertices": 12002
     },
     "far": {
       "min": [
         -0.8279690742492676,
-        -0.001589745283126831,
+        -0.0015897750854492188,
         -1.1600220203399658
       ],
       "max": [
         0.8279690742492676,
-        0.9804438352584839,
+        0.9804438948631287,
         1.1567093133926392
       ],
-      "floor_y": -0.001589745283126831,
-      "ceiling_y": 0.9804438352584839,
-      "vertices": 3467
+      "floor_y": -0.0015897750854492188,
+      "ceiling_y": 0.9804438948631287,
+      "vertices": 3459
     }
   },
-  "mesh_nodes": 18
+  "mesh_nodes": 26
 }

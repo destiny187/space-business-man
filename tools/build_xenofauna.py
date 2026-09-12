@@ -24,6 +24,11 @@ def oval(name,p,s,slot='main',parent=None):
     return B.oval(name,p,s,slot,parent,32)
 
 def tube(name,pts,r=.08,slot='secondary',parent=None):
+    # Ground locomotion needs independent support pivots, not a rigid pair on each body plate.
+    if name in ('Pleat foot', 'Segment support', 'Folded plate leg', 'Helix floor support') and parent and parent.name.startswith('Anim_Segment'):
+        origin=Vector(pts[0]);side='L' if origin.x<0 else 'R'
+        support=B.pivot('Anim_Leg_'+parent.name.removeprefix('Anim_Segment_')+'_'+side,origin,parent)
+        pts=[tuple(Vector(p)-origin) for p in pts];parent=support
     curve=bpy.data.curves.new(name,'CURVE');curve.dimensions='3D';curve.resolution_u=2 if len(pts)>20 else 6;curve.bevel_depth=r;curve.bevel_resolution=3
     spline=curve.splines.new('BEZIER');spline.bezier_points.add(len(pts)-1)
     for point,co in zip(spline.bezier_points,pts):point.co=co;point.handle_left_type='AUTO';point.handle_right_type='AUTO'

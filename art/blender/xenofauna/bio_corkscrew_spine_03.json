@@ -39,32 +39,42 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
     "Anim_Segment_2",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
     "Anim_Segment_3",
-    "Anim_Segment_4"
+    "Anim_Leg_3_L",
+    "Anim_Leg_3_R",
+    "Anim_Segment_4",
+    "Anim_Leg_4_L",
+    "Anim_Leg_4_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_corkscrew_spine_03_near.glb",
       "triangles": 9120,
-      "sha256": "40dbc2a12c74efe61e2566df09fc637332fc8589b4ef7f2273bb038f7030b890"
+      "sha256": "a62a9788ab35e2d5a93ce3400d5af46a42a9fa262c00e8fffca54c0f75102ca0"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_corkscrew_spine_03_far.glb",
-      "triangles": 2546,
-      "sha256": "ef5b7e7eef7e49aff8610e58b1f8f03259b7cb077fe3618dba77c96b11d70b83"
+      "triangles": 2536,
+      "sha256": "e3e4768aebf58fa96e132b6785784312e159be633687457febe2f4f176106901"
     }
   },
   "geometry": {
     "near": {
       "min": [
-        -0.7760375142097473,
+        -0.7760374546051025,
         0.0,
         -1.305314302444458
       ],
       "max": [
-        0.7760375142097473,
+        0.7760374546051025,
         1.181952953338623,
         1.3074190616607666
       ],
@@ -74,19 +84,19 @@
     },
     "far": {
       "min": [
-        -0.7754235863685608,
+        -0.775423526763916,
         -9.083747863769531e-05,
         -1.305314302444458
       ],
       "max": [
-        0.7754235863685608,
-        1.183087944984436,
+        0.775423526763916,
+        1.1830878257751465,
         1.3074190616607666
       ],
       "floor_y": -9.083747863769531e-05,
-      "ceiling_y": 1.183087944984436,
-      "vertices": 1393
+      "ceiling_y": 1.1830878257751465,
+      "vertices": 1388
     }
   },
-  "mesh_nodes": 11
+  "mesh_nodes": 16
 }

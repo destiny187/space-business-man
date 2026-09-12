@@ -39,30 +39,36 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
-    "Anim_Segment_2"
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Segment_2",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_accordion_shell_06_near.glb",
       "triangles": 6720,
-      "sha256": "459e4f1999bfaeebd3d6e0662b34f363228769638ea3faf1f6099518c158f439"
+      "sha256": "85d09c96630a31ca9531c2be7932e4f37e8070eebc0fe35aa121627eda69b287"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_accordion_shell_06_far.glb",
-      "triangles": 1880,
-      "sha256": "0c4630b956f0ac6c50ee07ddd935aceb1e46ec1f6c3d8f2fe32a4ed18f1cc4b9"
+      "triangles": 1874,
+      "sha256": "d8bb07c0099a2c2cd4ffdec88e3b6e9c43b4bc72e843e01e932ae4b96dd2873d"
     }
   },
   "geometry": {
     "near": {
       "min": [
-        -0.9237465262413025,
+        -0.9237464666366577,
         0.0,
         -1.0500000715255737
       ],
       "max": [
-        0.9237465262413025,
+        0.9237464666366577,
         1.3377251625061035,
         1.080987811088562
       ],
@@ -72,19 +78,19 @@
     },
     "far": {
       "min": [
-        -0.9231382012367249,
+        -0.9231382608413696,
         0.00021952390670776367,
         -1.0501258373260498
       ],
       "max": [
-        0.9231382012367249,
+        0.9231381416320801,
         1.3392066955566406,
         1.08135187625885
       ],
       "floor_y": 0.00021952390670776367,
       "ceiling_y": 1.3392066955566406,
-      "vertices": 1050
+      "vertices": 1047
     }
   },
-  "mesh_nodes": 7
+  "mesh_nodes": 10
 }

@@ -189,7 +189,7 @@ static func advance(ecology: Dictionary,body_id: String,seconds: float) -> void:
 static func validate(value: Variant,manifest: Dictionary) -> String:
 	if not value is Dictionary or value.get("version")!="ecology-v1":return "생태 저장 버전 오류"
 	if value.get("catalog_hash")!=FrontierEcologyCatalog.signature() or value.get("rules_hash")!=FrontierUniverse.fingerprint(FrontierEcologyCatalog.config()):return "생태 원형 또는 규칙 버전이 달라 원본 저장을 보존합니다."
-	if manifest.settings.has("ecology_rules") and manifest.settings.ecology_rules.get("catalog_hash","")!=FrontierEcologyCatalog.extension_signature():return "추가 생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
+	if manifest.settings.has("ecology_rules") and not FrontierEcologyCatalog.extension_compatible(str(manifest.settings.ecology_rules.get("catalog_hash",""))):return "추가 생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
 	if manifest.settings.get("ecology_rules",{}).has("flora_catalog_hash") and manifest.settings.ecology_rules.flora_catalog_hash!=FrontierEcologyCatalog.flora_signature():return "추가 식물·미생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
 	if not FrontierExpeditionBusiness.integer(value.get("item_storage_version",0),0,1):return "표본 아이템 저장 버전 오류"
 	for key in ["planets","observations","research","specimens"]:

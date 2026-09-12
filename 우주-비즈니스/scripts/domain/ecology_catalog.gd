@@ -7,6 +7,7 @@ static var _pools: Dictionary={}
 static var _config: Dictionary={}
 static var _signature: String=""
 static var _extension_signature: String=""
+static var _visual_compatibility: Dictionary={}
 static var _expanded_pools: Dictionary={}
 static var _flora_pools: Dictionary={}
 static var _flora_signature: String=""
@@ -93,6 +94,13 @@ static func signature() -> String:
 
 static func extension_signature() -> String:
 	prepare();return _extension_signature
+
+static func extension_compatible(saved: String) -> bool:
+	var current:=extension_signature()
+	if saved==current:return true
+	if _visual_compatibility.is_empty():_visual_compatibility=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/catalog_compatibility.json"))
+	# A reviewed pair of exact digests, never a blanket bypass for future catalogue edits.
+	return saved in _visual_compatibility.xenofauna.get(current,[])
 
 static func flora_signature() -> String:
 	prepare();return _flora_signature

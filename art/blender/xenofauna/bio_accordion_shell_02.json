@@ -39,20 +39,28 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
     "Anim_Segment_2",
-    "Anim_Segment_3"
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R",
+    "Anim_Segment_3",
+    "Anim_Leg_3_L",
+    "Anim_Leg_3_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_accordion_shell_02_near.glb",
       "triangles": 9968,
-      "sha256": "8c3dca4b04153f7e19baf65e7e158a67d5c7465e1f6607de542cb3e46653bbe2"
+      "sha256": "6ee184d7a0bf407f3a0c7eb109e0e9e53150bc29fc38b3a885a239a5f7eb8b31"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_accordion_shell_02_far.glb",
-      "triangles": 2786,
-      "sha256": "b896ffb9a3166e3da3d4c25998390e41173b82d5548c1c041eb867b15487563a"
+      "triangles": 2778,
+      "sha256": "72f32d66245b557c693f9976d1a935ac11e6ef593d132f0d7f7e53a13c11f1a8"
     }
   },
   "geometry": {
@@ -84,8 +92,8 @@
       ],
       "floor_y": 0.0004234910011291504,
       "ceiling_y": 1.4729193449020386,
-      "vertices": 1527
+      "vertices": 1523
     }
   },
-  "mesh_nodes": 11
+  "mesh_nodes": 15
 }

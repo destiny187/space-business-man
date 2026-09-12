@@ -39,19 +39,25 @@
   "pivots": [
     "Anim_Body",
     "Anim_Segment_0",
+    "Anim_Leg_0_L",
+    "Anim_Leg_0_R",
     "Anim_Segment_1",
-    "Anim_Segment_2"
+    "Anim_Leg_1_L",
+    "Anim_Leg_1_R",
+    "Anim_Segment_2",
+    "Anim_Leg_2_L",
+    "Anim_Leg_2_R"
   ],
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_knuckle_chain_01_near.glb",
       "triangles": 13392,
-      "sha256": "bd04c5abc6f0b2334ebd124fc6acd7c4dc2b9b67a4932675d9123e2df5973648"
+      "sha256": "ca33ebc27473ac54d35a3c3cc6e067afd8b341b5859e49dce561768decfc4fcf"
     },
     "far": {
       "path": "우주-비즈니스/assets/models/xenofauna/bio_knuckle_chain_01_far.glb",
-      "triangles": 3744,
-      "sha256": "b12e736931a4bae769be88097275950b276059ec018d44de30eaae47f92cf250"
+      "triangles": 3743,
+      "sha256": "059aec9259839293d543734c36b5e8c5177ba0591f55099ae92d0b5ebded7d7d"
     }
   },
   "geometry": {
@@ -72,19 +78,19 @@
     },
     "far": {
       "min": [
-        -0.7362024784088135,
+        -0.7437466382980347,
         0.0,
         -1.398707628250122
       ],
       "max": [
-        0.7362024784088135,
+        0.7438892722129822,
         1.5399999618530273,
         1.4136104583740234
       ],
       "floor_y": 0.0,
       "ceiling_y": 1.5399999618530273,
-      "vertices": 1945
+      "vertices": 1929
     }
   },
-  "mesh_nodes": 7
+  "mesh_nodes": 13
 }
