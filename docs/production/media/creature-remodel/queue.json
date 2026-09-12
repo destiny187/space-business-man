@@ -110,6 +110,17 @@
     "Asset build, rendered review and campaign integration are separate states",
     "Split rigs when joints, limbs, symmetry, organs or propulsion differ"
   ],
+  "progress": {
+    "approved_references": 6,
+    "additional_anatomies_rendered": 59,
+    "campaign_replacements": 62,
+    "other_animal_ids": 5535,
+    "ground_locomotion_rendered": 64,
+    "models_built": 65,
+    "r02_planned": 56,
+    "r02_built": 56,
+    "r02_rendered": 56
+  },
   "forms": [
     {
       "species_id": "bio_lithic_01",
@@ -7341,11 +7352,12 @@
         "organ": "분산 감광점",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_02",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "addfa4f33a09bdeef510e77adbf7aedb1138ab23224c9e2d7d547a661216efdb"
     },
     {
       "species_id": "bio_torus_loom_03",
@@ -7359,11 +7371,12 @@
         "organ": "깊은 감각구",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_03",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "b79d4e4d9c73ef103a4df75e31cf2dc3efc3e5f296aeec3e32862056c4c4edb6"
     },
     {
       "species_id": "bio_torus_loom_04",
@@ -7377,11 +7390,12 @@
         "organ": "빛을 모으는 틈",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_04",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "658e5499dec3c8f226721e56fb2dd133cc351128bde7825d165c974e9f99c2b7"
     },
     {
       "species_id": "bio_torus_loom_05",
@@ -7395,11 +7409,12 @@
         "organ": "방사 화학수용기",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_05",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "edbbbf32f6886d4622d4711b561d3930542a02008d9dc83551ca2887f7fe6d54"
     },
     {
       "species_id": "bio_torus_loom_06",
@@ -7413,11 +7428,12 @@
         "organ": "주름형 압력막",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_06",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "0d0af58f17079ebcbc80a5e206445095dc42f2cca88813d1baeda3c7b8df928e"
     },
     {
       "species_id": "bio_torus_loom_07",
@@ -7431,11 +7447,12 @@
         "organ": "말단 감각패드",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_07",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "617ea1b1d2a3ee57b50b24f8f15692ef95c1468806811227b344d378e6772006"
     },
     {
       "species_id": "bio_torus_loom_08",
@@ -7449,11 +7466,12 @@
         "organ": "이중 감각고리",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_08",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "bf0cf0e29a0cb8f6da17b2e8cc308861fe9c3f072ee99a513f45660a823c61eb"
     },
     {
       "species_id": "bio_torus_loom_09",
@@ -7467,11 +7485,12 @@
         "organ": "빗살 감각엽",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_09",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "dda40d1565b90ec059a8d476b69808a37fe3cf8da843dd7fdaa5f3872caaedd7"
     },
     {
       "species_id": "bio_torus_loom_10",
@@ -7485,11 +7504,12 @@
         "organ": "분지 촉각수염",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_torus_loom_10",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "ae345abd779eab4ff46104c47181a44d190fe648868f13c0d006fddf247814fa"
     },
     {
       "species_id": "bio_double_vault_01",
@@ -7683,11 +7703,12 @@
         "organ": "피부 진동공",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_01",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "043cf41157bf4a35c00cc2fc91f0f8b73d9856f233e2820d7d4b1df84db3b495"
     },
     {
       "species_id": "bio_pentapalm_02",
@@ -7701,11 +7722,12 @@
         "organ": "분산 감광점",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_02",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "14540608138e9134ff5542d24a2fec87b4be2272ae4444acbdd28c3afef72e71"
     },
     {
       "species_id": "bio_pentapalm_03",
@@ -7737,11 +7759,12 @@
         "organ": "빛을 모으는 틈",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_04",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "7d094a2e87ffdae42c223134e0575fa920ab78e80f3ac0c6e7051ac822bb0735"
     },
     {
       "species_id": "bio_pentapalm_05",
@@ -7755,11 +7778,12 @@
         "organ": "방사 화학수용기",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_05",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "2c3ad3fe0d591f199dcc93c8b8ccab036bf0aca66d5a9dae24ac9ccc00a5a3e2"
     },
     {
       "species_id": "bio_pentapalm_06",
@@ -7773,11 +7797,12 @@
         "organ": "주름형 압력막",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_06",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "1ffc86a2577111a8d54c1cb4df93a9f042f6d8f360ce823831e9704433e58269"
     },
     {
       "species_id": "bio_pentapalm_07",
@@ -7791,11 +7816,12 @@
         "organ": "말단 감각패드",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_07",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "df25b14867a016532969cbd6f240cbdee58a7fc5caffa8ba62b89154a0a30919"
     },
     {
       "species_id": "bio_pentapalm_08",
@@ -7809,11 +7835,12 @@
         "organ": "이중 감각고리",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_08",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "e7b83b6caf012ace709dbce40441c0a04aaaeb02ff8be26e66af97a31e0d7ba2"
     },
     {
       "species_id": "bio_pentapalm_09",
@@ -7827,11 +7854,12 @@
         "organ": "빗살 감각엽",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_09",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "3a6732e5e66d1c78c0e5b1cd5cd08e561fbb6353417208b0ac1980db67fffb39"
     },
     {
       "species_id": "bio_pentapalm_10",
@@ -7845,11 +7873,12 @@
         "organ": "분지 촉각수염",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pentapalm_10",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "3a0e9d44655cc991ee2650da7b9b0ad3a40e9c4f3d6adb0e0b309c6eef829763"
     },
     {
       "species_id": "bio_walking_calyx_01",
@@ -10581,11 +10610,12 @@
         "organ": "분산 감광점",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_02",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "ee7f8b3a3ea80b8cf127350a54c54292596e3e9340f27dcc461c4dfe5ded6638"
     },
     {
       "species_id": "bio_pendulum_grazer_03",
@@ -10599,11 +10629,12 @@
         "organ": "깊은 감각구",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_03",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "1ce41f1fd5382c727303e7378200a10204206ec5734c332ccf64f23bf5644639"
     },
     {
       "species_id": "bio_pendulum_grazer_04",
@@ -10617,11 +10648,12 @@
         "organ": "빛을 모으는 틈",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_04",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "34fb202061d8caaa48fa9a2e3d5f17ce24c84e117bf7348cbad6cea3350edc68"
     },
     {
       "species_id": "bio_pendulum_grazer_05",
@@ -10635,11 +10667,12 @@
         "organ": "방사 화학수용기",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_05",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "f43ac51d9c07c62fb859f2b512716f6b40f03f1a22d31a48fb391e2afe2fd7a9"
     },
     {
       "species_id": "bio_pendulum_grazer_06",
@@ -10653,11 +10686,12 @@
         "organ": "주름형 압력막",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_06",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "b18000cf7ac5b1c07a1424eeca5c9c8f91b95b81e6d2cb92e5edfc1eace2abac"
     },
     {
       "species_id": "bio_pendulum_grazer_07",
@@ -10671,11 +10705,12 @@
         "organ": "말단 감각패드",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_07",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "7b75cc26e67b631510b159741e1c24f7f9a3f58653225ae79a74e1927cb4e250"
     },
     {
       "species_id": "bio_pendulum_grazer_08",
@@ -10689,11 +10724,12 @@
         "organ": "이중 감각고리",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_08",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "e72babbd38a0e7f4bec9a2ad86b316e490e4564fb966e336681ae3701a945d9c"
     },
     {
       "species_id": "bio_pendulum_grazer_09",
@@ -10707,11 +10743,12 @@
         "organ": "빗살 감각엽",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_09",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "818ff71a9fc80a14697563e717b1325cef0b4e80a57e4cf5f3f2fd849fbde981"
     },
     {
       "species_id": "bio_pendulum_grazer_10",
@@ -10725,11 +10762,12 @@
         "organ": "분지 촉각수염",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_pendulum_grazer_10",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "8de3fbcf86f08a2d7e0c3961e1e35138e4678b4a64b87bb592d4757e323afec3"
     },
     {
       "species_id": "bio_split_keel_01",
@@ -11643,11 +11681,12 @@
         "organ": "피부 진동공",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_01",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "04a197de1e575c8974d39f4fdfb27261e4470845bdaf2826db93b59d0f979e4f"
     },
     {
       "species_id": "bio_mirror_fork_02",
@@ -11661,11 +11700,12 @@
         "organ": "분산 감광점",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_02",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "b03e08a664474d65e38b23d23f4dd33a7b803c9d920ec5ff378a81f7731f0ef4"
     },
     {
       "species_id": "bio_mirror_fork_03",
@@ -11679,11 +11719,12 @@
         "organ": "깊은 감각구",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_03",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "2fdb675ca89dc4bf3cc5f7d99a9d3357161c1fe73781c809676f959aaf3a6078"
     },
     {
       "species_id": "bio_mirror_fork_04",
@@ -11697,11 +11738,12 @@
         "organ": "빛을 모으는 틈",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_04",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "b1d5d76be081a57bb764482135dd6bdf07a6ebb31716900a30f78193a70da5c9"
     },
     {
       "species_id": "bio_mirror_fork_05",
@@ -11715,11 +11757,12 @@
         "organ": "방사 화학수용기",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_05",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "03278b867e202624cf211583980818986f50eee0bc3f003614b5ee4741e67919"
     },
     {
       "species_id": "bio_mirror_fork_06",
@@ -11733,11 +11776,12 @@
         "organ": "주름형 압력막",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_06",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "6babedd3d3929ed66518315e1951f052c5848fb51ae985e2c3e2272dcfd9d481"
     },
     {
       "species_id": "bio_mirror_fork_07",
@@ -11751,11 +11795,12 @@
         "organ": "말단 감각패드",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_07",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "fec2d2eb2bd8bc6eefd08f05169ee00114cd5290416058c73b195d3d4b55992c"
     },
     {
       "species_id": "bio_mirror_fork_08",
@@ -11769,11 +11814,12 @@
         "organ": "이중 감각고리",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_08",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "1ebe3694f94b3146f1e5b6cae39c5faa3b3c67b182417bea88b238a7dff57d9c"
     },
     {
       "species_id": "bio_mirror_fork_09",
@@ -11787,11 +11833,12 @@
         "organ": "빗살 감각엽",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_09",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "57490cca74e59c7713f76305a2084fb86b00c392eaef7c4d8d745101b14c26d9"
     },
     {
       "species_id": "bio_mirror_fork_10",
@@ -11805,11 +11852,12 @@
         "organ": "분지 촉각수염",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_mirror_fork_10",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "d74d94b60036424dedfc009b986552aaa5996360ee463c9d5bd9580426e67e68"
     },
     {
       "species_id": "bio_quill_amphora_01",
@@ -11841,11 +11889,12 @@
         "organ": "분산 감광점",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_02",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "cdd134adbb89400027e65a19e9f0e6170a42470bf8dde63d07da553e42afb6b5"
     },
     {
       "species_id": "bio_quill_amphora_03",
@@ -11859,11 +11908,12 @@
         "organ": "깊은 감각구",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_03",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "30c7c316d0e4460dd26bb8b20a36131319d47a472a10db12d05849018a8cdfe1"
     },
     {
       "species_id": "bio_quill_amphora_04",
@@ -11877,11 +11927,12 @@
         "organ": "빛을 모으는 틈",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_04",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "cd4301ab0abfc368ec113da60ed2f2cda9a70e09834005b6ac5aea4d0bdf8cfd"
     },
     {
       "species_id": "bio_quill_amphora_05",
@@ -11895,11 +11946,12 @@
         "organ": "방사 화학수용기",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_05",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "a4326aad5db9220d02767a1c0cfdb13855ac35297a37156a26d9b7bc2bf7e1f7"
     },
     {
       "species_id": "bio_quill_amphora_06",
@@ -11913,11 +11965,12 @@
         "organ": "주름형 압력막",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_06",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "a33225a80d042f9884d25ca6c456fafe7902bd8f17bebd7537ea019ae59330ca"
     },
     {
       "species_id": "bio_quill_amphora_07",
@@ -11931,11 +11984,12 @@
         "organ": "말단 감각패드",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_07",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "32b757abcd3b1801f4283a453e716afc80eb858c9d9feff2c2f7771a6175a73d"
     },
     {
       "species_id": "bio_quill_amphora_08",
@@ -11949,11 +12003,12 @@
         "organ": "이중 감각고리",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_08",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "7374388a5c504648c85b30ea0c370ebc9aff1a22f4603fb15f4e09f7b8fa891d"
     },
     {
       "species_id": "bio_quill_amphora_09",
@@ -11967,11 +12022,12 @@
         "organ": "빗살 감각엽",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_09",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "ac694f885b9bc01a3c17578519c9db1e2dceb96ddc4796e954b12585b5bf6202"
     },
     {
       "species_id": "bio_quill_amphora_10",
@@ -11985,11 +12041,12 @@
         "organ": "분지 촉각수염",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_quill_amphora_10",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "9889b4f9408c28dbcc48fd76722c332bcd66db59eb8c3309bb3f0627a2030241"
     },
     {
       "species_id": "bio_braid_crawler_01",
@@ -12183,11 +12240,12 @@
         "organ": "피부 진동공",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_01",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "7a2fe36e2cfafef55e4fe544c1274ec49dfb4b8ecabf0d5f75db35a81960af90"
     },
     {
       "species_id": "bio_hinge_book_02",
@@ -12201,11 +12259,12 @@
         "organ": "분산 감광점",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_02",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "6d7098092cdfd1de88fbb379daa39253829bc7a5cef839594bd3416f44653c4d"
     },
     {
       "species_id": "bio_hinge_book_03",
@@ -12219,11 +12278,12 @@
         "organ": "깊은 감각구",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_03",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "34816390f1cd53842f5f923dd73acfa706fe4a0e59857247306fbcfcefeceef8"
     },
     {
       "species_id": "bio_hinge_book_04",
@@ -12237,11 +12297,12 @@
         "organ": "빛을 모으는 틈",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_04",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "6319563cf3b4e5895bb6f1c0928b456e6e40dafdfec2f1a1a52618323d0075ff"
     },
     {
       "species_id": "bio_hinge_book_05",
@@ -12255,11 +12316,12 @@
         "organ": "방사 화학수용기",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_05",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "d2df5d7a2b5ca419d2d00f606aeee177a9ae2326928553b18876cd3648b26524"
     },
     {
       "species_id": "bio_hinge_book_06",
@@ -12273,11 +12335,12 @@
         "organ": "주름형 압력막",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_06",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "e2e726052b1d85a9267ed3219c2004046cc49d4d8e4bad28a072ed03277a993b"
     },
     {
       "species_id": "bio_hinge_book_07",
@@ -12291,11 +12354,12 @@
         "organ": "말단 감각패드",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_07",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "5fc080128cad28eab460f3256bd381c5285d79203ee9b25e1eb9b7aa335dc7c5"
     },
     {
       "species_id": "bio_hinge_book_08",
@@ -12309,11 +12373,12 @@
         "organ": "이중 감각고리",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_08",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "736e52f23d5b3c6723e1a725f6e88f11838cff5ecbc275176e879f4494fcf477"
     },
     {
       "species_id": "bio_hinge_book_09",
@@ -12327,11 +12392,12 @@
         "organ": "빗살 감각엽",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_09",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "6129f159edf1f727ffa9b47b3283f09829b99d0f19a6156f49860834761926e0"
     },
     {
       "species_id": "bio_hinge_book_10",
@@ -12345,11 +12411,12 @@
         "organ": "분지 촉각수염",
         "existing_template": "legacy-unskinned"
       },
-      "batch": null,
-      "asset_id": null,
-      "art_status": "queued",
-      "runtime_status": "pending",
-      "individual_review": "pending"
+      "batch": "R02",
+      "asset_id": "bio_hinge_book_10",
+      "art_status": "render-reviewed",
+      "runtime_status": "surface-actor-integrated",
+      "individual_review": "Imported near/far; 240 motion steps; nine Forward+ pose captures; family boards inspected. Full campaign and host attack activation pending.",
+      "build_fingerprint": "c88f4b797688b86283164637aed9711bb0c8cfa891529aa6dc93023967a28be9"
     },
     {
       "species_id": "bio_offset_halo_01",
@@ -100911,12 +100978,5 @@
       "runtime_status": "pending",
       "individual_review": "pending"
     }
-  ],
-  "progress": {
-    "approved_references": 6,
-    "additional_anatomies_rendered": 3,
-    "campaign_replacements": 6,
-    "other_animal_ids": 5591,
-    "ground_locomotion_rendered": 8
-  }
+  ]
 }

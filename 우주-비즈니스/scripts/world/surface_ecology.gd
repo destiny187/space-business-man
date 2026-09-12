@@ -148,6 +148,7 @@ func _update_wildlife(delta: float) -> void:
 			row.combat_serial=serial;row.combat_struck=bool(combat.struck)
 		else:
 			actor.combat_override=false
+			actor.restored_down=motion.phase=="incapacitated"
 			if actor.state!=motion.state:actor.set_state(motion.state)
 		var destination: Transform3D=global_transform*Transform3D(motion.basis,motion.point)
 		actor.drive_ground(destination.origin,destination.basis,delta,ground_probe,behavior_stopped,terrain.field.revision)

@@ -110,7 +110,7 @@ func review(original: Dictionary,form: Dictionary) -> void:
 
 func audit_registry() -> void:
 	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_runtime.json"))
-	assert(manifest.enabled_ground_species.size()==6)
+	assert(not manifest.enabled_ground_species.is_empty())
 	for id in manifest.enabled_ground_species:
 		var form:=FrontierEcologyCatalog.form(id)
 		assert(FrontierWildlifeCombat.pattern(form)=="none")
@@ -138,4 +138,4 @@ func audit_registry() -> void:
 		var form:=FrontierEcologyCatalog.form(id)
 		assert(Actor.RemodelRegistry.entry(form).is_empty() and FrontierWildlifeCombat.pattern(form)!="none")
 		assert(Actor.RemodelRegistry.path(form,"near").ends_with(str(form.lods.near.path).trim_prefix("우주-비즈니스/")))
-	print("REMODEL_REGISTRY six surface species; imported prewarm/deferred LOD; incident opt-out; host charge/leap preserved")
+	print("REMODEL_REGISTRY ",manifest.enabled_ground_species.size()," surface species; imported prewarm/deferred LOD; incident opt-out; host charge/leap preserved")

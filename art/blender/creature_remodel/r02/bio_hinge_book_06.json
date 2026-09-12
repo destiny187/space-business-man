@@ -1,0 +1,194 @@
+{
+  "id": "bio_hinge_book_06",
+  "source_id": "bio_hinge_book_06",
+  "name": "갈림서판수",
+  "kind": "bivalve",
+  "family": "hinge_book",
+  "habitat": "한랭·빙하",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96,
+    "mode": 5,
+    "sensory_type": "주름형 압력막",
+    "eye_count": 0,
+    "neck_length": 1.8,
+    "organ_branch": 2,
+    "shell_lobes": 5
+  },
+  "attack": "bite",
+  "recipe_sha256": "848428fc6e5567ec9ca31bed7f8003b4ef36d00e9d7d68abeadd7160589da2f4",
+  "version": "r02-1",
+  "build_fingerprint": "e2e726052b1d85a9267ed3219c2004046cc49d4d8e4bad28a072ed03277a993b",
+  "normalized_geometry_sha256": "b3123a8a78307c7d11c86eb87c8a4706c743e91d13cd7df7e4a7488b3eff43fc",
+  "source": "art/blender/creature_remodel/r02/bio_hinge_book_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 22,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "keel_mouth",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        1.0499999523162842
+      ]
+    },
+    "Socket_keel_mouth": {
+      "bone": "keel_mouth",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        1.0499999523162842
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "keel_mouth",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        1.0499999523162842
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        6.38702546899145e-17,
+        0.10000000149011612,
+        1.0430803298950195
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0307765007019043,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        7.261207807438721e-17,
+        0.10000000149011612,
+        -1.185845136642456
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.9915119409561157,
+        0.10000000149011612,
+        -1.2142520377866835e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3399105777009827,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5268613954365232,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.7099999785423279,
+    1.0499999523162842
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_hinge_book_06_near.glb",
+      "sha256": "eb6e04507200c9a78fbda89e07a04aec2780c7f7d45f755326a3f7e825282bad",
+      "triangles": 35562,
+      "min": [
+        -1.2938547134399414,
+        0.02499999850988388,
+        -1.4881879091262817
+      ],
+      "max": [
+        1.3331191539764404,
+        1.831317663192749,
+        1.3454231023788452
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_hinge_book_06_far.glb",
+      "sha256": "1922ba622f47b18ce4ffecaac44e06d10c6c2e863ab4c6ff8e58c5bfe3b63b9e",
+      "triangles": 15286,
+      "min": [
+        -1.2937707901000977,
+        0.025011513382196426,
+        -1.4881038665771484
+      ],
+      "max": [
+        1.3330352306365967,
+        1.831317663192749,
+        1.3453333377838135
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "panel-1_0": "chest",
+    "panel-1_1": "chest",
+    "panel1_0": "chest",
+    "panel1_1": "chest",
+    "keel_mouth": "head",
+    "keel_mouth_jaw-1": "keel_mouth",
+    "keel_mouth_jaw1": "keel_mouth",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower"
+  },
+  "build_seconds": 7.227,
+  "source_render_seconds": 7.522
+}

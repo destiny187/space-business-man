@@ -1,0 +1,206 @@
+{
+  "id": "bio_pendulum_grazer_06",
+  "source_id": "bio_pendulum_grazer_06",
+  "name": "긴추섭식수",
+  "kind": "cantilever",
+  "family": "pendulum_grazer",
+  "habitat": "동굴·지하수",
+  "palette": [
+    "695e77",
+    "bab0b1",
+    "34494e",
+    "ab9567"
+  ],
+  "morphology": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96,
+    "mode": 5,
+    "sensory_type": "주름형 압력막",
+    "eye_count": 0,
+    "neck_length": 1.8,
+    "organ_branch": 2,
+    "shell_lobes": 5
+  },
+  "attack": "bite",
+  "recipe_sha256": "7873beb265d942e48581d5caa517f6886cde4eecea7269dc91a693e32bdadd07",
+  "version": "r02-1",
+  "build_fingerprint": "b18000cf7ac5b1c07a1424eeca5c9c8f91b95b81e6d2cb92e5edfc1eace2abac",
+  "normalized_geometry_sha256": "117d14ab9eab89dd1de1459a1ecf0c3fd64e008100f53f0662ea5715cd40e9b3",
+  "source": "art/blender/creature_remodel/r02/bio_pendulum_grazer_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 26,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        -0.1899999976158142,
+        0.913599967956543,
+        2.7300000190734863
+      ]
+    },
+    "Socket_head": {
+      "bone": "head",
+      "point": [
+        -0.1899999976158142,
+        0.913599967956543,
+        2.7300000190734863
+      ]
+    },
+    "Socket_head1": {
+      "bone": "head1",
+      "point": [
+        0.1899999976158142,
+        0.913599967956543,
+        2.7300000190734863
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        -0.1899999976158142,
+        0.913599967956543,
+        2.7300000190734863
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        6.251130944005318e-17,
+        0.10000000149011612,
+        1.0208871364593506
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0088450908660889,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        7.106713630070967e-17,
+        0.10000000149011612,
+        -1.1606143712997437
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.9704159498214722,
+        0.10000000149011612,
+        -1.1884168711509373e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58
+    }
+  },
+  "muzzle": [
+    -0.1899999976158142,
+    0.913599967956543,
+    2.7300000190734863
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_pendulum_grazer_06_near.glb",
+      "sha256": "9c01612db72029197a3a92a58cdbaa23a1630efad4d640c442d984a1e3af0ac6",
+      "triangles": 31304,
+      "min": [
+        -1.2727587223052979,
+        0.02499999850988388,
+        -1.4629572629928589
+      ],
+      "max": [
+        1.3111878633499146,
+        1.9091182947158813,
+        2.8126630783081055
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_pendulum_grazer_06_far.glb",
+      "sha256": "14977aedf8d69d52fd58395a385b0f24cdd0a79ebd29b6dd10490a58df1a8cee",
+      "triangles": 13454,
+      "min": [
+        -1.2726722955703735,
+        0.024997131898999214,
+        -1.4628708362579346
+      ],
+      "max": [
+        1.3111014366149902,
+        1.9091182947158813,
+        2.8149328231811523
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "neck0_0": "chest",
+    "neck0_1": "neck0_0",
+    "neck0_2": "neck0_1",
+    "head": "neck0_2",
+    "head_jaw-1": "head",
+    "head_jaw1": "head",
+    "neck1_0": "chest",
+    "neck1_1": "neck1_0",
+    "neck1_2": "neck1_1",
+    "head1": "neck1_2",
+    "head1_jaw-1": "head1",
+    "head1_jaw1": "head1",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower"
+  },
+  "build_seconds": 5.616,
+  "source_render_seconds": 6.364
+}

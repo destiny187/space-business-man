@@ -1,0 +1,243 @@
+{
+  "id": "bio_mirror_fork_05",
+  "source_id": "bio_mirror_fork_05",
+  "name": "좁은갈래수",
+  "kind": "forked",
+  "family": "mirror_fork",
+  "habitat": "열수·온토",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4,
+    "mode": 4,
+    "sensory_type": "방사 화학수용기",
+    "eye_count": 6,
+    "neck_length": 2.6,
+    "organ_branch": 1,
+    "shell_lobes": 7
+  },
+  "attack": "bite",
+  "recipe_sha256": "dbc85c0915b870aec6f82e9b22cc7344edcafe2b3806880b10db4fca3fbe7db8",
+  "version": "r02-1",
+  "build_fingerprint": "03278b867e202624cf211583980818986f50eee0bc3f003614b5ee4741e67919",
+  "normalized_geometry_sha256": "bdfad30d4cb3c8ceef21c8a6199111216a4189ba7707af55fa78bfcf6ad8bbd8",
+  "source": "art/blender/creature_remodel/r02/bio_mirror_fork_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 36,
+  "locomotion_chains": 7,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "forkmouth-1",
+      "point": [
+        -0.4209407866001129,
+        0.9419999718666077,
+        2.4600000381469727
+      ]
+    },
+    "Socket_forkmouth-1": {
+      "bone": "forkmouth-1",
+      "point": [
+        -0.4209407866001129,
+        0.9419999718666077,
+        2.4600000381469727
+      ]
+    },
+    "Socket_forkmouth1": {
+      "bone": "forkmouth1",
+      "point": [
+        0.4209407866001129,
+        0.9419999718666077,
+        2.4600000381469727
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "forkmouth-1",
+      "point": [
+        -0.4209407866001129,
+        0.9419999718666077,
+        2.4600000381469727
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        4.191902528490488e-17,
+        0.10000000149011612,
+        0.6845896244049072
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.46993860602378845,
+        0.10000000149011612,
+        0.37476351857185364
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.7038301229476929,
+        0.10000000149011612,
+        -0.16064463555812836
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.2795940637588501,
+        0.10000000149011612,
+        -0.5805830359458923
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.27198323607444763,
+        0.10000000149011612,
+        -0.5647789835929871
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.7095171809196472,
+        0.10000000149011612,
+        -0.16194267570972443
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.4775754511356354,
+        0.10000000149011612,
+        0.38085371255874634
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.31858767825045253,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.49381090128820143,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.42857142857142855,
+      "support2": 0.8571428571428571,
+      "support3": 0.2857142857142857,
+      "support4": 0.7142857142857143,
+      "support5": 0.14285714285714285,
+      "support6": 0.5714285714285714
+    }
+  },
+  "muzzle": [
+    -0.4209407866001129,
+    0.9419999718666077,
+    2.4600000381469727
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_mirror_fork_05_near.glb",
+      "sha256": "eda5e0adc447b8daeaa9d35bd83ec99785d7d4a5042f414577d2ec1d32ba29a8",
+      "triangles": 37122,
+      "min": [
+        -1.0202656984329224,
+        0.02499999850988388,
+        -0.8882696628570557
+      ],
+      "max": [
+        1.0145785808563232,
+        1.6097925901412964,
+        2.5260565280914307
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_mirror_fork_05_far.glb",
+      "sha256": "3a931ba8b3edc029cf035040b1c87b13ef5d0106eed02135ff35242c06c47b3e",
+      "triangles": 15954,
+      "min": [
+        -1.020276427268982,
+        0.024997137486934662,
+        -0.8882932662963867
+      ],
+      "max": [
+        1.0145927667617798,
+        1.6098806858062744,
+        2.526280641555786
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "fork-1_0": "chest",
+    "fork-1_1": "fork-1_0",
+    "fork-1_2": "fork-1_1",
+    "forkmouth-1": "fork-1_2",
+    "forkmouth-1_jaw-1": "forkmouth-1",
+    "forkmouth-1_jaw1": "forkmouth-1",
+    "fork1_0": "chest",
+    "fork1_1": "fork1_0",
+    "fork1_2": "fork1_1",
+    "forkmouth1": "fork1_2",
+    "forkmouth1_jaw-1": "forkmouth1",
+    "forkmouth1_jaw1": "forkmouth1",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "chest",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower"
+  },
+  "build_seconds": 22.653,
+  "source_render_seconds": 35.668
+}

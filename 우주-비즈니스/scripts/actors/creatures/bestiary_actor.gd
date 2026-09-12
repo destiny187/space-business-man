@@ -22,6 +22,7 @@ var flight_blend := -1.0
 var flight_clock := -1.0
 var state := "idle"
 var combat_override:=false
+var restored_down:=false
 var combat_pattern:="none"
 var combat_phase:=""
 var combat_clock:=0.0
@@ -54,7 +55,7 @@ var mouth_markers: Array[Node3D]=[]
 var visibility_notifier: VisibleOnScreenNotifier3D
 
 func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[],allow_remodel: bool=true) -> void:
-	definition=form;remodel=RemodelRegistry.entry(form) if allow_remodel else {};remodel_colors.clear();combat_override=false;combat_pattern="none";combat_phase="";combat_clock=0.0
+	definition=form;remodel=RemodelRegistry.entry(form) if allow_remodel else {};remodel_colors.clear();combat_override=false;restored_down=false;combat_pattern="none";combat_phase="";combat_clock=0.0
 	deferred_far_scene=null;deferred_material_cache.clear();visible_model=-1;desired_distant=false
 	if attack_timing.is_empty():attack_timing=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/attack_presentation.json")).timing_seconds
 	var timing: Dictionary=attack_timing
@@ -266,7 +267,7 @@ func drive_ground(at: Vector3,facing: Basis,delta: float,sampler: Callable,stopp
 	else:global_transform=Transform3D(facing,at)
 
 func apply_combat(live: Dictionary,profile: Dictionary,stopped: bool) -> void:
-	combat_override=true;combat_pattern=profile.pattern;combat_phase=live.phase;combat_clock=float(live.time)
+	combat_override=true;restored_down=false;combat_pattern=profile.pattern;combat_phase=live.phase;combat_clock=float(live.time)
 	combat_info=profile;combat_live=live
 	paused=stopped;elapsed=combat_clock
 	windup_seconds=float(profile.get("windup",.7));active_seconds=float(profile.get("active",.3));recovery_seconds=float(profile.get("recovery",1.1))

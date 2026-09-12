@@ -1,0 +1,231 @@
+{
+  "id": "bio_mirror_fork_07",
+  "source_id": "bio_mirror_fork_07",
+  "name": "관갈래수",
+  "kind": "forked",
+  "family": "mirror_fork",
+  "habitat": "건조 사구·협곡",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "radial_count": 4,
+    "limb_count": 6,
+    "branch_mode": 6,
+    "width": 0.95,
+    "height": 1.05,
+    "mode": 6,
+    "sensory_type": "말단 감각패드",
+    "eye_count": 0,
+    "neck_length": 1.4,
+    "organ_branch": 3,
+    "shell_lobes": 4
+  },
+  "attack": "bite",
+  "recipe_sha256": "b46dc08e5698fca3149301cbc29fd26dfe9f1185237d71f949d8867240350b8d",
+  "version": "r02-1",
+  "build_fingerprint": "fec2d2eb2bd8bc6eefd08f05169ee00114cd5290416058c73b195d3d4b55992c",
+  "normalized_geometry_sha256": "30f3b223981b85a489bba6dcbfabb8e9f243918bdddcf9d04cc0672ad1d720a3",
+  "source": "art/blender/creature_remodel/r02/bio_mirror_fork_07.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 33,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "forkmouth-1",
+      "point": [
+        -0.38304001092910767,
+        0.8964999914169312,
+        2.7799999713897705
+      ]
+    },
+    "Socket_forkmouth-1": {
+      "bone": "forkmouth-1",
+      "point": [
+        -0.38304001092910767,
+        0.8964999914169312,
+        2.7799999713897705
+      ]
+    },
+    "Socket_forkmouth1": {
+      "bone": "forkmouth1",
+      "point": [
+        0.38304001092910767,
+        0.8964999914169312,
+        2.7799999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "forkmouth-1",
+      "point": [
+        -0.38304001092910767,
+        0.8964999914169312,
+        2.7799999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        4.8852648393948924e-17,
+        0.10000000149011612,
+        0.7978242635726929
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7731887102127075,
+        0.10000000149011612,
+        0.4464007318019867
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.8011789321899414,
+        0.10000000149011612,
+        -0.46256089210510254
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        4.819451372009968e-17,
+        0.10000000149011612,
+        -0.7870761156082153
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.8129456639289856,
+        0.10000000149011612,
+        -0.46935442090034485
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.7575089335441589,
+        0.10000000149011612,
+        0.43734797835350037
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3391772973242646,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5257248108526101,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58,
+      "support4": 0.16,
+      "support5": 0.66
+    }
+  },
+  "muzzle": [
+    -0.38304001092910767,
+    0.8964999914169312,
+    2.7799999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_mirror_fork_07_near.glb",
+      "sha256": "7f0deba5bbaf95500681d1d5418b063a67f42f3dcde174bd7ad193371e58c697",
+      "triangles": 30846,
+      "min": [
+        -1.1161531209945679,
+        0.02499999850988388,
+        -1.0888481140136719
+      ],
+      "max": [
+        1.104386329650879,
+        1.5642145872116089,
+        2.8460564613342285
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_mirror_fork_07_far.glb",
+      "sha256": "b5826371482ed8dd6b62e1205f03c7a9d38a6edf3ecca7f14ef305b27a23fb18",
+      "triangles": 13258,
+      "min": [
+        -1.1161750555038452,
+        0.02499653771519661,
+        -1.0887874364852905
+      ],
+      "max": [
+        1.1044081449508667,
+        1.5642964839935303,
+        2.8462791442871094
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "fork-1_0": "chest",
+    "fork-1_1": "fork-1_0",
+    "fork-1_2": "fork-1_1",
+    "forkmouth-1": "fork-1_2",
+    "forkmouth-1_jaw-1": "forkmouth-1",
+    "forkmouth-1_jaw1": "forkmouth-1",
+    "fork1_0": "chest",
+    "fork1_1": "fork1_0",
+    "fork1_2": "fork1_1",
+    "forkmouth1": "fork1_2",
+    "forkmouth1_jaw-1": "forkmouth1",
+    "forkmouth1_jaw1": "forkmouth1",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower"
+  },
+  "build_seconds": 22.757,
+  "source_render_seconds": 37.886
+}

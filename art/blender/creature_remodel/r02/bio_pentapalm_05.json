@@ -1,0 +1,299 @@
+{
+  "id": "bio_pentapalm_05",
+  "source_id": "bio_pentapalm_05",
+  "name": "일곱손바닥수",
+  "kind": "radial",
+  "family": "pentapalm",
+  "habitat": "동굴·지하수",
+  "palette": [
+    "695e77",
+    "bab0b1",
+    "34494e",
+    "ab9567"
+  ],
+  "morphology": {
+    "radial_count": 7,
+    "limb_count": 7,
+    "branch_mode": 4,
+    "width": 0.72,
+    "height": 1.4,
+    "mode": 4,
+    "sensory_type": "방사 화학수용기",
+    "eye_count": 7,
+    "neck_length": 2.6,
+    "organ_branch": 1,
+    "shell_lobes": 7
+  },
+  "attack": "slam",
+  "recipe_sha256": "05322a16d6abab673738daf67b196cb662d742ca475c77a2ec3f6648a21120e5",
+  "version": "r02-1",
+  "build_fingerprint": "2c3ad3fe0d591f199dcc93c8b8ccab036bf0aca66d5a9dae24ac9ccc00a5a3e2",
+  "normalized_geometry_sha256": "0441598b1fc70a9a1b8bfc61d04686efce0002b50e1c0e8c0a445b7d57452fd9",
+  "source": "art/blender/creature_remodel/r02/bio_pentapalm_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 52,
+  "locomotion_chains": 7,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ray0_mouth",
+      "point": [
+        8.01898730485406e-17,
+        0.1599999964237213,
+        1.3095999956130981
+      ]
+    },
+    "Socket_ray0_mouth": {
+      "bone": "ray0_mouth",
+      "point": [
+        8.01898730485406e-17,
+        0.1599999964237213,
+        1.3095999956130981
+      ]
+    },
+    "Socket_ray1_mouth": {
+      "bone": "ray1_mouth",
+      "point": [
+        1.067384958267212,
+        0.1599999964237213,
+        0.8512110114097595
+      ]
+    },
+    "Socket_ray2_mouth": {
+      "bone": "ray2_mouth",
+      "point": [
+        1.1967706680297852,
+        0.1599999964237213,
+        -0.2731551229953766
+      ]
+    },
+    "Socket_ray3_mouth": {
+      "bone": "ray3_mouth",
+      "point": [
+        0.5965783596038818,
+        0.1599999964237213,
+        -1.2388076782226562
+      ]
+    },
+    "Socket_ray4_mouth": {
+      "bone": "ray4_mouth",
+      "point": [
+        -0.5619840621948242,
+        0.1599999964237213,
+        -1.1669719219207764
+      ]
+    },
+    "Socket_ray5_mouth": {
+      "bone": "ray5_mouth",
+      "point": [
+        -1.2336772680282593,
+        0.1599999964237213,
+        -0.28157880902290344
+      ]
+    },
+    "Socket_ray6_mouth": {
+      "bone": "ray6_mouth",
+      "point": [
+        -1.0860729217529297,
+        0.1599999964237213,
+        0.8661141395568848
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ray0_mouth",
+      "point": [
+        8.01898730485406e-17,
+        0.1599999964237213,
+        1.3095999956130981
+      ]
+    },
+    "Socket_ray0": {
+      "bone": "ray0_foot",
+      "point": [
+        6.304482108281518e-17,
+        0.10000000149011612,
+        1.0296000242233276
+      ]
+    },
+    "Socket_ray1": {
+      "bone": "ray1_foot",
+      "point": [
+        0.8484721183776855,
+        0.10000000149011612,
+        0.676633894443512
+      ]
+    },
+    "Socket_ray2": {
+      "bone": "ray2_foot",
+      "point": [
+        0.9237908720970154,
+        0.10000000149011612,
+        -0.21084924042224884
+      ]
+    },
+    "Socket_ray3": {
+      "bone": "ray3_foot",
+      "point": [
+        0.475090891122818,
+        0.10000000149011612,
+        -0.98653644323349
+      ]
+    },
+    "Socket_ray4": {
+      "bone": "ray4_foot",
+      "point": [
+        -0.440496563911438,
+        0.10000000149011612,
+        -0.9147005677223206
+      ]
+    },
+    "Socket_ray5": {
+      "bone": "ray5_foot",
+      "point": [
+        -0.9606974124908447,
+        0.10000000149011612,
+        -0.2192729115486145
+      ]
+    },
+    "Socket_ray6": {
+      "bone": "ray6_foot",
+      "point": [
+        -0.8671600818634033,
+        0.10000000149011612,
+        0.6915370225906372
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.30649272436291136,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.47506372276251263,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "ray0": 0.0,
+      "ray1": 0.42857142857142855,
+      "ray2": 0.8571428571428571,
+      "ray3": 0.2857142857142857,
+      "ray4": 0.7142857142857143,
+      "ray5": 0.14285714285714285,
+      "ray6": 0.5714285714285714
+    }
+  },
+  "muzzle": [
+    8.01898730485406e-17,
+    0.1599999964237213,
+    1.3095999956130981
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_pentapalm_05_near.glb",
+      "sha256": "5b0b19848b2514f7d586832d22467ffe4a22ca4f0505aa1676df962a0aa5f06b",
+      "triangles": 57202,
+      "min": [
+        -1.3118845224380493,
+        0.02499999850988388,
+        -1.3256651163101196
+      ],
+      "max": [
+        1.2749780416488647,
+        1.0460000038146973,
+        1.3756564855575562
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_pentapalm_05_far.glb",
+      "sha256": "35209adf6e467015abf70aadc87542e5010007d9a266fc566212db180fd36e24",
+      "triangles": 24592,
+      "min": [
+        -1.3122023344039917,
+        0.024996532127261162,
+        -1.325767993927002
+      ],
+      "max": [
+        1.275295376777649,
+        1.0459762811660767,
+        1.3757528066635132
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "ray0_base": "chest",
+    "ray0_upper": "ray0_base",
+    "ray0_lower": "ray0_upper",
+    "ray0_foot": "ray0_lower",
+    "ray0_mouth": "ray0_foot",
+    "ray0_mouth_jaw-1": "ray0_mouth",
+    "ray0_mouth_jaw1": "ray0_mouth",
+    "ray1_base": "chest",
+    "ray1_upper": "ray1_base",
+    "ray1_lower": "ray1_upper",
+    "ray1_foot": "ray1_lower",
+    "ray1_mouth": "ray1_foot",
+    "ray1_mouth_jaw-1": "ray1_mouth",
+    "ray1_mouth_jaw1": "ray1_mouth",
+    "ray2_base": "chest",
+    "ray2_upper": "ray2_base",
+    "ray2_lower": "ray2_upper",
+    "ray2_foot": "ray2_lower",
+    "ray2_mouth": "ray2_foot",
+    "ray2_mouth_jaw-1": "ray2_mouth",
+    "ray2_mouth_jaw1": "ray2_mouth",
+    "ray3_base": "chest",
+    "ray3_upper": "ray3_base",
+    "ray3_lower": "ray3_upper",
+    "ray3_foot": "ray3_lower",
+    "ray3_mouth": "ray3_foot",
+    "ray3_mouth_jaw-1": "ray3_mouth",
+    "ray3_mouth_jaw1": "ray3_mouth",
+    "ray4_base": "chest",
+    "ray4_upper": "ray4_base",
+    "ray4_lower": "ray4_upper",
+    "ray4_foot": "ray4_lower",
+    "ray4_mouth": "ray4_foot",
+    "ray4_mouth_jaw-1": "ray4_mouth",
+    "ray4_mouth_jaw1": "ray4_mouth",
+    "ray5_base": "chest",
+    "ray5_upper": "ray5_base",
+    "ray5_lower": "ray5_upper",
+    "ray5_foot": "ray5_lower",
+    "ray5_mouth": "ray5_foot",
+    "ray5_mouth_jaw-1": "ray5_mouth",
+    "ray5_mouth_jaw1": "ray5_mouth",
+    "ray6_base": "chest",
+    "ray6_upper": "ray6_base",
+    "ray6_lower": "ray6_upper",
+    "ray6_foot": "ray6_lower",
+    "ray6_mouth": "ray6_foot",
+    "ray6_mouth_jaw-1": "ray6_mouth",
+    "ray6_mouth_jaw1": "ray6_mouth"
+  },
+  "build_seconds": 32.503,
+  "source_render_seconds": 21.227
+}

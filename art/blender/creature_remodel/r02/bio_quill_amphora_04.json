@@ -1,0 +1,220 @@
+{
+  "id": "bio_quill_amphora_04",
+  "source_id": "bio_quill_amphora_04",
+  "name": "육공호수",
+  "kind": "pressure",
+  "family": "quill_amphora",
+  "habitat": "건조 사구·협곡",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "radial_count": 6,
+    "limb_count": 6,
+    "branch_mode": 3,
+    "width": 1.3,
+    "height": 0.73,
+    "mode": 3,
+    "sensory_type": "빛을 모으는 틈",
+    "eye_count": 0,
+    "neck_length": 0.85,
+    "organ_branch": 3,
+    "shell_lobes": 6
+  },
+  "attack": "spit",
+  "recipe_sha256": "89cf4be6857b555c5735561ad6b4373fcce758c5bec452c697db1e9c0c0f4461",
+  "version": "r02-1",
+  "build_fingerprint": "cd4301ab0abfc368ec113da60ed2f2cda9a70e09834005b6ac5aea4d0bdf8cfd",
+  "normalized_geometry_sha256": "51601608e62969716e1ede4d1066034345b4efa3dd1edae15dbf54906d92d9bd",
+  "source": "art/blender/creature_remodel/r02/bio_quill_amphora_04.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 30,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "valve0",
+      "point": [
+        0.0,
+        1.6846985816955566,
+        0.2134118527173996
+      ]
+    },
+    "Socket_valve0": {
+      "bone": "valve0",
+      "point": [
+        0.0,
+        1.6846985816955566,
+        0.2134118527173996
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "valve0",
+      "point": [
+        0.0,
+        1.6846985816955566,
+        0.2134118527173996
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        8.12849609178873e-17,
+        0.10000000149011612,
+        1.327484130859375
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.95757657289505,
+        0.10000000149011612,
+        0.5528571009635925
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        1.1011276245117188,
+        0.10000000149011612,
+        -0.635736346244812
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        7.790964050219732e-17,
+        0.10000000149011612,
+        -1.272360920906067
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.9573207497596741,
+        0.10000000149011612,
+        -0.5527094006538391
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -1.1492066383361816,
+        0.10000000149011612,
+        0.6634947657585144
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.38673040584918583,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5994321290662381,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58,
+      "support4": 0.16,
+      "support5": 0.66
+    }
+  },
+  "muzzle": [
+    0.0,
+    1.6846985816955566,
+    0.2134118527173996
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_quill_amphora_04_near.glb",
+      "sha256": "25186502b7bd0bb8cdbd04ef92ed6498bdb3bab13355ccbb5b88ac735eae8044",
+      "triangles": 27264,
+      "min": [
+        -1.4524139165878296,
+        0.02499999850988388,
+        -1.5741329193115234
+      ],
+      "max": [
+        1.4043350219726562,
+        1.740160346031189,
+        1.629256010055542
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_quill_amphora_04_far.glb",
+      "sha256": "8b37195724ea8d12d00bd3a7ab3e237d9dc97acd6978e43c0940445a4bd51ca8",
+      "triangles": 11716,
+      "min": [
+        -1.4524388313293457,
+        0.02499999850988388,
+        -1.574074625968933
+      ],
+      "max": [
+        1.404361605644226,
+        1.7403925657272339,
+        1.6291977167129517
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "rib0": "chest",
+    "rib1": "chest",
+    "rib2": "chest",
+    "rib3": "chest",
+    "rib4": "chest",
+    "rib5": "chest",
+    "valve0": "head",
+    "valve0_jaw-1": "valve0",
+    "valve0_jaw1": "valve0",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower"
+  },
+  "build_seconds": 5.507,
+  "source_render_seconds": 5.986
+}

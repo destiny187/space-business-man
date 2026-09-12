@@ -1,0 +1,138 @@
+extends "res://scripts/showcase/creature_remodel_field.gd"
+## R02 imported campaign actors. Forced presentation registration is confined to this review.
+var video:=false
+func run() -> void:
+	if "--check-scope" in OS.get_cmdline_user_args():
+		audit_scope();quit();return
+	folder=ProjectSettings.globalize_path("res://../output/creature-remodel/r02")
+	DirAccess.make_dir_recursive_absolute(folder)
+	video="--video" in OS.get_cmdline_user_args()
+	root.size=Vector2i(960,720);root.content_scale_size=root.size;root.msaa_3d=Viewport.MSAA_4X
+	stage=Node3D.new();root.add_child(stage)
+	var world:=WorldEnvironment.new();var env:=Environment.new();world.environment=env
+	env.background_mode=Environment.BG_COLOR;env.background_color=Color("cbd5d0")
+	env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("bdccce");env.ambient_light_energy=.52;stage.add_child(world)
+	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-52,-30,0);sun.shadow_enabled=true;sun.shadow_bias=.01;sun.shadow_normal_bias=.03;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_ORTHOGONAL;sun.directional_shadow_max_distance=30;stage.add_child(sun)
+	terrain_mesh()
+	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.near=.05;camera.far=60;camera.current=true;stage.add_child(camera);Ink.attach(stage,true)
+	var font:=load("res://assets/fonts/NotoSansKR.ttf")
+	title=Label.new();title.position=Vector2(24,18);title.add_theme_font_override("font",font);title.add_theme_font_size_override("font_size",25);title.add_theme_color_override("font_color",Color("203a36"));root.add_child(title)
+	caption=Label.new();caption.position=Vector2(26,57);caption.add_theme_font_override("font",font);caption.add_theme_font_size_override("font_size",17);caption.add_theme_color_override("font_color",Color("37574d"));root.add_child(caption)
+	var filter:=Array(OS.get_cmdline_user_args()).filter(func(x):return not x.begins_with("--"))
+	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_r02.json"))
+	for form in manifest.forms:
+		if not filter.is_empty() and form.id not in filter and form.family not in filter:continue
+		await review_batch(form)
+	var evidence_name:="/diagnostic-evidence.json" if "--diagnostic" in OS.get_cmdline_user_args() else ("/video-evidence.json" if video else "/evidence.json")
+	FileAccess.open(folder+evidence_name,FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"actor":"bestiary_actor.gd","species":report},"\t"))
+	print("REMODEL_BATCH_DONE ",report.size());quit()
+
+func photograph(id: String,suffix: String) -> void:
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(folder+"/"+id+"_"+suffix+".png")
+
+func center_camera(actor: Node3D,form: Dictionary) -> void:
+	var lo:=Vector3(float(form.lods.near.min[0]),float(form.lods.near.min[1]),float(form.lods.near.min[2]))
+	var hi:=Vector3(float(form.lods.near.max[0]),float(form.lods.near.max[1]),float(form.lods.near.max[2]))
+	var center: Vector3=actor.visual_root.global_transform*((lo+hi)*.5-Vector3(0,lo.y,0))
+	camera.size=maxf(hi.y-lo.y,maxf(hi.x-lo.x,hi.z-lo.z))*.80+1.1
+	# Keep the near plane above the sloping ground; radial organs read from a higher view.
+	var offset:=Vector3(4.2,6.0,7.5)*1.3 if form.kind=="radial" else Vector3(4.2,3.0,7.5)*1.5
+	camera.position=center+offset;camera.look_at(center)
+
+func review_batch(form: Dictionary) -> void:
+	var original:=FrontierEcologyCatalog.form(form.source_id)
+	assert(not original.is_empty() and FrontierWildlifeCombat.pattern(original)=="none")
+	Actor.RemodelRegistry.entry(original);Actor.RemodelRegistry.entries[original.id]=form
+	var actor:=Actor.new();actor.defer_far=true;actor.lod_override=0
+	actor.configure(original,{"scale":1.,"palette":original.palette});stage.add_child(actor);actor.set_process(false)
+	assert(actor.finish_lods() and actor.models.size()==2)
+	assert(actor.ground_motion.authored_limbs.size()==int(form.locomotion_chains))
+	assert(not actor.set_state("attack"))
+	var host_profile:=FrontierWildlifeCombat.profile({"form_id":original.id,"look_id":FrontierEcologyCatalog.look_for_seed(original.id,0),"combat_tier":5})
+	var fast_speed: float=host_profile.speed
+	var motion=actor.ground_motion;var max_error:=0.;var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0
+	for limb in motion.authored_limbs:
+		assert(is_equal_approx(motion.limb_phase(limb.name),float(form.motion_profile.limb_phases[limb.name])));phase_checks+=1
+	title.text=form.name;var at:=Vector3(0,height(0,0),0)
+	actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.);center_camera(actor,form)
+	caption.text="형태 · %d개 지지 사지 · %d개 관절"%[form.locomotion_chains,form.bone_count]
+	await photograph(form.id,"idle")
+	actor.set_state("move")
+	var yaw:=0.;var step:=0
+	for i in 240:
+		var t:=float(i)/30.;var speed: float=motion.natural(form.motion_profile)
+		caption.text="걷기 · 경사 지지"
+		if i>=45 and i<135:speed=lerpf(speed,fast_speed,smoothstep(45,65,i));caption.text="빠른 도주 · 기존 게임 속도의 보폭과 접지"
+		elif i>=135 and i<159:speed=fast_speed*(1.-smoothstep(135,159,i));caption.text="감속 · 발 재배치"
+		elif i>=159 and i<189:speed=0.;yaw=(i-159)/30.*.75;caption.text="정지 선회"
+		elif i>=189:speed=0.;actor.set_state("feed");caption.text="섭식 · 관절 기관"
+		at+=Vector3(sin(yaw),0,cos(yaw))*speed/30.;at.y=height(at.x,at.z)
+		actor.drive_ground(at,frame_at(at,yaw),1./30.,probe,false,0);actor._process(1./30.)
+		root_error=maxf(root_error,actor.global_position.distance_to(at))
+		if motion.grounded_error>max_error:
+			max_error=motion.grounded_error;max_error_at={"frame":i,"clip":motion.wanted_clip,"reach":motion.reach_debug.duplicate()}
+		var skeleton: Skeleton3D=actor.anatomical_skeletons[0]
+		for b in skeleton.get_bone_count():
+			var pose:=skeleton.get_bone_global_pose(b);assert(pose.is_finite())
+			if i==0:first_bones.append(pose)
+			if i==80:bone_motion+=pose.origin.distance_to(first_bones[b].origin)
+		center_camera(actor,form)
+		if video:await photograph(form.id,"motion_%03d"%step);step+=1
+		elif i in [30,110,220]:await photograph(form.id,"walk" if i==30 else ("run" if i==110 else "feed"))
+	assert(root_error<.00001 and bone_motion>.01)
+	var socket_samples: Dictionary={}
+	# Pose the authored strike for art review; no host attack or new damage is enabled.
+	actor.state="attack"
+	for sample in [{"name":"prepare","time":.78},{"name":"strike","time":1.08},{"name":"recover","time":1.7}]:
+		motion.wanted_clip="attack";motion.pose_clock=sample.time;motion.pose_step=0.;motion.pose_authored()
+		caption.text="공격 기관 · "+str(sample.name);center_camera(actor,form)
+		var positions: Dictionary={}
+		for key in motion.socket_nodes[0]:
+			var p: Vector3=motion.socket_nodes[0][key].global_position;assert(p.is_finite());positions[key]=[p.x,p.y,p.z]
+		socket_samples[sample.name]=positions
+		await photograph(form.id,sample.name)
+	if video:
+		caption.text="공격 기관 · 준비 → 방출·물기 → 회수"
+		for i in 84:
+			motion.wanted_clip="attack";motion.pose_clock=float(i)/30.;motion.pose_step=1./30.;motion.pose_authored()
+			await photograph(form.id,"motion_%03d"%step);step+=1
+	actor.state="idle";actor.combat_override=true;actor.combat_phase="down";actor.combat_clock=1.1;motion.tick(1./30.);motion.pose_authored()
+	assert(motion.wanted_clip=="down");caption.text="무력화 · 하중 내려놓기";await photograph(form.id,"down")
+	if video:
+		for i in 36:
+			actor.combat_clock=float(i)/30.;motion.tick(1./30.);motion.pose_authored()
+			await photograph(form.id,"motion_%03d"%step);step+=1
+	actor.combat_override=false;actor.restored_down=true;motion.tick(1./30.);motion.pose_authored()
+	assert(motion.wanted_clip=="down" and is_equal_approx(motion.pose_clock,1.19))
+	actor.restored_down=false;actor.set_state("move");actor.lod_override=1
+	at.z+=.05;at.y=height(at.x,at.z);actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.);center_camera(actor,form)
+	assert(actor.visible_model==1 and actor.mouth_marker==motion.socket_nodes[1].Socket_Muzzle)
+	caption.text="원거리 LOD · 같은 골격과 발사 기관";await photograph(form.id,"far")
+	report.append({"id":form.id,"family":form.family,"species_id":original.id,"bone_count":form.bone_count,"clip_count":form.clips.size(),"limb_phase_checks":phase_checks,"root_error":root_error,"max_foot_target_error":max_error,"max_error_at":max_error_at,"bone_motion":bone_motion,"lods":2,"host_attack":"none","tested_host_flee_speed":fast_speed,"socket_samples":socket_samples,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256}})
+	print("REMODEL_BATCH ",form.id," bones=",form.bone_count," feet=",phase_checks," error=",max_error);actor.free()
+
+func audit_scope() -> void:
+	var original:=FrontierEcologyCatalog.form("bio_hinge_book_01")
+	assert(not Actor.RemodelRegistry.entry(original).is_empty())
+	var actors: Array=[];var holder:=Node3D.new();root.add_child(holder)
+	for i in 2:
+		var actor:=Actor.new();actor.load_far=false;actor.configure(original,{"scale":1.,"palette":original.palette})
+		holder.add_child(actor);actor.set_process(false);actor.ground_motion.tick(0);actor.ground_motion.pose_authored();actors.append(actor)
+	var before: Array=[];var untouched: Skeleton3D=actors[1].anatomical_skeletons[0]
+	var untouched_node: int=actors[1].models[0].get_instance_id()
+	for b in untouched.get_bone_count():before.append(untouched.get_bone_global_pose(b))
+	var actor=actors[0];actor.set_state("move")
+	for i in 60:
+		var at:=Vector3(0,height(0,float(i)*.05),float(i)*.05)
+		actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.)
+	var phase_before: float=actor.ground_motion.phase;var state_before: String=actor.state
+	assert(not actor.set_state("attack") and actor.state==state_before and actor.ground_motion.phase==phase_before)
+	actor.restored_down=true;actor.set_state("dormant");actor.ground_motion.tick(1./30.);actor.ground_motion.pose_authored()
+	var down_time: float=actor.ground_motion.pose_clock
+	actor.restored_down=true;actor.ground_motion.tick(1./30.);assert(actor.ground_motion.pose_clock==down_time)
+	assert(actors[1].state=="idle" and actors[1].global_position==Vector3.ZERO and actors[1].models[0].get_instance_id()==untouched_node)
+	assert(actors[1].ground_motion.phase==0 and actors[1].ground_motion.ground_samples.is_empty() and actors[1].ground_motion.settling_feet.is_empty())
+	for b in untouched.get_bone_count():assert(before[b]==untouched.get_bone_global_pose(b))
+	print("REMODEL_SCOPE one actor moved/restored; peer pose, node, phase and caches unchanged; rejected attack and duplicate restored state unchanged; no world save or request publisher invoked")
+	holder.free()

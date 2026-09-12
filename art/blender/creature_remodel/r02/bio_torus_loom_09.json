@@ -1,0 +1,283 @@
+{
+  "id": "bio_torus_loom_09",
+  "source_id": "bio_torus_loom_09",
+  "name": "교차환수",
+  "kind": "annular",
+  "family": "torus_loom",
+  "habitat": "건조 사구·협곡",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "radial_count": 6,
+    "limb_count": 8,
+    "branch_mode": 8,
+    "width": 1.08,
+    "height": 0.88,
+    "mode": 8,
+    "sensory_type": "빗살 감각엽",
+    "eye_count": 0,
+    "neck_length": 1.0,
+    "organ_branch": 4,
+    "shell_lobes": 8
+  },
+  "attack": "spit",
+  "recipe_sha256": "faf65f3c3a6dbe23547c61f15ac09ba90c2bd292c4dd37aa97e178b0e9c5bd30",
+  "version": "r02-1",
+  "build_fingerprint": "dda40d1565b90ec059a8d476b69808a37fe3cf8da843dd7fdaa5f3872caaedd7",
+  "normalized_geometry_sha256": "328abfbcf64ee02249bfdd6eccf05cec3433f2e0b4d9a9311d3d7a5e2e17c731",
+  "source": "art/blender/creature_remodel/r02/bio_torus_loom_09.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 51,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.33000001311302185,
+        1.1211999654769897,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_0": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.33000001311302185,
+        1.1211999654769897,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_1": {
+      "bone": "siphon0_1",
+      "point": [
+        -0.10999999940395355,
+        1.0211999416351318,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_2": {
+      "bone": "siphon0_2",
+      "point": [
+        0.10999999940395355,
+        0.9211999773979187,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_3": {
+      "bone": "siphon0_3",
+      "point": [
+        0.33000001311302185,
+        0.8212000131607056,
+        0.8100000023841858
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.33000001311302185,
+        1.1211999654769897,
+        0.8100000023841858
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        6.19563043362546e-17,
+        0.10000000149011612,
+        1.0118231773376465
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8399620056152344,
+        0.10000000149011612,
+        0.8399620056152344
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        1.0044134855270386,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.7586104869842529,
+        0.10000000149011612,
+        -0.7586104869842529
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        7.13437124103229e-17,
+        0.10000000149011612,
+        -1.1651312112808228
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.6885246634483337,
+        0.10000000149011612,
+        -0.6885246634483337
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -1.136491060256958,
+        0.10000000149011612,
+        -1.3918002020474335e-16
+      ]
+    },
+    "Socket_support7": {
+      "bone": "support7_foot",
+      "point": [
+        -0.7855968475341797,
+        0.10000000149011612,
+        0.7855968475341797
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.33372945926349196,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5172806618584126,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58,
+      "support4": 0.16,
+      "support5": 0.66,
+      "support6": 0.24,
+      "support7": 0.74
+    }
+  },
+  "muzzle": [
+    -0.33000001311302185,
+    1.1211999654769897,
+    0.8100000023841858
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_09_near.glb",
+      "sha256": "da19c32f197ea634d92cef45160288eae1e377d8b444c1bcc676afb22dd42a16",
+      "triangles": 57912,
+      "min": [
+        -1.438262939453125,
+        0.02499999850988388,
+        -1.4669032096862793
+      ],
+      "max": [
+        1.3061854839324951,
+        2.123396635055542,
+        1.3135950565338135
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_09_far.glb",
+      "sha256": "2b5b6cddb5bc6b87d22e79e43845919df97f84b908c6e36aea4c4b95a21be3e0",
+      "triangles": 24894,
+      "min": [
+        -1.438202142715454,
+        0.025011511519551277,
+        -1.4668450355529785
+      ],
+      "max": [
+        1.3061248064041138,
+        2.1233205795288086,
+        1.3135343790054321
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "ring0_0": "chest",
+    "ring0_1": "chest",
+    "ring0_2": "chest",
+    "ring0_3": "chest",
+    "ring0_4": "chest",
+    "ring0_5": "chest",
+    "ring0_6": "chest",
+    "ring0_7": "chest",
+    "ring0_8": "chest",
+    "ring0_9": "chest",
+    "ring0_10": "chest",
+    "ring0_11": "chest",
+    "siphon0_0": "head",
+    "siphon0_0_jaw-1": "siphon0_0",
+    "siphon0_0_jaw1": "siphon0_0",
+    "siphon0_1": "head",
+    "siphon0_1_jaw-1": "siphon0_1",
+    "siphon0_1_jaw1": "siphon0_1",
+    "siphon0_2": "head",
+    "siphon0_2_jaw-1": "siphon0_2",
+    "siphon0_2_jaw1": "siphon0_2",
+    "siphon0_3": "head",
+    "siphon0_3_jaw-1": "siphon0_3",
+    "siphon0_3_jaw1": "siphon0_3",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "chest",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "support7_upper": "chest",
+    "support7_lower": "support7_upper",
+    "support7_foot": "support7_lower"
+  },
+  "build_seconds": 27.347,
+  "source_render_seconds": 20.331
+}

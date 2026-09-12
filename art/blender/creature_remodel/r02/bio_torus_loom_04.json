@@ -1,0 +1,248 @@
+{
+  "id": "bio_torus_loom_04",
+  "source_id": "bio_torus_loom_04",
+  "name": "넓은문직조수",
+  "kind": "annular",
+  "family": "torus_loom",
+  "habitat": "동굴·지하수",
+  "palette": [
+    "695e77",
+    "bab0b1",
+    "34494e",
+    "ab9567"
+  ],
+  "morphology": {
+    "radial_count": 6,
+    "limb_count": 6,
+    "branch_mode": 3,
+    "width": 1.3,
+    "height": 0.73,
+    "mode": 3,
+    "sensory_type": "빛을 모으는 틈",
+    "eye_count": 0,
+    "neck_length": 0.85,
+    "organ_branch": 3,
+    "shell_lobes": 6
+  },
+  "attack": "spit",
+  "recipe_sha256": "fb4af8640e92edcbd2792a5eb91604461a3fad11a5b66502b5381877f77fb491",
+  "version": "r02-1",
+  "build_fingerprint": "658e5499dec3c8f226721e56fb2dd133cc351128bde7825d165c974e9f99c2b7",
+  "normalized_geometry_sha256": "3caf816d8dc1bf041efd943bd5257c43a1fa021a45513ccfaa16530ce45778ea",
+  "source": "art/blender/creature_remodel/r02/bio_torus_loom_04.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 42,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.2199999988079071,
+        1.010200023651123,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_0": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.2199999988079071,
+        1.010200023651123,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_1": {
+      "bone": "siphon0_1",
+      "point": [
+        0.0,
+        0.9101999998092651,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_2": {
+      "bone": "siphon0_2",
+      "point": [
+        0.2199999988079071,
+        0.8101999759674072,
+        0.8100000023841858
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.2199999988079071,
+        1.010200023651123,
+        0.8100000023841858
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        8.647336859206491e-17,
+        0.10000000149011612,
+        1.4122172594070435
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0186984539031982,
+        0.10000000149011612,
+        0.5881458520889282
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        1.1714123487472534,
+        0.10000000149011612,
+        -0.6763152480125427
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        8.288259078786201e-17,
+        0.10000000149011612,
+        -1.353575348854065
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -1.0184262990951538,
+        0.10000000149011612,
+        -0.5879887342453003
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -1.2225602865219116,
+        0.10000000149011612,
+        0.7058455348014832
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.39424714345676526,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6110830723579862,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58,
+      "support4": 0.16,
+      "support5": 0.66
+    }
+  },
+  "muzzle": [
+    -0.2199999988079071,
+    1.010200023651123,
+    0.8100000023841858
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_04_near.glb",
+      "sha256": "23d874be07140b9b02f24d6c8f3d548c3a7b6bfbdc9fb7677c680cf1d926855a",
+      "triangles": 47090,
+      "min": [
+        -1.5257675647735596,
+        0.02499999850988388,
+        -1.6553473472595215
+      ],
+      "max": [
+        1.474619746208191,
+        1.906586766242981,
+        1.7139892578125
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_04_far.glb",
+      "sha256": "f60247e8d10a536afdeecbd6f703f35ed10d174ef0c12fedb53d600da739c09e",
+      "triangles": 20244,
+      "min": [
+        -1.525796890258789,
+        0.02499999850988388,
+        -1.6552891731262207
+      ],
+      "max": [
+        1.4746421575546265,
+        1.9071708917617798,
+        1.713928461074829
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "ring0_0": "chest",
+    "ring0_1": "chest",
+    "ring0_2": "chest",
+    "ring0_3": "chest",
+    "ring0_4": "chest",
+    "ring0_5": "chest",
+    "ring0_6": "chest",
+    "ring0_7": "chest",
+    "ring0_8": "chest",
+    "ring0_9": "chest",
+    "ring0_10": "chest",
+    "ring0_11": "chest",
+    "siphon0_0": "head",
+    "siphon0_0_jaw-1": "siphon0_0",
+    "siphon0_0_jaw1": "siphon0_0",
+    "siphon0_1": "head",
+    "siphon0_1_jaw-1": "siphon0_1",
+    "siphon0_1_jaw1": "siphon0_1",
+    "siphon0_2": "head",
+    "siphon0_2_jaw-1": "siphon0_2",
+    "siphon0_2_jaw1": "siphon0_2",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower"
+  },
+  "build_seconds": 13.8,
+  "source_render_seconds": 22.311
+}

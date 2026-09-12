@@ -10,6 +10,7 @@ var socket_nodes: Array[Dictionary]=[]
 var authored_limbs: Array[Dictionary]=[]
 var planted: Dictionary={}
 var released_feet: Dictionary={}
+var settling_feet: Dictionary={}
 var ground_samples: Dictionary={}
 var gait:="move_loop"
 var wanted_clip:="idle_loop"
@@ -60,11 +61,11 @@ func install(lod: int) -> void:
 	actor.mouth_markers[lod]=nodes.get("Socket_Muzzle")
 
 func reset() -> void:
-	super.reset();planted.clear();released_feet.clear();ground_samples.clear()
+	super.reset();planted.clear();released_feet.clear();settling_feet.clear();ground_samples.clear()
 
 func drive(target: Transform3D,delta: float,sampler: Callable,stopped: bool,interval: float=0.,revision: int=-1) -> void:
 	if initialized and point.distance_to(target.origin)>maxf(3.,body_length*actor.base_scale*float(config().teleport_lengths)):
-		planted.clear();released_feet.clear();ground_samples.clear()
+		planted.clear();released_feet.clear();settling_feet.clear();ground_samples.clear()
 	super.drive(target,delta,sampler,stopped,interval,revision)
 
 func ground_sample(key: String,at: Vector3,reach: float) -> Dictionary:
@@ -104,16 +105,17 @@ func tick(delta: float) -> void:
 	if actor.paused:return
 	var moving: bool=actor.state=="move" and (velocity.length() if driven else travel_speed)>.025
 	var next: String=gait if moving else ("feed" if actor.state=="feed" else "idle_loop")
+	if actor.restored_down:next="down" if art.clips.has("down") else "hurt"
 	if actor.combat_override:
 		if actor.combat_phase=="hurt":next="hurt"
-		elif actor.combat_phase=="down":next="hurt"
+		elif actor.combat_phase=="down":next="down" if art.clips.has("down") else "hurt"
 		elif actor.combat_phase in ["attack","warning"]:next="attack"
 	elif actor.state=="attack":next="attack"
 	if next=="idle_loop" and wanted_clip in ["move_loop","run_loop"]:next="stop"
 	elif next=="idle_loop" and wanted_clip=="stop" and pose_clock<.59:next="stop"
 	if not moving and next=="idle_loop" and absf(turn_speed)>.20:next="turn_left" if turn_speed<0 else "turn_right"
 	if next!=wanted_clip:
-		wanted_clip=next;pose_clock=0;planted.clear();released_feet.clear()
+		wanted_clip=next;pose_clock=0;planted.clear();released_feet.clear();settling_feet.clear()
 	var old_clock:=pose_clock
 	if next in ["move_loop","run_loop"]:
 		var data: Dictionary=profile.run if next=="run_loop" else profile
@@ -121,7 +123,9 @@ func tick(delta: float) -> void:
 		pose_step=delta*travel_speed/maxf(.001,actor.base_scale)/natural(data)
 	elif next=="attack":
 		pose_clock=attack_clock();pose_step=maxf(0,pose_clock-old_clock)
-	elif actor.combat_override and actor.combat_phase=="down":pose_clock=.40;pose_step=0
+	elif actor.restored_down:pose_clock=1.19 if next=="down" else .40;pose_step=0
+	elif actor.combat_override and actor.combat_phase=="down":
+		pose_clock=minf(1.19,actor.combat_clock) if next=="down" else .40;pose_step=maxf(0,pose_clock-old_clock)
 	elif actor.combat_override and actor.combat_phase=="hurt":pose_clock=minf(.79,actor.combat_clock);pose_step=maxf(0,pose_clock-old_clock)
 	else:
 		pose_step=delta*(.18 if actor.state=="dormant" else 1.0);pose_clock+=pose_step
@@ -173,6 +177,7 @@ func socket_point(skeleton: Skeleton3D,socket: Dictionary) -> Vector3:
 	return skeleton.global_transform*(skeleton.get_bone_global_pose(bone)*skeleton.get_bone_global_rest(bone).affine_inverse()*v(socket.point))
 
 func limb_phase(name: String) -> float:
+	if profile.get("limb_phases",{}).has(name):return float(profile.limb_phases[name])
 	if kind=="quadruped":
 		return {"fore-1":0.,"fore1":.5,"hind-1":.5 if gait=="run_loop" else .75,"hind1":0. if gait=="run_loop" else .25}.get(name,0.)
 	if kind=="hexapod":return fposmod((0. if "-1" in name else .5)+(int(name[3])%2)*.5,1.)
@@ -233,6 +238,22 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 			var progress:=clampf((phase-float(release.phase))/.20,0,1)
 			var free_target:=original+visual.global_basis.y*clampf(ground_offset,-float(limb.length)*.24*actor.base_scale,float(limb.length)*.24*actor.base_scale)
 			destination=Vector3(release.from).lerp(free_target,smoothstep(0,1,progress))+visual.global_basis.y*sin(progress*PI)*leg_length*.09*actor.base_scale
+		# At rest, breathing/settling can pull a broad radial limb past its reach.
+		# Take a short inward step on the ground plane instead of stretching the knee or lifting a planted foot.
+		if not moving and stance_now:
+			if not settling_feet.has(limb.name) and hip_world.distance_to(destination)>actual_reach*.97:
+				var up: Vector3=hit.normal
+				var height_from_sole: float=(hip_world-destination).dot(up)
+				var projection:=hip_world-up*height_from_sole
+				var lateral:=destination-projection
+				var safe_distance:=sqrt(maxf(.0001,pow(actual_reach*.955,2)-height_from_sole*height_from_sole))
+				settling_feet[limb.name]={"from":destination,"to":projection+lateral.normalized()*minf(lateral.length(),safe_distance),"time":idle_clock}
+			if settling_feet.has(limb.name):
+				var step: Dictionary=settling_feet[limb.name]
+				var progress:=clampf((idle_clock-float(step.time))/.18,0,1)
+				destination=Vector3(step.from).lerp(step.to,smoothstep(0,1,progress))+visual.global_basis.y*sin(progress*PI)*leg_length*.045*actor.base_scale
+				stance_now=progress>=1
+				if stance_now:planted[limb.name]=step.to;settling_feet.erase(limb.name)
 		var goal:=skeleton.global_transform.affine_inverse()*destination
 		var h:=skeleton.get_bone_global_pose(upper).origin;var k:=skeleton.get_bone_global_pose(lower).origin;var f:=skeleton.get_bone_global_pose(foot).origin
 		var reach:=h.distance_to(k)+k.distance_to(f)

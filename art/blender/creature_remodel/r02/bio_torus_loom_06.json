@@ -1,0 +1,207 @@
+{
+  "id": "bio_torus_loom_06",
+  "source_id": "bio_torus_loom_06",
+  "name": "비틀린환수",
+  "kind": "annular",
+  "family": "torus_loom",
+  "habitat": "결정 광맥 지대",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96,
+    "mode": 5,
+    "sensory_type": "주름형 압력막",
+    "eye_count": 0,
+    "neck_length": 1.8,
+    "organ_branch": 2,
+    "shell_lobes": 5
+  },
+  "attack": "spit",
+  "recipe_sha256": "bcb3a88be82b889b2113add6bdd172d3a68560b97d70731a91b67326f193d200",
+  "version": "r02-1",
+  "build_fingerprint": "0d0af58f17079ebcbc80a5e206445095dc42f2cca88813d1baeda3c7b8df928e",
+  "normalized_geometry_sha256": "63f682498b5217259cc17754db25077d85fc4f05ca0b1ac4e72022a32199187e",
+  "source": "art/blender/creature_remodel/r02/bio_torus_loom_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 27,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.10999999940395355,
+        1.180400013923645,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_0": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.10999999940395355,
+        1.180400013923645,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_1": {
+      "bone": "siphon0_1",
+      "point": [
+        0.10999999940395355,
+        1.080399990081787,
+        0.8100000023841858
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.10999999940395355,
+        1.180400013923645,
+        0.8100000023841858
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        6.794707720460865e-17,
+        0.10000000149011612,
+        1.1096599102020264
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0965707302093506,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        7.724688354308513e-17,
+        0.10000000149011612,
+        -1.2615373134613037
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -1.0547999143600464,
+        0.10000000149011612,
+        -1.291757405345024e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.34579862068140205,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5359878620561732,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58
+    }
+  },
+  "muzzle": [
+    -0.10999999940395355,
+    1.180400013923645,
+    0.8100000023841858
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_06_near.glb",
+      "sha256": "db0ef28e9ca719a8e6e8f7a73165629c692b1ffe5b72d7f9f769a7f9296eb152",
+      "triangles": 32920,
+      "min": [
+        -1.3571428060531616,
+        0.02499999850988388,
+        -1.5638800859451294
+      ],
+      "max": [
+        1.3989135026931763,
+        2.240386486053467,
+        1.412002682685852
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_06_far.glb",
+      "sha256": "2111d54af167b6f854afed3b33e52160f71ecbe3dea2d4fe6f0f4177462bbb32",
+      "triangles": 14148,
+      "min": [
+        -1.3570564985275269,
+        0.024996528401970863,
+        -1.563793659210205
+      ],
+      "max": [
+        1.398829460144043,
+        2.240821599960327,
+        1.4119162559509277
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "ring0_0": "chest",
+    "ring0_1": "chest",
+    "ring0_2": "chest",
+    "ring0_3": "chest",
+    "ring0_4": "chest",
+    "ring0_5": "chest",
+    "siphon0_0": "head",
+    "siphon0_0_jaw-1": "siphon0_0",
+    "siphon0_0_jaw1": "siphon0_0",
+    "siphon0_1": "head",
+    "siphon0_1_jaw-1": "siphon0_1",
+    "siphon0_1_jaw1": "siphon0_1",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower"
+  },
+  "build_seconds": 38.25,
+  "source_render_seconds": 18.7
+}

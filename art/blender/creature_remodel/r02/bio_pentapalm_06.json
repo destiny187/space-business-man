@@ -1,0 +1,227 @@
+{
+  "id": "bio_pentapalm_06",
+  "source_id": "bio_pentapalm_06",
+  "name": "갈래손수",
+  "kind": "radial",
+  "family": "pentapalm",
+  "habitat": "인간 거주에 적합한 온대",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "radial_count": 3,
+    "limb_count": 4,
+    "branch_mode": 5,
+    "width": 1.15,
+    "height": 0.96,
+    "mode": 5,
+    "sensory_type": "주름형 압력막",
+    "eye_count": 0,
+    "neck_length": 1.8,
+    "organ_branch": 2,
+    "shell_lobes": 5
+  },
+  "attack": "slam",
+  "recipe_sha256": "b951196bc0ae4754aa458499d1c118c5274ac9f68355501b80b7ddf4583ebb60",
+  "version": "r02-1",
+  "build_fingerprint": "1ffc86a2577111a8d54c1cb4df93a9f042f6d8f360ce823831e9704433e58269",
+  "normalized_geometry_sha256": "0e173d8245e4c968b39937f04101594fb9087a48e4e083070b578f2a4ac56417",
+  "source": "art/blender/creature_remodel/r02/bio_pentapalm_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 31,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ray0_mouth",
+      "point": [
+        1.241791858228779e-16,
+        0.1599999964237213,
+        2.0279998779296875
+      ]
+    },
+    "Socket_ray0_mouth": {
+      "bone": "ray0_mouth",
+      "point": [
+        1.241791858228779e-16,
+        0.1599999964237213,
+        2.0279998779296875
+      ]
+    },
+    "Socket_ray1_mouth": {
+      "bone": "ray1_mouth",
+      "point": [
+        2.1224567890167236,
+        0.1599999964237213,
+        -0.0
+      ]
+    },
+    "Socket_ray2_mouth": {
+      "bone": "ray2_mouth",
+      "point": [
+        1.1564929934623107e-16,
+        0.1599999964237213,
+        -1.888696312904358
+      ]
+    },
+    "Socket_ray3_mouth": {
+      "bone": "ray3_mouth",
+      "point": [
+        -2.138986587524414,
+        0.1599999964237213,
+        -2.6195033877343113e-16
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ray0_mouth",
+      "point": [
+        1.241791858228779e-16,
+        0.1599999964237213,
+        2.0279998779296875
+      ]
+    },
+    "Socket_ray0": {
+      "bone": "ray0_foot",
+      "point": [
+        1.0703413385715249e-16,
+        0.10000000149011612,
+        1.7480000257492065
+      ]
+    },
+    "Socket_ray1": {
+      "bone": "ray1_foot",
+      "point": [
+        1.8424568176269531,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_ray2": {
+      "bone": "ray2_foot",
+      "point": [
+        9.850424738050567e-17,
+        0.10000000149011612,
+        -1.6086963415145874
+      ]
+    },
+    "Socket_ray3": {
+      "bone": "ray3_foot",
+      "point": [
+        -1.858986496925354,
+        0.10000000149011612,
+        -2.276601951373109e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "ray0": 0.0,
+      "ray1": 0.25,
+      "ray2": 0.5,
+      "ray3": 0.75
+    }
+  },
+  "muzzle": [
+    1.241791858228779e-16,
+    0.1599999964237213,
+    2.0279998779296875
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_pentapalm_06_near.glb",
+      "sha256": "b4d5f0554034245ad8948ed21fb18386b30cd6425dabba0b00119fc198872839",
+      "triangles": 33512,
+      "min": [
+        -2.205043077468872,
+        0.02499999850988388,
+        -1.954752802848816
+      ],
+      "max": [
+        2.1885132789611816,
+        0.8083999752998352,
+        2.0940566062927246
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_pentapalm_06_far.glb",
+      "sha256": "14a2e711caa1ef8d2e9ca06b5df4f01ff4eb3560aa9b1bd8fe1de2db2133853e",
+      "triangles": 14404,
+      "min": [
+        -2.20513916015625,
+        0.024996532127261162,
+        -1.954849123954773
+      ],
+      "max": [
+        2.1886088848114014,
+        0.8083771467208862,
+        2.094154119491577
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "ray0_base": "chest",
+    "ray0_upper": "ray0_base",
+    "ray0_lower": "ray0_upper",
+    "ray0_foot": "ray0_lower",
+    "ray0_mouth": "ray0_foot",
+    "ray0_mouth_jaw-1": "ray0_mouth",
+    "ray0_mouth_jaw1": "ray0_mouth",
+    "ray1_base": "chest",
+    "ray1_upper": "ray1_base",
+    "ray1_lower": "ray1_upper",
+    "ray1_foot": "ray1_lower",
+    "ray1_mouth": "ray1_foot",
+    "ray1_mouth_jaw-1": "ray1_mouth",
+    "ray1_mouth_jaw1": "ray1_mouth",
+    "ray2_base": "chest",
+    "ray2_upper": "ray2_base",
+    "ray2_lower": "ray2_upper",
+    "ray2_foot": "ray2_lower",
+    "ray2_mouth": "ray2_foot",
+    "ray2_mouth_jaw-1": "ray2_mouth",
+    "ray2_mouth_jaw1": "ray2_mouth",
+    "ray3_base": "chest",
+    "ray3_upper": "ray3_base",
+    "ray3_lower": "ray3_upper",
+    "ray3_foot": "ray3_lower",
+    "ray3_mouth": "ray3_foot",
+    "ray3_mouth_jaw-1": "ray3_mouth",
+    "ray3_mouth_jaw1": "ray3_mouth"
+  },
+  "build_seconds": 23.326,
+  "source_render_seconds": 20.814
+}

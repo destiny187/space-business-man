@@ -12,6 +12,7 @@ var rows: Dictionary={}
 var selected: Dictionary={}
 var audio: FrontierAudio
 var hint: Label
+var target_health: FrontierTargetHealth
 var signal_bar: ProgressBar
 var signal_label: Label
 var refresh_time:=0.0
@@ -26,6 +27,7 @@ func configure(owner_surface: FrontierCrewSurfaceScene,eye: Camera3D) -> void:
  var clue_overlay: Control=load("res://scripts/ui/coopertech_clue_overlay.gd").new();clue_overlay.incident=self;layer.add_child(clue_overlay)
  hint=Label.new();hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;hint.mouse_filter=Control.MOUSE_FILTER_IGNORE
  hint.add_theme_color_override("font_shadow_color",Color.BLACK);hint.add_theme_constant_override("shadow_offset_x",2);hint.add_theme_constant_override("shadow_offset_y",2);layer.add_child(hint)
+ target_health=FrontierTargetHealth.new();layer.add_child(target_health)
  signal_bar=ProgressBar.new();signal_bar.show_percentage=false;signal_bar.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(signal_bar)
  signal_label=Label.new();signal_label.mouse_filter=Control.MOUSE_FILTER_IGNORE;signal_label.add_theme_color_override("font_shadow_color",Color.BLACK);signal_label.add_theme_constant_override("shadow_offset_x",2);signal_label.add_theme_constant_override("shadow_offset_y",2);layer.add_child(signal_label)
 func blocked() -> bool:return app==null or app.feedback==null or app.feedback.blocked() or (not app.test_mode and not get_window().has_focus())
@@ -82,7 +84,7 @@ func make(row: Dictionary) -> Dictionary:
   for lineage in natives.lineages:
    var form:=FrontierEcologyCatalog.form(lineage.form_id)
    if form.category!="animal" or form.environment=="cave":continue
-   var creature:=Creature.new();creature.load_far=false;creature.configure(form,FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id));root_node.add_child(creature);creature.set_state("move");result.creature=creature
+   var creature:=Creature.new();creature.load_far=false;creature.configure(form,FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id),[],false);root_node.add_child(creature);creature.set_state("move");result.creature=creature
    result.stolen=add_model("battery",creature,Vector3(0,.6,-.3));result.stolen.scale=Vector3.ONE*.35;break
  if mode=="robot":
   var bubble:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=1.15;sphere.height=3.0;bubble.mesh=sphere;root_node.add_child(bubble);bubble.position=Vector3(0,1.5,0)
@@ -109,7 +111,7 @@ func _process(delta: float) -> void:
  if surface==null or surface.session.latest.is_empty():return
  elapsed+=delta;refresh_time-=delta
  if refresh_time<=0:refresh_time=.25;refresh()
- var stopped:=blocked();hint.visible=not stopped;signal_label.visible=not stopped;signal_bar.visible=not stopped
+ var stopped:=blocked();target_health.hide();hint.visible=not stopped;signal_label.visible=not stopped;signal_bar.visible=not stopped
  for speaker in audio.get_children():
   if speaker is AudioStreamPlayer or speaker is AudioStreamPlayer3D:speaker.stream_paused=stopped
  camera.h_offset=0;camera.v_offset=0;selected={}
@@ -188,7 +190,10 @@ func _process(delta: float) -> void:
     if row.phase!=nodes.phase:
      var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_combat_pulse" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
      audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
-    app.feedback.effects.burst(at+Vector3.UP,Color("cbb5ff"),8);event_serial+=1
+    # Combat contacts already have host-confirmed material effects. A serial
+    # update must not add an unrelated purple burst at the robot's origin.
+    if mode not in ["robot","drone"]:app.feedback.effects.burst(at+Vector3.UP,Color("cbb5ff"),8)
+    event_serial+=1
    nodes.serial=int(row.serial);nodes.phase=str(row.phase)
   if stopped:continue
   for part in FrontierExplorationIncidents.targets(row):
@@ -200,10 +205,14 @@ func _process(delta: float) -> void:
  if stopped:return
  var size:=get_viewport().get_visible_rect().size
  hint.size=Vector2(minf(520,size.x-40),72);hint.position=Vector2((size.x-hint.size.x)*.5,size.y*.59)
- hint.text="" if selected.is_empty() else str(FrontierExplorationIncidents.definition(selected.template).name)+"\n"+str(selected.action)
+ hint.text="" if selected.is_empty() else str(selected.action)
  if not selected.is_empty() and rows[selected.id].has("native"):
-  hint.text=FrontierNativeIncidents.title(rows[selected.id].native)+"\n"+str(selected.action)
- if not selected.is_empty() and selected.part=="robot":hint.text+=" · 냉각 중 약점 노출" if rows[selected.id].phase=="cooling" else " · 조준선에서 벗어나기"
+  hint.text=str(selected.action)
+ if not selected.is_empty() and selected.part=="robot":
+  hint.text=""
+  var robot: Dictionary=rows[selected.id]
+  if app.placement_kind.is_empty() and not app.field_hud.scan_card.visible:
+   target_health.present(float(robot.hp),float(FrontierExplorationIncidents.config().robot.health),float(robot.get("shield",0)),float(robot.get("shield_max",0)))
  if not selected.is_empty() and selected.part=="cargo":
   var reward:=FrontierFirearmLootView.description(models[selected.id])
   if not reward.is_empty():hint.text+="\n"+reward

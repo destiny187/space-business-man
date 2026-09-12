@@ -1,0 +1,239 @@
+{
+  "id": "bio_torus_loom_02",
+  "source_id": "bio_torus_loom_02",
+  "name": "쌍환직조수",
+  "kind": "annular",
+  "family": "torus_loom",
+  "habitat": "건조 사구·협곡",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "radial_count": 4,
+    "limb_count": 4,
+    "branch_mode": 1,
+    "width": 0.85,
+    "height": 1.12,
+    "mode": 1,
+    "sensory_type": "분산 감광점",
+    "eye_count": 8,
+    "neck_length": 1.2,
+    "organ_branch": 2,
+    "shell_lobes": 4
+  },
+  "attack": "spit",
+  "recipe_sha256": "2baaa4ea4991dea9a91857ed3f03fdc3b9a09e189b401303d63478295ed7ab07",
+  "version": "r02-1",
+  "build_fingerprint": "addfa4f33a09bdeef510e77adbf7aedb1138ab23224c9e2d7d547a661216efdb",
+  "normalized_geometry_sha256": "f8c07c536a9d6356d85c802079c45fbe0d8f4c4a32e5c3f7f72387b3891a9098",
+  "source": "art/blender/creature_remodel/r02/bio_torus_loom_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 43,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.10999999940395355,
+        1.298799991607666,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_0": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.10999999940395355,
+        1.298799991607666,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon0_1": {
+      "bone": "siphon0_1",
+      "point": [
+        0.10999999940395355,
+        1.198799967765808,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon1_0": {
+      "bone": "siphon1_0",
+      "point": [
+        -0.10999999940395355,
+        1.298799991607666,
+        0.8100000023841858
+      ]
+    },
+    "Socket_siphon1_1": {
+      "bone": "siphon1_1",
+      "point": [
+        0.10999999940395355,
+        1.198799967765808,
+        0.8100000023841858
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "siphon0_0",
+      "point": [
+        -0.10999999940395355,
+        1.298799991607666,
+        0.8100000023841858
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.540048439146558e-17,
+        0.10000000149011612,
+        0.9047585129737854
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8619952201843262,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        4.771574489027644e-17,
+        0.10000000149011612,
+        -0.7792572379112244
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.9322731494903564,
+        0.10000000149011612,
+        -1.1417053863900268e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2835238149269753,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.43946191313681177,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.5,
+      "support2": 0.08,
+      "support3": 0.58
+    }
+  },
+  "muzzle": [
+    -0.10999999940395355,
+    1.298799991607666,
+    0.8100000023841858
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_02_near.glb",
+      "sha256": "1a0347bcdbc2a012bc5646c7c36f0ac3cb829d5404a75222b4b933559b55d923",
+      "triangles": 51232,
+      "min": [
+        -1.2346159219741821,
+        0.02499999850988388,
+        -1.0815999507904053
+      ],
+      "max": [
+        1.1643378734588623,
+        2.424373149871826,
+        1.2071012258529663
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r02/bio_torus_loom_02_far.glb",
+      "sha256": "8041fe50d79429ca86c1ebf59b8bad3a9c1a96f8774fb3703643ac1a4095ce6d",
+      "triangles": 22024,
+      "min": [
+        -1.2345294952392578,
+        0.024997131898999214,
+        -1.0815160274505615
+      ],
+      "max": [
+        1.1642539501190186,
+        2.4258012771606445,
+        1.2070149183273315
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "ring0_0": "chest",
+    "ring0_1": "chest",
+    "ring0_2": "chest",
+    "ring0_3": "chest",
+    "ring0_4": "chest",
+    "ring0_5": "chest",
+    "ring0_6": "chest",
+    "ring0_7": "chest",
+    "siphon0_0": "head",
+    "siphon0_0_jaw-1": "siphon0_0",
+    "siphon0_0_jaw1": "siphon0_0",
+    "siphon0_1": "head",
+    "siphon0_1_jaw-1": "siphon0_1",
+    "siphon0_1_jaw1": "siphon0_1",
+    "ring1_0": "chest",
+    "ring1_1": "chest",
+    "ring1_2": "chest",
+    "ring1_3": "chest",
+    "ring1_4": "chest",
+    "ring1_5": "chest",
+    "ring1_6": "chest",
+    "ring1_7": "chest",
+    "siphon1_0": "head",
+    "siphon1_0_jaw-1": "siphon1_0",
+    "siphon1_0_jaw1": "siphon1_0",
+    "siphon1_1": "head",
+    "siphon1_1_jaw-1": "siphon1_1",
+    "siphon1_1_jaw1": "siphon1_1",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower"
+  },
+  "build_seconds": 13.676,
+  "source_render_seconds": 16.061
+}
