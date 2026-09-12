@@ -144,7 +144,7 @@ static func clear_drop(world: Dictionary,body_id: String,p: Vector3,ignore: Stri
 		if FrontierShuttles.area_key(world,id)=="surface:"+body_id and p.distance_to(FrontierCrewWorld.vector(world.crew.members[id].position))<r+2:return false
 	for id in FrontierShuttles.fleet(world):
 		if world.location==body_id and p.distance_to(FrontierShuttles.pad(world,id))<r+4:return false
-	for vein in FrontierExpeditionBusiness.veins(body,p):
+	for vein in FrontierExpeditionBusiness.clearance_veins(body,p):
 		if vein.get("underground",false):continue
 		var q:=FrontierCrewWorld.vector(vein.position)
 		if Vector2(q.x-p.x,q.z-p.z).length()<r+3:return false

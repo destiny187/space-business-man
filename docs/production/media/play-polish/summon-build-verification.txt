@@ -1,0 +1,31 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS follow ground ready
+PASS existing public FINCH preserved
+PASS ground collision near ship ready
+PASS legal FINCH position near lander exists
+PASS summon ground collision ready
+SHUTTLE_POINT (-31.0, 1.865349, -36.0) ray (-31.06985, 1.860683, -36.17647) reason
+PASS FINCH choice starts valid ground preview
+PASS wheel rotates preview 90 degrees
+RESPONSE { "ok": true, "sequence": 2, "revision": 5.0, "gains": {  } }
+PASS click durably deploys FINCH
+PASS FINCH touchdown completes
+PASS actual FINCH finishes descent at selected position
+PASS summoned model keeps selected heading
+PASS summoned position is saved
+PASS deployed public FINCH can be boarded after touchdown
+PASS boarding keeps owner cargo and sortie valid
+RESPONSE { "ok": true, "sequence": 3, "revision": 6.0, "gains": {  } }
+PASS stowing removes parked model
+PASS valid new factory site found
+PASS building card directly starts placement
+BUILD reason
+PASS factory ghost accepts supported ground
+PASS wheel cycles exactly four headings
+RESPONSE { "ok": true, "sequence": 4, "revision": 7.0, "gains": {  } }
+PASS new construction is Mk.2 with selected yaw
+PASS direct Mk.2 demolition grants no unpaid upgrade parts
+PASS research summon and build save cleanly
+PLAY_POLISH_FOLLOW 22 failures 0

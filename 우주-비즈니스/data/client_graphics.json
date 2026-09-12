@@ -2,9 +2,11 @@
   "view_distance": {
     "name": "시야거리",
     "labels": [
-      "낮음",
+      "매우 가까움",
+      "가까움",
       "보통",
-      "높음"
+      "멀리",
+      "매우 멀리"
     ],
     "levels": [
       {
@@ -18,7 +20,20 @@
       {
         "view_distance": 4800.0,
         "lod": 1.0
+      },
+      {
+        "view_distance": 7200.0,
+        "lod": 1.0
+      },
+      {
+        "view_distance": 10000.0,
+        "lod": 1.0
       }
+    ],
+    "preset_levels": [
+      0,
+      2,
+      3
     ]
   },
   "shadows": {

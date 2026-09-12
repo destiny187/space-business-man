@@ -203,7 +203,7 @@ func _process(delta: float) -> void:
 	var underground: float=clampf(-player.position.y/10.0,0,1)
 	environment.ambient_light_energy=lerpf(.28,.035,underground)
 	environment.fog_density=lerpf(.0007,.002,underground)
-	hud.value="%s  /  T%d\n좌표 %.0f, %.0f  ·  깊이 %.1f m\n우주선까지 %.0f m" % [body.name,int(body.planet_tier),player.position.x,player.position.z,maxf(0,-player.position.y),player.position.distance_to(ship_position)]
+	hud.value="%s\n좌표 %.0f, %.0f  ·  깊이 %.1f m\n우주선까지 %.0f m" % [body.name,player.position.x,player.position.z,maxf(0,-player.position.y),player.position.distance_to(ship_position)]
 	if not logistics.is_empty():hud.value+="\n휴대 암석 %d · 운반 중 %d · 창고 %d" % [int(logistics.hand_rock),int(logistics.robot.cargo),int(logistics.depot_rock)]
 	if debug_visible:hud.value+="\n활성 청크 %d · 작업 %d · 최대 생성 %.1fms · 최근 설치 %.1fms" % [terrain.chunks.size(),terrain.jobs.size(),terrain.max_build_ms,terrain.last_install_ms]
 	message.position.y=maxf(140,hud.position.y+hud.get_minimum_size().y+10)

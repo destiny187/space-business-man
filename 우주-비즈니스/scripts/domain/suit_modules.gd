@@ -57,7 +57,7 @@ static func shield_delay(member: Dictionary) -> float:
  var factor:=1.0
  if has_effect(member,"critical_recharge") and float(member.get("vitals",{}).get("health",100))<=FrontierCrewAugmentation.maximum_health(member)*float(config().legendary.critical_recharge.threshold):factor=float(config().legendary.critical_recharge.factor)
  return float(config().shield.delay)*(1.0-bonus(member,"shield_delay"))*factor
-static func title(item: Dictionary) -> String:return "T%d %s %s"%[int(item.tier),config().rarities[item.rarity].name,config().slots[item.slot].name]
+static func title(item: Dictionary) -> String:return "%s %s"%[config().rarities[item.rarity].name,config().slots[item.slot].name]
 static func value_text(stat: String,value: float) -> String:
  return "%s %+.0f"%[config().stats[stat].name,value] if config().stats[stat].unit=="flat" else "%s %+.1f%%"%[config().stats[stat].name,value*100]
 static func drop(world: Dictionary,actor: String,source_id: String,tier: int,source: String) -> String:

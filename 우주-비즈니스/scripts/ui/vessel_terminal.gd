@@ -24,7 +24,7 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	var pod:=TextureRect.new();pod.texture=load(FrontierFreightSalvage.ICON);pod.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;pod.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;pod.custom_minimum_size=Vector2(64,52);freight_card.add_child(pod)
 	freight_label=Label.new();freight_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;freight_label.size_flags_horizontal=Control.SIZE_EXPAND_FILL;freight_label.add_theme_font_size_override("font_size",13);freight_card.add_child(freight_label);freight_card.hide()
 	var grid:=GridContainer.new();grid.columns=2;grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL;grid.add_theme_constant_override("h_separation",12);grid.add_theme_constant_override("v_separation",12);add_child(grid)
-	for row in [["lotus","Lotus 보급","기초 물자  현장 투하","ice"],["augmentation","신체 증강","선내 장치  강화","reinforced_frame"],["cargo","화물창","배낭 ↔ 선박","stone"],["inventory","내 아이템","장비  번호 슬롯","reinforced_frame"],["research","연구","설계도  생태 분석","crystal"],["shipyard","정비","선체  모듈","control_circuit"],["launch","탑승  이륙","승무원 탑승 후 출항","ship_module"],["rejoin","원정선 합류","화물은 먼저 직접 하역","ship_module"]]:
+	for row in [["shuttles","소형선 호출","기체 선택  위치 지정","ship_module"],["lotus","Lotus 보급","기초 물자  현장 투하","ice"],["augmentation","신체 증강","선내 장치  강화","reinforced_frame"],["cargo","화물창","배낭 ↔ 선박","stone"],["inventory","내 아이템","장비  번호 슬롯","reinforced_frame"],["research","연구","설계도  생태 분석","crystal"],["shipyard","정비","선체  모듈","control_circuit"],["launch","탑승  이륙","승무원 탑승 후 출항","ship_module"],["rejoin","원정선 합류","화물은 먼저 직접 하역","ship_module"]]:
 		var button:=Button.new();button.custom_minimum_size=Vector2(180,100);button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;grid.add_child(button)
 		var content:=VBoxContainer.new();content.mouse_filter=Control.MOUSE_FILTER_IGNORE;button.add_child(content);content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);content.offset_left=16;content.offset_top=12;content.offset_right=-16
 		var top:=HBoxContainer.new();top.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(top)
@@ -52,7 +52,7 @@ func update_snapshot(value: Dictionary) -> void:
 	freight_card.visible=not freight.is_empty()
 	freight_label.text="회수 거치대  1 / 1\n"+("mine 교체 부품 운반 중 · J" if FrontierFreightSalvage.maintenance(freight) else "유실 화물 운반 중 · J") if not freight.is_empty() else ""
 	if not freight.is_empty():freight_card.get_child(0).texture=load(FrontierFreightSalvage.icon(freight))
-	for id in ["research","shipyard","augmentation"]:cards[id].visible=not personal
+	for id in ["research","shipyard","augmentation","shuttles"]:cards[id].visible=not personal
 	cards.rejoin.visible=personal
 	cards.launch.get_meta("hint").text="혼자 탑승하여 출발" if personal else "승무원 탑승 후 출항"
 	cards.launch.tooltip_text="소형선으로 이륙" if personal else "출동 중인 소형선이 복귀하고 전원 탑승하면 이륙합니다."

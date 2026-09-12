@@ -41,6 +41,7 @@ var selected_item: String=""
 var selected_definition: String="miner_1"
 var selected_resource: String=""
 var last_key: String=""
+var last_hotbar_key: String=""
 var data: Dictionary={}
 var bag: Dictionary={}
 var depot: Dictionary={}
@@ -196,6 +197,9 @@ func _process(delta: float) -> void:
 	if not active:hide();return
 	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id]
 	data=FrontierEquipment.state(member)
+	_refresh_hotbar()
+	# The hotbar remains live in the field; closed inventory tabs do no work.
+	if not visible:return
 	var ledger: Dictionary=app.session.surface.get("business",{})
 	bag=app.session.latest.get("inventory",ledger.get("bags",{}).get(app.session.latest.self_id,FrontierExpeditionBusiness.inventory())).duplicate()
 	bag.stone=int(bag.get("stone",0))+int(member.carried)
@@ -216,11 +220,14 @@ func _process(delta: float) -> void:
 	warehouse_management.visible=not using_ship()
 	warehouse_management.disabled=using_ship() or storage_site.is_empty() or storage_site.get("state")=="settled" or not FrontierExpeditionBusiness.near_warehouse(storage_site,FrontierCrewWorld.vector(member.position))
 	warehouse_management.tooltip_text="현장 창고 9m 이내에서 보급 / 로봇 / 시설을 관리합니다."
-	var key:=JSON.stringify([data,bag,depot,storage_site.get("stored_equipment",{}),storage_site.get("buildings",{}).size(),ledger.get("credits",0),member.carried,storage.selected,using_ship(),app.surface_world!=null,personal,storage_pending.size()])
+	credit.text="%s"%int(ledger.get("credits",FrontierExpeditionBusiness.config().starting_credits))
+	if tabs.current_tab>2:return
+	var available:=FrontierItemInventory.capacity(member)
+	var view_state: Array=[data,bag,member.carried,available,tabs.current_tab]
+	if tabs.current_tab==2:view_state.append_array([depot,storage_site.get("stored_equipment",{}),FrontierItemInventory.warehouse_capacity(storage_site),using_ship(),personal,storage_pending.size()])
+	var key:=JSON.stringify(view_state)
 	if key==last_key:return
 	last_key=key
-	credit.text="%s"%int(ledger.get("credits",FrontierExpeditionBusiness.config().starting_credits))
-	var available:=FrontierItemInventory.capacity(member)
 	var occupied:=FrontierItemInventory.used(bag,data.items.size())
 	capacity.max_value=available;capacity.value=occupied
 	capacity_text.text="수납  %d / %d칸%s"%[occupied,available,"  초과 보관" if occupied>available else ""]
@@ -228,6 +235,37 @@ func _process(delta: float) -> void:
 	capacity_text.tooltip_text="자원은 한 칸에 %d개, 장비와 생체 표본은 한 칸에 1개입니다. 번호 슬롯에 장착해도 수납 공간을 사용합니다."%int(FrontierItemInventory.config().resource_stack)
 	if occupied>available:capacity_text.tooltip_text+="\n기존 아이템은 보존됩니다. 창고에 반납하여 공간을 확보하세요."
 	else:capacity_text.tooltip_text+="\n기본 수납은 %d칸입니다. 성능 개조의 현장 물류로 수납 칸을 늘릴 수 있습니다."%int(FrontierItemInventory.config().slots)
+	if tabs.current_tab==0:
+		_begin_tiles(owned)
+		for id in data.items:_tile(owned,id,data.items[id])
+		var stack_indices: Dictionary={}
+		for stack in FrontierItemInventory.stacks(bag):
+			var id: String=stack.resource
+			var tile:=_reuse_tile(owned,_stack_key(stack_indices,id));tile.picture=FrontierResourceIcons.texture(id);tile.amount=str(int(stack.amount));tile.caption=FrontierCatalog.entry("resources",id).name;FrontierItemBrowser.tag(tile,tile.caption,FrontierItemBrowser.kind(id),int(bag[id]));tile.tooltip_text=FrontierCatalog.entry("resources",id).name+"  최대 %d개"%FrontierItemInventory.stack_size(id)
+			tile.custom_minimum_size=Vector2(84,96)
+			if not tile.has_meta("resource"):tile.pressed.connect(func():selected_resource=str(tile.get_meta("resource"));selected_item="";_refresh_details();_highlight())
+			tile.set_meta("resource",id);tile.queue_redraw()
+		_end_tiles(owned)
+	elif tabs.current_tab==1:
+		if recipes.get_child_count()==0:
+			for id in FrontierEquipment.config().items:
+				if FrontierEquipment.config().items[id].get("craftable",true):_tile(recipes,"",id)
+		for tile in recipes.get_children():
+			var definition: String=tile.get_meta("definition")
+			var def: Dictionary=FrontierEquipment.config().items[definition]
+			tile.unavailable=int(data.kit)<=0 if definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost)
+			tile.tooltip_text=str(def.name)+("  재료 부족" if tile.unavailable else "");tile.queue_redraw()
+	elif tabs.current_tab==2:
+		_begin_tiles(cargo);_begin_tiles(storage_owned);_refresh_storage(available);_end_tiles(cargo);_end_tiles(storage_owned)
+	if selected_item!="" and not data.items.has(selected_item):selected_item=""
+	if tabs.current_tab==0 and selected_resource.is_empty() and not data.items.is_empty():
+		if selected_item.is_empty():selected_item=data.slots[int(data.selected)] if data.slots[int(data.selected)]!="" else data.items.keys()[0]
+		selected_definition=data.items[selected_item]
+	_layout();_refresh_details();_highlight()
+func _refresh_hotbar() -> void:
+	var key:=JSON.stringify([data.items,data.slots,data.selected,data.get("weapon_rolls",{})])
+	if key==last_hotbar_key:return
+	last_hotbar_key=key
 	for i in data.slots.size():
 		var def: Dictionary=FrontierEquipment.config().items.get(data.items.get(data.slots[i],""),{})
 		var tile:=hotbuttons[i];tile.picture=null if def.is_empty() else FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.get("tier",0));tile.selected=i==int(data.selected);tile.caption="";tile.tooltip_text=str(i+1)+"  "+str(def.get("name","빈 슬롯"));tile.queue_redraw()
@@ -235,31 +273,30 @@ func _process(delta: float) -> void:
 			var rarity: String=str(data.get("weapon_rolls",{}).get(data.slots[i],{}).get("rarity","standard"))
 			tile.rarity_color=Color(str(FrontierFirearms.config().rarities[rarity].color))
 		else:tile.rarity_color=Color.TRANSPARENT
-	for grid in [owned,recipes,cargo,storage_owned]:
-		for child in grid.get_children():grid.remove_child(child);child.queue_free()
-	tiles.clear()
-	for id in data.items:_tile(owned,id,data.items[id])
-	for id in FrontierEquipment.config().items:
-		if FrontierEquipment.config().items[id].get("craftable",true):_tile(recipes,"",id)
-	for storage_index in 2:
-		var source: Dictionary=bag if storage_index==0 else depot
-		var grid: GridContainer=owned if storage_index==0 else cargo
-		var displayed: Array=[]
-		displayed=FrontierItemInventory.stacks(source) if storage_index==0 else []
-		for stack in displayed:
-			var id: String=stack.resource
-			var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(id);tile.amount=str(int(stack.amount));tile.caption=FrontierCatalog.entry("resources",id).name;FrontierItemBrowser.tag(tile,tile.caption,FrontierItemBrowser.kind(id),int(source[id]));tile.tooltip_text=FrontierCatalog.entry("resources",id).name+("  최대 %d개"%FrontierItemInventory.stack_size(id) if storage_index==0 else "  공동 재고 합계")
-			if storage_index==0:tile.custom_minimum_size=Vector2(84,96)
-			tile.set_meta("resource",id);tile.pressed.connect(func():selected_resource=id;selected_item="";_refresh_details();_highlight());grid.add_child(tile)
-	_refresh_storage(available)
-	if selected_item!="" and not data.items.has(selected_item):selected_item=""
-	if tabs.current_tab==0 and selected_resource.is_empty() and not data.items.is_empty():
-		if selected_item.is_empty():selected_item=data.slots[int(data.selected)] if data.slots[int(data.selected)]!="" else data.items.keys()[0]
-		selected_definition=data.items[selected_item]
-	_layout();_refresh_details();_highlight()
+func _begin_tiles(grid: Node) -> void:
+	grid.set_meta("tile_order",0)
+	for tile in grid.get_children():tile.set_meta("retained",false)
+func _reuse_tile(grid: Node,key: String) -> FrontierItemTile:
+	if not grid.has_meta("tile_cache"):grid.set_meta("tile_cache",{})
+	var cache: Dictionary=grid.get_meta("tile_cache")
+	if not cache.has(key):
+		var created:=FrontierItemTile.new();created.set_meta("tile_key",key);grid.add_child(created);cache[key]=created
+	var tile: FrontierItemTile=cache[key]
+	tile.set_meta("retained",true)
+	var order:=int(grid.get_meta("tile_order",0));grid.move_child(tile,mini(order,grid.get_child_count()-1));grid.set_meta("tile_order",order+1)
+	return tile
+func _end_tiles(grid: Node) -> void:
+	var cache: Dictionary=grid.get_meta("tile_cache",{})
+	for tile in grid.get_children():
+		if tile.get_meta("retained",false):continue
+		cache.erase(tile.get_meta("tile_key"));tiles.erase(tile);grid.remove_child(tile);tile.queue_free()
+func _stack_key(indices: Dictionary,resource: String) -> String:
+	var index:=int(indices.get(resource,0));indices[resource]=index+1
+	return "resource:"+resource+":"+str(index)
 func _tile(parent: Node,id: String,definition: String) -> void:
 	var def: Dictionary=FrontierEquipment.config().items[definition]
-	var tile:=FrontierItemTile.new();tile.item_id=id;tile.set_meta("definition",definition);tile.picture=FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.tier);tile.caption=def.name;tile.tooltip_text=def.name;FrontierItemBrowser.tag(tile,def.name,"equipment")
+	var tile:=_reuse_tile(parent,"equipment:"+(definition if id.is_empty() else id));tile.item_id=id;tile.set_meta("definition",definition);tile.picture=FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.tier);tile.caption=def.name;tile.tooltip_text=def.name;FrontierItemBrowser.tag(tile,def.name,"equipment")
+	tile.rarity_color=Color.TRANSPARENT;tile.rarity_label=""
 	if def.has("firearm"):
 		var rarity: String=str(data.get("weapon_rolls",{}).get(id,{}).get("rarity","standard"))
 		var quality: Dictionary=FrontierFirearms.config().rarities[rarity]
@@ -268,8 +305,10 @@ func _tile(parent: Node,id: String,definition: String) -> void:
 	if parent==recipes:
 		tile.unavailable=int(data.kit)<=0 if definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost)
 		if tile.unavailable:tile.tooltip_text+="  재료 부족"
-	tile.pressed.connect(func():selected_item=id;selected_definition=definition;selected_resource="";_refresh_details();_highlight())
-	parent.add_child(tile);tiles.append(tile)
+	if not tile in tiles:
+		tile.pressed.connect(func():selected_item=tile.item_id;selected_definition=str(tile.get_meta("definition"));selected_resource="";_refresh_details();_highlight())
+		tiles.append(tile)
+	tile.queue_redraw()
 func _highlight() -> void:
 	for grid in [owned,cargo]:
 		for tile in grid.get_children():
@@ -319,7 +358,7 @@ func _refresh_details() -> void:
 		var product:=FrontierProductionTier2.product(selected_resource)
 		preview.show_model(product.model if not product.is_empty() else "ore_"+selected_resource)
 		_metric("보유 수량",str(int((bag if storage.selected==0 else depot).get(selected_resource,0))),float((bag if storage.selected==0 else depot).get(selected_resource,0))/float(FrontierItemInventory.config().resource_stack))
-		if not product.is_empty():FrontierInterfaceStyle.label(stats,product.use,12)
+		if not product.is_empty():FrontierInterfaceStyle.label(stats,FrontierInterfaceStyle.player_text(product.use),12)
 		else:_metric("채집기 요구 등급",str(int(FrontierMineralWorld.tier(selected_resource))),float(FrontierMineralWorld.tier(selected_resource))/3)
 		_show_uses(selected_resource)
 		action.text="창고로 옮기기…";action.disabled=false
@@ -382,28 +421,33 @@ func _refresh_storage(available: int) -> void:
 	if response_left<=0:storage_label.text="옮기는 중…" if not storage_pending.is_empty() else "아이템을 선택하거나 반대편 슬롯으로 끌어놓으세요."
 	if response_left<=0:storage_label.modulate=FrontierInterfaceStyle.WARNING if occupied>limit else FrontierInterfaceStyle.ACCENT
 	for id in data.items:
-		_storage_tile(storage_owned,{"equipment_item":id,"source":"bag"},FrontierInterfaceStyle.icon(FrontierEquipment.config().items[data.items[id]].model),"",FrontierEquipment.config().items[data.items[id]].name)
+		_storage_tile(storage_owned,"equipment:"+id,{"equipment_item":id,"source":"bag"},FrontierInterfaceStyle.icon(FrontierEquipment.config().items[data.items[id]].model),"",FrontierEquipment.config().items[data.items[id]].name)
 	for side in ["bag","warehouse"]:
 		var grid: GridContainer=storage_owned if side=="bag" else cargo
 		var source: Dictionary=bag if side=="bag" else depot
+		var stack_indices: Dictionary={}
 		for stack in FrontierItemInventory.stacks(source):
-			_storage_tile(grid,{"resource":stack.resource,"amount":stack.amount,"source":side},FrontierResourceIcons.texture(stack.resource),str(stack.amount),FrontierCatalog.entry("resources",stack.resource).name)
+			_storage_tile(grid,_stack_key(stack_indices,stack.resource),{"resource":stack.resource,"amount":stack.amount,"source":side},FrontierResourceIcons.texture(stack.resource),str(stack.amount),FrontierCatalog.entry("resources",stack.resource).name)
 	for stored in storage_site.get("stored_equipment",{}).values():
 		var mine: bool=stored.owner==app.session.latest.self_id
 		var def: Dictionary=FrontierEquipment.config().items[stored.definition]
 		var payload: Dictionary={"equipment_item":stored.item_id,"source":"warehouse"} if mine else {}
-		_storage_tile(cargo,payload,FrontierInterfaceStyle.icon(def.model),"",def.name+("" if mine else "  다른 승무원 소유"))
+		_storage_tile(cargo,"equipment:"+str(stored.owner)+":"+str(stored.item_id),payload,FrontierInterfaceStyle.icon(def.model),"",def.name+("" if mine else "  다른 승무원 소유"))
 
-func _storage_tile(grid: GridContainer,payload: Dictionary,picture: Texture2D,amount: String,caption: String) -> void:
-	var tile:=FrontierItemTile.new();tile.custom_minimum_size=Vector2(72,80) if get_viewport().get_visible_rect().size.x<1100 else Vector2(84,96);tile.picture=picture;tile.amount=amount;tile.caption=caption;tile.tooltip_text=caption
+func _storage_tile(grid: GridContainer,key: String,payload: Dictionary,picture: Texture2D,amount: String,caption: String) -> void:
+	var tile:=_reuse_tile(grid,key);tile.custom_minimum_size=Vector2(72,80) if get_viewport().get_visible_rect().size.x<1100 else Vector2(84,96);tile.picture=picture;tile.amount=amount;tile.caption=caption;tile.tooltip_text=caption
 	FrontierItemBrowser.tag(tile,caption,FrontierItemBrowser.kind(str(payload.resource)) if payload.has("resource") else "equipment",int((bag if payload.get("source")=="bag" else depot).get(payload.get("resource",""),1)))
 	tile.selected=not payload.is_empty() and payload.get("source")==storage_selection.get("source") and (payload.get("resource",payload.get("equipment_item",""))==storage_selection.get("resource",storage_selection.get("equipment_item","!")))
-	tile.pressed.connect(func():
-		if payload.is_empty():return
-		storage_selection=payload.duplicate();last_key="";_refresh_transfer()
-		if Input.is_physical_key_pressed(KEY_SHIFT):
-			var quick:=payload.duplicate();quick.quick=true;_transfer_cargo(quick))
-	tile.cargo_payload=payload;tile.cargo_destination="bag" if grid==storage_owned else "warehouse";tile.cargo_dropped.connect(_transfer_cargo);grid.add_child(tile)
+	if not tile.has_meta("cargo_bound"):
+		tile.set_meta("cargo_bound",true)
+		tile.pressed.connect(func():
+			var current:=tile.cargo_payload
+			if current.is_empty():return
+			storage_selection=current.duplicate();last_key="";_refresh_transfer()
+			if Input.is_physical_key_pressed(KEY_SHIFT):
+				var quick:=current.duplicate();quick.quick=true;_transfer_cargo(quick))
+		tile.cargo_dropped.connect(_transfer_cargo)
+	tile.cargo_payload=payload;tile.cargo_destination="bag" if grid==storage_owned else "warehouse";tile.queue_redraw()
 func _transfer_cargo(payload: Dictionary) -> void:
 	if not storage_pending.is_empty():return
 	var withdraw: bool=payload.get("source")=="warehouse"

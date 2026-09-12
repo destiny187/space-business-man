@@ -144,7 +144,16 @@ func _peer_disconnected(peer: int) -> void:
 func _server_disconnected() -> void:
 	active=false;latest={};surface={};notice.emit("호스트 연결이 종료됐습니다. 개인 장비 원본은 유지됩니다.")
 	if enet is FrontierCrewRelayPeer:call_deferred("_relay_lost",enet,enet.error if not enet.error.is_empty() else "호스트 연결이 종료됐습니다.")
+func _drain_completed_requests() -> void:
+	if authority==null or authority.completed_requests.is_empty():return
+	var replies:=authority.completed_requests.duplicate();authority.completed_requests.clear()
+	# Publish durable inventory before delivering the extraction feedback.
+	if not authority.stopped:_publish();_publish_surface()
+	for reply in replies:
+		if int(reply.peer)==1:_complete_request(int(reply.sequence),reply.result)
+		elif not offline and authority.peers.has(int(reply.peer)):_response.rpc_id(int(reply.peer),int(reply.sequence),reply.result)
 func _process(delta: float) -> void:
+	if hosting:_drain_completed_requests()
 	if not hosting or (enet==null and not offline) or authority.stopped:return
 	var now:=Time.get_ticks_msec()/1000.0
 	for peer in authority.advance_time(now):_reject_peer(peer,"참가 준비 시간이 초과됐습니다.")
@@ -270,8 +279,10 @@ func send_request(kind: String,args: Dictionary) -> bool:
 	request_started.emit(int(request.sequence),kind,args)
 	if hosting:
 		authority.now=Time.get_ticks_msec()/1000.0
-		var result:=authority.request(1,request);_complete_request(int(request.sequence),result)
-		if kind not in ["surface_fire","surface_reload","surface_stance"]:_publish();_publish_surface()
+		var before:=_request_publication_state()
+		var result:=authority.request(1,request)
+		if not result.get("pending",false):_complete_request(int(request.sequence),result)
+		_publish_request_result(request,result,before)
 	else:_request.rpc_id(1,request)
 	return true
 @rpc("any_peer","call_remote","reliable",0)
@@ -280,9 +291,20 @@ func _request(value: Dictionary) -> void:
 	var peer:=multiplayer.get_remote_sender_id()
 	if not _rate_allowed(peer):return
 	authority.now=Time.get_ticks_msec()/1000.0
+	var before:=_request_publication_state()
 	var result:=authority.request(peer,value)
-	_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result)
-	if value.get("kind","") not in ["surface_fire","surface_reload","surface_stance"]:_publish();_publish_surface()
+	if not result.get("pending",false):_response.rpc_id(peer,int(value.sequence) if FrontierUniverse._finite(value.get("sequence"),1,9007199254740000) else 0,result)
+	_publish_request_result(value,result,before)
+func _request_publication_state() -> Array:
+	return [authority.world.crew.revision,authority.phase,authority.lobby_ready.duplicate()]
+func _publish_request_result(envelope: Dictionary,result: Dictionary,before: Array) -> void:
+	if envelope.get("kind","") in ["surface_fire","surface_reload","surface_stance"] or result.get("pending",false):return
+	if before!=_request_publication_state():
+		_publish();_publish_surface()
+	elif not result.get("ok",false) and envelope.has("revision") and envelope.revision!=authority.world.crew.revision:
+		# A stale requester still needs a current snapshot to retry. An unchanged
+		# rejection/replay does not rebuild every peer's world and surface packet.
+		_publish()
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:_complete_request(sequence,value)

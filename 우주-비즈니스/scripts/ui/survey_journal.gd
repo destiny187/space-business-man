@@ -146,7 +146,7 @@ func select(entry: Dictionary) -> void:
 		var index:=int(entry.row.stage)
 		var text: String=d.knowledge if entry.row.claimed else "다음 조사  "+str(d.stages[index].label)
 		var label:=FrontierInterfaceStyle.label(details,text,14);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-		FrontierInterfaceStyle.label(details,"T%d  조사 %d / %d"%[int(d.tier),index,d.stages.size()],13)
+		FrontierInterfaceStyle.label(details,"조사 %d / %d"%[index,d.stages.size()],13)
 		var at: Array=entry.row.position
 		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(at[0]),float(at[2])],13)
 		if d.mode=="archive":
@@ -171,13 +171,13 @@ func select(entry: Dictionary) -> void:
 			preview.show_specimen(entry.row.native)
 			var individual:=FrontierInterfaceStyle.label(details,FrontierNativeIncidents.title(entry.row.native)+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		else:preview.show_model(d.model)
-		FrontierInterfaceStyle.label(details,"T%d  %s"%[int(d.tier),"회수 완료" if entry.row.claimed else "현장 진행 중"],13)
+		FrontierInterfaceStyle.label(details,"회수 완료" if entry.row.claimed else "현장 진행 중",13)
 		if entry.row.has("blueprint"):
 			var license: Dictionary=FrontierFacilityBlueprints.definitions().get(entry.row.blueprint,{})
 			FrontierInterfaceStyle.label(details,("중복 설계  부품으로 회수" if entry.row.get("blueprint_duplicate",false) else "공동 설계 해금")+"  "+str(license.get("name",entry.row.blueprint)),13,FrontierInterfaceStyle.ACCENT)
 		var equipment: String=d.get("equipment",{}).get(str(int(entry.row.tier)),"")
 		if equipment!="":FrontierInterfaceStyle.label(details,"회수 장비  "+str(FrontierEquipment.config().items[equipment].name),13)
-		var note:=FrontierInterfaceStyle.label(details,d.hint,14);note.autowrap_mode=TextServer.AUTOWRAP_ARBITRARY
+		var note:=FrontierInterfaceStyle.label(details,FrontierInterfaceStyle.player_text(d.hint),14);note.autowrap_mode=TextServer.AUTOWRAP_ARBITRARY
 		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(entry.row.position[0]),float(entry.row.position[2])],13)
 		var reward:=FrontierNativeIncidents.reward(entry.row)
 		for resource in reward:

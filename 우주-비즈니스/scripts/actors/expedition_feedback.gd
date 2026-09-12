@@ -60,7 +60,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _shuttle_snapshot(value: Dictionary) -> void:
 	var state:=str(value.get("crew",{}).get("shuttles",{}).get(value.get("self_id",""),{}).get("state",""))
 	if known_shuttle_state=="assembling" and state=="docked":
-		show_cue("FINCH 조립 완료 · 착륙선 옆에서 출발하세요.")
+		show_cue("FINCH 조립 완료 · 착륙선 단말에서 호출하세요.")
 		if not blocked():audio.play("sfx_factory_complete")
 	known_shuttle_state=state
 
@@ -101,13 +101,12 @@ func _response(sequence: int,value: Dictionary) -> void:
 		audio.play("sfx_pickup_resource" if value.get("ok",false) else "sfx_build_invalid");return
 	if request.kind.begins_with("shuttle_"):
 		if not value.get("ok",false):reject(str(value.get("error","소형선 작업 실패")))
-		else:audio.play("sfx_build_place" if request.kind=="shuttle_build" else "sfx_factory_complete");show_cue("FINCH 조립 시작" if request.kind=="shuttle_build" else "FINCH 출동" if request.kind=="shuttle_board" else "이탈 승무원 회수 완료" if request.kind=="shuttle_recall" else "원정선 합류 완료")
+		else:audio.play("sfx_build_place" if request.kind=="shuttle_build" else "sfx_factory_complete");show_cue("FINCH 조립 시작" if request.kind=="shuttle_build" else "FINCH 출동" if request.kind=="shuttle_board" else "이탈 승무원 회수 완료" if request.kind=="shuttle_recall" else "FINCH 호출" if request.kind=="shuttle_deploy" else "FINCH 격납 완료" if request.kind=="shuttle_stow" else "원정선 합류 완료")
 		return
 	if app.surface_world==null or app.surface_world.body.id!=request.body:return
 	if value.get("code")=="mining_cooldown":return
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
-	if request.kind in ["business_mine","surface_dig"] and app.surface_world.presence!=null:app.surface_world.presence.mark(point,Vector3.FORWARD,1.0)
 	match request.kind:
 		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대 · 광맥 작업 지시")
 		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")

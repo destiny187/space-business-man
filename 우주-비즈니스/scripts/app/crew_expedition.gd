@@ -97,6 +97,8 @@ var research_actions: Array[Control]=[]
 var business_panel: FrontierBusinessPanel
 var preferred_robot_id: String=""
 var placement_kind: String=""
+var placement_rotation:=0
+var placement_shuttle_holder:=""
 var placement_point:=Vector3.INF
 var placement_valid:=false
 var placement_reason: String=""
@@ -271,6 +273,7 @@ func _build_ui() -> void:
 		if business_panel.context_kind not in ["build","ship","base","robot"]:args["access_facility_id"]=business_panel.context_id
 		session.send_request(kind,args))
 	business_panel.place_building.connect(begin_placement)
+	business_panel.shuttle_panel.deploy_requested.connect(begin_shuttle_placement)
 	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시  "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
 	business_panel.station_action.connect(station_action)
 	station_market=FrontierStationMarketPanel.new();ui.add_child(station_market)
@@ -703,9 +706,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			if outside and surface_world==null and flight!=null and flight.combat_view!=null and not flight.combat_view.selected_wreck.is_empty():
 				session.send_request("space_salvage",{"id":flight.combat_view.selected_wreck});return
 			if not (surface_world!=null and surface_world.incidents!=null and surface_world.incidents.interact()) and not (surface_world!=null and surface_world.discoveries!=null and surface_world.discoveries.interact()) and not lotus.interact() and not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
+	if event is InputEventMouseButton and event.pressed and not placement_kind.is_empty() and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		placement_rotation=posmod(placement_rotation+(1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else -1),4)
+		placement_ghost.rotation.y=float(placement_rotation)*PI*.5
+		get_viewport().set_input_as_handled();return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():
-			if placement_valid:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point),"yaw":placement_ghost.rotation.y});cancel_placement()
+			if placement_valid:
+				if placement_kind=="shuttle":session.send_request("shuttle_deploy",{"holder":placement_shuttle_holder,"position":FrontierExpeditionBusiness.array(placement_point),"yaw":placement_ghost.rotation.y})
+				else:session.send_request("business_build",{"building":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point),"yaw":placement_ghost.rotation.y})
+				cancel_placement()
 			else:feedback.reject(placement_reason)
 			return
 		if inventory_panel.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or navigation_frame.visible:return
@@ -972,6 +982,7 @@ func open_warehouse_management() -> void:
 func station_action(kind: String) -> void:
 	match kind:
 		"lotus":lotus.toggle()
+		"shuttles":business_panel.tabs.current_tab=business_panel.shuttle_panel.get_index();business_panel.shuttle_panel.update_snapshot(session.latest)
 		"augmentation":stations.navigate("augmentation")
 		"inventory":
 			open_menu(inventory_panel)
@@ -989,41 +1000,48 @@ func order_robot() -> void:
 	if target.get("kind")!="vein":feedback.reject("광맥을 조준하고 R로 로봇에게 지시하세요.");return
 	session.send_request("business_assign",{"vein_id":target.id,"robot_id":preferred_robot_id})
 
+func placement_definition() -> Dictionary:
+	return {"name":"FINCH","model":"ships/finch","cost":{}} if placement_kind=="shuttle" else FrontierFacilityResearch.construction(placement_kind)
+func begin_shuttle_placement(holder: String) -> void:
+	begin_placement("shuttle");placement_shuttle_holder=holder
 func begin_placement(kind: String) -> void:
 	cancel_placement();close_menus()
 	if kind.is_empty() or surface_world==null:return
 	placement_kind=kind
-	placement_ghost=load("res://assets/models/"+FrontierCatalog.entry("buildings",kind).model+".glb").instantiate();add_child(placement_ghost)
+	placement_rotation=0
+	placement_ghost=load("res://assets/models/"+placement_definition().model+".glb").instantiate();add_child(placement_ghost)
 	ghost_material=StandardMaterial3D.new();ghost_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ghost_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ghost_material.albedo_color=Color(.3,.9,.6,.45)
 	for node in placement_ghost.find_children("*","MeshInstance3D",true,false):node.material_override=ghost_material;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	var footprint:=FrontierTerraformPlacement.new();placement_ghost.add_child(footprint);footprint.configure(self,kind)
+	if kind!="shuttle":
+		var footprint:=FrontierTerraformPlacement.new();placement_ghost.add_child(footprint);footprint.configure(self,kind)
 func cancel_placement() -> void:
-	placement_kind="";placement_valid=false;placement_reason=""
+	placement_kind="";placement_shuttle_holder="";placement_valid=false;placement_reason=""
 	if is_instance_valid(placement_ghost):placement_ghost.queue_free()
 	placement_ghost=null
 func _update_business_placement() -> void:
 	if placement_kind.is_empty() or surface_world==null:return
-	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*12);query.exclude=[actors[session.latest.self_id].get_rid()]
+	var query:=PhysicsRayQueryParameters3D.create(camera.position,camera.position-camera.global_basis.z*(float(FrontierShuttles.config().deployment_range) if placement_kind=="shuttle" else 12.0));query.exclude=[actors[session.latest.self_id].get_rid()]
 	var hit:=get_world_3d().direct_space_state.intersect_ray(query)
 	placement_valid=false
-	if hit.is_empty():placement_ghost.hide();placement_reason="12m 안의 지면을 조준하세요  Esc 취소";return
+	if hit.is_empty():placement_ghost.hide();placement_reason="주변 지면을 조준하세요  Esc 취소";return
 	placement_point=hit.position
 	var ground_height: float=surface_world.terrain.field.height(placement_point.x,placement_point.z)
 	var on_surface: bool=absf(placement_point.y-ground_height)<1.5
 	if on_surface:placement_point.y=ground_height
 	placement_ghost.position=placement_point;placement_ghost.show()
-	if FrontierCombatCover.config().buildings.has(placement_kind):placement_ghost.rotation.y=yaw
+	placement_ghost.rotation.y=float(placement_rotation)*PI*.5
 	var packet: Dictionary=session.surface
 	var world: Dictionary=FrontierShuttles.context(session.authority.world,session.latest.self_id) if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
 	if not session.hosting:world["lotus"]=session.latest.get("lotus",{})
 	var current:=FrontierExpeditionBusiness.site(world)
-	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
+	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else "" if placement_kind=="shuttle" else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
+	if placement_kind=="shuttle":reason=FrontierShuttles.deployment_reason(world,session.latest.self_id,placement_shuttle_holder,placement_point)
 	if not on_surface:reason="지표의 평탄한 지면에 배치하세요  Esc 취소"
 	if reason.is_empty() and not surface_world.ready_at(placement_point):reason="지면을 불러오는 중입니다."
 	placement_reason=reason
 	placement_valid=on_surface and reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
-	status.value=("클릭 건설  "+FrontierCatalog.cost_text(FrontierCatalog.entry("buildings",placement_kind).cost)) if placement_valid else reason
+	status.value=("클릭 호출  휠 회전  Esc 취소" if placement_kind=="shuttle" else "클릭 건설  휠 회전  "+FrontierCatalog.cost_text(placement_definition().cost)) if placement_valid else reason
 
 func start_solo(fresh: bool=false) -> void:
 	if network_busy:return

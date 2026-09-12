@@ -72,13 +72,66 @@ static func guard(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			for id in fleet(world):
 				if aboard(world,id) or fleet(world)[id].state=="assembling":return "조립 또는 운송 중인 소형선이 있습니다. 승무원이 원정선에 합류한 뒤 함께 출발하세요."
 	return ""
+static func deployed(ship: Dictionary,body_id: String) -> bool:
+	return ship.get("state")=="docked" and ship.get("deployment",{}).get("body_id","")==body_id
 static func pad(world: Dictionary,actor: String) -> Vector3:
-	var point:=FrontierCrewWorld.vector(config().pad)
-	point.x+=float(fleet(world).get(actor,{}).get("pad_slot",fleet(world).size()))*7.0
-	if FrontierCrewSurface.landed(world):point.y=FrontierCrewSurface.field(world).height(point.x,point.z)
-	return point
+	var ship: Dictionary=fleet(world).get(actor,{})
+	return FrontierCrewWorld.vector(ship.deployment.position) if deployed(ship,world.location) else Vector3.INF
+static func deployment_access(world: Dictionary,actor: String,holder: String) -> String:
+	var member: Dictionary=world.crew.members.get(actor,{})
+	var craft: Dictionary=fleet(world).get(holder,{})
+	if aboard(world,actor) or not FrontierCrewSurface.landed(world) or member.get("aboard",true):return "공동 착륙선 밖에서 소형선을 호출하세요."
+	if FrontierCrewWorld.vector(member.position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "착륙선 단말 가까이에서 호출하세요."
+	if craft.get("state","")!="docked":return "격납 중인 소형선을 선택하세요."
+	if holder!=actor and not craft.get("company",false):return "자신의 소형선 또는 공용선을 선택하세요."
+	return ""
+static func deployment_reason(world: Dictionary,actor: String,holder: String,p: Vector3) -> String:
+	var error:=deployment_access(world,actor,holder)
+	if not error.is_empty():return error
+	if not p.is_finite():return "지면을 선택하세요."
+	var origin:=FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position)
+	var radius:=float(config().deployment_radius)
+	if p.distance_to(origin)>float(config().deployment_range):return "착륙선 주변에서 위치를 선택하세요."
+	if Vector2(p.x-origin.x,p.z-origin.z).length()<13+radius:return "착륙선 진입로를 비워 두세요."
+	var field:=FrontierCrewSurface.field(world)
+	var floor:=FrontierExpeditionBusiness.ground(field,p.x,p.z,radius)
+	if not floor.is_finite() or absf(floor.y-p.y)>.5:return "소형선을 지지할 평탄한 지면이 필요합니다."
+	var site: Dictionary=world.get("business",{}).get("sites",{}).get(world.location,{})
+	if site.get("base_deployed",false) and p.distance_to(FrontierCrewWorld.vector(site.center))<radius+4:return "창고 진입로를 비워 두세요."
+	for building in site.get("buildings",{}).values():
+		if p.distance_to(FrontierCrewWorld.vector(building.position))<radius+FrontierTerraformTier3.radius(building)+1.5:return "시설과 호출 위치가 겹칩니다."
+	for robot in site.get("robots",{}).values():
+		if p.distance_to(FrontierCrewWorld.vector(robot.position))<radius+2:return "로봇이 호출 위치에 있습니다."
+	for id in world.crew.members:
+		if area_key(world,id)=="surface:"+world.location and p.distance_to(FrontierCrewWorld.vector(world.crew.members[id].position))<radius+1:return "승무원이 호출 위치에 있습니다."
+	for id in fleet(world):
+		if id!=holder and deployed(fleet(world)[id],world.location) and p.distance_to(pad(world,id))<radius*2+2:return "다른 소형선과 위치가 겹칩니다."
+	for rover in FrontierRovers.fleet(world).vehicles.values():
+		if rover.location_kind=="surface" and rover.body_id==world.location and p.distance_to(FrontierRovers.point(rover))<radius+4:return "차량과 호출 위치가 겹칩니다."
+	for vein in FrontierExpeditionBusiness.clearance_veins(FrontierUniverse.body_from_id(world.manifest,world.location),p):
+		if not vein.get("underground",false) and int(site.get("remaining",{}).get(vein.id,vein.capacity))>0 and Vector2(vein.position[0]-p.x,vein.position[2]-p.z).length()<radius+2:return "광맥과 호출 위치가 겹칩니다."
+	if FrontierLotusSupport.blocks(world,world.location,p,radius):return "보급 투하 공간을 비워 두세요."
+	if FrontierSurfaceWater.depth(world.get("surface_water",{}).get(world.location,FrontierSurfaceWater.create()),p)>.05:return "물 밖의 지면을 선택하세요."
+	var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
+	if FrontierSurfaceDrainage.liquid(body.get("terrain_traits",{})) and p.y< -3.9:return "물 밖의 지면을 선택하세요."
+	return ""
+static func stow_docked(world: Dictionary) -> void:
+	for craft in fleet(world).values():
+		if craft.state=="docked":craft.erase("deployment")
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
 	var member: Dictionary=world.crew.members[actor]
+	if kind in ["shuttle_deploy","shuttle_stow"]:
+		var holder:=str(args.get("holder",actor))
+		var error:=deployment_access(world,actor,holder)
+		if not error.is_empty():return error
+		var craft: Dictionary=fleet(world)[holder]
+		if kind=="shuttle_stow":craft.erase("deployment");return ""
+		if not FrontierUniverse._vector3_array(args.get("position")) or not FrontierUniverse._finite(args.get("yaw",0),-TAU,TAU):return "소형선 호출 위치 오류"
+		var p:=FrontierCrewWorld.vector(args.position)
+		error=deployment_reason(world,actor,holder,p)
+		if not error.is_empty():return error
+		craft.deployment={"body_id":world.location,"position":args.position.duplicate(),"yaw":float(args.get("yaw",0)),"time":float(world.crew.navigation.orbit_time)}
+		return ""
 	if kind=="shuttle_recall":
 		if actor!=world.crew.owner_id:return "호스트만 이탈 승무원을 회수할 수 있습니다."
 		if aboard(world,actor):return "공동 원정선에 합류한 뒤 회수하세요."
@@ -86,7 +139,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if target==actor or not aboard(world,target) or fleet(world).get(target,{}).get("state")!="sortie":return "회수할 이탈 소형선이 없습니다."
 		var craft: Dictionary=fleet(world)[target]
 		# No transfer: craft cargo, bag and owned equipment keep their original ledgers.
-		craft.state="docked";craft.location=world.location;craft.navigation_target=world.location
+		craft.erase("deployment");craft.state="docked";craft.location=world.location;craft.navigation_target=world.location
 		craft.system=int(world.crew.navigation.system);craft.navigation=world.crew.navigation.duplicate(true)
 		craft.navigation.mode="idle";craft.navigation.speed=0.0;craft.navigation.boosting=false;craft.navigation.manual=true
 		craft.navigation.target=FrontierUniverse.ordinal_of(world.manifest,world.location)
@@ -108,8 +161,6 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			if job.factory_id==factory.id:return "로봇 조립을 먼저 완료하세요."
 		if FrontierCrewWorld.vector(member.position).distance_to(FrontierCrewWorld.vector(factory.position))>8:return "제작소 8m 안에서 조립을 요청하세요."
 		if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().cost):return "가방에 소형선 조립 부품을 준비하세요."
-		var dock:=pad(world,actor)
-		if not FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),dock.x,dock.z,3).is_finite():return "소형선 착륙대의 평탄한 공간을 확보하세요."
 		FrontierExpeditionBusiness.transfer(world.business.bags[actor],config().cost,-1)
 		var nav: Dictionary=world.crew.navigation.duplicate(true)
 		fleet(world)[actor]={"state":"assembling","pad_slot":fleet(world).size(),"progress":0.0,"factory_id":factory.id,"system":int(nav.system),"location":world.location,"navigation_target":world.location,"navigation":nav,"landing":world.crew.landing.duplicate(),"cargo":{},"cargo_equipment":{},"rock":0}
@@ -117,7 +168,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if kind=="shuttle_board" and not fleet(world).has(actor):
 		for holder in fleet(world).keys():
 			var loan: Dictionary=fleet(world)[holder]
-			if not loan.get("company",false) or loan.state!="docked":continue
+			if not loan.get("company",false) or not deployed(loan,world.location):continue
 			if not loan.cargo_equipment.is_empty():return "공용 FINCH의 개인 장비를 먼저 내려 주세요."
 			if not FrontierCrewSurface.landed(world) or member.aboard or FrontierCrewWorld.vector(member.position).distance_to(pad(world,holder))>float(config().interaction_distance):return "Lotus 공용 FINCH 가까이에서 탑승하세요."
 			FrontierFreightSalvage.reassign(world,holder,actor)
@@ -127,6 +178,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if kind=="shuttle_board":
 		if aboard(world,actor):return "이미 소형선으로 출동 중입니다."
 		if not FrontierCrewSurface.landed(world) or member.aboard:return "착륙 후 소형선에 접근하세요."
+		if not deployed(ship,world.location):return "착륙선 단말에서 소형선을 먼저 호출하세요."
+		if float(world.crew.navigation.orbit_time)-float(ship.deployment.time)<float(config().deployment_seconds):return "소형선이 내려오는 중입니다."
 		if FrontierCrewWorld.vector(member.position).distance_to(pad(world,actor))>float(config().interaction_distance):return "소형선 6m 안으로 접근하세요."
 		ship.location=world.location;ship.navigation_target=world.location;ship.system=int(world.crew.navigation.system)
 		ship.navigation=world.crew.navigation.duplicate(true);ship.landing=world.crew.landing.duplicate()
@@ -138,7 +191,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if not aboard(world,actor):return "복귀할 출동 기록이 없습니다."
 		if not FrontierCrewSurface.landed(world) or ship.landing.is_empty() or ship.location!=world.location:return "공동 원정선이 있는 행성에 착륙한 뒤 합류하세요."
 		if FrontierCrewWorld.vector(member.position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "공동 원정선 가까이 돌아오세요."
-		member.erase("shuttle_id");member.aboard=false;member.ready=false;ship.state="docked"
+		member.erase("shuttle_id");member.aboard=false;member.ready=false;ship.state="docked";ship.erase("deployment")
 		return ""
 	return "지원하지 않는 소형선 작업입니다."
 static func manufacture(world: Dictionary,dt: float) -> void:
@@ -158,6 +211,9 @@ static func validate(crew: Dictionary) -> String:
 	for id in crew.get("shuttles",{}):
 		var ship: Variant=crew.shuttles[id]
 		if not crew.members.has(id) or not ship is Dictionary or ship.get("state") not in ["assembling","docked","sortie"]:return "소형선 소유·상태 오류"
+		if ship.has("deployment"):
+			var deployment: Variant=ship.deployment
+			if not deployment is Dictionary or not deployment.get("body_id") is String or not FrontierUniverse._vector3_array(deployment.get("position")) or not FrontierUniverse._finite(deployment.get("yaw"),-TAU,TAU) or not FrontierUniverse._finite(deployment.get("time"),0,9007199254740000):return "소형선 호출 기록 오류"
 		if not FrontierExpeditionBusiness.integer(ship.get("pad_slot",0),0,5):return "소형선 주기 위치 오류"
 		if not FrontierExpeditionBusiness.integer(ship.get("system"),0,249999) or not FrontierUniverse._finite(ship.get("progress"),0,float(config().seconds)):return "소형선 진행 오류"
 		if not ship.get("location") is String or not ship.get("navigation_target") is String or not ship.get("landing") is Dictionary:return "소형선 위치 오류"
@@ -178,6 +234,7 @@ static func validate(crew: Dictionary) -> String:
 static func validate_world(world: Dictionary) -> String:
 	for id in fleet(world):
 		var ship: Dictionary=fleet(world)[id]
+		if ship.has("deployment") and FrontierUniverse.ordinal_of(world.manifest,ship.deployment.body_id)<0:return "소형선 호출 행성 오류"
 		for body_id in [ship.location,ship.navigation_target]:
 			var ordinal:=FrontierUniverse.ordinal_of(world.manifest,str(body_id))
 			if ordinal<0 or FrontierUniverse.system_index(world.manifest,ordinal)!=int(ship.system):return "소형선 항성계 주소 오류"

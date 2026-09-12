@@ -14,7 +14,7 @@ static func owned(world: Dictionary,id: String) -> bool:
  return id.is_empty() or world.get("expedition_research",{}).get("licenses",{}).has(id)
 static func reason(world: Dictionary,row: Dictionary,next_tier: int) -> String:
  var id:=required(row,next_tier)
- return "" if owned(world,id) else "Mk.%d 설계도가 필요합니다. 정거장 T3 설계도 탭에서 구매하거나 T3 기록고를 복원하세요."%next_tier
+ return "" if owned(world,id) else "Mk.%d 설계도가 필요합니다. 정거장 전문 설비 설계도 탭에서 구매하거나 기술 기록고를 복원하세요."%next_tier
 static func register(world: Dictionary,id: String,source: String,reference: String) -> bool:
  if not definitions().has(id) or source not in ["exploration","station"] or reference.is_empty() or reference.length()>160:return false
  FrontierExpeditionResearch.ensure(world)

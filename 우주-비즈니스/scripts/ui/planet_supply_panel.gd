@@ -14,7 +14,7 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	var chain:=HBoxContainer.new();chain.alignment=BoxContainer.ALIGNMENT_CENTER;add_child(chain)
 	for id in ["alloy_frame","cryo_cell","industrial_core"]:
 		var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(id);tile.caption=FrontierProductionTier2.product(id).name;tile.grade=3
-		tile.tooltip_text=FrontierProductionTier2.product(id).use;chain.add_child(tile)
+		tile.tooltip_text=FrontierInterfaceStyle.player_text(FrontierProductionTier2.product(id).use);chain.add_child(tile)
 		if id!="industrial_core":panel.label(chain,"+" if id=="alloy_frame" else "→",22)
 	lease=panel.button(self,"생산 이용권  %d Cr"%int(FrontierPlanetSupply.config().lease_price),func():panel.command.emit("business_lease",{}))
 	register=panel.button(self,"이 거점에서 복원 계약 시작",func():panel.command.emit("business_register",{}))

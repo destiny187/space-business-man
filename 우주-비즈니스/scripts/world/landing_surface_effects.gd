@@ -41,7 +41,6 @@ func update(height: float,thrust: float,hatch: float,blocked: bool) -> void:
 	lamp.light_energy=hatch*(1.5 if finch else 3.2)
 	if not blocked and not marked and height<.4 and surface.presence!=null:
 		marked=true
-		for dust in emitters:surface.presence.mark(dust.global_position,Vector3.FORWARD,3)
 func release() -> void:
 	if is_instance_valid(lamp):lamp.queue_free()
 	queue_free()

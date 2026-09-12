@@ -51,7 +51,7 @@ func _ready() -> void:
  money=label(header,"",18);money.autowrap_mode=TextServer.AUTOWRAP_OFF;money.custom_minimum_size.x=120;money.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
  button(header,"닫기  Esc",hide)
  var tabs:=HBoxContainer.new();column.add_child(tabs)
- for tab in [["goods","물자 거래"],["blueprints","T3 설계도"],["ships","선체 구매"],["owned","보유 선체"],["refits","항해 개장"]]:
+ for tab in [["goods","물자 거래"],["blueprints","전문 설비 설계도"],["ships","선체 구매"],["owned","보유 선체"],["refits","항해 개장"]]:
   var key: String=tab[0]
   service_tabs[key]=button(tabs,tab[1],func():mode=key;selected="";rebuild())
  browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품·설계도·선체 검색";browser.changed.connect(rebuild)
@@ -147,7 +147,7 @@ func rebuild() -> void:
   var is_ship: bool=mode in ["ships","owned","refits"]
   var def:=item_definition(id)
   var caption: String=def.name+"\n"+("" if mode=="blueprints" else def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
-  if mode=="refits":caption="T%s  %s\n%d Cr"%[id,def.name,def.station_credits]
+  if mode=="refits":caption="%s\n%d Cr"%[def.name,def.station_credits]
   if mode=="blueprints":caption=def.name+"\n"+("공동 보유" if blueprint_owned(id) else "%d Cr"%int(def.price))
   if mode=="goods" and id==station.get("demand",""):caption+="\n↑ 수요 증가"
   var key: String=id
@@ -189,7 +189,7 @@ func refresh_detail() -> void:
   sell.disabled=sell.disabled or int(data.get("inventory",{}).get(selected,0))<count or int(station.stock[selected])+count>int(station.get("capacities",{}).get(selected,FrontierSpaceStation.config().max_stock))
  elif mode=="blueprints":
   var def: Dictionary=FrontierFacilityBlueprints.definitions()[selected]
-  title_label.text=def.name;role.text=def.use+"\n완성 설계 / 원정대 공동 사용"
+  title_label.text=def.name;role.text=FrontierInterfaceStyle.player_text(def.use)+"\n완성 설계 / 원정대 공동 사용"
   unit_price.text="제작 재료·설치 조건은 별도  |  동일 설계의 추가 연구 없음"
   show_blueprint_model(str(def.model))
   var owned:=blueprint_owned(selected)
@@ -213,11 +213,11 @@ func refresh_detail() -> void:
   var vessel: Dictionary=data.get("vessel",{})
   var shown:=vessel.duplicate(true);shown.hull=hull_id
   var caps:=FrontierVesselAccess.capabilities(shown)
-  label(access_box,"현재 선체 T%d · 선택 T%s"%[FrontierVesselAccess.tier_for(caps),selected] if mode=="refits" else "T%d 항해 성능"%FrontierVesselAccess.tier_for(caps),13)
+  label(access_box,"현재 선체와 개장 성능 비교" if mode=="refits" else "항해 내성",13)
   FrontierVesselCapabilityReadout.populate(access_box,caps,int(selected) if mode=="refits" else 0)
   if mode=="refits":
    var refit: Dictionary=FrontierVesselAccess.config().refits[selected]
-   title_label.text="T%s  %s"%[selected,refit.name]
+   title_label.text=str(refit.name)
    unit_price.text="현재 선체 %s에 영구 적용 · 부품 포함\n임무 모듈 슬롯 유지 / 선체별 순차 개장"%def.name
    var next:=FrontierVesselAccess.next_refit(vessel)
    buy.text="개장 완료" if int(selected)<next else "선행 개장 필요" if int(selected)>next else "항해 개장  %d Cr"%int(refit.station_credits)

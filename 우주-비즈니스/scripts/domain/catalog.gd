@@ -20,6 +20,8 @@ static func entry(category: String, key: String) -> Dictionary:
 		return product if not product.is_empty() else FrontierMinerals.entry(key)
 	if category=="buildings" and FrontierCombatCover.config().buildings.has(key):return FrontierCombatCover.config().buildings[key]
 	if category=="buildings" and not table(category).has(key):return FrontierPlanetWeather.config().buildings.get(key,FrontierTerraformTier3.config().buildings.get(key,{}))
+	if category=="buildings" and key=="factory":
+		var definition: Dictionary=table(category)[key].duplicate();definition.name="현장 제작소";definition.description="부품 생산과 장비 조립. 로봇과 차량은 Mk.2 조립 설비가 필요합니다.";return definition
 	return table(category).get(key, {})
 
 static func cost_text(cost: Dictionary) -> String:

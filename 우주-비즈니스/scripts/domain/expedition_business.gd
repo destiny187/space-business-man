@@ -70,6 +70,18 @@ static func veins(body: Dictionary,center: Vector3=Vector3.ZERO,cache: Variant=n
 				break
 	if cache!=null:cache.fixed=values.slice(fixed_start)
 	return values
+# Clearance is read-only seed geology. Reuse cells while the pointer moves;
+# body/rule changes invalidate it, and travelling cannot grow the cache without bound.
+static var _clearance_body: Dictionary={}
+static var _clearance_regions: Dictionary={}
+static func clearance_veins(body: Dictionary,center: Vector3) -> Array:
+	if body!=_clearance_body:
+		_clearance_body=body.duplicate(true);_clearance_regions.clear()
+	var result:=veins(body,center,_clearance_regions)
+	for key in _clearance_regions.keys():
+		if _clearance_regions.size()<=65:break
+		if key is Vector2i:_clearance_regions.erase(key)
+	return result
 static func starter_veins(body: Dictionary={}) -> Array:
 	if body.has("ground_rules"):return FrontierGroundProgression.starter(body)
 	if _starter_veins.is_empty():_starter_veins=JSON.parse_string(FileAccess.get_file_as_string("res://data/landing_resources.json"))
@@ -78,9 +90,18 @@ static func starter_veins(body: Dictionary={}) -> Array:
 		if int(body.get("planet_tier",1))<=int(row.get("maximum_planet_tier",5)):result.append(row.duplicate(true))
 	return result
 static func find_vein(body: Dictionary,id: String) -> Dictionary:
+	if body.kind in ["gas_giant","ice_giant"]:return {}
 	if id.begins_with("surf1:"):return FrontierSurfaceRegions.find(body,id)
 	if id.begins_with("deep1:"):return preload("res://scripts/domain/deep_deposits.gd").find(body,id)
 	if id.begins_with("ore1:"):return FrontierMineralWorld.find(body,id)
+	# A starter deposit must not regenerate every surrounding surface/underground
+	# tile for each extraction and again for every depleted entry during save validation.
+	if FrontierMineralWorld.enabled(body):
+		for row in starter_veins(body):
+			if row.id==id:return row
+	for row in FrontierGroundExploration.deposits(body):
+		if row.id==id:return row
+	if not id.begins_with("vein:") and id!="cave:gem:0":return {}
 	for row in veins(body):
 		if row.id==id:return row
 	return {}
@@ -114,6 +135,8 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	if not FrontierFreeTerraform.active(current) and p.distance_to(point(current.center))>float(config().build_radius):return "개발 거점 65m 이내에 배치하세요."
 	if (current.get("base_deployed",true) and p.distance_to(point(current.center))<radius+4) or p.distance_to(point(FrontierCrewSurface.config().ship_position))<radius+13:return "착륙선과 창고의 진입로를 비워 두세요."
 	if FrontierFreeTerraform.active(current) and maxf(absf(p.x),absf(p.z))>float(current.free_terraform.rules.extent):return "지원 지표 범위를 벗어났습니다."
+	for id in FrontierShuttles.fleet(world):
+		if FrontierShuttles.deployed(FrontierShuttles.fleet(world)[id],world.location) and p.distance_to(FrontierShuttles.pad(world,id))<radius+float(FrontierShuttles.config().deployment_radius)+1.5:return "소형선 진입로를 비워 두세요."
 	var floor:=ground(FrontierCrewSurface.field(world),p.x,p.z,radius)
 	if not floor.is_finite() or absf(floor.y-p.y)>.5:return "평탄하고 지지되는 지면이 필요합니다."
 	for building in current.get("placement_neighbors",current.buildings).values():
@@ -123,11 +146,11 @@ static func placement(world: Dictionary,kind: String,p: Vector3,active: Dictiona
 	for robot in current.robots.values():
 		if point(robot.position).distance_to(p)<radius+1.5:return "로봇이 배치 구역 안에 있습니다."
 	var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
-	for vein in veins(body,p):
+	for vein in clearance_veins(body,p):
 		if Vector2(vein.position[0]-p.x,vein.position[2]-p.z).length()<radius+2:return "광맥과 채광 접근로를 비워 두세요."
 	return ""
 static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3,active: Dictionary) -> String:
-	if kind in FrontierPlanetWeather.config().buildings and int(FrontierUniverse.body_from_id(world.manifest,world.location).get("planet_tier",1))<2:return "T2 행성부터 사용할 수 있는 현장 기상 설비입니다."
+	if kind in FrontierPlanetWeather.config().buildings and int(FrontierUniverse.body_from_id(world.manifest,world.location).get("planet_tier",1))<2:return "기상 관측이 필요한 행성부터 사용할 수 있는 설비입니다."
 	var current:=site(world)
 	if FrontierRegionalTerraform.enabled(current) and not current.has("local_region"):
 		var preview: Dictionary=world.duplicate(false);preview.business=world.business.duplicate(false);preview.business.sites=world.business.sites.duplicate(false)
@@ -147,10 +170,14 @@ static func build_reason(world: Dictionary,actor: String,kind: String,p: Vector3
 		var gate:=FrontierFacilityBlueprints.reason(world,{"type":kind},int(def.tier))
 		if not gate.is_empty():return gate
 		if kind=="source_control":
-			if not current.has("tier3"):return "T3 지역 사업의 유입원에서 사용하세요."
+			if not current.has("tier3"):return "전문 복원 사업의 유입원에서 사용하세요."
 			var center:=point(current.free_terraform.source if FrontierFreeTerraform.active(current) else current.regions["region:1"].center)
 			var range_limit: float=current.free_terraform.rules.pollution_radius if FrontierFreeTerraform.active(current) else current.tier3.rules.source_radius
 			if Vector2(p.x-center.x,p.z-center.z).length()>range_limit:return "오염 구역 내부에 배치하세요."
+	if kind=="factory":
+		var license_error:=FrontierFacilityResearch.gate(world.business,kind)
+		if not license_error.is_empty():return license_error
+	def=FrontierFacilityResearch.construction(kind)
 	if not FrontierEarlyAccess.available(world.business,def.tech):return "시설 기술이 필요합니다."
 	var missing: Dictionary={}
 	for key in def.cost:
@@ -187,6 +214,7 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 	if not world.has("business"):world.business=create()
 	var ledger: Dictionary=world.business
 	if kind in ["business_lease","business_lease_release"]:return FrontierPlanetSupply.apply(world,actor,kind)
+	if kind=="business_facility_research":return FrontierFacilityResearch.apply(world,actor,args)
 	if kind=="business_efficiency":return FrontierProgressionResearch.apply(world,actor,args)
 	if kind.begins_with("business_research_"):return FrontierFieldEngineering.apply(world,actor,kind,args)
 	if kind=="business_register":
@@ -270,8 +298,9 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 		var error:=build_reason(world,actor,key,p,active)
 		if not error.is_empty():return error
 		if not FrontierUniverse._finite(args.get("yaw",0.0),-TAU,TAU):return "배치 방향 오류"
-		transfer(bag(world,actor),FrontierCatalog.entry("buildings",key).cost,-1)
-		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"tier":int(FrontierCatalog.entry("buildings",key).get("tier",1)),"position":array(p),"yaw":0.0,"enabled":true,"active":false,"status":"전력 확인 중","work":0.0}
+		transfer(bag(world,actor),FrontierFacilityResearch.construction(key).cost,-1)
+		var id:=identifier(ledger,"facility");current.buildings[id]={"id":id,"type":key,"tier":int(FrontierFacilityResearch.construction(key).get("tier",1)),"position":array(p),"yaw":float(args.get("yaw",0.0)),"enabled":true,"active":false,"status":"전력 확인 중","work":0.0}
+		if key=="factory":current.buildings[id].research_built=true
 		if FrontierCombatCover.is_cover(current.buildings[id]):FrontierCombatCover.create(current.buildings[id],float(args.get("yaw",0.0)))
 		return ""
 	if kind in ["business_toggle","business_demolish","business_craft"]:
@@ -410,6 +439,7 @@ static func public_view(world: Dictionary,actor: String,shared: Dictionary={}) -
 	if not world.has("business"):return {}
 	if shared.is_empty():shared=public_shared(world)
 	var view:=shared.duplicate()
+	view.facility_research=world.business.get("facility_research",[]).duplicate()
 	view.sites=shared.sites.duplicate();view.bags={}
 	if view.sites.has(world.location):
 		view.sites[world.location]=FrontierRegionalTerraform.local_public(view.sites[world.location],point(world.crew.members[actor].position))
@@ -453,6 +483,7 @@ static func valid_robot(robot: Variant,id: String) -> bool:
 		if not FrontierUniverse._vector3_array(p):return false
 	return true
 static func validate(value: Variant,manifest: Dictionary) -> String:
+	if value is Dictionary and not FrontierFacilityResearch.valid(value.get("facility_research",[])):return "공동 설비 연구 기록 오류"
 	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature():return "사업 규칙 버전이 맞지 않습니다. 저장 원본을 보존하세요."
 	if not integer(value.get("efficiency",0),0,int(FrontierProgressionResearch.config().maximum_level)):return "공동 효율 연구 단계 오류"
 	if not integer(value.get("credits"),0,1000000000) or not integer(value.get("counter"),0,1000000000):return "사업 자금·순번 오류"

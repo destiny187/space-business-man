@@ -211,7 +211,7 @@ func show_target(ordinal: int) -> void:
 	var body:=FrontierUniverse.body(app.session.manifest,ordinal)
 	app.chart.target=ordinal;app.chart.system_index=int(body.system_ordinal);app.chart.queue_redraw();_map_mode()
 	target_name.text=body.name
-	target_kind.text=FrontierUniverse.kind_label(body)+"  T%d"%int(body.planet_tier)
+	target_kind.text=FrontierUniverse.kind_label(body)
 	if not app.session.latest.get("weather",{}).is_empty():target_kind.text+="\n기상  "+str(FrontierPlanetWeather.profile(body).name)+(" · 드문 위험 기상" if not str(FrontierPlanetWeather.profile(body).hazard).is_empty() else "")
 	if not FrontierUniverse.landable(body):target_kind.text+="\n"+FrontierUniverse.landing_restriction(body)
 	refresh_survey()
@@ -330,10 +330,8 @@ func _update_context() -> void:
 		if ship.is_empty():
 			for candidate in value.crew.get("shuttles",{}).values():
 				if candidate.get("company",false) and candidate.state=="docked":ship=candidate;break
-		if ship.get("state","")=="docked":
-			var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad)
-			point.x+=float(ship.get("pad_slot",0))*7.0
-			point.y=app.surface_world.terrain.field.height(point.x,point.z)
+		if FrontierShuttles.deployed(ship,app.surface_world.body.id):
+			var point:=FrontierCrewWorld.vector(ship.deployment.position)
 			if FrontierCrewWorld.vector(own.position).distance_to(point)<=float(FrontierShuttles.config().interaction_distance):
 				context_kind="shuttle_board";context_ready=true;context.text="F  FINCH 탑승  항성계 운송 출발";context.disabled=false;context.reset_size();context.show();return
 	if not app.outside:
@@ -379,7 +377,7 @@ func _update_context() -> void:
 		if not FrontierUniverse.landable(body):context.text=body.name+"  "+FrontierUniverse.landing_restriction(body)
 		elif gap>limit:context.text=body.name+"  조금 더 접근하세요"
 		var access_error:=FrontierVesselAccess.landing_reason(access_world(),ordinal)
-		if not access_error.is_empty():context_ready=false;context.text=body.name+"  T%d 항해 내성 필요 · 정비 K"%int(body.planet_tier);context.tooltip_text=access_error
+		if not access_error.is_empty():context_ready=false;context.text=body.name+"  항해 내성 부족  정비 K";context.tooltip_text=access_error
 		else:context.tooltip_text=""
 	if context_kind=="launch":context_ready=true
 	if not app.session.offline:
@@ -441,7 +439,7 @@ func find_station_route() -> void:
 		var ordinal:=FrontierUniverse.first_ordinal(app.session.manifest,int(item.index))
 		app.chart.route_system=int(item.index);show_route(ordinal)
 		target_name.text=FrontierSpaceStation.definition(app.session.manifest,int(item.index),excluded).name
-		target_kind.text="공개 교역 신호  /  T3 설계도 6종 확정 판매"
+		target_kind.text="공개 교역 신호  /  전문 설비 설계도 6종 확정 판매"
 		return
 	_notice("현재 준비된 항로·항속거리 안에 교역 신호가 없습니다. 근처 항성으로 이동하거나 지도 준비 후 다시 확인하세요.")
 
@@ -459,7 +457,7 @@ func _access_info(ordinal: int) -> void:
 	if next_key!=access_key:
 		access_key=next_key
 		for child in access_readout.get_children():access_readout.remove_child(child);child.queue_free()
-		var title:=FrontierInterfaceStyle.label(access_readout,"T%d 항해 환경 / 현재 T%d"%[tier,FrontierVesselAccess.tier_for(caps)],13)
+		var title:=FrontierInterfaceStyle.label(access_readout,"목적지 요구 성능 / 현재 선체",13)
 		title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		if tier>2:FrontierVesselCapabilityReadout.populate(access_readout,caps,tier)
 	var guide_reason:=app.onboarding.departure_reason(ordinal)

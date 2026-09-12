@@ -34,7 +34,6 @@ var summary: FrontierResourceReadout
 var stock: FrontierResourceReadout
 var environment_bars: Dictionary={}
 var environment_label: Label
-var workload_label: Label
 var guidance: Label
 var technology: OptionButton
 var building: OptionButton
@@ -79,7 +78,6 @@ func _ready() -> void:
 	var column:=VBoxContainer.new();main_column=column;column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",9);scroll.add_child(column)
 	heading=label(column,"건설  B 닫기",24)
 	summary=FrontierResourceReadout.new();column.add_child(summary);guidance=label(column,"");stock=FrontierResourceReadout.new();column.add_child(stock)
-	workload_label=label(column,"")
 	register_button=button(column,"무료 개발 등록",func():command.emit("business_register",{}))
 	deposit_button=button(column,"현장 창고에 자원 반납",func():station_action.emit("storage"))
 	factory_navigation=HBoxContainer.new();column.add_child(factory_navigation)
@@ -100,18 +98,17 @@ func _ready() -> void:
 	building_cost=FrontierResourceReadout.new();building_cost.centered_cost=true;building_cost.custom_minimum_size.x=0;build_tab.add_child(building_cost)
 	building.item_selected.connect(func(_index: int):refresh_building_cost())
 	building_message=label(build_tab,"",14);building_message.add_theme_color_override("font_color",FrontierInterfaceStyle.DANGER)
-	button(build_tab,"선택 시설 배치  지면 조준 후 클릭",try_place_building)
 	var grid:=GridContainer.new();grid.columns=4;build_tab.add_child(grid)
 	for index in building.item_count:
 		var kind:=str(building.get_item_metadata(index))
-		var def:=FrontierCatalog.entry("buildings",kind)
+		var def:=FrontierFacilityResearch.construction(kind)
 		var card:=Button.new();card.custom_minimum_size=Vector2(145,168);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;card.toggle_mode=true
 		card.tooltip_text=def.name+"  "+FrontierCatalog.cost_text(def.cost)+"\n"+str(def.get("description",""))
 		var content:=VBoxContainer.new();content.add_theme_constant_override("separation",3);content.mouse_filter=Control.MOUSE_FILTER_IGNORE;card.add_child(content);content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);content.offset_top=4;content.offset_bottom=-4
 		var preview:=TextureRect.new();preview.texture=load("res://assets/ui/previews/"+def.model+".png");preview.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;preview.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;preview.custom_minimum_size.y=78;preview.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(preview)
 		var title:=Label.new();title.text=def.name;title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;title.add_theme_font_size_override("font_size",14);title.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(title)
 		var costs:=FrontierResourceReadout.new();costs.centered_cost=true;costs.custom_minimum_size=Vector2(0,32);costs.mouse_filter=Control.MOUSE_FILTER_IGNORE;costs.add_theme_font_size_override("normal_font_size",13);content.add_child(costs);card.set_meta("cost_readout",costs)
-		card.pressed.connect(func():building.select(index);building_message.text="";refresh_building_cost());grid.add_child(card);building_cards[kind]=card
+		card.pressed.connect(func():building.select(index);building_message.text="";refresh_building_cost();try_place_building());grid.add_child(card);building_cards[kind]=card
 	refresh_building_cost()
 	var facility_tab:=VBoxContainer.new();facility_tab.name="시설 관리"
 	facility_picture=FrontierEquipmentPreview.new();facility_picture.custom_minimum_size=Vector2(150,150);facility_picture.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;facility_tab.add_child(facility_picture)
@@ -119,7 +116,7 @@ func _ready() -> void:
 	facility=option(facility_tab)
 	button(facility_tab,"가동 / 정지 · 엄폐물 수리",func():command.emit("business_toggle",{"building_id":selected(facility)}))
 	button(facility_tab,"시설 철거 · 엄폐물은 남은 내구도만큼 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
-	label(build_tab,"Esc  배치 취소",12)
+	label(build_tab,"시설 선택 → 지면 클릭    휠 90° 회전    Esc 취소",12)
 	var research_tab:=VBoxContainer.new();research_tab.name="기술";tabs.add_child(research_tab)
 	technology=option(research_tab)
 	label(research_tab,"기초 설계 사용 가능")
@@ -239,7 +236,7 @@ func set_context(kind: String,id: String="") -> void:
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
 	if kind=="factory":_factory_page()
 	else:_factory_layout(false)
-	var title: String={"build":"건설","ship":"착륙선 단말","base":"현장 창고","factory":"현장 제작소","robot":"M-01 작업 관리"}.get(kind,FrontierCatalog.entry("buildings",kind).get("name","시설"))
+	var title: String={"build":"건설","ship":"착륙선 단말","base":"현장 창고","factory":"현장 제작소","robot":"M-01 작업 관리"}.get(kind,FrontierFacilityResearch.construction(kind).get("name","시설"))
 	heading.text=title+"  Esc 닫기"
 	register_button.hide()
 	stock.visible=kind not in ["base","storage","ship"]
@@ -308,8 +305,6 @@ func _flush_paint() -> void:
 	pending_paint=false
 	_paint_update.callv(paint_arguments)
 func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
-	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
-	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경 / 계약".validate_node_name()
 	register_button.hide();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;planet_body=planet;engineering=research;knowledge=ecology
 	if supply_panel.is_visible_in_tree():supply_panel.update(value,planet,actor,actor==value.get("owner_id",""))
@@ -430,7 +425,9 @@ func update_engineering() -> void:
 		if action.disabled:research_detail.text+="\n전력 / 가동 상태와 현장 창고 재료를 확인하세요."
 
 func try_place_building() -> void:
-	var cost: Dictionary=FrontierCatalog.entry("buildings",selected(building)).cost
+	if selected(building)=="factory" and not FrontierFacilityResearch.owned(ledger,"factory"):
+		building_message.text=FrontierFacilityResearch.gate(ledger,"factory");return
+	var cost: Dictionary=FrontierFacilityResearch.construction(selected(building)).cost
 	if not FrontierExpeditionBusiness.affordable(ledger.get("bags",{}).get(actor_id,{}),cost):
 		building_message.text="재료가 부족합니다."
 		return
@@ -442,12 +439,12 @@ func refresh_building_cost() -> void:
 	for kind in building_cards:
 		var card: Button=building_cards[kind]
 		card.set_pressed_no_signal(kind==selected(building))
-		var tier: int=FrontierCatalog.entry("buildings",kind).get("tier",1)
+		var tier: int=FrontierFacilityResearch.construction(kind).get("tier",1)
 		if tier>=3:
 			var blueprint:=FrontierFacilityBlueprints.required({"type":kind},tier)
-			card.tooltip_text="공동 원정 설계도 필요" if blueprint not in ledger.get("facility_blueprints",[]) else FrontierCatalog.entry("buildings",kind).get("description","")
-		card.get_meta("cost_readout").show_cost(FrontierCatalog.entry("buildings",kind).cost,bag,false,22)
-	var cost: Dictionary=FrontierCatalog.entry("buildings",selected(building)).cost
+			card.tooltip_text="공동 원정 설계도 필요" if blueprint not in ledger.get("facility_blueprints",[]) else FrontierFacilityResearch.construction(kind).get("description","")
+		card.get_meta("cost_readout").show_cost(FrontierFacilityResearch.construction(kind).cost,bag,false,22)
+	var cost: Dictionary=FrontierFacilityResearch.construction(selected(building)).cost
 	building_cost.show_cost(cost,bag,true)
 
 func refresh_work_cards(values: Dictionary) -> void:

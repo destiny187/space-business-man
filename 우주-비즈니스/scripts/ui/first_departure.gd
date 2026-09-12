@@ -128,7 +128,7 @@ func _save() -> void:
 func enabled() -> bool:
 	var settings := FrontierClientSettings.current(get_tree())
 	var mode: int = int(settings.values.get("tutorial_mode", 0)) if settings != null else 0
-	return mode == 1 or (mode == 0 and progress.get("eligible", false) and not progress.get("complete", false))
+	return not progress.get("complete", false) and (mode == 1 or (mode == 0 and progress.get("eligible", false)))
 
 func solar_step() -> String:
 	if not enabled() or progress.get("travel", false) or progress.get("complete", false) or app.session.latest.is_empty():return ""

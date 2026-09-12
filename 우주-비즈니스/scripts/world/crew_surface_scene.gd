@@ -82,7 +82,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	ecology.wildlife_cue.connect(_wildlife_cue)
 	lamp=SpotLight3D.new();lamp.light_cull_mask=((1 << 20)-1)^FrontierExpeditionFeedback.HANDHELD_LAYER;lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():
-		_refresh_distant();ecology.invalidate()
+		_refresh_distant() # Ecology already subscribes to geometry_changed.
 		if business_view!=null:business_view.accept(business_view.ledger)
 	)
 	business_view=FrontierBusinessSiteView.new();add_child(business_view);business_view.configure(terrain,body);business_view.accept(packet.get("business",{}))
@@ -99,6 +99,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	weather_view=FrontierPlanetWeatherView.new();weather_view.name="Weather";add_child(weather_view);weather_view.configure(self,camera)
 	var deep_gallery=preload("res://scripts/world/deep_cave_view.gd").new();deep_gallery.name="DeepGallery";add_child(deep_gallery);deep_gallery.configure(self)
 	_update_interest()
+	session.snapshot_received.connect(_shuttle_snapshot)
 	_update_shuttles()
 
 func _ecology(packet: Dictionary) -> Dictionary:
@@ -160,6 +161,7 @@ func _process(delta: float) -> void:
 	refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
 	if refits.requested_hull.is_empty() and seated_hull!=refits.hull_id:seat_vessel()
 	_update_interest()
+	_animate_shuttles(delta)
 	fallback_tick-=delta
 	if fallback_tick<=0 and (fallback_jobs!=terrain.completed_jobs or fallback_distant_builds!=distant.build_count):
 		fallback_tick=.5;fallback_jobs=terrain.completed_jobs;fallback_distant_builds=distant.build_count
@@ -213,19 +215,37 @@ func finish_landing_view() -> void:
 	presentation_points.clear();business_view.presentation_points.clear()
 	business_view.region_key=Vector2i(99999,99999)
 
+func _shuttle_snapshot(_snapshot: Dictionary) -> void:
+	_update_shuttles()
+
+var shuttle_clock:=0.0
+var shuttle_clock_elapsed:=0.0
 func _update_shuttles() -> void:
 	var value: Dictionary=session.latest
+	shuttle_clock=float(value.crew.navigation.orbit_time);shuttle_clock_elapsed=0.0
 	var fleet: Dictionary=value.crew.get("shuttles",{})
 	var at_mother: bool=value.get("local_shuttle","").is_empty()
 	for id in shuttle_models.keys():
-		if not at_mother or not fleet.has(id) or fleet[id].state!="docked":shuttle_models[id].queue_free();shuttle_models.erase(id)
+		if not at_mother or not fleet.has(id) or not FrontierShuttles.deployed(fleet[id],body.id):shuttle_models[id].queue_free();shuttle_models.erase(id)
 	if not at_mother:return
 	for id in fleet:
-		if fleet[id].state!="docked" or shuttle_models.has(id):continue
+		if not FrontierShuttles.deployed(fleet[id],body.id) or shuttle_models.has(id):continue
 		var ship: Node3D=load(FrontierShuttles.config().model).instantiate();add_child(ship);FrontierInkStyle.apply(ship,{})
-		var point:=FrontierCrewWorld.vector(FrontierShuttles.config().pad);point.x+=float(fleet[id].get("pad_slot",0))*7.0;point.y=terrain.field.height(point.x,point.z)
-		ship.position=point;shuttle_models[id]=ship
+		var point:=FrontierCrewWorld.vector(fleet[id].deployment.position)
+		ship.position=point;ship.rotation.y=float(fleet[id].deployment.yaw);shuttle_models[id]=ship
 		var label:=Label3D.new();label.text="LOTUS 공용 FINCH" if fleet[id].get("company",false) else "FINCH · "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
+	_animate_shuttles(0)
+func _animate_shuttles(delta: float) -> void:
+	shuttle_clock_elapsed=minf(shuttle_clock_elapsed+delta,float(FrontierCrewSurface.config().snapshot_interval))
+	var now:=shuttle_clock+shuttle_clock_elapsed
+	if session.hosting:now=float(session.authority.world.crew.navigation.orbit_time)
+	for id in shuttle_models:
+		var craft: Dictionary=session.latest.crew.get("shuttles",{}).get(id,{})
+		if not craft.has("deployment"):continue
+		var deployment: Dictionary=craft.deployment
+		var age:=now-float(deployment.time)
+		shuttle_models[id].rotation.y=float(deployment.yaw)
+		shuttle_models[id].position=FrontierCrewWorld.vector(deployment.position)+Vector3.UP*18*(1-smoothstep(0,float(FrontierShuttles.config().deployment_seconds),age))
 
 func seat_vessel() -> void:
 	seated_hull=refits.hull_id

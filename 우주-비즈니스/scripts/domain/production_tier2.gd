@@ -65,6 +65,9 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if kind not in ["business_facility_upgrade","business_robot_upgrade"]:return "지원하지 않는 생산 작업입니다."
 	var next_tier:=int(row.get("tier",1))+1
 	if not robot:
+		if next_tier==2:
+			var research_error:=FrontierFacilityResearch.gate(world.business,row.type)
+			if not research_error.is_empty():return research_error
 		var blueprint_error:=FrontierFacilityBlueprints.reason(world,row,next_tier)
 		if not blueprint_error.is_empty():return blueprint_error
 	var def: Dictionary=config().robot_upgrade if robot and next_tier==2 else upgrade_definition(row)
@@ -90,7 +93,7 @@ static func upgrade_definition(row: Dictionary) -> Dictionary:
 	return config().facility_upgrades.get(row.get("type",""),{}) if tier==1 else {}
 static func upgrade_refund(row: Dictionary) -> Dictionary:
 	var result: Dictionary={}
-	if int(row.get("tier",1))>=2:FrontierExpeditionBusiness.transfer(result,config().facility_upgrades.get(row.get("type",""),{}).get("cost",{}),1)
+	if int(row.get("tier",1))>=2 and not row.get("research_built",false):FrontierExpeditionBusiness.transfer(result,config().facility_upgrades.get(row.get("type",""),{}).get("cost",{}),1)
 	if int(row.get("tier",1))==3 and row.get("type")!="source_control":FrontierExpeditionBusiness.transfer(result,(FrontierPlanetSupply.config().factory_upgrade if row.type=="factory" else FrontierTerraformTier3.config().upgrades.get(row.type,{})).get("cost",{}),1)
 	return result
 static func tick(site: Dictionary,dt: float) -> void:
@@ -135,6 +138,7 @@ static func validate_building(b: Dictionary) -> bool:
 	if b.has("working") and not b.working is bool:return false
 	if b.has("submerged") and not b.submerged is bool:return false
 	if not FrontierExpeditionBusiness.integer(b.get("tier",1),1,3):return false
+	if b.has("research_built") and (not b.research_built is bool or b.get("type")!="factory" or int(b.get("tier",1))<2):return false
 	if int(b.get("tier",1))==3 and b.get("type")!="factory" and b.get("type")!="source_control" and not FrontierTerraformTier3.config().upgrades.has(b.get("type")):return false
 	if int(b.get("tier",1))>=2 and b.get("type")!="source_control" and not FrontierCombatCover.is_cover(b) and not config().facility_upgrades.has(b.type):return false
 	if not FrontierUniverse._finite(b.get("bio_fuel",0),0,10) or not FrontierUniverse._finite(b.get("t3_fuel",0),0,120) or not FrontierUniverse._finite(b.get("t3_control_fraction",0),0,1):return false

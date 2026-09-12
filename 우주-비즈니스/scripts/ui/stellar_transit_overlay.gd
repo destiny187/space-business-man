@@ -83,7 +83,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	var origin:=box.position+Vector2(18,27)
 	draw_string(font,origin,"스캔 완료",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,cyan)
 	draw_string(font,origin+Vector2(0,33),scan_body.name,HORIZONTAL_ALIGNMENT_LEFT,width-36,27,Color(.88,.98,1))
-	var description:=FrontierUniverse.kind_label(scan_body)+"  T%d"%int(scan_body.planet_tier)
+	var description:=FrontierUniverse.kind_label(scan_body)
 	if FrontierCorporateOrbital.restored(scan_body):description="테라포밍 복원 완료"
 	elif scan_body.get("origin","")=="solar_reference":description="태양계  테라포밍 불가 행성"
 	elif not FrontierUniverse.landable(scan_body):description+="  착륙 불가"

@@ -37,7 +37,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  modes=TabBar.new();modes.add_tab("행성지도");modes.add_tab("테라포밍");column.add_child(modes)
  var bar:=HBoxContainer.new();column.add_child(bar);map_bar=bar
  layers=OptionButton.new()
- for text in ["자원·지질","환경·복원","시설·공급","기상·대피"]:layers.add_item(text)
+ for text in ["지역 지형","광물 산지","환경·복원","시설·공급","기상·대피"]:layers.add_item(text)
  bar.add_child(layers);layers.item_selected.connect(func(_i):update_detail();canvas.queue_redraw())
  var home:=Button.new();home.text="내 위치";bar.add_child(home);home.pressed.connect(func():focus=Vector2(app.camera.position.x,app.camera.position.z);canvas.queue_redraw())
  for pair in [["−",1.4],["+",1.0/1.4]]:
@@ -53,7 +53,7 @@ func refresh() -> void:
  if app.surface_world==null:hide();return
  body=app.surface_world.body;terrain=app.surface_world.terrain.field
  site=app.session.surface.get("business",{}).get("sites",{}).get(body.id,{})
- title.text=body.name+"  T%d  행성지도"%int(body.planet_tier)
+ title.text=body.name+"  지역지도"
  if modes.current_tab==1:terraform.refresh();return
  if cached_id!=body.id:
   texture=null;map_key=""
@@ -110,40 +110,12 @@ func draw_map() -> void:
  if body.is_empty():return
  canvas.draw_rect(Rect2(Vector2.ZERO,canvas.size),Color("10191f"))
  if texture!=null:canvas.draw_texture_rect(texture,Rect2(at(map_min),map_size/meters_per_pixel),false,Color(1,1,1,.85))
- var spacing:=1000.0 if meters_per_pixel>4 else 100.0
- var minp:=world(Vector2.ZERO);var maxp:=world(canvas.size)
- for x in range(floori(minp.x/spacing),ceili(maxp.x/spacing)+1):canvas.draw_line(at(Vector2(x*spacing,minp.y)),at(Vector2(x*spacing,maxp.y)),Color(1,1,1,.08))
- for z in range(floori(minp.y/spacing),ceili(maxp.y/spacing)+1):canvas.draw_line(at(Vector2(minp.x,z*spacing)),at(Vector2(maxp.x,z*spacing)),Color(1,1,1,.08))
- if layers.selected==0 and FrontierSurfaceRegions.enabled(body):
-  var span: float=body.regional_rules.region_span
-  for x in range(maxi(-13,floori(minp.x/span)),mini(13,ceili(maxp.x/span))+1):
-   for z in range(maxi(-13,floori(minp.y/span)),mini(13,ceili(maxp.y/span))+1):
-    var group:=FrontierSurfaceRegions.cluster(body,x,z);var pos:=at(group.center)
-    canvas.draw_circle(pos,maxf(3,span*.20/meters_per_pixel),Color(.78,.66,.39,.12))
-    canvas.draw_arc(pos,maxf(3,span*.20/meters_per_pixel),0,TAU,24,Color(.87,.74,.45,.4),1,true)
-    var icon:=FrontierResourceIcons.texture(group.resource)
-    if icon!=null:canvas.draw_texture_rect(icon,Rect2(pos-Vector2(14,14),Vector2(28,28)),false)
-    if meters_per_pixel<6:text_at(pos+Vector2(20,5),FrontierCatalog.entry("resources",group.resource).name+" ?",Color("e1bd74"),15)
- if layers.selected==0:
-  var hints: Dictionary={}
-  for row in FrontierGroundExploration.deposits(body):
-   if not hints.has(row.resource):hints[row.resource]=Vector2(row.position[0],row.position[2])
-  for resource in hints:
-   var point:=at(hints[resource]);var icon:=FrontierResourceIcons.texture(resource)
-   canvas.draw_arc(point,16,0,TAU,20,Color("83d9c5"),1,true)
-   if icon!=null:canvas.draw_texture_rect(icon,Rect2(point-Vector2(12,12),Vector2(24,24)),false)
-   text_at(point+Vector2(20,4),FrontierCatalog.entry("resources",resource).name+" 공급 후보",Color("83d9c5"),15)
-  for observation in app.session.latest.crew.get("survey",{}).values():
-   if observation.body_id!=body.id:continue
-   var row:=FrontierExpeditionBusiness.find_vein(body,observation.vein_id)
-   if row.is_empty() or row.get("underground",false):continue
-   var point:=at(Vector2(row.position[0],row.position[2]));canvas.draw_circle(point,4,Color.WHITE)
-   if meters_per_pixel<2:text_at(point+Vector2(8,20),"확인 잔량 %d"%int(site.get("remaining",{}).get(row.id,row.capacity)),Color.WHITE,14)
+ if layers.selected==1:draw_geology()
  for region in ([] if FrontierFreeTerraform.active(site) else site.get("regions",{}).values()):
   var center:=Vector2(region.center[0],region.center[2]);var pos:=at(center)
   var color:=Color("83d9c5") if FrontierRegionalTerraform.ready(region) else Color("efb46f")
   canvas.draw_arc(pos,maxf(10,float(region.radius)/meters_per_pixel),0,TAU,40,color,2,true)
-  if layers.selected==1:
+  if layers.selected==2:
    for cell in region.cells:
     var cell_pos:=at(Vector2(cell.position[0],cell.position[2]));var score:=FrontierEvaluator.environment_report(cell)
     canvas.draw_circle(cell_pos,maxf(3,24/meters_per_pixel),Color(.22,.8,.56,.15+.55*float(score.overall)/100).lerp(Color(.85,.32,.18,.7),clampf(float(cell.get("pollution",0))/60,0,1)))
@@ -160,9 +132,9 @@ func draw_map() -> void:
   text_at(Vector2(12,24),site.tier3.rules.profiles[site.tier3.profile].name+"  원인 → 영향 지역",Color("efb46f"),15)
  for row in site.get("buildings",{}).values():
   var pos:=at(Vector2(row.position[0],row.position[2]));canvas.draw_rect(Rect2(pos-Vector2(3,3),Vector2(6,6)),Color("83d9c5") if row.active else Color("efb46f"))
-  if layers.selected==2 and int(row.get("tier",1))==3:canvas.draw_arc(pos,48/meters_per_pixel,0,TAU,32,Color(.4,.8,.7,.3),1,true)
-  if layers.selected==2 and meters_per_pixel<3:text_at(pos+Vector2(8,0),FrontierCatalog.entry("buildings",row.type).name,Color("e6e8df"),11)
- if layers.selected==3:
+  if layers.selected==3 and int(row.get("tier",1))==3:canvas.draw_arc(pos,48/meters_per_pixel,0,TAU,32,Color(.4,.8,.7,.3),1,true)
+  if layers.selected==3 and meters_per_pixel<3:text_at(pos+Vector2(8,0),FrontierCatalog.entry("buildings",row.type).name,Color("e6e8df"),11)
+ if layers.selected==4:
   var weather: Dictionary=app.session.latest.get("weather",{});var front: Dictionary=weather.get("event",{})
   if not front.is_empty():
    var center:=at(Vector2(front.center[0],front.center[2]));var radius:=float(FrontierPlanetWeather.config().front_radius)/meters_per_pixel
@@ -184,11 +156,15 @@ func draw_map() -> void:
   canvas.draw_arc(pos,20,0,TAU,24,tint,2,true);text_at(pos+Vector2(25,5),FrontierCooperTechClues.STATES[int(clue.stage)],tint,14)
  if waypoint.is_finite():
   var pos:=at(waypoint);canvas.draw_line(pos-Vector2(8,0),pos+Vector2(8,0),Color.WHITE,2);canvas.draw_line(pos-Vector2(0,8),pos+Vector2(0,8),Color.WHITE,2)
- text_at(Vector2(12,canvas.size.y-12),"N ↑   후보 범위 ? / 실제 확인 전 잔량 미확정   ·   지원 지표 ±8.2km",Color("e6e8df"),12)
+ var scale_m:=100.0 if meters_per_pixel<2 else (500.0 if meters_per_pixel<8 else 2000.0)
+ var scale_start:=Vector2(20,canvas.size.y-24)
+ canvas.draw_line(scale_start,scale_start+Vector2(scale_m/meters_per_pixel,0),Color("e6e8df"),2,true)
+ text_at(scale_start+Vector2(0,-8),"%.0f m"%scale_m,Color("e6e8df"),12)
+ text_at(Vector2(canvas.size.x-46,30),"N ↑",Color("e6e8df"),16)
 func show_clue(clue: Dictionary) -> void:
  modes.current_tab=0;refresh();selected=clue.id;waypoint=Vector2(clue.position[0],clue.position[2]);focus=waypoint;app.open_menu(self);refresh();update_detail()
 func update_detail() -> void:
- if layers.selected==3:
+ if layers.selected==4:
   var weather: Dictionary=app.session.latest.get("weather",{});var front: Dictionary=weather.get("event",{})
   detail.text="기상 관측이 없는 기존 세계" if weather.is_empty() else str(weather.profile.name)+" · 차양은 비, 접지봉은 18m 안 자연 낙뢰를 차단합니다."
   if not front.is_empty():detail.text+="\n"+("도착까지 %.0f초"%maxf(0,float(front.start)-float(weather.clock)) if float(weather.clock)<float(front.start) else "소강까지 %.0f초"%maxf(0,float(front.end)-float(weather.clock)))+" · E로 하늘 관측 / J 발견 기록"
@@ -196,9 +172,9 @@ func update_detail() -> void:
  var clue: Dictionary=app.session.latest.get("coopertech_clues",{}).get(selected,{})
  if not clue.is_empty() and clue.body_id==body.id:
   detail.text="CooperTech  ·  "+FrontierCooperTechClues.STATES[int(clue.stage)]+"\n좌표 %.0f, %.0f · 현장까지 %.0fm"%[clue.position[0],clue.position[2],Vector2(clue.position[0],clue.position[2]).distance_to(Vector2(app.camera.position.x,app.camera.position.z))];return
- if FrontierFreeTerraform.active(site):detail.text=FrontierFreeTerraform.detail(site)+"\n대기·수질·토양·오염 분포는 테라포밍 탭에서 확인하세요.";return
+ if FrontierFreeTerraform.active(site) and layers.selected==2:detail.text=FrontierFreeTerraform.detail(site)+"\n대기·수질·토양·오염 분포는 테라포밍 탭에서 확인하세요.";return
  if selected.is_empty() or not site.get("regions",{}).has(selected):
-  detail.text="공급 후보는 지질 추정입니다. 현장에서 광맥과 잔량을 확인하세요.\n"+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "환경 탭에서 복원 구획, 시설 탭에서 현장 공급을 확인합니다.")
+  detail.text=("산지 윤곽은 지질 추정입니다. 개별 광맥은 현장에서 확인하세요.\n" if layers.selected==1 else "지형 높이와 등고선으로 주변 능선·저지대를 확인하세요.\n")+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "환경 탭에서 복원 구획, 시설 탭에서 현장 공급을 확인합니다.")
   return
  var region: Dictionary=site.regions[selected];var report:=FrontierEvaluator.environment_report(region)
  var names: Array=[]
@@ -210,3 +186,30 @@ func update_detail() -> void:
   var item: String=site.tier3.rules.profiles[site.tier3.profile].item
   var packs: int=5 if region.role=="source" else 10
   detail.text="%s  %s\n%s\n%s · 10분 공급 참고 %s %d개%s"%[region.name,"✓ 안정" if FrontierRegionalTerraform.ready(region) else "목표 구획 3곳 · 45초 유지",FrontierTerraformTier3.detail(site,region),"현장 재고: "+", ".join(names.slice(0,4)) if not names.is_empty() else "현장 창고에 직접 공급",FrontierProductionTier2.product(item).name,packs," · 정착 팩 별도" if region.role=="recovery" else ""]
+
+func draw_geology() -> void:
+ if not FrontierSurfaceRegions.enabled(body):return
+ var span: float=body.regional_rules.region_span
+ var minp:=world(Vector2.ZERO);var maxp:=world(canvas.size)
+ var candidates: Array=[]
+ for x in range(maxi(-13,floori(minp.x/span)),mini(13,ceili(maxp.x/span))+1):
+  for z in range(maxi(-13,floori(minp.y/span)),mini(13,ceili(maxp.y/span))+1):
+   var group:=FrontierSurfaceRegions.cluster(body,x,z)
+   var screen:=at(group.center)
+   if not Rect2(Vector2(24,24),canvas.size-Vector2(48,72)).has_point(screen):continue
+   candidates.append(group)
+ candidates.sort_custom(func(a,b):return a.center.distance_squared_to(focus)<b.center.distance_squared_to(focus))
+ var labels: Array[Vector2]=[]
+ for group in candidates:
+  var pos:=at(group.center)
+  if labels.size()>=6:break
+  if labels.any(func(other: Vector2):return absf(other.x-pos.x)<190 and absf(other.y-pos.y)<80):continue
+  labels.append(pos)
+  var boundary:=PackedVector2Array()
+  # Same elliptical deposit envelope used by surface generation; no individual ore icons.
+  for i in 48:
+   var angle:=TAU*float(i)/48
+   boundary.append(at(group.center+Vector2(cos(angle)*span*.32,sin(angle)*span*.20)))
+  canvas.draw_colored_polygon(boundary,Color(.81,.68,.4,.13))
+  boundary.append(boundary[0]);canvas.draw_polyline(boundary,Color(.87,.76,.51,.6),1.2,true)
+  text_at(pos+Vector2(8,5),FrontierCatalog.entry("resources",group.resource).name+" 산지",Color("f0dfb4"),14)

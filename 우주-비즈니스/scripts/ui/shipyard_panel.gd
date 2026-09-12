@@ -112,7 +112,7 @@ func refresh_details() -> void:
 	preview.selected_slot=selected_slot;preview.show_vessel(draft.vessel if ghost.button_pressed and not module.is_empty() else vessel)
 	for card in module_grid.get_children():card.selected=int(card.get_meta("index"))==(owned.selected if tabs.current_tab==0 else kind.selected);card.disabled=pending;card.queue_redraw()
 	var stats:=FrontierVesselRefit.stats(world);var after:=FrontierVesselRefit.stats(draft)
-	summary.value="T%d 항해 가능  "%int(stats.navigation_tier)+"공동 자금 %d Cr  질량 %.1f/%.1f t  전력 %.1f/%.1f MW"%[int(world.business.get("credits",0)),stats.mass,stats.maximum_mass,stats.power,stats.reactor_power]
+	summary.value="항해 내성  "+"공동 자금 %d Cr  질량 %.1f/%.1f t  전력 %.1f/%.1f MW"%[int(world.business.get("credits",0)),stats.mass,stats.maximum_mass,stats.power,stats.reactor_power]
 	if int(vessel.get("parts",0))>0:summary.value+="  연구 부품 %d"%int(vessel.parts)
 	for child in comparison.get_children():comparison.remove_child(child);child.queue_free()
 	for row in [["질량","mass","t"],["전력","power","MW"],["항속","stellar_range",""],["접근","speed","배"],["연구","research_speed","배"],["격납고","hangar","칸"]]:
@@ -126,8 +126,8 @@ func refresh_details() -> void:
 		FrontierVesselCapabilityReadout.populate(readout,stats.navigation_capabilities,next)
 		if next<=5:
 			var refit: Dictionary=FrontierVesselAccess.config().refits[str(next)]
-			details.value="T%d  %s\n%d Cr  %s\n현재 선체에 영구 적용 · 임무 모듈 슬롯 유지\n정거장 부품 포함 개장: %d Cr"%[next,refit.name,refit.field_credits,FrontierCatalog.cost_text(refit.materials),refit.station_credits]
-		else:details.value="T5 항해 내성을 갖추었습니다. 선체 역할과 임무 모듈을 자유롭게 선택하세요."
+			details.value="%s\n%d Cr  %s\n현재 선체에 영구 적용 · 임무 모듈 슬롯 유지\n정거장 부품 포함 개장: %d Cr"%[refit.name,refit.field_credits,FrontierCatalog.cost_text(refit.materials),refit.station_credits]
+		else:details.value="최고 항해 내성을 갖추었습니다. 선체 역할과 임무 모듈을 자유롭게 선택하세요."
 	if not module.is_empty():
 		var def:=FrontierVesselRefit.definition(module.type)
 		details.value=def.name+"  "+["표준","개량","희귀"][FrontierVesselRefit.grade_index(module.grade)]+"\n"+def.description

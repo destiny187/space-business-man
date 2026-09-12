@@ -25,17 +25,18 @@ static func create(manifest: Dictionary) -> Dictionary:
  focus*=float(cfg.focus_fraction)
  var start_focus:=FrontierUniverse.position(manifest,2)
  var best:=-INF
- var finish:=Vector3(0,30000,30000)
+ var finish:=start_focus+Vector3.UP*float(cfg.finish_distance)
  for elevation in cfg.elevations:
   for radius in cfg.view_radii:
    for index in int(cfg.view_samples):
     var angle:=TAU*float(index)/float(cfg.view_samples)
     var eye:=Vector3(cos(angle)*float(radius),float(elevation),sin(angle)*float(radius))
+    eye=start_focus+(eye-start_focus).normalized()*float(cfg.finish_distance)
     var start:=start_focus+(eye-start_focus).normalized()*float(cfg.start_distance)
     if not _clear_path(start,eye,points,radii,float(cfg.clearance)):continue
     var score:=_score(eye,focus,points,radii)
     if score>best:best=score;finish=eye
- return {"version":1,"elapsed":0.0,"duration":cfg.duration,"hold":cfg.hold,"move_end":cfg.move_end,"turn_start":cfg.turn_start,"turn_end":cfg.turn_end,"start_focus":FrontierExpeditionBusiness.array(start_focus),"start":FrontierExpeditionBusiness.array(start_focus+(finish-start_focus).normalized()*float(cfg.start_distance)),"finish":FrontierExpeditionBusiness.array(finish),"focus":FrontierExpeditionBusiness.array(focus)}
+ return {"version":1,"elapsed":0.0,"duration":cfg.duration,"hold":cfg.hold,"move_end":cfg.move_end,"turn_start":cfg.turn_start,"turn_end":cfg.turn_end,"start_focus":FrontierExpeditionBusiness.array(start_focus),"start":FrontierExpeditionBusiness.array(start_focus+(finish-start_focus).normalized()*float(cfg.start_distance)),"finish":FrontierExpeditionBusiness.array(finish),"focus":FrontierExpeditionBusiness.array(start_focus)}
 static func _clear_path(start: Vector3,finish: Vector3,points: Array[Vector3],radii: Array[float],clearance: float) -> bool:
  if Geometry3D.get_closest_point_to_segment(Vector3.ZERO,start,finish).length()<float(FrontierUniverse.presentation().star_warning_radius)+clearance:return false
  for i in points.size():

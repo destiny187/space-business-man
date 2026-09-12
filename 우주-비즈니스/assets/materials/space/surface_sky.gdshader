@@ -12,17 +12,17 @@ uniform float night_mix = 0.0;
 uniform vec2 cloud_offset = vec2(0.0);
 uniform float sun_radius = 0.00465;
 #include "res://assets/materials/space/arrival_smoke.gdshaderinc"
-float star_hash(vec3 p) {return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
+#include "res://assets/materials/space/starfield.gdshaderinc"
 void sky() {
  vec3 d=normalize(EYEDIR);
  float altitude=max(d.y,0.0);
  vec3 color=mix(horizon.rgb,zenith.rgb,pow(altitude,.42));
  if(d.y>0.01) {
-  vec3 q=(stars_basis*d)*260.0;vec3 cell=floor(q);
-  vec3 center=vec3(star_hash(cell+3.),star_hash(cell+7.),star_hash(cell+11.));
-  float distance_to_star=length(fract(q)-center);
-  float stars=step(.989,star_hash(cell))*exp(-distance_to_star*distance_to_star*180.0);
-  color+=stars*max(1.0-atmosphere,night_mix*.92)*smoothstep(0.,.12,altitude)*vec3(.8,.88,1.);
+  // Tiny stars belong to the full-resolution sky, never the changing radiance map.
+  if(!AT_CUBEMAP_PASS) {
+   float starlight=stars(stars_basis*d,260.0,.989);
+   color+=starlight*max(1.0-atmosphere,night_mix*.92)*smoothstep(0.,.12,altitude)*vec3(.8,.88,1.);
+  }
   // No cloud contribution exists at zero coverage (e.g. airless worlds).
   if(cloud_amount>0.0) {
   vec2 p=d.xz/(altitude+.23)*1.8+vec2(seed_phase,seed_phase*.37)+cloud_offset;

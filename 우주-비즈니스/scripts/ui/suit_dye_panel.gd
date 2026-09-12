@@ -32,7 +32,7 @@ func configure(owner: FrontierCrewExpedition) -> void:
 	for key in FrontierSuitAppearance.config().parts:
 		var button:=Button.new();button.text=FrontierSuitAppearance.config().parts[key];button.custom_minimum_size=Vector2(96,36);button.toggle_mode=true
 		var gem: String=FrontierSuitAppearance.config().dye_costs[key].keys()[0]
-		button.tooltip_text="%s 1개  /  T%d"%[FrontierResourceIcons.names()[gem],FrontierMineralWorld.tier(gem)]
+		button.tooltip_text="%s 1개"%FrontierResourceIcons.names()[gem]
 		grid.add_child(button);parts[key]=button;button.pressed.connect(func():select_part(key))
 	for channel in FrontierSuitAppearance.config().channels:
 		var row:=HBoxContainer.new();options.add_child(row)

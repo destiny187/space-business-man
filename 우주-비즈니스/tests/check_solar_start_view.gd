@@ -25,7 +25,10 @@ func run() -> void:
  var final_pose:=FrontierSolarOpening.pose(nav.solar_opening,float(nav.solar_opening.duration))
  nav.position=FrontierExpeditionBusiness.array(final_pose.position);nav.direction=FrontierExpeditionBusiness.array(final_pose.direction)
  view.update_navigation(nav)
- assert(not FrontierSolarOpening.active(nav) and final_pose.position.distance_to(point)>10000)
+ assert(not FrontierSolarOpening.active(nav) and final_pose.position.distance_to(point)<500 and is_equal_approx(final_pose.position.distance_to(earth),float(FrontierSolarOpening.config().finish_distance)))
+ await create_timer(.5).timeout
+ await RenderingServer.frame_post_draw
+ root.get_texture().get_image().save_png(folder+"/earth-departure.png")
  var target:=FrontierCrewNavigation.first_destination(m)
  nav.mode="jump";nav.target=target;nav.transit={"progress":.7,"duration":12.0};nav.jump_left=3.6
  view.update_navigation(nav)

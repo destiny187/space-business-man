@@ -229,7 +229,7 @@ func _refresh_candidates() -> void:
 	_label(sidebar,"주변 천체",14)
 	for ordinal in planets:
 		var body: Dictionary = planets[ordinal].body
-		_button(sidebar,"%s · T%d" % [body.name,int(body.planet_tier)],_select.bind(ordinal))
+		_button(sidebar,str(body.name),_select.bind(ordinal))
 
 func _select(ordinal: int) -> void:
 	if jump_remaining>0:status.text="도약 완료 후 목적지를 변경할 수 있습니다.";return
@@ -238,7 +238,7 @@ func _select(ordinal: int) -> void:
 	target_ordinal = ordinal
 	autopilot = false
 	address.text = str(ordinal+1)
-	destination.text = "%s · T%d\n%s" % [body.name,int(body.planet_tier),FrontierUniverse.kind_label(body)]+"\n"+FrontierMineralWorld.summary(body)
+	destination.text = "%s\n%s" % [body.name,FrontierUniverse.kind_label(body)]+"\n"+FrontierMineralWorld.summary(body)
 	if not FrontierUniverse.landable(body):destination.text+="\n착륙 불가 · 궤도 탐사 대상";return
 	var habitat: Dictionary=FrontierEcology.profile(body)
 	destination.text+="\n궤도 추정 %.1f°C · %.0f kPa\n%s"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.habitat(habitat).label]

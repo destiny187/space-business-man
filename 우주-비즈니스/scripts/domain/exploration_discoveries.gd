@@ -132,7 +132,7 @@ static func scan(world: Dictionary,row: Dictionary,actor: String) -> void:
 	record.scanned_stage=record.stage
 static func result(world: Dictionary,row: Dictionary) -> Dictionary:
 	var d:=definition(row.template);var index:=stage(world,row);var finished: bool=index>=d.stages.size()
-	return {"kind":"discovery","id":row.id,"name":d.name,"icon":"scan","point":FrontierExpeditionBusiness.array(row.point) if row.get("point") is Vector3 else row.position,"subtitle":"탐험 발견  T%d  %d/%d"%[int(d.tier),mini(index,d.stages.size()),d.stages.size()],"notes":[{"icon":"scan","text":d.knowledge if finished else d.stages[index].label}],"condition":"J 발견 기록에 장소와 조사 성과를 보존합니다.","action":"조사 완료" if finished else "F  "+str(d.stages[index].label)}
+	return {"kind":"discovery","id":row.id,"name":d.name,"icon":"scan","point":FrontierExpeditionBusiness.array(row.point) if row.get("point") is Vector3 else row.position,"subtitle":"탐험 발견  %d/%d"%[mini(index,d.stages.size()),d.stages.size()],"notes":[{"icon":"scan","text":d.knowledge if finished else d.stages[index].label}],"condition":"J 발견 기록에 장소와 조사 성과를 보존합니다.","action":"조사 완료" if finished else "F  "+str(d.stages[index].label)}
 static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
 	var aim:=FrontierCrewSurface.direction(args.get("aim"))
 	if aim==Vector3.ZERO:return "발견물을 조준하세요."

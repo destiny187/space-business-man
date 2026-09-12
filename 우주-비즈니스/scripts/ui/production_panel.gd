@@ -71,7 +71,7 @@ func refresh() -> void:
 	var def:=FrontierProductionTier2.product(selected_product)
 	var batch_count:=int(batches.value);var recipe_cost:=FrontierProductionTier2.batch_cost(def,batch_count);batches.visible=manufacturing
 	if manufacturing:preview.show_model(def.model)
-	title.text=def.name+" ×%d"%(int(def.amount)*batch_count);description.text=def.use
+	title.text=def.name+" ×%d"%(int(def.amount)*batch_count);description.text=FrontierInterfaceStyle.player_text(def.use)
 	for id in product_cards:product_cards[id].selected=id==selected_product;product_cards[id].queue_redraw()
 	for child in ingredients.get_children():ingredients.remove_child(child);child.queue_free()
 	var stock: Dictionary=current.get("inventory",{})
@@ -104,9 +104,12 @@ func refresh() -> void:
 	upgrade.text="제작소 Mk.%d 개조"%next_tier if manufacturing else "Mk.%d 개조"%next_tier
 	upgrade.tooltip_text=str(upgrade_def.get("effect","채광 18  적재 64  이동 +20%"))
 	upgrade.disabled=b.get("submerged",false) or b.is_empty() or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or not FrontierPlanetSupply.operating(current)
+	if not is_robot and next_tier==2:
+		var research_error:=FrontierFacilityResearch.gate(panel.ledger,str(b.get("type","")))
+		if not research_error.is_empty():upgrade.disabled=true;upgrade.text="공동 설비 연구 필요";upgrade.tooltip_text=research_error
 	var blueprint:=FrontierFacilityBlueprints.required(b,next_tier) if not is_robot else ""
 	if not blueprint.is_empty() and blueprint not in panel.ledger.get("facility_blueprints",[]):
-		upgrade.disabled=true;upgrade.text="Mk.%d 설계도 필요"%next_tier;upgrade.tooltip_text="정거장 T3 설계도 탭에서 구매하거나 T3 기록고를 복원하세요."
+		upgrade.disabled=true;upgrade.text="Mk.%d 설계도 필요"%next_tier;upgrade.tooltip_text="정거장 전문 설비 설계도 탭에서 구매하거나 기술 기록고를 복원하세요."
 	if upgrade_def.is_empty():upgrade.text="현재 최고 단계  Mk.%d"%int(b.get("tier",1));target_cost.value=""
 
 func production_reason(product_id: String) -> String:

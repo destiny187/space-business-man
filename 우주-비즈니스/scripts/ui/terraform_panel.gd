@@ -42,7 +42,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
    var p: Array=site.free_terraform.source if FrontierFreeTerraform.active(site) else site.regions["region:1"].center
    focus=Vector2(p[0],p[2]);chosen=focus;layer=3;for_buttons();refresh())
  canvas=Control.new();canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL;canvas.custom_minimum_size=Vector2(300,230);canvas.clip_contents=true;add_child(canvas);canvas.draw.connect(draw_view);canvas.gui_input.connect(input_view)
- supply_mode=OptionButton.new();supply_mode.add_item("가동 보급 · 5분");supply_mode.add_item("설비 준비 · T3");add_child(supply_mode);supply_mode.hide();supply_mode.item_selected.connect(func(_i):supply_scroll.scroll_vertical=0;refresh())
+ supply_mode=OptionButton.new();supply_mode.add_item("가동 보급 · 5분");supply_mode.add_item("전문 설비 준비");add_child(supply_mode);supply_mode.hide();supply_mode.item_selected.connect(func(_i):supply_scroll.scroll_vertical=0;refresh())
  supply_scroll=ScrollContainer.new();supply_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;supply_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(supply_scroll);supply_scroll.hide()
  var supply_content:=VBoxContainer.new();supply_content.size_flags_horizontal=Control.SIZE_EXPAND_FILL;supply_scroll.add_child(supply_content)
  supply_rows=VBoxContainer.new();supply_rows.add_theme_constant_override("separation",12);supply_content.add_child(supply_rows)
@@ -203,7 +203,7 @@ func refresh_supply() -> void:
   return
  legend.text="5분 연속 가동 상한  /  이미 투입한 팩 제외  /  목표 도달·정전·침수 시 실제 소비 감소"
  info.text="해당 현장 창고로 직접 운반하세요. 다른 현장의 재고는 사용하지 않습니다."
- if not site.has("tier3"):info.text="T3 현장에 설치한 설비의 보급 계획을 표시합니다."
+ if not site.has("tier3"):info.text="전문 복원 현장에 설치한 설비의 보급 계획을 표시합니다."
  var speed:=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(app.session.surface))
  var plan:=FrontierTerraformTier3.supply_plan(site,300,speed,app.session.surface)
  var signature:=JSON.stringify(plan)

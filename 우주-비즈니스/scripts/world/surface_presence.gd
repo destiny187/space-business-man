@@ -1,6 +1,6 @@
 class_name FrontierSurfacePresence
 extends Node3D
-## Local scenery, saved-state driven growth, coherent wind and bounded interaction traces.
+## Local scenery, saved-state driven growth, coherent wind.
 var surface: FrontierCrewSurfaceScene
 var cfg: Dictionary
 var region: Dictionary={}
@@ -8,7 +8,6 @@ var recovery_areas: Array=[]
 var state: Dictionary={"grass":0.0,"trees":0.0,"wet":0.0,"life":0.0}
 var patches: Array[Dictionary]=[]
 var ponds: Array[Dictionary]=[]
-var traces: Array[Dictionary]=[]
 var lights: Dictionary={}
 var style_cache: Dictionary={}
 var materials: Array[ShaderMaterial]=[]
@@ -18,9 +17,6 @@ var wind:=Vector3.RIGHT
 var shelter:=1.0
 var cave:=0.0
 var sample_timer:=0.0
-var previous:=Vector3.INF
-var stride:=0.0
-var foot:=1.0
 var assets_ready:=false
 var request: Dictionary={}
 var sounds: Node
@@ -50,8 +46,6 @@ func accept(ledger: Dictionary) -> void:
  var next: String=surface.surface_details.building_signature
  if next!=signature:signature=next;sample_timer=0;_invalidate_ground()
 func _invalidate_ground() -> void:
- for row in traces:row.node.queue_free()
- traces.clear()
  for row in patches:row.checked=false
  for row in ponds:row.checked=false
 func _blocked(p: Vector3) -> bool:
@@ -180,7 +174,6 @@ func _process(delta: float) -> void:
   presentation_timer=.05
   for mat in materials:
    mat.set_shader_parameter("presence_time",clock_value);mat.set_shader_parameter("presence_wind",Vector2(wind.x,wind.z)*gust)
- _traces(delta,blocked)
  scenery.update(delta,blocked)
  sounds.update(delta,blocked)
 func _sample_shelter() -> void:
@@ -206,38 +199,5 @@ func _industry() -> void:
    if lights.size()>=8:continue
    var light:=OmniLight3D.new();light.light_color=Color("a7e3dd");light.omni_range=6;light.light_energy=0;node.add_child(light);light.position=Vector3(0,2.4,0);lights[id]=light
   lights[id].light_energy=(.65+.08*sin(clock_value*2+float(hash(id)%100)))*(1-surface.atmosphere.daylight*.7) if node.get_meta("working",false) else 0.0
-func mark(point: Vector3,direction: Vector3,kind: float=0.0) -> void:
- if not point.is_finite():return
- if traces.size()>=int(cfg.trace_count):
-  if traces.is_empty():return
-  traces[0].node.queue_free();traces.pop_front()
- var p:=point;p.y=surface.terrain.field.height(p.x,p.z)+.026
- if absf(p.y-point.y)>(4.0 if kind==1 else 1.0):return
- var node:=MeshInstance3D.new();var mesh:=PlaneMesh.new();mesh.size=Vector2(.24,.44) if kind==0 else (Vector2(.3,1.2) if kind==2 else (Vector2(8,8) if kind==3 else Vector2(1.1,1.1)));node.mesh=mesh;node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
- var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/surface_trace.gdshader");mat.set_shader_parameter("kind",kind);mat.set_shader_parameter("trace_color",Color("748e98") if float(surface.body.traits.temperature)<0 else Color(surface.body.traits.dust).darkened(.48));node.material_override=mat;add_child(node)
- node.position=p;node.basis=Basis(Quaternion(Vector3.UP,surface.terrain.field.normal(p)))*Basis(Vector3.UP,atan2(direction.x,direction.z))
- traces.append({"node":node,"material":mat,"age":0.0})
- if kind==1 and scenery!=null:scenery.puff(p,8)
-func _traces(delta: float,blocked: bool) -> void:
- if not blocked:
-  var p: Vector3=surface.viewer.position
-  var app=surface.get_parent()
-  var driving: bool=app is FrontierCrewExpedition and not app.rovers.seat().is_empty()
-  if driving:p.y=surface.terrain.field.height(p.x,p.z)
-  if previous.is_finite():
-   var displacement:=p-previous
-   if displacement.length()<3 and absf(p.y-surface.terrain.field.height(p.x,p.z))<.5:
-    stride+=Vector2(displacement.x,displacement.z).length()
-    if stride>.9:
-     var side:=Vector3(-displacement.z,0,displacement.x).normalized()
-     if driving:mark(p+side*.85,displacement,2);mark(p-side*.85,displacement,2)
-     else:mark(p+side*foot*.13,displacement)
-     stride=0;foot*=-1
-  previous=p
- for row in traces:
-  if not blocked:row.age+=delta*(1+gust*.8)
-  row.material.set_shader_parameter("fade",1-smoothstep(float(cfg.trace_seconds)*.65,float(cfg.trace_seconds),row.age))
- for i in range(traces.size()-1,-1,-1):
-  if traces[i].age>float(cfg.trace_seconds):traces[i].node.queue_free();traces.remove_at(i)
 func local_weight() -> float:
  return 0.0 if region.is_empty() else FrontierSurfaceRecovery.weight(surface.viewer.position,region.center,region.radius)

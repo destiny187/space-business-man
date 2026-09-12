@@ -221,6 +221,7 @@ func _update_entity(id: String) -> void:
 	elif kind=="building":
 		if not site.get("buildings",{}).has(id):return
 		var row: Dictionary=site.get("buildings",{})[id]
+		node.rotation.y=float(row.get("yaw",0.0))
 		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active
 		var symbol: String="⊘ " if row.get("submerged",false) else ("▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! ")))
 		nodes[row.id].get_meta("label").text=symbol+FrontierTerraformTier3.name(row)+"\n"+str(row.status)

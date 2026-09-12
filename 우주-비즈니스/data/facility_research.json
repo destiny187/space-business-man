@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "projects": {
+    "factory": {
+      "name": "자동 조립 설비",
+      "model": "factory",
+      "price": 600,
+      "cost": {
+        "iron": 20,
+        "copper": 10
+      },
+      "effect": "현장 제작소 Mk.2 건설과 개조, 채광 로봇·차량 조립을 개방합니다."
+    },
+    "solar": {
+      "name": "발전 설비 개조",
+      "model": "solar",
+      "price": 400,
+      "cost": {
+        "refined_iron": 2,
+        "refined_copper": 2
+      },
+      "effect": "이 설비의 Mk.2 개조를 개방합니다. 각 시설의 개조 부품은 별도로 필요합니다."
+    },
+    "charger": {
+      "name": "충전 설비 개조",
+      "model": "charger",
+      "price": 400,
+      "cost": {
+        "refined_iron": 2,
+        "refined_copper": 2
+      },
+      "effect": "이 설비의 Mk.2 개조를 개방합니다. 각 시설의 개조 부품은 별도로 필요합니다."
+    },
+    "atmosphere": {
+      "name": "대기 처리 개조",
+      "model": "atmosphere",
+      "price": 400,
+      "cost": {
+        "refined_iron": 2,
+        "refined_copper": 2
+      },
+      "effect": "이 설비의 Mk.2 개조를 개방합니다. 각 시설의 개조 부품은 별도로 필요합니다."
+    },
+    "thermal": {
+      "name": "열 제어 개조",
+      "model": "thermal",
+      "price": 400,
+      "cost": {
+        "refined_iron": 2,
+        "refined_copper": 2
+      },
+      "effect": "이 설비의 Mk.2 개조를 개방합니다. 각 시설의 개조 부품은 별도로 필요합니다."
+    },
+    "water": {
+      "name": "수질 정화 개조",
+      "model": "water",
+      "price": 400,
+      "cost": {
+        "refined_iron": 2,
+        "refined_copper": 2
+      },
+      "effect": "이 설비의 Mk.2 개조를 개방합니다. 각 시설의 개조 부품은 별도로 필요합니다."
+    },
+    "biolab": {
+      "name": "생태 배양 개조",
+      "model": "biolab",
+      "price": 400,
+      "cost": {
+        "refined_iron": 2,
+        "refined_copper": 2
+      },
+      "effect": "이 설비의 Mk.2 개조를 개방합니다. 각 시설의 개조 부품은 별도로 필요합니다."
+    }
+  }
+}

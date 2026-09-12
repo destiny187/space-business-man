@@ -20,7 +20,7 @@ func configure(panel: FrontierBusinessPanel) -> void:
 func refresh(site: Dictionary) -> void:
 	var b: Dictionary=site.get("buildings",{}).get(owner_panel.context_id,{})
 	var def:=FrontierProductionTier2.robot_recipe()
-	cost.value="필요 재료  "+FrontierCatalog.cost_text(def.cost)
+	cost.show_cost(def.cost,site.get("inventory",{}),true)
 	var reason: String=""
 	var job: Dictionary={}
 	for row in site.get("jobs",{}).values():
@@ -34,7 +34,7 @@ func refresh(site: Dictionary) -> void:
 	elif not FrontierProductionTier2.robot_gate(b).is_empty():reason=FrontierProductionTier2.robot_gate(b)
 	elif not b.get("active",false):reason="전력 / 가동 상태를 확인하세요."
 	elif not FrontierEarlyAccess.available(owner_panel.ledger,"robotics"):reason="착륙선 단말에서 로봇공학을 구매하세요."
-	elif not FrontierExpeditionBusiness.affordable(site.get("inventory",{}),def.cost):reason="공동 창고에 제작 재료가 부족합니다."
+	elif not FrontierExpeditionBusiness.affordable(site.get("inventory",{}),def.cost):reason="현장 창고의 재료가 부족합니다. 배낭 재료는 창고로 옮겨 주세요."
 	for project in owner_panel.engineering.get("projects",{}).values():
 		if project.get("facility_id","")==owner_panel.context_id and project.get("stage","") in ["prototype","trial"]:reason="공학 작업 진행 중"
 	craft.disabled=not reason.is_empty()

@@ -107,7 +107,7 @@ func refresh() -> void:
 	var inspected: String=selected if data.evidence.has(selected) else (str(data.evidence.keys()[0]) if not data.evidence.is_empty() else "")
 	preview.present(state,inspected if mode=="journal" or loaded or phase=="success" else "")
 	stage_label.text={"unseen":"발견되지 않은 표본","discovered":"표본 계측  %d / %d"%[count,required],"analyzed":"분석 완료  조립 대기","prototyped":"시험기 준비  현장 시험 대기"}[state]
-	hint.text={"unseen":"지하에서 보석을 발견하면 단서가 연결됩니다.","discovered":"내 배낭의 표본을 연구대에 올려 계측합니다.","analyzed":"현장 제작소 Mk.2  내 부품으로 시험기 조립","prototyped":"T2 시험기  정식 Mk.3 설계는 현장 시험 후 개방"}[state]
+	hint.text={"unseen":"지하에서 보석을 발견하면 단서가 연결됩니다.","discovered":"내 배낭의 표본을 연구대에 올려 계측합니다.","analyzed":"현장 제작소 Mk.2  내 부품으로 시험기 조립","prototyped":"현장 시험기  정식 Mk.3 설계는 현장 시험 후 개방"}[state]
 	if mode=="journal":hint.text="원정대 공동 기록  표본 계측은 원정선 연구대에서"
 	for id in specimens:
 		var tile: FrontierItemTile=specimens[id];tile.visible=data.evidence.has(id) if mode=="journal" else int(stock.get(id,0))>0;tile.disabled=busy() or not data.evidence.has(id);tile.selected=id==selected;tile.amount=str(int(stock.get(id,0))) if mode!="journal" else ("발견" if data.evidence.has(id) else "?");tile.modulate=Color.WHITE if data.evidence.has(id) else Color(.3,.36,.4);tile.queue_redraw()

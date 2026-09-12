@@ -51,3 +51,7 @@ static func label(parent: Node,text: String,size: int=14,color: Color=TEXT) -> L
 static func icon(model: String) -> Texture2D:
 	var path: String="res://assets/ui/equipment/"+model.get_file()+".png"
 	return load(path) if ResourceLoader.exists(path) else load("res://assets/ui/previews/"+model.get_file()+".png")
+
+static func player_text(value: String) -> String:
+	for tier in range(1,6):value=value.replace("T%d "%tier,"")
+	return value

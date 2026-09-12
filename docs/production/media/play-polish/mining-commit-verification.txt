@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS isolated authority starts
+PASS starter lookup retains exact resource capacity and position
+PASS unknown deposit is rejected
+PASS mining queues durable commit
+PASS pending result gives no inventory or acknowledged sequence
+PASS duplicate pending request schedules no second extraction
+PASS miner can keep moving during storage
+PASS mining disk commit completes
+PASS newer movement survives mining publication
+DURABLE_DIAG seq 1.0 expected 1 savedbag { "copper": 5.0, "crystal": 0.0, "ice": 0.0, "iron": 0.0, "stone": 0.0 } livebag { "iron": 0, "copper": 5, "stone": 0, "ice": 0, "crystal": 0 }
+PASS confirmed materials and request receipt already exist on disk
+PASS one successful asynchronous reply
+PASS committed replay never duplicates materials
+PASS failure scenario reaches pending state
+PASS storage failure stops authority
+PASS failed mining preserves inventory depletion and sequence
+PASS storage failure replies without success
+PASS migration preserves old facilities and grants owned upgrade license
+MINING_COMMIT failures 0

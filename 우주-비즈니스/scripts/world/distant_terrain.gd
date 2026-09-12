@@ -60,7 +60,7 @@ func _build_job(result: Dictionary,request: Dictionary) -> void:
 	for key in height_samples.keys():
 		if not bounds.has_point(key):height_samples.erase(key)
 	result.arrays=_arrays(field,request.anchor,request.radius,request.distance,height_samples,false)
-	var coarse:=16.0 if request.distance<=4096 else 32.0
+	var coarse:=coarse_step(request.distance)
 	var inner: float=(request.radius+.5)*field.span
 	var low: Vector2=((center-Vector2.ONE*inner)/coarse).floor()*coarse-Vector2.ONE*coarse
 	var high: Vector2=((center+Vector2.ONE*inner)/coarse).ceil()*coarse+Vector2.ONE*coarse
@@ -152,12 +152,16 @@ func rebuild(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,ter
 	rendered_anchor=anchor;has_rendered_anchor=true
 	_install(_arrays(field,anchor,radius_chunks,view_distance),terrain_material)
 
+static func coarse_step(distance: float) -> float:
+	# The two extended ranges retain the nearby detailed ring and cap distant geometry.
+	return 16.0 if distance<=4096 else (32.0 if distance<=6000 else 64.0)
+
 static func _arrays(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,view_distance: float,samples: Dictionary={},include_outer: bool=true) -> Array:
 	var center:=Vector2((anchor.x+.5)*field.span,(anchor.z+.5)*field.span)
 	var inner: float=(radius_chunks+.5)*field.span
 	var hole:=Rect2(center-Vector2.ONE*inner,Vector2.ONE*inner*2)
 	# Both grids align to world coordinates, never to the camera direction.
-	var coarse:=16.0 if view_distance<=4096 else 32.0
+	var coarse:=coarse_step(view_distance)
 	var low: Vector2=(hole.position/ coarse).floor()*coarse-Vector2.ONE*coarse
 	var high: Vector2=(hole.end/coarse).ceil()*coarse+Vector2.ONE*coarse
 	var join:=Rect2(low,high-low)

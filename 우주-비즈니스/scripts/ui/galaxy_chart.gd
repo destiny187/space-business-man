@@ -67,7 +67,7 @@ func _ready() -> void:
 	visibility_changed.connect(func():
 		if core_view!=null:core_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if galaxy and is_visible_in_tree() else SubViewport.UPDATE_DISABLED
 	)
-	tooltip_text="외곽: 저티어  중심: 고티어 비중 증가\n별을 선택해 항로를 설정하세요. 내부 정보는 방문 후 공개됩니다.\n중앙 블랙홀은 위치 표식입니다."
+	tooltip_text="외곽: 온화한 환경  중심: 가혹한 환경 비중 증가\n별을 선택해 항로를 설정하세요. 내부 정보는 방문 후 공개됩니다.\n중앙 블랙홀은 위치 표식입니다."
 	custom_minimum_size=Vector2(180,180) if compact else Vector2(280,340)
 	clip_contents=true
 	mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
