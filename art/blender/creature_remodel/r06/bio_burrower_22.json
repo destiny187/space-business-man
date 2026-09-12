@@ -1,0 +1,222 @@
+{
+  "id": "bio_burrower_22",
+  "source_id": "bio_burrower_22",
+  "name": "지하 갑주형 굴착수류",
+  "family": "burrower",
+  "kind": "burrower",
+  "construction": "burrower",
+  "anatomical_type": "skink",
+  "organ_system": "sails",
+  "environment": "cave",
+  "habitat": "어둠·외부 먹이 유입 또는 화학 기질",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.355,
+    "height": 1.0,
+    "mode": 1,
+    "radial_count": 5,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 4
+  },
+  "attack": "slam",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "slam",
+  "host_motion": "shockwave",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "burrower",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 13
+  },
+  "version": "r06-1",
+  "build_fingerprint": "18e82f3ea3c1e5f904069dc116ef43386faf40afc153b8365dc3b3155ceeca09",
+  "normalized_geometry_sha256": "ea83a6f40da9eecd846ad9e8949cc20931c06b814a89e98bef4751bc0a6338b7",
+  "source": "art/blender/creature_remodel/r06/bio_burrower_22.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 30,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.21480000019073486,
+        1.6059999465942383
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.21480000019073486,
+        1.6059999465942383
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.21480000019073486,
+        1.6059999465942383
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.3822000026702881,
+        0.10000000149011612,
+        0.6299399733543396
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.3822000026702881,
+        0.10000000149011612,
+        0.6299399733543396
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.3822000026702881,
+        0.10000000149011612,
+        -0.6692600250244141
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.3822000026702881,
+        0.10000000149011612,
+        -0.6692600250244141
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.15125286772535096,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.234441944974294,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.21480000019073486,
+    1.6059999465942383
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_burrower_22_near.glb",
+      "sha256": "b04749239ec80654b1a5589e2bd93ba255a2df2c70d9d9a6b5f9fd842f7bc70f",
+      "triangles": 31134,
+      "min": [
+        -0.5123999118804932,
+        0.02075699344277382,
+        -2.0356907844543457
+      ],
+      "max": [
+        0.5123999714851379,
+        1.2110949754714966,
+        1.5979998111724854
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_burrower_22_far.glb",
+      "sha256": "d31011dc0a649f4c44fd04d5443878a4f367179f97a3758ac547f8d0db4172b1",
+      "triangles": 13380,
+      "min": [
+        -0.5123974680900574,
+        0.021877538412809372,
+        -2.0278360843658447
+      ],
+      "max": [
+        0.5123922228813171,
+        1.2110949754714966,
+        1.5979998111724854
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial1",
+    "organ3": "axial1",
+    "organ4": "axial0"
+  },
+  "build_seconds": 7.954,
+  "source_render_seconds": 6.357,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "ae25f31311061ff9474481b304e4cae717caf873944132380bf169ece3d48b19"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

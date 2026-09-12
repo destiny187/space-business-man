@@ -1,0 +1,254 @@
+{
+  "id": "biota_tower_antennal_fans_11",
+  "name": "광각굽은세마디우산눈수",
+  "family": "biota_tower_antennal_fans",
+  "construction": "tower",
+  "organ_system": "antennal_fans",
+  "environment": "crystal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_antennal_fans_11",
+  "kind": "tower",
+  "habitat": "광물 피막과 모서리를 피해 열린 감각면 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 3,
+    "limb_count": 8,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·가지 끝에 펼친 감각 부채 / 만곡 배열·주요 기관 3개",
+  "recipe_sha256": "8d9ee0cd258fdf47b03c2a49cd53871cdc1baa348f81bb5b328a38f518b8723a",
+  "authored_anatomy": "Continuous tower anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "883488748414a25edf9e378b9e4bc83e67f80fd52e7d4ec384c0e0993c097679",
+  "normalized_geometry_sha256": "af18166bbd0eac5e5e5cc432ea02609bfd33f9364f35fe49109e6ef8edc2825a",
+  "source": "art/blender/creature_remodel/r03/biota_tower_antennal_fans_11.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 34,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.107926127637688e-17,
+        0.10999999940395355,
+        0.9975000023841858
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.7053390145301819,
+        0.10999999940395355,
+        0.7053390145301819
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.9975000023841858,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.7053390145301819,
+        0.10999999940395355,
+        -0.7053390145301819
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        6.107926127637688e-17,
+        0.10999999940395355,
+        -0.9975000023841858
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.7053390145301819,
+        0.10999999940395355,
+        -0.7053390145301819
+      ]
+    },
+    "Socket_leg6": {
+      "bone": "leg6_foot",
+      "point": [
+        -0.9975000023841858,
+        0.10999999940395355,
+        -1.2215852255275376e-16
+      ]
+    },
+    "Socket_leg7": {
+      "bone": "leg7_foot",
+      "point": [
+        -0.7053390145301819,
+        0.10999999940395355,
+        0.7053390145301819
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3566276408373302,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5527728432978618,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001,
+      "leg6": 0.51,
+      "leg7": 0.010000000000000009
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.076200008392334,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_antennal_fans_11_near.glb",
+      "sha256": "93be9b1d0f9c968021f3c6345b0d91b87dd507f76ead9b6660bed69366667e2f",
+      "triangles": 45260,
+      "min": [
+        -1.2992719411849976,
+        0.034999996423721313,
+        -1.2992719411849976
+      ],
+      "max": [
+        1.2992719411849976,
+        2.4781999588012695,
+        1.2992719411849976
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_antennal_fans_11_far.glb",
+      "sha256": "4e8e577b23b60697f3836ad0ec976ab4fc11819ebf52ee80b6424c833d597d0a",
+      "triangles": 19454,
+      "min": [
+        -1.2992111444473267,
+        0.034999996423721313,
+        -1.2992593050003052
+      ],
+      "max": [
+        1.2992111444473267,
+        2.4781999588012695,
+        1.2992593050003052
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "leg6_upper": "chest",
+    "leg6_lower": "leg6_upper",
+    "leg6_foot": "leg6_lower",
+    "leg7_upper": "chest",
+    "leg7_lower": "leg7_upper",
+    "leg7_foot": "leg7_lower",
+    "organ0": "vertical0",
+    "organ1": "vertical1",
+    "organ2": "vertical2"
+  },
+  "build_seconds": 12.349,
+  "source_render_seconds": 9.042,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "8ed1fd1f57c87c29a60b88ee69a154eba899adfc82e7181cefaf8008b4d54be7"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

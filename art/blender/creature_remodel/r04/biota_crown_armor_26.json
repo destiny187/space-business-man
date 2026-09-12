@@ -39,7 +39,7 @@
     "jointed_oral_organs": 2
   },
   "version": "r04-1",
-  "build_fingerprint": "f1e737e4a43f4d9faadea7fe324f0b7a41979a28dd4cb76d97c2907133300513",
+  "build_fingerprint": "0813068289763efefdb3ffadf9fd02af1507017fb06e166a5c81e559ed6e3f6f",
   "normalized_geometry_sha256": "0b4d98c0f02a7a40a40f38f1f74c8788f76ad91509fbeda779c72653c009155b",
   "source": "art/blender/creature_remodel/r04/biota_crown_armor_26.blend",
   "status": "built-awaiting-game-render",
@@ -182,7 +182,25 @@
       "leg5": 0.9,
       "leg6": 0.6000000000000001,
       "leg7": 1.1
-    }
+    },
+    "strike_origins": [
+      {
+        "bone": "raptorial-11",
+        "point": [
+          -0.6200000047683716,
+          0.699999988079071,
+          1.3600000143051147
+        ]
+      },
+      {
+        "bone": "raptorial11",
+        "point": [
+          0.6200000047683716,
+          0.699999988079071,
+          1.3600000143051147
+        ]
+      }
+    ]
   },
   "muzzle": [
     0.0,
@@ -207,7 +225,7 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_armor_26_far.glb",
-      "sha256": "cd6c3caf8aeab5027b15f822a4d45a3097bb90860ae976ee65f52ecc5a5566fd",
+      "sha256": "b2139b2924781122fb716a24c7b25689aa2eb53e8b315c31c976fda37d088b27",
       "triangles": 19656,
       "min": [
         -1.2301621437072754,
@@ -276,6 +294,14 @@
     "organ1": "chest",
     "organ2": "chest"
   },
-  "build_seconds": 24.65,
-  "source_render_seconds": 11.166
+  "build_seconds": 18.337,
+  "source_render_seconds": 6.13,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "c304a2e54952085bda65747d3bce23195844b67ded9e96fe8e7c54d350cd86a9"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
 }

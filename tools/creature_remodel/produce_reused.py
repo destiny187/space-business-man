@@ -17,12 +17,13 @@ def fingerprint(base):
     return hashlib.sha256(produce_captured.fingerprint(base).encode()+Path(lod_animation.__file__).read_bytes()+Path(__file__).read_bytes()).hexdigest()
 
 
-def legacy_fingerprint(base):
-    """Completed v1 assets passed the stricter check and retain their source provenance."""
+def legacy_fingerprint(base,version=1):
+    """Completed v1/v2 assets passed stricter checks and retain their provenance."""
+    assert version in [1,2]
     compat = Path(__file__).parent/'compat'
     return hashlib.sha256(produce_captured.fingerprint(base).encode()
-                          +(compat/'lod_animation_v1.py').read_bytes()
-                          +(compat/'produce_reused_v1.py').read_bytes()).hexdigest()
+                          +(compat/f'lod_animation_v{version}.py').read_bytes()
+                          +(compat/f'produce_reused_v{version}.py').read_bytes()).hexdigest()
 
 
 def main():
@@ -58,7 +59,7 @@ def main():
         base = base_fingerprint(spec)
         if metadata.exists():
             row = json.loads(metadata.read_text())
-            if (row.get('build_fingerprint') in [base, produce_captured.fingerprint(base), legacy_fingerprint(base), fingerprint(base)]
+            if (row.get('build_fingerprint') in [base, produce_captured.fingerprint(base), legacy_fingerprint(base), legacy_fingerprint(base,2), fingerprint(base)]
                 and (ROOT/row['source']).is_file()
                 and (ROOT/'docs/production/media/creature-remodel'/batch/'blender'/(spec['id']+'.png')).is_file()
                 and all(asset_matches(asset) for asset in row['lods'].values())):
@@ -66,7 +67,7 @@ def main():
                 return row
         row = original_build(spec, *build_args)
         row['animation_capture'] = {'version': 1, 'base_fingerprint': base}
-        row['lod_animation_reuse'] = {'version': 2, 'source': 'near'}
+        row['lod_animation_reuse'] = {'version': 3, 'source': 'near'}
         temporary = metadata.with_suffix('.json.tmp')
         temporary.write_text(json.dumps(row, ensure_ascii=False, indent=2)+'\n')
         os.replace(temporary, metadata)

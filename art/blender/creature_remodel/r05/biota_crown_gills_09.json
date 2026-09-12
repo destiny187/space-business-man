@@ -1,0 +1,191 @@
+{
+  "id": "biota_crown_gills_09",
+  "name": "운해곧은열한마디깃털관수",
+  "family": "biota_crown_gills",
+  "construction": "crown",
+  "organ_system": "gills",
+  "environment": "gas_cloud",
+  "locomotion_medium": "atmosphere",
+  "anatomy_note": "빈 중앙 공간을 둘러싼 살아 있는 관·넓게 펼친 깃 아가미 / 직렬 배열·주요 기관 11개",
+  "source_id": "biota_crown_gills_09",
+  "kind": "crown",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "고체 발판 없이 떠 있는 부력낭·평형막·현수 여과기관의 가상 대기층 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 0,
+    "radial_count": 11,
+    "limb_count": 4,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "flight": {},
+  "anatomical_type": "crown",
+  "production_batch": "r05",
+  "air_motion": false,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "crown",
+    "medium": "atmosphere",
+    "wing_chains": 0,
+    "ground_supports": 0,
+    "organs": 30
+  },
+  "version": "r05-1",
+  "build_fingerprint": "f12fc13c383dedac5275d23a2df83b5fcd3e4537ffa916bdbd022a53829293e6",
+  "normalized_geometry_sha256": "329c433ef1c15bc70ee6932a2f37bfb9516b9d3abf403c13440ab511e8916189",
+  "source": "art/blender/creature_remodel/r05/biota_crown_gills_09.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 34,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {}
+  },
+  "muzzle": [
+    0.0,
+    0.6200000047683716,
+    0.14000000059604645
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_crown_gills_09_near.glb",
+      "sha256": "f0a1ee75e2456548517d964acfd5b724e63b8d14af0e2ecc10e47fbb37f28601",
+      "triangles": 25329,
+      "min": [
+        -1.0209691524505615,
+        0.5035490989685059,
+        -1.0209691524505615
+      ],
+      "max": [
+        1.0209691524505615,
+        1.775657057762146,
+        0.9664867520332336
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_crown_gills_09_far.glb",
+      "sha256": "d4612d3673ca2170289f0e012f1ae83dac5e386e4e8a8d917fdef5ff9e9028c9",
+      "triangles": 10888,
+      "min": [
+        -1.0209888219833374,
+        0.503606379032135,
+        -1.0209879875183105
+      ],
+      "max": [
+        1.0209888219833374,
+        1.776918888092041,
+        0.9668347835540771
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "coronal_lobe00": "chest",
+    "coronal_lobe01": "coronal_lobe00",
+    "coronal_lobe10": "chest",
+    "coronal_lobe11": "coronal_lobe10",
+    "coronal_lobe20": "chest",
+    "coronal_lobe21": "coronal_lobe20",
+    "coronal_lobe30": "chest",
+    "coronal_lobe31": "coronal_lobe30",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "trailing_feeler00": "chest",
+    "trailing_feeler01": "trailing_feeler00",
+    "trailing_feeler10": "chest",
+    "trailing_feeler11": "trailing_feeler10",
+    "trailing_feeler20": "chest",
+    "trailing_feeler21": "trailing_feeler20",
+    "organ0": "coronal_lobe01",
+    "organ1": "coronal_lobe01",
+    "organ2": "coronal_lobe01",
+    "organ3": "coronal_lobe11",
+    "organ4": "coronal_lobe11",
+    "organ5": "coronal_lobe11",
+    "organ6": "coronal_lobe21",
+    "organ7": "coronal_lobe21",
+    "organ8": "coronal_lobe21",
+    "organ9": "coronal_lobe31",
+    "organ10": "coronal_lobe31"
+  },
+  "build_seconds": 8.682,
+  "source_render_seconds": 9.245,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "766fb48b00af1e7cb703abddf51008cd333c502575cf0fbcc01005cee89a2982"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

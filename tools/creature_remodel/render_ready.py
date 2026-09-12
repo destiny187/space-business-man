@@ -5,6 +5,7 @@ captures finish. It never enables unreviewed models or modifies world data.
 """
 from pathlib import Path
 import sys,json,time,subprocess,os,argparse
+from with_renderer import renderer_slot
 ROOT=Path(__file__).resolve().parents[2]
 def pending(batch):
     manifest=ROOT/f'우주-비즈니스/data/creature_remodel_{batch}.json'
@@ -13,7 +14,10 @@ def pending(batch):
         path=ROOT/'output/creature-remodel'/batch/(row['id']+'_evidence.json')
         old=json.loads(path.read_text()) if path.exists() else {}
         evidence=old.get('species',old)
-        if evidence.get('id')!=row['id'] or evidence.get('asset_sha256')!={key:value['sha256'] for key,value in row['lods'].items()}:result.append(row['id'])
+        if (evidence.get('id')!=row['id'] or evidence.get('asset_sha256')!={key:value['sha256'] for key,value in row['lods'].items()}
+            or batch!='r05' and evidence.get('authored_pose_capture_version',0)<2
+            or evidence.get('body_support_version',0)!=row.get('body_support_version',0)
+            or evidence.get('contact_metadata_version',0)!=row.get('contact_metadata_version',0)):result.append(row['id'])
     return result
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--batch',default='r03',choices=['r03','r04','r05','r06']);parser.add_argument('--pid',type=int);parser.add_argument('--state');args=parser.parse_args();batch=args.batch
@@ -33,7 +37,7 @@ def main():
         if len(todo)>=32 or todo and not running:
             selection=todo[:96];logpath=destination/f'{prefix}-{sequence:03d}.log';sequence+=1
             print('RENDER_READY',len(selection),'of',len(todo),'waiting; log',logpath.name,flush=True)
-            with logpath.open('w') as log:
+            with renderer_slot(),logpath.open('w') as log:
                 scene='creature_air_review' if batch=='r05' else 'creature_batch_review'
                 result=subprocess.run([str(ROOT/'tools/godot.sh'),'--script','res://scripts/showcase/'+scene+'.gd','--','--batch='+batch,'--direct','--unreviewed',*selection],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
             text=logpath.read_text(errors='replace')

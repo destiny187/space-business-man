@@ -67,8 +67,10 @@ def transplant(near_path, far_path):
         for key in ['matrix', 'translation', 'rotation', 'scale']:
             a, b = node.get(key, defaults[key]), other.get(key, defaults[key])
             # Re-evaluated empty sockets can differ by a few float ULPs.
-            assert a == b or (a is not None and b is not None and len(a) == len(b)
-                              and max(abs(x-y) for x, y in zip(a, b)) <= .000002), ('Changed rest transform', node['name'], key)
+            # q and -q encode the same rotation, including a 180-degree socket.
+            error=max(abs(x-y) for x,y in zip(a,b))
+            if key=='rotation':error=min(error,max(abs(x+y) for x,y in zip(a,b)))
+            assert len(a)==len(b) and error<=.000002, ('Changed rest transform', node['name'], key)
     views, accessors = {}, {}
     def copy_accessor(index):
         nonlocal target

@@ -1,0 +1,411 @@
+{
+  "id": "biota_bilateral_siphons_50",
+  "name": "융빙열두깃부채꼬리이중흡관수",
+  "family": "biota_bilateral_siphons",
+  "construction": "avian",
+  "organ_system": "siphons",
+  "environment": "cold",
+  "locomotion_medium": "surface_air",
+  "anatomy_note": "어깨·팔꿈치·손목이 연결된 부채꼬리 비행기관·흉골 용골·접이 발과 조향 꼬리 · 좌우 장기낭을 잇는 굵은 신경목·안팎 면이 있는 열린 여과관",
+  "source_id": "biota_bilateral_siphons_50",
+  "kind": "avian",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "어깨·팔꿈치·손목이 연결된 부채꼬리 비행기관·흉골 용골·접이 발과 조향 꼬리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 4,
+    "radial_count": 12,
+    "limb_count": 6,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 2
+  },
+  "flight": {
+    "version": 1,
+    "wing_style": "fan",
+    "wing_pairs": 1,
+    "primary_feathers": 12,
+    "minimum_pressure_kpa": 50.0,
+    "flap_hz": 1.4,
+    "patrol_radius": 6.5,
+    "cruise_height": 5.4,
+    "cycle_seconds": 48.0,
+    "rest_seconds": 12.0,
+    "transition_seconds": 5.0
+  },
+  "anatomical_type": "avian",
+  "production_batch": "r05",
+  "air_motion": true,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "avian",
+    "medium": "surface_air",
+    "wing_chains": 2,
+    "ground_supports": 2,
+    "organs": 87
+  },
+  "version": "r05-1",
+  "build_fingerprint": "8790c5d9e380eb6cb403241fcdb7ff25c83e06381177bd68dd6e74f83835f984",
+  "normalized_geometry_sha256": "dde39fbd996b4321325fb211aa87cbdacc587d6a1f7ea6db64d7dc5b9f5a40cb",
+  "source": "art/blender/creature_remodel/r05/biota_bilateral_siphons_50.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 122,
+  "locomotion_chains": 2,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "ground_idle_loop",
+    "flight_loop",
+    "takeoff",
+    "landing"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2649999856948853,
+        1.0700000524520874
+      ]
+    },
+    "Socket_organ0mouth": {
+      "bone": "organ0mouth",
+      "point": [
+        -1.0835248231887817,
+        0.8307309746742249,
+        -0.2677517533302307
+      ]
+    },
+    "Socket_organ1mouth": {
+      "bone": "organ1mouth",
+      "point": [
+        -1.1331249475479126,
+        0.8094738125801086,
+        -0.2783803343772888
+      ]
+    },
+    "Socket_organ2mouth": {
+      "bone": "organ2mouth",
+      "point": [
+        -1.182724952697754,
+        0.7882166504859924,
+        -0.2890089452266693
+      ]
+    },
+    "Socket_organ3mouth": {
+      "bone": "organ3mouth",
+      "point": [
+        -1.0835248231887817,
+        0.8307309746742249,
+        -0.2677517533302307
+      ]
+    },
+    "Socket_organ4mouth": {
+      "bone": "organ4mouth",
+      "point": [
+        -1.1331249475479126,
+        0.8094738125801086,
+        -0.2783803343772888
+      ]
+    },
+    "Socket_organ5mouth": {
+      "bone": "organ5mouth",
+      "point": [
+        -1.182724952697754,
+        0.7882166504859924,
+        -0.2890089452266693
+      ]
+    },
+    "Socket_organ6mouth": {
+      "bone": "organ6mouth",
+      "point": [
+        1.0835248231887817,
+        0.8307309746742249,
+        -0.2677517533302307
+      ]
+    },
+    "Socket_organ7mouth": {
+      "bone": "organ7mouth",
+      "point": [
+        1.1331249475479126,
+        0.8094738125801086,
+        -0.2783803343772888
+      ]
+    },
+    "Socket_organ8mouth": {
+      "bone": "organ8mouth",
+      "point": [
+        1.182724952697754,
+        0.7882166504859924,
+        -0.2890089452266693
+      ]
+    },
+    "Socket_organ9mouth": {
+      "bone": "organ9mouth",
+      "point": [
+        1.0835248231887817,
+        0.8307309746742249,
+        -0.2677517533302307
+      ]
+    },
+    "Socket_organ10mouth": {
+      "bone": "organ10mouth",
+      "point": [
+        1.1331249475479126,
+        0.8094738125801086,
+        -0.2783803343772888
+      ]
+    },
+    "Socket_organ11mouth": {
+      "bone": "organ11mouth",
+      "point": [
+        1.182724952697754,
+        0.7882166504859924,
+        -0.2890089452266693
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2649999856948853,
+        1.0700000524520874
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2649999856948853,
+        1.0700000524520874
+      ]
+    },
+    "Socket_landing-1": {
+      "bone": "landing-1_foot",
+      "point": [
+        -0.2199999988079071,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    },
+    "Socket_landing1": {
+      "bone": "landing1_foot",
+      "point": [
+        0.2199999988079071,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.25555648238743245,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3961125477005203,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "landing-1": 0.5,
+      "landing1": 0
+    },
+    "flight_reference_hz": 1.5
+  },
+  "muzzle": [
+    0.0,
+    1.2649999856948853,
+    1.0700000524520874
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_siphons_50_near.glb",
+      "sha256": "266cfb7dc615bfd60c8a6391996a628e4f39ca18ff1f943b686186db1cb8fe64",
+      "triangles": 58244,
+      "min": [
+        -1.646209716796875,
+        0.02499999850988388,
+        -1.43025803565979
+      ],
+      "max": [
+        1.635860800743103,
+        1.492045283317566,
+        1.072802186012268
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_siphons_50_far.glb",
+      "sha256": "718ea77e210541a84319914c0ef39aebf0a691dcf7562db503544e78166c1b48",
+      "triangles": 25038,
+      "min": [
+        -1.6465187072753906,
+        0.025012221187353134,
+        -1.431899070739746
+      ],
+      "max": [
+        1.6355643272399902,
+        1.4911798238754272,
+        1.0729689598083496
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "flight_neck0": "chest",
+    "flight_neck1": "flight_neck0",
+    "head": "flight_neck1",
+    "oral": "head",
+    "Protected flight eye -1_lid": "head",
+    "Protected flight eye 1_lid": "head",
+    "wing0_-1_0": "chest",
+    "wing0_-1_1": "wing0_-1_0",
+    "wing0_-1_2": "wing0_-1_1",
+    "primary0_-1_0": "wing0_-1_1",
+    "primary0_-1_1": "wing0_-1_1",
+    "primary0_-1_2": "wing0_-1_1",
+    "primary0_-1_3": "wing0_-1_1",
+    "primary0_-1_4": "wing0_-1_1",
+    "primary0_-1_5": "wing0_-1_1",
+    "primary0_-1_6": "wing0_-1_1",
+    "primary0_-1_7": "wing0_-1_2",
+    "primary0_-1_8": "wing0_-1_2",
+    "primary0_-1_9": "wing0_-1_2",
+    "primary0_-1_10": "wing0_-1_2",
+    "primary0_-1_11": "wing0_-1_2",
+    "primary0_-1_12": "wing0_-1_2",
+    "primary0_-1_13": "wing0_-1_2",
+    "wing0_1_0": "chest",
+    "wing0_1_1": "wing0_1_0",
+    "wing0_1_2": "wing0_1_1",
+    "primary0_1_0": "wing0_1_1",
+    "primary0_1_1": "wing0_1_1",
+    "primary0_1_2": "wing0_1_1",
+    "primary0_1_3": "wing0_1_1",
+    "primary0_1_4": "wing0_1_1",
+    "primary0_1_5": "wing0_1_1",
+    "primary0_1_6": "wing0_1_1",
+    "primary0_1_7": "wing0_1_2",
+    "primary0_1_8": "wing0_1_2",
+    "primary0_1_9": "wing0_1_2",
+    "primary0_1_10": "wing0_1_2",
+    "primary0_1_11": "wing0_1_2",
+    "primary0_1_12": "wing0_1_2",
+    "primary0_1_13": "wing0_1_2",
+    "landing-1_upper": "chest",
+    "landing-1_lower": "landing-1_upper",
+    "landing-1_foot": "landing-1_lower",
+    "landing1_upper": "chest",
+    "landing1_lower": "landing1_upper",
+    "landing1_foot": "landing1_lower",
+    "steering_tail0": "chest",
+    "steering_tail1": "steering_tail0",
+    "organ0": "chest",
+    "organ0conduit0": "organ0",
+    "organ0conduit1": "organ0conduit0",
+    "organ0mouth": "organ0conduit1",
+    "organ0mouth_jaw-1": "organ0mouth",
+    "organ0mouth_jaw1": "organ0mouth",
+    "organ1": "chest",
+    "organ1conduit0": "organ1",
+    "organ1conduit1": "organ1conduit0",
+    "organ1mouth": "organ1conduit1",
+    "organ1mouth_jaw-1": "organ1mouth",
+    "organ1mouth_jaw1": "organ1mouth",
+    "organ2": "chest",
+    "organ2conduit0": "organ2",
+    "organ2conduit1": "organ2conduit0",
+    "organ2mouth": "organ2conduit1",
+    "organ2mouth_jaw-1": "organ2mouth",
+    "organ2mouth_jaw1": "organ2mouth",
+    "organ3": "chest",
+    "organ3conduit0": "organ3",
+    "organ3conduit1": "organ3conduit0",
+    "organ3mouth": "organ3conduit1",
+    "organ3mouth_jaw-1": "organ3mouth",
+    "organ3mouth_jaw1": "organ3mouth",
+    "organ4": "chest",
+    "organ4conduit0": "organ4",
+    "organ4conduit1": "organ4conduit0",
+    "organ4mouth": "organ4conduit1",
+    "organ4mouth_jaw-1": "organ4mouth",
+    "organ4mouth_jaw1": "organ4mouth",
+    "organ5": "chest",
+    "organ5conduit0": "organ5",
+    "organ5conduit1": "organ5conduit0",
+    "organ5mouth": "organ5conduit1",
+    "organ5mouth_jaw-1": "organ5mouth",
+    "organ5mouth_jaw1": "organ5mouth",
+    "organ6": "chest",
+    "organ6conduit0": "organ6",
+    "organ6conduit1": "organ6conduit0",
+    "organ6mouth": "organ6conduit1",
+    "organ6mouth_jaw-1": "organ6mouth",
+    "organ6mouth_jaw1": "organ6mouth",
+    "organ7": "chest",
+    "organ7conduit0": "organ7",
+    "organ7conduit1": "organ7conduit0",
+    "organ7mouth": "organ7conduit1",
+    "organ7mouth_jaw-1": "organ7mouth",
+    "organ7mouth_jaw1": "organ7mouth",
+    "organ8": "chest",
+    "organ8conduit0": "organ8",
+    "organ8conduit1": "organ8conduit0",
+    "organ8mouth": "organ8conduit1",
+    "organ8mouth_jaw-1": "organ8mouth",
+    "organ8mouth_jaw1": "organ8mouth",
+    "organ9": "chest",
+    "organ9conduit0": "organ9",
+    "organ9conduit1": "organ9conduit0",
+    "organ9mouth": "organ9conduit1",
+    "organ9mouth_jaw-1": "organ9mouth",
+    "organ9mouth_jaw1": "organ9mouth",
+    "organ10": "chest",
+    "organ10conduit0": "organ10",
+    "organ10conduit1": "organ10conduit0",
+    "organ10mouth": "organ10conduit1",
+    "organ10mouth_jaw-1": "organ10mouth",
+    "organ10mouth_jaw1": "organ10mouth",
+    "organ11": "chest",
+    "organ11conduit0": "organ11",
+    "organ11conduit1": "organ11conduit0",
+    "organ11mouth": "organ11conduit1",
+    "organ11mouth_jaw-1": "organ11mouth",
+    "organ11mouth_jaw1": "organ11mouth"
+  },
+  "build_seconds": 43.679,
+  "source_render_seconds": 4.98,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "350cd5dd72add7c231273fbf093e66c230513921e19c67f01652740983ce6ab5"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

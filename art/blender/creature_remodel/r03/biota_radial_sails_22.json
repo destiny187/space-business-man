@@ -1,0 +1,236 @@
+{
+  "id": "biota_radial_sails_22",
+  "name": "차열갈래네마디부채손바닥수",
+  "family": "biota_radial_sails",
+  "construction": "radial",
+  "organ_system": "sails",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_radial_sails_22",
+  "kind": "radial",
+  "habitat": "겹친 광물성 차열판·좁은 보호 기공의 가상 고온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "중앙 소화체에서 바깥으로 뻗는 방사 기관·몸통과 이어진 넓은 측막 / 분기 배열·주요 기관 4개",
+  "recipe_sha256": "0ca453d23d4c6b7426f72865a6fd2b10e23337fb45246558a3a067431069c3ae",
+  "authored_anatomy": "Continuous radial anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "0956132ffdb28c0c2db53163d6f13fc8f7a59afbfdfd0c353cf5d9d72713c1de",
+  "normalized_geometry_sha256": "b8d815e32f5e135dbf27f356c8f6d928b7df02a3224e234a41342cbbd509d4b5",
+  "source": "art/blender/creature_remodel/r03/biota_radial_sails_22.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 38,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.2619999945163727,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.2619999945163727,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.2619999945163727,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.880601973607408e-17,
+        0.10999999940395355,
+        1.2869999408721924
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.114574670791626,
+        0.10999999940395355,
+        0.6434999704360962
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        1.114574670791626,
+        0.10999999940395355,
+        -0.6434999704360962
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        7.880601973607408e-17,
+        0.10999999940395355,
+        -1.2869999408721924
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.114574670791626,
+        0.10999999940395355,
+        -0.6434999704360962
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -1.114574670791626,
+        0.10999999940395355,
+        0.6434999704360962
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3986411311010303,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6178937532065969,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.2619999945163727,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_radial_sails_22_near.glb",
+      "sha256": "1ab2b8fa04c11aedf712af6741e11f8fd01af8ec9f6f92c52c95d35d8c10e8e3",
+      "triangles": 38146,
+      "min": [
+        -1.938392162322998,
+        0.034999996423721313,
+        -2.0471160411834717
+      ],
+      "max": [
+        1.9927470684051514,
+        1.206352949142456,
+        1.938392162322998
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_radial_sails_22_far.glb",
+      "sha256": "9ff073060c09fefa183f168c0877edef58d701a2d597c6a8025fcc8b9849a791",
+      "triangles": 16394,
+      "min": [
+        -1.9380782842636108,
+        0.03501151129603386,
+        -2.046745538711548
+      ],
+      "max": [
+        1.9923951625823975,
+        1.2060770988464355,
+        1.9380782842636108
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21",
+    "organ3": "radial_axis31"
+  },
+  "build_seconds": 14.232,
+  "source_render_seconds": 3.467,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "bd29223fa8847a38485d7e1e61281087dfa6f8c6ce85d8068ea5821dba9c83e3"
+  }
+}

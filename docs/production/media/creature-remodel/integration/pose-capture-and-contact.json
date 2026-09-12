@@ -1,0 +1,94 @@
+{
+  "renderer": "forward_plus",
+  "lod_pose_max_transform_error": 2.4578449e-07,
+  "lod_existing_nodes_root_and_phase_preserved": true,
+  "crown_contact_metadata_version": 1,
+  "contact_displacements": {
+    "strike": 0.5002942063415182,
+    "strike_second": 0.6401118205251605
+  },
+  "host_cases": {
+    "actual_host_step": true,
+    "failures": 0,
+    "records": [
+      {
+        "clips": [
+          "attack"
+        ],
+        "damage_events": 2,
+        "frames": [
+          "bio_crown_stalker_01_hit_012.png",
+          "bio_crown_stalker_01_hit_028.png",
+          "bio_crown_stalker_01_hit_040.png",
+          "bio_crown_stalker_01_hit_049.png",
+          "bio_crown_stalker_01_hit_060.png",
+          "bio_crown_stalker_01_hit_078.png"
+        ],
+        "host_behavior": "double_sweep",
+        "host_speed": 3.6,
+        "id": "bio_crown_stalker_01",
+        "max_foot_target_error": 0.00167968473397195,
+        "outcome": "hit",
+        "remaining_health": 76.0,
+        "rendered_contacts": 2,
+        "root_error": 0.0,
+        "unchanged_balance": true,
+        "unrelated_actor_preserved": true
+      },
+      {
+        "clips": [
+          "attack"
+        ],
+        "damage_events": 0,
+        "frames": [
+          "bio_crown_stalker_01_miss_012.png",
+          "bio_crown_stalker_01_miss_028.png",
+          "bio_crown_stalker_01_miss_040.png",
+          "bio_crown_stalker_01_miss_049.png",
+          "bio_crown_stalker_01_miss_060.png",
+          "bio_crown_stalker_01_miss_078.png"
+        ],
+        "host_behavior": "double_sweep",
+        "host_speed": 3.6,
+        "id": "bio_crown_stalker_01",
+        "max_foot_target_error": 0.00167968473397195,
+        "outcome": "miss",
+        "remaining_health": 100,
+        "rendered_contacts": 0,
+        "root_error": 0.0,
+        "unchanged_balance": true,
+        "unrelated_actor_preserved": true
+      },
+      {
+        "clips": [
+          "attack"
+        ],
+        "damage_events": 0,
+        "frames": [
+          "bio_crown_stalker_01_blocked_012.png",
+          "bio_crown_stalker_01_blocked_028.png",
+          "bio_crown_stalker_01_blocked_040.png",
+          "bio_crown_stalker_01_blocked_049.png",
+          "bio_crown_stalker_01_blocked_060.png",
+          "bio_crown_stalker_01_blocked_078.png"
+        ],
+        "host_behavior": "double_sweep",
+        "host_speed": 3.6,
+        "id": "bio_crown_stalker_01",
+        "max_foot_target_error": 0.00167968473397195,
+        "outcome": "blocked",
+        "remaining_health": 100,
+        "rendered_contacts": 0,
+        "root_error": 0.0,
+        "unchanged_balance": true,
+        "unrelated_actor_preserved": true
+      }
+    ],
+    "renderer": "forward_plus"
+  },
+  "files_sha256": {
+    "우주-비즈니스/scripts/actors/creatures/remodel_motion.gd": "95c92ea1baf800a55a6e7864f92572a868732ee6544d5c0681ec49ccc7b822de",
+    "우주-비즈니스/scripts/actors/creatures/bestiary_actor.gd": "889a2eaa9aaa1cbc44ff2f93ed656dcad4aad1e4d4694adfc4338e64d7100f02",
+    "tools/creature_remodel/strike_metadata.py": "f16d2f7c0cedfdb119a6cf5c7bf9eac14ff3cf1c6974b55573ec80e5c1bbf45b"
+  }
+}

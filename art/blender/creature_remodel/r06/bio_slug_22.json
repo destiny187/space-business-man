@@ -1,0 +1,184 @@
+{
+  "id": "bio_slug_22",
+  "source_id": "bio_slug_22",
+  "name": "지하 갑주형 여과연체류",
+  "family": "slug",
+  "kind": "slug",
+  "construction": "slug",
+  "anatomical_type": "slug",
+  "organ_system": "sails",
+  "environment": "cave",
+  "habitat": "어둠·외부 먹이 유입 또는 화학 기질",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.355,
+    "height": 1.0,
+    "mode": 1,
+    "radial_count": 5,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 4
+  },
+  "attack": "none",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "slug",
+    "support_limbs": 0,
+    "oral_organs": 1,
+    "articulated_organs": 26
+  },
+  "version": "r06-1",
+  "build_fingerprint": "10e776ac71cbf2d46575511e071b1b70c95595ccff691f3c58549e1a14fd12d5",
+  "normalized_geometry_sha256": "0baacd2823e11a19988d5f1270ef08f368d18088ba1c9019a0d8c2ee1aab9669",
+  "source": "art/blender/creature_remodel/r06/bio_slug_22.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 29,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_grazing_radula": {
+      "bone": "grazing_radula",
+      "point": [
+        -1.8124772624167096e-16,
+        0.21000000834465027,
+        1.975000023841858
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "grazing_radula",
+      "point": [
+        -1.8124772624167096e-16,
+        0.21000000834465027,
+        1.975000023841858
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "grazing_radula",
+      "point": [
+        -1.8124772624167096e-16,
+        0.21000000834465027,
+        1.975000023841858
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {},
+    "strike_origins": []
+  },
+  "muzzle": [
+    -1.8124772624167096e-16,
+    0.21000000834465027,
+    1.975000023841858
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_slug_22_near.glb",
+      "sha256": "bc8bea17718a6d6eb675dc39e359ad24386f893515b8365c45e15741ff47830d",
+      "triangles": 33534,
+      "min": [
+        -0.5767251253128052,
+        0.04961932450532913,
+        -1.8649998903274536
+      ],
+      "max": [
+        0.5963966250419617,
+        0.7513039708137512,
+        1.9786652326583862
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_slug_22_far.glb",
+      "sha256": "4febab3b10cbd27b188b1f125047d45d2d0e9202e2dc93800cb9a43534e81858",
+      "triangles": 14414,
+      "min": [
+        -0.57645183801651,
+        0.04961932450532913,
+        -1.8649998903274536
+      ],
+      "max": [
+        0.5963966250419617,
+        0.7513039708137512,
+        1.9786325693130493
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "peristaltic_axis0": "chest",
+    "peristaltic_axis1": "peristaltic_axis0",
+    "peristaltic_axis2": "peristaltic_axis1",
+    "peristaltic_axis3": "peristaltic_axis2",
+    "peristaltic_axis4": "peristaltic_axis3",
+    "peristaltic_axis5": "peristaltic_axis4",
+    "peristaltic_axis6": "peristaltic_axis5",
+    "peristaltic_axis7": "peristaltic_axis6",
+    "peristaltic_axis8": "peristaltic_axis7",
+    "peristaltic_axis9": "peristaltic_axis8",
+    "peristaltic_axis10": "peristaltic_axis9",
+    "peristaltic_axis11": "peristaltic_axis10",
+    "peristaltic_axis12": "peristaltic_axis11",
+    "peristaltic_axis13": "peristaltic_axis12",
+    "peristaltic_axis14": "peristaltic_axis13",
+    "peristaltic_axis15": "peristaltic_axis14",
+    "peristaltic_axis16": "peristaltic_axis15",
+    "peristaltic_axis17": "peristaltic_axis16",
+    "grazing_radula": "peristaltic_axis17",
+    "grazing_radula_petal0": "grazing_radula",
+    "grazing_radula_petal1": "grazing_radula",
+    "grazing_radula_petal2": "grazing_radula",
+    "grazing_radula_petal3": "grazing_radula",
+    "eyestalk-10": "peristaltic_axis17",
+    "eyestalk-11": "eyestalk-10",
+    "eyestalk10": "peristaltic_axis17",
+    "eyestalk11": "eyestalk10"
+  },
+  "build_seconds": 7.529,
+  "source_render_seconds": 5.667,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "fcdb4c628c19ffbf56b6241ed61f25abb4ca64845b45de8bd10d92e3932c10f4"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

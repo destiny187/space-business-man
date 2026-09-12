@@ -1,0 +1,4657 @@
+{
+  "count": 50,
+  "maximum_support_penetration": 0.0,
+  "root_error": 0.0,
+  "species": [
+    {
+      "asset_sha256": {
+        "far": "61b7f445712c6a4ad5270b6dbd15663e3300bfaf3382ab4be476a7d5809c9d44",
+        "near": "b4ca3025b8013b654f170093ececa1d6028304cff13bd74fea8321249bb0cd64"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 15.0,
+      "bone_motion": 3.71411298401654,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_01",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.06968069076538,
+            2.41946625709534,
+            14.2169952392578
+          ],
+          "Socket_Strike": [
+            1.06968069076538,
+            2.41946625709534,
+            14.2169952392578
+          ],
+          "Socket_eversible_pharynx": [
+            1.06968069076538,
+            2.41946625709534,
+            14.2169952392578
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.04378032684326,
+            2.4329080581665,
+            14.2000532150269
+          ],
+          "Socket_Strike": [
+            1.04378032684326,
+            2.4329080581665,
+            14.2000532150269
+          ],
+          "Socket_eversible_pharynx": [
+            1.04378032684326,
+            2.4329080581665,
+            14.2000532150269
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.07875037193298,
+            2.43644762039185,
+            14.2025012969971
+          ],
+          "Socket_Strike": [
+            1.07875037193298,
+            2.43644762039185,
+            14.2025012969971
+          ],
+          "Socket_eversible_pharynx": [
+            1.07875037193298,
+            2.43644762039185,
+            14.2025012969971
+          ]
+        }
+      },
+      "species_id": "bio_coil_01",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 10008,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4135,
+          "max_weight_sum_error": 1.30385160446167e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "74a9b9f89cb87a6b22dc8897843d4cc33b886c907af6818763e04d528f9a02bd"
+    },
+    {
+      "asset_sha256": {
+        "far": "dcc55596b613dc4eb87fc2d8a9625c8fa624b2341d85112843fbd7f30ee9f2f7",
+        "near": "bd19edbf15b7d479b5ce64b28c74e84cb90cc02413e4648684e6ab2cac5fb4a1"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 17.0,
+      "bone_motion": 2.14515247382224,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_02",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.07811427116394,
+            2.43112134933472,
+            14.2361717224121
+          ],
+          "Socket_Strike": [
+            1.07811427116394,
+            2.43112134933472,
+            14.2361717224121
+          ],
+          "Socket_eversible_pharynx": [
+            1.07811427116394,
+            2.43112134933472,
+            14.2361717224121
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.06105351448059,
+            2.43610692024231,
+            14.2202463150024
+          ],
+          "Socket_Strike": [
+            1.06105351448059,
+            2.43610692024231,
+            14.2202463150024
+          ],
+          "Socket_eversible_pharynx": [
+            1.06105351448059,
+            2.43610692024231,
+            14.2202463150024
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.07866430282593,
+            2.45308470726013,
+            14.2264108657837
+          ],
+          "Socket_Strike": [
+            1.07866430282593,
+            2.45308470726013,
+            14.2264108657837
+          ],
+          "Socket_eversible_pharynx": [
+            1.07866430282593,
+            2.45308470726013,
+            14.2264108657837
+          ]
+        }
+      },
+      "species_id": "bio_coil_02",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 10900,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4506,
+          "max_weight_sum_error": 1.0454095900058746e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "d2e636d21efdcf1130b7f0138d7c14a7004d14013492dcfb066fa8253dbef0d8"
+    },
+    {
+      "asset_sha256": {
+        "far": "dd801bdb73ab9ba9bec3be5243c7d0340db6e7747d6ac9bf8c95441820808218",
+        "near": "7d231572b3fd3a019b171a42dc511210b31b18528f9380066f3e2f116f18d837"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 19.0,
+      "bone_motion": 4.11665222235024,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_03",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.09906530380249,
+            2.44009017944336,
+            14.2489700317383
+          ],
+          "Socket_Strike": [
+            1.09906530380249,
+            2.44009017944336,
+            14.2489700317383
+          ],
+          "Socket_eversible_pharynx": [
+            1.09906530380249,
+            2.44009017944336,
+            14.2489700317383
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.0766099691391,
+            2.44344902038574,
+            14.2404460906982
+          ],
+          "Socket_Strike": [
+            1.0766099691391,
+            2.44344902038574,
+            14.2404460906982
+          ],
+          "Socket_eversible_pharynx": [
+            1.0766099691391,
+            2.44344902038574,
+            14.2404460906982
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.10380470752716,
+            2.47017073631287,
+            14.2360248565674
+          ],
+          "Socket_Strike": [
+            1.10380470752716,
+            2.47017073631287,
+            14.2360248565674
+          ],
+          "Socket_eversible_pharynx": [
+            1.10380470752716,
+            2.47017073631287,
+            14.2360248565674
+          ]
+        }
+      },
+      "species_id": "bio_coil_03",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 11791,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4868,
+          "max_weight_sum_error": 1.1175870895385742e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "baadd500967c73747e2a440b774e5e884153af31b9fc0bab1b0b462b24b7c4f1"
+    },
+    {
+      "asset_sha256": {
+        "far": "4ca328d9198c8bc6db626d73eb67a17cb2329f8d5f4ef048d2ba879293e5837d",
+        "near": "35a0e29efd01ef34563240f52151a10b9433540279f3eb5f46eccd91e3b9c21a"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 18.0,
+      "bone_motion": 4.25535285659134,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_04",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.11899280548096,
+            2.44425296783447,
+            14.2620029449463
+          ],
+          "Socket_Strike": [
+            1.11899280548096,
+            2.44425296783447,
+            14.2620029449463
+          ],
+          "Socket_eversible_pharynx": [
+            1.11899280548096,
+            2.44425296783447,
+            14.2620029449463
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.09076416492462,
+            2.44345092773438,
+            14.263858795166
+          ],
+          "Socket_Strike": [
+            1.09076416492462,
+            2.44345092773438,
+            14.263858795166
+          ],
+          "Socket_eversible_pharynx": [
+            1.09076416492462,
+            2.44345092773438,
+            14.263858795166
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.12445437908173,
+            2.46499681472778,
+            14.2513256072998
+          ],
+          "Socket_Strike": [
+            1.12445437908173,
+            2.46499681472778,
+            14.2513256072998
+          ],
+          "Socket_eversible_pharynx": [
+            1.12445437908173,
+            2.46499681472778,
+            14.2513256072998
+          ]
+        }
+      },
+      "species_id": "bio_coil_04",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 12150,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5005,
+          "max_weight_sum_error": 1.2665987014770508e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "52eaf7bf25388274667c6d7e81e51d7f009e0a902daa8d5b498d7fd6156b2920"
+    },
+    {
+      "asset_sha256": {
+        "far": "9cea900d642894b694302ea090418e6fcec7558d13aa71aa1d0b0737f60fc2de",
+        "near": "45fcf8d01e251e928d979b8a52a0c98c917fa9ee69bdb81fc00cd60500219311"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 20.0,
+      "bone_motion": 5.04753628559411,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_05",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.13639080524445,
+            2.45681953430176,
+            14.276159286499
+          ],
+          "Socket_Strike": [
+            1.13639080524445,
+            2.45681953430176,
+            14.276159286499
+          ],
+          "Socket_eversible_pharynx": [
+            1.13639080524445,
+            2.45681953430176,
+            14.276159286499
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.10572254657745,
+            2.43570804595947,
+            14.2865543365479
+          ],
+          "Socket_Strike": [
+            1.10572254657745,
+            2.43570804595947,
+            14.2865543365479
+          ],
+          "Socket_eversible_pharynx": [
+            1.10572254657745,
+            2.43570804595947,
+            14.2865543365479
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.14076006412506,
+            2.46656918525696,
+            14.2680015563965
+          ],
+          "Socket_Strike": [
+            1.14076006412506,
+            2.46656918525696,
+            14.2680015563965
+          ],
+          "Socket_eversible_pharynx": [
+            1.14076006412506,
+            2.46656918525696,
+            14.2680015563965
+          ]
+        }
+      },
+      "species_id": "bio_coil_05",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13038,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5370,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "bf767500536ee258736d42218fc8708b6b095362fc08de452aa665c9e818128c"
+    },
+    {
+      "asset_sha256": {
+        "far": "4eb2f3a1adcd53a6f3ae6a9366b305970e03ced5e9b3a955880b93d6a959c37d",
+        "near": "224d4ca6a1e372e2d694aeb9312587f3f090675a489d02d145599169e7f815dc"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 17.0,
+      "bone_motion": 4.47693071700633,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_06",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.31361901760101,
+            2.4228949546814,
+            14.127552986145
+          ],
+          "Socket_Strike": [
+            1.31361901760101,
+            2.4228949546814,
+            14.127552986145
+          ],
+          "Socket_eversible_pharynx": [
+            1.31361901760101,
+            2.4228949546814,
+            14.127552986145
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.27559649944305,
+            2.44194316864014,
+            14.1169624328613
+          ],
+          "Socket_Strike": [
+            1.27559649944305,
+            2.44194316864014,
+            14.1169624328613
+          ],
+          "Socket_eversible_pharynx": [
+            1.27559649944305,
+            2.44194316864014,
+            14.1169624328613
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.32003569602966,
+            2.44137334823608,
+            14.1157321929932
+          ],
+          "Socket_Strike": [
+            1.32003569602966,
+            2.44137334823608,
+            14.1157321929932
+          ],
+          "Socket_eversible_pharynx": [
+            1.32003569602966,
+            2.44137334823608,
+            14.1157321929932
+          ]
+        }
+      },
+      "species_id": "bio_coil_06",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 11603,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4781,
+          "max_weight_sum_error": 1.210719347000122e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "3eacf6a0b770326acea4daa5715a9ec5677eb3581b7ba08d6aa4a8a3ecc0562e"
+    },
+    {
+      "asset_sha256": {
+        "far": "6b6b63e9ccef5c156761b937d054ed2425c5b1579e9f860e47f914f74fefe8b0",
+        "near": "56987456d0c36d21d2263c8a54be98c06e3f5bbc5a832d045063420b60be0b8f"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 19.0,
+      "bone_motion": 3.84838552214205,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_07",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.32664155960083,
+            2.42813205718994,
+            14.1454124450684
+          ],
+          "Socket_Strike": [
+            1.32664155960083,
+            2.42813205718994,
+            14.1454124450684
+          ],
+          "Socket_eversible_pharynx": [
+            1.32664155960083,
+            2.42813205718994,
+            14.1454124450684
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.29200005531311,
+            2.4448070526123,
+            14.139575958252
+          ],
+          "Socket_Strike": [
+            1.29200005531311,
+            2.4448070526123,
+            14.139575958252
+          ],
+          "Socket_eversible_pharynx": [
+            1.29200005531311,
+            2.4448070526123,
+            14.139575958252
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.32881295681,
+            2.44308233261108,
+            14.1405391693115
+          ],
+          "Socket_Strike": [
+            1.32881295681,
+            2.44308233261108,
+            14.1405391693115
+          ],
+          "Socket_eversible_pharynx": [
+            1.32881295681,
+            2.44308233261108,
+            14.1405391693115
+          ]
+        }
+      },
+      "species_id": "bio_coil_07",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 12492,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5155,
+          "max_weight_sum_error": 1.2665987014770508e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "624593a5fe8c6882e4366bc4bd4b98d8673715300d561532625feddf64961736"
+    },
+    {
+      "asset_sha256": {
+        "far": "779cd16faf625690edd721ae24caecceba7c75ae9222eae69073458af8c4440b",
+        "near": "acf992e46eb3d401b3e85ea502307a36a994efc9789d1092797e79491a6e6ce8"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 21.0,
+      "bone_motion": 4.30409534461796,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_08",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.34162926673889,
+            2.4460620880127,
+            14.1569395065308
+          ],
+          "Socket_Strike": [
+            1.34162926673889,
+            2.4460620880127,
+            14.1569395065308
+          ],
+          "Socket_eversible_pharynx": [
+            1.34162926673889,
+            2.4460620880127,
+            14.1569395065308
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.30861186981201,
+            2.44913101196289,
+            14.1615085601807
+          ],
+          "Socket_Strike": [
+            1.30861186981201,
+            2.44913101196289,
+            14.1615085601807
+          ],
+          "Socket_eversible_pharynx": [
+            1.30861186981201,
+            2.44913101196289,
+            14.1615085601807
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.34230351448059,
+            2.47562026977539,
+            14.1500854492188
+          ],
+          "Socket_Strike": [
+            1.34230351448059,
+            2.47562026977539,
+            14.1500854492188
+          ],
+          "Socket_eversible_pharynx": [
+            1.34230351448059,
+            2.47562026977539,
+            14.1500854492188
+          ]
+        }
+      },
+      "species_id": "bio_coil_08",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13377,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5524,
+          "max_weight_sum_error": 1.1298106983304024e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "c41f634cc79db9143641bc1cfafef44ab4f0808e7f76ab745bcb0c1f9fc5384c"
+    },
+    {
+      "asset_sha256": {
+        "far": "5cc026f9aeec87bd00c4087c895d3ec8680251002e7397e7e6b20173be6c4789",
+        "near": "c7c053483af7137d74e2095cb4a869a083e0170a5666265eb90939df02a29e19"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 20.0,
+      "bone_motion": 5.42869018949568,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_09",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.36163949966431,
+            2.44816303253174,
+            14.1692199707031
+          ],
+          "Socket_Strike": [
+            1.36163949966431,
+            2.44816303253174,
+            14.1692199707031
+          ],
+          "Socket_eversible_pharynx": [
+            1.36163949966431,
+            2.44816303253174,
+            14.1692199707031
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.3269077539444,
+            2.45606207847595,
+            14.1793575286865
+          ],
+          "Socket_Strike": [
+            1.3269077539444,
+            2.45606207847595,
+            14.1793575286865
+          ],
+          "Socket_eversible_pharynx": [
+            1.3269077539444,
+            2.45606207847595,
+            14.1793575286865
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.36969375610352,
+            2.47657513618469,
+            14.1547346115112
+          ],
+          "Socket_Strike": [
+            1.36969375610352,
+            2.47657513618469,
+            14.1547346115112
+          ],
+          "Socket_eversible_pharynx": [
+            1.36969375610352,
+            2.47657513618469,
+            14.1547346115112
+          ]
+        }
+      },
+      "species_id": "bio_coil_09",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13739,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5661,
+          "max_weight_sum_error": 1.0617077350616455e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "0a8da2984869bd8a7a2548f4204ed84f10ce34f3a2050d829ac2d733efd165c8"
+    },
+    {
+      "asset_sha256": {
+        "far": "4ff8fe4afaf938b9a3bc782b79758bac31f803caa44c43742d88c5e47c927ad5",
+        "near": "53742c60662e92c316ba3159dd4c1eec850b45b7703f5522389b4c395c16d514"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 22.0,
+      "bone_motion": 6.64471029676497,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_10",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.3773478269577,
+            2.45496416091919,
+            14.1848735809326
+          ],
+          "Socket_Strike": [
+            1.3773478269577,
+            2.45496416091919,
+            14.1848735809326
+          ],
+          "Socket_eversible_pharynx": [
+            1.3773478269577,
+            2.45496416091919,
+            14.1848735809326
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.34489989280701,
+            2.45404744148254,
+            14.1996726989746
+          ],
+          "Socket_Strike": [
+            1.34489989280701,
+            2.45404744148254,
+            14.1996726989746
+          ],
+          "Socket_eversible_pharynx": [
+            1.34489989280701,
+            2.45404744148254,
+            14.1996726989746
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.38701105117798,
+            2.4741644859314,
+            14.1708583831787
+          ],
+          "Socket_Strike": [
+            1.38701105117798,
+            2.4741644859314,
+            14.1708583831787
+          ],
+          "Socket_eversible_pharynx": [
+            1.38701105117798,
+            2.4741644859314,
+            14.1708583831787
+          ]
+        }
+      },
+      "species_id": "bio_coil_10",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14632,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6027,
+          "max_weight_sum_error": 1.0523945093154907e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "3637fc300a2bdeab65695f4193103a50d381098ee040fdb1630e416d5734f2c0"
+    },
+    {
+      "asset_sha256": {
+        "far": "2d2e29f13cda5208b7cf651d9b78f2bb07a24ee69b2524c50786fd69449ba167",
+        "near": "8131294be93b14da3c879e05deeee34bd3ca6473f0d56fa0296d704eb95e39c2"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 19.0,
+      "bone_motion": 5.72745256312191,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_11",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.20856046676636,
+            2.46179676055908,
+            14.3512525558472
+          ],
+          "Socket_Strike": [
+            1.20856046676636,
+            2.46179676055908,
+            14.3512525558472
+          ],
+          "Socket_eversible_pharynx": [
+            1.20856046676636,
+            2.46179676055908,
+            14.3512525558472
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.15689611434937,
+            2.47192525863647,
+            14.3413705825806
+          ],
+          "Socket_Strike": [
+            1.15689611434937,
+            2.47192525863647,
+            14.3413705825806
+          ],
+          "Socket_eversible_pharynx": [
+            1.15689611434937,
+            2.47192525863647,
+            14.3413705825806
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.21602833271027,
+            2.48171067237854,
+            14.338809967041
+          ],
+          "Socket_Strike": [
+            1.21602833271027,
+            2.48171067237854,
+            14.338809967041
+          ],
+          "Socket_eversible_pharynx": [
+            1.21602833271027,
+            2.48171067237854,
+            14.338809967041
+          ]
+        }
+      },
+      "species_id": "bio_coil_11",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13232,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5461,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "e76afc63800578234fe7f61f13bb4532912ad129b1c58b7e27f5338d0e8ee293"
+    },
+    {
+      "asset_sha256": {
+        "far": "c8134dfeefc48bef9d69d06a25681c1b0f2d0003c85208eaacd5935cbd2a8360",
+        "near": "5552903203af6a7c8518fe1aa453b1bb48edcf32c17813dbb5ea56eceb792641"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 21.0,
+      "bone_motion": 6.17941710539162,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_12",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.22280240058899,
+            2.46115636825562,
+            14.3687496185303
+          ],
+          "Socket_Strike": [
+            1.22280240058899,
+            2.46115636825562,
+            14.3687496185303
+          ],
+          "Socket_eversible_pharynx": [
+            1.22280240058899,
+            2.46115636825562,
+            14.3687496185303
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.17635011672974,
+            2.479327917099,
+            14.3614740371704
+          ],
+          "Socket_Strike": [
+            1.17635011672974,
+            2.479327917099,
+            14.3614740371704
+          ],
+          "Socket_eversible_pharynx": [
+            1.17635011672974,
+            2.479327917099,
+            14.3614740371704
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.23236036300659,
+            2.4772891998291,
+            14.3587341308594
+          ],
+          "Socket_Strike": [
+            1.23236036300659,
+            2.4772891998291,
+            14.3587341308594
+          ],
+          "Socket_eversible_pharynx": [
+            1.23236036300659,
+            2.4772891998291,
+            14.3587341308594
+          ]
+        }
+      },
+      "species_id": "bio_coil_12",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14118,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5826,
+          "max_weight_sum_error": 1.1175870895385742e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "d6b52033348a09a3293a4e9b1f57339a200cc530c121190074d23853d3cbe9ec"
+    },
+    {
+      "asset_sha256": {
+        "far": "142915c124f54e6092e19fd94265aa87414831fbed71dc32c729085ab84fb876",
+        "near": "cec525b08b9f68c2492616c306ca85573c474a5aabfef112ebb47accedd59eac"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 23.0,
+      "bone_motion": 2.13474137149751,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_13",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.21954488754272,
+            2.47371244430542,
+            14.3938570022583
+          ],
+          "Socket_Strike": [
+            1.21954488754272,
+            2.47371244430542,
+            14.3938570022583
+          ],
+          "Socket_eversible_pharynx": [
+            1.21954488754272,
+            2.47371244430542,
+            14.3938570022583
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.19712960720062,
+            2.48306083679199,
+            14.3817291259766
+          ],
+          "Socket_Strike": [
+            1.19712960720062,
+            2.48306083679199,
+            14.3817291259766
+          ],
+          "Socket_eversible_pharynx": [
+            1.19712960720062,
+            2.48306083679199,
+            14.3817291259766
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.21167778968811,
+            2.49680995941162,
+            14.3959951400757
+          ],
+          "Socket_Strike": [
+            1.21167778968811,
+            2.49680995941162,
+            14.3959951400757
+          ],
+          "Socket_eversible_pharynx": [
+            1.21167778968811,
+            2.49680995941162,
+            14.3959951400757
+          ]
+        }
+      },
+      "species_id": "bio_coil_13",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15009,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6195,
+          "max_weight_sum_error": 1.1175870895385742e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "0d339db62021be0d15998f13e6c075ff7a20679aa6e999789527cef609dc0325"
+    },
+    {
+      "asset_sha256": {
+        "far": "f7f6c47ab8e6ca837243fedde8f8bbcdbf0f04c731dd0aeb643074fc62179ca6",
+        "near": "4ddad30ee0e0a079d34ceee53e45d0183ec24e7c7b3d61b6d249fff84b032695"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 22.0,
+      "bone_motion": 6.03834338672459,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_14",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.24710142612457,
+            2.4825611114502,
+            14.3984508514404
+          ],
+          "Socket_Strike": [
+            1.24710142612457,
+            2.4825611114502,
+            14.3984508514404
+          ],
+          "Socket_eversible_pharynx": [
+            1.24710142612457,
+            2.4825611114502,
+            14.3984508514404
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.21741843223572,
+            2.49075555801392,
+            14.4007234573364
+          ],
+          "Socket_Strike": [
+            1.21741843223572,
+            2.49075555801392,
+            14.4007234573364
+          ],
+          "Socket_eversible_pharynx": [
+            1.21741843223572,
+            2.49075555801392,
+            14.4007234573364
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.2591837644577,
+            2.51419568061829,
+            14.3852005004883
+          ],
+          "Socket_Strike": [
+            1.2591837644577,
+            2.51419568061829,
+            14.3852005004883
+          ],
+          "Socket_eversible_pharynx": [
+            1.2591837644577,
+            2.51419568061829,
+            14.3852005004883
+          ]
+        }
+      },
+      "species_id": "bio_coil_14",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15375,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6331,
+          "max_weight_sum_error": 1.0803341865539551e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "1d93095b3abee3d7941021b816a69f1064ea147a1489d5f7c96596e459cc7757"
+    },
+    {
+      "asset_sha256": {
+        "far": "294238442b1ae413f60a945acd54c244aedb8c6dd430794a12a647daf316d4e2",
+        "near": "1ca4c9598a27704f11bdcf71ea6df431c518461d953b6002c8625de2417a40aa"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 24.0,
+      "bone_motion": 7.30441047437489,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_15",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.25996613502502,
+            2.48485732078552,
+            14.41526222229
+          ],
+          "Socket_Strike": [
+            1.25996613502502,
+            2.48485732078552,
+            14.41526222229
+          ],
+          "Socket_eversible_pharynx": [
+            1.25996613502502,
+            2.48485732078552,
+            14.41526222229
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.23895764350891,
+            2.49386596679688,
+            14.4189548492432
+          ],
+          "Socket_Strike": [
+            1.23895764350891,
+            2.49386596679688,
+            14.4189548492432
+          ],
+          "Socket_eversible_pharynx": [
+            1.23895764350891,
+            2.49386596679688,
+            14.4189548492432
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.27582907676697,
+            2.50969123840332,
+            14.4006614685059
+          ],
+          "Socket_Strike": [
+            1.27582907676697,
+            2.50969123840332,
+            14.4006614685059
+          ],
+          "Socket_eversible_pharynx": [
+            1.27582907676697,
+            2.50969123840332,
+            14.4006614685059
+          ]
+        }
+      },
+      "species_id": "bio_coil_15",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16256,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6692,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "527c8fdad7e5ef29df2f585fe385b0fdd3360dddd1e1c2f13c05d322a6084e55"
+    },
+    {
+      "asset_sha256": {
+        "far": "d8e8831a7cdcf9e679272c4878bc417931ca17262eead250c1c2b0e2db35bb7e",
+        "near": "526489736a966c7a5acb9ab67c157bd63429d6f2b96f248e7c85e00aba8e1833"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 21.0,
+      "bone_motion": 7.36929074116051,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_16",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.03317356109619,
+            2.49667882919312,
+            14.6406183242798
+          ],
+          "Socket_Strike": [
+            1.03317356109619,
+            2.49667882919312,
+            14.6406183242798
+          ],
+          "Socket_eversible_pharynx": [
+            1.03317356109619,
+            2.49667882919312,
+            14.6406183242798
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            0.976803660392761,
+            2.5139148235321,
+            14.6194553375244
+          ],
+          "Socket_Strike": [
+            0.976803660392761,
+            2.5139148235321,
+            14.6194553375244
+          ],
+          "Socket_eversible_pharynx": [
+            0.976803660392761,
+            2.5139148235321,
+            14.6194553375244
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.04710841178894,
+            2.51704525947571,
+            14.6255416870117
+          ],
+          "Socket_Strike": [
+            1.04710841178894,
+            2.51704525947571,
+            14.6255416870117
+          ],
+          "Socket_eversible_pharynx": [
+            1.04710841178894,
+            2.51704525947571,
+            14.6255416870117
+          ]
+        }
+      },
+      "species_id": "bio_coil_16",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14909,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6141,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "f251dfb0a0d6b4d6b200a967fb76460ccd33188b7a5ebb16b590e5ce9353bb86"
+    },
+    {
+      "asset_sha256": {
+        "far": "efc1e6bdf85a21383e4c6d384f9b1dba1341b8ddd164b1c2e3f15b5e5851df7d",
+        "near": "7faee62846f085d5802ea4fb983f32fe197abb61d460fc856a7109446927da63"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 23.0,
+      "bone_motion": 7.6042292881757,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_17",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.04046559333801,
+            2.5110011100769,
+            14.6573419570923
+          ],
+          "Socket_Strike": [
+            1.04046559333801,
+            2.5110011100769,
+            14.6573419570923
+          ],
+          "Socket_eversible_pharynx": [
+            1.04046559333801,
+            2.5110011100769,
+            14.6573419570923
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.00232136249542,
+            2.51153612136841,
+            14.6398258209229
+          ],
+          "Socket_Strike": [
+            1.00232136249542,
+            2.51153612136841,
+            14.6398258209229
+          ],
+          "Socket_eversible_pharynx": [
+            1.00232136249542,
+            2.51153612136841,
+            14.6398258209229
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.05768358707428,
+            2.53088641166687,
+            14.6441287994385
+          ],
+          "Socket_Strike": [
+            1.05768358707428,
+            2.53088641166687,
+            14.6441287994385
+          ],
+          "Socket_eversible_pharynx": [
+            1.05768358707428,
+            2.53088641166687,
+            14.6441287994385
+          ]
+        }
+      },
+      "species_id": "bio_coil_17",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15795,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6513,
+          "max_weight_sum_error": 1.2665987014770508e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "ef9bfc49857e580325641175542e7c6291138ec731d25fcfe1ff400e107ee74d"
+    },
+    {
+      "asset_sha256": {
+        "far": "161b82835d6706a2699ffee1583567226dc4f2d9fda527b1dfb1e21b6952314a",
+        "near": "eb6f0169c74c95fe3adbf160a0556d00f3b1d02cd1d67026e8e00b953829295b"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 25.0,
+      "bone_motion": 6.91501482017338,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_18",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.05003619194031,
+            2.50347089767456,
+            14.6779794692993
+          ],
+          "Socket_Strike": [
+            1.05003619194031,
+            2.50347089767456,
+            14.6779794692993
+          ],
+          "Socket_eversible_pharynx": [
+            1.05003619194031,
+            2.50347089767456,
+            14.6779794692993
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.02309489250183,
+            2.52250814437866,
+            14.6594944000244
+          ],
+          "Socket_Strike": [
+            1.02309489250183,
+            2.52250814437866,
+            14.6594944000244
+          ],
+          "Socket_eversible_pharynx": [
+            1.02309489250183,
+            2.52250814437866,
+            14.6594944000244
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.06576704978943,
+            2.51658940315247,
+            14.6705446243286
+          ],
+          "Socket_Strike": [
+            1.06576704978943,
+            2.51658940315247,
+            14.6705446243286
+          ],
+          "Socket_eversible_pharynx": [
+            1.06576704978943,
+            2.51658940315247,
+            14.6705446243286
+          ]
+        }
+      },
+      "species_id": "bio_coil_18",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16681,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6882,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "0a8f519d97cf347dd9af9708f6e23b5973b1b252fe21955126fca95c0dfbc08b"
+    },
+    {
+      "asset_sha256": {
+        "far": "72cc213701b5539b7e854252ffa46843196aaca181f1db87a495de52d1a37e86",
+        "near": "9a907ba3005ee4f564e7c7c09860c2045e4258685cd2eff8350ed17139a89b31"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 24.0,
+      "bone_motion": 5.53804438002408,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_19",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.05807638168335,
+            2.52479720115662,
+            14.690544128418
+          ],
+          "Socket_Strike": [
+            1.05807638168335,
+            2.52479720115662,
+            14.690544128418
+          ],
+          "Socket_eversible_pharynx": [
+            1.05807638168335,
+            2.52479720115662,
+            14.690544128418
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.04473853111267,
+            2.52762508392334,
+            14.6804122924805
+          ],
+          "Socket_Strike": [
+            1.04473853111267,
+            2.52762508392334,
+            14.6804122924805
+          ],
+          "Socket_eversible_pharynx": [
+            1.04473853111267,
+            2.52762508392334,
+            14.6804122924805
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.07175755500793,
+            2.55810832977295,
+            14.6807813644409
+          ],
+          "Socket_Strike": [
+            1.07175755500793,
+            2.55810832977295,
+            14.6807813644409
+          ],
+          "Socket_eversible_pharynx": [
+            1.07175755500793,
+            2.55810832977295,
+            14.6807813644409
+          ]
+        }
+      },
+      "species_id": "bio_coil_19",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 17034,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7010,
+          "max_weight_sum_error": 1.2665987014770508e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "807bfc0d9bcfddeacb6baddaaaaac65cc78083593df872186440e032f84d176a"
+    },
+    {
+      "asset_sha256": {
+        "far": "27e2450e1762b2f435f7e3a60edde8e7e5fcbedf5547b2000de6f8309e464e96",
+        "near": "fbdde59ac662b4837cd93aeae64a08dc06169a26d38e170677101684f3087014"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 26.0,
+      "bone_motion": 7.63316683657467,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_20",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.07612633705139,
+            2.52737736701965,
+            14.7026796340942
+          ],
+          "Socket_Strike": [
+            1.07612633705139,
+            2.52737736701965,
+            14.7026796340942
+          ],
+          "Socket_eversible_pharynx": [
+            1.07612633705139,
+            2.52737736701965,
+            14.7026796340942
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.06143224239349,
+            2.52707386016846,
+            14.7036123275757
+          ],
+          "Socket_Strike": [
+            1.06143224239349,
+            2.52707386016846,
+            14.7036123275757
+          ],
+          "Socket_eversible_pharynx": [
+            1.06143224239349,
+            2.52707386016846,
+            14.7036123275757
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.09221482276917,
+            2.54854202270508,
+            14.6936111450195
+          ],
+          "Socket_Strike": [
+            1.09221482276917,
+            2.54854202270508,
+            14.6936111450195
+          ],
+          "Socket_eversible_pharynx": [
+            1.09221482276917,
+            2.54854202270508,
+            14.6936111450195
+          ]
+        }
+      },
+      "species_id": "bio_coil_20",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 17932,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7381,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "1d33ee4247659cb306e62a775d2ed55a4b2af69585c23add1433eb948c159705"
+    },
+    {
+      "asset_sha256": {
+        "far": "2b6e8464d32d5ab1ff335a8094238034dbd0bcadf59ce479c0b5c72a53b52bf8",
+        "near": "a9918fc247340733387d83054a4854e096a55e55891754c7a196fdf3e9b011bc"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 23.0,
+      "bone_motion": 8.62494945712388,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_21",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.33790290355682,
+            2.49886751174927,
+            14.4995851516724
+          ],
+          "Socket_Strike": [
+            1.33790290355682,
+            2.49886751174927,
+            14.4995851516724
+          ],
+          "Socket_eversible_pharynx": [
+            1.33790290355682,
+            2.49886751174927,
+            14.4995851516724
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.2824786901474,
+            2.51311349868774,
+            14.4654712677002
+          ],
+          "Socket_Strike": [
+            1.2824786901474,
+            2.51311349868774,
+            14.4654712677002
+          ],
+          "Socket_eversible_pharynx": [
+            1.2824786901474,
+            2.51311349868774,
+            14.4654712677002
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.35181200504303,
+            2.51851558685303,
+            14.4789056777954
+          ],
+          "Socket_Strike": [
+            1.35181200504303,
+            2.51851558685303,
+            14.4789056777954
+          ],
+          "Socket_eversible_pharynx": [
+            1.35181200504303,
+            2.51851558685303,
+            14.4789056777954
+          ]
+        }
+      },
+      "species_id": "bio_coil_21",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16628,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6858,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "19c205476c74ee5f33ba27dffad5a9d0761c75ec20d3a3365b8ace27fc9016e0"
+    },
+    {
+      "asset_sha256": {
+        "far": "cb2910b6615b2967d643d92cfa9464a64c23e9780a52ca1dad9bf3e7103609c6",
+        "near": "99c7b863446b20751ab53eec6187b6d4a2386a346d5e4575b67b9eca4d1e7b74"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 25.0,
+      "bone_motion": 9.28520663268864,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_22",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.35006499290466,
+            2.50934362411499,
+            14.5170383453369
+          ],
+          "Socket_Strike": [
+            1.35006499290466,
+            2.50934362411499,
+            14.5170383453369
+          ],
+          "Socket_eversible_pharynx": [
+            1.35006499290466,
+            2.50934362411499,
+            14.5170383453369
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.30384469032288,
+            2.51424837112427,
+            14.4866123199463
+          ],
+          "Socket_Strike": [
+            1.30384469032288,
+            2.51424837112427,
+            14.4866123199463
+          ],
+          "Socket_eversible_pharynx": [
+            1.30384469032288,
+            2.51424837112427,
+            14.4866123199463
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.36665332317352,
+            2.52917742729187,
+            14.5004091262817
+          ],
+          "Socket_Strike": [
+            1.36665332317352,
+            2.52917742729187,
+            14.5004091262817
+          ],
+          "Socket_eversible_pharynx": [
+            1.36665332317352,
+            2.52917742729187,
+            14.5004091262817
+          ]
+        }
+      },
+      "species_id": "bio_coil_22",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 17505,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7212,
+          "max_weight_sum_error": 1.1548399925231934e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "35d35727413de5cebbe2a9a83c6649f887e504331cd944c2d1921535d12a932b"
+    },
+    {
+      "asset_sha256": {
+        "far": "023f188f36c44aac7577610d372bb5a76eb4d525cfb1c1352f5434326b0ccaeb",
+        "near": "94835b37144bb8f55cb4e54e443e9df68da0baaedaf26da23752ac6669839d49"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 27.0,
+      "bone_motion": 9.31994641013443,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_23",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.36228156089783,
+            2.50582385063171,
+            14.5337781906128
+          ],
+          "Socket_Strike": [
+            1.36228156089783,
+            2.50582385063171,
+            14.5337781906128
+          ],
+          "Socket_eversible_pharynx": [
+            1.36228156089783,
+            2.50582385063171,
+            14.5337781906128
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.32425439357758,
+            2.52388167381287,
+            14.5095109939575
+          ],
+          "Socket_Strike": [
+            1.32425439357758,
+            2.52388167381287,
+            14.5095109939575
+          ],
+          "Socket_eversible_pharynx": [
+            1.32425439357758,
+            2.52388167381287,
+            14.5095109939575
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.3800607919693,
+            2.52184581756592,
+            14.5232057571411
+          ],
+          "Socket_Strike": [
+            1.3800607919693,
+            2.52184581756592,
+            14.5232057571411
+          ],
+          "Socket_eversible_pharynx": [
+            1.3800607919693,
+            2.52184581756592,
+            14.5232057571411
+          ]
+        }
+      },
+      "species_id": "bio_coil_23",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 18401,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7586,
+          "max_weight_sum_error": 1.1548399925231934e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "9cc49473307249f5ab91c0537188ae934cf554417631b5c88605a27bfb954a98"
+    },
+    {
+      "asset_sha256": {
+        "far": "1d610cf48ca1b7c99e698f3a70dc4b5b27bbba06b9ee60eea6e7f23689f386c4",
+        "near": "0c5e93ea924549cb9cc4cb722fcf8d19f6c13d33e61aad55e273d05b908d834c"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 26.0,
+      "bone_motion": 4.12847735174,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_24",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.36228764057159,
+            2.51640462875366,
+            14.5452346801758
+          ],
+          "Socket_Strike": [
+            1.36228764057159,
+            2.51640462875366,
+            14.5452346801758
+          ],
+          "Socket_eversible_pharynx": [
+            1.36228764057159,
+            2.51640462875366,
+            14.5452346801758
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.3449455499649,
+            2.5286750793457,
+            14.5343017578125
+          ],
+          "Socket_Strike": [
+            1.3449455499649,
+            2.5286750793457,
+            14.5343017578125
+          ],
+          "Socket_eversible_pharynx": [
+            1.3449455499649,
+            2.5286750793457,
+            14.5343017578125
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.36652112007141,
+            2.53868889808655,
+            14.5372581481934
+          ],
+          "Socket_Strike": [
+            1.36652112007141,
+            2.53868889808655,
+            14.5372581481934
+          ],
+          "Socket_eversible_pharynx": [
+            1.36652112007141,
+            2.53868889808655,
+            14.5372581481934
+          ]
+        }
+      },
+      "species_id": "bio_coil_24",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 18758,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7726,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "225e0f15a8d308bd7e6d7f26187f1479a2876cbb60edc21c38f02e715f8ec318"
+    },
+    {
+      "asset_sha256": {
+        "far": "9550f9ae3585713be6fcc6f10e136e0398725564e9c51fa4a0e1d9279b436f0c",
+        "near": "034048c6a8cb79608293fe278bf3a1e74c093d48f2440cb93cc053011943c519"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 28.0,
+      "bone_motion": 8.2932791877538,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "coil",
+      "host_attack": "none",
+      "id": "bio_coil_25",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.38602089881897,
+            2.52624464035034,
+            14.5548057556152
+          ],
+          "Socket_Strike": [
+            1.38602089881897,
+            2.52624464035034,
+            14.5548057556152
+          ],
+          "Socket_eversible_pharynx": [
+            1.38602089881897,
+            2.52624464035034,
+            14.5548057556152
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.36342668533325,
+            2.53731536865234,
+            14.5590229034424
+          ],
+          "Socket_Strike": [
+            1.36342668533325,
+            2.53731536865234,
+            14.5590229034424
+          ],
+          "Socket_eversible_pharynx": [
+            1.36342668533325,
+            2.53731536865234,
+            14.5590229034424
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.40256202220917,
+            2.55981636047363,
+            14.5467510223389
+          ],
+          "Socket_Strike": [
+            1.40256202220917,
+            2.55981636047363,
+            14.5467510223389
+          ],
+          "Socket_eversible_pharynx": [
+            1.40256202220917,
+            2.55981636047363,
+            14.5467510223389
+          ]
+        }
+      },
+      "species_id": "bio_coil_25",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 19641,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 8091,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "8287e58436682cffdd318beda19f964a591dd7d4a96a788622a30d8d8690d2ff"
+    },
+    {
+      "asset_sha256": {
+        "far": "582ae50dbedcd1672eaf19a02b3315aa7644b17cb1892dc1286036919c451686",
+        "near": "82113dbd6d9c3c996803b40a98cf6a02fb74229e6782432be7336ff9414b44ee"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 20.0,
+      "bone_motion": 5.48016419447958,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_01",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.03715753555298,
+            2.33466577529907,
+            14.1872091293335
+          ],
+          "Socket_Strike": [
+            1.03715753555298,
+            2.33466577529907,
+            14.1872091293335
+          ],
+          "Socket_grazing_radula": [
+            1.03715753555298,
+            2.33466577529907,
+            14.1872091293335
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.01147747039795,
+            2.34713459014893,
+            14.1717348098755
+          ],
+          "Socket_Strike": [
+            1.01147747039795,
+            2.34713459014893,
+            14.1717348098755
+          ],
+          "Socket_grazing_radula": [
+            1.01147747039795,
+            2.34713459014893,
+            14.1717348098755
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.04610061645508,
+            2.35157418251038,
+            14.1728534698486
+          ],
+          "Socket_Strike": [
+            1.04610061645508,
+            2.35157418251038,
+            14.1728534698486
+          ],
+          "Socket_grazing_radula": [
+            1.04610061645508,
+            2.35157418251038,
+            14.1728534698486
+          ]
+        }
+      },
+      "species_id": "bio_slug_01",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 11409,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4716,
+          "max_weight_sum_error": 1.1362135410308838e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "0c58cad3bf547ee18989ed6e962e36083cdfb008829291c7364e83a67d7167d1"
+    },
+    {
+      "asset_sha256": {
+        "far": "a91f5c81225616f2888bdecf2e369e38c661d2b05ca29e04fc50287312b27e1f",
+        "near": "8af41aac7b63a6e5b3a5e314beca20120d3154d6f1e593ad8c0afddd0903d7ff"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 21.0,
+      "bone_motion": 2.6823702994734,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_02",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.04559457302094,
+            2.34620928764343,
+            14.206823348999
+          ],
+          "Socket_Strike": [
+            1.04559457302094,
+            2.34620928764343,
+            14.206823348999
+          ],
+          "Socket_grazing_radula": [
+            1.04559457302094,
+            2.34620928764343,
+            14.206823348999
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.02894699573517,
+            2.35035753250122,
+            14.1916065216064
+          ],
+          "Socket_Strike": [
+            1.02894699573517,
+            2.35035753250122,
+            14.1916065216064
+          ],
+          "Socket_grazing_radula": [
+            1.02894699573517,
+            2.35035753250122,
+            14.1916065216064
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.04633402824402,
+            2.36799573898315,
+            14.1972246170044
+          ],
+          "Socket_Strike": [
+            1.04633402824402,
+            2.36799573898315,
+            14.1972246170044
+          ],
+          "Socket_grazing_radula": [
+            1.04633402824402,
+            2.36799573898315,
+            14.1972246170044
+          ]
+        }
+      },
+      "species_id": "bio_slug_02",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 12125,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5013,
+          "max_weight_sum_error": 1.0454095900058746e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "31e15d7aba287130f0e37fa77afbb0a11bbd0eea363cfb7c959ad818ebeef0ae"
+    },
+    {
+      "asset_sha256": {
+        "far": "f3d0d3597085d68f746fda7db84c301a93a93b1639b10100b8fc954f46786767",
+        "near": "d75f26666ad79ccd92b58cda8a2c0510c29d7f2f10ba761718975ac091ba8186"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 22.0,
+      "bone_motion": 4.86054358072579,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_03",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.0662956237793,
+            2.35519933700562,
+            14.2198371887207
+          ],
+          "Socket_Strike": [
+            1.0662956237793,
+            2.35519933700562,
+            14.2198371887207
+          ],
+          "Socket_grazing_radula": [
+            1.0662956237793,
+            2.35519933700562,
+            14.2198371887207
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.04493296146393,
+            2.35756468772888,
+            14.211817741394
+          ],
+          "Socket_Strike": [
+            1.04493296146393,
+            2.35756468772888,
+            14.211817741394
+          ],
+          "Socket_grazing_radula": [
+            1.04493296146393,
+            2.35756468772888,
+            14.211817741394
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.07159018516541,
+            2.384920835495,
+            14.2073421478271
+          ],
+          "Socket_Strike": [
+            1.07159018516541,
+            2.384920835495,
+            14.2073421478271
+          ],
+          "Socket_grazing_radula": [
+            1.07159018516541,
+            2.384920835495,
+            14.2073421478271
+          ]
+        }
+      },
+      "species_id": "bio_slug_03",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 12841,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5295,
+          "max_weight_sum_error": 1.0989606380462646e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "ad05ef137c1f5b6a0fab59c4f43b90bb185d899b4472da28c7e91880acc08cc7"
+    },
+    {
+      "asset_sha256": {
+        "far": "7a21068e7e90c6d8ab83c1f0731539c8c0ea8fe8b9e6af1ceacd85f222f4dd5b",
+        "near": "808aba9dd1a024f3504514b41d8f83bf64e3edebfdf9a36ab711d838a57399dc"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 23.0,
+      "bone_motion": 5.93737954832613,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_04",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.08586990833282,
+            2.35941505432129,
+            14.2331008911133
+          ],
+          "Socket_Strike": [
+            1.08586990833282,
+            2.35941505432129,
+            14.2331008911133
+          ],
+          "Socket_grazing_radula": [
+            1.08586990833282,
+            2.35941505432129,
+            14.2331008911133
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.05908596515656,
+            2.35769319534302,
+            14.2347621917725
+          ],
+          "Socket_Strike": [
+            1.05908596515656,
+            2.35769319534302,
+            14.2347621917725
+          ],
+          "Socket_grazing_radula": [
+            1.05908596515656,
+            2.35769319534302,
+            14.2347621917725
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.09144425392151,
+            2.38005328178406,
+            14.2223978042603
+          ],
+          "Socket_Strike": [
+            1.09144425392151,
+            2.38005328178406,
+            14.2223978042603
+          ],
+          "Socket_grazing_radula": [
+            1.09144425392151,
+            2.38005328178406,
+            14.2223978042603
+          ]
+        }
+      },
+      "species_id": "bio_slug_04",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13549,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5590,
+          "max_weight_sum_error": 1.0989606380462646e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "413dadc731b072296472bc864a9c6167bf39fbbb423d1863f2b752e53548d19f"
+    },
+    {
+      "asset_sha256": {
+        "far": "6b4faf01bec8ec6b20d53521279d9da75af54f42e59275cc4a21b6778d93130a",
+        "near": "a4392eca9a7c25723ecf5b9caec28910002cd97888777b7a5ad4e13273f5bda9"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 24.0,
+      "bone_motion": 6.45834192819893,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_05",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.1035829782486,
+            2.37175369262695,
+            14.2477855682373
+          ],
+          "Socket_Strike": [
+            1.1035829782486,
+            2.37175369262695,
+            14.2477855682373
+          ],
+          "Socket_grazing_radula": [
+            1.1035829782486,
+            2.37175369262695,
+            14.2477855682373
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.07341980934143,
+            2.3503303527832,
+            14.2567777633667
+          ],
+          "Socket_Strike": [
+            1.07341980934143,
+            2.3503303527832,
+            14.2567777633667
+          ],
+          "Socket_grazing_radula": [
+            1.07341980934143,
+            2.3503303527832,
+            14.2567777633667
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.10746121406555,
+            2.38169145584106,
+            14.2391662597656
+          ],
+          "Socket_Strike": [
+            1.10746121406555,
+            2.38169145584106,
+            14.2391662597656
+          ],
+          "Socket_grazing_radula": [
+            1.10746121406555,
+            2.38169145584106,
+            14.2391662597656
+          ]
+        }
+      },
+      "species_id": "bio_slug_05",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14264,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5878,
+          "max_weight_sum_error": 1.210719347000122e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "020aa459b92f8e1a82e7861f51cfbc858c2a3f5f6bec4f699f38f6e2c0c0e035"
+    },
+    {
+      "asset_sha256": {
+        "far": "dc0c5fe1a593733490cbede6a5215287b85efc57612c7d152872d908e6bac7cb",
+        "near": "64da1ef6e8d75470cba0ee2ef6903409f2e95949791285d6bb5f6c2d45deae2f"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 22.0,
+      "bone_motion": 6.33295428939164,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_06",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.28037166595459,
+            2.3382396697998,
+            14.0980911254883
+          ],
+          "Socket_Strike": [
+            1.28037166595459,
+            2.3382396697998,
+            14.0980911254883
+          ],
+          "Socket_grazing_radula": [
+            1.28037166595459,
+            2.3382396697998,
+            14.0980911254883
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.24405646324158,
+            2.3560357093811,
+            14.088282585144
+          ],
+          "Socket_Strike": [
+            1.24405646324158,
+            2.3560357093811,
+            14.088282585144
+          ],
+          "Socket_grazing_radula": [
+            1.24405646324158,
+            2.3560357093811,
+            14.088282585144
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.28696954250336,
+            2.35660076141357,
+            14.0862159729004
+          ],
+          "Socket_Strike": [
+            1.28696954250336,
+            2.35660076141357,
+            14.0862159729004
+          ],
+          "Socket_grazing_radula": [
+            1.28696954250336,
+            2.35660076141357,
+            14.0862159729004
+          ]
+        }
+      },
+      "species_id": "bio_slug_06",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13003,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5367,
+          "max_weight_sum_error": 1.1688098311424255e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "5a47813b57f5120f01e65e6676878585a85f23fe2379dbf561bd815769551885"
+    },
+    {
+      "asset_sha256": {
+        "far": "08882d3f70dfbb237d63fdf07089478b85c6989231470c453a82c01401dba8ed",
+        "near": "3d881de0b377d86f0be860636740e36f85caae80dddd74eb7873804174d1c8a6"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 23.0,
+      "bone_motion": 4.82470053620636,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_07",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.29329991340637,
+            2.34344077110291,
+            14.1161870956421
+          ],
+          "Socket_Strike": [
+            1.29329991340637,
+            2.34344077110291,
+            14.1161870956421
+          ],
+          "Socket_grazing_radula": [
+            1.29329991340637,
+            2.34344077110291,
+            14.1161870956421
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.26048851013184,
+            2.35896921157837,
+            14.1105785369873
+          ],
+          "Socket_Strike": [
+            1.26048851013184,
+            2.35896921157837,
+            14.1105785369873
+          ],
+          "Socket_grazing_radula": [
+            1.26048851013184,
+            2.35896921157837,
+            14.1105785369873
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.29559338092804,
+            2.35834884643555,
+            14.1110372543335
+          ],
+          "Socket_Strike": [
+            1.29559338092804,
+            2.35834884643555,
+            14.1110372543335
+          ],
+          "Socket_grazing_radula": [
+            1.29559338092804,
+            2.35834884643555,
+            14.1110372543335
+          ]
+        }
+      },
+      "species_id": "bio_slug_07",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13717,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5665,
+          "max_weight_sum_error": 9.313225746154785e-08
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "812e5391694a1d111b0270b03d50f7597822b966a368de03350cd5fec0d602f3"
+    },
+    {
+      "asset_sha256": {
+        "far": "67f7566f2e49277da9e10f141c533e45a5fbdff5345ed58d7c3d3d14dc41748a",
+        "near": "551bcc6b1d762f1df971320b8ffc18a664a3af6a982993bfdc0bb8d2e0f056fc"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 24.0,
+      "bone_motion": 5.02324989624321,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_08",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.30850958824158,
+            2.36117458343506,
+            14.1282215118408
+          ],
+          "Socket_Strike": [
+            1.30850958824158,
+            2.36117458343506,
+            14.1282215118408
+          ],
+          "Socket_grazing_radula": [
+            1.30850958824158,
+            2.36117458343506,
+            14.1282215118408
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.27700161933899,
+            2.36336302757263,
+            14.1323642730713
+          ],
+          "Socket_Strike": [
+            1.27700161933899,
+            2.36336302757263,
+            14.1323642730713
+          ],
+          "Socket_grazing_radula": [
+            1.27700161933899,
+            2.36336302757263,
+            14.1323642730713
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.3094208240509,
+            2.39055037498474,
+            14.1214971542358
+          ],
+          "Socket_Strike": [
+            1.3094208240509,
+            2.39055037498474,
+            14.1214971542358
+          ],
+          "Socket_grazing_radula": [
+            1.3094208240509,
+            2.39055037498474,
+            14.1214971542358
+          ]
+        }
+      },
+      "species_id": "bio_slug_08",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14430,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5955,
+          "max_weight_sum_error": 1.1298106983304024e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "6dce11b1fe43628028dfe8c172375d4cbdcd885d7963789b9200ab643389c906"
+    },
+    {
+      "asset_sha256": {
+        "far": "442984869d650070cf786250d9c7d42343af77ef55033e81e0e017426399320d",
+        "near": "39a47b2812539d698cca0cd00b4b84752bf3b04b7caae05eb805830cfefdf52b"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 25.0,
+      "bone_motion": 7.72378568537533,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_09",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.32853531837463,
+            2.36326098442078,
+            14.140552520752
+          ],
+          "Socket_Strike": [
+            1.32853531837463,
+            2.36326098442078,
+            14.140552520752
+          ],
+          "Socket_grazing_radula": [
+            1.32853531837463,
+            2.36326098442078,
+            14.140552520752
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.29506385326385,
+            2.37032389640808,
+            14.1503868103027
+          ],
+          "Socket_Strike": [
+            1.29506385326385,
+            2.37032389640808,
+            14.1503868103027
+          ],
+          "Socket_grazing_radula": [
+            1.29506385326385,
+            2.37032389640808,
+            14.1503868103027
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.33647179603577,
+            2.39151453971863,
+            14.1265487670898
+          ],
+          "Socket_Strike": [
+            1.33647179603577,
+            2.39151453971863,
+            14.1265487670898
+          ],
+          "Socket_grazing_radula": [
+            1.33647179603577,
+            2.39151453971863,
+            14.1265487670898
+          ]
+        }
+      },
+      "species_id": "bio_slug_09",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15140,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6243,
+          "max_weight_sum_error": 1.1175870895385742e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "38d8d518ee6a974b0ce769c986847b821218ea130e69619f10f5a261628b3fa4"
+    },
+    {
+      "asset_sha256": {
+        "far": "5afac0ef11c29756fe2fd9c1d2cb79c46719c61be001f67f130af474a8a2ef8d",
+        "near": "c0312743273fb1591e1db2cdd450a74ea7506243544b573bc7d51493887edb9a"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 26.0,
+      "bone_motion": 8.64972468651831,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_10",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.34463822841644,
+            2.36992764472961,
+            14.1562633514404
+          ],
+          "Socket_Strike": [
+            1.34463822841644,
+            2.36992764472961,
+            14.1562633514404
+          ],
+          "Socket_grazing_radula": [
+            1.34463822841644,
+            2.36992764472961,
+            14.1562633514404
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.31245899200439,
+            2.3685507774353,
+            14.1704959869385
+          ],
+          "Socket_Strike": [
+            1.31245899200439,
+            2.3685507774353,
+            14.1704959869385
+          ],
+          "Socket_grazing_radula": [
+            1.31245899200439,
+            2.3685507774353,
+            14.1704959869385
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.35371160507202,
+            2.38917636871338,
+            14.1424713134766
+          ],
+          "Socket_Strike": [
+            1.35371160507202,
+            2.38917636871338,
+            14.1424713134766
+          ],
+          "Socket_grazing_radula": [
+            1.35371160507202,
+            2.38917636871338,
+            14.1424713134766
+          ]
+        }
+      },
+      "species_id": "bio_slug_10",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15861,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6539,
+          "max_weight_sum_error": 1.2293457984924316e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "b6175bef61effee77c1d6f6a81cb9963e0b67db5ccf2e99d551f2073d5b5387a"
+    },
+    {
+      "asset_sha256": {
+        "far": "881e81fc9d6a1b757e8488238994c7d2dcd5857629673333ff03cb00197c0aac",
+        "near": "c3e343758dd8ca8db44b6ba52f099eae4e97f3e0e75b0cb08b7a97e8f8a2398c"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 24.0,
+      "bone_motion": 8.21974948234856,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_11",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.17523276805878,
+            2.37697553634644,
+            14.3225183486938
+          ],
+          "Socket_Strike": [
+            1.17523276805878,
+            2.37697553634644,
+            14.3225183486938
+          ],
+          "Socket_grazing_radula": [
+            1.17523276805878,
+            2.37697553634644,
+            14.3225183486938
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.12529873847961,
+            2.38613963127136,
+            14.3122663497925
+          ],
+          "Socket_Strike": [
+            1.12529873847961,
+            2.38613963127136,
+            14.3122663497925
+          ],
+          "Socket_grazing_radula": [
+            1.12529873847961,
+            2.38613963127136,
+            14.3122663497925
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.18270874023438,
+            2.39676666259766,
+            14.3102512359619
+          ],
+          "Socket_Strike": [
+            1.18270874023438,
+            2.39676666259766,
+            14.3102512359619
+          ],
+          "Socket_grazing_radula": [
+            1.18270874023438,
+            2.39676666259766,
+            14.3102512359619
+          ]
+        }
+      },
+      "species_id": "bio_slug_11",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14633,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6045,
+          "max_weight_sum_error": 1.3224780559539795e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "2a4484784b63a28771a837ac8c63904b2fb6a6e8d84e7de2a5640f594cdd89db"
+    },
+    {
+      "asset_sha256": {
+        "far": "a53a6199c45fd975a1f63f8947065fc6e5787bf2738c9f9f66f4d13cabc47e34",
+        "near": "41db56810903bfd2115d92e805fc88188042347ebdd58c3b8c40f9410838eb44"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 25.0,
+      "bone_motion": 8.04002170450985,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_12",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.1893562078476,
+            2.37648582458496,
+            14.3395862579346
+          ],
+          "Socket_Strike": [
+            1.1893562078476,
+            2.37648582458496,
+            14.3395862579346
+          ],
+          "Socket_grazing_radula": [
+            1.1893562078476,
+            2.37648582458496,
+            14.3395862579346
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.14465522766113,
+            2.39348697662354,
+            14.3327131271362
+          ],
+          "Socket_Strike": [
+            1.14465522766113,
+            2.39348697662354,
+            14.3327131271362
+          ],
+          "Socket_grazing_radula": [
+            1.14465522766113,
+            2.39348697662354,
+            14.3327131271362
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.19862413406372,
+            2.39258670806885,
+            14.329758644104
+          ],
+          "Socket_Strike": [
+            1.19862413406372,
+            2.39258670806885,
+            14.329758644104
+          ],
+          "Socket_grazing_radula": [
+            1.19862413406372,
+            2.39258670806885,
+            14.329758644104
+          ]
+        }
+      },
+      "species_id": "bio_slug_12",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15345,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6331,
+          "max_weight_sum_error": 1.0803341865539551e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "4ca5996a14d94638b10e8f607a7d58f993cbe53101cb2f41f1ae0a06b89aa641"
+    },
+    {
+      "asset_sha256": {
+        "far": "a8a7fc3545d26f853b22ce3680d5a452594620a3571ebd288d16eb993b3375d7",
+        "near": "b689124e17763d2b59fe398dce0b95fca50145f0d4d8e9ea51b534558157366b"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 26.0,
+      "bone_motion": 2.42914889939129,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_13",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.18702828884125,
+            2.38882350921631,
+            14.3644275665283
+          ],
+          "Socket_Strike": [
+            1.18702828884125,
+            2.38882350921631,
+            14.3644275665283
+          ],
+          "Socket_grazing_radula": [
+            1.18702828884125,
+            2.38882350921631,
+            14.3644275665283
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.16504287719727,
+            2.39731359481812,
+            14.3530721664429
+          ],
+          "Socket_Strike": [
+            1.16504287719727,
+            2.39731359481812,
+            14.3530721664429
+          ],
+          "Socket_grazing_radula": [
+            1.16504287719727,
+            2.39731359481812,
+            14.3530721664429
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.17939758300781,
+            2.41176533699036,
+            14.3665981292725
+          ],
+          "Socket_Strike": [
+            1.17939758300781,
+            2.41176533699036,
+            14.3665981292725
+          ],
+          "Socket_grazing_radula": [
+            1.17939758300781,
+            2.41176533699036,
+            14.3665981292725
+          ]
+        }
+      },
+      "species_id": "bio_slug_13",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16059,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6628,
+          "max_weight_sum_error": 1.1175870895385742e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "e14b68817c9ce6ca1ccb3bc82e38b512d0b79be78bc68d63c53fa7d2818d0ebf"
+    },
+    {
+      "asset_sha256": {
+        "far": "058ed279ac5b7447089fba6bdcc9eb5a42575409f135356b54c9fca67be37d54",
+        "near": "06fa84d5241d98ead421923cefe0286cc251f9e18bf52beab39cbcf69047dea3"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 27.0,
+      "bone_motion": 8.40238075889647,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_14",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.21446025371552,
+            2.39766240119934,
+            14.3691911697388
+          ],
+          "Socket_Strike": [
+            1.21446025371552,
+            2.39766240119934,
+            14.3691911697388
+          ],
+          "Socket_grazing_radula": [
+            1.21446025371552,
+            2.39766240119934,
+            14.3691911697388
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.1852605342865,
+            2.40491342544556,
+            14.372501373291
+          ],
+          "Socket_Strike": [
+            1.1852605342865,
+            2.40491342544556,
+            14.372501373291
+          ],
+          "Socket_grazing_radula": [
+            1.1852605342865,
+            2.40491342544556,
+            14.372501373291
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.22651743888855,
+            2.42899608612061,
+            14.3568649291992
+          ],
+          "Socket_Strike": [
+            1.22651743888855,
+            2.42899608612061,
+            14.3568649291992
+          ],
+          "Socket_grazing_radula": [
+            1.22651743888855,
+            2.42899608612061,
+            14.3568649291992
+          ]
+        }
+      },
+      "species_id": "bio_slug_14",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16774,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6913,
+          "max_weight_sum_error": 1.210719347000122e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "26754e280e5c92e0e2d76208cae944753417688d04bed18daffa26dd0798950f"
+    },
+    {
+      "asset_sha256": {
+        "far": "f43d4e235349189face4acf10da370c4fafc799e9c48d152ede5332b8f8343ab",
+        "near": "d3e2b2a0bbcfed8f1b72bd3a06800bc7cbbdd3b7d475f2dfbd8c768d13157c2d"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 28.0,
+      "bone_motion": 9.32011215575039,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_15",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.22750055789948,
+            2.39999008178711,
+            14.3856868743896
+          ],
+          "Socket_Strike": [
+            1.22750055789948,
+            2.39999008178711,
+            14.3856868743896
+          ],
+          "Socket_grazing_radula": [
+            1.22750055789948,
+            2.39999008178711,
+            14.3856868743896
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.20648038387299,
+            2.40811395645142,
+            14.3907842636108
+          ],
+          "Socket_Strike": [
+            1.20648038387299,
+            2.40811395645142,
+            14.3907842636108
+          ],
+          "Socket_grazing_radula": [
+            1.20648038387299,
+            2.40811395645142,
+            14.3907842636108
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.24302470684052,
+            2.42469120025635,
+            14.371711730957
+          ],
+          "Socket_Strike": [
+            1.24302470684052,
+            2.42469120025635,
+            14.371711730957
+          ],
+          "Socket_grazing_radula": [
+            1.24302470684052,
+            2.42469120025635,
+            14.371711730957
+          ]
+        }
+      },
+      "species_id": "bio_slug_15",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 17481,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7201,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "b9495ff409fc125cb6b72e02dae39b99c8546e00a66509c2442a8ee2564a251d"
+    },
+    {
+      "asset_sha256": {
+        "far": "89af0b911c48460b3a3893a8839fe05767be7624a7d4908ffea1dcf7ffa8a93b",
+        "near": "c7a305f024653b7c794178a673c9b71e5eda2f13c6794283a10884e58a5e5a23"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 26.0,
+      "bone_motion": 10.6504496131092,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_16",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            0.99994307756424,
+            2.41195964813232,
+            14.6113758087158
+          ],
+          "Socket_Strike": [
+            0.99994307756424,
+            2.41195964813232,
+            14.6113758087158
+          ],
+          "Socket_grazing_radula": [
+            0.99994307756424,
+            2.41195964813232,
+            14.6113758087158
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            0.944892883300781,
+            2.42806148529053,
+            14.5909900665283
+          ],
+          "Socket_Strike": [
+            0.944892883300781,
+            2.42806148529053,
+            14.5909900665283
+          ],
+          "Socket_grazing_radula": [
+            0.944892883300781,
+            2.42806148529053,
+            14.5909900665283
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.01350843906403,
+            2.43221879005432,
+            14.5968809127808
+          ],
+          "Socket_Strike": [
+            1.01350843906403,
+            2.43221879005432,
+            14.5968809127808
+          ],
+          "Socket_grazing_radula": [
+            1.01350843906403,
+            2.43221879005432,
+            14.5968809127808
+          ]
+        }
+      },
+      "species_id": "bio_slug_16",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16311,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6728,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "6f475e9bcbfb2280999d281e1f3bdf34e1f80803ff6519ebe045edba13cea45c"
+    },
+    {
+      "asset_sha256": {
+        "far": "077c3dab42701bf1e18d0c8f2cf22c3c39b4c457c686dee7c5248b89bf30363f",
+        "near": "1ce02fcb3a0358e6cf3f486695065126cececd641e14e747af6f506265cafeb3"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 27.0,
+      "bone_motion": 9.82975891418755,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_17",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.00808310508728,
+            2.4259934425354,
+            14.6282167434692
+          ],
+          "Socket_Strike": [
+            1.00808310508728,
+            2.4259934425354,
+            14.6282167434692
+          ],
+          "Socket_grazing_radula": [
+            1.00808310508728,
+            2.4259934425354,
+            14.6282167434692
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            0.969709873199463,
+            2.42592144012451,
+            14.6112937927246
+          ],
+          "Socket_Strike": [
+            0.969709873199463,
+            2.42592144012451,
+            14.6112937927246
+          ],
+          "Socket_grazing_radula": [
+            0.969709873199463,
+            2.42592144012451,
+            14.6112937927246
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.02484488487244,
+            2.44578766822815,
+            14.6156091690063
+          ],
+          "Socket_Strike": [
+            1.02484488487244,
+            2.44578766822815,
+            14.6156091690063
+          ],
+          "Socket_grazing_radula": [
+            1.02484488487244,
+            2.44578766822815,
+            14.6156091690063
+          ]
+        }
+      },
+      "species_id": "bio_slug_17",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 17027,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7023,
+          "max_weight_sum_error": 1.2293457984924316e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "be590400c6431e458c809161e6bcaa8a76d61d672b9b1a79c8d07bcd236bd3dd"
+    },
+    {
+      "asset_sha256": {
+        "far": "017aa9bf138d525603fff20f5e268f98c50fe22ecb349cf2faab3fd93bafd47d",
+        "near": "4e54695e9d72fc7fadc17cfe6a5d06561cb91afc49c7790252ffc7950683691f"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 28.0,
+      "bone_motion": 8.23583120293915,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_18",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.01746642589569,
+            2.41871237754822,
+            14.6481027603149
+          ],
+          "Socket_Strike": [
+            1.01746642589569,
+            2.41871237754822,
+            14.6481027603149
+          ],
+          "Socket_grazing_radula": [
+            1.01746642589569,
+            2.41871237754822,
+            14.6481027603149
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            0.990569770336151,
+            2.43676948547363,
+            14.6313323974609
+          ],
+          "Socket_Strike": [
+            0.990569770336151,
+            2.43676948547363,
+            14.6313323974609
+          ],
+          "Socket_grazing_radula": [
+            0.990569770336151,
+            2.43676948547363,
+            14.6313323974609
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.03265488147736,
+            2.43185472488403,
+            14.6409339904785
+          ],
+          "Socket_Strike": [
+            1.03265488147736,
+            2.43185472488403,
+            14.6409339904785
+          ],
+          "Socket_grazing_radula": [
+            1.03265488147736,
+            2.43185472488403,
+            14.6409339904785
+          ]
+        }
+      },
+      "species_id": "bio_slug_18",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 17735,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7312,
+          "max_weight_sum_error": 1.2665987014770508e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "e3f8d7a735b7386fe1559b7e6128dd0fcdd665a0a756eda9f7d1dc646edeb8f8"
+    },
+    {
+      "asset_sha256": {
+        "far": "efff8ddf108831c53a15a04573f9c7302c335f3144daffa20a83d2e5a6315352",
+        "near": "e3f5acc581dea7c27c22f0941abaa81f3193668741f107545575a7a762f31be1"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 29.0,
+      "bone_motion": 7.23370300419629,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_19",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.02600693702698,
+            2.43980813026428,
+            14.6609745025635
+          ],
+          "Socket_Strike": [
+            1.02600693702698,
+            2.43980813026428,
+            14.6609745025635
+          ],
+          "Socket_grazing_radula": [
+            1.02600693702698,
+            2.43980813026428,
+            14.6609745025635
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.01215386390686,
+            2.44192266464233,
+            14.6521739959717
+          ],
+          "Socket_Strike": [
+            1.01215386390686,
+            2.44192266464233,
+            14.6521739959717
+          ],
+          "Socket_grazing_radula": [
+            1.01215386390686,
+            2.44192266464233,
+            14.6521739959717
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.03965961933136,
+            2.4729175567627,
+            14.6517295837402
+          ],
+          "Socket_Strike": [
+            1.03965961933136,
+            2.4729175567627,
+            14.6517295837402
+          ],
+          "Socket_grazing_radula": [
+            1.03965961933136,
+            2.4729175567627,
+            14.6517295837402
+          ]
+        }
+      },
+      "species_id": "bio_slug_19",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 18440,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7598,
+          "max_weight_sum_error": 1.1734664440155029e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "db3e40e60400a1966fb92d2efa379a440e4ede66a5412362e2361e36a7ddfd54"
+    },
+    {
+      "asset_sha256": {
+        "far": "0d624a3347ffb4bf2bba192249d3990a8588d176b3df5a2e4885651f5f4067c1",
+        "near": "9f8ed575c9f6c600f077244d350f0ed8b7341e1a648ef14a02af48c7851108eb"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 30.0,
+      "bone_motion": 9.36700821109116,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_20",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.04395937919617,
+            2.44235467910767,
+            14.6733713150024
+          ],
+          "Socket_Strike": [
+            1.04395937919617,
+            2.44235467910767,
+            14.6733713150024
+          ],
+          "Socket_grazing_radula": [
+            1.04395937919617,
+            2.44235467910767,
+            14.6733713150024
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.02878618240356,
+            2.44156432151794,
+            14.6747341156006
+          ],
+          "Socket_Strike": [
+            1.02878618240356,
+            2.44156432151794,
+            14.6747341156006
+          ],
+          "Socket_grazing_radula": [
+            1.02878618240356,
+            2.44156432151794,
+            14.6747341156006
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.0598019361496,
+            2.46356201171875,
+            14.6641283035278
+          ],
+          "Socket_Strike": [
+            1.0598019361496,
+            2.46356201171875,
+            14.6641283035278
+          ],
+          "Socket_grazing_radula": [
+            1.0598019361496,
+            2.46356201171875,
+            14.6641283035278
+          ]
+        }
+      },
+      "species_id": "bio_slug_20",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 19163,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7891,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "4d31aed0870230f855a1fdb0464607c763137a5b79d07f68110ee2a9843ba5ae"
+    },
+    {
+      "asset_sha256": {
+        "far": "090d3b02b36eb0eb85bbecb598d41e45d6a5366e5d021d5c8e902f8ab2b1d5c2",
+        "near": "062d628ffdc832efb8543b662235b1822ec9c4ce32810c2d1f3dacc3db91cfcd"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 28.0,
+      "bone_motion": 11.9557480383664,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_21",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.30537354946136,
+            2.41404247283936,
+            14.4699249267578
+          ],
+          "Socket_Strike": [
+            1.30537354946136,
+            2.41404247283936,
+            14.4699249267578
+          ],
+          "Socket_grazing_radula": [
+            1.30537354946136,
+            2.41404247283936,
+            14.4699249267578
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.24998223781586,
+            2.42735767364502,
+            14.4373474121094
+          ],
+          "Socket_Strike": [
+            1.24998223781586,
+            2.42735767364502,
+            14.4373474121094
+          ],
+          "Socket_grazing_radula": [
+            1.24998223781586,
+            2.42735767364502,
+            14.4373474121094
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.3188384771347,
+            2.43360066413879,
+            14.4498310089111
+          ],
+          "Socket_Strike": [
+            1.3188384771347,
+            2.43360066413879,
+            14.4498310089111
+          ],
+          "Socket_grazing_radula": [
+            1.3188384771347,
+            2.43360066413879,
+            14.4498310089111
+          ]
+        }
+      },
+      "species_id": "bio_slug_21",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 18028,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7438,
+          "max_weight_sum_error": 1.1944212019443512e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "47e3edfde7b0fc6778f7aea71fff29d837216a4ff660e21d461e868c6a45d1a3"
+    },
+    {
+      "asset_sha256": {
+        "far": "4febab3b10cbd27b188b1f125047d45d2d0e9202e2dc93800cb9a43534e81858",
+        "near": "bc8bea17718a6d6eb675dc39e359ad24386f893515b8365c45e15741ff47830d"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 29.0,
+      "bone_motion": 11.8119959849864,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_22",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.31777989864349,
+            2.42443132400513,
+            14.487419128418
+          ],
+          "Socket_Strike": [
+            1.31777989864349,
+            2.42443132400513,
+            14.487419128418
+          ],
+          "Socket_grazing_radula": [
+            1.31777989864349,
+            2.42443132400513,
+            14.487419128418
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.27126586437225,
+            2.42854881286621,
+            14.4583587646484
+          ],
+          "Socket_Strike": [
+            1.27126586437225,
+            2.42854881286621,
+            14.4583587646484
+          ],
+          "Socket_grazing_radula": [
+            1.27126586437225,
+            2.42854881286621,
+            14.4583587646484
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.3340892791748,
+            2.44416236877441,
+            14.4712200164795
+          ],
+          "Socket_Strike": [
+            1.3340892791748,
+            2.44416236877441,
+            14.4712200164795
+          ],
+          "Socket_grazing_radula": [
+            1.3340892791748,
+            2.44416236877441,
+            14.4712200164795
+          ]
+        }
+      },
+      "species_id": "bio_slug_22",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 18730,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7722,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "a0d5e83abc760dced3d6a3fcc5c1ff33feb5c0ec18a4716945ab949356ca27ea"
+    },
+    {
+      "asset_sha256": {
+        "far": "2ac3d8b8047974056c6fa71ceec4b562f7865a30dbdccb04c307416fa96237cd",
+        "near": "42222ab1a4e10167e8dbf1fc9d0217f79095b17f26a15deead53482a79b7ee31"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 30.0,
+      "bone_motion": 10.9687176216394,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_23",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.32959878444672,
+            2.42110562324524,
+            14.503888130188
+          ],
+          "Socket_Strike": [
+            1.32959878444672,
+            2.42110562324524,
+            14.503888130188
+          ],
+          "Socket_grazing_radula": [
+            1.32959878444672,
+            2.42110562324524,
+            14.503888130188
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.29203522205353,
+            2.43807506561279,
+            14.4812421798706
+          ],
+          "Socket_Strike": [
+            1.29203522205353,
+            2.43807506561279,
+            14.4812421798706
+          ],
+          "Socket_grazing_radula": [
+            1.29203522205353,
+            2.43807506561279,
+            14.4812421798706
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.34718108177185,
+            2.43709373474121,
+            14.4933853149414
+          ],
+          "Socket_Strike": [
+            1.34718108177185,
+            2.43709373474121,
+            14.4933853149414
+          ],
+          "Socket_grazing_radula": [
+            1.34718108177185,
+            2.43709373474121,
+            14.4933853149414
+          ]
+        }
+      },
+      "species_id": "bio_slug_23",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 19449,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 8015,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "a011b1ed8c946f20a2dc5fc8d7326ba5acd9f5f3e4c58620b5abd265114b0a5d"
+    },
+    {
+      "asset_sha256": {
+        "far": "9f48112cfbb8667366f8f77475c61f53606297e9b4c59b311d4014d1cc25b76f",
+        "near": "595c0cbbc7a90176e5f4d456fa34501768736f749a939f494055bcda18930f45"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 31.0,
+      "bone_motion": 5.00981553830206,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_24",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.32967150211334,
+            2.4315299987793,
+            14.5158710479736
+          ],
+          "Socket_Strike": [
+            1.32967150211334,
+            2.4315299987793,
+            14.5158710479736
+          ],
+          "Socket_grazing_radula": [
+            1.32967150211334,
+            2.4315299987793,
+            14.5158710479736
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.3128719329834,
+            2.44292664527893,
+            14.5056400299072
+          ],
+          "Socket_Strike": [
+            1.3128719329834,
+            2.44292664527893,
+            14.5056400299072
+          ],
+          "Socket_grazing_radula": [
+            1.3128719329834,
+            2.44292664527893,
+            14.5056400299072
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.33402824401855,
+            2.45367479324341,
+            14.5079927444458
+          ],
+          "Socket_Strike": [
+            1.33402824401855,
+            2.45367479324341,
+            14.5079927444458
+          ],
+          "Socket_grazing_radula": [
+            1.33402824401855,
+            2.45367479324341,
+            14.5079927444458
+          ]
+        }
+      },
+      "species_id": "bio_slug_24",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 20159,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 8310,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "6e34d095d8b44c3413e3bbe4dea80af1026ffdf36ad23676ea7a333e073128e8"
+    },
+    {
+      "asset_sha256": {
+        "far": "f84f101ab928d0772be3f047c2e345611b13a46e9b148db0efae8f4ac4903892",
+        "near": "a274b59ce41068639ce98c7c24c404528c2eb876a5dcab256a4cb4d8a8d0c1e3"
+      },
+      "authored_pose_capture_version": 2,
+      "body_support_version": 1,
+      "bone_count": 32.0,
+      "bone_motion": 9.9344174284488,
+      "clip_count": 11,
+      "contact_metadata_version": 0,
+      "family": "slug",
+      "host_attack": "none",
+      "id": "bio_slug_25",
+      "limb_phase_checks": 0,
+      "lods": 2,
+      "max_body_contact_error": 0.0,
+      "max_error_at": {},
+      "max_foot_target_error": 0.0,
+      "pose_capture_origin": [
+        0.0,
+        1.87693047523499,
+        13.0732002258301
+      ],
+      "root_error": 0.0,
+      "socket_samples": {
+        "prepare": {
+          "Socket_Muzzle": [
+            1.35314440727234,
+            2.44136929512024,
+            14.5257434844971
+          ],
+          "Socket_Strike": [
+            1.35314440727234,
+            2.44136929512024,
+            14.5257434844971
+          ],
+          "Socket_grazing_radula": [
+            1.35314440727234,
+            2.44136929512024,
+            14.5257434844971
+          ]
+        },
+        "recover": {
+          "Socket_Muzzle": [
+            1.33179938793182,
+            2.45143818855286,
+            14.5303077697754
+          ],
+          "Socket_Strike": [
+            1.33179938793182,
+            2.45143818855286,
+            14.5303077697754
+          ],
+          "Socket_grazing_radula": [
+            1.33179938793182,
+            2.45143818855286,
+            14.5303077697754
+          ]
+        },
+        "strike": {
+          "Socket_Muzzle": [
+            1.370197057724,
+            2.47460985183716,
+            14.5180778503418
+          ],
+          "Socket_Strike": [
+            1.370197057724,
+            2.47460985183716,
+            14.5180778503418
+          ],
+          "Socket_grazing_radula": [
+            1.370197057724,
+            2.47460985183716,
+            14.5180778503418
+          ]
+        }
+      },
+      "species_id": "bio_slug_25",
+      "tested_host_flee_speed": 4.025,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 20865,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 8597,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "8d0b8db63bd7238e132a18f50c232fb6cfb53198c93f50df2908419b5b361f16"
+    }
+  ]
+}

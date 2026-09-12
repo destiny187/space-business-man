@@ -4,10 +4,18 @@ import sys,json,hashlib,os
 ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(Path(__file__).parent),str(ROOT/'tools'),str(ROOT/'tools/bestiary')]
 from midpoint_recipes import recipes
 
+def revised_contact(spec):
+    return spec.get('host_pattern') in ['claw','scythe'] and spec['construction'] in ['felid','scorpion','mantid']
+
 def fingerprint(spec):
     h=hashlib.sha256(json.dumps(spec,sort_keys=True).encode())
     for file in ['produce_midpoints.py','midpoint_recipes.py','midpoint_anatomy.py','midpoint_motion.py','production_core.py','anatomy_stage.py','biota_anatomy.py','build_batch.py']:
-        h.update((Path(__file__).parent/file).read_bytes())
+        # Only the twenty claw/sweep species enter the revised animation branch.
+        # Other species retain the exact original source provenance and assets.
+        path=Path(__file__).parent/file
+        if not revised_contact(spec) and file in ['produce_midpoints.py','midpoint_motion.py']:
+            path=path.parent/'compat'/(path.stem+'_v1.py')
+        h.update(path.read_bytes())
     for file in ['build_creature_studies.py','build_creature_remodel_r01.py','refine_creature_motion.py','bestiary/biota_midpoint_art.py','ink_blender.py']:
         h.update((ROOT/'tools'/file).read_bytes())
     h.update((ROOT/'우주-비즈니스/data/ink_materials.json').read_bytes());return h.hexdigest()

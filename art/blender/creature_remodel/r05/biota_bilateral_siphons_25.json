@@ -1,0 +1,285 @@
+{
+  "id": "biota_bilateral_siphons_25",
+  "name": "퇴적열린흡관장각여과새",
+  "family": "biota_bilateral_siphons",
+  "construction": "avian",
+  "organ_system": "siphons",
+  "environment": "basalt",
+  "locomotion_medium": "surface_air",
+  "anatomy_note": "긴 S자 목·긴 착지 다리·가는 탐침 부리·길고 가는 비행깃 · 열린흡관 기관 계통",
+  "source_id": "biota_bilateral_siphons_25",
+  "kind": "avian",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "기질에 닿는 넓은 흡착면과 여과 부속기관 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 2,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "wader",
+    "wing_count": 2,
+    "mode": 2,
+    "eye_count": 2
+  },
+  "flight": {
+    "version": 1,
+    "wing_style": "scythe",
+    "wing_pairs": 1,
+    "primary_feathers": 11,
+    "minimum_pressure_kpa": 50.0,
+    "flap_hz": 1.35,
+    "patrol_radius": 5.5,
+    "cruise_height": 4.7,
+    "cycle_seconds": 48.0,
+    "rest_seconds": 12.0,
+    "transition_seconds": 5.0
+  },
+  "anatomical_type": "wader",
+  "production_batch": "r05",
+  "air_motion": true,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "wader",
+    "medium": "surface_air",
+    "wing_chains": 2,
+    "ground_supports": 2,
+    "organs": 49
+  },
+  "version": "r05-1",
+  "build_fingerprint": "e13041393c912d82958639e19abca0bfed7121f4c4e2819d64541855c735b011",
+  "normalized_geometry_sha256": "81e4e9314a8b1bb47cb50e7ac61ddffb784c616ffb28e74bb83d94b803baecda",
+  "source": "art/blender/creature_remodel/r05/biota_bilateral_siphons_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 66,
+  "locomotion_chains": 2,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "ground_idle_loop",
+    "flight_loop",
+    "takeoff",
+    "landing"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.115000009536743,
+        1.440000057220459
+      ]
+    },
+    "Socket_organ0mouth": {
+      "bone": "organ0mouth",
+      "point": [
+        -0.9704651236534119,
+        1.3648401498794556,
+        -0.24069719016551971
+      ]
+    },
+    "Socket_organ1mouth": {
+      "bone": "organ1mouth",
+      "point": [
+        -1.020065188407898,
+        1.3435829877853394,
+        -0.251325786113739
+      ]
+    },
+    "Socket_organ2mouth": {
+      "bone": "organ2mouth",
+      "point": [
+        1.0696651935577393,
+        1.3223258256912231,
+        -0.2619543671607971
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.115000009536743,
+        1.440000057220459
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.115000009536743,
+        1.440000057220459
+      ]
+    },
+    "Socket_landing-1": {
+      "bone": "landing-1_foot",
+      "point": [
+        -0.2199999988079071,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    },
+    "Socket_landing1": {
+      "bone": "landing1_foot",
+      "point": [
+        0.2199999988079071,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.390976681449467,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6060138562466739,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "landing-1": 0.5,
+      "landing1": 0
+    },
+    "flight_reference_hz": 1.5
+  },
+  "muzzle": [
+    0.0,
+    2.115000009536743,
+    1.440000057220459
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_siphons_25_near.glb",
+      "sha256": "e6fb54a531ebc6a8c6cd78dcc0d2e00569b67f8b5bcc34004e982713b1262274",
+      "triangles": 37252,
+      "min": [
+        -2.2121617794036865,
+        0.02499999850988388,
+        -1.4299349784851074
+      ],
+      "max": [
+        2.2121617794036865,
+        2.34248685836792,
+        1.4412955045700073
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_siphons_25_far.glb",
+      "sha256": "a0b707a0d64c87757087f2882468d17771f5d4d6926fed4cf8a16ecaacc9afae",
+      "triangles": 16012,
+      "min": [
+        -2.2124452590942383,
+        0.02501147985458374,
+        -1.4313467741012573
+      ],
+      "max": [
+        2.2124452590942383,
+        2.341543674468994,
+        1.4413866996765137
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "flight_neck0": "chest",
+    "flight_neck1": "flight_neck0",
+    "head": "flight_neck1",
+    "oral": "head",
+    "Protected flight eye -1_lid": "head",
+    "Protected flight eye 1_lid": "head",
+    "wing0_-1_0": "chest",
+    "wing0_-1_1": "wing0_-1_0",
+    "wing0_-1_2": "wing0_-1_1",
+    "primary0_-1_0": "wing0_-1_1",
+    "primary0_-1_1": "wing0_-1_1",
+    "primary0_-1_2": "wing0_-1_1",
+    "primary0_-1_3": "wing0_-1_1",
+    "primary0_-1_4": "wing0_-1_1",
+    "primary0_-1_5": "wing0_-1_1",
+    "primary0_-1_6": "wing0_-1_2",
+    "primary0_-1_7": "wing0_-1_2",
+    "primary0_-1_8": "wing0_-1_2",
+    "primary0_-1_9": "wing0_-1_2",
+    "primary0_-1_10": "wing0_-1_2",
+    "primary0_-1_11": "wing0_-1_2",
+    "primary0_-1_12": "wing0_-1_2",
+    "wing0_1_0": "chest",
+    "wing0_1_1": "wing0_1_0",
+    "wing0_1_2": "wing0_1_1",
+    "primary0_1_0": "wing0_1_1",
+    "primary0_1_1": "wing0_1_1",
+    "primary0_1_2": "wing0_1_1",
+    "primary0_1_3": "wing0_1_1",
+    "primary0_1_4": "wing0_1_1",
+    "primary0_1_5": "wing0_1_1",
+    "primary0_1_6": "wing0_1_2",
+    "primary0_1_7": "wing0_1_2",
+    "primary0_1_8": "wing0_1_2",
+    "primary0_1_9": "wing0_1_2",
+    "primary0_1_10": "wing0_1_2",
+    "primary0_1_11": "wing0_1_2",
+    "primary0_1_12": "wing0_1_2",
+    "landing-1_upper": "chest",
+    "landing-1_lower": "landing-1_upper",
+    "landing-1_foot": "landing-1_lower",
+    "landing1_upper": "chest",
+    "landing1_lower": "landing1_upper",
+    "landing1_foot": "landing1_lower",
+    "steering_tail0": "chest",
+    "steering_tail1": "steering_tail0",
+    "organ0": "chest",
+    "organ0conduit0": "organ0",
+    "organ0conduit1": "organ0conduit0",
+    "organ0mouth": "organ0conduit1",
+    "organ0mouth_jaw-1": "organ0mouth",
+    "organ0mouth_jaw1": "organ0mouth",
+    "organ1": "chest",
+    "organ1conduit0": "organ1",
+    "organ1conduit1": "organ1conduit0",
+    "organ1mouth": "organ1conduit1",
+    "organ1mouth_jaw-1": "organ1mouth",
+    "organ1mouth_jaw1": "organ1mouth",
+    "organ2": "chest",
+    "organ2conduit0": "organ2",
+    "organ2conduit1": "organ2conduit0",
+    "organ2mouth": "organ2conduit1",
+    "organ2mouth_jaw-1": "organ2mouth",
+    "organ2mouth_jaw1": "organ2mouth"
+  },
+  "build_seconds": 25.731,
+  "source_render_seconds": 12.549,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "42a82df252d24c33aa47953957c142f835180ea7b985777e430c3e9f72e34ecf"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

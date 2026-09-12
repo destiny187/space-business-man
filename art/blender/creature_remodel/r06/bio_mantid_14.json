@@ -1,0 +1,279 @@
+{
+  "id": "bio_mantid_14",
+  "source_id": "bio_mantid_14",
+  "name": "습지 분지형 낫날절지류",
+  "family": "mantid",
+  "kind": "mantid",
+  "construction": "mantid",
+  "anatomical_type": "beetle",
+  "organ_system": "sails",
+  "environment": "wetland",
+  "habitat": "충분한 수분·유기 기질·수위 변화",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.265,
+    "height": 1.0,
+    "mode": 3,
+    "radial_count": 8,
+    "limb_count": 4,
+    "eye_count": 2,
+    "lineage": 2
+  },
+  "attack": "scythe",
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "34494e",
+    "c0b477"
+  ],
+  "host_pattern": "scythe",
+  "host_motion": "double_sweep",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "mantid",
+    "support_limbs": 6,
+    "oral_organs": 1,
+    "articulated_organs": 28
+  },
+  "version": "r06-1",
+  "build_fingerprint": "e5cba6fe7a162716dcafd86e4ebd44cb496a2adcda437190270bb5c7cdfff8b8",
+  "normalized_geometry_sha256": "6bd57beb357633babb53566cb55b809d113de2dbceee623ef3f9001df71def5f",
+  "source": "art/blender/creature_remodel/r06/bio_mantid_14.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 52,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        0.9200000762939453
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        0.9200000762939453
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        0.9200000762939453
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        -0.32499998807907104
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        -0.32499998807907104
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.36618808241810513,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.567591527748063,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.2,
+      "leg3": 0.7,
+      "leg4": 0.4,
+      "leg5": 0.9
+    },
+    "strike_origins": [
+      {
+        "bone": "raptorial_secondary-11",
+        "point": [
+          -0.4300000071525574,
+          0.6699999570846558,
+          1.2799999713897705
+        ]
+      },
+      {
+        "bone": "raptorial_secondary11",
+        "point": [
+          0.4300000071525574,
+          0.6699999570846558,
+          1.2799999713897705
+        ]
+      }
+    ]
+  },
+  "muzzle": [
+    0.0,
+    0.7099999785423279,
+    0.9200000762939453
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_mantid_14_near.glb",
+      "sha256": "f9322e7428c8f5866fcafa7408c1cfbb02227a37d246023f4965b3c17d61b9df",
+      "triangles": 45654,
+      "min": [
+        -1.2301173210144043,
+        0.02499999850988388,
+        -1.1520823240280151
+      ],
+      "max": [
+        1.2301173210144043,
+        1.9334081411361694,
+        1.28793466091156
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_mantid_14_far.glb",
+      "sha256": "cd2b9a150a04a75baafc4f699dd491c3d771bf6d553990e2d370009b77ba6d34",
+      "triangles": 19624,
+      "min": [
+        -1.2301621437072754,
+        0.024997156113386154,
+        -1.1521568298339844
+      ],
+      "max": [
+        1.2301616668701172,
+        1.933397650718689,
+        1.2891443967819214
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "abdomen": "chest",
+    "elytron-1": "abdomen",
+    "elytron1": "abdomen",
+    "head": "chest",
+    "oral": "head",
+    "oral_petal0": "oral",
+    "oral_petal1": "oral",
+    "oral_petal2": "oral",
+    "Compound receptor -1_lid": "head",
+    "antenna-10": "head",
+    "antenna-11": "antenna-10",
+    "Compound receptor 1_lid": "head",
+    "antenna10": "head",
+    "antenna11": "antenna10",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "abdomen",
+    "organ1": "abdomen",
+    "organ2": "abdomen",
+    "organ3": "chest",
+    "organ4": "chest",
+    "organ5": "chest",
+    "organ6": "chest",
+    "organ7": "chest",
+    "abdominal_respiration-1_0": "abdomen",
+    "abdominal_respiration-1_1": "abdomen",
+    "abdominal_respiration-1_2": "abdomen",
+    "raptorial_secondary-10": "head",
+    "raptorial_secondary-11": "raptorial_secondary-10",
+    "abdominal_respiration1_0": "abdomen",
+    "abdominal_respiration1_1": "abdomen",
+    "abdominal_respiration1_2": "abdomen",
+    "raptorial_secondary10": "head",
+    "raptorial_secondary11": "raptorial_secondary10"
+  },
+  "build_seconds": 13.975,
+  "source_render_seconds": 3.774,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "90fef39df06b7e0085d268181cb99f4c8598d79d003958f4233e2cfb09230ef3"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "id": "bio_stalker_02",
+  "source_id": "bio_stalker_02",
+  "name": "숲 갑주형 추적포식류",
+  "family": "stalker",
+  "kind": "stalker",
+  "construction": "stalker",
+  "anatomical_type": "canid",
+  "organ_system": "gills",
+  "environment": "temperate",
+  "habitat": "온화한 기후·액체 물·생산자와 먹이망",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.035,
+    "height": 1.0,
+    "mode": 1,
+    "radial_count": 4,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 0
+  },
+  "attack": "bite",
+  "palette": [
+    "657849",
+    "adbc72",
+    "34494e",
+    "bb9357"
+  ],
+  "host_pattern": "bite",
+  "host_motion": "melee",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "stalker",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 18
+  },
+  "version": "r06-1",
+  "build_fingerprint": "f1ee48ef00cd2f9909df31880b28568b70e711ca9bceca16178a813cd0f53acf",
+  "normalized_geometry_sha256": "b6ac845095a52704471c889b13b6b9f2a869dbeea9c0931cb620bc72df8b9b8f",
+  "source": "art/blender/creature_remodel/r06/bio_stalker_02.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 35,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.30982398986816406,
+        0.10000000149011612,
+        0.46355998516082764
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.30982398986816406,
+        0.10000000149011612,
+        0.46355998516082764
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.30982398986816406,
+        0.10000000149011612,
+        -0.49724000692367554
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.30982398986816406,
+        0.10000000149011612,
+        -0.49724000692367554
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.24209374753341806,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.375245308676798,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.9424999952316284,
+    1.7170000076293945
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_stalker_02_near.glb",
+      "sha256": "19a461a9b73351ab96540e3157ca4c0c373168f97e1881c7c6213134c1eafbc3",
+      "triangles": 39626,
+      "min": [
+        -0.4842744469642639,
+        0.02499999850988388,
+        -1.2114629745483398
+      ],
+      "max": [
+        0.482740193605423,
+        1.7913038730621338,
+        1.7349997758865356
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_stalker_02_far.glb",
+      "sha256": "d17b6277475dba07614e22fb091613c3f94399e05a2931591355061240c71c0d",
+      "triangles": 17030,
+      "min": [
+        -0.4843785762786865,
+        0.024996541440486908,
+        -1.2118518352508545
+      ],
+      "max": [
+        0.48281973600387573,
+        1.7913038730621338,
+        1.7349997758865356
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial1",
+    "organ3": "axial0",
+    "rear_audio-10": "chest",
+    "rear_audio-11": "rear_audio-10",
+    "rear_audio10": "chest",
+    "rear_audio11": "rear_audio10"
+  },
+  "build_seconds": 8.982,
+  "source_render_seconds": 3.796,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "d8370e9ef6793ae748085c6a3efea6bf6c8c8711a605712b2ffe867f5bdaf120"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

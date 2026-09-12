@@ -30,13 +30,22 @@ def main():
     dest=ROOT/'output/creature-remodel/production';dest.mkdir(parents=True,exist_ok=True)
     workers=int(os.environ.get('CREATURE_WORKERS','4'));threads=int(os.environ.get('CREATURE_THREADS','2'));chunk_size=int(os.environ.get('CREATURE_CHUNK_SIZE','48'))
     assert 1<=workers<=8 and threads>=1 and chunk_size>0
-    queues=[[r['id'] for r in rows[worker::workers]] for worker in range(workers)]
+    pending=rows
+    if os.environ.get('CREATURE_PENDING_ONLY')=='1':
+        # Reuse the publisher's source fingerprints and verified asset hashes.
+        # Preserve the full selection below so final coverage still checks every ID.
+        from publish_manifest import main as publish
+        publish(BATCH)
+        current=json.loads((ROOT/f'우주-비즈니스/data/creature_remodel_{BATCH}.json').read_text())['forms']
+        done={r['id'] for r in current if (ROOT/r['source']).is_file() and (ROOT/f'docs/production/media/creature-remodel/{BATCH}/blender'/f"{r['id']}.png").is_file()}
+        pending=[r for r in rows if r['id'] not in done]
+    queues=[[r['id'] for r in pending[worker::workers]] for worker in range(workers)]
     prefix=mode if BATCH=='r03' else BATCH+'-'+mode
     logs=[open(dest/f'{prefix}-{worker}.log','w') for worker in range(workers)]
     jobs={};codes=[];completed_chunks=0
     reuse=os.environ.get('CREATURE_REUSE_LOD')=='1';capture=reuse or os.environ.get('CREATURE_CAPTURE_ANIMATION')=='1'
     script='produce_reused.py' if reuse else ('produce_captured.py' if capture else {'r03':'produce.py','r04':'produce_midpoints.py','r05':'produce_air.py','r06':'produce_legacy.py'}[BATCH])
-    state={'mode':mode,'species_count':len(rows),'status':'running','chunk_size':chunk_size,'batch':BATCH,'selected_ids':[r['id'] for r in rows]}
+    state={'mode':mode,'species_count':len(rows),'pending_at_start':len(pending),'status':'running','chunk_size':chunk_size,'batch':BATCH,'selected_ids':[r['id'] for r in rows]}
     path=dest/('active.json' if BATCH=='r03' else BATCH+'-active.json')
     def save_state():
         state.update(pids=[p.pid for p in jobs.values()],completed_chunks=completed_chunks)

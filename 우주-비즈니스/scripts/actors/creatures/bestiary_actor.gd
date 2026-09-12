@@ -164,6 +164,7 @@ func set_lod(distant: bool) -> void:
 	var index:=1 if distant and models.size()>1 else 0
 	if visible_model==index:return
 	visible_model=index
+	if not remodel.is_empty() and ground_motion!=null:ground_motion.sync_visible_lod(index)
 	for i in range(models.size()):models[i].visible=i==index
 	if not mouth_markers.is_empty():mouth_marker=mouth_markers[index]
 

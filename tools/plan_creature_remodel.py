@@ -33,17 +33,22 @@ def main():
             if p.with_suffix('.lock').exists():continue
             entry=json.loads(p.read_text())
             if expected and not checkpoint_current(entry,expected):continue
+            if batch=='r06':
+                from strike_metadata import patch
+                patch(entry)
+                from body_support_metadata import patch as patch_body
+                patch_body(entry)
             built[entry['source_id']]=entry
             evidence=ROOT/'output/creature-remodel'/batch/(entry['id']+'_evidence.json')
             if evidence.exists():
                 data=json.loads(evidence.read_text());record=data.get('species',data)
-                if record.get('id')==entry['id'] and data.get('renderer')=='forward_plus' and record.get('asset_sha256')=={k:v['sha256'] for k,v in entry['lods'].items()}:captured.add(entry['source_id'])
+                if record.get('id')==entry['id'] and data.get('renderer')=='forward_plus' and record.get('asset_sha256')=={k:v['sha256'] for k,v in entry['lods'].items()} and (batch=='r05' or record.get('authored_pose_capture_version',0)>=2) and record.get('contact_metadata_version',0)==entry.get('contact_metadata_version',0) and record.get('body_support_version',0)==entry.get('body_support_version',0):captured.add(entry['source_id'])
         evidence=ROOT/'docs/production/media/creature-remodel'/batch/'evidence.json'
         if evidence.exists():
             data=json.loads(evidence.read_text())
             for record in data.get('species',[]):
                 entry=next((r for r in built.values() if r['id']==record['id']),None)
-                if entry and record.get('asset_sha256')=={k:v['sha256'] for k,v in entry['lods'].items()}:audited.add(entry['source_id'])
+                if entry and record.get('asset_sha256')=={k:v['sha256'] for k,v in entry['lods'].items()} and (batch=='r05' or record.get('authored_pose_capture_version',0)>=2) and record.get('contact_metadata_version',0)==entry.get('contact_metadata_version',0) and record.get('body_support_version',0)==entry.get('body_support_version',0):audited.add(entry['source_id'])
     runtime=json.loads((ROOT/'우주-비즈니스/data/creature_remodel_runtime.json').read_text())
     enabled=set(runtime['enabled_ground_species'])|set(runtime.get('enabled_air_species',[]))
     rows=[]

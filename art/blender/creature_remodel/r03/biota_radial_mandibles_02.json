@@ -1,0 +1,244 @@
+{
+  "id": "biota_radial_mandibles_02",
+  "name": "집광곧은네마디겹턱방사수",
+  "family": "biota_radial_mandibles",
+  "construction": "radial",
+  "organ_system": "mandibles",
+  "environment": "temperate",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_radial_mandibles_02",
+  "kind": "radial",
+  "habitat": "넓은 광합성·감각 면과 여과 기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "중앙 소화체에서 바깥으로 뻗는 방사 기관·맞물리는 한 쌍의 관절 턱 / 직렬 배열·주요 기관 4개",
+  "recipe_sha256": "666b25d0ad5202cd0197405f745209b1e3ef1f3532b5da08e0cf2f462b2de2f0",
+  "authored_anatomy": "Continuous radial anatomy; mandibles lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "12cf5908c84acc2e83db9e62ed36c89f2c448f8fbb6e76e8c40fe7f06692c295",
+  "normalized_geometry_sha256": "cf874b6e2516f13b8f3d0ee5733046cfeab562291eed9ebf44d0def76f32fbc0",
+  "source": "art/blender/creature_remodel/r03/biota_radial_mandibles_02.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 46,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        1.0119999647140503
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8764176368713379,
+        0.10999999940395355,
+        0.5059999823570251
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.8764176368713379,
+        0.10999999940395355,
+        -0.5059999823570251
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        -1.0119999647140503
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.8764176368713379,
+        0.10999999940395355,
+        -0.5059999823570251
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.8764176368713379,
+        0.10999999940395355,
+        0.5059999823570251
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.31038377633219727,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.48109485331490576,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.20999997854232788,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_radial_mandibles_02_near.glb",
+      "sha256": "04260669bf2480396f836e26fd44ce8878dd08bb06e4341895b5f3dccf753b76",
+      "triangles": 37552,
+      "min": [
+        -1.504867672920227,
+        0.034999996423721313,
+        -1.6151765584945679
+      ],
+      "max": [
+        1.560025930404663,
+        0.9113038778305054,
+        1.504867672920227
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_radial_mandibles_02_far.glb",
+      "sha256": "968602e88cad22d2f89267419786391ed0e7cf2844827503253ad816c0853017",
+      "triangles": 16142,
+      "min": [
+        -1.505034327507019,
+        0.034996528178453445,
+        -1.6152130365371704
+      ],
+      "max": [
+        1.560117483139038,
+        0.9113038778305054,
+        1.505036473274231
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "radial_axis01",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "radial_axis11",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "radial_axis21",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2",
+    "organ3": "radial_axis31",
+    "organ3jaw-1": "organ3",
+    "organ3jaw1": "organ3"
+  },
+  "build_seconds": 17.025,
+  "source_render_seconds": 3.721,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "473adc3d58f1ffab65fb283ab84236ceabf91f4b7bbf0c56123174e9807ea06f"
+  }
+}

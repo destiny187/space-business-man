@@ -29,7 +29,7 @@ def bird(s):
             s.wing_chains.append({'bones':names,'side':side,'pair':pair})
             s.membrane('Attached proximal flight web',[root,elbow,wrist,root+V((0,.49,0))],'skin')
             if style=='membrane':
-                count=4
+                count=int(s.spec.get('art_refinements',{}).get('membrane_digits',4))
                 for i in range(count):
                     finger='wingfinger'+str(pair)+'_'+str(side)+'_'+str(i);tip=wrist+V((side*(.28+i*.13),.16+i*.20,-.03));s.bone(finger,wrist,tip,names[-1]);s.organs.append((finger,'flight_digit',i*.4))
                     s.tube('Tensioned membrane finger '+finger,[wrist,tip],[.035,.012],'keratin',finger)

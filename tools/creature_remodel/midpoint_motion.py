@@ -7,6 +7,14 @@ from refine_creature_motion import pulse
 
 def animate(s):
     p=s.profile;rig=s.arm;kind=s.spec['construction'];host=s.spec.get('host_motion','');scene=bpy.context.scene;scene.render.fps=30;s.actions={}
+    pattern=s.spec.get('host_pattern','none');paw_strike=kind=='felid' and pattern=='claw'
+    if paw_strike:
+        contact_bones=['front1_foot'];p['attack_unplanted_limbs']={'front1':[.02,1.65]}
+    elif kind in ['scorpion','mantid'] and pattern in ['claw','scythe']:
+        names=[name for name in s.bones if name.startswith('raptorial')]
+        contact_bones=sorted([name for name in names if not any(s.bones[child]['parent']==name for child in names)],key=lambda name:s.bones[name]['a'].x)
+    else:contact_bones=[]
+    if contact_bones:p['strike_origins']=[{'bone':name,'point':[s.bones[name]['b'].x,s.bones[name]['b'].z,-s.bones[name]['b'].y]} for name in contact_bones]
     states=[('idle_loop',2),('move_loop',2),('run_loop',1.2),('feed',2.4),('attack',2.8),('hurt',.8),('blocked',.9),('stop',.6),('turn_left',1),('turn_right',1),('down',1.2)]
     if host=='charge':states.append(('charge_loop',1.2))
     if host=='leap':states.extend([('leap_prepare',.8),('leap_air',1.),('leap_land',.7)])
@@ -36,7 +44,10 @@ def animate(s):
                 elif role=='neck':
                     reach=.36 if name.startswith(('raptorial','prehensile_trunk','stinger_axis')) else .13
                     alternating=(1 if '-1' in name else -1) if host=='double_sweep' else 1
-                    s.local(name,(reach*wind-reach*1.6*strike+.015*wave,0,alternating*.24*strike if host=='double_sweep' else .012*wave))
+                    local_strike=strike
+                    if kind=='mantid' and host=='double_sweep' and state=='attack' and name.startswith('raptorial'):
+                        local_strike=pulse(t,.86,1.03,1.22) if s.bones[name]['a'].x<0 else pulse(t,1.34,1.55,1.77)
+                    s.local(name,(reach*wind-reach*1.6*local_strike+.015*wave,0,alternating*.24*local_strike if host=='double_sweep' else .012*wave))
                 elif role=='mouth':s.local(name,(.08*wind-.07*strike,0,.025*wave if state=='feed' else 0))
                 elif role=='panel':s.local(name,(0,.04*wave+.14*wind-.20*strike,0))
                 elif role=='rib':s.local(name,(.015*wave,0,0),scale=(1+.04*wind,1+.04*wind,1))
@@ -54,6 +65,8 @@ def animate(s):
                 if moving:
                     foot.y+=-forward+((-.5+fraction/gait['stance'])*gait['stride'] if fraction<gait['stance'] else (.5-smooth(0,1,(fraction-gait['stance'])/(1-gait['stance'])))*gait['stride'])
                     if fraction>=gait['stance']:foot.z+=math.sin((fraction-gait['stance'])/(1-gait['stance'])*math.pi)*min(.14,s.support_height*.22)
+                if paw_strike and state=='attack' and leg['name']=='front1':
+                    foot+=V((-.10*strike,.10*wind-.38*strike,.34*wind+.20*strike))
                 if state=='leap_air':
                     foot.z+=s.support_height*.48;foot.y+=.08 if leg['name'].startswith('front') else -.12
                 if state=='leap_land':foot.z+=s.support_height*.48*(1-smooth(0,.16,t))

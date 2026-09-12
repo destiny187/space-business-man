@@ -32,7 +32,7 @@ def checkpoint_current(row,expected):
     if row['build_fingerprint']==captured_fingerprint(base):return True
     from produce_reused import fingerprint as reused_fingerprint,legacy_fingerprint
     reuse=row.get('lod_animation_reuse',{})
-    return (reuse=={'version':1,'source':'near'} and row['build_fingerprint']==legacy_fingerprint(base)) or (reuse=={'version':2,'source':'near'} and row['build_fingerprint']==reused_fingerprint(base))
+    return any(reuse=={'version':v,'source':'near'} and row['build_fingerprint']==legacy_fingerprint(base,v) for v in [1,2]) or (reuse=={'version':3,'source':'near'} and row['build_fingerprint']==reused_fingerprint(base))
 
 def main(batch):
     assert batch.isidentifier()
@@ -54,10 +54,15 @@ def main(batch):
         # Describe the two authored peaks, without rebuilding meshes or changing host timing.
         if batch in ['r04','r06'] and row.get('host_motion')=='double_sweep':
             row['motion_profile'].update(release=[1.03,1.55],active_end=1.77)
+        if batch=='r06':
+            from strike_metadata import patch
+            patch(row)
+            from body_support_metadata import patch as patch_body
+            patch_body(row)
         rows.append(row)
         # Small per-species runtime records; build audit and skeleton graphs remain offline.
         runtime={k:row[k] for k in ['id','source_id','name','kind','palette','attack','bone_count','locomotion_chains','clips','muzzle','lods','motion_profile','sockets']}
-        for key in ['host_motion','host_pattern','air_motion']:
+        for key in ['host_motion','host_pattern','air_motion','contact_metadata_version','body_support_version']:
             if key in row:runtime[key]=row[key]
         destination=ROOT/'우주-비즈니스/data/creature_remodel'/batch/(row['id']+'.json');destination.parent.mkdir(parents=True,exist_ok=True)
         content=json.dumps(runtime,ensure_ascii=False,separators=(',',':'))+'\n'

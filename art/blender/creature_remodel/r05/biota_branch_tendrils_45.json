@@ -1,0 +1,229 @@
+{
+  "id": "biota_branch_tendrils_45",
+  "name": "운해둘레일곱마디뿌리별수",
+  "family": "biota_branch_tendrils",
+  "construction": "branch",
+  "organ_system": "tendrils",
+  "environment": "gas_cloud",
+  "locomotion_medium": "atmosphere",
+  "anatomy_note": "연결된 가지 몸통 끝마다 배치된 기관·말단이 갈라지는 굵은 촉지 / 방사 배열·주요 기관 7개",
+  "source_id": "biota_branch_tendrils_45",
+  "kind": "branch",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "고체 발판 없이 떠 있는 부력낭·평형막·현수 여과기관의 가상 대기층 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 4,
+    "radial_count": 7,
+    "limb_count": 4,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "flight": {},
+  "anatomical_type": "branch",
+  "production_batch": "r05",
+  "air_motion": false,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "branch",
+    "medium": "atmosphere",
+    "wing_chains": 0,
+    "ground_supports": 0,
+    "organs": 68
+  },
+  "version": "r05-1",
+  "build_fingerprint": "0b7d3f5799d5a0e044198654c597f8772367b9b068af5a96d2fb2ba1739c1bfe",
+  "normalized_geometry_sha256": "af5f85cfbdb8bd19ad488803902beab1059d1754bcf71926a202a7cdc096ad60",
+  "source": "art/blender/creature_remodel/r05/biota_branch_tendrils_45.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 72,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {}
+  },
+  "muzzle": [
+    0.0,
+    0.6200000047683716,
+    0.14000000059604645
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_branch_tendrils_45_near.glb",
+      "sha256": "c0972637a3cd03a3e03a56ca44deb24131044eb226eeacce1d456d8ec4686d22",
+      "triangles": 14664,
+      "min": [
+        -2.074958086013794,
+        0.46816787123680115,
+        -2.256687641143799
+      ],
+      "max": [
+        2.1908891201019287,
+        1.5413038730621338,
+        2.256688356399536
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_branch_tendrils_45_far.glb",
+      "sha256": "5d1ffd3ccdad71fb100377f4ce5634496266bdeeef0291e7bd3f940898dec661",
+      "triangles": 6299,
+      "min": [
+        -2.04172420501709,
+        0.46816787123680115,
+        -2.2458298206329346
+      ],
+      "max": [
+        2.1484596729278564,
+        1.5413038730621338,
+        2.2458302974700928
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "buoyant_ray00": "chest",
+    "buoyant_ray01": "buoyant_ray00",
+    "buoyant_ray10": "chest",
+    "buoyant_ray11": "buoyant_ray10",
+    "buoyant_ray20": "chest",
+    "buoyant_ray21": "buoyant_ray20",
+    "buoyant_ray30": "chest",
+    "buoyant_ray31": "buoyant_ray30",
+    "buoyant_ray40": "chest",
+    "buoyant_ray41": "buoyant_ray40",
+    "buoyant_ray50": "chest",
+    "buoyant_ray51": "buoyant_ray50",
+    "buoyant_ray60": "chest",
+    "buoyant_ray61": "buoyant_ray60",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "trailing_feeler00": "chest",
+    "trailing_feeler01": "trailing_feeler00",
+    "trailing_feeler10": "chest",
+    "trailing_feeler11": "trailing_feeler10",
+    "trailing_feeler20": "chest",
+    "trailing_feeler21": "trailing_feeler20",
+    "trailing_feeler30": "chest",
+    "trailing_feeler31": "trailing_feeler30",
+    "trailing_feeler40": "chest",
+    "trailing_feeler41": "trailing_feeler40",
+    "trailing_feeler50": "chest",
+    "trailing_feeler51": "trailing_feeler50",
+    "trailing_feeler60": "chest",
+    "trailing_feeler61": "trailing_feeler60",
+    "organ0": "buoyant_ray01",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "buoyant_ray11",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "buoyant_ray21",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1",
+    "organ3": "buoyant_ray31",
+    "organ3tactile0": "organ3",
+    "organ3tactile1": "organ3tactile0",
+    "organ3branch-10": "organ3tactile1",
+    "organ3branch10": "organ3tactile1",
+    "organ4": "buoyant_ray41",
+    "organ4tactile0": "organ4",
+    "organ4tactile1": "organ4tactile0",
+    "organ4branch-10": "organ4tactile1",
+    "organ4branch10": "organ4tactile1",
+    "organ5": "buoyant_ray51",
+    "organ5tactile0": "organ5",
+    "organ5tactile1": "organ5tactile0",
+    "organ5branch-10": "organ5tactile1",
+    "organ5branch10": "organ5tactile1",
+    "organ6": "buoyant_ray61",
+    "organ6tactile0": "organ6",
+    "organ6tactile1": "organ6tactile0",
+    "organ6branch-10": "organ6tactile1",
+    "organ6branch10": "organ6tactile1"
+  },
+  "build_seconds": 11.192,
+  "source_render_seconds": 5.665,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "a8568b8e4becf8acb830078c9c7bad21157dd858358ebbedeb7dc494a6a2b8ad"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

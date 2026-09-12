@@ -39,7 +39,7 @@
     "jointed_oral_organs": 1
   },
   "version": "r04-1",
-  "build_fingerprint": "2a1efc77630f910c3af405088d66a91b1e075fbc7c8869dfb4dd9f295726fa63",
+  "build_fingerprint": "bbf5d322c69268df79d0155dc50fb1c9b910c97c11e8c67b61a7ebace5e5df18",
   "normalized_geometry_sha256": "373792cd3a1cddb878c5abda30face89b9ee39f028558f8d910be53ec2ee708b",
   "source": "art/blender/creature_remodel/r04/biota_lobopod_gills_26.blend",
   "status": "built-awaiting-game-render",
@@ -141,7 +141,23 @@
       "front1": 0,
       "hind-1": 0,
       "hind1": 0.5
-    }
+    },
+    "attack_unplanted_limbs": {
+      "front1": [
+        0.02,
+        1.65
+      ]
+    },
+    "strike_origins": [
+      {
+        "bone": "front1_foot",
+        "point": [
+          0.33886998891830444,
+          0.10000000149011612,
+          0.7808200120925903
+        ]
+      }
+    ]
   },
   "muzzle": [
     0.0,
@@ -151,7 +167,7 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_gills_26_near.glb",
-      "sha256": "47f7658b37229d8b527ccee51ffde5233f5482f5fc4a6fa91927b414a1b920fb",
+      "sha256": "e4e8de7213eb5f755046c99a29602157959de088f5af6620680774919f6dbf48",
       "triangles": 36566,
       "min": [
         -0.4543698728084564,
@@ -166,7 +182,7 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_gills_26_far.glb",
-      "sha256": "6d51f4d28a01a2e302eaddd97b8e2b3fb838f999463c7570b80e0f2022e8cd1b",
+      "sha256": "2bc66e5c13ca13cdf3d2461ef3bf5ef30da21527cdb4e70856b015fd61febb48",
       "triangles": 15714,
       "min": [
         -0.454345166683197,
@@ -212,6 +228,14 @@
     "organ1": "axial1",
     "organ2": "axial0"
   },
-  "build_seconds": 15.035,
-  "source_render_seconds": 3.578
+  "build_seconds": 61.794,
+  "source_render_seconds": 8.776,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "dfc8cc2d9d2efcff82ce1395f035b19bee4e33c629983f03de96b88a47e9edbd"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
 }

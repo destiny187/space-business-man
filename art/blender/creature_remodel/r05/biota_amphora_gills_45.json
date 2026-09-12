@@ -1,0 +1,191 @@
+{
+  "id": "biota_amphora_gills_45",
+  "name": "운해둘레일곱마디깃아가미항수",
+  "family": "biota_amphora_gills",
+  "construction": "amphora",
+  "organ_system": "gills",
+  "environment": "gas_cloud",
+  "locomotion_medium": "atmosphere",
+  "anatomy_note": "수축 목과 열린 입구를 가진 항아리 몸체·넓게 펼친 깃 아가미 / 방사 배열·주요 기관 7개",
+  "source_id": "biota_amphora_gills_45",
+  "kind": "amphora",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "고체 발판 없이 떠 있는 부력낭·평형막·현수 여과기관의 가상 대기층 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 4,
+    "radial_count": 7,
+    "limb_count": 4,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "flight": {},
+  "anatomical_type": "amphora",
+  "production_batch": "r05",
+  "air_motion": false,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "amphora",
+    "medium": "atmosphere",
+    "wing_chains": 0,
+    "ground_supports": 0,
+    "organs": 30
+  },
+  "version": "r05-1",
+  "build_fingerprint": "c1b62a8bf6e7a7ce2dc6dd267c9864526c1a74b9e5d50e74d1abc30c88127a49",
+  "normalized_geometry_sha256": "4d24850b42e12e25ed9d14b128ae049ce8fe058b13b51a4df7067b37d4ca3e5c",
+  "source": "art/blender/creature_remodel/r05/biota_amphora_gills_45.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 34,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {}
+  },
+  "muzzle": [
+    0.0,
+    0.6200000047683716,
+    0.14000000059604645
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_amphora_gills_45_near.glb",
+      "sha256": "69fd65e552ff86bf7ea888753b2590b568d2b5fededb5afb0efb969ab0db2aec",
+      "triangles": 30342,
+      "min": [
+        -1.066489815711975,
+        0.46816787123680115,
+        -0.7062784433364868
+      ],
+      "max": [
+        1.066489815711975,
+        2.0418856143951416,
+        0.7062785029411316
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_amphora_gills_45_far.glb",
+      "sha256": "af67e91d12fb945d7a7b5ca7aec14a5bd6e5c68c19522812cbbffc24b0e46a63",
+      "triangles": 13040,
+      "min": [
+        -1.0669251680374146,
+        0.46816787123680115,
+        -0.7071409225463867
+      ],
+      "max": [
+        1.0669251680374146,
+        2.04085636138916,
+        0.7070834040641785
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "pressure_keel-10": "chest",
+    "pressure_keel-11": "pressure_keel-10",
+    "pressure_keel10": "chest",
+    "pressure_keel11": "pressure_keel10",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "trailing_feeler00": "chest",
+    "trailing_feeler01": "trailing_feeler00",
+    "trailing_feeler10": "chest",
+    "trailing_feeler11": "trailing_feeler10",
+    "trailing_feeler20": "chest",
+    "trailing_feeler21": "trailing_feeler20",
+    "trailing_feeler30": "chest",
+    "trailing_feeler31": "trailing_feeler30",
+    "trailing_feeler40": "chest",
+    "trailing_feeler41": "trailing_feeler40",
+    "trailing_feeler50": "chest",
+    "trailing_feeler51": "trailing_feeler50",
+    "trailing_feeler60": "chest",
+    "trailing_feeler61": "trailing_feeler60",
+    "organ0": "chest",
+    "organ1": "chest",
+    "organ2": "chest",
+    "organ3": "chest",
+    "organ4": "chest",
+    "organ5": "chest",
+    "organ6": "chest"
+  },
+  "build_seconds": 8.519,
+  "source_render_seconds": 13.473,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "eedeb852c782baadacbc320a8e7246b0c14d926a809c2a81314d929927a74448"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

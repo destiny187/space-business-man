@@ -1,0 +1,321 @@
+{
+  "id": "bio_stalker_05",
+  "source_id": "bio_stalker_05",
+  "name": "숲 확장형 추적포식류",
+  "family": "stalker",
+  "kind": "stalker",
+  "construction": "stalker",
+  "anatomical_type": "canid",
+  "organ_system": "siphons",
+  "environment": "temperate",
+  "habitat": "온화한 기후·액체 물·생산자와 먹이망",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.1400000000000001,
+    "height": 1.0,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 0
+  },
+  "attack": "bite",
+  "palette": [
+    "657849",
+    "adbc72",
+    "34494e",
+    "bb9357"
+  ],
+  "host_pattern": "bite",
+  "host_motion": "melee",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "stalker",
+    "support_limbs": 4,
+    "oral_organs": 8,
+    "articulated_organs": 42
+  },
+  "version": "r06-1",
+  "build_fingerprint": "c1b76cdf5073f1cdff696a86a531fcc8025043c945b8f5aff78df4b63f301e51",
+  "normalized_geometry_sha256": "21bd3ac93b34a734b066364dcdb8e5684b560151f272bde3476be1e9542fb767",
+  "source": "art/blender/creature_remodel/r06/bio_stalker_05.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 73,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_organ0mouth": {
+      "bone": "organ0mouth",
+      "point": [
+        0.41699928045272827,
+        2.3523643016815186,
+        0.39114001393318176
+      ]
+    },
+    "Socket_organ1mouth": {
+      "bone": "organ1mouth",
+      "point": [
+        0.44159606099128723,
+        2.4015579223632812,
+        0.39114001393318176
+      ]
+    },
+    "Socket_organ2mouth": {
+      "bone": "organ2mouth",
+      "point": [
+        0.4661928117275238,
+        2.450751304626465,
+        0.39114001393318176
+      ]
+    },
+    "Socket_organ3mouth": {
+      "bone": "organ3mouth",
+      "point": [
+        -0.41699928045272827,
+        2.3523643016815186,
+        -0.0
+      ]
+    },
+    "Socket_organ4mouth": {
+      "bone": "organ4mouth",
+      "point": [
+        -0.44159606099128723,
+        2.4015579223632812,
+        -0.0
+      ]
+    },
+    "Socket_organ5mouth": {
+      "bone": "organ5mouth",
+      "point": [
+        0.4661928117275238,
+        2.450751304626465,
+        -0.39114001393318176
+      ]
+    },
+    "Socket_organ6mouth": {
+      "bone": "organ6mouth",
+      "point": [
+        0.41699928045272827,
+        2.3523643016815186,
+        -0.39114001393318176
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.29628801345825195,
+        0.10000000149011612,
+        0.49542000889778137
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.29628801345825195,
+        0.10000000149011612,
+        0.49542000889778137
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.29628801345825195,
+        0.10000000149011612,
+        -0.5301799774169922
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.29628801345825195,
+        0.10000000149011612,
+        -0.5301799774169922
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2420275452307409,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3751426951076484,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.9424999952316284,
+    1.7170000076293945
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_stalker_05_near.glb",
+      "sha256": "bd51111bba300ce4af1b794d1082daa51a57a941183bc724b9b5dec2a4e0acd2",
+      "triangles": 50442,
+      "min": [
+        -0.4915851354598999,
+        0.02499999850988388,
+        -1.2480195760726929
+      ],
+      "max": [
+        0.5161818861961365,
+        2.506716012954712,
+        1.7349997758865356
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_stalker_05_far.glb",
+      "sha256": "f746651cefaf6c05088cc081f7485c2856948b277499fa03f03e70eabb8759c2",
+      "triangles": 21680,
+      "min": [
+        -0.4914041757583618,
+        0.02499999850988388,
+        -1.2483073472976685
+      ],
+      "max": [
+        0.516001284122467,
+        2.5069377422332764,
+        1.7349997758865356
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ0conduit0": "organ0",
+    "organ0conduit1": "organ0conduit0",
+    "organ0mouth": "organ0conduit1",
+    "organ0mouth_jaw-1": "organ0mouth",
+    "organ0mouth_jaw1": "organ0mouth",
+    "organ1": "axial1",
+    "organ1conduit0": "organ1",
+    "organ1conduit1": "organ1conduit0",
+    "organ1mouth": "organ1conduit1",
+    "organ1mouth_jaw-1": "organ1mouth",
+    "organ1mouth_jaw1": "organ1mouth",
+    "organ2": "axial1",
+    "organ2conduit0": "organ2",
+    "organ2conduit1": "organ2conduit0",
+    "organ2mouth": "organ2conduit1",
+    "organ2mouth_jaw-1": "organ2mouth",
+    "organ2mouth_jaw1": "organ2mouth",
+    "organ3": "axial1",
+    "organ3conduit0": "organ3",
+    "organ3conduit1": "organ3conduit0",
+    "organ3mouth": "organ3conduit1",
+    "organ3mouth_jaw-1": "organ3mouth",
+    "organ3mouth_jaw1": "organ3mouth",
+    "organ4": "axial1",
+    "organ4conduit0": "organ4",
+    "organ4conduit1": "organ4conduit0",
+    "organ4mouth": "organ4conduit1",
+    "organ4mouth_jaw-1": "organ4mouth",
+    "organ4mouth_jaw1": "organ4mouth",
+    "organ5": "axial0",
+    "organ5conduit0": "organ5",
+    "organ5conduit1": "organ5conduit0",
+    "organ5mouth": "organ5conduit1",
+    "organ5mouth_jaw-1": "organ5mouth",
+    "organ5mouth_jaw1": "organ5mouth",
+    "organ6": "axial0",
+    "organ6conduit0": "organ6",
+    "organ6conduit1": "organ6conduit0",
+    "organ6mouth": "organ6conduit1",
+    "organ6mouth_jaw-1": "organ6mouth",
+    "organ6mouth_jaw1": "organ6mouth",
+    "rear_audio-10": "chest",
+    "rear_audio-11": "rear_audio-10",
+    "rear_audio10": "chest",
+    "rear_audio11": "rear_audio10"
+  },
+  "build_seconds": 16.792,
+  "source_render_seconds": 3.69,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "f9c92bec7c02defaffd76c593a498e2452463c242d3b1b175abc18c10b79557c"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

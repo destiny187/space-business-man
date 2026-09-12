@@ -21,6 +21,10 @@ def audit(batch):
         assert r['id']==f['id'] and e['renderer']=='forward_plus',f['id']
         hashes={lod:l['sha256'] for lod,l in f['lods'].items()}
         if r['asset_sha256']!=hashes:continue
+        if batch!='r05' and r.get('authored_pose_capture_version',0)<2:continue
+        if r.get('contact_metadata_version',0)!=f.get('contact_metadata_version',0):continue
+        if r.get('body_support_version',0)!=f.get('body_support_version',0):continue
+        if f.get('body_support_version'):assert r.get('max_body_contact_error',1)<.01,f['id']
         assert r['root_error']<.00001 and r.get('max_foot_target_error',r.get('max_ground_foot_error',1))<.025,f['id']
         if batch!='r05':
             assert r['bone_motion']>.01 and r['limb_phase_checks']==f['locomotion_chains']
@@ -46,12 +50,12 @@ def audit(batch):
     print(batch,'AUDIT',len(forms),'geometry',len(geometries),'parent graphs',len(topologies),flush=True)
     return forms,result
 
-def boards(batch,forms,prefix=''):
+def boards(batch,forms,prefix='',states=None):
     media=ROOT/'docs/production/media/creature-remodel'/batch;output=ROOT/'output/creature-remodel'/batch
     font=ImageFont.truetype(str(ROOT/'우주-비즈니스/assets/fonts/NotoSansKR.ttf'),13)
     # Nine clearly legible species per page, rather than an unbounded miniature sheet.
     for page in range(math.ceil(len(forms)/9)):
-        for state in (['0000','0540'] if batch=='r05' else ['idle','run','strike']):
+        for state in (states or (['0000','0540'] if batch=='r05' else ['idle','run','strike'])):
             canvas=Image.new('RGB',(1080,864),'#cbd5d0');draw=ImageDraw.Draw(canvas)
             for i,r in enumerate(forms[page*9:page*9+9]):
                 path=output/f"{r['id']}_{state}.png"

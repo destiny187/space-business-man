@@ -17,6 +17,7 @@ var wanted_clip:="idle_loop"
 var pose_clock:=0.0
 var pose_step:=0.0
 var grounded_error:=0.0
+var body_contact_error:=0.0
 var reach_debug: Dictionary={}
 
 func configure(owner: Node3D,display: Node3D) -> void:
@@ -62,6 +63,11 @@ func install(lod: int) -> void:
 
 func reset() -> void:
 	super.reset();planted.clear();released_feet.clear();settling_feet.clear();ground_samples.clear()
+
+func sync_visible_lod(lod: int) -> void:
+	# The hidden player may hold an old clip. Rejoin the shared pose immediately;
+	# keep the actor's gait clock and world-space foot contacts unchanged.
+	if lod<clips.size():clips[lod]=""
 
 func drive(target: Transform3D,delta: float,sampler: Callable,stopped: bool,interval: float=0.,revision: int=-1) -> void:
 	if initialized and point.distance_to(target.origin)>maxf(3.,body_length*actor.base_scale*float(config().teleport_lengths)):
@@ -192,6 +198,7 @@ func attack_clock() -> float:
 
 func pose_authored(visible_only: bool=false) -> void:
 	grounded_error=0
+	body_contact_error=0
 	for lod in players.size():
 		if visible_only and not actor.models[lod].visible:continue
 		var player:=players[lod]
@@ -241,7 +248,8 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 	if actor.state=="dormant" or (actor.state=="attack" and not host_grounded) or (actor.combat_override and actor.combat_phase in ["hurt","down","attack"] and not host_grounded):
 		planted.clear();return
 	if authored_limbs.is_empty():
-		terrain_tail(skeleton)
+		if profile.has("body_supports"):terrain_body(skeleton)
+		else:terrain_tail(skeleton)
 		return
 	var moving:=wanted_clip in ["move_loop","run_loop","charge_loop"]
 	var data: Dictionary=profile.run if gait=="run_loop" else profile
@@ -403,3 +411,23 @@ func terrain_tail(skeleton: Skeleton3D) -> void:
 		var shift: float=clampf((Vector3(hit.point)-visual.global_position).dot(visual.global_basis.y),-body_length*.04*actor.base_scale,body_length*.04*actor.base_scale)
 		value.origin+=skeleton.global_basis.inverse()*visual.global_basis.y*shift
 		set_global_pose(skeleton,bone,value)
+
+func terrain_body(skeleton: Skeleton3D) -> void:
+	# Lift the authored contractile pads only where local relief intersects the skin.
+	# Keep the lateral wave, limb-free locomotion and authority root unchanged.
+	var poses: Dictionary={};var shifts: Dictionary={};var samples: Array=[]
+	for support in profile.body_supports:
+		var owner:=skeleton.find_bone(support.owner)
+		var at:=socket_point(skeleton,support)
+		var hit:=ground_sample("body_"+str(support.bone),at,leg_length*actor.base_scale)
+		if hit.get("missing",false):continue
+		poses[owner]=skeleton.get_bone_global_pose(owner)
+		var penetration: float=(Vector3(hit.point)-at).dot(visual.global_basis.y)
+		shifts[owner]=maxf(float(shifts.get(owner,0.)),clampf(penetration+.008*actor.base_scale,0.,body_length*.20*actor.base_scale))
+		samples.append({"support":support,"ground":hit.point})
+	for bone in poses:
+		var value: Transform3D=poses[bone]
+		value.origin+=skeleton.global_basis.inverse()*visual.global_basis.y*float(shifts[bone])
+		set_global_pose(skeleton,bone,value)
+	for sample in samples:
+		body_contact_error=maxf(body_contact_error,(Vector3(sample.ground)-socket_point(skeleton,sample.support)).dot(visual.global_basis.y))

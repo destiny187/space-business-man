@@ -39,7 +39,7 @@
     "jointed_oral_organs": 5
   },
   "version": "r04-1",
-  "build_fingerprint": "8384167566004e52891ecef3ff7fa16dd6c8cfe07cdcab21ac4d1f50b67a941f",
+  "build_fingerprint": "655dc494f3e05b63e9f4bf79df4e507458e4d6ebc1a7b4648c114d777e27f71a",
   "normalized_geometry_sha256": "99e0d0d134aa162ad4aa8ff5b2a01dd2ff09b4216abd4b40da6e984cd8ec6725",
   "source": "art/blender/creature_remodel/r04/biota_crown_siphons_26.blend",
   "status": "built-awaiting-game-render",
@@ -206,7 +206,25 @@
       "leg5": 0.9,
       "leg6": 0.6000000000000001,
       "leg7": 1.1
-    }
+    },
+    "strike_origins": [
+      {
+        "bone": "raptorial-11",
+        "point": [
+          -0.6200000047683716,
+          0.699999988079071,
+          1.3600000143051147
+        ]
+      },
+      {
+        "bone": "raptorial11",
+        "point": [
+          0.6200000047683716,
+          0.699999988079071,
+          1.3600000143051147
+        ]
+      }
+    ]
   },
   "muzzle": [
     0.0,
@@ -216,7 +234,7 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_siphons_26_near.glb",
-      "sha256": "28ef2e9606506d19970581a558a47bccdccdfa6f3f96f3fdf1fcda48704a4c9c",
+      "sha256": "773e1b8d5f30839474b0bde7aabca2c39a1b97456cd43ede2c316bd69b343743",
       "triangles": 52060,
       "min": [
         -1.2301173210144043,
@@ -231,7 +249,7 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_siphons_26_far.glb",
-      "sha256": "afdf10c776a3ee0229c707631e3f5ba348ad75a9b33561634d0f8a5fd2406149",
+      "sha256": "0a0e83aece91fdb72c016cfc0164e26bc0a3cce4e8a75e657b7b1102ab61588f",
       "triangles": 22378,
       "min": [
         -1.2301621437072754,
@@ -315,6 +333,14 @@
     "organ2mouth_jaw-1": "organ2mouth",
     "organ2mouth_jaw1": "organ2mouth"
   },
-  "build_seconds": 44.368,
-  "source_render_seconds": 11.093
+  "build_seconds": 18.302,
+  "source_render_seconds": 5.474,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "b4246e2ef4582a0efa1aa5331eb942f073c18db9b14451d42b4192d81acefbe1"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
 }

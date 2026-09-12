@@ -6,13 +6,13 @@ from PIL import Image,ImageDraw,ImageFont
 import imageio_ffmpeg
 import numpy as np
 from recipes import recipes
+from review_digest import sha
 ROOT=Path(__file__).resolve().parents[2]
 MEDIA=ROOT/'docs/production/media/creature-remodel/r02'
 RENDER=ROOT/'output/creature-remodel/r02'
 LABELS={'torus_loom':'고리형','pentapalm':'방사형','pendulum_grazer':'현수형','quill_amphora':'압력낭형','hinge_book':'접판형','mirror_fork':'분기형'}
 REPRESENTATIVES=['bio_torus_loom_02','bio_pentapalm_07','bio_pendulum_grazer_05','bio_quill_amphora_10','bio_hinge_book_08','bio_mirror_fork_09']
 FONT=ROOT/'우주-비즈니스/assets/fonts/NotoSansKR.ttf'
-def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def glb_check(path,expected):
     raw=path.read_bytes();magic,version,size=struct.unpack_from('<III',raw,0);assert magic==0x46546C67 and version==2 and size==len(raw)
     length,kind=struct.unpack_from('<II',raw,12);data=json.loads(raw[20:20+length]);assert kind==0x4E4F534A

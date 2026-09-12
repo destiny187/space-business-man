@@ -1,0 +1,260 @@
+{
+  "id": "bio_lithic_18",
+  "source_id": "bio_lithic_18",
+  "name": "결정 부채형 암갑류",
+  "family": "lithic",
+  "kind": "lithic",
+  "construction": "lithic",
+  "anatomical_type": "proboscid",
+  "organ_system": "sails",
+  "environment": "crystal",
+  "habitat": "결정 기질·광물·제한된 유기물",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.31,
+    "height": 1.0,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 8,
+    "eye_count": 2,
+    "lineage": 3
+  },
+  "attack": "ram",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "ram",
+  "host_motion": "charge",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "lithic",
+    "support_limbs": 6,
+    "oral_organs": 2,
+    "articulated_organs": 21
+  },
+  "version": "r06-1",
+  "build_fingerprint": "0d1a59a76753d5859f2f5fea5d913d8a8567ec09b6f64326ab4afbac91e33caf",
+  "normalized_geometry_sha256": "954feba33314b688ad615cd19b262c4109709c89beff4498eac9091870616043",
+  "source": "art/blender/creature_remodel/r06/bio_lithic_18.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 45,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "charge_loop"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2544000148773193,
+        1.559899926185608
+      ]
+    },
+    "Socket_trunk_tip": {
+      "bone": "trunk_tip",
+      "point": [
+        0.0,
+        0.7800000309944153,
+        2.049999952316284
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2544000148773193,
+        1.559899926185608
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2544000148773193,
+        1.559899926185608
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.6017879843711853,
+        0.10000000149011612,
+        0.6423299908638
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.6017879843711853,
+        0.10000000149011612,
+        0.6423299908638
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.6017879843711853,
+        0.10000000149011612,
+        -0.6820700168609619
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.6017879843711853,
+        0.10000000149011612,
+        -0.6820700168609619
+      ]
+    },
+    "Socket_median-1": {
+      "bone": "median-1_foot",
+      "point": [
+        -0.7317879796028137,
+        0.10000000149011612,
+        -0.019870012998580933
+      ]
+    },
+    "Socket_median1": {
+      "bone": "median1_foot",
+      "point": [
+        0.7317879796028137,
+        0.10000000149011612,
+        -0.019870012998580933
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.36459087610672974,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5651158579654311,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5,
+      "median-1": 0.25,
+      "median1": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.2544000148773193,
+    1.559899926185608
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lithic_18_near.glb",
+      "sha256": "fa31d51793fabbe10272e29ab8ed00d44409e5ec1cf5c266844b7a73b81eb535",
+      "triangles": 55260,
+      "min": [
+        -0.9102877974510193,
+        0.02499999850988388,
+        -1.175238847732544
+      ],
+      "max": [
+        0.9102879166603088,
+        2.6573615074157715,
+        2.0499095916748047
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lithic_18_far.glb",
+      "sha256": "a49535d8fdd6a9a2bf1c5f3ac458824ef50734aed76c5199842c2aa92ceba243",
+      "triangles": 23750,
+      "min": [
+        -0.9102672338485718,
+        0.024996528401970863,
+        -1.1731566190719604
+      ],
+      "max": [
+        0.9102879166603088,
+        2.657083511352539,
+        2.0500805377960205
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "prehensile_trunk0": "head",
+    "prehensile_trunk1": "prehensile_trunk0",
+    "prehensile_trunk2": "prehensile_trunk1",
+    "trunk_tip": "prehensile_trunk2",
+    "trunk_tip_petal0": "trunk_tip",
+    "trunk_tip_petal1": "trunk_tip",
+    "trunk_tip_petal2": "trunk_tip",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial1",
+    "organ3": "axial1",
+    "organ4": "axial0",
+    "median-1_upper": "chest",
+    "median-1_lower": "median-1_upper",
+    "median-1_foot": "median-1_lower",
+    "median1_upper": "chest",
+    "median1_lower": "median1_upper",
+    "median1_foot": "median1_lower"
+  },
+  "build_seconds": 18.695,
+  "source_render_seconds": 3.951,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "74b24a2e6403c64382b4b192a8c33aa6599570c64923d395a115a9753fbfafef"
+  }
+}

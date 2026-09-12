@@ -39,7 +39,7 @@
     "jointed_oral_organs": 2
   },
   "version": "r04-1",
-  "build_fingerprint": "c017694bc107f18ee77dc6ac3f45f7c775a84eaa30a019a4c80c62d3b57d81a4",
+  "build_fingerprint": "aaebafdfdb7243edeb03271bf8bb846935b4840fa4a12d15ef5af0eb48b0d695",
   "normalized_geometry_sha256": "34043f59220d286aa2c7948ef226cb9dbc3f9ebd0b8771a9d1aa9f7a0b1abf67",
   "source": "art/blender/creature_remodel/r04/biota_crown_gills_26.blend",
   "status": "built-awaiting-game-render",
@@ -182,7 +182,25 @@
       "leg5": 0.9,
       "leg6": 0.6000000000000001,
       "leg7": 1.1
-    }
+    },
+    "strike_origins": [
+      {
+        "bone": "raptorial-11",
+        "point": [
+          -0.6200000047683716,
+          0.699999988079071,
+          1.3600000143051147
+        ]
+      },
+      {
+        "bone": "raptorial11",
+        "point": [
+          0.6200000047683716,
+          0.699999988079071,
+          1.3600000143051147
+        ]
+      }
+    ]
   },
   "muzzle": [
     0.0,
@@ -192,7 +210,7 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_gills_26_near.glb",
-      "sha256": "33756360be194bf65b9aeb3d50d78d1539d0d1c45b1eb310b517ff850d5dfbe8",
+      "sha256": "c7a677f11daaeece1d7b597388f28b59d78a2011e46643188a427867a634c9f6",
       "triangles": 49788,
       "min": [
         -1.2301173210144043,
@@ -207,7 +225,7 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_gills_26_far.glb",
-      "sha256": "48ba913cee1cede7307c000849b34419bf2dc1003bd8064ec1559990bfeff207",
+      "sha256": "babd31c26ddb4deaa6d8faec28aefec88cd6738072f4965461a7e416f4e02746",
       "triangles": 21402,
       "min": [
         -1.2301621437072754,
@@ -276,6 +294,14 @@
     "organ1": "chest",
     "organ2": "chest"
   },
-  "build_seconds": 27.633,
-  "source_render_seconds": 4.048
+  "build_seconds": 14.533,
+  "source_render_seconds": 11.582,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "6d3b4b800a77fda0cb11bfdf54a1113ef0c9adca21230061f0a35b631f4ced9b"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
 }

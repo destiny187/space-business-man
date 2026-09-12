@@ -1,0 +1,235 @@
+{
+  "id": "biota_bilateral_sails_40",
+  "name": "염류열두깃비막현수망토수",
+  "family": "biota_bilateral_sails",
+  "construction": "avian",
+  "organ_system": "sails",
+  "environment": "arid",
+  "locomotion_medium": "surface_air",
+  "anatomy_note": "어깨·팔꿈치·손목이 연결된 비막 비행기관·흉골 용골·접이 발과 조향 꼬리 · 좌우 장기낭을 잇는 굵은 신경목·몸통과 이어진 넓은 측막",
+  "source_id": "biota_bilateral_sails_40",
+  "kind": "avian",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "어깨·팔꿈치·손목이 연결된 비막 비행기관·흉골 용골·접이 발과 조향 꼬리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 3,
+    "radial_count": 12,
+    "limb_count": 10,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 2
+  },
+  "flight": {
+    "version": 1,
+    "wing_style": "membrane",
+    "wing_pairs": 1,
+    "primary_feathers": 12,
+    "minimum_pressure_kpa": 50.0,
+    "flap_hz": 1.25,
+    "patrol_radius": 6.0,
+    "cruise_height": 5.05,
+    "cycle_seconds": 48.0,
+    "rest_seconds": 12.0,
+    "transition_seconds": 5.0
+  },
+  "anatomical_type": "avian",
+  "production_batch": "r05",
+  "air_motion": true,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "avian",
+    "medium": "surface_air",
+    "wing_chains": 2,
+    "ground_supports": 2,
+    "organs": 31
+  },
+  "version": "r05-1",
+  "build_fingerprint": "be0de631378f9d0574f1222c4c596d95691a7cba1d937840686de77a7a3884e7",
+  "normalized_geometry_sha256": "516d2705286def6509d30f6aa4543f56dbad3d50217b7e52a781035e60bc712d",
+  "source": "art/blender/creature_remodel/r05/biota_bilateral_sails_40.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 42,
+  "locomotion_chains": 2,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "ground_idle_loop",
+    "flight_loop",
+    "takeoff",
+    "landing"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2649999856948853,
+        1.0700000524520874
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2649999856948853,
+        1.0700000524520874
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2649999856948853,
+        1.0700000524520874
+      ]
+    },
+    "Socket_landing-1": {
+      "bone": "landing-1_foot",
+      "point": [
+        -0.2199999988079071,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    },
+    "Socket_landing1": {
+      "bone": "landing1_foot",
+      "point": [
+        0.2199999988079071,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.25555648238743245,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3961125477005203,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "landing-1": 0.5,
+      "landing1": 0
+    },
+    "flight_reference_hz": 1.5
+  },
+  "muzzle": [
+    0.0,
+    1.2649999856948853,
+    1.0700000524520874
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_sails_40_near.glb",
+      "sha256": "936d5df3c54119eefed7f7350cdb2ea857c28db033cebc1cdfeb17d5c3b09c9e",
+      "triangles": 31216,
+      "min": [
+        -1.6643214225769043,
+        0.02499999850988388,
+        -1.4299349784851074
+      ],
+      "max": [
+        1.6643214225769043,
+        1.5252231359481812,
+        1.072802186012268
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_sails_40_far.glb",
+      "sha256": "de9749e09f8fc2779a1f2e139f8f205f79c6954fcb4923771ef1e8ab1f6e3a93",
+      "triangles": 13416,
+      "min": [
+        -1.664360523223877,
+        0.025012221187353134,
+        -1.4313467741012573
+      ],
+      "max": [
+        1.6646347045898438,
+        1.5266093015670776,
+        1.0729689598083496
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "flight_neck0": "chest",
+    "flight_neck1": "flight_neck0",
+    "head": "flight_neck1",
+    "oral": "head",
+    "Protected flight eye -1_lid": "head",
+    "Protected flight eye 1_lid": "head",
+    "wing0_-1_0": "chest",
+    "wing0_-1_1": "wing0_-1_0",
+    "wing0_-1_2": "wing0_-1_1",
+    "wingfinger0_-1_0": "wing0_-1_2",
+    "wingfinger0_-1_1": "wing0_-1_2",
+    "wingfinger0_-1_2": "wing0_-1_2",
+    "wingfinger0_-1_3": "wing0_-1_2",
+    "wing0_1_0": "chest",
+    "wing0_1_1": "wing0_1_0",
+    "wing0_1_2": "wing0_1_1",
+    "wingfinger0_1_0": "wing0_1_2",
+    "wingfinger0_1_1": "wing0_1_2",
+    "wingfinger0_1_2": "wing0_1_2",
+    "wingfinger0_1_3": "wing0_1_2",
+    "landing-1_upper": "chest",
+    "landing-1_lower": "landing-1_upper",
+    "landing-1_foot": "landing-1_lower",
+    "landing1_upper": "chest",
+    "landing1_lower": "landing1_upper",
+    "landing1_foot": "landing1_lower",
+    "steering_tail0": "chest",
+    "steering_tail1": "steering_tail0",
+    "organ0": "chest",
+    "organ1": "chest",
+    "organ2": "chest",
+    "organ3": "chest",
+    "organ4": "chest",
+    "organ5": "chest",
+    "organ6": "chest",
+    "organ7": "chest",
+    "organ8": "chest",
+    "organ9": "chest",
+    "organ10": "chest",
+    "organ11": "chest"
+  },
+  "build_seconds": 17.642,
+  "source_render_seconds": 3.718,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "8c5afb7c11f723b6b0d147ff0f56c5abb14a9eba222a2cfa15c4c231c1c68344"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

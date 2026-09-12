@@ -1,0 +1,227 @@
+{
+  "id": "bio_spiral_maw_04",
+  "source_id": "bio_spiral_maw_04",
+  "name": "나선구강체 · 확공형",
+  "family": "spiral_maw",
+  "kind": "spiral_maw",
+  "construction": "spiral_maw",
+  "anatomical_type": "spiral_maw",
+  "organ_system": "antennal_fans",
+  "environment": "acid",
+  "habitat": "내산성 외피·반응 기질·부산물 배출",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.105,
+    "height": 1.0,
+    "mode": 3,
+    "radial_count": 6,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "bite",
+  "palette": [
+    "737347",
+    "b0b15e",
+    "34494e",
+    "94c177"
+  ],
+  "host_pattern": "bite",
+  "host_motion": "melee",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "spiral_maw",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 19
+  },
+  "version": "r06-1",
+  "build_fingerprint": "755b785ea933ba471e025eff353e2eb5a33c52850ef13eddf8837531e76253d3",
+  "normalized_geometry_sha256": "f76d7d3c86e433e2772e31700f699dd4f44c6d0ba2d926e3074c6c5f914f0798",
+  "source": "art/blender/creature_remodel/r06/bio_spiral_maw_04.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 35,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_coil_oral0": {
+      "bone": "coil_oral0",
+      "point": [
+        -0.051343806087970734,
+        0.7699999809265137,
+        -0.5085397958755493
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "coil_oral0",
+      "point": [
+        -0.051343806087970734,
+        0.7699999809265137,
+        -0.5085397958755493
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "coil_oral0",
+      "point": [
+        -0.051343806087970734,
+        0.7699999809265137,
+        -0.5085397958755493
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        0.13768461346626282,
+        0.10000000149011612,
+        1.1690024137496948
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7799500226974487,
+        0.10000000149011612,
+        0.07999999821186066
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.32643553614616394,
+        0.10000000149011612,
+        -1.1308084726333618
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.8840261697769165,
+        0.10000000149011612,
+        -0.14403462409973145
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.26093277137683063,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4044457956340875,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.051343806087970734,
+    0.7699999809265137,
+    -0.5085397958755493
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_spiral_maw_04_near.glb",
+      "sha256": "9bcf3a14fc623b39a428325a6ba06b34ac379dc792bf29a61f0acba0a7f3b15d",
+      "triangles": 30176,
+      "min": [
+        -1.1860853433609009,
+        0.02499999850988388,
+        -1.4328676462173462
+      ],
+      "max": [
+        1.082009196281433,
+        0.9713038802146912,
+        1.4710615873336792
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_spiral_maw_04_far.glb",
+      "sha256": "5c85271b930d2e4975688881b1b6ab237e12d3f5c61d4671905b3230c08cedcf",
+      "triangles": 12970,
+      "min": [
+        -1.186014175415039,
+        0.024996532127261162,
+        -1.432796597480774
+      ],
+      "max": [
+        1.0819356441497803,
+        0.9713038802146912,
+        1.4710458517074585
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_organ00": "chest",
+    "coiled_organ01": "coiled_organ00",
+    "coiled_organ02": "coiled_organ01",
+    "coiled_organ03": "coiled_organ02",
+    "coiled_organ04": "coiled_organ03",
+    "coiled_organ05": "coiled_organ04",
+    "coiled_organ06": "coiled_organ05",
+    "coiled_organ07": "coiled_organ06",
+    "coiled_organ08": "coiled_organ07",
+    "coiled_organ09": "coiled_organ08",
+    "coiled_organ010": "coiled_organ09",
+    "coiled_organ011": "coiled_organ010",
+    "coiled_organ012": "coiled_organ011",
+    "coiled_organ013": "coiled_organ012",
+    "coiled_organ014": "coiled_organ013",
+    "coiled_organ015": "coiled_organ014",
+    "coil_oral0": "coiled_organ015",
+    "coil_oral0_petal0": "coil_oral0",
+    "coil_oral0_petal1": "coil_oral0",
+    "coil_oral0_petal2": "coil_oral0",
+    "support0_upper": "coiled_organ010",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "coiled_organ00",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "coiled_organ015",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "coiled_organ05",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 9.285,
+  "source_render_seconds": 11.147,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "f025e35337595f46db165cf9bba473a5ecd8c5decc88181b4b10bcbbfe506ff0"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

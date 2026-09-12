@@ -1,0 +1,283 @@
+{
+  "id": "bio_lithic_15",
+  "source_id": "bio_lithic_15",
+  "name": "서리석 확장형 암갑류",
+  "family": "lithic",
+  "kind": "lithic",
+  "construction": "lithic",
+  "anatomical_type": "chelonian",
+  "organ_system": "tendrils",
+  "environment": "cold",
+  "habitat": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.3,
+    "height": 1.0,
+    "mode": 4,
+    "radial_count": 9,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 2
+  },
+  "attack": "ram",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "ram",
+  "host_motion": "charge",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "lithic",
+    "support_limbs": 6,
+    "oral_organs": 1,
+    "articulated_organs": 53
+  },
+  "version": "r06-1",
+  "build_fingerprint": "a2b4a0bf4c947ba90a83fac4e3a373a96ecee385ae2c8604dfdd684ef54a726c",
+  "normalized_geometry_sha256": "f73ba9dc194f1f2dc77979c681c52e847cdd1dabe92259dca151e0684b4653d0",
+  "source": "art/blender/creature_remodel/r06/bio_lithic_15.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 76,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "charge_loop"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.35599997639656067,
+        1.4788999557495117
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.35599997639656067,
+        1.4788999557495117
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.35599997639656067,
+        1.4788999557495117
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.8176000118255615,
+        0.10000000149011612,
+        0.6181399822235107
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.8176000118255615,
+        0.10000000149011612,
+        0.6181399822235107
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.8176000118255615,
+        0.10000000149011612,
+        -0.6570600271224976
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.8176000118255615,
+        0.10000000149011612,
+        -0.6570600271224976
+      ]
+    },
+    "Socket_median-1": {
+      "bone": "median-1_foot",
+      "point": [
+        -0.9476000070571899,
+        0.10000000149011612,
+        -0.019460022449493408
+      ]
+    },
+    "Socket_median1": {
+      "bone": "median1_foot",
+      "point": [
+        0.9476000070571899,
+        0.10000000149011612,
+        -0.019460022449493408
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.20960085914208212,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3248813316702273,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5,
+      "median-1": 0.25,
+      "median1": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.35599997639656067,
+    1.4788999557495117
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lithic_15_near.glb",
+      "sha256": "a72d4fa70c21fa172514392f507f34cedbbb29b139d142aaa513da1202f1b683",
+      "triangles": 44096,
+      "min": [
+        -1.1260998249053955,
+        0.02499999850988388,
+        -1.1478031873703003
+      ],
+      "max": [
+        1.126099944114685,
+        1.832518219947815,
+        1.460499882698059
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lithic_15_far.glb",
+      "sha256": "88911cef1d9d696ee2ff4adc2a291d0a88d2436de4ff1ecccf0f53b5c64b3bfe",
+      "triangles": 18952,
+      "min": [
+        -1.1260998249053955,
+        0.024997735396027565,
+        -1.1481846570968628
+      ],
+      "max": [
+        1.126099944114685,
+        1.8316532373428345,
+        1.460499882698059
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "axial1",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "axial1",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1",
+    "organ3": "axial1",
+    "organ3tactile0": "organ3",
+    "organ3tactile1": "organ3tactile0",
+    "organ3branch-10": "organ3tactile1",
+    "organ3branch10": "organ3tactile1",
+    "organ4": "axial1",
+    "organ4tactile0": "organ4",
+    "organ4tactile1": "organ4tactile0",
+    "organ4branch-10": "organ4tactile1",
+    "organ4branch10": "organ4tactile1",
+    "organ5": "axial1",
+    "organ5tactile0": "organ5",
+    "organ5tactile1": "organ5tactile0",
+    "organ5branch-10": "organ5tactile1",
+    "organ5branch10": "organ5tactile1",
+    "organ6": "axial0",
+    "organ6tactile0": "organ6",
+    "organ6tactile1": "organ6tactile0",
+    "organ6branch-10": "organ6tactile1",
+    "organ6branch10": "organ6tactile1",
+    "organ7": "axial0",
+    "organ7tactile0": "organ7",
+    "organ7tactile1": "organ7tactile0",
+    "organ7branch-10": "organ7tactile1",
+    "organ7branch10": "organ7tactile1",
+    "organ8": "axial0",
+    "organ8tactile0": "organ8",
+    "organ8tactile1": "organ8tactile0",
+    "organ8branch-10": "organ8tactile1",
+    "organ8branch10": "organ8tactile1",
+    "median-1_upper": "chest",
+    "median-1_lower": "median-1_upper",
+    "median-1_foot": "median-1_lower",
+    "median1_upper": "chest",
+    "median1_lower": "median1_upper",
+    "median1_foot": "median1_lower"
+  },
+  "build_seconds": 26.064,
+  "source_render_seconds": 6.87,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "c406e63f3d23b05f935c9ba41d95ceacce402e76beafe2fad440001d799a6071"
+  }
+}

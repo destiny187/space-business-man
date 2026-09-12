@@ -1,0 +1,198 @@
+{
+  "id": "biota_branch_antennal_fans_36",
+  "name": "운해쌍줄여덟마디감각수관수",
+  "family": "biota_branch_antennal_fans",
+  "construction": "branch",
+  "organ_system": "antennal_fans",
+  "environment": "gas_cloud",
+  "locomotion_medium": "atmosphere",
+  "anatomy_note": "연결된 가지 몸통 끝마다 배치된 기관·가지 끝에 펼친 감각 부채 / 쌍열 배열·주요 기관 8개",
+  "source_id": "biota_branch_antennal_fans_36",
+  "kind": "branch",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "고체 발판 없이 떠 있는 부력낭·평형막·현수 여과기관의 가상 대기층 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 3,
+    "radial_count": 8,
+    "limb_count": 10,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "flight": {},
+  "anatomical_type": "branch",
+  "production_batch": "r05",
+  "air_motion": false,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "branch",
+    "medium": "atmosphere",
+    "wing_chains": 0,
+    "ground_supports": 0,
+    "organs": 37
+  },
+  "version": "r05-1",
+  "build_fingerprint": "1a4ac4db885cf261f0e87a586bffc3bc0bb1dafe2625b7c64ff14d4990ad02da",
+  "normalized_geometry_sha256": "d8905636da2636f7fd7efa9464f2aadfb57406d8f346fb984fb2e2e787aca8ce",
+  "source": "art/blender/creature_remodel/r05/biota_branch_antennal_fans_36.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 41,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {}
+  },
+  "muzzle": [
+    0.0,
+    0.6200000047683716,
+    0.14000000059604645
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_branch_antennal_fans_36_near.glb",
+      "sha256": "2e9baa95b5b1727e3eb58931f6a5c60e1738910b6773431be52b66b914f75e24",
+      "triangles": 32302,
+      "min": [
+        -1.7561731338500977,
+        0.5035490989685059,
+        -1.571022629737854
+      ],
+      "max": [
+        1.701173186302185,
+        1.5413038730621338,
+        1.5233912467956543
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_branch_antennal_fans_36_far.glb",
+      "sha256": "0e02f64d99bd74dc319a21ed66886772724a4517e87bf5771ae90846843eb52e",
+      "triangles": 13884,
+      "min": [
+        -1.7561731338500977,
+        0.5035490989685059,
+        -1.570897102355957
+      ],
+      "max": [
+        1.701173186302185,
+        1.5413038730621338,
+        1.5232657194137573
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "buoyant_ray00": "chest",
+    "buoyant_ray01": "buoyant_ray00",
+    "buoyant_ray10": "chest",
+    "buoyant_ray11": "buoyant_ray10",
+    "buoyant_ray20": "chest",
+    "buoyant_ray21": "buoyant_ray20",
+    "buoyant_ray30": "chest",
+    "buoyant_ray31": "buoyant_ray30",
+    "buoyant_ray40": "chest",
+    "buoyant_ray41": "buoyant_ray40",
+    "buoyant_ray50": "chest",
+    "buoyant_ray51": "buoyant_ray50",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "trailing_feeler00": "chest",
+    "trailing_feeler01": "trailing_feeler00",
+    "trailing_feeler10": "chest",
+    "trailing_feeler11": "trailing_feeler10",
+    "trailing_feeler20": "chest",
+    "trailing_feeler21": "trailing_feeler20",
+    "trailing_feeler30": "chest",
+    "trailing_feeler31": "trailing_feeler30",
+    "trailing_feeler40": "chest",
+    "trailing_feeler41": "trailing_feeler40",
+    "trailing_feeler50": "chest",
+    "trailing_feeler51": "trailing_feeler50",
+    "organ0": "buoyant_ray01",
+    "organ1": "buoyant_ray01",
+    "organ2": "buoyant_ray11",
+    "organ3": "buoyant_ray21",
+    "organ4": "buoyant_ray31",
+    "organ5": "buoyant_ray31",
+    "organ6": "buoyant_ray41",
+    "organ7": "buoyant_ray51"
+  },
+  "build_seconds": 9.681,
+  "source_render_seconds": 6.781,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "437d7ebf34fd6d41db0d335feb8f78dfbf6ff77dbe343a83fbf6cc35ffa17216"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

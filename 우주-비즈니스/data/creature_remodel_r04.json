@@ -3915,7 +3915,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "7cdd2a7fcb37bfa07ad3f4087d942a83a5f129f825625927aa8312c77ce315f6",
+      "build_fingerprint": "e38da84b670ed5ac8aca9d3c8b1ad3760b349bb4beb2a800d153154a0f66e7bd",
       "normalized_geometry_sha256": "26f5b94e7591e9fc07f6cbaca05bb06e9ae795cfc90ea4a0cc110dd47e7c64c6",
       "source": "art/blender/creature_remodel/r04/biota_branch_antennal_fans_25.blend",
       "status": "built-awaiting-game-render",
@@ -4015,7 +4015,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -4025,7 +4043,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_antennal_fans_25_near.glb",
-          "sha256": "a050c40d62caed91706f3ba02720ed099eda47dac5e2e4a07557937b51e1adc0",
+          "sha256": "9c3a23bdb8eef8194051681937fdbb58d744c76f05fcedbc8c462aa194e2240b",
           "triangles": 37408,
           "min": [
             -1.2301173210144043,
@@ -4040,7 +4058,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_antennal_fans_25_far.glb",
-          "sha256": "ec64833d45f946d2007824a2f190bf392b7a46edb1d0cf76638320d223bbf071",
+          "sha256": "8374f5555cb21f2fef7b8cd9d24b50117776730cce0d9ca3e07d589ce9df3e8b",
           "triangles": 16078,
           "min": [
             -1.2301621437072754,
@@ -4091,8 +4109,16 @@
         "organ1": "chest",
         "organ2": "chest"
       },
-      "build_seconds": 17.212,
-      "source_render_seconds": 3.467
+      "build_seconds": 10.622,
+      "source_render_seconds": 4.161,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "838e85d808e90429d49480ace12e6a6dddd98571b0e0a04ad13707af7c98311a"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_antennal_fans_26",
@@ -4374,7 +4400,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "432f36ae406065477e8ef51fca3b23c600d18b984c59fe4bcc53a6393e8ec4f9",
+      "build_fingerprint": "8f7dbaaacfc4ec88fb5ab2a6fe358c763e1a4446f04d79efd97037b85b06134a",
       "normalized_geometry_sha256": "992c0969f9872e1cdd240cc40419dd9fc5d2f1c9364c7c2f0b0191e49942b1e2",
       "source": "art/blender/creature_remodel/r04/biota_branch_armor_25.blend",
       "status": "built-awaiting-game-render",
@@ -4474,7 +4500,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -4484,7 +4528,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_armor_25_near.glb",
-          "sha256": "1f46daa8b7ac6d336c4d6f368293886c4800b4b62246809b0f3fd875cc9839ae",
+          "sha256": "f1b6e9c6797543ccc210fda3650d44dcefd39678b8a8dc3883ab85869e9478b0",
           "triangles": 32188,
           "min": [
             -1.2301173210144043,
@@ -4499,7 +4543,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_armor_25_far.glb",
-          "sha256": "8a75e257015f539f6b85ef98f3c6e9b1c4c0d94580a7d4bdc140165b703d3cbc",
+          "sha256": "d5588b03f35a50a8484fd7f7c07de4bebbb9bb2b8ab06c15baebec96603f9cf5",
           "triangles": 13832,
           "min": [
             -1.2301621437072754,
@@ -4550,8 +4594,16 @@
         "organ1": "chest",
         "organ2": "chest"
       },
-      "build_seconds": 15.199,
-      "source_render_seconds": 3.524
+      "build_seconds": 12.583,
+      "source_render_seconds": 11.483,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "29e7060c3667349ec10ea1111d636b1825b9ffdb61b5f41a6c64ee6f1b6b02fe"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_armor_26",
@@ -4833,7 +4885,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "09265de25f912e3a4dc4d4d3e1a57931a37468507235982f2724d8bc1078eb65",
+      "build_fingerprint": "d51c390c7e47e4f3329a4595199d3c8ee3ac5b9ea2272d18a7f739423d44451d",
       "normalized_geometry_sha256": "2c7f78eec026190395ab91de57bfc3004776a5d1e6bb0f7d8bb2113478374512",
       "source": "art/blender/creature_remodel/r04/biota_branch_gills_25.blend",
       "status": "built-awaiting-game-render",
@@ -4933,7 +4985,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -4943,7 +5013,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_gills_25_near.glb",
-          "sha256": "91031682eaf17b13411a136ae7812625050150bb3d3843c8c9a7cc0f51e98556",
+          "sha256": "daf57aa3c541068074bf05ec4dcd6d977add0a0cf361554588db424d65bc2717",
           "triangles": 36244,
           "min": [
             -1.2301173210144043,
@@ -4958,7 +5028,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_gills_25_far.glb",
-          "sha256": "99f2e84a80747b96f3e0012412a5b81b4e256f19767c0b4981bb533c35c1f545",
+          "sha256": "7aea624140c64bda8cb868f0d1dd338af8e918818896e380cc922f8081d06a3a",
           "triangles": 15576,
           "min": [
             -1.2301621437072754,
@@ -5009,8 +5079,16 @@
         "organ1": "chest",
         "organ2": "chest"
       },
-      "build_seconds": 18.706,
-      "source_render_seconds": 3.821
+      "build_seconds": 10.137,
+      "source_render_seconds": 8.925,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "75c8e7e17d350bad5671d88989b67e0864d9e33c2d74f1903da439c72690d926"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_gills_26",
@@ -5292,7 +5370,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "dcb4a93766e7a56b41dabeb3b250ed28b291f9fcae6d5d967b8b46d5aa37b656",
+      "build_fingerprint": "9e509c274b68d6a67dcbcf20aacef64b518837b244f70ea1f11fc13589a2d703",
       "normalized_geometry_sha256": "d34b1792fc830696d0e812d17f961ef8572c2cec021c0945a327347a066e0e15",
       "source": "art/blender/creature_remodel/r04/biota_branch_mandibles_25.blend",
       "status": "built-awaiting-game-render",
@@ -5392,7 +5470,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -5402,7 +5498,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_mandibles_25_near.glb",
-          "sha256": "440ed8654aaea1795699488a1c98d6a567e493ca4dab7d025e2411d6e9c36e3c",
+          "sha256": "24b0518eecba7053fceec70f771ac218f31e6d3fd2bf1c425f38a612b815091d",
           "triangles": 32300,
           "min": [
             -1.2301173210144043,
@@ -5417,7 +5513,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_mandibles_25_far.glb",
-          "sha256": "257aee568a1bcbdda12aa1eb040300bc15277c3d0a9bc8141e024522ceb8f982",
+          "sha256": "4f19328ec98045cf4f7e3dcbdb06e73ccc3395fef712b7697832ec1faced82d6",
           "triangles": 13880,
           "min": [
             -1.2301621437072754,
@@ -5471,8 +5567,16 @@
         "organ1jaw-1": "organ1",
         "organ1jaw1": "organ1"
       },
-      "build_seconds": 16.807,
-      "source_render_seconds": 3.646
+      "build_seconds": 9.077,
+      "source_render_seconds": 5.968,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "5eb9ecca794bbd364c5195a73e772c9c198d04039f272d365c91ab6af43910d4"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_mandibles_26",
@@ -5757,7 +5861,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "d6823246b8bd0af98635b2c1b51103c1ba0cc8a58b812a9aa0041b8d617d7ad2",
+      "build_fingerprint": "9fcbf59059050bfd1184c3919ddb6e085f0b77e34864c77125b8fd02212f14d6",
       "normalized_geometry_sha256": "5daf261e30656c9e21080820c7b36bedb88fcb61b4f4ee1c0cb63272689ed286",
       "source": "art/blender/creature_remodel/r04/biota_branch_sails_25.blend",
       "status": "built-awaiting-game-render",
@@ -5857,7 +5961,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -5867,7 +5989,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_sails_25_near.glb",
-          "sha256": "fad6c5c23618327c208554c81e42fee49900518bc6a157c2480b7c471f8fdad6",
+          "sha256": "97e908a2e823dc4b4f41c929ec4e3254bea7f8d70227a139a906714a17aafac4",
           "triangles": 31560,
           "min": [
             -1.2301173210144043,
@@ -5882,7 +6004,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_sails_25_far.glb",
-          "sha256": "5f367d799f0cae4488910c2920b8407fbb166a67f3b144d58e4d672046064f79",
+          "sha256": "91d30e19a9996c29d4f40211b260cb1b48b409e325dcebf46452dba4252fc5ad",
           "triangles": 13562,
           "min": [
             -1.2301621437072754,
@@ -5932,8 +6054,16 @@
         "organ0": "abdomen",
         "organ1": "chest"
       },
-      "build_seconds": 16.101,
-      "source_render_seconds": 3.502
+      "build_seconds": 8.897,
+      "source_render_seconds": 3.627,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "45ebea4fc2a2d95ebe6de1bbfaa4bcf87dfd2040c99a054c8ceec70c64f81a11"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_sails_26",
@@ -6214,7 +6344,7 @@
         "jointed_oral_organs": 4
       },
       "version": "r04-1",
-      "build_fingerprint": "9fed465a9df14a34420ce16634683e2dbe0c0c37ab902acef14dd36d8b07c12f",
+      "build_fingerprint": "916d74bf71fd92d0c24e7fc4d87a21278bcc8dd1354cb125f5e00a9743c7e1e7",
       "normalized_geometry_sha256": "d5ad6d5139df46c46ae39dbfb142e163142ced63fb8955e1e3c9320a91dfaf2e",
       "source": "art/blender/creature_remodel/r04/biota_branch_siphons_25.blend",
       "status": "built-awaiting-game-render",
@@ -6338,7 +6468,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -6348,7 +6496,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_siphons_25_near.glb",
-          "sha256": "12e997951ccecada5177b316f9542d327b3c792a640c73a497f40a3fbe3c204b",
+          "sha256": "ba505338d0e9abc0283aa6fd6f47b182fa45241835bc3b44a7c6a3018f052de5",
           "triangles": 38464,
           "min": [
             -1.2301173210144043,
@@ -6363,7 +6511,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_siphons_25_far.glb",
-          "sha256": "e484b05551560725c72f7ed646e8eaf8b024d42c98f728bf5c50dea9b1f52148",
+          "sha256": "df4112e95d04cd6fed29e4c8b443aca9478315ac427a02185a208ac23937bbb2",
           "triangles": 16530,
           "min": [
             -1.2301621437072754,
@@ -6429,8 +6577,16 @@
         "organ2mouth_jaw-1": "organ2mouth",
         "organ2mouth_jaw1": "organ2mouth"
       },
-      "build_seconds": 18.984,
-      "source_render_seconds": 3.668
+      "build_seconds": 12.481,
+      "source_render_seconds": 6.16,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "cd3e74e489fa9b720950685b4b2ee9a9cca0bc7beca302c9022df822142b4549"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_siphons_26",
@@ -6751,7 +6907,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "982e9832b6c3a850e2424a9081f127b072d558f8e9299b88b8e5632627ecec5c",
+      "build_fingerprint": "d53004acda0948af2baccc496ca0d91051b56bc3da1983817b572c8a0a49dcfa",
       "normalized_geometry_sha256": "5388fc74abec9c0571f212e7f385473d8893091ebc879ce78cd8c14710394f86",
       "source": "art/blender/creature_remodel/r04/biota_branch_tendrils_25.blend",
       "status": "built-awaiting-game-render",
@@ -6851,7 +7007,25 @@
           "leg1": 0.5,
           "leg2": 0.2,
           "leg3": 0.7
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              1.5899999141693115,
+              1.5
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -6861,7 +7035,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_tendrils_25_near.glb",
-          "sha256": "4f412ede9b8916f1f259000037b0147abe6abaf803fb2b2c06a462f09f961ada",
+          "sha256": "e036fc32e84ef6a2dbf814587e31d1baaae6890fae5d47ce12d2a0a10f656cea",
           "triangles": 31090,
           "min": [
             -1.2301173210144043,
@@ -6876,7 +7050,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_tendrils_25_far.glb",
-          "sha256": "df34def50c6d481e174607fe4fa0390d8694a73668210fb2bd4eda665ca9719f",
+          "sha256": "01e81d0686f4ac21be6b59830903bdc8376f209c8406fe75b4a6d31b75cb3d9e",
           "triangles": 13360,
           "min": [
             -1.2301621437072754,
@@ -6939,8 +7113,16 @@
         "organ2branch-10": "organ2tactile1",
         "organ2branch10": "organ2tactile1"
       },
-      "build_seconds": 18.97,
-      "source_render_seconds": 6.467
+      "build_seconds": 12.081,
+      "source_render_seconds": 4.087,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "ea232241e20f69e738c2a31d36454b74c88166f36227eef3702410614fc27c1e"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_branch_tendrils_26",
@@ -10229,7 +10411,7 @@
         "jointed_oral_organs": 2
       },
       "version": "r04-1",
-      "build_fingerprint": "510a1cd7002859445ed32c42177b14cd6e4d1c97ae6a84a7b977f851dc9f778b",
+      "build_fingerprint": "14f828d3eec336cc7ad8c5ede363bbd982db2bcf822b06d93350c0162c9b24cc",
       "normalized_geometry_sha256": "3991be6980e8115ffaa2be706f681f8b5f919ddf10d87a0c907ff7f38bbadb48",
       "source": "art/blender/creature_remodel/r04/biota_crown_antennal_fans_26.blend",
       "status": "built-awaiting-game-render",
@@ -10372,7 +10554,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -10382,7 +10582,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_antennal_fans_26_near.glb",
-          "sha256": "2be3e1bb247e07c4405a585ca93c47a4a242156e3eaa65a4336bd10454896fdc",
+          "sha256": "c7533e0ee152ce6de316dde2bf2a27757e0e5021ee60a6334b855922ef72e107",
           "triangles": 50952,
           "min": [
             -1.2301173210144043,
@@ -10397,7 +10597,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_antennal_fans_26_far.glb",
-          "sha256": "06e4a47e508683b1c50acd6df86017f828d77e764b2148b008aee11f56533698",
+          "sha256": "65a019bfce7d4f2382f3cfa8c03af809daf20ffe4e6c7e37486e616144b9032c",
           "triangles": 21902,
           "min": [
             -1.2301621437072754,
@@ -10466,8 +10666,16 @@
         "organ1": "chest",
         "organ2": "chest"
       },
-      "build_seconds": 33.506,
-      "source_render_seconds": 7.415
+      "build_seconds": 17.125,
+      "source_render_seconds": 4.105,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "858d8f941ae6944ab6441688a8dbf742d68595612d2f7b9d4ca6fa7a96244811"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_crown_armor_25",
@@ -10771,7 +10979,7 @@
         "jointed_oral_organs": 2
       },
       "version": "r04-1",
-      "build_fingerprint": "f1e737e4a43f4d9faadea7fe324f0b7a41979a28dd4cb76d97c2907133300513",
+      "build_fingerprint": "0813068289763efefdb3ffadf9fd02af1507017fb06e166a5c81e559ed6e3f6f",
       "normalized_geometry_sha256": "0b4d98c0f02a7a40a40f38f1f74c8788f76ad91509fbeda779c72653c009155b",
       "source": "art/blender/creature_remodel/r04/biota_crown_armor_26.blend",
       "status": "built-awaiting-game-render",
@@ -10914,7 +11122,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -10939,7 +11165,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_armor_26_far.glb",
-          "sha256": "cd6c3caf8aeab5027b15f822a4d45a3097bb90860ae976ee65f52ecc5a5566fd",
+          "sha256": "b2139b2924781122fb716a24c7b25689aa2eb53e8b315c31c976fda37d088b27",
           "triangles": 19656,
           "min": [
             -1.2301621437072754,
@@ -11008,8 +11234,16 @@
         "organ1": "chest",
         "organ2": "chest"
       },
-      "build_seconds": 24.65,
-      "source_render_seconds": 11.166
+      "build_seconds": 18.337,
+      "source_render_seconds": 6.13,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "c304a2e54952085bda65747d3bce23195844b67ded9e96fe8e7c54d350cd86a9"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_crown_gills_25",
@@ -11313,7 +11547,7 @@
         "jointed_oral_organs": 2
       },
       "version": "r04-1",
-      "build_fingerprint": "c017694bc107f18ee77dc6ac3f45f7c775a84eaa30a019a4c80c62d3b57d81a4",
+      "build_fingerprint": "aaebafdfdb7243edeb03271bf8bb846935b4840fa4a12d15ef5af0eb48b0d695",
       "normalized_geometry_sha256": "34043f59220d286aa2c7948ef226cb9dbc3f9ebd0b8771a9d1aa9f7a0b1abf67",
       "source": "art/blender/creature_remodel/r04/biota_crown_gills_26.blend",
       "status": "built-awaiting-game-render",
@@ -11456,7 +11690,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -11466,7 +11718,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_gills_26_near.glb",
-          "sha256": "33756360be194bf65b9aeb3d50d78d1539d0d1c45b1eb310b517ff850d5dfbe8",
+          "sha256": "c7a677f11daaeece1d7b597388f28b59d78a2011e46643188a427867a634c9f6",
           "triangles": 49788,
           "min": [
             -1.2301173210144043,
@@ -11481,7 +11733,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_gills_26_far.glb",
-          "sha256": "48ba913cee1cede7307c000849b34419bf2dc1003bd8064ec1559990bfeff207",
+          "sha256": "babd31c26ddb4deaa6d8faec28aefec88cd6738072f4965461a7e416f4e02746",
           "triangles": 21402,
           "min": [
             -1.2301621437072754,
@@ -11550,8 +11802,16 @@
         "organ1": "chest",
         "organ2": "chest"
       },
-      "build_seconds": 27.633,
-      "source_render_seconds": 4.048
+      "build_seconds": 14.533,
+      "source_render_seconds": 11.582,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "6d3b4b800a77fda0cb11bfdf54a1113ef0c9adca21230061f0a35b631f4ced9b"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_crown_mandibles_25",
@@ -11858,7 +12118,7 @@
         "jointed_oral_organs": 2
       },
       "version": "r04-1",
-      "build_fingerprint": "82d2cd0fe213f79f791548e9e83c80f30f884c28d8c676f78b100ff6096a2bd1",
+      "build_fingerprint": "123d557ebd2286042c940e1a2aa9eb1ada328a594d48cc7cdf5a9e35beaa9155",
       "normalized_geometry_sha256": "12eb284fcedcbb8aef3e3d0f1bb06c34527c362fd599556ebda016c6d06287c3",
       "source": "art/blender/creature_remodel/r04/biota_crown_mandibles_26.blend",
       "status": "built-awaiting-game-render",
@@ -12001,7 +12261,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -12011,7 +12289,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_mandibles_26_near.glb",
-          "sha256": "0fbedc280ad3b0b95cade48301bb183bb11123084522e73449a16806b90e009c",
+          "sha256": "5039138501f8e89759522ec5add9ceca76c9daa046a31be58fba6efcfe480b48",
           "triangles": 45858,
           "min": [
             -1.2301173210144043,
@@ -12026,7 +12304,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_mandibles_26_far.glb",
-          "sha256": "adfc46d97fe7060b06ba3796891dbea74d5614b21baba4a275f42b6fe9bac8b7",
+          "sha256": "4344acfaf8b45bbba5f09cb99452b48af4f9910f3395bfc2ad9f955444d31bc4",
           "triangles": 19710,
           "min": [
             -1.2301621437072754,
@@ -12098,8 +12376,16 @@
         "organ1jaw-1": "organ1",
         "organ1jaw1": "organ1"
       },
-      "build_seconds": 30.342,
-      "source_render_seconds": 11.381
+      "build_seconds": 15.842,
+      "source_render_seconds": 6.129,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "e946e0c5f844ff03916cf7884ce038200024d6d176869c4bbf23d5ac27b4d5c0"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_crown_sails_25",
@@ -12402,7 +12688,7 @@
         "jointed_oral_organs": 2
       },
       "version": "r04-1",
-      "build_fingerprint": "b5edcf803b4e7bc5c67943b152c856661925808f7f5e23d2873822fc88620e30",
+      "build_fingerprint": "ec732720ce391009033cf020e87c31b2b51e35fc8ba0141ab622bcecb0a8cb61",
       "normalized_geometry_sha256": "27c46aaa4f719f1eccccc9176820bd6dc6519fdb679e0c34e7712d50bf44e39c",
       "source": "art/blender/creature_remodel/r04/biota_crown_sails_26.blend",
       "status": "built-awaiting-game-render",
@@ -12545,7 +12831,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -12555,7 +12859,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_sails_26_near.glb",
-          "sha256": "c3ce018a1a534f1cf010029debe6766dc67fd18e6ea9d2e3338857ff5645f7d4",
+          "sha256": "33f14ea603d849c1ba413455c05c16e63b332579d151477cd38e7c0ec0781843",
           "triangles": 45104,
           "min": [
             -1.2301173210144043,
@@ -12570,7 +12874,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_sails_26_far.glb",
-          "sha256": "1b66bc9b783d7df86831dc30005f76495fe74e5d4aa3436e0debfcd101c1a7dc",
+          "sha256": "3e0f0faa3673c327ea123e08cfdc47968981be1071f628ef108d70187905f45f",
           "triangles": 19386,
           "min": [
             -1.2301621437072754,
@@ -12638,8 +12942,16 @@
         "organ0": "abdomen",
         "organ1": "chest"
       },
-      "build_seconds": 29.571,
-      "source_render_seconds": 3.961
+      "build_seconds": 13.784,
+      "source_render_seconds": 3.569,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "b33b84158e0bdb8fc85771e6d90f9660dd5263eef9614e2ec5284fbed0a9250f"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_crown_siphons_25",
@@ -12982,7 +13294,7 @@
         "jointed_oral_organs": 5
       },
       "version": "r04-1",
-      "build_fingerprint": "8384167566004e52891ecef3ff7fa16dd6c8cfe07cdcab21ac4d1f50b67a941f",
+      "build_fingerprint": "655dc494f3e05b63e9f4bf79df4e507458e4d6ebc1a7b4648c114d777e27f71a",
       "normalized_geometry_sha256": "99e0d0d134aa162ad4aa8ff5b2a01dd2ff09b4216abd4b40da6e984cd8ec6725",
       "source": "art/blender/creature_remodel/r04/biota_crown_siphons_26.blend",
       "status": "built-awaiting-game-render",
@@ -13149,7 +13461,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -13159,7 +13489,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_siphons_26_near.glb",
-          "sha256": "28ef2e9606506d19970581a558a47bccdccdfa6f3f96f3fdf1fcda48704a4c9c",
+          "sha256": "773e1b8d5f30839474b0bde7aabca2c39a1b97456cd43ede2c316bd69b343743",
           "triangles": 52060,
           "min": [
             -1.2301173210144043,
@@ -13174,7 +13504,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_siphons_26_far.glb",
-          "sha256": "afdf10c776a3ee0229c707631e3f5ba348ad75a9b33561634d0f8a5fd2406149",
+          "sha256": "0a0e83aece91fdb72c016cfc0164e26bc0a3cce4e8a75e657b7b1102ab61588f",
           "triangles": 22378,
           "min": [
             -1.2301621437072754,
@@ -13258,8 +13588,16 @@
         "organ2mouth_jaw-1": "organ2mouth",
         "organ2mouth_jaw1": "organ2mouth"
       },
-      "build_seconds": 44.368,
-      "source_render_seconds": 11.093
+      "build_seconds": 18.302,
+      "source_render_seconds": 5.474,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "b4246e2ef4582a0efa1aa5331eb942f073c18db9b14451d42b4192d81acefbe1"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_crown_tendrils_25",
@@ -13575,7 +13913,7 @@
         "jointed_oral_organs": 2
       },
       "version": "r04-1",
-      "build_fingerprint": "ab2bbcb83e218dadee399c9ca0a0becf3207dc7791b194beae359d2aeeeee23e",
+      "build_fingerprint": "1397263d336c1b707a2daa49242ffe141e179dca7d8de9e713951834c7082abf",
       "normalized_geometry_sha256": "a66d9501c5bdb6203aab8d694a8a2275d49bafa763252367b103540d0a362d65",
       "source": "art/blender/creature_remodel/r04/biota_crown_tendrils_26.blend",
       "status": "built-awaiting-game-render",
@@ -13718,7 +14056,25 @@
           "leg5": 0.9,
           "leg6": 0.6000000000000001,
           "leg7": 1.1
-        }
+        },
+        "strike_origins": [
+          {
+            "bone": "raptorial-11",
+            "point": [
+              -0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          },
+          {
+            "bone": "raptorial11",
+            "point": [
+              0.6200000047683716,
+              0.699999988079071,
+              1.3600000143051147
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -13728,7 +14084,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_tendrils_26_near.glb",
-          "sha256": "f45da0d6c43d719c447e479a311c7935fb3901bc2b4b531a9c58f189a69585a5",
+          "sha256": "516fbe5e4ae2a9d624a025cee456019030c80b01e55a05aa45d195a6c23f3965",
           "triangles": 44739,
           "min": [
             -1.2301173210144043,
@@ -13743,7 +14099,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_crown_tendrils_26_far.glb",
-          "sha256": "ec71b3fd2ccab95c69b16ebfd236c20c107cc3a9a32052cfa33233aaf38fd393",
+          "sha256": "fd7d385a328f9277f1c978e36c31b03904e5898492e123489719df7ef175e264",
           "triangles": 19228,
           "min": [
             -1.2301621437072754,
@@ -13824,8 +14180,16 @@
         "organ2branch-10": "organ2tactile1",
         "organ2branch10": "organ2tactile1"
       },
-      "build_seconds": 32.533,
-      "source_render_seconds": 4.067
+      "build_seconds": 15.724,
+      "source_render_seconds": 3.956,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "d9dc740ea137270f35c8b9bede136d22ea619a3198e15d11b35e948d7094fd69"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_flat_antennal_fans_25",
@@ -17156,7 +17520,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "932e63753232a5075d036d21d8ac81330463ea27e65947019dabba88b3ac4956",
+      "build_fingerprint": "46c1aea2e011318d5be98afbdaa3163e1b1f01bb6e31f054bc6d9ff8f5debd55",
       "normalized_geometry_sha256": "abb040ad26a482135ba7882be66db38494b2c840ab2ad1f6a672cbb883573690",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_antennal_fans_26.blend",
       "status": "built-awaiting-game-render",
@@ -17258,7 +17622,23 @@
           "front1": 0,
           "hind-1": 0,
           "hind1": 0.5
-        }
+        },
+        "attack_unplanted_limbs": {
+          "front1": [
+            0.02,
+            1.65
+          ]
+        },
+        "strike_origins": [
+          {
+            "bone": "front1_foot",
+            "point": [
+              0.32899999618530273,
+              0.10000000149011612,
+              0.8055999875068665
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -17268,7 +17648,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_antennal_fans_26_near.glb",
-          "sha256": "f086eef1fc8fd45f1a746cd878980753aa1a9a3a5f339e87c682687b2298bbad",
+          "sha256": "ec25253e97c57b3aaaaa161c4b1ebdd66650ee5dd5a012befe450bd55a2223f0",
           "triangles": 37788,
           "min": [
             -0.4444998800754547,
@@ -17283,7 +17663,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_antennal_fans_26_far.glb",
-          "sha256": "b0b6324184af6fd8ca2b64e969a44ae2a46201dd7124bc75c05d8a0af348f671",
+          "sha256": "4f96adc32fb97156d1822093fda450f2e9ae6278507eef895e51a751320e524a",
           "triangles": 16242,
           "min": [
             -0.4445890486240387,
@@ -17329,8 +17709,16 @@
         "organ1": "axial1",
         "organ2": "axial0"
       },
-      "build_seconds": 19.897,
-      "source_render_seconds": 8.069
+      "build_seconds": 12.598,
+      "source_render_seconds": 8.738,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "5efa1a612ea4b7db239996b9594c2cbac446407ace152d084cdeb2c5db38ef02"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_lobopod_armor_25",
@@ -17801,7 +18189,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "2a1efc77630f910c3af405088d66a91b1e075fbc7c8869dfb4dd9f295726fa63",
+      "build_fingerprint": "bbf5d322c69268df79d0155dc50fb1c9b910c97c11e8c67b61a7ebace5e5df18",
       "normalized_geometry_sha256": "373792cd3a1cddb878c5abda30face89b9ee39f028558f8d910be53ec2ee708b",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_gills_26.blend",
       "status": "built-awaiting-game-render",
@@ -17903,7 +18291,23 @@
           "front1": 0,
           "hind-1": 0,
           "hind1": 0.5
-        }
+        },
+        "attack_unplanted_limbs": {
+          "front1": [
+            0.02,
+            1.65
+          ]
+        },
+        "strike_origins": [
+          {
+            "bone": "front1_foot",
+            "point": [
+              0.33886998891830444,
+              0.10000000149011612,
+              0.7808200120925903
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -17913,7 +18317,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_gills_26_near.glb",
-          "sha256": "47f7658b37229d8b527ccee51ffde5233f5482f5fc4a6fa91927b414a1b920fb",
+          "sha256": "e4e8de7213eb5f755046c99a29602157959de088f5af6620680774919f6dbf48",
           "triangles": 36566,
           "min": [
             -0.4543698728084564,
@@ -17928,7 +18332,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_gills_26_far.glb",
-          "sha256": "6d51f4d28a01a2e302eaddd97b8e2b3fb838f999463c7570b80e0f2022e8cd1b",
+          "sha256": "2bc66e5c13ca13cdf3d2461ef3bf5ef30da21527cdb4e70856b015fd61febb48",
           "triangles": 15714,
           "min": [
             -0.454345166683197,
@@ -17974,8 +18378,16 @@
         "organ1": "axial1",
         "organ2": "axial0"
       },
-      "build_seconds": 15.035,
-      "source_render_seconds": 3.578
+      "build_seconds": 61.794,
+      "source_render_seconds": 8.776,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "dfc8cc2d9d2efcff82ce1395f035b19bee4e33c629983f03de96b88a47e9edbd"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_lobopod_mandibles_25",
@@ -18235,7 +18647,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "4bda61fb47e114677d2b5fb1e82cac939201e036ed0763efd46c7dc8c660a11f",
+      "build_fingerprint": "d72384196732e6b20ac92015647494ca7c81c555ea0dcbda6a955408be256c1f",
       "normalized_geometry_sha256": "e55cc2d4e9bfd833d17c2948a5262abb83a2891f1d30dc0c8699226ae5019f0f",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_mandibles_26.blend",
       "status": "built-awaiting-game-render",
@@ -18337,7 +18749,23 @@
           "front1": 0,
           "hind-1": 0,
           "hind1": 0.5
-        }
+        },
+        "attack_unplanted_limbs": {
+          "front1": [
+            0.02,
+            1.65
+          ]
+        },
+        "strike_origins": [
+          {
+            "bone": "front1_foot",
+            "point": [
+              0.3339349925518036,
+              0.10000000149011612,
+              0.7932100296020508
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -18347,7 +18775,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_mandibles_26_near.glb",
-          "sha256": "50ec1d7d0eca15d98c9953fea58d1986d7fe6f68fb2bb8141715c97f802fb4ed",
+          "sha256": "b2d8c3d56f5a5d9832baf2147983327e25b51038c6dbe0744c3b8eaace5fee54",
           "triangles": 32692,
           "min": [
             -0.44943487644195557,
@@ -18362,7 +18790,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_mandibles_26_far.glb",
-          "sha256": "27ae0aa981d01b04162133b4502fa5a9fae2b5d06d69330fbeb9511f461c186f",
+          "sha256": "6bb088c1da73ee53f0b2881a84da16d5bb2c1fbb85524c7be8a49e79713c6970",
           "triangles": 14046,
           "min": [
             -0.44942113757133484,
@@ -18411,8 +18839,16 @@
         "organ1jaw-1": "organ1",
         "organ1jaw1": "organ1"
       },
-      "build_seconds": 17.732,
-      "source_render_seconds": 3.516
+      "build_seconds": 59.317,
+      "source_render_seconds": 12.787,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "6bd0b72779da1b3ba59d477d3cdbe22adc95d18f0f8216430568bc8a769167d0"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_lobopod_sails_25",
@@ -18668,7 +19104,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "6425567348d52e54b2a6dc6e3eb8a5373979ca6cac1db54292f36f8194e43cd9",
+      "build_fingerprint": "da326a26c47ec1051f36ce96b45dd86bb1a144f347cc1cd6786feef527a67da9",
       "normalized_geometry_sha256": "5d8476d3fbd6394ee0e655485c574f40cee37b1f4ed46c3bb076ceaff0a158a9",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_sails_26.blend",
       "status": "built-awaiting-game-render",
@@ -18770,7 +19206,23 @@
           "front1": 0,
           "hind-1": 0,
           "hind1": 0.5
-        }
+        },
+        "attack_unplanted_limbs": {
+          "front1": [
+            0.02,
+            1.65
+          ]
+        },
+        "strike_origins": [
+          {
+            "bone": "front1_foot",
+            "point": [
+              0.319130003452301,
+              0.10000000149011612,
+              0.8303800225257874
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -18780,7 +19232,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_sails_26_near.glb",
-          "sha256": "c0601c45d58cd6d5c6e3b64378782e72d1a534e01f211763970710ca3f16097e",
+          "sha256": "98ba9fe700f5e32e256bd3a33b1d09619433c8ea8047dadde832031743e28764",
           "triangles": 31996,
           "min": [
             -0.434629887342453,
@@ -18795,7 +19247,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_sails_26_far.glb",
-          "sha256": "280a3eb65cc1584361ea14d8b704e1a3d9eebcf0ae73b2cdd00b69c7dd657e82",
+          "sha256": "d1e8595cc73db2bec7bab255cffc5b732dd5b7268da80fb705bad55689e5eec2",
           "triangles": 13750,
           "min": [
             -0.4346252977848053,
@@ -18840,8 +19292,16 @@
         "organ0": "axial1",
         "organ1": "axial1"
       },
-      "build_seconds": 15.044,
-      "source_render_seconds": 6.996
+      "build_seconds": 10.337,
+      "source_render_seconds": 7.909,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "c773f3b2540d9965956c266eba3ba8588b42c199a0747a88ed20bc0f4f7a66ea"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_lobopod_siphons_25",
@@ -19137,7 +19597,7 @@
         "jointed_oral_organs": 4
       },
       "version": "r04-1",
-      "build_fingerprint": "c1c6af049eb2be9d8f07302640272b123277012a02b58ed4ae9c230dd0511ffd",
+      "build_fingerprint": "d2e5a30564f1df9ab8040fa04a94cc4ba0d8f2b43ff23d7f276d9a88ce3a0074",
       "normalized_geometry_sha256": "ca23af5760a139f0441bbe2212714a85e60288cfc6e6d620e646f974b8485767",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_siphons_26.blend",
       "status": "built-awaiting-game-render",
@@ -19263,7 +19723,23 @@
           "front1": 0,
           "hind-1": 0,
           "hind1": 0.5
-        }
+        },
+        "attack_unplanted_limbs": {
+          "front1": [
+            0.02,
+            1.65
+          ]
+        },
+        "strike_origins": [
+          {
+            "bone": "front1_foot",
+            "point": [
+              0.3240649998188019,
+              0.10000000149011612,
+              0.8179900050163269
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -19273,7 +19749,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_siphons_26_near.glb",
-          "sha256": "f7e31edd7ad6d092c0b79b3202cd2327a415647ebdee410e91fbccf2bac7e2a5",
+          "sha256": "20b3504d3e190574c4a4678a5ff968eef90ede88848e232eee6947a2619a94da",
           "triangles": 39002,
           "min": [
             -0.43956488370895386,
@@ -19288,7 +19764,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_siphons_26_far.glb",
-          "sha256": "eef0edc800daa5a41beb6780505300ae5997703baf12228f65abef4a167e3701",
+          "sha256": "b29370d8c63bec7ea8ab4e431fdde607aa8733265f42ae7fb2acea4effdc2f09",
           "triangles": 16758,
           "min": [
             -0.4395511746406555,
@@ -19349,8 +19825,16 @@
         "organ2mouth_jaw-1": "organ2mouth",
         "organ2mouth_jaw1": "organ2mouth"
       },
-      "build_seconds": 21.698,
-      "source_render_seconds": 3.549
+      "build_seconds": 14.494,
+      "source_render_seconds": 6.626,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "b4dcaf5f856ba7e2d2f3644cbefbe6f2484be49af1dcbcb99a7a6f6e785f1eee"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_lobopod_tendrils_25",
@@ -19619,7 +20103,7 @@
         "jointed_oral_organs": 1
       },
       "version": "r04-1",
-      "build_fingerprint": "4a6082be4edeabeb09f0f718ea31dd633425874d7b3d38537b3ae8acd95fa5f3",
+      "build_fingerprint": "5da1e2d3fb7a80188a315f323e6d1e9e7febdf12a0d31784acd6e2a27e225b4d",
       "normalized_geometry_sha256": "eb357f9dce27ba176d394e5354ca1eab4e931f2f233add66e10e4ddca330b854",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_tendrils_26.blend",
       "status": "built-awaiting-game-render",
@@ -19721,7 +20205,23 @@
           "front1": 0,
           "hind-1": 0,
           "hind1": 0.5
-        }
+        },
+        "attack_unplanted_limbs": {
+          "front1": [
+            0.02,
+            1.65
+          ]
+        },
+        "strike_origins": [
+          {
+            "bone": "front1_foot",
+            "point": [
+              0.31419500708580017,
+              0.10000000149011612,
+              0.842769980430603
+            ]
+          }
+        ]
       },
       "muzzle": [
         0.0,
@@ -19731,7 +20231,7 @@
       "lods": {
         "near": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_tendrils_26_near.glb",
-          "sha256": "f8de405190650251441722de0c184acfde5a69dc9e659bdab0efbb780a5da637",
+          "sha256": "bb8c203e9bab61d54fd8a81f09cef2b82c7db01a5926d86aed2a9d5e892adcf4",
           "triangles": 31663,
           "min": [
             -0.42969489097595215,
@@ -19746,7 +20246,7 @@
         },
         "far": {
           "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_tendrils_26_far.glb",
-          "sha256": "3c509203c6ed71b8ae34aa848deb0dcc37b2c69c07ff1644ae0730d95b881465",
+          "sha256": "6c1ee4c71b167cdec1303d04d583611322d04d60e43347264ec6bb3d3eeaca62",
           "triangles": 13606,
           "min": [
             -0.43072783946990967,
@@ -19804,8 +20304,16 @@
         "organ2branch-10": "organ2tactile1",
         "organ2branch10": "organ2tactile1"
       },
-      "build_seconds": 17.582,
-      "source_render_seconds": 3.563
+      "build_seconds": 12.425,
+      "source_render_seconds": 5.755,
+      "animation_capture": {
+        "version": 1,
+        "base_fingerprint": "1b009d1d8bba03b2150578ab325af01243a83c15b3d826e915a750720349602f"
+      },
+      "lod_animation_reuse": {
+        "version": 2,
+        "source": "near"
+      }
     },
     {
       "id": "biota_mantle_antennal_fans_25",

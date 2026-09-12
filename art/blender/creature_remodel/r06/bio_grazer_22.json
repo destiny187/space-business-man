@@ -1,0 +1,240 @@
+{
+  "id": "bio_grazer_22",
+  "source_id": "bio_grazer_22",
+  "name": "수관 갑주형 뿔초식류",
+  "family": "grazer",
+  "kind": "grazer",
+  "construction": "grazer",
+  "anatomical_type": "proboscid",
+  "organ_system": "sails",
+  "environment": "canopy",
+  "habitat": "식생·빛과 그늘·수직 서식처",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.355,
+    "height": 1.0,
+    "mode": 1,
+    "radial_count": 5,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 4
+  },
+  "attack": "ram",
+  "palette": [
+    "387463",
+    "8baa55",
+    "34494e",
+    "c99552"
+  ],
+  "host_pattern": "ram",
+  "host_motion": "charge",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "grazer",
+    "support_limbs": 4,
+    "oral_organs": 2,
+    "articulated_organs": 25
+  },
+  "version": "r06-1",
+  "build_fingerprint": "21d111ef04294583752e926fe4723352dfe12cab6801861dcdb1571c375ff142",
+  "normalized_geometry_sha256": "33e942ae3ff220013d4040430352e1b1d2fafed2ddb608d2fd5a419874a751f4",
+  "source": "art/blender/creature_remodel/r06/bio_grazer_22.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 43,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "charge_loop"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2544000148773193,
+        1.559899926185608
+      ]
+    },
+    "Socket_trunk_tip": {
+      "bone": "trunk_tip",
+      "point": [
+        0.0,
+        0.7800000309944153,
+        2.049999952316284
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2544000148773193,
+        1.559899926185608
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.2544000148773193,
+        1.559899926185608
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.6017879843711853,
+        0.10000000149011612,
+        0.6423299908638
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.6017879843711853,
+        0.10000000149011612,
+        0.6423299908638
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.6017879843711853,
+        0.10000000149011612,
+        -0.6820700168609619
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.6017879843711853,
+        0.10000000149011612,
+        -0.6820700168609619
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.36422805643199224,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.564553487469588,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.2544000148773193,
+    1.559899926185608
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_grazer_22_near.glb",
+      "sha256": "a2ada499e9024ad51fefc6d328812afdd46107981ef40378ce5cff41abe73616",
+      "triangles": 45542,
+      "min": [
+        -0.7802878022193909,
+        0.02499999850988388,
+        -1.175238847732544
+      ],
+      "max": [
+        0.7802879214286804,
+        2.575895071029663,
+        2.0499095916748047
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_grazer_22_far.glb",
+      "sha256": "143d4b2a2c477ef8a864fb3c67204e4e95b5c9e136733d580ce9f07f4cf546bf",
+      "triangles": 19572,
+      "min": [
+        -0.7802878022193909,
+        0.024996528401970863,
+        -1.1731566190719604
+      ],
+      "max": [
+        0.7802879214286804,
+        2.575925350189209,
+        2.0500805377960205
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "prehensile_trunk0": "head",
+    "prehensile_trunk1": "prehensile_trunk0",
+    "prehensile_trunk2": "prehensile_trunk1",
+    "trunk_tip": "prehensile_trunk2",
+    "trunk_tip_petal0": "trunk_tip",
+    "trunk_tip_petal1": "trunk_tip",
+    "trunk_tip_petal2": "trunk_tip",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial1",
+    "organ3": "axial1",
+    "organ4": "axial0",
+    "prehensile_labium-10": "oral",
+    "prehensile_labium-11": "prehensile_labium-10",
+    "prehensile_labium10": "oral",
+    "prehensile_labium11": "prehensile_labium10"
+  },
+  "build_seconds": 18.024,
+  "source_render_seconds": 3.547,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "7c796ca0ecdd3cb3561c2e204ab274706b11e79b784621eaf1cfa9074116426e"
+  }
+}

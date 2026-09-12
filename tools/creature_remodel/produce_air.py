@@ -6,7 +6,10 @@ from air_recipes import recipes
 def fingerprint(spec):
     h=hashlib.sha256(json.dumps(spec,sort_keys=True).encode())
     for file in ['produce_air.py','air_recipes.py','air_anatomy.py','air_motion.py','production_core.py','anatomy_stage.py','biota_anatomy.py','build_batch.py']:
-        h.update((Path(__file__).parent/file).read_bytes())
+        path=Path(__file__).parent/file
+        if not spec.get('art_refinements') and file in ['produce_air.py','air_recipes.py','air_anatomy.py']:
+            path=path.parent/'compat'/(path.stem+'_v1.py')
+        h.update(path.read_bytes())
     for file in ['build_creature_studies.py','build_creature_remodel_r01.py','refine_creature_motion.py','ink_blender.py']:
         h.update((ROOT/'tools'/file).read_bytes())
     h.update((ROOT/'우주-비즈니스/data/ink_materials.json').read_bytes());return h.hexdigest()

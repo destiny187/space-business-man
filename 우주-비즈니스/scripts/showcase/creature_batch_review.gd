@@ -5,6 +5,8 @@ var batch_name:="r02"
 func run() -> void:
 	if "--check-scope" in OS.get_cmdline_user_args():
 		audit_scope();quit();return
+	if "--check-lod" in OS.get_cmdline_user_args():
+		audit_lod();quit();return
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--batch="):batch_name=argument.trim_prefix("--batch=")
 	assert(batch_name.is_valid_identifier())
@@ -26,12 +28,16 @@ func run() -> void:
 	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_"+batch_name+".json"))
 	for form in manifest.forms:
 		if not filter.is_empty() and form.id not in filter and form.family not in filter:continue
+		var previous: Dictionary={}
+		var checkpoint: String=folder+"/"+form.id+"_evidence.json"
+		if FileAccess.file_exists(checkpoint):previous=JSON.parse_string(FileAccess.get_file_as_string(checkpoint))
+		var matching: bool=previous.get("renderer","")=="forward_plus" and previous.get("species",{}).get("asset_sha256",{})=={"near":form.lods.near.sha256,"far":form.lods.far.sha256}
+		matching=matching and int(previous.get("species",{}).get("body_support_version",0))==int(form.get("body_support_version",0))
 		if "--unreviewed" in OS.get_cmdline_user_args():
-			var checkpoint: String=folder+"/"+form.id+"_evidence.json"
-			if FileAccess.file_exists(checkpoint):
-				var previous: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(checkpoint))
-				if previous.get("renderer","")=="forward_plus" and previous.species.asset_sha256=={"near":form.lods.near.sha256,"far":form.lods.far.sha256}:continue
-		await review_batch(form)
+			if matching and int(previous.species.get("authored_pose_capture_version",0))>=2 and int(previous.species.get("contact_metadata_version",0))==int(form.get("contact_metadata_version",0)):continue
+		if matching and not video and ("--poses-only" in OS.get_cmdline_user_args() or "--unreviewed" in OS.get_cmdline_user_args()):
+			await refresh_poses(form,previous.species)
+		else:await review_batch(form)
 		if report.is_empty() or report[-1].id!=form.id:
 			push_error("Incomplete species review: "+str(form.id));quit(1);return
 		FileAccess.open(folder+"/"+form.id+"_evidence.json",FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"species":report[-1]},"\t"))
@@ -52,11 +58,9 @@ func center_camera(actor: Node3D,form: Dictionary) -> void:
 	var offset:=Vector3(4.2,6.0,7.5)*1.3 if form.kind=="radial" else Vector3(4.2,3.0,7.5)*1.5
 	camera.position=center+offset;camera.look_at(center)
 
-func review_batch(form: Dictionary) -> void:
+func make_actor(form: Dictionary) -> Node3D:
 	var original:=FrontierEcologyCatalog.form(form.source_id)
 	assert(not original.is_empty())
-	var host_pattern: String=FrontierWildlifeCombat.pattern(original)
-	if batch_name in ["r02","r03"]:assert(host_pattern=="none")
 	Actor.RemodelRegistry.entry(original);Actor.RemodelRegistry.entries[original.id]=form
 	var actor:=Actor.new();actor.defer_far=true;actor.lod_override=0
 	var ready_scenes: Array=[]
@@ -66,11 +70,51 @@ func review_batch(form: Dictionary) -> void:
 			var model:=gltf.generate_scene(state);var packed:=PackedScene.new();assert(packed.pack(model)==OK);model.free();ready_scenes.append(packed)
 	actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes,true,form if not ready_scenes.is_empty() else {});stage.add_child(actor);actor.set_process(false)
 	assert(actor.finish_lods() and actor.models.size()==2)
+	return actor
+
+func capture_attack(actor: Node3D,form: Dictionary) -> Dictionary:
+	var motion=actor.ground_motion
+	actor.state="attack";motion.clips.fill("")
+	var profile: Dictionary=form.motion_profile
+	var samples: Array=[{"name":"prepare","time":float(profile.prepare)},{"name":"strike","time":float(profile.release[0])}]
+	if profile.release.size()>1:samples.append({"name":"strike_second","time":float(profile.release[1])})
+	samples.append({"name":"recover","time":lerpf(float(profile.active_end),float(profile.get("settle",profile.duration)),.5)})
+	var positions: Dictionary={}
+	for sample in samples:
+		motion.wanted_clip="attack";motion.pose_clock=sample.time;motion.pose_step=0.;motion.pose_authored()
+		caption.text="공격 기관 · "+str(sample.name);center_camera(actor,form)
+		positions[sample.name]={}
+		for key in motion.socket_nodes[0]:
+			var p: Vector3=motion.socket_nodes[0][key].global_position;assert(p.is_finite());positions[sample.name][key]=[p.x,p.y,p.z]
+		var contacts: Array=profile.get("strike_origins",[])
+		for index in contacts.size():
+			var p: Vector3=motion.socket_point(actor.anatomical_skeletons[0],contacts[index])
+			positions[sample.name]["Contact_"+str(index)]=[p.x,p.y,p.z]
+		await photograph(form.id,sample.name)
+	return positions
+
+func refresh_poses(form: Dictionary,previous: Dictionary) -> void:
+	var actor:=make_actor(form);var motion=actor.ground_motion
+	title.text=form.name
+	var at:=Vector3(0,height(0,0),0);actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.)
+	var updated:=previous.duplicate(true)
+	updated.socket_samples=await capture_attack(actor,form)
+	actor.state="move";actor.set_lod(true);motion.wanted_clip="run_loop";motion.pose_clock=.37;motion.pose_step=0.;motion.pose_authored(true)
+	caption.text="원거리 LOD · 현재 동작 동기화";center_camera(actor,form);await photograph(form.id,"far")
+	updated.authored_pose_capture_version=2;updated.pose_capture_origin=[at.x,at.y,at.z]
+	updated.contact_metadata_version=int(form.get("contact_metadata_version",0))
+	report.append(updated);print("REMODEL_POSE_REFRESH ",form.id,"; original locomotion evidence preserved");actor.free()
+
+func review_batch(form: Dictionary) -> void:
+	var original:=FrontierEcologyCatalog.form(form.source_id)
+	var host_pattern: String=FrontierWildlifeCombat.pattern(original)
+	if batch_name in ["r02","r03"]:assert(host_pattern=="none")
+	var actor:=make_actor(form)
 	assert(actor.ground_motion.authored_limbs.size()==int(form.locomotion_chains))
 	assert(actor.set_state("attack")== (original.get("attack","none")!="none"));actor.set_state("idle")
 	var host_profile:=FrontierWildlifeCombat.profile({"form_id":original.id,"look_id":FrontierEcologyCatalog.look_for_seed(original.id,0),"combat_tier":5})
 	var fast_speed: float=host_profile.speed
-	var motion=actor.ground_motion;var max_error:=0.;var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0
+	var motion=actor.ground_motion;var max_error:=0.;var max_body_error:=0.;var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0
 	for limb in motion.authored_limbs:
 		assert(is_equal_approx(motion.limb_phase(limb.name),float(form.motion_profile.limb_phases[limb.name])));phase_checks+=1
 	title.text=form.name;var at:=Vector3(0,height(0,0),0)
@@ -89,6 +133,7 @@ func review_batch(form: Dictionary) -> void:
 		at+=Vector3(sin(yaw),0,cos(yaw))*speed/30.;at.y=height(at.x,at.z)
 		actor.drive_ground(at,frame_at(at,yaw),1./30.,probe,false,0);actor._process(1./30.)
 		root_error=maxf(root_error,actor.global_position.distance_to(at))
+		max_body_error=maxf(max_body_error,motion.body_contact_error)
 		if motion.grounded_error>max_error:
 			max_error=motion.grounded_error;max_error_at={"frame":i,"clip":motion.wanted_clip,"reach":motion.reach_debug.duplicate()}
 		var skeleton: Skeleton3D=actor.anatomical_skeletons[0]
@@ -99,18 +144,10 @@ func review_batch(form: Dictionary) -> void:
 		center_camera(actor,form)
 		if video:await photograph(form.id,"motion_%03d"%step);step+=1
 		elif i in [30,110,220]:await photograph(form.id,"walk" if i==30 else ("run" if i==110 else "feed"))
-	assert(root_error<.00001 and bone_motion>.01)
-	var socket_samples: Dictionary={}
+	assert(root_error<.00001 and bone_motion>.01 and max_body_error<.01)
 	# Pose the authored strike for art review; no host attack or new damage is enabled.
-	actor.state="attack"
-	for sample in [{"name":"prepare","time":.78},{"name":"strike","time":1.08},{"name":"recover","time":1.7}]:
-		motion.wanted_clip="attack";motion.pose_clock=sample.time;motion.pose_step=0.;motion.pose_authored()
-		caption.text="공격 기관 · "+str(sample.name);center_camera(actor,form)
-		var positions: Dictionary={}
-		for key in motion.socket_nodes[0]:
-			var p: Vector3=motion.socket_nodes[0][key].global_position;assert(p.is_finite());positions[key]=[p.x,p.y,p.z]
-		socket_samples[sample.name]=positions
-		await photograph(form.id,sample.name)
+	var socket_samples: Dictionary=await capture_attack(actor,form)
+	var pose_capture_origin: Array=[at.x,at.y,at.z]
 	if video:
 		caption.text="공격 기관 · 준비 → 방출·물기 → 회수"
 		for i in 84:
@@ -128,8 +165,31 @@ func review_batch(form: Dictionary) -> void:
 	at.z+=.05;at.y=height(at.x,at.z);actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.);center_camera(actor,form)
 	assert(actor.visible_model==1 and actor.mouth_marker==motion.socket_nodes[1].Socket_Muzzle)
 	caption.text="원거리 LOD · 같은 골격과 발사 기관";await photograph(form.id,"far")
-	report.append({"id":form.id,"family":form.family,"species_id":original.id,"bone_count":form.bone_count,"clip_count":form.clips.size(),"limb_phase_checks":phase_checks,"root_error":root_error,"max_foot_target_error":max_error,"max_error_at":max_error_at,"bone_motion":bone_motion,"lods":2,"host_attack":host_pattern,"tested_host_flee_speed":fast_speed,"socket_samples":socket_samples,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256}})
-	print("REMODEL_BATCH ",form.id," bones=",form.bone_count," feet=",phase_checks," error=",max_error);actor.free()
+	report.append({"id":form.id,"family":form.family,"species_id":original.id,"bone_count":form.bone_count,"clip_count":form.clips.size(),"limb_phase_checks":phase_checks,"root_error":root_error,"max_foot_target_error":max_error,"max_error_at":max_error_at,"bone_motion":bone_motion,"lods":2,"host_attack":host_pattern,"tested_host_flee_speed":fast_speed,"socket_samples":socket_samples,"authored_pose_capture_version":2,"contact_metadata_version":int(form.get("contact_metadata_version",0)),"pose_capture_origin":pose_capture_origin,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256}})
+	report[-1].body_support_version=int(form.get("body_support_version",0));report[-1].max_body_contact_error=max_body_error
+	print("REMODEL_BATCH ",form.id," bones=",form.bone_count," feet=",phase_checks," error=",max_error," body=",max_body_error);actor.free()
+
+func audit_lod() -> void:
+	var original:=FrontierEcologyCatalog.form("bio_runner_01")
+	var actor:=Actor.new();actor.configure(original,{"scale":1.,"palette":original.palette});root.add_child(actor);actor.set_process(false)
+	assert(actor.models.size()==2)
+	var motion=actor.ground_motion
+	actor.set_lod(true);motion.wanted_clip="run_loop";motion.pose_clock=.37;motion.pose_step=0.;motion.pose_authored(true)
+	actor.set_lod(false);motion.wanted_clip="attack";motion.pose_clock=1.08;motion.pose_step=0.;motion.pose_authored(true)
+	var near_skeleton: Skeleton3D=actor.anatomical_skeletons[0]
+	var expected: Dictionary={}
+	for bone in near_skeleton.get_bone_count():expected[near_skeleton.get_bone_name(bone)]=near_skeleton.get_bone_global_pose(bone)
+	var phase_before: float=motion.phase;var model_before: int=actor.models[1].get_instance_id();var root_before:=actor.global_transform
+	actor.set_lod(true);motion.pose_authored(true)
+	var far_skeleton: Skeleton3D=actor.anatomical_skeletons[1];var maximum:=0.
+	for bone in far_skeleton.get_bone_count():
+		var actual:=far_skeleton.get_bone_global_pose(bone);var target: Transform3D=expected[far_skeleton.get_bone_name(bone)]
+		maximum=maxf(maximum,actual.origin.distance_to(target.origin))
+		for axis in 3:maximum=maxf(maximum,actual.basis[axis].distance_to(target.basis[axis]))
+	assert(maximum<.00001)
+	assert(motion.phase==phase_before and actor.models[1].get_instance_id()==model_before and actor.global_transform==root_before)
+	print("REMODEL_LOD_POSE_SYNC hidden run -> visible strike; maximum transform error=",maximum,"; node, root and gait phase preserved")
+	actor.free()
 
 func audit_scope() -> void:
 	var original:=FrontierEcologyCatalog.form("bio_hinge_book_01")

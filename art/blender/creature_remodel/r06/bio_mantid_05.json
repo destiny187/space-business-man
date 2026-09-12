@@ -1,0 +1,345 @@
+{
+  "id": "bio_mantid_05",
+  "source_id": "bio_mantid_05",
+  "name": "수관 확장형 낫날절지류",
+  "family": "mantid",
+  "kind": "mantid",
+  "construction": "mantid",
+  "anatomical_type": "mantid",
+  "organ_system": "siphons",
+  "environment": "canopy",
+  "habitat": "식생·빛과 그늘·수직 서식처",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.1400000000000001,
+    "height": 1.0,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 6,
+    "eye_count": 2,
+    "lineage": 0
+  },
+  "attack": "scythe",
+  "palette": [
+    "387463",
+    "8baa55",
+    "34494e",
+    "c99552"
+  ],
+  "host_pattern": "scythe",
+  "host_motion": "double_sweep",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "mantid",
+    "support_limbs": 4,
+    "oral_organs": 8,
+    "articulated_organs": 48
+  },
+  "version": "r06-1",
+  "build_fingerprint": "9e544a74c796af509c65c4b0c8a1aab73bd2def0aff85c7c8d24870f7ea10986",
+  "normalized_geometry_sha256": "af700049070da724ec9bb4475d16bcd667bad01bb50e0138c2712b650da2c8d0",
+  "source": "art/blender/creature_remodel/r06/bio_mantid_05.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 80,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.600000023841858,
+        1.0600000619888306
+      ]
+    },
+    "Socket_organ0mouth": {
+      "bone": "organ0mouth",
+      "point": [
+        0.29446321725845337,
+        2.503565788269043,
+        -0.6000000238418579
+      ]
+    },
+    "Socket_organ1mouth": {
+      "bone": "organ1mouth",
+      "point": [
+        0.3118557333946228,
+        2.555743455886841,
+        -0.6000000238418579
+      ]
+    },
+    "Socket_organ2mouth": {
+      "bone": "organ2mouth",
+      "point": [
+        0.32924824953079224,
+        2.6079208850860596,
+        -0.6000000238418579
+      ]
+    },
+    "Socket_organ3mouth": {
+      "bone": "organ3mouth",
+      "point": [
+        -0.29446321725845337,
+        2.503565788269043,
+        -0.019999999552965164
+      ]
+    },
+    "Socket_organ4mouth": {
+      "bone": "organ4mouth",
+      "point": [
+        -0.3118557333946228,
+        2.555743455886841,
+        -0.019999999552965164
+      ]
+    },
+    "Socket_organ5mouth": {
+      "bone": "organ5mouth",
+      "point": [
+        0.22572533786296844,
+        2.6158454418182373,
+        0.25
+      ]
+    },
+    "Socket_organ6mouth": {
+      "bone": "organ6mouth",
+      "point": [
+        0.20186299085617065,
+        2.508464813232422,
+        0.25
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.600000023841858,
+        1.0600000619888306
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.600000023841858,
+        1.0600000619888306
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.2,
+      "leg3": 0.7
+    },
+    "strike_origins": [
+      {
+        "bone": "raptorial-11",
+        "point": [
+          -0.6200000047683716,
+          1.5899999141693115,
+          1.5
+        ]
+      },
+      {
+        "bone": "raptorial11",
+        "point": [
+          0.6200000047683716,
+          1.5899999141693115,
+          1.5
+        ]
+      }
+    ]
+  },
+  "muzzle": [
+    0.0,
+    1.600000023841858,
+    1.0600000619888306
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_mantid_05_near.glb",
+      "sha256": "481efe7458011407a58e40e042b7ee725bdbde8361723ca77bc8bf76d29e999b",
+      "triangles": 50706,
+      "min": [
+        -1.2301173210144043,
+        0.02499999850988388,
+        -1.1508417129516602
+      ],
+      "max": [
+        1.2301173210144043,
+        2.6781952381134033,
+        1.514064908027649
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_mantid_05_far.glb",
+      "sha256": "e41532c37cb6da335830c7a7f2bf5cb72f37ec308757c195fc85e24681b330cd",
+      "triangles": 21794,
+      "min": [
+        -1.2301621437072754,
+        0.024997156113386154,
+        -1.151349425315857
+      ],
+      "max": [
+        1.2301616668701172,
+        2.678607225418091,
+        1.5152919292449951
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "abdomen": "chest",
+    "raised_thorax0": "chest",
+    "raised_thorax1": "raised_thorax0",
+    "head": "raised_thorax1",
+    "oral": "head",
+    "oral_petal0": "oral",
+    "oral_petal1": "oral",
+    "oral_petal2": "oral",
+    "Compound receptor -1_lid": "head",
+    "antenna-10": "head",
+    "antenna-11": "antenna-10",
+    "Compound receptor 1_lid": "head",
+    "antenna10": "head",
+    "antenna11": "antenna10",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "raptorial-10": "raised_thorax1",
+    "raptorial-11": "raptorial-10",
+    "raptorial10": "raised_thorax1",
+    "raptorial11": "raptorial10",
+    "organ0": "abdomen",
+    "organ0conduit0": "organ0",
+    "organ0conduit1": "organ0conduit0",
+    "organ0mouth": "organ0conduit1",
+    "organ0mouth_jaw-1": "organ0mouth",
+    "organ0mouth_jaw1": "organ0mouth",
+    "organ1": "abdomen",
+    "organ1conduit0": "organ1",
+    "organ1conduit1": "organ1conduit0",
+    "organ1mouth": "organ1conduit1",
+    "organ1mouth_jaw-1": "organ1mouth",
+    "organ1mouth_jaw1": "organ1mouth",
+    "organ2": "abdomen",
+    "organ2conduit0": "organ2",
+    "organ2conduit1": "organ2conduit0",
+    "organ2mouth": "organ2conduit1",
+    "organ2mouth_jaw-1": "organ2mouth",
+    "organ2mouth_jaw1": "organ2mouth",
+    "organ3": "chest",
+    "organ3conduit0": "organ3",
+    "organ3conduit1": "organ3conduit0",
+    "organ3mouth": "organ3conduit1",
+    "organ3mouth_jaw-1": "organ3mouth",
+    "organ3mouth_jaw1": "organ3mouth",
+    "organ4": "chest",
+    "organ4conduit0": "organ4",
+    "organ4conduit1": "organ4conduit0",
+    "organ4mouth": "organ4conduit1",
+    "organ4mouth_jaw-1": "organ4mouth",
+    "organ4mouth_jaw1": "organ4mouth",
+    "organ5": "chest",
+    "organ5conduit0": "organ5",
+    "organ5conduit1": "organ5conduit0",
+    "organ5mouth": "organ5conduit1",
+    "organ5mouth_jaw-1": "organ5mouth",
+    "organ5mouth_jaw1": "organ5mouth",
+    "organ6": "chest",
+    "organ6conduit0": "organ6",
+    "organ6conduit1": "organ6conduit0",
+    "organ6mouth": "organ6conduit1",
+    "organ6mouth_jaw-1": "organ6mouth",
+    "organ6mouth_jaw1": "organ6mouth",
+    "abdominal_respiration-1_0": "abdomen",
+    "abdominal_respiration-1_1": "abdomen",
+    "abdominal_respiration-1_2": "abdomen",
+    "abdominal_respiration1_0": "abdomen",
+    "abdominal_respiration1_1": "abdomen",
+    "abdominal_respiration1_2": "abdomen"
+  },
+  "build_seconds": 18.554,
+  "source_render_seconds": 5.797,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "63668474e4beb2829c74f291b9fc029c0e496d834592db59ed8bfa158bca234c"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

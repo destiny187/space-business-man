@@ -39,7 +39,7 @@
     "jointed_oral_organs": 4
   },
   "version": "r04-1",
-  "build_fingerprint": "c1c6af049eb2be9d8f07302640272b123277012a02b58ed4ae9c230dd0511ffd",
+  "build_fingerprint": "d2e5a30564f1df9ab8040fa04a94cc4ba0d8f2b43ff23d7f276d9a88ce3a0074",
   "normalized_geometry_sha256": "ca23af5760a139f0441bbe2212714a85e60288cfc6e6d620e646f974b8485767",
   "source": "art/blender/creature_remodel/r04/biota_lobopod_siphons_26.blend",
   "status": "built-awaiting-game-render",
@@ -165,7 +165,23 @@
       "front1": 0,
       "hind-1": 0,
       "hind1": 0.5
-    }
+    },
+    "attack_unplanted_limbs": {
+      "front1": [
+        0.02,
+        1.65
+      ]
+    },
+    "strike_origins": [
+      {
+        "bone": "front1_foot",
+        "point": [
+          0.3240649998188019,
+          0.10000000149011612,
+          0.8179900050163269
+        ]
+      }
+    ]
   },
   "muzzle": [
     0.0,
@@ -175,7 +191,7 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_siphons_26_near.glb",
-      "sha256": "f7e31edd7ad6d092c0b79b3202cd2327a415647ebdee410e91fbccf2bac7e2a5",
+      "sha256": "20b3504d3e190574c4a4678a5ff968eef90ede88848e232eee6947a2619a94da",
       "triangles": 39002,
       "min": [
         -0.43956488370895386,
@@ -190,7 +206,7 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_siphons_26_far.glb",
-      "sha256": "eef0edc800daa5a41beb6780505300ae5997703baf12228f65abef4a167e3701",
+      "sha256": "b29370d8c63bec7ea8ab4e431fdde607aa8733265f42ae7fb2acea4effdc2f09",
       "triangles": 16758,
       "min": [
         -0.4395511746406555,
@@ -251,6 +267,14 @@
     "organ2mouth_jaw-1": "organ2mouth",
     "organ2mouth_jaw1": "organ2mouth"
   },
-  "build_seconds": 21.698,
-  "source_render_seconds": 3.549
+  "build_seconds": 14.494,
+  "source_render_seconds": 6.626,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "b4dcaf5f856ba7e2d2f3644cbefbe6f2484be49af1dcbcb99a7a6f6e785f1eee"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
 }

@@ -38,7 +38,7 @@ func run() -> void:
 		for asset in form.lods.values():
 			if FileAccess.get_sha256("res://"+str(asset.path).trim_prefix("우주-비즈니스/"))!=asset.sha256:
 				push_error("Host review asset changed after publication: "+form.id);quit(1);return
-		for mode in (["blocked"] if "--blocked-only" in OS.get_cmdline_user_args() else ["hit","miss","blocked"]):await exercise(stage,form,mode)
+		for mode in (["blocked"] if "--blocked-only" in OS.get_cmdline_user_args() else (["hit"] if "--hit-only" in OS.get_cmdline_user_args() else ["hit","miss","blocked"])):await exercise(stage,form,mode)
 	if records.is_empty():push_error("Host review selected no cases");quit(1);return
 	FileAccess.open(folder+"/evidence.json",FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"actual_host_step":true,"records":records,"failures":failures},"\t"))
 	print("REMODEL_HOST_REVIEW ",records.size()," FAILURES ",failures);quit(1 if failures else 0)
@@ -93,7 +93,7 @@ func exercise(stage: Node3D,form: Dictionary,outcome: String) -> void:
 	check(presentation_unchanged,"presentation preserves host state and unrelated actor")
 	if outcome=="hit":
 		check(clips.has("charge_loop") if info.behavior=="charge" else (clips.has("leap_air") and clips.has("leap_land") if info.behavior=="leap" else clips.has("attack")),"host-compatible clips")
-	records.append({"id":form.id,"outcome":outcome,"host_behavior":info.behavior,"host_speed":info.get("charge_speed",info.speed),"clips":clips.keys(),"root_error":root_error,"max_foot_target_error":max_error,"damage_events":damage_events,"remaining_health":member.vitals.health,"unchanged_balance":true,"unrelated_actor_preserved":presentation_unchanged,"rendered_contacts":actor.remodel_effects.emitted_contacts,"frames":frame_files})
+	records.append({"id":form.id,"outcome":outcome,"host_behavior":info.behavior,"host_speed":info.get("charge_speed",info.speed),"clips":clips.keys(),"root_error":root_error,"max_foot_target_error":max_error,"damage_events":damage_events,"remaining_health":member.vitals.health,"unchanged_balance":true,"unrelated_actor_preserved":presentation_unchanged,"rendered_contacts":actor.remodel_effects.emitted_contacts,"frames":frame_files,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256},"contact_metadata_version":int(form.get("contact_metadata_version",0))})
 	print("REMODEL_HOST ",form.id," ",outcome," ",clips.keys()," hits=",damage_events," IK=",max_error)
 	if max_error>.025:print("HOST_REACH_DIAGNOSTIC ",max_error_at)
 	if outcome=="hit":

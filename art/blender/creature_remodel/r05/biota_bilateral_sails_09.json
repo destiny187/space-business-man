@@ -1,0 +1,187 @@
+{
+  "id": "biota_bilateral_sails_09",
+  "name": "운해곧은열한마디현수망토수",
+  "family": "biota_bilateral_sails",
+  "construction": "bilateral",
+  "organ_system": "sails",
+  "environment": "gas_cloud",
+  "locomotion_medium": "atmosphere",
+  "anatomy_note": "좌우 장기낭을 잇는 굵은 신경목·몸통과 이어진 넓은 측막 / 직렬 배열·주요 기관 11개",
+  "source_id": "biota_bilateral_sails_09",
+  "kind": "bilateral",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "고체 발판 없이 떠 있는 부력낭·평형막·현수 여과기관의 가상 대기층 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 0,
+    "radial_count": 11,
+    "limb_count": 4,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "flight": {},
+  "anatomical_type": "bilateral",
+  "production_batch": "r05",
+  "air_motion": false,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "bilateral",
+    "medium": "atmosphere",
+    "wing_chains": 0,
+    "ground_supports": 0,
+    "organs": 26
+  },
+  "version": "r05-1",
+  "build_fingerprint": "eb2ff9bab972b8189e171d23a00effe8102fc79111e81c7761be1f72b90b588e",
+  "normalized_geometry_sha256": "2a700a8e4b998cbcb7519e57d103bb31eb75231a0cd25992b476d7ac560243e0",
+  "source": "art/blender/creature_remodel/r05/biota_bilateral_sails_09.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 30,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {}
+  },
+  "muzzle": [
+    0.0,
+    0.6200000047683716,
+    0.14000000059604645
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_sails_09_near.glb",
+      "sha256": "cf3013ec44a7a50da3084d6aea4357149abfbe2f88c4cebe5da4f1927e86d1a1",
+      "triangles": 17501,
+      "min": [
+        -0.895068883895874,
+        0.5035490989685059,
+        -0.6980083584785461
+      ],
+      "max": [
+        0.895068883895874,
+        2.1853606700897217,
+        0.6980082988739014
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_bilateral_sails_09_far.glb",
+      "sha256": "035a0e56bb52d9e202df332aaca8b7964791ebb2276ac4df4c58c11ae8929118",
+      "triangles": 7522,
+      "min": [
+        -0.8945791125297546,
+        0.503606379032135,
+        -0.6992156505584717
+      ],
+      "max": [
+        0.8945751786231995,
+        2.1853108406066895,
+        0.6993594765663147
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "pressure_keel-10": "chest",
+    "pressure_keel-11": "pressure_keel-10",
+    "pressure_keel10": "chest",
+    "pressure_keel11": "pressure_keel10",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "trailing_feeler00": "chest",
+    "trailing_feeler01": "trailing_feeler00",
+    "trailing_feeler10": "chest",
+    "trailing_feeler11": "trailing_feeler10",
+    "trailing_feeler20": "chest",
+    "trailing_feeler21": "trailing_feeler20",
+    "organ0": "chest",
+    "organ1": "chest",
+    "organ2": "chest",
+    "organ3": "chest",
+    "organ4": "chest",
+    "organ5": "chest",
+    "organ6": "chest",
+    "organ7": "chest",
+    "organ8": "chest",
+    "organ9": "chest",
+    "organ10": "chest"
+  },
+  "build_seconds": 6.043,
+  "source_render_seconds": 6.849,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "abbdd37ff82463f96b50bf739f45229c77ae2d3120347f18b69413d1fe2f5a04"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

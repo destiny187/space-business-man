@@ -39,7 +39,7 @@
     "jointed_oral_organs": 1
   },
   "version": "r04-1",
-  "build_fingerprint": "932e63753232a5075d036d21d8ac81330463ea27e65947019dabba88b3ac4956",
+  "build_fingerprint": "46c1aea2e011318d5be98afbdaa3163e1b1f01bb6e31f054bc6d9ff8f5debd55",
   "normalized_geometry_sha256": "abb040ad26a482135ba7882be66db38494b2c840ab2ad1f6a672cbb883573690",
   "source": "art/blender/creature_remodel/r04/biota_lobopod_antennal_fans_26.blend",
   "status": "built-awaiting-game-render",
@@ -141,7 +141,23 @@
       "front1": 0,
       "hind-1": 0,
       "hind1": 0.5
-    }
+    },
+    "attack_unplanted_limbs": {
+      "front1": [
+        0.02,
+        1.65
+      ]
+    },
+    "strike_origins": [
+      {
+        "bone": "front1_foot",
+        "point": [
+          0.32899999618530273,
+          0.10000000149011612,
+          0.8055999875068665
+        ]
+      }
+    ]
   },
   "muzzle": [
     0.0,
@@ -151,7 +167,7 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_antennal_fans_26_near.glb",
-      "sha256": "f086eef1fc8fd45f1a746cd878980753aa1a9a3a5f339e87c682687b2298bbad",
+      "sha256": "ec25253e97c57b3aaaaa161c4b1ebdd66650ee5dd5a012befe450bd55a2223f0",
       "triangles": 37788,
       "min": [
         -0.4444998800754547,
@@ -166,7 +182,7 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_antennal_fans_26_far.glb",
-      "sha256": "b0b6324184af6fd8ca2b64e969a44ae2a46201dd7124bc75c05d8a0af348f671",
+      "sha256": "4f96adc32fb97156d1822093fda450f2e9ae6278507eef895e51a751320e524a",
       "triangles": 16242,
       "min": [
         -0.4445890486240387,
@@ -212,6 +228,14 @@
     "organ1": "axial1",
     "organ2": "axial0"
   },
-  "build_seconds": 19.897,
-  "source_render_seconds": 8.069
+  "build_seconds": 12.598,
+  "source_render_seconds": 8.738,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "5efa1a612ea4b7db239996b9594c2cbac446407ace152d084cdeb2c5db38ef02"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
 }

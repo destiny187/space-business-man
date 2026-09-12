@@ -9,7 +9,20 @@ ROOT=Path(__file__).resolve().parents[2];GAME=ROOT/'우주-비즈니스'
 STAGE=ROOT/'output/creature-remodel/import-project'
 GODOT=next((Path(p) for p in [os.environ.get('GAME_GODOT_BIN'),shutil.which('godot'),shutil.which('godot4'),'/Applications/Godot.app/Contents/MacOS/Godot',str(Path.home()/'Downloads/Godot.app/Contents/MacOS/Godot')] if p and Path(p).is_file()),None)
 
-def digest(path,algorithm='sha256'):return hashlib.new(algorithm,path.read_bytes()).hexdigest()
+DIGEST_PATH=ROOT/'output/creature-remodel/production/import-digests.json'
+DIGESTS=json.loads(DIGEST_PATH.read_text()) if DIGEST_PATH.exists() else {}
+def digest(path,algorithm='sha256',force=False):
+    info=path.stat();signature=[info.st_size,info.st_mtime_ns,info.st_ctime_ns,info.st_ino]
+    key=str(path);cached=DIGESTS.get(key,{})
+    if force or cached.get('signature')!=signature:
+        data=path.read_bytes();after=path.stat()
+        assert signature==[after.st_size,after.st_mtime_ns,after.st_ctime_ns,after.st_ino],str(path)+' changed while hashing'
+        cached={'signature':signature,'sha256':hashlib.sha256(data).hexdigest(),'md5':hashlib.md5(data).hexdigest()}
+        DIGESTS[key]=cached
+    return cached[algorithm]
+def save_digests():
+    DIGEST_PATH.parent.mkdir(parents=True,exist_ok=True)
+    temp=DIGEST_PATH.with_suffix('.tmp');temp.write_text(json.dumps(DIGESTS));os.replace(temp,DIGEST_PATH)
 def destinations(text):
     line=next(line for line in text.splitlines() if line.startswith('dest_files='))
     return [p.removeprefix('res://') for p in re.findall(r'"(res://[^\"]+)"',line)]
@@ -30,6 +43,7 @@ def main():
             md5=GAME/(dest[0].rsplit('.',1)[0]+'.md5') if dest else None
             if md5 and md5.exists() and all((GAME/p).exists() for p in dest) and 'source_md5="'+digest(source,'md5')+'"' in md5.read_text():continue
             selected.append(dict(id=f['id'],lod=lod,relative=str(relative),sha256=asset['sha256'],bone_count=f['bone_count'],clips=f['clips']))
+    save_digests()
     if not selected:print('IMPORT_CURRENT all enabled assets already match their engine cache',flush=True);return
     STAGE.mkdir(parents=True,exist_ok=True)
     (STAGE/'project.godot').write_text('config_version=5\n[application]\nconfig/name="Completed fauna import"\n[rendering]\nrenderer/rendering_method="gl_compatibility"\n')
@@ -63,7 +77,7 @@ func _initialize() -> void:
     def install(source,dest):
         dest.parent.mkdir(parents=True,exist_ok=True);temp=dest.with_name(dest.name+'.remodel-tmp');shutil.copy2(source,temp);os.replace(temp,dest)
     for r in selected:
-        source=GAME/r['relative'];assert digest(source)==r['sha256'],'Asset changed during import'
+        source=GAME/r['relative'];assert digest(source,force=True)==r['sha256'],'Asset changed during import'
         sidecar=(STAGE/r['relative']).with_suffix('.glb.import');text=sidecar.read_text()
         for destination in destinations(text):
             install(STAGE/destination,GAME/destination)
@@ -71,5 +85,6 @@ func _initialize() -> void:
             if (STAGE/md5).exists():install(STAGE/md5,GAME/md5)
         install(sidecar,source.with_suffix('.glb.import'))
     (STAGE/'installed.json').write_text(json.dumps({'validated_glbs':len(selected),'assets':selected},indent=2)+'\n')
+    save_digests()
     print('IMPORT_INSTALLED',len(selected),'validated GLBs; source settings unchanged',flush=True)
 if __name__=='__main__':main()

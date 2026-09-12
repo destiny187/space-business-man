@@ -1,0 +1,258 @@
+{
+  "id": "bio_blind_harp_02",
+  "source_id": "bio_blind_harp_02",
+  "name": "공명늑골체 · 장축형",
+  "family": "blind_harp",
+  "kind": "blind_harp",
+  "construction": "blind_harp",
+  "anatomical_type": "blind_harp",
+  "organ_system": "gills",
+  "environment": "cave",
+  "habitat": "어둠·외부 먹이 유입 또는 화학 기질",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.035,
+    "height": 1.0,
+    "mode": 1,
+    "radial_count": 4,
+    "limb_count": 6,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "blind_harp",
+    "support_limbs": 6,
+    "oral_organs": 1,
+    "articulated_organs": 26
+  },
+  "version": "r06-1",
+  "build_fingerprint": "7ccf9d3d1b0d221b31dfb3c14e40017e78bd917ccd8bbff7e74644905c5aee2c",
+  "normalized_geometry_sha256": "e0cf0b369298738cf26f7b5efd86d874b05f5765203a17a6568d8735eea86427",
+  "source": "art/blender/creature_remodel/r06/bio_blind_harp_02.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 48,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_hanging_oral": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.7699999809265137,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.7699999809265137,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.7699999809265137,
+        1.0299999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.3570750057697296,
+        0.10000000149011612,
+        1.3899999856948853
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8507094979286194,
+        0.10000000149011612,
+        1.1050000190734863
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.8507094979286194,
+        0.10000000149011612,
+        -1.0549999475479126
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.3570750057697296,
+        0.10000000149011612,
+        -1.3399999141693115
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.8507094979286194,
+        0.10000000149011612,
+        -1.0549999475479126
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.8507094979286194,
+        0.10000000149011612,
+        1.1050000190734863
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2548953616240685,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3950878105173062,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.16666666666666666,
+      "support2": 0.3333333333333333,
+      "support3": 0.5,
+      "support4": 0.6666666666666666,
+      "support5": 0.8333333333333334
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.7699999809265137,
+    1.0299999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_blind_harp_02_near.glb",
+      "sha256": "3d44a47734bb31d16a917d9e59195e051cdc3a3aefa0e6a0dd32c4d9d94ef659",
+      "triangles": 44084,
+      "min": [
+        -1.1601449251174927,
+        0.02499999850988388,
+        -1.6420589685440063
+      ],
+      "max": [
+        1.1601449251174927,
+        1.8475589752197266,
+        1.6920591592788696
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_blind_harp_02_far.glb",
+      "sha256": "bdf0441ca9dd936aaee83d2c6546e2ea11a34e6c75ca4e71c644421b97b53302",
+      "triangles": 18952,
+      "min": [
+        -1.1601731777191162,
+        0.02499999850988388,
+        -1.6420443058013916
+      ],
+      "max": [
+        1.1601704359054565,
+        1.849286437034607,
+        1.6920446157455444
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "dorsal_arch00": "chest",
+    "dorsal_arch01": "dorsal_arch00",
+    "dorsal_arch02": "dorsal_arch01",
+    "suspended_neural0_00": "dorsal_arch01",
+    "suspended_neural0_01": "suspended_neural0_00",
+    "suspended_neural0_10": "dorsal_arch01",
+    "suspended_neural0_11": "suspended_neural0_10",
+    "suspended_neural0_20": "dorsal_arch01",
+    "suspended_neural0_21": "suspended_neural0_20",
+    "suspended_neural0_30": "dorsal_arch01",
+    "suspended_neural0_31": "suspended_neural0_30",
+    "dorsal_arch10": "chest",
+    "dorsal_arch11": "dorsal_arch10",
+    "dorsal_arch12": "dorsal_arch11",
+    "suspended_neural1_00": "dorsal_arch11",
+    "suspended_neural1_01": "suspended_neural1_00",
+    "suspended_neural1_10": "dorsal_arch11",
+    "suspended_neural1_11": "suspended_neural1_10",
+    "suspended_neural1_20": "dorsal_arch11",
+    "suspended_neural1_21": "suspended_neural1_20",
+    "suspended_neural1_30": "dorsal_arch11",
+    "suspended_neural1_31": "suspended_neural1_30",
+    "hanging_oral": "chest",
+    "hanging_oral_petal0": "hanging_oral",
+    "hanging_oral_petal1": "hanging_oral",
+    "hanging_oral_petal2": "hanging_oral",
+    "hanging_oral_petal3": "hanging_oral",
+    "support0_upper": "dorsal_arch02",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "dorsal_arch12",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "dorsal_arch10",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "dorsal_arch00",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "dorsal_arch00",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "dorsal_arch02",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "head": "chest"
+  },
+  "build_seconds": 13.077,
+  "source_render_seconds": 6.583,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "f9ef5dba9fb66e33112f8181b98a8803b62ad541c66d32eef0851acd836132cf"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

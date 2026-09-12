@@ -1,0 +1,218 @@
+{
+  "id": "bio_winged_13",
+  "source_id": "bio_winged_13",
+  "name": "협곡 부채형 막날개류",
+  "family": "winged",
+  "kind": "winged",
+  "construction": "winged",
+  "anatomical_type": "winged",
+  "organ_system": "siphons",
+  "environment": "arid",
+  "habitat": "낮은 수분·일교차·수분 보존",
+  "locomotion_medium": "air",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.23,
+    "height": 1.0,
+    "mode": 2,
+    "radial_count": 7,
+    "limb_count": 8,
+    "eye_count": 2,
+    "lineage": 2
+  },
+  "attack": "dive",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "winged",
+    "support_limbs": 2,
+    "oral_organs": 1,
+    "articulated_organs": 34
+  },
+  "version": "r06-1",
+  "build_fingerprint": "9732a23ca02bd63a9cbed80a41bdc707bfd45ddfd552154978162326561233ee",
+  "normalized_geometry_sha256": "f2f8ba3ea0f0dbc28526125689a8dc66e1eebb86e4ceed5e65b81cb31683ee18",
+  "source": "art/blender/creature_remodel/r06/bio_winged_13.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 44,
+  "locomotion_chains": 2,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.800000011920929,
+        1.0600000619888306
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.800000011920929,
+        1.0600000619888306
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.800000011920929,
+        1.0600000619888306
+      ]
+    },
+    "Socket_clasp-1": {
+      "bone": "clasp-1_foot",
+      "point": [
+        -0.2800000011920929,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    },
+    "Socket_clasp1": {
+      "bone": "clasp1_foot",
+      "point": [
+        0.2800000011920929,
+        0.10000000149011612,
+        -0.11999999731779099
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.23074235685153466,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3576506531198787,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "clasp-1": 0,
+      "clasp1": 0.5
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.800000011920929,
+    1.0600000619888306
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_winged_13_near.glb",
+      "sha256": "6d75bbdac4147b8ecd4ab5a8d48f52c4a3be81145523c0a81f3c9a066de271d6",
+      "triangles": 17824,
+      "min": [
+        -1.7631549835205078,
+        0.02499999850988388,
+        -1.9243203401565552
+      ],
+      "max": [
+        1.7634259462356567,
+        1.1244269609451294,
+        1.0725414752960205
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_winged_13_far.glb",
+      "sha256": "097ef266d9ae8bfac0b87701229691b754776511793d3fb061a56cb822e74e1d",
+      "triangles": 7656,
+      "min": [
+        -1.7590023279190063,
+        0.025030070915818214,
+        -1.9243203401565552
+      ],
+      "max": [
+        1.7621577978134155,
+        1.1259230375289917,
+        1.0723788738250732
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "swimming_axis0": "chest",
+    "swimming_axis1": "swimming_axis0",
+    "swimming_axis2": "swimming_axis1",
+    "swimming_axis3": "swimming_axis2",
+    "oral": "swimming_axis0",
+    "oral_petal0": "oral",
+    "oral_petal1": "oral",
+    "oral_petal2": "oral",
+    "oral_petal3": "oral",
+    "head": "swimming_axis0",
+    "propulsive_fin-10": "chest",
+    "propulsive_fin-11": "propulsive_fin-10",
+    "propulsive_fin-12": "propulsive_fin-11",
+    "fin_ray-1_0": "propulsive_fin-10",
+    "fin_ray-1_1": "propulsive_fin-10",
+    "fin_ray-1_2": "propulsive_fin-10",
+    "fin_ray-1_3": "propulsive_fin-11",
+    "fin_ray-1_4": "propulsive_fin-11",
+    "fin_ray-1_5": "propulsive_fin-12",
+    "fin_ray-1_6": "propulsive_fin-12",
+    "posterior_propulsor-10": "chest",
+    "posterior_propulsor-11": "posterior_propulsor-10",
+    "propulsive_fin10": "chest",
+    "propulsive_fin11": "propulsive_fin10",
+    "propulsive_fin12": "propulsive_fin11",
+    "fin_ray1_0": "propulsive_fin10",
+    "fin_ray1_1": "propulsive_fin10",
+    "fin_ray1_2": "propulsive_fin10",
+    "fin_ray1_3": "propulsive_fin11",
+    "fin_ray1_4": "propulsive_fin11",
+    "fin_ray1_5": "propulsive_fin12",
+    "fin_ray1_6": "propulsive_fin12",
+    "posterior_propulsor10": "chest",
+    "posterior_propulsor11": "posterior_propulsor10",
+    "caudal_fluke-1": "posterior_propulsor11",
+    "caudal_fluke1": "posterior_propulsor11",
+    "clasp-1_upper": "chest",
+    "clasp-1_lower": "clasp-1_upper",
+    "clasp-1_foot": "clasp-1_lower",
+    "clasp1_upper": "chest",
+    "clasp1_lower": "clasp1_upper",
+    "clasp1_foot": "clasp1_lower"
+  },
+  "build_seconds": 16.852,
+  "source_render_seconds": 3.633,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "1ceeab811ed0016dd9d62a8781bc94f41df917ef4dc50c3052bb433689f72cbe"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}
