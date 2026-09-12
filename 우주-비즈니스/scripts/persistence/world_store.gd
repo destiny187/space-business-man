@@ -9,7 +9,8 @@ func _init(save_path: String = "user://exploration_world.json") -> void:
 	path = save_path
 
 # Periodic checkpoints and mandatory automatic commits use an ordered worker.
-# Transactions join it so no older save can replace an acknowledged transaction.
+# Ordinary requests queue durable commits; start/close and explicit synchronous
+# boundaries join it so no older save can replace an acknowledged transaction.
 var checkpoint_thread: Thread
 var verified_digest: String=""
 var queued_commit: Dictionary={}

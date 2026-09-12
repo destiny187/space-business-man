@@ -33,6 +33,16 @@ func _initialize() -> void:
  check(session.snapshots==4,"pending extraction has no premature publication")
  session._publish_request_result({"kind":"surface_fire"},{"ok":true},before)
  check(session.snapshots==4,"firearm commands keep their separate publication cadence")
+ session.offline=true
+ session.authority.completed_requests=[{"peer":1,"sequence":1,"result":{"ok":false},"stale":true}]
+ session._drain_completed_requests()
+ check(session.snapshots==5 and session.surfaces==3,"queued stale rejection refreshes crew without rebuilding surface")
+ session.authority.completed_requests=[{"peer":1,"sequence":1,"result":{"ok":true}}]
+ session._drain_completed_requests()
+ check(session.snapshots==5 and session.surfaces==3,"queued receipt replay does not publish unchanged state")
+ session.authority.completed_requests=[{"peer":1,"sequence":2,"result":{"ok":true},"committed":true}]
+ session._drain_completed_requests()
+ check(session.snapshots==6 and session.surfaces==4,"durable queued result publishes before feedback")
  session.free();print("ACTION_PUBLICATION failures ",failures);quit(1 if failures else 0)
 func check(ok: bool,label: String) -> void:
  print("PASS " if ok else "FAIL ",label)

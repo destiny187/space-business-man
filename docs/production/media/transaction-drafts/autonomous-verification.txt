@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS initial durable state
+PASS periodic job precedes mandatory commit
+PASS mandatory commit queues behind periodic job
+PASS mandatory state is isolated and never dropped
+PASS ordered backup retains preceding checkpoint
+PASS another mandatory commit queued
+PASS transaction joins and supersedes mandatory commit
+PASS authority starts
+PASS two automatic saves become one mandatory job
+PASS unaffected crew may keep moving during disk work
+PASS newer movement survives pending result publication
+PASS uncommitted results stay out of live world and snapshots
+PASS completion publishes both changes
+PASS published result is already durable
+PASS player transaction queues behind production without joining disk
+PASS pending production commits before queued transaction
+PASS queued transaction uses confirmed production state
+PASS worker failure stops authority
+PASS failed production remains unpublished
+PASS invalid mandatory snapshot rejected before worker
+PASS unchanged rover may keep driving while save completes
+PASS newer rover position survives result publication
+PASS rules signature cache detects in-memory catalogue changes
+PASS rules signature remains byte-compatible after restoration
+AUTONOMOUS_SAVE failures 0

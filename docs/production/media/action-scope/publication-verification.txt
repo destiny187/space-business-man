@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS unchanged rejection builds no snapshots
+PASS receipt replay builds no snapshots
+PASS stale failure still receives current crew state
+PASS committed change publishes crew and surface
+PASS readiness changes publish without a world revision change
+PASS phase changes publish without a world revision change
+PASS pending extraction has no premature publication
+PASS firearm commands keep their separate publication cadence
+ACTION_PUBLICATION failures 0

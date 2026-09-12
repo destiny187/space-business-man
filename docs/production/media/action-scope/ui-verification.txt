@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS surface loaded
+PASS closed inventory preserves every grid
+PASS hidden panel still updates active tool hotbar
+PASS inventory change preserves inactive tabs
+PASS one quantity change retains inventory cards
+PASS retained inventory card shows new quantity
+PASS craft availability updates without replacing recipe cards
+PASS recipe availability matches current materials: pistol_1
+PASS recipe availability matches current materials: pistol_2
+PASS recipe availability matches current materials: pistol_3
+PASS recipe availability matches current materials: sniper_3
+PASS recipe availability matches current materials: shotgun_2
+PASS recipe availability matches current materials: shotgun_3
+PASS recipe availability matches current materials: smg_2
+PASS recipe availability matches current materials: smg_3
+PASS recipe availability matches current materials: lmg_2
+PASS recipe availability matches current materials: lmg_3
+PASS recipe availability matches current materials: plasma_3
+PASS recipe availability matches current materials: miner_1
+PASS recipe availability matches current materials: miner_2
+PASS recipe availability matches current materials: terrain_1
+PASS recipe availability matches current materials: terrain_2
+PASS recipe availability matches current materials: marksman_3
+PASS recipe availability matches current materials: pulse_1
+PASS recipe availability matches current materials: pulse_2
+PASS recipe availability matches current materials: pulse_3
+PASS unrelated site data does not enter cargo refresh key
+PASS cargo quantity changes retain both sides of storage
+PASS retained cargo button uses latest transfer payload
+PASS new stack adds only its own card
+PASS consumed stack removes only its own card
+PASS unchanged rejection emits no world snapshot
+ACTION_SCOPE {"clearance_ms":[8.687,0.233,0.061],"clearance_rows":67,"hidden_grids_preserved":true,"hidden_ms":0.128,"inactive_tabs_preserved":true,"recipe_count":19,"recipe_nodes_preserved":true,"rejected_snapshot_count":0}
+PASS session closes
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

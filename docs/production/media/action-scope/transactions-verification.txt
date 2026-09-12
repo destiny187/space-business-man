@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS isolated authority starts
+PASS equipment select succeeds
+PASS equipment select succeeds
+PASS equipment select succeeds
+PASS slot selection preserves ecology terrain and business values
+PASS non-rover command retains rover runtime
+PASS replay performs no second save or mutation
+PASS failed synchronous save preserves entire original
+PASS cached geology matches full generation across cell boundaries
+PASS cached geology matches full generation across cell boundaries
+PASS cached geology matches full generation across cell boundaries
+PASS clearance region cache stays bounded while travelling
+PASS new seed invalidates clearance cache
+PASS returning to original body restores exact geology
+TRANSACTION_SCOPE {"save_bytes":100044,"selection_ms":[37.907,33.791,34.687],"selection_save_ms":[36.396,32.648,33.511]}

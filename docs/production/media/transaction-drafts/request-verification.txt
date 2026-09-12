@@ -1,0 +1,32 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS authority starts from isolated save
+PASS selection waits for durable result without publishing
+PASS pending duplicate schedules no second commit
+PASS loadout transaction allows character movement
+PASS selection commit finishes
+PASS new movement and confirmed tool both survive
+PASS confirmed selection is already on disk
+PASS selection waits for durable result without publishing
+PASS pending duplicate schedules no second commit
+PASS loadout transaction allows character movement
+PASS selection commit finishes
+PASS new movement and confirmed tool both survive
+PASS confirmed selection is already on disk
+PASS selection waits for durable result without publishing
+PASS pending duplicate schedules no second commit
+PASS loadout transaction allows character movement
+PASS selection commit finishes
+PASS new movement and confirmed tool both survive
+PASS confirmed selection is already on disk
+PASS ordinary selection never invokes synchronous write
+PASS completed replay reuses receipt
+PASS queue scenario has a pending commit
+PASS next input queues without waiting for disk
+PASS queued duplicate is bounded
+PASS first queued scenario commits
+PASS stale queued input is rejected without rebasing costs or saving
+PASS failed-save scenario submits
+PASS failed commit preserves original world and selected tool
+PASS failed commit returns no success feedback
+REQUEST_COMMIT {"failures":0,"submit_ms":[14.466,14.796,16.61],"synchronous_writes":0}

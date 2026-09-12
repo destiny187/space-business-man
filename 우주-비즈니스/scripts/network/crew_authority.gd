@@ -1,6 +1,7 @@
 class_name FrontierCrewAuthority
 extends RefCounted
 const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
+const WorldDraft=preload("res://scripts/persistence/world_draft.gd")
 const WorldSnapshot=preload("res://scripts/persistence/world_snapshot.gd")
 ## Host-only admission, immutable profile references and durable transactions.
 # Host scene resolves a live device descriptor (area/body/position/enabled); no RPC setter.
@@ -27,6 +28,7 @@ var motions: Dictionary={}
 var session_id: String
 var save_world: Callable
 var save_flight_checkpoint: Callable
+var save_request: Callable
 var save_autonomous: Callable
 var poll_autonomous: Callable
 var finish_autonomous: Callable
@@ -34,7 +36,9 @@ var autonomous_world: Dictionary={}
 var autonomous_mobile: Dictionary={}
 var autonomous_vehicles: Dictionary={}
 var staged_autonomous:=false
-var pending_mining: Dictionary={}
+var pending_request: Dictionary={}
+var queued_requests: Array=[]
+var autonomous_runtime_fields: Dictionary={}
 var completed_requests: Array=[]
 var autonomous_sequences: Dictionary={}
 
@@ -48,14 +52,20 @@ func resolve_autonomous(wait: bool=false) -> bool:
 	var status: int=finish_autonomous.call() if wait else poll_autonomous.call()
 	if status==0:return false
 	if status<0:
-		autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear();autonomous_sequences.clear();stopped=true;error="저장 실패로 세계를 정지했습니다."
-		if not pending_mining.is_empty():
-			pending_mining.result=failure(error);completed_requests.append(pending_mining);pending_mining={}
+		autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear();autonomous_sequences.clear();autonomous_runtime_fields.clear();stopped=true;error="저장 실패로 세계를 정지했습니다."
+		if not pending_request.is_empty():
+			pending_request.result=failure(error);completed_requests.append(pending_request);pending_request={}
 		return false
+	for id in autonomous_runtime_fields:
+		for field in autonomous_runtime_fields[id]:autonomous_world.crew.members[id][field]=world.crew.members[id][field]
+	autonomous_runtime_fields.clear()
 	world=autonomous_world;autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear()
 	for id in autonomous_sequences:world.crew.members[id].last_sequence=autonomous_sequences[id]
 	autonomous_sequences.clear()
-	if not pending_mining.is_empty():completed_requests.append(pending_mining);pending_mining={}
+	if not pending_request.is_empty():
+		_finish_request(pending_request.actor,pending_request.envelope,pending_request.water_hit,pending_request.rover_runtime)
+		pending_request.committed=true
+		completed_requests.append(pending_request);pending_request={}
 	return true
 func _stage_autonomous(_state: Dictionary) -> bool:
 	staged_autonomous=true
@@ -197,19 +207,36 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
 	return {"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"orbital_terraform":shared.orbital_terraform,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
-func request(peer: int,envelope: Variant) -> Dictionary:
-	# Continuous extraction must not join a disk job on the render thread.
-	if envelope is Dictionary and envelope.get("kind")=="business_mine" and autonomous_pending():
-		if not pending_mining.is_empty() and pending_mining.peer==peer and pending_mining.envelope==envelope:return {"pending":true}
-		if not resolve_autonomous():
-			var waiting:=failure(error if stopped else "저장 중인 채광 결과를 기다립니다.");waiting.code="mining_cooldown";waiting.retry_after=.05;return waiting
-	if not resolve_autonomous(true):return failure(error)
+func pump_requests() -> void:
+	if stopped:
+		for queued in queued_requests:completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":failure(error)})
+		queued_requests.clear();return
+	if not resolve_autonomous() or queued_requests.is_empty():return
+	var queued: Dictionary=queued_requests.pop_front()
+	var before: Array=[world.crew.revision,phase,lobby_ready.duplicate()]
+	var result:=request(int(queued.peer),queued.envelope,true) if peers.get(int(queued.peer))==queued.actor else failure("요청한 승무원이 세션을 떠났습니다.")
+	if not result.get("pending",false):completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":result,"committed":before!=[world.crew.revision,phase,lobby_ready],"stale":queued.envelope.get("revision",world.crew.revision)!=world.crew.revision})
+func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
 	if not envelope.get("kind") is String or not envelope.get("args") is Dictionary:return failure("요청 형식 오류")
 	if JSON.stringify(envelope).length()>int(FrontierCrewWorld.config().maximum_message_bytes):return failure("요청 크기 초과")
 	if not FrontierUniverse._finite(envelope.get("sequence"),1,9007199254740000) or envelope.sequence!=floorf(envelope.sequence):return failure("요청 순번 오류")
 	var actor: String=peers[peer]
+	# A disk job never joins the input/render thread. Requests keep their original
+	# revision and sequence while waiting, so stale costs cannot be silently rebased.
+	if not pending_request.is_empty() and pending_request.peer==peer and pending_request.actor==actor and int(pending_request.sequence)==int(envelope.sequence):
+		return {"pending":true} if pending_request.envelope==envelope else failure("같은 요청 번호의 내용이 달라졌습니다.")
+	for queued in queued_requests:
+		if queued.peer==peer and queued.actor==actor and int(queued.envelope.sequence)==int(envelope.sequence):return {"pending":true} if queued.envelope==envelope else failure("같은 요청 번호의 내용이 달라졌습니다.")
+	if (not from_queue and not queued_requests.is_empty()) or (autonomous_pending() and not resolve_autonomous()):
+		if stopped:return failure(error)
+		if envelope.kind=="business_mine":
+			var waiting:=failure("저장 중인 채광 결과를 기다립니다.");waiting.code="mining_cooldown";waiting.retry_after=.05;return waiting
+		if envelope.kind=="surface_fire":return {"ok":false,"code":"weapon_blocked","firearm_action":envelope.kind}
+		if queued_requests.size()>=32:return failure("앞선 작업을 처리 중입니다. 잠시 후 다시 시도하세요.")
+		queued_requests.append({"peer":peer,"actor":actor,"envelope":envelope.duplicate(true)})
+		return {"pending":true}
 	if envelope.kind=="lobby_ready":
 		if phase!="lobby" or not envelope.args.get("value") is bool:return failure("대기실 준비 상태 오류")
 		lobby_ready[actor]=envelope.args.value
@@ -259,7 +286,7 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 			var waiting:=failure("채광 도구가 준비 중입니다.");waiting.code="mining_cooldown";waiting.retry_after=remaining;return waiting
 	if envelope.kind in ["surface_dig","surface_attack","surface_incident_tool"] and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("도구가 준비 중입니다.")
 	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch"]:return failure("먼저 로버에서 내리세요.")
-	var canonical:=WorldSnapshot.copy(world)
+	var canonical:=WorldDraft.request(world,actor,envelope.kind)
 	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	var rover_draft:=rover_runtime.duplicate(true) if envelope.kind.begins_with("rover_") else rover_runtime
@@ -344,15 +371,20 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		for id in draft.crew.receipts:
 			if float(draft.crew.receipts[id].result.revision)<revision:revision=float(draft.crew.receipts[id].result.revision);oldest=id
 		draft.crew.receipts.erase(oldest)
-	FrontierSpecimenItems.prune(draft)
-	if envelope.kind=="business_mine" and save_autonomous.is_valid():
-		if not save_autonomous.call(draft):return failure("채광 저장을 시작하지 못했습니다. 변경은 확정되지 않았습니다.")
+	if not WorldDraft.personal_equipment(envelope.kind):FrontierSpecimenItems.prune(draft)
+	var submit: Callable=save_autonomous if envelope.kind=="business_mine" else save_request
+	if submit.is_valid():
+		if not submit.call(draft):return failure("저장을 시작하지 못했습니다. 변경은 확정되지 않았습니다.")
 		_hold_candidate(draft,true)
-		pending_mining={"peer":peer,"sequence":sequence,"envelope":envelope.duplicate(true),"result":result}
-		last_mine[actor]=now
+		pending_request={"peer":peer,"actor":actor,"sequence":sequence,"envelope":envelope.duplicate(true),"result":result,"water_hit":water_hit,"rover_runtime":rover_draft if envelope.kind.begins_with("rover_") else {}}
+		if envelope.kind=="business_mine":last_mine[actor]=now
 		return {"pending":true}
 	if not save_world.call(draft):return failure("저장에 실패했습니다. 변경은 확정되지 않았습니다.")
-	world=draft;rover_runtime=rover_draft
+	world=draft;_finish_request(actor,envelope,water_hit,rover_draft)
+	return result
+func _finish_request(actor: String,envelope: Dictionary,water_hit: Dictionary,rover_draft: Dictionary) -> void:
+	var sequence:=int(envelope.sequence)
+	if envelope.kind.begins_with("rover_"):rover_runtime=rover_draft
 	if envelope.kind=="surface_incident_tool":last_dig[actor]=now
 	if envelope.kind=="surface_discovery":
 		var body_id: String=FrontierShuttles.context(world,actor).location
@@ -364,12 +396,11 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 	if envelope.kind=="shuttle_recall":motions.erase(str(envelope.args.character_id))
 	if envelope.kind in ["surface_dig","surface_attack"]:last_dig[actor]=now
 	if envelope.kind=="business_mine":last_mine[actor]=now
-	return result
 var gun_checkpoint:=0.0
 var gun_dirty:=false
 var gun_receipts: Dictionary={}
 func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
-	if not resolve_autonomous(true):return failure(error)
+	if not resolve_autonomous():return {"ok":false,"code":"weapon_blocked"}
 	var actor: String=peers[peer]
 	var member: Dictionary=world.crew.members[actor]
 	var sequence:=int(envelope.sequence)
@@ -448,6 +479,7 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 func close() -> bool:
 	if not resolve_autonomous(true):return false
 	stopped=true
+	queued_requests.clear()
 	var draft:=WorldSnapshot.copy(world)
 	FrontierRovers.brake_all(draft)
 	for id in peers.values():
@@ -533,19 +565,28 @@ func step_surface(delta: float) -> void:
 	if not save_autonomous.call(candidate):stopped=true;error="자동 진행 저장 제출 실패로 세계를 정지했습니다.";return
 	_hold_candidate(candidate)
 
-func _hold_candidate(candidate: Dictionary,mining: bool=false) -> void:
+func _hold_candidate(candidate: Dictionary,request_commit: bool=false) -> void:
 	autonomous_world=candidate
-	autonomous_mobile.clear();autonomous_sequences.clear()
+	autonomous_mobile.clear();autonomous_sequences.clear();autonomous_runtime_fields.clear()
 	# The worker already owns a frozen snapshot. Crew untouched by this automatic
 	# transaction can keep walking/regenerating without losing newer runtime state.
 	# A member changed by combat/rescue waits for the durable result instead.
 	for id in world.crew.members:
 		var member: Dictionary=candidate.crew.members.get(id,{})
 		var comparison:=member.duplicate()
-		if mining and comparison.has("last_sequence"):comparison.last_sequence=world.crew.members[id].last_sequence
+		if request_commit and comparison.has("last_sequence"):comparison.last_sequence=world.crew.members[id].last_sequence
 		if comparison==world.crew.members[id]:
-			if mining:autonomous_sequences[id]=member.last_sequence
+			if request_commit:autonomous_sequences[id]=member.last_sequence
 			autonomous_mobile[id]=true;candidate.crew.members[id]=world.crew.members[id]
+		elif request_commit:
+			var mobile:=true
+			for field in ["position","area","aboard","shuttle_id","vitals"]:
+				if member.get(field)!=world.crew.members[id].get(field):mobile=false;break
+			if mobile:
+				autonomous_mobile[id]=true;autonomous_runtime_fields[id]=[]
+				for field in member:
+					if field!="last_sequence" and member[field]==world.crew.members[id].get(field):
+						autonomous_runtime_fields[id].append(field);member[field]=world.crew.members[id][field]
 	autonomous_vehicles.clear()
 	var vehicles: Dictionary=FrontierRovers.fleet(world).vehicles
 	var next_vehicles: Dictionary=FrontierRovers.fleet(candidate).vehicles
@@ -553,7 +594,8 @@ func _hold_candidate(candidate: Dictionary,mining: bool=false) -> void:
 		if next_vehicles.get(id,{})!=vehicles[id]:continue
 		var riders:=FrontierRovers.seats(rover_runtime,id)
 		if riders.any(func(rider):return not str(rider).is_empty() and not can_simulate_member(rider)):continue
-		autonomous_vehicles[id]=true;next_vehicles[id]=vehicles[id]
+		autonomous_vehicles[id]=true
+		if not is_same(next_vehicles,vehicles):next_vehicles[id]=vehicles[id]
 
 func _step_surface(delta: float) -> void:
 	if stopped:return
@@ -571,24 +613,27 @@ func _step_surface(delta: float) -> void:
 		wildlife_timer=0.0
 	weather_timer+=delta
 	if weather_timer>=.25:
-		var weather_draft:=WorldSnapshot.copy(world)
-		var weather_changed:=FrontierPlanetWeather.tick(weather_draft,minf(weather_timer,.35),peers.values(),shot_obstacle_provider,weather_ready_provider,weather_presence)
+		var weather_draft:=WorldDraft.weather(world,peers.values())
+		var next_presence:=weather_presence.duplicate(true)
+		var weather_changed:=FrontierPlanetWeather.tick(weather_draft,minf(weather_timer,.35),peers.values(),shot_obstacle_provider,weather_ready_provider,next_presence)
 		weather_timer=0.0
 		if weather_changed and not save_world.call(weather_draft):stopped=true;error="기상 저장 실패로 세계를 정지했습니다.";return
-		world=weather_draft
+		world=weather_draft;weather_presence=next_presence
 	incident_timer+=delta
 	if incident_timer>=.25:
 		var active: Array=[]
 		for peer in peers:
 			if inputs.get(peer,{}).get("controls_enabled",true) and world.crew.members[peers[peer]].area=="surface" and not world.crew.members[peers[peer]].aboard:active.append(peers[peer])
 		if not active.is_empty():
-			var incident_draft:=WorldSnapshot.copy(world)
+			var incident_draft:=WorldDraft.incidents(world,active)
 			var changed:=FrontierExplorationIncidents.tick(incident_draft,minf(incident_timer,.35),active,shot_obstacle_provider,peers.values())
 			if changed:
 				incident_draft.crew.revision+=1
 				if not save_world.call(incident_draft):stopped=true;error="탐험 사건 저장 실패";return
 			world=incident_draft
 		incident_timer=0.0
+	# Later runtime updates must not mutate branches shared with the unpublished baseline.
+	if staged_autonomous:world=WorldDraft.water(world,peers.values())
 	_step_water(delta)
 	industry_timer+=delta
 	if industry_timer>=1.0:
@@ -613,6 +658,7 @@ func _step_surface(delta: float) -> void:
 		for id in peers.values():
 			var local:=FrontierShuttles.context(world,id)
 			if FrontierCrewSurface.landed(local):bodies[local.location]=true
+		if staged_autonomous:world=WorldDraft.plots(world,bodies.keys())
 		for id in bodies:FrontierEcology.advance(world.ecology,id,1.0)
 	scan_timer+=delta
 	if scan_timer<.1:return

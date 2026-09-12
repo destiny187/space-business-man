@@ -66,6 +66,7 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
 	authority.save_flight_checkpoint=store.begin_checkpoint
 	authority.save_autonomous=store.begin_commit
+	authority.save_request=store.begin_commit
 	authority.poll_autonomous=func():
 		if not store.poll_checkpoint():return -1
 		return 0 if store.has_pending() else 1
@@ -147,13 +148,16 @@ func _server_disconnected() -> void:
 func _drain_completed_requests() -> void:
 	if authority==null or authority.completed_requests.is_empty():return
 	var replies:=authority.completed_requests.duplicate();authority.completed_requests.clear()
-	# Publish durable inventory before delivering the extraction feedback.
-	if not authority.stopped:_publish();_publish_surface()
+	# Publish confirmed state before feedback, without turning queued rejections
+	# or receipt replays into full surface refreshes.
+	if not authority.stopped:
+		if replies.any(func(reply):return reply.get("committed",false)):_publish();_publish_surface()
+		elif replies.any(func(reply):return reply.get("stale",false)):_publish()
 	for reply in replies:
 		if int(reply.peer)==1:_complete_request(int(reply.sequence),reply.result)
-		elif not offline and authority.peers.has(int(reply.peer)):_response.rpc_id(int(reply.peer),int(reply.sequence),reply.result)
+		elif not offline and authority.peers.has(int(reply.peer)) and reply.get("actor",authority.peers[int(reply.peer)])==authority.peers[int(reply.peer)]:_response.rpc_id(int(reply.peer),int(reply.sequence),reply.result)
 func _process(delta: float) -> void:
-	if hosting:_drain_completed_requests()
+	if hosting:authority.pump_requests();_drain_completed_requests()
 	if not hosting or (enet==null and not offline) or authority.stopped:return
 	var now:=Time.get_ticks_msec()/1000.0
 	for peer in authority.advance_time(now):_reject_peer(peer,"참가 준비 시간이 초과됐습니다.")

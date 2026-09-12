@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS scoped weather matches full draft including no-save clock progress
+PASS weather damage and rescue leave original world intact
+PASS scoped incident tick matches full draft
+PASS seismic event opens actual terrain in candidate
+PASS foreign disconnected carrier drops only in candidate
+PASS incident cover damage and rescue preserve original world
+PASS unrelated ecology and industry are shared read-only
+PASS later water flooding and plot updates preserve rollback baseline
+PASS scoped equipment accepts selection
+PASS equipment and receipt changes stay isolated from unrelated domains
+PASS unknown requests retain full independent draft
+WORLD_DRAFTS {"failures":0,"small_median_ms":{"equipment":0.04,"full":0.591,"incidents":0.079,"weather":0.036},"unrelated_10000_median_ms":{"equipment":0.031,"full":9.338,"incidents":0.062,"weather":0.03}}

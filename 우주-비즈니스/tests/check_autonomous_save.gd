@@ -54,8 +54,12 @@ func run() -> void:
  check(store.read_state().flight_position[0]==42,"published result is already durable")
  authority.step_surface(.1)
  var request: Dictionary={"session_id":authority.session_id,"sequence":1,"revision":authority.world.crew.revision,"kind":"ready","args":{"value":true}}
+ authority.poll_autonomous=func():return 0
  var result:=authority.request(1,request)
- check(result.get("ok",false) and not authority.autonomous_pending() and store.read_state().flight_position[0]==44,"player transaction drains pending production before drafting")
+ check(result.get("pending",false) and authority.queued_requests.size()==1,"player transaction queues behind production without joining disk")
+ check(authority.resolve_autonomous(true),"pending production commits before queued transaction")
+ authority.pump_requests()
+ check(authority.completed_requests.back().result.ok and store.read_state().flight_position[0]==44,"queued transaction uses confirmed production state")
  var broken:=FrontierWorldStore.new(folder+"/missing/sub/world.json")
  attach(authority,broken);authority.step_surface(.1)
  check(authority.autonomous_pending() and not authority.resolve_autonomous(true) and authority.stopped,"worker failure stops authority")
