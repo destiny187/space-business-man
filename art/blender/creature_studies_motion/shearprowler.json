@@ -1,0 +1,160 @@
+{
+  "id": "shearprowler",
+  "name": "여섯발 그늘사냥꾼",
+  "kind": "hexapod",
+  "source_id": "biota_lobopod_armor_26",
+  "habitat": "열수림 · 낮은 매복과 감각 수염",
+  "attack": "scythe",
+  "palette": [
+    "355a61",
+    "779786",
+    "253843",
+    "bb915c"
+  ],
+  "source": "art/blender/creature_studies_motion/shearprowler.blend",
+  "status": "approved-shape-motion-v3-speed-lab",
+  "bone_count": 33,
+  "locomotion_chains": 6,
+  "clips": [
+    "attack",
+    "blocked",
+    "feed",
+    "hurt",
+    "idle_loop",
+    "move_loop",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "run_loop"
+  ],
+  "muzzle": [
+    0.0,
+    0.8299999833106995,
+    1.7699999809265137
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/shearprowler_near.glb",
+      "triangles": 33434,
+      "sha256": "1748df10b172db5f7be272800a500cd6b69ee13c45c78092df78730f8d84bfce",
+      "min": [
+        -1.0699999332427979,
+        -0.019961245357990265,
+        -2.331655740737915
+      ],
+      "max": [
+        1.0699999332427979,
+        1.4041295051574707,
+        1.954373836517334
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/shearprowler_far.glb",
+      "triangles": 14370,
+      "sha256": "d8588f07b681dbb04a419d085cc94535eef44c3e098cbeca49d5f4860db3c5d7",
+      "min": [
+        -1.0683525800704956,
+        -0.017841551452875137,
+        -2.331655740737915
+      ],
+      "max": [
+        1.069325566291809,
+        1.4042466878890991,
+        1.954373836517334
+      ]
+    }
+  },
+  "approved_mesh_digest": "d5c589c1a176d160c9aaadfc88e36e48c91bc4cd196ade600d530191626f95b6",
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.64,
+    "release": [
+      0.92,
+      1.26
+    ],
+    "active_end": 1.44,
+    "settle": 2.58,
+    "travel": 0.76,
+    "stride": 0.52,
+    "stance": 0.7,
+    "period": 1.0,
+    "damage": 14,
+    "strike_radius": 0.3,
+    "target_z": 2.25,
+    "target_height": 0.65,
+    "effect": "slash",
+    "hit_pause": 0.03,
+    "knockback": 0.15,
+    "run": {
+      "stride": 0.74,
+      "stance": 0.58,
+      "period": 0.6
+    }
+  },
+  "sockets": {
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.8299999833106995,
+        1.7699999809265137
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.8299999833106995,
+        1.7699999809265137
+      ]
+    },
+    "Socket_leg0_-1": {
+      "bone": "leg0_-1_foot",
+      "point": [
+        -0.96,
+        0.115,
+        1.1
+      ]
+    },
+    "Socket_leg1_-1": {
+      "bone": "leg1_-1_foot",
+      "point": [
+        -0.9599999785423279,
+        0.11500000208616257,
+        0.22999998927116394
+      ]
+    },
+    "Socket_leg0_1": {
+      "bone": "leg0_1_foot",
+      "point": [
+        0.96,
+        0.115,
+        1.1
+      ]
+    },
+    "Socket_leg1_1": {
+      "bone": "leg1_1_foot",
+      "point": [
+        0.9599999785423279,
+        0.11500000208616257,
+        0.22999998927116394
+      ]
+    },
+    "Socket_leg2_-1": {
+      "bone": "leg2_-1_foot",
+      "point": [
+        -0.9599999785423279,
+        0.11500000208616257,
+        -0.5
+      ]
+    },
+    "Socket_leg2_1": {
+      "bone": "leg2_1_foot",
+      "point": [
+        0.9599999785423279,
+        0.11500000208616257,
+        -0.5
+      ]
+    }
+  }
+}

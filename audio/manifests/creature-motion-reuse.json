@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-12",
+  "provider": "Existing ElevenLabs originals and game masters; no new generation",
+  "scope": "six-form isolated contact lab",
+  "original_manifests": [
+    "audio/manifests/native-combat.json",
+    "audio/manifests/ground-weapon-feedback.json",
+    "audio/manifests/water-interactions.json"
+  ],
+  "jobs": [
+    {
+      "id": "sfx_wildlife_warning",
+      "game_file": "우주-비즈니스/assets/audio/sfx_wildlife_warning.wav",
+      "sha256": "df0918bd86dd6878d69adf58cbe75c5f94ca1fe27a2884f449424b8b13cf814c",
+      "duration": 1.2
+    },
+    {
+      "id": "sfx_wildlife_strike",
+      "game_file": "우주-비즈니스/assets/audio/sfx_wildlife_strike.wav",
+      "sha256": "ad44a348a9c21185da83a3e34745a719d6b8b7bb7f10bf17a9d911cfb93a6364",
+      "duration": 0.85
+    },
+    {
+      "id": "sfx_wildlife_hurt",
+      "game_file": "우주-비즈니스/assets/audio/sfx_wildlife_hurt.wav",
+      "sha256": "b3e2b9b4662f04a57204d01cb54d059c2b2f5f43a014ffecc3c5ec46c8a0215c",
+      "duration": 0.65
+    },
+    {
+      "id": "sfx_gun_hit_shield",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_hit_shield.wav",
+      "sha256": "5b3554d82cac83e34f371a55802d61a694b34e7764aa0de2134f46af13fa2974",
+      "duration": 0.14497916666666666
+    },
+    {
+      "id": "sfx_water_shot_v1",
+      "game_file": "우주-비즈니스/assets/audio/sfx_water_shot_v1.wav",
+      "sha256": "73e939c97e73ecc6021a0869c2e97db4325043cd6cf7b6ac06d5a1a282fc5325",
+      "duration": 0.8
+    }
+  ],
+  "mix": "preparation -12dB; release -9dB; confirmed organic -5dB; shield -4dB; ground -7dB, distance attenuation, 12-voice cap",
+  "new_generation": "Unavailable: no exposed ElevenLabs tool or configured API key. Existing assets reused. No generated file claimed.",
+  "pending_prompts": {
+    "pressureurn": "Single organic pressure bladder tightening and releasing a hollow percussive spore pop. Warm stylized alien wildlife, no mechanical gunfire, short dry tail, no speech or music.",
+    "reedserpent": "Short controlled acid spit, a wet elastic mouth click followed by three thin fluid jets. Stylized alien animal, clean and readable, no gore, speech or music.",
+    "veilglider": "Two swift hollow chitin dart clicks with a restrained wing membrane flick. Organic small alien glider, dry and light, no gunshot, speech or music."
+  },
+  "listening": "Runtime signal capture to be checked; subjective listening pending.",
+  "runtime_signal": {
+    "recording": "audio/review/creature-motion/speed-runtime.wav",
+    "duration": 93.9,
+    "peak_dbfs": -12.375168167936677,
+    "rms_dbfs": -35.52346635970346,
+    "nonzero_samples": 1782932,
+    "clipped_samples": 0,
+    "listening": "Runtime recording and nonzero signal verified; subjective listening pending"
+  },
+  "runtime_plays": 72
+}

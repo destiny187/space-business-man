@@ -1,0 +1,130 @@
+{
+  "id": "vaulthopper",
+  "name": "접등 도약수",
+  "kind": "hopper",
+  "source_id": "biota_chain_armor_26",
+  "habitat": "저중력 암지 · 탄성 뒷다리와 완충등",
+  "attack": "slam",
+  "palette": [
+    "ad7346",
+    "e2c98c",
+    "4a5960",
+    "648b7a"
+  ],
+  "source": "art/blender/creature_studies_motion/vaulthopper.blend",
+  "status": "approved-shape-motion-v3-speed-lab",
+  "bone_count": 22,
+  "locomotion_chains": 2,
+  "clips": [
+    "attack",
+    "blocked",
+    "feed",
+    "hurt",
+    "idle_loop",
+    "move_loop",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "run_loop"
+  ],
+  "muzzle": [
+    0.0,
+    0.699999988079071,
+    1.1100000143051147
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/vaulthopper_near.glb",
+      "triangles": 40418,
+      "sha256": "8456358300656eb61daf1dc94e4bc3100d96eadda695093b76abb2050d93c452",
+      "min": [
+        -0.9025339484214783,
+        0.01000000536441803,
+        -1.3970763683319092
+      ],
+      "max": [
+        0.9032508134841919,
+        1.6042388677597046,
+        1.1521577835083008
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/vaulthopper_far.glb",
+      "triangles": 17370,
+      "sha256": "1fcda11c1547dbc5a0d3bee6b1e43c6194c99d008bc01483fe9f86359a480313",
+      "min": [
+        -0.902048647403717,
+        0.010048876516520977,
+        -1.3970763683319092
+      ],
+      "max": [
+        0.9032508134841919,
+        1.6042388677597046,
+        1.1515122652053833
+      ]
+    }
+  },
+  "approved_mesh_digest": "1f32b81c6f5117cc0b17e890414f3b0b745d49407869a97168c428a33740d686",
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.64,
+    "release": [
+      1.4
+    ],
+    "active_end": 1.5,
+    "settle": 2.6,
+    "travel": 1.12,
+    "stride": 0.4,
+    "stance": 0.42,
+    "period": 1.0,
+    "damage": 30,
+    "strike_radius": 0.72,
+    "target_z": 2.02,
+    "target_height": 0.1,
+    "effect": "slam",
+    "air_start": 0.72,
+    "air_end": 1.4,
+    "air_height": 0.78,
+    "hit_pause": 0.035,
+    "knockback": 0.25,
+    "run": {
+      "stride": 0.7,
+      "stance": 0.42,
+      "period": 0.6
+    }
+  },
+  "sockets": {
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.699999988079071,
+        1.1100000143051147
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.699999988079071,
+        1.1100000143051147
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.58,
+        0.115,
+        -0.3
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.58,
+        0.115,
+        -0.3
+      ]
+    }
+  }
+}

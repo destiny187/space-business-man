@@ -42,10 +42,10 @@ func spawn(kind: String,point: Vector3,color: Color,life: float,size: float) -> 
 	if pool.is_empty():
 		node=MeshInstance3D.new();node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(node)
 	else:node=pool.pop_back()
-	node.mesh=quad if kind in ["flash","dust"] else hoop if kind=="ring" else shard if kind=="shard" else line
+	node.mesh=quad if kind in ["flash","dust","contact","arc"] else hoop if kind=="ring" else shard if kind=="shard" else line
 	node.material_override=flash_material if node.mesh==quad else line_material
 	node.position=point;node.rotation=Vector3.ZERO;node.scale=Vector3.ONE*size;node.show()
-	node.set_instance_shader_parameter("phase",0.0);node.set_instance_shader_parameter("soft",1.0 if kind=="dust" else 0.0)
+	node.set_instance_shader_parameter("phase",0.0);node.set_instance_shader_parameter("shape",{"dust":1.0,"contact":2.0,"arc":3.0}.get(kind,0.0))
 	node.set_instance_shader_parameter("tint",color);node.set_instance_shader_parameter("effect_color",color)
 	if node.mesh==quad and is_instance_valid(camera):node.basis=camera.global_basis.scaled(Vector3.ONE*size)
 	var e: Dictionary={"node":node,"kind":kind,"start":point,"color":color,"age":0.0,"life":life,"size":size,"velocity":Vector3.ZERO,"fresh":true}
@@ -74,9 +74,8 @@ func shot(origin: Vector3,event: Dictionary,near_clip: float=0.0) -> void:
 	for hit in event.get("contacts",[]):impact(hit)
 	if event.get("effect","")=="splash" and not event.rays.is_empty():
 		var point:=FrontierCrewWorld.vector(event.rays[0])
-		spawn("flash",point,Color(style.color),.12,.62)
-		var wave:=spawn("ring",point,Color(style.color),.25,.28)
-		if not wave.is_empty():wave.growth=.85
+		spawn("contact",point,Color(style.color),.08,.42)
+		spawn("arc",point,Color(style.color),.22,.85)
 
 func impact(contact: Dictionary) -> void:
 	var kind: String=contact.get("kind","surface")
@@ -87,29 +86,30 @@ func impact(contact: Dictionary) -> void:
 	if normal.length_squared()<.5:normal=Vector3.UP
 	point+=normal*.018
 	var color:=Color(style.color);var size:=float(style.size)
-	spawn("dust" if kind in ["surface","organic"] else "flash",point,color,.10 if kind!="break" else .16,size*2)
+	var contact_flash:=spawn("contact",point,color,.065 if kind!="break" else .09,size*2.0)
+	if not contact_flash.is_empty():contact_flash.spin=rng.randf_range(-PI,PI)
 	var side:=normal.cross(Vector3.UP).normalized()
 	if side.length_squared()<.5:side=Vector3.RIGHT
 	var up:=side.cross(normal).normalized()
+	var soft_contact: bool=kind in ["surface","organic"]
+	if soft_contact:
+		# One low-opacity irregular puff, separate from the sharp instant of contact.
+		var puff:=spawn("dust",point,color,float(style.life),size*.9)
+		if not puff.is_empty():puff.velocity=normal*.22;puff.spin=rng.randf_range(-PI,PI)
 	for i in int(style.sparks):
 		var a:=rng.randf()*TAU
-		var direction: Vector3=(normal*rng.randf_range(.5,1.2)+(side*cos(a)+up*sin(a))*rng.randf_range(.5,1.0)).normalized()
-		var e:=spawn("dust" if kind in ["surface","organic"] else "spark",point,color,float(style.life)*rng.randf_range(.7,1.1),rng.randf_range(.025,.06) if kind in ["surface","organic"] else .012)
-		if not e.is_empty():e.velocity=direction*float(style.speed)*rng.randf_range(.6,1.0)
+		var direction: Vector3=(normal*rng.randf_range(.25,.6)+(side*cos(a)+up*sin(a))*rng.randf_range(.6,1.0)).normalized()
+		var e:=spawn("shard" if soft_contact else "spark",point,color,float(style.life)*rng.randf_range(.7,1.1),rng.randf_range(.018,.034) if soft_contact else .017)
+		if not e.is_empty():e.velocity=direction*float(style.speed)*rng.randf_range(.6,1.0);e.spin=a
 	if kind in ["shield","break"]:
-		var ring:=spawn("ring",point,color,float(style.life),size*.6)
-		if not ring.is_empty():
-			ring.growth=size*1.25
-			ring.node.quaternion=Quaternion(Vector3.UP,normal)
+		var arc:=spawn("arc",point,color,float(style.life),size*2.8)
+		if not arc.is_empty():arc.spin=rng.randf_range(-PI,PI)
 	if kind=="break":
-		# A small outward fracture, distinct from ordinary shield contact sparks.
-		for i in 6:
-			var a:=float(i)*TAU/6+rng.randf_range(-.15,.15)
+		for i in 5:
+			var a:=float(i)*TAU/5+rng.randf_range(-.15,.15)
 			var outward:=side*cos(a)+up*sin(a)
-			var piece:=spawn("shard",point+outward*.11,color,.32,rng.randf_range(.09,.16))
-			if not piece.is_empty():
-				piece.velocity=outward*rng.randf_range(1.0,1.7)+normal*.3;piece.spin=a
-				if is_instance_valid(camera):piece.node.basis=camera.global_basis.scaled(Vector3.ONE*float(piece.size))
+			var piece:=spawn("shard",point+outward*.06,color,.24,rng.randf_range(.04,.085))
+			if not piece.is_empty():piece.velocity=outward*rng.randf_range(.7,1.3)+normal*.2;piece.spin=a
 	emitted.impact+=1
 
 func segment(node: MeshInstance3D,start: Vector3,finish: Vector3,width: float) -> void:
@@ -128,13 +128,15 @@ func _process(delta: float) -> void:
 		var node: MeshInstance3D=e.node;var color: Color=e.color;color.a*=1-t*t
 		node.set_instance_shader_parameter("phase",t);node.set_instance_shader_parameter("tint",color);node.set_instance_shader_parameter("effect_color",color)
 		match e.kind:
-			"flash":
+			"flash","contact","arc":
 				if is_instance_valid(e.get("socket")):node.position=e.socket.global_position
 				if is_instance_valid(camera):node.basis=camera.global_basis;node.rotate_object_local(Vector3.BACK,float(e.get("spin",0)))
-				node.scale=Vector3.ONE*float(e.size)*(1-t*.65)
+				node.scale=Vector3.ONE*float(e.size)*(1-t*(.65 if e.kind=="flash" else .20 if e.kind=="contact" else 0.0))
 			"dust":
 				node.position=e.start+e.velocity*e.age;node.scale=Vector3.ONE*float(e.size)*(1+t*.8)
-				if is_instance_valid(camera):node.basis=camera.global_basis.scaled(Vector3.ONE*float(e.size)*(1+t*.8))
+				if is_instance_valid(camera):
+					node.basis=camera.global_basis;node.rotate_object_local(Vector3.BACK,float(e.get("spin",0)))
+					node.scale=Vector3.ONE*float(e.size)*(1+t*.8)
 			"tracer":
 				var front:=minf(float(e.distance),maxf(minf(float(e.length)*.7,float(e.distance)*.25),float(e.distance)*e.age/e.travel))
 				var back:=maxf(0,front-float(e.length)*(1-t*.6))

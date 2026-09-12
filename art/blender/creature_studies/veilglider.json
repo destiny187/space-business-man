@@ -1,0 +1,61 @@
+{
+  "id": "veilglider",
+  "name": "겹막 활공수",
+  "kind": "glider",
+  "source_id": "biota_bilateral_armor_11",
+  "habitat": "고압 대기 · 두 쌍의 막날개와 조향 꼬리",
+  "attack": "dart",
+  "palette": [
+    "635569",
+    "b89691",
+    "344f57",
+    "d6b87e"
+  ],
+  "source": "art/blender/creature_studies/veilglider.blend",
+  "status": "type-study-not-native-catalog",
+  "bone_count": 25,
+  "locomotion_chains": 2,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "feed",
+    "attack"
+  ],
+  "muzzle": [
+    0.0,
+    1.5299999713897705,
+    1.2100000381469727
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies/veilglider_near.glb",
+      "triangles": 27926,
+      "sha256": "527b2db68cf8ffb47b67b685261ce24b827b0f13adbaa09cd8643cdfd8a76b1b",
+      "min": [
+        -2.5108566284179688,
+        3.8743019104003906e-05,
+        -2.108398675918579
+      ],
+      "max": [
+        2.5108580589294434,
+        1.9499797821044922,
+        1.213303804397583
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies/veilglider_far.glb",
+      "triangles": 12002,
+      "sha256": "340798464660ea99fc3ac21767dfbcb7e80fde0033d7101fc9d881e9096b48c6",
+      "min": [
+        -2.510838031768799,
+        3.8743019104003906e-05,
+        -2.085646152496338
+      ],
+      "max": [
+        2.510840654373169,
+        1.9499797821044922,
+        1.2131935358047485
+      ]
+    }
+  }
+}

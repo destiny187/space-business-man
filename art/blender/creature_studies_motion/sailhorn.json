@@ -1,0 +1,143 @@
+{
+  "id": "sailhorn",
+  "name": "갈래돛 초식수",
+  "kind": "quadruped",
+  "source_id": "biota_spindle_armor_25",
+  "habitat": "건조 분지 · 여과뿔과 저수 피부",
+  "attack": "ram",
+  "palette": [
+    "79615b",
+    "c3ad7f",
+    "344f49",
+    "d5be87"
+  ],
+  "source": "art/blender/creature_studies_motion/sailhorn.blend",
+  "status": "approved-shape-motion-v3-speed-lab",
+  "bone_count": 23,
+  "locomotion_chains": 4,
+  "clips": [
+    "attack",
+    "blocked",
+    "feed",
+    "hurt",
+    "idle_loop",
+    "move_loop",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "run_loop"
+  ],
+  "muzzle": [
+    0.0,
+    2.240000009536743,
+    1.7999999523162842
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/sailhorn_near.glb",
+      "triangles": 35463,
+      "sha256": "9098802b6c25d29ea242d306a1e5c48d0eaab10328da6a72ef2ab0f61d6371d7",
+      "min": [
+        -0.8319883346557617,
+        0.009000003337860107,
+        -2.0158421993255615
+      ],
+      "max": [
+        0.8319883346557617,
+        2.9928581714630127,
+        1.805123209953308
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/sailhorn_far.glb",
+      "triangles": 15240,
+      "sha256": "19b7564e0647c2187e62e0c52e2db637d12bbcfeb02a41f4bf05bdf4c424b03f",
+      "min": [
+        -0.832028865814209,
+        0.009000003337860107,
+        -2.0158114433288574
+      ],
+      "max": [
+        0.8320282697677612,
+        2.9928581714630127,
+        1.8052964210510254
+      ]
+    }
+  },
+  "approved_mesh_digest": "e656f137afe2a7206a634a1b21154f98ea67c8fe27a003cc1d2b2322744bc78d",
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.74,
+    "release": [
+      0.98
+    ],
+    "active_end": 1.16,
+    "settle": 2.55,
+    "travel": 1.05,
+    "stride": 0.66,
+    "stance": 0.68,
+    "period": 1.0,
+    "damage": 28,
+    "strike_radius": 0.24,
+    "target_z": 2.72,
+    "target_height": 1.6,
+    "effect": "ram",
+    "hit_pause": 0.045,
+    "knockback": 0.28,
+    "run": {
+      "stride": 0.9,
+      "stance": 0.56,
+      "period": 0.6
+    }
+  },
+  "sockets": {
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        0,
+        2.44,
+        1.6
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        2.240000009536743,
+        1.7999999523162842
+      ]
+    },
+    "Socket_fore-1": {
+      "bone": "fore-1_foot",
+      "point": [
+        -0.47999998927116394,
+        0.13500000536441803,
+        0.7800000309944153
+      ]
+    },
+    "Socket_fore1": {
+      "bone": "fore1_foot",
+      "point": [
+        0.47999998927116394,
+        0.13500000536441803,
+        0.7800000309944153
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.44999998807907104,
+        0.13500000536441803,
+        -0.44999998807907104
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.44999998807907104,
+        0.13500000536441803,
+        -0.44999998807907104
+      ]
+    }
+  }
+}

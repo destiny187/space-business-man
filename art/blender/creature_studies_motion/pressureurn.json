@@ -1,0 +1,137 @@
+{
+  "id": "pressureurn",
+  "name": "숨항아리 포격수",
+  "kind": "tripod",
+  "source_id": "bio_quill_amphora_01",
+  "habitat": "염류 분지 · 압력낭과 골질 늑판",
+  "attack": "mortar",
+  "palette": [
+    "787c89",
+    "d2c6a3",
+    "3e5260",
+    "d28858"
+  ],
+  "source": "art/blender/creature_studies_motion/pressureurn.blend",
+  "status": "approved-shape-motion-v3-speed-lab",
+  "bone_count": 17,
+  "locomotion_chains": 3,
+  "clips": [
+    "attack",
+    "blocked",
+    "feed",
+    "hurt",
+    "idle_loop",
+    "move_loop",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "run_loop"
+  ],
+  "muzzle": [
+    0.0,
+    2.5299999713897705,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/pressureurn_near.glb",
+      "triangles": 29416,
+      "sha256": "d833918efb5589d2d3b3409191bb08b5b39f63c71a9f53887d802c07d357ff50",
+      "min": [
+        -1.0224554538726807,
+        0.020000003278255463,
+        -1.2094995975494385
+      ],
+      "max": [
+        1.0224554538726807,
+        2.5598747730255127,
+        0.8194997906684875
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/pressureurn_far.glb",
+      "triangles": 12642,
+      "sha256": "c43888d503b045deb5f52c54aeb151975b389ef054ab8ce65dc8ce4da09f35d5",
+      "min": [
+        -1.0224554538726807,
+        0.02001308836042881,
+        -1.20917809009552
+      ],
+      "max": [
+        1.0224554538726807,
+        2.5589101314544678,
+        0.8194997906684875
+      ]
+    }
+  },
+  "approved_mesh_digest": "5abca1ae5110a2232bee816cdddb9c9b9184127491fbcd81a154ee7cb59a3114",
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.88,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.26,
+    "settle": 2.62,
+    "travel": 0.0,
+    "stride": 0.3,
+    "stance": 0.76,
+    "period": 1.0,
+    "damage": 32,
+    "strike_radius": 0.14,
+    "target_z": 3.2,
+    "target_height": 0.75,
+    "effect": "mortar",
+    "flight_seconds": 0.72,
+    "arc_height": 1.25,
+    "hit_pause": 0.0,
+    "knockback": 0.25,
+    "run": {
+      "stride": 0.4,
+      "stance": 0.67,
+      "period": 0.8
+    }
+  },
+  "sockets": {
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        0.0,
+        2.5299999713897705,
+        -0.0
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        2.5299999713897705,
+        -0.0
+      ]
+    },
+    "Socket_tripod0": {
+      "bone": "tripod0_foot",
+      "point": [
+        5.878304760059908e-17,
+        0.125,
+        -0.7199999690055847
+      ]
+    },
+    "Socket_tripod1": {
+      "bone": "tripod1_foot",
+      "point": [
+        -0.8313843607902527,
+        0.125,
+        0.7199999690055847
+      ]
+    },
+    "Socket_tripod2": {
+      "bone": "tripod2_foot",
+      "point": [
+        0.8313843607902527,
+        0.125,
+        0.7199999690055847
+      ]
+    }
+  }
+}

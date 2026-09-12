@@ -1,0 +1,115 @@
+{
+  "id": "reedserpent",
+  "name": "갈대막 분사수",
+  "kind": "serpent",
+  "source_id": "biota_ribbon_armor_26",
+  "habitat": "산성 습지 · 점액 복면과 세갈래 구강",
+  "attack": "spit",
+  "palette": [
+    "496e64",
+    "b9bc86",
+    "354548",
+    "c9866d"
+  ],
+  "source": "art/blender/creature_studies_motion/reedserpent.blend",
+  "status": "approved-shape-motion-v3-speed-lab",
+  "bone_count": 16,
+  "locomotion_chains": 0,
+  "clips": [
+    "attack",
+    "blocked",
+    "feed",
+    "hurt",
+    "idle_loop",
+    "move_loop",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "run_loop"
+  ],
+  "muzzle": [
+    0.0,
+    0.4300000071525574,
+    1.899999976158142
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/reedserpent_near.glb",
+      "triangles": 19774,
+      "sha256": "1bc85306215a199c60f9b8f7a9fc8ffa3054e2918bc1d36f33a5f2291a7429d0",
+      "min": [
+        -0.44862622022628784,
+        0.02671663835644722,
+        -2.9873390197753906
+      ],
+      "max": [
+        0.46085917949676514,
+        0.8327206373214722,
+        1.9399888515472412
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies_motion/reedserpent_far.glb",
+      "triangles": 8498,
+      "sha256": "4ad6aa010f1149a8d4020e34aa72596a821c2afefe7b05a5f9e54869be1cf566",
+      "min": [
+        -0.4481483995914459,
+        0.026856230571866035,
+        -2.9873390197753906
+      ],
+      "max": [
+        0.4605773091316223,
+        0.8330745100975037,
+        1.9409481287002563
+      ]
+    }
+  },
+  "approved_mesh_digest": "e54735423d0e7d9deeb6548aa8f49c999b8ec711a7ee44f994a8f7725130654b",
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.8,
+    "release": [
+      1.0,
+      1.12,
+      1.24
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0.0,
+    "stride": 0.5,
+    "stance": 0.7,
+    "period": 1.0,
+    "damage": 9,
+    "strike_radius": 0.1,
+    "target_z": 3.25,
+    "target_height": 0.6,
+    "effect": "acid",
+    "flight_seconds": 0.32,
+    "arc_height": 0.1,
+    "hit_pause": 0.0,
+    "knockback": 0.1,
+    "run": {
+      "stride": 0.85,
+      "stance": 0.7,
+      "period": 0.6
+    }
+  },
+  "sockets": {
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.4300000071525574,
+        1.899999976158142
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.4300000071525574,
+        1.899999976158142
+      ]
+    }
+  }
+}

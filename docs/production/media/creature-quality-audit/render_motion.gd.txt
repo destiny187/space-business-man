@@ -1,0 +1,31 @@
+extends "res://tests/render_ground_locomotion_types.gd"
+## Inspection only: use existing actor, pose, contact solver and INK stage.
+func run() -> void:
+	folder=ProjectSettings.globalize_path("res://../output/creature-quality-audit-20260912/frames")
+	DirAccess.make_dir_recursive_absolute(folder)
+	root.size=Vector2i(1440,840);root.content_scale_size=root.size
+	var ids: Array[String]=["bio_grazer_01","bio_quill_amphora_01","biota_spindle_armor_01","biota_spindle_armor_25","biota_lobopod_armor_26","biota_ribbon_armor_26"]
+	for i in ids.size():panels.append(panel(FrontierEcologyCatalog.form(ids[i]),i))
+	await process_frame
+	for frame_index in 108:
+		var t: float=frame_index/12.0
+		var state_name: String="idle" if t<1 else ("move" if t<5 else ("idle" if t<6 else ("feed" if t<7.5 else "stressed")))
+		for step in 5:
+			for p in panels:
+				var creature: Node3D=p.actor;var m: RefCounted=creature.ground_motion
+				if creature.state!=state_name:creature.set_state(state_name)
+				var yaw: float=clampf((t-4)*PI/2,0,PI/2)
+				var facing:=Basis(Vector3.UP,yaw)
+				if state_name=="move":p.at+=facing.z*m.leg_length*.75/60.0
+				creature.drive_ground(p.at,facing,1.0/60.0,floor_probe,false);creature.pose()
+				var target: Vector3=m.point+Vector3.UP*float(p.height)*.5
+				p.camera.global_position=target+Vector3(4,2,4)*maxf(.5,float(p.span)/3);p.camera.look_at(target)
+				p.label.text=creature.definition.id+" | "+state_name+" | %.2fs"%t
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(folder+"/frame-%03d.png"%frame_index)
+		if frame_index%24==0:print("CREATURE_REVIEW_FRAME ",frame_index)
+	for p in panels:p.actor.lod_override=1;p.actor.set_lod(true)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(folder+"/far-stressed.png")
+	print("CREATURE_REVIEW_DONE samples=6 frames=108 synthetic-flat-stage existing-actor")
+	quit()

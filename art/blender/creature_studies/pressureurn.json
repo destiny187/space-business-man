@@ -1,0 +1,61 @@
+{
+  "id": "pressureurn",
+  "name": "숨항아리 포격수",
+  "kind": "tripod",
+  "source_id": "bio_quill_amphora_01",
+  "habitat": "염류 분지 · 압력낭과 골질 늑판",
+  "attack": "mortar",
+  "palette": [
+    "787c89",
+    "d2c6a3",
+    "3e5260",
+    "d28858"
+  ],
+  "source": "art/blender/creature_studies/pressureurn.blend",
+  "status": "type-study-not-native-catalog",
+  "bone_count": 17,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "feed",
+    "attack"
+  ],
+  "muzzle": [
+    0.0,
+    2.5299999713897705,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies/pressureurn_near.glb",
+      "triangles": 29416,
+      "sha256": "9ca1a1a54f9a2a5a7cdd0302139da8a51a896ce8931acb7ffd93c63ab617bcda",
+      "min": [
+        -1.0224554538726807,
+        0.020000003278255463,
+        -1.2094995975494385
+      ],
+      "max": [
+        1.0224554538726807,
+        2.5598747730255127,
+        0.8194997906684875
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies/pressureurn_far.glb",
+      "triangles": 12642,
+      "sha256": "d2247af65a3cc57ff65df2b98e4a84f146a7bde01e004fd32afe44d43cdbb277",
+      "min": [
+        -1.0224554538726807,
+        0.02001308836042881,
+        -1.20917809009552
+      ],
+      "max": [
+        1.0224554538726807,
+        2.5589101314544678,
+        0.8194997906684875
+      ]
+    }
+  }
+}

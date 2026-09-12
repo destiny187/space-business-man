@@ -1,0 +1,224 @@
+{
+  "date": "2026-09-12",
+  "method": "Read four runtime catalogs, file existence/LFS headers, and JSON chunks of each near/far GLB; no gameplay tests and no geometry/animation changes. Statistics do not constitute visual approval.",
+  "catalog_total": 8000,
+  "unique_ids": 8000,
+  "collections": {
+    "forms": {
+      "total": 600,
+      "categories": {
+        "animal": 400,
+        "plant": 125,
+        "microbe": 75
+      },
+      "families": 30
+    },
+    "xenofauna_forms": {
+      "total": 300,
+      "categories": {
+        "animal": 300
+      },
+      "families": 30
+    },
+    "xenoflora_forms": {
+      "total": 100,
+      "categories": {
+        "plant": 60,
+        "microbe": 40
+      },
+      "families": 20
+    },
+    "biota_forms": {
+      "total": 7000,
+      "categories": {
+        "animal": 4900,
+        "plant": 1400,
+        "microbe": 700
+      },
+      "families": 140
+    }
+  },
+  "categories": {
+    "animal": 5600,
+    "plant": 1585,
+    "microbe": 815
+  },
+  "appearance_profiles": 160000,
+  "ground": {
+    "total": 5130,
+    "kinds": {
+      "many": 858,
+      "quadruped": 790,
+      "biped": 25,
+      "slither": 378,
+      "crawl": 707,
+      "radial": 2351,
+      "hop": 21
+    },
+    "legged": 4045,
+    "with_gait_chain": 175,
+    "single_hinge_solver": 3870,
+    "without_legs": 1085
+  },
+  "animal_collections": {
+    "forms": {
+      "ground": 315
+    },
+    "xenofauna_forms": {
+      "ground": 300
+    },
+    "xenoflora_forms": {
+      "ground": 0
+    },
+    "biota_forms": {
+      "ground": 4515
+    }
+  },
+  "animal_medium_explicit": {
+    "legacy-family-defined": 400,
+    "ground": 4815,
+    "atmosphere": 245,
+    "surface_air": 140
+  },
+  "replacement": {
+    "total": 196,
+    "ocular_design": 196
+  },
+  "combat_patterns": {
+    "ram": 71,
+    "kick": 25,
+    "bite": 59,
+    "slam": 35,
+    "claw": 49,
+    "scythe": 42,
+    "none": 5319
+  },
+  "assets": {
+    "animal": {
+      "near": {
+        "files": 5600,
+        "total_bytes": 8234643420,
+        "triangle_min": 2616,
+        "triangle_median": 43032.0,
+        "triangle_p95": 100886,
+        "triangle_max": 166236,
+        "models_with_skin": 4900,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 4.0
+      },
+      "far": {
+        "files": 5600,
+        "total_bytes": 2453643996,
+        "triangle_min": 894,
+        "triangle_median": 12055.0,
+        "triangle_p95": 28244,
+        "triangle_max": 46542,
+        "models_with_skin": 4900,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 4.0
+      }
+    },
+    "plant": {
+      "near": {
+        "files": 1585,
+        "total_bytes": 2152217672,
+        "triangle_min": 4316,
+        "triangle_median": 38730,
+        "triangle_p95": 102420,
+        "triangle_max": 193028,
+        "models_with_skin": 1400,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 3
+      },
+      "far": {
+        "files": 1585,
+        "total_bytes": 631950940,
+        "triangle_min": 1372,
+        "triangle_median": 10851,
+        "triangle_p95": 28676,
+        "triangle_max": 54046,
+        "models_with_skin": 1400,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 3
+      }
+    },
+    "microbe": {
+      "near": {
+        "files": 815,
+        "total_bytes": 795676260,
+        "triangle_min": 6560,
+        "triangle_median": 29816,
+        "triangle_p95": 60408,
+        "triangle_max": 88124,
+        "models_with_skin": 700,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 3
+      },
+      "far": {
+        "files": 815,
+        "total_bytes": 240624796,
+        "triangle_min": 1832,
+        "triangle_median": 8516,
+        "triangle_p95": 16912,
+        "triangle_max": 24673,
+        "models_with_skin": 700,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 3
+      }
+    },
+    "all": {
+      "near": {
+        "files": 8000,
+        "total_bytes": 11182537352,
+        "triangle_min": 2616,
+        "triangle_median": 40238.0,
+        "triangle_p95": 99310,
+        "triangle_max": 193028,
+        "models_with_skin": 7000,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 3.0
+      },
+      "far": {
+        "files": 8000,
+        "total_bytes": 3326219732,
+        "triangle_min": 894,
+        "triangle_median": 11294.0,
+        "triangle_p95": 27804,
+        "triangle_max": 54046,
+        "models_with_skin": 7000,
+        "models_with_clips": 0,
+        "models_with_textures": 0,
+        "models_with_morph_targets": 0,
+        "mesh_nodes_median": 3.0
+      }
+    }
+  },
+  "source_files_present": 8000,
+  "issues": [],
+  "provenance_sha256": {
+    "우주-비즈니스/data/bestiary/forms.json": "a143b6bdb6a3b1cbd2cab9d61581cd23dbedf6d8a4a69252cc00be389da98216",
+    "우주-비즈니스/data/bestiary/xenofauna_forms.json": "72da71f91bc388c99a37d285d3080832d702d11c08df5eb9eee53ad2250de19c",
+    "우주-비즈니스/data/bestiary/xenoflora_forms.json": "87ba057c9591741645b31c8199460736d6459d0587108789d850337ff653e7d5",
+    "우주-비즈니스/data/bestiary/biota_forms.json": "c06cd11212594ec7b929f77d055daa3582c3b23d396ae1fb9f93bd66e57234e5",
+    "우주-비즈니스/scripts/actors/creatures/bestiary_actor.gd": "481fbb2d4138a5f22fac527df48ef1f415a02ec08102b2c132412ae2904b336e",
+    "우주-비즈니스/scripts/actors/creatures/ground_locomotion.gd": "41e36ad436517edb3f76431e726a396ecbe9c4dce6288ae6f828ffc713b36c79",
+    "우주-비즈니스/scripts/actors/creatures/ground_locomotion_feet.gd": "31e28c98c715860a59855fe919008c9e5ebc7719899e157f6f27785c18f7067a",
+    "우주-비즈니스/scripts/world/wildlife_behavior.gd": "b7e9993a5611174bd3bd56bf9f5d0373c3797166225324abf6e43d452302c89c",
+    "우주-비즈니스/scripts/domain/ecology_catalog.gd": "7c6decf08ca6ccf69afd78da14cde87349b76236d5bedef91041bac7c40d6c5a",
+    "우주-비즈니스/data/bestiary/ground_locomotion.json": "db57e4a42428a0a61f8aac467c53003eda498bde75afffd3d2da959434bc37a5"
+  }
+}

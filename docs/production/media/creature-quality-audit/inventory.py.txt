@@ -1,0 +1,45 @@
+from pathlib import Path
+from collections import Counter
+import json,struct,hashlib,statistics
+root=Path.cwd(); base=root/'우주-비즈니스/data/bestiary'; output=root/'docs/production/media/creature-quality-audit'
+files=['forms','xenofauna_forms','xenoflora_forms','biota_forms']; rows=[]; collections={}; provenance={}
+def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def count(a,key):return dict(Counter(key(x) for x in a))
+for name in files:
+ p=base/(name+'.json'); a=json.loads(p.read_text())['forms']; rows+=a
+ collections[name]={'total':len(a),'categories':count(a,lambda x:x['category']),'families':len(set(x['family'] for x in a))}; provenance[str(p.relative_to(root))]=digest(p)
+byid={x['id']:x for x in rows}; g=json.loads((base/'ground_locomotion.json').read_text())['forms']; issues=[]; assets={}; matrix=[]
+for row in rows:
+ source=root/row['source']; local_source=source.is_file() and not source.open('rb').read(42).startswith(b'version https://git-lfs')
+ if not local_source:issues.append({'id':row['id'],'source':'missing-or-lfs-pointer'})
+ item={'id':row['id'],'category':row['category'],'source':row['source'],'source_present':local_source,'lods':{}}
+ for lod in ['near','far']:
+  path=root/row['lods'][lod]['path']
+  try:
+   with path.open('rb') as f:
+    header=f.read(20); magic,ver,total,chunk_len,chunk_type=struct.unpack('<4sIIII',header)
+    if magic!=b'glTF' or chunk_type!=0x4E4F534A:raise ValueError('not GLB JSON')
+    d=json.loads(f.read(chunk_len))
+   tris=sum(d['accessors'][p['indices']]['count']//3 for mesh in d.get('meshes',[]) for p in mesh['primitives'] if 'indices' in p and p.get('mode',4)==4)
+   item['lods'][lod]={'bytes':path.stat().st_size,'triangles':tris,'mesh_nodes':sum('mesh' in n for n in d.get('nodes',[])),'skins':len(d.get('skins',[])),'animations':len(d.get('animations',[])),'textures':len(d.get('textures',[])),'morph_meshes':sum(any(p.get('targets') for p in m['primitives']) for m in d.get('meshes',[]))}
+  except Exception as e:issues.append({'id':row['id'],'lod':lod,'error':str(e)})
+ matrix.append(item)
+print('GLB metadata read',len(matrix),flush=True)
+for category in ['animal','plant','microbe','all']:
+ a=[x for x in matrix if category=='all' or x['category']==category]; details={}
+ for lod in ['near','far']:
+  sample=[x['lods'][lod] for x in a if lod in x['lods']]; ts=sorted(x['triangles'] for x in sample)
+  details[lod]={'files':len(sample),'total_bytes':sum(x['bytes'] for x in sample),'triangle_min':min(ts),'triangle_median':statistics.median(ts),'triangle_p95':ts[int((len(ts)-1)*.95)],'triangle_max':max(ts),'models_with_skin':sum(x['skins']>0 for x in sample),'models_with_clips':sum(x['animations']>0 for x in sample),'models_with_textures':sum(x['textures']>0 for x in sample),'models_with_morph_targets':sum(x['morph_meshes']>0 for x in sample),'mesh_nodes_median':statistics.median(x['mesh_nodes'] for x in sample)}
+ assets[category]=details
+legged=[k for k,v in g.items() if v['limbs']]; chain=[k for k in legged if byid[k].get('gait',{}).get('limbs')]
+animals=[x for x in rows if x['category']=='animal']; config=json.loads((root/'우주-비즈니스/data/wildlife_combat.json').read_text()); ground=set(g)
+combat=Counter()
+for row in animals:
+ p=config['anatomical_attacks'].get(row.get('construction',''),row.get('attack','none'))
+ combat[p if p in config['patterns'] and row['id'] in ground else 'none']+=1
+for path in ['우주-비즈니스/scripts/actors/creatures/bestiary_actor.gd','우주-비즈니스/scripts/actors/creatures/ground_locomotion.gd','우주-비즈니스/scripts/actors/creatures/ground_locomotion_feet.gd','우주-비즈니스/scripts/world/wildlife_behavior.gd','우주-비즈니스/scripts/domain/ecology_catalog.gd','우주-비즈니스/data/bestiary/ground_locomotion.json']:
+ provenance[path]=digest(root/path)
+report={'date':'2026-09-12','method':'Read four runtime catalogs, file existence/LFS headers, and JSON chunks of each near/far GLB; no gameplay tests and no geometry/animation changes. Statistics do not constitute visual approval.','catalog_total':len(rows),'unique_ids':len(byid),'collections':collections,'categories':count(rows,lambda x:x['category']),'appearance_profiles':sum(len(json.loads((base/(n+'.json')).read_text())['appearances']) for n in ['appearances','xenofauna_appearances','xenoflora_appearances','biota_appearances']),'ground':{'total':len(g),'kinds':count(g.values(),lambda v:v['kind']),'legged':len(legged),'with_gait_chain':len(chain),'single_hinge_solver':len(legged)-len(chain),'without_legs':len(g)-len(legged)},'animal_collections':{name:{'ground':sum(x['category']=='animal' and x['id'] in ground for x in json.loads((base/(name+'.json')).read_text())['forms'])} for name in files},'animal_medium_explicit':count(animals,lambda x:x.get('locomotion_medium','legacy-family-defined')),'replacement':{'total':sum(bool(x.get('replacement')) for x in rows),'ocular_design':sum(bool(x.get('ocular_design')) for x in rows)},'combat_patterns':dict(combat),'assets':assets,'source_files_present':sum(x['source_present'] for x in matrix),'issues':issues,'provenance_sha256':provenance}
+(output/'inventory.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+(root/'output/creature-quality-audit-20260912/asset-matrix.json').write_text(json.dumps(matrix,ensure_ascii=False))
+print(json.dumps(report,ensure_ascii=False,indent=2))

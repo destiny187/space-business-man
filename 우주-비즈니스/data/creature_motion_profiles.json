@@ -1,0 +1,170 @@
+{
+  "version": 3,
+  "scope": "approved six-form movement and contact lab; campaign adapter pending",
+  "blend_seconds": 0.18,
+  "profiles": {
+    "sailhorn": {
+      "duration": 2.8,
+      "prepare": 0.74,
+      "release": [
+        0.98
+      ],
+      "active_end": 1.16,
+      "settle": 2.55,
+      "travel": 1.05,
+      "stride": 0.66,
+      "stance": 0.68,
+      "period": 1.0,
+      "damage": 28,
+      "strike_radius": 0.24,
+      "target_z": 2.72,
+      "target_height": 1.6,
+      "effect": "ram",
+      "hit_pause": 0.045,
+      "knockback": 0.28,
+      "run": {
+        "stride": 0.9,
+        "stance": 0.56,
+        "period": 0.6
+      }
+    },
+    "shearprowler": {
+      "duration": 2.8,
+      "prepare": 0.64,
+      "release": [
+        0.92,
+        1.26
+      ],
+      "active_end": 1.44,
+      "settle": 2.58,
+      "travel": 0.76,
+      "stride": 0.52,
+      "stance": 0.7,
+      "period": 1.0,
+      "damage": 14,
+      "strike_radius": 0.3,
+      "target_z": 2.25,
+      "target_height": 0.65,
+      "effect": "slash",
+      "hit_pause": 0.03,
+      "knockback": 0.15,
+      "run": {
+        "stride": 0.74,
+        "stance": 0.58,
+        "period": 0.6
+      }
+    },
+    "pressureurn": {
+      "duration": 2.8,
+      "prepare": 0.88,
+      "release": [
+        1.08
+      ],
+      "active_end": 1.26,
+      "settle": 2.62,
+      "travel": 0.0,
+      "stride": 0.3,
+      "stance": 0.76,
+      "period": 1.0,
+      "damage": 32,
+      "strike_radius": 0.14,
+      "target_z": 3.2,
+      "target_height": 0.75,
+      "effect": "mortar",
+      "flight_seconds": 0.72,
+      "arc_height": 1.25,
+      "hit_pause": 0.0,
+      "knockback": 0.25,
+      "run": {
+        "stride": 0.4,
+        "stance": 0.67,
+        "period": 0.8
+      }
+    },
+    "vaulthopper": {
+      "duration": 2.8,
+      "prepare": 0.64,
+      "release": [
+        1.4
+      ],
+      "active_end": 1.5,
+      "settle": 2.6,
+      "travel": 1.12,
+      "stride": 0.4,
+      "stance": 0.42,
+      "period": 1.0,
+      "damage": 30,
+      "strike_radius": 0.72,
+      "target_z": 2.02,
+      "target_height": 0.1,
+      "effect": "slam",
+      "air_start": 0.72,
+      "air_end": 1.4,
+      "air_height": 0.78,
+      "hit_pause": 0.035,
+      "knockback": 0.25,
+      "run": {
+        "stride": 0.7,
+        "stance": 0.42,
+        "period": 0.6
+      }
+    },
+    "reedserpent": {
+      "duration": 2.8,
+      "prepare": 0.8,
+      "release": [
+        1.0,
+        1.12,
+        1.24
+      ],
+      "active_end": 1.36,
+      "settle": 2.64,
+      "travel": 0.0,
+      "stride": 0.5,
+      "stance": 0.7,
+      "period": 1.0,
+      "damage": 9,
+      "strike_radius": 0.1,
+      "target_z": 3.25,
+      "target_height": 0.6,
+      "effect": "acid",
+      "flight_seconds": 0.32,
+      "arc_height": 0.1,
+      "hit_pause": 0.0,
+      "knockback": 0.1,
+      "run": {
+        "stride": 0.85,
+        "stance": 0.7,
+        "period": 0.6
+      }
+    },
+    "veilglider": {
+      "duration": 2.8,
+      "prepare": 0.84,
+      "release": [
+        1.02,
+        1.16
+      ],
+      "active_end": 1.3,
+      "settle": 2.6,
+      "travel": 0.0,
+      "stride": 0.7,
+      "stance": 0.6,
+      "period": 1.0,
+      "damage": 13,
+      "strike_radius": 0.07,
+      "target_z": 3.65,
+      "target_height": 1.25,
+      "effect": "dart",
+      "flight_seconds": 0.22,
+      "arc_height": 0.0,
+      "hit_pause": 0.0,
+      "knockback": 0.12,
+      "run": {
+        "stride": 1.3,
+        "stance": 0.6,
+        "period": 0.8
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "shearprowler",
+  "name": "여섯발 그늘사냥꾼",
+  "kind": "hexapod",
+  "source_id": "biota_lobopod_armor_26",
+  "habitat": "열수림 · 낮은 매복과 감각 수염",
+  "attack": "scythe",
+  "palette": [
+    "355a61",
+    "779786",
+    "253843",
+    "bb915c"
+  ],
+  "source": "art/blender/creature_studies/shearprowler.blend",
+  "status": "type-study-not-native-catalog",
+  "bone_count": 33,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "feed",
+    "attack"
+  ],
+  "muzzle": [
+    0.0,
+    0.8299999833106995,
+    1.7699999809265137
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies/shearprowler_near.glb",
+      "triangles": 33434,
+      "sha256": "ced097d4e00eb2d7e73f75f257157bbe547dfc68214515206e115fd69e4eaf51",
+      "min": [
+        -1.0699999332427979,
+        -0.019961245357990265,
+        -2.331655740737915
+      ],
+      "max": [
+        1.0699999332427979,
+        1.4041295051574707,
+        1.954373836517334
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies/shearprowler_far.glb",
+      "triangles": 14370,
+      "sha256": "7104ca760820c16e2becce75c5e7c6d56ae66302a2451f03b606d419a4600fd4",
+      "min": [
+        -1.0683525800704956,
+        -0.017841551452875137,
+        -2.331655740737915
+      ],
+      "max": [
+        1.069325566291809,
+        1.4042466878890991,
+        1.954373836517334
+      ]
+    }
+  }
+}

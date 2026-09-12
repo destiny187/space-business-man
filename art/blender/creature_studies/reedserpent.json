@@ -1,0 +1,61 @@
+{
+  "id": "reedserpent",
+  "name": "갈대막 분사수",
+  "kind": "serpent",
+  "source_id": "biota_ribbon_armor_26",
+  "habitat": "산성 습지 · 점액 복면과 세갈래 구강",
+  "attack": "spit",
+  "palette": [
+    "496e64",
+    "b9bc86",
+    "354548",
+    "c9866d"
+  ],
+  "source": "art/blender/creature_studies/reedserpent.blend",
+  "status": "type-study-not-native-catalog",
+  "bone_count": 16,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "feed",
+    "attack"
+  ],
+  "muzzle": [
+    0.0,
+    0.4300000071525574,
+    1.899999976158142
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies/reedserpent_near.glb",
+      "triangles": 19774,
+      "sha256": "f5d75e75d35b271b9cccc500fb8bbc7f9f39cea95ee208e88597f8b51f7648db",
+      "min": [
+        -0.44862622022628784,
+        0.02671663835644722,
+        -2.9873390197753906
+      ],
+      "max": [
+        0.46085917949676514,
+        0.8327206373214722,
+        1.9399888515472412
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies/reedserpent_far.glb",
+      "triangles": 8498,
+      "sha256": "6cedba346f59fd5c9e3b6dfa93222d2e1ed6ff192674570d5899972181a12a79",
+      "min": [
+        -0.4481483995914459,
+        0.026856230571866035,
+        -2.9873390197753906
+      ],
+      "max": [
+        0.4605773091316223,
+        0.8330745100975037,
+        1.9409481287002563
+      ]
+    }
+  }
+}

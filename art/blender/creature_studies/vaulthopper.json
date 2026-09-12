@@ -1,0 +1,61 @@
+{
+  "id": "vaulthopper",
+  "name": "접등 도약수",
+  "kind": "hopper",
+  "source_id": "biota_chain_armor_26",
+  "habitat": "저중력 암지 · 탄성 뒷다리와 완충등",
+  "attack": "slam",
+  "palette": [
+    "ad7346",
+    "e2c98c",
+    "4a5960",
+    "648b7a"
+  ],
+  "source": "art/blender/creature_studies/vaulthopper.blend",
+  "status": "type-study-not-native-catalog",
+  "bone_count": 22,
+  "locomotion_chains": 2,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "feed",
+    "attack"
+  ],
+  "muzzle": [
+    0.0,
+    0.699999988079071,
+    1.1100000143051147
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_studies/vaulthopper_near.glb",
+      "triangles": 40418,
+      "sha256": "21b02d3587e61b516825fb93ebe53ae93c0fa490829e95e51a002fb4f25cb524",
+      "min": [
+        -0.9025339484214783,
+        0.01000000536441803,
+        -1.3970763683319092
+      ],
+      "max": [
+        0.9032508134841919,
+        1.6042388677597046,
+        1.1521577835083008
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_studies/vaulthopper_far.glb",
+      "triangles": 17370,
+      "sha256": "59cc12ac9e7d3ef3af69e82044c391ee979dc036171e867de2f99b3404b870a6",
+      "min": [
+        -0.902048647403717,
+        0.010048876516520977,
+        -1.3970763683319092
+      ],
+      "max": [
+        0.9032508134841919,
+        1.6042388677597046,
+        1.1515122652053833
+      ]
+    }
+  }
+}

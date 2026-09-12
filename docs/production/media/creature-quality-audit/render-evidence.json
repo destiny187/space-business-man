@@ -1,0 +1,118 @@
+{
+  "date": "2026-09-12",
+  "engine": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+  "scope": "Six existing animals; INK stage inherited from render_ground_locomotion_types.gd. No creature/model/gameplay changes. Synthetic flat floor, commanded root motion, fixed 60Hz simulation, 12fps capture. This is not natural field gameplay or a performance benchmark.",
+  "states": "idle 0–1s; move 1–5s with 90-degree turn 4–5s; idle 5–6s; feed 6–7.5s; stressed 7.5–9s; one far LOD stressed frame",
+  "frame_count": 108,
+  "source_script_sha256": "e7e409382603d9f75af2323da1708b0ebb357fb86c60f8e4e76f319e39f481c2",
+  "runtime_asset_checks": [
+    {
+      "id": "bio_grazer_01",
+      "lods": {
+        "near": {
+          "glb_sha256": "69b56551b7ce305c14d637a409e53054c00d976717b077e38a26787ad895aeeb",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        },
+        "far": {
+          "glb_sha256": "8960899d5fc70787f30fd2e1c752fda0e9f044d5184f9bf540bef91a1f4f7111",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        }
+      }
+    },
+    {
+      "id": "bio_quill_amphora_01",
+      "lods": {
+        "near": {
+          "glb_sha256": "b2950543460ca419aeb2cbfe4189bd66920c20ed38d844a5f9c224d75a8fb0ba",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        },
+        "far": {
+          "glb_sha256": "02744b9f5b864dac912fe7c1a208da103a342fb8e565843c5d06e6854b38bd2a",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        }
+      }
+    },
+    {
+      "id": "biota_spindle_armor_01",
+      "lods": {
+        "near": {
+          "glb_sha256": "e9c41db8aaaf26795ec2fa77aa056d2f6d296e24ebe37e2f0bed886a9e236024",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        },
+        "far": {
+          "glb_sha256": "532953f59b9e19309191b749f7a7a17909aa0648b46b31a47b74a982f7ce018b",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        }
+      }
+    },
+    {
+      "id": "biota_spindle_armor_25",
+      "lods": {
+        "near": {
+          "glb_sha256": "536a4a87d6f2e5f4945a2c9261eb5146989b99eebf8c7359e6b8a63cfa098377",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        },
+        "far": {
+          "glb_sha256": "c5bda41d280d78ff1f942367514f982093253135cfac05a71fb3309e6875c9b1",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        }
+      }
+    },
+    {
+      "id": "biota_lobopod_armor_26",
+      "lods": {
+        "near": {
+          "glb_sha256": "879baf570a661271ff0f0eee98f988863aa1c58e12344773aa6176be8cd5b02b",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        },
+        "far": {
+          "glb_sha256": "4b7dd8be41fcd10d296530dc3f8a349dcb034a311fcca5d65825004c3169e7dd",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        }
+      }
+    },
+    {
+      "id": "biota_ribbon_armor_26",
+      "lods": {
+        "near": {
+          "glb_sha256": "ebc2b459d367ebc53a6b79fbbd990f8b46afd50dda4c726446b563d1fcecd47c",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        },
+        "far": {
+          "glb_sha256": "3fc549a9a647f887af726e1cc24eb03445179bc668e544a310a58eca0c70311a",
+          "catalog_sha256_matches": true,
+          "import_source_md5_matches": true
+        }
+      }
+    }
+  ],
+  "observed_frames": [
+    0,
+    18,
+    24,
+    30,
+    36,
+    54,
+    66,
+    84,
+    96
+  ],
+  "limitations": [
+    "Mac locked: active-window manual observation unavailable",
+    "Not all 8,000 species visually reviewed",
+    "No live campaign, multiplayer, audio listening or broad gameplay tests"
+  ],
+  "far_stressed_frame_reviewed": true,
+  "render_format": "1440x840; six 480x420 orthographic SubViewports. Existing review stage, not a gameplay graphics preset. Animated WebP scaled to 1080x630 at 83ms/frame."
+}

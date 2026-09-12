@@ -1,0 +1,828 @@
+{
+  "audio_plays": 72,
+  "cases": [
+    {
+      "case": "hit",
+      "contacts": 1,
+      "form": "sailhorn",
+      "health": 72.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 1,
+      "form": "sailhorn",
+      "health": 100.0,
+      "shield": 92.0
+    },
+    {
+      "case": "miss",
+      "contacts": 0,
+      "form": "sailhorn",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 2,
+      "form": "shearprowler",
+      "health": 72.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 2,
+      "form": "shearprowler",
+      "health": 100.0,
+      "shield": 92.0
+    },
+    {
+      "case": "miss",
+      "contacts": 0,
+      "form": "shearprowler",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 1,
+      "form": "pressureurn",
+      "health": 68.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 1,
+      "form": "pressureurn",
+      "health": 100.0,
+      "shield": 88.0
+    },
+    {
+      "case": "miss",
+      "contacts": 1,
+      "form": "pressureurn",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 1,
+      "form": "vaulthopper",
+      "health": 70.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 1,
+      "form": "vaulthopper",
+      "health": 100.0,
+      "shield": 90.0
+    },
+    {
+      "case": "miss",
+      "contacts": 1,
+      "form": "vaulthopper",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 3,
+      "form": "reedserpent",
+      "health": 73.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 3,
+      "form": "reedserpent",
+      "health": 100.0,
+      "shield": 93.0
+    },
+    {
+      "case": "miss",
+      "contacts": 3,
+      "form": "reedserpent",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 2,
+      "form": "veilglider",
+      "health": 74.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 2,
+      "form": "veilglider",
+      "health": 100.0,
+      "shield": 94.0
+    },
+    {
+      "case": "miss",
+      "contacts": 2,
+      "form": "veilglider",
+      "health": 100.0,
+      "shield": 0.0
+    }
+  ],
+  "device": "Apple M2 (Apple8)",
+  "events": [
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 28.0,
+      "form": "sailhorn",
+      "kind": "organic",
+      "point": [
+        0.0,
+        1.85244476795197,
+        2.24771022796631
+      ],
+      "stroke": "strike_0",
+      "time": 0.866666666666667
+    },
+    {
+      "absorbed": 28.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "sailhorn",
+      "kind": "shield",
+      "point": [
+        0.0,
+        1.79462444782257,
+        2.0344660282135
+      ],
+      "stroke": "strike_0",
+      "time": 0.833333333333333
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 14.0,
+      "form": "shearprowler",
+      "kind": "organic",
+      "point": [
+        -0.902488946914673,
+        0.528532207012177,
+        1.99235057830811
+      ],
+      "stroke": "strike_0",
+      "time": 0.833333333333333
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 14.0,
+      "form": "shearprowler",
+      "kind": "organic",
+      "point": [
+        0.825042128562927,
+        0.527740299701691,
+        1.98886620998383
+      ],
+      "stroke": "strike_1",
+      "time": 1.2
+    },
+    {
+      "absorbed": 14.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "shearprowler",
+      "kind": "shield",
+      "point": [
+        -0.955623686313629,
+        0.46613797545433,
+        1.87152814865112
+      ],
+      "stroke": "strike_0",
+      "time": 0.8
+    },
+    {
+      "absorbed": 14.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "shearprowler",
+      "kind": "shield",
+      "point": [
+        0.935407519340515,
+        0.462936252355576,
+        1.88348042964935
+      ],
+      "stroke": "strike_1",
+      "time": 1.16666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 32.0,
+      "form": "pressureurn",
+      "kind": "organic",
+      "point": [
+        0.0,
+        1.66814231872559,
+        2.70513534545898
+      ],
+      "stroke": "projectile_0",
+      "time": 1.7
+    },
+    {
+      "absorbed": 32.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "pressureurn",
+      "kind": "shield",
+      "point": [
+        0.0,
+        1.78607702255249,
+        2.63057565689087
+      ],
+      "stroke": "projectile_0",
+      "time": 1.66666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "pressureurn",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.140000000596046,
+        3.47182273864746
+      ],
+      "stroke": "projectile_0",
+      "time": 1.86666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 30.0,
+      "form": "vaulthopper",
+      "kind": "organic",
+      "point": [
+        0.0,
+        0.0299999993294477,
+        1.32000017166138
+      ],
+      "stroke": "landing",
+      "time": 1.4
+    },
+    {
+      "absorbed": 30.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "vaulthopper",
+      "kind": "shield",
+      "point": [
+        0.0,
+        0.0299999993294477,
+        1.32000017166138
+      ],
+      "stroke": "landing",
+      "time": 1.4
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "vaulthopper",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.0299999993294477,
+        1.32000017166138
+      ],
+      "stroke": "landing",
+      "time": 1.4
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 9.0,
+      "form": "reedserpent",
+      "kind": "organic",
+      "point": [
+        0.0,
+        0.652552306652069,
+        2.76400804519653
+      ],
+      "stroke": "projectile_0",
+      "time": 1.23333333333333
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 9.0,
+      "form": "reedserpent",
+      "kind": "organic",
+      "point": [
+        0.0,
+        0.615987658500671,
+        2.81870484352112
+      ],
+      "stroke": "projectile_1",
+      "time": 1.33333333333333
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 9.0,
+      "form": "reedserpent",
+      "kind": "organic",
+      "point": [
+        0.0,
+        0.614921510219574,
+        2.87700009346008
+      ],
+      "stroke": "projectile_2",
+      "time": 1.46666666666667
+    },
+    {
+      "absorbed": 9.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "reedserpent",
+      "kind": "shield",
+      "point": [
+        0.0,
+        0.64843213558197,
+        2.61947512626648
+      ],
+      "stroke": "projectile_0",
+      "time": 1.2
+    },
+    {
+      "absorbed": 9.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "reedserpent",
+      "kind": "shield",
+      "point": [
+        0.0,
+        0.601340234279633,
+        2.6555483341217
+      ],
+      "stroke": "projectile_1",
+      "time": 1.3
+    },
+    {
+      "absorbed": 9.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "reedserpent",
+      "kind": "shield",
+      "point": [
+        0.0,
+        0.597318112850189,
+        2.6779887676239
+      ],
+      "stroke": "projectile_2",
+      "time": 1.43333333333333
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "reedserpent",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.100000001490116,
+        4.34425497055054
+      ],
+      "stroke": "projectile_0",
+      "time": 1.6
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "reedserpent",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.100000001490116,
+        4.48700714111328
+      ],
+      "stroke": "projectile_1",
+      "time": 1.73333333333334
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "reedserpent",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.0999999940395355,
+        4.51103258132935
+      ],
+      "stroke": "projectile_2",
+      "time": 1.86666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 13.0,
+      "form": "veilglider",
+      "kind": "organic",
+      "point": [
+        0.0,
+        1.37416398525238,
+        3.10074687004089
+      ],
+      "stroke": "projectile_0",
+      "time": 1.2
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 13.0,
+      "form": "veilglider",
+      "kind": "organic",
+      "point": [
+        0.0,
+        1.33689427375793,
+        3.13808155059814
+      ],
+      "stroke": "projectile_1",
+      "time": 1.33333333333333
+    },
+    {
+      "absorbed": 13.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "veilglider",
+      "kind": "shield",
+      "point": [
+        0.0,
+        1.40277791023254,
+        2.97416996955872
+      ],
+      "stroke": "projectile_0",
+      "time": 1.16666666666667
+    },
+    {
+      "absorbed": 13.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "veilglider",
+      "kind": "shield",
+      "point": [
+        0.0,
+        1.36355030536652,
+        2.98104381561279
+      ],
+      "stroke": "projectile_1",
+      "time": 1.3
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "veilglider",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.0700000002980232,
+        8.86986446380615
+      ],
+      "stroke": "projectile_0",
+      "time": 1.7
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "veilglider",
+      "kind": "surface",
+      "point": [
+        0.0,
+        0.0700000002980232,
+        10.6017036437988
+      ],
+      "stroke": "projectile_1",
+      "time": 2.0
+    }
+  ],
+  "renderer": "forward_plus",
+  "scope": "isolated contact lab; no campaign/save writes",
+  "models": [
+    {
+      "id": "sailhorn",
+      "source": "art/blender/creature_studies_motion/sailhorn.blend",
+      "approved_mesh_digest": "e656f137afe2a7206a634a1b21154f98ea67c8fe27a003cc1d2b2322744bc78d",
+      "bones": 23,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/sailhorn_near.glb",
+          "triangles": 35463,
+          "sha256": "b8436a6bc9c1763d592f7f56245e7c285fa494abef01f6bb1fad10e1b7d22f0b",
+          "min": [
+            -0.8319883346557617,
+            0.009000003337860107,
+            -2.0158421993255615
+          ],
+          "max": [
+            0.8319883346557617,
+            2.9928581714630127,
+            1.805123209953308
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/sailhorn_far.glb",
+          "triangles": 15240,
+          "sha256": "097ee4fbe69fadb856d079f55463d4150d91568764475861406c5603b1c97af4",
+          "min": [
+            -0.832028865814209,
+            0.009000003337860107,
+            -2.0158114433288574
+          ],
+          "max": [
+            0.8320282697677612,
+            2.9928581714630127,
+            1.8052964210510254
+          ]
+        }
+      }
+    },
+    {
+      "id": "shearprowler",
+      "source": "art/blender/creature_studies_motion/shearprowler.blend",
+      "approved_mesh_digest": "d5c589c1a176d160c9aaadfc88e36e48c91bc4cd196ade600d530191626f95b6",
+      "bones": 33,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/shearprowler_near.glb",
+          "triangles": 33434,
+          "sha256": "65481523aa62fd543d12d26006896b28aaf41a7dd6ea6b56e553da781f183716",
+          "min": [
+            -1.0699999332427979,
+            -0.019961245357990265,
+            -2.331655740737915
+          ],
+          "max": [
+            1.0699999332427979,
+            1.4041295051574707,
+            1.954373836517334
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/shearprowler_far.glb",
+          "triangles": 14370,
+          "sha256": "049f452e6871a6e8920765f1ecc9f10686212a2ae064b0a3648ca93e473f0d0c",
+          "min": [
+            -1.0683525800704956,
+            -0.017841551452875137,
+            -2.331655740737915
+          ],
+          "max": [
+            1.069325566291809,
+            1.4042466878890991,
+            1.954373836517334
+          ]
+        }
+      }
+    },
+    {
+      "id": "pressureurn",
+      "source": "art/blender/creature_studies_motion/pressureurn.blend",
+      "approved_mesh_digest": "5abca1ae5110a2232bee816cdddb9c9b9184127491fbcd81a154ee7cb59a3114",
+      "bones": 17,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/pressureurn_near.glb",
+          "triangles": 29416,
+          "sha256": "82dadf0f8d2435fd289a1d0ce7247b3e1a5aded335727bbf64ade0549ec51c86",
+          "min": [
+            -1.0224554538726807,
+            0.020000003278255463,
+            -1.2094995975494385
+          ],
+          "max": [
+            1.0224554538726807,
+            2.5598747730255127,
+            0.8194997906684875
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/pressureurn_far.glb",
+          "triangles": 12642,
+          "sha256": "eeb3444b65f145cb3c37589d996347303a30f4859c0e48909d54083f79d09fa4",
+          "min": [
+            -1.0224554538726807,
+            0.02001308836042881,
+            -1.20917809009552
+          ],
+          "max": [
+            1.0224554538726807,
+            2.5589101314544678,
+            0.8194997906684875
+          ]
+        }
+      }
+    },
+    {
+      "id": "vaulthopper",
+      "source": "art/blender/creature_studies_motion/vaulthopper.blend",
+      "approved_mesh_digest": "1f32b81c6f5117cc0b17e890414f3b0b745d49407869a97168c428a33740d686",
+      "bones": 22,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/vaulthopper_near.glb",
+          "triangles": 40418,
+          "sha256": "523d84bfb48a2a1775d7a0e3ea8548a7e7b58b0e41a6a34347399052b53dea7d",
+          "min": [
+            -0.9025339484214783,
+            0.01000000536441803,
+            -1.3970763683319092
+          ],
+          "max": [
+            0.9032508134841919,
+            1.6042388677597046,
+            1.1521577835083008
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/vaulthopper_far.glb",
+          "triangles": 17370,
+          "sha256": "9522c48543305010abc594e83125c2b106bb627cf39fd626afb6c62708be28ba",
+          "min": [
+            -0.902048647403717,
+            0.010048876516520977,
+            -1.3970763683319092
+          ],
+          "max": [
+            0.9032508134841919,
+            1.6042388677597046,
+            1.1515122652053833
+          ]
+        }
+      }
+    },
+    {
+      "id": "reedserpent",
+      "source": "art/blender/creature_studies_motion/reedserpent.blend",
+      "approved_mesh_digest": "e54735423d0e7d9deeb6548aa8f49c999b8ec711a7ee44f994a8f7725130654b",
+      "bones": 16,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/reedserpent_near.glb",
+          "triangles": 19774,
+          "sha256": "938f5a89d6336719cd68a09c08921a0e10997753a798e4a2fd882a00b819d6b6",
+          "min": [
+            -0.44862622022628784,
+            0.02671663835644722,
+            -2.9873390197753906
+          ],
+          "max": [
+            0.46085917949676514,
+            0.8327206373214722,
+            1.9399888515472412
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/reedserpent_far.glb",
+          "triangles": 8498,
+          "sha256": "cdcbb3c0a6504c1e9398d5ecae5a76911f186f5a2f48d8b32e2b1e36ef28c31d",
+          "min": [
+            -0.4481483995914459,
+            0.026856230571866035,
+            -2.9873390197753906
+          ],
+          "max": [
+            0.4605773091316223,
+            0.8330745100975037,
+            1.9409481287002563
+          ]
+        }
+      }
+    },
+    {
+      "id": "veilglider",
+      "source": "art/blender/creature_studies_motion/veilglider.blend",
+      "approved_mesh_digest": "64b06492b626f2e3f7f6b23eeea8746d9f7887cf4f7dcb9046f07ae233709fd9",
+      "bones": 25,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/veilglider_near.glb",
+          "triangles": 27926,
+          "sha256": "cf2274979beab1206f860c53f8c00c0213d044edd011bd8988267b0f06fcba78",
+          "min": [
+            -2.5108566284179688,
+            3.8743019104003906e-05,
+            -2.108398675918579
+          ],
+          "max": [
+            2.5108580589294434,
+            1.9499797821044922,
+            1.213303804397583
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/veilglider_far.glb",
+          "triangles": 12002,
+          "sha256": "fab4b3b66ad06b9a1a11d28e5dd089ef13e88a06c1b4116e833d69aba601f6e7",
+          "min": [
+            -2.510838031768799,
+            3.8743019104003906e-05,
+            -2.085646152496338
+          ],
+          "max": [
+            2.510840654373169,
+            1.9499797821044922,
+            1.2131935358047485
+          ]
+        }
+      }
+    }
+  ],
+  "approved_v1_glbs_unchanged": true,
+  "all_18_outcomes_verified": true,
+  "duplicate_damage_events": 0,
+  "audio": {
+    "recording": "audio/review/creature-motion/contact-runtime.wav",
+    "duration": 69.8,
+    "peak_dbfs": -13.294848991703613,
+    "rms_dbfs": -34.27877966002083,
+    "nonzero_samples": 1776885,
+    "clipped_samples": 0,
+    "listening": "Runtime recording and nonzero signal verified; subjective listening pending"
+  },
+  "movie": {
+    "file": "docs/production/media/creature-motion/contact-review.mp4",
+    "sha256": "817b7247c417c54034b23c19eca2dac8c70bd551bca5cc4d904b2dc71f3bf587",
+    "fps": 30,
+    "scope": "full six-type contact-lab render, no campaign claims"
+  }
+}
