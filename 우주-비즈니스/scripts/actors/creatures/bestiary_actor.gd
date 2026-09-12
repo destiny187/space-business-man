@@ -28,6 +28,8 @@ var combat_phase:=""
 var combat_clock:=0.0
 var combat_info: Dictionary={}
 var combat_live: Dictionary={}
+var combat_targets: Dictionary={}
+var remodel_effects: Node3D
 var combat_decal: Decal
 static var combat_textures: Dictionary={}
 var elapsed := 0.0
@@ -68,6 +70,7 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[],al
 	elapsed=0
 	attack_phase=""
 	for child in get_children(): child.free()
+	remodel_effects=null;combat_targets={}
 	visual_root=Node3D.new();visual_root.name="LocomotionVisual";add_child(visual_root)
 	ground_motion=GroundMotion.new() if remodel.is_empty() else RemodelMotion.new()
 	models.clear()
@@ -179,17 +182,25 @@ func _process(delta: float) -> void:
 	if not paused and not combat_override:
 		elapsed+=delta*(movement_rate if state=="move" else 1.0)
 		_update_attack_phase()
-	if not FrontierFieldVisibility.active(visibility_notifier):return
+	if not FrontierFieldVisibility.active(visibility_notifier):
+		if is_instance_valid(remodel_effects):remodel_effects.sync(self,false)
+		return
 	var camera:=get_viewport().get_camera_3d()
 	if lod_override>=0: set_lod(lod_override==1)
 	elif camera: set_lod(camera.global_position.distance_to(global_position)>25.)
 	if not paused:
 		if not remodel.is_empty():ground_motion.tick(delta)
 		pose(true)
+		if is_instance_valid(remodel_effects):remodel_effects.step(delta)
 
 func pose(visible_lod_only: bool=false) -> void:
 	if not remodel.is_empty():
-		if is_inside_tree():ground_motion.pose_authored(visible_lod_only)
+		if is_inside_tree():
+			ground_motion.pose_authored(visible_lod_only)
+			if combat_override and combat_pattern!="none":
+				if not is_instance_valid(remodel_effects):
+					remodel_effects=preload("res://scripts/actors/creatures/remodel_host_effects.gd").new();remodel_effects.audio_enabled=false;remodel_effects.top_level=true;remodel_effects.camera=get_viewport().get_camera_3d();add_child(remodel_effects);remodel_effects.global_transform=Transform3D.IDENTITY
+				remodel_effects.sync(self,show_effects and not paused)
 		return
 	if not combat_override:_update_attack_phase()
 	var t:=flight_clock if definition.get("construction","")=="avian" and flight_clock>=0 else elapsed+motion_phase
@@ -266,9 +277,9 @@ func drive_ground(at: Vector3,facing: Basis,delta: float,sampler: Callable,stopp
 		ground_motion.drive(Transform3D(facing,at),delta,sampler,stopped,interval,revision)
 	else:global_transform=Transform3D(facing,at)
 
-func apply_combat(live: Dictionary,profile: Dictionary,stopped: bool) -> void:
+func apply_combat(live: Dictionary,profile: Dictionary,stopped: bool,targets: Dictionary={}) -> void:
 	combat_override=true;restored_down=false;combat_pattern=profile.pattern;combat_phase=live.phase;combat_clock=float(live.time)
-	combat_info=profile;combat_live=live
+	combat_info=profile;combat_live=live;combat_targets=targets
 	paused=stopped;elapsed=combat_clock
 	windup_seconds=float(profile.get("windup",.7));active_seconds=float(profile.get("active",.3));recovery_seconds=float(profile.get("recovery",1.1))
 	attack_duration=windup_seconds+active_seconds+recovery_seconds

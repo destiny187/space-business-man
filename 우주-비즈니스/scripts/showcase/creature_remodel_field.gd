@@ -113,7 +113,8 @@ func audit_registry() -> void:
 	assert(not manifest.enabled_ground_species.is_empty())
 	for id in manifest.enabled_ground_species:
 		var form:=FrontierEcologyCatalog.form(id)
-		assert(FrontierWildlifeCombat.pattern(form)=="none")
+		var entry:=Actor.RemodelRegistry.entry(form)
+		assert(FrontierWildlifeCombat.pattern(form)=="none" or entry.get("host_motion","") in ["charge","leap"])
 		var near: PackedScene=load(Actor.RemodelRegistry.path(form,"near"))
 		var far: PackedScene=load(Actor.RemodelRegistry.path(form,"far"))
 		var actor:=Actor.new();actor.defer_far=true
@@ -130,7 +131,13 @@ func audit_registry() -> void:
 		motion.planted["temporary"]=Vector3.ONE;motion.released_feet["temporary"]={};motion.reset()
 		assert(motion.planted.is_empty() and motion.released_feet.is_empty() and motion.ground_samples.is_empty())
 		actor.free()
-	# Saved incident art and active host charge/leap species retain their matching rigs.
+	for id in manifest.get("enabled_air_species",[]):
+		var form:=FrontierEcologyCatalog.form(id);var actor:=Actor.new();actor.configure(form,{"scale":1.,"palette":form.palette});root.add_child(actor)
+		assert(actor.remodel.get("air_motion",false) and actor.models.size()==2)
+		actor.flight_blend=1.;actor.flight_clock=24.;actor.ground_motion.tick(1./30.);actor.ground_motion.pose_authored()
+		assert(actor.ground_motion.wanted_clip=="flight_loop")
+		actor.free()
+	# Saved incident art retains its established dimensions until its own adapter is complete.
 	var old_form:=FrontierEcologyCatalog.form(manifest.enabled_ground_species[0])
 	var old_actor:=Actor.new();old_actor.load_far=false;old_actor.configure(old_form,{},[],false)
 	assert(old_actor.remodel.is_empty() and not old_actor.joints[0].is_empty());old_actor.free()
@@ -138,4 +145,4 @@ func audit_registry() -> void:
 		var form:=FrontierEcologyCatalog.form(id)
 		assert(Actor.RemodelRegistry.entry(form).is_empty() and FrontierWildlifeCombat.pattern(form)!="none")
 		assert(Actor.RemodelRegistry.path(form,"near").ends_with(str(form.lods.near.path).trim_prefix("우주-비즈니스/")))
-	print("REMODEL_REGISTRY ",manifest.enabled_ground_species.size()," surface species; imported prewarm/deferred LOD; incident opt-out; host charge/leap preserved")
+	print("REMODEL_REGISTRY ",manifest.enabled_ground_species.size()," surface species; imported prewarm/deferred LOD; incident opt-out; host motion adapters checked")

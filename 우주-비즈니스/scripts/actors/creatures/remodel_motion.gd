@@ -111,13 +111,19 @@ func tick(delta: float) -> void:
 		elif actor.combat_phase=="down":next="down" if art.clips.has("down") else "hurt"
 		elif actor.combat_phase in ["attack","warning"]:next="attack"
 	elif actor.state=="attack":next="attack"
+	var host:=host_clip()
+	if host.is_empty():host=flight_clip()
+	if not host.is_empty():next=host.clip
+	if next=="charge_loop":gait="run_loop"
 	if next=="idle_loop" and wanted_clip in ["move_loop","run_loop"]:next="stop"
 	elif next=="idle_loop" and wanted_clip=="stop" and pose_clock<.59:next="stop"
 	if not moving and next=="idle_loop" and absf(turn_speed)>.20:next="turn_left" if turn_speed<0 else "turn_right"
 	if next!=wanted_clip:
 		wanted_clip=next;pose_clock=0;planted.clear();released_feet.clear();settling_feet.clear()
 	var old_clock:=pose_clock
-	if next in ["move_loop","run_loop"]:
+	if not host.is_empty():
+		pose_clock=host.clock;pose_step=maxf(0,pose_clock-old_clock)
+	elif next in ["move_loop","run_loop"]:
 		var data: Dictionary=profile.run if next=="run_loop" else profile
 		pose_clock=fposmod(phase,2.)*float(data.period)
 		pose_step=delta*travel_speed/maxf(.001,actor.base_scale)/natural(data)
@@ -129,6 +135,31 @@ func tick(delta: float) -> void:
 	elif actor.combat_override and actor.combat_phase=="hurt":pose_clock=minf(.79,actor.combat_clock);pose_step=maxf(0,pose_clock-old_clock)
 	else:
 		pose_step=delta*(.18 if actor.state=="dormant" else 1.0);pose_clock+=pose_step
+
+func flight_clip() -> Dictionary:
+	if not art.get("air_motion",false) or actor.flight_blend<0 or actor.combat_override:return {}
+	if actor.flight_blend<=.0001:return {"clip":"ground_idle_loop","clock":fposmod(idle_clock,2.)}
+	var cfg: Dictionary=actor.definition.flight
+	var phase_time:=fposmod(actor.flight_clock,float(cfg.cycle_seconds))-float(cfg.rest_seconds)
+	var transition: float=cfg.transition_seconds
+	var air_time: float=float(cfg.cycle_seconds)-float(cfg.rest_seconds)
+	if phase_time<transition:return {"clip":"takeoff","clock":clampf(phase_time/transition,0,1)*5.}
+	if phase_time>air_time-transition:return {"clip":"landing","clock":clampf((phase_time-air_time+transition)/transition,0,1)*5.}
+	return {"clip":"flight_loop","clock":fposmod(actor.flight_clock,2.)}
+
+func host_clip() -> Dictionary:
+	if not actor.combat_override or actor.combat_phase!="attack":return {}
+	var t: float=actor.combat_clock;var wind: float=actor.windup_seconds;var active: float=actor.active_seconds
+	var blocked: bool=actor.combat_live.get("attack",{}).get("blocked",false)
+	if blocked and art.clips.has("blocked"):
+		return {"clip":"blocked","clock":minf(.89,maxf(0,t-wind-active))}
+	if art.get("host_motion","")=="charge" and t>=wind and t<wind+active:
+		return {"clip":"charge_loop","clock":fposmod(phase,2.)*float(profile.run.period)}
+	if art.get("host_motion","")=="leap":
+		if t<wind:return {"clip":"leap_prepare","clock":.8*clampf(t/maxf(.001,wind),0,1)}
+		if t<wind+active:return {"clip":"leap_air","clock":clampf((t-wind)/maxf(.001,active),0,1)}
+		return {"clip":"leap_land","clock":.7*clampf((t-wind-active)/maxf(.001,actor.recovery_seconds),0,1)}
+	return {}
 
 func attack_clock() -> float:
 	# Piecewise retiming maps the existing host windup/contact/recovery to the authored clip.
@@ -154,7 +185,8 @@ func pose_authored(visible_only: bool=false) -> void:
 			skeleton.set_bone_pose_rotation(bone,before.basis.orthonormalized().get_rotation_quaternion())
 			skeleton.set_bone_pose_scale(bone,before.basis.get_scale())
 		if clips[lod]!=wanted_clip:
-			clips[lod]=wanted_clip;player.play(clip_names[lod][wanted_clip],.12)
+			var snap: bool=clips[lod].is_empty() or actor.restored_down or (wanted_clip=="down" and pose_clock>.25)
+			clips[lod]=wanted_clip;player.play(clip_names[lod][wanted_clip],0. if snap else .12)
 			player.seek(pose_clock,true);player.advance(0)
 		elif absf(clip_times[lod]-pose_clock)>.00001:
 			# Reconcile hidden LODs and host seeks, preserving normal transition blending.
@@ -186,12 +218,15 @@ func limb_phase(name: String) -> float:
 	return 0.
 
 func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
-	if actor.state=="dormant" or actor.state=="attack" or (actor.combat_override and actor.combat_phase in ["hurt","down","attack"]):
+	if art.get("air_motion",false) and actor.flight_blend>.0001:return
+	var charging:=wanted_clip=="charge_loop"
+	var host_grounded: bool=actor.combat_override and art.has("host_motion") and float(actor.combat_live.get("air_height",0))<=.02 and wanted_clip in ["attack","charge_loop","leap_prepare","leap_land","blocked"]
+	if actor.state=="dormant" or (actor.state=="attack" and not host_grounded) or (actor.combat_override and actor.combat_phase in ["hurt","down","attack"] and not host_grounded):
 		planted.clear();return
 	if authored_limbs.is_empty():
 		terrain_tail(skeleton)
 		return
-	var moving:=wanted_clip in ["move_loop","run_loop"]
+	var moving:=wanted_clip in ["move_loop","run_loop","charge_loop"]
 	var data: Dictionary=profile.run if gait=="run_loop" else profile
 	# Leave modest knee compression for uneven ground instead of locking fully extended limbs.
 	if not authored_limbs.is_empty() and kind!="hopper":

@@ -1,9 +1,11 @@
 {
-  "version": 2,
-  "scope": "Presentation only; reviewed R01/R02 ground species. Host combat, incidents and flight enablement remain separate.",
+  "version": 3,
+  "scope": "Reviewed ground fauna and approved surface-air glider. Existing host behavior and species identities are preserved.",
   "sources": [
     "res://data/creature_remodel_r01.json",
-    "res://data/creature_remodel_r02.json"
+    "res://data/creature_remodel_r02.json",
+    "res://data/creature_remodel_combat.json",
+    "res://data/creature_remodel_flight.json"
   ],
   "enabled_ground_species": [
     "bio_quill_amphora_01",
@@ -67,10 +69,12 @@
     "bio_torus_loom_07",
     "bio_torus_loom_08",
     "bio_torus_loom_09",
-    "bio_torus_loom_10"
+    "bio_torus_loom_10",
+    "biota_spindle_armor_25",
+    "biota_lobopod_armor_26"
   ],
-  "pending_host_attack_adaptation": {
-    "biota_spindle_armor_25": "Host anatomical ram is a 12 m/s root charge; requires charge locomotion/attack blending.",
-    "biota_lobopod_armor_26": "Host anatomical claw uses one leap landing; approved clip is a two-forelimb slash study."
-  }
+  "pending_host_attack_adaptation": {},
+  "enabled_air_species": [
+    "biota_bilateral_armor_11"
+  ]
 }

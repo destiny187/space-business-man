@@ -10,6 +10,9 @@ var materials: Dictionary={}
 var ball: SphereMesh
 var shard: PrismMesh
 var audio_count:=0
+var audio_enabled:=true
+var terrain_probe: Callable
+var ground_level:=0.0
 var voices: Array=[]
 
 func _ready() -> void:
@@ -31,10 +34,10 @@ func piece(shape: String,at: Vector3,velocity: Vector3,size: Vector3,color: Colo
 	node.mesh=shard if shape=="shard" else ball
 	node.material_override=mat(color);node.position=at;node.rotation=Vector3.ZERO;node.scale=size;node.show()
 	node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	particles.append({"node":node,"shape":shape,"start":at,"velocity":velocity,"size":size,"age":0.0,"life":life,"gravity":gravity})
+	particles.append({"node":node,"shape":shape,"start":at,"velocity":velocity,"size":size,"age":0.0,"life":life,"gravity":gravity,"floor":ground_level+.012})
 
 func sound(id: String,at: Vector3,pitch: float=1.0,volume: float=-5) -> void:
-	if voices.size()>=12:return
+	if not audio_enabled or voices.size()>=12:return
 	var voice:=AudioStreamPlayer3D.new();voice.stream=load("res://assets/audio/"+id+".wav");voice.pitch_scale=pitch;voice.volume_db=volume;voice.unit_size=12;voice.max_distance=35;add_child(voice);voice.global_position=at;voice.play();voices.append(voice);audio_count+=1
 
 func preparation(at: Vector3,kind: String) -> void:
@@ -52,6 +55,9 @@ func trail(a: Vector3,b: Vector3,color: Color,width: float) -> void:
 
 func impact(event: Dictionary,kind: String,strength: float=1.0) -> void:
 	var point: Vector3=event.point;var normal: Vector3=event.normal
+	if terrain_probe.is_valid():
+		var hit: Dictionary=terrain_probe.call(point,3.)
+		ground_level=float(hit.point.y) if not hit.get("missing",false) else point.y-3.
 	# Organic impacts use a brief pointed mark and physical fragments, without
 	# the warm circular puff or expanding ground ring. Shield arcs remain cyan.
 	if event.kind=="shield":accents.impact({"kind":event.kind,"point":[point.x,point.y,point.z],"normal":[normal.x,normal.y,normal.z]})
@@ -70,7 +76,7 @@ func impact(event: Dictionary,kind: String,strength: float=1.0) -> void:
 		var a: float=i*2.399;var speed: float=.65+float(i%4)*.27
 		var velocity: Vector3=Vector3(cos(a),.45+float(i%3)*.13,sin(a))*speed*strength
 		piece("blob" if kind=="acid" else "shard",point+normal*.025,velocity,Vector3(.035,.060,.028) if kind!="acid" else Vector3(.055,.025,.055),color,.32+float(i%3)*.06,3)
-	if kind=="acid":piece("blob",Vector3(point.x,.022,point.z),Vector3.ZERO,Vector3(.17,.007,.13),color,.85)
+	if kind=="acid":piece("blob",point+normal*.022,Vector3.ZERO,Vector3(.17,.007,.13),color,.85)
 
 func step(delta: float) -> void:
 	accents._process(delta)
@@ -78,7 +84,7 @@ func step(delta: float) -> void:
 		var p: Dictionary=particles[i];p.age+=delta;var t: float=p.age/p.life
 		if t>=1:p.node.hide();pool.append(p.node);particles.remove_at(i);continue
 		p.node.position=p.start+p.velocity*p.age+Vector3.DOWN*p.gravity*p.age*p.age
-		p.node.position.y=maxf(.012,p.node.position.y)
+		p.node.position.y=maxf(float(p.floor),p.node.position.y)
 		p.node.scale=p.size*(1-t*t)
 		if p.shape=="shard":p.node.rotate_x(delta*4.5);p.node.rotate_z(delta*3)
 	for i in range(voices.size()-1,-1,-1):

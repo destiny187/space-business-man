@@ -136,7 +136,7 @@ func _update_wildlife(delta: float) -> void:
 		actor.paused=behavior_stopped
 		var combat: Dictionary=motion.get("combat",{})
 		if not combat.is_empty():
-			actor.apply_combat(combat,FrontierWildlifeCombat.profile(row),behavior_stopped)
+			actor.apply_combat(combat,FrontierWildlifeCombat.profile(row),behavior_stopped,behavior_crew.get("members",{}))
 			var serial: int=int(combat.serial)
 			if int(row.get("combat_serial",serial))!=serial and not behavior_stopped:
 				var cue: String={"warning":"warning","attack":"windup","hurt":"hurt","down":"down"}.get(combat.phase,"")
