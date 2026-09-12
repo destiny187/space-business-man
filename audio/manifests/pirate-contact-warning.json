@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-12",
+  "service": "ElevenLabs 웹 Sound Effects",
+  "model": "화면에 모델 ID가 노출되지 않아 특정하지 않음",
+  "id": "sfx_pirate_contact_warning",
+  "version": 2,
+  "status": "generated_edited_connected",
+  "prompt": "A charming cartoon sci-fi spaceship warning sound. Three short rounded electronic chirps: bwoop, bip-bip! A springy little pitch dip, warm midrange synth tone, crisp soft attacks and tiny gaps. Urgent and mischievous, like a small ship noticing space pirates, lighthearted adventure game style. Clean dry sound, one second followed by silence. No voice, growl, scary rumble, harsh buzzer, realistic siren, music, cinematic swell or reward melody.",
+  "settings": {
+    "duration_seconds": 2,
+    "prompt_influence_percent": 30,
+    "loop": false,
+    "automatic_prompt_enhancement": false
+  },
+  "source_takes": [
+    {
+      "file": "audio/source/elevenlabs/pirate-contact-cartoon/take-01.wav",
+      "seconds": 2,
+      "channels": 2,
+      "sample_rate": 48000,
+      "sha256": "ba25ea98e9a0bedb5b966400887ed4efb3af865286e351b4077e0dd14c1f66fe"
+    },
+    {
+      "file": "audio/source/elevenlabs/pirate-contact-cartoon/take-02.wav",
+      "seconds": 2,
+      "channels": 2,
+      "sample_rate": 48000,
+      "sha256": "b60230c86d00b92cb38ad4e4062e34d824b7a104b151e677cd51e937fd7f85ed"
+    },
+    {
+      "file": "audio/source/elevenlabs/pirate-contact-cartoon/take-03.wav",
+      "seconds": 2,
+      "channels": 2,
+      "sample_rate": 48000,
+      "sha256": "0172480b3d4144302970f046bc4484bbeae4ab092b82ccd443266281a1737915"
+    },
+    {
+      "file": "audio/source/elevenlabs/pirate-contact-cartoon/take-04.wav",
+      "seconds": 2,
+      "channels": 2,
+      "sample_rate": 48000,
+      "sha256": "cd9cc61fb1725c5b9272797c4b1155663da240d9953565eed66eb031143f53d7"
+    }
+  ],
+  "game_file": "우주-비즈니스/assets/audio/sfx_pirate_contact_warning.wav",
+  "game_sha256": "480e0038077fcd4b050cc640ec31f15e64ff2fac53511161e5ab308954ada4e8",
+  "selected_take": 2,
+  "editing": "tools/prepare_pirate_warning.py: 시작음과 두 개 짧은 음을 0/0.43/0.70초에 배치. 후속 두 음의 피치 1.06. 8ms 시작/45ms 끝 페이드, 모노, 전체 0.96초, 선형 피크 0.63. 원본 보존.",
+  "rejected_version": {
+    "source": "audio/source/elevenlabs/pirate-contact/take-01.wav",
+    "history_id": "9Zy4QOSbMpvnhJ1dNTsJ",
+    "reason": "사용자 카툰풍 정정에 따라 거친 금속 경보안 미채택"
+  },
+  "verification": "실제 Godot 조우/내부 비행/메뉴 재생 조건과 게임 믹스 녹음, 파형/피크 확인. 주관적 최종 청감 미확인.",
+  "production_record": "docs/production/143-pirate-blast-and-warning.md"
+}

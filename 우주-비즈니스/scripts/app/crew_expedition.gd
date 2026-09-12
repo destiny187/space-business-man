@@ -406,6 +406,8 @@ func _apply_snapshot(value: Dictionary) -> void:
 	flight.freight_pilot=value.crew.pilot_id==value.self_id
 	flight.trace_records=value.crew.get("corporate_traces",{}).duplicate()
 	flight.trace_scan=value.get("scan",{}).duplicate()
+	flight.combat_snapshot=value.crew.get("space_combat",{})
+	flight.combat_actor=value.self_id
 	flight.update_navigation(value.crew.navigation)
 	navigation_journal.observe(value)
 	flight.refits.flight_mode=true
@@ -492,7 +494,11 @@ func _physics_process(delta: float) -> void:
 		if outside and surface_world==null and not test_mode and not cursor_released and _mouse_look_allowed() and not navigation_frame.visible and not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null:
 			keyboard_turn=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A))
 			flight_controls=[float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT))]
-		if flight_controls.any(func(value):return absf(float(value))>.01) or (outside and scanning):dismiss_stellar_arrival()
+		if flight_controls.size()==4 and flight!=null and not arrival.active and not feedback.blocked() and get_window().has_focus():
+			scan_aim=-flight.camera.global_basis.z
+			flight_controls.append(float(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not mouse_resume_guard and flight.combat_view!=null and flight.combat_view.armed()))
+			flight_controls.append(float(not flight.navigation.is_empty() and flight.navigation.mode!="jump" and not get_tree().has_meta("startup_loader")))
+		if flight_controls.slice(0,4).any(func(value):return absf(float(value))>.01) or (outside and scanning):dismiss_stellar_arrival()
 		if onboarding!=null:onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
@@ -660,6 +666,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if solar_opening_active():return
 	if arrival!=null and arrival.active:return
 	if event is InputEventMouseButton and mouse_resume_guard:return
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and flight!=null and flight.combat_view!=null and flight.combat_view.armed():
+		get_viewport().set_input_as_handled();return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and outside and surface_world==null and _mouse_look_allowed() and not cursor_released and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and session.latest.get("self_id","")==session.latest.get("crew",{}).get("pilot_id",""):
 		var scale_factor: float=maxf(exterior_view.size.x/space_view.size.x,exterior_view.size.y/space_view.size.y)
 		var pointer: Vector2=exterior_view.global_position+exterior_view.size*.5 if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED else event.position
@@ -677,6 +685,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
 			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
 		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
+		if event.physical_keycode==KEY_R and outside and surface_world==null and flight!=null and flight.combat_view!=null and flight.combat_view.repair_available():
+			session.send_request("space_repair",{});return
 		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():
 			if FrontierEquipment.active(session.latest.crew.members[session.latest.self_id]).has("firearm"):firearm.reload()
 			else:order_robot()
@@ -688,6 +698,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		if event.physical_keycode==KEY_Q:surface_action("surface_collect")
 		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
+			if outside and surface_world==null and flight!=null and flight.combat_view!=null and not flight.combat_view.selected_wreck.is_empty():
+				session.send_request("space_salvage",{"id":flight.combat_view.selected_wreck});return
 			if not (surface_world!=null and surface_world.incidents!=null and surface_world.incidents.interact()) and not (surface_world!=null and surface_world.discoveries!=null and surface_world.discoveries.interact()) and not lotus.interact() and not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT and surface_world!=null and dig_timer<=0:
 		if not placement_kind.is_empty():

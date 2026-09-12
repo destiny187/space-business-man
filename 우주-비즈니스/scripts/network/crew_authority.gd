@@ -53,7 +53,9 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 		for robot in site.robots.values():FrontierRobotWork.ensure(robot)
 	for robot in world.get("business",{}).get("hangar",{}).values():FrontierRobotWork.ensure(robot)
 	var new_crew: bool=not world.has("crew")
-	if new_crew:world.crew=FrontierCrewWorld.create(profile)
+	if new_crew:
+		world.crew=FrontierCrewWorld.create(profile)
+		world.crew.space_combat=FrontierSpaceCombat.create()
 	if not world.crew.has("navigation"):world.crew.navigation=FrontierCrewNavigation.create(world)
 	if new_crew:FrontierLotusSupport.equip_new_world(world)
 	FrontierLotusSupport.ensure(world)
@@ -63,6 +65,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	error=FrontierCrewWorld.validate(world.crew)
 	if not error.is_empty():return false
 	FrontierWildlifeCombat.resume(world.crew)
+	FrontierSpaceCombat.resume(world)
 	FrontierExplorationDiscoveries.ensure(world)
 	FrontierExplorationIncidents.ensure(world)
 	FrontierExpeditionResearch.ensure(world)
@@ -186,13 +189,15 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","suit_module","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","suit_module","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	if envelope.kind=="shuttle_recall":
 		var target: String=str(envelope.args.get("character_id",""))
 		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
 		if target in peers.values():return failure("접속 중인 승무원은 회수할 수 없습니다.")
 		for entry in pending.values():
 			if entry.profile.character_id==target:return failure("승무원이 재접속 중입니다. 동기화를 기다려 주세요.")
+	var combat_restriction:=FrontierSpaceCombat.guard(world,actor,envelope.kind,envelope.args)
+	if not combat_restriction.is_empty():return failure(combat_restriction)
 	var restriction:=FrontierShuttles.guard(world,actor,envelope.kind,envelope.args)
 	if not restriction.is_empty():return failure(restriction)
 	var work_station:=FrontierUpgradeAccess.station_for(envelope.kind,envelope.args)
@@ -203,12 +208,12 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		var access:=FrontierUpgradeAccess.reason(FrontierShuttles.context(world,actor),actor,work_station,descriptor)
 		if not access.is_empty():return failure(access)
 	var canonical:=WorldSnapshot.copy(world)
-	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_")) else FrontierShuttles.context(canonical,actor)
+	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	var rover_draft:=rover_runtime.duplicate(true)
 	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch"]:return failure("먼저 로버에서 내리세요.")
 	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit","suit_module"]:FrontierItemInventory.merge_legacy(draft,actor)
-	if not envelope.kind.begins_with("lotus_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall"]:return failure("착륙선에서 내린 뒤 실행하세요.")
+	if not envelope.kind.begins_with("lotus_") and not envelope.kind.begins_with("space_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var flood_reason:=FrontierFacilityFlooding.guard(canonical,actor,envelope.kind,envelope.args)
 	if not flood_reason.is_empty():return failure(flood_reason)
 	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
@@ -224,7 +229,8 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 		if solver!=null:
 			solver.record=draft.get("surface_water",{}).get(draft.crew.landing.body_id,FrontierSurfaceWater.create())
 			water_hit=solver.intersect(origin,aim,reach)
-	if envelope.kind=="suit_module":reason=FrontierSuitModules.apply(draft,actor,envelope.args)
+	if envelope.kind in ["space_salvage","space_repair"]:reason=FrontierSpaceCombat.apply(draft,actor,envelope.kind,envelope.args)
+	elif envelope.kind=="suit_module":reason=FrontierSuitModules.apply(draft,actor,envelope.args)
 	elif envelope.kind in ["surface_incident","surface_incident_tool"]:
 		if envelope.kind=="surface_incident_tool" and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("도구가 준비 중입니다.")
 		reason=FrontierExplorationIncidents.apply(draft,actor,envelope.args,envelope.kind=="surface_incident_tool",shot_obstacle_provider)
@@ -243,7 +249,9 @@ func request(peer: int,envelope: Variant) -> Dictionary:
 			if offered is Dictionary:station=offered
 		reason=FrontierExpeditionResearch.contribute(draft,actor,envelope.args,station)
 	elif envelope.kind.begins_with("lotus_"):reason=FrontierLotusSupport.apply(draft,actor,envelope.kind,envelope.args,lotus_clearance_provider)
-	elif envelope.kind.begins_with("shuttle_"):reason=FrontierShuttles.apply(draft,actor,envelope.kind,envelope.args)
+	elif envelope.kind.begins_with("shuttle_"):
+		reason=FrontierShuttles.apply(draft,actor,envelope.kind,envelope.args)
+		if reason.is_empty() and envelope.kind=="shuttle_recall":FrontierSpaceCombat.recalled(draft,str(envelope.args.character_id))
 	elif envelope.kind.begins_with("rover_"):reason=FrontierRovers.apply(draft,actor,envelope.kind,envelope.args,rover_draft)
 	elif envelope.kind in ["withdraw","deposit"]:reason=FrontierItemInventory.ship_transfer(draft,actor,envelope.kind,envelope.args)
 	elif envelope.kind.begins_with("equipment_"):reason=FrontierEquipment.apply(draft,actor,envelope.kind,envelope.args)
@@ -348,7 +356,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if jump_request<0 or jump_request>9007199254740000:return false
-	if flight_controls.size() not in [3,4]:return false
+	if flight_controls.size() not in [3,4,6]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if vehicle_controls.size() not in [0,4]:return false
@@ -398,6 +406,18 @@ func checkpoint() -> bool:
 	if stopped:return false
 	if not save_world.call(world):stopped=true;error="항해 상태 저장 실패로 세계를 정지했습니다.";return false
 	return true
+
+var flight_combat_timer:=0.0
+var flight_combat_checkpoint:=0.0
+func step_flight_combat(delta: float) -> void:
+	if stopped:return
+	flight_combat_timer+=delta;flight_combat_checkpoint+=delta
+	if flight_combat_timer<.1:return
+	var changed:=FrontierSpaceCombat.tick(world,minf(flight_combat_timer,.15),inputs,peers,now)
+	flight_combat_timer=0.0
+	if changed or (not FrontierSpaceCombat.record(world).get("encounter",{}).is_empty() and flight_combat_checkpoint>=2):
+		world.crew.revision+=1;flight_combat_checkpoint=0.0
+		checkpoint()
 
 var water_solvers: Dictionary={}
 var water_timer:=0.0

@@ -362,6 +362,8 @@ func _physics_process(delta: float) -> void:
 		FrontierCrewNavigation.steer(local,local_controls,minf(delta,.1))
 		if FrontierCrewNavigation.step(local,minf(delta,.1)):arrived=true
 		FrontierShuttles.commit(authority.world,local,actor)
+	authority.step_flight_combat(minf(delta,.1))
+	if authority.stopped:return
 	if FrontierSpaceTraffic.enabled(authority.world.manifest):
 		var interests:=FrontierSpaceTraffic.observers(authority.world)
 		authority.world.crew.navigation.traffic_observers=interests

@@ -114,6 +114,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	draw_string(font,origin+Vector2(0,224),("E 유지  대기층 관측    Tab 항성 지도" if atmosphere_ready else "E 접근    Tab 항성 지도"),HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 
 func _draw_vitals(font: Font) -> void:
+	if nav.get("combat_fitted",false):return
 	var start:=Vector2(26,size.y-100)
 	for index in 2:
 		var value: float=float(nav.get("hull" if index==0 else "energy",100.0))
@@ -169,6 +170,7 @@ func _draw_motion(font: Font,center: Vector2) -> void:
 	var width:=minf(360,size.x*.43)
 	var origin:=Vector2(size.x-width-24,size.y-91)
 	_draw_speed(font)
+	if nav.get("combat_active",false):return
 	if not telemetry.is_empty():
 		var caption: String=FrontierFlightTelemetry.distance_label(float(telemetry.distance))+"  "+FrontierFlightTelemetry.eta_label(telemetry) if telemetry.same_system else "Tab  성간 항로 설정"
 		draw_string(font,origin+Vector2(0,27),caption,HORIZONTAL_ALIGNMENT_RIGHT,width,15,Color(.55,.77,.83))

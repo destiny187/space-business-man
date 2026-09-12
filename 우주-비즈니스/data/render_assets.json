@@ -16278,5 +16278,41 @@
     "geometry": "ink-family-remodeled",
     "foliage": false,
     "generator": "tools/build_combat_cover.py"
+  },
+  {
+    "id": "pirate_raider",
+    "title": "항해 전투",
+    "name": "해적 추격기",
+    "group": "우주선",
+    "model": "res://assets/models/ships/pirate_raider.glb",
+    "source": "art/blender/ships/pirate_raider.blend",
+    "geometry": "ink-authored",
+    "foliage": false,
+    "generator": "tools/build_pirate_craft.py",
+    "review": "docs/production/139-pirate-flight-combat.md"
+  },
+  {
+    "id": "pirate_interdictor",
+    "title": "항해 전투",
+    "name": "해적 교란선",
+    "group": "우주선",
+    "model": "res://assets/models/ships/pirate_interdictor.glb",
+    "source": "art/blender/ships/pirate_interdictor.blend",
+    "geometry": "ink-authored",
+    "foliage": false,
+    "generator": "tools/build_pirate_craft.py",
+    "review": "docs/production/139-pirate-flight-combat.md"
+  },
+  {
+    "id": "expedition_pulse_mount",
+    "title": "항해 전투",
+    "name": "원정선 연동 펄스포",
+    "group": "우주선",
+    "model": "res://assets/models/ships/expedition_pulse_mount.glb",
+    "source": "art/blender/ships/expedition_pulse_mount.blend",
+    "geometry": "ink-authored",
+    "foliage": false,
+    "generator": "tools/build_pirate_craft.py",
+    "review": "docs/production/139-pirate-flight-combat.md"
   }
 ]

@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "minimum_tier": 2,
+  "stellar_chance": 0.22,
+  "local_chance": 0.14,
+  "local_seconds": 90.0,
+  "local_distance": 2500.0,
+  "cooldown_seconds": 600.0,
+  "safe_journeys": 2,
+  "warning_seconds": 8.0,
+  "resume_seconds": 5.0,
+  "combat_seconds": 100.0,
+  "pursuit_seconds": 32.0,
+  "escape_radius": 1150.0,
+  "escape_seconds": 4.0,
+  "combat_speed": 230.0,
+  "recovery_seconds": 6.0,
+  "recovery_hull": 35.0,
+  "repair_cost": 60,
+  "shield": 100.0,
+  "finch_shield": 140.0,
+  "shield_delay": 5.0,
+  "shield_rate": 15.0,
+  "fire_interval": 0.16,
+  "fire_damage": 16.0,
+  "fire_heat": 0.14,
+  "heat_cooling": 0.32,
+  "fire_range": 1100.0,
+  "aim_dot": 0.94,
+  "salvage_range": 100.0,
+  "salvage_seconds": 2.5,
+  "maximum_wrecks": 24,
+  "enemy": {
+    "raider": {
+      "name": "해적 추격기",
+      "model": "res://assets/models/ships/pirate_raider.glb",
+      "lod": "res://assets/models/ships/pirate_raider_lod1.glb",
+      "hull": 100.0,
+      "shield": 32.0,
+      "radius": 17.0,
+      "speed": 190,
+      "orbit": 270.0,
+      "damage": 14,
+      "interval": 2.8,
+      "windup": 1.25,
+      "range": 620.0,
+      "loot": {
+        "iron": 8,
+        "copper": 5
+      },
+      "engagement_distance": 230,
+      "flank_distance": 95,
+      "acceleration": 145,
+      "turn_speed": 4.5,
+      "approach_seconds": 2.4,
+      "strike_seconds": 2.7,
+      "break_seconds": 1.7,
+      "burst_count": 2,
+      "burst_interval": 0.24,
+      "projectile_speed": 390,
+      "projectile_radius": 2.5,
+      "pass_clearance": 85
+    },
+    "interdictor": {
+      "name": "해적 교란선",
+      "model": "res://assets/models/ships/pirate_interdictor.glb",
+      "lod": "res://assets/models/ships/pirate_interdictor_lod1.glb",
+      "hull": 170.0,
+      "shield": 65.0,
+      "radius": 28.0,
+      "speed": 85,
+      "orbit": 430.0,
+      "damage": 24,
+      "interval": 4.5,
+      "windup": 1.8,
+      "range": 650.0,
+      "loot": {
+        "iron": 12,
+        "copper": 8
+      },
+      "engagement_distance": 315,
+      "flank_distance": 90,
+      "acceleration": 75,
+      "turn_speed": 2.8,
+      "approach_seconds": 3.2,
+      "strike_seconds": 0.75,
+      "break_seconds": 2.4,
+      "burst_count": 1,
+      "burst_interval": 0.3,
+      "projectile_speed": 285,
+      "projectile_radius": 5,
+      "pass_clearance": 110
+    }
+  },
+  "audio": {
+    "shot": "sfx_gun_ship_pulse",
+    "warning": "sfx_pirate_contact_warning",
+    "impact": "sfx_gun_impact",
+    "break": "sfx_shield_break",
+    "destroy": "sfx_mine_break",
+    "escaped": "ui_discovery",
+    "salvage": "sfx_pickup_resource",
+    "recover": "sfx_vessel_brake",
+    "enemy_shot": "sfx_combat_pulse"
+  },
+  "radio": {
+    "seconds": 4.0,
+    "lines": {
+      "radio_contact": {
+        "receiver": "target",
+        "text": "앞의 선박, 거기 멈춰라."
+      },
+      "radio_withdraw": {
+        "receiver": "해적 편대",
+        "text": "추격 중지. 전 기체 복귀."
+      }
+    }
+  },
+  "presentation": {
+    "camera": [
+      0,
+      19,
+      62
+    ],
+    "muzzle": [
+      0,
+      6.1,
+      -8.6
+    ],
+    "key_energy": 1.15,
+    "rim_energy": 1.0,
+    "projectile_limit": 24,
+    "corpse_seconds": 1.1,
+    "debris_seconds": 3.2,
+    "explosion": {"size": 30.0, "flash_seconds": 0.16, "plasma_seconds": 0.62, "plumes": 5, "streaks": 22, "debris_limit": 16, "debris_seconds": 3.2},
+    "camera_pitch": -0.06
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "date": "2026-09-12",
+  "new_generation": false,
+  "superseded_warning": "2026-09-12 조우 경고를 별도 생성한 sfx_pirate_contact_warning으로 교체했다. pirate-contact-warning.json을 따른다. 이 파일의 warning 재사용 항목은 이전 구현 이력이다.",
+  "provenance_manifests": [
+    "audio/manifests/elevenlabs.json",
+    "audio/manifests/space-experience.json",
+    "audio/manifests/ground-combat.json"
+  ],
+  "jobs": [
+    {
+      "id": "sfx_combat_pulse",
+      "game_file": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "seconds": 0.6,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "source_for_sfx_gun_ship_pulse",
+        "enemy_shot"
+      ]
+    },
+    {
+      "id": "sfx_gun_impact",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_impact.wav",
+      "sha256": "f5f996daacb1608c7c7a28f95b136e53cb5d2449b835063b9b7125f8a7a0fa1c",
+      "seconds": 0.18658333333333332,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "impact"
+      ]
+    },
+    {
+      "id": "sfx_mine_break",
+      "game_file": "우주-비즈니스/assets/audio/sfx_mine_break.wav",
+      "sha256": "6670eb4d1ef1514d90d8d8e06fd45d579c06b2a480db65c726d3dca094977810",
+      "seconds": 1.36,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "destroy"
+      ]
+    },
+    {
+      "id": "sfx_pickup_resource",
+      "game_file": "우주-비즈니스/assets/audio/sfx_pickup_resource.wav",
+      "sha256": "519140878cc64d09d52ef53eb70352943ebb233a6b07560fbbb6a2bdf5edec20",
+      "seconds": 0.6,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "salvage"
+      ]
+    },
+    {
+      "id": "sfx_shield_break",
+      "game_file": "우주-비즈니스/assets/audio/sfx_shield_break.wav",
+      "sha256": "bbdb28fa9ba9afbdfe936fc158ac717d01adc064bafa2808c834ff89fca5ac35",
+      "seconds": 0.23585416666666667,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "break"
+      ]
+    },
+    {
+      "id": "sfx_stellar_warning",
+      "game_file": "우주-비즈니스/assets/audio/sfx_stellar_warning.wav",
+      "sha256": "defd2dd602367dc610952093fcb8967e93a898976cc5064835de0535a111a0a7",
+      "seconds": 2.0,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "warning"
+      ]
+    },
+    {
+      "id": "sfx_vessel_brake",
+      "game_file": "우주-비즈니스/assets/audio/sfx_vessel_brake.wav",
+      "sha256": "3136be728b0374ed7f781b609f047d0c4bb28c9359f58610698a53f38bf1ce77",
+      "seconds": 2.0,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "recover"
+      ]
+    },
+    {
+      "id": "ui_discovery",
+      "game_file": "우주-비즈니스/assets/audio/ui_discovery.wav",
+      "sha256": "18af86476099fd5e1108472cfe59d1e15296b35b85b5d2e2aee75e398d13edbb",
+      "seconds": 2.0,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "escaped"
+      ]
+    },
+    {
+      "id": "sfx_gun_ship_pulse",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_ship_pulse.wav",
+      "source": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "source_sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "sha256": "ae7307752f19fb2ab76e4e7e2acd6c54c10618cbd003df66fe8e44a944f04677",
+      "seconds": 0.14497916666666666,
+      "trim_start_seconds": 0.0,
+      "processing": "Mono average; first pulse trimmed to 145ms; 2ms/25ms fades; peak gain capped at 2. Existing ElevenLabs source, no new generation.",
+      "status": "derived_elevenlabs_reuse",
+      "use": [
+        "shot"
+      ]
+    },
+    {
+      "id": "sfx_robot_charge",
+      "game_file": "우주-비즈니스/assets/audio/sfx_robot_charge.wav",
+      "sha256": "af245eff3f2ec9476c80553e1e58b928159acdca1048ee934a15d0803152e68c",
+      "seconds": 4.955,
+      "status": "existing_elevenlabs_reuse",
+      "use": [
+        "enemy preparation, looping voice with host charge progress pitch"
+      ]
+    }
+  ],
+  "runtime_review": {
+    "status": "partial",
+    "actual_scene": "res://scenes/app/crew_expedition.tscn",
+    "verified": [
+      "sfx_gun_ship_pulse and sfx_gun_impact playback state during authoritative combat",
+      "menu stops active combat streams",
+      "FINCH recovery and salvage complete in current scene"
+    ],
+    "not_verified": [
+      "subjective loudness and full sound mix listening",
+      "six-player network mix"
+    ],
+    "record": "docs/production/139-pirate-flight-combat.md"
+  },
+  "note": "Existing ElevenLabs effects reused for pulse emitters, warning, impacts, recovery and salvage; not newly generated ship-specific audio.",
+  "quality_revision_2": {
+    "new_generation": false,
+    "charge": "pitch 0.75 to 1.3 through authoritative windup; stops on discharge/menu",
+    "spatial_mix": "dedicated flight 3D attenuation, up to 20 transient voices plus two charge loops",
+    "capture": {
+      "file": "docs/production/media/pirate-quality/combat-sfx.wav",
+      "seconds": 40.384,
+      "linear_peak": 0.14703600108624,
+      "discarded_frames": 0
+    },
+    "verified": [
+      "current expedition charge and firing playback",
+      "delayed destruction sound",
+      "no clipped SFX samples or discarded capture frames",
+      "menu stops charge and transient audio"
+    ],
+    "not_verified": [
+      "subjective listening and final loudness preference",
+      "six-player network mix"
+    ],
+    "record": "docs/production/141-pirate-combat-quality.md"
+  }
+}

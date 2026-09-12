@@ -1,6 +1,9 @@
 class_name FrontierCrewFlightView
 extends FrontierSpaceFlight
 signal planet_scanned(ordinal: int)
+var combat_snapshot: Dictionary={}
+var combat_actor: String=""
+var combat_view: FrontierSpaceCombatView
 var navigation: Dictionary={}
 var announced_system: int=-1
 var orbit_clock:=0.0
@@ -69,6 +72,7 @@ func _ready() -> void:
 	transit_audio=FrontierAudio.new();add_child(transit_audio)
 	soundscape=FrontierSpaceAudio.new();add_child(soundscape)
 	vessel_sound=FrontierVesselSound.new();add_child(vessel_sound);engine=vessel_sound.layers.turbine
+	combat_view=FrontierSpaceCombatView.new();add_child(combat_view);combat_view.configure(self)
 	set_physics_process(false);set_process_unhandled_input(false)
 func _visual_hidden() -> bool:
 	var viewport:=get_viewport()
@@ -80,6 +84,7 @@ func update_navigation(value: Dictionary) -> void:
 		pending_navigation=value.duplicate(true)
 		return
 	pending_navigation={}
+	if value.get("combat_active",false):soundscape.cancel_arrival()
 	var initial_view:=navigation.is_empty()
 	var solar_start: bool=initial_view and int(value.system)==0 and value.mode=="idle"
 	station_excluded=int(value.get("first_stellar_system",-1))
@@ -109,12 +114,12 @@ func update_navigation(value: Dictionary) -> void:
 	if render_system!=announced_system and value.mode!="jump":
 		announced_system=render_system
 		var system:=FrontierUniverse.system(state.manifest,render_system)
-		if not solar_start or FrontierSolarOpening.active(value):soundscape.enter(int(system.band))
-		if FrontierSolarOpening.active(value) or not solar_start:transit_overlay.announce(system.star.name,not FrontierSolarOpening.active(value) and (initial_view or value.get("transit",{}).get("revisit",false)))
+		if not value.get("combat_active",false) and (not solar_start or FrontierSolarOpening.active(value)):soundscape.enter(int(system.band))
+		if not value.get("combat_active",false) and (FrontierSolarOpening.active(value) or not solar_start):transit_overlay.announce(system.star.name,not FrontierSolarOpening.active(value) and (initial_view or value.get("transit",{}).get("revisit",false)))
 	var phase:=FrontierCrewNavigation.phase(value)
 	if phase!=last_phase:
 		last_phase=phase
-	if float(value.get("hull",100))<previous_hull and not value.get("star_warning",false):transit_audio.play("sfx_build_invalid")
+	if float(value.get("hull",100))<previous_hull and not value.get("star_warning",false) and not value.get("combat_fitted",false):transit_audio.play("sfx_build_invalid")
 	var braking: bool=value.mode!="jump" and (value.get("proximity_braking",false) or (float(navigation.get("speed",0))>60 and float(value.speed)<float(navigation.get("speed",0))-5))
 	previous_braking=braking
 	previous_hull=float(value.get("hull",100))
@@ -133,6 +138,7 @@ func update_navigation(value: Dictionary) -> void:
 	update_orbits(float(value.get("orbit_time",0)))
 func _process(delta: float) -> void:
 	if _visual_hidden():
+		if combat_view!=null:combat_view.suspend()
 		if not visual_suspended:
 			visual_suspended=true;vessel_sound.suspend();soundscape.scan.stop();soundscape.arrival.stream_paused=true
 			if is_instance_valid(traffic):traffic.suspend()
@@ -167,7 +173,9 @@ func _process(delta: float) -> void:
 		engine_turn=Vector2(clampf(local_turn.x/maxf(delta,.001),-1,1),clampf(local_turn.y/maxf(delta,.001),-1,1))
 	else:ship.quaternion=ship.quaternion.slerp(_flight_basis(facing).get_rotation_quaternion(),1.0-exp(-delta*6.0))
 	camera.position=(Vector3(0,8,21) if refits.hull_id=="finch" else Vector3(0,16,57)) if exterior else (Vector3(0,5.3,-1.2) if refits.hull_id=="finch" else Vector3(0,2,-18))
+	if exterior and combat_view.relevant() and refits.hull_id!="finch":camera.position=FrontierSpaceCombat.point(FrontierSpaceCombat.config().presentation.camera)
 	camera.rotation=(Vector3(-.15,0,0) if exterior else Vector3.ZERO)+Vector3(look_offset.y,look_offset.x,0)
+	if exterior and combat_view.relevant():camera.rotation.x=float(FrontierSpaceCombat.config().presentation.camera_pitch)+look_offset.y
 	if navigation.mode=="jump":
 		transit_camera_rotation=transit_camera_rotation.slerp(ship.quaternion,1.0-exp(-delta*float(FrontierUniverse.presentation().stellar_transition.camera_follow_speed)))
 		var follow_basis:=Basis(transit_camera_rotation)
@@ -189,6 +197,7 @@ func _process(delta: float) -> void:
 		transit_overlay.arrival_age=opening_clock
 		engine_brake=.65 if absf(float(navigation.speed))>1 else 0.0
 
+	combat_view.update(delta,presentation_paused or opening or transition_preparing)
 	warning_clock=maxf(0,warning_clock-delta)
 	if navigation.get("star_warning",false) and warning_clock<=0 and not presentation_blocked:
 		transit_audio.play("sfx_stellar_warning");warning_clock=2.2 if navigation.get("star_danger",false) else 4.0
@@ -219,7 +228,7 @@ func _process(delta: float) -> void:
 	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_paused)
 
 func pick_planet(point: Vector2) -> int:
-	if navigation.get("mode","")=="jump":return -1
+	if navigation.get("mode","")=="jump" or (combat_view!=null and combat_view.armed()):return -1
 	var ray:=camera.project_ray_normal(point)
 	var nearest:=INF;var found: int=-1
 	for ordinal in planets:

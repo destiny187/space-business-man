@@ -14,6 +14,8 @@ func _ready() -> void:
 	scan=AudioStreamPlayer.new();scan.bus="SFX";scan.stream=library.stream("sfx_orbital_scan",true);scan.volume_db=-60;add_child(scan)
 	arrival=AudioStreamPlayer.new();arrival.bus="SFX";arrival.volume_db=float(config.arrival_volume_db);add_child(arrival)
 func enter(band: int) -> void:pending_tier=clampi(band,0,4)
+func cancel_arrival() -> void:
+	pending_tier=-1;arrival.stop()
 func update(delta: float,scanning: bool,progress: float) -> void:
 	transition_left=maxf(0,transition_left-delta)
 	arrival.stream_paused=blocked

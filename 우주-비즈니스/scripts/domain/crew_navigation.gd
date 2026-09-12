@@ -110,7 +110,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 	var cfg_state: Dictionary=world.manifest.settings.flight
 	nav.hull=float(nav.get("hull",100.0));nav.energy=float(nav.get("energy",100.0))
 	nav.damage_cooldown=maxf(0,float(nav.get("damage_cooldown",0))-delta)
-	if nav.damage_cooldown<=0:nav.hull=minf(100,nav.hull+float(cfg_state.get("hull_repair",4))*delta)
+	if nav.damage_cooldown<=0 and not nav.get("combat_fitted",false):nav.hull=minf(100,nav.hull+float(cfg_state.get("hull_repair",4))*delta)
 	if nav.mode!="jump" and not nav.get("boosting",false):nav.energy=minf(100,nav.energy+float(cfg_state.get("energy_recharge",12))*delta)
 	stellar_hazard(world,delta)
 	var old_time: float=float(nav.get("orbit_time",0))
@@ -144,6 +144,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 		var destination:=Vector2(nav.transit.to[0],nav.transit.to[1])
 		var galaxy_point:=source.lerp(destination,travel)
 		nav.transit.galaxy_position=[galaxy_point.x,galaxy_point.y]
+		if FrontierSpaceCombat.intercept_arrival(world):return true
 		nav.speed=float(cfg.boost_speed)*sin(PI*travel)
 		# Local departure motion is presentation only; transit owns the galaxy position.
 		position+=direction*float(nav.speed)*delta
@@ -230,7 +231,7 @@ static func phase(nav: Dictionary) -> String:
 static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if FrontierSolarOpening.active(world.crew.navigation):return
 	var nav: Dictionary=world.crew.navigation
-	if nav.mode!="idle" or FrontierCrewSurface.landed(world):return
+	if nav.mode!="idle" or FrontierCrewSurface.landed(world) or nav.get("combat_recovery",false):return
 	if float(controls[0])==0 and float(controls[1])==0 and float(controls[2])==0 and not nav.get("manual",false):return
 	for member in world.crew.members.values():
 		if member.get("connected",true) and not member.aboard:return
@@ -251,6 +252,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		nav.energy=maxf(0,float(nav.get("energy",100))-float(cfg.get("boost_drain",22))*delta)
 		if nav.energy<=0:nav.boost_depleted=true;nav.boosting=false
 	var maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
+	if nav.get("combat_active",false):maximum=minf(maximum,float(FrontierSpaceCombat.config().combat_speed)*(2.2 if nav.boosting else 1.0))
 	if float(nav.get("hull",100))<=0:maximum=0
 	var previous_speed: float=float(nav.speed)
 	nav.speed=move_toward(float(nav.speed),float(controls[0])*maximum,float(cfg.acceleration)*delta*3)

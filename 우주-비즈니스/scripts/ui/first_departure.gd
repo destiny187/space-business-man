@@ -241,6 +241,7 @@ func _process(delta: float) -> void:
 	card.hide()
 	highlight = Rect2()
 	step = ""
+	if app.flight!=null and app.outside and app.flight.combat_view!=null and app.flight.combat_view.relevant():depart.hide();queue_redraw();return
 	if app.solar_opening_active() or letter.visible or not enabled() or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase") != "playing":queue_redraw();return
 	if app.session.latest.crew.navigation.mode=="jump" or (app.flight!=null and app.flight.transit_overlay.presenting_arrival()):queue_redraw();return
 	if get_tree().has_meta("startup_loader") or FrontierClientSettings.ensure(get_tree()).is_open() or (app.arrival != null and app.arrival.active):queue_redraw();return
