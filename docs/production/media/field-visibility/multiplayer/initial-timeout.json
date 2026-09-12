@@ -1,0 +1,21 @@
+{
+  "revision": "eb1429a2",
+  "checks": [
+    "host opens committed field save",
+    "first rendered guest joins ENet",
+    "guest0 response lobby_ready",
+    "host response start_game",
+    "both clients finish actual field loading",
+    "both clients render with local occlusion",
+    "shared articulated creature exists",
+    "same creature visible in both cameras",
+    "host looking away does not hide guest creature",
+    "hidden host pose sleeps while visible guest pose and both clocks advance",
+    "host camera return restores current pose",
+    "same local cover hides front camera but leaves back camera visible",
+    "host capture covered",
+    "guest0 capture visible-behind-cover"
+  ],
+  "error": "AssertionError('third rendered client joins running field')",
+  "runtime_errors": []
+}

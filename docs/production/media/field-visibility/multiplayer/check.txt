@@ -1,0 +1,31 @@
+PASS host opens committed field save
+PASS first rendered guest joins ENet
+PASS guest0 response lobby_ready
+PASS host response start_game
+PASS both clients finish actual field loading
+PASS both clients render with local occlusion
+PASS shared articulated creature exists
+PASS same creature visible in both cameras
+PASS host looking away does not hide guest creature
+PASS host camera return restores current pose
+PASS same local cover hides front camera but leaves back camera visible
+PASS host capture covered
+PASS guest0 capture visible-behind-cover
+PASS third rendered client joins running field
+PASS late client renders independently of hidden host
+PASS guest1 capture late-join
+PASS remote input still moves host collision body
+PASS moving client reconciles to host while cameras differ
+PASS removing cover restores rendering
+PASS guest receives host-approved excavation fixture
+PASS guest0 response surface_dig
+PASS guest excavation reaches all three render/collision worlds
+PASS all three peers have matching edits and current occluders
+PASS host capture after-dig
+PASS guest0 capture after-dig
+PASS guest1 capture after-dig
+PASS third client reconnects after excavation
+PASS reconnected client restores latest terrain and occlusion
+PASS reconnected camera restores creature animation
+PASS guest1 capture reconnected
+MULTIPLAYER 31 checks 0 runtime errors workspace /private/var/folders/gx/y_kyc5wx23q_1cprsjvw6b2w0000gn/T/field-multiplayer-3_izjr4j

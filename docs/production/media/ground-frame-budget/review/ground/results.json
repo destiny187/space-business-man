@@ -1,0 +1,536 @@
+{
+  "context": {
+    "display_scale": 2.0,
+    "durations": {
+      "scene_ready_ms": 6080
+    },
+    "engine": "4.7.2-stable (official)",
+    "environment": [
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@58/@ScrollContainer@61/@VBoxContainer@62/@VBoxContainer@90/@HBoxContainer@1629/@Control@1630/@SubViewport@1631/@Node3D@1632/@WorldEnvironment@1634",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@91/@VBoxContainer@92/@TabContainer@100/탐사 연구/@HBoxContainer@103/@SubViewportContainer@104/@SubViewport@105/@Node3D@106/@WorldEnvironment@107",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@91/@VBoxContainer@92/@TabContainer@100/발견 도감/@HBoxContainer@169/@ScrollContainer@165/@VBoxContainer@166/@SubViewportContainer@167/@SubViewport@170/@Node3D@171/@WorldEnvironment@172",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/로봇 제작/@HBoxContainer@274/@SubViewportContainer@275/@SubViewport@276/@Node3D@277/@WorldEnvironment@278",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/생산 _ 개조/@HBoxContainer@295/@VBoxContainer@324/@ScrollContainer@327/@VBoxContainer@328/@HBoxContainer@329/@SubViewportContainer@330/@SubViewport@331/@Node3D@332/@WorldEnvironment@333",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/로봇/@SubViewportContainer@525/@SubViewport@526/@Node3D@527/@WorldEnvironment@528",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/생물공학/@HBoxContainer@606/@SubViewportContainer@607/@SubViewport@608/@Node3D@609/@WorldEnvironment@610",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/시설 관리/@SubViewportContainer@469/@SubViewport@654/@Node3D@655/@WorldEnvironment@656",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/착륙선/@HBoxContainer@675/@VBoxContainer@676/@SubViewportContainer@679/@SubViewport@680/@Node3D@681/@WorldEnvironment@682",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/소형선/@SubViewportContainer@740/@SubViewport@741/@Node3D@742/@WorldEnvironment@743",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/시험기 조립/@HBoxContainer@2309/@SubViewportContainer@2310/@SubViewport@2311/@Node3D@2312/@WorldEnvironment@2313",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@230/@ScrollContainer@233/@VBoxContainer@234/@TabContainer@272/로버 제작/@HBoxContainer@2336/@SubViewportContainer@2337/@SubViewport@2338/@Node3D@2339/@WorldEnvironment@2340",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@756/@SubViewport@816/@Node3D@817/@WorldEnvironment@819",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@834/@VBoxContainer@835/@HBoxContainer@842/@VBoxContainer@843/@Control@844/@SubViewportContainer@845/@SubViewport@846/@Node3D@847/@WorldEnvironment@848",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@903/@VBoxContainer@904/@HBoxContainer@912/@VBoxContainer@917/@TabContainer@921/신체/@SubViewportContainer@1047/@SubViewport@1048/@Node3D@1049/@WorldEnvironment@1050",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@903/@VBoxContainer@904/@HBoxContainer@912/@VBoxContainer@917/@TabContainer@921/염색/@SubViewportContainer@1124/@SubViewport@1125/@Node3D@1126/@WorldEnvironment@1127",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@903/@VBoxContainer@904/@HBoxContainer@912/@VBoxContainer@917/@TabContainer@921/모듈/@HBoxContainer@1445/@VBoxContainer@1452/@ScrollContainer@1455/@VBoxContainer@1456/@SubViewportContainer@1457/@SubViewport@1458/@Node3D@1459/@WorldEnvironment@1460",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@903/@VBoxContainer@904/@HBoxContainer@912/@VBoxContainer@1498/@ScrollContainer@1501/@VBoxContainer@1502/@VBoxContainer@1503/@SubViewportContainer@915/@SubViewport@1504/@Node3D@1505/@WorldEnvironment@1506",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@1990/@ScrollContainer@1993/@VBoxContainer@1994/@SubViewportContainer@1996/@SubViewport@1997/@Node3D@1998/@WorldEnvironment@1999",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2017/@VBoxContainer@2018/@HBoxContainer@2022/@VBoxContainer@2023/@SubViewportContainer@2024/@SubViewport@2025/@Node3D@2026/@WorldEnvironment@2027",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2070/@VBoxContainer@2071/@TabContainer@2078/표본 분석/@HBoxContainer@2081/@SubViewportContainer@2082/@SubViewport@2083/@Node3D@2084/@WorldEnvironment@2085",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2070/@VBoxContainer@2071/@TabContainer@2078/공동 설비/@HBoxContainer@2110/@SubViewportContainer@2111/@SubViewport@2112/@Node3D@2113/@WorldEnvironment@2114",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2070/@VBoxContainer@2071/@TabContainer@2132/신체 증강/@VBoxContainer@2150/@ScrollContainer@2153/@VBoxContainer@2154/@Control@2155/@SubViewportContainer@2156/@SubViewport@2157/@Node3D@2158/@WorldEnvironment@2159",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2070/@VBoxContainer@2071/@TabContainer@2132/장비 개조/@VBoxContainer@2209/@ScrollContainer@2212/@VBoxContainer@2213/@SubViewportContainer@2214/@SubViewport@2215/@Node3D@2216/@WorldEnvironment@2217",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2070/@VBoxContainer@2071/@TabContainer@2132/개인 성능/@HBoxContainer@2230/@SubViewportContainer@2231/@SubViewport@2232/@Node3D@2233/@WorldEnvironment@2234",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2070/@VBoxContainer@2071/@TabContainer@2132/운송 숙련/@HBoxContainer@2250/@SubViewportContainer@2251/@SubViewport@2252/@Node3D@2253/@WorldEnvironment@2254",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@PanelContainer@2270/@VBoxContainer@2271/@HBoxContainer@2275/@VBoxContainer@2276/@SubViewportContainer@2277/@SubViewport@2278/@Node3D@2279/@WorldEnvironment@2280",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@Control@1620/@SubViewport@1642/@Node3D@1643/@WorldEnvironment@1646",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@CanvasLayer@36/@Control@37/@Control@1620/@PanelContainer@1700/@ScrollContainer@1703/@VBoxContainer@1704/@HBoxContainer@1722/@SubViewportContainer@1723/@SubViewport@1724/@Node3D@1725/@WorldEnvironment@1726",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@SubViewport@2518/@Node3D@2519/@WorldEnvironment@2520",
+        "sdfgi": false,
+        "ssao_intensity": 2.0,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      },
+      {
+        "path": "/root/CrewExpedition/@Node3D@2841/@WorldEnvironment@2842",
+        "sdfgi": false,
+        "ssao_intensity": 1.20000004768372,
+        "ssr_steps": 64,
+        "volumetric_fog": false
+      }
+    ],
+    "fixture_note": "Pre-existing isolated benchmark save. Current source snapshot with dedicated user data dir; old world generation rules retained.",
+    "gpu": "Apple M2 (Apple8)",
+    "physics_ticks": 60,
+    "scenario": "ground",
+    "seed": 71503.0,
+    "space_view": "(1280, 800)",
+    "suns": {
+      "284122155144": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "288433899850": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "295262227091": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "302728088494": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "317424930243": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "323867381474": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "325998088019": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "327239602071": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "330209169441": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "337104605584": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "339268866558": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "350627042441": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "358059349395": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "375490877779": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "377655138764": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "398643436472": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "403408166080": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "422852960407": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "428238447034": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "435737862987": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "436962599822": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "439328187405": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "444462015712": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "445502203146": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "446391395645": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "449662952945": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "452682851978": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "453739816648": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "486321170855": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "486337948073": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "509809274343": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "509826051560": {
+        "angle": 0.0,
+        "blend": false
+      },
+      "536585711526": {
+        "angle": 0.0,
+        "blend": false
+      }
+    },
+    "viewport_size": "(1280.0, 800.0)",
+    "window_size": "(1280, 800)",
+    "world": "galaxy:galaxy-v3:71503:planet:10"
+  },
+  "results": [
+    {
+      "draw_calls": 597.206896551724,
+      "duration_s": 6.046725,
+      "ecology_actors": 16,
+      "engine_static_mib": 1081.05457878113,
+      "fps": 9.59196920647127,
+      "frames": 58,
+      "frames_over_100ms": 28,
+      "frames_over_50ms": 57,
+      "label": "medium",
+      "max_fps": 0,
+      "mean_ms": 104.253879310345,
+      "msaa": 1,
+      "nodes": 7241.0,
+      "one_percent_low_fps": 3.07720712681171,
+      "p95_ms": 163.278,
+      "p99_ms": 318.521,
+      "physics_ms": 17.2058448275862,
+      "primitives": 384468.655172414,
+      "process_ms": 152.914396551724,
+      "render_scale": 1.0,
+      "render_setup_cpu_ms": 0.888896551724138,
+      "root_gpu_ms": null,
+      "root_render_cpu_ms": 9.61548276194211,
+      "space_gpu_ms": null,
+      "space_render_cpu_ms": 0.0,
+      "space_view_size": "(1280, 800)",
+      "terrain": {
+        "build_max_ms": 523.055,
+        "chunks": 75,
+        "commit_max_ms": 2.546,
+        "main_max_ms": 3.505
+      },
+      "video_mib": 648.53125,
+      "vsync_mode": 0,
+      "window_size": "(1280, 800)",
+      "worst_frame": {
+        "draw_calls": 597.0,
+        "ms": 324.97,
+        "physics_ms": 12.951,
+        "primitives": 384460.0,
+        "process_ms": 81.198,
+        "render_setup_cpu_ms": 0.9,
+        "root_gpu_ms": 0.0,
+        "root_render_cpu_ms": 27.6060009002686,
+        "space_gpu_ms": 0.0,
+        "space_render_cpu_ms": 0.0,
+        "terrain_install_ms": 0.232,
+        "terrain_jobs": 0,
+        "terrain_main_ms": 0.005,
+        "terrain_staged": 0
+      },
+      "worst_ms": 324.97
+    },
+    {
+      "draw_calls": 767.719512195122,
+      "duration_s": 12.017197,
+      "ecology_actors": 14,
+      "engine_static_mib": 1090.68186378479,
+      "fps": 13.6471092218926,
+      "frames": 164,
+      "frames_over_100ms": 16,
+      "frames_over_50ms": 143,
+      "label": "medium_walk",
+      "max_fps": 0,
+      "mean_ms": 73.2755914634146,
+      "msaa": 1,
+      "nodes": 7916.0,
+      "one_percent_low_fps": 2.74467396018027,
+      "p95_ms": 119.67,
+      "p99_ms": 197.297,
+      "physics_ms": 17.882737804878,
+      "primitives": 326112.25,
+      "process_ms": 139.747615853659,
+      "render_scale": 1.0,
+      "render_setup_cpu_ms": 3.58146951219512,
+      "root_gpu_ms": null,
+      "root_render_cpu_ms": 3.83566463138999,
+      "space_gpu_ms": null,
+      "space_render_cpu_ms": 0.0,
+      "space_view_size": "(1280, 800)",
+      "terrain": {
+        "build_max_ms": 2546.853,
+        "chunks": 37,
+        "commit_max_ms": 2.546,
+        "main_max_ms": 3.577
+      },
+      "video_mib": 648.890625,
+      "vsync_mode": 0,
+      "walk_distance": 66.4726638793945,
+      "window_size": "(1280, 800)",
+      "worst_frame": {
+        "draw_calls": 707.0,
+        "ms": 478.599,
+        "physics_ms": 8.392,
+        "primitives": 388610.0,
+        "process_ms": 62.932,
+        "render_setup_cpu_ms": 412.603,
+        "root_gpu_ms": 0.0,
+        "root_render_cpu_ms": 2.99900007247925,
+        "space_gpu_ms": 0.0,
+        "space_render_cpu_ms": 0.0,
+        "terrain_install_ms": 0.232,
+        "terrain_jobs": 0,
+        "terrain_main_ms": 0.005,
+        "terrain_staged": 0
+      },
+      "worst_ms": 478.599
+    },
+    {
+      "draw_calls": 989.136363636364,
+      "duration_s": 6.052216,
+      "ecology_actors": 16,
+      "engine_static_mib": 1094.37961483002,
+      "fps": 14.5401287726677,
+      "frames": 88,
+      "frames_over_100ms": 2,
+      "frames_over_50ms": 54,
+      "label": "navigation_open",
+      "max_fps": 0,
+      "mean_ms": 68.7751818181818,
+      "msaa": 1,
+      "nodes": 8071.0,
+      "one_percent_low_fps": 0.934482497610061,
+      "p95_ms": 80.604,
+      "p99_ms": 102.134,
+      "physics_ms": 12.6738863636364,
+      "primitives": 262097.897727273,
+      "process_ms": 93.3450568181818,
+      "render_scale": 1.0,
+      "render_setup_cpu_ms": 0.859727272727273,
+      "root_gpu_ms": null,
+      "root_render_cpu_ms": 3.86380682208321,
+      "space_gpu_ms": null,
+      "space_render_cpu_ms": 0.0,
+      "space_view_size": "(1280, 800)",
+      "terrain": {
+        "build_max_ms": 2546.853,
+        "chunks": 75,
+        "commit_max_ms": 2.546,
+        "main_max_ms": 3.577
+      },
+      "video_mib": 650.5625,
+      "vsync_mode": 0,
+      "window_size": "(1280, 800)",
+      "worst_frame": {
+        "draw_calls": 973.0,
+        "ms": 1070.111,
+        "physics_ms": 56.056,
+        "primitives": 260579.0,
+        "process_ms": 1606.026,
+        "render_setup_cpu_ms": 2.616,
+        "root_gpu_ms": 0.0,
+        "root_render_cpu_ms": 3.03600001335144,
+        "space_gpu_ms": 0.0,
+        "space_render_cpu_ms": 0.0,
+        "terrain_install_ms": 0.622,
+        "terrain_jobs": 2,
+        "terrain_main_ms": 2.968,
+        "terrain_staged": 0
+      },
+      "worst_ms": 1070.111
+    }
+  ]
+}

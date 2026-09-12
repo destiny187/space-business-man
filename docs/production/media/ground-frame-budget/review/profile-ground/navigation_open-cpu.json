@@ -1,0 +1,650 @@
+{
+  "callbacks": [
+    {
+      "calls": 315,
+      "max_usec": 2045,
+      "method": "_physics_process",
+      "path": "res://scripts/app/crew_expedition.gd",
+      "usec": 226018
+    },
+    {
+      "calls": 315,
+      "max_usec": 21501,
+      "method": "_physics_process",
+      "path": "res://scripts/network/crew_session.gd",
+      "usec": 211102
+    },
+    {
+      "calls": 315,
+      "max_usec": 19,
+      "method": "_physics_process",
+      "path": "res://scripts/world/planet_weather_view.gd",
+      "usec": 832
+    },
+    {
+      "calls": 155,
+      "max_usec": 2834,
+      "method": "_process",
+      "path": "res://scripts/app/crew_expedition.gd",
+      "usec": 117501
+    },
+    {
+      "calls": 155,
+      "max_usec": 24607,
+      "method": "_process",
+      "path": "res://scripts/network/crew_session.gd",
+      "usec": 314010
+    },
+    {
+      "calls": 310,
+      "max_usec": 7,
+      "method": "_process",
+      "path": "res://scripts/ui/galaxy_chart.gd",
+      "usec": 663
+    },
+    {
+      "calls": 155,
+      "max_usec": 46,
+      "method": "_process",
+      "path": "res://scripts/ui/research_panel.gd",
+      "usec": 418
+    },
+    {
+      "calls": 465,
+      "max_usec": 30,
+      "method": "_process",
+      "path": "res://scripts/ui/expedition_research_panel.gd",
+      "usec": 1414
+    },
+    {
+      "calls": 465,
+      "max_usec": 23,
+      "method": "_process",
+      "path": "res://scripts/ui/research_flow.gd",
+      "usec": 543
+    },
+    {
+      "calls": 465,
+      "max_usec": 91,
+      "method": "_process",
+      "path": "res://scripts/ui/research_preview.gd",
+      "usec": 3553
+    },
+    {
+      "calls": 155,
+      "max_usec": 27,
+      "method": "_process",
+      "path": "res://scripts/ui/survey_journal.gd",
+      "usec": 492
+    },
+    {
+      "calls": 3410,
+      "max_usec": 56,
+      "method": "_process",
+      "path": "res://scripts/ui/equipment_preview.gd",
+      "usec": 6304
+    },
+    {
+      "calls": 310,
+      "max_usec": 7,
+      "method": "_process",
+      "path": "res://scripts/ui/rover_workshop.gd",
+      "usec": 624
+    },
+    {
+      "calls": 155,
+      "max_usec": 15,
+      "method": "_process",
+      "path": "res://scripts/ui/station_market_panel.gd",
+      "usec": 540
+    },
+    {
+      "calls": 155,
+      "max_usec": 15,
+      "method": "_process",
+      "path": "res://scripts/ui/ship_module_preview.gd",
+      "usec": 318
+    },
+    {
+      "calls": 155,
+      "max_usec": 330,
+      "method": "_process",
+      "path": "res://scripts/ui/equipment_panel.gd",
+      "usec": 28768
+    },
+    {
+      "calls": 155,
+      "max_usec": 15,
+      "method": "_process",
+      "path": "res://scripts/ui/augmentation_readout.gd",
+      "usec": 401
+    },
+    {
+      "calls": 155,
+      "max_usec": 18,
+      "method": "_process",
+      "path": "res://scripts/ui/suit_dye_panel.gd",
+      "usec": 531
+    },
+    {
+      "calls": 155,
+      "max_usec": 14,
+      "method": "_process",
+      "path": "res://scripts/ui/suit_module_panel.gd",
+      "usec": 390
+    },
+    {
+      "calls": 155,
+      "max_usec": 84,
+      "method": "_process",
+      "path": "res://scripts/ui/field_hud.gd",
+      "usec": 4497
+    },
+    {
+      "calls": 155,
+      "max_usec": 407,
+      "method": "_process",
+      "path": "res://scripts/ui/field_instruments.gd",
+      "usec": 23910
+    },
+    {
+      "calls": 155,
+      "max_usec": 6,
+      "method": "_process",
+      "path": "res://scripts/ui/surface_radar.gd",
+      "usec": 339
+    },
+    {
+      "calls": 155,
+      "max_usec": 40,
+      "method": "_process",
+      "path": "res://scripts/ui/survey_card.gd",
+      "usec": 2165
+    },
+    {
+      "calls": 155,
+      "max_usec": 7,
+      "method": "_process",
+      "path": "res://scripts/ui/environment_hud.gd",
+      "usec": 347
+    },
+    {
+      "calls": 155,
+      "max_usec": 51,
+      "method": "_process",
+      "path": "res://scripts/ui/rover_dock.gd",
+      "usec": 3823
+    },
+    {
+      "calls": 310,
+      "max_usec": 10,
+      "method": "_process",
+      "path": "res://scripts/ui/progression_research_panel.gd",
+      "usec": 431
+    },
+    {
+      "calls": 155,
+      "max_usec": 17,
+      "method": "_process",
+      "path": "res://scripts/ui/augmentation_panel.gd",
+      "usec": 664
+    },
+    {
+      "calls": 155,
+      "max_usec": 24,
+      "method": "_process",
+      "path": "res://scripts/ui/augmentation_body.gd",
+      "usec": 389
+    },
+    {
+      "calls": 155,
+      "max_usec": 27,
+      "method": "_process",
+      "path": "res://scripts/ui/augmentation_preview.gd",
+      "usec": 537
+    },
+    {
+      "calls": 310,
+      "max_usec": 76,
+      "method": "_process",
+      "path": "res://scripts/actors/effects.gd",
+      "usec": 1330
+    },
+    {
+      "calls": 155,
+      "max_usec": 15,
+      "method": "_process",
+      "path": "res://scripts/ui/equipment_workshop.gd",
+      "usec": 388
+    },
+    {
+      "calls": 155,
+      "max_usec": 116,
+      "method": "_process",
+      "path": "res://scripts/ui/first_departure.gd",
+      "usec": 6705
+    },
+    {
+      "calls": 155,
+      "max_usec": 145,
+      "method": "_process",
+      "path": "res://scripts/ui/expedition_navigation.gd",
+      "usec": 7358
+    },
+    {
+      "calls": 155,
+      "max_usec": 142,
+      "method": "_process",
+      "path": "res://scripts/ui/nearby_stars.gd",
+      "usec": 1835
+    },
+    {
+      "calls": 155,
+      "max_usec": 837709,
+      "method": "_process",
+      "path": "res://scripts/ui/planet_map.gd",
+      "usec": 838682
+    },
+    {
+      "calls": 155,
+      "max_usec": 21,
+      "method": "_process",
+      "path": "res://scripts/ui/terraform_panel.gd",
+      "usec": 412
+    },
+    {
+      "calls": 155,
+      "max_usec": 610,
+      "method": "_process",
+      "path": "res://scripts/actors/expedition_feedback.gd",
+      "usec": 35877
+    },
+    {
+      "calls": 155,
+      "max_usec": 106,
+      "method": "_process",
+      "path": "res://scripts/app/crew_stations.gd",
+      "usec": 9149
+    },
+    {
+      "calls": 155,
+      "max_usec": 100,
+      "method": "_process",
+      "path": "res://scripts/app/lotus_support_controller.gd",
+      "usec": 6933
+    },
+    {
+      "calls": 155,
+      "max_usec": 79,
+      "method": "_process",
+      "path": "res://scripts/app/landing_audio.gd",
+      "usec": 5901
+    },
+    {
+      "calls": 155,
+      "max_usec": 371,
+      "method": "_process",
+      "path": "res://scripts/app/expedition_audio.gd",
+      "usec": 6991
+    },
+    {
+      "calls": 155,
+      "max_usec": 64,
+      "method": "_process",
+      "path": "res://scripts/app/crew_flight_view.gd",
+      "usec": 4333
+    },
+    {
+      "calls": 155,
+      "max_usec": 165,
+      "method": "_process",
+      "path": "res://scripts/world/vessel_drive_effects.gd",
+      "usec": 12663
+    },
+    {
+      "calls": 310,
+      "max_usec": 311,
+      "method": "_process",
+      "path": "res://scripts/world/vessel_visuals.gd",
+      "usec": 15512
+    },
+    {
+      "calls": 155,
+      "max_usec": 14,
+      "method": "_process",
+      "path": "res://scripts/ui/stellar_transit_overlay.gd",
+      "usec": 687
+    },
+    {
+      "calls": 1240,
+      "max_usec": 122,
+      "method": "_process",
+      "path": "res://scripts/world/orbital_lod.gd",
+      "usec": 4806
+    },
+    {
+      "calls": 155,
+      "max_usec": 41,
+      "method": "_process",
+      "path": "res://scripts/world/orbital_debris.gd",
+      "usec": 1934
+    },
+    {
+      "calls": 155,
+      "max_usec": 1046,
+      "method": "_process",
+      "path": "res://scripts/world/crew_surface_scene.gd",
+      "usec": 66391
+    },
+    {
+      "calls": 155,
+      "max_usec": 2926,
+      "method": "_process",
+      "path": "res://scripts/world/terrain_streamer.gd",
+      "usec": 21891
+    },
+    {
+      "calls": 155,
+      "max_usec": 370,
+      "method": "_process",
+      "path": "res://scripts/world/surface_hydrology.gd",
+      "usec": 2424
+    },
+    {
+      "calls": 155,
+      "max_usec": 14,
+      "method": "_process",
+      "path": "res://scripts/world/surface_water_view.gd",
+      "usec": 1359
+    },
+    {
+      "calls": 155,
+      "max_usec": 1750,
+      "method": "_process",
+      "path": "res://scripts/world/distant_terrain.gd",
+      "usec": 6078
+    },
+    {
+      "calls": 155,
+      "max_usec": 32108,
+      "method": "_process",
+      "path": "res://scripts/world/surface_ecology.gd",
+      "usec": 318566
+    },
+    {
+      "calls": 2423,
+      "max_usec": 453,
+      "method": "_process",
+      "path": "res://scripts/actors/creatures/bestiary_actor.gd",
+      "usec": 85666
+    },
+    {
+      "calls": 155,
+      "max_usec": 725,
+      "method": "_process",
+      "path": "res://scripts/world/business_site_view.gd",
+      "usec": 59378
+    },
+    {
+      "calls": 155,
+      "max_usec": 23902,
+      "method": "_process",
+      "path": "res://scripts/world/surface_details.gd",
+      "usec": 94610
+    },
+    {
+      "calls": 155,
+      "max_usec": 82,
+      "method": "_process",
+      "path": "res://scripts/world/surface_atmosphere_particles.gd",
+      "usec": 4586
+    },
+    {
+      "calls": 155,
+      "max_usec": 2340,
+      "method": "_process",
+      "path": "res://scripts/world/surface_presence.gd",
+      "usec": 210533
+    },
+    {
+      "calls": 155,
+      "max_usec": 150,
+      "method": "_process",
+      "path": "res://scripts/world/water_interactions.gd",
+      "usec": 8639
+    },
+    {
+      "calls": 155,
+      "max_usec": 510,
+      "method": "_process",
+      "path": "res://scripts/world/discovery_view.gd",
+      "usec": 7591
+    },
+    {
+      "calls": 155,
+      "max_usec": 269,
+      "method": "_process",
+      "path": "res://scripts/world/incident_view.gd",
+      "usec": 24811
+    },
+    {
+      "calls": 155,
+      "max_usec": 28,
+      "method": "_process",
+      "path": "res://scripts/ui/coopertech_clue_overlay.gd",
+      "usec": 659
+    },
+    {
+      "calls": 155,
+      "max_usec": 120,
+      "method": "_process",
+      "path": "res://scripts/world/planet_weather_view.gd",
+      "usec": 9276
+    },
+    {
+      "calls": 155,
+      "max_usec": 30,
+      "method": "_process",
+      "path": "res://scripts/world/deep_cave_view.gd",
+      "usec": 621
+    },
+    {
+      "calls": 155,
+      "max_usec": 36,
+      "method": "_process",
+      "path": "res://scripts/ui/client_settings.gd",
+      "usec": 1402
+    },
+    {
+      "calls": 155,
+      "max_usec": 247,
+      "method": "_process",
+      "path": "res://scripts/actors/firearm_view.gd",
+      "usec": 23719
+    },
+    {
+      "calls": 155,
+      "max_usec": 13,
+      "method": "_process",
+      "path": "res://scripts/actors/firearm_effects.gd",
+      "usec": 591
+    }
+  ],
+  "extra": {
+    "app._apply_snapshot": {
+      "calls": 42,
+      "max_usec": 2322,
+      "usec": 76345
+    },
+    "authority.snapshot": {
+      "calls": 42,
+      "max_usec": 1137,
+      "usec": 33138
+    },
+    "authority.snapshot_shared": {
+      "calls": 42,
+      "max_usec": 203,
+      "usec": 5040
+    },
+    "authority.step_surface": {
+      "calls": 315,
+      "max_usec": 14124,
+      "usec": 104439
+    },
+    "ecology.refresh": {
+      "calls": 6,
+      "max_usec": 9649,
+      "usec": 45510
+    },
+    "ecology.update_wildlife": {
+      "calls": 155,
+      "max_usec": 27711,
+      "usec": 252229
+    },
+    "session.publish_surface": {
+      "calls": 10,
+      "max_usec": 20845,
+      "usec": 194360
+    },
+    "store.begin_checkpoint": {
+      "calls": 1,
+      "max_usec": 21153,
+      "usec": 21153
+    }
+  },
+  "frames": 156,
+  "spikes": [
+    {
+      "frame": 1207,
+      "method": "_physics_process",
+      "ms": 14.359,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1207,
+      "method": "_process",
+      "ms": 837.709,
+      "path": "res://scripts/ui/planet_map.gd"
+    },
+    {
+      "frame": 1207,
+      "method": "_process",
+      "ms": 32.108,
+      "path": "res://scripts/world/surface_ecology.gd"
+    },
+    {
+      "frame": 1218,
+      "method": "_process",
+      "ms": 15.961,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1223,
+      "method": "_process",
+      "ms": 11.233,
+      "path": "res://scripts/world/surface_ecology.gd"
+    },
+    {
+      "frame": 1235,
+      "method": "_process",
+      "ms": 19.759,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1250,
+      "method": "_process",
+      "ms": 18.987,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1259,
+      "method": "_process",
+      "ms": 13.74,
+      "path": "res://scripts/world/surface_details.gd"
+    },
+    {
+      "frame": 1266,
+      "method": "_process",
+      "ms": 22.627,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1273,
+      "method": "_process",
+      "ms": 9.082,
+      "path": "res://scripts/world/surface_ecology.gd"
+    },
+    {
+      "frame": 1282,
+      "method": "_process",
+      "ms": 22.486,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1292,
+      "method": "_physics_process",
+      "ms": 21.501,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1296,
+      "method": "_process",
+      "ms": 20.764,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1296,
+      "method": "_process",
+      "ms": 9.688,
+      "path": "res://scripts/world/surface_ecology.gd"
+    },
+    {
+      "frame": 1313,
+      "method": "_process",
+      "ms": 19.917,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1314,
+      "method": "_process",
+      "ms": 23.902,
+      "path": "res://scripts/world/surface_details.gd"
+    },
+    {
+      "frame": 1321,
+      "method": "_process",
+      "ms": 9.062,
+      "path": "res://scripts/world/surface_ecology.gd"
+    },
+    {
+      "frame": 1329,
+      "method": "_process",
+      "ms": 24.607,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1344,
+      "method": "_process",
+      "ms": 20.08,
+      "path": "res://scripts/network/crew_session.gd"
+    },
+    {
+      "frame": 1347,
+      "method": "_process",
+      "ms": 8.221,
+      "path": "res://scripts/world/surface_ecology.gd"
+    },
+    {
+      "frame": 1359,
+      "method": "_process",
+      "ms": 12.386,
+      "path": "res://scripts/world/surface_details.gd"
+    },
+    {
+      "frame": 1361,
+      "method": "_process",
+      "ms": 19.332,
+      "path": "res://scripts/network/crew_session.gd"
+    }
+  ]
+}

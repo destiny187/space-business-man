@@ -7,6 +7,9 @@ test-results/
 .env
 __pycache__/
 
+# Local captures, benchmark workspaces, and generated videos; keep sources in tools/.
+/output/
+
 # Reproducible per-variant/lighting/LOD captures; source and review boards stay versioned.
 /docs/production/media/bestiary/variants/
 /docs/production/media/bestiary/lighting/
@@ -26,3 +29,6 @@ __pycache__/
 
 # Native local multiplayer service environment.
 /.local/crew-relay/
+
+# Recreated by the focused orbital terraforming verification.
+/docs/production/media/orbital-terraforming/world.json

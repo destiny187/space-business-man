@@ -25,7 +25,7 @@
 - `check_field_visibility.gd`: Metal Forward+의 독립 월드/카메라 두 개에서 가려짐과 표시 분리, 시점 회전/복귀, 비활성 LOD, 숨겨진 로봇 위치·시설 충돌·공격 표현 단계, 지형 개방 후 재표시, 뷰포트 설정 복구를 확인했다. 17개 확인 실패 0. 지형 뒤 생물·시설·로봇을 둔 검증 장면의 주 시점 그리기 호출은 오클루전 끔 69회 → 켬 1회였다. 일반 필드의 개선율로 해석하지 않는다.
 - 최초 복귀 검사는 원래 정지해 있는 몸통을 비교해 실패했다. 실제 움직이는 머리 관절로 검사 대상을 바로잡아 복귀와 비활성 LOD를 확인했다.
 - 128 레이에서 큰 생물 모션 경계 상자가 가림 면에 가까운 배치의 통지는 보수적으로 활성 상태를 유지했다. 완전 가림 검증 장면은 가림 면과 생물 사이 간격을 확보해 검사했고, 실제 게임의 모션 경계는 축소하지 않았다. 좁은 틈·경계에서 모든 대상을 반드시 제거한다는 보장은 아니다.
-- 다중 ENet 클라이언트·6인 인터넷·Windows 실기와 전 생물/시설 전수 검수는 수행하지 않았다.
+- 이 최초 검사는 독립 뷰포트 검사였다. 실제 ENet 다중 프로세스의 후속 결과는 아래에 구분한다. 6인 인터넷·Windows 실기와 전 생물/시설 전수 검수는 수행하지 않았다.
 
 ## 실제 필드 확인·측정
 
@@ -42,3 +42,26 @@
 ![시설 방향](media/field-visibility/field-2.png)
 
 관련 엔진 근거: [가려짐과 추가 CPU 비용](https://docs.godotengine.org/en/stable/tutorials/3d/occlusion_culling.html), [화면 가시성 통지](https://docs.godotengine.org/en/stable/classes/class_visibleonscreennotifier3d.html). 가려짐이 적은 개방 지형에서는 렌더 감소보다 판정 비용이 클 수 있으므로 FPS 효과를 보장하지 않는다.
+
+## 실제 3인 렌더·접속 확인
+
+2026-09-09 사용자 요청으로 `eb1429a2`의 별도 실행 폴더와 진단용 저장 복사본에서 호스트 1개·게스트 2개를 실행했다. 세 프로세스 모두 Metal Forward+ 실제 창, 1280×800, 보통·100%, FPS 상한 30, VSync 끔이다. 같은 Apple M2의 로컬 ENet이며 사용자 저장은 사용하지 않았다. 진행 중이던 후속 수영·수면 변경은 이 검사에 포함하지 않았다.
+
+- 최종 실행은 캡처·접속 준비를 포함한 **31개 확인 통과, 엔진/스크립트 오류 0**이었다. 호스트가 돌아서 생물을 보지 않을 때 호스트의 관절 변환은 멈추고 시간은 진행했으며, 게스트의 같은 생물은 계속 움직였다. 호스트 시점 복귀 후 현재 자세로 돌아왔다.
+- 동일한 불투명 시험 벽의 앞/뒤에 카메라를 놓아 호스트에서는 생물이 가려지고 게스트에서는 계속 표시되는 것을 확인했다. 가림 조건을 고정하기 위한 시험 벽만 추가했으며 실제 필드·생물·세션을 사용했다. 벽은 충돌이나 세계 데이터를 변경하지 않는다.
+- 세 번째 실행의 진행 중 입장과 독립 화면 표시, 게스트 이동의 호스트 충돌체 반영과 위치 정정을 확인했다. 시험용 지형 변환기를 호스트 세계에 준비한 뒤 게스트의 실제 `surface_dig` 요청으로 굴착했다. 세 실행의 편집 해시가 일치했고, 지형 작업 완료 후 각 청크의 오클루더 인덱스 수가 현재 메시 삼각형 수와 일치했다. 호스트와 게스트는 관심 구역이 달라 전체 청크 수가 같을 필요는 없다.
+- 세 번째 실행을 종료하고 같은 프로필로 재접속해 최신 굴착 기록·오클루더·생물 표시를 복구했다. 가림/반대 시점·굴착 후·재접속 화면을 직접 검수했다.
+
+앞선 실행에서는 세 번째 입장의 연결/필드 준비 완료를 **180초 안에 확인하지 못했다**. 같은 게임 코드에 접속 시각 로그를 추가한 최종 실행에서는 중간 입장과 재접속이 통과했다. 초기 상태 수신부터 ACK 송신까지 각각 17ms·15ms였으므로 ‘입장 전 렌더 준비가 ACK를 장시간 막는다’는 가설은 재현되지 않았다. 최초 실패 원인은 미확정이며 해결했다고 기록하지 않는다. 게임 코드는 변경하지 않았다. 검사 도구의 관절 선택과 캡처 인자 충돌도 최종 실행 전에 바로잡았다.
+
+이 결과는 서로의 가림 판정이 전파되지 않고 관련 멀티 동작이 유지되는 것을 확인한 것이다. 같은 Mac에서 3개 렌더러가 자원을 공유하므로 독립 기기의 FPS, 최대 6인 인터넷·지연/손실·장시간 안정성을 보장하지 않는다.
+
+검사 도구는 `tools/check_field_multiplayer.py`와 `tests/check_field_visibility_peer.gd`다. `tools/godot.sh`, 가져온 에셋/캐시, 해당 커밋의 게임 파일과 별도 `host/world.json`·`host/profile.json`이 있는 실행 폴더를 준비한 뒤 `python3 tools/check_field_multiplayer.py --runtime <별도 실행 폴더> --revision eb1429a2`로 실행한다. 게스트 프로필은 그 폴더에 만들며 실제 사용자 저장 폴더를 지정하지 않는다.
+
+[검사 로그](media/field-visibility/multiplayer/check.txt), [결과·시점별 상태](media/field-visibility/multiplayer/result.json), [최초 시간 초과 기록](media/field-visibility/multiplayer/initial-timeout.json), [호스트 접속 로그](media/field-visibility/multiplayer/host.txt), [중간 입장·재접속 로그](media/field-visibility/multiplayer/guest1.txt)를 보존한다.
+
+| 호스트: 벽에 가려짐 | 게스트: 반대편에서 표시 |
+| --- | --- |
+| ![호스트 가림](media/field-visibility/multiplayer/host-covered.png) | ![게스트 표시](media/field-visibility/multiplayer/guest0-visible-behind-cover.png) |
+
+[굴착 후 호스트 화면](media/field-visibility/multiplayer/host-after-dig.png), [세 번째 실행의 재접속 화면](media/field-visibility/multiplayer/guest1-reconnected.png).

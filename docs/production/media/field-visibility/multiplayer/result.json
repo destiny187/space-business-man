@@ -1,0 +1,311 @@
+{
+  "revision": "eb1429a2",
+  "scope": "Three actual Metal Forward+ processes over local ENet, 1280x800 medium at 30 FPS cap. Synthetic opaque cover isolates occlusion; creatures, movement, excavation and session are real game paths. Not three independent devices, six players or internet latency.",
+  "checks": [
+    "host opens committed field save",
+    "first rendered guest joins ENet",
+    "guest0 response lobby_ready",
+    "host response start_game",
+    "both clients finish actual field loading",
+    "both clients render with local occlusion",
+    "shared articulated creature exists",
+    "same creature visible in both cameras",
+    "host looking away does not hide guest creature",
+    "hidden host pose sleeps while visible guest pose and both clocks advance",
+    "host camera return restores current pose",
+    "same local cover hides front camera but leaves back camera visible",
+    "host capture covered",
+    "guest0 capture visible-behind-cover",
+    "third rendered client joins running field",
+    "late client renders independently of hidden host",
+    "guest1 capture late-join",
+    "remote input still moves host collision body",
+    "moving client reconciles to host while cameras differ",
+    "removing cover restores rendering",
+    "guest receives host-approved excavation fixture",
+    "guest0 response surface_dig",
+    "guest excavation reaches all three render/collision worlds",
+    "all three peers have matching edits and current occluders",
+    "host capture after-dig",
+    "guest0 capture after-dig",
+    "guest1 capture after-dig",
+    "third client reconnects after excavation",
+    "reconnected client restores latest terrain and occlusion",
+    "reconnected camera restores creature animation",
+    "guest1 capture reconnected"
+  ],
+  "error": null,
+  "runtime_errors": [],
+  "evidence": {
+    "host-covered": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 133,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 38,
+      "edit_count": 0,
+      "watched": {
+        "clock": 33.0456820000001,
+        "id": "surface:0:-1:0",
+        "pose": 2891549998,
+        "visible": false
+      },
+      "terrain_hash": "d4455a0831bada2fd4f8c650736d210e98ce297b08225a642ac000e3dfa4b649",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          0.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ]
+      },
+      "tick_ms": 46121
+    },
+    "guest0-visible-behind-cover": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 279,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 31,
+      "edit_count": 0,
+      "watched": {
+        "clock": 33.8149160000001,
+        "id": "surface:0:-1:0",
+        "pose": 3675518233,
+        "visible": true
+      },
+      "terrain_hash": "d4455a0831bada2fd4f8c650736d210e98ce297b08225a642ac000e3dfa4b649",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          0.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ]
+      },
+      "tick_ms": 41878
+    },
+    "guest1-late-join": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 558,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 31,
+      "edit_count": 0,
+      "watched": {
+        "clock": 17.1725303333333,
+        "id": "surface:0:-1:0",
+        "pose": 4050882768,
+        "visible": true
+      },
+      "terrain_hash": "d4455a0831bada2fd4f8c650736d210e98ce297b08225a642ac000e3dfa4b649",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          0.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "8cf6fa8b083de9eeb8d4fb785315eac9": [
+          4.0,
+          2.00073838233948,
+          -2.0
+        ]
+      },
+      "tick_ms": 33923
+    },
+    "host-after-dig": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 604,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 38,
+      "edit_count": 1,
+      "watched": {
+        "clock": 70.281932,
+        "id": "surface:0:-1:0",
+        "pose": 3736672530,
+        "visible": true
+      },
+      "terrain_hash": "4bf776cdbe93838990ddf7fd59e6c50eb1d2babbfef1621613712209c33adca5",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          1.75000023841858,
+          2.00099539756775,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "8cf6fa8b083de9eeb8d4fb785315eac9": [
+          4.0,
+          0.697960615158081,
+          -2.0
+        ]
+      },
+      "tick_ms": 84585
+    },
+    "guest0-after-dig": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 688,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 31,
+      "edit_count": 1,
+      "watched": {
+        "clock": 71.9149160000001,
+        "id": "surface:0:-1:0",
+        "pose": 2755853053,
+        "visible": true
+      },
+      "terrain_hash": "4bf776cdbe93838990ddf7fd59e6c50eb1d2babbfef1621613712209c33adca5",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          1.75000023841858,
+          2.00099539756775,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "8cf6fa8b083de9eeb8d4fb785315eac9": [
+          4.0,
+          0.697960615158081,
+          -2.0
+        ]
+      },
+      "tick_ms": 81095
+    },
+    "guest1-after-dig": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 550,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 31,
+      "edit_count": 1,
+      "watched": {
+        "clock": 21.9391496666667,
+        "id": "surface:0:-1:0",
+        "pose": 859009285,
+        "visible": true
+      },
+      "terrain_hash": "4bf776cdbe93838990ddf7fd59e6c50eb1d2babbfef1621613712209c33adca5",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          1.75000023841858,
+          2.00099539756775,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "8cf6fa8b083de9eeb8d4fb785315eac9": [
+          4.0,
+          0.697960615158081,
+          -2.0
+        ]
+      },
+      "tick_ms": 39469
+    },
+    "guest1-reconnected": {
+      "active": true,
+      "viewport_size": [
+        1280,
+        800
+      ],
+      "renderer": "forward_plus",
+      "draw_calls": 558,
+      "occlusion": true,
+      "disable_3d": false,
+      "occluders_paired": true,
+      "occluder_chunks": 31,
+      "edit_count": 1,
+      "watched": {
+        "clock": 19.0834685555555,
+        "id": "surface:0:-1:0",
+        "pose": 2982520334,
+        "visible": true
+      },
+      "terrain_hash": "4bf776cdbe93838990ddf7fd59e6c50eb1d2babbfef1621613712209c33adca5",
+      "positions": {
+        "01d3e9009d52f6a7d1427bbba3f998fc": [
+          1.75000023841858,
+          2.00099539756775,
+          -2.0
+        ],
+        "5e6549e8623b9becb00afdaa2f590591": [
+          -4.0,
+          2.00007009506226,
+          -2.0
+        ],
+        "8cf6fa8b083de9eeb8d4fb785315eac9": [
+          4.0,
+          0.697863221168518,
+          -2.0
+        ]
+      },
+      "tick_ms": 32813
+    }
+  },
+  "workspace": "/private/var/folders/gx/y_kyc5wx23q_1cprsjvw6b2w0000gn/T/field-multiplayer-3_izjr4j",
+  "limitations": [
+    "앞선 중간 입장 1회는 180초 내 연결/필드 준비 완료를 확인하지 못했다. 같은 게임 코드에 접속 시각 로그를 추가한 최종 실행에서 중간 입장과 재접속이 통과했으나 최초 실패 원인은 미확정이다.",
+    "최종 로그에서 중간 입장의 초기 상태 수신→ACK 송신은 17ms, 재접속은 15ms였다. 입장 전 렌더 준비가 ACK를 장시간 막는다는 가설은 재현되지 않았다.",
+    "같은 M2의 3개 실제 렌더 프로세스 검사이며 독립 기기·6인 인터넷·성능 보장 검사가 아니다.",
+    "테스트 기반은 eb1429a2이며 후속 수영·수면 변경은 포함하지 않는다."
+  ]
+}
