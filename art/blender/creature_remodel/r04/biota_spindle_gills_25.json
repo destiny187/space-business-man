@@ -1,0 +1,215 @@
+{
+  "id": "biota_spindle_gills_25",
+  "name": "융빙깃여과분지뿔초식수",
+  "family": "biota_spindle_gills",
+  "construction": "cervid",
+  "organ_system": "gills",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "anatomy_note": "높은 네 갈래굽 다리·세운 목·분지 여과뿔 · 깃여과 기관 계통",
+  "source_id": "biota_spindle_gills_25",
+  "kind": "cervid",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "기저 저장층과 짧은 단열 주름 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "cervid",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "ram",
+  "host_motion": "charge",
+  "authored_anatomy": {
+    "type": "cervid",
+    "support_limb_count": 4,
+    "attachment_chains": 13,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "25758c7e6564ad94944e8d4ae70042cf555644731edc0770cd953a71f30712c7",
+  "normalized_geometry_sha256": "f21edcb6de7f646bdb969b2f7cbd226bd420753d7d3ea0c4a3c9c7b3b2d47511",
+  "source": "art/blender/creature_remodel/r04/biota_spindle_gills_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 30,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "charge_loop"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.6918998956680298,
+        1.6542999744415283
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.6918998956680298,
+        1.6542999744415283
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.6918998956680298,
+        1.6542999744415283
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.3291879892349243,
+        0.10000000149011612,
+        0.452349990606308
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.3291879892349243,
+        0.10000000149011612,
+        0.452349990606308
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.3291879892349243,
+        0.10000000149011612,
+        -0.4856500029563904
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.3291879892349243,
+        0.10000000149011612,
+        -0.4856500029563904
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3078603366279993,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4771835217733989,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    1.6918998956680298,
+    1.6542999744415283
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_spindle_gills_25_near.glb",
+      "sha256": "f7a6bf7dbab832af3f3351465adfae2b81ff63835ed16fff51d080f148a7a6e6",
+      "triangles": 47924,
+      "min": [
+        -0.6315886378288269,
+        0.02499999850988388,
+        -0.9523178935050964
+      ],
+      "max": [
+        0.649161696434021,
+        2.930737257003784,
+        1.6644997596740723
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_spindle_gills_25_far.glb",
+      "sha256": "879db2bd0bf1e99b6aeb9607320203acb8f8b69ea1da0385151cc6498138ce10",
+      "triangles": 20598,
+      "min": [
+        -0.6315886378288269,
+        0.02499999850988388,
+        -0.9528272747993469
+      ],
+      "max": [
+        0.649161696434021,
+        2.930737257003784,
+        1.6644997596740723
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial0"
+  },
+  "build_seconds": 14.339,
+  "source_render_seconds": 3.428
+}

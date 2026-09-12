@@ -1,0 +1,549 @@
+{
+  "actual_host_step": true,
+  "verified_cases": 24,
+  "records": [
+    {
+      "id": "biota_branch_armor_25",
+      "outcome": "hit",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 2,
+      "rendered_contacts": 2,
+      "max_foot_target_error": 0.00077714427607,
+      "host_behavior": "double_sweep",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "1f46daa8b7ac6d336c4d6f368293886c4800b4b62246809b0f3fd875cc9839ae",
+        "far": "8a75e257015f539f6b85ef98f3c6e9b1c4c0d94580a7d4bdc140165b703d3cbc"
+      }
+    },
+    {
+      "id": "biota_branch_armor_25",
+      "outcome": "miss",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00077714427607,
+      "host_behavior": "double_sweep",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "1f46daa8b7ac6d336c4d6f368293886c4800b4b62246809b0f3fd875cc9839ae",
+        "far": "8a75e257015f539f6b85ef98f3c6e9b1c4c0d94580a7d4bdc140165b703d3cbc"
+      }
+    },
+    {
+      "id": "biota_branch_armor_25",
+      "outcome": "blocked",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00077714427607,
+      "host_behavior": "double_sweep",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "1f46daa8b7ac6d336c4d6f368293886c4800b4b62246809b0f3fd875cc9839ae",
+        "far": "8a75e257015f539f6b85ef98f3c6e9b1c4c0d94580a7d4bdc140165b703d3cbc"
+      }
+    },
+    {
+      "id": "biota_crown_armor_26",
+      "outcome": "hit",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "rendered_contacts": 1,
+      "max_foot_target_error": 0.00025414582342,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "a3e9e606df2eff6946cf2ad1e37345a7840e6bde7a44a24896023b1a163fd423",
+        "far": "cd6c3caf8aeab5027b15f822a4d45a3097bb90860ae976ee65f52ecc5a5566fd"
+      }
+    },
+    {
+      "id": "biota_crown_armor_26",
+      "outcome": "miss",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00025414582342,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "a3e9e606df2eff6946cf2ad1e37345a7840e6bde7a44a24896023b1a163fd423",
+        "far": "cd6c3caf8aeab5027b15f822a4d45a3097bb90860ae976ee65f52ecc5a5566fd"
+      }
+    },
+    {
+      "id": "biota_crown_armor_26",
+      "outcome": "blocked",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00025414582342,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "a3e9e606df2eff6946cf2ad1e37345a7840e6bde7a44a24896023b1a163fd423",
+        "far": "cd6c3caf8aeab5027b15f822a4d45a3097bb90860ae976ee65f52ecc5a5566fd"
+      }
+    },
+    {
+      "id": "biota_lobopod_armor_25",
+      "outcome": "hit",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "rendered_contacts": 1,
+      "max_foot_target_error": 0.00013549413416,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "15809ca60399cf451c3d6d2a0437dd4290da71fcc947b07220c790e5c1519162",
+        "far": "e2753d358c470fe87fc0fcda93e83540bd39d182a7a5678ebf56070feac6077f"
+      }
+    },
+    {
+      "id": "biota_lobopod_armor_25",
+      "outcome": "miss",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00013549413416,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "15809ca60399cf451c3d6d2a0437dd4290da71fcc947b07220c790e5c1519162",
+        "far": "e2753d358c470fe87fc0fcda93e83540bd39d182a7a5678ebf56070feac6077f"
+      }
+    },
+    {
+      "id": "biota_lobopod_armor_25",
+      "outcome": "blocked",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00013549413416,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "15809ca60399cf451c3d6d2a0437dd4290da71fcc947b07220c790e5c1519162",
+        "far": "e2753d358c470fe87fc0fcda93e83540bd39d182a7a5678ebf56070feac6077f"
+      }
+    },
+    {
+      "id": "biota_lobopod_gills_26",
+      "outcome": "hit",
+      "clips": [
+        "leap_prepare",
+        "leap_air",
+        "leap_land"
+      ],
+      "damage_events": 1,
+      "rendered_contacts": 1,
+      "max_foot_target_error": 0.00064362108242,
+      "host_behavior": "leap",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "47f7658b37229d8b527ccee51ffde5233f5482f5fc4a6fa91927b414a1b920fb",
+        "far": "6d51f4d28a01a2e302eaddd97b8e2b3fb838f999463c7570b80e0f2022e8cd1b"
+      }
+    },
+    {
+      "id": "biota_lobopod_gills_26",
+      "outcome": "miss",
+      "clips": [
+        "leap_prepare",
+        "leap_air",
+        "leap_land"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00064362108242,
+      "host_behavior": "leap",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "47f7658b37229d8b527ccee51ffde5233f5482f5fc4a6fa91927b414a1b920fb",
+        "far": "6d51f4d28a01a2e302eaddd97b8e2b3fb838f999463c7570b80e0f2022e8cd1b"
+      }
+    },
+    {
+      "id": "biota_lobopod_gills_26",
+      "outcome": "blocked",
+      "clips": [
+        "leap_prepare",
+        "leap_air",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00020001841767,
+      "host_behavior": "leap",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "47f7658b37229d8b527ccee51ffde5233f5482f5fc4a6fa91927b414a1b920fb",
+        "far": "6d51f4d28a01a2e302eaddd97b8e2b3fb838f999463c7570b80e0f2022e8cd1b"
+      }
+    },
+    {
+      "id": "biota_radial_armor_26",
+      "outcome": "hit",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "rendered_contacts": 1,
+      "max_foot_target_error": 0.00033303996315,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "ab40525e88dff821d89211e22ffa472c9364dfea8b0d67412fb081060d1c03a0",
+        "far": "2b371aebb2b3a36d144f480a201e4c0fb88e3a75d365aec664048c197dc6a6ee"
+      }
+    },
+    {
+      "id": "biota_radial_armor_26",
+      "outcome": "miss",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00033303996315,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "ab40525e88dff821d89211e22ffa472c9364dfea8b0d67412fb081060d1c03a0",
+        "far": "2b371aebb2b3a36d144f480a201e4c0fb88e3a75d365aec664048c197dc6a6ee"
+      }
+    },
+    {
+      "id": "biota_radial_armor_26",
+      "outcome": "blocked",
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "rendered_contacts": 0,
+      "max_foot_target_error": 0.00033303996315,
+      "host_behavior": "melee",
+      "evidence_origin": "r04-host-review.log; all checks before this case passed",
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "ab40525e88dff821d89211e22ffa472c9364dfea8b0d67412fb081060d1c03a0",
+        "far": "2b371aebb2b3a36d144f480a201e4c0fb88e3a75d365aec664048c197dc6a6ee"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_saddle_armor_25_hit_012.png",
+        "biota_saddle_armor_25_hit_028.png",
+        "biota_saddle_armor_25_hit_040.png",
+        "biota_saddle_armor_25_hit_049.png",
+        "biota_saddle_armor_25_hit_060.png",
+        "biota_saddle_armor_25_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_armor_25",
+      "max_foot_target_error": 0.0032170342747122,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f296986936b260c93f1735714f07c50f1de9a7fe074379a150d6166d91a9566d",
+        "far": "f89967527041bc2e0ad8ec8040a9b5933dbed7abf4449bd735f8154ba86ba84f"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_armor_25_miss_012.png",
+        "biota_saddle_armor_25_miss_028.png",
+        "biota_saddle_armor_25_miss_040.png",
+        "biota_saddle_armor_25_miss_049.png",
+        "biota_saddle_armor_25_miss_060.png",
+        "biota_saddle_armor_25_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_armor_25",
+      "max_foot_target_error": 0.000788831093814224,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f296986936b260c93f1735714f07c50f1de9a7fe074379a150d6166d91a9566d",
+        "far": "f89967527041bc2e0ad8ec8040a9b5933dbed7abf4449bd735f8154ba86ba84f"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_armor_25_blocked_012.png",
+        "biota_saddle_armor_25_blocked_028.png",
+        "biota_saddle_armor_25_blocked_040.png",
+        "biota_saddle_armor_25_blocked_049.png",
+        "biota_saddle_armor_25_blocked_060.png",
+        "biota_saddle_armor_25_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_armor_25",
+      "max_foot_target_error": 0.00111853599082679,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f296986936b260c93f1735714f07c50f1de9a7fe074379a150d6166d91a9566d",
+        "far": "f89967527041bc2e0ad8ec8040a9b5933dbed7abf4449bd735f8154ba86ba84f"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_saddle_armor_26_hit_012.png",
+        "biota_saddle_armor_26_hit_028.png",
+        "biota_saddle_armor_26_hit_040.png",
+        "biota_saddle_armor_26_hit_049.png",
+        "biota_saddle_armor_26_hit_060.png",
+        "biota_saddle_armor_26_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_armor_26",
+      "max_foot_target_error": 0.000972742680460215,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "6e814eb0eec638db00140f5510f074bff33508ce7d44e34214b309afa6d111a5",
+        "far": "273267a40f560e163f3bc4fea9ad896afcc1c77c9b062f85543f5f72408793b4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_armor_26_miss_012.png",
+        "biota_saddle_armor_26_miss_028.png",
+        "biota_saddle_armor_26_miss_040.png",
+        "biota_saddle_armor_26_miss_049.png",
+        "biota_saddle_armor_26_miss_060.png",
+        "biota_saddle_armor_26_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_armor_26",
+      "max_foot_target_error": 0.000517374253831804,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "6e814eb0eec638db00140f5510f074bff33508ce7d44e34214b309afa6d111a5",
+        "far": "273267a40f560e163f3bc4fea9ad896afcc1c77c9b062f85543f5f72408793b4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_armor_26_blocked_012.png",
+        "biota_saddle_armor_26_blocked_028.png",
+        "biota_saddle_armor_26_blocked_040.png",
+        "biota_saddle_armor_26_blocked_049.png",
+        "biota_saddle_armor_26_blocked_060.png",
+        "biota_saddle_armor_26_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_armor_26",
+      "max_foot_target_error": 0.0030287061817944,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "6e814eb0eec638db00140f5510f074bff33508ce7d44e34214b309afa6d111a5",
+        "far": "273267a40f560e163f3bc4fea9ad896afcc1c77c9b062f85543f5f72408793b4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_spindle_gills_25_hit_012.png",
+        "biota_spindle_gills_25_hit_028.png",
+        "biota_spindle_gills_25_hit_040.png",
+        "biota_spindle_gills_25_hit_049.png",
+        "biota_spindle_gills_25_hit_060.png",
+        "biota_spindle_gills_25_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_spindle_gills_25",
+      "max_foot_target_error": 0.00458126422017813,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f7a6bf7dbab832af3f3351465adfae2b81ff63835ed16fff51d080f148a7a6e6",
+        "far": "879db2bd0bf1e99b6aeb9607320203acb8f8b69ea1da0385151cc6498138ce10"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_spindle_gills_25_miss_012.png",
+        "biota_spindle_gills_25_miss_028.png",
+        "biota_spindle_gills_25_miss_040.png",
+        "biota_spindle_gills_25_miss_049.png",
+        "biota_spindle_gills_25_miss_060.png",
+        "biota_spindle_gills_25_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_spindle_gills_25",
+      "max_foot_target_error": 0.000603224616497755,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f7a6bf7dbab832af3f3351465adfae2b81ff63835ed16fff51d080f148a7a6e6",
+        "far": "879db2bd0bf1e99b6aeb9607320203acb8f8b69ea1da0385151cc6498138ce10"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_spindle_gills_25_blocked_012.png",
+        "biota_spindle_gills_25_blocked_028.png",
+        "biota_spindle_gills_25_blocked_040.png",
+        "biota_spindle_gills_25_blocked_049.png",
+        "biota_spindle_gills_25_blocked_060.png",
+        "biota_spindle_gills_25_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_spindle_gills_25",
+      "max_foot_target_error": 0.00094314687885344,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f7a6bf7dbab832af3f3351465adfae2b81ff63835ed16fff51d080f148a7a6e6",
+        "far": "879db2bd0bf1e99b6aeb9607320203acb8f8b69ea1da0385151cc6498138ce10"
+      }
+    }
+  ]
+}

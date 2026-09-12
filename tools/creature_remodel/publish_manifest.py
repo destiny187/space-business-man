@@ -18,11 +18,21 @@ def main(batch):
     elif batch=='r04':
         from produce_midpoints import recipes,fingerprint
         expected={s['id']:fingerprint(s) for s in recipes()}
+    elif batch=='r05':
+        from produce_air import recipes,fingerprint
+        expected={s['id']:fingerprint(s) for s in recipes()}
+    elif batch=='r06':
+        from produce_legacy import recipes,fingerprint
+        expected={s['id']:fingerprint(s) for s in recipes()}
     for p in sorted((ROOT/'art/blender/creature_remodel'/batch).glob('*.json')):
+        if p.with_suffix('.lock').exists():continue
         row=json.loads(p.read_text())
         if expected and row['build_fingerprint']!=expected.get(row['id']):
             print('STALE_CHECKPOINT',row['id']);continue
         if any(not (ROOT/l['path']).exists() or hashlib.sha256((ROOT/l['path']).read_bytes()).hexdigest()!=l['sha256'] for l in row['lods'].values()):raise ValueError('Incomplete asset '+row['id'])
+        # Describe the two authored peaks, without rebuilding meshes or changing host timing.
+        if batch in ['r04','r06'] and row.get('host_motion')=='double_sweep':
+            row['motion_profile'].update(release=[1.03,1.55],active_end=1.77)
         rows.append(row)
         # Small per-species runtime records; build audit and skeleton graphs remain offline.
         runtime={k:row[k] for k in ['id','source_id','name','kind','palette','attack','bone_count','locomotion_chains','clips','muzzle','lods','motion_profile','sockets']}

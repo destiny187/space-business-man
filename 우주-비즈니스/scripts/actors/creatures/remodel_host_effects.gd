@@ -29,11 +29,14 @@ func sync(actor: Node3D,draw: bool) -> void:
 		if normal.length_squared()<.01:normal=-actor.global_basis.z
 		var shield_now:=float(member.get("vitals",{}).get("shield",0))
 		var shield_hit: bool=float(shield_before.get(id,shield_now))>shield_now or shield_now>0
-		impact({"kind":"shield" if shield_hit else "organic","point":at+normal*.26,"normal":normal},"ram" if actor.combat_info.get("behavior","")=="charge" else "slam")
+		var kind: String="slash" if actor.combat_info.get("pattern","") in ["claw","scythe"] else "ram"
+		impact({"kind":"shield" if shield_hit else "organic","point":at+normal*.26,"normal":normal},kind)
 		emitted_contacts+=1
 	var pulses:=int(attack.get("pulses",0));var blocked: bool=attack.get("blocked",false)
 	if draw and phase=="attack" and actor.combat_info.get("behavior","")=="leap" and pulses>=2 and last_pulses<2 and not blocked:
 		impact({"kind":"terrain","point":actor.global_position+Vector3.UP*.035,"normal":actor.global_basis.y},"slam",.8)
+	if draw and phase=="attack" and actor.combat_info.get("behavior","")=="shockwave" and pulses>=1 and last_pulses<1:
+		impact({"kind":"terrain","point":actor.global_position+Vector3.UP*.035,"normal":actor.global_basis.y},"slam",1.)
 	if draw and blocked and not was_blocked and attack.get("hits",{}).is_empty():
 		impact({"kind":"terrain","point":mouth,"normal":-actor.global_basis.z},"ram",.55)
 	last_pulses=pulses;was_blocked=blocked

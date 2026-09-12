@@ -7,11 +7,14 @@ ROOT=Path(__file__).resolve().parents[2];MEDIA=ROOT/'docs/production/media/creat
 FONT=ROOT/'우주-비즈니스/assets/fonts/NotoSansKR.ttf'
 def audit():
     forms=json.loads((ROOT/'우주-비즈니스/data/creature_remodel_r03.json').read_text())['forms'];rows=[];topologies=set();hashes=set()
+    previous_path=MEDIA/'evidence.json';previous=json.loads(previous_path.read_text()) if previous_path.exists() else {}
+    verified={r['id']:r['asset_sha256'] for r in previous.get('species',[])}
     queue=json.loads((ROOT/'docs/production/media/creature-remodel/queue.json').read_text())
     for name,digest in queue['catalog_sha256'].items():assert sha(ROOT/f'우주-비즈니스/data/bestiary/{name}.json')==digest
     for form in forms:
         evidence_file=OUTPUT/(form['id']+'_evidence.json');assert evidence_file.exists(),form['id']
         evidence=json.loads(evidence_file.read_text());assert evidence['renderer']=='forward_plus';r=evidence['species']
+        assert r['id']==form['id'],(form['id'],'evidence belongs to another species')
         assert r['host_attack']=='none' and r['root_error']<.00001 and r['bone_motion']>.01
         assert r['max_foot_target_error']<.025,(form['id'],r['max_foot_target_error'])
         assert r['limb_phase_checks']==form['morphology']['limb_count']==form['locomotion_chains']
@@ -21,7 +24,7 @@ def audit():
         topologies.add(branch(None))
         for lod,asset in form['lods'].items():
             assert sha(ROOT/asset['path'])==asset['sha256']==r['asset_sha256'][lod]
-            glb_check(ROOT/asset['path'],form)
+            if verified.get(form['id'],{}).get(lod)!=asset['sha256']:glb_check(ROOT/asset['path'],form)
         for state in ['idle','walk','run','feed','prepare','strike','recover','down','far']:assert (OUTPUT/f"{form['id']}_{state}.png").exists()
         rows.append(r)
     result={'renderer':'forward_plus','reviewed_count':len(rows),'unique_normalized_geometry':len(hashes),'unique_skeleton_parent_graphs':len(topologies),'max_foot_target_error':max(r['max_foot_target_error'] for r in rows),'original_catalog_hashes_unchanged':True,'species':rows}

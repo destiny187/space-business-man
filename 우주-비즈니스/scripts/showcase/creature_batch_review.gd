@@ -32,6 +32,8 @@ func run() -> void:
 				var previous: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(checkpoint))
 				if previous.get("renderer","")=="forward_plus" and previous.species.asset_sha256=={"near":form.lods.near.sha256,"far":form.lods.far.sha256}:continue
 		await review_batch(form)
+		if report.is_empty() or report[-1].id!=form.id:
+			push_error("Incomplete species review: "+str(form.id));quit(1);return
 		FileAccess.open(folder+"/"+form.id+"_evidence.json",FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"species":report[-1]},"\t"))
 	var evidence_name:="/diagnostic-evidence.json" if "--diagnostic" in OS.get_cmdline_user_args() else ("/video-evidence.json" if video else "/evidence.json")
 	FileAccess.open(folder+evidence_name,FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"actor":"bestiary_actor.gd","species":report},"\t"))
@@ -65,7 +67,7 @@ func review_batch(form: Dictionary) -> void:
 	actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes);stage.add_child(actor);actor.set_process(false)
 	assert(actor.finish_lods() and actor.models.size()==2)
 	assert(actor.ground_motion.authored_limbs.size()==int(form.locomotion_chains))
-	assert(actor.set_state("attack")== (host_pattern!="none"));actor.set_state("idle")
+	assert(actor.set_state("attack")== (original.get("attack","none")!="none"));actor.set_state("idle")
 	var host_profile:=FrontierWildlifeCombat.profile({"form_id":original.id,"look_id":FrontierEcologyCatalog.look_for_seed(original.id,0),"combat_tier":5})
 	var fast_speed: float=host_profile.speed
 	var motion=actor.ground_motion;var max_error:=0.;var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0

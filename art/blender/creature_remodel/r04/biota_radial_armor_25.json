@@ -1,0 +1,212 @@
+{
+  "id": "biota_radial_armor_25",
+  "name": "차열겹갑열판등딱지수",
+  "family": "biota_radial_armor",
+  "construction": "chelonian",
+  "organ_system": "armor",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "anatomy_note": "둥근 등딱지·접히는 목·짧은 사지·겹친 차열 판 · 겹갑 기관 계통",
+  "source_id": "biota_radial_armor_25",
+  "kind": "chelonian",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "겹친 광물성 차열판·좁은 보호 기공의 가상 고온 생리 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "chelonian",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "none",
+  "host_motion": "",
+  "authored_anatomy": {
+    "type": "chelonian",
+    "support_limb_count": 4,
+    "attachment_chains": 11,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "2b6a5d6ffb8e95c5ff74c154bc141057811eee2be2653786d3b6fa02741a655b",
+  "normalized_geometry_sha256": "050d097111a4983e078c9747c9cd712db12627f8518e2728e1f18b8211123b07",
+  "source": "art/blender/creature_remodel/r04/biota_radial_armor_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 28,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.35599997639656067,
+        1.4788999557495117
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.35599997639656067,
+        1.4788999557495117
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.35599997639656067,
+        1.4788999557495117
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.8823999762535095,
+        0.10000000149011612,
+        0.5402600169181824
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.8823999762535095,
+        0.10000000149011612,
+        0.5402600169181824
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.8823999762535095,
+        0.10000000149011612,
+        -0.5765399932861328
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.8823999762535095,
+        0.10000000149011612,
+        -0.5765399932861328
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.22211910803382395,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3442846174524271,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.35599997639656067,
+    1.4788999557495117
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_radial_armor_25_near.glb",
+      "sha256": "126876c21d65aa90b62946a77c2068e5a4842f355f0e10509b4e9502eb0885c3",
+      "triangles": 35248,
+      "min": [
+        -1.0469999313354492,
+        0.02499999850988388,
+        -1.0504553318023682
+      ],
+      "max": [
+        1.0470000505447388,
+        1.3944507837295532,
+        1.460499882698059
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_radial_armor_25_far.glb",
+      "sha256": "6a1ce6dc146a2e8e87ad8490660a69d785a1f897e7bf57ce57821e6cb9fdc91d",
+      "triangles": 15148,
+      "min": [
+        -1.046987771987915,
+        0.02499714121222496,
+        -1.0514768362045288
+      ],
+      "max": [
+        1.046879529953003,
+        1.3944507837295532,
+        1.460499882698059
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial0"
+  },
+  "build_seconds": 14.19,
+  "source_render_seconds": 3.487
+}

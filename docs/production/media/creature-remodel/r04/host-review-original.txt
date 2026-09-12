@@ -1,0 +1,159 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS natural native home landing
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:305183","ordinal":305183,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:305183","combat_tier":4,"form_id":"biota_lobopod_siphons_25","home_point":"(37.4736, 2.031343, 20.76)","id":"surface:1:0:0","introduced":false,"layer":"surface","look_id":"biota_lobopod_siphons_25_p00_s03","point":"(37.4736, 2.031343, 20.76)","status":"active","terrestrial":true,"yaw":0.433539786195391}}
+PASS host terrain fixture
+PASS host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_branch_armor_25 hit ["attack"] hits=2 IK=0.00077714427607
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_branch_armor_25 miss ["attack"] hits=0 IK=0.00077714427607
+PASS host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_branch_armor_25 blocked ["attack"] hits=0 IK=0.00077714427607
+PASS host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_crown_armor_26 hit ["attack"] hits=1 IK=0.00025414582342
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_crown_armor_26 miss ["attack"] hits=0 IK=0.00025414582342
+PASS host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_crown_armor_26 blocked ["attack"] hits=0 IK=0.00025414582342
+PASS host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_lobopod_armor_25 hit ["attack"] hits=1 IK=0.00013549413416
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_lobopod_armor_25 miss ["attack"] hits=0 IK=0.00013549413416
+PASS host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_lobopod_armor_25 blocked ["attack"] hits=0 IK=0.00013549413416
+PASS host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_lobopod_gills_26 hit ["leap_prepare", "leap_air", "leap_land"] hits=1 IK=0.00064362108242
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_lobopod_gills_26 miss ["leap_prepare", "leap_air", "leap_land"] hits=0 IK=0.00064362108242
+PASS host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_lobopod_gills_26 blocked ["leap_prepare", "leap_air", "blocked"] hits=0 IK=0.00020001841767
+PASS host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_radial_armor_26 hit ["attack"] hits=1 IK=0.00033303996315
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_radial_armor_26 miss ["attack"] hits=0 IK=0.00033303996315
+PASS host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_radial_armor_26 blocked ["attack"] hits=0 IK=0.00033303996315
+FAIL: host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_saddle_armor_25 hit ["attack", "charge_loop", "blocked"] hits=1 IK=0.0421581082046
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_saddle_armor_25 miss ["attack", "charge_loop"] hits=0 IK=0.00078883109381
+FAIL: host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_saddle_armor_25 blocked ["attack", "charge_loop", "blocked"] hits=0 IK=0.03990504145622
+FAIL: host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_saddle_armor_26 hit ["attack", "charge_loop", "blocked"] hits=1 IK=0.03760164231062
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_saddle_armor_26 miss ["attack", "charge_loop"] hits=0 IK=0.00051737425383
+FAIL: host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_saddle_armor_26 blocked ["attack", "charge_loop", "blocked"] hits=0 IK=0.03497364744544
+FAIL: host root and charging contact
+PASS host contact outcome hit
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+PASS host-compatible clips
+REMODEL_HOST biota_spindle_gills_25 hit ["attack", "charge_loop", "blocked"] hits=1 IK=0.04647852480412
+PASS host root and charging contact
+PASS host contact outcome miss
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_spindle_gills_25 miss ["attack", "charge_loop"] hits=0 IK=0.0006032246165
+FAIL: host root and charging contact
+PASS host contact outcome blocked
+PASS only confirmed host hits create contact effects
+PASS art does not mutate attack balance
+PASS presentation preserves host state and unrelated actor
+REMODEL_HOST biota_spindle_gills_25 blocked ["attack", "charge_loop", "blocked"] hits=0 IK=0.07375448942184
+REMODEL_HOST_REVIEW 24 FAILURES 6

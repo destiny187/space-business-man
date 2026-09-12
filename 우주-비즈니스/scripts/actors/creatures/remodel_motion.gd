@@ -145,7 +145,8 @@ func flight_clip() -> Dictionary:
 	var air_time: float=float(cfg.cycle_seconds)-float(cfg.rest_seconds)
 	if phase_time<transition:return {"clip":"takeoff","clock":clampf(phase_time/transition,0,1)*5.}
 	if phase_time>air_time-transition:return {"clip":"landing","clock":clampf((phase_time-air_time+transition)/transition,0,1)*5.}
-	return {"clip":"flight_loop","clock":fposmod(actor.flight_clock,2.)}
+	var clock_scale:=float(cfg.flap_hz)/float(profile.flight_reference_hz) if profile.has("flight_reference_hz") else 1.
+	return {"clip":"flight_loop","clock":fposmod(actor.flight_clock*clock_scale,2.)}
 
 func host_clip() -> Dictionary:
 	if not actor.combat_override or actor.combat_phase!="attack":return {}
@@ -159,6 +160,22 @@ func host_clip() -> Dictionary:
 		if t<wind:return {"clip":"leap_prepare","clock":.8*clampf(t/maxf(.001,wind),0,1)}
 		if t<wind+active:return {"clip":"leap_air","clock":clampf((t-wind)/maxf(.001,active),0,1)}
 		return {"clip":"leap_land","clock":.7*clampf((t-wind-active)/maxf(.001,actor.recovery_seconds),0,1)}
+	if art.get("host_motion","") in ["melee","double_sweep","shockwave"]:
+		var host_times: Array=[0.,wind]
+		var art_times: Array=[0.,float(profile.prepare)]
+		var contacts: Array=profile.release
+		if art.host_motion=="double_sweep":
+			assert(contacts.size()==2)
+			host_times.append(wind+float(actor.combat_info.first_strike));art_times.append(float(contacts[0]))
+			host_times.append(wind+float(actor.combat_info.first_strike)+float(actor.combat_info.second_strike));art_times.append(float(contacts[1]))
+		else:
+			host_times.append(wind+(float(actor.combat_info.impact_delay) if art.host_motion=="shockwave" else active*.45));art_times.append(float(contacts[0]))
+		host_times.append(wind+active);art_times.append(float(profile.active_end))
+		host_times.append(wind+active+actor.recovery_seconds);art_times.append(float(profile.duration))
+		for i in range(1,host_times.size()):
+			if t<=float(host_times[i]):
+				return {"clip":"attack","clock":lerpf(float(art_times[i-1]),float(art_times[i]),clampf((t-float(host_times[i-1]))/maxf(.001,float(host_times[i])-float(host_times[i-1])),0,1))}
+		return {"clip":"attack","clock":float(profile.duration)}
 	return {}
 
 func attack_clock() -> float:
@@ -219,7 +236,6 @@ func limb_phase(name: String) -> float:
 
 func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 	if art.get("air_motion",false) and actor.flight_blend>.0001:return
-	var charging:=wanted_clip=="charge_loop"
 	var host_grounded: bool=actor.combat_override and art.has("host_motion") and float(actor.combat_live.get("air_height",0))<=.02 and wanted_clip in ["attack","charge_loop","leap_prepare","leap_land","blocked"]
 	if actor.state=="dormant" or (actor.state=="attack" and not host_grounded) or (actor.combat_override and actor.combat_phase in ["hurt","down","attack"] and not host_grounded):
 		planted.clear();return
@@ -234,16 +250,38 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 		var root_pose:=skeleton.get_bone_global_pose(root_bone)
 		root_pose.origin.y-=leg_length*.075
 		set_global_pose(skeleton,root_bone,root_pose)
+	# Recoil can raise the front hip above the entire leg's vertical reach. Lower the
+	# torso a little before moving individual feet; an inward step alone cannot fix that.
+	var prepared_ground: Dictionary={}
+	var crouch:=0.0
+	var recoil_support: bool=host_grounded and art.get("host_motion","")=="charge"
+	for limb in (authored_limbs if recoil_support else []):
+		var foot:=skeleton.find_bone(limb.foot);var lower:=skeleton.find_bone(limb.lower);var upper:=skeleton.find_bone(limb.upper)
+		var at:=skeleton.global_transform*skeleton.get_bone_global_pose(foot).origin
+		var hit: Dictionary=ground_sample(limb.name,at,float(limb.length)*actor.base_scale);prepared_ground[limb.name]=hit
+		if hit.get("missing",false):continue
+		if moving and fposmod(phase+limb_phase(limb.name),1.)>=float(data.stance):continue
+		var hip:=skeleton.global_transform*skeleton.get_bone_global_pose(upper).origin
+		var length_value: float=(skeleton.get_bone_global_pose(upper).origin.distance_to(skeleton.get_bone_global_pose(lower).origin)+skeleton.get_bone_global_pose(lower).origin.distance_to(skeleton.get_bone_global_pose(foot).origin))*actor.base_scale
+		var required: float=(hip-Vector3(hit.point)).dot(visual.global_basis.y)-float(limb.sole)*actor.base_scale-length_value*.94
+		crouch=maxf(crouch,required)
+	if crouch>.0001 and kind!="hopper":
+		var root_bone:=skeleton.find_bone("root");var root_pose:=skeleton.get_bone_global_pose(root_bone)
+		root_pose.origin.y-=minf(crouch,leg_length*actor.base_scale*.18)/maxf(.001,skeleton.global_basis.y.length())
+		set_global_pose(skeleton,root_bone,root_pose)
 	for limb in authored_limbs:
 		var foot:=skeleton.find_bone(limb.foot);var lower:=skeleton.find_bone(limb.lower);var upper:=skeleton.find_bone(limb.upper)
 		var original:=skeleton.global_transform*skeleton.get_bone_global_pose(foot).origin
-		var hit: Dictionary=ground_sample(limb.name,original,float(limb.length)*actor.base_scale)
+		var hit: Dictionary=prepared_ground.get(limb.name,{})
+		if hit.is_empty():hit=ground_sample(limb.name,original,float(limb.length)*actor.base_scale)
 		if hit.get("missing",false):planted.erase(limb.name);continue
 		var fraction:=fposmod(phase+limb_phase(limb.name),1.)
 		var cycle:=floori(phase+limb_phase(limb.name))
 		var stance_now: bool=not moving or fraction<float(data.stance)
 		if kind=="hopper" and moving:stance_now=fraction<.27 or fraction>=.80
 		if wanted_clip.begins_with("turn_") or wanted_clip=="stop":stance_now=false
+		var lifted: Array=profile.get("attack_unplanted_limbs",{}).get(limb.name,[])
+		if wanted_clip=="attack" and not lifted.is_empty() and pose_clock>=float(lifted[0]) and pose_clock<=float(lifted[1]):stance_now=false
 		var sole: float=float(limb.sole)*actor.base_scale
 		var destination:=original
 		# A local ground delta preserves the authored foot lift and whole-body hop.
@@ -263,8 +301,13 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 		else:planted.erase(limb.name)
 		var hip_world:=skeleton.global_transform*skeleton.get_bone_global_pose(upper).origin
 		var actual_reach: float=(skeleton.get_bone_global_pose(upper).origin.distance_to(skeleton.get_bone_global_pose(lower).origin)+skeleton.get_bone_global_pose(lower).origin.distance_to(skeleton.get_bone_global_pose(foot).origin))*actor.base_scale
+		var proximal: float=skeleton.get_bone_global_pose(upper).origin.distance_to(skeleton.get_bone_global_pose(lower).origin)*actor.base_scale
+		var distal: float=skeleton.get_bone_global_pose(lower).origin.distance_to(skeleton.get_bone_global_pose(foot).origin)*actor.base_scale
+		var minimum_reach: float=absf(proximal-distal)+.004*actor.base_scale
 		# Release a trailing foot before the joint reaches its physical limit. Replant next cycle.
-		if moving and stance_now and hip_world.distance_to(destination)>actual_reach*.975:
+		# Unequal segments also have an inner reach limit; short, broad walkers must lift
+		# before their planted foot passes underneath a knee that cannot fold any further.
+		if moving and stance_now and (hip_world.distance_to(destination)>actual_reach*.975 or hip_world.distance_to(destination)<minimum_reach):
 			if not released_feet.has(limb.name) or released_feet[limb.name].cycle!=cycle:
 				released_feet[limb.name]={"cycle":cycle,"phase":phase,"from":destination}
 		if moving and released_feet.has(limb.name) and released_feet[limb.name].cycle==cycle:

@@ -4,6 +4,7 @@ from collections import Counter
 import json,hashlib,struct,math,sys,subprocess
 from PIL import Image,ImageDraw,ImageFont
 import imageio_ffmpeg
+import numpy as np
 from recipes import recipes
 ROOT=Path(__file__).resolve().parents[2]
 MEDIA=ROOT/'docs/production/media/creature-remodel/r02'
@@ -20,25 +21,26 @@ def glb_check(path,expected):
         a=data['accessors'][index];view=data['bufferViews'][a['bufferView']];n={'SCALAR':1,'VEC2':2,'VEC3':3,'VEC4':4,'MAT4':16}[a['type']]
         code,bytesize={5121:('B',1),5123:('H',2),5125:('I',4),5126:('f',4)}[a['componentType']]
         stride=view.get('byteStride',n*bytesize);offset=view.get('byteOffset',0)+a.get('byteOffset',0)
-        return [struct.unpack_from('<'+code*n,binary,offset+i*stride) for i in range(a['count'])]
+        dtype={5121:np.dtype('u1'),5123:np.dtype('<u2'),5125:np.dtype('<u4'),5126:np.dtype('<f4')}[a['componentType']]
+        return np.ndarray((a['count'],n),dtype=dtype,buffer=binary,offset=offset,strides=(stride,bytesize))
     assert set(a['name'] for a in data['animations'])==set(expected['clips'])
     assert len(data['skins'])==1 and len(data['skins'][0]['joints'])==expected['bone_count']
     count=0;max_weight_error=0
     for mesh in data['meshes']:
         for p in mesh['primitives']:
-            attrs=p['attributes'];positions=accessor(attrs['POSITION']);assert all(math.isfinite(x) for v in positions for x in v)
+            attrs=p['attributes'];positions=accessor(attrs['POSITION']);assert np.isfinite(positions).all()
             assert 'WEIGHTS_0' in attrs and 'JOINTS_0' in attrs
             weights=accessor(attrs['WEIGHTS_0']);joints=accessor(attrs['JOINTS_0'])
-            for row in weights:
-                assert all(math.isfinite(x) and x>=0 for x in row);error=abs(sum(row)-1);max_weight_error=max(max_weight_error,error);assert error<.0001
-            assert all(0<=j<expected['bone_count'] for row in joints for j in row);count+=len(positions)
+            assert np.isfinite(weights).all() and (weights>=0).all()
+            error=float(np.abs(weights.astype(np.float64).sum(axis=1)-1).max());max_weight_error=max(max_weight_error,error);assert error<.0001
+            assert (joints>=0).all() and (joints<expected['bone_count']).all();count+=len(positions)
     for animation in data['animations']:
         assert animation['channels']
         for sampler in animation['samplers']:
-            values=accessor(sampler['output']);assert all(math.isfinite(x) for row in values for x in row)
-            if animation['name'] in ['idle_loop','move_loop','run_loop','feed']:
+            values=accessor(sampler['output']);assert np.isfinite(values).all()
+            if animation['name'].endswith('_loop') or animation['name']=='feed':
                 # Regression for the feed endpoint: every exported skeletal track closes its loop.
-                assert max(abs(a-b) for a,b in zip(values[0],values[-1]))<.0001,(path,animation['name'])
+                assert float(np.abs(values[0]-values[-1]).max())<.0001,(path,animation['name'])
     return {'weighted_vertices':count,'max_weight_sum_error':max_weight_error}
 
 def audit():
