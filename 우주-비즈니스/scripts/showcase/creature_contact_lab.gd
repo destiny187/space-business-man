@@ -85,7 +85,7 @@ func accept(event: Dictionary,key: String) -> void:
 	var result: Dictionary=Contacts.apply_once(event,ledger,state,key,float(profile.damage))
 	if result.is_empty():return
 	fx.impact(result,str(profile.effect),1.2 if profile.effect in ["ram","slam"] else 1.0)
-	events.append({"form":current.id,"case":outcome,"time":attack_time,"stroke":key,"kind":result.kind,"damage":result.damage,"absorbed":result.absorbed,"point":[result.point.x,result.point.y,result.point.z]})
+	events.append({"form":current.id,"case":outcome,"time":attack_time,"stroke":key,"kind":result.kind,"damage":result.damage,"absorbed":result.absorbed,"point":[result.point.x,result.point.y,result.point.z],"contact_distance_from_body":actor.global_position.distance_to(result.point)})
 	if result.kind in ["organic","shield"]:
 		defender.flash_hit(result.kind=="shield")
 		hurt_time=0;defender.restart("blocked" if result.kind=="shield" else "hurt")
@@ -150,13 +150,14 @@ func attack_step(delta: float) -> void:
 			var socket: String="Socket_Strike" if profile.effect=="ram" else ("Socket_leg0_-1" if i==0 else "Socket_leg0_1")
 			if profile.effect=="slam":
 				if previous<release and attack_time>=release:
-					var point: Vector3=(actor.contact_point("Socket_hind-1")+actor.contact_point("Socket_hind1"))*.5+Vector3.BACK*.5;point.y=.03
+					var sockets: Array=profile.get("landing_sockets",["Socket_hind-1","Socket_hind1"])
+					var point: Vector3=(actor.contact_point(sockets[0])+actor.contact_point(sockets[1]))*.5+Vector3.BACK*.5;point.y=.03
 					var event: Dictionary={"target":"ground","kind":"surface","point":point,"normal":Vector3.UP}
 					if Vector2(defender.position.x-point.x,defender.position.z-point.z).length()<float(profile.strike_radius)+.53:event.target="defender";event.kind="shield" if state.shield>0 else "organic"
 					accept(event,"landing")
 				continue
 			var point: Vector3=actor.contact_point(socket)
-			if attack_time>=release-.15 and attack_time<=release+.13:
+			if attack_time>=release-float(profile.get("strike_lead",.15)) and attack_time<=release+float(profile.get("strike_tail",.13)):
 				var from: Vector3=last_points.get(socket,point)
 				if profile.effect=="slash":fx.trail(from,point,Color("f6e4be"),.027)
 				accept(Contacts.sweep(from,point,float(profile.strike_radius),targets(),false),"strike_"+str(i))
@@ -210,9 +211,12 @@ func render_speed(out: String) -> void:
 func run() -> void:
 	var wanted:=OS.get_cmdline_user_args();speed_review=wanted.has("--speed-review")
 	if speed_review:wanted.remove_at(wanted.find("--speed-review"))
+	var remodel_review:=wanted.has("--r01")
+	if remodel_review:wanted.remove_at(wanted.find("--r01"))
 	folder=ProjectSettings.globalize_path("res://../output/creature-motion/"+("speed-render" if speed_review else "render"));DirAccess.make_dir_recursive_absolute(folder)
+	if remodel_review:folder=ProjectSettings.globalize_path("res://../output/creature-remodel/r01/render");DirAccess.make_dir_recursive_absolute(folder)
 	root.size=Vector2i(1280,800);root.content_scale_size=root.size;root.msaa_3d=Viewport.MSAA_4X;root.screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
-	make_stage();forms=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_motion_studies.json")).forms
+	make_stage();forms=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_r01.json" if remodel_review else "res://data/creature_motion_studies.json")).forms
 	for form in forms:
 		if not wanted.is_empty() and not str(form.id) in wanted:continue
 		load_type(form);await process_frame

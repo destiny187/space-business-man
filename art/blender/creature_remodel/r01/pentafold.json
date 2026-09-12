@@ -1,0 +1,148 @@
+{
+  "id": "pentafold",
+  "name": "오지 접힘수",
+  "kind": "radial",
+  "source_id": "bio_pentapalm_03",
+  "palette": [
+    "846755",
+    "c0ac84",
+    "405954",
+    "b47b47"
+  ],
+  "attack": "slam",
+  "habitat": "열수·온토 · 다섯 방사 사지와 말단 섭식부",
+  "source": "art/blender/creature_remodel/r01/pentafold.blend",
+  "status": "remodel-r01-built-awaiting-review",
+  "bone_count": 33,
+  "locomotion_chains": 5,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right"
+  ],
+  "approved_mesh_digest": null,
+  "mesh_digest": "8d7eba2039f5e817cb9e742c20dfe2ac76301d5786dccf91cb2f65fcf816b9b0",
+  "muzzle": [
+    0.0,
+    0.15000000596046448,
+    1.6699999570846558
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.15000000596046448,
+        1.6699999570846558
+      ]
+    },
+    "Socket_ray0": {
+      "bone": "ray0_foot",
+      "point": [
+        9.062386973828038e-17,
+        0.11999999731779099,
+        1.4800000190734863
+      ]
+    },
+    "Socket_ray1": {
+      "bone": "ray1_foot",
+      "point": [
+        1.4075636863708496,
+        0.11999999731779099,
+        0.4573451578617096
+      ]
+    },
+    "Socket_ray2": {
+      "bone": "ray2_foot",
+      "point": [
+        0.8699221611022949,
+        0.11999999731779099,
+        -1.1973451375961304
+      ]
+    },
+    "Socket_ray3": {
+      "bone": "ray3_foot",
+      "point": [
+        -0.8699221611022949,
+        0.11999999731779099,
+        -1.1973451375961304
+      ]
+    },
+    "Socket_ray4": {
+      "bone": "ray4_foot",
+      "point": [
+        -1.4075636863708496,
+        0.11999999731779099,
+        0.4573451578617096
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.72,
+    "release": [
+      1.3
+    ],
+    "active_end": 1.48,
+    "settle": 2.6,
+    "travel": 0.42,
+    "stride": 0.35,
+    "stance": 0.76,
+    "period": 1.0,
+    "damage": 30,
+    "strike_radius": 0.85,
+    "target_z": 2.1,
+    "target_height": 0.1,
+    "effect": "slam",
+    "hit_pause": 0.035,
+    "knockback": 0.23,
+    "run": {
+      "stride": 0.58,
+      "stance": 0.72,
+      "period": 0.6
+    },
+    "landing_sockets": [
+      "Socket_ray0",
+      "Socket_ray0"
+    ]
+  },
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r01/pentafold_near.glb",
+      "triangles": 36292,
+      "sha256": "f8d6d0ff010bec8f1085a72ca160711e6f8f105491a8ea449fc05679c05a0648",
+      "min": [
+        -1.7642320394515991,
+        0.044999994337558746,
+        -1.5322771072387695
+      ],
+      "max": [
+        1.7642320394515991,
+        0.9350000023841858,
+        1.824911117553711
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r01/pentafold_far.glb",
+      "triangles": 15602,
+      "sha256": "63bd1ced62334af3310329ac0b876c3925d177339769592ae015b136dab51e07",
+      "min": [
+        -1.764538288116455,
+        0.04501150920987129,
+        -1.5325350761413574
+      ],
+      "max": [
+        1.7644366025924683,
+        0.9349910020828247,
+        1.8247116804122925
+      ]
+    }
+  }
+}

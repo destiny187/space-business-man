@@ -1,0 +1,138 @@
+{
+  "id": "tethermaw",
+  "name": "줄목 추적수",
+  "kind": "cantilever",
+  "source_id": "bio_pendulum_grazer_01",
+  "palette": [
+    "677e76",
+    "c5b58d",
+    "3e505c",
+    "b38a5d"
+  ],
+  "attack": "bite",
+  "habitat": "현수 식도 · 긴 관절 목 끝의 머리와 회수 동작",
+  "source": "art/blender/creature_remodel/r01/tethermaw.blend",
+  "status": "remodel-r01-built-awaiting-review",
+  "bone_count": 18,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right"
+  ],
+  "approved_mesh_digest": null,
+  "mesh_digest": "1ff590c58e3ced179b8701391b8a9f2c9b45930f83eadd401f5cce8721699359",
+  "muzzle": [
+    0.0,
+    0.9700000286102295,
+    3.0199999809265137
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.9700000286102295,
+        3.0199999809265137
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "head",
+      "point": [
+        0.0,
+        0.9700000286102295,
+        3.0199999809265137
+      ]
+    },
+    "Socket_anchor0": {
+      "bone": "anchor0_foot",
+      "point": [
+        5.694607798346582e-17,
+        0.10000000149011612,
+        0.7300000190734863
+      ]
+    },
+    "Socket_anchor1": {
+      "bone": "anchor1_foot",
+      "point": [
+        0.8054035902023315,
+        0.10000000149011612,
+        -0.6650000214576721
+      ]
+    },
+    "Socket_anchor2": {
+      "bone": "anchor2_foot",
+      "point": [
+        -0.8054035902023315,
+        0.10000000149011612,
+        -0.6650000214576721
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.8,
+    "release": [
+      1.04
+    ],
+    "active_end": 1.23,
+    "settle": 2.64,
+    "travel": 0.3,
+    "stride": 0.48,
+    "stance": 0.76,
+    "period": 1.0,
+    "damage": 24,
+    "strike_radius": 0.22,
+    "target_z": 3.72,
+    "target_height": 1.0,
+    "effect": "ram",
+    "hit_pause": 0.035,
+    "knockback": 0.18,
+    "run": {
+      "stride": 0.7,
+      "stance": 0.73,
+      "period": 0.6
+    },
+    "strike_lead": 0.025,
+    "strike_tail": 0.12
+  },
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r01/tethermaw_near.glb",
+      "triangles": 27338,
+      "sha256": "4ac939f6be5cc64ea66f28d6e9b9f8a586f58ec5c0d8dbde8ec3470a27323298",
+      "min": [
+        -1.1272951364517212,
+        0.02499999850988388,
+        -0.925154983997345
+      ],
+      "max": [
+        1.1272951364517212,
+        1.9287066459655762,
+        3.0379929542541504
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r01/tethermaw_far.glb",
+      "triangles": 11746,
+      "sha256": "27b3252d96e403ea14fd1eb29aba7bc010d5b7a90e0e0bdc6e9e0583ce5682e5",
+      "min": [
+        -1.127321720123291,
+        0.02501225657761097,
+        -0.9251967072486877
+      ],
+      "max": [
+        1.127321720123291,
+        1.9270882606506348,
+        3.0378968715667725
+      ]
+    }
+  }
+}

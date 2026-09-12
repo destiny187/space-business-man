@@ -1,0 +1,738 @@
+{
+  "scope": "Three new anatomy assets rendered in R01 staging; no campaign replacement",
+  "renderer": "forward_plus",
+  "device": "Apple M2 (Apple8)",
+  "models": [
+    {
+      "id": "annulus",
+      "name": "환공 여과수",
+      "kind": "annular",
+      "source_id": "bio_torus_loom_01",
+      "palette": [
+        "536e70",
+        "b4b89b",
+        "334950",
+        "c9965e"
+      ],
+      "attack": "spit",
+      "habitat": "광물성 암반 · 진동 감각공과 고리 안쪽 여과기관",
+      "source": "art/blender/creature_remodel/r01/annulus.blend",
+      "status": "remodel-r01-built-awaiting-review",
+      "bone_count": 22,
+      "locomotion_chains": 3,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "approved_mesh_digest": null,
+      "mesh_digest": "ac9ef9da55aa4cdd48c712ea39f5d098ce492b072ac22f98dab23756eb9007c3",
+      "muzzle": [
+        0.0,
+        1.2899999618530273,
+        0.8500000238418579
+      ],
+      "sockets": {
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            1.2899999618530273,
+            0.8500000238418579
+          ]
+        },
+        "Socket_support0": {
+          "bone": "support0_foot",
+          "point": [
+            5.817072218907302e-17,
+            0.10000000149011612,
+            0.949999988079071
+          ]
+        },
+        "Socket_support1": {
+          "bone": "support1_foot",
+          "point": [
+            0.8227241039276123,
+            0.10000000149011612,
+            -0.4749999940395355
+          ]
+        },
+        "Socket_support2": {
+          "bone": "support2_foot",
+          "point": [
+            -0.8227241039276123,
+            0.10000000149011612,
+            -0.4749999940395355
+          ]
+        }
+      },
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.8,
+        "release": [
+          1.0,
+          1.12,
+          1.24
+        ],
+        "active_end": 1.36,
+        "settle": 2.64,
+        "travel": 0,
+        "stride": 0.34,
+        "stance": 0.8,
+        "period": 1.0,
+        "damage": 9,
+        "strike_radius": 0.1,
+        "target_z": 3.2,
+        "target_height": 0.8,
+        "effect": "acid",
+        "flight_seconds": 0.32,
+        "arc_height": 0.1,
+        "hit_pause": 0,
+        "knockback": 0.1,
+        "run": {
+          "stride": 0.5,
+          "stance": 0.78,
+          "period": 0.7
+        }
+      },
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/annulus_near.glb",
+          "triangles": 27824,
+          "sha256": "ff53c86e42171276b6a278c5c7090efb9dc33f2be8df179211543cd40d7ff4fd",
+          "min": [
+            -1.1352734565734863,
+            0.02499999850988388,
+            -0.7185527086257935
+          ],
+          "max": [
+            1.1352734565734863,
+            2.4118552207946777,
+            1.2522014379501343
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/annulus_far.glb",
+          "triangles": 11956,
+          "sha256": "bc99c6f9c68a102420ad8f8a0587dac948bcadf8664405476180a02d843d7498",
+          "min": [
+            -1.1352968215942383,
+            0.024997133761644363,
+            -0.7185950875282288
+          ],
+          "max": [
+            1.1352968215942383,
+            2.4115946292877197,
+            1.2521213293075562
+          ]
+        }
+      }
+    },
+    {
+      "id": "pentafold",
+      "name": "오지 접힘수",
+      "kind": "radial",
+      "source_id": "bio_pentapalm_03",
+      "palette": [
+        "846755",
+        "c0ac84",
+        "405954",
+        "b47b47"
+      ],
+      "attack": "slam",
+      "habitat": "열수·온토 · 다섯 방사 사지와 말단 섭식부",
+      "source": "art/blender/creature_remodel/r01/pentafold.blend",
+      "status": "remodel-r01-built-awaiting-review",
+      "bone_count": 33,
+      "locomotion_chains": 5,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "approved_mesh_digest": null,
+      "mesh_digest": "8d7eba2039f5e817cb9e742c20dfe2ac76301d5786dccf91cb2f65fcf816b9b0",
+      "muzzle": [
+        0.0,
+        0.15000000596046448,
+        1.6699999570846558
+      ],
+      "sockets": {
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.15000000596046448,
+            1.6699999570846558
+          ]
+        },
+        "Socket_ray0": {
+          "bone": "ray0_foot",
+          "point": [
+            9.062386973828038e-17,
+            0.11999999731779099,
+            1.4800000190734863
+          ]
+        },
+        "Socket_ray1": {
+          "bone": "ray1_foot",
+          "point": [
+            1.4075636863708496,
+            0.11999999731779099,
+            0.4573451578617096
+          ]
+        },
+        "Socket_ray2": {
+          "bone": "ray2_foot",
+          "point": [
+            0.8699221611022949,
+            0.11999999731779099,
+            -1.1973451375961304
+          ]
+        },
+        "Socket_ray3": {
+          "bone": "ray3_foot",
+          "point": [
+            -0.8699221611022949,
+            0.11999999731779099,
+            -1.1973451375961304
+          ]
+        },
+        "Socket_ray4": {
+          "bone": "ray4_foot",
+          "point": [
+            -1.4075636863708496,
+            0.11999999731779099,
+            0.4573451578617096
+          ]
+        }
+      },
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.72,
+        "release": [
+          1.3
+        ],
+        "active_end": 1.48,
+        "settle": 2.6,
+        "travel": 0.42,
+        "stride": 0.35,
+        "stance": 0.76,
+        "period": 1.0,
+        "damage": 30,
+        "strike_radius": 0.85,
+        "target_z": 2.1,
+        "target_height": 0.1,
+        "effect": "slam",
+        "hit_pause": 0.035,
+        "knockback": 0.23,
+        "run": {
+          "stride": 0.58,
+          "stance": 0.72,
+          "period": 0.6
+        },
+        "landing_sockets": [
+          "Socket_ray0",
+          "Socket_ray0"
+        ]
+      },
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/pentafold_near.glb",
+          "triangles": 36292,
+          "sha256": "f8d6d0ff010bec8f1085a72ca160711e6f8f105491a8ea449fc05679c05a0648",
+          "min": [
+            -1.7642320394515991,
+            0.044999994337558746,
+            -1.5322771072387695
+          ],
+          "max": [
+            1.7642320394515991,
+            0.9350000023841858,
+            1.824911117553711
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/pentafold_far.glb",
+          "triangles": 15602,
+          "sha256": "63bd1ced62334af3310329ac0b876c3925d177339769592ae015b136dab51e07",
+          "min": [
+            -1.764538288116455,
+            0.04501150920987129,
+            -1.5325350761413574
+          ],
+          "max": [
+            1.7644366025924683,
+            0.9349910020828247,
+            1.8247116804122925
+          ]
+        }
+      }
+    },
+    {
+      "id": "tethermaw",
+      "name": "줄목 추적수",
+      "kind": "cantilever",
+      "source_id": "bio_pendulum_grazer_01",
+      "palette": [
+        "677e76",
+        "c5b58d",
+        "3e505c",
+        "b38a5d"
+      ],
+      "attack": "bite",
+      "habitat": "현수 식도 · 긴 관절 목 끝의 머리와 회수 동작",
+      "source": "art/blender/creature_remodel/r01/tethermaw.blend",
+      "status": "remodel-r01-built-awaiting-review",
+      "bone_count": 18,
+      "locomotion_chains": 3,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "approved_mesh_digest": null,
+      "mesh_digest": "1ff590c58e3ced179b8701391b8a9f2c9b45930f83eadd401f5cce8721699359",
+      "muzzle": [
+        0.0,
+        0.9700000286102295,
+        3.0199999809265137
+      ],
+      "sockets": {
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.9700000286102295,
+            3.0199999809265137
+          ]
+        },
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.9700000286102295,
+            3.0199999809265137
+          ]
+        },
+        "Socket_anchor0": {
+          "bone": "anchor0_foot",
+          "point": [
+            5.694607798346582e-17,
+            0.10000000149011612,
+            0.7300000190734863
+          ]
+        },
+        "Socket_anchor1": {
+          "bone": "anchor1_foot",
+          "point": [
+            0.8054035902023315,
+            0.10000000149011612,
+            -0.6650000214576721
+          ]
+        },
+        "Socket_anchor2": {
+          "bone": "anchor2_foot",
+          "point": [
+            -0.8054035902023315,
+            0.10000000149011612,
+            -0.6650000214576721
+          ]
+        }
+      },
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.8,
+        "release": [
+          1.04
+        ],
+        "active_end": 1.23,
+        "settle": 2.64,
+        "travel": 0.3,
+        "stride": 0.48,
+        "stance": 0.76,
+        "period": 1.0,
+        "damage": 24,
+        "strike_radius": 0.22,
+        "target_z": 3.72,
+        "target_height": 1.0,
+        "effect": "ram",
+        "hit_pause": 0.035,
+        "knockback": 0.18,
+        "run": {
+          "stride": 0.7,
+          "stance": 0.73,
+          "period": 0.6
+        },
+        "strike_lead": 0.025,
+        "strike_tail": 0.12
+      },
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/tethermaw_near.glb",
+          "triangles": 27338,
+          "sha256": "4ac939f6be5cc64ea66f28d6e9b9f8a586f58ec5c0d8dbde8ec3470a27323298",
+          "min": [
+            -1.1272951364517212,
+            0.02499999850988388,
+            -0.925154983997345
+          ],
+          "max": [
+            1.1272951364517212,
+            1.9287066459655762,
+            3.0379929542541504
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/tethermaw_far.glb",
+          "triangles": 11746,
+          "sha256": "27b3252d96e403ea14fd1eb29aba7bc010d5b7a90e0e0bdc6e9e0583ce5682e5",
+          "min": [
+            -1.127321720123291,
+            0.02501225657761097,
+            -0.9251967072486877
+          ],
+          "max": [
+            1.127321720123291,
+            1.9270882606506348,
+            3.0378968715667725
+          ]
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case": "hit",
+      "contacts": 3,
+      "form": "annulus",
+      "health": 73.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 3,
+      "form": "annulus",
+      "health": 100.0,
+      "shield": 93.0
+    },
+    {
+      "case": "miss",
+      "contacts": 3,
+      "form": "annulus",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 1,
+      "form": "pentafold",
+      "health": 70.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 1,
+      "form": "pentafold",
+      "health": 100.0,
+      "shield": 90.0
+    },
+    {
+      "case": "miss",
+      "contacts": 1,
+      "form": "pentafold",
+      "health": 100.0,
+      "shield": 0.0
+    },
+    {
+      "case": "hit",
+      "contacts": 1,
+      "form": "tethermaw",
+      "health": 76.0,
+      "shield": 0.0
+    },
+    {
+      "case": "shield",
+      "contacts": 1,
+      "form": "tethermaw",
+      "health": 100.0,
+      "shield": 96.0
+    },
+    {
+      "case": "miss",
+      "contacts": 0,
+      "form": "tethermaw",
+      "health": 100.0,
+      "shield": 0.0
+    }
+  ],
+  "events": [
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 9.0,
+      "form": "annulus",
+      "kind": "organic",
+      "point": [
+        8.5704317683469e-19,
+        0.997901737689972,
+        2.59858846664429
+      ],
+      "stroke": "projectile_0",
+      "time": 1.26666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 9.0,
+      "form": "annulus",
+      "kind": "organic",
+      "point": [
+        -0.00195155513938516,
+        1.00740420818329,
+        2.62931704521179
+      ],
+      "stroke": "projectile_1",
+      "time": 1.36666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 9.0,
+      "form": "annulus",
+      "kind": "organic",
+      "point": [
+        -0.00295953429304063,
+        0.989996433258057,
+        2.68917274475098
+      ],
+      "stroke": "projectile_2",
+      "time": 1.5
+    },
+    {
+      "absorbed": 9.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "annulus",
+      "kind": "shield",
+      "point": [
+        1.048845784768e-18,
+        1.03453326225281,
+        2.4639949798584
+      ],
+      "stroke": "projectile_0",
+      "time": 1.23333333333333
+    },
+    {
+      "absorbed": 9.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "annulus",
+      "kind": "shield",
+      "point": [
+        -0.0024840934202075,
+        1.05575084686279,
+        2.47358989715576
+      ],
+      "stroke": "projectile_1",
+      "time": 1.33333333333333
+    },
+    {
+      "absorbed": 9.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "annulus",
+      "kind": "shield",
+      "point": [
+        -0.00409074872732162,
+        1.05315387248993,
+        2.49392056465149
+      ],
+      "stroke": "projectile_2",
+      "time": 1.46666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "annulus",
+      "kind": "surface",
+      "point": [
+        -2.07528841662076e-18,
+        0.100000001490116,
+        4.65628957748413
+      ],
+      "stroke": "projectile_0",
+      "time": 1.53333333333333
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "annulus",
+      "kind": "surface",
+      "point": [
+        0.00471151014789939,
+        0.100000001490116,
+        4.57776165008545
+      ],
+      "stroke": "projectile_1",
+      "time": 1.63333333333334
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "annulus",
+      "kind": "surface",
+      "point": [
+        0.00792561192065477,
+        0.0999999940395355,
+        4.56799077987671
+      ],
+      "stroke": "projectile_2",
+      "time": 1.76666666666667
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "damage": 30.0,
+      "form": "pentafold",
+      "kind": "organic",
+      "point": [
+        1.73506487044506e-05,
+        0.0299999993294477,
+        2.40000009536743
+      ],
+      "stroke": "landing",
+      "time": 1.3
+    },
+    {
+      "absorbed": 30.0,
+      "case": "shield",
+      "damage": 0.0,
+      "form": "pentafold",
+      "kind": "shield",
+      "point": [
+        1.73506487044506e-05,
+        0.0299999993294477,
+        2.40000009536743
+      ],
+      "stroke": "landing",
+      "time": 1.3
+    },
+    {
+      "absorbed": 0.0,
+      "case": "miss",
+      "damage": 0.0,
+      "form": "pentafold",
+      "kind": "surface",
+      "point": [
+        1.73506487044506e-05,
+        0.0299999993294477,
+        2.40000009536743
+      ],
+      "stroke": "landing",
+      "time": 1.3
+    },
+    {
+      "absorbed": 0.0,
+      "case": "hit",
+      "contact_distance_from_body": 3.12213134765625,
+      "damage": 24.0,
+      "form": "tethermaw",
+      "kind": "organic",
+      "point": [
+        -0.00358520448207855,
+        0.788059711456299,
+        3.32035350799561
+      ],
+      "stroke": "strike_0",
+      "time": 1.03333333333333
+    },
+    {
+      "absorbed": 24.0,
+      "case": "shield",
+      "contact_distance_from_body": 3.12213134765625,
+      "damage": 0.0,
+      "form": "tethermaw",
+      "kind": "shield",
+      "point": [
+        -0.00358520448207855,
+        0.788059711456299,
+        3.32035350799561
+      ],
+      "stroke": "strike_0",
+      "time": 1.03333333333333
+    }
+  ],
+  "locomotion": [
+    {
+      "distance_m": 3.47961538461538,
+      "fast_mps": 0.915750915750916,
+      "form": "annulus",
+      "run_cycle_seconds": 0.7,
+      "sequence": "walk / accelerate / fast / decelerate / stop; distance-matched gait",
+      "speed_ratio": 2.15470803706098,
+      "walk_mps": 0.425
+    },
+    {
+      "distance_m": 4.87390350877193,
+      "fast_mps": 1.34259259259259,
+      "form": "pentafold",
+      "run_cycle_seconds": 0.6,
+      "sequence": "walk / accelerate / fast / decelerate / stop; distance-matched gait",
+      "speed_ratio": 2.91534391534392,
+      "walk_mps": 0.460526315789474
+    },
+    {
+      "distance_m": 5.91845710165826,
+      "fast_mps": 1.59817351598174,
+      "form": "tethermaw",
+      "run_cycle_seconds": 0.6,
+      "sequence": "walk / accelerate / fast / decelerate / stop; distance-matched gait",
+      "speed_ratio": 2.53044140030441,
+      "walk_mps": 0.631578947368421
+    }
+  ],
+  "all_nine_outcomes_verified": true,
+  "catalogs_unchanged": true,
+  "long_head_contact": {
+    "absorbed": 0.0,
+    "case": "hit",
+    "contact_distance_from_body": 3.12213134765625,
+    "damage": 24.0,
+    "form": "tethermaw",
+    "kind": "organic",
+    "point": [
+      -0.00358520448207855,
+      0.788059711456299,
+      3.32035350799561
+    ],
+    "stroke": "strike_0",
+    "time": 1.03333333333333
+  },
+  "audio": "Existing ElevenLabs sources replayed; no new species recording generated",
+  "movie_sha256": "fbd5d6a5403a58d80379c795e8b54de7135afa9bc5d63e95fb5c29b974c2ab85"
+}

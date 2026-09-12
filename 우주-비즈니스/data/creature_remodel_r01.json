@@ -1,0 +1,1239 @@
+{
+  "version": 1,
+  "scope": "R01 production/review staging; no native catalog or save writes",
+  "forms": [
+    {
+      "id": "sailhorn",
+      "name": "갈래돛 초식수",
+      "kind": "quadruped",
+      "source_id": "biota_spindle_armor_25",
+      "habitat": "건조 분지 · 여과뿔과 저수 피부",
+      "attack": "ram",
+      "palette": [
+        "79615b",
+        "c3ad7f",
+        "344f49",
+        "d5be87"
+      ],
+      "source": "art/blender/creature_studies_motion/sailhorn.blend",
+      "status": "approved-shape-motion-v3-speed-lab",
+      "bone_count": 23,
+      "locomotion_chains": 4,
+      "clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle_loop",
+        "move_loop",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "run_loop"
+      ],
+      "muzzle": [
+        0.0,
+        2.240000009536743,
+        1.7999999523162842
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/sailhorn_near.glb",
+          "triangles": 35463,
+          "sha256": "9098802b6c25d29ea242d306a1e5c48d0eaab10328da6a72ef2ab0f61d6371d7",
+          "min": [
+            -0.8319883346557617,
+            0.009000003337860107,
+            -2.0158421993255615
+          ],
+          "max": [
+            0.8319883346557617,
+            2.9928581714630127,
+            1.805123209953308
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/sailhorn_far.glb",
+          "triangles": 15240,
+          "sha256": "19b7564e0647c2187e62e0c52e2db637d12bbcfeb02a41f4bf05bdf4c424b03f",
+          "min": [
+            -0.832028865814209,
+            0.009000003337860107,
+            -2.0158114433288574
+          ],
+          "max": [
+            0.8320282697677612,
+            2.9928581714630127,
+            1.8052964210510254
+          ]
+        }
+      },
+      "approved_mesh_digest": "e656f137afe2a7206a634a1b21154f98ea67c8fe27a003cc1d2b2322744bc78d",
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.74,
+        "release": [
+          0.98
+        ],
+        "active_end": 1.16,
+        "settle": 2.55,
+        "travel": 1.05,
+        "stride": 0.66,
+        "stance": 0.68,
+        "period": 1.0,
+        "damage": 28,
+        "strike_radius": 0.24,
+        "target_z": 2.72,
+        "target_height": 1.6,
+        "effect": "ram",
+        "hit_pause": 0.045,
+        "knockback": 0.28,
+        "run": {
+          "stride": 0.9,
+          "stance": 0.56,
+          "period": 0.6
+        }
+      },
+      "sockets": {
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0,
+            2.44,
+            1.6
+          ]
+        },
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            2.240000009536743,
+            1.7999999523162842
+          ]
+        },
+        "Socket_fore-1": {
+          "bone": "fore-1_foot",
+          "point": [
+            -0.47999998927116394,
+            0.13500000536441803,
+            0.7800000309944153
+          ]
+        },
+        "Socket_fore1": {
+          "bone": "fore1_foot",
+          "point": [
+            0.47999998927116394,
+            0.13500000536441803,
+            0.7800000309944153
+          ]
+        },
+        "Socket_hind-1": {
+          "bone": "hind-1_foot",
+          "point": [
+            -0.44999998807907104,
+            0.13500000536441803,
+            -0.44999998807907104
+          ]
+        },
+        "Socket_hind1": {
+          "bone": "hind1_foot",
+          "point": [
+            0.44999998807907104,
+            0.13500000536441803,
+            -0.44999998807907104
+          ]
+        }
+      }
+    },
+    {
+      "id": "shearprowler",
+      "name": "여섯발 그늘사냥꾼",
+      "kind": "hexapod",
+      "source_id": "biota_lobopod_armor_26",
+      "habitat": "열수림 · 낮은 매복과 감각 수염",
+      "attack": "scythe",
+      "palette": [
+        "355a61",
+        "779786",
+        "253843",
+        "bb915c"
+      ],
+      "source": "art/blender/creature_studies_motion/shearprowler.blend",
+      "status": "approved-shape-motion-v3-speed-lab",
+      "bone_count": 33,
+      "locomotion_chains": 6,
+      "clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle_loop",
+        "move_loop",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "run_loop"
+      ],
+      "muzzle": [
+        0.0,
+        0.8299999833106995,
+        1.7699999809265137
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/shearprowler_near.glb",
+          "triangles": 33434,
+          "sha256": "1748df10b172db5f7be272800a500cd6b69ee13c45c78092df78730f8d84bfce",
+          "min": [
+            -1.0699999332427979,
+            -0.019961245357990265,
+            -2.331655740737915
+          ],
+          "max": [
+            1.0699999332427979,
+            1.4041295051574707,
+            1.954373836517334
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/shearprowler_far.glb",
+          "triangles": 14370,
+          "sha256": "d8588f07b681dbb04a419d085cc94535eef44c3e098cbeca49d5f4860db3c5d7",
+          "min": [
+            -1.0683525800704956,
+            -0.017841551452875137,
+            -2.331655740737915
+          ],
+          "max": [
+            1.069325566291809,
+            1.4042466878890991,
+            1.954373836517334
+          ]
+        }
+      },
+      "approved_mesh_digest": "d5c589c1a176d160c9aaadfc88e36e48c91bc4cd196ade600d530191626f95b6",
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.64,
+        "release": [
+          0.92,
+          1.26
+        ],
+        "active_end": 1.44,
+        "settle": 2.58,
+        "travel": 0.76,
+        "stride": 0.52,
+        "stance": 0.7,
+        "period": 1.0,
+        "damage": 14,
+        "strike_radius": 0.3,
+        "target_z": 2.25,
+        "target_height": 0.65,
+        "effect": "slash",
+        "hit_pause": 0.03,
+        "knockback": 0.15,
+        "run": {
+          "stride": 0.74,
+          "stance": 0.58,
+          "period": 0.6
+        }
+      },
+      "sockets": {
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.8299999833106995,
+            1.7699999809265137
+          ]
+        },
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.8299999833106995,
+            1.7699999809265137
+          ]
+        },
+        "Socket_leg0_-1": {
+          "bone": "leg0_-1_foot",
+          "point": [
+            -0.96,
+            0.115,
+            1.1
+          ]
+        },
+        "Socket_leg1_-1": {
+          "bone": "leg1_-1_foot",
+          "point": [
+            -0.9599999785423279,
+            0.11500000208616257,
+            0.22999998927116394
+          ]
+        },
+        "Socket_leg0_1": {
+          "bone": "leg0_1_foot",
+          "point": [
+            0.96,
+            0.115,
+            1.1
+          ]
+        },
+        "Socket_leg1_1": {
+          "bone": "leg1_1_foot",
+          "point": [
+            0.9599999785423279,
+            0.11500000208616257,
+            0.22999998927116394
+          ]
+        },
+        "Socket_leg2_-1": {
+          "bone": "leg2_-1_foot",
+          "point": [
+            -0.9599999785423279,
+            0.11500000208616257,
+            -0.5
+          ]
+        },
+        "Socket_leg2_1": {
+          "bone": "leg2_1_foot",
+          "point": [
+            0.9599999785423279,
+            0.11500000208616257,
+            -0.5
+          ]
+        }
+      }
+    },
+    {
+      "id": "pressureurn",
+      "name": "숨항아리 포격수",
+      "kind": "tripod",
+      "source_id": "bio_quill_amphora_01",
+      "habitat": "염류 분지 · 압력낭과 골질 늑판",
+      "attack": "mortar",
+      "palette": [
+        "787c89",
+        "d2c6a3",
+        "3e5260",
+        "d28858"
+      ],
+      "source": "art/blender/creature_studies_motion/pressureurn.blend",
+      "status": "approved-shape-motion-v3-speed-lab",
+      "bone_count": 17,
+      "locomotion_chains": 3,
+      "clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle_loop",
+        "move_loop",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "run_loop"
+      ],
+      "muzzle": [
+        0.0,
+        2.5299999713897705,
+        -0.0
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/pressureurn_near.glb",
+          "triangles": 29416,
+          "sha256": "d833918efb5589d2d3b3409191bb08b5b39f63c71a9f53887d802c07d357ff50",
+          "min": [
+            -1.0224554538726807,
+            0.020000003278255463,
+            -1.2094995975494385
+          ],
+          "max": [
+            1.0224554538726807,
+            2.5598747730255127,
+            0.8194997906684875
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/pressureurn_far.glb",
+          "triangles": 12642,
+          "sha256": "c43888d503b045deb5f52c54aeb151975b389ef054ab8ce65dc8ce4da09f35d5",
+          "min": [
+            -1.0224554538726807,
+            0.02001308836042881,
+            -1.20917809009552
+          ],
+          "max": [
+            1.0224554538726807,
+            2.5589101314544678,
+            0.8194997906684875
+          ]
+        }
+      },
+      "approved_mesh_digest": "5abca1ae5110a2232bee816cdddb9c9b9184127491fbcd81a154ee7cb59a3114",
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.88,
+        "release": [
+          1.08
+        ],
+        "active_end": 1.26,
+        "settle": 2.62,
+        "travel": 0.0,
+        "stride": 0.3,
+        "stance": 0.76,
+        "period": 1.0,
+        "damage": 32,
+        "strike_radius": 0.14,
+        "target_z": 3.2,
+        "target_height": 0.75,
+        "effect": "mortar",
+        "flight_seconds": 0.72,
+        "arc_height": 1.25,
+        "hit_pause": 0.0,
+        "knockback": 0.25,
+        "run": {
+          "stride": 0.4,
+          "stance": 0.67,
+          "period": 0.8
+        }
+      },
+      "sockets": {
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            2.5299999713897705,
+            -0.0
+          ]
+        },
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            2.5299999713897705,
+            -0.0
+          ]
+        },
+        "Socket_tripod0": {
+          "bone": "tripod0_foot",
+          "point": [
+            5.878304760059908e-17,
+            0.125,
+            -0.7199999690055847
+          ]
+        },
+        "Socket_tripod1": {
+          "bone": "tripod1_foot",
+          "point": [
+            -0.8313843607902527,
+            0.125,
+            0.7199999690055847
+          ]
+        },
+        "Socket_tripod2": {
+          "bone": "tripod2_foot",
+          "point": [
+            0.8313843607902527,
+            0.125,
+            0.7199999690055847
+          ]
+        }
+      }
+    },
+    {
+      "id": "vaulthopper",
+      "name": "접등 도약수",
+      "kind": "hopper",
+      "source_id": "biota_chain_armor_26",
+      "habitat": "저중력 암지 · 탄성 뒷다리와 완충등",
+      "attack": "slam",
+      "palette": [
+        "ad7346",
+        "e2c98c",
+        "4a5960",
+        "648b7a"
+      ],
+      "source": "art/blender/creature_studies_motion/vaulthopper.blend",
+      "status": "approved-shape-motion-v3-speed-lab",
+      "bone_count": 22,
+      "locomotion_chains": 2,
+      "clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle_loop",
+        "move_loop",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "run_loop"
+      ],
+      "muzzle": [
+        0.0,
+        0.699999988079071,
+        1.1100000143051147
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/vaulthopper_near.glb",
+          "triangles": 40418,
+          "sha256": "8456358300656eb61daf1dc94e4bc3100d96eadda695093b76abb2050d93c452",
+          "min": [
+            -0.9025339484214783,
+            0.01000000536441803,
+            -1.3970763683319092
+          ],
+          "max": [
+            0.9032508134841919,
+            1.6042388677597046,
+            1.1521577835083008
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/vaulthopper_far.glb",
+          "triangles": 17370,
+          "sha256": "1fcda11c1547dbc5a0d3bee6b1e43c6194c99d008bc01483fe9f86359a480313",
+          "min": [
+            -0.902048647403717,
+            0.010048876516520977,
+            -1.3970763683319092
+          ],
+          "max": [
+            0.9032508134841919,
+            1.6042388677597046,
+            1.1515122652053833
+          ]
+        }
+      },
+      "approved_mesh_digest": "1f32b81c6f5117cc0b17e890414f3b0b745d49407869a97168c428a33740d686",
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.64,
+        "release": [
+          1.4
+        ],
+        "active_end": 1.5,
+        "settle": 2.6,
+        "travel": 1.12,
+        "stride": 0.4,
+        "stance": 0.42,
+        "period": 1.0,
+        "damage": 30,
+        "strike_radius": 0.72,
+        "target_z": 2.02,
+        "target_height": 0.1,
+        "effect": "slam",
+        "air_start": 0.72,
+        "air_end": 1.4,
+        "air_height": 0.78,
+        "hit_pause": 0.035,
+        "knockback": 0.25,
+        "run": {
+          "stride": 0.7,
+          "stance": 0.42,
+          "period": 0.6
+        }
+      },
+      "sockets": {
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.699999988079071,
+            1.1100000143051147
+          ]
+        },
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.699999988079071,
+            1.1100000143051147
+          ]
+        },
+        "Socket_hind-1": {
+          "bone": "hind-1_foot",
+          "point": [
+            -0.58,
+            0.115,
+            -0.3
+          ]
+        },
+        "Socket_hind1": {
+          "bone": "hind1_foot",
+          "point": [
+            0.58,
+            0.115,
+            -0.3
+          ]
+        }
+      }
+    },
+    {
+      "id": "reedserpent",
+      "name": "갈대막 분사수",
+      "kind": "serpent",
+      "source_id": "biota_ribbon_armor_26",
+      "habitat": "산성 습지 · 점액 복면과 세갈래 구강",
+      "attack": "spit",
+      "palette": [
+        "496e64",
+        "b9bc86",
+        "354548",
+        "c9866d"
+      ],
+      "source": "art/blender/creature_studies_motion/reedserpent.blend",
+      "status": "approved-shape-motion-v3-speed-lab",
+      "bone_count": 16,
+      "locomotion_chains": 0,
+      "clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle_loop",
+        "move_loop",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "run_loop"
+      ],
+      "muzzle": [
+        0.0,
+        0.4300000071525574,
+        1.899999976158142
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/reedserpent_near.glb",
+          "triangles": 19774,
+          "sha256": "1bc85306215a199c60f9b8f7a9fc8ffa3054e2918bc1d36f33a5f2291a7429d0",
+          "min": [
+            -0.44862622022628784,
+            0.02671663835644722,
+            -2.9873390197753906
+          ],
+          "max": [
+            0.46085917949676514,
+            0.8327206373214722,
+            1.9399888515472412
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/reedserpent_far.glb",
+          "triangles": 8498,
+          "sha256": "4ad6aa010f1149a8d4020e34aa72596a821c2afefe7b05a5f9e54869be1cf566",
+          "min": [
+            -0.4481483995914459,
+            0.026856230571866035,
+            -2.9873390197753906
+          ],
+          "max": [
+            0.4605773091316223,
+            0.8330745100975037,
+            1.9409481287002563
+          ]
+        }
+      },
+      "approved_mesh_digest": "e54735423d0e7d9deeb6548aa8f49c999b8ec711a7ee44f994a8f7725130654b",
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.8,
+        "release": [
+          1.0,
+          1.12,
+          1.24
+        ],
+        "active_end": 1.36,
+        "settle": 2.64,
+        "travel": 0.0,
+        "stride": 0.5,
+        "stance": 0.7,
+        "period": 1.0,
+        "damage": 9,
+        "strike_radius": 0.1,
+        "target_z": 3.25,
+        "target_height": 0.6,
+        "effect": "acid",
+        "flight_seconds": 0.32,
+        "arc_height": 0.1,
+        "hit_pause": 0.0,
+        "knockback": 0.1,
+        "run": {
+          "stride": 0.85,
+          "stance": 0.7,
+          "period": 0.6
+        }
+      },
+      "sockets": {
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.4300000071525574,
+            1.899999976158142
+          ]
+        },
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.4300000071525574,
+            1.899999976158142
+          ]
+        }
+      }
+    },
+    {
+      "id": "veilglider",
+      "name": "겹막 활공수",
+      "kind": "glider",
+      "source_id": "biota_bilateral_armor_11",
+      "habitat": "고압 대기 · 두 쌍의 막날개와 조향 꼬리",
+      "attack": "dart",
+      "palette": [
+        "635569",
+        "b89691",
+        "344f57",
+        "d6b87e"
+      ],
+      "source": "art/blender/creature_studies_motion/veilglider.blend",
+      "status": "approved-shape-motion-v3-speed-lab",
+      "bone_count": 25,
+      "locomotion_chains": 2,
+      "clips": [
+        "attack",
+        "blocked",
+        "feed",
+        "hurt",
+        "idle_loop",
+        "move_loop",
+        "stop",
+        "turn_left",
+        "turn_right",
+        "run_loop"
+      ],
+      "muzzle": [
+        0.0,
+        1.5299999713897705,
+        1.2100000381469727
+      ],
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/veilglider_near.glb",
+          "triangles": 27926,
+          "sha256": "e8a324c0271106180650da36a6959e180336add1e224e0e2a7fe797f4750e227",
+          "min": [
+            -2.5108566284179688,
+            3.8743019104003906e-05,
+            -2.108398675918579
+          ],
+          "max": [
+            2.5108580589294434,
+            1.9499797821044922,
+            1.213303804397583
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_studies_motion/veilglider_far.glb",
+          "triangles": 12002,
+          "sha256": "c3e5a28a05807f9549a1a3e0e683124381dd38fba39795c088ef6aa4c5e9ad0a",
+          "min": [
+            -2.510838031768799,
+            3.8743019104003906e-05,
+            -2.085646152496338
+          ],
+          "max": [
+            2.510840654373169,
+            1.9499797821044922,
+            1.2131935358047485
+          ]
+        }
+      },
+      "approved_mesh_digest": "64b06492b626f2e3f7f6b23eeea8746d9f7887cf4f7dcb9046f07ae233709fd9",
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.84,
+        "release": [
+          1.02,
+          1.16
+        ],
+        "active_end": 1.3,
+        "settle": 2.6,
+        "travel": 0.0,
+        "stride": 0.7,
+        "stance": 0.6,
+        "period": 1.0,
+        "damage": 13,
+        "strike_radius": 0.07,
+        "target_z": 3.65,
+        "target_height": 1.25,
+        "effect": "dart",
+        "flight_seconds": 0.22,
+        "arc_height": 0.0,
+        "hit_pause": 0.0,
+        "knockback": 0.12,
+        "run": {
+          "stride": 1.3,
+          "stance": 0.6,
+          "period": 0.8
+        }
+      },
+      "sockets": {
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            1.5299999713897705,
+            1.2100000381469727
+          ]
+        },
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            1.5299999713897705,
+            1.2100000381469727
+          ]
+        },
+        "Socket_hind-1": {
+          "bone": "hind-1_foot",
+          "point": [
+            -0.3100000023841858,
+            0.13500000536441803,
+            -0.17999999225139618
+          ]
+        },
+        "Socket_hind1": {
+          "bone": "hind1_foot",
+          "point": [
+            0.3100000023841858,
+            0.13500000536441803,
+            -0.17999999225139618
+          ]
+        }
+      }
+    },
+    {
+      "id": "annulus",
+      "name": "환공 여과수",
+      "kind": "annular",
+      "source_id": "bio_torus_loom_01",
+      "palette": [
+        "536e70",
+        "b4b89b",
+        "334950",
+        "c9965e"
+      ],
+      "attack": "spit",
+      "habitat": "광물성 암반 · 진동 감각공과 고리 안쪽 여과기관",
+      "source": "art/blender/creature_remodel/r01/annulus.blend",
+      "status": "remodel-r01-built-awaiting-review",
+      "bone_count": 22,
+      "locomotion_chains": 3,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "approved_mesh_digest": null,
+      "mesh_digest": "ac9ef9da55aa4cdd48c712ea39f5d098ce492b072ac22f98dab23756eb9007c3",
+      "muzzle": [
+        0.0,
+        1.2899999618530273,
+        0.8500000238418579
+      ],
+      "sockets": {
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            1.2899999618530273,
+            0.8500000238418579
+          ]
+        },
+        "Socket_support0": {
+          "bone": "support0_foot",
+          "point": [
+            5.817072218907302e-17,
+            0.10000000149011612,
+            0.949999988079071
+          ]
+        },
+        "Socket_support1": {
+          "bone": "support1_foot",
+          "point": [
+            0.8227241039276123,
+            0.10000000149011612,
+            -0.4749999940395355
+          ]
+        },
+        "Socket_support2": {
+          "bone": "support2_foot",
+          "point": [
+            -0.8227241039276123,
+            0.10000000149011612,
+            -0.4749999940395355
+          ]
+        }
+      },
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.8,
+        "release": [
+          1.0,
+          1.12,
+          1.24
+        ],
+        "active_end": 1.36,
+        "settle": 2.64,
+        "travel": 0,
+        "stride": 0.34,
+        "stance": 0.8,
+        "period": 1.0,
+        "damage": 9,
+        "strike_radius": 0.1,
+        "target_z": 3.2,
+        "target_height": 0.8,
+        "effect": "acid",
+        "flight_seconds": 0.32,
+        "arc_height": 0.1,
+        "hit_pause": 0,
+        "knockback": 0.1,
+        "run": {
+          "stride": 0.5,
+          "stance": 0.78,
+          "period": 0.7
+        }
+      },
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/annulus_near.glb",
+          "triangles": 27824,
+          "sha256": "ff53c86e42171276b6a278c5c7090efb9dc33f2be8df179211543cd40d7ff4fd",
+          "min": [
+            -1.1352734565734863,
+            0.02499999850988388,
+            -0.7185527086257935
+          ],
+          "max": [
+            1.1352734565734863,
+            2.4118552207946777,
+            1.2522014379501343
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/annulus_far.glb",
+          "triangles": 11956,
+          "sha256": "bc99c6f9c68a102420ad8f8a0587dac948bcadf8664405476180a02d843d7498",
+          "min": [
+            -1.1352968215942383,
+            0.024997133761644363,
+            -0.7185950875282288
+          ],
+          "max": [
+            1.1352968215942383,
+            2.4115946292877197,
+            1.2521213293075562
+          ]
+        }
+      }
+    },
+    {
+      "id": "pentafold",
+      "name": "오지 접힘수",
+      "kind": "radial",
+      "source_id": "bio_pentapalm_03",
+      "palette": [
+        "846755",
+        "c0ac84",
+        "405954",
+        "b47b47"
+      ],
+      "attack": "slam",
+      "habitat": "열수·온토 · 다섯 방사 사지와 말단 섭식부",
+      "source": "art/blender/creature_remodel/r01/pentafold.blend",
+      "status": "remodel-r01-built-awaiting-review",
+      "bone_count": 33,
+      "locomotion_chains": 5,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "approved_mesh_digest": null,
+      "mesh_digest": "8d7eba2039f5e817cb9e742c20dfe2ac76301d5786dccf91cb2f65fcf816b9b0",
+      "muzzle": [
+        0.0,
+        0.15000000596046448,
+        1.6699999570846558
+      ],
+      "sockets": {
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.15000000596046448,
+            1.6699999570846558
+          ]
+        },
+        "Socket_ray0": {
+          "bone": "ray0_foot",
+          "point": [
+            9.062386973828038e-17,
+            0.11999999731779099,
+            1.4800000190734863
+          ]
+        },
+        "Socket_ray1": {
+          "bone": "ray1_foot",
+          "point": [
+            1.4075636863708496,
+            0.11999999731779099,
+            0.4573451578617096
+          ]
+        },
+        "Socket_ray2": {
+          "bone": "ray2_foot",
+          "point": [
+            0.8699221611022949,
+            0.11999999731779099,
+            -1.1973451375961304
+          ]
+        },
+        "Socket_ray3": {
+          "bone": "ray3_foot",
+          "point": [
+            -0.8699221611022949,
+            0.11999999731779099,
+            -1.1973451375961304
+          ]
+        },
+        "Socket_ray4": {
+          "bone": "ray4_foot",
+          "point": [
+            -1.4075636863708496,
+            0.11999999731779099,
+            0.4573451578617096
+          ]
+        }
+      },
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.72,
+        "release": [
+          1.3
+        ],
+        "active_end": 1.48,
+        "settle": 2.6,
+        "travel": 0.42,
+        "stride": 0.35,
+        "stance": 0.76,
+        "period": 1.0,
+        "damage": 30,
+        "strike_radius": 0.85,
+        "target_z": 2.1,
+        "target_height": 0.1,
+        "effect": "slam",
+        "hit_pause": 0.035,
+        "knockback": 0.23,
+        "run": {
+          "stride": 0.58,
+          "stance": 0.72,
+          "period": 0.6
+        },
+        "landing_sockets": [
+          "Socket_ray0",
+          "Socket_ray0"
+        ]
+      },
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/pentafold_near.glb",
+          "triangles": 36292,
+          "sha256": "f8d6d0ff010bec8f1085a72ca160711e6f8f105491a8ea449fc05679c05a0648",
+          "min": [
+            -1.7642320394515991,
+            0.044999994337558746,
+            -1.5322771072387695
+          ],
+          "max": [
+            1.7642320394515991,
+            0.9350000023841858,
+            1.824911117553711
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/pentafold_far.glb",
+          "triangles": 15602,
+          "sha256": "63bd1ced62334af3310329ac0b876c3925d177339769592ae015b136dab51e07",
+          "min": [
+            -1.764538288116455,
+            0.04501150920987129,
+            -1.5325350761413574
+          ],
+          "max": [
+            1.7644366025924683,
+            0.9349910020828247,
+            1.8247116804122925
+          ]
+        }
+      }
+    },
+    {
+      "id": "tethermaw",
+      "name": "줄목 추적수",
+      "kind": "cantilever",
+      "source_id": "bio_pendulum_grazer_01",
+      "palette": [
+        "677e76",
+        "c5b58d",
+        "3e505c",
+        "b38a5d"
+      ],
+      "attack": "bite",
+      "habitat": "현수 식도 · 긴 관절 목 끝의 머리와 회수 동작",
+      "source": "art/blender/creature_remodel/r01/tethermaw.blend",
+      "status": "remodel-r01-built-awaiting-review",
+      "bone_count": 18,
+      "locomotion_chains": 3,
+      "clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "feed",
+        "attack",
+        "hurt",
+        "blocked",
+        "stop",
+        "turn_left",
+        "turn_right"
+      ],
+      "approved_mesh_digest": null,
+      "mesh_digest": "1ff590c58e3ced179b8701391b8a9f2c9b45930f83eadd401f5cce8721699359",
+      "muzzle": [
+        0.0,
+        0.9700000286102295,
+        3.0199999809265137
+      ],
+      "sockets": {
+        "Socket_Muzzle": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.9700000286102295,
+            3.0199999809265137
+          ]
+        },
+        "Socket_Strike": {
+          "bone": "head",
+          "point": [
+            0.0,
+            0.9700000286102295,
+            3.0199999809265137
+          ]
+        },
+        "Socket_anchor0": {
+          "bone": "anchor0_foot",
+          "point": [
+            5.694607798346582e-17,
+            0.10000000149011612,
+            0.7300000190734863
+          ]
+        },
+        "Socket_anchor1": {
+          "bone": "anchor1_foot",
+          "point": [
+            0.8054035902023315,
+            0.10000000149011612,
+            -0.6650000214576721
+          ]
+        },
+        "Socket_anchor2": {
+          "bone": "anchor2_foot",
+          "point": [
+            -0.8054035902023315,
+            0.10000000149011612,
+            -0.6650000214576721
+          ]
+        }
+      },
+      "motion_profile": {
+        "duration": 2.8,
+        "prepare": 0.8,
+        "release": [
+          1.04
+        ],
+        "active_end": 1.23,
+        "settle": 2.64,
+        "travel": 0.3,
+        "stride": 0.48,
+        "stance": 0.76,
+        "period": 1.0,
+        "damage": 24,
+        "strike_radius": 0.22,
+        "target_z": 3.72,
+        "target_height": 1.0,
+        "effect": "ram",
+        "hit_pause": 0.035,
+        "knockback": 0.18,
+        "run": {
+          "stride": 0.7,
+          "stance": 0.73,
+          "period": 0.6
+        },
+        "strike_lead": 0.025,
+        "strike_tail": 0.12
+      },
+      "lods": {
+        "near": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/tethermaw_near.glb",
+          "triangles": 27338,
+          "sha256": "4ac939f6be5cc64ea66f28d6e9b9f8a586f58ec5c0d8dbde8ec3470a27323298",
+          "min": [
+            -1.1272951364517212,
+            0.02499999850988388,
+            -0.925154983997345
+          ],
+          "max": [
+            1.1272951364517212,
+            1.9287066459655762,
+            3.0379929542541504
+          ]
+        },
+        "far": {
+          "path": "우주-비즈니스/assets/models/creature_remodel/r01/tethermaw_far.glb",
+          "triangles": 11746,
+          "sha256": "27b3252d96e403ea14fd1eb29aba7bc010d5b7a90e0e0bdc6e9e0583ce5682e5",
+          "min": [
+            -1.127321720123291,
+            0.02501225657761097,
+            -0.9251967072486877
+          ],
+          "max": [
+            1.127321720123291,
+            1.9270882606506348,
+            3.0378968715667725
+          ]
+        }
+      }
+    }
+  ]
+}

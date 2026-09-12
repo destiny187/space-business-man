@@ -1,0 +1,132 @@
+{
+  "id": "annulus",
+  "name": "환공 여과수",
+  "kind": "annular",
+  "source_id": "bio_torus_loom_01",
+  "palette": [
+    "536e70",
+    "b4b89b",
+    "334950",
+    "c9965e"
+  ],
+  "attack": "spit",
+  "habitat": "광물성 암반 · 진동 감각공과 고리 안쪽 여과기관",
+  "source": "art/blender/creature_remodel/r01/annulus.blend",
+  "status": "remodel-r01-built-awaiting-review",
+  "bone_count": 22,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right"
+  ],
+  "approved_mesh_digest": null,
+  "mesh_digest": "ac9ef9da55aa4cdd48c712ea39f5d098ce492b072ac22f98dab23756eb9007c3",
+  "muzzle": [
+    0.0,
+    1.2899999618530273,
+    0.8500000238418579
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "head",
+      "point": [
+        0.0,
+        1.2899999618530273,
+        0.8500000238418579
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.817072218907302e-17,
+        0.10000000149011612,
+        0.949999988079071
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8227241039276123,
+        0.10000000149011612,
+        -0.4749999940395355
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.8227241039276123,
+        0.10000000149011612,
+        -0.4749999940395355
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.8,
+    "release": [
+      1.0,
+      1.12,
+      1.24
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.34,
+    "stance": 0.8,
+    "period": 1.0,
+    "damage": 9,
+    "strike_radius": 0.1,
+    "target_z": 3.2,
+    "target_height": 0.8,
+    "effect": "acid",
+    "flight_seconds": 0.32,
+    "arc_height": 0.1,
+    "hit_pause": 0,
+    "knockback": 0.1,
+    "run": {
+      "stride": 0.5,
+      "stance": 0.78,
+      "period": 0.7
+    }
+  },
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r01/annulus_near.glb",
+      "triangles": 27824,
+      "sha256": "ff53c86e42171276b6a278c5c7090efb9dc33f2be8df179211543cd40d7ff4fd",
+      "min": [
+        -1.1352734565734863,
+        0.02499999850988388,
+        -0.7185527086257935
+      ],
+      "max": [
+        1.1352734565734863,
+        2.4118552207946777,
+        1.2522014379501343
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r01/annulus_far.glb",
+      "triangles": 11956,
+      "sha256": "bc99c6f9c68a102420ad8f8a0587dac948bcadf8664405476180a02d843d7498",
+      "min": [
+        -1.1352968215942383,
+        0.024997133761644363,
+        -0.7185950875282288
+      ],
+      "max": [
+        1.1352968215942383,
+        2.4115946292877197,
+        1.2521213293075562
+      ]
+    }
+  }
+}
