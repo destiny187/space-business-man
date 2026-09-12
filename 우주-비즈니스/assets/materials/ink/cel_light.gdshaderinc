@@ -5,6 +5,10 @@ void light(){
  float n=dot(NORMAL,LIGHT);
  // Three deliberate bands, with a narrow antialiased transition.
  float band=.12+.40*smoothstep(.10,.125,n)+.48*smoothstep(.58,.605,n);
+ #ifdef INK_ORBITAL_SURFACE
+ float band_pixel=fwidth(n)*.75;
+ band=.12+.40*smoothstep(.10-band_pixel,.125+band_pixel,n)+.48*smoothstep(.58-band_pixel,.605+band_pixel,n);
+ #endif
  // Local lights include distance falloff in attenuation; thresholding it
  // as a directional shadow makes lamps disappear a few metres away.
  float shadow=LIGHT_IS_DIRECTIONAL?smoothstep(.28,.48,ATTENUATION):ATTENUATION;
@@ -25,5 +29,9 @@ void light(){
  float highlight=pow(max(dot(NORMAL,half_vector),0.),mix(110.,18.,rough));
 #endif
  float cut=smoothstep(.52,.57,highlight);
+ #ifdef INK_ORBITAL_SURFACE
+ float highlight_pixel=fwidth(highlight)*.75;
+ cut=smoothstep(.52-highlight_pixel,.57+highlight_pixel,highlight);
+ #endif
  SPECULAR_LIGHT+=LIGHT_COLOR*cut*shadow*(.09+metal*.28)*highlight_strength/PI;
 }

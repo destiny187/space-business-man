@@ -399,6 +399,7 @@ func _apply_snapshot(value: Dictionary) -> void:
 	if flight==null:_setup_flight()
 	onboarding.update_snapshot(value)
 	flight.transition_preparing=arrival.active
+	flight.update_terraforming(value.get("orbital_terraform",{}))
 	flight.freight_records=value.crew.get("freight_records",{}).duplicate(true)
 	flight.freight_activity=value.get("freight_activity",[]).duplicate(true)
 	flight.freight_vessels=value.get("freight_vessels",[]).duplicate(true)

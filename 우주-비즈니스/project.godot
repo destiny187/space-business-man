@@ -29,7 +29,14 @@ window/stretch/mode="canvas_items"
 
 [rendering]
 
-occlusion_culling/occlusion_rays_per_thread=128
 rendering_device/driver.windows="d3d12"
 textures/vram_compression/import_etc2_astc=true
 anti_aliasing/quality/msaa_3d=2
+occlusion_culling/occlusion_rays_per_thread=128
+
+[shader_globals]
+
+orbital_surface_quality={
+"type": "int",
+"value": 1
+}

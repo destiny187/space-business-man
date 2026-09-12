@@ -940,6 +940,74 @@
       "radius": 2.6,
       "sample": false,
       "clue": true
+    },
+    "lost_technology_archive": {
+      "id": "lost_technology_archive",
+      "name": "로스트 테크놀로지 기록고",
+      "tier": 3,
+      "environment": "any",
+      "model": "discoveries/lost_technology_archive",
+      "mode": "archive",
+      "sound": "machine",
+      "knowledge": "복원한 설계는 원정대가 함께 사용합니다. 재료를 준비해 제작소에서 생산·개조하세요.",
+      "stages": [
+        {
+          "label": "손상 기록 조각 회수",
+          "point": [
+            -1.8,
+            0,
+            1.7
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 3
+        },
+        {
+          "label": "제어 회로 설치·전원 복구",
+          "point": [
+            1.8,
+            0,
+            1.7
+          ],
+          "tool": "",
+          "cost": {
+            "control_circuit": 1,
+            "refined_copper": 2
+          },
+          "seconds": 4
+        },
+        {
+          "label": "기록 대조·설계도 복원",
+          "point": [
+            0,
+            0,
+            1.8
+          ],
+          "tool": "",
+          "cost": {},
+          "seconds": 5
+        }
+      ],
+      "reward": {},
+      "sample": false,
+      "clue": false
     }
+  },
+  "archive": {
+    "minimum_tier": 3,
+    "tile_chance": 45,
+    "attempts": 64,
+    "spacing": 42,
+    "duplicate_reward": {
+      "refined_copper": 2
+    },
+    "blueprints": [
+      "facility_factory_mk3",
+      "facility_atmosphere_mk3",
+      "facility_water_mk3",
+      "facility_thermal_mk3",
+      "facility_biolab_mk3",
+      "facility_source_control_mk3"
+    ]
   }
 }

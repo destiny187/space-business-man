@@ -35,7 +35,10 @@ var selecting_route:=false
 var was_transiting:=false
 var nearby_stars: Control
 var flight_render_suspended:=false
+var terraform_preview_left:=0.0
 var route_distance: Label
+var access_readout: VBoxContainer
+var access_key: String=""
 
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;theme=app.ui_theme;mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -69,6 +72,7 @@ func _build_map() -> void:
 	var title:=FrontierInterfaceStyle.label(heading,"항성 지도",24);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	map_mode=_button(heading,"은하 보기",func():app.chart.galaxy=not app.chart.galaxy;app.chart.reset_view();_map_mode())
 	_button(heading,"이동 가능한 근처",func():app.chart.focus_nearby();_map_mode())
+	_button(heading,"교역 신호",find_station_route)
 	_button(heading,"생산 거점",func():app.navigation_records.filter.select(3);app.navigation_records.page=0;app.navigation_records.refresh();app.navigation_records.popup_centered())
 	_button(heading,"기록",func():app.navigation_records.refresh();app.navigation_records.popup_centered())
 	_button(heading,"닫기  Tab",app.close_menus)
@@ -100,6 +104,7 @@ func _build_map() -> void:
 		row.add_child(bar);survey_bars[entry[0]]=bar
 	survey_note=FrontierInterfaceStyle.label(card,"",12,FrontierInterfaceStyle.MUTED);survey_note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	route_distance=FrontierInterfaceStyle.label(card,"",16,FrontierInterfaceStyle.ACCENT);route_distance.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	access_readout=VBoxContainer.new();card.add_child(access_readout)
 	route=_button(card,"출발",func():start_route(selected_preview))
 	app.travel_status=target_kind
 	app.navigation_records=FrontierNavigationRecords.new();app.add_child(app.navigation_records);app.navigation_records.selected.connect(show_target)
@@ -168,6 +173,7 @@ func refresh(value: Dictionary) -> void:
 	if nav.mode!="jump" and was_transiting:app.close_menus();selecting_route=false;selected_preview=-1
 	was_transiting=nav.mode=="jump"
 	for map in [app.chart,mini]:
+		map.navigation_capabilities=value.get("vessel_stats",{}).get("navigation_capabilities",{})
 		map.station_excluded=int(nav.get("first_stellar_system",-1))
 		map.manifest=app.session.manifest;map.current_system=int(nav.system);map.elapsed=float(nav.get("orbit_time",0));map.ship_position=FrontierCrewWorld.vector(nav.position);map.ship_direction=FrontierCrewWorld.vector(nav.direction);map.journal=app.navigation_journal
 		map.transit=nav.get("transit",{}) if nav.mode=="jump" else {};map.queue_redraw()
@@ -244,8 +250,12 @@ func refresh_survey() -> void:
 	else:survey_note.modulate=Color.WHITE
 
 func _update_preview(body: Dictionary) -> void:
-	if preview_key==body.id:return
-	preview_key=body.id
+	var recovery: Dictionary=app.session.latest.get("orbital_terraform",{}).get(body.id,{})
+	var next_key:=str([body.id,recovery])
+	if preview_key==next_key:return
+	if is_instance_valid(preview_body) and preview_body.get_meta("body_id","")==body.id:
+		FrontierOrbitalTerraformView.apply(preview_body,body,recovery);FrontierOrbitalTerraformView.focus_preview(preview_body,recovery);preview_key=next_key;return
+	preview_key=next_key
 	if is_instance_valid(preview_body):preview_body.queue_free()
 	if body.get("origin","")=="solar_reference":
 		preview_body=FrontierSolarPlanet.new();preview_root.add_child(preview_body);preview_body.configure(int(body.ordinal)-FrontierUniverse.first_ordinal(app.session.manifest,int(body.system_ordinal)),1.0,body)
@@ -260,14 +270,21 @@ func _update_preview(body: Dictionary) -> void:
 		material.set_shader_parameter("land_color",Color(t.dust));material.set_shader_parameter("sea_color",Color(t.sea));material.set_shader_parameter("rock_color",Color(t.rock));material.set_shader_parameter("sea_level",lerpf(.20,.61,float(t.water)/100.0) if float(t.water)>0 else 0.0);material.set_shader_parameter("cloud_amount",float(t.cloud));material.set_shader_parameter("seed_offset",float(t.pattern_seed));material.set_shader_parameter("molten",t.id=="volcanic")
 		FrontierCorporateOrbital.apply(material,body)
 		mesh.material_override=material;preview_body=mesh;preview_root.add_child(mesh)
+	FrontierOrbitalTerraformView.preview_shells(preview_body,body)
+	preview_body.set_meta("body_id",body.id)
+	FrontierOrbitalTerraformView.apply(preview_body,body,recovery)
+	FrontierOrbitalTerraformView.focus_preview(preview_body,recovery)
 
 func start_route(ordinal: int) -> void:
 	if ordinal<0 or pending_route>=0:return
 	var guide_error:=app.onboarding.departure_reason(ordinal)
 	if not guide_error.is_empty():_notice(guide_error);return
+	var access_error:=FrontierVesselAccess.departure_reason(access_world(),ordinal)
+	if not access_error.is_empty():_notice(access_error);return
 	pending_route=ordinal;pending_sequence=-1;pending_revision=-1
 	if not app.session.send_request("navigate",{"ordinal":ordinal}):pending_route=-1
 func _response(sequence: int,value: Dictionary) -> void:
+	if value.has("firearm_action"):return
 	if not value.get("ok",false):_notice(str(value.get("error","실행할 수 없습니다.")))
 	if sequence!=pending_sequence or pending_route<0:return
 	if value.get("ok",false):pending_revision=int(value.revision)
@@ -276,6 +293,10 @@ func _notice(value: String) -> void:
 	message.text=value;toast_left=4;message.show()
 
 func _process(delta: float) -> void:
+	terraform_preview_left-=delta
+	if terraform_preview_left<=0 and app.navigation_frame.visible and selected_preview>=0 and not selecting_route:
+		terraform_preview_left=float(FrontierOrbitalTerraform.config().refresh_seconds)
+		_update_preview(FrontierUniverse.body(app.session.manifest,selected_preview))
 	if app.session.active and (app.surface_world==null or app.navigation_frame.visible):
 		FrontierStellarRoutes.build(app.session.manifest,int(app.session.latest.get("crew",{}).get("navigation",{}).get("system",0)),1500 if app.navigation_frame.visible else 250)
 	if app.space_view!=null:
@@ -357,6 +378,9 @@ func _update_context() -> void:
 		context.text=body.name+"    "+("F  착륙" if pilot else "F  착륙 준비")
 		if not FrontierUniverse.landable(body):context.text=body.name+"  "+FrontierUniverse.landing_restriction(body)
 		elif gap>limit:context.text=body.name+"  조금 더 접근하세요"
+		var access_error:=FrontierVesselAccess.landing_reason(access_world(),ordinal)
+		if not access_error.is_empty():context_ready=false;context.text=body.name+"  T%d 항해 내성 필요 · 정비 K"%int(body.planet_tier);context.tooltip_text=access_error
+		else:context.tooltip_text=""
 	if context_kind=="launch":context_ready=true
 	if not app.session.offline:
 		var ready_count:=0;var connected_count:=0
@@ -407,8 +431,39 @@ func _route_info() -> void:
 	route.disabled=not app.session.latest.crew.get("landing",{}).is_empty() or app.session.latest.self_id!=app.session.latest.crew.pilot_id or nav.mode!="idle" or pending_route>=0 or distance>limit+.001 or index==int(nav.system)
 	_access_info(selected_preview)
 
+func find_station_route() -> void:
+	if app.session.latest.is_empty():return
+	var nav: Dictionary=app.session.latest.crew.navigation
+	var index:=int(nav.system);var excluded:=int(nav.get("first_stellar_system",-1))
+	for item in FrontierStellarRoutes.nearby(app.session.manifest,index,FrontierVesselRefit.stellar_range(app.session.latest)):
+		if FrontierSpaceStation.definition(app.session.manifest,int(item.index),excluded).is_empty():continue
+		app.chart.focus_nearby();_map_mode()
+		var ordinal:=FrontierUniverse.first_ordinal(app.session.manifest,int(item.index))
+		app.chart.route_system=int(item.index);show_route(ordinal)
+		target_name.text=FrontierSpaceStation.definition(app.session.manifest,int(item.index),excluded).name
+		target_kind.text="공개 교역 신호  /  T3 설계도 6종 확정 판매"
+		return
+	_notice("현재 준비된 항로·항속거리 안에 교역 신호가 없습니다. 근처 항성으로 이동하거나 지도 준비 후 다시 확인하세요.")
+
+func access_world() -> Dictionary:
+	var value: Dictionary=app.session.latest
+	var result: Dictionary={"manifest":app.session.manifest,"crew":value.crew,"vessel":value.get("vessel",{}),"navigation_capabilities":value.get("vessel_stats",{}).get("navigation_capabilities",{})}
+	if not value.get("local_shuttle","").is_empty():result.local_shuttle=value.local_shuttle;result.mothership_location=value.get("main_location","")
+	return result
 func _access_info(ordinal: int) -> void:
+	var world:=access_world()
+	var tier:=FrontierVesselAccess.departure_tier(app.session.manifest,world.crew.navigation,ordinal)
+	var caps:=FrontierVesselAccess.world_capabilities(world)
+	var reason:=FrontierVesselAccess.departure_reason(world,ordinal)
+	var next_key:=str([caps,tier])
+	if next_key!=access_key:
+		access_key=next_key
+		for child in access_readout.get_children():access_readout.remove_child(child);child.queue_free()
+		var title:=FrontierInterfaceStyle.label(access_readout,"T%d 항해 환경 / 현재 T%d"%[tier,FrontierVesselAccess.tier_for(caps)],13)
+		title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		if tier>2:FrontierVesselCapabilityReadout.populate(access_readout,caps,tier)
 	var guide_reason:=app.onboarding.departure_reason(ordinal)
 	route.tooltip_text=""
 	if not guide_reason.is_empty():route.disabled=true;route.text="태양계 가이드 진행 중";route.tooltip_text=guide_reason
+	elif not reason.is_empty():route.disabled=true;route.text="항해 내성 부족";route.tooltip_text=reason
 	elif not selecting_route:route.text="행성 접근";route.tooltip_text=""

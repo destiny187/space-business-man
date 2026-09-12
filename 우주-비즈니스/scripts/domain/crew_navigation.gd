@@ -69,6 +69,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not FrontierUniverse._finite(args.get("ordinal"),0,int(world.manifest.settings.planet_count)-1) or args.ordinal!=floorf(args.ordinal):return "행성 주소가 올바르지 않습니다."
 		nav.station_target=false;nav.target=int(args.ordinal);world.navigation_target=FrontierUniverse.body_id(world.manifest,int(nav.target))
 	elif kind=="depart":
+		var access_error:=FrontierVesselAccess.departure_reason(world,int(nav.target))
+		if not access_error.is_empty():return access_error
 		var destination_system:=FrontierUniverse.system_index(world.manifest,int(nav.target))
 		var distance:=FrontierUniverse.map_position(world.manifest,int(nav.system)).distance_to(FrontierUniverse.map_position(world.manifest,destination_system))
 		if destination_system!=int(nav.system) and distance>FrontierVesselRefit.stellar_range(world)+.001:return "항속거리 초과 · 가까운 항성계를 경유하거나 비행체를 업그레이드하세요."
@@ -312,7 +314,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 
 static var departure_cache: Dictionary={}
 static func first_destination(manifest: Dictionary) -> int:
-	var cache_key: String=str(FrontierPlanetaryCycles.enabled(manifest))+":"+manifest.id+":"+str(manifest.settings.get("system_rules",{}).get("version",0))+":"+str(manifest.settings.get("ground_rules",{}).get("version",0))
+	var cache_key: String=str(FrontierPlanetaryCycles.enabled(manifest))+":"+manifest.id+":"+str(manifest.settings.get("system_rules",{}).get("version",0))+":"+str(manifest.settings.get("ground_rules",{}).get("version",0))+":"+str(manifest.settings.planet_count)+":"+str(manifest.settings.get("galaxy_layout",{}))
 	if departure_cache.has(cache_key):return departure_cache[cache_key]
 	var origin:=FrontierUniverse.system(manifest,0)
 	var start:=Vector2(origin.map_position[0],origin.map_position[1])

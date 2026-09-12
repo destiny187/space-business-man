@@ -149,6 +149,14 @@ func select(entry: Dictionary) -> void:
 		FrontierInterfaceStyle.label(details,"T%d  조사 %d / %d"%[int(d.tier),index,d.stages.size()],13)
 		var at: Array=entry.row.position
 		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(at[0]),float(at[2])],13)
+		if d.mode=="archive":
+			var blueprint:=FrontierFacilityBlueprints.archive_blueprint({"manifest":app.session.manifest},entry.row)
+			var design: Dictionary=FrontierFacilityBlueprints.definitions()[blueprint]
+			var line:=HBoxContainer.new();details.add_child(line)
+			var image:=TextureRect.new();image.texture=load("res://assets/ui/previews/"+str(design.building)+".png") if design.building!="source_control" else load("res://assets/ui/previews/terraform3/source_control.png");image.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;image.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;image.custom_minimum_size=Vector2(56,48);line.add_child(image)
+			var label_text:=str(design.name)+("  공동 설계 확보" if entry.row.claimed else "  복원 대상")
+			if entry.row.get("blueprint_duplicate",false):label_text=str(design.name)+"  기존 설계 / 부품 회수"
+			var note:=FrontierInterfaceStyle.label(line,label_text,14);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;note.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 		for resource in d.reward:
 			var line:=HBoxContainer.new();details.add_child(line);line.add_child(FrontierResourceIcons.view(resource,24));FrontierInterfaceStyle.label(line,str(int(d.reward[resource])),14)
 		if not entry.row.clue.is_empty():

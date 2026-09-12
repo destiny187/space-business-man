@@ -66,6 +66,7 @@ static func configure(material: ShaderMaterial,body: Dictionary) -> void:
 	material.set_shader_parameter("liquid_allowed",float(traits.get("pressure",0))>.05)
 	material.set_shader_parameter("highlight_strength",float(cfg.highlight_strength))
 static func orbital(material: ShaderMaterial,traits: Dictionary) -> void:
+	FrontierOrbitalSurface.configure(material,str(traits.get("id","cratered")))
 	material.set_shader_parameter("surface_temperature",float(traits.get("temperature",20)))
 	material.set_shader_parameter("surface_water",float(traits.get("water",0))/100.0)
 	material.set_shader_parameter("geology_style",{"sedimentary":1,"crystalline":2,"alkaline":3}.get(traits.get("id",""),0))

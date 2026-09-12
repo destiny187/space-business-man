@@ -22,6 +22,8 @@ static func context(world: Dictionary,actor: String) -> Dictionary:
 	local.crew.members={actor:world.crew.members[actor]}
 	local.crew.pilot_id=actor
 	local.vessel={}
+	local.navigation_capabilities=FrontierVesselAccess.capabilities(world.get("vessel",{}))
+	local.mothership_location=world.location
 	for key in ["navigation","landing","cargo","cargo_equipment","rock"]:local.crew[key]=ship[key]
 	local.location=ship.location;local.navigation_target=ship.navigation_target;local.flight_position=ship.navigation.position
 	local.crew["cargo_slots"]=int(config().cargo_slots)

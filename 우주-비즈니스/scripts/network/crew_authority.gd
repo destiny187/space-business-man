@@ -62,6 +62,7 @@ var industry_timer:=0.0
 var last_mine: Dictionary={}
 var rover_spawn_validator: Callable
 var rover_runtime: Dictionary={"seats":{},"exits":{},"tasks":{},"status":{}}
+var orbital_terraform:=FrontierOrbitalTerraform.new()
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
 	weather_presence.clear();weather_timer=0.0;wildlife_combat.cache.clear();wildlife_timer=0.0
@@ -71,6 +72,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	if not error.is_empty():return false
 	world=source.duplicate(true);save_world=persist
 	world.manifest=WorldSnapshot.own_manifest(world.manifest)
+	orbital_terraform.cache.clear()
 	rover_runtime={"seats":{},"exits":{},"tasks":{},"status":{}}
 	FrontierRovers.brake_all(world)
 	for site in world.get("business",{}).get("sites",{}).values():
@@ -158,7 +160,8 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 	world=draft;peers[peer]=id;pending.erase(peer)
 	return {"ok":true,"snapshot":snapshot(peer)}
 func snapshot_shared() -> Dictionary:
-	return {"freight_vessels":FrontierFreightSalvageSurvey.vessels(world),"freight_activity":FrontierFreightSalvageSurvey.activity(scans),"shared_credits":int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits)),"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"session_id":session_id,"galaxy_id":world.manifest.id}
+	var terraformed:=orbital_terraform.summaries(world)
+	return {"freight_vessels":FrontierFreightSalvageSurvey.vessels(world),"freight_activity":FrontierFreightSalvageSurvey.activity(scans),"shared_credits":int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits)),"orbital_terraform":terraformed,"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"session_id":session_id,"galaxy_id":world.manifest.id}
 func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	if shared.is_empty():shared=snapshot_shared()
 	var data: Dictionary=world.crew.duplicate()
@@ -183,7 +186,7 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
-	return {"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"orbital_terraform":shared.orbital_terraform,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
 	if not resolve_autonomous(true):return failure(error)
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")

@@ -135,5 +135,25 @@
         "water_quality": 2
       }
     ]
+  },
+  "planet_surface": {
+    "name": "행성 표면 품질",
+    "labels": [
+      "낮음",
+      "보통",
+      "높음"
+    ],
+    "tooltip": "우주에서 보는 행성의 세부 무늬입니다. 보통은 지질 무늬, 높음은 미세 무늬와 표면 요철을 추가합니다. 낮음에서도 표면 경계를 부드럽게 표시합니다.",
+    "levels": [
+      {
+        "planet_surface_quality": 0
+      },
+      {
+        "planet_surface_quality": 1
+      },
+      {
+        "planet_surface_quality": 2
+      }
+    ]
   }
 }

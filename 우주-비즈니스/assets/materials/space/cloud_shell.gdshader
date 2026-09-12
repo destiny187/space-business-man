@@ -4,12 +4,14 @@ render_mode cull_back,depth_draw_never;
 #include "res://assets/materials/space/illumination.gdshaderinc"
 #include "res://assets/materials/ink/cel_light.gdshaderinc"
 #include "res://assets/materials/space/cloud_field.gdshaderinc"
+#include "res://assets/materials/space/terraform_field.gdshaderinc"
 uniform vec4 cloud_tint:source_color=vec4(.81,.85,.86,1.0);
 uniform float planet_radius=1.0;
 varying vec3 cloud_point;
 void vertex(){cloud_point=normalize(VERTEX);space_world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;}
 void fragment(){
- float coverage=cloud_field(cloud_point);ALBEDO=cloud_tint.rgb*mix(.72,1.0,smoothstep(.2,.8,coverage));ROUGHNESS=1.0;
+ vec4 recovery=terraform_field(cloud_point);
+ float coverage=cloud_field_amount(cloud_point,mix(cloud_coverage,max(cloud_coverage,terraform_cloud_coverage),recovery.y*recovery.w));ALBEDO=cloud_tint.rgb*mix(.72,1.0,smoothstep(.2,.8,coverage));ROUGHNESS=1.0;
  ALPHA=coverage*.9*(1.0-smoothstep(planet_radius*22.0,planet_radius*30.0,length(VERTEX)));
  float period=floor(cloud_time/23.0);
  vec3 storm=normalize(vec3(sin(cloud_seed+period*3.7),.35*sin(period+cloud_seed),cos(cloud_seed+period*3.7)));

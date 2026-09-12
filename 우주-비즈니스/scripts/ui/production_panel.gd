@@ -22,6 +22,7 @@ var search: LineEdit
 var craftable: CheckButton
 var empty: Label
 var product_list: VBoxContainer
+var batches: SpinBox
 func configure(owner_panel: FrontierBusinessPanel) -> void:
 	panel=owner_panel;name="생산 / 개조"
 	var browse:=HBoxContainer.new();add_child(browse)
@@ -47,8 +48,9 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	target_cost=FrontierResourceReadout.new();content.add_child(target_cost)
 	upgrade=panel.button(content,"",func():panel.command.emit("business_robot_upgrade" if current.get("robots",{}).has(panel.selected(targets)) else "business_facility_upgrade",{"building_id":panel.selected(targets),"robot_id":panel.selected(targets)}))
 	help_label=panel.label(detail,"재료  완성품 → 현장 창고",13)
+	batches=SpinBox.new();batches.min_value=1;batches.max_value=int(FrontierProductionTier2.config().maximum_batch);batches.value=1;batches.prefix="생산 묶음 ";detail.add_child(batches);batches.value_changed.connect(func(_value):refresh())
 	progress=ProgressBar.new();progress.custom_minimum_size.y=18;detail.add_child(progress)
-	produce=panel.button(detail,"",func():panel.command.emit("business_produce",{"building_id":panel.selected(targets),"product":selected_product}))
+	produce=panel.button(detail,"",func():panel.command.emit("business_produce",{"building_id":panel.selected(targets),"product":selected_product,"batches":int(batches.value)}))
 func update_site(site: Dictionary) -> void:
 	current=site
 	var options: Dictionary={}
@@ -67,14 +69,15 @@ func refresh() -> void:
 	var manufacturing: bool=panel.context_kind=="factory"
 	product_list.visible=manufacturing;search.get_parent().visible=manufacturing;ingredients.visible=manufacturing;help_label.visible=manufacturing
 	var def:=FrontierProductionTier2.product(selected_product)
+	var batch_count:=int(batches.value);var recipe_cost:=FrontierProductionTier2.batch_cost(def,batch_count);batches.visible=manufacturing
 	if manufacturing:preview.show_model(def.model)
-	title.text=def.name+" ×%d"%int(def.amount);description.text=def.use
+	title.text=def.name+" ×%d"%(int(def.amount)*batch_count);description.text=def.use
 	for id in product_cards:product_cards[id].selected=id==selected_product;product_cards[id].queue_redraw()
 	for child in ingredients.get_children():ingredients.remove_child(child);child.queue_free()
 	var stock: Dictionary=current.get("inventory",{})
-	for id in def.cost:
+	for id in recipe_cost:
 		var column:=VBoxContainer.new();ingredients.add_child(column);column.add_child(FrontierResourceIcons.view(id,28))
-		FrontierInterfaceStyle.label(column,"%d/%d"%[int(stock.get(id,0)),int(def.cost[id])],12,FrontierInterfaceStyle.ACCENT if int(stock.get(id,0))>=int(def.cost[id]) else FrontierInterfaceStyle.DANGER)
+		FrontierInterfaceStyle.label(column,"%d/%d"%[int(stock.get(id,0)),int(recipe_cost[id])],12,FrontierInterfaceStyle.ACCENT if int(stock.get(id,0))>=int(recipe_cost[id]) else FrontierInterfaceStyle.DANGER)
 	var id:=panel.selected(targets)
 	var b: Dictionary=current.get("buildings",{}).get(id,current.get("robots",{}).get(id,{}))
 	if not manufacturing:
@@ -82,16 +85,17 @@ func refresh() -> void:
 		preview.show_model("miner" if panel.context_kind=="robot" else target_def.get("model",""))
 		title.text="M-01 로봇" if panel.context_kind=="robot" else FrontierTerraformTier3.name(b)
 		description.text="Mk.%d  %s"%[int(b.get("tier",1)),b.get("status","")]
-		if current.has("tier3"):
+		if current.has("tier3") and not FrontierFreeTerraform.active(current):
 			var zone: Dictionary=current.regions.get(str(b.get("region_id","region:0")),{})
 			if not zone.is_empty():description.text+="\n"+FrontierTerraformTier3.detail(current,zone)
 	var job: Dictionary=b.get("production",{})
 	progress.value=0;progress.visible=not job.is_empty()
 	if not job.is_empty():progress.value=float(job.progress)/float(FrontierProductionTier2.product(job.product).seconds)*100
-	produce.text="제품 생산  %.0f초  제작소 8m 이내"%(float(def.seconds)/FrontierProductionTier2.factor(b))
+	produce.text="%d묶음 생산  %.0f초"%[batch_count,float(def.seconds)*batch_count/FrontierProductionTier2.factor(b)]
 	var reason:=production_reason(selected_product)
-	produce.disabled=b.get("type","")!="factory" or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,def.cost) or not FrontierPlanetSupply.operating(current) or not reason.is_empty()
+	produce.disabled=b.get("type","")!="factory" or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,recipe_cost) or not FrontierPlanetSupply.operating(current) or not reason.is_empty()
 	help_label.text=reason if not reason.is_empty() else "재료  완성품 → 현장 창고"
+	if not job.is_empty():help_label.text="%d / %d묶음 남음  |  창고가 가득 차면 출고 대기"%[int(job.get("remaining",1)),int(job.get("total",1))]
 	filter_products()
 	var is_robot: bool=current.get("robots",{}).has(id)
 	var upgrade_def: Dictionary=(FrontierProductionTier2.config().robot_upgrade if int(b.get("tier",1))==1 else {}) if is_robot else FrontierProductionTier2.upgrade_definition(b)
@@ -102,7 +106,7 @@ func refresh() -> void:
 	upgrade.disabled=b.get("submerged",false) or b.is_empty() or upgrade_def.is_empty() or not job.is_empty() or not FrontierExpeditionBusiness.affordable(stock,upgrade_def.get("cost",{})) or not FrontierPlanetSupply.operating(current)
 	var blueprint:=FrontierFacilityBlueprints.required(b,next_tier) if not is_robot else ""
 	if not blueprint.is_empty() and blueprint not in panel.ledger.get("facility_blueprints",[]):
-		upgrade.disabled=true;upgrade.text="Mk.%d 설계도 필요"%next_tier;upgrade.tooltip_text="공동 원정 설계도 보유 상태를 확인하세요."
+		upgrade.disabled=true;upgrade.text="Mk.%d 설계도 필요"%next_tier;upgrade.tooltip_text="정거장 T3 설계도 탭에서 구매하거나 T3 기록고를 복원하세요."
 	if upgrade_def.is_empty():upgrade.text="현재 최고 단계  Mk.%d"%int(b.get("tier",1));target_cost.value=""
 
 func production_reason(product_id: String) -> String:

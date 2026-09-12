@@ -48,29 +48,40 @@
       "mass": 40,
       "maximum_mass": 54,
       "reactor_power": 12,
-      "hangar": 2
+      "hangar": 2,
+      "roles": [
+        "exploration",
+        "industry"
+      ]
     },
     "swift": {
       "name": "SWIFT",
       "role": "고속 탐사선",
-      "price": 6800,
+      "price": 24000,
       "model": "res://assets/models/ships/swift.glb",
       "speed": 1.25,
       "mass": 36,
       "maximum_mass": 52,
       "reactor_power": 13,
-      "hangar": 2
+      "hangar": 2,
+      "roles": [
+        "exploration"
+      ]
     },
     "mule": {
       "name": "MULE",
       "role": "중량 수송선",
-      "price": 8200,
+      "price": 28000,
       "model": "res://assets/models/ships/mule.glb",
       "speed": 0.9,
       "mass": 44,
       "maximum_mass": 68,
       "reactor_power": 15,
-      "hangar": 5
+      "hangar": 5,
+      "roles": [
+        "logistics",
+        "trade"
+      ]
     }
   },
   "approach_speed": 1400,

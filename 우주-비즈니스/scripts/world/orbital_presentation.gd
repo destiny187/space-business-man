@@ -59,7 +59,7 @@ func _decorate(node: Node3D,body: Dictionary,radius: float) -> void:
 				child.name="OrbitalAtmosphere";child.visible=density>.005
 				child.scale=Vector3.ONE*(1.0+float(config().atmosphere.shell_height)*minf(density,1.0))
 				child.material_override.set_shader_parameter("density",density)
-		if coverage<=.01:continue
+		if coverage<=.01 and not FrontierUniverse.landable(body):continue
 		var cloud:=MeshInstance3D.new();cloud.name="OrbitalCloudLayer";cloud.mesh=surface.mesh;cloud.scale=Vector3.ONE*(1.0+float(config().clouds.height))
 		var mat:=ShaderMaterial.new();mat.shader=load("res://assets/materials/space/cloud_shell.gdshader")
 		mat.set_shader_parameter("cloud_coverage",coverage);mat.set_shader_parameter("cloud_seed",float(t.get("pattern_seed",body.seed%1000)))

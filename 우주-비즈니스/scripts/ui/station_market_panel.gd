@@ -24,6 +24,7 @@ var quantity: SpinBox
 var buy: Button
 var sell: Button
 var bars: VBoxContainer
+var access_box: VBoxContainer
 var preview: SubViewport
 var preview_root: Node3D
 var preview_camera: Camera3D
@@ -50,10 +51,10 @@ func _ready() -> void:
  money=label(header,"",18);money.autowrap_mode=TextServer.AUTOWRAP_OFF;money.custom_minimum_size.x=120;money.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
  button(header,"닫기  Esc",hide)
  var tabs:=HBoxContainer.new();column.add_child(tabs)
- for tab in [["goods","물자 거래"],["ships","선체 구매"],["owned","보유 선체"]]:
+ for tab in [["goods","물자 거래"],["blueprints","T3 설계도"],["ships","선체 구매"],["owned","보유 선체"],["refits","항해 개장"]]:
   var key: String=tab[0]
   service_tabs[key]=button(tabs,tab[1],func():mode=key;selected="";rebuild())
- browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품  선체 이름 검색";browser.changed.connect(rebuild)
+ browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품·설계도·선체 검색";browser.changed.connect(rebuild)
  sale_only=CheckButton.new();sale_only.text="내가 판매할 수 있는 물자";column.add_child(sale_only);sale_only.toggled.connect(func(_v):rebuild())
  market_cycle=HBoxContainer.new();market_cycle.add_theme_constant_override("separation",10);column.add_child(market_cycle)
  demand_icon=TextureRect.new();demand_icon.custom_minimum_size=Vector2(28,28);demand_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;demand_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;market_cycle.add_child(demand_icon)
@@ -65,6 +66,7 @@ func _ready() -> void:
  var scroll:=ScrollContainer.new();scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;scroll.size_flags_horizontal=Control.SIZE_EXPAND_FILL;scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;list.add_child(scroll)
  grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",12);grid.add_theme_constant_override("v_separation",12);grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL;scroll.add_child(grid)
  empty=label(list,"조건에 맞는 상품이 없습니다.",14)
+ access_box=VBoxContainer.new();access_box.add_theme_constant_override("separation",6);list.add_child(access_box)
  var detail:=VBoxContainer.new();detail.custom_minimum_size.x=300;detail.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail.add_theme_constant_override("separation",6);body.add_child(detail)
  var detail_scroll:=ScrollContainer.new();detail_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;detail_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;detail.add_child(detail_scroll)
  var content:=VBoxContainer.new();content.size_flags_horizontal=Control.SIZE_EXPAND_FILL;detail_scroll.add_child(content)
@@ -81,7 +83,7 @@ func _ready() -> void:
  bars=VBoxContainer.new();bars.add_theme_constant_override("separation",9);content.add_child(bars)
  unit_price=label(detail,"",13)
  quantity=SpinBox.new();quantity.min_value=1;quantity.max_value=1000;quantity.value=1;quantity.prefix="수량 ";quantity.value_changed.connect(func(_v: float):refresh_detail());detail.add_child(quantity)
- buy=button(detail,"구매",func():send("station_equip" if mode=="owned" else "station_buy"))
+ buy=button(detail,"구매",func():send("station_navigation_refit" if mode=="refits" else "station_equip" if mode=="owned" else ("station_blueprint" if mode=="blueprints" else "station_buy")))
  sell=button(detail,"판매",func():send("station_sell"))
  message=label(column,"공동 자금  구매 물자는 내 아이템창으로 이동",13)
  audio=FrontierAudio.new();add_child(audio)
@@ -121,13 +123,16 @@ func rebuild() -> void:
  heading.text=str(station.get("name","WAYFARER"))+"  교역"
  money.text="%s Cr"%int(station.get("credits",0))
  var items: Array=[]
- if mode=="owned":items=data.get("vessel",{}).get("hulls",["kestrel"]).duplicate()
+ if mode=="refits":items=["3","4","5"]
+ elif mode=="blueprints":
+  for row in station.get("blueprints",[]):items.append(str(row.id))
+ elif mode=="owned":items=data.get("vessel",{}).get("hulls",["kestrel"]).duplicate()
  else:
   for id in station.get("stock",{}):
    if id.begins_with("hull:")==(mode=="ships"):items.append(id)
  browser.category.visible=mode=="goods";sale_only.visible=mode=="goods"
  items=items.filter(func(id):
-  var title: String=FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")].name if mode!="goods" else FrontierCatalog.entry("resources",id).name
+  var title: String=item_definition(id).name
   var query:=browser.search.text.strip_edges().to_lower()
   if not query.is_empty() and not title.to_lower().contains(query):return false
   if mode=="goods":
@@ -139,25 +144,30 @@ func rebuild() -> void:
  empty.visible=items.is_empty()
  if selected not in items:selected=str(items[0]) if not items.is_empty() else ""
  for id in items:
-  var is_ship: bool=mode!="goods"
-  var def: Dictionary=FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")] if is_ship else FrontierCatalog.entry("resources",id)
-  var caption: String=def.name+"\n"+(def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
+  var is_ship: bool=mode in ["ships","owned","refits"]
+  var def:=item_definition(id)
+  var caption: String=def.name+"\n"+("" if mode=="blueprints" else def.role if is_ship else (("상점 %d"%int(station.stock[id])) if int(station.stock[id])>0 else "상점 품절")+("  내 가방 %d"%int(data.inventory[id]) if int(data.get("inventory",{}).get(id,0))>0 else ""))
+  if mode=="refits":caption="T%s  %s\n%d Cr"%[id,def.name,def.station_credits]
+  if mode=="blueprints":caption=def.name+"\n"+("공동 보유" if blueprint_owned(id) else "%d Cr"%int(def.price))
   if mode=="goods" and id==station.get("demand",""):caption+="\n↑ 수요 증가"
   var key: String=id
   var card:=button(grid,caption,func():selected=key;refresh_detail())
   card.custom_minimum_size=Vector2(160,100);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-  card.icon=load("res://assets/ui/interface/ship.svg") if is_ship else FrontierResourceIcons.texture(id)
-  card.expand_icon=true;card.add_theme_constant_override("icon_max_width",40)
+  card.icon=load("res://assets/ui/previews/"+("terraform3/source_control" if def.building=="source_control" else str(def.building))+".png") if mode=="blueprints" else (load("res://assets/ui/interface/ship.svg") if is_ship else FrontierResourceIcons.texture(id))
+  card.expand_icon=true;card.add_theme_constant_override("icon_max_width",64 if mode=="blueprints" else 40)
   if mode=="goods" and id==station.get("demand",""):card.add_theme_color_override("font_color",FrontierInterfaceStyle.ACCENT)
   card.clip_text=true;card.tooltip_text=caption;card.set_meta("item",id);card.toggle_mode=true;card.disabled=pending
  refresh_detail()
 func refresh_detail() -> void:
  if buy==null:return
  for node in bars.get_children():bars.remove_child(node);node.queue_free()
+ for node in access_box.get_children():access_box.remove_child(node);node.queue_free()
+ access_box.visible=mode in ["ships","owned","refits"]
  var station: Dictionary=data.get("station",{})
  var valid: bool=not selected.is_empty() and not station.is_empty()
  buy.disabled=not valid or pending or data.get("self_id","")!=data.get("crew",{}).get("owner_id","") or not in_range()
  sell.disabled=buy.disabled
+ picture.custom_minimum_size.y=180 if mode=="refits" else 130
  quantity.visible=mode=="goods";sell.visible=mode=="goods";icon.visible=mode=="goods";picture.visible=mode!="goods"
  for card in grid.get_children():card.set_pressed_no_signal(card.get_meta("item")==selected);card.disabled=pending
  if not valid:
@@ -177,19 +187,42 @@ func refresh_detail() -> void:
   buy.text="구매  %d Cr"%(price*count);sell.text="판매  %d Cr"%(sale*count)
   buy.disabled=buy.disabled or int(station.stock[selected])<count or int(station.credits)<price*count
   sell.disabled=sell.disabled or int(data.get("inventory",{}).get(selected,0))<count or int(station.stock[selected])+count>int(station.get("capacities",{}).get(selected,FrontierSpaceStation.config().max_stock))
+ elif mode=="blueprints":
+  var def: Dictionary=FrontierFacilityBlueprints.definitions()[selected]
+  title_label.text=def.name;role.text=def.use+"\n완성 설계 / 원정대 공동 사용"
+  unit_price.text="제작 재료·설치 조건은 별도  |  동일 설계의 추가 연구 없음"
+  show_blueprint_model(str(def.model))
+  var owned:=blueprint_owned(selected)
+  buy.text="공동 보유" if owned else "설계도 구매  %d Cr"%int(def.price)
+  buy.disabled=buy.disabled or owned or int(station.credits)<int(def.price)
+  var cost: Dictionary=FrontierPlanetSupply.config().factory_upgrade.cost if def.building=="factory" else (FrontierTerraformTier3.config().buildings.source_control.cost if def.building=="source_control" else FrontierTerraformTier3.config().upgrades[def.building].cost)
+  label(bars,"신축 재료" if def.building=="source_control" else "Mk.2 → Mk.3 개조 재료",13)
+  var materials:=FrontierResourceReadout.new();materials.value=FrontierCatalog.cost_text(cost);bars.add_child(materials)
  else:
   unit_price.text=""
-  var hull_id:=selected.trim_prefix("hull:");var def: Dictionary=FrontierSpaceStation.config().hulls[hull_id]
+  var hull_id:=str(data.get("vessel",{}).get("hull","kestrel")) if mode=="refits" else selected.trim_prefix("hull:");var def: Dictionary=FrontierSpaceStation.config().hulls[hull_id]
   title_label.text=def.name;role.text=def.role
   if preview_model==null or preview_model.get_meta("hull","")!=hull_id:
    if is_instance_valid(preview_model):preview_model.queue_free()
    preview_dirty=true
+   preview_camera.size=13;preview_camera.position=Vector3(18,12,24);preview_camera.look_at(Vector3.ZERO)
    preview_model=load(def.model).instantiate();preview_model.set_meta("hull",hull_id);FrontierInkStyle.apply(preview_model,{});preview_root.add_child(preview_model)
-  for row in [["항속거리",FrontierVesselRefit.stellar_range({"vessel":{"hull":hull_id}}),350.0],["추진",float(def.speed),1.5],["적재",float(def.maximum_mass)-float(def.mass),30.0],["격납고",float(def.hangar),6.0],["전력",float(def.reactor_power),16.0]]:
+  for row in ([] if mode=="refits" else [["항속거리",FrontierVesselRefit.stellar_range({"vessel":{"hull":hull_id}}),350.0],["추진",float(def.speed),1.5],["적재",float(def.maximum_mass)-float(def.mass),30.0],["격납고",float(def.hangar),6.0],["전력",float(def.reactor_power),16.0]]):
    var line:=HBoxContainer.new();bars.add_child(line);var name_label:=label(line,row[0],12);name_label.custom_minimum_size.x=58
    var bar:=ProgressBar.new();bar.max_value=row[2];bar.value=row[1];bar.show_percentage=false;bar.custom_minimum_size=Vector2(120,9);bar.size_flags_horizontal=Control.SIZE_EXPAND_FILL;bar.size_flags_vertical=Control.SIZE_SHRINK_CENTER;bar.tooltip_text="%s: %.2f"%[row[0],row[1]];line.add_child(bar)
   var vessel: Dictionary=data.get("vessel",{})
-  if mode=="owned":
+  var shown:=vessel.duplicate(true);shown.hull=hull_id
+  var caps:=FrontierVesselAccess.capabilities(shown)
+  label(access_box,"현재 선체 T%d · 선택 T%s"%[FrontierVesselAccess.tier_for(caps),selected] if mode=="refits" else "T%d 항해 성능"%FrontierVesselAccess.tier_for(caps),13)
+  FrontierVesselCapabilityReadout.populate(access_box,caps,int(selected) if mode=="refits" else 0)
+  if mode=="refits":
+   var refit: Dictionary=FrontierVesselAccess.config().refits[selected]
+   title_label.text="T%s  %s"%[selected,refit.name]
+   unit_price.text="현재 선체 %s에 영구 적용 · 부품 포함\n임무 모듈 슬롯 유지 / 선체별 순차 개장"%def.name
+   var next:=FrontierVesselAccess.next_refit(vessel)
+   buy.text="개장 완료" if int(selected)<next else "선행 개장 필요" if int(selected)>next else "항해 개장  %d Cr"%int(refit.station_credits)
+   buy.disabled=buy.disabled or int(selected)!=next or int(station.credits)<int(refit.station_credits)
+  elif mode=="owned":
    var equipped: bool=vessel.get("hull","kestrel")==selected
    buy.text="사용 중" if equipped else "이 선체로 교체";buy.disabled=buy.disabled or equipped
   else:
@@ -205,9 +238,9 @@ func response(sequence: int,value: Dictionary) -> void:
  if not pending or sequence!=pending_sequence:return
  pending=false
  var ok: bool=value.get("ok",false)
- message.text=("선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
+ message.text=("항해 개장 완료  항성 지도에서 새 항로를 확인하세요" if pending_kind=="station_navigation_refit" else "공동 설계도 확보  제작소에서 생산·개조하세요" if pending_kind=="station_blueprint" else "선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
  var sounds: Dictionary=FrontierSpaceStation.config().audio
- audio.play(sounds.hull if ok and (pending_kind=="station_equip" or selected.begins_with("hull:")) else sounds.trade if ok else sounds.failure)
+ audio.play(sounds.hull if ok and (pending_kind in ["station_equip","station_navigation_refit"] or selected.begins_with("hull:")) else sounds.trade if ok else sounds.failure)
  refresh_detail()
 
 func _process(_delta: float) -> void:
@@ -219,6 +252,22 @@ func _process(_delta: float) -> void:
   if not RenderingServer.frame_post_draw.is_connected(_preview_rendered):RenderingServer.frame_post_draw.connect(_preview_rendered,CONNECT_ONE_SHOT)
 func _preview_rendered() -> void:
  if is_instance_valid(preview):preview.render_target_update_mode=SubViewport.UPDATE_DISABLED
+
+func blueprint_owned(id: String) -> bool:
+ for row in data.get("station",{}).get("blueprints",[]):
+  if row.id==id:return bool(row.owned)
+ return false
+func show_blueprint_model(model: String) -> void:
+ if is_instance_valid(preview_model) and preview_model.get_meta("blueprint","")==model:return
+ if is_instance_valid(preview_model):preview_root.remove_child(preview_model);preview_model.queue_free()
+ preview_model=load("res://assets/models/"+model+".glb").instantiate();preview_model.set_meta("blueprint",model);preview_root.add_child(preview_model);FrontierInkStyle.apply(preview_model,{})
+ preview_camera.size=6 if model=="factory" else 4.8;preview_camera.position=Vector3(7,5,9);preview_camera.look_at(Vector3(0,1,0));preview_dirty=true
+
+func item_definition(id: String) -> Dictionary:
+ if mode=="refits":
+  var row: Dictionary=FrontierVesselAccess.config().refits[id].duplicate();row.role="공동 선체 항해 내성";return row
+ if mode=="blueprints":return FrontierFacilityBlueprints.definitions()[id]
+ return FrontierCatalog.entry("resources",id) if mode=="goods" else FrontierSpaceStation.config().hulls[id.trim_prefix("hull:")]
 
 func update_cycle()->void:
  if market_cycle==null:return

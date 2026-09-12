@@ -10665,6 +10665,18 @@
     "generator": "tools/build_terraform3.py"
   },
   {
+    "id": "lost_technology_archive",
+    "title": "T3 / 기록 복원",
+    "name": "손상된 기술 기록고",
+    "group": "탐험 발견",
+    "model": "res://assets/models/discoveries/lost_technology_archive.glb",
+    "source": "art/blender/discoveries/lost_technology_archive.blend",
+    "geometry": "authored-weathered-archive",
+    "foliage": false,
+    "generator": "tools/build_lost_archive.py",
+    "review": "docs/production/105-tier3-blueprints-and-supply.md"
+  },
+  {
     "id": "solar_mars_restored",
     "title": "화성 복원",
     "name": "화성 / Space Y 관리",
@@ -10882,17 +10894,6 @@
     "generator": "tools/build_mine_maintenance.py",
     "review": "docs/production/119-mine-maintenance.md",
     "foliage": false
-  },
-  {
-    "id": "deep_strata",
-    "title": "심층 / 층리 공동",
-    "name": "심층 층리 아치",
-    "group": "발견·환경",
-    "model": "res://assets/models/underground/deep_strata.glb",
-    "source": "art/blender/underground/deep_strata.blend",
-    "geometry": "authored-deep-strata-first-pass",
-    "generator": "tools/build_deep_strata.py",
-    "review": "docs/production/128-performance-and-content-commits.md"
   },
   {
     "id": "bio_torus_loom_01",
@@ -16093,6 +16094,17 @@
     "floor_y": 0.0,
     "catalogue": "xenoflora",
     "review_status": "Godot INK near/far and five states; 20 family sheets; Blender source representatives"
+  },
+  {
+    "id": "deep_strata",
+    "title": "심층 / 층리 공동",
+    "name": "심층 층리 아치",
+    "group": "발견·환경",
+    "model": "res://assets/models/underground/deep_strata.glb",
+    "source": "art/blender/underground/deep_strata.blend",
+    "geometry": "authored-deep-strata-first-pass",
+    "generator": "tools/build_deep_strata.py",
+    "review": "docs/production/128-performance-and-content-commits.md"
   },
   {
     "id": "field_canopy",

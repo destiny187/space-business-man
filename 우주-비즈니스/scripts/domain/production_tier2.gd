@@ -54,11 +54,14 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if FrontierFieldEngineering.uses(world,world.location,id):return "공학 실험을 먼저 완료하세요."
 		var key:=str(args.get("product",""));var recipe:=product(key)
 		if recipe.is_empty():return "지원하지 않는 제품입니다."
+		var batches: Variant=args.get("batches",1)
+		if not FrontierExpeditionBusiness.integer(batches,1,int(config().maximum_batch)):return "생산 묶음 수를 확인하세요."
+		var cost:=batch_cost(recipe,int(batches))
 		var reason:=FrontierPlanetSupply.production_reason(FrontierUniverse.body_from_id(world.manifest,world.location),row,recipe)
 		if not reason.is_empty():return reason
-		if not FrontierExpeditionBusiness.affordable(site.inventory,recipe.cost):return "현장 창고의 가공 재료가 부족합니다."
-		FrontierExpeditionBusiness.transfer(site.inventory,recipe.cost,-1)
-		row.production={"product":key,"progress":0.0};return ""
+		if not FrontierExpeditionBusiness.affordable(site.inventory,cost):return "현장 창고의 묶음 생산 재료가 부족합니다."
+		FrontierExpeditionBusiness.transfer(site.inventory,cost,-1)
+		row.production={"product":key,"progress":0.0,"remaining":int(batches),"total":int(batches)};return ""
 	if kind not in ["business_facility_upgrade","business_robot_upgrade"]:return "지원하지 않는 생산 작업입니다."
 	var next_tier:=int(row.get("tier",1))+1
 	if not robot:
@@ -101,7 +104,13 @@ static func tick(site: Dictionary,dt: float) -> void:
 		if float(job.progress)<float(recipe.seconds):continue
 		if not FrontierItemInventory.warehouse_fits(site,{job.product:int(recipe.amount)}):row.status="창고 가득 참 · 완성품 출고 대기";continue
 		site.inventory[job.product]=int(site.inventory.get(job.product,0))+int(recipe.amount)
-		row.production={};row.product_serial=int(row.get("product_serial",0))+1;row.status=recipe.name+" · 생산 완료"
+		job.remaining=int(job.get("remaining",1))-1;row.product_serial=int(row.get("product_serial",0))+1
+		if int(job.remaining)<=0:row.production={};row.status=recipe.name+" · 생산 완료"
+		else:job.progress=0.0;row.status=recipe.name+" · %d묶음 남음"%int(job.remaining)
+static func batch_cost(recipe: Dictionary,batches: int) -> Dictionary:
+	var result: Dictionary={}
+	for item in recipe.cost:result[item]=int(recipe.cost[item])*batches
+	return result
 static func restoration_ready(site: Dictionary) -> bool:
 	var r: Dictionary=site.get("restoration2",{})
 	return r.is_empty() or (float(r.salinity)<=float(config().restoration.salinity_target) and float(r.soil)>=float(config().restoration.soil_target))
@@ -134,4 +143,5 @@ static func validate_building(b: Dictionary) -> bool:
 	if not job is Dictionary:return false
 	if job.is_empty():return true
 	if b.type!="factory" or not job.get("product") is String or product(job.product).is_empty():return false
+	if not FrontierExpeditionBusiness.integer(job.get("total",1),1,int(config().maximum_batch)) or not FrontierExpeditionBusiness.integer(job.get("remaining",1),1,int(job.get("total",1))):return false
 	return FrontierUniverse._finite(job.get("progress"),0,float(product(job.product).seconds))

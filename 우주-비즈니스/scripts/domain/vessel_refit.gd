@@ -12,7 +12,7 @@ static func definition(kind: String) -> Dictionary:return config().modules.get(k
 static func stats(world: Dictionary) -> Dictionary:
 	var cfg:=config()
 	var hull:=FrontierSpaceStation.hull(world.get("vessel",{}))
-	var result: Dictionary={"stellar_range":stellar_range(world),"mass":float(hull.mass),"power":float(cfg.base_power),"speed":float(hull.speed),"research_speed":1.0,"hangar":int(hull.hangar),"maximum_mass":float(hull.maximum_mass),"reactor_power":float(hull.reactor_power)}
+	var result: Dictionary={"navigation_capabilities":FrontierVesselAccess.world_capabilities(world),"navigation_tier":FrontierVesselAccess.tier_for(FrontierVesselAccess.world_capabilities(world)),"stellar_range":stellar_range(world),"mass":float(hull.mass),"power":float(cfg.base_power),"speed":float(hull.speed),"research_speed":1.0,"hangar":int(hull.hangar),"maximum_mass":float(hull.maximum_mass),"reactor_power":float(hull.reactor_power)}
 	var vessel: Dictionary=world.get("vessel",{})
 	for id in vessel.get("loadout",{}).values():
 		if id.is_empty():continue
@@ -40,6 +40,9 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 	if not FrontierCrewSurface.landed(world) or FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "착륙한 우주선 주변에서 정비하세요."
 	if not world.has("business"):return "먼저 무료 사업 등록으로 공동 사업 장부를 여세요."
 	if not world.has("vessel"):world.vessel=create(int(world.manifest.seed),world.crew.world_id)
+	if action=="vessel_navigation_refit":
+		if not FrontierExpeditionBusiness.integer(args.get("tier"),3,5):return "항해 개장 단계를 선택하세요."
+		return FrontierVesselAccess.apply(world,int(args.tier))
 	var vessel: Dictionary=world.vessel
 	var kind: String=str(args.get("module_type",""));var id: String=str(args.get("module_id",""))
 	var site:=FrontierExpeditionBusiness.site(world)
@@ -99,6 +102,8 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 	return ""
 static func validate(value: Variant,seed_value: int,realm: String="") -> String:
 	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or value.get("id")!=create(seed_value,realm).id:return "원정선 개조 원형·식별 오류"
+	var access_error:=FrontierVesselAccess.validate(value)
+	if not access_error.is_empty():return access_error
 	if value.has("hull") or value.has("hulls"):
 		if not value.get("hulls") is Array or value.hulls.is_empty() or value.hulls.size()>FrontierSpaceStation.config().hulls.size() or value.get("hull") not in value.hulls or "kestrel" not in value.hulls:return "보유 선체 구조 오류"
 		var hull_seen: Dictionary={}

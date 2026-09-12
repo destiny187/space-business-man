@@ -1,26 +1,50 @@
 {
   "facility_factory_mk3": {
     "building": "factory",
-    "tier": 3
+    "tier": 3,
+    "name": "제작소 Mk.3",
+    "price": 1200,
+    "model": "factory",
+    "use": "P3 전문 제품 생산"
   },
   "facility_atmosphere_mk3": {
     "building": "atmosphere",
-    "tier": 3
+    "tier": 3,
+    "name": "선택성 대기 처리기",
+    "price": 800,
+    "model": "terraform3/atmosphere_module",
+    "use": "반응성 가스 정화"
   },
   "facility_water_mk3": {
     "building": "water",
-    "tier": 3
+    "tier": 3,
+    "name": "폐쇄 수자원 순환기",
+    "price": 800,
+    "model": "terraform3/water_module",
+    "use": "산성 수질 정화"
   },
   "facility_thermal_mk3": {
     "building": "thermal",
-    "tier": 3
+    "tier": 3,
+    "name": "지역 열교환기",
+    "price": 600,
+    "model": "terraform3/thermal_module",
+    "use": "생활권 온도 조절"
   },
   "facility_biolab_mk3": {
     "building": "biolab",
-    "tier": 3
+    "tier": 3,
+    "name": "선구종 정착기",
+    "price": 1000,
+    "model": "terraform3/biolab_module",
+    "use": "정화된 생활권의 선구종 정착"
   },
   "facility_source_control_mk3": {
     "building": "source_control",
-    "tier": 3
+    "tier": 3,
+    "name": "유입원 제어 장치",
+    "price": 1000,
+    "model": "terraform3/source_control",
+    "use": "오염 구역 내부에서 유입 억제"
   }
 }

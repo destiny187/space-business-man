@@ -1,0 +1,276 @@
+{
+  "generator": "tools/bake_orbital_surfaces.py",
+  "mapping": "Godot local direction; U atan(z,x)/TAU+.5; V acos(y)/PI",
+  "entries": [
+    {
+      "id": "oxidized",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/oxidized.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "7d043486a1c1b0f20afe34968efc4eb428f410be7c4606cf3e09beeec4f78bab"
+    },
+    {
+      "id": "continental",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/continental.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "95587e8529255c2864161e4e1c23046ec1a452b00e4f79e09898d47eee8b3baa"
+    },
+    {
+      "id": "cratered",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/cratered.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "c6e838af76952589b1ecbe746d251656a567f1587891d33efbcf4ada20095ead"
+    },
+    {
+      "id": "fractured",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/fractured.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "5f13d819643fa210baea5e2164dd815f183d3987d4ec3e22cd2ff3277506ed1e"
+    },
+    {
+      "id": "tundra",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/tundra.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "1b8db1dfde49e382cb797fea2b3e318e4a195abd4c80e0ac08ccea0eb6d68685"
+    },
+    {
+      "id": "frozen",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/frozen.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "4b262f9e6e1c88e66479ce3a45f07913a64ebb3c8e56252cbd8ff3d44031e6f9"
+    },
+    {
+      "id": "volcanic",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/volcanic.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "9c53826d7d2e5611f11bda66385d4c86fab8171c7b52a5735c38fc190d6cc3e5"
+    },
+    {
+      "id": "salt",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/salt.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "aea8a5f8e1ed991b4333e580f92e9ec69dc458258cd507035144862cab33b32e"
+    },
+    {
+      "id": "ochre",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/ochre.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "ca7f75efd59940b4a13e09b165c9ef3d47229295da2b0b3d74f595482668605b"
+    },
+    {
+      "id": "banded",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/banded.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "8e59352305d28482caa916b1cb5b2aa6b40f05fbf8df231763b93b56d6a4c72d"
+    },
+    {
+      "id": "storm",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/storm.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "3dad74d835507dbd8deb2a4c3ca7c6ee62e66c50342e0a60a168da16efeaee8c"
+    },
+    {
+      "id": "pale",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/pale.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "86b5ad76359b7796fe9b2afc9f64a4311e1849686344713f23f7291304c2c7c8"
+    },
+    {
+      "id": "azure",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/azure.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "101cd4cb572ea436877efba8986f5684f95491ac516a784f11f3645f41a92c1f"
+    },
+    {
+      "id": "turquoise",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/turquoise.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "7887cb8b75785ff7a0e7c98f98c6fa2884f87660a6363271802f5f90b6c3756f"
+    },
+    {
+      "id": "violet",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/violet.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "968e44c91e025229d7d41e906a2b9ac73f482a0dcad11e0c2e4f434cb841bd40"
+    },
+    {
+      "id": "sedimentary",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/sedimentary.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "3192f4b2f7c19cc77f022850b2d419b0a34ff6c053c0250e161bd38a9fbd5c73"
+    },
+    {
+      "id": "crystalline",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/crystalline.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "bb6f309cd716090efb90e8819a3ffa3691c8002553382fd0608f0f70a7cb1567"
+    },
+    {
+      "id": "alkaline",
+      "kind": "relief_mask",
+      "texture": "res://assets/textures/orbital/alkaline.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "ae8ac13e3694667c61a6aaf1d493a5be04ff0c8db91556c8fe6866d6470f7fd0"
+    },
+    {
+      "id": "mercury",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/mercury.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "873d64e459710d3c13fb9e86718545f584543c54a3b4ba727a642a430a021d54"
+    },
+    {
+      "id": "venus",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/venus.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "011be8f194f1bde6edee4e8bc534b2a86702604c67e389a7248a9fbeb5a9c7af"
+    },
+    {
+      "id": "mars",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/mars.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "419fef7a2e2412bd69c5d55b5446fec9bfc3024bc5e5249bbbe0fba7419db440"
+    },
+    {
+      "id": "jupiter",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/jupiter.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "0b7ffc18df788210ab98ef3eb7fc9353a913a63901151776975f4a47abe3bfa0"
+    },
+    {
+      "id": "saturn",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/saturn.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "dff117aa979b104270e4ae31a4457db006002cc8f746be92f7c196a45d3c2408"
+    },
+    {
+      "id": "uranus",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/uranus.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "4d6acebf7edae854bf41765da4d520f272fa22cf6803aab6d95e120e0f5e9913"
+    },
+    {
+      "id": "neptune",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/neptune.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "40fe4e4d712074cf1ea9beefbc68a59a4070a09bb506b129b04b5901565638ff"
+    },
+    {
+      "id": "earth",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/earth.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "4397aa3e8d465f64ae41dcc884f8e8c254537bf1b20a4393cd98809d2fab9d89"
+    },
+    {
+      "id": "mars_restored",
+      "kind": "solar_color",
+      "texture": "res://assets/textures/orbital/mars_restored.png",
+      "size": [
+        2048,
+        1024
+      ],
+      "sha256": "d724c26a286e053c46f0e2e3bf14f2e6f6ad533034f6b9f6af4461c84ea186c2"
+    }
+  ]
+}

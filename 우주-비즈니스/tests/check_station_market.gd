@@ -36,7 +36,7 @@ func run() -> void:
  nav.system=index;nav.mode="idle";nav.manual=true;nav.speed=0
  var station:=FrontierSpaceStation.definition(m,index)
  nav.position=FrontierExpeditionBusiness.array(FrontierCrewWorld.vector(station.position)+Vector3(0,0,1100));core.world.flight_position=nav.position.duplicate()
- core.world.business=FrontierExpeditionBusiness.create();core.world.business.credits=20000
+ core.world.business=FrontierExpeditionBusiness.create();core.world.business.credits=5000+maxi(int(FrontierSpaceStation.config().hulls.swift.price),int(FrontierSpaceStation.config().hulls.mule.price))
  var owner: String=core.peers[1]
  core.world.business.bags[owner]=FrontierExpeditionBusiness.inventory();core.world.business.bags[owner].iron=10
  check(request("station_buy",{"item":"iron","amount":3}).ok,"buy supply")

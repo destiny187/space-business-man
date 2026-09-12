@@ -13,7 +13,7 @@ static func records(world: Dictionary) -> Dictionary:return world.get("discoveri
 static func eligible(body: Dictionary,d: Dictionary) -> bool:
 	if int(d.tier)>int(body.planet_tier):return false
 	var p:=FrontierEcology.profile(body)
-	var pressure: float=float(p.pressure)*(100.0 if not body.get("terrain_traits",{}).is_empty() else 1.0)
+	var pressure: float=float(p.pressure)*(100.0 if not p.has("pressure_unit") and not body.get("terrain_traits",{}).is_empty() else 1.0)
 	var wet: bool=float(p.moisture)>.08 and float(p.temperature)>0 and float(p.temperature)<80 and pressure>15
 	var life: bool=p.origin!="sterile" and float(p.moisture)>.08 and float(p.temperature)>-25 and float(p.temperature)<85 and pressure>15
 	match d.environment:
@@ -31,6 +31,7 @@ static func tile(body: Dictionary,field: FrontierTerrainField,key: Vector2i) -> 
 	var candidates: Array=[]
 	for id in config().items:
 		var d:=definition(id)
+		if d.mode=="archive":continue # Preserve every pre-existing POI random draw and location.
 		if eligible(body,d):candidates.append({"id":id,"order":rng.randf(),"tier":int(d.tier)})
 	# T2 introduces at least two suitable upper-tier types before filling the mixed pool.
 	candidates.sort_custom(func(a,b):return a.order<b.order)
@@ -65,9 +66,30 @@ static func tile(body: Dictionary,field: FrontierTerrainField,key: Vector2i) -> 
 			var id: String="poi:%d:%d:%s"%[key.x,key.y,d.id]
 			result.append({"id":id,"template":d.id,"body_id":body.id,"position":[point.x,point.y,point.z],"yaw":yaw})
 			break
+	result.append_array(archive_tile(body,original,key,result))
 	if _tiles.size()>256:_tiles.erase(_tiles.keys()[0])
 	_tiles[cache_key]=result
 	return result
+static func archive_tile(body: Dictionary,field: FrontierTerrainField,key: Vector2i,existing: Array) -> Array:
+	var cfg: Dictionary=config().archive
+	if int(body.planet_tier)<int(cfg.minimum_tier):return []
+	var rng:=RandomNumberGenerator.new();rng.seed=FrontierUniverse.derive(int(body.streams.discovery),"lost-archive-v1:%d:%d"%[key.x,key.y])
+	if rng.randi()%100>=int(cfg.tile_chance):return []
+	var span: float=config().tile_size
+	var limit:=float(JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json")).region_half_extent)
+	var d:=definition("lost_technology_archive")
+	for attempt in int(cfg.attempts):
+		var p:=Vector3(key.x*span+rng.randf_range(24,span-24),0,key.y*span+rng.randf_range(24,span-24))
+		if Vector2(p.x,p.z).length()<60 or maxf(absf(p.x),absf(p.z))>limit-24:continue
+		p.y=field.height(p.x,p.z)
+		if FrontierSurfaceDrainage.liquid(field.traits) and p.y< -3.9:continue
+		if existing.any(func(row):return FrontierCrewWorld.vector(row.position).distance_to(p)<float(cfg.spacing)):continue
+		var yaw:=rng.randf()*TAU;var level:=true
+		for point in [Vector3(-2.4,0,-1.6),Vector3(2.4,0,-1.6),Vector3(-2.4,0,2.2),Vector3(2.4,0,2.2)]:
+			var q: Vector3=p+point.rotated(Vector3.UP,yaw)
+			if absf(field.height(q.x,q.z)-p.y)>.45:level=false;break
+		if level:return [{"id":"poi:%d:%d:lost_technology_archive"%[key.x,key.y],"template":d.id,"body_id":body.id,"position":[p.x,p.y,p.z],"yaw":yaw}]
+	return []
 static func nearby(body: Dictionary,field: FrontierTerrainField,p: Vector3) -> Array:
 	var result: Array=[]
 	var key:=Vector2i(floori(p.x/float(config().tile_size)),floori(p.z/float(config().tile_size)))
@@ -142,8 +164,17 @@ static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
 			if not specimen_error.is_empty():return specimen_error
 		if d.clue:_clue(world,row,record)
 		if d.mode=="water":_release_water(world,row)
+		if d.mode=="archive":
+			var blueprint:=FrontierFacilityBlueprints.archive_blueprint(world,row)
+			var duplicate:=FrontierFacilityBlueprints.owned(world,blueprint)
+			if duplicate:
+				var salvage: Dictionary=config().archive.duplicate_reward
+				if not FrontierItemInventory.fits(world,actor,salvage):return "기존 설계의 회수 부품을 담을 공간이 부족합니다."
+				FrontierExpeditionBusiness.transfer(stock,salvage,1)
+			elif not FrontierFacilityBlueprints.register(world,blueprint,"exploration",record_key(row)):return "기록 복원 결과를 등록하지 못했습니다."
+			record.blueprint=blueprint;record.blueprint_duplicate=duplicate
 		# Host rolls once from this world/place; reopening cannot change the result.
-		if FrontierUniverse.derive(int(world.manifest.seed),record_key(row)+":module")%100<35:
+		if d.mode!="archive" and FrontierUniverse.derive(int(world.manifest.seed),record_key(row)+":module")%100<35:
 			var module_error:=FrontierSuitModules.drop(world,actor,record_key(row),int(FrontierUniverse.body_from_id(world.manifest,row.body_id).planet_tier),"discovery")
 			if not module_error.is_empty():return module_error
 		record.claimed=true
@@ -207,6 +238,8 @@ static func validate(world: Dictionary) -> String:
 		if not FrontierExpeditionBusiness.integer(row.get("stage"),0,count) or not FrontierExpeditionBusiness.integer(row.get("scanned_stage"),-1,count):return "발견 단계 오류"
 		if not row.get("claimed") is bool or row.claimed!=(row.stage==count) or int(row.scanned_stage)>int(row.stage):return "발견 보상 상태 오류"
 		if not row.get("discoverer") is String or not row.get("clue") is Dictionary or not row.get("sample") is Dictionary:return "발견 기록 형식 오류"
+		if definition(row.template).mode=="archive" and row.claimed:
+			if row.get("blueprint")!=FrontierFacilityBlueprints.archive_blueprint(world,row) or not row.get("blueprint_duplicate") is bool or not FrontierFacilityBlueprints.owned(world,row.blueprint):return "복원 설계도 기록 오류"
 	return ""
 static func snapshot(world: Dictionary,body_id: String) -> Dictionary:
 	var result: Dictionary={"version":1,"records":{}}

@@ -23,6 +23,11 @@ var terrain_size:=Vector2.ZERO
 var cached_body:=""
 var globe_relief: Array=[]
 var clock:=0.0
+var supply_scroll: ScrollContainer
+var supply_rows: VBoxContainer
+var supply_mode: OptionButton
+var preparation: FrontierT3PreparationPanel
+var supply_signature:=""
 var buttons: Array[Button]=[]
 func configure(owner_app: FrontierCrewExpedition) -> void:
  app=owner_app;size_flags_vertical=Control.SIZE_EXPAND_FILL
@@ -30,12 +35,18 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  for i in 4:
   var b:=Button.new();b.text=["대기","수질","토양","오염원"][i];b.toggle_mode=true;b.button_pressed=i==0;b.icon=load("res://assets/ui/previews/"+["atmosphere","water","biolab","terraform3/source_control"][i]+".png");b.expand_icon=true;b.custom_minimum_size=Vector2(104,40);b.add_theme_constant_override("icon_max_width",30);row.add_child(b);buttons.append(b)
   b.pressed.connect(func():layer=i;for_buttons();refresh())
+ var supply:=Button.new();supply.text="보급 계획";supply.toggle_mode=true;buttons.append(supply);row.add_child(supply);supply.pressed.connect(func():layer=4;for_buttons();refresh())
  var home:=Button.new();home.text="내 위치";row.add_child(home);home.pressed.connect(func():focus=Vector2(app.camera.position.x,app.camera.position.z);chosen=focus;refresh())
  var source:=Button.new();source.text="오염 구역";row.add_child(source);source.pressed.connect(func():
   if site.has("tier3"):
    var p: Array=site.free_terraform.source if FrontierFreeTerraform.active(site) else site.regions["region:1"].center
    focus=Vector2(p[0],p[2]);chosen=focus;layer=3;for_buttons();refresh())
  canvas=Control.new();canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL;canvas.custom_minimum_size=Vector2(300,230);canvas.clip_contents=true;add_child(canvas);canvas.draw.connect(draw_view);canvas.gui_input.connect(input_view)
+ supply_mode=OptionButton.new();supply_mode.add_item("가동 보급 · 5분");supply_mode.add_item("설비 준비 · T3");add_child(supply_mode);supply_mode.hide();supply_mode.item_selected.connect(func(_i):supply_scroll.scroll_vertical=0;refresh())
+ supply_scroll=ScrollContainer.new();supply_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;supply_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(supply_scroll);supply_scroll.hide()
+ var supply_content:=VBoxContainer.new();supply_content.size_flags_horizontal=Control.SIZE_EXPAND_FILL;supply_scroll.add_child(supply_content)
+ supply_rows=VBoxContainer.new();supply_rows.add_theme_constant_override("separation",12);supply_content.add_child(supply_rows)
+ preparation=FrontierT3PreparationPanel.new();supply_content.add_child(preparation);preparation.configure(app);preparation.hide()
  legend=FrontierInterfaceStyle.label(self,"",13,FrontierInterfaceStyle.MUTED)
  info=FrontierInterfaceStyle.label(self,"",15);info.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;info.custom_minimum_size.y=66
 func for_buttons() -> void:
@@ -45,9 +56,12 @@ func _process(dt: float) -> void:
  clock-=dt
  if clock<=0:clock=.5;refresh()
 func refresh() -> void:
+ for_buttons()
  if app.surface_world==null:return
  body=app.surface_world.body;site=app.session.surface.get("business",{}).get("sites",{}).get(body.id,{})
  if cached_body!=body.id:cached_body=body.id;focus=Vector2(app.camera.position.x,app.camera.position.z);chosen=focus;terrain_key="";globe_relief=[]
+ canvas.visible=layer!=4;supply_scroll.visible=layer==4;supply_mode.visible=layer==4
+ if layer==4:refresh_supply();return
  if not FrontierFreeTerraform.active(site):info.text="기존 저장의 지역 복원 규칙입니다. 자유 배치·구면 분포는 새 세계에 적용됩니다.";canvas.queue_redraw();return
  if globe_relief.is_empty():
   var cfg: Dictionary=site.free_terraform.rules;var f:=app.surface_world.terrain.field
@@ -93,6 +107,7 @@ func color_for(cell: Dictionary) -> Color:
  else:return Color("467277").lerp(Color("ed814e"),clampf(float(cell.get("pollution",0))/60,0,1))
  return Color("b46742").lerp(Color("72cbb3") if layer<2 else Color("82be70"),clampf(amount,0,1))
 func draw_view() -> void:
+ if layer==4:return
  canvas.draw_rect(Rect2(Vector2.ZERO,canvas.size),Color("10191f"))
  if not FrontierFreeTerraform.active(site):
   text_at(Vector2(24,50),"기존 지역 지도에서 복원 현장을 확인하세요.");return
@@ -177,3 +192,49 @@ func input_view(event: InputEvent) -> void:
   else:focus=(focus-event.relative*meters).clamp(Vector2(-8192,-8192),Vector2(8192,8192))
   canvas.queue_redraw()
  canvas.accept_event()
+
+func refresh_supply() -> void:
+ legend.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+ preparation.visible=supply_mode.selected==1;supply_rows.visible=supply_mode.selected==0
+ if preparation.visible:
+  preparation.update_context(site,body,chosen if chosen.is_finite() else focus)
+  legend.text="현재 제작법 기준 · 묶음 생산 여분 반영 · 현장 사이 자동 운송 없음"
+  info.text="지도에서 위치를 선택해 해당 현장 재고를 확인하세요. 완제품과 선행 부품이 있으면 필요한 원료가 줄어듭니다."
+  return
+ legend.text="5분 연속 가동 상한  /  이미 투입한 팩 제외  /  목표 도달·정전·침수 시 실제 소비 감소"
+ info.text="해당 현장 창고로 직접 운반하세요. 다른 현장의 재고는 사용하지 않습니다."
+ if not site.has("tier3"):info.text="T3 현장에 설치한 설비의 보급 계획을 표시합니다."
+ var speed:=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(app.session.surface))
+ var plan:=FrontierTerraformTier3.supply_plan(site,300,speed,app.session.surface)
+ var signature:=JSON.stringify(plan)
+ if signature==supply_signature:return
+ supply_signature=signature
+ for node in supply_rows.get_children():supply_rows.remove_child(node);node.queue_free()
+ if plan.is_empty():
+  var message:=FrontierInterfaceStyle.label(supply_rows,"설비를 설치하면 현장별 운반 목록이 나타납니다.",16);message.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+  if site.has("tier3"):
+   var profile: Dictionary=site.tier3.rules.profiles[site.tier3.profile]
+   var intro:=HBoxContainer.new();supply_rows.add_child(intro)
+   for kind in ["source_control",profile.treatment,"biolab"]:
+    var card:=VBoxContainer.new();intro.add_child(card);card.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+    var icon:=TextureRect.new();icon.texture=load("res://assets/ui/previews/"+("terraform3/source_control" if kind=="source_control" else kind)+".png");icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;icon.custom_minimum_size=Vector2(100,95);card.add_child(icon)
+    var title:=FrontierInterfaceStyle.label(card,FrontierTerraformTier3.name({"type":kind,"tier":3}),14);title.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+  return
+ for district in plan:
+  var card:=PanelContainer.new();card.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.PANEL,FrontierInterfaceStyle.LINE,12));supply_rows.add_child(card)
+  var col:=VBoxContainer.new();card.add_child(col)
+  var heading:=HBoxContainer.new();col.add_child(heading)
+  var title:=FrontierInterfaceStyle.label(heading,"%s  |  설비 %d대"%[district.name,district.machines],16);title.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+  var locate:=Button.new();locate.text="지도에서 보기";heading.add_child(locate)
+  var center: Array=district.center
+  locate.pressed.connect(func():focus=Vector2(center[0],center[2]);chosen=focus;layer=3;for_buttons();refresh())
+  var power_line:=HBoxContainer.new();col.add_child(power_line)
+  var bar:=ProgressBar.new();bar.max_value=maxf(1,float(district.power_needed));bar.value=district.power;bar.show_percentage=false;bar.custom_minimum_size=Vector2(120,14);power_line.add_child(bar)
+  FrontierInterfaceStyle.label(power_line,"전력 %.0f / 필요 %.0f"%[float(district.power),float(district.power_needed)],14,FrontierInterfaceStyle.DANGER if district.power<district.power_needed else FrontierInterfaceStyle.ACCENT)
+  var items:=HFlowContainer.new();items.add_theme_constant_override("h_separation",18);col.add_child(items)
+  for item in district.demand:
+   var product:=VBoxContainer.new();product.custom_minimum_size.x=116;items.add_child(product)
+   product.add_child(FrontierResourceIcons.view(item,40))
+   var name_label:=FrontierInterfaceStyle.label(product,FrontierCatalog.entry("resources",item).name,13);name_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+   FrontierInterfaceStyle.label(product,"재고 %d / 필요 %d"%[int(district.stock.get(item,0)),int(district.demand[item])],13)
+   FrontierInterfaceStyle.label(product,"운반 +%d"%int(district.missing[item]) if district.missing[item]>0 else "보급 확보",14,FrontierInterfaceStyle.DANGER if district.missing[item]>0 else FrontierInterfaceStyle.ACCENT)

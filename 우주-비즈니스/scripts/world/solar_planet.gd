@@ -35,6 +35,14 @@ func configure(ordinal: int,radius: float,body: Dictionary={}) -> void:
 					mat.set_shader_parameter("highlight_strength",.08)
 					if "_vertex_paint" in mat.resource_name:mat.set_shader_parameter("use_vertex_color",true)
 
+	# Only the body paint receives orbital detail; rings/structures retain their materials.
+	for surface in surfaces:
+		var mat:=surface.get_active_material(0).duplicate() as ShaderMaterial
+		mat.shader=load("res://assets/materials/space/solar_planet.gdshader")
+		FrontierOrbitalSurface.configure(mat,asset,true)
+		mat.set_shader_parameter("orbital_gaseous",index==1 or index>=4)
+		surface.material_override=mat
+
 func set_epoch(elapsed: float,body: Dictionary={}) -> void:
 	if body.get("astro",{}).get("enabled",false):
 		# Replace the source's illustrative tilt; do not add a second obliquity.

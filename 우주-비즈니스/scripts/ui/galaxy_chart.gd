@@ -4,6 +4,7 @@ signal station_selected(index: int,station_id: String)
 signal route_selected(ordinal: int)
 var corporate_marks: Dictionary={}
 var stellar_range:=8.0
+var navigation_capabilities: Dictionary={}
 var nearby_only:=false
 var scene_3d
 var route_system: int=-1
@@ -124,6 +125,9 @@ func _draw() -> void:
 		for station in FrontierSpaceStation.all(manifest,system_index,station_excluded,elapsed):
 			var factor: float=extent/maxf(FrontierUniverse.orbit_radius(manifest,system_index,count-1)*1.1,ship_position.length() if system_index==current_system else 0.0)
 			var point:=center+Vector2(station.position[0],station.position[2])*factor
+			if station.get("fixed_port",false):
+				var anchor:=point;point+=Vector2(16,-18)
+				draw_line(anchor,point,Color("ffc180"),1,true)
 			draw_rect(Rect2(point-Vector2(5,5),Vector2(10,10)),Color("ffc180"),false,2)
 			if not compact:draw_string(font,point+Vector2(9,-12),station.get("short_name","정거장"),HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ffc180"))
 			hits.append({"point":point,"station":system_index,"station_id":station.id,"ordinal":-1})
@@ -290,9 +294,15 @@ func _draw_spatial() -> void:
 		var coordinate: Vector2=FrontierStellarRoutes.points[index]/outer if FrontierStellarRoutes.has_point(index) else FrontierUniverse.map_position(manifest,index)/outer
 		var point: Vector2=scene_3d.project_star(coordinate)
 		if not Rect2(Vector2.ZERO,size).grow(-8).has_point(point):continue
-		var reachable: bool=coordinate.distance_to(origin)*outer<=stellar_range+.001
+		var within_range: bool=coordinate.distance_to(origin)*outer<=stellar_range+.001
+		var access_world: Dictionary={"manifest":manifest,"crew":{"navigation":{"system":current_system}},"navigation_capabilities":navigation_capabilities}
+		var blocked:=not FrontierVesselAccess.departure_reason(access_world,FrontierUniverse.first_ordinal(manifest,index)).is_empty() if index!=current_system else false
+		var reachable: bool=within_range and not blocked
 		if nearby_only and not reachable:continue
-		var color:=Color("b2f4e1") if reachable else Color("647286")
+		var color:=FrontierInterfaceStyle.WARNING if blocked and within_range else Color("b2f4e1") if reachable else Color("647286")
+		if blocked:
+			draw_rect(Rect2(point+Vector2(5,2),Vector2(6,5)),color,false,1)
+			draw_arc(point+Vector2(8,2),2,PI,TAU,8,color,1,true)
 		rendered_stars.append(coordinate)
 		# Thin projection stem exposes height without replacing the actual 3D star.
 		var plane_point: Vector2=scene_3d.project(coordinate)

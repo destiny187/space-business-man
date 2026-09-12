@@ -29,7 +29,7 @@ func run() -> void:
  nav.mode="idle";nav.manual=true;nav.system=index;nav.target=FrontierUniverse.first_ordinal(world.manifest,index);nav.speed=0
  nav.position=FrontierExpeditionBusiness.array(FrontierCrewWorld.vector(station.position)+Vector3(0,360,1050));nav.direction=[0,-.25,-1]
  world.flight_position=nav.position.duplicate();world.location=FrontierUniverse.body_id(world.manifest,int(nav.target))
- world.business=FrontierExpeditionBusiness.create();world.business.credits=20000
+ world.business=FrontierExpeditionBusiness.create();world.business.credits=5000+maxi(int(FrontierSpaceStation.config().hulls.swift.price),int(FrontierSpaceStation.config().hulls.mule.price))
  world.business.bags[world.crew.owner_id]=FrontierExpeditionBusiness.inventory();world.business.bags[world.crew.owner_id].iron=40
  app.session._publish();app.outside=true;app.exterior_view.show();app.if_flight_view()
  await create_timer(1).timeout;app.flight.transit_overlay.arrival_age=100

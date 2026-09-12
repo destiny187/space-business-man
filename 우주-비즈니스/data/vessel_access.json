@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "capabilities": {
+    "radiation_shielding": {
+      "name": "입자 차폐",
+      "icon": "augment_endurance",
+      "maximum": 3
+    },
+    "thermal_control": {
+      "name": "열 제어",
+      "icon": "augment_stamina_recovery",
+      "maximum": 3
+    },
+    "navigation_stability": {
+      "name": "항법 안정",
+      "icon": "ship",
+      "maximum": 3
+    }
+  },
+  "tier_requirements": {
+    "3": {
+      "radiation_shielding": 1,
+      "thermal_control": 1,
+      "navigation_stability": 1
+    },
+    "4": {
+      "radiation_shielding": 2,
+      "thermal_control": 2,
+      "navigation_stability": 2
+    },
+    "5": {
+      "radiation_shielding": 3,
+      "thermal_control": 3,
+      "navigation_stability": 3
+    }
+  },
+  "hull_capabilities": {
+    "kestrel": {},
+    "swift": {
+      "radiation_shielding": 1,
+      "thermal_control": 1,
+      "navigation_stability": 1
+    },
+    "mule": {
+      "radiation_shielding": 1,
+      "thermal_control": 1,
+      "navigation_stability": 1
+    }
+  },
+  "refits": {
+    "3": {
+      "name": "차폐 항해 개장",
+      "capabilities": {
+        "radiation_shielding": 1,
+        "thermal_control": 1,
+        "navigation_stability": 1
+      },
+      "field_credits": 12000,
+      "station_credits": 18000,
+      "materials": {
+        "alloy_frame": 8,
+        "cryo_cell": 4,
+        "industrial_core": 2
+      }
+    },
+    "4": {
+      "name": "심우주 항해 개장",
+      "capabilities": {
+        "radiation_shielding": 2,
+        "thermal_control": 2,
+        "navigation_stability": 2
+      },
+      "field_credits": 36000,
+      "station_credits": 54000,
+      "materials": {
+        "corrosion_alloy": 16,
+        "circulation_module": 6,
+        "regional_heat_module": 6
+      }
+    },
+    "5": {
+      "name": "은하핵 항해 개장",
+      "capabilities": {
+        "radiation_shielding": 3,
+        "thermal_control": 3,
+        "navigation_stability": 3
+      },
+      "field_credits": 100000,
+      "station_credits": 150000,
+      "materials": {
+        "corrosion_alloy": 40,
+        "circulation_module": 16,
+        "regional_heat_module": 16
+      }
+    }
+  }
+}

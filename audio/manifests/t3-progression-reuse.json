@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "new_audio_generated": false,
+  "source_manifests": [
+    "audio/manifests/elevenlabs.json",
+    "audio/manifests/terraform3-reuse.json",
+    "audio/manifests/space-station-reuse.json"
+  ],
+  "mapping": {
+    "archive_idle": "sfx_robot_work",
+    "archive_repair": "sfx_lotus_open",
+    "archive_recovered": "ui_discovery",
+    "station_purchase": "sfx_pickup_resource",
+    "production": "sfx_factory_complete",
+    "failure": "sfx_build_invalid"
+  },
+  "verification": "Existing ElevenLabs assets reused; live playback check recorded in production document."
+}

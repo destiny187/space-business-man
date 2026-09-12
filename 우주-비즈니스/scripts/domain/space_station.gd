@@ -10,7 +10,7 @@ static func definition(m: Dictionary,index: int,excluded: int=-1,elapsed: float=
  if index==excluded:return {}
  if index==0:return FrontierOrbitalPorts.definition(m,"solar_mars_port" if station_id.is_empty() else station_id,elapsed)
  if not station_id.is_empty() and station_id!=str(index):return {}
- var key: String=m.id+":"+str(index)
+ var key: String=m.id+":"+str(m.settings.planet_count)+":"+str(m.settings.get("galaxy_layout",{}))+":"+str(index)
  if stations.has(key):return stations[key]
  var result: Dictionary={}
  var seed_value:=FrontierUniverse.derive(int(m.seed),"station-v1:"+str(index))
@@ -59,7 +59,8 @@ static func snapshot(world: Dictionary) -> Dictionary:
  station.prices=offers.prices
  station.sale_ratio=offers.get("sale_ratio",config().sale_ratio)
  station.capacities=offers.get("capacities",{})
- station.services={"goods":true,"ships":not station.get("fixed_port",false),"blueprints":not station.get("fixed_port",false),"owned":true}
+ station.services={"goods":true,"ships":not station.get("fixed_port",false),"blueprints":not station.get("fixed_port",false),"owned":true,"refits":not station.get("fixed_port",false)}
+ station.blueprints=FrontierFacilityBlueprints.offers(world)
  if station.get("fixed_port",false):station.blueprints=[]
  station.credits=int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits))
  return station
@@ -95,6 +96,18 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
  var count:=int(amount)
  if station.get("fixed_port",false) and action not in ["station_buy","station_sell","station_equip"]:return "이 물류항은 기초 물자만 거래합니다."
  match action:
+  "station_navigation_refit":
+   if count!=1 or not id.is_valid_int():return "구매할 항해 개장 한 단계를 선택하세요."
+   var error:=FrontierVesselAccess.apply(world,int(id),true)
+   if not error.is_empty():return error
+  "station_blueprint":
+   var blueprint: Dictionary=FrontierFacilityBlueprints.definitions().get(id,{})
+   if blueprint.is_empty() or count!=1:return "구매할 설계도 한 개를 선택하세요."
+   if FrontierFacilityBlueprints.owned(world,id):return "원정대가 이미 보유한 설계도입니다."
+   var price:=int(blueprint.price)
+   if int(world.business.credits)<price:return "설계도를 구매할 공동 자금이 부족합니다."
+   if not FrontierFacilityBlueprints.register(world,id,"station",str(station.id)):return "설계도 등록을 확정하지 못했습니다."
+   world.business.credits-=price
   "station_equip":
    if id not in vessel.hulls:return "먼저 구매한 선체를 선택하세요."
    if id==vessel.hull:return "현재 사용 중인 선체입니다."

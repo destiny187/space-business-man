@@ -152,3 +152,38 @@ static func valid(site: Dictionary,body: Dictionary) -> bool:
    if not FrontierUniverse._finite(cell.get("pollution"),0,float(r.rules.maximum_mass)) or not FrontierUniverse._finite(cell.get("colonization"),0,100):return false
  var expected:=float(r.initial_mass)+float(r.created)-float(r.removed)
  return absf(mass(site)-expected)<maxf(.01,absf(expected)*.0001)
+
+static func supply_plan(site: Dictionary,horizon: float,speed: float=1.0,world: Dictionary={}) -> Array:
+ # A conservative dispatch manifest for enabled installed machines. Loaded fuel is
+ # already paid for; shared warehouse stocks are counted once per supply district.
+ var result: Array=[]
+ if not site.has("tier3"):return result
+ var r: Dictionary=site.tier3.rules;var profile: Dictionary=r.profiles[site.tier3.profile]
+ for id in site.get("regions",{}):
+  var region: Dictionary=site.regions[id];var demand: Dictionary={};var machines:=0;var power_needed:=0.0
+  for b in site.buildings.values():
+   if b.get("region_id","region:0")!=id or not b.get("enabled",true):continue
+   if b.type not in ["factory","water","thermal","biolab","atmosphere","source_control"]:continue
+   machines+=1;power_needed+=power(b)
+   var inputs: Dictionary={}
+   var inside:=FrontierFreeTerraform.in_pollution(site,Vector2(b.position[0],b.position[2])) if FrontierFreeTerraform.active(site) else true
+   if int(b.get("tier",1))>=3:
+    if inside and b.type in [profile.treatment,"source_control"]:inputs[profile.item]=[r.source_pack_seconds if b.type=="source_control" else r.treatment_pack_seconds,float(b.get("t3_fuel",0))]
+    if b.type=="biolab":inputs.pioneer_culture=[r.culture_pack_seconds,float(b.get("t3_fuel",0))]
+   var base:=FrontierExpeditionBusiness.config();var restore: Dictionary=FrontierProductionTier2.config().restoration
+   if b.type=="water":
+    inputs.ice=[float(base.water_cycle_seconds)/(FrontierProductionTier2.factor(b)*FrontierFieldEngineering.factor(world,b)),0.0]
+    if int(b.get("tier",1))>=2:inputs[site.get("free_terraform",{}).get("restoration",region.get("restoration2",{})).get("inputs",{}).get("water","mineral_filter")]=[restore.filter_cycle,0.0]
+   if b.type=="biolab":
+    inputs.ice=[base.biolab_nutrient_seconds,float(b.get("bio_fuel",0))]
+    if int(b.get("tier",1))>=2:inputs[site.get("free_terraform",{}).get("restoration",region.get("restoration2",{})).get("inputs",{}).get("biolab","soil_base")]=[restore.soil_cycle,0.0]
+   if b.type=="atmosphere" and int(b.get("tier",1))>=2:
+    inputs.mineral_filter=[float(restore.filter_cycle)*(float(site.free_terraform.rules.air_volume) if FrontierFreeTerraform.active(site) else 1.0),0.0]
+   for item in inputs:
+    var count:=ceili(maxf(0,horizon*speed-float(inputs[item][1]))/float(inputs[item][0]))
+    demand[item]=int(demand.get(item,0))+count
+  if machines==0:continue
+  var missing: Dictionary={}
+  for item in demand:missing[item]=maxi(0,int(demand[item])-int(region.inventory.get(item,0)))
+  result.append({"id":id,"name":region.name,"center":region.center,"machines":machines,"demand":demand,"missing":missing,"stock":region.inventory,"power":float(region.get("power_supply",0)),"power_needed":maxf(power_needed,float(region.get("power_demand",0)))})
+ return result

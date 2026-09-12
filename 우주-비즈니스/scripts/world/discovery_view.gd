@@ -45,8 +45,15 @@ func refresh() -> void:
 		var scene: PackedScene=scenes[path]
 		var model: Node3D=scene.instantiate();add_child(model);model.position=FrontierCrewWorld.vector(row.position);model.rotation.y=float(row.yaw);FrontierInkStyle.apply(model,cache)
 		models[row.id]=model
+		if FrontierExplorationDiscoveries.definition(row.template).mode=="archive":
+			var blueprint:=FrontierFacilityBlueprints.archive_blueprint(context(),row)
+			var def: Dictionary=FrontierFacilityBlueprints.definitions()[blueprint]
+			var projection: Node3D=load("res://assets/models/"+str(def.model)+".glb").instantiate();projection.name="ArchiveProjection";model.add_child(projection);projection.position=Vector3(0,1.15,1.0);projection.scale=Vector3.ONE*(.18 if def.building=="factory" else .35)
+			var hologram:=StandardMaterial3D.new();hologram.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;hologram.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;hologram.albedo_color=Color(.3,.95,.8,.45)
+			for mesh in projection.find_children("*","MeshInstance3D",true,false):mesh.material_override=hologram;mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		parts[row.id]={"rotors":model.find_children("Anim_Rotor*","Node3D",true,false),"sails":model.find_children("Anim_Sail*","Node3D",true,false),"glows":model.find_children("Anim_Glow*","Node3D",true,false)}
 		for mesh in model.find_children("*","MeshInstance3D",true,false):
+			if model.get_node_or_null("ArchiveProjection")!=null and model.get_node("ArchiveProjection").is_ancestor_of(mesh):continue
 			var body:=StaticBody3D.new();mesh.add_child(body);var shape:=CollisionShape3D.new();shape.shape=mesh.mesh.create_trimesh_shape();body.add_child(shape)
 		var marker:=MeshInstance3D.new();var torus:=TorusMesh.new();torus.inner_radius=.23;torus.outer_radius=.30;torus.rings=16;torus.ring_segments=8;marker.mesh=torus
 		var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_color=Color("cbb5ff");marker.material_override=material;add_child(marker);markers[row.id]=marker
@@ -64,18 +71,23 @@ func _pending_states() -> void:
 		if previous_stages.has(id) and previous_stages[id]!=index:
 			serial+=1
 			if not blocked():
-				audio.play("sfx_discovery_excavate" if d.mode in ["dig","water"] else ("sfx_lotus_open" if d.mode in ["repair","salvage"] else "ui_discovery"),marker.position)
+				audio.play("sfx_discovery_excavate" if d.mode in ["dig","water"] else ("sfx_lotus_open" if d.mode in ["repair","salvage","archive"] and index<d.stages.size() else "ui_discovery"),marker.position)
 				puff(marker.position)
 		previous_stages[id]=index
+		if d.mode=="archive":
+			for cassette in model.find_children("Anim_Power*","Node3D",true,false):cassette.visible=index>=2
+			var projection:=model.get_node_or_null("ArchiveProjection")
+			if projection!=null:projection.visible=index>=2
 		for cover in model.find_children("Anim_Cover*","Node3D",true,false):
 			if not cover.has_meta("rest"):cover.set_meta("rest",cover.position)
 			var opened: bool=index>=2
+			if d.mode=="archive":opened=index>=1
 			if d.mode in ["dig","water"]:
 				cover.visible=not opened
 				for shape in cover.find_children("*","CollisionShape3D",true,false):shape.set_deferred("disabled",opened)
 			elif d.mode=="shade":
 				cover.scale.z=9.0 if opened else 1.0;cover.position=cover.get_meta("rest")+Vector3.UP*(1.9 if opened else 0.0)
-			else:cover.rotation.x=-1.6 if opened else 0.0
+			else:cover.rotation.x=(-.95 if d.mode=="archive" else -1.6) if opened else 0.0
 func blocked() -> bool:
 	return app==null or app.feedback==null or app.feedback.blocked() or (not app.test_mode and not get_window().has_focus())
 func _process(delta: float) -> void:
@@ -93,9 +105,13 @@ func _process(delta: float) -> void:
 		var distance_value:=FrontierCrewWorld.vector(row.position).distance_to(surface.viewer.position)
 		if distance_value<near_sound:near_sound=distance_value;sound_row=row
 		for rotor in parts[id].rotors:
-			if index>=2:rotor.rotation.z+=delta*1.4
+			if index>=2:
+				if d.mode=="archive":rotor.rotation.y+=delta*(.25 if fmod(elapsed,2.8)<2.2 else .02)
+				else:rotor.rotation.z+=delta*1.4
 		for sail in parts[id].sails:sail.rotation.z=sin(elapsed+float(row.yaw))*.08
-		for glow in parts[id].glows:glow.scale=Vector3.ONE*(1.0 if index>=2 or surface.atmosphere.daylight<.3 else .45)
+		for glow in parts[id].glows:
+			glow.scale=Vector3.ONE*(1.0 if index>=2 or surface.atmosphere.daylight<.3 else .45)
+			if d.mode=="archive":glow.visible=index>=2 and fmod(elapsed,4.7)>.12
 		if d.mode=="pulse" and fmod(float(surface.session.latest.crew.navigation.orbit_time)+float(row.yaw)*3,8.0)<3.0 and fmod(elapsed,1.2)<delta:puff(FrontierCrewWorld.vector(row.position)+Vector3.UP*1.7)
 	if not sound_row.is_empty():
 		var d:=FrontierExplorationDiscoveries.definition(sound_row.template)
@@ -111,6 +127,7 @@ func _process(delta: float) -> void:
 	var step: Dictionary=d.stages[index]
 	var known:=FrontierExplorationDiscoveries.known(world,selected)
 	hint.text="%s  %d/%d\n%s  %s"%[d.name,index+1,d.stages.size(),"F" if known else "E 유지",step.label]
+	if d.mode=="archive":hint.text+="\n"+str(FrontierFacilityBlueprints.definitions()[FrontierFacilityBlueprints.archive_blueprint(world,selected)].name)
 	if not str(step.tool).is_empty():hint.text+="  ["+("지형 변환기" if step.tool=="terrain" else "채집기")+"]"
 	for resource in step.cost:hint.text+="  %s %d"%[FrontierCatalog.entry("resources",resource).name,int(step.cost[resource])]
 func interact() -> bool:

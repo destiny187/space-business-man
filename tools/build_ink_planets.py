@@ -55,6 +55,36 @@ def render_variant(name,obj,traits):
     scene.render.filepath=str(DEST/(name+'.png'));bpy.ops.render.render(write_still=True)
 
 
+def variant_fields(v,idx,name,t):
+    """Continuous source fields shared by Blender meshes and orbital map baking."""
+    v=v.copy();x,y,z=v.T;phase=idx*1.783
+    broad=S.noise(v+phase,1.0);fine=S.noise(v+phase*.31,3.6);ridges=1-np.abs(S.noise(v+phase*.2,2.8))
+    h=np.clip(.48+broad*.36+fine*.10,0,1);crater=np.zeros(len(v));feature=np.clip(ridges*.5+fine*.1,0,1);gas=t['kind'] in ['gas_giant','ice_giant']
+    radius=np.ones(len(v));rng=np.random.default_rng(710+idx)
+    if not gas:
+        for k in range(55 if name=='cratered' else 12):
+            axis=rng.normal(size=3);axis/=np.linalg.norm(axis);d=np.arccos(np.clip(v@axis,-1,1))/rng.uniform(.025,.17)
+            crater+=np.exp(-((d-1)/.22)**2)*.8-np.exp(-((d/.72)**4))*.55
+        radius+=(h-.5)*.007+crater*.0038
+        if name in ['fractured','volcanic']:
+            seams=np.exp(-(np.sin(x*8+y*3+phase+np.sin(z*4))/.12)**2);radius-=seams*.004;feature=1-seams
+        elif name in ['oxidized','ochre']:
+            mesa=np.floor(h*7)/7;radius+=mesa*.005;feature=np.clip(.5+np.sin(h*41)*.3,0,1)
+        elif name in ['continental','tundra']:
+            ranges=np.maximum(0,ridges-.65)*np.maximum(0,h-.40);radius+=ranges*.027;feature=np.clip(ranges*9,0,1)
+        elif name=='sedimentary':
+            strata=np.sin(h*54+fine*.8);radius+=np.floor(h*9)/9*.010;feature=np.clip(.5+strata*.45,0,1)
+        elif name=='crystalline':
+            peaks=np.maximum(0,ridges-.65);radius+=peaks*.035;feature=np.clip(peaks*4+fine*.2,0,1)
+        elif name=='alkaline':
+            veins=np.exp(-(np.sin(x*7+y*5+z*3+fine)/.16)**2);radius+=veins*.004;feature=veins
+        elif name=='salt':
+            basin=np.exp(-((h-.40)/.055)**2);radius-=basin*.003;feature=basin
+    else:
+        oblateness=.035 if t['kind']=='gas_giant' else .02;v[:,2]*=1-oblateness;feature=.5+.35*np.sin(z*17+fine)
+    return v*radius[:,None],np.column_stack([h,np.clip(.5+crater*.5,0,1),feature])
+
+
 def variants():
     src=ROOT/'art/blender/planet-variants';out=ROOT/'우주-비즈니스/assets/models/planet-variants';records=[]
     selected=next((a.split('=',1)[1].split(',') for a in sys.argv if a.startswith('--families=')),[])
@@ -64,34 +94,12 @@ def variants():
         bpy.ops.wm.read_factory_settings(use_empty=True)
         bpy.ops.mesh.primitive_uv_sphere_add(segments=256,ring_count=128,radius=1);obj=bpy.context.object;obj.name='Surface';mesh=obj.data
         v=np.array([tuple(p.co) for p in mesh.vertices]);v/=np.linalg.norm(v,axis=1)[:,None];x,y,z=v.T;phase=idx*1.783
-        broad=S.noise(v+phase,1.0);fine=S.noise(v+phase*.31,3.6);ridges=1-np.abs(S.noise(v+phase*.2,2.8))
-        h=np.clip(.48+broad*.36+fine*.10,0,1);crater=np.zeros(len(v));feature=np.clip(ridges*.5+fine*.1,0,1);gas=t['kind'] in ['gas_giant','ice_giant']
-        radius=np.ones(len(v));rng=np.random.default_rng(710+idx)
-        if not gas:
-            for k in range(55 if name=='cratered' else 12):
-                axis=rng.normal(size=3);axis/=np.linalg.norm(axis);d=np.arccos(np.clip(v@axis,-1,1))/rng.uniform(.025,.17)
-                crater+=np.exp(-((d-1)/.22)**2)*.8-np.exp(-((d/.72)**4))*.55
-            radius+=(h-.5)*.007+crater*.0038
-            if name in ['fractured','volcanic']:
-                seams=np.exp(-(np.sin(x*8+y*3+phase+np.sin(z*4))/.12)**2);radius-=seams*.004;feature=1-seams
-            elif name in ['oxidized','ochre']:
-                mesa=np.floor(h*7)/7;radius+=mesa*.005;feature=np.clip(.5+np.sin(h*41)*.3,0,1)
-            elif name in ['continental','tundra']:
-                ranges=np.maximum(0,ridges-.65)*np.maximum(0,h-.40);radius+=ranges*.027;feature=np.clip(ranges*9,0,1)
-            elif name=='sedimentary':
-                strata=np.sin(h*54+fine*.8);radius+=np.floor(h*9)/9*.010;feature=np.clip(.5+strata*.45,0,1)
-            elif name=='crystalline':
-                peaks=np.maximum(0,ridges-.65);radius+=peaks*.035;feature=np.clip(peaks*4+fine*.2,0,1)
-            elif name=='alkaline':
-                veins=np.exp(-(np.sin(x*7+y*5+z*3+fine)/.16)**2);radius+=veins*.004;feature=veins
-            elif name=='salt':
-                basin=np.exp(-((h-.40)/.055)**2);radius-=basin*.003;feature=basin
-        else:
-            oblateness=.035 if t['kind']=='gas_giant' else .02;v[:,2]*=1-oblateness;feature=.5+.35*np.sin(z*17+fine)
-        for vert,co in zip(mesh.vertices,v*radius[:,None]):vert.co=co
+        coords,masks=variant_fields(v,idx,name,t)
+        h,impact,feature=masks.T
+        for vert,co in zip(mesh.vertices,coords):vert.co=co
         for f in mesh.polygons:f.use_smooth=True
         attr=mesh.color_attributes.new(name='Relief',type='FLOAT_COLOR',domain='POINT')
-        attr.data.foreach_set('color',np.column_stack([h,np.clip(.5+crater*.5,0,1),feature,np.ones(len(v))]).astype(np.float32).ravel())
+        attr.data.foreach_set('color',np.column_stack([h,impact,feature,np.ones(len(v))]).astype(np.float32).ravel())
         mat=bpy.data.materials.new(name+'_relief');mat.use_nodes=True;nodes=mat.node_tree.nodes;links=mat.node_tree.links;bs=nodes.get('Principled BSDF');bs.inputs['Roughness'].default_value=.94
         vc=nodes.new('ShaderNodeVertexColor');vc.layer_name='Relief';ramp=nodes.new('ShaderNodeValToRGB');ramp.color_ramp.elements[0].color=(*S.rgb(t['rock']),1);ramp.color_ramp.elements[1].color=(*S.rgb(t['dust']),1)
         links.new(vc.outputs['Color'],ramp.inputs[0]);links.new(ramp.outputs[0],bs.inputs['Base Color']);obj.data.materials.append(mat)

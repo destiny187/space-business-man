@@ -1,0 +1,2103 @@
+{
+  "commands": 241,
+  "completed": true,
+  "credits": 3800,
+  "failures": 0,
+  "flights": [
+    {
+      "from": 0,
+      "start": 0.0,
+      "to": 7623
+    },
+    {
+      "from": 7623,
+      "start": 12.0000000000002,
+      "to": 19013
+    },
+    {
+      "from": 19013,
+      "start": 23.9999999999999,
+      "to": 2051
+    },
+    {
+      "from": 2051,
+      "start": 1213.09999999923,
+      "to": 12477
+    },
+    {
+      "from": 12477,
+      "start": 1259.64999999918,
+      "to": 2051
+    },
+    {
+      "from": 2051,
+      "start": 1367.09999999909,
+      "to": 10008
+    },
+    {
+      "from": 10008,
+      "start": 1379.09999999907,
+      "to": 356
+    },
+    {
+      "from": 356,
+      "start": 1391.09999999906,
+      "to": 44586
+    }
+  ],
+  "marks": {
+    "blueprint_acquired": 1259.64999999918,
+    "cold_landing": 794.899999999606,
+    "factory_mk2": 312.000000000045,
+    "factory_mk3": 1346.0999999991,
+    "first_landing": 100.599999999996,
+    "metal_freight_ready": 562.499999999817,
+    "mk3_parts_ready": 1191.99999999924,
+    "start": 0.0,
+    "t3_landing": 1467.09999999899
+  },
+  "mined": {
+    "copper": 28,
+    "iron": 168,
+    "lithium": 12,
+    "nickel": 16,
+    "stone": 82,
+    "titanium": 8
+  },
+  "mining_seconds": {
+    "1": 41.2333333333108
+  },
+  "phase": "landing",
+  "phase_seconds": {
+    "boarding": 53.2000000000005,
+    "construction": 32.8000000000002,
+    "flight": 452.291666666701,
+    "gather_and_process": 819.700000000118,
+    "landing": 109.099999999998
+  },
+  "players": 1,
+  "positions": {
+    "1": [
+      -4.0,
+      2.00007009506226,
+      -2.0
+    ]
+  },
+  "production_wait_seconds": 180.099999999836,
+  "seconds": 1467.09999999899,
+  "t3_tier": 3,
+  "transfers": [
+    {
+      "args": {
+        "amount": 20,
+        "resource": "iron"
+      },
+      "at": 103.899999999995,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "stone"
+      },
+      "at": 103.899999999995,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "iron"
+      },
+      "at": 120.299999999994,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 128.799999999995,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "copper"
+      },
+      "at": 136.700000000001,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 145.300000000008,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "stone"
+      },
+      "at": 153.600000000014,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 161.600000000021,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "iron"
+      },
+      "at": 161.600000000021,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "copper"
+      },
+      "at": 161.600000000021,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "stone"
+      },
+      "at": 161.600000000021,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "iron"
+      },
+      "at": 172.000000000029,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 179.800000000035,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 15,
+        "resource": "copper"
+      },
+      "at": 187.900000000042,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 196.300000000048,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "stone"
+      },
+      "at": 204.900000000055,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 213.000000000062,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 224.300000000071,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 40,
+        "resource": "iron"
+      },
+      "at": 224.300000000071,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 15,
+        "resource": "copper"
+      },
+      "at": 224.300000000071,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "stone"
+      },
+      "at": 224.300000000071,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 4,
+        "resource": "copper"
+      },
+      "at": 238.000000000082,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 246.200000000088,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 264.000000000089,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 274.500000000079,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 4,
+        "resource": "copper"
+      },
+      "at": 321.000000000037,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 328.60000000003,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 342.500000000017,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 353.700000000007,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 1,
+        "resource": "reinforced_frame"
+      },
+      "at": 379.099999999984,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 1,
+        "resource": "control_circuit"
+      },
+      "at": 379.099999999984,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 414.599999999952,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 455.399999999914,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 468.899999999902,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 479.199999999893,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 2,
+        "resource": "alloy_frame"
+      },
+      "at": 520.099999999856,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 2,
+        "resource": "alloy_frame"
+      },
+      "at": 528.499999999848,
+      "kind": "deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 17,
+        "resource": "copper"
+      },
+      "at": 528.499999999848,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 536.599999999841,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 553.899999999825,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 45,
+        "resource": "copper"
+      },
+      "at": 553.899999999825,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 45,
+        "resource": "copper"
+      },
+      "at": 562.499999999817,
+      "kind": "deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "copper"
+      },
+      "at": 830.899999999573,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 839.499999999565,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 846.299999999559,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 857.599999999549,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "iron"
+      },
+      "at": 857.599999999549,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "copper"
+      },
+      "at": 857.599999999549,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 10,
+        "resource": "stone"
+      },
+      "at": 857.599999999549,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 15,
+        "resource": "copper"
+      },
+      "at": 867.799999999539,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 875.699999999532,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 894.999999999515,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 906.599999999504,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 40,
+        "resource": "iron"
+      },
+      "at": 906.599999999504,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 15,
+        "resource": "copper"
+      },
+      "at": 906.599999999504,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 20,
+        "resource": "stone"
+      },
+      "at": 906.599999999504,
+      "kind": "business_withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 4,
+        "resource": "copper"
+      },
+      "at": 918.499999999493,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 926.199999999486,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 939.599999999474,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 952.599999999462,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 24,
+        "resource": "ice"
+      },
+      "at": 997.699999999421,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1005.79999999941,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 8,
+        "resource": "copper"
+      },
+      "at": 1013.49999999941,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1021.4999999994,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1057.79999999937,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 2,
+        "resource": "alloy_frame"
+      },
+      "at": 1090.99999999934,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1098.69999999933,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "amount": 8,
+        "resource": "copper"
+      },
+      "at": 1106.79999999932,
+      "kind": "withdraw",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1114.59999999932,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1127.2999999993,
+      "kind": "business_deposit",
+      "peer": 1
+    },
+    {
+      "args": {
+        "all_resources": true
+      },
+      "at": 1147.59999999929,
+      "kind": "business_deposit",
+      "peer": 1
+    }
+  ],
+  "valid_save": true,
+  "walking_meters": {
+    "1": 3848.36720004264
+  },
+  "walking_seconds": {
+    "1": 666.466666666287
+  },
+  "wall_seconds": 972.482,
+  "saved_mk3_factories": [
+    "facility:6"
+  ],
+  "generation_conditions": {
+    "seed": 71503.0,
+    "settings": {
+      "band_names": [
+        "외곽 개척권",
+        "외곽 항로",
+        "중간 성역",
+        "내곽 성역",
+        "중심 접근권"
+      ],
+      "catalog_version": "nasa-ps-20260906",
+      "central_body": {
+        "galaxy_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "galaxy_units_to_flight_units": 100000.0,
+        "kind": "black_hole",
+        "model_scale_galaxy_units": 1.4,
+        "name": "은하 중심 블랙홀",
+        "version": 1.0,
+        "visible_within_galaxy_units": 180.0
+      },
+      "corporate_space": {
+        "mars": {
+          "access": "orbital_only",
+          "city_strength": 0.32,
+          "cloud": 0.38,
+          "operator": "space_y",
+          "pressure": 0.92,
+          "state": "restored",
+          "visual": "mars_restored"
+        },
+        "ports": {
+          "sale_ratio": 0.4,
+          "sites": {
+            "solar_earth_logistics": {
+              "altitude": 600.0,
+              "body": 2.0,
+              "clearance": 2800.0,
+              "goods": {
+                "copper": {
+                  "capacity": 140.0,
+                  "price": 14.0,
+                  "stock": 80.0
+                },
+                "ice": {
+                  "capacity": 200.0,
+                  "price": 10.0,
+                  "stock": 60.0
+                },
+                "iron": {
+                  "capacity": 180.0,
+                  "price": 10.0,
+                  "stock": 100.0
+                },
+                "stone": {
+                  "capacity": 160.0,
+                  "price": 6.0,
+                  "stock": 100.0
+                }
+              },
+              "name": "Space Y 지구 물류항",
+              "period": 2100.0,
+              "phase": 2.2,
+              "short_name": "EARTH Y-02"
+            },
+            "solar_mars_port": {
+              "altitude": 500.0,
+              "body": 3.0,
+              "clearance": 2600.0,
+              "goods": {
+                "copper": {
+                  "capacity": 140.0,
+                  "price": 14.0,
+                  "stock": 60.0
+                },
+                "ice": {
+                  "capacity": 200.0,
+                  "price": 10.0,
+                  "stock": 100.0
+                },
+                "iron": {
+                  "capacity": 180.0,
+                  "price": 10.0,
+                  "stock": 80.0
+                },
+                "stone": {
+                  "capacity": 160.0,
+                  "price": 6.0,
+                  "stock": 60.0
+                }
+              },
+              "name": "Space Y 화성 항만",
+              "period": 1800.0,
+              "phase": 0.7,
+              "short_name": "MARS Y-01"
+            }
+          },
+          "version": 1.0
+        },
+        "traffic": {
+          "avoidance_radius": 650.0,
+          "far_distance": 180000.0,
+          "lane_height": 60000.0,
+          "leg_seconds": 600.0,
+          "near_distance": 4500.0,
+          "version": 1.0
+        },
+        "version": 1.0
+      },
+      "flight": {
+        "acceleration": 95.0,
+        "arrival_clearance": 600.0,
+        "boost_drain": 22.0,
+        "boost_multiplier": 2.2,
+        "boost_speed": 700.0,
+        "cruise_speed": 280.0,
+        "energy_max": 100.0,
+        "energy_recharge": 12.0,
+        "hull_max": 100.0,
+        "hull_repair": 4.0,
+        "jump_seconds": 3.5,
+        "manual_speed": 700.0,
+        "scan_seconds": 1.8,
+        "system_boundary": 20000.0,
+        "transit_energy_cost": 30.0,
+        "transit_seconds": 12.0,
+        "turn_speed": 1.0
+      },
+      "generator_version": "galaxy-v3",
+      "ground_rules": {
+        "expedition": {
+          "capacity": 35.0,
+          "deposits_per_resource": 4.0,
+          "radius": 450.0,
+          "radius_spread": 60.0,
+          "samples": 160.0
+        },
+        "intro_max_processing_seconds": 360.0,
+        "near_resource_radius": 80.0,
+        "starter": [
+          {
+            "angle": -3.0,
+            "capacity": 40.0,
+            "id": "landing2:iron:a:small:0",
+            "radius": 24.0,
+            "resource": "iron"
+          },
+          {
+            "angle": -1.765,
+            "capacity": 40.0,
+            "id": "landing2:iron:a:small:1",
+            "radius": 35.0,
+            "resource": "iron"
+          },
+          {
+            "angle": -0.53,
+            "capacity": 40.0,
+            "id": "landing2:iron:a:small:2",
+            "radius": 46.0,
+            "resource": "iron"
+          },
+          {
+            "angle": 0.705,
+            "capacity": 40.0,
+            "id": "landing2:iron:a:small:3",
+            "radius": 57.0,
+            "resource": "iron"
+          },
+          {
+            "angle": 1.94,
+            "capacity": 40.0,
+            "id": "landing2:iron:a:small:4",
+            "radius": 68.0,
+            "resource": "iron"
+          },
+          {
+            "angle": -2.753,
+            "capacity": 30.0,
+            "id": "landing2:copper:small:0",
+            "radius": 31.0,
+            "resource": "copper"
+          },
+          {
+            "angle": -1.518,
+            "capacity": 30.0,
+            "id": "landing2:copper:small:1",
+            "radius": 42.0,
+            "resource": "copper"
+          },
+          {
+            "angle": -0.283,
+            "capacity": 30.0,
+            "id": "landing2:copper:small:2",
+            "radius": 53.0,
+            "resource": "copper"
+          },
+          {
+            "angle": 0.952,
+            "capacity": 30.0,
+            "id": "landing2:copper:small:3",
+            "radius": 64.0,
+            "resource": "copper"
+          },
+          {
+            "angle": 2.187,
+            "capacity": 30.0,
+            "id": "landing2:copper:small:4",
+            "radius": 75.0,
+            "resource": "copper"
+          },
+          {
+            "angle": -2.506,
+            "capacity": 40.0,
+            "id": "landing2:iron:b:small:0",
+            "radius": 38.0,
+            "resource": "iron"
+          },
+          {
+            "angle": -1.271,
+            "capacity": 40.0,
+            "id": "landing2:iron:b:small:1",
+            "radius": 49.0,
+            "resource": "iron"
+          },
+          {
+            "angle": -0.036,
+            "capacity": 40.0,
+            "id": "landing2:iron:b:small:2",
+            "radius": 60.0,
+            "resource": "iron"
+          },
+          {
+            "angle": 1.199,
+            "capacity": 40.0,
+            "id": "landing2:iron:b:small:3",
+            "radius": 71.0,
+            "resource": "iron"
+          },
+          {
+            "angle": 2.434,
+            "capacity": 40.0,
+            "id": "landing2:iron:b:small:4",
+            "radius": 30.0,
+            "resource": "iron"
+          },
+          {
+            "angle": -2.259,
+            "capacity": 30.0,
+            "id": "landing2:stone:small:0",
+            "radius": 45.0,
+            "resource": "stone"
+          },
+          {
+            "angle": -1.024,
+            "capacity": 30.0,
+            "id": "landing2:stone:small:1",
+            "radius": 56.0,
+            "resource": "stone"
+          },
+          {
+            "angle": 0.211,
+            "capacity": 30.0,
+            "id": "landing2:stone:small:2",
+            "radius": 67.0,
+            "resource": "stone"
+          },
+          {
+            "angle": 1.446,
+            "capacity": 30.0,
+            "id": "landing2:stone:small:3",
+            "radius": 26.0,
+            "resource": "stone"
+          },
+          {
+            "angle": 2.681,
+            "capacity": 30.0,
+            "id": "landing2:stone:small:4",
+            "radius": 37.0,
+            "resource": "stone"
+          },
+          {
+            "angle": -2.012,
+            "capacity": 30.0,
+            "id": "landing2:ice:small:0",
+            "radius": 52.0,
+            "resource": "ice"
+          },
+          {
+            "angle": -0.777,
+            "capacity": 30.0,
+            "id": "landing2:ice:small:1",
+            "radius": 63.0,
+            "resource": "ice"
+          },
+          {
+            "angle": 0.458,
+            "capacity": 30.0,
+            "id": "landing2:ice:small:2",
+            "radius": 74.0,
+            "resource": "ice"
+          },
+          {
+            "angle": 1.693,
+            "capacity": 30.0,
+            "id": "landing2:ice:small:3",
+            "radius": 33.0,
+            "resource": "ice"
+          },
+          {
+            "angle": 2.928,
+            "capacity": 30.0,
+            "id": "landing2:ice:small:4",
+            "radius": 44.0,
+            "resource": "ice"
+          }
+        ],
+        "version": 4.0
+      },
+      "inner_radius": 100.0,
+      "orbit_inner_radius": 2300.0,
+      "orbit_period_seconds": 18000.0,
+      "orbit_spacing": 1700.0,
+      "outer_radius": 500.0,
+      "planet_count": 1000000.0,
+      "planet_kinds": [
+        "basalt",
+        "glacial",
+        "sulfur",
+        "gas_giant",
+        "ice_giant"
+      ],
+      "planet_rules": {
+        "archetypes": {
+          "alkaline": {
+            "dust": "b5bfa3",
+            "geology": "alkaline",
+            "kind": "basalt",
+            "name": "알칼리 광화대",
+            "oxygen": 0.025,
+            "pressure": 0.48,
+            "relief": 35.0,
+            "rock": "526f69",
+            "sea": "47716d",
+            "temperature": 32.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.02,
+              "plateau_relief": 10.0,
+              "region_frequency": 0.0028,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 42.0,
+            "water": 14.0
+          },
+          "azure": {
+            "dust": "71b8e0",
+            "geology": "",
+            "kind": "ice_giant",
+            "name": "청색 폭풍대",
+            "oxygen": 0.0,
+            "pressure": 7.0,
+            "relief": 0.0,
+            "rock": "254581",
+            "sea": "607aaa",
+            "temperature": -150.0,
+            "toxicity": 100.0,
+            "water": 0.0
+          },
+          "banded": {
+            "dust": "e3cf9c",
+            "geology": "",
+            "kind": "gas_giant",
+            "name": "다층 구름대",
+            "oxygen": 0.0,
+            "pressure": 8.0,
+            "relief": 0.0,
+            "rock": "956647",
+            "sea": "bea880",
+            "temperature": -80.0,
+            "toxicity": 100.0,
+            "water": 0.0
+          },
+          "continental": {
+            "dust": "8a9865",
+            "geology": "weathered",
+            "kind": "basalt",
+            "name": "습윤 대륙",
+            "oxygen": 0.19,
+            "pressure": 1.0,
+            "relief": 23.0,
+            "rock": "515b48",
+            "sea": "205e83",
+            "temperature": 18.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.08,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 8.0,
+            "water": 65.0
+          },
+          "cratered": {
+            "dust": "aaa596",
+            "geology": "pegmatite",
+            "kind": "basalt",
+            "name": "충돌 고원",
+            "oxygen": 0.005,
+            "pressure": 0.12,
+            "relief": 48.0,
+            "rock": "565865",
+            "sea": "244456",
+            "temperature": -30.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": -0.05,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 18.0,
+            "water": 8.0
+          },
+          "crystalline": {
+            "dust": "b1bbc4",
+            "geology": "pegmatite",
+            "kind": "basalt",
+            "name": "결정질 고원",
+            "oxygen": 0.01,
+            "pressure": 0.18,
+            "relief": 49.0,
+            "rock": "595f79",
+            "sea": "344e67",
+            "temperature": -22.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": -0.08,
+              "plateau_relief": 18.0,
+              "region_frequency": 0.0028,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 20.0,
+            "water": 9.0
+          },
+          "fractured": {
+            "dust": "c4e1e0",
+            "geology": "cryovolcanic",
+            "kind": "glacial",
+            "name": "균열 빙원",
+            "oxygen": 0.06,
+            "pressure": 0.55,
+            "relief": 32.0,
+            "rock": "527e91",
+            "sea": "164958",
+            "temperature": -48.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.015,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 12.0,
+            "water": 35.0
+          },
+          "frozen": {
+            "dust": "e0d5e5",
+            "geology": "cryogenic",
+            "kind": "glacial",
+            "name": "극저온 설원",
+            "oxygen": 0.008,
+            "pressure": 0.18,
+            "relief": 42.0,
+            "rock": "7b7194",
+            "sea": "3d426c",
+            "temperature": -110.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": -0.035,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 10.0,
+            "water": 12.0
+          },
+          "ochre": {
+            "dust": "af9b4f",
+            "geology": "hydrothermal",
+            "kind": "sulfur",
+            "name": "황토 열수대",
+            "oxygen": 0.06,
+            "pressure": 0.85,
+            "relief": 38.0,
+            "rock": "646340",
+            "sea": "356c68",
+            "temperature": 60.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": -0.06,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 55.0,
+            "water": 18.0
+          },
+          "oxidized": {
+            "dust": "b56745",
+            "geology": "metallic",
+            "kind": "basalt",
+            "name": "산화 사막",
+            "oxygen": 0.015,
+            "pressure": 0.22,
+            "relief": 34.0,
+            "rock": "633e36",
+            "sea": "183e50",
+            "temperature": 28.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.03,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "surface_geology": {
+                "shelf_height": 0.32,
+                "version": 1.0,
+                "wash_depth": 0.48
+              },
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 35.0,
+            "water": 0.0
+          },
+          "pale": {
+            "dust": "d9dcb5",
+            "geology": "",
+            "kind": "gas_giant",
+            "name": "담황 제트대",
+            "oxygen": 0.0,
+            "pressure": 7.0,
+            "relief": 0.0,
+            "rock": "8c9a82",
+            "sea": "a3b7b3",
+            "temperature": -110.0,
+            "toxicity": 100.0,
+            "water": 0.0
+          },
+          "salt": {
+            "dust": "d4bc83",
+            "geology": "hydrothermal",
+            "kind": "sulfur",
+            "name": "염류 분지",
+            "oxygen": 0.08,
+            "pressure": 1.15,
+            "relief": 20.0,
+            "rock": "897454",
+            "sea": "437e78",
+            "temperature": 42.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.1,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 45.0,
+            "water": 28.0
+          },
+          "sedimentary": {
+            "dust": "b8aa80",
+            "geology": "sedimentary",
+            "kind": "basalt",
+            "name": "퇴적 분지",
+            "oxygen": 0.07,
+            "pressure": 0.78,
+            "relief": 22.0,
+            "rock": "76634e",
+            "sea": "39666c",
+            "temperature": 12.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.17,
+              "plateau_relief": 6.0,
+              "region_frequency": 0.0019,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 25.0,
+            "water": 24.0
+          },
+          "storm": {
+            "dust": "c99586",
+            "geology": "",
+            "kind": "gas_giant",
+            "name": "거대 폭풍대",
+            "oxygen": 0.0,
+            "pressure": 9.0,
+            "relief": 0.0,
+            "rock": "593f62",
+            "sea": "80748d",
+            "temperature": -60.0,
+            "toxicity": 100.0,
+            "water": 0.0
+          },
+          "tundra": {
+            "dust": "a2aeac",
+            "geology": "icy_basin",
+            "kind": "glacial",
+            "name": "해빙 툰드라",
+            "oxygen": 0.16,
+            "pressure": 0.9,
+            "relief": 25.0,
+            "rock": "5c6778",
+            "sea": "315e78",
+            "temperature": -8.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": 0.055,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 7.0,
+            "water": 48.0
+          },
+          "turquoise": {
+            "dust": "9fe3ca",
+            "geology": "",
+            "kind": "ice_giant",
+            "name": "청록 구름대",
+            "oxygen": 0.0,
+            "pressure": 8.0,
+            "relief": 0.0,
+            "rock": "386f80",
+            "sea": "82bfc7",
+            "temperature": -180.0,
+            "toxicity": 100.0,
+            "water": 0.0
+          },
+          "violet": {
+            "dust": "b6b4e5",
+            "geology": "",
+            "kind": "ice_giant",
+            "name": "보랏빛 극대기",
+            "oxygen": 0.0,
+            "pressure": 9.0,
+            "relief": 0.0,
+            "rock": "514780",
+            "sea": "8d83ba",
+            "temperature": -170.0,
+            "toxicity": 100.0,
+            "water": 0.0
+          },
+          "volcanic": {
+            "cooling_threshold": 80.0,
+            "dust": "ac6940",
+            "geology": "volcanic",
+            "kind": "sulfur",
+            "name": "불타는 화산",
+            "oxygen": 0.01,
+            "pressure": 1.8,
+            "relief": 55.0,
+            "rock": "3b3540",
+            "sea": "51382e",
+            "temperature": 320.0,
+            "terrain_layout": {
+              "basin_threshold": -0.18,
+              "basin_transition": 0.16,
+              "landing_inner": 40.0,
+              "landing_outer": 85.0,
+              "plain_detail": 0.14,
+              "plain_threshold": -0.155,
+              "plateau_relief": 12.0,
+              "region_frequency": 0.0023,
+              "transition": 0.14,
+              "version": 2.0
+            },
+            "toxicity": 75.0,
+            "water": 0.0
+          }
+        },
+        "version": 4.0
+      },
+      "planetary_cycles": {
+        "eccentricity_max": 0.12,
+        "enabled": true,
+        "epoch_offset": 0.0,
+        "inner_habitable_fraction": [
+          0.55,
+          0.95
+        ],
+        "intro_day_hours": [
+          16.0,
+          30.0
+        ],
+        "intro_max_tilt": 25.0,
+        "latitude_degrees": [
+          -35.0,
+          35.0
+        ],
+        "locked_days": [
+          10.0,
+          30.0
+        ],
+        "locked_weights": [
+          0.8,
+          0.4
+        ],
+        "orbit_spacing": 1.7,
+        "presentation": {
+          "clock_extrapolation_limit": 1.0,
+          "cloud_speed": 0.006,
+          "night_ambient": 0.2,
+          "night_horizon": "172738",
+          "night_wind_db": -2.0,
+          "night_zenith": "060e20",
+          "refresh_seconds": 0.12,
+          "rover_headlight_energy": 18.0,
+          "sun_angular_radius": 0.00465,
+          "sun_energy": 1.8,
+          "twilight_color": "e78a56",
+          "worklight_energy": 12.0
+        },
+        "solar": {
+          "eccentricity": [
+            0.2056,
+            0.0068,
+            0.0167,
+            0.0934,
+            0.0484,
+            0.0542,
+            0.0472,
+            0.0086
+          ],
+          "semimajor_au": [
+            0.387,
+            0.723,
+            1.0,
+            1.524,
+            5.203,
+            9.537,
+            19.191,
+            30.069
+          ],
+          "source": "https://science.nasa.gov/learn/basics-of-space-flight/chapter1-2/",
+          "spin_hours": [
+            1407.6,
+            5832.5,
+            23.9345,
+            24.6229,
+            9.925,
+            10.656,
+            17.24,
+            16.11
+          ],
+          "tilt_degrees": [
+            0.034,
+            177.36,
+            23.44,
+            25.19,
+            3.13,
+            26.73,
+            97.77,
+            28.32
+          ]
+        },
+        "spin_hours": [
+          8.0,
+          72.0
+        ],
+        "star_profiles": {
+          "A": [
+            2.0,
+            1.8,
+            20.0
+          ],
+          "F": [
+            1.3,
+            1.3,
+            3.0
+          ],
+          "G": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "K": [
+            0.75,
+            0.75,
+            0.3
+          ],
+          "M": [
+            0.3,
+            0.3,
+            0.012
+          ]
+        },
+        "tilt_degrees": [
+          0.0,
+          40.0
+        ],
+        "time_scale": 60.0,
+        "version": 1.0,
+        "year_seconds": 31557600.0
+      },
+      "planets_per_system": 8.0,
+      "regional_rules": {
+        "cell_offsets": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            -28.0,
+            0.0
+          ],
+          [
+            28.0,
+            0.0
+          ],
+          [
+            0.0,
+            -28.0
+          ],
+          [
+            0.0,
+            28.0
+          ]
+        ],
+        "cluster_fraction": 0.8,
+        "cluster_slots": 12.0,
+        "facility_radius": 48.0,
+        "free_placement": {
+          "air_columns": 64.0,
+          "air_mix": 0.0003,
+          "air_rows": 32.0,
+          "air_volume": 1.0,
+          "cell_size": 24.0,
+          "extent": 8192.0,
+          "intro_radius": 32.0,
+          "max_cells": 50000.0,
+          "pollution_initial": 60.0,
+          "pollution_radius": 120.0,
+          "pollution_rate": 0.5,
+          "pollution_target": 8.0,
+          "radius": {
+            "atmosphere": 96.0,
+            "biolab": 64.0,
+            "source_control": 160.0,
+            "thermal": 64.0,
+            "water": 64.0
+          },
+          "specialized_rate_factor": 6.0,
+          "stage_fraction": 0.2,
+          "stage_thresholds": [
+            0.3,
+            0.65
+          ],
+          "supply_span": 512.0,
+          "surface_capacity": 4.0,
+          "targets": {
+            "1": {
+              "area": 2304.0,
+              "stable": 30.0
+            },
+            "2": {
+              "area": 27648.0,
+              "stable": 30.0
+            },
+            "3": {
+              "area": 55296.0,
+              "stable": 45.0
+            }
+          },
+          "version": 1.0,
+          "water_height_span": 35.0,
+          "water_lowland_gain": 0.75
+        },
+        "map_extent": 8192.0,
+        "map_resolution": 96.0,
+        "region_span": 640.0,
+        "required_cells": 3.0,
+        "stage_fraction": 0.2,
+        "tier3": {
+          "colonization_goal": 60.0,
+          "colonization_rate": 1.5,
+          "controlled_minimum": 0.9,
+          "culture_pack_seconds": 45.0,
+          "maximum_mass": 100000000.0,
+          "pollution_limit": 8.0,
+          "profiles": {
+            "acid_water": {
+              "item": "neutralizer_pack",
+              "name": "산성 수질 유입",
+              "names": [
+                "착륙 정착지",
+                "산성 유입원",
+                "수질 정화지",
+                "선구종 복원지"
+              ],
+              "roles": [
+                "settlement",
+                "source",
+                "water",
+                "recovery"
+              ],
+              "treatment": "water"
+            },
+            "reactive_gas": {
+              "item": "sorbent_pack",
+              "name": "반응성 가스 유입",
+              "names": [
+                "착륙 정착지",
+                "가스 유입원",
+                "대기 정화지",
+                "선구종 복원지"
+              ],
+              "roles": [
+                "settlement",
+                "source",
+                "air",
+                "recovery"
+              ],
+              "treatment": "atmosphere"
+            }
+          },
+          "required_cells": 3.0,
+          "source_pack_seconds": 120.0,
+          "source_radius": 48.0,
+          "source_rate": 0.5,
+          "stable_seconds": 45.0,
+          "stage_fraction": 0.15,
+          "starting_pollution": 60.0,
+          "suppression": 0.98,
+          "transfer_fraction_per_second": 0.006,
+          "transfer_limit_per_second": 0.4,
+          "treatment_pack_seconds": 60.0,
+          "treatment_rate": 1.0,
+          "version": 1.0
+        },
+        "tiers": {
+          "1": {
+            "distance": 0.0,
+            "regions": 1.0
+          },
+          "2": {
+            "distance": 520.0,
+            "regions": 3.0
+          },
+          "3": {
+            "distance": 720.0,
+            "regions": 4.0
+          }
+        },
+        "version": 3.0,
+        "zone_radius": 65.0
+      },
+      "resource_rules": {
+        "base_capacity": 18.0,
+        "capacity_distance_cap": 50.0,
+        "capacity_per_km": 10.0,
+        "capacity_per_tier": 8.0,
+        "capacity_spread": 28.0,
+        "depth_max": 58.0,
+        "depth_min": 10.0,
+        "exotic_chance_percent": 12.0,
+        "exotic_materials": [
+          "stellarite_ore",
+          "darkstone_ore"
+        ],
+        "exotic_min_tier": 4.0,
+        "gem_capacity": 8.0,
+        "gem_chance_percent": 30.0,
+        "profiles": {
+          "alkaline": {
+            "gems": [
+              "sapphire",
+              "diamond"
+            ],
+            "kind": "basalt",
+            "name": "희토 광화대",
+            "primary": [
+              "rare_earth",
+              "titanium",
+              "silicon"
+            ],
+            "secondary": [
+              "nickel",
+              "lithium"
+            ]
+          },
+          "cryogenic": {
+            "gems": [
+              "diamond",
+              "sapphire"
+            ],
+            "kind": "glacial",
+            "name": "빙하 퇴적층",
+            "primary": [
+              "ice",
+              "lithium",
+              "nickel"
+            ],
+            "secondary": [
+              "silicon",
+              "iron"
+            ]
+          },
+          "cryovolcanic": {
+            "gems": [
+              "diamond",
+              "ruby"
+            ],
+            "kind": "glacial",
+            "name": "빙저 화산층",
+            "primary": [
+              "ice",
+              "nickel",
+              "rare_earth"
+            ],
+            "secondary": [
+              "titanium",
+              "lithium"
+            ]
+          },
+          "hydrothermal": {
+            "gems": [
+              "emerald",
+              "sapphire"
+            ],
+            "kind": "sulfur",
+            "name": "열수 광맥",
+            "primary": [
+              "copper",
+              "sulfur",
+              "phosphate"
+            ],
+            "secondary": [
+              "iron",
+              "rare_earth"
+            ]
+          },
+          "icy_basin": {
+            "gems": [
+              "emerald",
+              "sapphire"
+            ],
+            "kind": "glacial",
+            "name": "얼음 퇴적 분지",
+            "primary": [
+              "ice",
+              "aluminum",
+              "phosphate"
+            ],
+            "secondary": [
+              "copper",
+              "silicon"
+            ]
+          },
+          "metallic": {
+            "gems": [
+              "diamond",
+              "sapphire"
+            ],
+            "kind": "basalt",
+            "name": "금속질",
+            "primary": [
+              "iron",
+              "nickel",
+              "titanium"
+            ],
+            "secondary": [
+              "copper",
+              "silicon"
+            ]
+          },
+          "pegmatite": {
+            "gems": [
+              "emerald",
+              "ruby"
+            ],
+            "kind": "basalt",
+            "name": "거대 결정층",
+            "primary": [
+              "silicon",
+              "lithium",
+              "rare_earth"
+            ],
+            "secondary": [
+              "aluminum",
+              "copper"
+            ]
+          },
+          "sedimentary": {
+            "gems": [
+              "emerald",
+              "ruby"
+            ],
+            "kind": "basalt",
+            "name": "퇴적 분지",
+            "primary": [
+              "phosphate",
+              "aluminum",
+              "iron"
+            ],
+            "secondary": [
+              "copper",
+              "silicon"
+            ]
+          },
+          "volcanic": {
+            "gems": [
+              "ruby",
+              "diamond"
+            ],
+            "kind": "sulfur",
+            "name": "화산 광화대",
+            "primary": [
+              "sulfur",
+              "titanium",
+              "iron"
+            ],
+            "secondary": [
+              "nickel",
+              "copper"
+            ]
+          },
+          "weathered": {
+            "gems": [
+              "ruby",
+              "emerald"
+            ],
+            "kind": "basalt",
+            "name": "풍화 대륙",
+            "primary": [
+              "aluminum",
+              "iron",
+              "silicon"
+            ],
+            "secondary": [
+              "phosphate",
+              "copper"
+            ]
+          }
+        },
+        "quality_levels": 3.0,
+        "region_half_extent": 8192.0,
+        "resource_tiers": {
+          "aluminum": 1.0,
+          "copper": 1.0,
+          "crystal": 2.0,
+          "darkstone_ore": 3.0,
+          "diamond": 3.0,
+          "emerald": 2.0,
+          "ice": 1.0,
+          "iron": 1.0,
+          "lithium": 1.0,
+          "nickel": 1.0,
+          "phosphate": 1.0,
+          "rare_earth": 2.0,
+          "ruby": 2.0,
+          "sapphire": 2.0,
+          "silicon": 1.0,
+          "stellarite_ore": 3.0,
+          "stone": 1.0,
+          "sulfur": 1.0,
+          "titanium": 2.0
+        },
+        "surface_slots": 12.0,
+        "tile_limit": 102.0,
+        "tile_size": 80.0,
+        "underground_slots": 6.0,
+        "version": 3.0,
+        "view_radius": 1.0
+      },
+      "solar_kinds": [
+        "basalt",
+        "sulfur",
+        "basalt",
+        "basalt",
+        "gas_giant",
+        "gas_giant",
+        "ice_giant",
+        "ice_giant"
+      ],
+      "solar_names": [
+        "수성",
+        "금성",
+        "지구",
+        "화성",
+        "목성",
+        "토성",
+        "천왕성",
+        "해왕성"
+      ],
+      "starting_ordinal": 2.0,
+      "starting_seed": 71491.0,
+      "system_rules": {
+        "asteroid_instances": 420.0,
+        "boundary": 94000.0,
+        "maximum_planets": 12.0,
+        "minimum_planets": 4.0,
+        "moon_orbit_radius": 3.2,
+        "names": {
+          "debris": "소행성 회랑",
+          "giant_court": "거대행성 성역",
+          "open": "넓은 항로",
+          "satellites": "위성 군집"
+        },
+        "outer_radius_range": [
+          68000.0,
+          82000.0
+        ],
+        "pair_planets": 16.0,
+        "ring_outer_radius": 2.25,
+        "star_radius_range": [
+          900.0,
+          2100.0
+        ],
+        "themes": [
+          "open",
+          "debris",
+          "satellites",
+          "giant_court"
+        ],
+        "version": 1.0
+      },
+      "systems_per_sector": 5000.0,
+      "tier_weights": [
+        [
+          85.0,
+          15.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          15.0,
+          70.0,
+          15.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          15.0,
+          70.0,
+          15.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          15.0,
+          70.0,
+          15.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          15.0,
+          85.0
+        ]
+      ],
+      "underground_rules": {
+        "archetypes": {
+          "continental": "sediment",
+          "fractured": "ice",
+          "frozen": "ice",
+          "ochre": "lava",
+          "oxidized": "sediment",
+          "salt": "sediment",
+          "tundra": "ice",
+          "volcanic": "lava"
+        },
+        "maximum_depth": 200.0,
+        "occupancy": 0.7,
+        "profiles": {
+          "fracture": {
+            "bend": 12.0,
+            "ceiling_scale": 1.25,
+            "radius": [
+              4.8,
+              5.4
+            ],
+            "slope": 0.2,
+            "step": 32.0
+          },
+          "ice": {
+            "bend": 14.0,
+            "ceiling_scale": 1.35,
+            "radius": [
+              4.8,
+              5.6
+            ],
+            "slope": 0.18,
+            "step": 32.0
+          },
+          "lava": {
+            "bend": 9.0,
+            "ceiling_scale": 1.0,
+            "radius": [
+              5.0,
+              6.0
+            ],
+            "slope": 0.23,
+            "step": 32.0
+          },
+          "sediment": {
+            "bend": 18.0,
+            "ceiling_scale": 0.85,
+            "radius": [
+              5.6,
+              6.5
+            ],
+            "slope": 0.16,
+            "step": 32.0
+          }
+        },
+        "region_size": 768.0,
+        "version": 1.0
+      }
+    }
+  },
+  "condition_hash": "cd4ce56d337a2c57979ed7590ececbeca72b1f6142f56b3f1a7cde2a3460f22b",
+  "raw_total": 314,
+  "ship_transactions": 20,
+  "warehouse_transactions": 51,
+  "milestone_intervals": {
+    "first_landing": 100.599999999996,
+    "factory_mk2": 211.40000000004903,
+    "metal_freight_ready": 250.49999999977194,
+    "cold_landing": 232.3999999997891,
+    "mk3_parts_ready": 397.09999999963384,
+    "blueprint_acquired": 67.64999999994006,
+    "factory_mk3": 86.44999999992001,
+    "t3_landing": 120.99999999988995
+  }
+}

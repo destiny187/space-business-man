@@ -98,6 +98,16 @@ func _setup_space() -> void:
 	get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	orbital_presentation=FrontierOrbitalPresentation.new();add_child(orbital_presentation)
 
+var terraform_states: Dictionary={}
+func update_terraforming(values: Dictionary,force: bool=false) -> void:
+	terraform_states=values
+	for entry in planets.values():
+		var summary: Dictionary=values.get(entry.body.id,{})
+		var signature:=str(summary)
+		if not force and entry.node.get_meta("terraform_signature","")==signature:continue
+		entry.node.set_meta("terraform_signature",signature)
+		FrontierOrbitalTerraformView.apply(entry.node,entry.body,summary)
+
 func _load_system(index: int) -> void:
 	for entry in planets.values():
 		remove_child(entry.node)
@@ -114,6 +124,7 @@ func _load_system(index: int) -> void:
 	_clear_prepared()
 	_build_system_art(s)
 	orbital_presentation.configure(self)
+	update_terraforming(terraform_states,true)
 	_refresh_candidates()
 	status.text = "%s · 항성계 %08d · 주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,FrontierUniverse.body_count(state.manifest,index)]
 
@@ -170,7 +181,7 @@ func _build_ui() -> void:
 	column.add_theme_constant_override("separation",10)
 	scroll.add_child(column)
 	_label(column,"원정 항법",22,Color("a0dfc5"))
-	_label(column,"한 은하 · 시드 %d\n100만 개의 행성 주소" % int(state.manifest.seed),14)
+	_label(column,"한 은하 · 시드 %d\n%s 개의 행성 주소" % [int(state.manifest.seed),FrontierUniverse.planet_count_label(int(state.manifest.settings.planet_count))],14)
 	address = LineEdit.new()
 	address.placeholder_text = "행성 번호 1 ~ %d" % int(state.manifest.settings.planet_count)
 	address.max_length = str(int(state.manifest.settings.planet_count)).length()
@@ -230,7 +241,7 @@ func _select(ordinal: int) -> void:
 	destination.text = "%s · T%d\n%s" % [body.name,int(body.planet_tier),FrontierUniverse.kind_label(body)]+"\n"+FrontierMineralWorld.summary(body)
 	if not FrontierUniverse.landable(body):destination.text+="\n착륙 불가 · 궤도 탐사 대상";return
 	var habitat: Dictionary=FrontierEcology.profile(body)
-	destination.text+="\n궤도 추정 %.1f°C · %.0f kPa\n%s · 착륙 후 생명 신호 조사"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.config().habitats[habitat.environment].label]
+	destination.text+="\n궤도 추정 %.1f°C · %.0f kPa\n%s"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.habitat(habitat).label]
 
 func _address_target() -> void:
 	if not address.text.is_valid_int() or int(address.text)<1 or int(address.text)>int(state.manifest.settings.planet_count):
