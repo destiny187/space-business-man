@@ -1,0 +1,209 @@
+{
+  "id": "biota_radial_gills_41",
+  "name": "집광둘레세마디깃털방사수",
+  "family": "biota_radial_gills",
+  "construction": "radial",
+  "organ_system": "gills",
+  "environment": "temperate",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_radial_gills_41",
+  "kind": "radial",
+  "habitat": "넓은 광합성·감각 면과 여과 기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "중앙 소화체에서 바깥으로 뻗는 방사 기관·넓게 펼친 깃 아가미 / 방사 배열·주요 기관 3개",
+  "recipe_sha256": "0322a6a7e3c9068f5bbff7a6ce6be1cded8207298c826261ff5dd9de48a8df63",
+  "authored_anatomy": "Continuous radial anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "4a51d876f8355c32adef99ceef6cfc1dc9023d6ae6287f3d3707620a12d39c3c",
+  "normalized_geometry_sha256": "155f1daefdf5ef5b7e7025c06d4f367014855e934686ae6aa43cbe30db4385cb",
+  "source": "art/blender/creature_remodel/r03/biota_radial_gills_41.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 29,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.11640000343322754,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.11640000343322754,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.11640000343322754,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.409113656663613e-17,
+        0.10999999940395355,
+        1.2100000381469727
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.2100000381469727,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        7.409113656663613e-17,
+        0.10999999940395355,
+        -1.2100000381469727
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.2100000381469727,
+        0.10999999940395355,
+        -1.4818227313327225e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3578394398489247,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5546511317658332,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.11640000343322754,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_radial_gills_41_near.glb",
+      "sha256": "2e1c08cd8a2698ae25bfe907c4ffcb6b91b2d02affcec047afee30625ebc3a6a",
+      "triangles": 34088,
+      "min": [
+        -1.6391353607177734,
+        0.034999996423721313,
+        -1.5122722387313843
+      ],
+      "max": [
+        1.591564416885376,
+        0.817703902721405,
+        1.7780144214630127
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_radial_gills_41_far.glb",
+      "sha256": "73b0c28958f41065d036dcb31c069cef112412330ba43f1c5fcc8fce9c3184a4",
+      "triangles": 14652,
+      "min": [
+        -1.6393581628799438,
+        0.0349971279501915,
+        -1.5121890306472778
+      ],
+      "max": [
+        1.5917935371398926,
+        0.817703902721405,
+        1.7781726121902466
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21"
+  },
+  "build_seconds": 14.536,
+  "source_render_seconds": 10.433,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "7a4ea0f7ac72678826c631125d9890935e3fecd93032693cd4c65c7ec6df5933"
+  }
+}

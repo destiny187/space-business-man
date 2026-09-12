@@ -27,7 +27,12 @@ def expected_fingerprints(batch):
 def checkpoint_current(row,expected):
     from produce_captured import fingerprint as captured_fingerprint
     base=expected.get(row['id'])
-    return row['build_fingerprint']==base or (base is not None and row.get('animation_capture')=={'version':1,'base_fingerprint':base} and row['build_fingerprint']==captured_fingerprint(base))
+    if row['build_fingerprint']==base:return True
+    if base is None or row.get('animation_capture')!={'version':1,'base_fingerprint':base}:return False
+    if row['build_fingerprint']==captured_fingerprint(base):return True
+    from produce_reused import fingerprint as reused_fingerprint,legacy_fingerprint
+    reuse=row.get('lod_animation_reuse',{})
+    return (reuse=={'version':1,'source':'near'} and row['build_fingerprint']==legacy_fingerprint(base)) or (reuse=={'version':2,'source':'near'} and row['build_fingerprint']==reused_fingerprint(base))
 
 def main(batch):
     assert batch.isidentifier()

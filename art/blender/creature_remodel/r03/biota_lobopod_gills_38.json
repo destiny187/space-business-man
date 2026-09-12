@@ -1,0 +1,255 @@
+{
+  "id": "biota_lobopod_gills_38",
+  "name": "집광쌍줄열마디털아가미완보수",
+  "family": "biota_lobopod_gills",
+  "construction": "lobopod",
+  "organ_system": "gills",
+  "environment": "temperate",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_lobopod_gills_38",
+  "kind": "lobopod",
+  "habitat": "넓은 광합성·감각 면과 여과 기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 10,
+    "limb_count": 6,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 2
+  },
+  "anatomy_note": "부드러운 몸마디와 낮은 엽족·넓게 펼친 깃 아가미 / 쌍열 배열·주요 기관 10개",
+  "recipe_sha256": "6077703c26782fcc2005076e94842dd2af074dcc6fd1b30d37f497e866dab1ea",
+  "authored_anatomy": "Continuous lobopod anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "0170a076caac5665c74daee615dc4950056408f4b5fe594b85629126cb3066c2",
+  "normalized_geometry_sha256": "b30ce8a642ef03864730ee41845952e05f82793d09db39e756c4653807fa71a9",
+  "source": "art/blender/creature_remodel/r03/biota_lobopod_gills_38.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 57,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7475000023841858,
+        2.1449999809265137
+      ]
+    },
+    "Socket_telescopic_oral": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7475000023841858,
+        2.1449999809265137
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7475000023841858,
+        2.1449999809265137
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.5149999856948853
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.5149999856948853
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        0.19499999284744263
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        0.4050000011920929
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -0.44999998807907104
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -0.44999998807907104
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2509277875796893,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.38893807074851844,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.23000000417232513,
+    0.7475000023841858,
+    2.1449999809265137
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_lobopod_gills_38_near.glb",
+      "sha256": "d2a55e8aa0f44a71eb7d49e131fb8df7c00d1a9d31cff5c1108622aefff6e2ec",
+      "triangles": 61452,
+      "min": [
+        -0.6945072412490845,
+        0.034999996423721313,
+        -2.3308043479919434
+      ],
+      "max": [
+        0.6812499165534973,
+        1.490659475326538,
+        2.1516687870025635
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_lobopod_gills_38_far.glb",
+      "sha256": "a3aa362afc3e2a39d283a0b3f953890a23fdfce98257d2d93663c456d6b19917",
+      "triangles": 26416,
+      "min": [
+        -0.6941184997558594,
+        0.03497166186571121,
+        -2.331327199935913
+      ],
+      "max": [
+        0.6812499165534973,
+        1.4906893968582153,
+        2.1519153118133545
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis0_3": "axis0_2",
+    "axis0_4": "axis0_3",
+    "axis0_5": "axis0_4",
+    "axis0_6": "axis0_5",
+    "axis0_7": "axis0_6",
+    "axis0_8": "axis0_7",
+    "axis0_9": "axis0_8",
+    "axis1_0": "chest",
+    "axis1_1": "axis1_0",
+    "axis1_2": "axis1_1",
+    "axis1_3": "axis1_2",
+    "axis1_4": "axis1_3",
+    "axis1_5": "axis1_4",
+    "axis1_6": "axis1_5",
+    "axis1_7": "axis1_6",
+    "axis1_8": "axis1_7",
+    "axis1_9": "axis1_8",
+    "head": "axis1_9",
+    "telescopic_oral": "head",
+    "telescopic_oral_petal0": "telescopic_oral",
+    "telescopic_oral_petal1": "telescopic_oral",
+    "telescopic_oral_petal2": "telescopic_oral",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis0_6",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis0_6",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "axis1_3",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "axis1_3",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_2",
+    "organ2": "axis0_4",
+    "organ3": "axis0_6",
+    "organ4": "axis0_8",
+    "organ5": "axis1_0",
+    "organ6": "axis1_2",
+    "organ7": "axis1_4",
+    "organ8": "axis1_6",
+    "organ9": "axis1_8"
+  },
+  "build_seconds": 27.915,
+  "source_render_seconds": 4.753,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "22a0d5ca698ce1a9446f5c5a627de8cd7526d16cc5e01d6725abcf018c6e5d08"
+  }
+}

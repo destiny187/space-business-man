@@ -1,0 +1,208 @@
+{
+  "id": "bio_split_keel_01",
+  "source_id": "bio_split_keel_01",
+  "name": "짧은쌍골수",
+  "family": "split_keel",
+  "kind": "split_keel",
+  "construction": "split_keel",
+  "anatomical_type": "split_keel",
+  "organ_system": "armor",
+  "environment": "arid",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "두 개의 긴 몸통이 가로 근육으로 결합된 지상 동물 / 삼방 열린 골격",
+  "morphology": {
+    "width": 1,
+    "height": 1,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 3,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "split_keel",
+    "support_limbs": 3,
+    "oral_organs": 1,
+    "articulated_organs": 16
+  },
+  "version": "r06-1",
+  "build_fingerprint": "31aee938713227245d7d1152933b310a50d9ade1b425abc5c7bb6576db70aca1",
+  "normalized_geometry_sha256": "e3920ef492a00607e1b597967dfa7b5479d3f6ad1e2f5311ceafa10cd35aad12",
+  "source": "art/blender/creature_remodel/r06/bio_split_keel_01.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 29,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_hanging_oral": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.7699999809265137,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.7699999809265137,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.7699999809265137,
+        1.0299999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.3449999988079071,
+        0.10000000149011612,
+        1.3899999856948853
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8386344909667969,
+        0.10000000149011612,
+        -1.0549999475479126
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.8386344909667969,
+        0.10000000149011612,
+        -1.0549999475479126
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2548953597977363,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.39508780768649127,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.3333333333333333,
+      "support2": 0.6666666666666666
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.7699999809265137,
+    1.0299999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_split_keel_01_near.glb",
+      "sha256": "a739115df22e767474bdfde6b0ac1b1f5a0e8286a24a5153c161b915b7a38c4e",
+      "triangles": 19980,
+      "min": [
+        -1.1480697393417358,
+        0.02499999850988388,
+        -1.293016791343689
+      ],
+      "max": [
+        1.1480697393417358,
+        0.9788581132888794,
+        1.6920591592788696
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_split_keel_01_far.glb",
+      "sha256": "08b13c0d6ead8edbff211e45d7adf8b6bbe48191e3caa71c1438b9f2dc4acdca",
+      "triangles": 8586,
+      "min": [
+        -1.1480917930603027,
+        0.025012250989675522,
+        -1.2930582761764526
+      ],
+      "max": [
+        1.1480910778045654,
+        0.9788581132888794,
+        1.6920435428619385
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "dorsal_arch00": "chest",
+    "dorsal_arch01": "dorsal_arch00",
+    "dorsal_arch02": "dorsal_arch01",
+    "dorsal_arch10": "chest",
+    "dorsal_arch11": "dorsal_arch10",
+    "dorsal_arch12": "dorsal_arch11",
+    "transverse_muscle00": "chest",
+    "transverse_muscle01": "transverse_muscle00",
+    "transverse_muscle10": "chest",
+    "transverse_muscle11": "transverse_muscle10",
+    "transverse_muscle20": "chest",
+    "transverse_muscle21": "transverse_muscle20",
+    "hanging_oral": "chest",
+    "hanging_oral_petal0": "hanging_oral",
+    "hanging_oral_petal1": "hanging_oral",
+    "hanging_oral_petal2": "hanging_oral",
+    "hanging_oral_petal3": "hanging_oral",
+    "support0_upper": "dorsal_arch02",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "dorsal_arch10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "dorsal_arch00",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "head": "chest"
+  },
+  "build_seconds": 9.622,
+  "source_render_seconds": 4.396,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "d7c339177893b5bff7fba02a5f24e620a349d41297a9d84a135e93b0521d8284"
+  }
+}

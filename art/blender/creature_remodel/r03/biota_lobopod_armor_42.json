@@ -1,0 +1,233 @@
+{
+  "id": "biota_lobopod_armor_42",
+  "name": "차폐둘레네마디관족완보수",
+  "family": "biota_lobopod_armor",
+  "construction": "lobopod",
+  "organ_system": "armor",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_lobopod_armor_42",
+  "kind": "lobopod",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 2
+  },
+  "anatomy_note": "부드러운 몸마디와 낮은 엽족·분절된 외피와 겹갑 / 방사 배열·주요 기관 4개",
+  "recipe_sha256": "3a77842f6df4fc0a301faaf0a3ada243b6b023bcf94a8dadab41148e42b11801",
+  "authored_anatomy": "Continuous lobopod anatomy; armor lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "394f9b5728dd143125982bc8e41021729b0265f90219eb4911aaaeb4ea3cfbc0",
+  "normalized_geometry_sha256": "f8ce31dd8f14a39947ff2b545466fa6a5fa0c98ecdfc2bc7ee76d620e26b2349",
+  "source": "art/blender/creature_remodel/r03/biota_lobopod_armor_42.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 35,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "telescopic_oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.49379998445510864,
+        1.8450000286102295
+      ]
+    },
+    "Socket_telescopic_oral": {
+      "bone": "telescopic_oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.49379998445510864,
+        1.8450000286102295
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "telescopic_oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.49379998445510864,
+        1.8450000286102295
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.6710000038146973,
+        0.10999999940395355,
+        -1.215000033378601
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.6710000038146973,
+        0.10999999940395355,
+        -1.215000033378601
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.6710000038146973,
+        0.10999999940395355,
+        -0.6524999737739563
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.6710000038146973,
+        0.10999999940395355,
+        -0.4424999952316284
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.6710000038146973,
+        0.10999999940395355,
+        0.11999999731779099
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        0.6710000038146973,
+        0.10999999940395355,
+        0.11999999731779099
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.21485557163840124,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3330261360395219,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    -4.408728404608808e-17,
+    0.49379998445510864,
+    1.8450000286102295
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_lobopod_armor_42_near.glb",
+      "sha256": "daab54c39a72f42d53f74de99a7e260b2ceb21d78da3c384e8d5e16e52616eed",
+      "triangles": 38382,
+      "min": [
+        -0.8337498903274536,
+        0.034999996423721313,
+        -2.043661594390869
+      ],
+      "max": [
+        0.8337499499320984,
+        1.1667355298995972,
+        1.8516687154769897
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_lobopod_armor_42_far.glb",
+      "sha256": "dfd52e1ffd177883168da1b5428d4cf161f965e69dd9e9eab1eb5505c7e898aa",
+      "triangles": 16496,
+      "min": [
+        -0.8337309956550598,
+        0.03501151129603386,
+        -2.04414963722229
+      ],
+      "max": [
+        0.8337499499320984,
+        1.1667355298995972,
+        1.8519151210784912
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis0_3": "axis0_2",
+    "head": "axis0_3",
+    "telescopic_oral": "head",
+    "telescopic_oral_petal0": "telescopic_oral",
+    "telescopic_oral_petal1": "telescopic_oral",
+    "telescopic_oral_petal2": "telescopic_oral",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis0_1",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis0_1",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "axis0_2",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "axis0_2",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_1",
+    "organ2": "axis0_2",
+    "organ3": "axis0_3"
+  },
+  "build_seconds": 14.89,
+  "source_render_seconds": 6.418,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "850a2ca019e9e59f8dad778525d02e4eee428a8bd950a96d2ebc6477893e3202"
+  }
+}

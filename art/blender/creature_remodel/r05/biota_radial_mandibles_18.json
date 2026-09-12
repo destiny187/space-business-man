@@ -1,0 +1,208 @@
+{
+  "id": "biota_radial_mandibles_18",
+  "name": "운해굽은열마디겹턱방사수",
+  "family": "biota_radial_mandibles",
+  "construction": "radial",
+  "organ_system": "mandibles",
+  "environment": "gas_cloud",
+  "locomotion_medium": "atmosphere",
+  "anatomy_note": "중앙 소화체에서 바깥으로 뻗는 방사 기관·맞물리는 한 쌍의 관절 턱 / 만곡 배열·주요 기관 10개",
+  "source_id": "biota_radial_mandibles_18",
+  "kind": "radial",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "고체 발판 없이 떠 있는 부력낭·평형막·현수 여과기관의 가상 대기층 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "dart",
+  "morphology": {
+    "topology": 1,
+    "radial_count": 10,
+    "limb_count": 6,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "flight": {},
+  "anatomical_type": "radial",
+  "production_batch": "r05",
+  "air_motion": false,
+  "host_pattern": "none",
+  "authored_anatomy": {
+    "type": "radial",
+    "medium": "atmosphere",
+    "wing_chains": 0,
+    "ground_supports": 0,
+    "organs": 35
+  },
+  "version": "r05-1",
+  "build_fingerprint": "d2bcf5f89812b7211a684cb48f60ba26141a76eac245229d0f64c7bc092742af",
+  "normalized_geometry_sha256": "dc7afcaa02486fe69883312d3847e634ce4e0697974a9afc41c74036becf8e67",
+  "source": "art/blender/creature_remodel/r05/biota_radial_mandibles_18.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 59,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6200000047683716,
+        0.14000000059604645
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {}
+  },
+  "muzzle": [
+    0.0,
+    0.6200000047683716,
+    0.14000000059604645
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_radial_mandibles_18_near.glb",
+      "sha256": "ff473fb56ef90b7ec24a8ee08d0c459176f9ecc4ebb96401c5a28a87f9c804fe",
+      "triangles": 20567,
+      "min": [
+        -1.58051598072052,
+        0.5031744241714478,
+        -1.3983724117279053
+      ],
+      "max": [
+        1.5253671407699585,
+        1.5413038730621338,
+        1.3983724117279053
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r05/biota_radial_mandibles_18_far.glb",
+      "sha256": "0a993712efeb0786cdbba0b16451ffa72142c96fecb2bdcf8996f780b81babc2",
+      "triangles": 8840,
+      "min": [
+        -1.5809226036071777,
+        0.5035049319267273,
+        -1.39775550365448
+      ],
+      "max": [
+        1.5258822441101074,
+        1.5413038730621338,
+        1.39775550365448
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "head": "chest",
+    "buoyant_ray00": "chest",
+    "buoyant_ray01": "buoyant_ray00",
+    "buoyant_ray10": "chest",
+    "buoyant_ray11": "buoyant_ray10",
+    "buoyant_ray20": "chest",
+    "buoyant_ray21": "buoyant_ray20",
+    "buoyant_ray30": "chest",
+    "buoyant_ray31": "buoyant_ray30",
+    "buoyant_ray40": "chest",
+    "buoyant_ray41": "buoyant_ray40",
+    "buoyant_ray50": "chest",
+    "buoyant_ray51": "buoyant_ray50",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "trailing_feeler00": "chest",
+    "trailing_feeler01": "trailing_feeler00",
+    "trailing_feeler10": "chest",
+    "trailing_feeler11": "trailing_feeler10",
+    "trailing_feeler20": "chest",
+    "trailing_feeler21": "trailing_feeler20",
+    "trailing_feeler30": "chest",
+    "trailing_feeler31": "trailing_feeler30",
+    "organ0": "buoyant_ray01",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "buoyant_ray01",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "buoyant_ray11",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2",
+    "organ3": "buoyant_ray11",
+    "organ3jaw-1": "organ3",
+    "organ3jaw1": "organ3",
+    "organ4": "buoyant_ray21",
+    "organ4jaw-1": "organ4",
+    "organ4jaw1": "organ4",
+    "organ5": "buoyant_ray31",
+    "organ5jaw-1": "organ5",
+    "organ5jaw1": "organ5",
+    "organ6": "buoyant_ray31",
+    "organ6jaw-1": "organ6",
+    "organ6jaw1": "organ6",
+    "organ7": "buoyant_ray41",
+    "organ7jaw-1": "organ7",
+    "organ7jaw1": "organ7",
+    "organ8": "buoyant_ray41",
+    "organ8jaw-1": "organ8",
+    "organ8jaw1": "organ8",
+    "organ9": "buoyant_ray51",
+    "organ9jaw-1": "organ9",
+    "organ9jaw1": "organ9"
+  },
+  "build_seconds": 22.839,
+  "source_render_seconds": 3.779
+}

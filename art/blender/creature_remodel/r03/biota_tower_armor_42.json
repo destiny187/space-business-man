@@ -1,0 +1,227 @@
+{
+  "id": "biota_tower_armor_42",
+  "name": "열수둘레네마디높은갑문수",
+  "family": "biota_tower_armor",
+  "construction": "tower",
+  "organ_system": "armor",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_armor_42",
+  "kind": "tower",
+  "habitat": "열을 분산하는 넓은 기관과 기질 여과관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·분절된 외피와 겹갑 / 방사 배열·주요 기관 4개",
+  "recipe_sha256": "fd5624c886f97751b5c028f1bd6b58d39a442ebe13e712b06cfbfc8fa7f6d42b",
+  "authored_anatomy": "Continuous tower anatomy; armor lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "09c12dcad6c263e63ccc6aa608f782b4bf31f5871b41503b7a82b42726ea96d4",
+  "normalized_geometry_sha256": "18d8560d331ecd8619b1c6ec2ddc25c0c0c8aaec1ef98611da1190b1acb6e25d",
+  "source": "art/blender/creature_remodel/r03/biota_tower_armor_42.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 29,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.4101998805999756,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.4101998805999756,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.4101998805999756,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.398779374623584e-17,
+        0.10999999940395355,
+        1.0449999570846558
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.9049965143203735,
+        0.10999999940395355,
+        0.5224999785423279
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.9049965143203735,
+        0.10999999940395355,
+        -0.5224999785423279
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        6.398779374623584e-17,
+        0.10999999940395355,
+        -1.0449999570846558
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.9049965143203735,
+        0.10999999940395355,
+        -0.5224999785423279
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.9049965143203735,
+        0.10999999940395355,
+        0.5224999785423279
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.35171422031974586,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5451570414956061,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.4101998805999756,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_armor_42_near.glb",
+      "sha256": "57aeca346cce913e55828dc14d461e0f7c7f4b6159ceff2144b588944627556f",
+      "triangles": 35404,
+      "min": [
+        -1.2191027402877808,
+        0.034999996423721313,
+        -1.347272276878357
+      ],
+      "max": [
+        1.2191027402877808,
+        2.6745543479919434,
+        1.347272276878357
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_armor_42_far.glb",
+      "sha256": "c694a8d74d0adfc57d0924ee959a3fecd42d22cb715db5ee2b1a5ee5959cc420",
+      "triangles": 15218,
+      "min": [
+        -1.2191238403320312,
+        0.03501151129603386,
+        -1.3471890687942505
+      ],
+      "max": [
+        1.2191238403320312,
+        2.6757569313049316,
+        1.3471890687942505
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "vertical0",
+    "organ1": "vertical0",
+    "organ2": "vertical1",
+    "organ3": "vertical2"
+  },
+  "build_seconds": 16.416,
+  "source_render_seconds": 3.956,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "0f03b1f4e29f803ed9c40a6a50e1d88a50dce732e08562ebcea6efd929a29016"
+  }
+}

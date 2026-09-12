@@ -1,0 +1,206 @@
+{
+  "id": "bio_funnel_stilt_01",
+  "source_id": "bio_funnel_stilt_01",
+  "name": "삼각누두수",
+  "family": "funnel_stilt",
+  "kind": "funnel_stilt",
+  "construction": "funnel_stilt",
+  "anatomical_type": "funnel_stilt",
+  "organ_system": "armor",
+  "environment": "basalt",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "큰 깔때기 몸통의 바깥 벽에서 바로 이어지는 긴 다리 / 삼방 열린 골격",
+  "morphology": {
+    "width": 1,
+    "height": 1,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 3,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "596c70",
+    "839594",
+    "34494e",
+    "ba6d34"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "funnel_stilt",
+    "support_limbs": 3,
+    "oral_organs": 1,
+    "articulated_organs": 14
+  },
+  "version": "r06-1",
+  "build_fingerprint": "00ddda4cfbbcb56286f2bbbc02e7aa7b1d31ae635d2770322181d625d29ffb27",
+  "normalized_geometry_sha256": "d33c0bf03a9a05ca9683f6f6d84975b8c5fea4b9c24f6adc5072738ec134b830",
+  "source": "art/blender/creature_remodel/r06/bio_funnel_stilt_01.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 27,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_central_pharynx0": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.590000033378601,
+        -0.0
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.590000033378601,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.590000033378601,
+        -0.0
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        4.714890448627345e-17,
+        0.10000000149011612,
+        0.7699999809265137
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6668395400047302,
+        0.10000000149011612,
+        -0.38499999046325684
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.6668395400047302,
+        0.10000000149011612,
+        -0.38499999046325684
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.37644301329739477,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5834866706109619,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.3333333333333333,
+      "support2": 0.6666666666666666
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.590000033378601,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_funnel_stilt_01_near.glb",
+      "sha256": "ec118a8010d6aeb2088c62560b42c7e991e78311ff662490fc413ecdba375b8f",
+      "triangles": 20886,
+      "min": [
+        -0.9762749075889587,
+        0.02499999850988388,
+        -0.623016893863678
+      ],
+      "max": [
+        0.9762749075889587,
+        1.6854795217514038,
+        1.0720590353012085
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_funnel_stilt_01_far.glb",
+      "sha256": "40c46bbe441bce54fa628f383216f5f3276cbd914b06e0b7e34bcbdc83c4b2e5",
+      "triangles": 8976,
+      "min": [
+        -0.9762962460517883,
+        0.024997133761644363,
+        -0.6230595111846924
+      ],
+      "max": [
+        0.9762962460517883,
+        1.6843093633651733,
+        1.0719879865646362
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "oral_wall0_00": "chest",
+    "oral_wall0_01": "oral_wall0_00",
+    "oral_plate0_0": "oral_wall0_00",
+    "oral_wall0_10": "chest",
+    "oral_wall0_11": "oral_wall0_10",
+    "oral_plate0_1": "oral_wall0_10",
+    "oral_wall0_20": "chest",
+    "oral_wall0_21": "oral_wall0_20",
+    "oral_plate0_2": "oral_wall0_20",
+    "central_pharynx0": "chest",
+    "central_pharynx0_petal0": "central_pharynx0",
+    "central_pharynx0_petal1": "central_pharynx0",
+    "central_pharynx0_petal2": "central_pharynx0",
+    "central_pharynx0_petal3": "central_pharynx0",
+    "central_pharynx0_petal4": "central_pharynx0",
+    "support0_upper": "oral_wall0_00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "oral_wall0_10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "oral_wall0_20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "head": "chest"
+  },
+  "build_seconds": 8.956,
+  "source_render_seconds": 3.603,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "4e3554e8850fac2e760a4edb2d9df36063ef79e7c02d4d5a766a129e5bd3a63a"
+  }
+}

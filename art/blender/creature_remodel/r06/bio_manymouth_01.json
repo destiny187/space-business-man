@@ -1,0 +1,330 @@
+{
+  "id": "bio_manymouth_01",
+  "source_id": "bio_manymouth_01",
+  "name": "분지다구체 · 공동형",
+  "family": "manymouth",
+  "kind": "manymouth",
+  "construction": "manymouth",
+  "anatomical_type": "manymouth",
+  "organ_system": "armor",
+  "environment": "cave",
+  "habitat": "어둠·외부 먹이 유입 또는 화학 기질",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.0,
+    "height": 1.0,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "bite",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "bite",
+  "host_motion": "melee",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "manymouth",
+    "support_limbs": 4,
+    "oral_organs": 10,
+    "articulated_organs": 45
+  },
+  "version": "r06-1",
+  "build_fingerprint": "b70dab09fc2022c2e4628b34a3f440b9c4331d46990667d9bd4c488c0c918a9e",
+  "normalized_geometry_sha256": "095cbbba9d0cae9b02d9397edf9fe1c1f75efda6cad66e3d50dd781b1bace0be",
+  "source": "art/blender/creature_remodel/r06/bio_manymouth_01.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 70,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_serial_oral0-1": {
+      "bone": "serial_oral0-1",
+      "point": [
+        -0.3664051592350006,
+        0.8561158180236816,
+        -0.757768452167511
+      ]
+    },
+    "Socket_serial_oral01": {
+      "bone": "serial_oral01",
+      "point": [
+        0.3664051592350006,
+        0.8561158180236816,
+        -0.757768452167511
+      ]
+    },
+    "Socket_serial_oral1-1": {
+      "bone": "serial_oral1-1",
+      "point": [
+        -0.29466956853866577,
+        0.8561158180236816,
+        -0.397768497467041
+      ]
+    },
+    "Socket_serial_oral11": {
+      "bone": "serial_oral11",
+      "point": [
+        0.43814074993133545,
+        0.8561158180236816,
+        -0.397768497467041
+      ]
+    },
+    "Socket_serial_oral2-1": {
+      "bone": "serial_oral2-1",
+      "point": [
+        -0.2664477825164795,
+        0.8561158180236816,
+        -0.03776848316192627
+      ]
+    },
+    "Socket_serial_oral21": {
+      "bone": "serial_oral21",
+      "point": [
+        0.46636253595352173,
+        0.8561158180236816,
+        -0.03776848316192627
+      ]
+    },
+    "Socket_serial_oral3-1": {
+      "bone": "serial_oral3-1",
+      "point": [
+        -0.2988588213920593,
+        0.8561158180236816,
+        0.3222315311431885
+      ]
+    },
+    "Socket_serial_oral31": {
+      "bone": "serial_oral31",
+      "point": [
+        0.4339514970779419,
+        0.8561158180236816,
+        0.3222315311431885
+      ]
+    },
+    "Socket_serial_oral4-1": {
+      "bone": "serial_oral4-1",
+      "point": [
+        -0.3722425699234009,
+        0.8561158180236816,
+        0.6822315454483032
+      ]
+    },
+    "Socket_serial_oral41": {
+      "bone": "serial_oral41",
+      "point": [
+        0.36056774854660034,
+        0.8561158180236816,
+        0.6822315454483032
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "serial_oral0-1",
+      "point": [
+        -0.3664051592350006,
+        0.8561158180236816,
+        -0.757768452167511
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "serial_oral0-1",
+      "point": [
+        -0.3664051592350006,
+        0.8561158180236816,
+        -0.757768452167511
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.005837414413690567,
+        0.10000000149011612,
+        1.1100000143051147
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6699573397636414,
+        0.10000000149011612,
+        -0.18000000715255737
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.07173560559749603,
+        0.10000000149011612,
+        -1.1100000143051147
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.5024536848068237,
+        0.10000000149011612,
+        0.18000000715255737
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.25489536277147457,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3950878122957856,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.3664051592350006,
+    0.8561158180236816,
+    -0.757768452167511
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_manymouth_01_near.glb",
+      "sha256": "9d562e8fd38a4b2d5a74cb1b72176e8024eb0edce03cca1c9028031b626187ca",
+      "triangles": 62772,
+      "min": [
+        -0.8045128583908081,
+        0.02499999850988388,
+        -1.4120591878890991
+      ],
+      "max": [
+        0.9720165133476257,
+        1.0099999904632568,
+        1.4120591878890991
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_manymouth_01_far.glb",
+      "sha256": "de1c49d8337c98e2b9665304932240161221455fa4b14ca2beebafba67367b4a",
+      "triangles": 26986,
+      "min": [
+        -0.8044373393058777,
+        0.025012250989675522,
+        -1.4119880199432373
+      ],
+      "max": [
+        0.9719429016113281,
+        1.0099999904632568,
+        1.4119881391525269
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "serial_visceral_axis0": "chest",
+    "serial_visceral_axis1": "serial_visceral_axis0",
+    "serial_visceral_axis2": "serial_visceral_axis1",
+    "serial_visceral_axis3": "serial_visceral_axis2",
+    "serial_visceral_axis4": "serial_visceral_axis3",
+    "serial_oral0-1": "serial_visceral_axis0",
+    "serial_oral0-1_petal0": "serial_oral0-1",
+    "serial_oral0-1_petal1": "serial_oral0-1",
+    "serial_oral0-1_petal2": "serial_oral0-1",
+    "serial_oral0-1_petal3": "serial_oral0-1",
+    "serial_oral01": "serial_visceral_axis0",
+    "serial_oral01_petal0": "serial_oral01",
+    "serial_oral01_petal1": "serial_oral01",
+    "serial_oral01_petal2": "serial_oral01",
+    "serial_oral01_petal3": "serial_oral01",
+    "serial_oral1-1": "serial_visceral_axis1",
+    "serial_oral1-1_petal0": "serial_oral1-1",
+    "serial_oral1-1_petal1": "serial_oral1-1",
+    "serial_oral1-1_petal2": "serial_oral1-1",
+    "serial_oral1-1_petal3": "serial_oral1-1",
+    "serial_oral11": "serial_visceral_axis1",
+    "serial_oral11_petal0": "serial_oral11",
+    "serial_oral11_petal1": "serial_oral11",
+    "serial_oral11_petal2": "serial_oral11",
+    "serial_oral11_petal3": "serial_oral11",
+    "serial_oral2-1": "serial_visceral_axis2",
+    "serial_oral2-1_petal0": "serial_oral2-1",
+    "serial_oral2-1_petal1": "serial_oral2-1",
+    "serial_oral2-1_petal2": "serial_oral2-1",
+    "serial_oral2-1_petal3": "serial_oral2-1",
+    "serial_oral21": "serial_visceral_axis2",
+    "serial_oral21_petal0": "serial_oral21",
+    "serial_oral21_petal1": "serial_oral21",
+    "serial_oral21_petal2": "serial_oral21",
+    "serial_oral21_petal3": "serial_oral21",
+    "serial_oral3-1": "serial_visceral_axis3",
+    "serial_oral3-1_petal0": "serial_oral3-1",
+    "serial_oral3-1_petal1": "serial_oral3-1",
+    "serial_oral3-1_petal2": "serial_oral3-1",
+    "serial_oral3-1_petal3": "serial_oral3-1",
+    "serial_oral31": "serial_visceral_axis3",
+    "serial_oral31_petal0": "serial_oral31",
+    "serial_oral31_petal1": "serial_oral31",
+    "serial_oral31_petal2": "serial_oral31",
+    "serial_oral31_petal3": "serial_oral31",
+    "serial_oral4-1": "serial_visceral_axis4",
+    "serial_oral4-1_petal0": "serial_oral4-1",
+    "serial_oral4-1_petal1": "serial_oral4-1",
+    "serial_oral4-1_petal2": "serial_oral4-1",
+    "serial_oral4-1_petal3": "serial_oral4-1",
+    "serial_oral41": "serial_visceral_axis4",
+    "serial_oral41_petal0": "serial_oral41",
+    "serial_oral41_petal1": "serial_oral41",
+    "serial_oral41_petal2": "serial_oral41",
+    "serial_oral41_petal3": "serial_oral41",
+    "support0_upper": "serial_visceral_axis4",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "serial_visceral_axis2",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "serial_visceral_axis1",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "serial_visceral_axis3",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 21.954,
+  "source_render_seconds": 6.067,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "8b27bae427f28b130f30f02f193263615ed4646eb09491eba91d03f2e81cab05"
+  }
+}

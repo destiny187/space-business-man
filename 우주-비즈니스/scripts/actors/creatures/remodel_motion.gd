@@ -329,6 +329,14 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 				settling_feet[limb.name]={"from":destination,"to":projection+lateral.normalized()*minf(lateral.length(),safe_distance),"time":idle_clock}
 			if settling_feet.has(limb.name):
 				var step: Dictionary=settling_feet[limb.name]
+				# Recoil keeps moving the hip during the short step. Keep its landing
+				# inside the current reach, rather than planting at an expired hip pose.
+				var up: Vector3=hit.normal
+				var height_from_sole: float=(hip_world-Vector3(step.to)).dot(up)
+				var projection:=hip_world-up*height_from_sole
+				var lateral:=Vector3(step.to)-projection
+				var safe_distance:=sqrt(maxf(.0001,pow(actual_reach*.955,2)-height_from_sole*height_from_sole))
+				step.to=projection+lateral.normalized()*minf(lateral.length(),safe_distance)
 				var progress:=clampf((idle_clock-float(step.time))/.18,0,1)
 				destination=Vector3(step.from).lerp(step.to,smoothstep(0,1,progress))+visual.global_basis.y*sin(progress*PI)*leg_length*.045*actor.base_scale
 				stance_now=progress>=1

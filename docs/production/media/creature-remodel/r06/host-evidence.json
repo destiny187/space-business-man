@@ -1,0 +1,846 @@
+{
+  "renderer": "forward_plus",
+  "actual_host_step": true,
+  "records": [
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_burrower_01_hit_012.png",
+        "bio_burrower_01_hit_028.png",
+        "bio_burrower_01_hit_040.png",
+        "bio_burrower_01_hit_049.png",
+        "bio_burrower_01_hit_060.png",
+        "bio_burrower_01_hit_078.png"
+      ],
+      "host_behavior": "shockwave",
+      "host_speed": 2.8,
+      "id": "bio_burrower_01",
+      "max_foot_target_error": 0.000325967295793816,
+      "outcome": "hit",
+      "remaining_health": 75.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "b482fb76becf9839e383dbbfb87001b9fc1a86b1b5b3661f1479f88a7d6f8a7c",
+        "far": "da7640ee9cdc43ef6a23435d6f4b522f0788dc58c6416e438da8fc5b79f2893a"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_burrower_01_miss_012.png",
+        "bio_burrower_01_miss_028.png",
+        "bio_burrower_01_miss_040.png",
+        "bio_burrower_01_miss_049.png",
+        "bio_burrower_01_miss_060.png",
+        "bio_burrower_01_miss_078.png"
+      ],
+      "host_behavior": "shockwave",
+      "host_speed": 2.8,
+      "id": "bio_burrower_01",
+      "max_foot_target_error": 0.000325967295793816,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "b482fb76becf9839e383dbbfb87001b9fc1a86b1b5b3661f1479f88a7d6f8a7c",
+        "far": "da7640ee9cdc43ef6a23435d6f4b522f0788dc58c6416e438da8fc5b79f2893a"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_burrower_01_blocked_012.png",
+        "bio_burrower_01_blocked_028.png",
+        "bio_burrower_01_blocked_040.png",
+        "bio_burrower_01_blocked_049.png",
+        "bio_burrower_01_blocked_060.png",
+        "bio_burrower_01_blocked_078.png"
+      ],
+      "host_behavior": "shockwave",
+      "host_speed": 2.8,
+      "id": "bio_burrower_01",
+      "max_foot_target_error": 0.000325967295793816,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "b482fb76becf9839e383dbbfb87001b9fc1a86b1b5b3661f1479f88a7d6f8a7c",
+        "far": "da7640ee9cdc43ef6a23435d6f4b522f0788dc58c6416e438da8fc5b79f2893a"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_burrower_11_hit_012.png",
+        "bio_burrower_11_hit_028.png",
+        "bio_burrower_11_hit_040.png",
+        "bio_burrower_11_hit_049.png",
+        "bio_burrower_11_hit_060.png",
+        "bio_burrower_11_hit_078.png"
+      ],
+      "host_behavior": "shockwave",
+      "host_speed": 2.8,
+      "id": "bio_burrower_11",
+      "max_foot_target_error": 0.00024759239749983,
+      "outcome": "hit",
+      "remaining_health": 75.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "de64282928d28cb104f5e512d7dd7401d9be340480414ba8655c71363437ee9e",
+        "far": "9cfd0772e3f34070b201a7f859c363fc2f22328dbc91ecb8bdf46e08d05e50ed"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_burrower_11_miss_012.png",
+        "bio_burrower_11_miss_028.png",
+        "bio_burrower_11_miss_040.png",
+        "bio_burrower_11_miss_049.png",
+        "bio_burrower_11_miss_060.png",
+        "bio_burrower_11_miss_078.png"
+      ],
+      "host_behavior": "shockwave",
+      "host_speed": 2.8,
+      "id": "bio_burrower_11",
+      "max_foot_target_error": 0.00024759239749983,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "de64282928d28cb104f5e512d7dd7401d9be340480414ba8655c71363437ee9e",
+        "far": "9cfd0772e3f34070b201a7f859c363fc2f22328dbc91ecb8bdf46e08d05e50ed"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_burrower_11_blocked_012.png",
+        "bio_burrower_11_blocked_028.png",
+        "bio_burrower_11_blocked_040.png",
+        "bio_burrower_11_blocked_049.png",
+        "bio_burrower_11_blocked_060.png",
+        "bio_burrower_11_blocked_078.png"
+      ],
+      "host_behavior": "shockwave",
+      "host_speed": 2.8,
+      "id": "bio_burrower_11",
+      "max_foot_target_error": 0.00024759239749983,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "de64282928d28cb104f5e512d7dd7401d9be340480414ba8655c71363437ee9e",
+        "far": "9cfd0772e3f34070b201a7f859c363fc2f22328dbc91ecb8bdf46e08d05e50ed"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_carapace_11_hit_012.png",
+        "bio_carapace_11_hit_028.png",
+        "bio_carapace_11_hit_040.png",
+        "bio_carapace_11_hit_049.png",
+        "bio_carapace_11_hit_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 4.4,
+      "id": "bio_carapace_11",
+      "max_foot_target_error": 0.000256306171650067,
+      "outcome": "hit",
+      "remaining_health": 86.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "0615c931afefce525924acc4076218d6168793b3db441fc031abefbce7d4becf",
+        "far": "c52afa993324ffecd1070d83ab19c327d183077f36d44c9113f154822bc7c78f"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_carapace_11_miss_012.png",
+        "bio_carapace_11_miss_028.png",
+        "bio_carapace_11_miss_040.png",
+        "bio_carapace_11_miss_049.png",
+        "bio_carapace_11_miss_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 4.4,
+      "id": "bio_carapace_11",
+      "max_foot_target_error": 0.000256306171650067,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "0615c931afefce525924acc4076218d6168793b3db441fc031abefbce7d4becf",
+        "far": "c52afa993324ffecd1070d83ab19c327d183077f36d44c9113f154822bc7c78f"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_carapace_11_blocked_012.png",
+        "bio_carapace_11_blocked_028.png",
+        "bio_carapace_11_blocked_040.png",
+        "bio_carapace_11_blocked_049.png",
+        "bio_carapace_11_blocked_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 4.4,
+      "id": "bio_carapace_11",
+      "max_foot_target_error": 0.000256306171650067,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "0615c931afefce525924acc4076218d6168793b3db441fc031abefbce7d4becf",
+        "far": "c52afa993324ffecd1070d83ab19c327d183077f36d44c9113f154822bc7c78f"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_runner_01_hit_012.png",
+        "bio_runner_01_hit_028.png",
+        "bio_runner_01_hit_040.png",
+        "bio_runner_01_hit_049.png",
+        "bio_runner_01_hit_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_01",
+      "max_foot_target_error": 0.000224104456719942,
+      "outcome": "hit",
+      "remaining_health": 82.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "47ce9a9c77c0b8782e7d1156ae9f7f063ae9ab6d8eb9ae4bac1647097f17595a",
+        "far": "fa5e4d5e7a570e8e1e4ec0e66c5c7964f4fb878f9dfad8ae95ad3a1f0b8d8ff2"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_runner_01_miss_012.png",
+        "bio_runner_01_miss_028.png",
+        "bio_runner_01_miss_040.png",
+        "bio_runner_01_miss_049.png",
+        "bio_runner_01_miss_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_01",
+      "max_foot_target_error": 0.000224104456719942,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "47ce9a9c77c0b8782e7d1156ae9f7f063ae9ab6d8eb9ae4bac1647097f17595a",
+        "far": "fa5e4d5e7a570e8e1e4ec0e66c5c7964f4fb878f9dfad8ae95ad3a1f0b8d8ff2"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_runner_01_blocked_012.png",
+        "bio_runner_01_blocked_028.png",
+        "bio_runner_01_blocked_040.png",
+        "bio_runner_01_blocked_049.png",
+        "bio_runner_01_blocked_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_01",
+      "max_foot_target_error": 0.000224104456719942,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "47ce9a9c77c0b8782e7d1156ae9f7f063ae9ab6d8eb9ae4bac1647097f17595a",
+        "far": "fa5e4d5e7a570e8e1e4ec0e66c5c7964f4fb878f9dfad8ae95ad3a1f0b8d8ff2"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_runner_11_hit_012.png",
+        "bio_runner_11_hit_028.png",
+        "bio_runner_11_hit_040.png",
+        "bio_runner_11_hit_049.png",
+        "bio_runner_11_hit_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_11",
+      "max_foot_target_error": 0.000397008087020367,
+      "outcome": "hit",
+      "remaining_health": 82.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "26655ff33b926228b6908a601ad6e9335dd65d6885305160c3c731d9561c5a30",
+        "far": "9555fed82310e277d4419c316cf2830a4e3a13e44e700e23e46fd52aadb59f28"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_runner_11_miss_012.png",
+        "bio_runner_11_miss_028.png",
+        "bio_runner_11_miss_040.png",
+        "bio_runner_11_miss_049.png",
+        "bio_runner_11_miss_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_11",
+      "max_foot_target_error": 0.000397008087020367,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "26655ff33b926228b6908a601ad6e9335dd65d6885305160c3c731d9561c5a30",
+        "far": "9555fed82310e277d4419c316cf2830a4e3a13e44e700e23e46fd52aadb59f28"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_runner_11_blocked_012.png",
+        "bio_runner_11_blocked_028.png",
+        "bio_runner_11_blocked_040.png",
+        "bio_runner_11_blocked_049.png",
+        "bio_runner_11_blocked_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_11",
+      "max_foot_target_error": 0.000397008087020367,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "26655ff33b926228b6908a601ad6e9335dd65d6885305160c3c731d9561c5a30",
+        "far": "9555fed82310e277d4419c316cf2830a4e3a13e44e700e23e46fd52aadb59f28"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_runner_21_hit_012.png",
+        "bio_runner_21_hit_028.png",
+        "bio_runner_21_hit_040.png",
+        "bio_runner_21_hit_049.png",
+        "bio_runner_21_hit_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_21",
+      "max_foot_target_error": 0.000297761813271791,
+      "outcome": "hit",
+      "remaining_health": 82.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "c45e038e84cf441e5dfe99f205e98e890c91b6fd1e112ccd32546809088694bf",
+        "far": "b0b6671c969a95da53c57fbf86f7f24938cd0a58f150d448e13d63edf0427adf"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_runner_21_miss_012.png",
+        "bio_runner_21_miss_028.png",
+        "bio_runner_21_miss_040.png",
+        "bio_runner_21_miss_049.png",
+        "bio_runner_21_miss_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_21",
+      "max_foot_target_error": 0.000297761813271791,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "c45e038e84cf441e5dfe99f205e98e890c91b6fd1e112ccd32546809088694bf",
+        "far": "b0b6671c969a95da53c57fbf86f7f24938cd0a58f150d448e13d63edf0427adf"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_runner_21_blocked_012.png",
+        "bio_runner_21_blocked_028.png",
+        "bio_runner_21_blocked_040.png",
+        "bio_runner_21_blocked_049.png",
+        "bio_runner_21_blocked_060.png"
+      ],
+      "host_behavior": "melee",
+      "host_speed": 3.8,
+      "id": "bio_runner_21",
+      "max_foot_target_error": 0.000297761813271791,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "c45e038e84cf441e5dfe99f205e98e890c91b6fd1e112ccd32546809088694bf",
+        "far": "b0b6671c969a95da53c57fbf86f7f24938cd0a58f150d448e13d63edf0427adf"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 2,
+      "frames": [
+        "bio_crown_stalker_01_hit_012.png",
+        "bio_crown_stalker_01_hit_028.png",
+        "bio_crown_stalker_01_hit_040.png",
+        "bio_crown_stalker_01_hit_049.png",
+        "bio_crown_stalker_01_hit_060.png",
+        "bio_crown_stalker_01_hit_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "bio_crown_stalker_01",
+      "max_foot_target_error": 0.00166709849145263,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 2,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "02348e2a00a71b8532ef4ba165d6f8fa08164a0494cb961c1343bb9858faa189",
+        "far": "58d851d805b241cc01fe51736b0267f431bcd3e883d8a964d94ebad2110600f4"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_crown_stalker_01_miss_012.png",
+        "bio_crown_stalker_01_miss_028.png",
+        "bio_crown_stalker_01_miss_040.png",
+        "bio_crown_stalker_01_miss_049.png",
+        "bio_crown_stalker_01_miss_060.png",
+        "bio_crown_stalker_01_miss_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "bio_crown_stalker_01",
+      "max_foot_target_error": 0.00166709849145263,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "02348e2a00a71b8532ef4ba165d6f8fa08164a0494cb961c1343bb9858faa189",
+        "far": "58d851d805b241cc01fe51736b0267f431bcd3e883d8a964d94ebad2110600f4"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_crown_stalker_01_blocked_012.png",
+        "bio_crown_stalker_01_blocked_028.png",
+        "bio_crown_stalker_01_blocked_040.png",
+        "bio_crown_stalker_01_blocked_049.png",
+        "bio_crown_stalker_01_blocked_060.png",
+        "bio_crown_stalker_01_blocked_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "bio_crown_stalker_01",
+      "max_foot_target_error": 0.00166709849145263,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "02348e2a00a71b8532ef4ba165d6f8fa08164a0494cb961c1343bb9858faa189",
+        "far": "58d851d805b241cc01fe51736b0267f431bcd3e883d8a964d94ebad2110600f4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_grazer_16_hit_012.png",
+        "bio_grazer_16_hit_028.png",
+        "bio_grazer_16_hit_040.png",
+        "bio_grazer_16_hit_049.png",
+        "bio_grazer_16_hit_060.png",
+        "bio_grazer_16_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "bio_grazer_16",
+      "max_foot_target_error": 0.00171716534532607,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "d25530efb63bd993dca98adf975807c2c1bc25f467ebfc7f96424296e3e11459",
+        "far": "96fb1dd40f435a05f72870fd46329bca74452788d29840b987922af952c32954"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_grazer_16_miss_012.png",
+        "bio_grazer_16_miss_028.png",
+        "bio_grazer_16_miss_040.png",
+        "bio_grazer_16_miss_049.png",
+        "bio_grazer_16_miss_060.png",
+        "bio_grazer_16_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "bio_grazer_16",
+      "max_foot_target_error": 0.000714012188836932,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "d25530efb63bd993dca98adf975807c2c1bc25f467ebfc7f96424296e3e11459",
+        "far": "96fb1dd40f435a05f72870fd46329bca74452788d29840b987922af952c32954"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_grazer_16_blocked_012.png",
+        "bio_grazer_16_blocked_028.png",
+        "bio_grazer_16_blocked_040.png",
+        "bio_grazer_16_blocked_049.png",
+        "bio_grazer_16_blocked_060.png",
+        "bio_grazer_16_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "bio_grazer_16",
+      "max_foot_target_error": 0.00171527033671737,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "d25530efb63bd993dca98adf975807c2c1bc25f467ebfc7f96424296e3e11459",
+        "far": "96fb1dd40f435a05f72870fd46329bca74452788d29840b987922af952c32954"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 2,
+      "frames": [
+        "bio_mantid_01_hit_012.png",
+        "bio_mantid_01_hit_028.png",
+        "bio_mantid_01_hit_040.png",
+        "bio_mantid_01_hit_049.png",
+        "bio_mantid_01_hit_060.png",
+        "bio_mantid_01_hit_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "bio_mantid_01",
+      "max_foot_target_error": 0.00077714427607134,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 2,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "e195075d2a23037a03280c03afa4aee82d6dcfcaaf777a1af2bf2a7e04703864",
+        "far": "1b061a5e9f1b3c3b09ffbed9c1dd40975898f4843e631118b7561ae8e5a85d5a"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_mantid_01_miss_012.png",
+        "bio_mantid_01_miss_028.png",
+        "bio_mantid_01_miss_040.png",
+        "bio_mantid_01_miss_049.png",
+        "bio_mantid_01_miss_060.png",
+        "bio_mantid_01_miss_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "bio_mantid_01",
+      "max_foot_target_error": 0.00077714427607134,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "e195075d2a23037a03280c03afa4aee82d6dcfcaaf777a1af2bf2a7e04703864",
+        "far": "1b061a5e9f1b3c3b09ffbed9c1dd40975898f4843e631118b7561ae8e5a85d5a"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_mantid_01_blocked_012.png",
+        "bio_mantid_01_blocked_028.png",
+        "bio_mantid_01_blocked_040.png",
+        "bio_mantid_01_blocked_049.png",
+        "bio_mantid_01_blocked_060.png",
+        "bio_mantid_01_blocked_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "bio_mantid_01",
+      "max_foot_target_error": 0.00077714427607134,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "e195075d2a23037a03280c03afa4aee82d6dcfcaaf777a1af2bf2a7e04703864",
+        "far": "1b061a5e9f1b3c3b09ffbed9c1dd40975898f4843e631118b7561ae8e5a85d5a"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "bio_lithic_11_hit_012.png",
+        "bio_lithic_11_hit_028.png",
+        "bio_lithic_11_hit_040.png",
+        "bio_lithic_11_hit_049.png",
+        "bio_lithic_11_hit_060.png",
+        "bio_lithic_11_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "bio_lithic_11",
+      "max_foot_target_error": 0.00193964468780905,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "0d68e61cb24c926f7305143c9bd6114d6f74b43e2e89012d3624c359b48046cb",
+        "far": "3466301ccbababc7f554d1398e70d1a00159c5128d434d421ea598b70bef7b0d"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_lithic_11_miss_012.png",
+        "bio_lithic_11_miss_028.png",
+        "bio_lithic_11_miss_040.png",
+        "bio_lithic_11_miss_049.png",
+        "bio_lithic_11_miss_060.png",
+        "bio_lithic_11_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "bio_lithic_11",
+      "max_foot_target_error": 0.000908465590327978,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "0d68e61cb24c926f7305143c9bd6114d6f74b43e2e89012d3624c359b48046cb",
+        "far": "3466301ccbababc7f554d1398e70d1a00159c5128d434d421ea598b70bef7b0d"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "bio_lithic_11_blocked_012.png",
+        "bio_lithic_11_blocked_028.png",
+        "bio_lithic_11_blocked_040.png",
+        "bio_lithic_11_blocked_049.png",
+        "bio_lithic_11_blocked_060.png",
+        "bio_lithic_11_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "bio_lithic_11",
+      "max_foot_target_error": 0.0019627227447927,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "0d68e61cb24c926f7305143c9bd6114d6f74b43e2e89012d3624c359b48046cb",
+        "far": "3466301ccbababc7f554d1398e70d1a00159c5128d434d421ea598b70bef7b0d"
+      }
+    }
+  ],
+  "failures": 0,
+  "correction": "bio_lithic_11 repeated after updating the landing point during recoil; failing results retained separately"
+}

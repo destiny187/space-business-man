@@ -1,0 +1,181 @@
+{
+  "id": "bio_swimmer_01",
+  "source_id": "bio_swimmer_01",
+  "name": "연안 기본형 유영어류",
+  "family": "swimmer",
+  "kind": "swimmer",
+  "construction": "swimmer",
+  "anatomical_type": "swimmer",
+  "organ_system": "armor",
+  "environment": "marine",
+  "habitat": "액체 수역·염도·유속·먹이",
+  "locomotion_medium": "water",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.0,
+    "height": 1.0,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 4,
+    "eye_count": 4,
+    "lineage": 0
+  },
+  "attack": "bite",
+  "palette": [
+    "3c7185",
+    "8cbabd",
+    "34494e",
+    "d8ad75"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "swimmer",
+    "support_limbs": 0,
+    "oral_organs": 1,
+    "articulated_organs": 26
+  },
+  "version": "r06-1",
+  "build_fingerprint": "d7611d9d4d0293d2c8a4b33fb05344f37cca59a803e0e9cb474c4f2b152f2439",
+  "normalized_geometry_sha256": "36b914d11ac75b71ab7d0f05d595c835c4951b511578bf5a1fee857b2ae52a14",
+  "source": "art/blender/creature_remodel/r06/bio_swimmer_01.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 30,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.800000011920929,
+        1.0600000619888306
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.800000011920929,
+        1.0600000619888306
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.800000011920929,
+        1.0600000619888306
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {},
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.800000011920929,
+    1.0600000619888306
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_swimmer_01_near.glb",
+      "sha256": "b3fa9b0a42907ec3ce3118b6a8f8ea47eef277853db10d125cbafdbd0a463561",
+      "triangles": 11040,
+      "min": [
+        -0.7159470915794373,
+        0.4695170521736145,
+        -1.9243203401565552
+      ],
+      "max": [
+        0.7166281342506409,
+        1.1252520084381104,
+        1.0725414752960205
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_swimmer_01_far.glb",
+      "sha256": "1d3d34c4fe6f7149ad092181c1fa61b7b049e618def995812a706b818caf5a12",
+      "triangles": 4742,
+      "min": [
+        -0.7165301442146301,
+        0.46940672397613525,
+        -1.9243203401565552
+      ],
+      "max": [
+        0.7154968976974487,
+        1.1259833574295044,
+        1.0723788738250732
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "swimming_axis0": "chest",
+    "swimming_axis1": "swimming_axis0",
+    "swimming_axis2": "swimming_axis1",
+    "swimming_axis3": "swimming_axis2",
+    "oral": "swimming_axis0",
+    "oral_petal0": "oral",
+    "oral_petal1": "oral",
+    "oral_petal2": "oral",
+    "oral_petal3": "oral",
+    "head": "swimming_axis0",
+    "propulsive_fin-10": "chest",
+    "propulsive_fin-11": "propulsive_fin-10",
+    "propulsive_fin-12": "propulsive_fin-11",
+    "fin_ray-1_0": "propulsive_fin-10",
+    "fin_ray-1_1": "propulsive_fin-10",
+    "fin_ray-1_2": "propulsive_fin-11",
+    "fin_ray-1_3": "propulsive_fin-11",
+    "fin_ray-1_4": "propulsive_fin-12",
+    "propulsive_fin10": "chest",
+    "propulsive_fin11": "propulsive_fin10",
+    "propulsive_fin12": "propulsive_fin11",
+    "fin_ray1_0": "propulsive_fin10",
+    "fin_ray1_1": "propulsive_fin10",
+    "fin_ray1_2": "propulsive_fin11",
+    "fin_ray1_3": "propulsive_fin11",
+    "fin_ray1_4": "propulsive_fin12",
+    "caudal_fluke-1": "swimming_axis3",
+    "caudal_fluke1": "swimming_axis3"
+  },
+  "build_seconds": 8.644,
+  "source_render_seconds": 7.686,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "bb9d42d3665a50c3b2a9dd43df323109d16b36228f501ac52f3977b1577c7a8d"
+  }
+}

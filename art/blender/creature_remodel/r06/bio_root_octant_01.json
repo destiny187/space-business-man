@@ -1,0 +1,279 @@
+{
+  "id": "bio_root_octant_01",
+  "source_id": "bio_root_octant_01",
+  "name": "삼분지근수",
+  "family": "root_octant",
+  "kind": "root_octant",
+  "construction": "root_octant",
+  "anatomical_type": "root_octant",
+  "organ_system": "armor",
+  "environment": "cave",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "중앙 머리 없이 굵게 분지하는 몸통의 끝이 발과 입을 겸함 / 삼방 열린 골격",
+  "morphology": {
+    "width": 1,
+    "height": 1,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 3,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "root_octant",
+    "support_limbs": 3,
+    "oral_organs": 6,
+    "articulated_organs": 42
+  },
+  "version": "r06-1",
+  "build_fingerprint": "a5f0c7732a8648b6d567cdf44dc8fa375cd94f9d88191dca0cbf26546a00a2d2",
+  "normalized_geometry_sha256": "22d20b4fb7873234d25363db1cccb564bc9d1268998d67deb1d4be17a7f7a4c0",
+  "source": "art/blender/creature_remodel/r06/bio_root_octant_01.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 60,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_terminal_oral0_-1": {
+      "bone": "terminal_oral0_-1",
+      "point": [
+        -0.2199999988079071,
+        0.36000001430511475,
+        1.1699999570846558
+      ]
+    },
+    "Socket_terminal_oral0_1": {
+      "bone": "terminal_oral0_1",
+      "point": [
+        0.2199999988079071,
+        0.36000001430511475,
+        1.1699999570846558
+      ]
+    },
+    "Socket_terminal_oral1_-1": {
+      "bone": "terminal_oral1_-1",
+      "point": [
+        1.1232497692108154,
+        0.36000001430511475,
+        -0.3944743871688843
+      ]
+    },
+    "Socket_terminal_oral1_1": {
+      "bone": "terminal_oral1_1",
+      "point": [
+        0.9032496809959412,
+        0.36000001430511475,
+        -0.7755256295204163
+      ]
+    },
+    "Socket_terminal_oral2_-1": {
+      "bone": "terminal_oral2_-1",
+      "point": [
+        -0.9032496809959412,
+        0.36000001430511475,
+        -0.7755256295204163
+      ]
+    },
+    "Socket_terminal_oral2_1": {
+      "bone": "terminal_oral2_1",
+      "point": [
+        -1.1232497692108154,
+        0.36000001430511475,
+        -0.3944743871688843
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "terminal_oral0_-1",
+      "point": [
+        -0.2199999988079071,
+        0.36000001430511475,
+        1.1699999570846558
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_oral0_-1",
+      "point": [
+        -0.2199999988079071,
+        0.36000001430511475,
+        1.1699999570846558
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7188010811805725,
+        0.10000000149011612,
+        -0.41499999165534973
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.7188010811805725,
+        0.10000000149011612,
+        -0.41499999165534973
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.18755366804835263,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.2907081854749466,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.3333333333333333,
+      "support2": 0.6666666666666666
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.2199999988079071,
+    0.36000001430511475,
+    1.1699999570846558
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_root_octant_01_near.glb",
+      "sha256": "af36db7cf640ecfc9ef66b7668b3a8b876bbc5dd77b7b716561c82c97835c7c8",
+      "triangles": 37642,
+      "min": [
+        -1.1662119626998901,
+        0.02499999850988388,
+        -0.8634743094444275
+      ],
+      "max": [
+        1.1662119626998901,
+        0.6901060342788696,
+        1.16840660572052
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_root_octant_01_far.glb",
+      "sha256": "988b79bc91b7bd0db27bad9253a6a410cd1de694e3d5f0a79711b46a8490e5d7",
+      "triangles": 16180,
+      "min": [
+        -1.1661853790283203,
+        0.025012250989675522,
+        -0.8633193373680115
+      ],
+      "max": [
+        1.1661853790283203,
+        0.6904592514038086,
+        1.1686445474624634
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "fork_tip0_-10": "radial_trunk01",
+    "fork_tip0_-11": "fork_tip0_-10",
+    "terminal_oral0_-1": "fork_tip0_-11",
+    "terminal_oral0_-1_petal0": "terminal_oral0_-1",
+    "terminal_oral0_-1_petal1": "terminal_oral0_-1",
+    "terminal_oral0_-1_petal2": "terminal_oral0_-1",
+    "terminal_oral0_-1_petal3": "terminal_oral0_-1",
+    "fork_tip0_10": "radial_trunk01",
+    "fork_tip0_11": "fork_tip0_10",
+    "terminal_oral0_1": "fork_tip0_11",
+    "terminal_oral0_1_petal0": "terminal_oral0_1",
+    "terminal_oral0_1_petal1": "terminal_oral0_1",
+    "terminal_oral0_1_petal2": "terminal_oral0_1",
+    "terminal_oral0_1_petal3": "terminal_oral0_1",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "fork_tip1_-10": "radial_trunk11",
+    "fork_tip1_-11": "fork_tip1_-10",
+    "terminal_oral1_-1": "fork_tip1_-11",
+    "terminal_oral1_-1_petal0": "terminal_oral1_-1",
+    "terminal_oral1_-1_petal1": "terminal_oral1_-1",
+    "terminal_oral1_-1_petal2": "terminal_oral1_-1",
+    "terminal_oral1_-1_petal3": "terminal_oral1_-1",
+    "fork_tip1_10": "radial_trunk11",
+    "fork_tip1_11": "fork_tip1_10",
+    "terminal_oral1_1": "fork_tip1_11",
+    "terminal_oral1_1_petal0": "terminal_oral1_1",
+    "terminal_oral1_1_petal1": "terminal_oral1_1",
+    "terminal_oral1_1_petal2": "terminal_oral1_1",
+    "terminal_oral1_1_petal3": "terminal_oral1_1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "fork_tip2_-10": "radial_trunk21",
+    "fork_tip2_-11": "fork_tip2_-10",
+    "terminal_oral2_-1": "fork_tip2_-11",
+    "terminal_oral2_-1_petal0": "terminal_oral2_-1",
+    "terminal_oral2_-1_petal1": "terminal_oral2_-1",
+    "terminal_oral2_-1_petal2": "terminal_oral2_-1",
+    "terminal_oral2_-1_petal3": "terminal_oral2_-1",
+    "fork_tip2_10": "radial_trunk21",
+    "fork_tip2_11": "fork_tip2_10",
+    "terminal_oral2_1": "fork_tip2_11",
+    "terminal_oral2_1_petal0": "terminal_oral2_1",
+    "terminal_oral2_1_petal1": "terminal_oral2_1",
+    "terminal_oral2_1_petal2": "terminal_oral2_1",
+    "terminal_oral2_1_petal3": "terminal_oral2_1",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "head": "chest"
+  },
+  "build_seconds": 16.677,
+  "source_render_seconds": 7.883,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "1389de82d9a64b1669bc66fee0c3c069308315294177ef97d991d81a0ad39b4d"
+  }
+}

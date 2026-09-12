@@ -1,0 +1,231 @@
+{
+  "id": "bio_radial_mill_01",
+  "source_id": "bio_radial_mill_01",
+  "name": "삼노보행수",
+  "family": "radial_mill",
+  "kind": "radial_mill",
+  "construction": "radial_mill",
+  "anatomical_type": "radial_mill",
+  "organ_system": "armor",
+  "environment": "thermal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "중앙 배를 둘러싼 두꺼운 노 모양 사지와 말단 흡착판 / 삼방 열린 골격",
+  "morphology": {
+    "width": 1,
+    "height": 1,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 3,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "4e525a",
+    "99805e",
+    "34494e",
+    "d67a37"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "radial_mill",
+    "support_limbs": 3,
+    "oral_organs": 3,
+    "articulated_organs": 21
+  },
+  "version": "r06-1",
+  "build_fingerprint": "82e5a36017c2e55fd2904401efad98041123e494941ed0616195fb0f33778033",
+  "normalized_geometry_sha256": "425577cb4e287d2883c9677abdb28b95ff038dfeeee5c73129d91e274ff5b753",
+  "source": "art/blender/creature_remodel/r06/bio_radial_mill_01.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 36,
+  "locomotion_chains": 3,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_terminal_grip0": {
+      "bone": "terminal_grip0",
+      "point": [
+        6.000769180620628e-17,
+        0.8399999737739563,
+        0.9800000190734863
+      ]
+    },
+    "Socket_terminal_grip1": {
+      "bone": "terminal_grip1",
+      "point": [
+        0.8487048745155334,
+        0.8399999737739563,
+        -0.49000000953674316
+      ]
+    },
+    "Socket_terminal_grip2": {
+      "bone": "terminal_grip2",
+      "point": [
+        -0.8487048745155334,
+        0.8399999737739563,
+        -0.49000000953674316
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "terminal_grip0",
+      "point": [
+        6.000769180620628e-17,
+        0.8399999737739563,
+        0.9800000190734863
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_grip0",
+      "point": [
+        6.000769180620628e-17,
+        0.8399999737739563,
+        0.9800000190734863
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7188010811805725,
+        0.10000000149011612,
+        -0.41499999165534973
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.7188010811805725,
+        0.10000000149011612,
+        -0.41499999165534973
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2548953641998582,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3950878145097802,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.3333333333333333,
+      "support2": 0.6666666666666666
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    6.000769180620628e-17,
+    0.8399999737739563,
+    0.9800000190734863
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_radial_mill_01_near.glb",
+      "sha256": "412b15b4b87fa4360dd1664cf1eb6f60646806978cc45b70ae3da9e028b662dc",
+      "triangles": 28254,
+      "min": [
+        -1.0282365083694458,
+        0.02499999850988388,
+        -0.6530169248580933
+      ],
+      "max": [
+        1.0282365083694458,
+        1.0124996900558472,
+        1.132059097290039
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_radial_mill_01_far.glb",
+      "sha256": "b55ceafe423a287211c0a4bf86fe065832ac6c17560699bf697dd42c53a879a8",
+      "triangles": 12142,
+      "min": [
+        -1.0282648801803589,
+        0.025012953206896782,
+        -0.6530595421791077
+      ],
+      "max": [
+        1.0282648801803589,
+        1.0123440027236938,
+        1.1319855451583862
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "paddle0": "radial_trunk00",
+    "terminal_grip0": "radial_trunk01",
+    "terminal_grip0_petal0": "terminal_grip0",
+    "terminal_grip0_petal1": "terminal_grip0",
+    "terminal_grip0_petal2": "terminal_grip0",
+    "terminal_grip0_petal3": "terminal_grip0",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "paddle1": "radial_trunk10",
+    "terminal_grip1": "radial_trunk11",
+    "terminal_grip1_petal0": "terminal_grip1",
+    "terminal_grip1_petal1": "terminal_grip1",
+    "terminal_grip1_petal2": "terminal_grip1",
+    "terminal_grip1_petal3": "terminal_grip1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "paddle2": "radial_trunk20",
+    "terminal_grip2": "radial_trunk21",
+    "terminal_grip2_petal0": "terminal_grip2",
+    "terminal_grip2_petal1": "terminal_grip2",
+    "terminal_grip2_petal2": "terminal_grip2",
+    "terminal_grip2_petal3": "terminal_grip2",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "head": "chest"
+  },
+  "build_seconds": 11.487,
+  "source_render_seconds": 5.825,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "c319f16586a92aa86788e2ea821dc39fbd87916ff8e7ab61c29e715cd27fee8f"
+  }
+}

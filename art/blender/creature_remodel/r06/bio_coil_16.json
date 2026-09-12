@@ -1,0 +1,172 @@
+{
+  "id": "bio_coil_16",
+  "source_id": "bio_coil_16",
+  "name": "열지 기본형 환절사행류",
+  "family": "coil",
+  "kind": "coil",
+  "construction": "coil",
+  "anatomical_type": "coil",
+  "organ_system": "antennal_fans",
+  "environment": "thermal",
+  "habitat": "안정된 열원·대사 기질·열 회피 구획",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.24,
+    "height": 1.0,
+    "mode": 0,
+    "radial_count": 3,
+    "limb_count": 4,
+    "eye_count": 2,
+    "lineage": 3
+  },
+  "attack": "spit",
+  "palette": [
+    "4e525a",
+    "99805e",
+    "34494e",
+    "d67a37"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "coil",
+    "support_limbs": 0,
+    "oral_organs": 1,
+    "articulated_organs": 18
+  },
+  "version": "r06-1",
+  "build_fingerprint": "0282ecb7197666227310723cb4a96200a242daf24f0c98cbd2097560fa88ec0d",
+  "normalized_geometry_sha256": "711df3281a52ab9bf6a4aeb7d33bdc1fed687af02a4d843e25b9ec247e2c2b33",
+  "source": "art/blender/creature_remodel/r06/bio_coil_16.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 21,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_eversible_pharynx": {
+      "bone": "eversible_pharynx",
+      "point": [
+        -0.32499998807907104,
+        0.30000001192092896,
+        1.915000081062317
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "eversible_pharynx",
+      "point": [
+        -0.32499998807907104,
+        0.30000001192092896,
+        1.915000081062317
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "eversible_pharynx",
+      "point": [
+        -0.32499998807907104,
+        0.30000001192092896,
+        1.915000081062317
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {},
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.32499998807907104,
+    0.30000001192092896,
+    1.915000081062317
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_coil_16_near.glb",
+      "sha256": "526489736a966c7a5acb9ab67c157bd63429d6f2b96f248e7c85e00aba8e1833",
+      "triangles": 26770,
+      "min": [
+        -0.5459749698638916,
+        0.0650000050663948,
+        -1.744999885559082
+      ],
+      "max": [
+        0.5446931719779968,
+        0.5507234334945679,
+        1.9275416135787964
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_coil_16_far.glb",
+      "sha256": "d8e8831a7cdcf9e679272c4878bc417931ca17262eead250c1c2b0e2db35bb7e",
+      "triangles": 11506,
+      "min": [
+        -0.5459749698638916,
+        0.06502781063318253,
+        -1.744999885559082
+      ],
+      "max": [
+        0.5447298884391785,
+        0.5500551462173462,
+        1.9275416135787964
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "peristaltic_axis0": "chest",
+    "peristaltic_axis1": "peristaltic_axis0",
+    "peristaltic_axis2": "peristaltic_axis1",
+    "peristaltic_axis3": "peristaltic_axis2",
+    "peristaltic_axis4": "peristaltic_axis3",
+    "peristaltic_axis5": "peristaltic_axis4",
+    "peristaltic_axis6": "peristaltic_axis5",
+    "peristaltic_axis7": "peristaltic_axis6",
+    "peristaltic_axis8": "peristaltic_axis7",
+    "peristaltic_axis9": "peristaltic_axis8",
+    "peristaltic_axis10": "peristaltic_axis9",
+    "peristaltic_axis11": "peristaltic_axis10",
+    "peristaltic_axis12": "peristaltic_axis11",
+    "peristaltic_axis13": "peristaltic_axis12",
+    "peristaltic_axis14": "peristaltic_axis13",
+    "eversible_pharynx": "peristaltic_axis14",
+    "eversible_pharynx_petal0": "eversible_pharynx",
+    "eversible_pharynx_petal1": "eversible_pharynx",
+    "eversible_pharynx_petal2": "eversible_pharynx"
+  },
+  "build_seconds": 8.28,
+  "source_render_seconds": 5.549,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "fd1ace6d9410471bff28a45f6bba85502468a0012b482cc88c7eee8eab46257a"
+  }
+}

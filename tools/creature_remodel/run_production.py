@@ -34,7 +34,8 @@ def main():
     prefix=mode if BATCH=='r03' else BATCH+'-'+mode
     logs=[open(dest/f'{prefix}-{worker}.log','w') for worker in range(workers)]
     jobs={};codes=[];completed_chunks=0
-    capture=os.environ.get('CREATURE_CAPTURE_ANIMATION')=='1';script='produce_captured.py' if capture else {'r03':'produce.py','r04':'produce_midpoints.py','r05':'produce_air.py','r06':'produce_legacy.py'}[BATCH]
+    reuse=os.environ.get('CREATURE_REUSE_LOD')=='1';capture=reuse or os.environ.get('CREATURE_CAPTURE_ANIMATION')=='1'
+    script='produce_reused.py' if reuse else ('produce_captured.py' if capture else {'r03':'produce.py','r04':'produce_midpoints.py','r05':'produce_air.py','r06':'produce_legacy.py'}[BATCH])
     state={'mode':mode,'species_count':len(rows),'status':'running','chunk_size':chunk_size,'batch':BATCH,'selected_ids':[r['id'] for r in rows]}
     path=dest/('active.json' if BATCH=='r03' else BATCH+'-active.json')
     def save_state():
@@ -42,7 +43,7 @@ def main():
         temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,indent=2));os.replace(temp,path)
     def launch(worker):
         ids=queues[worker][:chunk_size];del queues[worker][:chunk_size]
-        jobs[worker]=subprocess.Popen([BLENDER,'--background','--threads',str(threads),'--python',str(ROOT/'tools/creature_remodel'/script),'--',*([BATCH] if capture else []),*ids],cwd=ROOT,stdout=logs[worker],stderr=subprocess.STDOUT)
+        jobs[worker]=subprocess.Popen([BLENDER,'--background','--threads',str(threads),'--python-exit-code','1','--python',str(ROOT/'tools/creature_remodel'/script),'--',*([BATCH] if capture else []),*ids],cwd=ROOT,stdout=logs[worker],stderr=subprocess.STDOUT)
     for worker in range(workers):
         if queues[worker]:launch(worker)
     save_state();print('PRODUCTION_STARTED',len(rows),'species; workers',state['pids'],'chunk',chunk_size,flush=True)
@@ -55,7 +56,7 @@ def main():
                 completed_chunks+=1
                 if queues[worker]:launch(worker)
             else:
-                state['status']='failed';queues[worker]=[]
+                state.setdefault('failed_workers',[]).append({'worker':worker,'exit_code':code});queues[worker]=[]
             save_state()
         if jobs:time.sleep(2)
     for log in logs:log.close()

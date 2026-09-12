@@ -1,0 +1,235 @@
+{
+  "id": "biota_spindle_sails_46",
+  "name": "저수둘레여덟마디측막질주수",
+  "family": "biota_spindle_sails",
+  "construction": "spindle",
+  "organ_system": "sails",
+  "environment": "arid",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_spindle_sails_46",
+  "kind": "spindle",
+  "habitat": "수분을 보존하는 외피와 연결된 저장낭 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 8,
+    "limb_count": 6,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 2
+  },
+  "anatomy_note": "목과 꼬리가 이어진 유선형 근육 몸통·몸통과 이어진 넓은 측막 / 방사 배열·주요 기관 8개",
+  "recipe_sha256": "eb89017ab9a341f328d24806ee3a8c157cdf9de3569ae06c792b063decff93a3",
+  "authored_anatomy": "Continuous spindle anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "70f96be88f414d3e07fe7c5fbc1436f6325f3a5c2960d560f50039be16179514",
+  "normalized_geometry_sha256": "4af5e9c3a334dd2e0994092dc41b078ae6e7fdf96552e60314fdaf120522e999",
+  "source": "art/blender/creature_remodel/r03/biota_spindle_sails_46.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 37,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.8713999390602112,
+        1.8966000080108643
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.8713999390602112,
+        1.8966000080108643
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.8713999390602112,
+        1.8966000080108643
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.6710000038146973,
+        0.10999999940395355,
+        -1.2649999856948853
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.6710000038146973,
+        0.10999999940395355,
+        -1.2649999856948853
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.6710000038146973,
+        0.10999999940395355,
+        -0.4816666841506958
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.6710000038146973,
+        0.10999999940395355,
+        -0.27166667580604553
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.6710000038146973,
+        0.10999999940395355,
+        0.5116666555404663
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        0.6710000038146973,
+        0.10999999940395355,
+        0.5116666555404663
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3092239908267725,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4792971857814974,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    -4.408728404608808e-17,
+    0.8713999390602112,
+    1.8966000080108643
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spindle_sails_46_near.glb",
+      "sha256": "1fb46032eab004489f227600de2b48095a3c3be3f8e895561955532f17720e93",
+      "triangles": 46300,
+      "min": [
+        -0.8337498903274536,
+        0.034999996423721313,
+        -2.1080727577209473
+      ],
+      "max": [
+        0.8337499499320984,
+        2.1224207878112793,
+        1.9165998697280884
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spindle_sails_46_far.glb",
+      "sha256": "77db48024eded7d1b970d34d8d1d10937d0a36a47807100cffe1400ddd028f40",
+      "triangles": 19900,
+      "min": [
+        -0.8337498903274536,
+        0.034999996423721313,
+        -2.1066038608551025
+      ],
+      "max": [
+        0.8337499499320984,
+        2.1224236488342285,
+        1.9165998697280884
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "head": "axis0_2",
+    "oral": "head",
+    "orbital0_lid": "head",
+    "orbital1_lid": "head",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis0_1",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis0_1",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "axis0_2",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "axis0_2",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_0",
+    "organ2": "axis0_0",
+    "organ3": "axis0_1",
+    "organ4": "axis0_1",
+    "organ5": "axis0_2",
+    "organ6": "axis0_2",
+    "organ7": "axis0_2"
+  },
+  "build_seconds": 20.263,
+  "source_render_seconds": 4.859,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "a458d26df85c21b403a4fd519d981933de7e92a30ce9afd2c495a8fddcac531e"
+  }
+}
