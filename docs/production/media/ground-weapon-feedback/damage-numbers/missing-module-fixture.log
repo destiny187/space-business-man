@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS isolated fixture saved
+PASS Forward+ ground loaded
+PASS ground, model and host input ready
+PASS one actual target per shot 0
+PASS consecutive confirmed damage stacks 0
+PASS one actual target per shot 1
+PASS consecutive confirmed damage stacks 1
+PASS one actual target per shot 2
+PASS consecutive confirmed damage stacks 2
+PASS shield transition keeps broken icon and crack audio
+PASS damage stack expires
+PASS actual remaining damage excludes overkill
+PASS simultaneous defeat preserves crack picture and sound
+PASS shotgun pellets coalesce into one real total
+PASS weak point number on small window
+PASS menu clears all numbers and crack markers
+PASS miss has no number
+SCRIPT ERROR: Invalid access to property or key 'revision' on a base object of type 'Dictionary'.
+          at: run (res://../tools/media/review_ground_damage_numbers.gd:78)
+          GDScript backtrace (most recent call first):
+              [0] run (res://../tools/media/review_ground_damage_numbers.gd:78)

@@ -1,0 +1,104 @@
+{
+  "date": "2026-09-12",
+  "version": 3,
+  "original_generation_manifest": "audio/manifests/ground-combat-sources.json",
+  "previous_master_manifest": "audio/manifests/ground-weapon-feedback.json",
+  "intent": "Sharp shield crack, short staggered fragments, compact falling tail; crack preserved on simultaneous defeat.",
+  "processing": {
+    "crack_layers": [
+      [
+        "impact_v1.wav",
+        0.045,
+        1.12,
+        700,
+        10500,
+        0.75,
+        0
+      ],
+      [
+        "shield_break_v1.wav",
+        0.2,
+        1.05,
+        280,
+        10800,
+        1.0,
+        0.008
+      ],
+      [
+        "shield_break_v1.wav",
+        0.09,
+        1.52,
+        2200,
+        11500,
+        0.26,
+        0.075
+      ],
+      [
+        "shield_break_v1.wav",
+        0.09,
+        1.31,
+        1800,
+        10500,
+        0.16,
+        0.14
+      ]
+    ],
+    "tail_decay_seconds": 0.12,
+    "simultaneous_defeat_tail": {
+      "source": "shield_break_v1.wav",
+      "pitch": 0.69,
+      "gain": 0.33,
+      "offset": 0.18
+    },
+    "output": "PCM16 mono 48kHz, 0.75ms attack / 16ms end fade, RMS -21 / peak -6 dBFS bounds"
+  },
+  "generation": "No new generation. Existing ElevenLabs originals only; no Apex assets.",
+  "listening_review": "Subjective listening pending; runtime capture recorded separately.",
+  "jobs": [
+    {
+      "id": "sfx_gun_break",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shield_break_v1.wav",
+          "sha256": "ca40475a5d2e10dc8f6e16c2e874762ad4e5c96f1727f1761da6385968321baf"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_break.wav",
+      "sha256": "e7ab123fb04fa0cdc7d503d76cf8808e4c192d8fce769392d7f008addd9d0612",
+      "duration": 0.3,
+      "peak_dbfs": -6.000477743319013,
+      "rms_dbfs": -27.5666282624411,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_break_down",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shield_break_v1.wav",
+          "sha256": "ca40475a5d2e10dc8f6e16c2e874762ad4e5c96f1727f1761da6385968321baf"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_break_down.wav",
+      "sha256": "ec7919b5c236dda157bc7faabbfeca18ad0693a38b24e956f9266bccc0642d3f",
+      "duration": 0.38,
+      "peak_dbfs": -6.000477743319013,
+      "rms_dbfs": -28.37613158976201,
+      "clipped_samples": 0
+    }
+  ],
+  "runtime_review": "docs/production/media/ground-weapon-feedback/damage-numbers/verification.json",
+  "runtime_capture": [
+    "docs/production/media/ground-weapon-feedback/damage-numbers/runtime-mix.wav",
+    "docs/production/media/ground-weapon-feedback/damage-numbers/own-runtime-mix.wav"
+  ]
+}

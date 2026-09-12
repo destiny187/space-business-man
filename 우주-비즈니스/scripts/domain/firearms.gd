@@ -117,7 +117,8 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 			if member.loadout.get("crouched",false):spread*=.4
 		"weak_chain":
 			if int(s.weak_streak)>=2:multiplier=1.4
-	var rays: Array=[];var totals: Dictionary={"damage":0.0,"shield":0.0,"broken":false,"weak":false,"killed":false,"organic":false}
+	var rays: Array=[];var contacts: Array=[];var totals: Dictionary={"damage":0.0,"shield":0.0,"broken":false,"weak":false,"killed":false,"organic":false}
+	var damage_targets: Dictionary={}
 	var side:=aim.cross(Vector3.UP).normalized()
 	if side.length_squared()<.5:side=Vector3.RIGHT
 	var up:=side.cross(aim).normalized()
@@ -129,11 +130,14 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 		if obstacle.is_valid():reach=minf(reach,float(obstacle.call(actor,origin,direction,reach)))
 		var hit:=_target(world,actor,origin,direction,reach)
 		var point: Vector3=origin+direction*reach
+		var contact_kind: String="surface" if reach<float(tool.range)-.05 else ""
 		if not hit.is_empty():
 			point=hit.point
 			if hit.kind=="animal":totals.organic=true
 			var damage:=float(tool.damage)*multiplier*lerpf(1.0,.55,clampf((origin.distance_to(point)-float(tool.range)*.5)/(float(tool.range)*.5),0,1))
 			var outcome:=_damage(world,actor,hit,damage,tool,ads)
+			_record_damage(damage_targets,hit,outcome)
+			contact_kind="break" if outcome.broken else "shield" if outcome.shield>0 else "organic" if hit.kind=="animal" else "armor"
 			for key in ["damage","shield"]:totals[key]+=float(outcome.get(key,0))
 			for key in ["broken","weak","killed"]:totals[key]=totals[key] or outcome.get(key,false)
 		if tool.effect=="splash":
@@ -143,14 +147,31 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 				if gap>=float(tool.blast_radius) or hit.get("id","")==FrontierExplorationIncidents.key(row):continue
 				if not FrontierCrewSurface.visible_in_field(terrain,point-direction*.1,center):continue
 				if obstacle.is_valid() and float(obstacle.call(actor,point-direction*.15,(center-point).normalized(),gap))<gap-.8:continue
-				var splash:=_damage(world,actor,{"kind":"robot","id":FrontierExplorationIncidents.key(row),"weak":false},float(tool.damage)*.6*(1-gap/float(tool.blast_radius)),tool,false)
+				var splash_hit: Dictionary={"kind":"robot","id":FrontierExplorationIncidents.key(row),"weak":false,"point":center,"anchor":center+Vector3.UP*.75}
+				var splash:=_damage(world,actor,splash_hit,float(tool.damage)*.6*(1-gap/float(tool.blast_radius)),tool,false)
+				_record_damage(damage_targets,splash_hit,splash)
+				contacts.append({"point":[center.x,center.y,center.z],"normal":[-direction.x,-direction.y,-direction.z],"kind":"break" if splash.broken else "shield" if splash.shield>0 else "armor","splash":true})
 				totals.damage+=float(splash.damage);totals.shield+=float(splash.shield);totals.broken=totals.broken or splash.broken;totals.killed=totals.killed or splash.killed
 		rays.append([point.x,point.y,point.z])
+		# Presentation metadata only; each pellet keeps its actual host endpoint.
+		if not contact_kind.is_empty():contacts.append({"point":[point.x,point.y,point.z],"normal":[-direction.x,-direction.y,-direction.z],"kind":contact_kind})
 	s.ammo-=1;s.cooldown=maxf(.06,float(tool.interval));s.idle=0.0;s.streak+=1
 	s.weak_streak=(int(s.weak_streak)+1)%3 if totals.weak else 0
 	if totals.broken:s.breach=true
 	FrontierSuitModules.enter_combat(member)
-	return {"ok":true,"weapon":s.duplicate(true),"hits":totals,"rays":rays,"origin":[origin.x,origin.y,origin.z],"family":tool.firearm,"effect":tool.effect,"serial":args.get("serial",0),"item_id":tool.item_id}
+	return {"ok":true,"weapon":s.duplicate(true),"hits":totals,"damage_targets":damage_targets.values(),"rays":rays,"contacts":contacts,"origin":[origin.x,origin.y,origin.z],"family":tool.firearm,"effect":tool.effect,"serial":args.get("serial",0),"item_id":tool.item_id}
+
+static func _record_damage(targets: Dictionary,hit: Dictionary,outcome: Dictionary) -> void:
+	# Drones count hits, not HP. Preserve their marker without inventing an HP loss.
+	if hit.kind=="drone" or float(outcome.damage)+float(outcome.shield)<=0:return
+	var id: String=str(hit.kind)+":"+str(hit.id)
+	if not targets.has(id):
+		var anchor: Vector3=hit.get("anchor",hit.point+Vector3.UP*.65)
+		targets[id]={"id":id,"kind":hit.kind,"anchor":[anchor.x,anchor.y,anchor.z],"damage":0.0,"shield":0.0,"broken":false,"weak":false,"killed":false}
+	var target: Dictionary=targets[id]
+	for key in ["damage","shield"]:target[key]+=float(outcome[key])
+	for key in ["broken","weak","killed"]:target[key]=target[key] or outcome[key]
+
 static func _target(world: Dictionary,actor: String,origin: Vector3,aim: Vector3,reach: float) -> Dictionary:
 	var result: Dictionary={};var best:=reach+.001
 	for row in FrontierExplorationIncidents.records(world).values():
@@ -164,7 +185,7 @@ static func _target(world: Dictionary,actor: String,origin: Vector3,aim: Vector3
 		var distance:=maxf(0,along-sqrt(radius*radius-cross_sq))
 		if distance>best or not FrontierCrewSurface.visible_in_field(FrontierCrewSurface.field(world),origin,origin+aim*distance):continue
 		var core_delta:=FrontierExplorationIncidents.point(row,Vector3(0,1.98,.52))-origin
-		result={"kind":mode,"id":FrontierExplorationIncidents.key(row),"point":origin+aim*distance,"weak":mode=="robot" and row.phase=="cooling" and (core_delta-aim*core_delta.dot(aim)).length()<.4};best=distance
+		result={"kind":mode,"id":FrontierExplorationIncidents.key(row),"point":origin+aim*distance,"anchor":center+Vector3.UP*.75,"weak":mode=="robot" and row.phase=="cooling" and (core_delta-aim*core_delta.dot(aim)).length()<.4};best=distance
 	var life:=FrontierCrewSurface.target(world,actor,aim,[],reach,origin)
 	if not life.is_empty() and FrontierEcologyCatalog.form(life.form_id).category=="animal":
 		var distance:=origin.distance_to(life.hit_point)

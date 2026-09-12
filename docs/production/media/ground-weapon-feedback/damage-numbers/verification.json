@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-12",
+  "engine": "Godot 4.7.2 Metal Forward+ Apple M2",
+  "sizes": [
+    "1280x800",
+    "960x640"
+  ],
+  "view_distance": 1200,
+  "combat_verification": "Target stack 20/40/60, shotgun target coalescing, real remaining damage 2 on simultaneous break/defeat, gold weak point, expiration/menu/miss behavior and SFX capture passed. The same first run then failed the own-shield fixture and its save.",
+  "correction": "Valid pre-equipped starter module fixture and current authority dictionary references, rather than mutating shield on an unconfirmed or absent generator. Own shield and save narrow rerun: 9 checks, 0 failures.",
+  "readiness": "Terrain generation crossed the former 55-second test timeout. Final readiness was true in the diagnostic. The review now checks readiness after a long frame and allows up to 120 seconds. Terrain code and user settings were not changed.",
+  "warnings": "2 ObjectDB instances at final test teardown; no gameplay script/shader errors in corrected own-shield run.",
+  "not_verified": [
+    "Multi-client playback",
+    "Subjective listening",
+    "Native animal number rendering in this follow-up",
+    "Simultaneous multiple splash target number layout in live game"
+  ],
+  "audio": [
+    {
+      "file": "runtime-mix.wav",
+      "seconds": 13.504,
+      "channels": 2,
+      "peak_dbfs": -10.948684419321523,
+      "rms_dbfs": -31.68710150722805,
+      "clipped_samples": 0
+    },
+    {
+      "file": "own-runtime-mix.wav",
+      "seconds": 1.3973333333333333,
+      "channels": 2,
+      "peak_dbfs": -16.55663610775896,
+      "rms_dbfs": -42.758501820407034,
+      "clipped_samples": 0
+    }
+  ]
+}

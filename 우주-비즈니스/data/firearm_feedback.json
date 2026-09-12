@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "particle_limit": 144,
+  "shot_voices": 8,
+  "hit_duck_db": -3.0,
+  "damage_numbers": {"stack_window":0.75, "life":0.95, "pop_time":0.11, "rise":22, "font_size":25, "limit":16, "shield_color":"91d9ff", "health_color":"ff8b85", "armor_color":"d9e1e6", "weak_color":"ffdc83", "break_time":0.38},
+  "families": {
+    "carbine": {"color":"ffd39a", "flash_size":0.13, "flash_time":0.045, "trace_width":0.014, "trace_length":1.7, "trace_speed":1100, "kick":0.055, "lift":0.028, "roll":0.012, "recovery":22, "sound_gain":2.0},
+    "pistol": {"color":"ffe6b3", "flash_size":0.11, "flash_time":0.045, "trace_width":0.012, "trace_length":1.2, "trace_speed":1250, "kick":0.067, "lift":0.048, "roll":0.019, "recovery":20, "sound_gain":2.0},
+    "smg": {"color":"a6f5e5", "flash_size":0.095, "flash_time":0.035, "trace_width":0.011, "trace_length":1.2, "trace_speed":1050, "kick":0.036, "lift":0.018, "roll":0.010, "recovery":26, "sound_gain":0.5},
+    "shotgun": {"color":"ffc18b", "flash_size":0.19, "flash_time":0.055, "trace_width":0.010, "trace_length":0.85, "trace_speed":1050, "kick":0.11, "lift":0.074, "roll":0.027, "recovery":16, "sound_gain":2.5},
+    "lmg": {"color":"ffc990", "flash_size":0.15, "flash_time":0.045, "trace_width":0.016, "trace_length":2.0, "trace_speed":1100, "kick":0.066, "lift":0.036, "roll":0.016, "recovery":21, "sound_gain":1.0},
+    "marksman": {"color":"a6e5ff", "flash_size":0.135, "flash_time":0.045, "trace_width":0.014, "trace_length":2.8, "trace_speed":1700, "kick":0.085, "lift":0.055, "roll":0.013, "recovery":19, "sound_gain":2.5},
+    "sniper": {"color":"c3eaff", "flash_size":0.17, "flash_time":0.055, "trace_width":0.019, "trace_length":3.8, "trace_speed":2100, "kick":0.13, "lift":0.088, "roll":0.021, "recovery":15, "sound_gain":2.5},
+    "plasma": {"color":"bbadff", "flash_size":0.20, "flash_time":0.07, "trace_width":0.052, "trace_length":0.65, "trace_speed":650, "kick":0.09, "lift":0.047, "roll":0.018, "recovery":17, "sound_gain":2.0}
+  },
+  "impacts": {
+    "surface": {"color":"cab8a1", "size":0.10, "sparks":3, "speed":1.7, "life":0.18},
+    "armor": {"color":"ffd7a0", "size":0.14, "sparks":6, "speed":3.4, "life":0.19},
+    "organic": {"color":"d6c9a6", "size":0.115, "sparks":4, "speed":1.3, "life":0.16},
+    "shield": {"color":"a4eaff", "size":0.18, "sparks":5, "speed":2.5, "life":0.18},
+    "break": {"color":"c1f4ff", "size":0.28, "sparks":9, "speed":3.5, "life":0.24}
+  },
+  "confirmation": {
+    "hit": {"sound":"sfx_gun_hit_armor", "gain":0, "duration":0.16},
+    "organic": {"sound":"sfx_gun_hit_organic", "gain":0, "duration":0.16},
+    "shield": {"sound":"sfx_gun_hit_shield", "gain":0, "duration":0.18},
+    "weak": {"sound":"sfx_gun_hit_weak", "gain":1, "duration":0.21},
+    "break": {"sound":"sfx_gun_break", "gain":1, "duration":0.26},
+    "kill": {"sound":"sfx_gun_down", "gain":1, "duration":0.28}
+  }
+}

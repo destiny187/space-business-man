@@ -1,0 +1,257 @@
+{
+  "date": "2026-09-12",
+  "version": 2,
+  "original_generation_manifest": "audio/manifests/ground-combat-sources.json",
+  "previous_master_manifest": "audio/manifests/ground-combat.json",
+  "intent": "Short attack, restrained tail, distinct armor/organic/shield/weak/break/down confirmation. Original ElevenLabs sources only.",
+  "processing": "Onset trim; 0.75ms attack / 16ms end fades; source-specific band shaping; transient emphasis; exponential tail; peak/RMS bounded PCM16 mono 48kHz. Confirmation layers edited from the named sources.",
+  "listening_review": "Subjective listening pending; runtime playback and recorded signal review are recorded separately.",
+  "jobs": [
+    {
+      "id": "sfx_gun_carbine",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/carbine_v1.wav",
+          "sha256": "c412d1c1d29f505165dc613a219ad2b88800f33d1d371028cb21f0264e4211ea"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_carbine.wav",
+      "sha256": "b2a731b564510dd79a621a5c78c02c29da9b97b19c15e2d4edefe446bb1acb25",
+      "duration": 0.23,
+      "peak_dbfs": -5.553601213173987,
+      "rms_dbfs": -19.000250490219717,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_pistol",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/pistol_v1.wav",
+          "sha256": "0c1dc6b5b3011f7c10262eb425e956fcfe9efcec8a7c19c4f2f0fb0cbcabc919"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_pistol.wav",
+      "sha256": "447e75e0c77af69f0c5f297c370313b7267ac7aecf8c1219b6b7d619bceaffec",
+      "duration": 0.23,
+      "peak_dbfs": -5.000377362660108,
+      "rms_dbfs": -23.990716744067292,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_smg",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/smg_v1.wav",
+          "sha256": "4daf163728ab6b112124cc1bde9f1a8aa912baefe791fe52793e96384797b7da"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_smg.wav",
+      "sha256": "803f59a31279e9287302878983e0d2f659d681f18d69fe508ce3f0c1301d06eb",
+      "duration": 0.135,
+      "peak_dbfs": -5.43435140814138,
+      "rms_dbfs": -19.0002649126976,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_shotgun",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shotgun_v1.wav",
+          "sha256": "44aafca43a2694f2425deff6cc0e1edad862d00e7bbeb91c9526320d07f27aeb"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_shotgun.wav",
+      "sha256": "294573a7b70bfb4fc91ea71b1cbf320e19f9c69d30b55251336e5ac7172344f3",
+      "duration": 0.36,
+      "peak_dbfs": -5.000377362660108,
+      "rms_dbfs": -20.284944979820704,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_lmg",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/lmg_v1.wav",
+          "sha256": "daa2844d23c16d79673ce3e85c9cad871cdd420c6c04956960a4b01cade69928"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_lmg.wav",
+      "sha256": "b65e26f0afcb6b2b51ca8308931ac474a8ec87aacbfddf1a76ea00be454f7962",
+      "duration": 0.24,
+      "peak_dbfs": -5.000377362660108,
+      "rms_dbfs": -19.801200931695277,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_marksman",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/marksman_v1.wav",
+          "sha256": "81320de9a59834a3ed27cf3af37c0076370814f42068444ac8b1d0c17c07a013"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_marksman.wav",
+      "sha256": "cb27ceb1637d96ba304fdd77e92fe366b4ea4e87a7c1916ed3d29a23d6c58e08",
+      "duration": 0.27,
+      "peak_dbfs": -5.000377362660108,
+      "rms_dbfs": -25.903564833833627,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_sniper",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/sniper_v1.wav",
+          "sha256": "4644eb6ff8e30e92a78dc8bb5c3c1525e058e203a105cdd51dc22d119da0246a"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_sniper.wav",
+      "sha256": "c1c47d0701a5a01881a6bc9cbbcdc6826d1134f0297059094273d258f440bca6",
+      "duration": 0.37,
+      "peak_dbfs": -5.000377362660108,
+      "rms_dbfs": -19.999231392824054,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_plasma",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/plasma_v1.wav",
+          "sha256": "b31d74ea9c87dadfc26e253e154179933c5137e44a6d5ffa0e5f5e0954261068"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_plasma.wav",
+      "sha256": "ac3e44ee65e6b6f20fe8abec6c3fde33611fbd3c71bc44ca724f3677e898723d",
+      "duration": 0.31,
+      "peak_dbfs": -5.000377362660108,
+      "rms_dbfs": -24.80501410337221,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_hit_armor",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_hit_armor.wav",
+      "sha256": "307924e72d0aedf9294597ea37dae17fd22d98adb7a1f11addab33f323b5e10d",
+      "duration": 0.13,
+      "peak_dbfs": -7.0005506829029605,
+      "rms_dbfs": -23.0163465228079,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_hit_organic",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shotgun_v1.wav",
+          "sha256": "44aafca43a2694f2425deff6cc0e1edad862d00e7bbeb91c9526320d07f27aeb"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_hit_organic.wav",
+      "sha256": "f4d375c5c97cacb943f4a32548ad8954539ac75062b3a26a16454cc8087959be",
+      "duration": 0.115,
+      "peak_dbfs": -8.840497564274731,
+      "rms_dbfs": -22.00027838324158,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_hit_shield",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shield_break_v1.wav",
+          "sha256": "ca40475a5d2e10dc8f6e16c2e874762ad4e5c96f1727f1761da6385968321baf"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_hit_shield.wav",
+      "sha256": "5b3554d82cac83e34f371a55802d61a694b34e7764aa0de2134f46af13fa2974",
+      "duration": 0.14497916666666666,
+      "peak_dbfs": -7.0005506829029605,
+      "rms_dbfs": -28.32071942629858,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_hit_weak",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/marksman_v1.wav",
+          "sha256": "81320de9a59834a3ed27cf3af37c0076370814f42068444ac8b1d0c17c07a013"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_hit_weak.wav",
+      "sha256": "f628a40810f296cf14302321b191a362671dd900b176f4fbf0b7b8df7e9e7aef",
+      "duration": 0.15,
+      "peak_dbfs": -7.0005506829029605,
+      "rms_dbfs": -24.218599705982832,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_break",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shield_break_v1.wav",
+          "sha256": "ca40475a5d2e10dc8f6e16c2e874762ad4e5c96f1727f1761da6385968321baf"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_break.wav",
+      "sha256": "457747dc3f68acb59139602bfeabce4bdee46131a70eb0f87d2e70c8526707a5",
+      "duration": 0.25,
+      "peak_dbfs": -7.0005506829029605,
+      "rms_dbfs": -27.135318327660226,
+      "clipped_samples": 0
+    },
+    {
+      "id": "sfx_gun_down",
+      "provider": "ElevenLabs original reuse and mastering; no new generation",
+      "sources": [
+        {
+          "path": "audio/source/elevenlabs/ground-combat/impact_v1.wav",
+          "sha256": "d28a7a4c66ee1f057c583f8cbe088a6d8bd1e22c6a92625c30e3a4be515619c3"
+        },
+        {
+          "path": "audio/source/elevenlabs/ground-combat/shield_break_v1.wav",
+          "sha256": "ca40475a5d2e10dc8f6e16c2e874762ad4e5c96f1727f1761da6385968321baf"
+        }
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_down.wav",
+      "sha256": "a3e5ee0027ba2e553c0a92672da5a626fccad36565747a71480ccb7405b8fd42",
+      "duration": 0.23,
+      "peak_dbfs": -7.0005506829029605,
+      "rms_dbfs": -25.125668044929995,
+      "clipped_samples": 0
+    }
+  ],
+  "runtime_review": "docs/production/media/ground-weapon-feedback/verification.json",
+  "runtime_recording": "docs/production/media/ground-weapon-feedback/runtime-mix.wav"
+}

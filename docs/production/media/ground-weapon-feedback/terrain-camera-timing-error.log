@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS natural native home landing
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:305183","ordinal":305183,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:305183","combat_tier":4,"form_id":"biota_lobopod_siphons_25","home_point":"(37.4736, 2.031343, 20.76)","id":"surface:1:0:0","introduced":false,"layer":"surface","look_id":"biota_lobopod_siphons_25_p00_s03","point":"(37.4736, 2.031343, 20.76)","status":"active","terrestrial":true,"yaw":0.433539786195391}}
+PASS natural animal fixture
+PASS organic fixture saved
+PASS organic Forward+ ready
+PASS actual animal and ground collision loaded
+PASS host ground controls acknowledged
+FAIL: terrain hit creates surface contact
+PASS terrain review saves
+TERRAIN_FEEDBACK_REVIEW 8 FAILURES 1
+WARNING: 1 ObjectDB instance was leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

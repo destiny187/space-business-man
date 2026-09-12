@@ -67,20 +67,24 @@ func stream(id: String,looped: bool = false) -> AudioStream:
 	streams[key] = audio
 	return audio
 
-func play(id: String,location: Vector3 = Vector3.INF,pitch: float = 1.0) -> void:
+func play(id: String,location: Vector3 = Vector3.INF,pitch: float = 1.0,gain_db: float = 0.0,role: String = "") -> void:
 	var now: int = Time.get_ticks_msec()
 	var cooldown: int = 30 if id.begins_with("sfx_gun_") else 8000 if id == "sfx_creature_call" else (500 if id == "sfx_combat_pulse" else 100)
 	if now-int(last_played.get(id,-10000)) < cooldown: return
 	var audio: AudioStream = stream(id)
 	if audio == null: return
+	if role=="firearm_shot":
+		var voices:=get_children().filter(func(node):return node.get_meta("audio_role","")==role and not node.is_queued_for_deletion())
+		if voices.size()>=int(FrontierFirearmEffects.config().shot_voices):voices[0].stop();voices[0].queue_free()
 	last_played[id] = now
 	if location == Vector3.INF:
 		var speaker := AudioStreamPlayer.new()
 		speaker.stream = audio
 		speaker.pitch_scale=clampf(pitch,.25,4.0)
 		speaker.set_meta("cue",id)
+		speaker.set_meta("audio_role",role)
 		speaker.bus = "UI" if id.begins_with("ui_") else "SFX"
-		speaker.volume_db = -10
+		speaker.volume_db = -10+gain_db
 		add_child(speaker)
 		speaker.finished.connect(speaker.queue_free)
 		speaker.play()
@@ -89,13 +93,22 @@ func play(id: String,location: Vector3 = Vector3.INF,pitch: float = 1.0) -> void
 		speaker.stream = audio
 		speaker.pitch_scale=clampf(pitch,.25,4.0)
 		speaker.set_meta("cue",id)
+		speaker.set_meta("audio_role",role)
 		speaker.bus = "SFX"
-		speaker.volume_db = -8
+		speaker.volume_db = -8+gain_db
 		speaker.max_distance = 30
 		add_child(speaker)
 		speaker.global_position = location
 		speaker.finished.connect(speaker.queue_free)
 		speaker.play()
+
+func firearm_confirmation(id: String,gain_db: float=0.0) -> void:
+	# Make a short pocket in existing local shot tails, without ducking threats or the SFX bus.
+	for speaker in get_children():
+		if speaker is AudioStreamPlayer and speaker.get_meta("audio_role","")=="firearm_shot" and not speaker.has_meta("hit_ducked"):
+			speaker.set_meta("hit_ducked",true)
+			speaker.volume_db+=float(FrontierFirearmEffects.config().hit_duck_db)
+	play(id,Vector3.INF,1.0,gain_db)
 
 func stop_firearm_cues() -> void:
 	for speaker in get_children():

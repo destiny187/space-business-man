@@ -1,0 +1,51 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS start isolated host
+PASS land fixture:
+PASS isolated fixture saved
+PASS Forward+ ground loaded
+PASS robot and ground streamed
+PASS fresh accepted family event carbine
+PASS accepted pellet contacts carbine
+PASS contacts remain on their own ray carbine
+PASS family audio plays carbine
+PASS fresh accepted family event pistol
+PASS accepted pellet contacts pistol
+PASS contacts remain on their own ray pistol
+PASS family audio plays pistol
+PASS fresh accepted family event smg
+PASS accepted pellet contacts smg
+PASS contacts remain on their own ray smg
+PASS family audio plays smg
+PASS fresh accepted family event shotgun
+PASS accepted pellet contacts shotgun
+PASS contacts remain on their own ray shotgun
+PASS family audio plays shotgun
+PASS fresh accepted family event lmg
+PASS accepted pellet contacts lmg
+PASS contacts remain on their own ray lmg
+PASS family audio plays lmg
+PASS fresh accepted family event marksman
+PASS accepted pellet contacts marksman
+PASS contacts remain on their own ray marksman
+PASS family audio plays marksman
+PASS fresh accepted family event sniper
+PASS accepted pellet contacts sniper
+PASS contacts remain on their own ray sniper
+PASS family audio plays sniper
+PASS fresh accepted family event plasma
+PASS accepted pellet contacts plasma
+PASS contacts remain on their own ray plasma
+PASS family audio plays plasma
+PASS distinct confirmed feedback break actual=break
+PASS distinct confirmed feedback hit actual=hit
+PASS distinct confirmed feedback weak actual=weak
+PASS distinct confirmed feedback kill actual=kill
+PASS air shot has no invented impact
+PASS menu clears firearm effects and sound
+PASS actual SFX bus captured
+PASS isolated combat save closes
+GROUND_FEEDBACK_REVIEW 45 FAILURES 0
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

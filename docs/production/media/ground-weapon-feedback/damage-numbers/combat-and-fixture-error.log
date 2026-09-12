@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS isolated fixture saved
+PASS Forward+ ground loaded
+PASS ground, model and host input ready
+PASS one actual target per shot 0
+PASS consecutive confirmed damage stacks 0
+PASS one actual target per shot 1
+PASS consecutive confirmed damage stacks 1
+PASS one actual target per shot 2
+PASS consecutive confirmed damage stacks 2
+PASS shield transition keeps broken icon and crack audio
+PASS damage stack expires
+PASS actual remaining damage excludes overkill
+PASS simultaneous defeat preserves crack picture and sound
+PASS shotgun pellets coalesce into one real total
+PASS weak point number on small window
+PASS menu clears all numbers and crack markers
+PASS miss has no number
+FAIL: own shield hit has its own sound
+FAIL: own shield breaks on host vitals result
+FAIL: own break plays crack instead of build rejection
+PASS actual SFX output captured
+FAIL: isolated updated event save closes
+GROUND_DAMAGE_REVIEW 22 FAILURES 4
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

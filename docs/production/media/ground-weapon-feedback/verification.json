@@ -1,0 +1,36 @@
+{
+  "runtime": "Godot 4.7.2 Metal Forward+ Apple M2",
+  "robot_checks": 45,
+  "robot_failures": 0,
+  "duration_seconds": 25.429333333333332,
+  "peak_dbfs": -10.197667276528472,
+  "clipped_samples": 0,
+  "source": "runtime-mix.wav",
+  "listening_review": "Subjective listening pending; runtime sound playback and recorded signal inspected.",
+  "limitations": [
+    "No multi-client or long-duration regression",
+    "Review fixture shutdown reported 1\u20132 ObjectDB instances; no final gameplay script or shader error."
+  ],
+  "organic_review": {
+    "checks": 12,
+    "initial_failures": 1,
+    "passed_paths": [
+      "real organic contact and short confirmation",
+      "blocked muzzle has no flash",
+      "accepted scoped fire",
+      "save"
+    ],
+    "fixture_failure": "Terrain shot used previous camera orientation; corrected by waiting for actual camera state.",
+    "corrected_by": "terrain-and-scope.log"
+  },
+  "terrain_scope_review": {
+    "checks": 11,
+    "failures": 0,
+    "paths": [
+      "real downward ground contact",
+      "accepted scoped shot",
+      "trace starts beyond camera near field",
+      "save"
+    ]
+  }
+}

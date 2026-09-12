@@ -209,7 +209,7 @@ func _process(delta: float) -> void:
 	recoil_velocity+=(-recoil*140-recoil_velocity*20)*step
 	recoil=maxf(0,recoil+recoil_velocity*step)
 	muzzle.light_color=Color("8de8db") if tool.get("kind")=="miner" else Color("ffc07c")
-	muzzle.light_energy=intake_strength*.32+pow(recoil,3)*2.4
+	muzzle.light_energy=0.0 if tool.has("firearm") else intake_strength*.32+pow(recoil,3)*2.4
 	var moving: bool=active and app.actors[app.session.latest.self_id].velocity.length()>1
 	var swimming: bool=active and app.visuals[app.session.latest.self_id].get("motion",{}).get("state","") in ["swim","tread"]
 	swim_lower=lerpf(swim_lower,1.0 if swimming else 0.0,1-exp(-delta*6))

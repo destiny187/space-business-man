@@ -9,6 +9,7 @@ var last_legendary:=-1
 var last_shield:=-1
 var last_break:=-1
 var shield_flash:=0.0
+var shield_crack:=0.0
 var module_seen: Dictionary={}
 var modules_ready:=false
 var shield_echoes: Dictionary={}
@@ -80,9 +81,10 @@ func _process(delta: float) -> void:
 	meters.shield.update_value(float(v.get("shield",0)),shield_max)
 	if last_shield>=0 and int(v.get("shield_serial",0))>last_shield:
 		shield_flash=.5
-		if not app.feedback.blocked():app.feedback.audio.play("sfx_build_place")
+		if not app.feedback.blocked() and int(v.get("shield_break_serial",0))==last_break:app.feedback.audio.play("sfx_gun_hit_shield",Vector3.INF,.9,-2)
 	if last_break>=0 and int(v.get("shield_break_serial",0))>last_break:
-		if not app.feedback.blocked():app.feedback.audio.play("sfx_build_invalid")
+		if not app.feedback.blocked():
+			shield_crack=.4;app.feedback.audio.play("sfx_gun_break",Vector3.INF,.82,0)
 		notice.text="실드 소진  엄폐 후 재충전";notice_left=3
 	if last_legendary>=0 and int(v.get("legendary_serial",0))>last_legendary:
 		var effect: Dictionary=FrontierSuitModules.config().legendary.get(str(v.get("legendary_effect","")),{})
@@ -90,6 +92,8 @@ func _process(delta: float) -> void:
 		if not app.feedback.blocked():app.feedback.audio.play("ui_discovery")
 	last_legendary=int(v.get("legendary_serial",0))
 	last_shield=int(v.get("shield_serial",0));last_break=int(v.get("shield_break_serial",0));shield_flash=maxf(0,shield_flash-delta)
+	shield_crack=maxf(0,shield_crack-delta)
+	if app.feedback.blocked():shield_crack=0;shield_flash=0
 	_update_shield_echoes(delta)
 	for id in FrontierSuitModules.state(member).get("items",{}):
 		if modules_ready and not module_seen.has(id):notice.text=FrontierSuitModules.title(member.modules.items[id])+" 획득  I 모듈";notice_left=5;app.feedback.audio.play("ui_discovery")
@@ -100,7 +104,8 @@ func _process(delta: float) -> void:
 	meters.health.update_value(float(v.health),health_max,low_health)
 	meters.stamina.update_value(float(v.stamina),float(FrontierCrewVitals.config().maximum_stamina),bool(v.exhausted))
 	if last_damage>=0 and int(v.damage_serial)>last_damage:
-		damage_flash=.65;app.feedback.audio.play("sfx_build_invalid")
+		damage_flash=.65
+		if not app.feedback.blocked() and shield_crack<=0:app.feedback.audio.play("sfx_gun_hit_organic",Vector3.INF,.78,-4)
 	if last_rescue>=0 and int(v.rescue_serial)>last_rescue:notice.text="긴급 구조  장비와 화물 보존";notice_left=4
 	last_damage=int(v.damage_serial);last_rescue=int(v.rescue_serial)
 	damage_flash=maxf(0,damage_flash-delta);notice_left=maxf(0,notice_left-delta);notice.visible=notice_left>0
@@ -109,10 +114,18 @@ func _process(delta: float) -> void:
 	pickups.position=Vector2(viewport_size.x-226,248);notice.position=Vector2((viewport_size.x-notice.size.x)/2,80)
 	queue_redraw()
 func _draw() -> void:
-	if damage_flash<=0 and shield_flash<=0:return
+	if damage_flash<=0 and shield_flash<=0 and shield_crack<=0:return
 	var view_size:=get_viewport().get_visible_rect().size
 	if damage_flash>0:draw_rect(Rect2(Vector2(3,3),view_size-Vector2(6,6)),Color(1,.35,.2,damage_flash),false,6)
 	if shield_flash>0:draw_rect(Rect2(Vector2(12,12),view_size-Vector2(24,24)),Color(.3,.7,1,shield_flash),false,4)
+	if shield_crack>0:
+		var color:=Color(.57,.85,1,minf(.8,shield_crack/.15))
+		var drift: float=(1-shield_crack/.4)*12
+		for side in [-1,1]:
+			var at:=Vector2(22+drift if side==1 else view_size.x-22-drift,view_size.y*.5)
+			for vertical in [-1,1]:
+				var points:=PackedVector2Array([at+Vector2(0,vertical*50),at+Vector2(side*15,vertical*67),at+Vector2(side*8,vertical*81),at+Vector2(side*29,vertical*111)])
+				draw_polyline(points,color,2,true)
 
 func _update_shield_echoes(delta: float) -> void:
 	for id in app.actors:

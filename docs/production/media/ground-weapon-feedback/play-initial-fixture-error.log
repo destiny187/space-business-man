@@ -1,0 +1,43 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS start isolated host
+PASS land fixture:
+PASS isolated fixture saved
+PASS Forward+ ground loaded
+PASS robot and ground streamed
+PASS accepted pellet contacts carbine
+PASS contacts remain on their own ray carbine
+PASS family audio plays carbine
+PASS accepted pellet contacts pistol
+PASS contacts remain on their own ray pistol
+PASS family audio plays pistol
+PASS accepted pellet contacts smg
+PASS contacts remain on their own ray smg
+PASS family audio plays smg
+PASS accepted pellet contacts shotgun
+PASS contacts remain on their own ray shotgun
+PASS family audio plays shotgun
+PASS accepted pellet contacts lmg
+PASS contacts remain on their own ray lmg
+PASS family audio plays lmg
+PASS accepted pellet contacts marksman
+PASS contacts remain on their own ray marksman
+PASS family audio plays marksman
+PASS accepted pellet contacts sniper
+PASS contacts remain on their own ray sniper
+PASS family audio plays sniper
+PASS accepted pellet contacts plasma
+PASS contacts remain on their own ray plasma
+PASS family audio plays plasma
+FAIL: distinct confirmed feedback break
+FAIL: distinct confirmed feedback hit
+FAIL: distinct confirmed feedback weak
+FAIL: distinct confirmed feedback kill
+FAIL: air shot has no invented impact
+PASS menu clears firearm effects and sound
+PASS actual SFX bus captured
+FAIL: isolated combat save closes
+GROUND_FEEDBACK_REVIEW 37 FAILURES 6
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

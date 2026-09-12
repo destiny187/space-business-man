@@ -1,5 +1,7 @@
 # 사운드·ElevenLabs 제작
 
+2026-09-12 지상 타격감 후속: 기존 ElevenLabs 8계열 발사 원본을 다시 가공하고 장갑·생물·실드·약점·파괴·격파 확인음을 연결했다. 신규 생성 여부·실제 재생·청감 경계는 [145 제작 기록](145-ground-weapon-feedback.md), 발사·일반 명중 파일 해시는 [v2 이력](../../audio/manifests/ground-weapon-feedback.json), 후속 실드 파괴·동시 격파 2종은 [v3 이력](../../audio/manifests/ground-shield-feedback.json)이 소관이다.
+
 2026-09-12 지상 공격 고도화는 기존 ElevenLabs 생물 3음원을 재사용한다. 돌진/도약 출발·접촉/착지·두 번 베기 시각과 피치, 실제 재생 확인은 [138 제작 기록](138-native-ground-attack-patterns.md)에 둔다. 새 음원을 생성한 것은 아니다.
 
 2026-09-12 토착 지상 생물 교전용 경고·타격·피격 3종을 생성·연결했다. 생성 조건·편집·실제 재생과 청감 미확인 범위는 [137 제작 기록](137-native-wildlife-combat.md)을 따른다.
