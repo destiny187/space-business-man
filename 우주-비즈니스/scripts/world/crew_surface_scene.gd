@@ -15,6 +15,9 @@ var ecology: FrontierSurfaceEcology
 var body: Dictionary
 var epoch:=0
 var applied_edits:=0
+var accepted_business: Dictionary={}
+var accepted_ecology: Dictionary={}
+var accepted_packet:=false
 var incoming: Array=[]
 var config: Dictionary
 var material_cache: Dictionary={}
@@ -103,17 +106,21 @@ func _ecology(packet: Dictionary) -> Dictionary:
 
 func accept(packet: Dictionary) -> void:
 	if packet.body_id!=body.id or int(packet.epoch)!=epoch:return
-	if packet.edits.size()!=incoming.size():ecology.invalidate()
-	incoming=packet.edits.duplicate(true)
+	var edits_changed: bool=packet.edits!=incoming
+	if edits_changed:ecology.invalidate();incoming=packet.edits.duplicate(true)
 	water_columns=packet.get("water_columns",{})
 	ecology.ecology=_ecology(packet)
-	ecology.refresh_timer=0
-	business_view.accept(packet.get("business",{}))
-	surface_details.accept(packet.get("business",{}))
-	atmosphere.accept(packet.get("business",{}));_update_shuttles()
-	if presence!=null:presence.accept(packet.get("business",{}))
-	if hydrology!=null:hydrology.accept(packet.get("business",{}))
+	if not accepted_packet or edits_changed or accepted_ecology!=packet.ecology:
+		ecology.refresh_timer=0;accepted_ecology=packet.ecology
+	var business: Dictionary=packet.get("business",{})
+	if not accepted_packet or edits_changed or accepted_business!=business:
+		business_view.accept(business);surface_details.accept(business);atmosphere.accept(business)
+		if presence!=null:presence.accept(business)
+		if hydrology!=null:hydrology.accept(business)
+		accepted_business=business
+	_update_shuttles()
 	if physical_water!=null:physical_water.accept(packet.get("water",FrontierSurfaceWater.create()))
+	accepted_packet=true
 
 func _setup_environment() -> void:
 	var world:=WorldEnvironment.new();environment=Environment.new()

@@ -27,6 +27,30 @@ var motions: Dictionary={}
 var session_id: String
 var save_world: Callable
 var save_flight_checkpoint: Callable
+var save_autonomous: Callable
+var poll_autonomous: Callable
+var finish_autonomous: Callable
+var autonomous_world: Dictionary={}
+var autonomous_mobile: Dictionary={}
+var autonomous_vehicles: Dictionary={}
+var staged_autonomous:=false
+
+func autonomous_pending() -> bool:return not autonomous_world.is_empty()
+func can_simulate_member(id: String) -> bool:
+	return not autonomous_pending() or autonomous_mobile.has(id)
+func can_simulate_vehicle(id: String) -> bool:
+	return not autonomous_pending() or autonomous_vehicles.has(id)
+func resolve_autonomous(wait: bool=false) -> bool:
+	if not autonomous_pending():return true
+	var status: int=finish_autonomous.call() if wait else poll_autonomous.call()
+	if status==0:return false
+	if status<0:
+		autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear();stopped=true;error="자동 진행 저장 실패로 세계를 정지했습니다.";return false
+	world=autonomous_world;autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear()
+	return true
+func _stage_autonomous(_state: Dictionary) -> bool:
+	staged_autonomous=true
+	return true
 var stopped:=false
 var error:=""
 var now:=0.0
@@ -96,6 +120,7 @@ func _drop_pending(peer: int) -> void:
 	pending.erase(peer)
 func slots() -> int:return peers.size()+pending.size()+reserved.size()
 func admit(peer: int,profile: Variant,capability: String,protocol: int,content: String) -> Dictionary:
+	if not resolve_autonomous(true):return failure(error)
 	if stopped or peer<=1:return failure("세션이 닫혔습니다.")
 	if peers.has(peer) or pending.has(peer):return failure("이미 참가 처리 중입니다.")
 	if protocol!=int(FrontierCrewWorld.config().protocol) or content!=FrontierCrewWorld.content_hash():return failure("게임/생성/장비 버전이 호스트와 다릅니다.")
@@ -115,6 +140,7 @@ func admit(peer: int,profile: Variant,capability: String,protocol: int,content: 
 	pending[peer]={"profile":profile.duplicate(true),"token":token,"known":known,"reserved_until":reserved_until,"expires":now+float(FrontierCrewWorld.config().handshake_seconds)}
 	return {"ok":true,"world_id":world.crew.world_id,"token":token,"session_id":session_id,"snapshot":snapshot(peer)}
 func acknowledge(peer: int,received_session: String) -> Dictionary:
+	if not resolve_autonomous(true):return failure(error)
 	if stopped or received_session!=session_id or not pending.has(peer):return failure("유효한 참가 준비 응답이 아닙니다.")
 	var entry: Dictionary=pending[peer]
 	var draft:=WorldSnapshot.copy(world)
@@ -159,6 +185,7 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
 	return {"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func request(peer: int,envelope: Variant) -> Dictionary:
+	if not resolve_autonomous(true):return failure(error)
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
 	if not envelope.get("kind") is String or not envelope.get("args") is Dictionary:return failure("요청 형식 오류")
@@ -318,6 +345,7 @@ var gun_checkpoint:=0.0
 var gun_dirty:=false
 var gun_receipts: Dictionary={}
 func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
+	if not resolve_autonomous(true):return failure(error)
 	var actor: String=peers[peer]
 	var member: Dictionary=world.crew.members[actor]
 	var sequence:=int(envelope.sequence)
@@ -374,10 +402,11 @@ func direction_for(peer: int) -> Vector2:
 	return inputs[peer].direction
 func update_position(peer: int,position: Vector3) -> void:
 	# Called exclusively by host-side collision simulation, never an RPC.
-	if not peers.has(peer) or not position.is_finite():return
+	if not peers.has(peer) or not can_simulate_member(peers[peer]) or not position.is_finite():return
 	var id: String=peers[peer]
 	world.crew.members[id].position=[position.x,position.y,position.z]
 func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
+	if not resolve_autonomous(true):return false
 	if peers.has(peer):motions.erase(peers[peer])
 	_drop_pending(peer);inputs.erase(peer);input_sequences.erase(peer);scans.erase(peer)
 	if not peers.has(peer):return true
@@ -393,6 +422,7 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	if reserve_slot and peer!=1:reserved[id]=now+float(FrontierCrewWorld.config().reconnect_seconds)
 	return true
 func close() -> bool:
+	if not resolve_autonomous(true):return false
 	stopped=true
 	var draft:=WorldSnapshot.copy(world)
 	FrontierRovers.brake_all(draft)
@@ -404,6 +434,7 @@ func close() -> bool:
 func failure(message: String) -> Dictionary:return {"ok":false,"error":message,"revision":world.get("crew",{}).get("revision",0)}
 
 func checkpoint() -> bool:
+	if not resolve_autonomous(true):return false
 	if stopped:return false
 	if not save_world.call(world):stopped=true;error="항해 상태 저장 실패로 세계를 정지했습니다.";return false
 	return true
@@ -464,6 +495,36 @@ func _step_water(delta: float) -> void:
 
 var incident_timer:=0.0
 func step_surface(delta: float) -> void:
+	if stopped or not resolve_autonomous():return
+	if not save_autonomous.is_valid():_step_surface(delta);return
+	var previous:=world
+	var persist:=save_world
+	staged_autonomous=false;save_world=_stage_autonomous
+	_step_surface(delta)
+	save_world=persist
+	if not staged_autonomous:return
+	var candidate:=world
+	world=previous
+	if stopped:return
+	if not save_autonomous.call(candidate):stopped=true;error="자동 진행 저장 제출 실패로 세계를 정지했습니다.";return
+	autonomous_world=candidate
+	autonomous_mobile.clear()
+	# The worker already owns a frozen snapshot. Crew untouched by this automatic
+	# transaction can keep walking/regenerating without losing newer runtime state.
+	# A member changed by combat/rescue waits for the durable result instead.
+	for id in world.crew.members:
+		if candidate.crew.members.get(id,{})==world.crew.members[id]:
+			autonomous_mobile[id]=true;candidate.crew.members[id]=world.crew.members[id]
+	autonomous_vehicles.clear()
+	var vehicles: Dictionary=FrontierRovers.fleet(world).vehicles
+	var next_vehicles: Dictionary=FrontierRovers.fleet(candidate).vehicles
+	for id in vehicles:
+		if next_vehicles.get(id,{})!=vehicles[id]:continue
+		var riders:=FrontierRovers.seats(rover_runtime,id)
+		if riders.any(func(rider):return not str(rider).is_empty() and not can_simulate_member(rider)):continue
+		autonomous_vehicles[id]=true;next_vehicles[id]=vehicles[id]
+
+func _step_surface(delta: float) -> void:
 	if stopped:return
 	for member in world.crew.members.values():FrontierFirearms.tick(member,delta)
 	gun_checkpoint+=delta

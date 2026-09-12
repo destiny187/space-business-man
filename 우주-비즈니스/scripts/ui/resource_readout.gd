@@ -27,4 +27,7 @@ func show_cost(cost: Dictionary,stock: Dictionary,with_owned: bool=false,pixels:
 		var number: String=("%d/%d"%[have,need]) if with_owned else str(need)
 		parts.append("[img=%dx%d]%s[/img] [color=#%s]%s[/color]"%[pixels,pixels,FrontierResourceIcons.icon_path(id),color.to_html(false),number])
 		hints.append("%s: %d / %d"%[FrontierCatalog.entry("resources",id).name,have,need])
-	value="";text=("[center]" if centered_cost else "")+"   ".join(parts)+("[/center]" if centered_cost else "");tooltip_text="\n".join(hints)
+	var markup: String=("[center]" if centered_cost else "")+"   ".join(parts)+("[/center]" if centered_cost else "")
+	var hint: String="\n".join(hints)
+	if text==markup and tooltip_text==hint:return
+	value="";text=markup;tooltip_text=hint

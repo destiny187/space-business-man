@@ -11,6 +11,9 @@ var terrain: FrontierTerrainField
 var texture: ImageTexture
 var cached_id: String=""
 var map_key: String=""
+const MapBake=preload("res://scripts/ui/planet_map_bake.gd")
+var bake_job: RefCounted
+var bake_task: int=-1
 var map_min:=Vector2.ZERO
 var map_size:=Vector2.ONE
 var focus:=Vector2.ZERO
@@ -53,29 +56,31 @@ func refresh() -> void:
  title.text=body.name+"  T%d  행성지도"%int(body.planet_tier)
  if modes.current_tab==1:terraform.refresh();return
  if cached_id!=body.id:
+  texture=null;map_key=""
   cached_id=body.id;focus=Vector2(app.camera.position.x,app.camera.position.z);groups=[];waypoint=Vector2.INF;selected=""
- var bake_key: String=body.id+str((focus/32).floor())+str(meters_per_pixel)+str(canvas.size)
- if bake_key!=map_key and canvas.size.x>0:
-  map_key=bake_key;map_size=canvas.size*meters_per_pixel;map_min=focus-map_size*.5
-  var width:=160;var height:=100
-  var image:=Image.create(width,height,false,Image.FORMAT_RGBA8)
-  for z in height:
-   for x in width:
-    var point:=map_min+Vector2(float(x)/width,float(z)/height)*map_size
-    var h:=terrain.height(point.x,point.y)
-    var relief:=clampf((terrain.height(point.x+12,point.y)-h)*.035+(terrain.height(point.x,point.y+12)-h)*.02,-.25,.25)
-    var color:=Color("596051").lerp(Color("ad9d79"),clampf((h+30)/180,0,1))
-    if body.kind=="glacial":color=Color("607f91").lerp(Color("bed5d5"),clampf((h+40)/180,0,1))
-    if body.kind=="sulfur":color=Color("665947").lerp(Color("a89054"),clampf((h+40)/180,0,1))
-    color=color.lightened(relief) if relief>0 else color.darkened(-relief)
-    var contour:=fposmod(h,20.0)
-    if contour<.75:color=color.darkened(.20)
-    if h< -3.9 and float(body.get("traits",{}).get("water",0))>15 and float(body.get("traits",{}).get("temperature",-100))>0:color=Color("28545b")
-    if maxf(absf(point.x),absf(point.y))>8192:color=Color("10191f")
-    image.set_pixel(x,z,color)
-  texture=ImageTexture.create_from_image(image)
+ _finish_bake()
+ var bake_key:=_bake_key()
+ if bake_task<0 and bake_key!=map_key and canvas.size.x>0:
+  bake_job=MapBake.new()
+  var extent:=canvas.size*meters_per_pixel
+  bake_job.configure(terrain,body,focus-extent*.5,extent,bake_key)
+  bake_task=WorkerThreadPool.add_task(bake_job.run,false,"Planet map")
  update_detail();canvas.queue_redraw()
+func _bake_key() -> String:
+ return str([cached_id,terrain.seed_value,(focus/32).floor(),meters_per_pixel,canvas.size])
+func _finish_bake() -> void:
+ if bake_task<0 or not WorkerThreadPool.is_task_completed(bake_task):return
+ WorkerThreadPool.wait_for_task_completion(bake_task);bake_task=-1
+ # Navigation may have changed while the worker was drawing. Never install a stale map.
+ if terrain!=null and bake_job.key==_bake_key():
+  texture=ImageTexture.create_from_image(bake_job.result)
+  map_key=bake_job.key;map_min=bake_job.map_min;map_size=bake_job.map_size
+  canvas.queue_redraw()
+ bake_job=null
+func _exit_tree() -> void:
+ if bake_task>=0:WorkerThreadPool.wait_for_task_completion(bake_task);bake_task=-1;bake_job=null
 func _process(dt: float) -> void:
+ _finish_bake()
  if not visible:return
  timer-=dt
  if timer<=0:timer=.5;refresh()

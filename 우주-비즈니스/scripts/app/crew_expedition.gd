@@ -513,7 +513,7 @@ func _physics_process(delta: float) -> void:
 		session.authority.weather_ready_provider=_weather_ready
 		for peer in session.authority.peers:
 			var id: String=session.authority.peers[peer]
-			if not actors.has(id):continue
+			if not actors.has(id) or not session.authority.can_simulate_member(id):continue
 			if not rovers.seat(id).is_empty():continue
 			var actor: CharacterBody3D=actors[id];var direction:=session.authority.direction_for(peer)
 			var input: Dictionary=session.authority.inputs.get(peer,{})
@@ -829,22 +829,26 @@ func _refresh_surface_options() -> void:
 	var ecological: Dictionary=session.surface.ecology
 	if not form_options.get_popup().visible:
 		var selected: String=str(form_options.get_item_metadata(form_options.selected)) if form_options.selected>=0 else ""
-		form_options.clear();var ids: Array=[]
+		var ids: Array=[]
 		for row in ecological.observations.values():
 			if row.form_id not in ids:ids.append(row.form_id)
 		for row in ecological.research.values():
 			if row.form_id not in ids:ids.append(row.form_id)
 		ids.sort()
-		for id in ids:form_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(id))),FrontierEcologyCatalog.form(id).name);form_options.set_item_metadata(form_options.item_count-1,id)
-		if selected in ids:form_options.select(ids.find(selected))
-		if ids.is_empty():form_options.add_item("스캔한 생명체 없음");form_options.set_item_metadata(0,"")
+		if form_options.get_meta("source_ids",["uninitialized"])!=ids:
+			form_options.set_meta("source_ids",ids.duplicate());form_options.clear()
+			for id in ids:form_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(id))),FrontierEcologyCatalog.form(id).name);form_options.set_item_metadata(form_options.item_count-1,id)
+			if selected in ids:form_options.select(ids.find(selected))
+			if ids.is_empty():form_options.add_item("스캔한 생명체 없음");form_options.set_item_metadata(0,"")
 	if not sample_options.get_popup().visible:
 		var selected: String=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
 		var carried_samples:=FrontierSpecimenItems.carried(session.latest.get("inventory",{}))
-		sample_options.clear();var ids: Array=ecological.specimens.keys().filter(func(id):return ecological.specimens[id].state=="cargo" and carried_samples.has(id));ids.sort()
-		for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
-		if selected in ids:sample_options.select(ids.find(selected))
-		if ids.is_empty():sample_options.add_item("내 아이템창에 표본 없음");sample_options.set_item_metadata(0,"")
+		var ids: Array=ecological.specimens.keys().filter(func(id):return ecological.specimens[id].state=="cargo" and carried_samples.has(id));ids.sort()
+		if sample_options.get_meta("source_ids",["uninitialized"])!=ids:
+			sample_options.set_meta("source_ids",ids.duplicate());sample_options.clear()
+			for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
+			if selected in ids:sample_options.select(ids.find(selected))
+			if ids.is_empty():sample_options.add_item("내 아이템창에 표본 없음");sample_options.set_item_metadata(0,"")
 
 func surface_action(kind: String) -> void:
 	if not session.active or surface_world==null:return

@@ -196,6 +196,7 @@ func _ready() -> void:
 	vessel_terminal=FrontierVesselTerminal.new();ship_tab.add_child(vessel_terminal);vessel_terminal.configure(self)
 	shuttle_panel=FrontierShuttlePanel.new();tabs.add_child(shuttle_panel);shuttle_panel.configure(self)
 	set_context("build")
+	tabs.tab_changed.connect(func(_index):pending_paint=not paint_arguments.is_empty();_flush_paint())
 	hide()
 func label(parent: Node,text: String,size: int=15) -> Label:
 	var item:=Label.new();item.text=text;item.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;item.size_flags_horizontal=Control.SIZE_EXPAND_FILL;item.add_theme_font_size_override("font_size",size);parent.add_child(item);return item
@@ -206,6 +207,12 @@ func option(parent: Node) -> OptionButton:
 func selected(item: OptionButton) -> String:return str(item.get_item_metadata(item.selected)) if item.selected>=0 else ""
 func choices(item: OptionButton,values: Dictionary) -> void:
 	if item.get_popup().visible:return
+	var same: bool=item.item_count==values.size()
+	var index:=0
+	for key in values:
+		if not same:break
+		same=item.get_item_metadata(index)==key and item.get_item_text(index)==str(values[key]);index+=1
+	if same:return
 	var old:=selected(item);item.clear()
 	for key in values:item.add_item(values[key]);item.set_item_metadata(item.item_count-1,key)
 	for i in item.item_count:
@@ -223,8 +230,11 @@ func set_context(kind: String,id: String="") -> void:
 		_:allowed=["시설 관리","생산 / 개조"]
 	if kind in ["atmosphere","thermal","water","biolab"]:allowed.append("생물공학")
 	if kind=="storage":allowed.append("시설 관리")
+	allowed=allowed.map(func(title):return str(title).validate_node_name())
 	tabs.tabs_visible=allowed.size()>1 and kind!="factory"
-	for i in tabs.get_tab_count():tabs.set_tab_hidden(i,str(tabs.get_tab_control(i).name) not in allowed)
+	for i in tabs.get_tab_count():
+		tabs.set_tab_hidden(i,str(tabs.get_tab_control(i).name) not in allowed)
+		tabs.set_tab_title(i,str(tabs.get_tab_control(i).name).replace(" _ "," / "))
 	for i in tabs.get_tab_count():
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
 	if kind=="factory":_factory_page()
@@ -250,28 +260,29 @@ func refresh_context(current: Dictionary) -> void:
 	register_button.hide()
 	guidance.visible=current.is_empty()
 	if current.is_empty():guidance.text="착륙 지표를 준비 중입니다."
-	robot_factory.refresh(current)
-	var cargo: Dictionary={}
-	for key in current.get("inventory",{}):
-		if int(current.inventory[key])>0:cargo[key]=FrontierCatalog.entry("resources",key).name+" ×"+str(int(current.inventory[key]))
-	choices(warehouse_stock,cargo)
-	var next_key:=str(cargo)
-	if warehouse_key!=next_key:
-		warehouse_key=next_key
-		for child in warehouse_grid.get_children():warehouse_grid.remove_child(child);child.queue_free()
-		for key in cargo:
-			var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(key);tile.caption=FrontierCatalog.entry("resources",key).name;tile.amount=str(int(current.inventory[key]));tile.tooltip_text=cargo[key]
-			tile.selected=key==selected(warehouse_stock)
-			tile.pressed.connect(func():
-				for i in warehouse_stock.item_count:
-					if str(warehouse_stock.get_item_metadata(i))==key:warehouse_stock.select(i)
-				for other in warehouse_grid.get_children():other.selected=other==tile;other.queue_redraw())
-			warehouse_grid.add_child(tile)
+	if robot_factory.is_visible_in_tree():robot_factory.refresh(current)
+	if warehouse.is_visible_in_tree():
+		var cargo: Dictionary={}
+		for key in current.get("inventory",{}):
+			if int(current.inventory[key])>0:cargo[key]=FrontierCatalog.entry("resources",key).name+" ×"+str(int(current.inventory[key]))
+		choices(warehouse_stock,cargo)
+		var next_key:=str(cargo)
+		if warehouse_key!=next_key:
+			warehouse_key=next_key
+			for child in warehouse_grid.get_children():warehouse_grid.remove_child(child);child.queue_free()
+			for key in cargo:
+				var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(key);tile.caption=FrontierCatalog.entry("resources",key).name;tile.amount=str(int(current.inventory[key]));tile.tooltip_text=cargo[key]
+				tile.selected=key==selected(warehouse_stock)
+				tile.pressed.connect(func():
+					for i in warehouse_stock.item_count:
+						if str(warehouse_stock.get_item_metadata(i))==key:warehouse_stock.select(i)
+					for other in warehouse_grid.get_children():other.selected=other==tile;other.queue_redraw())
+				warehouse_grid.add_child(tile)
 	var target_robot: Dictionary=current.get("robots",{}).get(context_id,{})
 	robot_job_status.text="Mk.%d  %s  %s"%[int(target_robot.get("tier",1)),"자동" if target_robot.get("auto_enabled",false) else "지정 광맥" if not target_robot.get("manual_target","").is_empty() else "대기",str(target_robot.get("status",""))]
 	if context_kind not in ["build","ship","base"]:
 		var row: Dictionary=current.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
-		if context_kind!="robot" and not row.is_empty():
+		if context_kind!="robot" and not row.is_empty() and facility_picture.is_visible_in_tree():
 			facility_picture.show_model(FrontierCatalog.entry("buildings",row.type).model)
 			facility_status.text=FrontierCatalog.entry("buildings",row.type).description if row.type in FrontierPlanetWeather.config().buildings else "Mk.%d  %s"%[int(row.get("tier",1)),row.get("status","")]
 		if FrontierCombatCover.is_cover(row):facility_status.text=FrontierCombatCover.status(row)+"\n수리: "+FrontierCatalog.cost_text(FrontierCombatCover.config().buildings[row.type].repair)
@@ -298,14 +309,13 @@ func _flush_paint() -> void:
 	_paint_update.callv(paint_arguments)
 func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,research: Dictionary={},ecology: Dictionary={},planet: Dictionary={},viewer: Vector3=Vector3.ZERO,participant_count: int=1) -> void:
 	workload_label.text=FrontierCoopWorkload.description(value.get("sites",{}).get(id,{}),tier,participant_count)
-	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경 / 계약"
+	workload_label.visible=context_kind=="ship" and planet.get("origin","")!="solar_reference" and tabs.get_current_tab_control().name=="환경 / 계약".validate_node_name()
 	register_button.hide();guidance.show()
 	ledger=value;body_id=id;actor_id=actor;planet_tier=tier;planet_body=planet;engineering=research;knowledge=ecology
-	supply_panel.update(value,planet,actor,actor==value.get("owner_id",""))
+	if supply_panel.is_visible_in_tree():supply_panel.update(value,planet,actor,actor==value.get("owner_id",""))
 	refresh_context(value.get("sites",{}).get(id,{}))
-	refresh_building_cost()
-	update_engineering()
-	production_panel.update_site(value.get("sites",{}).get(id,{}))
+	if context_kind=="build":refresh_building_cost()
+	if engineering_cards.is_visible_in_tree():update_engineering()
 	for bar in environment_bars.values():bar.value=0
 	register_button.disabled=not value.is_empty() and (value.sites.has(id) or not value.get("active_elsewhere","").is_empty())
 	stock.value="등록된 현장 창고가 없습니다.";environment_label.text="착륙 지표의 환경을 조사합니다."
@@ -317,9 +327,10 @@ func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,resear
 	elif not value.sites.has(id):guidance.text="광맥을 바로 채집할 수 있습니다."
 	var current: Dictionary=value.sites.get(id,{})
 	register_button.hide();guidance.visible=current.is_empty()
-	production_panel.update_site(current)
+	if production_panel.is_visible_in_tree():production_panel.update_site(current)
 	if current.is_empty():return
 	stock.value="건설 재료  내 배낭" if context_kind=="build" else "생산 재료  현장 창고    장비/시험기  내 배낭"
+	if context_kind=="build":return
 	var factories: Dictionary={};var buildings: Dictionary={};var robots: Dictionary={};var veins: Dictionary={};var technologies: Dictionary={};var transported: Dictionary={}
 	for key in current.buildings:
 		if key!=context_id:continue
@@ -341,7 +352,8 @@ func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,resear
 		filter_context=next_filter
 		for i in vein.item_count:
 			if str(vein.get_item_metadata(i))==str(selected_robot.get("resource_filter","")):vein.select(i);break
-	refresh_work_cards(veins)
+	if work_cards.is_visible_in_tree():refresh_work_cards(veins)
+	if tabs.get_current_tab_control().name!="환경 / 계약".validate_node_name():return
 	var e: Dictionary=current.environment;var report:=FrontierEvaluator.environment_report(current,body_id)
 	for category in environment_bars:
 		environment_bars[category].visible=report.observed
@@ -458,7 +470,7 @@ func _factory_page() -> void:
 	factory_category.visible=factory_section.selected==0
 	var target: String="시설 관리" if factory_section.selected==1 else ["생산 / 개조","로봇 제작","로버 제작","시험기 조립","생물공학","소형선"][factory_category.selected]
 	for i in tabs.get_tab_count():
-		if str(tabs.get_tab_control(i).name)==target:tabs.current_tab=i;break
+		if str(tabs.get_tab_control(i).name)==target.validate_node_name():tabs.current_tab=i;break
 	_factory_layout(target=="생산 / 개조")
 func _factory_layout(fixed: bool) -> void:
 	outer_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED if fixed else ScrollContainer.SCROLL_MODE_AUTO

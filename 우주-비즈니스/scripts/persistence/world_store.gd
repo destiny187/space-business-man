@@ -8,10 +8,32 @@ var last_error := ""
 func _init(save_path: String = "user://exploration_world.json") -> void:
 	path = save_path
 
-# Only periodic checkpoints use the worker. Transactions join it before writing,
-# so an older checkpoint can never replace a newer acknowledged transaction.
+# Periodic checkpoints and mandatory automatic commits use an ordered worker.
+# Transactions join it so no older save can replace an acknowledged transaction.
 var checkpoint_thread: Thread
 var verified_digest: String=""
+var queued_commit: Dictionary={}
+var queued_manifest: String=""
+
+func has_pending() -> bool:
+	return checkpoint_thread!=null or not queued_commit.is_empty()
+
+# One mandatory commit may follow a periodic checkpoint. Never drop a production result.
+func begin_commit(state: Dictionary) -> bool:
+	if not queued_commit.is_empty():last_error="자동 진행 저장이 이미 대기 중입니다.";return false
+	last_error=FrontierUniverse.validate_world(state)
+	if not last_error.is_empty():return false
+	queued_commit=WorldSnapshot.copy(state)
+	queued_manifest=WorldSnapshot.manifest_json(state)
+	return poll_checkpoint()
+
+func _start_queued_commit() -> bool:
+	if queued_commit.is_empty():return true
+	checkpoint_thread=Thread.new()
+	var status:=checkpoint_thread.start(_write_snapshot.bind(path,queued_commit,verified_digest,queued_manifest))
+	queued_commit={};queued_manifest=""
+	if status!=OK:checkpoint_thread=null;last_error="자동 진행 저장 작업을 시작할 수 없습니다.";return false
+	return true
 
 func write(state: Dictionary) -> bool:
 	if not finish_pending():return false
@@ -20,6 +42,7 @@ func write(state: Dictionary) -> bool:
 	return _accept_write(_write_snapshot(path,state,verified_digest,WorldSnapshot.manifest_json(state)))
 
 func begin_checkpoint(state: Dictionary) -> bool:
+	if not queued_commit.is_empty():return true
 	if checkpoint_thread!=null:
 		if checkpoint_thread.is_alive():return true # One bounded job; next checkpoint uses the latest state.
 		if not finish_pending():return false
@@ -33,14 +56,22 @@ func begin_checkpoint(state: Dictionary) -> bool:
 	return true
 
 func poll_checkpoint() -> bool:
-	if checkpoint_thread==null or checkpoint_thread.is_alive():return true
-	return finish_pending()
+	if checkpoint_thread!=null:
+		if checkpoint_thread.is_alive():return true
+		if not _join_checkpoint():return false
+	return _start_queued_commit()
 
-func finish_pending() -> bool:
-	if checkpoint_thread==null:return true
+func _join_checkpoint() -> bool:
 	var result: Dictionary=checkpoint_thread.wait_to_finish()
 	checkpoint_thread=null
-	return _accept_write(result)
+	if not _accept_write(result):queued_commit={};queued_manifest="";return false
+	return true
+
+func finish_pending() -> bool:
+	while has_pending():
+		if checkpoint_thread!=null and not _join_checkpoint():return false
+		if not _start_queued_commit():return false
+	return true
 
 func _accept_write(result: Dictionary) -> bool:
 	last_error=result.get("error","")

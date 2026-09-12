@@ -1,7 +1,7 @@
 class_name FrontierCrewSurfaceReplica
 extends RefCounted
 ## Current planet and local ecology deltas only. No full galaxy/history in movement snapshots.
-static func packet(world: Dictionary,actor: String) -> Dictionary:
+static func packet(world: Dictionary,actor: String,business_shared: Dictionary={}) -> Dictionary:
 	if not FrontierCrewSurface.landed(world):return {}
 	var id: String=world.crew.landing.body_id
 	var source: Dictionary=world.ecology.planets[id]
@@ -36,7 +36,7 @@ static func packet(world: Dictionary,actor: String) -> Dictionary:
 	for group in [source.lineages,record.introductions.values(),observations.values(),cargo.values()]:
 		for row in group:
 			if world.ecology.get("species_research",{}).has(row.form_id):studies[row.form_id]=true
-	return {"water":FrontierSurfaceWater.packet(world.get("surface_water",{}).get(id,FrontierSurfaceWater.create()),position),"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
+	return {"water":FrontierSurfaceWater.packet(world.get("surface_water",{}).get(id,FrontierSurfaceWater.create()),position),"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor,business_shared),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
 		"edits":world.terrain_edits.get(id,[]).duplicate(true),"rules_hash":world.ecology.rules_hash,"catalog_hash":world.ecology.catalog_hash,
 		"ecology":{"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo,"species_research":studies}}
 

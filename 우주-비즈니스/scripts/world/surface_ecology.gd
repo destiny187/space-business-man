@@ -129,7 +129,7 @@ func _update_wildlife(delta: float) -> void:
 		if not Wildlife.eligible(actor.definition,row):
 			if actor.ground_motion.enabled:
 				actor.paused=behavior_stopped
-				actor.drive_ground(actor.global_position,actor.global_basis,delta,ground_probe,behavior_stopped)
+				actor.drive_ground(actor.global_position,actor.global_basis,delta,ground_probe,behavior_stopped,terrain.field.revision)
 			continue
 		var home: Vector3=row.get("home_point",row.point)
 		var motion:=FrontierWildlifeCombat.pose(terrain.field,row,home,behavior_time+behavior_elapsed,behavior_observers,behavior_crew,str(body.id))
@@ -150,7 +150,7 @@ func _update_wildlife(delta: float) -> void:
 			actor.combat_override=false
 			if actor.state!=motion.state:actor.set_state(motion.state)
 		var destination: Transform3D=global_transform*Transform3D(motion.basis,motion.point)
-		actor.drive_ground(destination.origin,destination.basis,delta,ground_probe,behavior_stopped)
+		actor.drive_ground(destination.origin,destination.basis,delta,ground_probe,behavior_stopped,terrain.field.revision)
 		var footfall: Vector3=actor.ground_motion.take_footfall()
 		if not behavior_stopped and viewer.position.distance_to(motion.point)<float(Wildlife.config().cue_range):
 			if combat.is_empty() and motion.alert and row.get("behavior_phase","")!="avoid":wildlife_cue.emit(motion.point,"alert")

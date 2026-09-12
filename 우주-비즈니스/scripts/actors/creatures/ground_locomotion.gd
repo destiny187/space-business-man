@@ -37,6 +37,10 @@ var pose_history: Array[Dictionary]=[]
 var previous_state:=""
 var transition_left:=0.0
 var source_frame:=-1
+var ground_revision:=-1
+var contact_interval:=0.0
+var contact_elapsed:=0.0
+var contacts_suspended:=false
 
 static func config() -> Dictionary:
 	if settings.is_empty():settings=JSON.parse_string(FileAccess.get_file_as_string("res://data/ground_locomotion.json"))
@@ -72,8 +76,13 @@ func reset() -> void:
 	initialized=false;velocity=Vector3.ZERO;speed=0;intensity=0;footfalls.clear();pose_history.clear()
 	for contact in contacts:contact.ready=false;contact.swing=false
 
-func drive(target: Transform3D,delta: float,sampler: Callable,stopped: bool) -> void:
+func drive(target: Transform3D,delta: float,sampler: Callable,stopped: bool,interval: float=0.0,revision: int=-1) -> void:
 	driven=true;probe=sampler;source_frame=Engine.get_process_frames()
+	ground_revision=revision;contact_interval=interval
+	if contacts_suspended and interval>=0:
+		for contact in contacts:contact.ready=false;contact.swing=false
+		contact_elapsed=0.0
+	contacts_suspended=interval<0
 	actor.global_transform=target
 	if stopped:
 		# The parent can still receive snapshots while a solo menu/focus pause is open.
@@ -126,12 +135,15 @@ func advance(travel: float,delta: float) -> void:
 	var previous_phase:=phase
 	phase+=travel/cycle_length
 	# Limbless ground animals disturb the soil with their body wave instead of footsteps.
-	if driven and limbs.is_empty() and sound_left<=0 and floori(previous_phase)!=floori(phase) and moving>float(config().minimum_speed):
+	if driven and not contacts_suspended and limbs.is_empty() and sound_left<=0 and floori(previous_phase)!=floori(phase) and moving>float(config().minimum_speed):
 		footfalls.append(Feet.ground(self,point).point);sound_left=float(config().footstep_seconds)
 	if previous_state!=actor.state:
 		transition_left=float(config().pose_seconds);previous_state=actor.state
 	transition_left=maxf(0,transition_left-delta)
-	if driven:Feet.update(self,delta)
+	if driven and not contacts_suspended:
+		contact_elapsed+=delta
+		if contact_elapsed>=contact_interval:
+			Feet.update(self,contact_elapsed);contact_elapsed=0.0
 
 func offset(index: int) -> float:
 	var rest:=v(limbs[index].rest)

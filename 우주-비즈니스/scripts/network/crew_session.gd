@@ -47,7 +47,7 @@ var surface: Dictionary={}
 var surface_timer:=0.0
 var surface_serial:=0
 var received_surface_serial:=-1
-var surface_digests: Dictionary={}
+var surface_packets: Dictionary={}
 var surface_bytes_sent:=0
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_peer_connected)
@@ -65,6 +65,11 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 	authority=FrontierCrewAuthority.new()
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
 	authority.save_flight_checkpoint=store.begin_checkpoint
+	authority.save_autonomous=store.begin_commit
+	authority.poll_autonomous=func():
+		if not store.poll_checkpoint():return -1
+		return 0 if store.has_pending() else 1
+	authority.finish_autonomous=func():return 1 if store.finish_pending() else -1
 	offline=solo
 	connection_kind="local_relay" if transport is FrontierCrewRelayPeer else ("solo" if solo else "direct")
 	if transport==null:invite_code=""
@@ -121,7 +126,7 @@ func _relay_lost(candidate: MultiplayerPeer,message: String) -> void:
 	var unsaved:=hosting and authority!=null and not authority.close()
 	if unsaved:message+="\n"+authority.error+" 시작 화면으로 나갈 때 다시 저장합니다."
 	hosting=unsaved;enet.close();enet=null;invite_code="";latest={};surface={}
-	pending_connections.clear();closing_connections.clear();rate_windows.clear();surface_digests.clear()
+	pending_connections.clear();closing_connections.clear();rate_windows.clear();surface_packets.clear()
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	notice.emit(message);connection_lost.emit(message)
 
@@ -131,7 +136,7 @@ func _peer_connected(peer: int) -> void:
 	_offer.rpc_id(peer,session_id,world_id,int(FrontierCrewWorld.config().protocol),FrontierCrewWorld.content_hash())
 func _peer_disconnected(peer: int) -> void:
 	if not hosting:return
-	pending_connections.erase(peer);closing_connections.erase(peer);rate_windows.erase(peer);surface_digests.erase(peer);peer_snapshot_deltas.erase(peer)
+	pending_connections.erase(peer);closing_connections.erase(peer);rate_windows.erase(peer);surface_packets.erase(peer);peer_snapshot_deltas.erase(peer)
 	if not authority.disconnect_member(peer):
 		active=false;notice.emit(authority.error)
 		if not offline:_closed.rpc(authority.error);return
@@ -155,7 +160,7 @@ func _process(delta: float) -> void:
 	snapshot_timer-=delta
 	if snapshot_timer<=0:snapshot_timer=1.0/float(FrontierCrewWorld.config().snapshot_hz);_publish()
 func _publish() -> void:
-	if not hosting or authority==null or authority.stopped:return
+	if not hosting or authority==null or authority.stopped or authority.autonomous_pending():return
 	snapshot_serial+=1
 	var shared:=authority.snapshot_shared()
 	latest=authority.snapshot(1,shared);snapshot_received.emit(latest)
@@ -212,7 +217,7 @@ func _acknowledge(epoch: String) -> void:
 	var peer:=multiplayer.get_remote_sender_id()
 	var result:=authority.acknowledge(peer,epoch)
 	if not result.ok:_reject_peer(peer,result.error);return
-	pending_connections.erase(peer);surface_digests.erase(peer);_publish();_publish_surface()
+	pending_connections.erase(peer);surface_packets.erase(peer);_publish();_publish_surface()
 func _valid_snapshot(value: Variant) -> bool:
 	if not value is Dictionary or value.get("phase") not in ["lobby","playing"] or not value.get("lobby_ready") is Dictionary or value.get("session_id")!=session_id or not value.get("crew") is Dictionary or not value.crew.has("navigation"):return false
 	if not value.get("self_id") is String or not value.crew.get("members") is Dictionary or not value.crew.members.has(value.self_id) or not value.get("active") is bool:return false
@@ -324,7 +329,7 @@ func close_session() -> bool:
 		closing_peer.close()
 		if enet==closing_peer:enet=null
 	hosting=false;offline=false;closing=false;invite_code="";latest={};surface={}
-	pending_connections.clear();closing_connections.clear();rate_windows.clear();surface_digests.clear()
+	pending_connections.clear();closing_connections.clear();rate_windows.clear();surface_packets.clear()
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	return true
 @rpc("authority","call_remote","reliable",0)
@@ -332,19 +337,27 @@ func _closed(message: String) -> void:
 	active=false;notice.emit(message)
 func _exit_tree() -> void:
 	if relay_pending!=null:relay_pending.close();relay_pending=null
-	if store!=null:store.finish_pending()
 	if hosting and authority!=null and not authority.stopped:authority.close()
+	if store!=null:store.finish_pending()
 	if enet!=null:enet.close()
 
+var pending_simulation_delta:=0.0
+var pending_navigation_delta:=0.0
 func _physics_process(delta: float) -> void:
 	if not hosting or not active or authority.stopped or authority.phase!="playing":return
-	if not store.poll_checkpoint():
+	if authority.autonomous_pending() and not authority.resolve_autonomous():
+		if not authority.stopped:pending_simulation_delta=minf(.1,pending_simulation_delta+delta);return
+	if not authority.stopped and not store.poll_checkpoint():
 		authority.stopped=true;authority.error="체크포인트 저장 실패: "+store.last_error
-	else:authority.step_surface(minf(delta,.1))
+	elif not authority.stopped:
+		delta=minf(.1,delta+pending_simulation_delta);pending_simulation_delta=0.0
+		authority.step_surface(minf(delta,.1))
 	if authority.stopped:
 		active=false;notice.emit(authority.error)
 		if not offline:_closed.rpc(authority.error)
 		return
+	if authority.autonomous_pending():pending_navigation_delta=minf(.1,pending_navigation_delta+delta);return
+	delta=minf(.1,delta+pending_navigation_delta);pending_navigation_delta=0.0
 	var controls: Array=[0.0,0.0,0.0]
 	for peer in authority.peers:
 		if authority.peers[peer]==authority.world.crew.pilot_id and authority.inputs.has(peer) and authority.inputs[peer].expires>=authority.now:
@@ -395,17 +408,19 @@ func _valid_manifest(value: Variant) -> bool:
 	return FrontierUniverse.fingerprint(value)==FrontierUniverse.fingerprint(FrontierUniverse.generate(int(value.seed),settings))
 
 func _publish_surface() -> void:
-	if not hosting or authority==null or authority.stopped or authority.phase!="playing":return
+	if not hosting or authority==null or authority.stopped or authority.autonomous_pending() or authority.phase!="playing":return
+	var business_shared: Dictionary={}
 	for peer in authority.peers:
 		var local:=FrontierShuttles.context(authority.world,authority.peers[peer])
-		var value:=FrontierCrewSurfaceReplica.packet(local,authority.peers[peer])
+		var shared_key: String=local.location+":"+str(local.get("local_shuttle","main"))
+		if FrontierCrewSurface.landed(local) and not business_shared.has(shared_key):business_shared[shared_key]=FrontierExpeditionBusiness.public_shared(local)
+		var value:=FrontierCrewSurfaceReplica.packet(local,authority.peers[peer],business_shared.get(shared_key,{}))
 		if value.is_empty():
 			if peer==1:surface={}
-			surface_digests.erase(peer);continue
+			surface_packets.erase(peer);continue
 		if authority.water_solvers.has(value.body_id):
 			value.water_columns=authority.water_solvers[value.body_id].columns_packet(FrontierCrewWorld.vector(local.crew.members[authority.peers[peer]].position))
-		var digest:=FrontierUniverse.fingerprint(value)
-		if surface_digests.get(peer,"")==digest:continue
+		if surface_packets.get(peer,{})==value:continue
 		surface_serial+=1
 		if peer==1:surface=value;surface_received.emit(value)
 		else:
@@ -413,7 +428,7 @@ func _publish_surface() -> void:
 			if encoded.is_empty():notice.emit("지표 기록 전송 한도를 확인해야 합니다.");continue
 			surface_bytes_sent+=encoded.size()
 			_surface_state.rpc_id(peer,session_id,surface_serial,encoded)
-		surface_digests[peer]=digest
+		surface_packets[peer]=value
 
 @rpc("authority","call_remote","reliable",3)
 func _surface_state(epoch: String,serial: int,data: PackedByteArray) -> void:

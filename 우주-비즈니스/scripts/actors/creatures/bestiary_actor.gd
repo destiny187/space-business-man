@@ -228,9 +228,16 @@ func pose(visible_lod_only: bool=false) -> void:
 		if definition.get("rig",{}).get("skinned",false):_anatomical_pose(lod_index,row,t)
 	update_fx()
 
-func drive_ground(at: Vector3,facing: Basis,delta: float,sampler: Callable,stopped: bool) -> void:
+func drive_ground(at: Vector3,facing: Basis,delta: float,sampler: Callable,stopped: bool,revision: int=-1) -> void:
 	if ground_motion!=null and ground_motion.enabled:
-		ground_motion.drive(Transform3D(facing,at),delta,sampler,stopped)
+		var interval:=0.0
+		var camera:=get_viewport().get_camera_3d()
+		if camera!=null and is_instance_valid(visibility_notifier):
+			var distance:=camera.global_position.distance_to(at)
+			# Keep nearby audible footfalls, even behind the camera. Authority/root movement never sleeps.
+			if distance>float(preload("res://scripts/world/wildlife_behavior.gd").config().cue_range):
+				interval=float(GroundMotion.config().distant_contact_seconds) if FrontierFieldVisibility.active(visibility_notifier) else -1.0
+		ground_motion.drive(Transform3D(facing,at),delta,sampler,stopped,interval,revision)
 	else:global_transform=Transform3D(facing,at)
 
 func apply_combat(live: Dictionary,profile: Dictionary,stopped: bool) -> void:

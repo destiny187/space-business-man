@@ -27,13 +27,14 @@ static func update(m: RefCounted,delta: float) -> void:
 		var fraction:=fposmod(local_phase,1)
 		if not c.ready:
 			var hit:=ground(m,rest)
-			c.position=hit.point;c.normal=hit.normal;c.ready=true;c.swing=false;c.cycle=cycle-1;c.refresh=0.0
+			c.position=hit.point;c.normal=hit.normal;c.ready=true;c.swing=false;c.cycle=cycle-1;c.refresh=0.0;c.ground_revision=m.ground_revision;c.ground_y=hit.point.y
 		c.refresh=float(c.get("refresh",0))+delta
 		# Re-probe a planted foot after terrain edits, without dragging it in X/Z.
-		if not c.swing and c.refresh>.35:
+		if not c.swing and ((m.ground_revision<0 and c.refresh>.35) or int(c.get("ground_revision",-1))!=m.ground_revision):
 			var hit:=ground(m,c.position)
-			c.position.y=move_toward(float(c.position.y),float(hit.point.y),delta*2.0)
+			c.ground_y=hit.point.y;c.ground_revision=m.ground_revision
 			c.normal=hit.normal;c.refresh=0.0
+		if not c.swing:c.position.y=move_toward(float(c.position.y),float(c.get("ground_y",c.position.y)),delta*2.0)
 		var moving: bool=m.travel_speed>float(m.config().minimum_speed) and m.intensity>.05
 		var stretched: bool=Vector2(c.position.x-rest.x,c.position.z-rest.z).length()>reach*(.35 if m.chains.has(m.limbs[i].hip) else .20)
 		var due: bool=moving and fraction>=m.stance and int(c.cycle)!=cycle
@@ -68,7 +69,7 @@ static func update(m: RefCounted,delta: float) -> void:
 			c.normal=c.normal.lerp(c.end_normal,ease).normalized()
 			if progress>=1:
 				var landing:=ground(m,c.position)
-				c.swing=false;c.position=landing.point;c.normal=landing.normal;c.end=c.position;active-=1
+				c.swing=false;c.position=landing.point;c.normal=landing.normal;c.end=c.position;c.ground_y=landing.point.y;c.ground_revision=m.ground_revision;active-=1
 				if m.sound_left<=0 and moving:
 					m.footfalls.append(c.position);m.sound_left=float(m.config().footstep_seconds)
 

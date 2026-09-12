@@ -3,6 +3,9 @@ extends RefCounted
 ## One host-owned business ledger; autonomous work is committed before publication.
 static var _config: Dictionary={}
 static var _starter_veins: Array=[]
+static var _signature_source: String=""
+static var _signature_catalog: Dictionary={}
+static var _signature_value: String=""
 static func config() -> Dictionary:
 	if _config.is_empty():
 		_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json"))
@@ -11,7 +14,13 @@ static func config() -> Dictionary:
 		_config.buildings.append_array(FrontierCombatCover.config().buildings.keys())
 	return _config
 static func signature() -> String:
-	return FrontierUniverse.fingerprint(JSON.parse_string(FileAccess.get_file_as_string("res://data/expedition_business.json")))+FrontierUniverse.fingerprint(FrontierCatalog.all())
+	var source:=FileAccess.get_file_as_string("res://data/expedition_business.json")
+	var catalog:=FrontierCatalog.all()
+	# Compare retained values, not a short hash: edits cannot collide with a cached approval.
+	if source!=_signature_source or catalog!=_signature_catalog or _signature_value.is_empty():
+		_signature_source=source;_signature_catalog=catalog.duplicate(true)
+		_signature_value=FrontierUniverse.fingerprint(JSON.parse_string(source))+FrontierUniverse.fingerprint(catalog)
+	return _signature_value
 static func create() -> Dictionary:
 	return {"version":1,"rules_hash":signature(),"credits":int(config().starting_credits),"technologies":[],"active":"","counter":0,"sites":{},"hangar":{},"bags":{},"crates":{}}
 static func inventory() -> Dictionary:
@@ -374,7 +383,7 @@ static func release_carrier(world: Dictionary,actor: String) -> void:
 	var ledger: Dictionary=world.business
 	var id:=identifier(ledger,"business-crate")
 	ledger.crates[id]={"body_id":world.location,"position":world.crew.members[actor].position.duplicate(),"inventory":bag(world,actor).duplicate(true)};ledger.bags[actor]=inventory()
-static func public_view(world: Dictionary,actor: String) -> Dictionary:
+static func public_shared(world: Dictionary) -> Dictionary:
 	if not world.has("business"):return {}
 	var ledger: Dictionary=world.business
 	var view: Dictionary={"version":1,"rules_hash":ledger.rules_hash,"credits":ledger.credits,"technologies":ledger.technologies.duplicate(),"active":ledger.active if ledger.active==world.location else "","hangar_capacity":int(FrontierVesselRefit.stats(world).hangar),"active_elsewhere":ledger.active if ledger.active!=world.location else "","counter":ledger.counter,"sites":{},"hangar":{},"bags":{},"crates":{}}
@@ -393,10 +402,18 @@ static func public_view(world: Dictionary,actor: String) -> Dictionary:
 			current[key]=source[key].duplicate(true) if source[key] is Dictionary or source[key] is Array else source[key]
 		current.robots={}
 		for id in source.robots:current.robots[id]=visible_robot(source.robots[id])
-		view.sites[world.location]=FrontierRegionalTerraform.local_public(current,point(world.crew.members[actor].position))
-	if ledger.bags.has(actor):view.bags[actor]=ledger.bags[actor].duplicate(true)
+		view.sites[world.location]=current
 	for id in ledger.crates:
 		if ledger.crates[id].body_id==world.location:view.crates[id]=ledger.crates[id].duplicate(true)
+	return view
+static func public_view(world: Dictionary,actor: String,shared: Dictionary={}) -> Dictionary:
+	if not world.has("business"):return {}
+	if shared.is_empty():shared=public_shared(world)
+	var view:=shared.duplicate()
+	view.sites=shared.sites.duplicate();view.bags={}
+	if view.sites.has(world.location):
+		view.sites[world.location]=FrontierRegionalTerraform.local_public(view.sites[world.location],point(world.crew.members[actor].position))
+	if world.business.bags.has(actor):view.bags[actor]=world.business.bags[actor].duplicate(true)
 	return view
 static func visible_robot(source: Dictionary) -> Dictionary:
 	var result: Dictionary={"path":[]}
@@ -490,7 +507,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 			if current.state=="supply" and not current.settlement.get("retained",false):return "보유 정산 기록 오류"
 			if not integer(current.settlement.get("payment"),0,100000000) or not current.settlement.get("scores") is Dictionary or not FrontierUniverse._finite(current.settlement.get("time"),0,10000000):return "계약 정산 기록 오류"
 		elif not current.settlement.is_empty():return "미정산 사업의 지급 기록 오류"
-		var body:=FrontierUniverse.body_from_id(manifest,id)
+		var body:=FrontierUniverse.body_definition(manifest,FrontierUniverse.ordinal_of(manifest,id))
 		if not FrontierRegionalTerraform.valid(current,body):return "지역 복원·공급 기록 오류"
 		if not current.settlement.is_empty() and int(current.settlement.payment)!=FrontierPlanetSupply.settlement_payment(current,int(body.planet_tier),current.settlement.get("retained",false)):return "정산 지급액 오류"
 		if current.get("production_lease",false) and not FrontierUniverse.landable(body):return "착륙 불가 생산 거점 오류"

@@ -66,6 +66,7 @@ func physics(delta: float) -> void:
 	for actor in app.actors.values():excludes.append(actor.get_rid())
 	for actor in actors.values():excludes.append(actor.get_rid())
 	for id in rows:
+		if not authority.can_simulate_vehicle(id):continue
 		var r: Dictionary=rows[id];var riders:=FrontierRovers.seats(runtime(),id);var input: Dictionary={}
 		for peer in authority.peers:
 			if authority.peers[peer]==riders[0]:input=authority.inputs.get(peer,{});break
@@ -96,7 +97,7 @@ func physics(delta: float) -> void:
 			if app.actors.has(rider):app.actors[rider].position=FrontierCrewWorld.vector(member.position);app.actors[rider].velocity=Vector3.ZERO
 	for id in runtime().tasks.keys():
 		var r: Dictionary=fleet().vehicles.get(id,{})
-		if not r.is_empty():step_task(r,delta)
+		if not r.is_empty() and not authority.autonomous_pending():step_task(r,delta)
 	preview_timer-=delta
 	if preview_timer<=0:
 		preview_timer=.5;update_unload_point()
