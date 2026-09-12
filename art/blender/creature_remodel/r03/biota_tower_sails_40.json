@@ -1,0 +1,287 @@
+{
+  "id": "biota_tower_sails_40",
+  "name": "퇴적쌍줄열두마디막주머니장각수",
+  "family": "biota_tower_sails",
+  "construction": "tower",
+  "organ_system": "sails",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_sails_40",
+  "kind": "tower",
+  "habitat": "기질에 닿는 넓은 흡착면과 여과 부속기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 12,
+    "limb_count": 10,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·몸통과 이어진 넓은 측막 / 쌍열 배열·주요 기관 12개",
+  "recipe_sha256": "dc103fa1b0ee90aa87ed66417b9ee8d31844fa55b42ea17b1ce6eea02b663477",
+  "authored_anatomy": "Continuous tower anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "89abe5d0acdde9cacbe40561b88f258c99cccd93cfacf60fb4aadd1fd173a816",
+  "normalized_geometry_sha256": "a722cc41d9b2d245af1ef4ff9784cae4bbc21149a51375467482f3e1c015fa07",
+  "source": "art/blender/creature_remodel/r03/biota_tower_sails_40.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 10,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.6399998664855957,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.6399998664855957,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.6399998664855957,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        4.9445118162051255e-17,
+        0.10999999940395355,
+        0.8075000047683716
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.47463658452033997,
+        0.10999999940395355,
+        0.6532812118530273
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.7679781317710876,
+        0.10999999940395355,
+        0.24953122437000275
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.7679781317710876,
+        0.10999999940395355,
+        -0.24953122437000275
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        0.47463658452033997,
+        0.10999999940395355,
+        -0.6532812118530273
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        4.9445118162051255e-17,
+        0.10999999940395355,
+        -0.8075000047683716
+      ]
+    },
+    "Socket_leg6": {
+      "bone": "leg6_foot",
+      "point": [
+        -0.47463658452033997,
+        0.10999999940395355,
+        -0.6532812118530273
+      ]
+    },
+    "Socket_leg7": {
+      "bone": "leg7_foot",
+      "point": [
+        -0.7679781317710876,
+        0.10999999940395355,
+        -0.24953122437000275
+      ]
+    },
+    "Socket_leg8": {
+      "bone": "leg8_foot",
+      "point": [
+        -0.7679781317710876,
+        0.10999999940395355,
+        0.24953122437000275
+      ]
+    },
+    "Socket_leg9": {
+      "bone": "leg9_foot",
+      "point": [
+        -0.47463658452033997,
+        0.10999999940395355,
+        0.6532812118530273
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3818586719982467,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5918809415972824,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001,
+      "leg6": 0.51,
+      "leg7": 0.010000000000000009,
+      "leg8": 0.68,
+      "leg9": 0.18000000000000016
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.6399998664855957,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_sails_40_near.glb",
+      "sha256": "41fd971a96cff6d6b585f95ae79cba8a0a2c3bf587b2b2d2f96f9b5590ac4ff1",
+      "triangles": 54784,
+      "min": [
+        -1.079380750656128,
+        0.034999996423721313,
+        -1.1092720031738281
+      ],
+      "max": [
+        1.079380750656128,
+        3.4592742919921875,
+        1.1092720031738281
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_sails_40_far.glb",
+      "sha256": "d2a18e643142ecf5b77ad52e46078cfc788000e54a4eb3b8ab0efde31b02770d",
+      "triangles": 23552,
+      "min": [
+        -1.0793945789337158,
+        0.034999996423721313,
+        -1.1092113256454468
+      ],
+      "max": [
+        1.0793945789337158,
+        3.4599902629852295,
+        1.1092113256454468
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "leg6_upper": "chest",
+    "leg6_lower": "leg6_upper",
+    "leg6_foot": "leg6_lower",
+    "leg7_upper": "chest",
+    "leg7_lower": "leg7_upper",
+    "leg7_foot": "leg7_lower",
+    "leg8_upper": "chest",
+    "leg8_lower": "leg8_upper",
+    "leg8_foot": "leg8_lower",
+    "leg9_upper": "chest",
+    "leg9_lower": "leg9_upper",
+    "leg9_foot": "leg9_lower",
+    "organ0": "vertical0",
+    "organ1": "vertical0",
+    "organ2": "vertical0",
+    "organ3": "vertical0",
+    "organ4": "vertical1",
+    "organ5": "vertical1",
+    "organ6": "vertical1",
+    "organ7": "vertical1",
+    "organ8": "vertical2",
+    "organ9": "vertical2",
+    "organ10": "vertical2",
+    "organ11": "vertical2"
+  },
+  "build_seconds": 13.867,
+  "source_render_seconds": 5.22,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "390acd0860bb7c2b06dcef94f644ed4c941c3189f3a6b9ef45374af0ae3a693d"
+  },
+  "lod_animation_reuse": {
+    "version": 1,
+    "source": "near"
+  }
+}

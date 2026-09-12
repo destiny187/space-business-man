@@ -1,0 +1,217 @@
+{
+  "id": "bio_knuckle_chain_06",
+  "source_id": "bio_knuckle_chain_06",
+  "name": "갈림연쇄수",
+  "family": "knuckle_chain",
+  "kind": "knuckle_chain",
+  "construction": "knuckle_chain",
+  "anatomical_type": "knuckle_chain",
+  "organ_system": "sails",
+  "environment": "basalt",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "개별 장기 마디가 큰 아치형 사슬을 만드는 몸통 / 비대칭 분기 골격",
+  "morphology": {
+    "width": 1.15,
+    "height": 0.96,
+    "mode": 5,
+    "radial_count": 3,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "596c70",
+    "839594",
+    "34494e",
+    "ba6d34"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "knuckle_chain",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 9
+  },
+  "version": "r06-1",
+  "build_fingerprint": "c2659f202b30b0f1a121b560668cecb1c9df7c9d407c52d6d289109c6ac130d8",
+  "normalized_geometry_sha256": "aaa7103829168feebca89f40bee59994022aee709f2fce6b44973db125183965",
+  "source": "art/blender/creature_remodel/r06/bio_knuckle_chain_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 25,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_terminal_oral": {
+      "bone": "terminal_oral",
+      "point": [
+        -0.07568024843931198,
+        0.7211999893188477,
+        1.1699999570846558
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "terminal_oral",
+      "point": [
+        -0.07568024843931198,
+        0.7211999893188477,
+        1.1699999570846558
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_oral",
+      "point": [
+        -0.07568024843931198,
+        0.7211999893188477,
+        1.1699999570846558
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.005837414413690567,
+        0.10000000149011612,
+        1.1100000143051147
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6699573397636414,
+        0.10000000149011612,
+        -0.18000000715255737
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.07173560559749603,
+        0.10000000149011612,
+        -1.1100000143051147
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.5024536848068237,
+        0.10000000149011612,
+        0.18000000715255737
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2836951942416168,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.43972755107450606,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.07568024843931198,
+    0.7211999893188477,
+    1.1699999570846558
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_knuckle_chain_06_near.glb",
+      "sha256": "085d859adea22abdb2508050948ba643104f8cf99ec1097107733ac51e52fca8",
+      "triangles": 27744,
+      "min": [
+        -0.8045128583908081,
+        0.02499999850988388,
+        -1.4120591878890991
+      ],
+      "max": [
+        0.9720165133476257,
+        1.1523901224136353,
+        1.4120591878890991
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_knuckle_chain_06_far.glb",
+      "sha256": "bd52926710605fbebf62c9cc26b72ea174a71f2e6f78c203fdb31d698335061a",
+      "triangles": 11924,
+      "min": [
+        -0.8044373393058777,
+        0.025005938485264778,
+        -1.4119880199432373
+      ],
+      "max": [
+        0.9719429016113281,
+        1.1523901224136353,
+        1.4119881391525269
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "serial_visceral_axis0": "chest",
+    "serial_visceral_axis1": "serial_visceral_axis0",
+    "serial_visceral_axis2": "serial_visceral_axis1",
+    "serial_visceral_axis3": "serial_visceral_axis2",
+    "serial_visceral_axis4": "serial_visceral_axis3",
+    "terminal_oral": "serial_visceral_axis4",
+    "terminal_oral_petal0": "terminal_oral",
+    "terminal_oral_petal1": "terminal_oral",
+    "terminal_oral_petal2": "terminal_oral",
+    "terminal_oral_petal3": "terminal_oral",
+    "support0_upper": "serial_visceral_axis4",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "serial_visceral_axis2",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "serial_visceral_axis1",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "serial_visceral_axis3",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 6.824,
+  "source_render_seconds": 4.854,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "1cdc505819ee768163c5cd9ab058b827ea29fdff18592ea48508617755e86c90"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

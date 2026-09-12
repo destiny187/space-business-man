@@ -1,0 +1,242 @@
+{
+  "id": "biota_mantle_armor_02",
+  "name": "광각곧은네마디등갑외투수",
+  "family": "biota_mantle_armor",
+  "construction": "mantle",
+  "organ_system": "armor",
+  "environment": "crystal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_mantle_armor_02",
+  "kind": "mantle",
+  "habitat": "광물 피막과 모서리를 피해 열린 감각면 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "두꺼운 외투 조직과 아래쪽 접지근·분절된 외피와 겹갑 / 직렬 배열·주요 기관 4개",
+  "recipe_sha256": "618e72e2407cb069d3ca22ae9ebf0627ad76184493e57239fcf3365ac226bb5b",
+  "authored_anatomy": "Continuous mantle anatomy; armor lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "cc19a023a48bd1f4f7ed8f8d1ba724adb6179d96150a90880ba3001c51275928",
+  "normalized_geometry_sha256": "b2bffa1408f5e06a53c218f2dda999b34e927a007cac0094fa4594145e193a79",
+  "source": "art/blender/creature_remodel/r03/biota_mantle_armor_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 40,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        1.0119999647140503
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8764176368713379,
+        0.10999999940395355,
+        0.5059999823570251
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.8764176368713379,
+        0.10999999940395355,
+        -0.5059999823570251
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        -1.0119999647140503
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.8764176368713379,
+        0.10999999940395355,
+        -0.5059999823570251
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.8764176368713379,
+        0.10999999940395355,
+        0.5059999823570251
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.31038377633219727,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.48109485331490576,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.20999997854232788,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_armor_02_near.glb",
+      "sha256": "1f006ac69beea5380916a167f1ca41b3252f3564b15e679ffa32a718e8f256fa",
+      "triangles": 37866,
+      "min": [
+        -1.376570463180542,
+        0.034999996423721313,
+        -1.4496384859085083
+      ],
+      "max": [
+        1.4130864143371582,
+        0.9113038778305054,
+        1.376570463180542
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_armor_02_far.glb",
+      "sha256": "9d58200e68748b29620a1f07b9ae7a697e6f0e54962141636ab3bb667cc2c7f5",
+      "triangles": 16276,
+      "min": [
+        -1.376570463180542,
+        0.034996528178453445,
+        -1.4496384859085083
+      ],
+      "max": [
+        1.4130864143371582,
+        0.9113038778305054,
+        1.376570463180542
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "ventral_oral_petal5": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21",
+    "organ3": "radial_axis31"
+  },
+  "build_seconds": 9.772,
+  "source_render_seconds": 3.573,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "9d9182d6601a445fe9d467acddd2e6230f211e3b38fadf1eade0b25c65d9d335"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

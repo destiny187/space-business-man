@@ -1,0 +1,244 @@
+{
+  "id": "biota_saddle_mandibles_22",
+  "name": "단열갈래네마디다악교각수",
+  "family": "biota_saddle_mandibles",
+  "construction": "saddle",
+  "organ_system": "mandibles",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_saddle_mandibles_22",
+  "kind": "saddle",
+  "habitat": "짧은 말단과 두꺼운 단열 외피 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "앞뒤 지지체를 연결하는 열린 등뼈 교각·맞물리는 한 쌍의 관절 턱 / 분기 배열·주요 기관 4개",
+  "recipe_sha256": "a6a32328bfe4f9f527c6a4dcf2d0fa8e422cfe20a28cd788820b4ca570df59a8",
+  "authored_anatomy": "Continuous saddle anatomy; mandibles lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "2a289907098da4e088b4b0abfbfea0e57411100c5d40bc7b6d85482062b740a2",
+  "normalized_geometry_sha256": "61673c35c99a613ee598c3f81867e9773893dc559c5c304712b7595f431cb58e",
+  "source": "art/blender/creature_remodel/r03/biota_saddle_mandibles_22.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 42,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.8410000205039978,
+        2.421600103378296
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.8410000205039978,
+        2.421600103378296
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.8410000205039978,
+        2.421600103378296
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.1115000247955322,
+        0.10999999940395355,
+        -0.7899999618530273
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.1115000247955322,
+        0.10999999940395355,
+        -0.7899999618530273
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.1115000247955322,
+        0.10999999940395355,
+        0.6100000143051147
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.1115000247955322,
+        0.10999999940395355,
+        0.8199999928474426
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.1115000247955322,
+        0.10999999940395355,
+        -0.5799999833106995
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        1.1115000247955322,
+        0.10999999940395355,
+        -0.5799999833106995
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.8410000205039978,
+    2.421600103378296
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_mandibles_22_near.glb",
+      "sha256": "61c8c1fa566a62fab8364b93c46b5b9e936a1a08bbc901f8360888a2a5401809",
+      "triangles": 44235,
+      "min": [
+        -1.2742499113082886,
+        0.034999996423721313,
+        -0.9999998807907104
+      ],
+      "max": [
+        1.2742500305175781,
+        2.2942638397216797,
+        2.4415998458862305
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_mandibles_22_far.glb",
+      "sha256": "97c64fbc8417534c460de1f6ed81eafa32f60f8003248bc02926f59d6b37202a",
+      "triangles": 19014,
+      "min": [
+        -1.2742499113082886,
+        0.034997131675481796,
+        -0.999822735786438
+      ],
+      "max": [
+        1.2742500305175781,
+        2.2942638397216797,
+        2.441321611404419
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "arch00": "chest",
+    "arch01": "arch00",
+    "arch02": "arch01",
+    "arch10": "chest",
+    "arch11": "arch10",
+    "arch12": "arch11",
+    "suspension_neck0": "arch12",
+    "suspension_neck1": "suspension_neck0",
+    "head": "suspension_neck1",
+    "oral": "head",
+    "leg0_upper": "arch00",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "arch00",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "arch02",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "arch02",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "arch10",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "arch10",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "arch00",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "arch01",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "arch10",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2",
+    "organ3": "arch11",
+    "organ3jaw-1": "organ3",
+    "organ3jaw1": "organ3"
+  },
+  "build_seconds": 13.205,
+  "source_render_seconds": 3.913,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "3024760f30ce2c88f612fc99b3fc7f81f88f76db661966400e34622b7e1535d9"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

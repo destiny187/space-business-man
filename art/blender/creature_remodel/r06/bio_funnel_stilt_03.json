@@ -1,0 +1,240 @@
+{
+  "id": "bio_funnel_stilt_03",
+  "source_id": "bio_funnel_stilt_03",
+  "name": "오각누두수",
+  "family": "funnel_stilt",
+  "kind": "funnel_stilt",
+  "construction": "funnel_stilt",
+  "anatomical_type": "funnel_stilt",
+  "organ_system": "mandibles",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "큰 깔때기 몸통의 바깥 벽에서 바로 이어지는 긴 다리 / 오방 분절 골격",
+  "morphology": {
+    "width": 1.05,
+    "height": 0.93,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 5,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "funnel_stilt",
+    "support_limbs": 5,
+    "oral_organs": 1,
+    "articulated_organs": 20
+  },
+  "version": "r06-1",
+  "build_fingerprint": "3e6563b6f0b87e6c8065b346e4a6467a3f43dc1a400d5c13db8fdb7e5704ebe3",
+  "normalized_geometry_sha256": "7559dc2c997519ddcdce976fcb762dc78e957b673bde6e7d39681983bab31329",
+  "source": "art/blender/creature_remodel/r06/bio_funnel_stilt_03.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 39,
+  "locomotion_chains": 5,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_central_pharynx0": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.5088000297546387,
+        -0.0
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.5088000297546387,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.5088000297546387,
+        -0.0
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        4.714890448627345e-17,
+        0.10000000149011612,
+        0.7699999809265137
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7323135733604431,
+        0.10000000149011612,
+        0.23794309794902802
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.4525946378707886,
+        0.10000000149011612,
+        -0.622943103313446
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.4525946378707886,
+        0.10000000149011612,
+        -0.622943103313446
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.7323135733604431,
+        0.10000000149011612,
+        0.23794309794902802
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3530000689251044,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5471501068339119,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.4,
+      "support2": 0.8,
+      "support3": 0.2,
+      "support4": 0.6
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.5088000297546387,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_funnel_stilt_03_near.glb",
+      "sha256": "2ea214e41425c8ef5a67243c8e25f4923ee99147bbb8860f29a329973aa3b816",
+      "triangles": 30084,
+      "min": [
+        -1.0474458932876587,
+        0.02499999850988388,
+        -0.9244195222854614
+      ],
+      "max": [
+        1.0474458932876587,
+        1.5942798852920532,
+        1.0720590353012085
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_funnel_stilt_03_far.glb",
+      "sha256": "2d70eb8148a0fc7b39b6cceeec452ced512598acd728cbb1d94737d21e778ac1",
+      "triangles": 12932,
+      "min": [
+        -1.0474629402160645,
+        0.024996532127261162,
+        -0.9244457483291626
+      ],
+      "max": [
+        1.0474579334259033,
+        1.595945954322815,
+        1.0719879865646362
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "oral_wall0_00": "chest",
+    "oral_wall0_01": "oral_wall0_00",
+    "oral_plate0_0": "oral_wall0_00",
+    "oral_wall0_10": "chest",
+    "oral_wall0_11": "oral_wall0_10",
+    "oral_plate0_1": "oral_wall0_10",
+    "oral_wall0_20": "chest",
+    "oral_wall0_21": "oral_wall0_20",
+    "oral_plate0_2": "oral_wall0_20",
+    "oral_wall0_30": "chest",
+    "oral_wall0_31": "oral_wall0_30",
+    "oral_plate0_3": "oral_wall0_30",
+    "oral_wall0_40": "chest",
+    "oral_wall0_41": "oral_wall0_40",
+    "oral_plate0_4": "oral_wall0_40",
+    "central_pharynx0": "chest",
+    "central_pharynx0_petal0": "central_pharynx0",
+    "central_pharynx0_petal1": "central_pharynx0",
+    "central_pharynx0_petal2": "central_pharynx0",
+    "central_pharynx0_petal3": "central_pharynx0",
+    "central_pharynx0_petal4": "central_pharynx0",
+    "support0_upper": "oral_wall0_00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "oral_wall0_10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "oral_wall0_20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "oral_wall0_30",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "oral_wall0_40",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "head": "chest"
+  },
+  "build_seconds": 9.282,
+  "source_render_seconds": 3.5,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "a11a7a0bf898a44aed3a77ab0cf9591ebec6357f22e7e291ab5b92418e3785a6"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

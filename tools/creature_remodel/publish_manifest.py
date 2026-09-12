@@ -1,6 +1,6 @@
 """Publish only complete per-species checkpoints. Does not enable campaign replacement."""
 from pathlib import Path
-import json,hashlib,os,sys
+import json,hashlib,os,sys,fcntl
 ROOT=Path(__file__).resolve().parents[2]
 def expected_fingerprints(batch):
     expected={}
@@ -34,7 +34,7 @@ def checkpoint_current(row,expected):
     reuse=row.get('lod_animation_reuse',{})
     return any(reuse=={'version':v,'source':'near'} and row['build_fingerprint']==legacy_fingerprint(base,v) for v in [1,2]) or (reuse=={'version':3,'source':'near'} and row['build_fingerprint']==reused_fingerprint(base))
 
-def main(batch):
+def publish(batch):
     assert batch.isidentifier()
     rows=[];expected=expected_fingerprints(batch)
     cache_path=ROOT/'output/creature-remodel/production'/('verified-assets-'+batch+'.json')
@@ -59,6 +59,11 @@ def main(batch):
             patch(row)
             from body_support_metadata import patch as patch_body
             patch_body(row)
+            from coiled_support_metadata import patch as patch_coiled
+            patch_coiled(row)
+        if batch=='r03':
+            from low_body_support_metadata import patch as patch_low_body
+            patch_low_body(row)
         rows.append(row)
         # Small per-species runtime records; build audit and skeleton graphs remain offline.
         runtime={k:row[k] for k in ['id','source_id','name','kind','palette','attack','bone_count','locomotion_chains','clips','muzzle','lods','motion_profile','sockets']}
@@ -73,4 +78,19 @@ def main(batch):
     if cache_changed:
         cache_path.parent.mkdir(parents=True,exist_ok=True);temporary=cache_path.with_suffix('.tmp');temporary.write_text(json.dumps(cache));os.replace(temporary,cache_path)
     print(batch,len(rows),'complete models published for review')
+
+def main(batch):
+    assert batch.isidentifier()
+    folder=ROOT/'output/creature-remodel/production';folder.mkdir(parents=True,exist_ok=True)
+    # A restarting producer and the render watcher share these atomic manifests.
+    # Serialize their publication, including metadata caches, within each batch.
+    with (folder/('publish-'+batch+'.lock')).open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        publish(batch)
+        if batch=='r03':
+            from low_body_support_metadata import flush
+            flush()
+        if batch=='r06':
+            from coiled_support_metadata import flush
+            flush()
 if __name__=='__main__':main(sys.argv[1])

@@ -114,7 +114,7 @@ func review_batch(form: Dictionary) -> void:
 	assert(actor.set_state("attack")== (original.get("attack","none")!="none"));actor.set_state("idle")
 	var host_profile:=FrontierWildlifeCombat.profile({"form_id":original.id,"look_id":FrontierEcologyCatalog.look_for_seed(original.id,0),"combat_tier":5})
 	var fast_speed: float=host_profile.speed
-	var motion=actor.ground_motion;var max_error:=0.;var max_body_error:=0.;var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0
+	var motion=actor.ground_motion;var max_error:=0.;var max_body_error:=0.;var max_body_at: Dictionary={};var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0
 	for limb in motion.authored_limbs:
 		assert(is_equal_approx(motion.limb_phase(limb.name),float(form.motion_profile.limb_phases[limb.name])));phase_checks+=1
 	title.text=form.name;var at:=Vector3(0,height(0,0),0)
@@ -133,7 +133,8 @@ func review_batch(form: Dictionary) -> void:
 		at+=Vector3(sin(yaw),0,cos(yaw))*speed/30.;at.y=height(at.x,at.z)
 		actor.drive_ground(at,frame_at(at,yaw),1./30.,probe,false,0);actor._process(1./30.)
 		root_error=maxf(root_error,actor.global_position.distance_to(at))
-		max_body_error=maxf(max_body_error,motion.body_contact_error)
+		if motion.body_contact_error>max_body_error:
+			max_body_error=motion.body_contact_error;max_body_at={"frame":i,"clip":motion.wanted_clip,"knee":motion.joint_contact_error}
 		if motion.grounded_error>max_error:
 			max_error=motion.grounded_error;max_error_at={"frame":i,"clip":motion.wanted_clip,"reach":motion.reach_debug.duplicate()}
 		var skeleton: Skeleton3D=actor.anatomical_skeletons[0]
@@ -144,7 +145,9 @@ func review_batch(form: Dictionary) -> void:
 		center_camera(actor,form)
 		if video:await photograph(form.id,"motion_%03d"%step);step+=1
 		elif i in [30,110,220]:await photograph(form.id,"walk" if i==30 else ("run" if i==110 else "feed"))
-	assert(root_error<.00001 and bone_motion>.01 and max_body_error<.01)
+	if max_body_error>=.01:
+		push_error("Body contact requires correction: "+str(form.id)+" "+str(max_body_error)+" "+JSON.stringify(max_body_at));actor.free();quit(1);return
+	assert(root_error<.00001 and bone_motion>.01)
 	# Pose the authored strike for art review; no host attack or new damage is enabled.
 	var socket_samples: Dictionary=await capture_attack(actor,form)
 	var pose_capture_origin: Array=[at.x,at.y,at.z]

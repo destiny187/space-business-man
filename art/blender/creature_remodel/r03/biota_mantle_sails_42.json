@@ -1,0 +1,242 @@
+{
+  "id": "biota_mantle_sails_42",
+  "name": "동결둘레네마디날개외투수",
+  "family": "biota_mantle_sails",
+  "construction": "mantle",
+  "organ_system": "sails",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_mantle_sails_42",
+  "kind": "mantle",
+  "habitat": "작은 개구부·겹친 단열막의 가상 극저온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "두꺼운 외투 조직과 아래쪽 접지근·몸통과 이어진 넓은 측막 / 방사 배열·주요 기관 4개",
+  "recipe_sha256": "a75bba7cde7d2010c0ade761fa8bf2541f5bbd0ada004e22cc7ec384ab2903e7",
+  "authored_anatomy": "Continuous mantle anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "10a76701f556d8bcff51f42ea910c7d7c5118849da8078e73b1d927f94baad49",
+  "normalized_geometry_sha256": "68d451a2d70e53a8b8b6586e12d4b75d8bcc71f45a4aaa6785a92cef253c5023",
+  "source": "art/blender/creature_remodel/r03/biota_mantle_sails_42.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 40,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.11640000343322754,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.11640000343322754,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.11640000343322754,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.409113656663613e-17,
+        0.10999999940395355,
+        1.2100000381469727
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0478907823562622,
+        0.10999999940395355,
+        0.6050000190734863
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        1.0478907823562622,
+        0.10999999940395355,
+        -0.6050000190734863
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        7.409113656663613e-17,
+        0.10999999940395355,
+        -1.2100000381469727
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.0478907823562622,
+        0.10999999940395355,
+        -0.6050000190734863
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -1.0478907823562622,
+        0.10999999940395355,
+        0.6050000190734863
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3578394439133715,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5546511380657259,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.11640000343322754,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_sails_42_near.glb",
+      "sha256": "5847b39cd32d133f020a954853352cb92900d9a27bad62b86408d75fe8ccd83e",
+      "triangles": 39146,
+      "min": [
+        -1.9984807968139648,
+        0.034999996423721313,
+        -2.1074979305267334
+      ],
+      "max": [
+        2.052985429763794,
+        1.2209476232528687,
+        1.9984807968139648
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_sails_42_far.glb",
+      "sha256": "aab87f7b0b9eb91275aa3868f54d32e3796857f821615597ce9a187c2cf612bb",
+      "triangles": 16826,
+      "min": [
+        -1.9981094598770142,
+        0.0349971279501915,
+        -2.10699725151062
+      ],
+      "max": [
+        2.052478313446045,
+        1.2206926345825195,
+        1.9981083869934082
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "ventral_oral_petal5": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21",
+    "organ3": "radial_axis31"
+  },
+  "build_seconds": 13.862,
+  "source_render_seconds": 12.816,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "ead03cd99cd2d0311b993cb882488bdac698b6d0d24834570dc2a5f633a0da6c"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -22,11 +22,19 @@ def main():
     approved=json.loads((ROOT/'우주-비즈니스/data/creature_motion_studies.json').read_text())['forms']
     first={r['source_id']:r['id'] for r in approved}
     first.update({'bio_torus_loom_01':'annulus','bio_pentapalm_03':'pentafold','bio_pendulum_grazer_01':'tethermaw'})
+    initial=json.loads((ROOT/'우주-비즈니스/data/creature_remodel_r01.json').read_text())['forms']
+    initial_review={}
+    for path in ['creature-speed/evidence.json','creature-remodel/r01/evidence.json']:
+        evidence=json.loads((ROOT/'docs/production/media'/path).read_text())
+        assert evidence['renderer']=='forward_plus'
+        initial_review.update({r['id']:r for r in evidence['models']})
+    initial_audited={r['source_id'] for r in initial if r['id'] in initial_review
+                     and {k:v['sha256'] for k,v in r['lods'].items()}=={k:v['sha256'] for k,v in initial_review[r['id']]['lods'].items()}}
     batches={r['source_id']:{**r,'batch':'R02'} for r in remodel_recipes()}
     batches.update({r['source_id']:{**r,'batch':'R03'} for r in production_recipes()})
     for batch,recipe in [('R04',midpoint_recipes),('R05',air_recipes),('R06',legacy_recipes)]:
         batches.update({r['source_id']:{**r,'batch':batch} for r in recipe()})
-    built={};captured=set();audited=set()
+    built={};built_by_asset={};captured=set();audited=set()
     for batch in ['r02','r03','r04','r05','r06']:
         expected=expected_fingerprints(batch)
         for p in (ROOT/'art/blender/creature_remodel'/batch).glob('*.json'):
@@ -38,7 +46,13 @@ def main():
                 patch(entry)
                 from body_support_metadata import patch as patch_body
                 patch_body(entry)
+                from coiled_support_metadata import patch as patch_coiled
+                patch_coiled(entry)
+            if batch=='r03':
+                from low_body_support_metadata import patch as patch_low_body
+                patch_low_body(entry)
             built[entry['source_id']]=entry
+            built_by_asset[entry['id']]=entry
             evidence=ROOT/'output/creature-remodel'/batch/(entry['id']+'_evidence.json')
             if evidence.exists():
                 data=json.loads(evidence.read_text());record=data.get('species',data)
@@ -47,8 +61,9 @@ def main():
         if evidence.exists():
             data=json.loads(evidence.read_text())
             for record in data.get('species',[]):
-                entry=next((r for r in built.values() if r['id']==record['id']),None)
+                entry=built_by_asset.get(record['id'])
                 if entry and record.get('asset_sha256')=={k:v['sha256'] for k,v in entry['lods'].items()} and (batch=='r05' or record.get('authored_pose_capture_version',0)>=2) and record.get('contact_metadata_version',0)==entry.get('contact_metadata_version',0) and record.get('body_support_version',0)==entry.get('body_support_version',0):audited.add(entry['source_id'])
+    captured.update(initial_audited);audited.update(initial_audited)
     runtime=json.loads((ROOT/'우주-비즈니스/data/creature_remodel_runtime.json').read_text())
     enabled=set(runtime['enabled_ground_species'])|set(runtime.get('enabled_air_species',[]))
     rows=[]
@@ -79,6 +94,6 @@ def main():
         'rules':['No six-rig limit','No species added for color or size changes','Preserve species IDs, native origins and existing save hashes',
                  'Asset build, rendered review and campaign integration are separate states','Split rigs when joints, limbs, symmetry, organs or propulsion differ'],
         'progress':{'models_built':len(first)+len(built),'renderer_captured':len(captured),'asset_and_render_audited':len(audited),'campaign_replacements':len(enabled),'remaining_replacements':5600-len(enabled),
-                    'batches':{batch:{'planned':sum(r['batch']==batch for r in batches.values()),'built':sum(batches[id]['batch']==batch for id in built),'enabled':sum(batches[id]['batch']==batch for id in enabled if id in batches)} for batch in ['R02','R03','R04','R05','R06']}},'forms':rows},ensure_ascii=False,indent=2)+'\n')
+                    'batches':{'R01':{'planned':len(first),'built':len(initial),'enabled':len(enabled.intersection(first))},**{batch:{'planned':sum(r['batch']==batch for r in batches.values()),'built':sum(batches[id]['batch']==batch for id in built),'enabled':sum(batches[id]['batch']==batch for id in enabled if id in batches)} for batch in ['R02','R03','R04','R05','R06']}}},'forms':rows},ensure_ascii=False,indent=2)+'\n')
     print(len(rows),'animal IDs queued;',len(first),'R01 IDs;',len(set(r['anatomy']['structure'] for r in rows)),'structure labels (not finished rigs)')
 if __name__=='__main__':main()

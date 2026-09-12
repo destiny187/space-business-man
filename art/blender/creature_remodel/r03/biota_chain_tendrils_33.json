@@ -1,0 +1,243 @@
+{
+  "id": "biota_chain_tendrils_33",
+  "name": "차폐쌍줄다섯마디수근연쇄충",
+  "family": "biota_chain_tendrils",
+  "construction": "chain",
+  "organ_system": "tendrils",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_chain_tendrils_33",
+  "kind": "chain",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "소화 마디와 관절을 잇는 연쇄 몸통·말단이 갈라지는 굵은 촉지 / 쌍열 배열·주요 기관 5개",
+  "recipe_sha256": "82a87408ef4ed4ebf5246e6c39a09815cd4f9113a5436e4b18d3cb9cd1b13389",
+  "authored_anatomy": "Continuous chain anatomy; tendrils lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "1a2defc56b0e39c0ebe443e3a69d6273052b3e6f0e39c1014eb45077e1390801",
+  "normalized_geometry_sha256": "1013b20a89b95e75f0406299fd2fda01a69b1a9ad219c6e8a684319dc8f61127",
+  "source": "art/blender/creature_remodel/r03/biota_chain_tendrils_33.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 59,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7724999785423279,
+        1.8949999809265137
+      ]
+    },
+    "Socket_telescopic_oral": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7724999785423279,
+        1.8949999809265137
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7724999785423279,
+        1.8949999809265137
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.2649999856948853
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.2649999856948853
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.0549999475479126
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.0549999475479126
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.25617920773189334,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.39707777198443467,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.23000000417232513,
+    0.7724999785423279,
+    1.8949999809265137
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_chain_tendrils_33_near.glb",
+      "sha256": "54b40aa0f123decf21f439520531b5bed4dac626f09382d47c5f4e02ac4eadb3",
+      "triangles": 31959,
+      "min": [
+        -1.0080984830856323,
+        0.034999996423721313,
+        -2.1086585521698
+      ],
+      "max": [
+        0.9719630479812622,
+        1.655992865562439,
+        1.9016687870025635
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_chain_tendrils_33_far.glb",
+      "sha256": "bfd6f739a5c72c3aed1d60ad093f804774286f7c8b245d7aebdc06b2dcc5568d",
+      "triangles": 13735,
+      "min": [
+        -1.0080984830856323,
+        0.034997131675481796,
+        -2.1080918312072754
+      ],
+      "max": [
+        0.9719617366790771,
+        1.655992865562439,
+        1.901915192604065
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis0_3": "axis0_2",
+    "axis0_4": "axis0_3",
+    "axis1_0": "chest",
+    "axis1_1": "axis1_0",
+    "axis1_2": "axis1_1",
+    "axis1_3": "axis1_2",
+    "axis1_4": "axis1_3",
+    "head": "axis1_4",
+    "telescopic_oral": "head",
+    "telescopic_oral_petal0": "telescopic_oral",
+    "telescopic_oral_petal1": "telescopic_oral",
+    "telescopic_oral_petal2": "telescopic_oral",
+    "telescopic_oral_petal3": "telescopic_oral",
+    "telescopic_oral_petal4": "telescopic_oral",
+    "telescopic_oral_petal5": "telescopic_oral",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis1_0",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis1_0",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "axis0_0",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "axis0_2",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "axis0_4",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1",
+    "organ3": "axis1_1",
+    "organ3tactile0": "organ3",
+    "organ3tactile1": "organ3tactile0",
+    "organ3branch-10": "organ3tactile1",
+    "organ3branch10": "organ3tactile1",
+    "organ4": "axis1_3",
+    "organ4tactile0": "organ4",
+    "organ4tactile1": "organ4tactile0",
+    "organ4branch-10": "organ4tactile1",
+    "organ4branch10": "organ4tactile1"
+  },
+  "build_seconds": 17.9,
+  "source_render_seconds": 6.873,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "e2838bf857aa27ce733b283d9d84b23dcd2d7921bdb1c005367110e60a3de32f"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

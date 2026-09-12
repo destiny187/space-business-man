@@ -35,8 +35,9 @@ def audit(batch):
             if f['air_motion']:assert len(r['phases'])==4 and r['dormant_and_introduced_remain_grounded']
         assert (ROOT/f['source']).stat().st_size>10000 and (media/'blender'/(f['id']+'.png')).exists()
         assert f['normalized_geometry_sha256'] not in geometries,f['id'];geometries.add(f['normalized_geometry_sha256'])
-        graph=f['skeleton_topology']
-        def branch(parent):return '('+''.join(sorted(branch(n) for n,p in graph.items() if p==parent))+')'
+        graph=f['skeleton_topology'];children={}
+        for name,parent in graph.items():children.setdefault(parent,[]).append(name)
+        def branch(parent):return '('+''.join(sorted(branch(n) for n in children.get(parent,[])))+')'
         topologies.add(branch(None))
         checks={}
         for lod,asset in f['lods'].items():
@@ -50,11 +51,12 @@ def audit(batch):
     print(batch,'AUDIT',len(forms),'geometry',len(geometries),'parent graphs',len(topologies),flush=True)
     return forms,result
 
-def boards(batch,forms,prefix='',states=None):
+def boards(batch,forms,prefix='',states=None,refresh_ids=None):
     media=ROOT/'docs/production/media/creature-remodel'/batch;output=ROOT/'output/creature-remodel'/batch
     font=ImageFont.truetype(str(ROOT/'우주-비즈니스/assets/fonts/NotoSansKR.ttf'),13)
     # Nine clearly legible species per page, rather than an unbounded miniature sheet.
     for page in range(math.ceil(len(forms)/9)):
+        if refresh_ids is not None and not any(r['id'] in refresh_ids for r in forms[page*9:page*9+9]):continue
         for state in (states or (['0000','0540'] if batch=='r05' else ['idle','run','strike'])):
             canvas=Image.new('RGB',(1080,864),'#cbd5d0');draw=ImageDraw.Draw(canvas)
             for i,r in enumerate(forms[page*9:page*9+9]):

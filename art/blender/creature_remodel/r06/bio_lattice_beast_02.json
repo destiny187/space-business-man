@@ -1,0 +1,238 @@
+{
+  "id": "bio_lattice_beast_02",
+  "source_id": "bio_lattice_beast_02",
+  "name": "사각격자수",
+  "family": "lattice_beast",
+  "kind": "lattice_beast",
+  "construction": "lattice_beast",
+  "anatomical_type": "lattice_beast",
+  "organ_system": "gills",
+  "environment": "crystal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "살덩어리 대신 빈 공간을 둘러싼 격자 골격과 마디 장기 / 사방 연결 골격",
+  "morphology": {
+    "width": 0.85,
+    "height": 1.12,
+    "mode": 1,
+    "radial_count": 4,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "lattice_beast",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 30
+  },
+  "version": "r06-1",
+  "build_fingerprint": "1ab06c3273545a27aeb8f40f6cb6b87041176f19cb516e6a2f559b6f6825d553",
+  "normalized_geometry_sha256": "df7713e441cb0023264f02bd1efad61a80667870247cb6bf67100cf10badd924",
+  "source": "art/blender/creature_remodel/r06/bio_lattice_beast_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 46,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_hanging_oral": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.8564000129699707,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.8564000129699707,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.8564000129699707,
+        1.0299999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.2932499945163727,
+        0.10000000149011612,
+        1.3899999856948853
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8632500171661377,
+        0.10000000149011612,
+        -0.7699999809265137
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.2932499945163727,
+        0.10000000149011612,
+        -1.3399999141693115
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.8632500171661377,
+        0.10000000149011612,
+        -0.7699999809265137
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2774201898827892,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4300012943183233,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.8564000129699707,
+    1.0299999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lattice_beast_02_near.glb",
+      "sha256": "4d772c0298f983bf3b0e9353bd49dae1bada66f5ae6790723439e919a102df0c",
+      "triangles": 37688,
+      "min": [
+        -1.1653090715408325,
+        0.02499999850988388,
+        -1.6420589685440063
+      ],
+      "max": [
+        1.1653090715408325,
+        1.4764000177383423,
+        1.6920591592788696
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lattice_beast_02_far.glb",
+      "sha256": "99194614c9f552eb4ecde9677816febf232f6dce5a51d07bd3a80fc5047d410e",
+      "triangles": 16200,
+      "min": [
+        -1.1652355194091797,
+        0.025011511519551277,
+        -1.6419854164123535
+      ],
+      "max": [
+        1.1652379035949707,
+        1.4764000177383423,
+        1.6919881105422974
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "dorsal_arch00": "chest",
+    "dorsal_arch01": "dorsal_arch00",
+    "dorsal_arch02": "dorsal_arch01",
+    "articulated_crossrib0_00": "dorsal_arch01",
+    "articulated_crossrib0_01": "articulated_crossrib0_00",
+    "articulated_crossrib0_10": "dorsal_arch01",
+    "articulated_crossrib0_11": "articulated_crossrib0_10",
+    "articulated_crossrib0_20": "dorsal_arch01",
+    "articulated_crossrib0_21": "articulated_crossrib0_20",
+    "articulated_crossrib0_30": "dorsal_arch01",
+    "articulated_crossrib0_31": "articulated_crossrib0_30",
+    "articulated_crossrib0_40": "dorsal_arch01",
+    "articulated_crossrib0_41": "articulated_crossrib0_40",
+    "dorsal_arch10": "chest",
+    "dorsal_arch11": "dorsal_arch10",
+    "dorsal_arch12": "dorsal_arch11",
+    "articulated_crossrib1_00": "dorsal_arch11",
+    "articulated_crossrib1_01": "articulated_crossrib1_00",
+    "articulated_crossrib1_10": "dorsal_arch11",
+    "articulated_crossrib1_11": "articulated_crossrib1_10",
+    "articulated_crossrib1_20": "dorsal_arch11",
+    "articulated_crossrib1_21": "articulated_crossrib1_20",
+    "articulated_crossrib1_30": "dorsal_arch11",
+    "articulated_crossrib1_31": "articulated_crossrib1_30",
+    "articulated_crossrib1_40": "dorsal_arch11",
+    "articulated_crossrib1_41": "articulated_crossrib1_40",
+    "hanging_oral": "chest",
+    "hanging_oral_petal0": "hanging_oral",
+    "hanging_oral_petal1": "hanging_oral",
+    "hanging_oral_petal2": "hanging_oral",
+    "hanging_oral_petal3": "hanging_oral",
+    "support0_upper": "dorsal_arch02",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "dorsal_arch10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "dorsal_arch00",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "dorsal_arch00",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 11.834,
+  "source_render_seconds": 6.432,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "bc3e395ea7e56a0a5738cd8e40edc18236f8f0beda7fe98ba499957517434657"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

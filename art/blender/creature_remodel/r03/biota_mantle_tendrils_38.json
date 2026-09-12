@@ -1,0 +1,300 @@
+{
+  "id": "biota_mantle_tendrils_38",
+  "name": "융빙쌍줄열마디촉수외투수",
+  "family": "biota_mantle_tendrils",
+  "construction": "mantle",
+  "organ_system": "tendrils",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_mantle_tendrils_38",
+  "kind": "mantle",
+  "habitat": "기저 저장층과 짧은 단열 주름 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 10,
+    "limb_count": 6,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "두꺼운 외투 조직과 아래쪽 접지근·말단이 갈라지는 굵은 촉지 / 쌍열 배열·주요 기관 10개",
+  "recipe_sha256": "9841954ef9b1b60991244ff9a1ce79fd45772795886b2456c8ad31c4f2c02ecb",
+  "authored_anatomy": "Continuous mantle anatomy; tendrils lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "7062cac62a82780308cf5440f12c83ccdb9a3d881a396f9e68c0ebe7f6b9e85f",
+  "normalized_geometry_sha256": "0fb17ff8616afcfdc10a19d9f45ba5ad95875e1a13340d722abd0e5903fac47f",
+  "source": "art/blender/creature_remodel/r03/biota_mantle_tendrils_38.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 98,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.3400000035762787,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.3400000035762787,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.3400000035762787,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        5.725224068922884e-17,
+        0.10999999940395355,
+        0.9350000023841858
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8097337484359741,
+        0.10999999940395355,
+        0.4675000011920929
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.8097337484359741,
+        0.10999999940395355,
+        -0.4675000011920929
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        5.725224068922884e-17,
+        0.10999999940395355,
+        -0.9350000023841858
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.8097337484359741,
+        0.10999999940395355,
+        -0.4675000011920929
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.8097337484359741,
+        0.10999999940395355,
+        0.4675000011920929
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.31146572480594875,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.48277187344922057,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.3400000035762787,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_tendrils_38_near.glb",
+      "sha256": "3522d0914ce582b9d06d52b94e3a4861637fd4b39a06b9e6d44bba1d57934a3d",
+      "triangles": 43526,
+      "min": [
+        -2.0882773399353027,
+        0.034999996423721313,
+        -2.160501003265381
+      ],
+      "max": [
+        2.0882773399353027,
+        1.0413038730621338,
+        2.052433729171753
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_tendrils_38_far.glb",
+      "sha256": "4e2afdf639d9b9aed3e4f637217caef08274b642425c8ed57091baca07706439",
+      "triangles": 18710,
+      "min": [
+        -2.0882294178009033,
+        0.03501225262880325,
+        -2.160383701324463
+      ],
+      "max": [
+        2.088226079940796,
+        1.0413038730621338,
+        2.052292823791504
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "radial_axis40": "chest",
+    "radial_axis41": "radial_axis40",
+    "radial_axis50": "chest",
+    "radial_axis51": "radial_axis50",
+    "radial_axis60": "chest",
+    "radial_axis61": "radial_axis60",
+    "radial_axis70": "chest",
+    "radial_axis71": "radial_axis70",
+    "radial_axis80": "chest",
+    "radial_axis81": "radial_axis80",
+    "radial_axis90": "chest",
+    "radial_axis91": "radial_axis90",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "ventral_oral_petal5": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "radial_axis01",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "radial_axis11",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "radial_axis21",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1",
+    "organ3": "radial_axis31",
+    "organ3tactile0": "organ3",
+    "organ3tactile1": "organ3tactile0",
+    "organ3branch-10": "organ3tactile1",
+    "organ3branch10": "organ3tactile1",
+    "organ4": "radial_axis41",
+    "organ4tactile0": "organ4",
+    "organ4tactile1": "organ4tactile0",
+    "organ4branch-10": "organ4tactile1",
+    "organ4branch10": "organ4tactile1",
+    "organ5": "radial_axis51",
+    "organ5tactile0": "organ5",
+    "organ5tactile1": "organ5tactile0",
+    "organ5branch-10": "organ5tactile1",
+    "organ5branch10": "organ5tactile1",
+    "organ6": "radial_axis61",
+    "organ6tactile0": "organ6",
+    "organ6tactile1": "organ6tactile0",
+    "organ6branch-10": "organ6tactile1",
+    "organ6branch10": "organ6tactile1",
+    "organ7": "radial_axis71",
+    "organ7tactile0": "organ7",
+    "organ7tactile1": "organ7tactile0",
+    "organ7branch-10": "organ7tactile1",
+    "organ7branch10": "organ7tactile1",
+    "organ8": "radial_axis81",
+    "organ8tactile0": "organ8",
+    "organ8tactile1": "organ8tactile0",
+    "organ8branch-10": "organ8tactile1",
+    "organ8branch10": "organ8tactile1",
+    "organ9": "radial_axis91",
+    "organ9tactile0": "organ9",
+    "organ9tactile1": "organ9tactile0",
+    "organ9branch-10": "organ9tactile1",
+    "organ9branch10": "organ9tactile1"
+  },
+  "build_seconds": 31.767,
+  "source_render_seconds": 12.002,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "51e4a2ac281ccf3de44eff6ec7856c180e1d5992b86ff9b49819480e85cf8079"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

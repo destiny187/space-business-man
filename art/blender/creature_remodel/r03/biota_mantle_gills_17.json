@@ -1,0 +1,233 @@
+{
+  "id": "biota_mantle_gills_17",
+  "name": "암중굽은아홉마디벨벳아가미수",
+  "family": "biota_mantle_gills",
+  "construction": "mantle",
+  "organ_system": "gills",
+  "environment": "cave",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_mantle_gills_17",
+  "kind": "mantle",
+  "habitat": "작은 시각기관·길어진 촉각·기질 부착기관의 지하 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "695e77",
+    "bab0b1",
+    "34494e",
+    "ab9567"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 9,
+    "limb_count": 4,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "두꺼운 외투 조직과 아래쪽 접지근·넓게 펼친 깃 아가미 / 만곡 배열·주요 기관 9개",
+  "recipe_sha256": "033566b0722784ae6305d6669ad561be09c6ccd48af0b3de9b77b34478de57dc",
+  "authored_anatomy": "Continuous mantle anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "02342d20d41a6e650fb2611fef60f98f685a4377c3cfded5bcb3b3c5dd2bc781",
+  "normalized_geometry_sha256": "1f276f1ebdae025f17e0dbb0c43b766dafed3bd4e574cdb17fd1bb38a2700488",
+  "source": "art/blender/creature_remodel/r03/biota_mantle_gills_17.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.16839998960494995,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.16839998960494995,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.16839998960494995,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.072335342068773e-17,
+        0.10999999940395355,
+        1.1549999713897705
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.1549999713897705,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        7.072335342068773e-17,
+        0.10999999940395355,
+        -1.1549999713897705
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.1549999713897705,
+        0.10999999940395355,
+        -1.4144670684137546e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3469831869462439,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5378239397666781,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.16839998960494995,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_gills_17_near.glb",
+      "sha256": "9bbd537c2a841865c04247fd966019ee1eca875343304a6e46c1dbada6787bcc",
+      "triangles": 49850,
+      "min": [
+        -1.7625194787979126,
+        0.034999996423721313,
+        -1.7346540689468384
+      ],
+      "max": [
+        1.816367506980896,
+        0.8697038888931274,
+        1.7346419095993042
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_gills_17_far.glb",
+      "sha256": "881a20c3aa9dac429cb4f438e2f60613313eda62227e3bba940015294865c6bb",
+      "triangles": 21430,
+      "min": [
+        -1.7626668214797974,
+        0.03501151129603386,
+        -1.7348138093948364
+      ],
+      "max": [
+        1.8160237073898315,
+        0.8697038888931274,
+        1.734785556793213
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "radial_axis40": "chest",
+    "radial_axis41": "radial_axis40",
+    "radial_axis50": "chest",
+    "radial_axis51": "radial_axis50",
+    "radial_axis60": "chest",
+    "radial_axis61": "radial_axis60",
+    "radial_axis70": "chest",
+    "radial_axis71": "radial_axis70",
+    "radial_axis80": "chest",
+    "radial_axis81": "radial_axis80",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "ventral_oral_petal5": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21",
+    "organ3": "radial_axis31",
+    "organ4": "radial_axis41",
+    "organ5": "radial_axis51",
+    "organ6": "radial_axis61",
+    "organ7": "radial_axis71",
+    "organ8": "radial_axis81"
+  },
+  "build_seconds": 15.4,
+  "source_render_seconds": 10.499,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "d4a2d2afbee1f547c7b20a3893a84c9faf0eab5437b1f99a5827d817afdff23e"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

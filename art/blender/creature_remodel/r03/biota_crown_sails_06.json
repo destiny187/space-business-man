@@ -1,0 +1,253 @@
+{
+  "id": "biota_crown_sails_06",
+  "name": "차폐곧은여덟마디꽃막관수",
+  "family": "biota_crown_sails",
+  "construction": "crown",
+  "organ_system": "sails",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_crown_sails_06",
+  "kind": "crown",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 8,
+    "limb_count": 6,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "빈 중앙 공간을 둘러싼 살아 있는 관·몸통과 이어진 넓은 측막 / 직렬 배열·주요 기관 8개",
+  "recipe_sha256": "a2a82cdd63ba879d39f818e8532ca43411c0afec44f1e3e9852ac9ced5e56f66",
+  "authored_anatomy": "Continuous crown anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "3da56d34a710269d922335c80be3dbc0929a4744f434406433ee961f9c8f05e5",
+  "normalized_geometry_sha256": "01ca11f35ec998d61a5cf29616fa41d13cdee26d9e3382ed298a36d5a6d79f6f",
+  "source": "art/blender/creature_remodel/r03/biota_crown_sails_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 51,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6399999856948853,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6399999856948853,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6399999856948853,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        5.18270575277916e-17,
+        0.10999999940395355,
+        0.8464000225067139
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.7330039143562317,
+        0.10999999940395355,
+        0.42320001125335693
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.7330039143562317,
+        0.10999999940395355,
+        -0.42320001125335693
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        5.18270575277916e-17,
+        0.10999999940395355,
+        -0.8464000225067139
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.7330039143562317,
+        0.10999999940395355,
+        -0.42320001125335693
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.7330039143562317,
+        0.10999999940395355,
+        0.42320001125335693
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3330672063690414,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5162541698720142,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.6399999856948853,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_crown_sails_06_near.glb",
+      "sha256": "0365f7a6353cbfded1f7b041eaf74e7db8e30d4d9a65115be99a6a8cc5aaf45c",
+      "triangles": 41684,
+      "min": [
+        -1.0945706367492676,
+        0.034999996423721313,
+        -1.1486722230911255
+      ],
+      "max": [
+        1.1987218856811523,
+        2.2570927143096924,
+        1.1486722230911255
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_crown_sails_06_far.glb",
+      "sha256": "eec08923f13bdb80a19165eb84a90412d2f6d602972c4638e2ff0e61ba54a124",
+      "triangles": 17918,
+      "min": [
+        -1.094391107559204,
+        0.03501151129603386,
+        -1.14859139919281
+      ],
+      "max": [
+        1.1984686851501465,
+        2.256812334060669,
+        1.14859139919281
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "crown_wall30": "chest",
+    "crown_wall31": "crown_wall30",
+    "crown_wall40": "chest",
+    "crown_wall41": "crown_wall40",
+    "crown_wall50": "chest",
+    "crown_wall51": "crown_wall50",
+    "crown_wall60": "chest",
+    "crown_wall61": "crown_wall60",
+    "crown_wall70": "chest",
+    "crown_wall71": "crown_wall70",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "crown_wall01",
+    "organ1": "crown_wall11",
+    "organ2": "crown_wall21",
+    "organ3": "crown_wall31",
+    "organ4": "crown_wall41",
+    "organ5": "crown_wall51",
+    "organ6": "crown_wall61",
+    "organ7": "crown_wall71"
+  },
+  "build_seconds": 20.029,
+  "source_render_seconds": 7.643,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "eb082ad0cafcbe7bfccf9694b894cdef3b49602a6feaac7283afbe934d7ceb58"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

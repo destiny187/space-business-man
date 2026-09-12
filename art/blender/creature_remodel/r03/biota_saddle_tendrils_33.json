@@ -1,0 +1,233 @@
+{
+  "id": "biota_saddle_tendrils_33",
+  "name": "차폐쌍줄다섯마디지근안장수",
+  "family": "biota_saddle_tendrils",
+  "construction": "saddle",
+  "organ_system": "tendrils",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_saddle_tendrils_33",
+  "kind": "saddle",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "앞뒤 지지체를 연결하는 열린 등뼈 교각·말단이 갈라지는 굵은 촉지 / 쌍열 배열·주요 기관 5개",
+  "recipe_sha256": "37c02f08d6db803e04ada84c5183e70cce54d86b48409c304c746752ab86072b",
+  "authored_anatomy": "Continuous saddle anatomy; tendrils lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "369a4f6979b19df494ba645bc6b6670ea596c2b6580a7b8a19cdd22bb4ac80fc",
+  "normalized_geometry_sha256": "4bcb9bbf04c399303226199e0ee47368ac8896418221e43fa3d9fa49263d5b6a",
+  "source": "art/blender/creature_remodel/r03/biota_saddle_tendrils_33.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9699999690055847,
+        2.7590999603271484
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9699999690055847,
+        2.7590999603271484
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9699999690055847,
+        2.7590999603271484
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.8075000047683716,
+        0.10999999940395355,
+        -0.8274999856948853
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8075000047683716,
+        0.10999999940395355,
+        -0.8274999856948853
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.8075000047683716,
+        0.10999999940395355,
+        -0.6175000071525574
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.8075000047683716,
+        0.10999999940395355,
+        -0.6175000071525574
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3869429456548593,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5997615657650319,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.9699999690055847,
+    2.7590999603271484
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_tendrils_33_near.glb",
+      "sha256": "0d8c56e052f431d19b5dcaef9700d5bde6cbb8748411fd0d028ea60afa0ac37a",
+      "triangles": 32653,
+      "min": [
+        -1.2597620487213135,
+        0.034999996423721313,
+        -1.0374999046325684
+      ],
+      "max": [
+        1.1870520114898682,
+        2.5207676887512207,
+        2.779099702835083
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_tendrils_33_far.glb",
+      "sha256": "c00bdbe43f5adba9b13627865af7dc9de56e422aa02c5dfa274d25cf1bbccbab",
+      "triangles": 14033,
+      "min": [
+        -1.2597620487213135,
+        0.034999996423721313,
+        -1.037322759628296
+      ],
+      "max": [
+        1.1870520114898682,
+        2.520256519317627,
+        2.779099702835083
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "arch00": "chest",
+    "arch01": "arch00",
+    "arch02": "arch01",
+    "arch10": "chest",
+    "arch11": "arch10",
+    "arch12": "arch11",
+    "suspension_neck0": "arch12",
+    "suspension_neck1": "suspension_neck0",
+    "head": "suspension_neck1",
+    "oral": "head",
+    "leg0_upper": "arch00",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "arch00",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "arch10",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "arch10",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "arch00",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "arch01",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "arch02",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1",
+    "organ3": "arch10",
+    "organ3tactile0": "organ3",
+    "organ3tactile1": "organ3tactile0",
+    "organ3branch-10": "organ3tactile1",
+    "organ3branch10": "organ3tactile1",
+    "organ4": "arch12",
+    "organ4tactile0": "organ4",
+    "organ4tactile1": "organ4tactile0",
+    "organ4branch-10": "organ4tactile1",
+    "organ4branch10": "organ4tactile1"
+  },
+  "build_seconds": 10.666,
+  "source_render_seconds": 6.134,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "824b3326faad25cbfd1229ebbec6f978b3e1d243ac291db0288a09867b57e349"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

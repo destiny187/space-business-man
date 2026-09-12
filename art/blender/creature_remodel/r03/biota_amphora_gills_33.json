@@ -1,0 +1,221 @@
+{
+  "id": "biota_amphora_gills_33",
+  "name": "차폐쌍줄다섯마디깃아가미항수",
+  "family": "biota_amphora_gills",
+  "construction": "amphora",
+  "organ_system": "gills",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_amphora_gills_33",
+  "kind": "amphora",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "수축 목과 열린 입구를 가진 항아리 몸체·넓게 펼친 깃 아가미 / 쌍열 배열·주요 기관 5개",
+  "recipe_sha256": "fd83d4ba3eaca98c8e1841abff786158581b6d06367c269ffe9814771d0a2eba",
+  "authored_anatomy": "Continuous amphora anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "46580659fa5d2c4fcc17d2b91e029c006ac705f158d6b975c59e6fe7af39a779",
+  "normalized_geometry_sha256": "90189346b5c61337c0a586dacdd30aa3cbd012edf21334c9957ab2210778b19e",
+  "source": "art/blender/creature_remodel/r03/biota_amphora_gills_33.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 37,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "apical_oral",
+      "point": [
+        0.0,
+        2.2725002765655518,
+        -0.0
+      ]
+    },
+    "Socket_apical_oral": {
+      "bone": "apical_oral",
+      "point": [
+        0.0,
+        2.2725002765655518,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "apical_oral",
+      "point": [
+        0.0,
+        2.2725002765655518,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        4.788369233312676e-17,
+        0.10999999940395355,
+        0.7820000052452087
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.7820000052452087,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        4.788369233312676e-17,
+        0.10999999940395355,
+        -0.7820000052452087
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -0.7820000052452087,
+        0.10999999940395355,
+        -9.576738466625351e-17
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3735269447828485,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5789667644134152,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.2725002765655518,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_gills_33_near.glb",
+      "sha256": "a52db01d2c866d3510739116bbf811d3e9685d0c0622dd6b958aebf427092007",
+      "triangles": 38852,
+      "min": [
+        -1.0842722654342651,
+        0.034999996423721313,
+        -1.0842722654342651
+      ],
+      "max": [
+        1.0842722654342651,
+        2.488939046859741,
+        1.0842722654342651
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_gills_33_far.glb",
+      "sha256": "1ef6dc06b0aad6d22684523546188c5d6d1fee9c842249deb3be17a7e4c569fd",
+      "triangles": 16700,
+      "min": [
+        -1.0841914415359497,
+        0.034997131675481796,
+        -1.0841890573501587
+      ],
+      "max": [
+        1.0841914415359497,
+        2.4887847900390625,
+        1.0841890573501587
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "crown_wall30": "chest",
+    "crown_wall31": "crown_wall30",
+    "crown_wall40": "chest",
+    "crown_wall41": "crown_wall40",
+    "head": "chest",
+    "apical_oral": "head",
+    "apical_oral_petal0": "apical_oral",
+    "apical_oral_petal1": "apical_oral",
+    "apical_oral_petal2": "apical_oral",
+    "apical_oral_petal3": "apical_oral",
+    "apical_oral_petal4": "apical_oral",
+    "apical_oral_petal5": "apical_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "crown_wall01",
+    "organ1": "crown_wall11",
+    "organ2": "crown_wall21",
+    "organ3": "crown_wall31",
+    "organ4": "crown_wall41"
+  },
+  "build_seconds": 12.65,
+  "source_render_seconds": 6.621,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "44db1b67d5b0a7b8f556a512a5637d90fd83c30f115efd222fd75dc981b2be23"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

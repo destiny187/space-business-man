@@ -1,0 +1,254 @@
+{
+  "id": "biota_mantle_siphons_01",
+  "name": "퇴적곧은세마디관악외투수",
+  "family": "biota_mantle_siphons",
+  "construction": "mantle",
+  "organ_system": "siphons",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_mantle_siphons_01",
+  "kind": "mantle",
+  "habitat": "기질에 닿는 넓은 흡착면과 여과 부속기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "spit",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "두꺼운 외투 조직과 아래쪽 접지근·안팎 면이 있는 열린 여과관 / 직렬 배열·주요 기관 3개",
+  "recipe_sha256": "1bc58b863e8e9d2d8fb89f958f0aa7f5dd36d2bb91e2941b80f56fecef1d9cdd",
+  "authored_anatomy": "Continuous mantle anatomy; siphons lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "c5ca8a463c1feb91b941b39b79131cf59691dfae4dcc6e8c83d5aa9a0ca194a2",
+  "normalized_geometry_sha256": "94c5b8aa271c62261c731e8a380000e80733bc4d175d37da7de9d4150df50926",
+  "source": "art/blender/creature_remodel/r03/biota_mantle_siphons_01.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 46,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_organ0mouth": {
+      "bone": "organ0mouth",
+      "point": [
+        1.0373097667810163e-16,
+        0.854118287563324,
+        1.6940553188323975
+      ]
+    },
+    "Socket_organ1mouth": {
+      "bone": "organ1mouth",
+      "point": [
+        1.5147264003753662,
+        0.854118287563324,
+        -0.8745276927947998
+      ]
+    },
+    "Socket_organ2mouth": {
+      "bone": "organ2mouth",
+      "point": [
+        -1.562357783317566,
+        0.854118287563324,
+        -0.9020276665687561
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.20999997854232788,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        1.0119999647140503
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0119999647140503,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        -1.0119999647140503
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.0119999647140503,
+        0.10999999940395355,
+        -1.239342609522234e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3103837803769182,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.48109485958422327,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.20999997854232788,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_siphons_01_near.glb",
+      "sha256": "d205efd2c330ac08e224e0b01de8a6552a211ab026131e3e5583c41d92df1acf",
+      "triangles": 34878,
+      "min": [
+        -1.658348798751831,
+        0.034999996423721313,
+        -1.3142722845077515
+      ],
+      "max": [
+        1.6107174158096313,
+        0.9322562217712402,
+        1.7614787817001343
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_mantle_siphons_01_far.glb",
+      "sha256": "7839c4a8464017c7b8cb6b544e732d7db83a042d17aa450e2b6e52b2b10d7047",
+      "triangles": 14992,
+      "min": [
+        -1.6581345796585083,
+        0.034996528178453445,
+        -1.3141915798187256
+      ],
+      "max": [
+        1.610501766204834,
+        0.9318808317184448,
+        1.7617138624191284
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "ventral_oral_petal5": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "radial_axis01",
+    "organ0conduit0": "organ0",
+    "organ0conduit1": "organ0conduit0",
+    "organ0mouth": "organ0conduit1",
+    "organ0mouth_jaw-1": "organ0mouth",
+    "organ0mouth_jaw1": "organ0mouth",
+    "organ1": "radial_axis11",
+    "organ1conduit0": "organ1",
+    "organ1conduit1": "organ1conduit0",
+    "organ1mouth": "organ1conduit1",
+    "organ1mouth_jaw-1": "organ1mouth",
+    "organ1mouth_jaw1": "organ1mouth",
+    "organ2": "radial_axis21",
+    "organ2conduit0": "organ2",
+    "organ2conduit1": "organ2conduit0",
+    "organ2mouth": "organ2conduit1",
+    "organ2mouth_jaw-1": "organ2mouth",
+    "organ2mouth_jaw1": "organ2mouth"
+  },
+  "build_seconds": 12.549,
+  "source_render_seconds": 4.488,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "229089bc1ecba8e7ffd10a756dfac07814c087e4820459e9aabf827022ee3dfc"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

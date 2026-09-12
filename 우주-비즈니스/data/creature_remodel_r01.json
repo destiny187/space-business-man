@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scope": "R01 production/review staging; no native catalog or save writes",
+  "scope": "Reviewed animal presentation assets; matching game cache installation is recorded in final-coverage.json. Original gameplay and species catalogues are preserved.",
   "forms": [
     {
       "id": "sailhorn",
@@ -831,7 +831,7 @@
       "attack": "spit",
       "habitat": "광물성 암반 · 진동 감각공과 고리 안쪽 여과기관",
       "source": "art/blender/creature_remodel/r01/annulus.blend",
-      "status": "remodel-r01-built-awaiting-review",
+      "status": "game-render-reviewed",
       "bone_count": 22,
       "locomotion_chains": 3,
       "clips": [
@@ -963,7 +963,7 @@
       "attack": "slam",
       "habitat": "열수·온토 · 다섯 방사 사지와 말단 섭식부",
       "source": "art/blender/creature_remodel/r01/pentafold.blend",
-      "status": "remodel-r01-built-awaiting-review",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 5,
       "clips": [
@@ -1111,7 +1111,7 @@
       "attack": "bite",
       "habitat": "현수 식도 · 긴 관절 목 끝의 머리와 회수 동작",
       "source": "art/blender/creature_remodel/r01/tethermaw.blend",
-      "status": "remodel-r01-built-awaiting-review",
+      "status": "game-render-reviewed",
       "bone_count": 18,
       "locomotion_chains": 3,
       "clips": [

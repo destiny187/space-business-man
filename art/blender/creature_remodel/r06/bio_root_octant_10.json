@@ -1,0 +1,479 @@
+{
+  "id": "bio_root_octant_10",
+  "source_id": "bio_root_octant_10",
+  "name": "관분지근수",
+  "family": "root_octant",
+  "kind": "root_octant",
+  "construction": "root_octant",
+  "anatomical_type": "root_octant",
+  "organ_system": "mandibles",
+  "environment": "crystal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "중앙 머리 없이 굵게 분지하는 몸통의 끝이 발과 입을 겸함 / 다층 방사 골격",
+  "morphology": {
+    "width": 1,
+    "height": 1.16,
+    "mode": 9,
+    "radial_count": 8,
+    "limb_count": 6,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "root_octant",
+    "support_limbs": 6,
+    "oral_organs": 16,
+    "articulated_organs": 112
+  },
+  "version": "r06-1",
+  "build_fingerprint": "f8f35f6324b1b385470130c19fc836fe6658cdf22e98cd0674f42570aa39329e",
+  "normalized_geometry_sha256": "dfb1b523bd45818f9d9617a3ac2756b73cc7519de3cb798a9bfd245677c7816d",
+  "source": "art/blender/creature_remodel/r06/bio_root_octant_10.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 149,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_terminal_oral0_-1": {
+      "bone": "terminal_oral0_-1",
+      "point": [
+        -0.2199999988079071,
+        0.4272000193595886,
+        1.1699999570846558
+      ]
+    },
+    "Socket_terminal_oral0_1": {
+      "bone": "terminal_oral0_1",
+      "point": [
+        0.2199999988079071,
+        0.4272000193595886,
+        1.1699999570846558
+      ]
+    },
+    "Socket_terminal_oral1_-1": {
+      "bone": "terminal_oral1_-1",
+      "point": [
+        0.6717514991760254,
+        0.4272000193595886,
+        0.9828784465789795
+      ]
+    },
+    "Socket_terminal_oral1_1": {
+      "bone": "terminal_oral1_1",
+      "point": [
+        0.9828784465789795,
+        0.4272000193595886,
+        0.6717514991760254
+      ]
+    },
+    "Socket_terminal_oral2_-1": {
+      "bone": "terminal_oral2_-1",
+      "point": [
+        1.1699999570846558,
+        0.4272000193595886,
+        0.2199999988079071
+      ]
+    },
+    "Socket_terminal_oral2_1": {
+      "bone": "terminal_oral2_1",
+      "point": [
+        1.1699999570846558,
+        0.4272000193595886,
+        -0.2199999988079071
+      ]
+    },
+    "Socket_terminal_oral3_-1": {
+      "bone": "terminal_oral3_-1",
+      "point": [
+        0.9828784465789795,
+        0.4272000193595886,
+        -0.6717514991760254
+      ]
+    },
+    "Socket_terminal_oral3_1": {
+      "bone": "terminal_oral3_1",
+      "point": [
+        0.6717514991760254,
+        0.4272000193595886,
+        -0.9828784465789795
+      ]
+    },
+    "Socket_terminal_oral4_-1": {
+      "bone": "terminal_oral4_-1",
+      "point": [
+        0.2199999988079071,
+        0.4272000193595886,
+        -1.1699999570846558
+      ]
+    },
+    "Socket_terminal_oral4_1": {
+      "bone": "terminal_oral4_1",
+      "point": [
+        -0.2199999988079071,
+        0.4272000193595886,
+        -1.1699999570846558
+      ]
+    },
+    "Socket_terminal_oral5_-1": {
+      "bone": "terminal_oral5_-1",
+      "point": [
+        -0.6717514991760254,
+        0.4272000193595886,
+        -0.9828784465789795
+      ]
+    },
+    "Socket_terminal_oral5_1": {
+      "bone": "terminal_oral5_1",
+      "point": [
+        -0.9828784465789795,
+        0.4272000193595886,
+        -0.6717514991760254
+      ]
+    },
+    "Socket_terminal_oral6_-1": {
+      "bone": "terminal_oral6_-1",
+      "point": [
+        -1.1699999570846558,
+        0.4272000193595886,
+        -0.2199999988079071
+      ]
+    },
+    "Socket_terminal_oral6_1": {
+      "bone": "terminal_oral6_1",
+      "point": [
+        -1.1699999570846558,
+        0.4272000193595886,
+        0.2199999988079071
+      ]
+    },
+    "Socket_terminal_oral7_-1": {
+      "bone": "terminal_oral7_-1",
+      "point": [
+        -0.9828784465789795,
+        0.4272000193595886,
+        0.6717514991760254
+      ]
+    },
+    "Socket_terminal_oral7_1": {
+      "bone": "terminal_oral7_1",
+      "point": [
+        -0.6717514991760254,
+        0.4272000193595886,
+        0.9828784465789795
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "terminal_oral0_-1",
+      "point": [
+        -0.2199999988079071,
+        0.4272000193595886,
+        1.1699999570846558
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_oral0_-1",
+      "point": [
+        -0.2199999988079071,
+        0.4272000193595886,
+        1.1699999570846558
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6774822473526001,
+        0.10000000149011612,
+        0.46884775161743164
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.6774822473526001,
+        0.10000000149011612,
+        -0.46884775161743164
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        -0.8299999833106995
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.6774822473526001,
+        0.10000000149011612,
+        -0.46884775161743164
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.6774822473526001,
+        0.10000000149011612,
+        0.46884775161743164
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2005375577600897,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.31083321452813906,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.16666666666666666,
+      "support2": 0.3333333333333333,
+      "support3": 0.5,
+      "support4": 0.6666666666666666,
+      "support5": 0.8333333333333334
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.2199999988079071,
+    0.4272000193595886,
+    1.1699999570846558
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_root_octant_10_near.glb",
+      "sha256": "cde68f57544d69fdbfa617f5452f3f6d903ee971ebe0a8ee36398dcfc06d676a",
+      "triangles": 89468,
+      "min": [
+        -1.16840660572052,
+        0.02499999850988388,
+        -1.16840660572052
+      ],
+      "max": [
+        1.16840660572052,
+        0.76069575548172,
+        1.16840660572052
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_root_octant_10_far.glb",
+      "sha256": "2973f70751826ef5b58635036576c9396e4728068aa7e30b405a4d5e912bb923",
+      "triangles": 38466,
+      "min": [
+        -1.1686445474624634,
+        0.02499999850988388,
+        -1.1686445474624634
+      ],
+      "max": [
+        1.1686445474624634,
+        0.7608013153076172,
+        1.1686445474624634
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "fork_tip0_-10": "radial_trunk01",
+    "fork_tip0_-11": "fork_tip0_-10",
+    "terminal_oral0_-1": "fork_tip0_-11",
+    "terminal_oral0_-1_petal0": "terminal_oral0_-1",
+    "terminal_oral0_-1_petal1": "terminal_oral0_-1",
+    "terminal_oral0_-1_petal2": "terminal_oral0_-1",
+    "terminal_oral0_-1_petal3": "terminal_oral0_-1",
+    "fork_tip0_10": "radial_trunk01",
+    "fork_tip0_11": "fork_tip0_10",
+    "terminal_oral0_1": "fork_tip0_11",
+    "terminal_oral0_1_petal0": "terminal_oral0_1",
+    "terminal_oral0_1_petal1": "terminal_oral0_1",
+    "terminal_oral0_1_petal2": "terminal_oral0_1",
+    "terminal_oral0_1_petal3": "terminal_oral0_1",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "fork_tip1_-10": "radial_trunk11",
+    "fork_tip1_-11": "fork_tip1_-10",
+    "terminal_oral1_-1": "fork_tip1_-11",
+    "terminal_oral1_-1_petal0": "terminal_oral1_-1",
+    "terminal_oral1_-1_petal1": "terminal_oral1_-1",
+    "terminal_oral1_-1_petal2": "terminal_oral1_-1",
+    "terminal_oral1_-1_petal3": "terminal_oral1_-1",
+    "fork_tip1_10": "radial_trunk11",
+    "fork_tip1_11": "fork_tip1_10",
+    "terminal_oral1_1": "fork_tip1_11",
+    "terminal_oral1_1_petal0": "terminal_oral1_1",
+    "terminal_oral1_1_petal1": "terminal_oral1_1",
+    "terminal_oral1_1_petal2": "terminal_oral1_1",
+    "terminal_oral1_1_petal3": "terminal_oral1_1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "fork_tip2_-10": "radial_trunk21",
+    "fork_tip2_-11": "fork_tip2_-10",
+    "terminal_oral2_-1": "fork_tip2_-11",
+    "terminal_oral2_-1_petal0": "terminal_oral2_-1",
+    "terminal_oral2_-1_petal1": "terminal_oral2_-1",
+    "terminal_oral2_-1_petal2": "terminal_oral2_-1",
+    "terminal_oral2_-1_petal3": "terminal_oral2_-1",
+    "fork_tip2_10": "radial_trunk21",
+    "fork_tip2_11": "fork_tip2_10",
+    "terminal_oral2_1": "fork_tip2_11",
+    "terminal_oral2_1_petal0": "terminal_oral2_1",
+    "terminal_oral2_1_petal1": "terminal_oral2_1",
+    "terminal_oral2_1_petal2": "terminal_oral2_1",
+    "terminal_oral2_1_petal3": "terminal_oral2_1",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "fork_tip3_-10": "radial_trunk31",
+    "fork_tip3_-11": "fork_tip3_-10",
+    "terminal_oral3_-1": "fork_tip3_-11",
+    "terminal_oral3_-1_petal0": "terminal_oral3_-1",
+    "terminal_oral3_-1_petal1": "terminal_oral3_-1",
+    "terminal_oral3_-1_petal2": "terminal_oral3_-1",
+    "terminal_oral3_-1_petal3": "terminal_oral3_-1",
+    "fork_tip3_10": "radial_trunk31",
+    "fork_tip3_11": "fork_tip3_10",
+    "terminal_oral3_1": "fork_tip3_11",
+    "terminal_oral3_1_petal0": "terminal_oral3_1",
+    "terminal_oral3_1_petal1": "terminal_oral3_1",
+    "terminal_oral3_1_petal2": "terminal_oral3_1",
+    "terminal_oral3_1_petal3": "terminal_oral3_1",
+    "radial_trunk40": "chest",
+    "radial_trunk41": "radial_trunk40",
+    "fork_tip4_-10": "radial_trunk41",
+    "fork_tip4_-11": "fork_tip4_-10",
+    "terminal_oral4_-1": "fork_tip4_-11",
+    "terminal_oral4_-1_petal0": "terminal_oral4_-1",
+    "terminal_oral4_-1_petal1": "terminal_oral4_-1",
+    "terminal_oral4_-1_petal2": "terminal_oral4_-1",
+    "terminal_oral4_-1_petal3": "terminal_oral4_-1",
+    "fork_tip4_10": "radial_trunk41",
+    "fork_tip4_11": "fork_tip4_10",
+    "terminal_oral4_1": "fork_tip4_11",
+    "terminal_oral4_1_petal0": "terminal_oral4_1",
+    "terminal_oral4_1_petal1": "terminal_oral4_1",
+    "terminal_oral4_1_petal2": "terminal_oral4_1",
+    "terminal_oral4_1_petal3": "terminal_oral4_1",
+    "radial_trunk50": "chest",
+    "radial_trunk51": "radial_trunk50",
+    "fork_tip5_-10": "radial_trunk51",
+    "fork_tip5_-11": "fork_tip5_-10",
+    "terminal_oral5_-1": "fork_tip5_-11",
+    "terminal_oral5_-1_petal0": "terminal_oral5_-1",
+    "terminal_oral5_-1_petal1": "terminal_oral5_-1",
+    "terminal_oral5_-1_petal2": "terminal_oral5_-1",
+    "terminal_oral5_-1_petal3": "terminal_oral5_-1",
+    "fork_tip5_10": "radial_trunk51",
+    "fork_tip5_11": "fork_tip5_10",
+    "terminal_oral5_1": "fork_tip5_11",
+    "terminal_oral5_1_petal0": "terminal_oral5_1",
+    "terminal_oral5_1_petal1": "terminal_oral5_1",
+    "terminal_oral5_1_petal2": "terminal_oral5_1",
+    "terminal_oral5_1_petal3": "terminal_oral5_1",
+    "radial_trunk60": "chest",
+    "radial_trunk61": "radial_trunk60",
+    "fork_tip6_-10": "radial_trunk61",
+    "fork_tip6_-11": "fork_tip6_-10",
+    "terminal_oral6_-1": "fork_tip6_-11",
+    "terminal_oral6_-1_petal0": "terminal_oral6_-1",
+    "terminal_oral6_-1_petal1": "terminal_oral6_-1",
+    "terminal_oral6_-1_petal2": "terminal_oral6_-1",
+    "terminal_oral6_-1_petal3": "terminal_oral6_-1",
+    "fork_tip6_10": "radial_trunk61",
+    "fork_tip6_11": "fork_tip6_10",
+    "terminal_oral6_1": "fork_tip6_11",
+    "terminal_oral6_1_petal0": "terminal_oral6_1",
+    "terminal_oral6_1_petal1": "terminal_oral6_1",
+    "terminal_oral6_1_petal2": "terminal_oral6_1",
+    "terminal_oral6_1_petal3": "terminal_oral6_1",
+    "radial_trunk70": "chest",
+    "radial_trunk71": "radial_trunk70",
+    "fork_tip7_-10": "radial_trunk71",
+    "fork_tip7_-11": "fork_tip7_-10",
+    "terminal_oral7_-1": "fork_tip7_-11",
+    "terminal_oral7_-1_petal0": "terminal_oral7_-1",
+    "terminal_oral7_-1_petal1": "terminal_oral7_-1",
+    "terminal_oral7_-1_petal2": "terminal_oral7_-1",
+    "terminal_oral7_-1_petal3": "terminal_oral7_-1",
+    "fork_tip7_10": "radial_trunk71",
+    "fork_tip7_11": "fork_tip7_10",
+    "terminal_oral7_1": "fork_tip7_11",
+    "terminal_oral7_1_petal0": "terminal_oral7_1",
+    "terminal_oral7_1_petal1": "terminal_oral7_1",
+    "terminal_oral7_1_petal2": "terminal_oral7_1",
+    "terminal_oral7_1_petal3": "terminal_oral7_1",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk30",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk40",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "radial_trunk50",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "radial_trunk70",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "head": "chest"
+  },
+  "build_seconds": 29.125,
+  "source_render_seconds": 4.071,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "cd4a5d7216521512eea425e2cd6b31a2833af42bf9b2981d96c39913b7773d20"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

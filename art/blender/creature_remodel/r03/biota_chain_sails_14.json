@@ -1,0 +1,244 @@
+{
+  "id": "biota_chain_sails_14",
+  "name": "융빙굽은여섯마디물결막충",
+  "family": "biota_chain_sails",
+  "construction": "chain",
+  "organ_system": "sails",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_chain_sails_14",
+  "kind": "chain",
+  "habitat": "기저 저장층과 짧은 단열 주름 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 6,
+    "limb_count": 6,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "소화 마디와 관절을 잇는 연쇄 몸통·몸통과 이어진 넓은 측막 / 만곡 배열·주요 기관 6개",
+  "recipe_sha256": "bd2e0d20414cfb869a79bc09b00670cbcfd41b8e7c9087a49add0a9366eaf219",
+  "authored_anatomy": "Continuous chain anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "3e089f6722b53815093d3d5f00c440e33d554af29c38c6c22b165a76cc91ba24",
+  "normalized_geometry_sha256": "d869a13c660f3604b19d4d986e12a368ce447e44e3b06f0a10edee7b808b97f6",
+  "source": "art/blender/creature_remodel/r03/biota_chain_sails_14.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 42,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "telescopic_oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.5712000131607056,
+        1.9450000524520874
+      ]
+    },
+    "Socket_telescopic_oral": {
+      "bone": "telescopic_oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.5712000131607056,
+        1.9450000524520874
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "telescopic_oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.5712000131607056,
+        1.9450000524520874
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.640500009059906,
+        0.10999999940395355,
+        -1.315000057220459
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.640500009059906,
+        0.10999999940395355,
+        -1.315000057220459
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.640500009059906,
+        0.10999999940395355,
+        -0.4983333349227905
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.640500009059906,
+        0.10999999940395355,
+        -0.28833332657814026
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.640500009059906,
+        0.10999999940395355,
+        0.528333306312561
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        0.640500009059906,
+        0.10999999940395355,
+        0.528333306312561
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.22150205030940437,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.34332817797957677,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    -4.408728404608808e-17,
+    0.5712000131607056,
+    1.9450000524520874
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_chain_sails_14_near.glb",
+      "sha256": "4ba8cda975eb58f55867d73659b741c449b5671dd28eeff5c8ae4c2d58b53b64",
+      "triangles": 40414,
+      "min": [
+        -0.8032498359680176,
+        0.034999996423721313,
+        -2.145376205444336
+      ],
+      "max": [
+        0.8032499551773071,
+        1.5387362241744995,
+        1.9516688585281372
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_chain_sails_14_far.glb",
+      "sha256": "10815816a888f1a89ef4c7f10d1a8217865d16c86a5621f1733a595d4e55710f",
+      "triangles": 17372,
+      "min": [
+        -0.8032309412956238,
+        0.03501151129603386,
+        -2.1404316425323486
+      ],
+      "max": [
+        0.8033567070960999,
+        1.5386488437652588,
+        1.9517076015472412
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis0_3": "axis0_2",
+    "axis0_4": "axis0_3",
+    "axis0_5": "axis0_4",
+    "head": "axis0_5",
+    "telescopic_oral": "head",
+    "telescopic_oral_petal0": "telescopic_oral",
+    "telescopic_oral_petal1": "telescopic_oral",
+    "telescopic_oral_petal2": "telescopic_oral",
+    "telescopic_oral_petal3": "telescopic_oral",
+    "telescopic_oral_petal4": "telescopic_oral",
+    "telescopic_oral_petal5": "telescopic_oral",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis0_2",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis0_2",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "axis0_4",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "axis0_4",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_1",
+    "organ2": "axis0_2",
+    "organ3": "axis0_3",
+    "organ4": "axis0_4",
+    "organ5": "axis0_5"
+  },
+  "build_seconds": 10.475,
+  "source_render_seconds": 3.781,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "2f8e9008da0321d1329d58e158d449cdb03e95f3ff23e3be29b3ddfd9abf1089"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

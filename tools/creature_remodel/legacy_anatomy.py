@@ -275,6 +275,9 @@ def body(s):
         elif k=='lantern_sail':s.support_height=z
         if 'head' not in s.bones:s.bone('head',(0,-.25,z),(0,-.45,z),'chest',False)
         # Small habitat organs complement, rather than replace, the family silhouette.
-        sensory_surface(s,[V((side*.22,-.23,z+.18)) for side in [-1,1]],'chest')
+        # Coils already carry sensors on their articulated oral surfaces. A second
+        # pair on the invisible chest would float inside the open moving coils.
+        if k not in ['gyre_tower','spiral_maw','spiral_hinge','corkscrew_spine','braid_crawler','offset_halo']:
+            sensory_surface(s,[V((side*.22,-.23,z+.18)) for side in [-1,1]],'chest')
     s.muzzle=next(iter(s.muzzles.values()))
     s.spec['authored_anatomy']={'family':k,'support_limbs':len(s.legs),'oral_organs':len(s.muzzles),'articulated_organs':len(s.organs)}

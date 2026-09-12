@@ -1,0 +1,239 @@
+{
+  "id": "biota_tower_mandibles_22",
+  "name": "차열갈래네마디수직악수",
+  "family": "biota_tower_mandibles",
+  "construction": "tower",
+  "organ_system": "mandibles",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_mandibles_22",
+  "kind": "tower",
+  "habitat": "겹친 광물성 차열판·좁은 보호 기공의 가상 고온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·맞물리는 한 쌍의 관절 턱 / 분기 배열·주요 기관 4개",
+  "recipe_sha256": "711c562a4b31119f5d1cf6874485baf5aafaaa7414671a313709051bc2996149",
+  "authored_anatomy": "Continuous tower anatomy; mandibles lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "50117720ea966945c5a32d575be4cf84a93dc75daddc744e98d84994f6718384",
+  "normalized_geometry_sha256": "dfd4d3dccf4fca4d6e2fa637c024c913778f0a53e6596f666d6649e6a119f6f0",
+  "source": "art/blender/creature_remodel/r03/biota_tower_mandibles_22.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 37,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.371000051498413,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.371000051498413,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.371000051498413,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.805975243892817e-17,
+        0.10999999940395355,
+        1.1115000247955322
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.9625872373580933,
+        0.10999999940395355,
+        0.5557500123977661
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.9625872373580933,
+        0.10999999940395355,
+        -0.5557500123977661
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        6.805975243892817e-17,
+        0.10999999940395355,
+        -1.1115000247955322
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.9625872373580933,
+        0.10999999940395355,
+        -0.5557500123977661
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.9625872373580933,
+        0.10999999940395355,
+        0.5557500123977661
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.371000051498413,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_mandibles_22_near.glb",
+      "sha256": "bc04137f768e0eec1820094d60948e14bf6b4fa57b4f8bbde73e79a35b651347",
+      "triangles": 37182,
+      "min": [
+        -1.2766934633255005,
+        0.034999996423721313,
+        -1.4137722253799438
+      ],
+      "max": [
+        1.2766934633255005,
+        2.6303181648254395,
+        1.4137722253799438
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_mandibles_22_far.glb",
+      "sha256": "6355bcf063355136ab0876bdb326b33b0fc7c08a71f4b0868b3fac7d5c176465",
+      "triangles": 15982,
+      "min": [
+        -1.2767139673233032,
+        0.034996528178453445,
+        -1.4136914014816284
+      ],
+      "max": [
+        1.2767139673233032,
+        2.630441427230835,
+        1.4136914014816284
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "vertical0",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "vertical0",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "vertical1",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2",
+    "organ3": "vertical2",
+    "organ3jaw-1": "organ3",
+    "organ3jaw1": "organ3"
+  },
+  "build_seconds": 10.516,
+  "source_render_seconds": 6.78,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "121813234f7f950c8a1f5d2108ea19f88289013275874d2faddde978823e9de4"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

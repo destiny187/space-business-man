@@ -1,0 +1,261 @@
+{
+  "id": "bio_crescent_maw_10",
+  "source_id": "bio_crescent_maw_10",
+  "name": "뿔월아수",
+  "family": "crescent_maw",
+  "kind": "crescent_maw",
+  "construction": "crescent_maw",
+  "anatomical_type": "crescent_maw",
+  "organ_system": "mandibles",
+  "environment": "crystal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "초승달 모양 몸통의 열린 두 끝이 서로 마주 보는 입 / 다층 방사 골격",
+  "morphology": {
+    "width": 1,
+    "height": 1.16,
+    "mode": 9,
+    "radial_count": 8,
+    "limb_count": 6,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "crescent_maw",
+    "support_limbs": 6,
+    "oral_organs": 2,
+    "articulated_organs": 20
+  },
+  "version": "r06-1",
+  "build_fingerprint": "11f4331e75df60496889bbd18ccf62b6bd7f4f8269880b5c74d79fcfe5a27d75",
+  "normalized_geometry_sha256": "55f3b8289802068fcf81d940e43a50011a781d43238eb1c749c9e823f834275a",
+  "source": "art/blender/creature_remodel/r06/bio_crescent_maw_10.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 43,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_opposed_oral0": {
+      "bone": "opposed_oral0",
+      "point": [
+        -0.48605579137802124,
+        0.8352000117301941,
+        0.4965451955795288
+      ]
+    },
+    "Socket_opposed_oral-1": {
+      "bone": "opposed_oral-1",
+      "point": [
+        -0.48605579137802124,
+        0.8352000117301941,
+        -0.4965451955795288
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "opposed_oral0",
+      "point": [
+        -0.48605579137802124,
+        0.8352000117301941,
+        0.4965451955795288
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "opposed_oral0",
+      "point": [
+        -0.48605579137802124,
+        0.8352000117301941,
+        0.4965451955795288
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.47113022208213806,
+        0.10000000149011612,
+        1.2158007621765137
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0424011945724487,
+        0.10000000149011612,
+        0.8507602214813232
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        1.0424011945724487,
+        0.10000000149011612,
+        -0.8507602214813232
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.22465012967586517,
+        0.10000000149011612,
+        -1.3618911504745483
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.7182846069335938,
+        0.10000000149011612,
+        -1.0768911838531494
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.9647647142410278,
+        0.10000000149011612,
+        0.9308007955551147
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28511906196633957,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.44193454604782634,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.16666666666666666,
+      "support2": 0.3333333333333333,
+      "support3": 0.5,
+      "support4": 0.6666666666666666,
+      "support5": 0.8333333333333334
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.48605579137802124,
+    0.8352000117301941,
+    0.4965451955795288
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crescent_maw_10_near.glb",
+      "sha256": "74b613edc2175d89c789dd786b82e0718b589bc94901ff833f4fd65b265d3507",
+      "triangles": 34914,
+      "min": [
+        -1.2742000818252563,
+        0.02499999850988388,
+        -1.6639503240585327
+      ],
+      "max": [
+        1.3518364429473877,
+        1.0865038633346558,
+        1.5178598165512085
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crescent_maw_10_far.glb",
+      "sha256": "12f886657895c6aa0893228a09b94f9b5e1a331f3276f996ceffce4ebad1d337",
+      "triangles": 15004,
+      "min": [
+        -1.2742221355438232,
+        0.025012250989675522,
+        -1.6638767719268799
+      ],
+      "max": [
+        1.3518620729446411,
+        1.0865038633346558,
+        1.5177886486053467
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crescent_axis0": "chest",
+    "crescent_axis1": "crescent_axis0",
+    "crescent_axis2": "crescent_axis1",
+    "crescent_axis3": "crescent_axis2",
+    "crescent_axis4": "crescent_axis3",
+    "crescent_axis5": "crescent_axis4",
+    "crescent_axis6": "crescent_axis5",
+    "crescent_axis7": "crescent_axis6",
+    "crescent_axis8": "crescent_axis7",
+    "crescent_axis9": "crescent_axis8",
+    "crescent_axis10": "crescent_axis9",
+    "crescent_axis11": "crescent_axis10",
+    "opposed_oral0": "crescent_axis0",
+    "opposed_oral0_petal0": "opposed_oral0",
+    "opposed_oral0_petal1": "opposed_oral0",
+    "opposed_oral0_petal2": "opposed_oral0",
+    "opposed_oral0_petal3": "opposed_oral0",
+    "opposed_oral-1": "crescent_axis11",
+    "opposed_oral-1_petal0": "opposed_oral-1",
+    "opposed_oral-1_petal1": "opposed_oral-1",
+    "opposed_oral-1_petal2": "opposed_oral-1",
+    "opposed_oral-1_petal3": "opposed_oral-1",
+    "support0_upper": "crescent_axis0",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "crescent_axis4",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "crescent_axis8",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "crescent_axis11",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "crescent_axis11",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "crescent_axis0",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "head": "chest"
+  },
+  "build_seconds": 13.912,
+  "source_render_seconds": 4.009,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "3e25c4ff76cf7082c2cd23a9e300852401ba4bf006d7d41985728d86ceabec57"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

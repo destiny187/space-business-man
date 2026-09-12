@@ -1,0 +1,212 @@
+{
+  "id": "biota_tower_gills_17",
+  "name": "암중굽은아홉마디깃털장각수",
+  "family": "biota_tower_gills",
+  "construction": "tower",
+  "organ_system": "gills",
+  "environment": "cave",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_gills_17",
+  "kind": "tower",
+  "habitat": "작은 시각기관·길어진 촉각·기질 부착기관의 지하 생태 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "695e77",
+    "bab0b1",
+    "34494e",
+    "ab9567"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 9,
+    "limb_count": 4,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·넓게 펼친 깃 아가미 / 만곡 배열·주요 기관 9개",
+  "recipe_sha256": "f78bbede3e4702e068452f362e1b704d5ea65d2cb8d9dc543b1ae9b415e14b49",
+  "authored_anatomy": "Continuous tower anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "356e573cdd147194227eb4d104759d2896a523106223d6d6ce5570212b3043d8",
+  "normalized_geometry_sha256": "4dc1f077d1939765a564f5f59ca0e1653db646aea729224d6c50c089e77435b2",
+  "source": "art/blender/creature_remodel/r03/biota_tower_gills_17.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 28,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.107926127637688e-17,
+        0.10999999940395355,
+        0.9975000023841858
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.9975000023841858,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        6.107926127637688e-17,
+        0.10999999940395355,
+        -0.9975000023841858
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -0.9975000023841858,
+        0.10999999940395355,
+        -1.2215852255275376e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.35662764156461224,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.552772844425149,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.076200008392334,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_gills_17_near.glb",
+      "sha256": "11096e2a4e0324b1ad5c22190cf6f5357fedfc7181586b9dbca2222c56f85f03",
+      "triangles": 39526,
+      "min": [
+        -1.2997722625732422,
+        0.034999996423721313,
+        -1.2997722625732422
+      ],
+      "max": [
+        1.2997722625732422,
+        2.334489583969116,
+        1.2997722625732422
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_gills_17_far.glb",
+      "sha256": "92065677a3533a59077a257391b641d7effa5477764b987ecb7fc634f4b43d1c",
+      "triangles": 16990,
+      "min": [
+        -1.2996914386749268,
+        0.03501151129603386,
+        -1.2996914386749268
+      ],
+      "max": [
+        1.2996914386749268,
+        2.3355162143707275,
+        1.2996914386749268
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "vertical0",
+    "organ1": "vertical0",
+    "organ2": "vertical0",
+    "organ3": "vertical1",
+    "organ4": "vertical1",
+    "organ5": "vertical1",
+    "organ6": "vertical2",
+    "organ7": "vertical2",
+    "organ8": "vertical2"
+  },
+  "build_seconds": 9.625,
+  "source_render_seconds": 4.153,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "eb482684842b3b9443d0162fb4365af1ca1d50f178831faa2635ac673e59b7b1"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

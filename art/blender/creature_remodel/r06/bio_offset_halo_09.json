@@ -1,0 +1,307 @@
+{
+  "id": "bio_offset_halo_09",
+  "source_id": "bio_offset_halo_09",
+  "name": "갈림편심수",
+  "family": "offset_halo",
+  "kind": "offset_halo",
+  "construction": "offset_halo",
+  "anatomical_type": "offset_halo",
+  "organ_system": "gills",
+  "environment": "arid",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "서로 다른 축의 고리 장기가 편심 관절로 맞물림 / 교차 연결 골격",
+  "morphology": {
+    "width": 1.08,
+    "height": 0.88,
+    "mode": 8,
+    "radial_count": 6,
+    "limb_count": 8,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "offset_halo",
+    "support_limbs": 8,
+    "oral_organs": 2,
+    "articulated_organs": 42
+  },
+  "version": "r06-1",
+  "build_fingerprint": "725eb36447cae084bf66fece1a15ab1cc198679899be382610f26c758f50d389",
+  "normalized_geometry_sha256": "714b152bab0021f36d64fae1a8d4dac389f8d86d63f2d6317f9b0a268d87ae39",
+  "source": "art/blender/creature_remodel/r06/bio_offset_halo_09.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 71,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_coil_oral0": {
+      "bone": "coil_oral0",
+      "point": [
+        0.5751990079879761,
+        1.486649513244629,
+        0.19201627373695374
+      ]
+    },
+    "Socket_coil_oral1": {
+      "bone": "coil_oral1",
+      "point": [
+        -0.5751990079879761,
+        1.486649513244629,
+        0.10798374563455582
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "coil_oral0",
+      "point": [
+        0.5751990079879761,
+        1.486649513244629,
+        0.19201627373695374
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "coil_oral0",
+      "point": [
+        0.5751990079879761,
+        1.486649513244629,
+        0.19201627373695374
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.33600887656211853,
+        0.10000000149011612,
+        0.8629233241081238
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7390597462654114,
+        0.10000000149011612,
+        0.11012754589319229
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.9060088992118835,
+        0.10000000149011612,
+        -0.29292330145835876
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.7390597462654114,
+        0.10000000149011612,
+        -0.6959741711616516
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        0.33600887656211853,
+        0.10000000149011612,
+        -0.8629233241081238
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.7390597462654114,
+        0.10000000149011612,
+        -0.11012754589319229
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.9060088992118835,
+        0.10000000149011612,
+        0.29292330145835876
+      ]
+    },
+    "Socket_support7": {
+      "bone": "support7_foot",
+      "point": [
+        -0.7390597462654114,
+        0.10000000149011612,
+        0.6959741711616516
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2885615212977645,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.44727035801153503,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.125,
+      "support2": 0.25,
+      "support3": 0.375,
+      "support4": 0.5,
+      "support5": 0.625,
+      "support6": 0.75,
+      "support7": 0.875
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.5751990079879761,
+    1.486649513244629,
+    0.19201627373695374
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_offset_halo_09_near.glb",
+      "sha256": "b3b7950cf1467bc28de82401a5585ebd037db776b3a103288824735f39f3841d",
+      "triangles": 55318,
+      "min": [
+        -1.2075632810592651,
+        0.02499999850988388,
+        -1.1644777059555054
+      ],
+      "max": [
+        1.2075632810592651,
+        2.0126914978027344,
+        1.1644777059555054
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_offset_halo_09_far.glb",
+      "sha256": "c56d36252f4cf07e6c2dad8f225290fa4b033b1e78fa3284a039ff780400c617",
+      "triangles": 23780,
+      "min": [
+        -1.2075519561767578,
+        0.024996543303132057,
+        -1.1644667387008667
+      ],
+      "max": [
+        1.2075519561767578,
+        2.0126914978027344,
+        1.1644667387008667
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_organ00": "chest",
+    "coiled_organ01": "coiled_organ00",
+    "coiled_organ02": "coiled_organ01",
+    "coiled_organ03": "coiled_organ02",
+    "coiled_organ04": "coiled_organ03",
+    "coiled_organ05": "coiled_organ04",
+    "coiled_organ06": "coiled_organ05",
+    "coiled_organ07": "coiled_organ06",
+    "coiled_organ08": "coiled_organ07",
+    "coiled_organ09": "coiled_organ08",
+    "coiled_organ010": "coiled_organ09",
+    "coiled_organ011": "coiled_organ010",
+    "coiled_organ012": "coiled_organ011",
+    "coiled_organ013": "coiled_organ012",
+    "coiled_organ014": "coiled_organ013",
+    "coiled_organ015": "coiled_organ014",
+    "coil_oral0": "coiled_organ015",
+    "coil_oral0_petal0": "coil_oral0",
+    "coil_oral0_petal1": "coil_oral0",
+    "coil_oral0_petal2": "coil_oral0",
+    "coil_oral0_petal3": "coil_oral0",
+    "coil_oral0_petal4": "coil_oral0",
+    "coiled_organ10": "chest",
+    "coiled_organ11": "coiled_organ10",
+    "coiled_organ12": "coiled_organ11",
+    "coiled_organ13": "coiled_organ12",
+    "coiled_organ14": "coiled_organ13",
+    "coiled_organ15": "coiled_organ14",
+    "coiled_organ16": "coiled_organ15",
+    "coiled_organ17": "coiled_organ16",
+    "coiled_organ18": "coiled_organ17",
+    "coiled_organ19": "coiled_organ18",
+    "coiled_organ110": "coiled_organ19",
+    "coiled_organ111": "coiled_organ110",
+    "coiled_organ112": "coiled_organ111",
+    "coiled_organ113": "coiled_organ112",
+    "coiled_organ114": "coiled_organ113",
+    "coiled_organ115": "coiled_organ114",
+    "coil_oral1": "coiled_organ115",
+    "coil_oral1_petal0": "coil_oral1",
+    "coil_oral1_petal1": "coil_oral1",
+    "coil_oral1_petal2": "coil_oral1",
+    "coil_oral1_petal3": "coil_oral1",
+    "coil_oral1_petal4": "coil_oral1",
+    "support0_upper": "coiled_organ010",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "coiled_organ110",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "coiled_organ110",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "coiled_organ110",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "coiled_organ110",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "coiled_organ010",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "coiled_organ010",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "support7_upper": "coiled_organ010",
+    "support7_lower": "support7_upper",
+    "support7_foot": "support7_lower",
+    "head": "chest"
+  },
+  "build_seconds": 17.709,
+  "source_render_seconds": 5.999,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "f73d2b6be352858b6f43a357ff015ec4f31b720bbd6268bad0ba90e8f19ba4e4"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

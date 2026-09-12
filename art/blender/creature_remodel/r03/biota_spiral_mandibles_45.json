@@ -1,0 +1,236 @@
+{
+  "id": "biota_spiral_mandibles_45",
+  "name": "열수둘레일곱마디회전턱수",
+  "family": "biota_spiral_mandibles",
+  "construction": "spiral",
+  "organ_system": "mandibles",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_spiral_mandibles_45",
+  "kind": "spiral",
+  "habitat": "열을 분산하는 넓은 기관과 기질 여과관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 7,
+    "limb_count": 4,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "중앙 대사축 주위를 감는 연속 몸통·맞물리는 한 쌍의 관절 턱 / 방사 배열·주요 기관 7개",
+  "recipe_sha256": "4f5b76e285963f8a0721640259e0a1443c5570fcd7e87e3f4d206fb21515de63",
+  "authored_anatomy": "Continuous spiral anatomy; mandibles lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "983f5b28f6427aeea485d97bd6242e4246e252a340e2e478d68a4c382d821e05",
+  "normalized_geometry_sha256": "1b897df2e563dbcb79923a531916a4f28755775bfda4187d25a253ed833341c3",
+  "source": "art/blender/creature_remodel/r03/biota_spiral_mandibles_45.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 52,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "radula",
+      "point": [
+        0.18462765216827393,
+        1.062000036239624,
+        1.23361337184906
+      ]
+    },
+    "Socket_radula": {
+      "bone": "radula",
+      "point": [
+        0.18462765216827393,
+        1.062000036239624,
+        1.23361337184906
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "radula",
+      "point": [
+        0.18462765216827393,
+        1.062000036239624,
+        1.23361337184906
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        1.0119999647140503
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0119999647140503,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        -1.0119999647140503
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.0119999647140503,
+        0.10999999940395355,
+        -1.239342609522234e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.18462765216827393,
+    1.062000036239624,
+    1.23361337184906
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spiral_mandibles_45_near.glb",
+      "sha256": "22da84fa7845c49922a4e2077766302febd711cf75314e7b808fc6d5deabe482",
+      "triangles": 32556,
+      "min": [
+        -1.3142722845077515,
+        0.034999996423721313,
+        -1.3142722845077515
+      ],
+      "max": [
+        1.3142722845077515,
+        1.7082520723342896,
+        1.3142722845077515
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spiral_mandibles_45_far.glb",
+      "sha256": "e2d60ecba305b4ce11f7b869b110bf626c5c81e5a016ec66ce90d9b5e82eaeac",
+      "triangles": 13994,
+      "min": [
+        -1.3141915798187256,
+        0.034996528178453445,
+        -1.3141915798187256
+      ],
+      "max": [
+        1.3141915798187256,
+        1.7087575197219849,
+        1.3141915798187256
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_axis0": "chest",
+    "coiled_axis1": "coiled_axis0",
+    "coiled_axis2": "coiled_axis1",
+    "coiled_axis3": "coiled_axis2",
+    "coiled_axis4": "coiled_axis3",
+    "coiled_axis5": "coiled_axis4",
+    "coiled_axis6": "coiled_axis5",
+    "head": "coiled_axis6",
+    "radula": "head",
+    "radula_petal0": "radula",
+    "radula_petal1": "radula",
+    "radula_petal2": "radula",
+    "radula_petal3": "radula",
+    "ocular_stalk-10": "head",
+    "ocular_stalk-11": "ocular_stalk-10",
+    "ocular_stalk10": "head",
+    "ocular_stalk11": "ocular_stalk10",
+    "leg0_upper": "coiled_axis0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "coiled_axis1",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "coiled_axis2",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "coiled_axis3",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "coiled_axis0",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "coiled_axis1",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "coiled_axis2",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2",
+    "organ3": "coiled_axis3",
+    "organ3jaw-1": "organ3",
+    "organ3jaw1": "organ3",
+    "organ4": "coiled_axis4",
+    "organ4jaw-1": "organ4",
+    "organ4jaw1": "organ4",
+    "organ5": "coiled_axis5",
+    "organ5jaw-1": "organ5",
+    "organ5jaw1": "organ5",
+    "organ6": "coiled_axis6",
+    "organ6jaw-1": "organ6",
+    "organ6jaw1": "organ6"
+  },
+  "build_seconds": 13.707,
+  "source_render_seconds": 8.084,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "87595e30f9ed28e60a97f46d520280a33cdd01adeae059c729edfaea109c6b6c"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "id": "bio_twin_moons_05",
+  "source_id": "bio_twin_moons_05",
+  "name": "큰달낭수",
+  "family": "twin_moons",
+  "kind": "twin_moons",
+  "construction": "twin_moons",
+  "anatomical_type": "twin_moons",
+  "organ_system": "siphons",
+  "environment": "arid",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "떨어진 두 장기낭이 굵은 신경목으로 연결된 비대칭 체형 / 높고 좁은 칠방 골격",
+  "morphology": {
+    "width": 0.72,
+    "height": 1.4,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 7,
+    "eye_count": 2,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "twin_moons",
+    "support_limbs": 7,
+    "oral_organs": 1,
+    "articulated_organs": 7
+  },
+  "version": "r06-1",
+  "build_fingerprint": "dd757c0de193307f594dc0e705ee7c4fd37a7577a15528f2d426897d2457adba",
+  "normalized_geometry_sha256": "eebaab3ca820452a9d39e885356383745e2cdf1a1cb6f0f8ace65c9a4d18d200",
+  "source": "art/blender/creature_remodel/r06/bio_twin_moons_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 32,
+  "locomotion_chains": 7,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_distal_oral": {
+      "bone": "distal_oral",
+      "point": [
+        0.6299999952316284,
+        1.628000020980835,
+        0.7799999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "distal_oral",
+      "point": [
+        0.6299999952316284,
+        1.628000020980835,
+        0.7799999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "distal_oral",
+      "point": [
+        0.6299999952316284,
+        1.628000020980835,
+        0.7799999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        0.6299999952316284,
+        0.10000000149011612,
+        0.8600000143051147
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0756438970565796,
+        0.10000000149011612,
+        0.645389199256897
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        1.1857088804244995,
+        0.10000000149011612,
+        0.16316306591033936
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.33268624544143677,
+        0.10000000149011612,
+        -0.8335522413253784
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.8273137211799622,
+        0.10000000149011612,
+        -0.8335522413253784
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -1.1357089281082153,
+        0.10000000149011612,
+        -0.446836918592453
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -1.0256439447402954,
+        0.10000000149011612,
+        0.03538919985294342
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.33284555696486584,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5159106132955421,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.42857142857142855,
+      "support2": 0.8571428571428571,
+      "support3": 0.2857142857142857,
+      "support4": 0.7142857142857143,
+      "support5": 0.14285714285714285,
+      "support6": 0.5714285714285714
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.6299999952316284,
+    1.628000020980835,
+    0.7799999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_twin_moons_05_near.glb",
+      "sha256": "28806e679497472280e6c8468bf85a2504f9349b4b2278a71bdcfa3b6665db66",
+      "triangles": 35112,
+      "min": [
+        -1.4445067644119263,
+        0.02499999850988388,
+        -1.1372178792953491
+      ],
+      "max": [
+        1.4945067167282104,
+        2.069061040878296,
+        1.1615544557571411
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_twin_moons_05_far.glb",
+      "sha256": "0c8f8a37bbed80edb55543b31664e463c0e1eb402fbb883baad4a2b4df2c7a2e",
+      "triangles": 15092,
+      "min": [
+        -1.4445183277130127,
+        0.024996545165777206,
+        -1.1372379064559937
+      ],
+      "max": [
+        1.4945166110992432,
+        2.06825852394104,
+        1.161505937576294
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "intervisceral_neck0": "chest",
+    "intervisceral_neck1": "intervisceral_neck0",
+    "intervisceral_neck2": "intervisceral_neck1",
+    "distal_oral": "intervisceral_neck2",
+    "distal_oral_petal0": "distal_oral",
+    "distal_oral_petal1": "distal_oral",
+    "distal_oral_petal2": "distal_oral",
+    "distal_oral_petal3": "distal_oral",
+    "support0_upper": "intervisceral_neck2",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "intervisceral_neck2",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "intervisceral_neck2",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "intervisceral_neck0",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "intervisceral_neck0",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "intervisceral_neck0",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "intervisceral_neck0",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "head": "chest"
+  },
+  "build_seconds": 13.323,
+  "source_render_seconds": 6.507,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "bd0a03e4a9b7a126c91897913b59aa48c1e1623482197fb962074c027cbc6531"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

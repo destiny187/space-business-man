@@ -18,6 +18,7 @@ var pose_clock:=0.0
 var pose_step:=0.0
 var grounded_error:=0.0
 var body_contact_error:=0.0
+var joint_contact_error:=0.0
 var reach_debug: Dictionary={}
 
 func configure(owner: Node3D,display: Node3D) -> void:
@@ -199,6 +200,7 @@ func attack_clock() -> float:
 func pose_authored(visible_only: bool=false) -> void:
 	grounded_error=0
 	body_contact_error=0
+	joint_contact_error=0
 	for lod in players.size():
 		if visible_only and not actor.models[lod].visible:continue
 		var player:=players[lod]
@@ -259,6 +261,7 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 		var root_pose:=skeleton.get_bone_global_pose(root_bone)
 		root_pose.origin.y-=leg_length*.075
 		set_global_pose(skeleton,root_bone,root_pose)
+	if profile.get("body_supports_before_limbs",false):terrain_body(skeleton)
 	# Recoil can raise the front hip above the entire leg's vertical reach. Lower the
 	# torso a little before moving individual feet; an inward step alone cannot fix that.
 	var prepared_ground: Dictionary={}
@@ -349,13 +352,69 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 				destination=Vector3(step.from).lerp(step.to,smoothstep(0,1,progress))+visual.global_basis.y*sin(progress*PI)*leg_length*.045*actor.base_scale
 				stance_now=progress>=1
 				if stance_now:planted[limb.name]=step.to;settling_feet.erase(limb.name)
+		if float(profile.get("knee_clearance",0.))>0 and not stance_now:
+			var free_hit:=ground_sample("free_"+str(limb.name),destination,float(limb.length)*actor.base_scale)
+			if not free_hit.get("missing",false):
+				var under: float=(Vector3(free_hit.point)+visual.global_basis.y*sole-destination).dot(visual.global_basis.y)
+				if under>0:destination+=visual.global_basis.y*under
+		if profile.get("clearance_footprint",false):
+			destination=clearance_footprint(skeleton,upper,lower,foot,destination,hit)
+			if stance_now:planted[limb.name]=destination
 		var goal:=skeleton.global_transform.affine_inverse()*destination
 		var h:=skeleton.get_bone_global_pose(upper).origin;var k:=skeleton.get_bone_global_pose(lower).origin;var f:=skeleton.get_bone_global_pose(foot).origin
 		var reach:=h.distance_to(k)+k.distance_to(f)
 		if stance_now and h.distance_to(goal)-reach>float(reach_debug.get("excess",0)):
 			reach_debug={"limb":limb.name,"excess":h.distance_to(goal)-reach,"length":reach,"target":goal,"hip":h,"fraction":fraction,"phase":phase,"clip":wanted_clip}
 		ik(skeleton,upper,lower,foot,goal)
+		if float(profile.get("knee_clearance",0.))>0:
+			var knee_world:=skeleton.global_transform*skeleton.get_bone_global_pose(lower).origin
+			var knee_hit:=ground_sample("knee_"+str(lower),knee_world,leg_length*actor.base_scale)
+			if not knee_hit.get("missing",false):joint_contact_error=maxf(joint_contact_error,(Vector3(knee_hit.point)-knee_world).dot(visual.global_basis.y)+float(profile.get("knee_radius",profile.knee_clearance))*actor.base_scale)
 		if stance_now:grounded_error=maxf(grounded_error,(skeleton.global_transform*skeleton.get_bone_global_pose(foot).origin).distance_to(destination))
+	if profile.has("body_supports") and not profile.get("body_supports_before_limbs",false):terrain_body(skeleton)
+	body_contact_error=maxf(body_contact_error,joint_contact_error)
+
+func clearance_footprint(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector3,hit: Dictionary) -> Vector3:
+	# Long upper segments cannot fold a knee above the floor when a planted toe
+	# travels directly beneath the hip. Move that toe to the nearest feasible
+	# footprint, preserving the actual hip, both segment lengths and ground plane.
+	var a:=skeleton.global_transform*skeleton.get_bone_global_pose(upper).origin
+	var b:=skeleton.global_transform*skeleton.get_bone_global_pose(lower).origin
+	var c:=skeleton.global_transform*skeleton.get_bone_global_pose(foot).origin
+	var lengths:=Vector2(a.distance_to(b),b.distance_to(c))
+	var up: Vector3=hit.normal
+	var clearance: float=float(profile.knee_clearance)*actor.base_scale
+	if knee_plane_height(a,target,lengths,up,hit.point)>=clearance:return target
+	var vertical: float=(a-target).dot(up)
+	var projected:=a-up*vertical
+	var lateral:=target-projected
+	var direction:=lateral.normalized()
+	if direction.length()<.01:
+		var rest:=skeleton.global_basis*(skeleton.get_bone_global_rest(foot).origin-skeleton.get_bone_global_rest(upper).origin)
+		direction=(rest-up*rest.dot(up)).normalized()
+	if direction.length()<.01:return target
+	var maximum:=sqrt(maxf(0.,pow((lengths.x+lengths.y)*.975,2)-vertical*vertical))
+	var previous:=lateral.length()
+	for i in range(1,17):
+		var distance:=lerpf(lateral.length(),maximum,float(i)/16.)
+		var candidate:=projected+direction*distance
+		if knee_plane_height(a,candidate,lengths,up,hit.point)>=clearance+.003*actor.base_scale:
+			var low:=previous;var high:=distance
+			for refine in 8:
+				var middle: float=(low+high)*.5
+				if knee_plane_height(a,projected+direction*middle,lengths,up,hit.point)>=clearance+.003*actor.base_scale:high=middle
+				else:low=middle
+			return projected+direction*high
+		previous=distance
+	return target
+
+func knee_plane_height(hip: Vector3,foot: Vector3,lengths: Vector2,up: Vector3,floor_point: Vector3) -> float:
+	var delta:=foot-hip;var distance:=delta.length()
+	if distance<absf(lengths.x-lengths.y)+.001 or distance>lengths.x+lengths.y:return -INF
+	var axis:=delta/distance
+	var along: float=(lengths.x*lengths.x-lengths.y*lengths.y+distance*distance)/(2.*distance)
+	var radius:=sqrt(maxf(0.,lengths.x*lengths.x-along*along))
+	return (hip+axis*along-floor_point).dot(up)+radius*(up-axis*up.dot(axis)).length()
 
 func ik(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector3) -> void:
 	var orientation:=skeleton.get_bone_global_pose(foot).basis
@@ -364,7 +423,7 @@ func ik(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector3) ->
 	for iteration in 3:
 		ik_pass(skeleton,upper,lower,foot,target)
 		var remaining:=skeleton.global_basis*(skeleton.get_bone_global_pose(foot).origin-target)
-		if remaining.length()<.002:break
+		if remaining.length()<.002 and (float(profile.get("knee_clearance",0.))<=0 or iteration>=1):break
 	var foot_pose:=skeleton.get_bone_global_pose(foot);foot_pose.basis=orientation
 	set_global_pose(skeleton,foot,foot_pose)
 
@@ -378,7 +437,27 @@ func ik_pass(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector
 	if bend.length()<.001:bend=axis.cross(Vector3.RIGHT if absf(axis.x)<.9 else Vector3.UP)
 	bend=bend.normalized()
 	var along: float=(length_a*length_a-length_b*length_b+distance*distance)/(2*distance)
-	var knee:=a.origin+axis*along+bend*sqrt(maxf(0,length_a*length_a-along*along))
+	var radius:=sqrt(maxf(0,length_a*length_a-along*along))
+	var center:=a.origin+axis*along
+	var knee:=center+bend*radius
+	var clearance: float=float(profile.get("knee_clearance",0.))
+	if clearance>0 and probe.is_valid() and radius>.0001:
+		var knee_world:=skeleton.global_transform*knee
+		var hit:=ground_sample("knee_"+str(lower),knee_world,leg_length*actor.base_scale)
+		if not hit.get("missing",false):
+			# Rotate the bend within its reach circle; hip, foot and segment lengths
+			# stay fixed. A low radial knee must leave room for its actual capsule.
+			var local_up: Vector3=(skeleton.global_basis.inverse()*visual.global_basis.y).normalized()
+			var projected_up:=local_up-axis*local_up.dot(axis)
+			if projected_up.length()>.0001:
+				var floor_local: Vector3=skeleton.global_transform.affine_inverse()*(Vector3(hit.point)+visual.global_basis.y*clearance*actor.base_scale)
+				var needed:=clampf((floor_local-center).dot(local_up)/(radius*projected_up.length()),-1.,1.)
+				var up:=projected_up.normalized();var present:=bend.dot(up)
+				if needed>present:
+					var side:=bend-up*present
+					if side.length()<.0001:side=axis.cross(up)
+					bend=up*needed+side.normalized()*sqrt(maxf(0.,1.-needed*needed))
+					knee=center+bend*radius
 	rotate_bone_toward(skeleton,upper,b.origin-a.origin,knee-a.origin)
 	b=skeleton.get_bone_global_pose(lower)
 	var current_foot:=skeleton.get_bone_global_pose(foot).origin
@@ -413,21 +492,22 @@ func terrain_tail(skeleton: Skeleton3D) -> void:
 		set_global_pose(skeleton,bone,value)
 
 func terrain_body(skeleton: Skeleton3D) -> void:
-	# Lift the authored contractile pads only where local relief intersects the skin.
-	# Keep the lateral wave, limb-free locomotion and authority root unchanged.
+	# Lift the authored body or oral chain only where relief intersects its skin.
+	# Preserve the authority root and pose the attached support legs afterward.
 	var poses: Dictionary={};var shifts: Dictionary={};var samples: Array=[]
-	for support in profile.body_supports:
+	for index in profile.body_supports.size():
+		var support: Dictionary=profile.body_supports[index]
 		var owner:=skeleton.find_bone(support.owner)
 		var at:=socket_point(skeleton,support)
-		var hit:=ground_sample("body_"+str(support.bone),at,leg_length*actor.base_scale)
+		var hit:=ground_sample("body_"+str(index),at,leg_length*actor.base_scale)
 		if hit.get("missing",false):continue
 		poses[owner]=skeleton.get_bone_global_pose(owner)
-		var penetration: float=(Vector3(hit.point)-at).dot(visual.global_basis.y)
-		shifts[owner]=maxf(float(shifts.get(owner,0.)),clampf(penetration+.008*actor.base_scale,0.,body_length*.20*actor.base_scale))
+		var penetration: float=(Vector3(hit.point)-at).dot(visual.global_basis.y)+float(support.get("radius",0.))*actor.base_scale
+		shifts[owner]=maxf(float(shifts.get(owner,0.)),clampf(penetration+.008*actor.base_scale,0.,body_length*float(profile.get("body_support_lift_ratio",.20))*actor.base_scale))
 		samples.append({"support":support,"ground":hit.point})
 	for bone in poses:
 		var value: Transform3D=poses[bone]
 		value.origin+=skeleton.global_basis.inverse()*visual.global_basis.y*float(shifts[bone])
 		set_global_pose(skeleton,bone,value)
 	for sample in samples:
-		body_contact_error=maxf(body_contact_error,(Vector3(sample.ground)-socket_point(skeleton,sample.support)).dot(visual.global_basis.y))
+		body_contact_error=maxf(body_contact_error,(Vector3(sample.ground)-socket_point(skeleton,sample.support)).dot(visual.global_basis.y)+float(sample.support.get("radius",0.))*actor.base_scale)

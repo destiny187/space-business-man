@@ -1,0 +1,250 @@
+{
+  "id": "biota_flat_tendrils_13",
+  "name": "퇴적굽은다섯마디분지판수",
+  "family": "biota_flat_tendrils",
+  "construction": "flat",
+  "organ_system": "tendrils",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_flat_tendrils_13",
+  "kind": "flat",
+  "habitat": "기질에 닿는 넓은 흡착면과 여과 부속기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "낮고 넓은 판상 몸체와 가장자리 운동기관·말단이 갈라지는 굵은 촉지 / 만곡 배열·주요 기관 5개",
+  "recipe_sha256": "6f4e295a472cefdb905c3e51ab8fa6a655d8e0a4884fdc32d1c043571c570895",
+  "authored_anatomy": "Continuous flat anatomy; tendrils lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "d74fa97a678068e615e8b1b87d7609e9a4fe44c5c86caabe6943fd7141e5d20b",
+  "normalized_geometry_sha256": "d6295512397cbe029dbe726e001851c5f69194d6db48ac37438cf48ff2891543",
+  "source": "art/blender/creature_remodel/r03/biota_flat_tendrils_13.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 58,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.4983999729156494,
+        0.9873096942901611
+      ]
+    },
+    "Socket_lateral_filter-1": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.4983999729156494,
+        0.9873096942901611
+      ]
+    },
+    "Socket_lateral_filter1": {
+      "bone": "lateral_filter1",
+      "point": [
+        0.2797250747680664,
+        0.4983999729156494,
+        0.9873096942901611
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.4983999729156494,
+        0.9873096942901611
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.072335342068773e-17,
+        0.10999999940395355,
+        1.1549999713897705
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.1549999713897705,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        7.072335342068773e-17,
+        0.10999999940395355,
+        -1.1549999713897705
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.1549999713897705,
+        0.10999999940395355,
+        -1.4144670684137546e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3469831869462439,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5378239397666781,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    -0.2797250747680664,
+    0.4983999729156494,
+    0.9873096942901611
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_flat_tendrils_13_near.glb",
+      "sha256": "5a341fde67731aa6e6399c1eadb60bcfb559d1ecc0a47314a7ccf3ccd95a51fd",
+      "triangles": 30382,
+      "min": [
+        -1.9314793348312378,
+        0.034999996423721313,
+        -1.6841524839401245
+      ],
+      "max": [
+        1.9309473037719727,
+        0.7710664868354797,
+        1.9797276258468628
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_flat_tendrils_13_far.glb",
+      "sha256": "b5c1f13abd649803ba463f21078d3fbf240f8617c12526115740c70afeccfc98",
+      "triangles": 13057,
+      "min": [
+        -1.9248366355895996,
+        0.03501151129603386,
+        -1.6844111680984497
+      ],
+      "max": [
+        1.9280447959899902,
+        0.7720119953155518,
+        1.9796863794326782
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "radial_axis40": "chest",
+    "radial_axis41": "radial_axis40",
+    "head": "chest",
+    "lateral_filter-1": "head",
+    "lateral_filter-1_petal0": "lateral_filter-1",
+    "lateral_filter-1_petal1": "lateral_filter-1",
+    "lateral_filter-1_petal2": "lateral_filter-1",
+    "lateral_filter1": "head",
+    "lateral_filter1_petal0": "lateral_filter1",
+    "lateral_filter1_petal1": "lateral_filter1",
+    "lateral_filter1_petal2": "lateral_filter1",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "radial_axis01",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "radial_axis11",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "radial_axis21",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1",
+    "organ3": "radial_axis31",
+    "organ3tactile0": "organ3",
+    "organ3tactile1": "organ3tactile0",
+    "organ3branch-10": "organ3tactile1",
+    "organ3branch10": "organ3tactile1",
+    "organ4": "radial_axis41",
+    "organ4tactile0": "organ4",
+    "organ4tactile1": "organ4tactile0",
+    "organ4branch-10": "organ4tactile1",
+    "organ4branch10": "organ4tactile1"
+  },
+  "build_seconds": 12.712,
+  "source_render_seconds": 3.816,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "f25c265ccab27d2ff6b03436d03aaf0b3a655fd3ce4902600768808d8ba7f55c"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

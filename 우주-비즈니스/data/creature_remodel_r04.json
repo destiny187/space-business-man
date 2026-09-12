@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scope": "Complete Blender checkpoints; runtime enablement requires matching actual render evidence",
+  "scope": "Reviewed animal presentation assets; matching game cache installation is recorded in final-coverage.json. Original gameplay and species catalogues are preserved.",
   "forms": [
     {
       "id": "biota_amphora_antennal_fans_25",
@@ -46,7 +46,7 @@
       "build_fingerprint": "89bd15739058c323a7bd4b2d17c48269d7a93db2465367b45fc734b1f887c44a",
       "normalized_geometry_sha256": "d406a0e08a0f1cd394df99f5e3c921781bd3f0916c0f3b8653b6cceef1f7bf9f",
       "source": "art/blender/creature_remodel/r04/biota_amphora_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 8,
       "clips": [
@@ -315,7 +315,7 @@
       "build_fingerprint": "ce0ef48d8fe1a3eea3fa515a4f07390e17bd2242d4591f30e573ab89a8769b30",
       "normalized_geometry_sha256": "fe77a0901871982076c37a688afbf29de95a2fb91388eeacfd394520eb1ff796",
       "source": "art/blender/creature_remodel/r04/biota_amphora_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 8,
       "clips": [
@@ -584,7 +584,7 @@
       "build_fingerprint": "632d99097e63f15a5f410558517057c07b1d1eb7d36dd09b61b4b1141ae7af70",
       "normalized_geometry_sha256": "1b67cb00e98f721c047f2d3a50e22b846d4ca102bdd4c71eb1b7314898f3c139",
       "source": "art/blender/creature_remodel/r04/biota_amphora_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 8,
       "clips": [
@@ -853,7 +853,7 @@
       "build_fingerprint": "c67fd0f7da60bf6bfbdb80e9d61ce7b7a51145e2972d9a7b7b3cdad30ec80b6d",
       "normalized_geometry_sha256": "54314f6c1b1d0df630276e9855c1c9d40cb7e6ba2febbd0b09b3e3c1e2b332fd",
       "source": "art/blender/creature_remodel/r04/biota_amphora_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 8,
       "clips": [
@@ -1122,7 +1122,7 @@
       "build_fingerprint": "4f46b42069d30a9bf599b93a2d56f2d6dd888cce2229138cae18923558ec1a87",
       "normalized_geometry_sha256": "074e267fa77d08015636536566808d541c459ef74432240817c9cc87bc8625f4",
       "source": "art/blender/creature_remodel/r04/biota_amphora_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 8,
       "clips": [
@@ -1391,7 +1391,7 @@
       "build_fingerprint": "c0a08d9795a2228e5a804c1be4c57fff5c3f916fbcecbeceb1879482a279c753",
       "normalized_geometry_sha256": "787a2f88e702eaf7c651aa7efaefba57bc5c8786dfaf0b45a9d4c29eceacca2e",
       "source": "art/blender/creature_remodel/r04/biota_amphora_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 8,
       "clips": [
@@ -1660,7 +1660,7 @@
       "build_fingerprint": "e7db5336d9ed52badbda3fa33e2ffdf67e022cc75572ff3207fc585d87865920",
       "normalized_geometry_sha256": "c38061100b185f9021091bc0263214598360e50da51ae107d9017d9dbbaff946",
       "source": "art/blender/creature_remodel/r04/biota_amphora_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 52,
       "locomotion_chains": 8,
       "clips": [
@@ -1932,7 +1932,7 @@
       "build_fingerprint": "58c5f6a419f699cd74cc6a2080a9c59f7cedaf31a33d8040b00c34f4e6301666",
       "normalized_geometry_sha256": "17b88e06dc6b90881044d3270fe83667f099cad3ae717ce730656d0e64404724",
       "source": "art/blender/creature_remodel/r04/biota_amphora_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 52,
       "locomotion_chains": 8,
       "clips": [
@@ -2204,7 +2204,7 @@
       "build_fingerprint": "f3bf152884f2b7eb0d564f7caa4312eaa7ddadc17362818df674b26cf9ff0133",
       "normalized_geometry_sha256": "754e5002285f5ea2a7d69595d9d998b28c101fcd95a015121ae844aa2ab80955",
       "source": "art/blender/creature_remodel/r04/biota_amphora_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 48,
       "locomotion_chains": 8,
       "clips": [
@@ -2472,7 +2472,7 @@
       "build_fingerprint": "c6a8001bc677c056adec99f5df86474acd839cb4bf5e8a6cff2bb00edc04d491",
       "normalized_geometry_sha256": "69d1b45eee85300fdbf2b5a12be83008e09241239fac41f08dd8f13795d9ed93",
       "source": "art/blender/creature_remodel/r04/biota_amphora_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 48,
       "locomotion_chains": 8,
       "clips": [
@@ -2740,7 +2740,7 @@
       "build_fingerprint": "d01f792cbf35a23390c410906a20bad98ee82bcfac4338387ad7504d98bb69ba",
       "normalized_geometry_sha256": "b92f5cc502b5bc199b45d157a03ce0844bc44b882c4e7d91f55ef9b574c3b45e",
       "source": "art/blender/creature_remodel/r04/biota_amphora_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 64,
       "locomotion_chains": 8,
       "clips": [
@@ -3048,7 +3048,7 @@
       "build_fingerprint": "c6999cb0b4f69ad2f4e01dd4083af21ce4e0cd67fe95cc910a4d440ba7b38920",
       "normalized_geometry_sha256": "feb8ba82fd44a8f42c64463978938a3f1772bb8e88cda5cf17a035fa550cd48f",
       "source": "art/blender/creature_remodel/r04/biota_amphora_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 64,
       "locomotion_chains": 8,
       "clips": [
@@ -3356,7 +3356,7 @@
       "build_fingerprint": "f73025bf672dcf1777edfde5d3cf8bd6fb9c2c9f3deea322a8370e292a1ae093",
       "normalized_geometry_sha256": "bc419f556ae3fd691b34c2dd60ce0e69491dda1b1366b37bb145583f11dd16a9",
       "source": "art/blender/creature_remodel/r04/biota_amphora_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 61,
       "locomotion_chains": 8,
       "clips": [
@@ -3637,7 +3637,7 @@
       "build_fingerprint": "2451a4ae5935bfe54ee402b4a382e5b1ce3ace25959c4760ac424f8219e11abc",
       "normalized_geometry_sha256": "76eb6ea807b6c7c3306793aafbae6c656753dffcb3cb48bb56354bdd1f8f3b1f",
       "source": "art/blender/creature_remodel/r04/biota_amphora_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 61,
       "locomotion_chains": 8,
       "clips": [
@@ -3918,7 +3918,7 @@
       "build_fingerprint": "e38da84b670ed5ac8aca9d3c8b1ad3760b349bb4beb2a800d153154a0f66e7bd",
       "normalized_geometry_sha256": "26f5b94e7591e9fc07f6cbaca05bb06e9ae795cfc90ea4a0cc110dd47e7c64c6",
       "source": "art/blender/creature_remodel/r04/biota_branch_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 35,
       "locomotion_chains": 4,
       "clips": [
@@ -4164,7 +4164,7 @@
       "build_fingerprint": "d99ce2776ff3c1f5f0f1ee3ff6b7dcff5eb76ff56d687910d89ae25b97381a64",
       "normalized_geometry_sha256": "303cb79087186c48bd278b198109b4fa0ed6f40ba72e77ea59c1682c8e1cd55b",
       "source": "art/blender/creature_remodel/r04/biota_branch_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 6,
       "clips": [
@@ -4403,7 +4403,7 @@
       "build_fingerprint": "8f7dbaaacfc4ec88fb5ab2a6fe358c763e1a4446f04d79efd97037b85b06134a",
       "normalized_geometry_sha256": "992c0969f9872e1cdd240cc40419dd9fc5d2f1c9364c7c2f0b0191e49942b1e2",
       "source": "art/blender/creature_remodel/r04/biota_branch_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 35,
       "locomotion_chains": 4,
       "clips": [
@@ -4649,7 +4649,7 @@
       "build_fingerprint": "a6467884096c07800082765b2596a6c55526c4c8439d532396e1fbceef2b1f16",
       "normalized_geometry_sha256": "6f5c3ea497d9c496e09892347af6bd32de95df5eb786eb84a49c68bc99390c98",
       "source": "art/blender/creature_remodel/r04/biota_branch_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 6,
       "clips": [
@@ -4888,7 +4888,7 @@
       "build_fingerprint": "d51c390c7e47e4f3329a4595199d3c8ee3ac5b9ea2272d18a7f739423d44451d",
       "normalized_geometry_sha256": "2c7f78eec026190395ab91de57bfc3004776a5d1e6bb0f7d8bb2113478374512",
       "source": "art/blender/creature_remodel/r04/biota_branch_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 35,
       "locomotion_chains": 4,
       "clips": [
@@ -5134,7 +5134,7 @@
       "build_fingerprint": "02567c3cddbd781c242a3383cbcc07c18681499ec1fe84728867819df6d3a6d0",
       "normalized_geometry_sha256": "4d63a1480f05bbce83caa3eb8a602bb02242333c5d65a4ff655991f0012c39ca",
       "source": "art/blender/creature_remodel/r04/biota_branch_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 6,
       "clips": [
@@ -5373,7 +5373,7 @@
       "build_fingerprint": "9e509c274b68d6a67dcbcf20aacef64b518837b244f70ea1f11fc13589a2d703",
       "normalized_geometry_sha256": "d34b1792fc830696d0e812d17f961ef8572c2cec021c0945a327347a066e0e15",
       "source": "art/blender/creature_remodel/r04/biota_branch_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 38,
       "locomotion_chains": 4,
       "clips": [
@@ -5622,7 +5622,7 @@
       "build_fingerprint": "dea6524b62b60c2690d7249502af3622a925c7db26a5b9f79c516eb7dff6d118",
       "normalized_geometry_sha256": "155c9f0bbc26a4f244c8a6b2d658f0d633c0664b540eba5ab3387d9839c990eb",
       "source": "art/blender/creature_remodel/r04/biota_branch_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 6,
       "clips": [
@@ -5864,7 +5864,7 @@
       "build_fingerprint": "9fcbf59059050bfd1184c3919ddb6e085f0b77e34864c77125b8fd02212f14d6",
       "normalized_geometry_sha256": "5daf261e30656c9e21080820c7b36bedb88fcb61b4f4ee1c0cb63272689ed286",
       "source": "art/blender/creature_remodel/r04/biota_branch_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 34,
       "locomotion_chains": 4,
       "clips": [
@@ -6109,7 +6109,7 @@
       "build_fingerprint": "82e650a814163df6dc893434b09e4b63c60dcf4999ac0abcf08d371a02946787",
       "normalized_geometry_sha256": "e690b5ef3eecb77be93424776882f25e8be6c3946e7c91af0c565043ca296ccd",
       "source": "art/blender/creature_remodel/r04/biota_branch_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 36,
       "locomotion_chains": 6,
       "clips": [
@@ -6347,7 +6347,7 @@
       "build_fingerprint": "916d74bf71fd92d0c24e7fc4d87a21278bcc8dd1354cb125f5e00a9743c7e1e7",
       "normalized_geometry_sha256": "d5ad6d5139df46c46ae39dbfb142e163142ced63fb8955e1e3c9320a91dfaf2e",
       "source": "art/blender/creature_remodel/r04/biota_branch_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 50,
       "locomotion_chains": 4,
       "clips": [
@@ -6632,7 +6632,7 @@
       "build_fingerprint": "d5dde6025b919bb2b12426ee036c780bf38465a8732b138a12313e1c1806f43d",
       "normalized_geometry_sha256": "01db55abb9f76a2afbea9040a4f8f82bece4bda7850dc69b3f36c713ecce68ea",
       "source": "art/blender/creature_remodel/r04/biota_branch_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 52,
       "locomotion_chains": 6,
       "clips": [
@@ -6910,7 +6910,7 @@
       "build_fingerprint": "d53004acda0948af2baccc496ca0d91051b56bc3da1983817b572c8a0a49dcfa",
       "normalized_geometry_sha256": "5388fc74abec9c0571f212e7f385473d8893091ebc879ce78cd8c14710394f86",
       "source": "art/blender/creature_remodel/r04/biota_branch_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 47,
       "locomotion_chains": 4,
       "clips": [
@@ -7168,7 +7168,7 @@
       "build_fingerprint": "604748b6d0e50a8f78deceb88031e5ae4c32ef91096e6c9cdfd6005758051d4f",
       "normalized_geometry_sha256": "6ad571c61fa04e857b0ce661e1712b8de527902da4d270a1dd0368ead856dcd1",
       "source": "art/blender/creature_remodel/r04/biota_branch_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 6,
       "clips": [
@@ -7419,7 +7419,7 @@
       "build_fingerprint": "c950b35e14370ca6f4b3d8930807aeb73aeb9b142e6a76e831ab1c688fe9021d",
       "normalized_geometry_sha256": "607300a25ac970630d214ff8be97dbafe89760b9c2b0f9fa3243f9981054f9be",
       "source": "art/blender/creature_remodel/r04/biota_chain_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 26,
       "locomotion_chains": 2,
       "clips": [
@@ -7611,7 +7611,7 @@
       "build_fingerprint": "36dfdb894abbf11978a8c634f45c24cbb5520d3c19d1560dc9829860fafcac61",
       "normalized_geometry_sha256": "c31f68e12d857779c5c163881e3bf9ecfdddcf8e5b766940bfa98abf11da7fe8",
       "source": "art/blender/creature_remodel/r04/biota_chain_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -7825,7 +7825,7 @@
       "build_fingerprint": "c8be6bd53dbb2d85b0513f5efb91c8b6a03945d127139a26ab1d7f3faf1eaa35",
       "normalized_geometry_sha256": "ec1c76a1b589083052bbef879d46f0a3194fb86cb956d7b56725219bbdcc3310",
       "source": "art/blender/creature_remodel/r04/biota_chain_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 26,
       "locomotion_chains": 2,
       "clips": [
@@ -8017,7 +8017,7 @@
       "build_fingerprint": "88a5f7d369ebb757059800b4c4f4a96d445810b00217b6131ae9a8def75c3995",
       "normalized_geometry_sha256": "1ac9b26f2f48bb2921a3d6f81027fe565791176f284cab4bde8a4cc0cfb2b1da",
       "source": "art/blender/creature_remodel/r04/biota_chain_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 26,
       "locomotion_chains": 2,
       "clips": [
@@ -8209,7 +8209,7 @@
       "build_fingerprint": "dff85894622f2d640c963401f05f55609b17fcb38fd678165846f2034e9b26e1",
       "normalized_geometry_sha256": "d2515d57db50caa468e9a380f696998cd4d8b9f97dfedd36c845edcfebc7f009",
       "source": "art/blender/creature_remodel/r04/biota_chain_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -8423,7 +8423,7 @@
       "build_fingerprint": "0d2a697074fc1aba859424762ffdb104e85b3b6514d16028dd79bd696d15f126",
       "normalized_geometry_sha256": "99f7a8cd0bec006dccec5413bb108b40729217dff0db5770d6f56bfee2beb75d",
       "source": "art/blender/creature_remodel/r04/biota_chain_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 2,
       "clips": [
@@ -8618,7 +8618,7 @@
       "build_fingerprint": "6cc7f02bd6ab786cadaa7fa7df083b8a88b5a5db38deb7cbb511b66736000e45",
       "normalized_geometry_sha256": "9494f3d5ed1141df681eda1525193f27184fd590cec4f7b41b80c87c47825e1f",
       "source": "art/blender/creature_remodel/r04/biota_chain_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -8835,7 +8835,7 @@
       "build_fingerprint": "f9bd741b2512cf861899bc6f601babf20e5a6b743b50b5c2d615db0b26ffb76a",
       "normalized_geometry_sha256": "3acd31ff531e4f7f8b1198845c13cb004abc1119200caf5e823796d945c8b6af",
       "source": "art/blender/creature_remodel/r04/biota_chain_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 25,
       "locomotion_chains": 2,
       "clips": [
@@ -9026,7 +9026,7 @@
       "build_fingerprint": "8c6d856826f707c809508ce74ba4993d833dba15ef64ac669e401a8d38a14a6b",
       "normalized_geometry_sha256": "c97da9ceda82838b84d36050632dfe0dee68dc40f302047a2d53d2ffb8dcc522",
       "source": "art/blender/creature_remodel/r04/biota_chain_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -9239,7 +9239,7 @@
       "build_fingerprint": "c57848851125d2ad4f995ccb5c989105bd7127ab5672801bf6a1d65d99e8cfe6",
       "normalized_geometry_sha256": "fba6e446ec54579217bbf5b0d23c96ac0e849ceb9b6d5b3108db1f1d58b0d52c",
       "source": "art/blender/creature_remodel/r04/biota_chain_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 41,
       "locomotion_chains": 2,
       "clips": [
@@ -9470,7 +9470,7 @@
       "build_fingerprint": "e1f427211142d96178f17ce2c92fe9e07d67ccdd39bf6c645a1b5bc8097b73e3",
       "normalized_geometry_sha256": "3699cfcbbdf92d361462e5a98d79d12018d2a494076ba4176d6fe8d95b6256b4",
       "source": "art/blender/creature_remodel/r04/biota_chain_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -9723,7 +9723,7 @@
       "build_fingerprint": "702e1a409172908204e2badfea6a875fab612a637711003c6cc0cc863d1fb85e",
       "normalized_geometry_sha256": "90143df98c1833a72a2312f0149870568d42aec75f8b5ce86b523a945723061d",
       "source": "art/blender/creature_remodel/r04/biota_chain_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 38,
       "locomotion_chains": 2,
       "clips": [
@@ -9927,7 +9927,7 @@
       "build_fingerprint": "a8e678c0c89a20dbbf5f2d885ba4276c72b2c894e129b23cad778707d897f288",
       "normalized_geometry_sha256": "b35b75f08c30d629ce9f85a9062128af3af5761cb05502c8a8406357544e5b20",
       "source": "art/blender/creature_remodel/r04/biota_chain_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [
@@ -10153,7 +10153,7 @@
       "build_fingerprint": "379a6b97f7ca97cb8345d80a6f4911ec9a66eac75b57b9deeb1978a2453b4ea0",
       "normalized_geometry_sha256": "de2ee8e5c4eb79550880daa091882a392f79cd41d9e8f60be34b5d4fa323f9d0",
       "source": "art/blender/creature_remodel/r04/biota_crown_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 41,
       "locomotion_chains": 8,
       "clips": [
@@ -10414,7 +10414,7 @@
       "build_fingerprint": "14f828d3eec336cc7ad8c5ede363bbd982db2bcf822b06d93350c0162c9b24cc",
       "normalized_geometry_sha256": "3991be6980e8115ffaa2be706f681f8b5f919ddf10d87a0c907ff7f38bbadb48",
       "source": "art/blender/creature_remodel/r04/biota_crown_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 53,
       "locomotion_chains": 8,
       "clips": [
@@ -10721,7 +10721,7 @@
       "build_fingerprint": "36995c4bce294985425efb4779918fa79d753d375820521c0244a092b82be5da",
       "normalized_geometry_sha256": "4c02ba9579d7969ad79c9cbbe06af84ee784869b15b23d5017e3ec11ea29d632",
       "source": "art/blender/creature_remodel/r04/biota_crown_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 41,
       "locomotion_chains": 8,
       "clips": [
@@ -10982,7 +10982,7 @@
       "build_fingerprint": "0813068289763efefdb3ffadf9fd02af1507017fb06e166a5c81e559ed6e3f6f",
       "normalized_geometry_sha256": "0b4d98c0f02a7a40a40f38f1f74c8788f76ad91509fbeda779c72653c009155b",
       "source": "art/blender/creature_remodel/r04/biota_crown_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 53,
       "locomotion_chains": 8,
       "clips": [
@@ -11289,7 +11289,7 @@
       "build_fingerprint": "20f3ecff572450c70c548ed8b6d0d97e2eb12f253602a4e351128798b45fcc6b",
       "normalized_geometry_sha256": "d3fce4436829d20c405f2cc5f7a48845e9a3104dc3e47b181428b5c90dd079a9",
       "source": "art/blender/creature_remodel/r04/biota_crown_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 41,
       "locomotion_chains": 8,
       "clips": [
@@ -11550,7 +11550,7 @@
       "build_fingerprint": "aaebafdfdb7243edeb03271bf8bb846935b4840fa4a12d15ef5af0eb48b0d695",
       "normalized_geometry_sha256": "34043f59220d286aa2c7948ef226cb9dbc3f9ebd0b8771a9d1aa9f7a0b1abf67",
       "source": "art/blender/creature_remodel/r04/biota_crown_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 53,
       "locomotion_chains": 8,
       "clips": [
@@ -11857,7 +11857,7 @@
       "build_fingerprint": "02ff0aa0ab588e6522352ddd83fdeb4fc2f0a9f07160f858049cbc77df15d457",
       "normalized_geometry_sha256": "24b9595a8d791426d704ab1cd460d82577b5916725d0a10d51d1670022ff4363",
       "source": "art/blender/creature_remodel/r04/biota_crown_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 44,
       "locomotion_chains": 8,
       "clips": [
@@ -12121,7 +12121,7 @@
       "build_fingerprint": "123d557ebd2286042c940e1a2aa9eb1ada328a594d48cc7cdf5a9e35beaa9155",
       "normalized_geometry_sha256": "12eb284fcedcbb8aef3e3d0f1bb06c34527c362fd599556ebda016c6d06287c3",
       "source": "art/blender/creature_remodel/r04/biota_crown_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 56,
       "locomotion_chains": 8,
       "clips": [
@@ -12431,7 +12431,7 @@
       "build_fingerprint": "1cd29d86fc84c94e30da41eb0e7215e33971362c3633c7074891722a6399d903",
       "normalized_geometry_sha256": "171f543cb7d3cef01b16361eaea577af8b1e72d1647f3a1bee3d44fbaa61c328",
       "source": "art/blender/creature_remodel/r04/biota_crown_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 8,
       "clips": [
@@ -12691,7 +12691,7 @@
       "build_fingerprint": "ec732720ce391009033cf020e87c31b2b51e35fc8ba0141ab622bcecb0a8cb61",
       "normalized_geometry_sha256": "27c46aaa4f719f1eccccc9176820bd6dc6519fdb679e0c34e7712d50bf44e39c",
       "source": "art/blender/creature_remodel/r04/biota_crown_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 52,
       "locomotion_chains": 8,
       "clips": [
@@ -12997,7 +12997,7 @@
       "build_fingerprint": "a528c064f9ec3997a8a1fb09708df6445b014d8f92f33a6c0f739bf02cc33525",
       "normalized_geometry_sha256": "750e33de87a46e18cbdbf1da35320717e7a6ffbfadd7e258fd22b16e52ba61af",
       "source": "art/blender/creature_remodel/r04/biota_crown_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 56,
       "locomotion_chains": 8,
       "clips": [
@@ -13297,7 +13297,7 @@
       "build_fingerprint": "655dc494f3e05b63e9f4bf79df4e507458e4d6ebc1a7b4648c114d777e27f71a",
       "normalized_geometry_sha256": "99e0d0d134aa162ad4aa8ff5b2a01dd2ff09b4216abd4b40da6e984cd8ec6725",
       "source": "art/blender/creature_remodel/r04/biota_crown_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 68,
       "locomotion_chains": 8,
       "clips": [
@@ -13643,7 +13643,7 @@
       "build_fingerprint": "ca49742a844399b98b1252773a3e8d1c35c0dcf3f71d49a813fbfe883c72ea48",
       "normalized_geometry_sha256": "40fde8c4c2dcd43da434c3f1aa49bb117ce8b72533e7b471ad4cea9cc8d31c06",
       "source": "art/blender/creature_remodel/r04/biota_crown_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 53,
       "locomotion_chains": 8,
       "clips": [
@@ -13916,7 +13916,7 @@
       "build_fingerprint": "1397263d336c1b707a2daa49242ffe141e179dca7d8de9e713951834c7082abf",
       "normalized_geometry_sha256": "a66d9501c5bdb6203aab8d694a8a2275d49bafa763252367b103540d0a362d65",
       "source": "art/blender/creature_remodel/r04/biota_crown_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 65,
       "locomotion_chains": 8,
       "clips": [
@@ -14235,7 +14235,7 @@
       "build_fingerprint": "a1abcb8dc667c5b99e8680038cd94f5379006eefe8f47bf08723c5efbd35849a",
       "normalized_geometry_sha256": "d19e79dc3c9b194f9dbfcae3c99f77c29ffaaad3b9aec2934e0eccc36f6f2911",
       "source": "art/blender/creature_remodel/r04/biota_flat_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -14447,7 +14447,7 @@
       "build_fingerprint": "b0b4e33d65dca5b9263e92d398076215d31d19487bbab12a7b91c77cd14ceae4",
       "normalized_geometry_sha256": "62ac992cbd573ca4b59bbaf8f229cd724298600e3c5b358f20490711c33266bc",
       "source": "art/blender/creature_remodel/r04/biota_flat_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -14659,7 +14659,7 @@
       "build_fingerprint": "4f02d1e6ec0a42e903229bce11a799f04cb690a9fc2d7b1e44bd537135315a02",
       "normalized_geometry_sha256": "d5bf9d48a93eb698bf99d0cd1931478d4d6da9763aa356426d07f1b0d3a1910d",
       "source": "art/blender/creature_remodel/r04/biota_flat_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -14871,7 +14871,7 @@
       "build_fingerprint": "3fa169402ccd5063da619b301dd32d37f820728fcc2f0ee5cb65c93e9a2e56e9",
       "normalized_geometry_sha256": "01fe3998291b022052f7a817fbae8ee0df0c47670451beb226f129a14461f4b6",
       "source": "art/blender/creature_remodel/r04/biota_flat_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -15083,7 +15083,7 @@
       "build_fingerprint": "a0300d82226996efddcf1e02eab60d70457fe9000fa14fae440f8e0d0fcf8cc6",
       "normalized_geometry_sha256": "ce5ec441306063db4bde92b3c73e424155ffc10d5b025f6a0a5709fa593d6e8e",
       "source": "art/blender/creature_remodel/r04/biota_flat_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -15295,7 +15295,7 @@
       "build_fingerprint": "feaced30455679e9440fe4e925540f76793dfa8ae9ea1f3e7ec96f15a3d324af",
       "normalized_geometry_sha256": "de0e244d20940c0556258d6acf4a2fe9d136816e7cc877bfb1b8d3f70ae8227c",
       "source": "art/blender/creature_remodel/r04/biota_flat_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -15507,7 +15507,7 @@
       "build_fingerprint": "6e879a7902961c92c6990f12d5ffd15db2c2f0a667c57d6c84e90022455ed942",
       "normalized_geometry_sha256": "fe0e981b98ffcbbbcb2777fe529aa4dd40b72c72836811cc1e3911b10110dd51",
       "source": "art/blender/creature_remodel/r04/biota_flat_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -15722,7 +15722,7 @@
       "build_fingerprint": "970c8884d022f13a5d9cdf592748517dd30205c75c7f29ec3f9eb9b69ad9e9f9",
       "normalized_geometry_sha256": "edf7ac889e9f2f608735295edce9f8120fe4059c4af44214eae1946d3539d9e9",
       "source": "art/blender/creature_remodel/r04/biota_flat_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -15937,7 +15937,7 @@
       "build_fingerprint": "887ad4af974ef18737e606a6b031316690e193479cdec57c875edb0f621ac80e",
       "normalized_geometry_sha256": "3dca99a2044eb91822836298fb8c424a7dc99b24c27f5d606a7a5df4906b77e3",
       "source": "art/blender/creature_remodel/r04/biota_flat_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -16148,7 +16148,7 @@
       "build_fingerprint": "1ef4ca10265bce228260945338a94e55b908925e6da83813daf724f21fc5cf42",
       "normalized_geometry_sha256": "7049ee2768dea471bb65ba1e617973912170e03ec48f41ca849c8d8ecafb43bd",
       "source": "art/blender/creature_remodel/r04/biota_flat_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -16359,7 +16359,7 @@
       "build_fingerprint": "a5884f3a11d52ecf44d491380150645ac8d538159d70e1446c04c15fe10ab86e",
       "normalized_geometry_sha256": "5096a1d2a7b1fe2cc2d1e158db835b1a7f7988cad671ffa331b8439e002ca361",
       "source": "art/blender/creature_remodel/r04/biota_flat_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -16610,7 +16610,7 @@
       "build_fingerprint": "a591566a10f70dabaa0fc97c41e90a9ce8b06fccdd4f9e804dabba26682fb89a",
       "normalized_geometry_sha256": "2761c3dc2399554c05782aa25cd11bd0a32b9b3eb20bf05893d578681d2adaaa",
       "source": "art/blender/creature_remodel/r04/biota_flat_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -16861,7 +16861,7 @@
       "build_fingerprint": "ecf89e67073a80576bc982fa92e24ba32107dcd86a292e112b0664a338fb9582",
       "normalized_geometry_sha256": "41985082a6bae6c6cf43ec207052b9040074fdbde8c0e3899f3cdd6f168191cd",
       "source": "art/blender/creature_remodel/r04/biota_flat_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -17085,7 +17085,7 @@
       "build_fingerprint": "553feb0ac315920c2d0d7fa1928b88819124936aca51520461f037d961c234a6",
       "normalized_geometry_sha256": "6e96a10b747c5878cfb659fe98c82da8c7628af673eaf865b0d80569f759c5de",
       "source": "art/blender/creature_remodel/r04/biota_flat_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -17309,7 +17309,7 @@
       "build_fingerprint": "3f5b8af524c04534186b46905cec219a5a070ca506c7918b72e56a7896e53e44",
       "normalized_geometry_sha256": "ee6f675b648d9fe6e69a074b61096fa030d715f73cc632fd2ae2cd3d75bea83b",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -17523,7 +17523,7 @@
       "build_fingerprint": "46c1aea2e011318d5be98afbdaa3163e1b1f01bb6e31f054bc6d9ff8f5debd55",
       "normalized_geometry_sha256": "abb040ad26a482135ba7882be66db38494b2c840ab2ad1f6a672cbb883573690",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -17764,7 +17764,7 @@
       "build_fingerprint": "cf09798d30181da0d22f0bd95fb190c0374661c1e020b0ededa80364913750ef",
       "normalized_geometry_sha256": "c8f8fe85ee27731476d0bd2188f389597859367f904a33a6e769f92ef7f0192e",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -17978,7 +17978,7 @@
       "build_fingerprint": "c8c446eb4a257adae5552e5769e3f29e83f6546b9cb3d6ee56c90afe7678cff6",
       "normalized_geometry_sha256": "88c6efffb0ef09d0e4367f36a7f25a9510f52feafba7a17d179bbdad3248f43f",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -18192,7 +18192,7 @@
       "build_fingerprint": "bbf5d322c69268df79d0155dc50fb1c9b910c97c11e8c67b61a7ebace5e5df18",
       "normalized_geometry_sha256": "373792cd3a1cddb878c5abda30face89b9ee39f028558f8d910be53ec2ee708b",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -18433,7 +18433,7 @@
       "build_fingerprint": "dc6701a9e43424729d6df9cbe21ac06a37f656015252c88d337794fbb34221c7",
       "normalized_geometry_sha256": "746ba073577c68df2f534d58f12780dfcb237ba73854d32076fc14365cd354f3",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -18650,7 +18650,7 @@
       "build_fingerprint": "d72384196732e6b20ac92015647494ca7c81c555ea0dcbda6a955408be256c1f",
       "normalized_geometry_sha256": "e55cc2d4e9bfd833d17c2948a5262abb83a2891f1d30dc0c8699226ae5019f0f",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -18894,7 +18894,7 @@
       "build_fingerprint": "75efd88d3cf0882bc3b6cd7948bf1d36db08bb91cebeb7b561a168b76e273084",
       "normalized_geometry_sha256": "a563de7957ef4431bfaf7b780dcb876d8f87ab912e09a23466d9765936fe26db",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -19107,7 +19107,7 @@
       "build_fingerprint": "da326a26c47ec1051f36ce96b45dd86bb1a144f347cc1cd6786feef527a67da9",
       "normalized_geometry_sha256": "5d8476d3fbd6394ee0e655485c574f40cee37b1f4ed46c3bb076ceaff0a158a9",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -19347,7 +19347,7 @@
       "build_fingerprint": "33e0f869e02eb4f853dea4b2f2fc0a457b5dc1859a299ccf5284be40c0a86b88",
       "normalized_geometry_sha256": "ce644e9f32febd564e2326e0d98333fdf92fad841582b61b10f78964e5573c67",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -19600,7 +19600,7 @@
       "build_fingerprint": "d2e5a30564f1df9ab8040fa04a94cc4ba0d8f2b43ff23d7f276d9a88ce3a0074",
       "normalized_geometry_sha256": "ca23af5760a139f0441bbe2212714a85e60288cfc6e6d620e646f974b8485767",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -19880,7 +19880,7 @@
       "build_fingerprint": "826f096937c77effbed07bee7c912e1f8738125a2c8d126931a5169746b86a41",
       "normalized_geometry_sha256": "d451430ae8b6175052afd3535903e439618e28219b733f885c1ffcdbbc310593",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [
@@ -20106,7 +20106,7 @@
       "build_fingerprint": "5da1e2d3fb7a80188a315f323e6d1e9e7febdf12a0d31784acd6e2a27e225b4d",
       "normalized_geometry_sha256": "eb357f9dce27ba176d394e5354ca1eab4e931f2f233add66e10e4ddca330b854",
       "source": "art/blender/creature_remodel/r04/biota_lobopod_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [
@@ -20359,7 +20359,7 @@
       "build_fingerprint": "ca7332f5b5646907e9162e589bbc613f8eef5a3b694992e08b2300c54d21e316",
       "normalized_geometry_sha256": "e289926f723006ae8d2d36b7e5f724850c0087d94ce1a03bb3ba0c863cbe4eb2",
       "source": "art/blender/creature_remodel/r04/biota_mantle_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -20571,7 +20571,7 @@
       "build_fingerprint": "ee3f61b6e1319784e1a32f0be491850546356196b424159c0a9eb7e0163d60f9",
       "normalized_geometry_sha256": "24c10c19259a67ea10031689fe105c4b0edee7f4924cd6812a241d9ab156f1d0",
       "source": "art/blender/creature_remodel/r04/biota_mantle_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -20783,7 +20783,7 @@
       "build_fingerprint": "610d0edc37d5f9591941bf4771bf5190905c5d1eb624247996b7999e7f119474",
       "normalized_geometry_sha256": "47a0bfd4982e90a9f61ff65e0b8b5095ed06cd19446b30a56f7519dd5afd5bf0",
       "source": "art/blender/creature_remodel/r04/biota_mantle_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -20995,7 +20995,7 @@
       "build_fingerprint": "4c6d1e4ce00a0da1fdf4c3f30a1ffe31561a3d491e77b90da6deb6acbea85789",
       "normalized_geometry_sha256": "71d3de0072766f131c7fa3b6c7eacb337358924837c11ef4f8da99a3d8673a10",
       "source": "art/blender/creature_remodel/r04/biota_mantle_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -21207,7 +21207,7 @@
       "build_fingerprint": "20f287ed5572dc30fa8bf847398ebd67fc8cba019251e11d92d696c1e480d3ad",
       "normalized_geometry_sha256": "5cdee2a726c61d6ba761a67d2b958997f1dbcf51f7c5e463b066bf3603a60854",
       "source": "art/blender/creature_remodel/r04/biota_mantle_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -21419,7 +21419,7 @@
       "build_fingerprint": "dc72ef04814e82a8c43565528daeeb0b5ed12cfd37ba7105ddaee9e939e1cd0e",
       "normalized_geometry_sha256": "7e06828b846b75afcba3dce8f08ae68527dfd10d44b7e09081b2e399cbf655e1",
       "source": "art/blender/creature_remodel/r04/biota_mantle_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -21631,7 +21631,7 @@
       "build_fingerprint": "7875f7849c26ef33cc6cb33c6bded99e5b945f6784c76938ec574b99152a9fb4",
       "normalized_geometry_sha256": "d3825922b752c3df38264a46602f80b1fa2309515fad9cef19fea42ca5eb3bd0",
       "source": "art/blender/creature_remodel/r04/biota_mantle_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -21846,7 +21846,7 @@
       "build_fingerprint": "99aff0af4fd7500441442d780eded275abc3e6dc8918846a9d6fb7d4bf4554db",
       "normalized_geometry_sha256": "865dd745260ce7448cb8f6bc7c5321d1863c401d32aaf6ad44b911b16eeb55cd",
       "source": "art/blender/creature_remodel/r04/biota_mantle_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -22061,7 +22061,7 @@
       "build_fingerprint": "2d074583682099d2e958aba50043d7032d0a7edb9aec01db82cfa5dab5677264",
       "normalized_geometry_sha256": "212b0cac7711beb1f07cd3a1f402a297e6922425bebc40056e23c4433328880a",
       "source": "art/blender/creature_remodel/r04/biota_mantle_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -22272,7 +22272,7 @@
       "build_fingerprint": "5020267513d1fb55773673d5e22dc5c2612fcaa0f39a37056eb1f334da35ec7c",
       "normalized_geometry_sha256": "b75217d69a9c2dfaf47dff60d1800b5bb03fb430c1c8a28b69e4f9d9065a3162",
       "source": "art/blender/creature_remodel/r04/biota_mantle_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -22483,7 +22483,7 @@
       "build_fingerprint": "e9bddc019733e36dfb6c17a967de1b3a2a18de5845d6957da1dc8300a6436bea",
       "normalized_geometry_sha256": "71d540c373ac1a3df4db178fec52de9e4c9e930b8c718eb0805e6338cec25b15",
       "source": "art/blender/creature_remodel/r04/biota_mantle_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -22734,7 +22734,7 @@
       "build_fingerprint": "2013929ffecd366b7b840f4595b1f0616ea0180efc79847ceac61c726a26b61d",
       "normalized_geometry_sha256": "3c4724176cd92d79c135e051f86c1cc53b7935028723a4a242502cfbdc7931ee",
       "source": "art/blender/creature_remodel/r04/biota_mantle_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -22985,7 +22985,7 @@
       "build_fingerprint": "0728df6258971a8bf27115a244444432a5056332de4b74da4795a9052e2426b5",
       "normalized_geometry_sha256": "63eab8ae415e9a37f8bd53314090e188b64327232b8129b15b3874b857846e9d",
       "source": "art/blender/creature_remodel/r04/biota_mantle_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -23209,7 +23209,7 @@
       "build_fingerprint": "98a8f4b3b437d117c7e45fc9683c45d7561a65218b542e597cef684df79936ac",
       "normalized_geometry_sha256": "58279d6bde7f3fbe27ccd09c0d8f9a5e9140cee8438daabc0847a1c78c8ed09a",
       "source": "art/blender/creature_remodel/r04/biota_mantle_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -23433,7 +23433,7 @@
       "build_fingerprint": "de84450a2467e080e39ef55fb7d26ea3ea3f471f6db7b7490c9ded1f656184a4",
       "normalized_geometry_sha256": "c596a641557adf235fd2ab6664745b470245101dbe5199735acdf3412b88767c",
       "source": "art/blender/creature_remodel/r04/biota_radial_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -23645,7 +23645,7 @@
       "build_fingerprint": "f4918e4b5141a5ecfd6b3bc710e6e87e9b72a21a95a9d5c4e8c49c3c9808298b",
       "normalized_geometry_sha256": "13e910b53e291e0bf9c6c7485208a3c0f116a8fc9fb96f5f33cf59b0e22310fb",
       "source": "art/blender/creature_remodel/r04/biota_radial_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -23857,7 +23857,7 @@
       "build_fingerprint": "2b6a5d6ffb8e95c5ff74c154bc141057811eee2be2653786d3b6fa02741a655b",
       "normalized_geometry_sha256": "050d097111a4983e078c9747c9cd712db12627f8518e2728e1f18b8211123b07",
       "source": "art/blender/creature_remodel/r04/biota_radial_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -24069,7 +24069,7 @@
       "build_fingerprint": "249c5288c582d90419107fd8485a006ed7db4bc4421e0ca2ecf492199c7b9091",
       "normalized_geometry_sha256": "0cfcc00ca16c4abde9aa2368be235793e64b197bf8be7e0aa9bf791685804361",
       "source": "art/blender/creature_remodel/r04/biota_radial_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -24281,7 +24281,7 @@
       "build_fingerprint": "6be76a3de46d97f9c0e8d11e37b3ec661f02c4a16a9dc28f1f471bd94cc80054",
       "normalized_geometry_sha256": "36ace979aab83877d8a5be6ef21952ebae3ab62fb757691c955db5c370984a26",
       "source": "art/blender/creature_remodel/r04/biota_radial_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -24493,7 +24493,7 @@
       "build_fingerprint": "1c16fca7681570e374edc259d580d7663af0ef24536889c548974722de5d1a49",
       "normalized_geometry_sha256": "7371cd8483e5f84a338c141d537040610fc344a36a8e3eef28714f714a4154c7",
       "source": "art/blender/creature_remodel/r04/biota_radial_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -24705,7 +24705,7 @@
       "build_fingerprint": "dd20944dac5018f0ba0cfbd812d3ab78c057fe842be168253703e36a0a70dc64",
       "normalized_geometry_sha256": "9ca2e614e8a9bf52c1b3715a47a6279d4525976a2200a215ed72f44c3e89e4e3",
       "source": "art/blender/creature_remodel/r04/biota_radial_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -24920,7 +24920,7 @@
       "build_fingerprint": "110dca061b8e4d7aadf6c635b0716adb8afb02a2e24b6716e1d5bb209b86ede4",
       "normalized_geometry_sha256": "5780eadf3b26b8e67e987b2512a41c907083c51e3d846672c9472a64758d1d7d",
       "source": "art/blender/creature_remodel/r04/biota_radial_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -25135,7 +25135,7 @@
       "build_fingerprint": "185be195f4560240d798750adc4c66a9eea93f155b32be86126d20ff8edc32c9",
       "normalized_geometry_sha256": "c2979215ac4d3cbef3dc9a8fd4a352032fe3b45a6c19c50afa6975959e08e684",
       "source": "art/blender/creature_remodel/r04/biota_radial_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -25346,7 +25346,7 @@
       "build_fingerprint": "472b42ee5bc57eb27e7b81731766157fa17cb47b3920b5782723e6cee82551a3",
       "normalized_geometry_sha256": "3aa9bcd8ce14263d30d301cfa3c12ab8a776c04eb3c9cddb66f0bf07a3e6cc07",
       "source": "art/blender/creature_remodel/r04/biota_radial_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -25557,7 +25557,7 @@
       "build_fingerprint": "86c0639a47cda75bf60cf32e11b9b1919fcc4fbe21825516c18f4ebb32395731",
       "normalized_geometry_sha256": "130bfbfc9507f161c3b7f01cebeb18ed1c4bbf88146644f0414afc91fa271daa",
       "source": "art/blender/creature_remodel/r04/biota_radial_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -25808,7 +25808,7 @@
       "build_fingerprint": "1597afaa8becc3f9e754c0c31e2c2d8e56a6780cbe28ff6e776b02a1789a574e",
       "normalized_geometry_sha256": "01b37c9e2334b4854888c18b81ec0bd69b49aa09650511067d64e9c7d41676a3",
       "source": "art/blender/creature_remodel/r04/biota_radial_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -26059,7 +26059,7 @@
       "build_fingerprint": "04ea218f2b7f8232a2427fee280122a1f8b6c0497037ca19db5e3e5289d6f24c",
       "normalized_geometry_sha256": "47d9d527b5776bb9db7ad42d9f8cfeab820860bf6a60e4527e4f7060689c7b65",
       "source": "art/blender/creature_remodel/r04/biota_radial_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -26283,7 +26283,7 @@
       "build_fingerprint": "a1b393ff7e2b8dec0b438577604f8458ad49bf581cfda51e85bbbf850653981b",
       "normalized_geometry_sha256": "1d4efee23e798996100ccbdc7be9f4af0379d29b7dd895264def4bc2083e63b3",
       "source": "art/blender/creature_remodel/r04/biota_radial_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -26507,7 +26507,7 @@
       "build_fingerprint": "c40b06c4bed0da56cf4e135756a44a3eccef810c65414b9497ea3b37d801adb2",
       "normalized_geometry_sha256": "23970b3babbe285cddbff925aba59602074cd2c52691acecd1367ff8496a35f8",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -26721,7 +26721,7 @@
       "build_fingerprint": "dae33fbf01b92af8a34ba70ced298db5794a8036b52f0c356cb38d993af339f9",
       "normalized_geometry_sha256": "a3028bc6d3ba4802f43f9039319519f39a299ca76fbb98d4a47a7173f3120822",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 25,
       "locomotion_chains": 0,
       "clips": [
@@ -26893,7 +26893,7 @@
       "build_fingerprint": "afd78479570f1a4d884914d8cb13e2443f4faef2e3f072d922588f862a58e184",
       "normalized_geometry_sha256": "b91cd48a2da92848c0c04166e6fe34830493961c4e47a4f532e134eb65bc3271",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -27107,7 +27107,7 @@
       "build_fingerprint": "80e6c6b1c0d39535832c941db11cda0b652e62de5f91122e5ec1cb166e5823aa",
       "normalized_geometry_sha256": "8b8493ff7a791c409bbed6f9e166cc5bdf250ceed2c877712546cee990168d5e",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -27321,7 +27321,7 @@
       "build_fingerprint": "bef16e437fbc00a5ade23d4f56deffc36f6c59056f4dc901024344bb8c0ffc33",
       "normalized_geometry_sha256": "334f24c25abbccd1163abab806e7631084050ddd0eb059e10630231984ed3b06",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 25,
       "locomotion_chains": 0,
       "clips": [
@@ -27493,7 +27493,7 @@
       "build_fingerprint": "9dd6a0232656ebe61337c259ff3e6aa7bd2dcb0a0ce3fc4d2991e235f74e8a12",
       "normalized_geometry_sha256": "4508b565d07024ea7a6a6971b5c60bf4f3433499ef07860bd2f732d62e86042e",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -27710,7 +27710,7 @@
       "build_fingerprint": "024a653aafe6c133f44e69b65066f5417bae62d0d7750d18c5136d52755266c6",
       "normalized_geometry_sha256": "c2333cf5c3f61c81d5142676b5c48fd3d6ae9d20c309e112ea0a2bb8fe5765ea",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 0,
       "clips": [
@@ -27885,7 +27885,7 @@
       "build_fingerprint": "d2bcaaf8356b97c2adc74945d97f2a8b8eb8a1c73718e83319da0635137be719",
       "normalized_geometry_sha256": "6177f80fe9d1cbf52995faa8157f82d57d3a30f0b9a6e5bdc4a7718f36d75750",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -28098,7 +28098,7 @@
       "build_fingerprint": "5f97c9b3a534552ed77811ad68b50318e3d98e938311a240a075c86b06d5fdba",
       "normalized_geometry_sha256": "cfe6a8da8cc1a5fee6165acaed3fa02fe71c068b232c401221a48ec85a93d0a3",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 24,
       "locomotion_chains": 0,
       "clips": [
@@ -28269,7 +28269,7 @@
       "build_fingerprint": "0d9088f8df6d7b32c7355899f66b0a4baaca8fb1d3e0e3b58d9db6a6f0b182ff",
       "normalized_geometry_sha256": "8a0db4f36c996f47ead3403a98a1616671138cbe5611c246aef43d6b47953f8b",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -28522,7 +28522,7 @@
       "build_fingerprint": "2a5f360667f37ba0f11eef2efe871a7b11ab1349dadf1554eca611d16a647b24",
       "normalized_geometry_sha256": "07309f459fa505bb9a11b69e85ac5392a84be46480fff972bd2de38a6a263b58",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 0,
       "clips": [
@@ -28733,7 +28733,7 @@
       "build_fingerprint": "9cf5d8ec0cd1f13db547823ad4344b2d331d53cfb74c5eb163b17a594398dd73",
       "normalized_geometry_sha256": "2bad90bc79693cd4685208bbc2925b5dc2256aba82876b04af4d8293bad2866a",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [
@@ -28959,7 +28959,7 @@
       "build_fingerprint": "e98e542737aaf08e15cd0f4e2f9bb07791b0d508bef1345923bcefb0c7952a3b",
       "normalized_geometry_sha256": "23903378f63ee4a2500daede9bb3ce61444089abf47a3f98402ca331f0532415",
       "source": "art/blender/creature_remodel/r04/biota_ribbon_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 0,
       "clips": [
@@ -29143,7 +29143,7 @@
       "build_fingerprint": "6e7afc962bb64fc3e64c0a87744704e3187728ade39d827f6a274439f3857789",
       "normalized_geometry_sha256": "34d78daec3ee4486c7c653ab759474621a63b6a410eadec96a4aa8e9c6e235c4",
       "source": "art/blender/creature_remodel/r04/biota_saddle_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -29356,7 +29356,7 @@
       "build_fingerprint": "f30e488779179da16ae12e06b2a73d89945d9c9aba59e4510a6ca5ea9c521beb",
       "normalized_geometry_sha256": "754913a5338dc5ec82524df3907fa5f993777bdf2af8c897a36a446312a8a959",
       "source": "art/blender/creature_remodel/r04/biota_saddle_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -29571,7 +29571,7 @@
       "build_fingerprint": "a46337244f160134a650e62671a2a47ed7003349580c928d5a6b0fa621bd3086",
       "normalized_geometry_sha256": "8351fa84e4ee160a90e03828268607ed47a577669b0c7fc4df9cf2f771cb8751",
       "source": "art/blender/creature_remodel/r04/biota_saddle_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -29784,7 +29784,7 @@
       "build_fingerprint": "8f58e3366f2e12d56bb607acc07e89d7f28c7f0d547c51ffa140e95b15985b4e",
       "normalized_geometry_sha256": "2f1299fdb6bff69541cb3ff2ca9d4807e42c7ffbb403a9277bf6cea1a5a993c9",
       "source": "art/blender/creature_remodel/r04/biota_saddle_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -29999,7 +29999,7 @@
       "build_fingerprint": "d51b7430d16c71e0575ad4b676ffd677e792df9d5a90980ceca8c762d1007f50",
       "normalized_geometry_sha256": "10d41200d2d885d017ee1b4ed90133aa50a95ed5200ddf36f7015d636f24574f",
       "source": "art/blender/creature_remodel/r04/biota_saddle_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -30212,7 +30212,7 @@
       "build_fingerprint": "e129810e1546e003307294c743b61b0d57d0520d363b8802637f49c6f261988e",
       "normalized_geometry_sha256": "7b66e4084114c621cf5a64d72ee422d066547857416598d0cc8ed3443cef0a5e",
       "source": "art/blender/creature_remodel/r04/biota_saddle_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -30427,7 +30427,7 @@
       "build_fingerprint": "dae7c3fe759ae487c705ce22d6f416dd52c3b6ba4cc4ef3a8f7caf8779a816b5",
       "normalized_geometry_sha256": "729d788effd775eb03ac859d7489f5945d262aa5596d25eec989a75b26f5c87e",
       "source": "art/blender/creature_remodel/r04/biota_saddle_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -30643,7 +30643,7 @@
       "build_fingerprint": "de6140dad7bd7fa37a2b68f2cb0411255083a90a11ba44db074684d43b7d6273",
       "normalized_geometry_sha256": "956db0ffb28e1eb8e46b7045cce9b9b6fcc7212beb198f25b78b8a44c15f257e",
       "source": "art/blender/creature_remodel/r04/biota_saddle_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -30861,7 +30861,7 @@
       "build_fingerprint": "013c3c6c080ac4fb52e1f83898b583c44f1ed8f5df3104276aedde0822116266",
       "normalized_geometry_sha256": "2d3b4f0fd7732164972d779f8eb0e2678a393b9b62732c26792544966f430ef7",
       "source": "art/blender/creature_remodel/r04/biota_saddle_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -31073,7 +31073,7 @@
       "build_fingerprint": "aac5943ead5fbca95b5eebf8bd3f2dd4136aa3b7537d9bdb516efd58094ff5e1",
       "normalized_geometry_sha256": "a980d2643d688994aabc42fb2c99feff8ca7e9508635444ebb06b9211ed4ca3e",
       "source": "art/blender/creature_remodel/r04/biota_saddle_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -31287,7 +31287,7 @@
       "build_fingerprint": "309c2501bc2b1a38e74b74a9d6914a73149ae785842f86d8da4ec7409976ddc4",
       "normalized_geometry_sha256": "8deaa9e5dfd9d7044f842500a1e648ac364486bcef4d5e7b29ffbad17574f852",
       "source": "art/blender/creature_remodel/r04/biota_saddle_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -31539,7 +31539,7 @@
       "build_fingerprint": "44ef1ae913d79bc748871014cbef5e58b2a027ead42d68c60b23fee62fad9935",
       "normalized_geometry_sha256": "19247c0529d1ded769f8edd583cc155b4a8b99e63f280e23df6562cd3c7ddf37",
       "source": "art/blender/creature_remodel/r04/biota_saddle_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -31793,7 +31793,7 @@
       "build_fingerprint": "665330702f6616ec9fedd4fa4142dbb3c8ce25e568ca45673556a13b786fa349",
       "normalized_geometry_sha256": "b5c29fa696ce74d5c93e806fdafbb004e7c8af6dca7217d139a9994a74e28e69",
       "source": "art/blender/creature_remodel/r04/biota_saddle_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -32018,7 +32018,7 @@
       "build_fingerprint": "9a15ee7f185396a810d8f7f6fbd5fae368b6e86c8c654f7fd74b199f2dccebc8",
       "normalized_geometry_sha256": "2edfdcc52258c81fb087f71a7df3617fc61d0692f3148c28ce2e4261de750ed5",
       "source": "art/blender/creature_remodel/r04/biota_saddle_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [
@@ -32245,7 +32245,7 @@
       "build_fingerprint": "5790b7a89f80d690c4d7d37d63e6fa1935fc98efa78794b3be98d4c0351a9e37",
       "normalized_geometry_sha256": "6ce51d52482a3d180dd0c7c3aebe3aa61ed84a36191740162dcd5b8f472c511d",
       "source": "art/blender/creature_remodel/r04/biota_spindle_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -32460,7 +32460,7 @@
       "build_fingerprint": "b46208ef1c28049978e44b5b76c0685671ea26f4ff90ebf053fb79a3e24d4baa",
       "normalized_geometry_sha256": "0eb21dd288f15f6b24439fb4ce3885e2ece5dbfdb252c4e84680ed1168c4d49b",
       "source": "art/blender/creature_remodel/r04/biota_spindle_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 4,
       "clips": [
@@ -32689,7 +32689,7 @@
       "build_fingerprint": "02407e59847abb8f03c9c6cb230644f53c9daf132eb37c3e4a551e25d2e0945b",
       "normalized_geometry_sha256": "cf3e525ee36b920b3959c89e57e74741feef3991a18b2d4269ebb64f8e6d7210",
       "source": "art/blender/creature_remodel/r04/biota_spindle_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 4,
       "clips": [
@@ -32918,7 +32918,7 @@
       "build_fingerprint": "25758c7e6564ad94944e8d4ae70042cf555644731edc0770cd953a71f30712c7",
       "normalized_geometry_sha256": "f21edcb6de7f646bdb969b2f7cbd226bd420753d7d3ea0c4a3c9c7b3b2d47511",
       "source": "art/blender/creature_remodel/r04/biota_spindle_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -33133,7 +33133,7 @@
       "build_fingerprint": "def2f72129d5aea5693ba655d7532902d8ee751329fb39d71342426f6f3636f8",
       "normalized_geometry_sha256": "b25ae3f03f7107d4647cdf20ae645a60b0e97d6c9460472b11ab8c684ac8b4af",
       "source": "art/blender/creature_remodel/r04/biota_spindle_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 37,
       "locomotion_chains": 4,
       "clips": [
@@ -33362,7 +33362,7 @@
       "build_fingerprint": "6fdcc3810bd08f7faaa1a607699d3c84fa05df0d39d80b14c9c9c28bed3b3e3c",
       "normalized_geometry_sha256": "a280cba3af163cea904ae8c5ca43df7f452b3514578cb83179be1d3f6644d4c8",
       "source": "art/blender/creature_remodel/r04/biota_spindle_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -33580,7 +33580,7 @@
       "build_fingerprint": "c77c5138f4235324c6e8654c6fcd4e9070d0facf4b4f1b3c50cc19ab4a58e144",
       "normalized_geometry_sha256": "4d9d755ff55348a40223a129accbdaac26c685d205e11afe3e9cab026323b0c1",
       "source": "art/blender/creature_remodel/r04/biota_spindle_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -33812,7 +33812,7 @@
       "build_fingerprint": "33f6050045b5f50f8001aebd19e48287bf657db41723b07afb3429a4279e74ae",
       "normalized_geometry_sha256": "b5bbed5f168e824a7a00274f054750253cf9b4edc298eeddc7cf345ea9bae184",
       "source": "art/blender/creature_remodel/r04/biota_spindle_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -34026,7 +34026,7 @@
       "build_fingerprint": "73a2e47be283e36be7f66676c6fd10c889615fdede24ef72509e4156636436cf",
       "normalized_geometry_sha256": "906621fb8f4d3d63ee24b1b0c0a9f358ace3c7996d9c7f2e29084157b717e35f",
       "source": "art/blender/creature_remodel/r04/biota_spindle_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 36,
       "locomotion_chains": 4,
       "clips": [
@@ -34254,7 +34254,7 @@
       "build_fingerprint": "0368dc4a10e7fce956693c971fd1ac16be959428e97fe8a286f6d47942710977",
       "normalized_geometry_sha256": "873f4249339f40dd50d76e368a0b1669679eea7745596a7d4fae1d39b4d6d339",
       "source": "art/blender/creature_remodel/r04/biota_spindle_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -34508,7 +34508,7 @@
       "build_fingerprint": "5817c3569508352f7acfc040497adefd36c2b7d7d13723c72843ae5257a49dd8",
       "normalized_geometry_sha256": "3ad7160a1594259be38c391d7d615de435d9e5c65210730148115787a319dab1",
       "source": "art/blender/creature_remodel/r04/biota_spindle_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 52,
       "locomotion_chains": 4,
       "clips": [
@@ -34776,7 +34776,7 @@
       "build_fingerprint": "78173301829efa75215a9b9582947d3719a105b5a0c6d18078652459372e560e",
       "normalized_geometry_sha256": "cef8deb784fb1e9b2df9f2a0ea64b77110de3a024640f14599bd50ca1c093343",
       "source": "art/blender/creature_remodel/r04/biota_spindle_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [
@@ -35003,7 +35003,7 @@
       "build_fingerprint": "1e65fb76df14a5f06a18ac9fbd77dbe273ed89539d62cb47ab418ee74e4b679b",
       "normalized_geometry_sha256": "24d3e6338c308fc95e983d6ebb1301831460c0cf8d7ce1be5a798663718507ee",
       "source": "art/blender/creature_remodel/r04/biota_spindle_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 49,
       "locomotion_chains": 4,
       "clips": [
@@ -35244,7 +35244,7 @@
       "build_fingerprint": "d8b14a0c96df5fa33ff9fe70247fb78d3a92b1f39403432d67cea771c935d4e3",
       "normalized_geometry_sha256": "96eb6924d3483c9ebcb63e7834bd89dd07d82043a4860bb2e4dd74dbc59920f0",
       "source": "art/blender/creature_remodel/r04/biota_spiral_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -35456,7 +35456,7 @@
       "build_fingerprint": "9c3f188df10467b79284ae5918bf2a8f5e753c0491c1bc811a0b2d5f063079e8",
       "normalized_geometry_sha256": "1bf7e1f5f750a54db3d2d2879bb39ce733749157bcad9e456d9152ce7655be2f",
       "source": "art/blender/creature_remodel/r04/biota_spiral_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -35668,7 +35668,7 @@
       "build_fingerprint": "52ac3f8f96e93c8b60e6d147a8e2edec3033f1666d7ce6aa578309c887cc03f9",
       "normalized_geometry_sha256": "e9752b3e9952d775884805ab6d0112ced71be6193cc12957b81cfa03466f3536",
       "source": "art/blender/creature_remodel/r04/biota_spiral_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -35880,7 +35880,7 @@
       "build_fingerprint": "d4a7cf326006c329f9f3a3559dfa4b0e7fb4bc932d73d752b13d33077c55fc72",
       "normalized_geometry_sha256": "41a2575b19a4c38451bae500f9e74e57f82fb18acaa0b385481ee9cf6e6b0c63",
       "source": "art/blender/creature_remodel/r04/biota_spiral_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -36092,7 +36092,7 @@
       "build_fingerprint": "fd27407031010cac3aa2307eb7a9aaa55b42040238f2bd2b1b194fb6220df5ed",
       "normalized_geometry_sha256": "2f564441dcd4f7aa78eec7f2b86db713a70e24ac8a101bb1cbbd7a3f81a9845c",
       "source": "art/blender/creature_remodel/r04/biota_spiral_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -36304,7 +36304,7 @@
       "build_fingerprint": "dc40671a33587009c9a185f0da92d1d61958381612f1509c38a0ed2b65076c6c",
       "normalized_geometry_sha256": "bf671f6430f4eea7941a2d90271cfee3eb4e3fc0dfec78c34ad3cf9d91d97b15",
       "source": "art/blender/creature_remodel/r04/biota_spiral_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 28,
       "locomotion_chains": 4,
       "clips": [
@@ -36516,7 +36516,7 @@
       "build_fingerprint": "c26e8812c9a2b3ae8fe280a4763059f94a4cfc67a276cc4218953dd1e8fcb85f",
       "normalized_geometry_sha256": "aa75134b7ef13d55cd8817fd312f05c5aadf2b496cdad302de78ec578e7a1a59",
       "source": "art/blender/creature_remodel/r04/biota_spiral_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -36731,7 +36731,7 @@
       "build_fingerprint": "6a2779f581c808abac14042f3914cb2c5d82ac026eecb995afa2d4e190995e4c",
       "normalized_geometry_sha256": "e804935f0771967415c9b19e2fe02a72dd41078004b40729e5fc8299b26c6086",
       "source": "art/blender/creature_remodel/r04/biota_spiral_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -36946,7 +36946,7 @@
       "build_fingerprint": "67c7e91f32c25434f04fffa181a6eba61f8d323d09975455f2adde06daff2ca0",
       "normalized_geometry_sha256": "b9398aec11d13b5df72ddf86a93165556a48cf2f32070b5736428f8242ddcc1d",
       "source": "art/blender/creature_remodel/r04/biota_spiral_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -37157,7 +37157,7 @@
       "build_fingerprint": "6e2f9cfb2d47bc42021799f88ed6fac830752c5940496474ff46257bc6d56478",
       "normalized_geometry_sha256": "a79092035519fddbb6810eb46b228671023b445843366b7e9d495c8a88777249",
       "source": "art/blender/creature_remodel/r04/biota_spiral_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 27,
       "locomotion_chains": 4,
       "clips": [
@@ -37368,7 +37368,7 @@
       "build_fingerprint": "708e2428f1da93e3ad884845c77b6f1405914e7673e63715f86d709b9c945ef1",
       "normalized_geometry_sha256": "b786d12c052f25569455b1e9e6b2523780fa1c9e482e9f83af5a4a80ffdb7842",
       "source": "art/blender/creature_remodel/r04/biota_spiral_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -37619,7 +37619,7 @@
       "build_fingerprint": "6af1c0285237f7e76cbb74880f32e4ce8c2c330f06b07d0ddd470ef51aa4d926",
       "normalized_geometry_sha256": "db02e5bd63308f01da38fe6617480d7320c4cfa299e46227193f9453ec1c9a4f",
       "source": "art/blender/creature_remodel/r04/biota_spiral_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 43,
       "locomotion_chains": 4,
       "clips": [
@@ -37870,7 +37870,7 @@
       "build_fingerprint": "e8a6fdf73f794e381714ae88f0dae3c9d0ca150eee7aa707cc76558270744c13",
       "normalized_geometry_sha256": "4da86093ae586ffd75dee9ebba52b68e925713cb942d16bc1443c48d339aa6d7",
       "source": "art/blender/creature_remodel/r04/biota_spiral_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -38094,7 +38094,7 @@
       "build_fingerprint": "1cf9574e4200285ad208dd5ef230ca4809bfeae76dbe71e39bcdb24679559da0",
       "normalized_geometry_sha256": "2104dad5df61fa522bfdb55971e17d873c3e62d750591e113ed4c68461a38a49",
       "source": "art/blender/creature_remodel/r04/biota_spiral_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 40,
       "locomotion_chains": 4,
       "clips": [
@@ -38318,7 +38318,7 @@
       "build_fingerprint": "ac9e3156fad736b6aa336ace332bd743d7daa4f36d8c2772e463b60cafbf9285",
       "normalized_geometry_sha256": "8b22da21be22b418f52e1ece78bb1f772792950549ba51313791f46dcb075fec",
       "source": "art/blender/creature_remodel/r04/biota_tower_antennal_fans_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 32,
       "locomotion_chains": 4,
       "clips": [
@@ -38534,7 +38534,7 @@
       "build_fingerprint": "cc0ad40fdd3232e52d3be62282bb0a3b6e37d5b72738d231ca5abe85864015d5",
       "normalized_geometry_sha256": "dea87034d03669ae17fe6f2d7e5ad6c3a881701ada75aece679e89f2b84dc7ed",
       "source": "art/blender/creature_remodel/r04/biota_tower_antennal_fans_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -38748,7 +38748,7 @@
       "build_fingerprint": "278e4173ed28a4ec3bc4bd9620a62d9a683569da98e0af1acdc9e1105a028b56",
       "normalized_geometry_sha256": "7805cf30f6b548458127d49ee31795439ac4c94dd9b5735468918320055cbc2a",
       "source": "art/blender/creature_remodel/r04/biota_tower_armor_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 32,
       "locomotion_chains": 4,
       "clips": [
@@ -38964,7 +38964,7 @@
       "build_fingerprint": "29d0749f0ae5678c5083522a589569cea73f561ae6ffad20922a87c793e0c82d",
       "normalized_geometry_sha256": "16c421e6a7da83ec3afc51c595b1f5fbc21bdbfdce9108757739618a3d9d73bb",
       "source": "art/blender/creature_remodel/r04/biota_tower_armor_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -39178,7 +39178,7 @@
       "build_fingerprint": "66a2243b21315f34acf90a4f8531bfc28b6f16fc40d852d97b2a31e02670f14f",
       "normalized_geometry_sha256": "eb3a50021d519f3881ea20a9b333c3e51dc3d32636a4890d2068bca2f6b6972c",
       "source": "art/blender/creature_remodel/r04/biota_tower_gills_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 32,
       "locomotion_chains": 4,
       "clips": [
@@ -39394,7 +39394,7 @@
       "build_fingerprint": "f075cd6f354a8391c30e95433c3576b8ab703760bfd36329e7f35da38791f308",
       "normalized_geometry_sha256": "e93eab40827266c597b917f2b4974474ca1d62285c2a7f426d2d21d92f22cf38",
       "source": "art/blender/creature_remodel/r04/biota_tower_gills_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 30,
       "locomotion_chains": 4,
       "clips": [
@@ -39608,7 +39608,7 @@
       "build_fingerprint": "81b03e3c6a988d8a461d6f18d188ad69e354ac68d3d8280c6a03ee20f3e3521b",
       "normalized_geometry_sha256": "62334943ec5a7e05229ebdcf585bb636a88a321397a847e7622ca934fb64a196",
       "source": "art/blender/creature_remodel/r04/biota_tower_mandibles_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 35,
       "locomotion_chains": 4,
       "clips": [
@@ -39827,7 +39827,7 @@
       "build_fingerprint": "356f043b8dfe3f29cad6d405f64d711ed60257a85acb2f05e3942beb86550107",
       "normalized_geometry_sha256": "abe1c7ad97b7717665fd6a765282ff0cc48ce47823c4f1f5c73767036d9d055f",
       "source": "art/blender/creature_remodel/r04/biota_tower_mandibles_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 33,
       "locomotion_chains": 4,
       "clips": [
@@ -40044,7 +40044,7 @@
       "build_fingerprint": "004fc03e4eb3945a74b53112869c7dbe80f0072ccfad3f07c04d5199cd35d2f1",
       "normalized_geometry_sha256": "095d6f29fb3a152cd441f86adc9499f019fa91b1d016dc30998ea150940dece3",
       "source": "art/blender/creature_remodel/r04/biota_tower_sails_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 31,
       "locomotion_chains": 4,
       "clips": [
@@ -40259,7 +40259,7 @@
       "build_fingerprint": "c45ce7e1606fd6b5980228fef61906f5ac590022e1d7f2bb81023a1557c7ad30",
       "normalized_geometry_sha256": "071b7024a5f932cf36cf45a5133dde77ae7a008a9268c1b17b72a0d8d809b89f",
       "source": "art/blender/creature_remodel/r04/biota_tower_sails_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 29,
       "locomotion_chains": 4,
       "clips": [
@@ -40472,7 +40472,7 @@
       "build_fingerprint": "6a28559f8e43ad11e50f51607a0b3a5f852bb4b455e6eda74d06b8a8c65631bc",
       "normalized_geometry_sha256": "63bea8211c265cbd34c8982ac432e52fe3ea8c95cb177a66e3b5bfa6d6d9e3ac",
       "source": "art/blender/creature_remodel/r04/biota_tower_siphons_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 47,
       "locomotion_chains": 4,
       "clips": [
@@ -40727,7 +40727,7 @@
       "build_fingerprint": "da08b7d86ca859b00e6feafcfc9ad35270d0b2ddd84b4dd62e2febc55e3ddc21",
       "normalized_geometry_sha256": "701df2d3bacc119ce3c766ead5cb15fc692dd5e86b41a5620296524707831449",
       "source": "art/blender/creature_remodel/r04/biota_tower_siphons_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 45,
       "locomotion_chains": 4,
       "clips": [
@@ -40980,7 +40980,7 @@
       "build_fingerprint": "283a3c252144d1f40cbc2a4095118976a6988524eefd25ec27e761df01a14ba7",
       "normalized_geometry_sha256": "5ba3bb79391095d5774599197b23b34c1c80dc8fb89cb11a422f1825ed67f664",
       "source": "art/blender/creature_remodel/r04/biota_tower_tendrils_25.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 44,
       "locomotion_chains": 4,
       "clips": [
@@ -41208,7 +41208,7 @@
       "build_fingerprint": "971fb69028e2e9bec424c43be500d8e9f755c88db056fb1e5f33f0761a53e440",
       "normalized_geometry_sha256": "616afbbe9e8677a5f08e844211ab30c4ddc6359814d5d22f21a3d0a8ac13e896",
       "source": "art/blender/creature_remodel/r04/biota_tower_tendrils_26.blend",
-      "status": "built-awaiting-game-render",
+      "status": "game-render-reviewed",
       "bone_count": 42,
       "locomotion_chains": 4,
       "clips": [

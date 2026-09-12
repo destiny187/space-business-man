@@ -1,0 +1,266 @@
+{
+  "id": "biota_amphora_antennal_fans_30",
+  "name": "동결갈래열두마디촉각화병수",
+  "family": "biota_amphora_antennal_fans",
+  "construction": "amphora",
+  "organ_system": "antennal_fans",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_amphora_antennal_fans_30",
+  "kind": "amphora",
+  "habitat": "작은 개구부·겹친 단열막의 가상 극저온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 12,
+    "limb_count": 6,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "수축 목과 열린 입구를 가진 항아리 몸체·가지 끝에 펼친 감각 부채 / 분기 배열·주요 기관 12개",
+  "recipe_sha256": "019d74e8123e1fba0d776d737e3df6817665b05f44a768291010487316ca205a",
+  "authored_anatomy": "Continuous amphora anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "d25c8085414504e4d76ce81ef77850b1d2e7a701f3fe5a2172ee047828b8b4bc",
+  "normalized_geometry_sha256": "9e4a9db7bf01fa82572c749ef17f6b291387cd9bdf9f32faba15a6a60c435c5e",
+  "source": "art/blender/creature_remodel/r03/biota_amphora_antennal_fans_30.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 64,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "apical_oral",
+      "point": [
+        -2.4835269396561444e-09,
+        2.0450000762939453,
+        -2.4835269396561444e-09
+      ]
+    },
+    "Socket_apical_oral": {
+      "bone": "apical_oral",
+      "point": [
+        -2.4835269396561444e-09,
+        2.0450000762939453,
+        -2.4835269396561444e-09
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "apical_oral",
+      "point": [
+        -2.4835269396561444e-09,
+        2.0450000762939453,
+        -2.4835269396561444e-09
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.591049897949899e-17,
+        0.10999999940395355,
+        1.0764000415802002
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.9321897625923157,
+        0.10999999940395355,
+        0.5382000207901001
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.9321897625923157,
+        0.10999999940395355,
+        -0.5382000207901001
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        6.591049897949899e-17,
+        0.10999999940395355,
+        -1.0764000415802002
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.9321897625923157,
+        0.10999999940395355,
+        -0.5382000207901001
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.9321897625923157,
+        0.10999999940395355,
+        0.5382000207901001
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    -2.4835269396561444e-09,
+    2.0450000762939453,
+    -2.4835269396561444e-09
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_antennal_fans_30_near.glb",
+      "sha256": "4b92f3ce61298d5a28fef2f5c8d2a74dffd707f37707c872f3e583ca34c7efa0",
+      "triangles": 65238,
+      "min": [
+        -1.2462960481643677,
+        0.034999996423721313,
+        -1.3786722421646118
+      ],
+      "max": [
+        1.2462960481643677,
+        2.5066256523132324,
+        1.3786722421646118
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_antennal_fans_30_far.glb",
+      "sha256": "548de6be37ae3a464486a99409e04038cd714ac5d249ea0f0b914dd777632355",
+      "triangles": 28046,
+      "min": [
+        -1.24631929397583,
+        0.034996528178453445,
+        -1.3785914182662964
+      ],
+      "max": [
+        1.24631929397583,
+        2.5066256523132324,
+        1.3785914182662964
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "crown_wall30": "chest",
+    "crown_wall31": "crown_wall30",
+    "crown_wall40": "chest",
+    "crown_wall41": "crown_wall40",
+    "crown_wall50": "chest",
+    "crown_wall51": "crown_wall50",
+    "crown_wall60": "chest",
+    "crown_wall61": "crown_wall60",
+    "crown_wall70": "chest",
+    "crown_wall71": "crown_wall70",
+    "crown_wall80": "chest",
+    "crown_wall81": "crown_wall80",
+    "crown_wall90": "chest",
+    "crown_wall91": "crown_wall90",
+    "crown_wall100": "chest",
+    "crown_wall101": "crown_wall100",
+    "crown_wall110": "chest",
+    "crown_wall111": "crown_wall110",
+    "head": "chest",
+    "apical_oral": "head",
+    "apical_oral_petal0": "apical_oral",
+    "apical_oral_petal1": "apical_oral",
+    "apical_oral_petal2": "apical_oral",
+    "apical_oral_petal3": "apical_oral",
+    "apical_oral_petal4": "apical_oral",
+    "apical_oral_petal5": "apical_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "crown_wall01",
+    "organ1": "crown_wall11",
+    "organ2": "crown_wall21",
+    "organ3": "crown_wall31",
+    "organ4": "crown_wall41",
+    "organ5": "crown_wall51",
+    "organ6": "crown_wall61",
+    "organ7": "crown_wall71",
+    "organ8": "crown_wall81",
+    "organ9": "crown_wall91",
+    "organ10": "crown_wall101",
+    "organ11": "crown_wall111"
+  },
+  "build_seconds": 37.723,
+  "source_render_seconds": 5.987,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "ae1febc0f3490554efa2ccfd730df4278876b30248f3e213d50211b65b9a170c"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

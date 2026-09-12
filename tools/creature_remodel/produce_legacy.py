@@ -4,10 +4,17 @@ import sys,json,hashlib,os
 ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(Path(__file__).parent),str(ROOT/'tools'),str(ROOT/'tools/bestiary')]
 from legacy_recipes import recipes
 
+def revised_sensors(spec):
+    return spec['construction'] in ['gyre_tower','spiral_maw','spiral_hinge','corkscrew_spine','braid_crawler','offset_halo']
+
 def fingerprint(spec):
     h=hashlib.sha256(json.dumps(spec,sort_keys=True).encode())
     for file in ['produce_legacy.py','legacy_recipes.py','legacy_anatomy.py','legacy_motion.py','production_core.py','anatomy_stage.py','biota_anatomy.py','build_batch.py','midpoint_anatomy.py']:
-        h.update((Path(__file__).parent/file).read_bytes())
+        path=Path(__file__).parent/file
+        # The other 580 species retain their original anatomical provenance.
+        if not revised_sensors(spec) and file in ['produce_legacy.py','legacy_anatomy.py']:
+            path=path.parent/'compat'/(path.stem+'_v1.py')
+        h.update(path.read_bytes())
     for file in ['build_creature_studies.py','build_creature_remodel_r01.py','refine_creature_motion.py','bestiary/biota_midpoint_art.py','ink_blender.py']:
         h.update((ROOT/'tools'/file).read_bytes())
     h.update((ROOT/'우주-비즈니스/data/ink_materials.json').read_bytes());return h.hexdigest()

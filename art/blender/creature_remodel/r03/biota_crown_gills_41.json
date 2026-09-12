@@ -1,0 +1,214 @@
+{
+  "id": "biota_crown_gills_41",
+  "name": "집광둘레세마디깃털관수",
+  "family": "biota_crown_gills",
+  "construction": "crown",
+  "organ_system": "gills",
+  "environment": "temperate",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_crown_gills_41",
+  "kind": "crown",
+  "habitat": "넓은 광합성·감각 면과 여과 기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "빈 중앙 공간을 둘러싼 살아 있는 관·넓게 펼친 깃 아가미 / 방사 배열·주요 기관 3개",
+  "recipe_sha256": "81831e41db28e72a0a4ec6e6aabecb56da30d0cd4d58213b7a2f0c91af47dfaf",
+  "authored_anatomy": "Continuous crown anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "987c679b1089c602cfb3e0004685dc6775e981f521de92508c701fc47f2fa5e2",
+  "normalized_geometry_sha256": "283f5762fe67ad0d26129db6643b2baa3a5b8f5c8409fd654e502a7a3f23bb8e",
+  "source": "art/blender/creature_remodel/r03/biota_crown_gills_41.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 30,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.4869999587535858,
+        -0.0
+      ]
+    },
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.4869999587535858,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.4869999587535858,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        1.0119999647140503
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0119999647140503,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        6.19671304761117e-17,
+        0.10999999940395355,
+        -1.0119999647140503
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.0119999647140503,
+        0.10999999940395355,
+        -1.239342609522234e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3412456372336157,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5289307377121043,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.4869999587535858,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_crown_gills_41_near.glb",
+      "sha256": "ab8016dfc4662e96716198fa7b983d1f54c40c709cd356e2f7fc73ec5210fa9a",
+      "triangles": 34830,
+      "min": [
+        -1.3142722845077515,
+        0.034999996423721313,
+        -1.3142722845077515
+      ],
+      "max": [
+        1.3142722845077515,
+        2.240504264831543,
+        1.318392038345337
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_crown_gills_41_far.glb",
+      "sha256": "70bf43678646610fee47491abe4925ce014f2821e551dd41836c244354683cb6",
+      "triangles": 14970,
+      "min": [
+        -1.3141915798187256,
+        0.034996528178453445,
+        -1.3141915798187256
+      ],
+      "max": [
+        1.3141915798187256,
+        2.241147994995117,
+        1.3183329105377197
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "head": "chest",
+    "ventral_oral": "head",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "ventral_oral_petal4": "ventral_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "crown_wall01",
+    "organ1": "crown_wall11",
+    "organ2": "crown_wall21"
+  },
+  "build_seconds": 11.946,
+  "source_render_seconds": 4.146,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "49bdf73f36da45f97dc15f15ebc9242ac3d03d88783a571124dcc14df54430fe"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -38,10 +38,10 @@
     "articulated_organs": 32
   },
   "version": "r06-1",
-  "build_fingerprint": "3ca3b903cc2463f3e7d463155e02a1bb72ceb56f9b0765f742c0f2c20a52376a",
-  "normalized_geometry_sha256": "950e8957e33aef79985be27815842c4ffee2b77d8b04b7dcd193ca6727af35fe",
+  "build_fingerprint": "49d67647a6a7eb88b9cca962f8764cd7c38cf9a8625d9e3b3c0a8c2c9ea0a14b",
+  "normalized_geometry_sha256": "41a8b52db1518892182d9331fc6e78f075b401c0a3dfad29b3b36e13156085ae",
   "source": "art/blender/creature_remodel/r06/bio_spiral_hinge_01.blend",
-  "status": "built-awaiting-game-render",
+  "status": "game-render-reviewed",
   "bone_count": 46,
   "locomotion_chains": 3,
   "clips": [
@@ -147,8 +147,8 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_spiral_hinge_01_near.glb",
-      "sha256": "3b06a43c5ee88f40367b632ab0161051156e7e76180475e474ecfc97d6a67382",
-      "triangles": 35258,
+      "sha256": "a7e5644e95673b8a5f48c1797b23d2e7b32ea85aa97b1416da54c351e0e95423",
+      "triangles": 33946,
       "min": [
         -1.2930699586868286,
         0.02499999850988388,
@@ -162,8 +162,8 @@
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_spiral_hinge_01_far.glb",
-      "sha256": "20897f9bac8f70ae1404c2d4cca0c0a99be72ef92491f96fadf7a972bfaa9862",
-      "triangles": 15152,
+      "sha256": "07ea4d5ddf298bed07cc74ba63384ac8e4a221fc35bf8985c51412be78974c80",
+      "triangles": 14590,
       "min": [
         -1.293091893196106,
         0.025012250989675522,
@@ -224,10 +224,14 @@
     "support2_foot": "support2_lower",
     "head": "chest"
   },
-  "build_seconds": 13.693,
-  "source_render_seconds": 3.522,
+  "build_seconds": 74.778,
+  "source_render_seconds": 12.766,
   "animation_capture": {
     "version": 1,
-    "base_fingerprint": "d920c10c195a07d3a4284d0a2e95b43edf8ad485cdd0d70345df4b5c63f433f5"
+    "base_fingerprint": "7559db23b5e1c8edf71fdc82d581c98d0f9111d93caa3f43e37d08e834b3847b"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
   }
 }

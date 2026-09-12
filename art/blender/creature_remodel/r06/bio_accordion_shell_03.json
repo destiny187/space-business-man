@@ -1,0 +1,231 @@
+{
+  "id": "bio_accordion_shell_03",
+  "source_id": "bio_accordion_shell_03",
+  "name": "오주름갑수",
+  "family": "accordion_shell",
+  "kind": "accordion_shell",
+  "construction": "accordion_shell",
+  "anatomical_type": "accordion_shell",
+  "organ_system": "mandibles",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "중심 축을 따라 압축되는 큰 외골격 주름과 측면 발 / 오방 분절 골격",
+  "morphology": {
+    "width": 1.05,
+    "height": 0.93,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 5,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "accordion_shell",
+    "support_limbs": 5,
+    "oral_organs": 1,
+    "articulated_organs": 11
+  },
+  "version": "r06-1",
+  "build_fingerprint": "3ff73f726062d3316ddc1b9e5de6002475c91535a5c8fefb7e43fff3780c1948",
+  "normalized_geometry_sha256": "a8aba5d20d40238da226eebcd0648aacf1c1fc774ff94cd7992bd963c97dbdb8",
+  "source": "art/blender/creature_remodel/r06/bio_accordion_shell_03.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 30,
+  "locomotion_chains": 5,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_terminal_oral": {
+      "bone": "terminal_oral",
+      "point": [
+        -0.06312666088342667,
+        0.6995999813079834,
+        1.1699999570846558
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "terminal_oral",
+      "point": [
+        -0.06312666088342667,
+        0.6995999813079834,
+        1.1699999570846558
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_oral",
+      "point": [
+        -0.06312666088342667,
+        0.6995999813079834,
+        1.1699999570846558
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.07568024843931198,
+        0.10000000149011612,
+        0.9557142853736877
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.5362648367881775,
+        0.10000000149011612,
+        0.30471113324165344
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.4349949359893799,
+        0.10000000149011612,
+        -0.8468539714813232
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.23508022725582123,
+        0.10000000149011612,
+        -0.8468539714813232
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.547939658164978,
+        0.10000000149011612,
+        0.30471113324165344
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.24222508822240116,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3754488867447218,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.4,
+      "support2": 0.8,
+      "support3": 0.2,
+      "support4": 0.6
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.06312666088342667,
+    0.6995999813079834,
+    1.1699999570846558
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_accordion_shell_03_near.glb",
+      "sha256": "3f0d1bb27dbaebf9d4ba0ff99289733c0bf01edcc67d79ad672fbe175f5cebb7",
+      "triangles": 65240,
+      "min": [
+        -0.8630719780921936,
+        0.02499999850988388,
+        -1.1483304500579834
+      ],
+      "max": [
+        0.8513972163200378,
+        1.0546000003814697,
+        1.2577733993530273
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_accordion_shell_03_far.glb",
+      "sha256": "3ac3b4b7e64459e96e2de43a28c58768ca2f0d0abf34c3e9607e76c7506059b8",
+      "triangles": 28050,
+      "min": [
+        -0.8630922436714172,
+        0.02499999850988388,
+        -1.1483625173568726
+      ],
+      "max": [
+        0.851414144039154,
+        1.0548372268676758,
+        1.257702350616455
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "serial_visceral_axis0": "chest",
+    "serial_visceral_axis1": "serial_visceral_axis0",
+    "serial_visceral_axis2": "serial_visceral_axis1",
+    "serial_visceral_axis3": "serial_visceral_axis2",
+    "serial_visceral_axis4": "serial_visceral_axis3",
+    "serial_visceral_axis5": "serial_visceral_axis4",
+    "serial_visceral_axis6": "serial_visceral_axis5",
+    "terminal_oral": "serial_visceral_axis6",
+    "terminal_oral_petal0": "terminal_oral",
+    "terminal_oral_petal1": "terminal_oral",
+    "terminal_oral_petal2": "terminal_oral",
+    "terminal_oral_petal3": "terminal_oral",
+    "support0_upper": "serial_visceral_axis5",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "serial_visceral_axis4",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "serial_visceral_axis2",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "serial_visceral_axis2",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "serial_visceral_axis4",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "head": "chest"
+  },
+  "build_seconds": 14.024,
+  "source_render_seconds": 12.369,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "86a191d8d23ae2a43250ba0606528cc511052452dd6730f9cd95e187b6b2551b"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

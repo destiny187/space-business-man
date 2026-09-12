@@ -1,0 +1,293 @@
+{
+  "id": "bio_asym_pincer_09",
+  "source_id": "bio_asym_pincer_09",
+  "name": "편측집게체 · 방사형",
+  "family": "asym_pincer",
+  "kind": "asym_pincer",
+  "construction": "asym_pincer",
+  "anatomical_type": "asym_pincer",
+  "organ_system": "gills",
+  "environment": "arid",
+  "habitat": "낮은 수분·일교차·수분 보존",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.105,
+    "height": 1.025,
+    "mode": 8,
+    "radial_count": 6,
+    "limb_count": 8,
+    "eye_count": 1,
+    "lineage": 0
+  },
+  "attack": "claw",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "claw",
+  "host_motion": "melee",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "asym_pincer",
+    "support_limbs": 8,
+    "oral_organs": 1,
+    "articulated_organs": 20
+  },
+  "version": "r06-1",
+  "build_fingerprint": "f587b88963ce6f99e4a72a40a4e8311a909be69f053b7c22291ac6aec56fec96",
+  "normalized_geometry_sha256": "51cd5eb38184741dc32e014adf76179843ca16ee0531a705c2b3090291fa5107",
+  "source": "art/blender/creature_remodel/r06/bio_asym_pincer_09.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 56,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6000000238418579,
+        0.9200000762939453
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6000000238418579,
+        0.9200000762939453
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6000000238418579,
+        0.9200000762939453
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.2799999713897705,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.2799999713897705,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.2799999713897705,
+        0.10000000149011612,
+        -0.2266666740179062
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.2799999713897705,
+        0.10000000149011612,
+        -0.2266666740179062
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.2799999713897705,
+        0.10000000149011612,
+        -0.4233333468437195
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        1.2799999713897705,
+        0.10000000149011612,
+        -0.4233333468437195
+      ]
+    },
+    "Socket_leg6": {
+      "bone": "leg6_foot",
+      "point": [
+        -1.2799999713897705,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    },
+    "Socket_leg7": {
+      "bone": "leg7_foot",
+      "point": [
+        1.2799999713897705,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3553116227991597,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5507330153386976,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.2,
+      "leg3": 0.7,
+      "leg4": 0.4,
+      "leg5": 0.9,
+      "leg6": 0.6000000000000001,
+      "leg7": 1.1
+    },
+    "strike_origins": [
+      {
+        "bone": "dominant_chela1",
+        "point": [
+          -1.25,
+          0.75,
+          1.350000023841858
+        ]
+      }
+    ]
+  },
+  "muzzle": [
+    0.0,
+    0.6000000238418579,
+    0.9200000762939453
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_asym_pincer_09_near.glb",
+      "sha256": "b5da7d362dede9b1a7dad437f9ef1f515244465380a66ffad3284e1f78b3935d",
+      "triangles": 69166,
+      "min": [
+        -1.6896114349365234,
+        0.02499999850988388,
+        -1.1520856618881226
+      ],
+      "max": [
+        1.4601173400878906,
+        1.8996944427490234,
+        1.9537190198898315
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_asym_pincer_09_far.glb",
+      "sha256": "19a2ec599497d3af8716170f175ab7510a2dc91920bdf86e780487336c816fab",
+      "triangles": 29732,
+      "min": [
+        -1.6896114349365234,
+        0.025007463991642,
+        -1.1523985862731934
+      ],
+      "max": [
+        1.4601616859436035,
+        1.8995698690414429,
+        1.9539560079574585
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "abdomen": "chest",
+    "head": "chest",
+    "oral": "head",
+    "oral_petal0": "oral",
+    "oral_petal1": "oral",
+    "oral_petal2": "oral",
+    "Compound receptor -1_lid": "head",
+    "antenna-10": "head",
+    "antenna-11": "antenna-10",
+    "Compound receptor 1_lid": "head",
+    "antenna10": "head",
+    "antenna11": "antenna10",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "leg6_upper": "chest",
+    "leg6_lower": "leg6_upper",
+    "leg6_foot": "leg6_lower",
+    "leg7_upper": "chest",
+    "leg7_lower": "leg7_upper",
+    "leg7_foot": "leg7_lower",
+    "raptorial-10": "chest",
+    "raptorial-11": "raptorial-10",
+    "pincer-1_-1": "raptorial-11",
+    "pincer-1_1": "raptorial-11",
+    "raptorial10": "chest",
+    "raptorial11": "raptorial10",
+    "pincer1_-1": "raptorial11",
+    "pincer1_1": "raptorial11",
+    "organ0": "abdomen",
+    "organ1": "abdomen",
+    "organ2": "chest",
+    "organ3": "chest",
+    "organ4": "chest",
+    "organ5": "chest",
+    "dominant_chela0": "chest",
+    "dominant_chela1": "dominant_chela0",
+    "dominant_finger-1": "dominant_chela1",
+    "dominant_finger1": "dominant_chela1"
+  },
+  "build_seconds": 17.191,
+  "source_render_seconds": 3.805,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "be661d3228eb4e61c1e99a33128034062b59a97f82c873431ed9d6160902b80f"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

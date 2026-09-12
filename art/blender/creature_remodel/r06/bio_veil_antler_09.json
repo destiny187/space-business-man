@@ -1,0 +1,277 @@
+{
+  "id": "bio_veil_antler_09",
+  "source_id": "bio_veil_antler_09",
+  "name": "접힌막각수",
+  "family": "veil_antler",
+  "kind": "veil_antler",
+  "construction": "veil_antler",
+  "anatomical_type": "veil_antler",
+  "organ_system": "gills",
+  "environment": "temperate",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "넓은 감각막을 뿔 사이에 편 머리 없는 저상 보행체 / 교차 연결 골격",
+  "morphology": {
+    "width": 1.08,
+    "height": 0.88,
+    "mode": 8,
+    "radial_count": 6,
+    "limb_count": 8,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "657849",
+    "adbc72",
+    "34494e",
+    "bb9357"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "veil_antler",
+    "support_limbs": 8,
+    "oral_organs": 1,
+    "articulated_organs": 21
+  },
+  "version": "r06-1",
+  "build_fingerprint": "d64026d3b0c4f92265e64a6e1365976fa3c6cdf2d952ad5cbbef8d3f18b7f778",
+  "normalized_geometry_sha256": "bed1aba6d6c8efca3f8850731d6fad9eddffe8a3af0a3d336cb9b4ae5f6c6ea5",
+  "source": "art/blender/creature_remodel/r06/bio_veil_antler_09.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_low_oral": {
+      "bone": "low_oral",
+      "point": [
+        0.0,
+        0.6335999965667725,
+        0.7300000190734863
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "low_oral",
+      "point": [
+        0.0,
+        0.6335999965667725,
+        0.7300000190734863
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "low_oral",
+      "point": [
+        0.0,
+        0.6335999965667725,
+        0.7300000190734863
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        3.4902435960421774e-17,
+        0.10000000149011612,
+        0.5699999928474426
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.40305086970329285,
+        0.10000000149011612,
+        0.40305086970329285
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.5699999928474426,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.40305086970329285,
+        0.10000000149011612,
+        -0.40305086970329285
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        3.4902435960421774e-17,
+        0.10000000149011612,
+        -0.5699999928474426
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.40305086970329285,
+        0.10000000149011612,
+        -0.40305086970329285
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.5699999928474426,
+        0.10000000149011612,
+        -6.980487192084355e-17
+      ]
+    },
+    "Socket_support7": {
+      "bone": "support7_foot",
+      "point": [
+        -0.40305086970329285,
+        0.10000000149011612,
+        0.40305086970329285
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.23342894405540102,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3618148632858716,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.125,
+      "support2": 0.25,
+      "support3": 0.375,
+      "support4": 0.5,
+      "support5": 0.625,
+      "support6": 0.75,
+      "support7": 0.875
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.6335999965667725,
+    0.7300000190734863
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_veil_antler_09_near.glb",
+      "sha256": "8c9693315adba032f294d3a3e844abf19de8d4da34137a5acfb7b94fa163339c",
+      "triangles": 36050,
+      "min": [
+        -0.9124449491500854,
+        0.02499999850988388,
+        -0.871554434299469
+      ],
+      "max": [
+        0.9124448895454407,
+        1.7816838026046753,
+        0.871554434299469
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_veil_antler_09_far.glb",
+      "sha256": "07ae03a1f8a735941ada85c25ff2ff215d9aa077d27c81720600a88bad2b3a41",
+      "triangles": 15496,
+      "min": [
+        -0.9124449491500854,
+        0.02499999850988388,
+        -0.8715059757232666
+      ],
+      "max": [
+        0.9124448895454407,
+        1.7816839218139648,
+        0.8715059757232666
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "sensory_spar00": "chest",
+    "sensory_spar01": "sensory_spar00",
+    "sensory_spar10": "chest",
+    "sensory_spar11": "sensory_spar10",
+    "sensory_veil1": "sensory_spar10",
+    "sensory_spar20": "chest",
+    "sensory_spar21": "sensory_spar20",
+    "sensory_veil2": "sensory_spar20",
+    "sensory_spar30": "chest",
+    "sensory_spar31": "sensory_spar30",
+    "sensory_veil3": "sensory_spar30",
+    "sensory_spar40": "chest",
+    "sensory_spar41": "sensory_spar40",
+    "sensory_veil4": "sensory_spar40",
+    "sensory_spar50": "chest",
+    "sensory_spar51": "sensory_spar50",
+    "sensory_veil5": "sensory_spar50",
+    "low_oral": "chest",
+    "low_oral_petal0": "low_oral",
+    "low_oral_petal1": "low_oral",
+    "low_oral_petal2": "low_oral",
+    "low_oral_petal3": "low_oral",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "chest",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "support7_upper": "chest",
+    "support7_lower": "support7_upper",
+    "support7_foot": "support7_lower",
+    "head": "chest"
+  },
+  "build_seconds": 23.548,
+  "source_render_seconds": 39.532,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "015143cf69907ba330737428bc877bc775b89787e34a940e52d0830b2bb90f9f"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

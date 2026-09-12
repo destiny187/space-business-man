@@ -1,0 +1,237 @@
+{
+  "id": "bio_crescent_maw_08",
+  "source_id": "bio_crescent_maw_08",
+  "name": "옆월아수",
+  "family": "crescent_maw",
+  "kind": "crescent_maw",
+  "construction": "crescent_maw",
+  "anatomical_type": "crescent_maw",
+  "organ_system": "armor",
+  "environment": "cave",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "초승달 모양 몸통의 열린 두 끝이 서로 마주 보는 입 / 편심 장축 골격",
+  "morphology": {
+    "width": 1.1,
+    "height": 1.2,
+    "mode": 7,
+    "radial_count": 5,
+    "limb_count": 4,
+    "eye_count": 5,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "crescent_maw",
+    "support_limbs": 4,
+    "oral_organs": 2,
+    "articulated_organs": 20
+  },
+  "version": "r06-1",
+  "build_fingerprint": "de28d4f64f7424f9b2143b09a51461ff509b3c59a122419a0a52f2d89f33cfc9",
+  "normalized_geometry_sha256": "261fc38e9d576e7a08718d53581124eab80596655bdb3a6be1130b2759f1b7da",
+  "source": "art/blender/creature_remodel/r06/bio_crescent_maw_08.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 37,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_opposed_oral0": {
+      "bone": "opposed_oral0",
+      "point": [
+        -0.5331687927246094,
+        0.8640000224113464,
+        0.4965451955795288
+      ]
+    },
+    "Socket_opposed_oral-1": {
+      "bone": "opposed_oral-1",
+      "point": [
+        -0.5331687927246094,
+        0.8640000224113464,
+        -0.4965451955795288
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "opposed_oral0",
+      "point": [
+        -0.5331687927246094,
+        0.8640000224113464,
+        0.4965451955795288
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "opposed_oral0",
+      "point": [
+        -0.5331687927246094,
+        0.8640000224113464,
+        0.4965451955795288
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.5182432532310486,
+        0.10000000149011612,
+        1.2158007621765137
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.1736432313919067,
+        0.10000000149011612,
+        0.5657601952552795
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.2471151351928711,
+        0.10000000149011612,
+        -1.3618911504745483
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -1.0882432460784912,
+        0.10000000149011612,
+        0.645800769329071
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2929006264211533,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4539959709527876,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.5331687927246094,
+    0.8640000224113464,
+    0.4965451955795288
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crescent_maw_08_near.glb",
+      "sha256": "6891258642c849ad414d047f3330d484b477542ed014215b4333b67ea0662948",
+      "triangles": 30096,
+      "min": [
+        -1.390302300453186,
+        0.02499999850988388,
+        -1.6639503240585327
+      ],
+      "max": [
+        1.4757025241851807,
+        1.115303874015808,
+        1.517859935760498
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crescent_maw_08_far.glb",
+      "sha256": "4e6a0946a115d3c303e3ce540668902b84d8c3849f5d9a013be6757e52952c17",
+      "triangles": 12932,
+      "min": [
+        -1.3902312517166138,
+        0.024997133761644363,
+        -1.6638767719268799
+      ],
+      "max": [
+        1.4756312370300293,
+        1.115303874015808,
+        1.5177887678146362
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crescent_axis0": "chest",
+    "crescent_axis1": "crescent_axis0",
+    "crescent_axis2": "crescent_axis1",
+    "crescent_axis3": "crescent_axis2",
+    "crescent_axis4": "crescent_axis3",
+    "crescent_axis5": "crescent_axis4",
+    "crescent_axis6": "crescent_axis5",
+    "crescent_axis7": "crescent_axis6",
+    "crescent_axis8": "crescent_axis7",
+    "crescent_axis9": "crescent_axis8",
+    "crescent_axis10": "crescent_axis9",
+    "crescent_axis11": "crescent_axis10",
+    "opposed_oral0": "crescent_axis0",
+    "opposed_oral0_petal0": "opposed_oral0",
+    "opposed_oral0_petal1": "opposed_oral0",
+    "opposed_oral0_petal2": "opposed_oral0",
+    "opposed_oral0_petal3": "opposed_oral0",
+    "opposed_oral-1": "crescent_axis11",
+    "opposed_oral-1_petal0": "opposed_oral-1",
+    "opposed_oral-1_petal1": "opposed_oral-1",
+    "opposed_oral-1_petal2": "opposed_oral-1",
+    "opposed_oral-1_petal3": "opposed_oral-1",
+    "support0_upper": "crescent_axis0",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "crescent_axis4",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "crescent_axis11",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "crescent_axis0",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 13.233,
+  "source_render_seconds": 6.499,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "5b15d9ea65c75b88ba17f565f4eadc2156737870f3a63640e1625bd7189734ba"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

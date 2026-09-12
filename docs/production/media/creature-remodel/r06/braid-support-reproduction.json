@@ -1,0 +1,1575 @@
+{
+  "renderer": "forward_plus",
+  "scope": "Two reproduced braid-crawler skins at the fast-run pose, followed by 240-step motion per species. No new Blender geometry or host balance changes.",
+  "body_support_version": 3,
+  "species": {
+    "bio_braid_crawler_04": {
+      "before": {
+        "renderer": "forward_plus",
+        "species": {
+          "base_scale": 1.0,
+          "body_error": 0.0,
+          "by_bone": {
+            "coil_oral1": 0.462168040780795,
+            "coil_oral1_petal0": 0.407200394509938,
+            "coil_oral1_petal1": 0.366426619633238,
+            "coil_oral1_petal2": 0.528528670049993,
+            "coiled_organ010": 0.203912614379211,
+            "coiled_organ011": 0.0430743994652494,
+            "coiled_organ012": 0.0367543647589659,
+            "coiled_organ07": 0.0694964039786248,
+            "coiled_organ08": 0.151277101347754,
+            "coiled_organ09": 0.193413937451237,
+            "coiled_organ112": 0.0839471322172229,
+            "coiled_organ113": 0.258006432699976,
+            "coiled_organ114": 0.334349272216777,
+            "coiled_organ115": 0.454871536346317,
+            "coiled_organ13": 0.0113944834980471,
+            "coiled_organ14": 0.0313000392944998,
+            "support0_foot": 0.219473305731733,
+            "support0_lower": 0.247194084514173,
+            "support0_upper": 0.178530231186221,
+            "support1_foot": 0.0612820244131611,
+            "support1_lower": 0.112219890055672,
+            "support1_upper": 0.208102970305816,
+            "support2_foot": 0.0339105990622728,
+            "support2_lower": 0.0410063695748266,
+            "support2_upper": 0.0537308128694096,
+            "support3_foot": 0.053130186199101,
+            "support3_lower": 0.0075940750200254,
+            "support5_lower": 0.139764986828976,
+            "support5_upper": 0.0717162243378351
+          },
+          "deepest": [
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.528528670049993,
+              "point": [
+                -0.0228407382965088,
+                0.696895956993103,
+                9.04146575927734
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.52697767045497,
+              "point": [
+                -0.0118288323283195,
+                0.70009434223175,
+                9.04408168792725
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.525494409777288,
+              "point": [
+                -0.033747062087059,
+                0.697931289672852,
+                9.03718852996826
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.52549027481028,
+              "point": [
+                -0.0185918193310499,
+                0.692805051803589,
+                9.00662422180176
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.523570830174015,
+              "point": [
+                -0.00638379715383053,
+                0.695954561233521,
+                9.00681114196777
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.522734176628623,
+              "point": [
+                -0.03107550740242,
+                0.694463491439819,
+                9.00718021392822
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.521074771093838,
+              "point": [
+                -0.00238778023049235,
+                0.707039833068848,
+                9.04463768005371
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.518339170659611,
+              "point": [
+                -0.042887419462204,
+                0.703042984008789,
+                9.03190135955811
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.517267401682018,
+              "point": [
+                0.00369001226499677,
+                0.703432679176331,
+                9.00771141052246
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.515722111492657,
+              "point": [
+                -0.0419343262910843,
+                0.700677514076233,
+                9.00839328765869
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.511944031613919,
+              "point": [
+                -0.0217740312218666,
+                0.699152588844299,
+                8.97397804260254
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.511717989225448,
+              "point": [
+                0.00404504686594009,
+                0.71667492389679,
+                9.04304885864258
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.509796222134098,
+              "point": [
+                -0.0349499210715294,
+                0.700508832931519,
+                8.97633934020996
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.509489123968857,
+              "point": [
+                -0.00882050208747387,
+                0.702724277973175,
+                8.97327709197998
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.508153463095562,
+              "point": [
+                -0.0488702319562435,
+                0.711452603340149,
+                9.02640819549561
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.507540218776594,
+              "point": [
+                0.0100959483534098,
+                0.714100778102875,
+                9.00918960571289
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.507529589321879,
+              "point": [
+                -0.0385879017412663,
+                0.720631837844849,
+                9.06081867218018
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.507212625184595,
+              "point": [
+                -0.0459316782653332,
+                0.718676090240479,
+                9.05378913879395
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.505522128523337,
+              "point": [
+                -0.0495151355862617,
+                0.710500955581665,
+                9.01008033752441
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "coil_oral1_petal2",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.504969189101587,
+              "point": [
+                -0.0300448201596737,
+                0.724906086921692,
+                9.06478309631348
+              ],
+              "surface": 0,
+              "weight": 1.0
+            }
+          ],
+          "foot_error": 0.000933500588871539,
+          "id": "bio_braid_crawler_04",
+          "joint_error": 0.0,
+          "limbs": [
+            {
+              "foot": [
+                -0.0882420837879181,
+                1.24477231502533,
+                8.78657054901123
+              ],
+              "foot_clearance": 0.0758711818954307,
+              "lower": [
+                -0.212335020303726,
+                0.999888837337494,
+                8.58282375335693
+              ],
+              "lower_clearance": -0.12661720203899,
+              "name": "support0",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.254128187894821,
+                1.4075984954834,
+                8.32173252105713
+              ],
+              "upper_clearance": 0.311154514281284
+            },
+            {
+              "foot": [
+                0.469576358795166,
+                1.17793130874634,
+                8.32144927978516
+              ],
+              "foot_clearance": 0.0141865722072039,
+              "lower": [
+                0.368697583675385,
+                1.14271092414856,
+                8.19032192230225
+              ],
+              "lower_clearance": -0.00425179725296521,
+              "name": "support1",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.1106126755476,
+                1.09824359416962,
+                7.94705629348755
+              ],
+              "upper_clearance": -0.01491270787448
+            },
+            {
+              "foot": [
+                0.659193158149719,
+                1.15745830535889,
+                7.1748480796814
+              ],
+              "foot_clearance": 0.0425283068450322,
+              "lower": [
+                0.514121532440186,
+                1.18415343761444,
+                7.29234600067139
+              ],
+              "lower_clearance": 0.0671639921984339,
+              "name": "support2",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.210020482540131,
+                1.2541720867157,
+                7.49950885772705
+              ],
+              "upper_clearance": 0.148210451114638
+            },
+            {
+              "foot": [
+                -0.246306627988815,
+                0.991751492023468,
+                6.74837398529053
+              ],
+              "foot_clearance": 0.0264842642819152,
+              "lower": [
+                -0.281403928995132,
+                1.21308887004852,
+                6.95231580734253
+              ],
+              "lower_clearance": 0.213073961651586,
+              "name": "support3",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.357239961624146,
+                1.5214329957962,
+                7.28166532516479
+              ],
+              "upper_clearance": 0.485511427484269
+            },
+            {
+              "foot": [
+                -0.756505787372589,
+                1.12668228149414,
+                7.14498996734619
+              ],
+              "foot_clearance": 0.134455986266372,
+              "lower": [
+                -0.510136902332306,
+                1.17837965488434,
+                6.9763355255127
+              ],
+              "lower_clearance": 0.193797918712862,
+              "name": "support4",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.427798628807068,
+                1.48891794681549,
+                7.30205106735229
+              ],
+              "upper_clearance": 0.457111706232611
+            },
+            {
+              "foot": [
+                -0.578749001026154,
+                1.17027974128723,
+                8.58066749572754
+              ],
+              "foot_clearance": 0.0748605662732476,
+              "lower": [
+                -0.628797471523285,
+                1.04187405109406,
+                8.26771545410156
+              ],
+              "lower_clearance": -0.0204094110889192,
+              "name": "support5",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.327600121498108,
+                1.42238306999207,
+                8.29278469085693
+              ],
+              "upper_clearance": 0.33468402651693
+            }
+          ],
+          "penetrating_vertices": 6570
+        }
+      },
+      "after": {
+        "renderer": "forward_plus",
+        "species": {
+          "base_scale": 1.0,
+          "body_error": 0.0,
+          "by_bone": {},
+          "deepest": [],
+          "foot_error": 0.00010444360668771,
+          "id": "bio_braid_crawler_04",
+          "joint_error": 0.0,
+          "limbs": [
+            {
+              "foot": [
+                -0.0883169323205948,
+                1.24465894699097,
+                8.7866907119751
+              ],
+              "foot_clearance": 0.0757444040979749,
+              "lower": [
+                -0.428550511598587,
+                1.27228844165802,
+                8.75464248657227
+              ],
+              "lower_clearance": 0.139839067094686,
+              "name": "support0",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.254128098487854,
+                1.40759837627411,
+                8.32173252105713
+              ],
+              "upper_clearance": 0.31115438682621
+            },
+            {
+              "foot": [
+                0.447638779878616,
+                1.40293431282043,
+                8.31329917907715
+              ],
+              "foot_clearance": 0.241562174630788,
+              "lower": [
+                0.346739768981934,
+                1.36767566204071,
+                8.1821985244751
+              ],
+              "lower_clearance": 0.223060284816646,
+              "name": "support1",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.0886808410286903,
+                1.32318592071533,
+                7.93890905380249
+              ],
+              "upper_clearance": 0.212408571506281
+            },
+            {
+              "foot": [
+                0.65465384721756,
+                1.20337271690369,
+                7.17301321029663
+              ],
+              "foot_clearance": 0.0889481526805038,
+              "lower": [
+                0.505390226840973,
+                1.24711048603058,
+                7.27960205078125
+              ],
+              "lower_clearance": 0.131985856211931,
+              "name": "support2",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.205575525760651,
+                1.29976105690002,
+                7.49785757064819
+              ],
+              "upper_clearance": 0.194310587923963
+            },
+            {
+              "foot": [
+                -0.250534206628799,
+                1.03900980949402,
+                6.74071502685547
+              ],
+              "foot_clearance": 0.075714281714636,
+              "lower": [
+                -0.227050513029099,
+                1.28961896896362,
+                6.9093599319458
+              ],
+              "lower_clearance": 0.291891202839017,
+              "name": "support3",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.357239872217178,
+                1.52143287658691,
+                7.28166580200195
+              ],
+              "upper_clearance": 0.485511255406579
+            },
+            {
+              "foot": [
+                -0.756505727767944,
+                1.12668216228485,
+                7.14499044418335
+              ],
+              "foot_clearance": 0.134455805063703,
+              "lower": [
+                -0.510136723518372,
+                1.17837965488434,
+                6.9763355255127
+              ],
+              "lower_clearance": 0.193797904973893,
+              "name": "support4",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.427798539400101,
+                1.48891794681549,
+                7.30205154418945
+              ],
+              "upper_clearance": 0.457111655683325
+            },
+            {
+              "foot": [
+                -0.579538702964783,
+                1.17087054252625,
+                8.5805196762085
+              ],
+              "foot_clearance": 0.0755263402159001,
+              "lower": [
+                -0.75780314207077,
+                1.19644677639008,
+                8.28928565979004
+              ],
+              "lower_clearance": 0.140507813180658,
+              "name": "support5",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.327600091695786,
+                1.42238318920135,
+                8.29278469085693
+              ],
+              "upper_clearance": 0.334684143080045
+            }
+          ],
+          "penetrating_vertices": 0
+        }
+      },
+      "full_motion": {
+        "renderer": "forward_plus",
+        "species": {
+          "asset_sha256": {
+            "far": "e936892f51db884d6d8b90d3a1113714c25340c7c54546bd76d8364b5ba70b3c",
+            "near": "ab9d5a0f1826e378b50196ab7a3b1918e27ba6f1db46fd9d0c2c5975f2d81378"
+          },
+          "authored_pose_capture_version": 2,
+          "body_support_version": 3,
+          "bone_count": 61.0,
+          "bone_motion": 12.6455636080354,
+          "clip_count": 11,
+          "contact_metadata_version": 0,
+          "family": "braid_crawler",
+          "host_attack": "none",
+          "id": "bio_braid_crawler_04",
+          "limb_phase_checks": 6,
+          "lods": 2,
+          "max_body_contact_error": 0.0,
+          "max_error_at": {
+            "clip": "feed",
+            "frame": 212,
+            "reach": {}
+          },
+          "max_foot_target_error": 0.000340152240823954,
+          "pose_capture_origin": [
+            0.0,
+            1.84453916549683,
+            12.9200124740601
+          ],
+          "root_error": 0.0,
+          "socket_samples": {
+            "prepare": {
+              "Socket_Muzzle": [
+                0.71394020318985,
+                2.78373289108276,
+                13.6430568695068
+              ],
+              "Socket_Strike": [
+                0.71394020318985,
+                2.78373289108276,
+                13.6430568695068
+              ],
+              "Socket_coil_oral0": [
+                0.71394020318985,
+                2.78373289108276,
+                13.6430568695068
+              ],
+              "Socket_coil_oral1": [
+                0.799487411975861,
+                2.32075500488281,
+                13.7296676635742
+              ],
+              "Socket_support0": [
+                0.48465758562088,
+                2.11022281646729,
+                13.5516204833984
+              ],
+              "Socket_support1": [
+                0.778620183467865,
+                1.99770712852478,
+                12.9202308654785
+              ],
+              "Socket_support2": [
+                0.104713715612888,
+                1.70859277248383,
+                11.9211750030518
+              ],
+              "Socket_support3": [
+                -0.832459568977356,
+                1.71993577480316,
+                12.3805084228516
+              ],
+              "Socket_support4": [
+                -1.01316010951996,
+                1.82106745243073,
+                12.9115610122681
+              ],
+              "Socket_support5": [
+                -0.0715185031294823,
+                2.08323335647583,
+                13.6734075546265
+              ]
+            },
+            "recover": {
+              "Socket_Muzzle": [
+                0.702965319156647,
+                2.85364246368408,
+                13.6272115707397
+              ],
+              "Socket_Strike": [
+                0.702965319156647,
+                2.85364246368408,
+                13.6272115707397
+              ],
+              "Socket_coil_oral0": [
+                0.702965319156647,
+                2.85364246368408,
+                13.6272115707397
+              ],
+              "Socket_coil_oral1": [
+                0.771566569805145,
+                2.37954044342041,
+                13.6971502304077
+              ],
+              "Socket_support0": [
+                0.478607058525085,
+                2.11849117279053,
+                13.5438547134399
+              ],
+              "Socket_support1": [
+                0.776771366596222,
+                1.99835789203644,
+                12.9204816818237
+              ],
+              "Socket_support2": [
+                0.104326196014881,
+                1.70935392379761,
+                11.9220151901245
+              ],
+              "Socket_support3": [
+                -0.831957399845123,
+                1.72116136550903,
+                12.3809242248535
+              ],
+              "Socket_support4": [
+                -1.01079976558685,
+                1.82428085803986,
+                12.9102973937988
+              ],
+              "Socket_support5": [
+                -0.0706957802176476,
+                2.08872866630554,
+                13.6674127578735
+              ]
+            },
+            "strike": {
+              "Socket_Muzzle": [
+                0.715536594390869,
+                2.81575179100037,
+                13.6285076141357
+              ],
+              "Socket_Strike": [
+                0.715536594390869,
+                2.81575179100037,
+                13.6285076141357
+              ],
+              "Socket_coil_oral0": [
+                0.715536594390869,
+                2.81575179100037,
+                13.6285076141357
+              ],
+              "Socket_coil_oral1": [
+                0.801314353942871,
+                2.35240125656128,
+                13.7150812149048
+              ],
+              "Socket_support0": [
+                0.484677940607071,
+                2.11020040512085,
+                13.551646232605
+              ],
+              "Socket_support1": [
+                0.778718769550323,
+                1.99769032001495,
+                12.920238494873
+              ],
+              "Socket_support2": [
+                0.10480085760355,
+                1.70848619937897,
+                11.921070098877
+              ],
+              "Socket_support3": [
+                -0.83247435092926,
+                1.71990060806274,
+                12.3804969787598
+              ],
+              "Socket_support4": [
+                -1.01318418979645,
+                1.8210346698761,
+                12.9115715026855
+              ],
+              "Socket_support5": [
+                -0.0715308114886284,
+                2.08317852020264,
+                13.6734704971313
+              ]
+            }
+          },
+          "species_id": "bio_braid_crawler_04",
+          "tested_host_flee_speed": 4.025
+        }
+      }
+    },
+    "bio_braid_crawler_05": {
+      "before": {
+        "renderer": "forward_plus",
+        "species": {
+          "base_scale": 1.0,
+          "body_error": 0.0,
+          "by_bone": {
+            "coil_oral2_petal3": 0.0378156689396882,
+            "support6_foot": 0.0788979183976741,
+            "support6_lower": 0.0115710985382795
+          },
+          "deepest": [
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0788979183976741,
+              "point": [
+                -0.547500371932983,
+                1.04448843002319,
+                8.75626659393311
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0788810352642773,
+              "point": [
+                -0.550713300704956,
+                1.04410624504089,
+                8.75528526306152
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0788477725401169,
+              "point": [
+                -0.544154226779938,
+                1.04484117031097,
+                8.75659942626953
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0787979505365977,
+              "point": [
+                -0.553669571876526,
+                1.04370927810669,
+                8.75369262695312
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.078732543919197,
+              "point": [
+                -0.540803372859955,
+                1.04515087604523,
+                8.75627136230469
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0786524631844332,
+              "point": [
+                -0.556255578994751,
+                1.04331266880035,
+                8.75155067443848
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0785565590571975,
+              "point": [
+                -0.537576735019684,
+                1.045405626297,
+                8.75529384613037
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.078450415522948,
+              "point": [
+                -0.558371782302856,
+                1.04293179512024,
+                8.74894142150879
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0783269140118446,
+              "point": [
+                -0.534598171710968,
+                1.04559564590454,
+                8.75370502471924
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.0781999351574048,
+              "point": [
+                -0.559937059879303,
+                1.04258131980896,
+                8.74596500396729
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            },
+            {
+              "bone": "support6_foot",
+              "mesh": "Radial gripping lip coil_oral0_petal0",
+              "penetration": 0.07809269133552,
+              "point": [
+                -0.543942987918854,
+                1.04280424118042,
+                8.7394495010376
+              ],
+              "surface": 0,
+              "weight": 1.0
+            }
+          ],
+          "foot_error": 0.00191447942052037,
+          "id": "bio_braid_crawler_05",
+          "joint_error": 0.0,
+          "limbs": [
+            {
+              "foot": [
+                0.154578506946564,
+                1.35490608215332,
+                8.93004989624023
+              ],
+              "foot_clearance": 0.135693931658196,
+              "lower": [
+                0.470165371894836,
+                1.42992424964905,
+                8.5869197845459
+              ],
+              "lower_clearance": 0.23941331440651,
+              "name": "support0",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.562913715839386,
+                1.8526406288147,
+                8.19363689422607
+              ],
+              "upper_clearance": 0.6899705240429
+            },
+            {
+              "foot": [
+                0.614272117614746,
+                1.31805217266083,
+                8.84868431091309
+              ],
+              "foot_clearance": 0.0757613275405677,
+              "lower": [
+                0.765055239200592,
+                1.37815284729004,
+                8.4050464630127
+              ],
+              "lower_clearance": 0.187626335897644,
+              "name": "support1",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.591064929962158,
+                1.8649959564209,
+                8.13177013397217
+              ],
+              "upper_clearance": 0.703433899897014
+            },
+            {
+              "foot": [
+                0.63703978061676,
+                1.25223422050476,
+                7.35873794555664
+              ],
+              "foot_clearance": 0.120763570598164,
+              "lower": [
+                0.388189852237701,
+                1.55954241752625,
+                7.5618839263916
+              ],
+              "lower_clearance": 0.434282232286356,
+              "name": "support2",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.0238243006169796,
+                1.97269511222839,
+                7.67932891845703
+              ],
+              "upper_clearance": 0.876443076069592
+            },
+            {
+              "foot": [
+                0.420902401208878,
+                1.18817639350891,
+                7.32783222198486
+              ],
+              "foot_clearance": 0.0754881835464474,
+              "lower": [
+                0.419730842113495,
+                1.60854721069336,
+                7.47291707992554
+              ],
+              "lower_clearance": 0.485440304885,
+              "name": "support3",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.00605702772736549,
+                1.96416306495667,
+                7.61314296722412
+              ],
+              "upper_clearance": 0.872252848309411
+            },
+            {
+              "foot": [
+                -0.36773356795311,
+                1.07538604736328,
+                6.99838018417358
+              ],
+              "foot_clearance": 0.0756579583601913,
+              "lower": [
+                -0.131132200360298,
+                1.29273223876953,
+                7.18484687805176
+              ],
+              "lower_clearance": 0.246057432329994,
+              "name": "support4",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.0835631564259529,
+                1.70509719848633,
+                7.47725486755371
+              ],
+              "upper_clearance": 0.628784021639996
+            },
+            {
+              "foot": [
+                -0.677130520343781,
+                1.11631417274475,
+                7.78289318084717
+              ],
+              "foot_clearance": 0.0767340166574528,
+              "lower": [
+                -0.396100848913193,
+                1.26607239246368,
+                7.59167432785034
+              ],
+              "lower_clearance": 0.212625231629477,
+              "name": "support5",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.109712734818459,
+                1.68176734447479,
+                7.53686475753784
+              ],
+              "upper_clearance": 0.604676214868644
+            },
+            {
+              "foot": [
+                -0.551307618618011,
+                1.11727046966553,
+                8.73451709747314
+              ],
+              "foot_clearance": -0.00228704129903767,
+              "lower": [
+                -0.657171308994293,
+                1.26049137115479,
+                8.20119380950928
+              ],
+              "lower_clearance": 0.204080585608033,
+              "name": "support6",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.721599161624908,
+                1.91236245632172,
+                8.17108058929443
+              ],
+              "upper_clearance": 0.861482179083318
+            }
+          ],
+          "penetrating_vertices": 610
+        }
+      },
+      "after": {
+        "renderer": "forward_plus",
+        "species": {
+          "base_scale": 1.0,
+          "body_error": 0.0,
+          "by_bone": {},
+          "deepest": [],
+          "foot_error": 0.000108696207462344,
+          "id": "bio_braid_crawler_05",
+          "joint_error": 0.0,
+          "limbs": [
+            {
+              "foot": [
+                0.155053421854973,
+                1.35460710525513,
+                8.93042087554932
+              ],
+              "foot_clearance": 0.135275226103316,
+              "lower": [
+                0.470165461301804,
+                1.42992424964905,
+                8.5869197845459
+              ],
+              "lower_clearance": 0.239413307267564,
+              "name": "support0",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.562913775444031,
+                1.8526406288147,
+                8.19363689422607
+              ],
+              "upper_clearance": 0.68997051971929
+            },
+            {
+              "foot": [
+                0.613735973834991,
+                1.31789112091064,
+                8.84847927093506
+              ],
+              "foot_clearance": 0.0756746321994903,
+              "lower": [
+                0.765054881572723,
+                1.37815272808075,
+                8.4050464630127
+              ],
+              "lower_clearance": 0.187626235687,
+              "name": "support1",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.591064929962158,
+                1.8649959564209,
+                8.13177013397217
+              ],
+              "upper_clearance": 0.703433899897014
+            },
+            {
+              "foot": [
+                0.63703978061676,
+                1.25223433971405,
+                7.35873794555664
+              ],
+              "foot_clearance": 0.120763689807454,
+              "lower": [
+                0.388189822435379,
+                1.55954241752625,
+                7.5618839263916
+              ],
+              "lower_clearance": 0.43428223482987,
+              "name": "support2",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.023824330419302,
+                1.97269511222839,
+                7.67932891845703
+              ],
+              "upper_clearance": 0.876443073165259
+            },
+            {
+              "foot": [
+                0.42090231180191,
+                1.1881765127182,
+                7.32783222198486
+              ],
+              "foot_clearance": 0.0754883102001969,
+              "lower": [
+                0.419730663299561,
+                1.60854721069336,
+                7.47291660308838
+              ],
+              "lower_clearance": 0.485440348602797,
+              "name": "support3",
+              "sole": 0.0750000029802322,
+              "upper": [
+                0.00605711759999394,
+                1.96416306495667,
+                7.61314296722412
+              ],
+              "upper_clearance": 0.872252839547101
+            },
+            {
+              "foot": [
+                -0.366795629262924,
+                1.07540380954742,
+                6.99840211868286
+              ],
+              "foot_clearance": 0.0755910896177739,
+              "lower": [
+                -0.13005056977272,
+                1.29256808757782,
+                7.1849045753479
+              ],
+              "lower_clearance": 0.245782723508534,
+              "name": "support4",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.0835631713271141,
+                1.70509719848633,
+                7.47725486755371
+              ],
+              "upper_clearance": 0.628784023084295
+            },
+            {
+              "foot": [
+                -0.676169037818909,
+                1.11469662189484,
+                7.78244018554688
+              ],
+              "foot_clearance": 0.0750708065497436,
+              "lower": [
+                -0.395833551883698,
+                1.26583743095398,
+                7.59128713607788
+              ],
+              "lower_clearance": 0.212384937700091,
+              "name": "support5",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.10971274971962,
+                1.68176734447479,
+                7.53686475753784
+              ],
+              "upper_clearance": 0.604676216306754
+            },
+            {
+              "foot": [
+                -0.558722674846649,
+                1.19396650791168,
+                8.72963333129883
+              ],
+              "foot_clearance": 0.0757345531778892,
+              "lower": [
+                -0.660842418670654,
+                1.25951194763184,
+                8.1804723739624
+              ],
+              "lower_clearance": 0.204455354215155,
+              "name": "support6",
+              "sole": 0.0750000029802322,
+              "upper": [
+                -0.721599161624908,
+                1.91236257553101,
+                8.17108058929443
+              ],
+              "upper_clearance": 0.861482298292608
+            }
+          ],
+          "penetrating_vertices": 0
+        }
+      },
+      "full_motion": {
+        "renderer": "forward_plus",
+        "species": {
+          "asset_sha256": {
+            "far": "ce5aa22b84f2c564c9dd17eaf4b1f0d32f5fc4b72dc697ac95cc4d1cac569bdc",
+            "near": "7d25d77ac161649cb80eacbe79b2b7a6379578e1b27770b2a559770a2cb6adc9"
+          },
+          "authored_pose_capture_version": 2,
+          "body_support_version": 3,
+          "bone_count": 90.0,
+          "bone_motion": 41.0706396745518,
+          "clip_count": 11,
+          "contact_metadata_version": 0,
+          "family": "braid_crawler",
+          "host_attack": "none",
+          "id": "bio_braid_crawler_05",
+          "limb_phase_checks": 7,
+          "lods": 2,
+          "max_body_contact_error": 0.0,
+          "max_error_at": {
+            "clip": "move_loop",
+            "frame": 2,
+            "reach": {}
+          },
+          "max_foot_target_error": 0.000471029081381857,
+          "pose_capture_origin": [
+            0.0,
+            1.89459037780762,
+            13.1665725708008
+          ],
+          "root_error": 0.0,
+          "socket_samples": {
+            "prepare": {
+              "Socket_Muzzle": [
+                0.820664346218109,
+                3.0744161605835,
+                13.7703447341919
+              ],
+              "Socket_Strike": [
+                0.820664346218109,
+                3.0744161605835,
+                13.7703447341919
+              ],
+              "Socket_coil_oral0": [
+                0.820664346218109,
+                3.0744161605835,
+                13.7703447341919
+              ],
+              "Socket_coil_oral1": [
+                0.539715707302094,
+                3.26499915122986,
+                13.9539289474487
+              ],
+              "Socket_coil_oral2": [
+                0.743587493896484,
+                2.85325312614441,
+                13.9112329483032
+              ],
+              "Socket_support0": [
+                0.704463183879852,
+                2.13115215301514,
+                13.6743650436401
+              ],
+              "Socket_support1": [
+                0.896643996238708,
+                2.0687108039856,
+                13.2228975296021
+              ],
+              "Socket_support2": [
+                0.173866793513298,
+                1.82513010501862,
+                12.2602634429932
+              ],
+              "Socket_support3": [
+                -0.310837417840958,
+                1.76397573947906,
+                12.1829786300659
+              ],
+              "Socket_support4": [
+                -0.89804071187973,
+                1.8002667427063,
+                12.7032041549683
+              ],
+              "Socket_support5": [
+                -0.87450760602951,
+                1.88993060588837,
+                13.1890621185303
+              ],
+              "Socket_support6": [
+                0.0196904353797436,
+                2.12290716171265,
+                13.9998588562012
+              ]
+            },
+            "recover": {
+              "Socket_Muzzle": [
+                0.822634875774384,
+                3.19463491439819,
+                13.7028217315674
+              ],
+              "Socket_Strike": [
+                0.822634875774384,
+                3.19463491439819,
+                13.7028217315674
+              ],
+              "Socket_coil_oral0": [
+                0.822634875774384,
+                3.19463491439819,
+                13.7028217315674
+              ],
+              "Socket_coil_oral1": [
+                0.611406683921814,
+                3.19988608360291,
+                13.9195423126221
+              ],
+              "Socket_coil_oral2": [
+                0.636680722236633,
+                2.85911703109741,
+                13.96067237854
+              ],
+              "Socket_support0": [
+                0.704456210136414,
+                2.13116240501404,
+                13.6743593215942
+              ],
+              "Socket_support1": [
+                0.896636426448822,
+                2.06871843338013,
+                13.2228975296021
+              ],
+              "Socket_support2": [
+                0.173866018652916,
+                1.82513093948364,
+                12.2602634429932
+              ],
+              "Socket_support3": [
+                -0.31083756685257,
+                1.76397693157196,
+                12.1829795837402
+              ],
+              "Socket_support4": [
+                -0.89804083108902,
+                1.8002678155899,
+                12.7032041549683
+              ],
+              "Socket_support5": [
+                -0.874508440494537,
+                1.88993203639984,
+                13.189061164856
+              ],
+              "Socket_support6": [
+                0.019690852612257,
+                2.12291026115417,
+                13.9998569488525
+              ]
+            },
+            "strike": {
+              "Socket_Muzzle": [
+                0.833246827125549,
+                3.10172033309937,
+                13.7372932434082
+              ],
+              "Socket_Strike": [
+                0.833246827125549,
+                3.10172033309937,
+                13.7372932434082
+              ],
+              "Socket_coil_oral0": [
+                0.833246827125549,
+                3.10172033309937,
+                13.7372932434082
+              ],
+              "Socket_coil_oral1": [
+                0.536567866802216,
+                3.2603645324707,
+                13.9641361236572
+              ],
+              "Socket_coil_oral2": [
+                0.721345126628876,
+                2.90350198745728,
+                13.9187412261963
+              ],
+              "Socket_support0": [
+                0.704462289810181,
+                2.13115406036377,
+                13.6743640899658
+              ],
+              "Socket_support1": [
+                0.894663572311401,
+                2.07166862487793,
+                13.2225332260132
+              ],
+              "Socket_support2": [
+                0.173885866999626,
+                1.82508361339569,
+                12.2602510452271
+              ],
+              "Socket_support3": [
+                -0.310840219259262,
+                1.76393187046051,
+                12.1829643249512
+              ],
+              "Socket_support4": [
+                -0.898062407970428,
+                1.80022299289703,
+                12.703200340271
+              ],
+              "Socket_support5": [
+                -0.874522864818573,
+                1.88990163803101,
+                13.1890773773193
+              ],
+              "Socket_support6": [
+                0.0196828357875347,
+                2.13035035133362,
+                13.9948348999023
+              ]
+            }
+          },
+          "species_id": "bio_braid_crawler_05",
+          "tested_host_flee_speed": 4.025
+        }
+      }
+    }
+  }
+}

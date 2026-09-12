@@ -1,0 +1,466 @@
+{
+  "id": "bio_ribbon_colony_05",
+  "source_id": "bio_ribbon_colony_05",
+  "name": "주름띠군체 · 밀생형",
+  "family": "ribbon_colony",
+  "kind": "ribbon_colony",
+  "construction": "ribbon_colony",
+  "anatomical_type": "ribbon_colony",
+  "organ_system": "siphons",
+  "environment": "cave",
+  "habitat": "어둠·외부 먹이 유입 또는 화학 기질",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.1400000000000001,
+    "height": 1.0,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 6,
+    "eye_count": 13,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "5b6077",
+    "9b91a5",
+    "34494e",
+    "71bdb5"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "ribbon_colony",
+    "support_limbs": 6,
+    "oral_organs": 18,
+    "articulated_organs": 81
+  },
+  "version": "r06-1",
+  "build_fingerprint": "fbabda429e8ccd4fafa032569644239c0fb259c3a06a0052d058fc1776583429",
+  "normalized_geometry_sha256": "3a99229ed07d90ead88dcbfa63525bcd8371ea05b762e83d627c8f73b8866dc2",
+  "source": "art/blender/creature_remodel/r06/bio_ribbon_colony_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 120,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_serial_oral0-1": {
+      "bone": "serial_oral0-1",
+      "point": [
+        -0.3664051592350006,
+        0.5561157464981079,
+        -0.757768452167511
+      ]
+    },
+    "Socket_serial_oral01": {
+      "bone": "serial_oral01",
+      "point": [
+        0.3664051592350006,
+        0.5561157464981079,
+        -0.757768452167511
+      ]
+    },
+    "Socket_serial_oral1-1": {
+      "bone": "serial_oral1-1",
+      "point": [
+        -0.29466956853866577,
+        0.5561157464981079,
+        -0.5577684640884399
+      ]
+    },
+    "Socket_serial_oral11": {
+      "bone": "serial_oral11",
+      "point": [
+        0.43814074993133545,
+        0.5561157464981079,
+        -0.5577684640884399
+      ]
+    },
+    "Socket_serial_oral2-1": {
+      "bone": "serial_oral2-1",
+      "point": [
+        -0.2664477825164795,
+        0.5561157464981079,
+        -0.3577684760093689
+      ]
+    },
+    "Socket_serial_oral21": {
+      "bone": "serial_oral21",
+      "point": [
+        0.46636253595352173,
+        0.5561157464981079,
+        -0.3577684760093689
+      ]
+    },
+    "Socket_serial_oral3-1": {
+      "bone": "serial_oral3-1",
+      "point": [
+        -0.2988588213920593,
+        0.5561157464981079,
+        -0.15776848793029785
+      ]
+    },
+    "Socket_serial_oral31": {
+      "bone": "serial_oral31",
+      "point": [
+        0.4339514970779419,
+        0.5561157464981079,
+        -0.15776848793029785
+      ]
+    },
+    "Socket_serial_oral4-1": {
+      "bone": "serial_oral4-1",
+      "point": [
+        -0.3722425699234009,
+        0.5561157464981079,
+        0.042231522500514984
+      ]
+    },
+    "Socket_serial_oral41": {
+      "bone": "serial_oral41",
+      "point": [
+        0.36056774854660034,
+        0.5561157464981079,
+        0.042231522500514984
+      ]
+    },
+    "Socket_serial_oral5-1": {
+      "bone": "serial_oral5-1",
+      "point": [
+        -0.4420853853225708,
+        0.5561157464981079,
+        0.24223151803016663
+      ]
+    },
+    "Socket_serial_oral51": {
+      "bone": "serial_oral51",
+      "point": [
+        0.2907249331474304,
+        0.5561157464981079,
+        0.24223151803016663
+      ]
+    },
+    "Socket_serial_oral6-1": {
+      "bone": "serial_oral6-1",
+      "point": [
+        -0.4660215973854065,
+        0.5561157464981079,
+        0.44223153591156006
+      ]
+    },
+    "Socket_serial_oral61": {
+      "bone": "serial_oral61",
+      "point": [
+        0.2667887210845947,
+        0.5561157464981079,
+        0.44223153591156006
+      ]
+    },
+    "Socket_serial_oral7-1": {
+      "bone": "serial_oral7-1",
+      "point": [
+        -0.4295318126678467,
+        0.5561157464981079,
+        0.6422315239906311
+      ]
+    },
+    "Socket_serial_oral71": {
+      "bone": "serial_oral71",
+      "point": [
+        0.30327850580215454,
+        0.5561157464981079,
+        0.6422315239906311
+      ]
+    },
+    "Socket_serial_oral8-1": {
+      "bone": "serial_oral8-1",
+      "point": [
+        -0.35475021600723267,
+        0.5561157464981079,
+        0.8422315120697021
+      ]
+    },
+    "Socket_serial_oral81": {
+      "bone": "serial_oral81",
+      "point": [
+        0.37806010246276855,
+        0.5561157464981079,
+        0.8422315120697021
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "serial_oral0-1",
+      "point": [
+        -0.3664051592350006,
+        0.5561157464981079,
+        -0.757768452167511
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "serial_oral0-1",
+      "point": [
+        -0.3664051592350006,
+        0.5561157464981079,
+        -0.757768452167511
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.06312666088342667,
+        0.10000000149011612,
+        1.0699999332427979
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.4179542362689972,
+        0.10000000149011612,
+        0.38499999046325684
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.5611807703971863,
+        0.10000000149011612,
+        -0.5849999785423279
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.09995736181735992,
+        0.10000000149011612,
+        -1.0699999332427979
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.49947190284729004,
+        0.10000000149011612,
+        -0.38499999046325684
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.5932509303092957,
+        0.10000000149011612,
+        0.5849999785423279
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.18755365594607096,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.29070816671641,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.16666666666666666,
+      "support2": 0.3333333333333333,
+      "support3": 0.5,
+      "support4": 0.6666666666666666,
+      "support5": 0.8333333333333334
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.3664051592350006,
+    0.5561157464981079,
+    -0.757768452167511
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_ribbon_colony_05_near.glb",
+      "sha256": "e9281964e1453700f69576ffecb3a01c447224d8c4a3eca77d3d8839d642b8dd",
+      "triangles": 115998,
+      "min": [
+        -0.902686357498169,
+        0.02499999850988388,
+        -1.3720589876174927
+      ],
+      "max": [
+        0.8706161975860596,
+        0.7099999785423279,
+        1.3720589876174927
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_ribbon_colony_05_far.glb",
+      "sha256": "5649966f42cf18e8a7b81290d4ff51032ef97d210381df664b495852d0cd9fa0",
+      "triangles": 49870,
+      "min": [
+        -0.9027082920074463,
+        0.025012250989675522,
+        -1.3719878196716309
+      ],
+      "max": [
+        0.8706381320953369,
+        0.7099999785423279,
+        1.3719878196716309
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "serial_visceral_axis0": "chest",
+    "serial_visceral_axis1": "serial_visceral_axis0",
+    "serial_visceral_axis2": "serial_visceral_axis1",
+    "serial_visceral_axis3": "serial_visceral_axis2",
+    "serial_visceral_axis4": "serial_visceral_axis3",
+    "serial_visceral_axis5": "serial_visceral_axis4",
+    "serial_visceral_axis6": "serial_visceral_axis5",
+    "serial_visceral_axis7": "serial_visceral_axis6",
+    "serial_visceral_axis8": "serial_visceral_axis7",
+    "serial_oral0-1": "serial_visceral_axis0",
+    "serial_oral0-1_petal0": "serial_oral0-1",
+    "serial_oral0-1_petal1": "serial_oral0-1",
+    "serial_oral0-1_petal2": "serial_oral0-1",
+    "serial_oral0-1_petal3": "serial_oral0-1",
+    "serial_oral01": "serial_visceral_axis0",
+    "serial_oral01_petal0": "serial_oral01",
+    "serial_oral01_petal1": "serial_oral01",
+    "serial_oral01_petal2": "serial_oral01",
+    "serial_oral01_petal3": "serial_oral01",
+    "serial_oral1-1": "serial_visceral_axis1",
+    "serial_oral1-1_petal0": "serial_oral1-1",
+    "serial_oral1-1_petal1": "serial_oral1-1",
+    "serial_oral1-1_petal2": "serial_oral1-1",
+    "serial_oral1-1_petal3": "serial_oral1-1",
+    "serial_oral11": "serial_visceral_axis1",
+    "serial_oral11_petal0": "serial_oral11",
+    "serial_oral11_petal1": "serial_oral11",
+    "serial_oral11_petal2": "serial_oral11",
+    "serial_oral11_petal3": "serial_oral11",
+    "serial_oral2-1": "serial_visceral_axis2",
+    "serial_oral2-1_petal0": "serial_oral2-1",
+    "serial_oral2-1_petal1": "serial_oral2-1",
+    "serial_oral2-1_petal2": "serial_oral2-1",
+    "serial_oral2-1_petal3": "serial_oral2-1",
+    "serial_oral21": "serial_visceral_axis2",
+    "serial_oral21_petal0": "serial_oral21",
+    "serial_oral21_petal1": "serial_oral21",
+    "serial_oral21_petal2": "serial_oral21",
+    "serial_oral21_petal3": "serial_oral21",
+    "serial_oral3-1": "serial_visceral_axis3",
+    "serial_oral3-1_petal0": "serial_oral3-1",
+    "serial_oral3-1_petal1": "serial_oral3-1",
+    "serial_oral3-1_petal2": "serial_oral3-1",
+    "serial_oral3-1_petal3": "serial_oral3-1",
+    "serial_oral31": "serial_visceral_axis3",
+    "serial_oral31_petal0": "serial_oral31",
+    "serial_oral31_petal1": "serial_oral31",
+    "serial_oral31_petal2": "serial_oral31",
+    "serial_oral31_petal3": "serial_oral31",
+    "serial_oral4-1": "serial_visceral_axis4",
+    "serial_oral4-1_petal0": "serial_oral4-1",
+    "serial_oral4-1_petal1": "serial_oral4-1",
+    "serial_oral4-1_petal2": "serial_oral4-1",
+    "serial_oral4-1_petal3": "serial_oral4-1",
+    "serial_oral41": "serial_visceral_axis4",
+    "serial_oral41_petal0": "serial_oral41",
+    "serial_oral41_petal1": "serial_oral41",
+    "serial_oral41_petal2": "serial_oral41",
+    "serial_oral41_petal3": "serial_oral41",
+    "serial_oral5-1": "serial_visceral_axis5",
+    "serial_oral5-1_petal0": "serial_oral5-1",
+    "serial_oral5-1_petal1": "serial_oral5-1",
+    "serial_oral5-1_petal2": "serial_oral5-1",
+    "serial_oral5-1_petal3": "serial_oral5-1",
+    "serial_oral51": "serial_visceral_axis5",
+    "serial_oral51_petal0": "serial_oral51",
+    "serial_oral51_petal1": "serial_oral51",
+    "serial_oral51_petal2": "serial_oral51",
+    "serial_oral51_petal3": "serial_oral51",
+    "serial_oral6-1": "serial_visceral_axis6",
+    "serial_oral6-1_petal0": "serial_oral6-1",
+    "serial_oral6-1_petal1": "serial_oral6-1",
+    "serial_oral6-1_petal2": "serial_oral6-1",
+    "serial_oral6-1_petal3": "serial_oral6-1",
+    "serial_oral61": "serial_visceral_axis6",
+    "serial_oral61_petal0": "serial_oral61",
+    "serial_oral61_petal1": "serial_oral61",
+    "serial_oral61_petal2": "serial_oral61",
+    "serial_oral61_petal3": "serial_oral61",
+    "serial_oral7-1": "serial_visceral_axis7",
+    "serial_oral7-1_petal0": "serial_oral7-1",
+    "serial_oral7-1_petal1": "serial_oral7-1",
+    "serial_oral7-1_petal2": "serial_oral7-1",
+    "serial_oral7-1_petal3": "serial_oral7-1",
+    "serial_oral71": "serial_visceral_axis7",
+    "serial_oral71_petal0": "serial_oral71",
+    "serial_oral71_petal1": "serial_oral71",
+    "serial_oral71_petal2": "serial_oral71",
+    "serial_oral71_petal3": "serial_oral71",
+    "serial_oral8-1": "serial_visceral_axis8",
+    "serial_oral8-1_petal0": "serial_oral8-1",
+    "serial_oral8-1_petal1": "serial_oral8-1",
+    "serial_oral8-1_petal2": "serial_oral8-1",
+    "serial_oral8-1_petal3": "serial_oral8-1",
+    "serial_oral81": "serial_visceral_axis8",
+    "serial_oral81_petal0": "serial_oral81",
+    "serial_oral81_petal1": "serial_oral81",
+    "serial_oral81_petal2": "serial_oral81",
+    "serial_oral81_petal3": "serial_oral81",
+    "support0_upper": "serial_visceral_axis7",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "serial_visceral_axis5",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "serial_visceral_axis3",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "serial_visceral_axis2",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "serial_visceral_axis4",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "serial_visceral_axis6",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "head": "chest"
+  },
+  "build_seconds": 31.855,
+  "source_render_seconds": 4.611,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "1920012e6d0214731968c34ee83d98c39f6977a17da4df39457df0177648f82a"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "id": "bio_lantern_sail_08",
+  "source_id": "bio_lantern_sail_08",
+  "name": "유막부유체 · 다지형",
+  "family": "lantern_sail",
+  "kind": "lantern_sail",
+  "construction": "lantern_sail",
+  "anatomical_type": "lantern_sail",
+  "organ_system": "armor",
+  "environment": "cold",
+  "habitat": "낮은 온도·휴면·단열 또는 수중 피난처",
+  "locomotion_medium": "water",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.07,
+    "height": 1.025,
+    "mode": 7,
+    "radial_count": 5,
+    "limb_count": 6,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "lantern_sail",
+    "support_limbs": 0,
+    "oral_organs": 1,
+    "articulated_organs": 10
+  },
+  "version": "r06-1",
+  "build_fingerprint": "dbff76e42a7a8f838fd48a4d5e4daf9ac6088912c58410eb7a70e84d0fd070ea",
+  "normalized_geometry_sha256": "e27d55811547d69d735f4a91da1b99e6c6bc6a181e9559734b090ed279459ae4",
+  "source": "art/blender/creature_remodel/r06/bio_lantern_sail_08.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 14,
+  "locomotion_chains": 0,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_pressure_nozzle": {
+      "bone": "pressure_nozzle",
+      "point": [
+        0.0,
+        1.2979999780654907,
+        0.5
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "pressure_nozzle",
+      "point": [
+        0.0,
+        1.2979999780654907,
+        0.5
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "pressure_nozzle",
+      "point": [
+        0.0,
+        1.2979999780654907,
+        0.5
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.28800000000000003,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4464000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {},
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.2979999780654907,
+    0.5
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lantern_sail_08_near.glb",
+      "sha256": "21da9d68140185fca643cab2616488ad6a9bbed0329f621cb6001352f27a2bbd",
+      "triangles": 9110,
+      "min": [
+        -0.6230173707008362,
+        0.4074859023094177,
+        -0.38380563259124756
+      ],
+      "max": [
+        0.6230173707008362,
+        1.8000704050064087,
+        0.5145813822746277
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_lantern_sail_08_far.glb",
+      "sha256": "1a3249096f1d5a52bf2663ea7e8777a114c5e686750a6a60f9f8fcdff62d81cb",
+      "triangles": 3914,
+      "min": [
+        -0.623100996017456,
+        0.4058115780353546,
+        -0.3846565783023834
+      ],
+      "max": [
+        0.6231013536453247,
+        1.8016016483306885,
+        0.5144225358963013
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "pressure_frame-10": "chest",
+    "pressure_frame-11": "pressure_frame-10",
+    "pressure_window-1": "pressure_frame-10",
+    "pressure_frame10": "chest",
+    "pressure_frame11": "pressure_frame10",
+    "pressure_window1": "pressure_frame10",
+    "pressure_nozzle": "chest",
+    "pressure_nozzle_petal0": "pressure_nozzle",
+    "pressure_nozzle_petal1": "pressure_nozzle",
+    "pressure_nozzle_petal2": "pressure_nozzle",
+    "pressure_nozzle_petal3": "pressure_nozzle",
+    "head": "chest"
+  },
+  "build_seconds": 3.294,
+  "source_render_seconds": 8.741,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "4271ada2d8c1ba019d54c3b21f772831e00a9902dbfd4e8547c603be791a0bdf"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "id": "bio_crown_anchor_08",
+  "source_id": "bio_crown_anchor_08",
+  "name": "이중관수",
+  "family": "crown_anchor",
+  "kind": "crown_anchor",
+  "construction": "crown_anchor",
+  "anatomical_type": "crown_anchor",
+  "organ_system": "armor",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "납작한 복판과 위로 휘어 맞물리는 닻 모양 돌기 / 편심 장축 골격",
+  "morphology": {
+    "width": 1.1,
+    "height": 1.2,
+    "mode": 7,
+    "radial_count": 5,
+    "limb_count": 4,
+    "eye_count": 5,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "crown_anchor",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 14
+  },
+  "version": "r06-1",
+  "build_fingerprint": "b41037eb098e8e5df937c804fbb3a74600199c08bde140bc96bb086acf08b048",
+  "normalized_geometry_sha256": "af41cf1079b39e26bb3ad6121db091b5b610d193a4cdd2a362cedee01d6e49a9",
+  "source": "art/blender/creature_remodel/r06/bio_crown_anchor_08.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 40,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6908978223800659,
+        0.3436739444732666
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6908978223800659,
+        0.3436739444732666
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.6908978223800659,
+        0.3436739444732666
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8172746896743774,
+        0.10000000149011612,
+        0.08034441620111465
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.15282416343688965,
+        0.10000000149011612,
+        -0.7803444266319275
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.8172746896743774,
+        0.10000000149011612,
+        0.08034441620111465
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.29290063022194135,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4539959768440091,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.6908978223800659,
+    0.3436739444732666
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crown_anchor_08_near.glb",
+      "sha256": "d8e68b5c07e32a5ab92fddd213270e38cc9097968b5c11c7ab6c0cea01bbdf2f",
+      "triangles": 28870,
+      "min": [
+        -1.1193338632583618,
+        0.02499999850988388,
+        -1.082403540611267
+      ],
+      "max": [
+        1.1193338632583618,
+        1.704371690750122,
+        1.132059097290039
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crown_anchor_08_far.glb",
+      "sha256": "5d03d6a81d3fa3009715cbf8cc9551cddbdd6c909ff8205d1634f825263beed5",
+      "triangles": 12406,
+      "min": [
+        -1.1192628145217896,
+        0.025011511519551277,
+        -1.0823323726654053
+      ],
+      "max": [
+        1.1192604303359985,
+        1.7048559188842773,
+        1.1319855451583862
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "opposed_hook0_-1": "radial_trunk01",
+    "opposed_hook0_1": "radial_trunk01",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "opposed_hook1_-1": "radial_trunk11",
+    "opposed_hook1_1": "radial_trunk11",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "opposed_hook2_-1": "radial_trunk21",
+    "opposed_hook2_1": "radial_trunk21",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "opposed_hook3_-1": "radial_trunk31",
+    "opposed_hook3_1": "radial_trunk31",
+    "radial_trunk40": "chest",
+    "radial_trunk41": "radial_trunk40",
+    "opposed_hook4_-1": "radial_trunk41",
+    "opposed_hook4_1": "radial_trunk41",
+    "ventral_oral": "chest",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk40",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 16.457,
+  "source_render_seconds": 51.371,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "63d05974860669cf87cdd71728efddf00ca50d91458f48ea64e7c64223efd609"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

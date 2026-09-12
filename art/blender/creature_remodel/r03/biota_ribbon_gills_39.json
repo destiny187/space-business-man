@@ -1,0 +1,298 @@
+{
+  "id": "biota_ribbon_gills_39",
+  "name": "동결쌍줄열한마디깃띠활주수",
+  "family": "biota_ribbon_gills",
+  "construction": "ribbon",
+  "organ_system": "gills",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_ribbon_gills_39",
+  "kind": "ribbon",
+  "habitat": "작은 개구부·겹친 단열막의 가상 극저온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 11,
+    "limb_count": 8,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "낮게 굽이치는 두꺼운 리본 몸통·넓게 펼친 깃 아가미 / 쌍열 배열·주요 기관 11개",
+  "recipe_sha256": "adc1b79d332e6609280c0699b63f0ac5198053bc26b5d4298488ab88a4547c0c",
+  "authored_anatomy": "Continuous ribbon anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "a28b5ada34e79cbf443073fbeb38633fab9a68d5e91b45e91a53f91e7fc8a08a",
+  "normalized_geometry_sha256": "683f47d9bfe8d06f706503ef820d7a0150396ffa4c24f0d2c7c9651a7b076ec0",
+  "source": "art/blender/creature_remodel/r03/biota_ribbon_gills_39.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 70,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.04972507804632187,
+        0.42249998450279236,
+        1.937809705734253
+      ]
+    },
+    "Socket_lateral_filter-1": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.04972507804632187,
+        0.42249998450279236,
+        1.937809705734253
+      ]
+    },
+    "Socket_lateral_filter1": {
+      "bone": "lateral_filter1",
+      "point": [
+        0.5097250938415527,
+        0.42249998450279236,
+        1.937809705734253
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.04972507804632187,
+        0.42249998450279236,
+        1.937809705734253
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.565000057220459
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.565000057220459
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -0.22409091889858246
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -0.22409091889858246
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.3550000190734863
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.3550000190734863
+      ]
+    },
+    "Socket_leg6": {
+      "bone": "leg6_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -0.014090915210545063
+      ]
+    },
+    "Socket_leg7": {
+      "bone": "leg7_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -0.014090915210545063
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.18592960573988762,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.2881908888968258,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001,
+      "leg6": 0.51,
+      "leg7": 0.010000000000000009
+    }
+  },
+  "muzzle": [
+    -0.04972507804632187,
+    0.42249998450279236,
+    1.937809705734253
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_ribbon_gills_39_near.glb",
+      "sha256": "87983fc3f25c59a76c1d7f9422b1feca5ecfe4c8e9284e939700a550a7cdd598",
+      "triangles": 67334,
+      "min": [
+        -0.6945071816444397,
+        0.034999996423721313,
+        -2.3993124961853027
+      ],
+      "max": [
+        0.6945071816444397,
+        1.2269020080566406,
+        1.9858472347259521
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_ribbon_gills_39_far.glb",
+      "sha256": "464a7d053cd1484ee2bce3a8130e5378f09a9c27ccc0ea8797959db211852d20",
+      "triangles": 28946,
+      "min": [
+        -0.6944246292114258,
+        0.035012245178222656,
+        -2.3998429775238037
+      ],
+      "max": [
+        0.6943862438201904,
+        1.227527141571045,
+        1.9858211278915405
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis0_3": "axis0_2",
+    "axis0_4": "axis0_3",
+    "axis0_5": "axis0_4",
+    "axis0_6": "axis0_5",
+    "axis0_7": "axis0_6",
+    "axis0_8": "axis0_7",
+    "axis0_9": "axis0_8",
+    "axis0_10": "axis0_9",
+    "axis1_0": "chest",
+    "axis1_1": "axis1_0",
+    "axis1_2": "axis1_1",
+    "axis1_3": "axis1_2",
+    "axis1_4": "axis1_3",
+    "axis1_5": "axis1_4",
+    "axis1_6": "axis1_5",
+    "axis1_7": "axis1_6",
+    "axis1_8": "axis1_7",
+    "axis1_9": "axis1_8",
+    "axis1_10": "axis1_9",
+    "head": "axis1_10",
+    "lateral_filter-1": "head",
+    "lateral_filter-1_petal0": "lateral_filter-1",
+    "lateral_filter-1_petal1": "lateral_filter-1",
+    "lateral_filter-1_petal2": "lateral_filter-1",
+    "lateral_filter1": "head",
+    "lateral_filter1_petal0": "lateral_filter1",
+    "lateral_filter1_petal1": "lateral_filter1",
+    "lateral_filter1_petal2": "lateral_filter1",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis0_5",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis0_5",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "axis1_0",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "axis1_0",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "leg6_upper": "axis1_5",
+    "leg6_lower": "leg6_upper",
+    "leg6_foot": "leg6_lower",
+    "leg7_upper": "axis1_5",
+    "leg7_lower": "leg7_upper",
+    "leg7_foot": "leg7_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_2",
+    "organ2": "axis0_4",
+    "organ3": "axis0_6",
+    "organ4": "axis0_8",
+    "organ5": "axis0_10",
+    "organ6": "axis1_1",
+    "organ7": "axis1_3",
+    "organ8": "axis1_5",
+    "organ9": "axis1_7",
+    "organ10": "axis1_9"
+  },
+  "build_seconds": 18.469,
+  "source_render_seconds": 4.145,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "2db26c3b5a485e0c094ebc0a09f80c2398bb7cc6e699b24de90371e52f3eac95"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

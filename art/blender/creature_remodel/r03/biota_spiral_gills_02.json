@@ -1,0 +1,240 @@
+{
+  "id": "biota_spiral_gills_02",
+  "name": "광각곧은네마디깃촉달팽이",
+  "family": "biota_spiral_gills",
+  "construction": "spiral",
+  "organ_system": "gills",
+  "environment": "crystal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_spiral_gills_02",
+  "kind": "spiral",
+  "habitat": "광물 피막과 모서리를 피해 열린 감각면 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 4,
+    "limb_count": 6,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "중앙 대사축 주위를 감는 연속 몸통·넓게 펼친 깃 아가미 / 직렬 배열·주요 기관 4개",
+  "recipe_sha256": "90befa48e020717203e7bdaa875aafed9b865ff533b25cd0adb4f9461dad56f4",
+  "authored_anatomy": "Continuous spiral anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "b001b2db4f6ba60b79a7dd889800091ddc91839449f8ab0b7f364e4f5b581d4a",
+  "normalized_geometry_sha256": "5de283934c027a2ea75e157ad9d7b5e024ea0eb372f546d7b050c0fb20593b5e",
+  "source": "art/blender/creature_remodel/r03/biota_spiral_gills_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 38,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "radula",
+      "point": [
+        0.34686917066574097,
+        1.0500000715255737,
+        0.33259597420692444
+      ]
+    },
+    "Socket_radula": {
+      "bone": "radula",
+      "point": [
+        0.34686917066574097,
+        1.0500000715255737,
+        0.33259597420692444
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "radula",
+      "point": [
+        0.34686917066574097,
+        1.0500000715255737,
+        0.33259597420692444
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        5.18270575277916e-17,
+        0.10999999940395355,
+        0.8464000225067139
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.7330039143562317,
+        0.10999999940395355,
+        0.42320001125335693
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        0.7330039143562317,
+        0.10999999940395355,
+        -0.42320001125335693
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        5.18270575277916e-17,
+        0.10999999940395355,
+        -0.8464000225067139
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.7330039143562317,
+        0.10999999940395355,
+        -0.42320001125335693
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.7330039143562317,
+        0.10999999940395355,
+        0.42320001125335693
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.4,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6200000000000001,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.34686917066574097,
+    1.0500000715255737,
+    0.33259597420692444
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spiral_gills_02_near.glb",
+      "sha256": "a6f30aa2c95e9b19bfdd38b867f05ced47bcc6c2c684a5e6b4e740ff23262161",
+      "triangles": 37018,
+      "min": [
+        -1.0471101999282837,
+        0.034999996423721313,
+        -1.1486722230911255
+      ],
+      "max": [
+        1.0471101999282837,
+        1.5713038444519043,
+        1.1486722230911255
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spiral_gills_02_far.glb",
+      "sha256": "4ef5a9dc1e2e4649737e517d3ec0717a3c3f0409c5b9427e0eee7a470ec679a6",
+      "triangles": 15912,
+      "min": [
+        -1.047137975692749,
+        0.03501151129603386,
+        -1.14859139919281
+      ],
+      "max": [
+        1.047137975692749,
+        1.5713038444519043,
+        1.14859139919281
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_axis0": "chest",
+    "coiled_axis1": "coiled_axis0",
+    "coiled_axis2": "coiled_axis1",
+    "coiled_axis3": "coiled_axis2",
+    "head": "coiled_axis3",
+    "radula": "head",
+    "radula_petal0": "radula",
+    "radula_petal1": "radula",
+    "radula_petal2": "radula",
+    "radula_petal3": "radula",
+    "ocular_stalk-10": "head",
+    "ocular_stalk-11": "ocular_stalk-10",
+    "ocular_stalk10": "head",
+    "ocular_stalk11": "ocular_stalk10",
+    "leg0_upper": "coiled_axis0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "coiled_axis1",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "coiled_axis2",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "coiled_axis3",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "coiled_axis0",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "coiled_axis1",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "coiled_axis0",
+    "organ1": "coiled_axis1",
+    "organ2": "coiled_axis2",
+    "organ3": "coiled_axis3"
+  },
+  "build_seconds": 14.147,
+  "source_render_seconds": 25.882,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "ab914a78b69248200446b4151154c273b5b36c2164a5680793af566ac1396eb8"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

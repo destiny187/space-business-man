@@ -1,0 +1,227 @@
+{
+  "id": "bio_gyre_tower_08",
+  "source_id": "bio_gyre_tower_08",
+  "name": "계단탑수",
+  "family": "gyre_tower",
+  "kind": "gyre_tower",
+  "construction": "gyre_tower",
+  "anatomical_type": "gyre_tower",
+  "organ_system": "armor",
+  "environment": "arid",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "속이 빈 나선형 몸통을 다리와 대사낭이 지탱 / 편심 장축 골격",
+  "morphology": {
+    "width": 1.1,
+    "height": 1.2,
+    "mode": 7,
+    "radial_count": 5,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "gyre_tower",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 19
+  },
+  "version": "r06-1",
+  "build_fingerprint": "1ff824a6d01bd38b86c9e29c738d3e97d45912be1a7803a1008775d58ced8f24",
+  "normalized_geometry_sha256": "6005b35a42aafe3caf387c815c9914c818170efce24504af86ae8091768dc276",
+  "source": "art/blender/creature_remodel/r06/bio_gyre_tower_08.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 35,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_coil_oral0": {
+      "bone": "coil_oral0",
+      "point": [
+        -0.029699916020035744,
+        2.5439999103546143,
+        -0.32206663489341736
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "coil_oral0",
+      "point": [
+        -0.029699916020035744,
+        2.5439999103546143,
+        -0.32206663489341736
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "coil_oral0",
+      "point": [
+        -0.029699916020035744,
+        2.5439999103546143,
+        -0.32206663489341736
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        0.4729999899864197,
+        0.10000000149011612,
+        0.5699999928474426
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        1.0429999828338623,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.4729999899864197,
+        0.10000000149011612,
+        -0.5699999928474426
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.9844930768013,
+        0.10000000149011612,
+        -0.22786948084831238
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.33329156179100294,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5166019207760546,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    -0.029699916020035744,
+    2.5439999103546143,
+    -0.32206663489341736
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_gyre_tower_08_near.glb",
+      "sha256": "21366baad5cef4c005061e1bef14485e64d432e45f5aff2a871a247fbdcec4fa",
+      "triangles": 29022,
+      "min": [
+        -1.2865521907806396,
+        0.02499999850988388,
+        -0.8720592260360718
+      ],
+      "max": [
+        1.3450590372085571,
+        2.7164998054504395,
+        0.8720592260360718
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_gyre_tower_08_far.glb",
+      "sha256": "67b1fcef9863ccbffa22311b70855a4b03ece3a964f0b684d67fbbb8809eff8a",
+      "triangles": 12472,
+      "min": [
+        -1.2864810228347778,
+        0.025012250989675522,
+        -0.87198805809021
+      ],
+      "max": [
+        1.3449879884719849,
+        2.7164998054504395,
+        0.87198805809021
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_organ00": "chest",
+    "coiled_organ01": "coiled_organ00",
+    "coiled_organ02": "coiled_organ01",
+    "coiled_organ03": "coiled_organ02",
+    "coiled_organ04": "coiled_organ03",
+    "coiled_organ05": "coiled_organ04",
+    "coiled_organ06": "coiled_organ05",
+    "coiled_organ07": "coiled_organ06",
+    "coiled_organ08": "coiled_organ07",
+    "coiled_organ09": "coiled_organ08",
+    "coiled_organ010": "coiled_organ09",
+    "coiled_organ011": "coiled_organ010",
+    "coiled_organ012": "coiled_organ011",
+    "coiled_organ013": "coiled_organ012",
+    "coiled_organ014": "coiled_organ013",
+    "coil_oral0": "coiled_organ014",
+    "coil_oral0_petal0": "coil_oral0",
+    "coil_oral0_petal1": "coil_oral0",
+    "coil_oral0_petal2": "coil_oral0",
+    "coil_oral0_petal3": "coil_oral0",
+    "support0_upper": "coiled_organ00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "coiled_organ00",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "coiled_organ00",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "coiled_organ05",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 10.284,
+  "source_render_seconds": 6.503,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "b252c878a28753cad8e7359e1338408bde85fb65ac6c7e86c6bdac8585979ade"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

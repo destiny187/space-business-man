@@ -1,0 +1,305 @@
+{
+  "id": "biota_branch_antennal_fans_14",
+  "name": "염류굽은여섯마디감각수관수",
+  "family": "biota_branch_antennal_fans",
+  "construction": "branch",
+  "organ_system": "antennal_fans",
+  "environment": "arid",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_branch_antennal_fans_14",
+  "kind": "branch",
+  "habitat": "외부 염류를 모으는 배출낭과 보호된 흡수면 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 6,
+    "limb_count": 6,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "연결된 가지 몸통 끝마다 배치된 기관·가지 끝에 펼친 감각 부채 / 만곡 배열·주요 기관 6개",
+  "recipe_sha256": "35fb093fa2fcfb2cdbf0995936d1089ba0c3193aa3bf34789d8d7ee81a720209",
+  "authored_anatomy": "Continuous branch anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "0d735843c229552f9b8edb9fc8b4267ff821e4c30a472311c823aa8dfd18b072",
+  "normalized_geometry_sha256": "42cbe850a7cc3a86dbf502e21dd15841ac81ebde963211bdc17fb154330c960d",
+  "source": "art/blender/creature_remodel/r03/biota_branch_antennal_fans_14.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 63,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "terminal_oral0",
+      "point": [
+        9.03605814580272e-17,
+        1.1242921352386475,
+        1.4757002592086792
+      ]
+    },
+    "Socket_terminal_oral0": {
+      "bone": "terminal_oral0",
+      "point": [
+        9.03605814580272e-17,
+        1.1242921352386475,
+        1.4757002592086792
+      ]
+    },
+    "Socket_terminal_oral1": {
+      "bone": "terminal_oral1",
+      "point": [
+        1.2779937982559204,
+        1.1242921352386475,
+        0.7378501296043396
+      ]
+    },
+    "Socket_terminal_oral2": {
+      "bone": "terminal_oral2",
+      "point": [
+        1.2779937982559204,
+        1.1242921352386475,
+        -0.7378501296043396
+      ]
+    },
+    "Socket_terminal_oral3": {
+      "bone": "terminal_oral3",
+      "point": [
+        9.03605814580272e-17,
+        1.1242921352386475,
+        -1.4757002592086792
+      ]
+    },
+    "Socket_terminal_oral4": {
+      "bone": "terminal_oral4",
+      "point": [
+        -1.2779937982559204,
+        1.1242921352386475,
+        -0.7378501296043396
+      ]
+    },
+    "Socket_terminal_oral5": {
+      "bone": "terminal_oral5",
+      "point": [
+        -1.2779937982559204,
+        1.1242921352386475,
+        0.7378501296043396
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_oral0",
+      "point": [
+        9.03605814580272e-17,
+        1.1242921352386475,
+        1.4757002592086792
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.072335342068773e-17,
+        0.10999999940395355,
+        1.1549999713897705
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.000259280204773,
+        0.10999999940395355,
+        0.5774999856948853
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        1.000259280204773,
+        0.10999999940395355,
+        -0.5774999856948853
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        7.072335342068773e-17,
+        0.10999999940395355,
+        -1.1549999713897705
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.000259280204773,
+        0.10999999940395355,
+        -0.5774999856948853
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -1.000259280204773,
+        0.10999999940395355,
+        0.5774999856948853
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3961942279171746,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6141010532716207,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    9.03605814580272e-17,
+    1.1242921352386475,
+    1.4757002592086792
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_branch_antennal_fans_14_near.glb",
+      "sha256": "23cb951def06419b8de2aae1fb6a25ab90447b73d29cd61fb28859c25771172e",
+      "triangles": 59272,
+      "min": [
+        -1.7265526056289673,
+        0.034999996423721313,
+        -1.8257843255996704
+      ],
+      "max": [
+        1.7265526056289673,
+        1.4589999914169312,
+        1.8257843255996704
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_branch_antennal_fans_14_far.glb",
+      "sha256": "e5bce02d1f6475e84649bb3cb3dcdd064b2b4110cfe88957dbe2fea271798b00",
+      "triangles": 25480,
+      "min": [
+        -1.7265526056289673,
+        0.0349971279501915,
+        -1.8256587982177734
+      ],
+      "max": [
+        1.7265526056289673,
+        1.4589999914169312,
+        1.8256587982177734
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "radial_axis30": "chest",
+    "radial_axis31": "radial_axis30",
+    "radial_axis40": "chest",
+    "radial_axis41": "radial_axis40",
+    "radial_axis50": "chest",
+    "radial_axis51": "radial_axis50",
+    "head": "chest",
+    "terminal_oral0": "radial_axis01",
+    "terminal_oral0_petal0": "terminal_oral0",
+    "terminal_oral0_petal1": "terminal_oral0",
+    "terminal_oral0_petal2": "terminal_oral0",
+    "terminal_oral1": "radial_axis11",
+    "terminal_oral1_petal0": "terminal_oral1",
+    "terminal_oral1_petal1": "terminal_oral1",
+    "terminal_oral1_petal2": "terminal_oral1",
+    "terminal_oral2": "radial_axis21",
+    "terminal_oral2_petal0": "terminal_oral2",
+    "terminal_oral2_petal1": "terminal_oral2",
+    "terminal_oral2_petal2": "terminal_oral2",
+    "terminal_oral3": "radial_axis31",
+    "terminal_oral3_petal0": "terminal_oral3",
+    "terminal_oral3_petal1": "terminal_oral3",
+    "terminal_oral3_petal2": "terminal_oral3",
+    "terminal_oral4": "radial_axis41",
+    "terminal_oral4_petal0": "terminal_oral4",
+    "terminal_oral4_petal1": "terminal_oral4",
+    "terminal_oral4_petal2": "terminal_oral4",
+    "terminal_oral5": "radial_axis51",
+    "terminal_oral5_petal0": "terminal_oral5",
+    "terminal_oral5_petal1": "terminal_oral5",
+    "terminal_oral5_petal2": "terminal_oral5",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21",
+    "organ3": "radial_axis31",
+    "organ4": "radial_axis41",
+    "organ5": "radial_axis51"
+  },
+  "build_seconds": 21.454,
+  "source_render_seconds": 6.129,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "8ca22b233ee21531a8a3b25b346f08a532db0991ac67f5d09ee0733d68363619"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

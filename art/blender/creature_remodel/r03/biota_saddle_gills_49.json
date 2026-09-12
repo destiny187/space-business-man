@@ -1,0 +1,216 @@
+{
+  "id": "biota_saddle_gills_49",
+  "name": "단열둘레열한마디현수깃수",
+  "family": "biota_saddle_gills",
+  "construction": "saddle",
+  "organ_system": "gills",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_saddle_gills_49",
+  "kind": "saddle",
+  "habitat": "짧은 말단과 두꺼운 단열 외피 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 11,
+    "limb_count": 4,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "앞뒤 지지체를 연결하는 열린 등뼈 교각·넓게 펼친 깃 아가미 / 방사 배열·주요 기관 11개",
+  "recipe_sha256": "e57ee5eb53170f2ba34680eedc9b9808cc9adc810a18da93a6441f4f46ab9c2e",
+  "authored_anatomy": "Continuous saddle anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "f3513da1103587d85707265fd4acf74db2eab3f5775351e92a9159a0e89f0f4e",
+  "normalized_geometry_sha256": "e62ff49f2bd23919a2686a487fddb81b341d0d8b4991738e4e02b2f2f521effa",
+  "source": "art/blender/creature_remodel/r03/biota_saddle_gills_49.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 32,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6001999974250793,
+        3.28410005569458
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6001999974250793,
+        3.28410005569458
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6001999974250793,
+        3.28410005569458
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        -1.0525000095367432
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        -1.0525000095367432
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        1.0824999809265137
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        1.0824999809265137
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3493160969555132,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5414399502810454,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.6001999974250793,
+    3.28410005569458
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_gills_49_near.glb",
+      "sha256": "af3cddfdeed71bc9041fe75c39a68d812b767d99f4fcbd9e9a94f596cc6006fe",
+      "triangles": 57316,
+      "min": [
+        -1.207749843597412,
+        0.034999996423721313,
+        -1.2624998092651367
+      ],
+      "max": [
+        1.2077499628067017,
+        2.248511552810669,
+        3.3040997982025146
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_gills_49_far.glb",
+      "sha256": "ad43a21531f125d4249b9471467200231482f0d614f2700eb00a0405e5ab28ec",
+      "triangles": 24642,
+      "min": [
+        -1.2077289819717407,
+        0.03488878905773163,
+        -1.2623226642608643
+      ],
+      "max": [
+        1.2075530290603638,
+        2.2483932971954346,
+        3.3040997982025146
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "arch00": "chest",
+    "arch01": "arch00",
+    "arch02": "arch01",
+    "suspension_neck0": "arch02",
+    "suspension_neck1": "suspension_neck0",
+    "head": "suspension_neck1",
+    "oral": "head",
+    "leg0_upper": "arch00",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "arch00",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "arch02",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "arch02",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "arch00",
+    "organ1": "arch00",
+    "organ2": "arch00",
+    "organ3": "arch00",
+    "organ4": "arch01",
+    "organ5": "arch01",
+    "organ6": "arch01",
+    "organ7": "arch02",
+    "organ8": "arch02",
+    "organ9": "arch02",
+    "organ10": "arch02"
+  },
+  "build_seconds": 13.06,
+  "source_render_seconds": 6.881,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "916a430f154e64bb300d3cc3c1e5984b7df3e6946e2979047cae319bb87d08c1"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

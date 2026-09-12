@@ -1,0 +1,258 @@
+{
+  "id": "biota_saddle_antennal_fans_43",
+  "name": "단열둘레다섯마디감각수목수",
+  "family": "biota_saddle_antennal_fans",
+  "construction": "saddle",
+  "organ_system": "antennal_fans",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_saddle_antennal_fans_43",
+  "kind": "saddle",
+  "habitat": "짧은 말단과 두꺼운 단열 외피 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 5,
+    "limb_count": 8,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "앞뒤 지지체를 연결하는 열린 등뼈 교각·가지 끝에 펼친 감각 부채 / 방사 배열·주요 기관 5개",
+  "recipe_sha256": "4dd933ba1359a42de456fce01208683d6b0c885e1563968b521956731fd88760",
+  "authored_anatomy": "Continuous saddle anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "20d228ead1607ea1f917b21ab357f4a87502a2a2e450634266dac12956905b81",
+  "normalized_geometry_sha256": "5ab00857355db8e65b2ed7356b512e19e5b1b506c6756fe013a544ddb556cbe6",
+  "source": "art/blender/creature_remodel/r03/biota_saddle_antennal_fans_43.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 38,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6001999974250793,
+        3.0590999126434326
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6001999974250793,
+        3.0590999126434326
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.6001999974250793,
+        3.0590999126434326
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        -0.8274999856948853
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        -0.8274999856948853
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        -0.8274999856948853
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        -0.8274999856948853
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        0.8575000166893005
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        0.8575000166893005
+      ]
+    },
+    "Socket_leg6": {
+      "bone": "leg6_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        0.8575000166893005
+      ]
+    },
+    "Socket_leg7": {
+      "bone": "leg7_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        0.8575000166893005
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.34931609852841733,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5414399527190469,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001,
+      "leg6": 0.51,
+      "leg7": 0.010000000000000009
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.6001999974250793,
+    3.0590999126434326
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_antennal_fans_43_near.glb",
+      "sha256": "37b360d8c97a65c60e97bc4b8a4afeb04477b5f8659916ee5513c296d1669afd",
+      "triangles": 57928,
+      "min": [
+        -1.1718662977218628,
+        0.034999996423721313,
+        -1.0374999046325684
+      ],
+      "max": [
+        1.1718662977218628,
+        2.5193190574645996,
+        3.079099655151367
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_saddle_antennal_fans_43_far.glb",
+      "sha256": "c110b1a223e9f30fd6237600cf566163d98b507b7840c1b9a08e9bcbb9c87763",
+      "triangles": 24902,
+      "min": [
+        -1.1721967458724976,
+        0.034999996423721313,
+        -1.037322759628296
+      ],
+      "max": [
+        1.1721967458724976,
+        2.5193190574645996,
+        3.079099655151367
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "arch00": "chest",
+    "arch01": "arch00",
+    "arch02": "arch01",
+    "suspension_neck0": "arch02",
+    "suspension_neck1": "suspension_neck0",
+    "head": "suspension_neck1",
+    "oral": "head",
+    "leg0_upper": "arch00",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "arch00",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "arch00",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "arch00",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "arch02",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "arch02",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "leg6_upper": "arch02",
+    "leg6_lower": "leg6_upper",
+    "leg6_foot": "leg6_lower",
+    "leg7_upper": "arch02",
+    "leg7_lower": "leg7_upper",
+    "leg7_foot": "leg7_lower",
+    "organ0": "arch00",
+    "organ1": "arch00",
+    "organ2": "arch01",
+    "organ3": "arch02",
+    "organ4": "arch02"
+  },
+  "build_seconds": 14.204,
+  "source_render_seconds": 3.873,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "33ad528e1ec5f8e7f1b8a233fe3611be27fbf416524d868b0940c5066caeb294"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "id": "biota_flat_armor_21",
+  "name": "완충갈래세마디방패가오리",
+  "family": "biota_flat_armor",
+  "construction": "flat",
+  "organ_system": "armor",
+  "environment": "crystal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_flat_armor_21",
+  "kind": "flat",
+  "habitat": "외부 물질과 내부 대사를 분리하는 두꺼운 낭벽 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "낮고 넓은 판상 몸체와 가장자리 운동기관·분절된 외피와 겹갑 / 분기 배열·주요 기관 3개",
+  "recipe_sha256": "7eb542217ef281575a8c9bc0d63daf591f4be549ea0dd1385dee8509b395b3b8",
+  "authored_anatomy": "Continuous flat anatomy; armor lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "0ebfdf500c8fbce6136ad0b0ac2780dc3ad68a0eeeb021bf9f37346218cc5709",
+  "normalized_geometry_sha256": "070744b052cbdafb22b93be1dd6c0d5944969056e53adf9d875c7ad157450458",
+  "source": "art/blender/creature_remodel/r03/biota_flat_armor_21.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 32,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_lateral_filter-1": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_lateral_filter1": {
+      "bone": "lateral_filter1",
+      "point": [
+        0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.880601973607408e-17,
+        0.10999999940395355,
+        1.2869999408721924
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.2869999408721924,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        7.880601973607408e-17,
+        0.10999999940395355,
+        -1.2869999408721924
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.2869999408721924,
+        0.10999999940395355,
+        -1.5761203947214816e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3986411246024988,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6178937431338731,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    -0.2797250747680664,
+    0.5920000076293945,
+    1.0701096057891846
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_flat_armor_21_near.glb",
+      "sha256": "888613f522e3a5f720de4d0a786f433980314e0ecc6d812f797397de577bd22f",
+      "triangles": 30236,
+      "min": [
+        -1.589272141456604,
+        0.034999996423721313,
+        -1.589272141456604
+      ],
+      "max": [
+        1.589272141456604,
+        0.8668186664581299,
+        1.7136367559432983
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_flat_armor_21_far.glb",
+      "sha256": "a66e23b920eac64501302a92c314dd9f9b0084545a57bde91c28e234505e25da",
+      "triangles": 12994,
+      "min": [
+        -1.5891914367675781,
+        0.03501151129603386,
+        -1.58936607837677
+      ],
+      "max": [
+        1.5891914367675781,
+        0.8661251664161682,
+        1.7136367559432983
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "head": "chest",
+    "lateral_filter-1": "head",
+    "lateral_filter-1_petal0": "lateral_filter-1",
+    "lateral_filter-1_petal1": "lateral_filter-1",
+    "lateral_filter-1_petal2": "lateral_filter-1",
+    "lateral_filter1": "head",
+    "lateral_filter1_petal0": "lateral_filter1",
+    "lateral_filter1_petal1": "lateral_filter1",
+    "lateral_filter1_petal2": "lateral_filter1",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "radial_axis01",
+    "organ1": "radial_axis11",
+    "organ2": "radial_axis21"
+  },
+  "build_seconds": 11.419,
+  "source_render_seconds": 4.155,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "98db662eb243d915c6af04ebeb412a0e6cc7d92d094d2b5de60987780dac1179"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

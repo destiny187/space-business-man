@@ -1,0 +1,269 @@
+{
+  "id": "bio_offset_halo_03",
+  "source_id": "bio_offset_halo_03",
+  "name": "사편심환수",
+  "family": "offset_halo",
+  "kind": "offset_halo",
+  "construction": "offset_halo",
+  "anatomical_type": "offset_halo",
+  "organ_system": "mandibles",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "서로 다른 축의 고리 장기가 편심 관절로 맞물림 / 오방 분절 골격",
+  "morphology": {
+    "width": 1.05,
+    "height": 0.93,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 5,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "offset_halo",
+    "support_limbs": 5,
+    "oral_organs": 2,
+    "articulated_organs": 40
+  },
+  "version": "r06-1",
+  "build_fingerprint": "282d84cc4d28f4fa18fa9b81843a8b5555281b8ae80c9697d90e8e8f14eb2ef1",
+  "normalized_geometry_sha256": "2f34d5a1b64e4435e0adcd1c4cb0ce7d0d0ec2d6fdadda62b4033f2f2cd70b47",
+  "source": "art/blender/creature_remodel/r06/bio_offset_halo_03.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 60,
+  "locomotion_chains": 5,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_coil_oral0": {
+      "bone": "coil_oral0",
+      "point": [
+        0.21645723283290863,
+        1.8702747821807861,
+        0.05544918030500412
+      ]
+    },
+    "Socket_coil_oral1": {
+      "bone": "coil_oral1",
+      "point": [
+        -0.21645723283290863,
+        1.8702747821807861,
+        0.24455082416534424
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "coil_oral0",
+      "point": [
+        0.21645723283290863,
+        1.8702747821807861,
+        0.05544918030500412
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "coil_oral0",
+      "point": [
+        0.21645723283290863,
+        1.8702747821807861,
+        0.05544918030500412
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        0.15812484920024872,
+        0.10000000149011612,
+        0.8918957710266113
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7002270817756653,
+        0.10000000149011612,
+        0.4980354607105255
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.17691273987293243,
+        0.10000000149011612,
+        -0.7830354571342468
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.49316245317459106,
+        0.10000000149011612,
+        -0.7830354571342468
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.7002270817756653,
+        0.10000000149011612,
+        -0.1457560956478119
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.27843873956801324,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4315800463304205,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.4,
+      "support2": 0.8,
+      "support3": 0.2,
+      "support4": 0.6
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.21645723283290863,
+    1.8702747821807861,
+    0.05544918030500412
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_offset_halo_03_near.glb",
+      "sha256": "1c8a833038a0c8190a05a5ff4a3e247e8edf28c20ed8e558166d7f479c7399fe",
+      "triangles": 43068,
+      "min": [
+        -1.0153594017028809,
+        0.02499999850988388,
+        -1.0845119953155518
+      ],
+      "max": [
+        1.0153594017028809,
+        2.0780088901519775,
+        1.1939548254013062
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_offset_halo_03_far.glb",
+      "sha256": "6db3fa9389b6e974cd7b5e7772ee62c29bc8c91270d292caa941c1b34f8a1f40",
+      "triangles": 18514,
+      "min": [
+        -1.015376329421997,
+        0.024996532127261162,
+        -1.084544062614441
+      ],
+      "max": [
+        1.0153714418411255,
+        2.0780088901519775,
+        1.1938812732696533
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_organ00": "chest",
+    "coiled_organ01": "coiled_organ00",
+    "coiled_organ02": "coiled_organ01",
+    "coiled_organ03": "coiled_organ02",
+    "coiled_organ04": "coiled_organ03",
+    "coiled_organ05": "coiled_organ04",
+    "coiled_organ06": "coiled_organ05",
+    "coiled_organ07": "coiled_organ06",
+    "coiled_organ08": "coiled_organ07",
+    "coiled_organ09": "coiled_organ08",
+    "coiled_organ010": "coiled_organ09",
+    "coiled_organ011": "coiled_organ010",
+    "coiled_organ012": "coiled_organ011",
+    "coiled_organ013": "coiled_organ012",
+    "coiled_organ014": "coiled_organ013",
+    "coil_oral0": "coiled_organ014",
+    "coil_oral0_petal0": "coil_oral0",
+    "coil_oral0_petal1": "coil_oral0",
+    "coil_oral0_petal2": "coil_oral0",
+    "coil_oral0_petal3": "coil_oral0",
+    "coil_oral0_petal4": "coil_oral0",
+    "coiled_organ10": "chest",
+    "coiled_organ11": "coiled_organ10",
+    "coiled_organ12": "coiled_organ11",
+    "coiled_organ13": "coiled_organ12",
+    "coiled_organ14": "coiled_organ13",
+    "coiled_organ15": "coiled_organ14",
+    "coiled_organ16": "coiled_organ15",
+    "coiled_organ17": "coiled_organ16",
+    "coiled_organ18": "coiled_organ17",
+    "coiled_organ19": "coiled_organ18",
+    "coiled_organ110": "coiled_organ19",
+    "coiled_organ111": "coiled_organ110",
+    "coiled_organ112": "coiled_organ111",
+    "coiled_organ113": "coiled_organ112",
+    "coiled_organ114": "coiled_organ113",
+    "coil_oral1": "coiled_organ114",
+    "coil_oral1_petal0": "coil_oral1",
+    "coil_oral1_petal1": "coil_oral1",
+    "coil_oral1_petal2": "coil_oral1",
+    "coil_oral1_petal3": "coil_oral1",
+    "coil_oral1_petal4": "coil_oral1",
+    "support0_upper": "coiled_organ010",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "coiled_organ010",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "coiled_organ110",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "coiled_organ110",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "coiled_organ110",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "head": "chest"
+  },
+  "build_seconds": 16.383,
+  "source_render_seconds": 4.069,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "7253b95f2877f724721a49dc2cd3b05ec7d59b0ce4159411bb9642b38698ecaf"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "id": "biota_amphora_antennal_fans_37",
+  "name": "저수쌍줄아홉마디촉각화병수",
+  "family": "biota_amphora_antennal_fans",
+  "construction": "amphora",
+  "organ_system": "antennal_fans",
+  "environment": "arid",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_amphora_antennal_fans_37",
+  "kind": "amphora",
+  "habitat": "수분을 보존하는 외피와 연결된 저장낭 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 9,
+    "limb_count": 4,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "수축 목과 열린 입구를 가진 항아리 몸체·가지 끝에 펼친 감각 부채 / 쌍열 배열·주요 기관 9개",
+  "recipe_sha256": "f624bf9e81263bdfd3eb0a498cbe92ad04ff86034db8a28e1b1826c2e22bca2c",
+  "authored_anatomy": "Continuous amphora anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "d21dc1549be3486dd7b3a755f9db132127aed627b5f68156a358f9ad9e0ad43c",
+  "normalized_geometry_sha256": "1a0fac2658dbd40b036c8d6bb18a0db4d6b30f33234796713d0339e4c5ec7221",
+  "source": "art/blender/creature_remodel/r03/biota_amphora_antennal_fans_37.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "apical_oral",
+      "point": [
+        3.311369178859991e-09,
+        2.2725000381469727,
+        -1.6556845894299954e-09
+      ]
+    },
+    "Socket_apical_oral": {
+      "bone": "apical_oral",
+      "point": [
+        3.311369178859991e-09,
+        2.2725000381469727,
+        -1.6556845894299954e-09
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "apical_oral",
+      "point": [
+        3.311369178859991e-09,
+        2.2725000381469727,
+        -1.6556845894299954e-09
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        4.788369233312676e-17,
+        0.10999999940395355,
+        0.7820000052452087
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.7820000052452087,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        4.788369233312676e-17,
+        0.10999999940395355,
+        -0.7820000052452087
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -0.7820000052452087,
+        0.10999999940395355,
+        -9.576738466625351e-17
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3735269447828485,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5789667644134152,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    3.311369178859991e-09,
+    2.2725000381469727,
+    -1.6556845894299954e-09
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_antennal_fans_37_near.glb",
+      "sha256": "d2fdc59e5f261b9146b153c6b820234675b4a19aeb3cc8bfb335fc3fd668cd25",
+      "triangles": 51798,
+      "min": [
+        -1.0842722654342651,
+        0.034999996423721313,
+        -1.0842722654342651
+      ],
+      "max": [
+        1.0842722654342651,
+        2.750514507293701,
+        1.0842722654342651
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_antennal_fans_37_far.glb",
+      "sha256": "a744aa46864162666a518cfa1db72ca03f2dae9db6e0569999d9027b27038267",
+      "triangles": 22268,
+      "min": [
+        -1.0841914415359497,
+        0.034997131675481796,
+        -1.0841890573501587
+      ],
+      "max": [
+        1.0841914415359497,
+        2.750514507293701,
+        1.0841890573501587
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "crown_wall30": "chest",
+    "crown_wall31": "crown_wall30",
+    "crown_wall40": "chest",
+    "crown_wall41": "crown_wall40",
+    "crown_wall50": "chest",
+    "crown_wall51": "crown_wall50",
+    "crown_wall60": "chest",
+    "crown_wall61": "crown_wall60",
+    "crown_wall70": "chest",
+    "crown_wall71": "crown_wall70",
+    "crown_wall80": "chest",
+    "crown_wall81": "crown_wall80",
+    "head": "chest",
+    "apical_oral": "head",
+    "apical_oral_petal0": "apical_oral",
+    "apical_oral_petal1": "apical_oral",
+    "apical_oral_petal2": "apical_oral",
+    "apical_oral_petal3": "apical_oral",
+    "apical_oral_petal4": "apical_oral",
+    "apical_oral_petal5": "apical_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "crown_wall01",
+    "organ1": "crown_wall11",
+    "organ2": "crown_wall21",
+    "organ3": "crown_wall31",
+    "organ4": "crown_wall41",
+    "organ5": "crown_wall51",
+    "organ6": "crown_wall61",
+    "organ7": "crown_wall71",
+    "organ8": "crown_wall81"
+  },
+  "build_seconds": 19.504,
+  "source_render_seconds": 6.054,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "ac3af49fa90b303bb08197a95cb3be1bfac8686130c52e97f6b8a245f4f98437"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

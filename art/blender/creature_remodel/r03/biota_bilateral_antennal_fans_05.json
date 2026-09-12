@@ -1,0 +1,215 @@
+{
+  "id": "biota_bilateral_antennal_fans_05",
+  "name": "광각곧은일곱마디쌍부채눈수",
+  "family": "biota_bilateral_antennal_fans",
+  "construction": "bilateral",
+  "organ_system": "antennal_fans",
+  "environment": "crystal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_bilateral_antennal_fans_05",
+  "kind": "bilateral",
+  "habitat": "광물 피막과 모서리를 피해 열린 감각면 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 7,
+    "limb_count": 4,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "좌우 장기낭을 잇는 굵은 신경목·가지 끝에 펼친 감각 부채 / 직렬 배열·주요 기관 7개",
+  "recipe_sha256": "a874a9454afe916288e82da403d77def997c18c31406d726f2ee23fd12a8921e",
+  "authored_anatomy": "Continuous bilateral anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "7b6a4453d5e2506e75aaefb1038117d979b8d2ab5e1573022ff3d02b245d54fe",
+  "normalized_geometry_sha256": "cc4e2c816b36ac33dec5a081a1528bf5b2c506a494cfcf5e9b7e59bb9ae59fb8",
+  "source": "art/blender/creature_remodel/r03/biota_bilateral_antennal_fans_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 31,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7549999952316284,
+        1.9341000318527222
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7549999952316284,
+        1.9341000318527222
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7549999952316284,
+        1.9341000318527222
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.8740000128746033,
+        0.10999999940395355,
+        -0.9024999737739563
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8740000128746033,
+        0.10999999940395355,
+        -0.9024999737739563
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.8740000128746033,
+        0.10999999940395355,
+        -0.6924999952316284
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.8740000128746033,
+        0.10999999940395355,
+        -0.6924999952316284
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.34731491394135444,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5383381166090994,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.7549999952316284,
+    1.9341000318527222
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_bilateral_antennal_fans_05_near.glb",
+      "sha256": "29275a5323c0cf20fcf7b5e5c91e95bb98defa466d90d76271ddb5e1ac4740d9",
+      "triangles": 40986,
+      "min": [
+        -1.0367498397827148,
+        0.034999996423721313,
+        -1.1124998331069946
+      ],
+      "max": [
+        1.0367499589920044,
+        2.1793761253356934,
+        1.9540998935699463
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_bilateral_antennal_fans_05_far.glb",
+      "sha256": "788654281119b934294c056415eea2acb7746875b60733763bff91ed41bfbc8c",
+      "triangles": 17618,
+      "min": [
+        -1.0367498397827148,
+        0.0349971279501915,
+        -1.1123226881027222
+      ],
+      "max": [
+        1.0367499589920044,
+        2.1793761253356934,
+        1.9538216590881348
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "arch00": "chest",
+    "arch01": "arch00",
+    "arch02": "arch01",
+    "arch10": "chest",
+    "arch11": "arch10",
+    "arch12": "arch11",
+    "suspension_neck0": "arch12",
+    "suspension_neck1": "suspension_neck0",
+    "head": "suspension_neck1",
+    "oral": "head",
+    "leg0_upper": "arch00",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "arch00",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "arch10",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "arch10",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "arch00",
+    "organ1": "arch01",
+    "organ2": "arch01",
+    "organ3": "arch02",
+    "organ4": "arch10",
+    "organ5": "arch11",
+    "organ6": "arch12"
+  },
+  "build_seconds": 12.295,
+  "source_render_seconds": 4.156,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "b9c50b37bb731ec861dc884fd5c9c57b7094d41bec0aac76cba04666e0de4dee"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

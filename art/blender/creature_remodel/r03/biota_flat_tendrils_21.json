@@ -1,0 +1,236 @@
+{
+  "id": "biota_flat_tendrils_21",
+  "name": "동결갈래세마디분지판수",
+  "family": "biota_flat_tendrils",
+  "construction": "flat",
+  "organ_system": "tendrils",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_flat_tendrils_21",
+  "kind": "flat",
+  "habitat": "작은 개구부·겹친 단열막의 가상 극저온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "낮고 넓은 판상 몸체와 가장자리 운동기관·말단이 갈라지는 굵은 촉지 / 분기 배열·주요 기관 3개",
+  "recipe_sha256": "e8f3cf60c5d0e446601e7f2c2b25180142433881f3d54520122a144ddf377eab",
+  "authored_anatomy": "Continuous flat anatomy; tendrils lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "4bf8325f4486bcc974336ce8478249410f25a62e096aa85c3d4eacd355043fd6",
+  "normalized_geometry_sha256": "90c27b07ef38c18e3d03b7358a2bd61e41b92afdd4c2987b756299e496bc2778",
+  "source": "art/blender/creature_remodel/r03/biota_flat_tendrils_21.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 44,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_lateral_filter-1": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_lateral_filter1": {
+      "bone": "lateral_filter1",
+      "point": [
+        0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "lateral_filter-1",
+      "point": [
+        -0.2797250747680664,
+        0.5920000076293945,
+        1.0701096057891846
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        7.880601973607408e-17,
+        0.10999999940395355,
+        1.2869999408721924
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.2869999408721924,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        7.880601973607408e-17,
+        0.10999999940395355,
+        -1.2869999408721924
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -1.2869999408721924,
+        0.10999999940395355,
+        -1.5761203947214816e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3986411246024988,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.6178937431338731,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    -0.2797250747680664,
+    0.5920000076293945,
+    1.0701096057891846
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_flat_tendrils_21_near.glb",
+      "sha256": "f01385bae6074bfbef7f422348fcdd2da067619accbd3a73755a19935fa00cc9",
+      "triangles": 29244,
+      "min": [
+        -2.0012104511260986,
+        0.034999996423721313,
+        -1.589272141456604
+      ],
+      "max": [
+        1.965134620666504,
+        0.8668185472488403,
+        2.119459867477417
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_flat_tendrils_21_far.glb",
+      "sha256": "10b388e53f8eedd38675976b5d567566e6870df0affb536648724c85aa806f07",
+      "triangles": 12569,
+      "min": [
+        -1.930376648902893,
+        0.03501151129603386,
+        -1.58936607837677
+      ],
+      "max": [
+        1.9202362298965454,
+        0.8661757707595825,
+        2.1038999557495117
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_axis00": "chest",
+    "radial_axis01": "radial_axis00",
+    "radial_axis10": "chest",
+    "radial_axis11": "radial_axis10",
+    "radial_axis20": "chest",
+    "radial_axis21": "radial_axis20",
+    "head": "chest",
+    "lateral_filter-1": "head",
+    "lateral_filter-1_petal0": "lateral_filter-1",
+    "lateral_filter-1_petal1": "lateral_filter-1",
+    "lateral_filter-1_petal2": "lateral_filter-1",
+    "lateral_filter1": "head",
+    "lateral_filter1_petal0": "lateral_filter1",
+    "lateral_filter1_petal1": "lateral_filter1",
+    "lateral_filter1_petal2": "lateral_filter1",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "radial_axis01",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "radial_axis11",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "radial_axis21",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1"
+  },
+  "build_seconds": 10.278,
+  "source_render_seconds": 3.887,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "25eff716a951002c2531f4bd7f8bf242a9aaee1c55582e6e8229f7c7bf60aee1"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "id": "bio_braid_crawler_02",
+  "source_id": "bio_braid_crawler_02",
+  "name": "세줄편조수",
+  "family": "braid_crawler",
+  "kind": "braid_crawler",
+  "construction": "braid_crawler",
+  "anatomical_type": "braid_crawler",
+  "organ_system": "gills",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "서로 꼬인 여러 근육줄기 사이로 장기가 드러나는 체형 / 사방 연결 골격",
+  "morphology": {
+    "width": 0.85,
+    "height": 1.12,
+    "mode": 1,
+    "radial_count": 4,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "braid_crawler",
+    "support_limbs": 4,
+    "oral_organs": 3,
+    "articulated_organs": 54
+  },
+  "version": "r06-1",
+  "build_fingerprint": "880be0381826bff0bf08f04d543cd63f66d94204d6e63b5625c8ab0c100abc63",
+  "normalized_geometry_sha256": "697abea90703ed885efe4984cd554ce0bb3dbb7188235fd9d6c91f1119c31c60",
+  "source": "art/blender/creature_remodel/r06/bio_braid_crawler_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 72,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_coil_oral0": {
+      "bone": "coil_oral0",
+      "point": [
+        0.15490584075450897,
+        0.9706913232803345,
+        1.1999999284744263
+      ]
+    },
+    "Socket_coil_oral1": {
+      "bone": "coil_oral1",
+      "point": [
+        -0.2034303992986679,
+        0.8757676482200623,
+        1.1999999284744263
+      ]
+    },
+    "Socket_coil_oral2": {
+      "bone": "coil_oral2",
+      "point": [
+        0.048524558544158936,
+        0.5727410912513733,
+        1.1999999284744263
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "coil_oral0",
+      "point": [
+        0.15490584075450897,
+        0.9706913232803345,
+        1.1999999284744263
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "coil_oral0",
+      "point": [
+        0.15490584075450897,
+        0.9706913232803345,
+        1.1999999284744263
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        0.2006799727678299,
+        0.10000000149011612,
+        0.8700000047683716
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7706799507141113,
+        0.10000000149011612,
+        0.30000001192092896
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.21175473928451538,
+        0.10000000149011612,
+        -1.0199999809265137
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.7308614253997803,
+        0.10000000149011612,
+        0.30000001192092896
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2974472120324083,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4610431786502329,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.15490584075450897,
+    0.9706913232803345,
+    1.1999999284744263
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_braid_crawler_02_near.glb",
+      "sha256": "80b1ee4495cd00ed03c863b70f6e9e23de7003b4278526657010ddd116e74af7",
+      "triangles": 50267,
+      "min": [
+        -1.032920479774475,
+        0.02499999850988388,
+        -1.3220590353012085
+      ],
+      "max": [
+        1.0727390050888062,
+        1.2159264087677002,
+        1.2051669359207153
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_braid_crawler_02_far.glb",
+      "sha256": "16dc7f2a5ca1b4f30895ad506df81b584ec2b3661a01b40e9f0029acd04fa25c",
+      "triangles": 21610,
+      "min": [
+        -1.0328469276428223,
+        0.024996532127261162,
+        -1.3219854831695557
+      ],
+      "max": [
+        1.0726710557937622,
+        1.2159264087677002,
+        1.2050384283065796
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_organ00": "chest",
+    "coiled_organ01": "coiled_organ00",
+    "coiled_organ02": "coiled_organ01",
+    "coiled_organ03": "coiled_organ02",
+    "coiled_organ04": "coiled_organ03",
+    "coiled_organ05": "coiled_organ04",
+    "coiled_organ06": "coiled_organ05",
+    "coiled_organ07": "coiled_organ06",
+    "coiled_organ08": "coiled_organ07",
+    "coiled_organ09": "coiled_organ08",
+    "coiled_organ010": "coiled_organ09",
+    "coiled_organ011": "coiled_organ010",
+    "coiled_organ012": "coiled_organ011",
+    "coiled_organ013": "coiled_organ012",
+    "coil_oral0": "coiled_organ013",
+    "coil_oral0_petal0": "coil_oral0",
+    "coil_oral0_petal1": "coil_oral0",
+    "coil_oral0_petal2": "coil_oral0",
+    "coil_oral0_petal3": "coil_oral0",
+    "coiled_organ10": "chest",
+    "coiled_organ11": "coiled_organ10",
+    "coiled_organ12": "coiled_organ11",
+    "coiled_organ13": "coiled_organ12",
+    "coiled_organ14": "coiled_organ13",
+    "coiled_organ15": "coiled_organ14",
+    "coiled_organ16": "coiled_organ15",
+    "coiled_organ17": "coiled_organ16",
+    "coiled_organ18": "coiled_organ17",
+    "coiled_organ19": "coiled_organ18",
+    "coiled_organ110": "coiled_organ19",
+    "coiled_organ111": "coiled_organ110",
+    "coiled_organ112": "coiled_organ111",
+    "coiled_organ113": "coiled_organ112",
+    "coil_oral1": "coiled_organ113",
+    "coil_oral1_petal0": "coil_oral1",
+    "coil_oral1_petal1": "coil_oral1",
+    "coil_oral1_petal2": "coil_oral1",
+    "coil_oral1_petal3": "coil_oral1",
+    "coiled_organ20": "chest",
+    "coiled_organ21": "coiled_organ20",
+    "coiled_organ22": "coiled_organ21",
+    "coiled_organ23": "coiled_organ22",
+    "coiled_organ24": "coiled_organ23",
+    "coiled_organ25": "coiled_organ24",
+    "coiled_organ26": "coiled_organ25",
+    "coiled_organ27": "coiled_organ26",
+    "coiled_organ28": "coiled_organ27",
+    "coiled_organ29": "coiled_organ28",
+    "coiled_organ210": "coiled_organ29",
+    "coiled_organ211": "coiled_organ210",
+    "coiled_organ212": "coiled_organ211",
+    "coiled_organ213": "coiled_organ212",
+    "coil_oral2": "coiled_organ213",
+    "coil_oral2_petal0": "coil_oral2",
+    "coil_oral2_petal1": "coil_oral2",
+    "coil_oral2_petal2": "coil_oral2",
+    "coil_oral2_petal3": "coil_oral2",
+    "support0_upper": "coiled_organ19",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "coiled_organ19",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "coiled_organ24",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "coiled_organ29",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 152.107,
+  "source_render_seconds": 5.682,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "b8fbab7258f0b93266a42ced4e25f49f6a4a4a5d241d2b4273ac96c281adeb65"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

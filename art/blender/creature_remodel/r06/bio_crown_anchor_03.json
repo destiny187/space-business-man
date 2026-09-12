@@ -1,0 +1,244 @@
+{
+  "id": "bio_crown_anchor_03",
+  "source_id": "bio_crown_anchor_03",
+  "name": "오묘관수",
+  "family": "crown_anchor",
+  "kind": "crown_anchor",
+  "construction": "crown_anchor",
+  "anatomical_type": "crown_anchor",
+  "organ_system": "mandibles",
+  "environment": "temperate",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "납작한 복판과 위로 휘어 맞물리는 닻 모양 돌기 / 오방 분절 골격",
+  "morphology": {
+    "width": 1.05,
+    "height": 0.93,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 5,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "657849",
+    "adbc72",
+    "34494e",
+    "bb9357"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "crown_anchor",
+    "support_limbs": 5,
+    "oral_organs": 1,
+    "articulated_organs": 14
+  },
+  "version": "r06-1",
+  "build_fingerprint": "b3d63cfd25b1eaa1fac7291bbb06af6a016aa96f1c345c381bdbd9d43f6548b0",
+  "normalized_geometry_sha256": "7c4c2e22631b0fa05f4366440826d7250637c0f48d614076a7a852a485aca379",
+  "source": "art/blender/creature_remodel/r06/bio_crown_anchor_03.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 43,
+  "locomotion_chains": 5,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_ventral_oral": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.49649783968925476,
+        0.3436739444732666
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.49649783968925476,
+        0.3436739444732666
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "ventral_oral",
+      "point": [
+        0.0,
+        0.49649783968925476,
+        0.3436739444732666
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7893769145011902,
+        0.10000000149011612,
+        0.25648412108421326
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.4878617525100708,
+        0.10000000149011612,
+        -0.671484112739563
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.4878617525100708,
+        0.10000000149011612,
+        -0.671484112739563
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.7893769145011902,
+        0.10000000149011612,
+        0.25648412108421326
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.24222508649947277,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3754488840741828,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.4,
+      "support2": 0.8,
+      "support3": 0.2,
+      "support4": 0.6
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.49649783968925476,
+    0.3436739444732666
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crown_anchor_03_near.glb",
+      "sha256": "bbbb6877384e6b3eb099201867bcd19032f2068983ea29099b88442bc921f81a",
+      "triangles": 30850,
+      "min": [
+        -1.1045093536376953,
+        0.02499999850988388,
+        -0.9729605913162231
+      ],
+      "max": [
+        1.1045093536376953,
+        1.5150532722473145,
+        1.132059097290039
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_crown_anchor_03_far.glb",
+      "sha256": "fdcc6049c5d0a31587cb09552588ea1240faa907996b0c8b92b41c1aa806f8ea",
+      "triangles": 13262,
+      "min": [
+        -1.1045212745666504,
+        0.024997133761644363,
+        -0.9729925990104675
+      ],
+      "max": [
+        1.1045243740081787,
+        1.5147300958633423,
+        1.1319855451583862
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "opposed_hook0_-1": "radial_trunk01",
+    "opposed_hook0_1": "radial_trunk01",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "opposed_hook1_-1": "radial_trunk11",
+    "opposed_hook1_1": "radial_trunk11",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "opposed_hook2_-1": "radial_trunk21",
+    "opposed_hook2_1": "radial_trunk21",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "opposed_hook3_-1": "radial_trunk31",
+    "opposed_hook3_1": "radial_trunk31",
+    "radial_trunk40": "chest",
+    "radial_trunk41": "radial_trunk40",
+    "opposed_hook4_-1": "radial_trunk41",
+    "opposed_hook4_1": "radial_trunk41",
+    "ventral_oral": "chest",
+    "ventral_oral_petal0": "ventral_oral",
+    "ventral_oral_petal1": "ventral_oral",
+    "ventral_oral_petal2": "ventral_oral",
+    "ventral_oral_petal3": "ventral_oral",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk30",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "radial_trunk40",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "head": "chest"
+  },
+  "build_seconds": 21.924,
+  "source_render_seconds": 36.24,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "7aa4a8ccddb189935e421b5adaf009a0a717f275f5037d8732afadc84ece829d"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

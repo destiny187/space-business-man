@@ -1,0 +1,265 @@
+{
+  "id": "bio_umbrella_clutch_07",
+  "source_id": "bio_umbrella_clutch_07",
+  "name": "접힌산개수",
+  "family": "umbrella_clutch",
+  "kind": "umbrella_clutch",
+  "construction": "umbrella_clutch",
+  "anatomical_type": "umbrella_clutch",
+  "organ_system": "tendrils",
+  "environment": "crystal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "층층이 겹친 우산형 장기판 아래에 모인 집게 다발 / 이중 배열 골격",
+  "morphology": {
+    "width": 0.95,
+    "height": 1.05,
+    "mode": 6,
+    "radial_count": 4,
+    "limb_count": 6,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "umbrella_clutch",
+    "support_limbs": 6,
+    "oral_organs": 1,
+    "articulated_organs": 25
+  },
+  "version": "r06-1",
+  "build_fingerprint": "f6a0b073ad96f519cf43712a6c654220514323fd6c04a52eb57e22c7ec333db0",
+  "normalized_geometry_sha256": "00d9eaa36207b5e07f138121f5ca1d052e0978bfdb97f7a0b66c747a077b40f5",
+  "source": "art/blender/creature_remodel/r06/bio_umbrella_clutch_07.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 55,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_central_pharynx0": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.1859999895095825,
+        -0.0
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.1859999895095825,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "central_pharynx0",
+      "point": [
+        0.0,
+        1.1859999895095825,
+        -0.0
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        4.714890448627345e-17,
+        0.10000000149011612,
+        0.7699999809265137
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6936345100402832,
+        0.10000000149011612,
+        0.2849999964237213
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.6936345100402832,
+        0.10000000149011612,
+        -0.2849999964237213
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        4.714890448627345e-17,
+        0.10000000149011612,
+        -0.7699999809265137
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.6936345100402832,
+        0.10000000149011612,
+        -0.2849999964237213
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.6936345100402832,
+        0.10000000149011612,
+        0.2849999964237213
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2641680586003311,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4094604908305132,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.16666666666666666,
+      "support2": 0.3333333333333333,
+      "support3": 0.5,
+      "support4": 0.6666666666666666,
+      "support5": 0.8333333333333334
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.1859999895095825,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_umbrella_clutch_07_near.glb",
+      "sha256": "6352e388fa026f1c3fcb0b072318492b942d9e289912bfc77e7715b63bd0b38a",
+      "triangles": 34932,
+      "min": [
+        -1.0030698776245117,
+        0.02499999850988388,
+        -1.0720590353012085
+      ],
+      "max": [
+        1.0030698776245117,
+        1.2727913856506348,
+        1.0720590353012085
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_umbrella_clutch_07_far.glb",
+      "sha256": "1e5433960bde73d692b5654b7e4de95c9fad9ccd1f84dce9a7589123efd69c23",
+      "triangles": 15016,
+      "min": [
+        -1.0030912160873413,
+        0.024996532127261162,
+        -1.0719879865646362
+      ],
+      "max": [
+        1.0030912160873413,
+        1.2752258777618408,
+        1.0719879865646362
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "oral_wall0_00": "chest",
+    "oral_wall0_01": "oral_wall0_00",
+    "oral_plate0_0": "oral_wall0_00",
+    "oral_wall0_10": "chest",
+    "oral_wall0_11": "oral_wall0_10",
+    "oral_plate0_1": "oral_wall0_10",
+    "oral_wall0_20": "chest",
+    "oral_wall0_21": "oral_wall0_20",
+    "oral_plate0_2": "oral_wall0_20",
+    "oral_wall0_30": "chest",
+    "oral_wall0_31": "oral_wall0_30",
+    "oral_plate0_3": "oral_wall0_30",
+    "central_pharynx0": "chest",
+    "central_pharynx0_petal0": "central_pharynx0",
+    "central_pharynx0_petal1": "central_pharynx0",
+    "central_pharynx0_petal2": "central_pharynx0",
+    "central_pharynx0_petal3": "central_pharynx0",
+    "central_pharynx0_petal4": "central_pharynx0",
+    "subumbrellar_grasper00": "chest",
+    "subumbrellar_grasper01": "subumbrellar_grasper00",
+    "subumbrellar_finger0_-1": "subumbrellar_grasper01",
+    "subumbrellar_finger0_1": "subumbrellar_grasper01",
+    "subumbrellar_grasper10": "chest",
+    "subumbrellar_grasper11": "subumbrellar_grasper10",
+    "subumbrellar_finger1_-1": "subumbrellar_grasper11",
+    "subumbrellar_finger1_1": "subumbrellar_grasper11",
+    "subumbrellar_grasper20": "chest",
+    "subumbrellar_grasper21": "subumbrellar_grasper20",
+    "subumbrellar_finger2_-1": "subumbrellar_grasper21",
+    "subumbrellar_finger2_1": "subumbrellar_grasper21",
+    "subumbrellar_grasper30": "chest",
+    "subumbrellar_grasper31": "subumbrellar_grasper30",
+    "subumbrellar_finger3_-1": "subumbrellar_grasper31",
+    "subumbrellar_finger3_1": "subumbrellar_grasper31",
+    "support0_upper": "oral_wall0_00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "oral_wall0_10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "oral_wall0_10",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "oral_wall0_20",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "oral_wall0_30",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "oral_wall0_30",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "head": "chest"
+  },
+  "build_seconds": 11.871,
+  "source_render_seconds": 6.744,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "dca4eb5d2de85a0f0ea2cd0cc7719e69d1e117a928bc393e35559df646860523"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "id": "biota_amphora_sails_13",
+  "name": "차열굽은다섯마디돛항아리수",
+  "family": "biota_amphora_sails",
+  "construction": "amphora",
+  "organ_system": "sails",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_amphora_sails_13",
+  "kind": "amphora",
+  "habitat": "겹친 광물성 차열판·좁은 보호 기공의 가상 고온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "수축 목과 열린 입구를 가진 항아리 몸체·몸통과 이어진 넓은 측막 / 만곡 배열·주요 기관 5개",
+  "recipe_sha256": "8614bc453ab6c7295166ce94c4355880ed46e80f94c7ca9c2ec4257f4149c95d",
+  "authored_anatomy": "Continuous amphora anatomy; sails lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "4864435f9743fc4076bf172bdcda66de7aa135f2e6e5bffb746090808fd99f88",
+  "normalized_geometry_sha256": "782984cb7ee62a02ae28aa5fde528af5ae866543905f9b32b73233f1fad32d60",
+  "source": "art/blender/creature_remodel/r03/biota_amphora_sails_13.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 37,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "apical_oral",
+      "point": [
+        0.0,
+        1.7919999361038208,
+        4.470348535789981e-09
+      ]
+    },
+    "Socket_apical_oral": {
+      "bone": "apical_oral",
+      "point": [
+        0.0,
+        1.7919999361038208,
+        4.470348535789981e-09
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "apical_oral",
+      "point": [
+        0.0,
+        1.7919999361038208,
+        4.470348535789981e-09
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        5.915044152402573e-17,
+        0.10999999940395355,
+        0.9660000205039978
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.9660000205039978,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        5.915044152402573e-17,
+        0.10999999940395355,
+        -0.9660000205039978
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -0.9660000205039978,
+        0.10999999940395355,
+        -1.1830088304805146e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3466361915189006,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.537286096854296,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    1.7919999361038208,
+    4.470348535789981e-09
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_sails_13_near.glb",
+      "sha256": "08a74ac3d0cf078f3c1d38b32ba20c6a4fb5493da4977b95d29c2cd7f8a06808",
+      "triangles": 30656,
+      "min": [
+        -1.2682722806930542,
+        0.034999996423721313,
+        -1.2682722806930542
+      ],
+      "max": [
+        1.2682722806930542,
+        2.369044542312622,
+        1.2682722806930542
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_sails_13_far.glb",
+      "sha256": "03eeadcf634c3c5a982364117063607c072d4765248ae0e0e38bc3b35ffb0578",
+      "triangles": 13176,
+      "min": [
+        -1.2681915760040283,
+        0.03501151129603386,
+        -1.2681914567947388
+      ],
+      "max": [
+        1.2681915760040283,
+        2.3694727420806885,
+        1.2681914567947388
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "crown_wall30": "chest",
+    "crown_wall31": "crown_wall30",
+    "crown_wall40": "chest",
+    "crown_wall41": "crown_wall40",
+    "head": "chest",
+    "apical_oral": "head",
+    "apical_oral_petal0": "apical_oral",
+    "apical_oral_petal1": "apical_oral",
+    "apical_oral_petal2": "apical_oral",
+    "apical_oral_petal3": "apical_oral",
+    "apical_oral_petal4": "apical_oral",
+    "apical_oral_petal5": "apical_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "crown_wall01",
+    "organ1": "crown_wall11",
+    "organ2": "crown_wall21",
+    "organ3": "crown_wall31",
+    "organ4": "crown_wall41"
+  },
+  "build_seconds": 10.283,
+  "source_render_seconds": 8.572,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "52d71a17213289cec7b517660ca9c037d50c6ae561b697b1824101e80642a4f7"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

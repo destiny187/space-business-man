@@ -38,10 +38,10 @@
     "articulated_organs": 21
   },
   "version": "r06-1",
-  "build_fingerprint": "ac94aa92bb264f9544f6b13f68b4ee7059ea2c568bddc336e1aef8c1c1e17d81",
-  "normalized_geometry_sha256": "18adbdbd58acd5fa389caa560753759a4a62464326e818de8e207ee4c6b768bd",
+  "build_fingerprint": "50c9e5d1f184fee550a753a2a7e2ccb8e21c5c61f95d56d62d083d62d5063785",
+  "normalized_geometry_sha256": "719eb35316938226b56e0e73c00b40198d86df93e674570d4995ad570d540182",
   "source": "art/blender/creature_remodel/r06/bio_spiral_maw_09.blend",
-  "status": "built-awaiting-game-render",
+  "status": "game-render-reviewed",
   "bone_count": 49,
   "locomotion_chains": 8,
   "clips": [
@@ -184,8 +184,8 @@
   "lods": {
     "near": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_spiral_maw_09_near.glb",
-      "sha256": "928e4b1e6a3fdcec54a025bccacfc3c3c6fc5ea1002dc663ca50096367b522ad",
-      "triangles": 43452,
+      "sha256": "d757d3960f88688e3cfd5c451f57c3c244dfa8f86520bda4bbf79256128dbb54",
+      "triangles": 42140,
       "min": [
         -1.060052752494812,
         0.02499999850988388,
@@ -193,14 +193,14 @@
       ],
       "max": [
         1.081504464149475,
-        0.9893038868904114,
+        0.9548749923706055,
         1.3953512907028198
       ]
     },
     "far": {
       "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_spiral_maw_09_far.glb",
-      "sha256": "e2c574b8b3a86dfae8fafac8e99277f11194d4c4fe2ea412b8f83ce3c73c5d37",
-      "triangles": 18680,
+      "sha256": "88cf1a8b9e3a0cf57f895964ccaa7891480e9b836ba8124c3264136b9d41e105",
+      "triangles": 18116,
       "min": [
         -1.0600018501281738,
         0.024996543303132057,
@@ -208,7 +208,7 @@
       ],
       "max": [
         1.0814560651779175,
-        0.9893038868904114,
+        0.9548749923706055,
         1.3952969312667847
       ]
     }
@@ -264,14 +264,14 @@
     "support7_foot": "support7_lower",
     "head": "chest"
   },
-  "build_seconds": 12.884,
-  "source_render_seconds": 3.972,
+  "build_seconds": 14.824,
+  "source_render_seconds": 5.391,
   "animation_capture": {
     "version": 1,
-    "base_fingerprint": "fe8f041255d641f98ebdcd1dfd9cf3edb71668d8e6ff3b8ff7d88b6c82802305"
+    "base_fingerprint": "2ebde787fc7a63f34d2dc2208ee76409deac7f156b8e6f0d0a8624938a6c9617"
   },
   "lod_animation_reuse": {
-    "version": 2,
+    "version": 3,
     "source": "near"
   }
 }

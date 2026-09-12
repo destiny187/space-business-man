@@ -1,0 +1,241 @@
+{
+  "id": "biota_amphora_mandibles_05",
+  "name": "집광곧은일곱마디측악항수",
+  "family": "biota_amphora_mandibles",
+  "construction": "amphora",
+  "organ_system": "mandibles",
+  "environment": "temperate",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_amphora_mandibles_05",
+  "kind": "amphora",
+  "habitat": "넓은 광합성·감각 면과 여과 기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 7,
+    "limb_count": 4,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "수축 목과 열린 입구를 가진 항아리 몸체·맞물리는 한 쌍의 관절 턱 / 직렬 배열·주요 기관 7개",
+  "recipe_sha256": "185764cd607d8542054fc939e70c47dd4b08ee99372a7d73755930a286b15da9",
+  "authored_anatomy": "Continuous amphora anatomy; mandibles lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "9ab20cb9e715d2eed1d3f89ccd64f217737f76146a97ac5f0761c2e7437e6461",
+  "normalized_geometry_sha256": "ed38879586b9ac4241572a8087bc4fcb7c2dc9fe568db1a4c60715779b120854",
+  "source": "art/blender/creature_remodel/r03/biota_amphora_mandibles_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 57,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "apical_oral",
+      "point": [
+        4.257474817137563e-09,
+        1.7599999904632568,
+        -0.0
+      ]
+    },
+    "Socket_apical_oral": {
+      "bone": "apical_oral",
+      "point": [
+        4.257474817137563e-09,
+        1.7599999904632568,
+        -0.0
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "apical_oral",
+      "point": [
+        4.257474817137563e-09,
+        1.7599999904632568,
+        -0.0
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        5.18270575277916e-17,
+        0.10999999940395355,
+        0.8464000225067139
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8464000225067139,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        5.18270575277916e-17,
+        0.10999999940395355,
+        -0.8464000225067139
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -0.8464000225067139,
+        0.10999999940395355,
+        -1.036541150555832e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.33306720637596604,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5162541698827474,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    4.257474817137563e-09,
+    1.7599999904632568,
+    -0.0
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_mandibles_05_near.glb",
+      "sha256": "1b536538e93ad53976ed15037e0b9e0d360ccf9fbabdfb33826db591dae3f21e",
+      "triangles": 34592,
+      "min": [
+        -1.1486722230911255,
+        0.034999996423721313,
+        -1.1486722230911255
+      ],
+      "max": [
+        1.1486722230911255,
+        1.9932587146759033,
+        1.1486722230911255
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_amphora_mandibles_05_far.glb",
+      "sha256": "fae6e5a2a3da4a56abb4ae9cbd093f88943915310550aa614373087fc95bb426",
+      "triangles": 14868,
+      "min": [
+        -1.148589015007019,
+        0.0349971279501915,
+        -1.14859139919281
+      ],
+      "max": [
+        1.148589015007019,
+        1.9937169551849365,
+        1.14859139919281
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "crown_wall00": "chest",
+    "crown_wall01": "crown_wall00",
+    "crown_wall10": "chest",
+    "crown_wall11": "crown_wall10",
+    "crown_wall20": "chest",
+    "crown_wall21": "crown_wall20",
+    "crown_wall30": "chest",
+    "crown_wall31": "crown_wall30",
+    "crown_wall40": "chest",
+    "crown_wall41": "crown_wall40",
+    "crown_wall50": "chest",
+    "crown_wall51": "crown_wall50",
+    "crown_wall60": "chest",
+    "crown_wall61": "crown_wall60",
+    "head": "chest",
+    "apical_oral": "head",
+    "apical_oral_petal0": "apical_oral",
+    "apical_oral_petal1": "apical_oral",
+    "apical_oral_petal2": "apical_oral",
+    "apical_oral_petal3": "apical_oral",
+    "apical_oral_petal4": "apical_oral",
+    "apical_oral_petal5": "apical_oral",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "crown_wall01",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "crown_wall11",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "crown_wall21",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2",
+    "organ3": "crown_wall31",
+    "organ3jaw-1": "organ3",
+    "organ3jaw1": "organ3",
+    "organ4": "crown_wall41",
+    "organ4jaw-1": "organ4",
+    "organ4jaw1": "organ4",
+    "organ5": "crown_wall51",
+    "organ5jaw-1": "organ5",
+    "organ5jaw1": "organ5",
+    "organ6": "crown_wall61",
+    "organ6jaw-1": "organ6",
+    "organ6jaw1": "organ6"
+  },
+  "build_seconds": 13.012,
+  "source_render_seconds": 3.675,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "ebef8a0cb1cbeb27edf18dff9dda46ca93093b110d250223fdf32fa6c15e7ce0"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

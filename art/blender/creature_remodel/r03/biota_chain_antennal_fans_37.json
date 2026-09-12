@@ -1,0 +1,235 @@
+{
+  "id": "biota_chain_antennal_fans_37",
+  "name": "퇴적쌍줄아홉마디수지촉각충",
+  "family": "biota_chain_antennal_fans",
+  "construction": "chain",
+  "organ_system": "antennal_fans",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_chain_antennal_fans_37",
+  "kind": "chain",
+  "habitat": "기질에 닿는 넓은 흡착면과 여과 부속기관 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 3,
+    "radial_count": 9,
+    "limb_count": 4,
+    "width": 0.85,
+    "height": 1.25,
+    "branch_mode": 3,
+    "mode": 3,
+    "eye_count": 0
+  },
+  "anatomy_note": "소화 마디와 관절을 잇는 연쇄 몸통·가지 끝에 펼친 감각 부채 / 쌍열 배열·주요 기관 9개",
+  "recipe_sha256": "55f7a2132b6203c749a3aac2e1a33f973d5b9d93457c80875fbd88ad87da2d88",
+  "authored_anatomy": "Continuous chain anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "ec667af0e61123246cbadfc359705c7d573310ee8e6ad0f7724640da475f48b7",
+  "normalized_geometry_sha256": "291caab1c925fd96fd7d320a42c9e2be91a721338a78ad6e63aa67e0ed6e1e2c",
+  "source": "art/blender/creature_remodel/r03/biota_chain_antennal_fans_37.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 51,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7724999785423279,
+        2.0950000286102295
+      ]
+    },
+    "Socket_telescopic_oral": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7724999785423279,
+        2.0950000286102295
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "telescopic_oral",
+      "point": [
+        0.23000000417232513,
+        0.7724999785423279,
+        2.0950000286102295
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.465000033378601
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.465000033378601
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.5184999704360962,
+        0.10999999940395355,
+        -1.2549999952316284
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.5184999704360962,
+        0.10999999940395355,
+        -1.2549999952316284
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.25617921372348657,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3970777812714042,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.23000000417232513,
+    0.7724999785423279,
+    2.0950000286102295
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_chain_antennal_fans_37_near.glb",
+      "sha256": "13c2faae1e412269cc33082151e9a0237d72686dec5959b472083d83bdb23974",
+      "triangles": 56028,
+      "min": [
+        -0.8479701280593872,
+        0.034999996423721313,
+        -2.294285297393799
+      ],
+      "max": [
+        0.8479701280593872,
+        1.8827358484268188,
+        2.1016688346862793
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_chain_antennal_fans_37_far.glb",
+      "sha256": "b688898bed72d2c0240c0463af8f24e65133d1e933cd6cbd95a5a8dbba1491d1",
+      "triangles": 24088,
+      "min": [
+        -0.8479701280593872,
+        0.0349971279501915,
+        -2.2946994304656982
+      ],
+      "max": [
+        0.8479701280593872,
+        1.8827358484268188,
+        2.1016688346862793
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis0_3": "axis0_2",
+    "axis0_4": "axis0_3",
+    "axis0_5": "axis0_4",
+    "axis0_6": "axis0_5",
+    "axis0_7": "axis0_6",
+    "axis0_8": "axis0_7",
+    "axis1_0": "chest",
+    "axis1_1": "axis1_0",
+    "axis1_2": "axis1_1",
+    "axis1_3": "axis1_2",
+    "axis1_4": "axis1_3",
+    "axis1_5": "axis1_4",
+    "axis1_6": "axis1_5",
+    "axis1_7": "axis1_6",
+    "axis1_8": "axis1_7",
+    "head": "axis1_8",
+    "telescopic_oral": "head",
+    "telescopic_oral_petal0": "telescopic_oral",
+    "telescopic_oral_petal1": "telescopic_oral",
+    "telescopic_oral_petal2": "telescopic_oral",
+    "telescopic_oral_petal3": "telescopic_oral",
+    "telescopic_oral_petal4": "telescopic_oral",
+    "telescopic_oral_petal5": "telescopic_oral",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis1_0",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis1_0",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_2",
+    "organ2": "axis0_4",
+    "organ3": "axis0_6",
+    "organ4": "axis0_8",
+    "organ5": "axis1_1",
+    "organ6": "axis1_3",
+    "organ7": "axis1_5",
+    "organ8": "axis1_7"
+  },
+  "build_seconds": 20.015,
+  "source_render_seconds": 5.568,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "3ee10325e5a975e273bb41970324fb7de297a31487786fcfad85e511b0275bee"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

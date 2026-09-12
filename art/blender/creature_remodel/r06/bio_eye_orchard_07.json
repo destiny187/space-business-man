@@ -1,0 +1,259 @@
+{
+  "id": "bio_eye_orchard_07",
+  "source_id": "bio_eye_orchard_07",
+  "name": "수지다안체 · 고관형",
+  "family": "eye_orchard",
+  "kind": "eye_orchard",
+  "construction": "eye_orchard",
+  "anatomical_type": "eye_orchard",
+  "organ_system": "tendrils",
+  "environment": "temperate",
+  "habitat": "온화한 기후·액체 물·생산자와 먹이망",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.035,
+    "height": 1.025,
+    "mode": 6,
+    "radial_count": 4,
+    "limb_count": 4,
+    "eye_count": 11,
+    "lineage": 0
+  },
+  "attack": "spit",
+  "palette": [
+    "657849",
+    "adbc72",
+    "34494e",
+    "bb9357"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "eye_orchard",
+    "support_limbs": 4,
+    "oral_organs": 4,
+    "articulated_organs": 24
+  },
+  "version": "r06-1",
+  "build_fingerprint": "36084be5801099f227af6151e977d1b360bc82ba104c8eb7f811e9f805c34f10",
+  "normalized_geometry_sha256": "705ac2b0e8bc7561b71e2e071c9d4a5e779bcf7f64701e10a6fc619f9e4a8596",
+  "source": "art/blender/creature_remodel/r06/bio_eye_orchard_07.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 43,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_distal_jet0": {
+      "bone": "distal_jet0",
+      "point": [
+        5.260164268827606e-17,
+        1.628000020980835,
+        1.1890499591827393
+      ]
+    },
+    "Socket_distal_jet1": {
+      "bone": "distal_jet1",
+      "point": [
+        0.8590499758720398,
+        1.7079999446868896,
+        0.33000001311302185
+      ]
+    },
+    "Socket_distal_jet2": {
+      "bone": "distal_jet2",
+      "point": [
+        5.260164268827606e-17,
+        1.7879999876022339,
+        -0.5290499925613403
+      ]
+    },
+    "Socket_distal_jet3": {
+      "bone": "distal_jet3",
+      "point": [
+        -0.8590499758720398,
+        1.628000020980835,
+        0.33000001311302185
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "distal_jet0",
+      "point": [
+        5.260164268827606e-17,
+        1.628000020980835,
+        1.1890499591827393
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "distal_jet0",
+      "point": [
+        5.260164268827606e-17,
+        1.628000020980835,
+        1.1890499591827393
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8299999833106995,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        -0.8299999833106995
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.8299999833106995,
+        0.10000000149011612,
+        -1.0164568744107995e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2595101622554586,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.40224075149596084,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    5.260164268827606e-17,
+    1.628000020980835,
+    1.1890499591827393
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_eye_orchard_07_near.glb",
+      "sha256": "2d127e7abbb5d6d916cfa4b36c65b3fab340d3f703b8190c14e6c8ffa3a78a95",
+      "triangles": 47166,
+      "min": [
+        -1.132059097290039,
+        0.02499999850988388,
+        -1.132059097290039
+      ],
+      "max": [
+        1.132059097290039,
+        2.0880000591278076,
+        1.1882081031799316
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_eye_orchard_07_far.glb",
+      "sha256": "6ec37c7c6785a26a8774f04dafe20568891e009fb460df1bed7f93256fef07e3",
+      "triangles": 20272,
+      "min": [
+        -1.1319855451583862,
+        0.025012250989675522,
+        -1.1319855451583862
+      ],
+      "max": [
+        1.1319855451583862,
+        2.0880000591278076,
+        1.1884137392044067
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "distal_jet0": "radial_trunk01",
+    "distal_jet0_petal0": "distal_jet0",
+    "distal_jet0_petal1": "distal_jet0",
+    "distal_jet0_petal2": "distal_jet0",
+    "distal_jet0_petal3": "distal_jet0",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "distal_jet1": "radial_trunk11",
+    "distal_jet1_petal0": "distal_jet1",
+    "distal_jet1_petal1": "distal_jet1",
+    "distal_jet1_petal2": "distal_jet1",
+    "distal_jet1_petal3": "distal_jet1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "distal_jet2": "radial_trunk21",
+    "distal_jet2_petal0": "distal_jet2",
+    "distal_jet2_petal1": "distal_jet2",
+    "distal_jet2_petal2": "distal_jet2",
+    "distal_jet2_petal3": "distal_jet2",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "distal_jet3": "radial_trunk31",
+    "distal_jet3_petal0": "distal_jet3",
+    "distal_jet3_petal1": "distal_jet3",
+    "distal_jet3_petal2": "distal_jet3",
+    "distal_jet3_petal3": "distal_jet3",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk30",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 11.843,
+  "source_render_seconds": 6.611,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "c17137750e563df968fb74b5e078e5baa315c992b530cb30c45dc0948169c3f8"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

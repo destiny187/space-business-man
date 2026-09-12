@@ -1,0 +1,234 @@
+{
+  "id": "bio_double_vault_02",
+  "source_id": "bio_double_vault_02",
+  "name": "삼궁낙수",
+  "family": "double_vault",
+  "kind": "double_vault",
+  "construction": "double_vault",
+  "anatomical_type": "double_vault",
+  "organ_system": "gills",
+  "environment": "temperate",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "나란한 두 등뼈 아치 아래에 매달린 신경기관 / 사방 연결 골격",
+  "morphology": {
+    "width": 0.85,
+    "height": 1.12,
+    "mode": 1,
+    "radial_count": 4,
+    "limb_count": 4,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "657849",
+    "adbc72",
+    "34494e",
+    "bb9357"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "double_vault",
+    "support_limbs": 4,
+    "oral_organs": 1,
+    "articulated_organs": 26
+  },
+  "version": "r06-1",
+  "build_fingerprint": "526bc55cc920f6f4da4d22feff5c52bb3997d61b8e2369136ffcc192ba8f83bc",
+  "normalized_geometry_sha256": "049bf8af18089ed1387a292e4d07d05565ede9768c717ea5b58eecc2256a769f",
+  "source": "art/blender/creature_remodel/r06/bio_double_vault_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 42,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_hanging_oral": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.8564000129699707,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.8564000129699707,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        0.8564000129699707,
+        1.0299999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.2932499945163727,
+        0.10000000149011612,
+        1.3899999856948853
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8632500171661377,
+        0.10000000149011612,
+        -0.7699999809265137
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        -0.2932499945163727,
+        0.10000000149011612,
+        -1.3399999141693115
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.8632500171661377,
+        0.10000000149011612,
+        -0.7699999809265137
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2774201898827892,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4300012943183233,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    0.8564000129699707,
+    1.0299999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_double_vault_02_near.glb",
+      "sha256": "47cfd4d78ceac29bf2df306a9211879aa1c73735eac09075e9a1f24f0352b010",
+      "triangles": 35470,
+      "min": [
+        -1.1653090715408325,
+        0.02499999850988388,
+        -1.6420589685440063
+      ],
+      "max": [
+        1.1653090715408325,
+        1.9418275356292725,
+        1.6920591592788696
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_double_vault_02_far.glb",
+      "sha256": "238e7aca835c62aa0a584a6333292ec5ac4945c87cbec52d291a4431ac313270",
+      "triangles": 15246,
+      "min": [
+        -1.1652355194091797,
+        0.025011511519551277,
+        -1.6419854164123535
+      ],
+      "max": [
+        1.1652379035949707,
+        1.9423999786376953,
+        1.6919881105422974
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "dorsal_arch00": "chest",
+    "dorsal_arch01": "dorsal_arch00",
+    "dorsal_arch02": "dorsal_arch01",
+    "suspended_neural0_00": "dorsal_arch01",
+    "suspended_neural0_01": "suspended_neural0_00",
+    "suspended_neural0_10": "dorsal_arch01",
+    "suspended_neural0_11": "suspended_neural0_10",
+    "suspended_neural0_20": "dorsal_arch01",
+    "suspended_neural0_21": "suspended_neural0_20",
+    "suspended_neural0_30": "dorsal_arch01",
+    "suspended_neural0_31": "suspended_neural0_30",
+    "dorsal_arch10": "chest",
+    "dorsal_arch11": "dorsal_arch10",
+    "dorsal_arch12": "dorsal_arch11",
+    "suspended_neural1_00": "dorsal_arch11",
+    "suspended_neural1_01": "suspended_neural1_00",
+    "suspended_neural1_10": "dorsal_arch11",
+    "suspended_neural1_11": "suspended_neural1_10",
+    "suspended_neural1_20": "dorsal_arch11",
+    "suspended_neural1_21": "suspended_neural1_20",
+    "suspended_neural1_30": "dorsal_arch11",
+    "suspended_neural1_31": "suspended_neural1_30",
+    "hanging_oral": "chest",
+    "hanging_oral_petal0": "hanging_oral",
+    "hanging_oral_petal1": "hanging_oral",
+    "hanging_oral_petal2": "hanging_oral",
+    "hanging_oral_petal3": "hanging_oral",
+    "support0_upper": "dorsal_arch02",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "dorsal_arch10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "dorsal_arch00",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "dorsal_arch00",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 11.349,
+  "source_render_seconds": 6.005,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "0b1789ce70fbdc6a092da67540a34ecc20384d22faa2e82aff6165239a58dfb1"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

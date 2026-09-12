@@ -1,0 +1,235 @@
+{
+  "id": "biota_ribbon_mandibles_21",
+  "name": "차폐갈래세마디톱니악띠수",
+  "family": "biota_ribbon_mandibles",
+  "construction": "ribbon",
+  "organ_system": "mandibles",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_ribbon_mandibles_21",
+  "kind": "ribbon",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "mode": 2,
+    "eye_count": 0
+  },
+  "anatomy_note": "낮게 굽이치는 두꺼운 리본 몸통·맞물리는 한 쌍의 관절 턱 / 분기 배열·주요 기관 3개",
+  "recipe_sha256": "6e19113d2023a28fa4df1fee9e8c791bbd5c9c7f6f6ed596a3d893a04dad9c67",
+  "authored_anatomy": "Continuous ribbon anatomy; mandibles lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "640798d8e1dc4dc26fba26605e4dc587373ff8401389aca873f310f477e21c5f",
+  "normalized_geometry_sha256": "08a9f2f99c83fcc53a56f9cbc1c0c858214ed91d95f7527d75bcd7a275af6cb2",
+  "source": "art/blender/creature_remodel/r03/biota_ribbon_mandibles_21.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 43,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "lateral_filter-1",
+      "point": [
+        0.24027490615844727,
+        0.3669999837875366,
+        1.5378098487854004
+      ]
+    },
+    "Socket_lateral_filter-1": {
+      "bone": "lateral_filter-1",
+      "point": [
+        0.24027490615844727,
+        0.3669999837875366,
+        1.5378098487854004
+      ]
+    },
+    "Socket_lateral_filter1": {
+      "bone": "lateral_filter1",
+      "point": [
+        0.7997250556945801,
+        0.3669999837875366,
+        1.5378098487854004
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "lateral_filter-1",
+      "point": [
+        0.24027490615844727,
+        0.3669999837875366,
+        1.5378098487854004
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.713699996471405,
+        0.10999999940395355,
+        -1.165000081062317
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.713699996471405,
+        0.10999999940395355,
+        -1.165000081062317
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.713699996471405,
+        0.10999999940395355,
+        -0.2383333146572113
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.713699996471405,
+        0.10999999940395355,
+        -0.2383333146572113
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.23439151095426777,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.36330684197911506,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.24027490615844727,
+    0.3669999837875366,
+    1.5378098487854004
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_ribbon_mandibles_21_near.glb",
+      "sha256": "badd938f16396cccf79afcc3b9318a18e3b0e3b0f1916f8b88e868325d59e9e9",
+      "triangles": 32456,
+      "min": [
+        -0.9754051566123962,
+        0.034999996423721313,
+        -2.0023105144500732
+      ],
+      "max": [
+        0.925754964351654,
+        1.23814058303833,
+        1.58584725856781
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_ribbon_mandibles_21_far.glb",
+      "sha256": "ddf94eee56e9bd509d776d51ff0056786166959f9fb80f2029b3037abd1474d5",
+      "triangles": 13950,
+      "min": [
+        -0.975924551486969,
+        0.034997131675481796,
+        -2.0022411346435547
+      ],
+      "max": [
+        0.925754964351654,
+        1.23860502243042,
+        1.5858211517333984
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "axis1_0": "chest",
+    "axis1_1": "axis1_0",
+    "axis1_2": "axis1_1",
+    "axis2_0": "chest",
+    "axis2_1": "axis2_0",
+    "axis2_2": "axis2_1",
+    "head": "axis2_2",
+    "lateral_filter-1": "head",
+    "lateral_filter-1_petal0": "lateral_filter-1",
+    "lateral_filter-1_petal1": "lateral_filter-1",
+    "lateral_filter-1_petal2": "lateral_filter-1",
+    "lateral_filter1": "head",
+    "lateral_filter1_petal0": "lateral_filter1",
+    "lateral_filter1_petal1": "lateral_filter1",
+    "lateral_filter1_petal2": "lateral_filter1",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis1_1",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis1_1",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "axis0_0",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "axis1_0",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1",
+    "organ2": "axis2_0",
+    "organ2jaw-1": "organ2",
+    "organ2jaw1": "organ2"
+  },
+  "build_seconds": 10.078,
+  "source_render_seconds": 3.732,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "4330e1ea6dca7501b10d7221f653aed47b89e770d55627fafb6c934dc7ab099a"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

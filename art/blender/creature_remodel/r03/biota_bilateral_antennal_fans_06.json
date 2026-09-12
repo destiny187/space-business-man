@@ -1,0 +1,240 @@
+{
+  "id": "biota_bilateral_antennal_fans_06",
+  "name": "완충곧은여덟마디쌍부채눈수",
+  "family": "biota_bilateral_antennal_fans",
+  "construction": "bilateral",
+  "organ_system": "antennal_fans",
+  "environment": "crystal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_bilateral_antennal_fans_06",
+  "kind": "bilateral",
+  "habitat": "외부 물질과 내부 대사를 분리하는 두꺼운 낭벽 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "627789",
+    "b6c7b5",
+    "374c62",
+    "c49361"
+  ],
+  "morphology": {
+    "topology": 0,
+    "radial_count": 8,
+    "limb_count": 6,
+    "width": 0.92,
+    "height": 1,
+    "branch_mode": 0,
+    "mode": 0,
+    "eye_count": 0
+  },
+  "anatomy_note": "좌우 장기낭을 잇는 굵은 신경목·가지 끝에 펼친 감각 부채 / 직렬 배열·주요 기관 8개",
+  "recipe_sha256": "e48c64a05d2672ba44de1c46ca1f6f1d8f2576f2f1bf6a375d36c3ef9865a46c",
+  "authored_anatomy": "Continuous bilateral anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "3c04b1574949d71e84c2ece50bcffaa5e98984f3e9744833257eb8da2df53f86",
+  "normalized_geometry_sha256": "3d5ea74b8b8d111705fc43b628898cd21b462d3ae325f6776464d2c05c059ffb",
+  "source": "art/blender/creature_remodel/r03/biota_bilateral_antennal_fans_06.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 38,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7549999952316284,
+        1.97160005569458
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7549999952316284,
+        1.97160005569458
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7549999952316284,
+        1.97160005569458
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.8740000128746033,
+        0.10999999940395355,
+        -0.9399999976158142
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.8740000128746033,
+        0.10999999940395355,
+        -0.9399999976158142
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.8740000128746033,
+        0.10999999940395355,
+        0.7600000500679016
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.8740000128746033,
+        0.10999999940395355,
+        0.9700000286102295
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -0.8740000128746033,
+        0.10999999940395355,
+        -0.7300000190734863
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        0.8740000128746033,
+        0.10999999940395355,
+        -0.7300000190734863
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.34717023293459326,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5381138610486196,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.7549999952316284,
+    1.97160005569458
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_bilateral_antennal_fans_06_near.glb",
+      "sha256": "d0e62612d193b96e0fc88a908af1f7f75b6479d707406a693eb0f4361b8d632e",
+      "triangles": 51180,
+      "min": [
+        -1.0367498397827148,
+        0.034999996423721313,
+        -1.1499998569488525
+      ],
+      "max": [
+        1.0367499589920044,
+        2.1649117469787598,
+        1.9915999174118042
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_bilateral_antennal_fans_06_far.glb",
+      "sha256": "d0b711fbee0561ad52dc6f03b7df4a52c92d39d0f1dab371439bd3a0898dd6c0",
+      "triangles": 22002,
+      "min": [
+        -1.0367498397827148,
+        0.034999996423721313,
+        -1.14982271194458
+      ],
+      "max": [
+        1.0367499589920044,
+        2.1649117469787598,
+        1.9915999174118042
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "arch00": "chest",
+    "arch01": "arch00",
+    "arch02": "arch01",
+    "arch10": "chest",
+    "arch11": "arch10",
+    "arch12": "arch11",
+    "suspension_neck0": "arch12",
+    "suspension_neck1": "suspension_neck0",
+    "head": "suspension_neck1",
+    "oral": "head",
+    "leg0_upper": "arch00",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "arch00",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "arch02",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "arch02",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "arch10",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "arch10",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "arch00",
+    "organ1": "arch00",
+    "organ2": "arch01",
+    "organ3": "arch02",
+    "organ4": "arch10",
+    "organ5": "arch10",
+    "organ6": "arch11",
+    "organ7": "arch12"
+  },
+  "build_seconds": 15.319,
+  "source_render_seconds": 11.373,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "331519ac4ad281118bf755f93ffb16f790c22778f05ad0391efdae2f6548a47c"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

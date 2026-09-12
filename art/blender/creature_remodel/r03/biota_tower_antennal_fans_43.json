@@ -1,0 +1,256 @@
+{
+  "id": "biota_tower_antennal_fans_43",
+  "name": "차열둘레다섯마디우산눈수",
+  "family": "biota_tower_antennal_fans",
+  "construction": "tower",
+  "organ_system": "antennal_fans",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_antennal_fans_43",
+  "kind": "tower",
+  "habitat": "겹친 광물성 차열판·좁은 보호 기공의 가상 고온 생리 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "morphology": {
+    "topology": 4,
+    "radial_count": 5,
+    "limb_count": 8,
+    "width": 1.1,
+    "height": 0.82,
+    "branch_mode": 4,
+    "mode": 4,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·가지 끝에 펼친 감각 부채 / 방사 배열·주요 기관 5개",
+  "recipe_sha256": "673d95898be0f515551d7ab3d76bab54c2c9d2588fb8bd7ee5dfb9640f4d31f0",
+  "authored_anatomy": "Continuous tower anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "3c0be84c33013163b8119caa997caea9ddfae7a94d50c94bd82e8c96213f70dc",
+  "normalized_geometry_sha256": "98b3a1522da78bfc82e26d2e49ca7d0979a0b83505445fd6b4bc9b11d55c6180",
+  "source": "art/blender/creature_remodel/r03/biota_tower_antennal_fans_43.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 36,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.4101998805999756,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.4101998805999756,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.4101998805999756,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.398779374623584e-17,
+        0.10999999940395355,
+        1.0449999570846558
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.7389265298843384,
+        0.10999999940395355,
+        0.7389265298843384
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        1.0449999570846558,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.7389265298843384,
+        0.10999999940395355,
+        -0.7389265298843384
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        6.398779374623584e-17,
+        0.10999999940395355,
+        -1.0449999570846558
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        -0.7389265298843384,
+        0.10999999940395355,
+        -0.7389265298843384
+      ]
+    },
+    "Socket_leg6": {
+      "bone": "leg6_foot",
+      "point": [
+        -1.0449999570846558,
+        0.10999999940395355,
+        -1.2797558749247167e-16
+      ]
+    },
+    "Socket_leg7": {
+      "bone": "leg7_foot",
+      "point": [
+        -0.7389265298843384,
+        0.10999999940395355,
+        0.7389265298843384
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3517142132858306,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5451570305930374,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.17,
+      "leg3": 0.67,
+      "leg4": 0.34,
+      "leg5": 0.8400000000000001,
+      "leg6": 0.51,
+      "leg7": 0.010000000000000009
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.4101998805999756,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_antennal_fans_43_near.glb",
+      "sha256": "cc76b27d948b79a37dc3e16a1a9495c8cb66cfe63dde10ba609701aa7b0b2110",
+      "triangles": 55704,
+      "min": [
+        -1.3467719554901123,
+        0.034999996423721313,
+        -1.3467719554901123
+      ],
+      "max": [
+        1.3467719554901123,
+        2.8122000694274902,
+        1.3467719554901123
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_antennal_fans_43_far.glb",
+      "sha256": "070d3b8725e30a584a6d26805b1b479b0970a874631586002ed0d923557fe622",
+      "triangles": 23944,
+      "min": [
+        -1.346711277961731,
+        0.034999996423721313,
+        -1.3467092514038086
+      ],
+      "max": [
+        1.346711277961731,
+        2.8122000694274902,
+        1.3467092514038086
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "leg6_upper": "chest",
+    "leg6_lower": "leg6_upper",
+    "leg6_foot": "leg6_lower",
+    "leg7_upper": "chest",
+    "leg7_lower": "leg7_upper",
+    "leg7_foot": "leg7_lower",
+    "organ0": "vertical0",
+    "organ1": "vertical0",
+    "organ2": "vertical1",
+    "organ3": "vertical1",
+    "organ4": "vertical2"
+  },
+  "build_seconds": 15.564,
+  "source_render_seconds": 7.3,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "1ddeff2a7dad48d5b01534d32389976bc9c4e939c9e6ce63429cf9b3be0576b1"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

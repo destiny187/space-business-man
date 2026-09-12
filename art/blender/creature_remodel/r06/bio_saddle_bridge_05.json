@@ -1,0 +1,265 @@
+{
+  "id": "bio_saddle_bridge_05",
+  "source_id": "bio_saddle_bridge_05",
+  "name": "넓은안장수",
+  "family": "saddle_bridge",
+  "kind": "saddle_bridge",
+  "construction": "saddle_bridge",
+  "anatomical_type": "saddle_bridge",
+  "organ_system": "siphons",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "앞뒤 몸통 사이가 비어 있는 안장 등뼈와 복부 현수기관 / 높고 좁은 칠방 골격",
+  "morphology": {
+    "width": 0.72,
+    "height": 1.4,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 7,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "saddle_bridge",
+    "support_limbs": 7,
+    "oral_organs": 1,
+    "articulated_organs": 21
+  },
+  "version": "r06-1",
+  "build_fingerprint": "8dddd09f811f9a17fe4bfe442a1969bdc59bd266de9f84d7e652e23322a10a0e",
+  "normalized_geometry_sha256": "c7f7a7c40ed3e4c90906d00d53fea367229afc440783cc7b18f4b523e92fface",
+  "source": "art/blender/creature_remodel/r06/bio_saddle_bridge_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 46,
+  "locomotion_chains": 7,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_hanging_oral": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        1.0579999685287476,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        1.0579999685287476,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        1.0579999685287476,
+        1.0299999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        3.4902435960421774e-17,
+        0.10000000149011612,
+        1.3899999856948853
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.44564396142959595,
+        0.10000000149011612,
+        1.1753891706466675
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.5557088851928711,
+        0.10000000149011612,
+        -0.8968369364738464
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.2473137229681015,
+        0.10000000149011612,
+        -1.2835522890090942
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.2473137229681015,
+        0.10000000149011612,
+        -1.2835522890090942
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.5557088851928711,
+        0.10000000149011612,
+        -0.8968369364738464
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.44564396142959595,
+        0.10000000149011612,
+        1.1753891706466675
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.33284557960670946,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5159106483903997,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.42857142857142855,
+      "support2": 0.8571428571428571,
+      "support3": 0.2857142857142857,
+      "support4": 0.7142857142857143,
+      "support5": 0.14285714285714285,
+      "support6": 0.5714285714285714
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.0579999685287476,
+    1.0299999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_saddle_bridge_05_near.glb",
+      "sha256": "c29eca2e71e4de313ca98102bd3c4d731df60a029d9b9116f7c9868a21786e9b",
+      "triangles": 41524,
+      "min": [
+        -0.8645065426826477,
+        0.02499999850988388,
+        -1.5872178077697754
+      ],
+      "max": [
+        0.8645065426826477,
+        2.2289602756500244,
+        1.6915544271469116
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_saddle_bridge_05_far.glb",
+      "sha256": "7d4dbb9a16c821e8d85cab9c0d85f4e2bb0b02d653d6b24d1e4a699a1194499a",
+      "triangles": 17852,
+      "min": [
+        -0.864517092704773,
+        0.024996543303132057,
+        -1.5872384309768677
+      ],
+      "max": [
+        0.8645152449607849,
+        2.2296645641326904,
+        1.691625952720642
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "dorsal_arch00": "chest",
+    "dorsal_arch01": "dorsal_arch00",
+    "dorsal_arch02": "dorsal_arch01",
+    "suspended_neural0_00": "dorsal_arch01",
+    "suspended_neural0_01": "suspended_neural0_00",
+    "suspended_neural0_10": "dorsal_arch01",
+    "suspended_neural0_11": "suspended_neural0_10",
+    "suspended_neural0_20": "dorsal_arch01",
+    "suspended_neural0_21": "suspended_neural0_20",
+    "suspended_neural0_30": "dorsal_arch01",
+    "suspended_neural0_31": "suspended_neural0_30",
+    "suspended_neural0_40": "dorsal_arch01",
+    "suspended_neural0_41": "suspended_neural0_40",
+    "suspended_neural0_50": "dorsal_arch01",
+    "suspended_neural0_51": "suspended_neural0_50",
+    "suspended_neural0_60": "dorsal_arch01",
+    "suspended_neural0_61": "suspended_neural0_60",
+    "hanging_oral": "chest",
+    "hanging_oral_petal0": "hanging_oral",
+    "hanging_oral_petal1": "hanging_oral",
+    "hanging_oral_petal2": "hanging_oral",
+    "hanging_oral_petal3": "hanging_oral",
+    "support0_upper": "dorsal_arch02",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "dorsal_arch02",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "dorsal_arch00",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "dorsal_arch00",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "dorsal_arch00",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "dorsal_arch00",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "dorsal_arch02",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "head": "chest"
+  },
+  "build_seconds": 15.521,
+  "source_render_seconds": 5.284,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "942dee8930b9777c5360f71c1357090fd598f9d3212ed231a2b853e7c5a94de1"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

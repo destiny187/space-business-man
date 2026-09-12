@@ -1,0 +1,240 @@
+{
+  "id": "bio_corkscrew_spine_03",
+  "source_id": "bio_corkscrew_spine_03",
+  "name": "삼선척수",
+  "family": "corkscrew_spine",
+  "kind": "corkscrew_spine",
+  "construction": "corkscrew_spine",
+  "anatomical_type": "corkscrew_spine",
+  "organ_system": "mandibles",
+  "environment": "crystal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "수평으로 감긴 나선 척추와 각 고리의 독립 접지기관 / 오방 분절 골격",
+  "morphology": {
+    "width": 1.05,
+    "height": 0.93,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 5,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "corkscrew_spine",
+    "support_limbs": 5,
+    "oral_organs": 1,
+    "articulated_organs": 20
+  },
+  "version": "r06-1",
+  "build_fingerprint": "28a1dda541c62b19c9af3f73a1a0b3580a463432817911aaf020cfaf9ab8b24d",
+  "normalized_geometry_sha256": "89f7f66112f309baa19da95838b2a760772bfe4dc90bcd9dc31db83eabe0e7ee",
+  "source": "art/blender/creature_remodel/r06/bio_corkscrew_spine_03.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 39,
+  "locomotion_chains": 5,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_coil_oral0": {
+      "bone": "coil_oral0",
+      "point": [
+        0.13142046332359314,
+        0.8927463293075562,
+        1.1999999284744263
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "coil_oral0",
+      "point": [
+        0.13142046332359314,
+        0.8927463293075562,
+        1.1999999284744263
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "coil_oral0",
+      "point": [
+        0.13142046332359314,
+        0.8927463293075562,
+        1.1999999284744263
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        0.09600437432527542,
+        0.10000000149011612,
+        0.9200000166893005
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6381065845489502,
+        0.10000000149011612,
+        0.5261396765708923
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.05067640542984009,
+        0.10000000149011612,
+        -0.811139702796936
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.6193987727165222,
+        0.10000000149011612,
+        -0.811139702796936
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.8264634013175964,
+        0.10000000149011612,
+        -0.1738603115081787
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.244158196382629,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.378445204393075,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.4,
+      "support2": 0.8,
+      "support3": 0.2,
+      "support4": 0.6
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.13142046332359314,
+    0.8927463293075562,
+    1.1999999284744263
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_corkscrew_spine_03_near.glb",
+      "sha256": "5009e84708f6469cdb90e86d4f601d49ecd06e1464c4bf8c9af4e14956f43a83",
+      "triangles": 30872,
+      "min": [
+        -1.1415958404541016,
+        0.02499999850988388,
+        -1.179999828338623
+      ],
+      "max": [
+        0.9532389044761658,
+        1.0789180994033813,
+        1.2220591306686401
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_corkscrew_spine_03_far.glb",
+      "sha256": "3fc7ac141335b0e2ebc88eae9eef263aa03e3c3d4e2bcb48cf027f9efbc762fa",
+      "triangles": 13272,
+      "min": [
+        -1.141608476638794,
+        0.025025589391589165,
+        -1.179999828338623
+      ],
+      "max": [
+        0.9532538056373596,
+        1.0789180994033813,
+        1.2219879627227783
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "coiled_organ00": "chest",
+    "coiled_organ01": "coiled_organ00",
+    "coiled_organ02": "coiled_organ01",
+    "coiled_organ03": "coiled_organ02",
+    "coiled_organ04": "coiled_organ03",
+    "coiled_organ05": "coiled_organ04",
+    "coiled_organ06": "coiled_organ05",
+    "coiled_organ07": "coiled_organ06",
+    "coiled_organ08": "coiled_organ07",
+    "coiled_organ09": "coiled_organ08",
+    "coiled_organ010": "coiled_organ09",
+    "coiled_organ011": "coiled_organ010",
+    "coiled_organ012": "coiled_organ011",
+    "coiled_organ013": "coiled_organ012",
+    "coiled_organ014": "coiled_organ013",
+    "coil_oral0": "coiled_organ014",
+    "coil_oral0_petal0": "coil_oral0",
+    "coil_oral0_petal1": "coil_oral0",
+    "coil_oral0_petal2": "coil_oral0",
+    "coil_oral0_petal3": "coil_oral0",
+    "coil_oral0_petal4": "coil_oral0",
+    "support0_upper": "coiled_organ010",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "coiled_organ010",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "coiled_organ05",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "coiled_organ05",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "coiled_organ05",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "head": "chest"
+  },
+  "build_seconds": 12.998,
+  "source_render_seconds": 3.743,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "eebc97125b9b0e258b67f12323b0866b85fcdf4b523849733c4b217f2aa8bfbd"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

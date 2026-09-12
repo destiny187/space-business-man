@@ -1,0 +1,319 @@
+{
+  "id": "bio_radial_mill_04",
+  "source_id": "bio_radial_mill_04",
+  "name": "육노보행수",
+  "family": "radial_mill",
+  "kind": "radial_mill",
+  "construction": "radial_mill",
+  "anatomical_type": "radial_mill",
+  "organ_system": "antennal_fans",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "중앙 배를 둘러싼 두꺼운 노 모양 사지와 말단 흡착판 / 낮고 넓은 육방 골격",
+  "morphology": {
+    "width": 1.3,
+    "height": 0.73,
+    "mode": 3,
+    "radial_count": 6,
+    "limb_count": 6,
+    "eye_count": 0,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "radial_mill",
+    "support_limbs": 6,
+    "oral_organs": 6,
+    "articulated_organs": 42
+  },
+  "version": "r06-1",
+  "build_fingerprint": "098de415b364ac726021b4cc716d684cfd27669bb02ee3d0ef0c2e960f5f2f2e",
+  "normalized_geometry_sha256": "d410bcd15c42859664db46e022ee69df83c5ac467d1cbeff278fb059c7975952",
+  "source": "art/blender/creature_remodel/r06/bio_radial_mill_04.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 69,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_terminal_grip0": {
+      "bone": "terminal_grip0",
+      "point": [
+        7.525454955457971e-17,
+        0.6456000208854675,
+        1.2289999723434448
+      ]
+    },
+    "Socket_terminal_grip1": {
+      "bone": "terminal_grip1",
+      "point": [
+        1.0643452405929565,
+        0.6456000208854675,
+        0.6144999861717224
+      ]
+    },
+    "Socket_terminal_grip2": {
+      "bone": "terminal_grip2",
+      "point": [
+        1.0643452405929565,
+        0.6456000208854675,
+        -0.6144999861717224
+      ]
+    },
+    "Socket_terminal_grip3": {
+      "bone": "terminal_grip3",
+      "point": [
+        7.525454955457971e-17,
+        0.6456000208854675,
+        -1.2289999723434448
+      ]
+    },
+    "Socket_terminal_grip4": {
+      "bone": "terminal_grip4",
+      "point": [
+        -1.0643452405929565,
+        0.6456000208854675,
+        -0.6144999861717224
+      ]
+    },
+    "Socket_terminal_grip5": {
+      "bone": "terminal_grip5",
+      "point": [
+        -1.0643452405929565,
+        0.6456000208854675,
+        0.6144999861717224
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "terminal_grip0",
+      "point": [
+        7.525454955457971e-17,
+        0.6456000208854675,
+        1.2289999723434448
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "terminal_grip0",
+      "point": [
+        7.525454955457971e-17,
+        0.6456000208854675,
+        1.2289999723434448
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.7188010811805725,
+        0.10000000149011612,
+        0.41499999165534973
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.7188010811805725,
+        0.10000000149011612,
+        -0.41499999165534973
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        -0.8299999833106995
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.7188010811805725,
+        0.10000000149011612,
+        -0.41499999165534973
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.7188010811805725,
+        0.10000000149011612,
+        0.41499999165534973
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.20863452620376932,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.32338351561584244,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.16666666666666666,
+      "support2": 0.3333333333333333,
+      "support3": 0.5,
+      "support4": 0.6666666666666666,
+      "support5": 0.8333333333333334
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    7.525454955457971e-17,
+    0.6456000208854675,
+    1.2289999723434448
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_radial_mill_04_near.glb",
+      "sha256": "b942ad79c840fa2bbf11921e899ccbf7c438066eb20b445bc4a23bc37b76e1e3",
+      "triangles": 54168,
+      "min": [
+        -1.1391633749008179,
+        0.02499999850988388,
+        -1.293902039527893
+      ],
+      "max": [
+        1.1391633749008179,
+        0.8180996775627136,
+        1.293902039527893
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_radial_mill_04_far.glb",
+      "sha256": "e150fd0ba61b5593d531c547ebcbec81f0da9462f187673d22505b9cb70010de",
+      "triangles": 23284,
+      "min": [
+        -1.1391633749008179,
+        0.024997133761644363,
+        -1.293902039527893
+      ],
+      "max": [
+        1.1391633749008179,
+        0.8179440498352051,
+        1.293902039527893
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "paddle0": "radial_trunk00",
+    "terminal_grip0": "radial_trunk01",
+    "terminal_grip0_petal0": "terminal_grip0",
+    "terminal_grip0_petal1": "terminal_grip0",
+    "terminal_grip0_petal2": "terminal_grip0",
+    "terminal_grip0_petal3": "terminal_grip0",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "paddle1": "radial_trunk10",
+    "terminal_grip1": "radial_trunk11",
+    "terminal_grip1_petal0": "terminal_grip1",
+    "terminal_grip1_petal1": "terminal_grip1",
+    "terminal_grip1_petal2": "terminal_grip1",
+    "terminal_grip1_petal3": "terminal_grip1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "paddle2": "radial_trunk20",
+    "terminal_grip2": "radial_trunk21",
+    "terminal_grip2_petal0": "terminal_grip2",
+    "terminal_grip2_petal1": "terminal_grip2",
+    "terminal_grip2_petal2": "terminal_grip2",
+    "terminal_grip2_petal3": "terminal_grip2",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "paddle3": "radial_trunk30",
+    "terminal_grip3": "radial_trunk31",
+    "terminal_grip3_petal0": "terminal_grip3",
+    "terminal_grip3_petal1": "terminal_grip3",
+    "terminal_grip3_petal2": "terminal_grip3",
+    "terminal_grip3_petal3": "terminal_grip3",
+    "radial_trunk40": "chest",
+    "radial_trunk41": "radial_trunk40",
+    "paddle4": "radial_trunk40",
+    "terminal_grip4": "radial_trunk41",
+    "terminal_grip4_petal0": "terminal_grip4",
+    "terminal_grip4_petal1": "terminal_grip4",
+    "terminal_grip4_petal2": "terminal_grip4",
+    "terminal_grip4_petal3": "terminal_grip4",
+    "radial_trunk50": "chest",
+    "radial_trunk51": "radial_trunk50",
+    "paddle5": "radial_trunk50",
+    "terminal_grip5": "radial_trunk51",
+    "terminal_grip5_petal0": "terminal_grip5",
+    "terminal_grip5_petal1": "terminal_grip5",
+    "terminal_grip5_petal2": "terminal_grip5",
+    "terminal_grip5_petal3": "terminal_grip5",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk30",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "radial_trunk40",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "radial_trunk50",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "head": "chest"
+  },
+  "build_seconds": 158.935,
+  "source_render_seconds": 10.924,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "c57e7efd286b8946eff04178c9057223a0ac15ad93fa8df3233d732684d80377"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

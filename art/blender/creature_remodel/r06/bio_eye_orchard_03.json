@@ -1,0 +1,322 @@
+{
+  "id": "bio_eye_orchard_03",
+  "source_id": "bio_eye_orchard_03",
+  "name": "수지다안체 · 분절형",
+  "family": "eye_orchard",
+  "kind": "eye_orchard",
+  "construction": "eye_orchard",
+  "anatomical_type": "eye_orchard",
+  "organ_system": "mandibles",
+  "environment": "wetland",
+  "habitat": "충분한 수분·유기 기질·수위 변화",
+  "locomotion_medium": "ground",
+  "anatomy_note": "Original family rebuilt with articulated animal anatomy",
+  "morphology": {
+    "width": 1.07,
+    "height": 1.0,
+    "mode": 2,
+    "radial_count": 5,
+    "limb_count": 8,
+    "eye_count": 7,
+    "lineage": 0
+  },
+  "attack": "spit",
+  "palette": [
+    "3f7467",
+    "8cac80",
+    "34494e",
+    "c0b477"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "eye_orchard",
+    "support_limbs": 8,
+    "oral_organs": 5,
+    "articulated_organs": 30
+  },
+  "version": "r06-1",
+  "build_fingerprint": "9f58dba43e829bdaf4ddfc223ee4d3694cf5c5b6d407a928db56d3c6a2ad773e",
+  "normalized_geometry_sha256": "04d1cc80d4f8a25b003c1ebff9a443ae0e22311072fab409c281ba6980c180d9",
+  "source": "art/blender/creature_remodel/r06/bio_eye_orchard_03.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 62,
+  "locomotion_chains": 8,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_distal_jet0": {
+      "bone": "distal_jet0",
+      "point": [
+        6.093230767747316e-17,
+        1.6100000143051147,
+        1.325100064277649
+      ]
+    },
+    "Socket_distal_jet1": {
+      "bone": "distal_jet1",
+      "point": [
+        0.9463964104652405,
+        1.6899999380111694,
+        0.6375028491020203
+      ]
+    },
+    "Socket_distal_jet2": {
+      "bone": "distal_jet2",
+      "point": [
+        0.5849051475524902,
+        1.7699999809265137,
+        -0.4750528037548065
+      ]
+    },
+    "Socket_distal_jet3": {
+      "bone": "distal_jet3",
+      "point": [
+        -0.5849051475524902,
+        1.6100000143051147,
+        -0.4750528037548065
+      ]
+    },
+    "Socket_distal_jet4": {
+      "bone": "distal_jet4",
+      "point": [
+        -0.9463964104652405,
+        1.6899999380111694,
+        0.6375028491020203
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "distal_jet0",
+      "point": [
+        6.093230767747316e-17,
+        1.6100000143051147,
+        1.325100064277649
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "distal_jet0",
+      "point": [
+        6.093230767747316e-17,
+        1.6100000143051147,
+        1.325100064277649
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6503255367279053,
+        0.10000000149011612,
+        0.4833952784538269
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.8172746896743774,
+        0.10000000149011612,
+        0.08034441620111465
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.5558750033378601,
+        0.10000000149011612,
+        -0.6133952736854553
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        0.15282416343688965,
+        0.10000000149011612,
+        -0.7803444266319275
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.5558750033378601,
+        0.10000000149011612,
+        -0.6133952736854553
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.8172746896743774,
+        0.10000000149011612,
+        0.08034441620111465
+      ]
+    },
+    "Socket_support7": {
+      "bone": "support7_foot",
+      "point": [
+        -0.6503255367279053,
+        0.10000000149011612,
+        0.4833952784538269
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2548953605986811,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.39508780892795575,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.125,
+      "support2": 0.25,
+      "support3": 0.375,
+      "support4": 0.5,
+      "support5": 0.625,
+      "support6": 0.75,
+      "support7": 0.875
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    6.093230767747316e-17,
+    1.6100000143051147,
+    1.325100064277649
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_eye_orchard_03_near.glb",
+      "sha256": "f2f7604bf3ee9a61fb66f5ef035a684e8786e2f6f226b89073033c9c5795e09b",
+      "triangles": 68000,
+      "min": [
+        -1.1188291311264038,
+        0.02499999850988388,
+        -1.081898808479309
+      ],
+      "max": [
+        1.1188291311264038,
+        2.069999933242798,
+        1.3242580890655518
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_eye_orchard_03_far.glb",
+      "sha256": "94b81278197e6691160e25496429ae394bae747222a7510c5a1e05e665a3cf62",
+      "triangles": 29234,
+      "min": [
+        -1.1187807321548462,
+        0.024996543303132057,
+        -1.0818504095077515
+      ],
+      "max": [
+        1.1187807321548462,
+        2.069999933242798,
+        1.3244636058807373
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "distal_jet0": "radial_trunk01",
+    "distal_jet0_petal0": "distal_jet0",
+    "distal_jet0_petal1": "distal_jet0",
+    "distal_jet0_petal2": "distal_jet0",
+    "distal_jet0_petal3": "distal_jet0",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "distal_jet1": "radial_trunk11",
+    "distal_jet1_petal0": "distal_jet1",
+    "distal_jet1_petal1": "distal_jet1",
+    "distal_jet1_petal2": "distal_jet1",
+    "distal_jet1_petal3": "distal_jet1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "distal_jet2": "radial_trunk21",
+    "distal_jet2_petal0": "distal_jet2",
+    "distal_jet2_petal1": "distal_jet2",
+    "distal_jet2_petal2": "distal_jet2",
+    "distal_jet2_petal3": "distal_jet2",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "distal_jet3": "radial_trunk31",
+    "distal_jet3_petal0": "distal_jet3",
+    "distal_jet3_petal1": "distal_jet3",
+    "distal_jet3_petal2": "distal_jet3",
+    "distal_jet3_petal3": "distal_jet3",
+    "radial_trunk40": "chest",
+    "radial_trunk41": "radial_trunk40",
+    "distal_jet4": "radial_trunk41",
+    "distal_jet4_petal0": "distal_jet4",
+    "distal_jet4_petal1": "distal_jet4",
+    "distal_jet4_petal2": "distal_jet4",
+    "distal_jet4_petal3": "distal_jet4",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk10",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk20",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "radial_trunk20",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "radial_trunk30",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "radial_trunk40",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "support7_upper": "radial_trunk40",
+    "support7_lower": "support7_upper",
+    "support7_foot": "support7_lower",
+    "head": "chest"
+  },
+  "build_seconds": 19.395,
+  "source_render_seconds": 10.808,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "2852eb3d24255ab74679b98a2c2348615d8ebb88b058e74fe0629c0a651c677d"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

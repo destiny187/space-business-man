@@ -1,0 +1,268 @@
+{
+  "id": "bio_inverted_fan_05",
+  "source_id": "bio_inverted_fan_05",
+  "name": "칠살역선수",
+  "family": "inverted_fan",
+  "kind": "inverted_fan",
+  "construction": "inverted_fan",
+  "anatomical_type": "inverted_fan",
+  "organ_system": "siphons",
+  "environment": "cold",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "한쪽에 치우친 부채 몸통과 반대쪽의 접지 다발 / 높고 좁은 칠방 골격",
+  "morphology": {
+    "width": 0.72,
+    "height": 1.4,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 7,
+    "eye_count": 7,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "648b9b",
+    "d2e0d4",
+    "34494e",
+    "699ea9"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "inverted_fan",
+    "support_limbs": 7,
+    "oral_organs": 1,
+    "articulated_organs": 24
+  },
+  "version": "r06-1",
+  "build_fingerprint": "19a638947a6bb302c82e97f718b36c67fc30e3464068b785733a24ea73a7dee4",
+  "normalized_geometry_sha256": "f03f4551d0c0fbb5c2b4271069fcea8f6e7085a3255022aa0d611e3af727ce8a",
+  "source": "art/blender/creature_remodel/r06/bio_inverted_fan_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 7,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_low_oral": {
+      "bone": "low_oral",
+      "point": [
+        0.0,
+        1.0080000162124634,
+        0.7300000190734863
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "low_oral",
+      "point": [
+        0.0,
+        1.0080000162124634,
+        0.7300000190734863
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "low_oral",
+      "point": [
+        0.0,
+        1.0080000162124634,
+        0.7300000190734863
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.2800000011920929,
+        0.10000000149011612,
+        0.5699999928474426
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.16564396023750305,
+        0.10000000149011612,
+        0.35538917779922485
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.2757088840007782,
+        0.10000000149011612,
+        -0.12683692574501038
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.0326862707734108,
+        0.10000000149011612,
+        -0.5135522484779358
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.5273137092590332,
+        0.10000000149011612,
+        -0.5135522484779358
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.8357089161872864,
+        0.10000000149011612,
+        -0.12683692574501038
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.7256439328193665,
+        0.10000000149011612,
+        0.35538917779922485
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3328455783559611,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5159106464517398,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.42857142857142855,
+      "support2": 0.8571428571428571,
+      "support3": 0.2857142857142857,
+      "support4": 0.7142857142857143,
+      "support5": 0.14285714285714285,
+      "support6": 0.5714285714285714
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.0080000162124634,
+    0.7300000190734863
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_inverted_fan_05_near.glb",
+      "sha256": "63f96b2e98dcc2c48b54f5decb7a6df0fd5eb092ab77afc22ca9bcf6478b1c11",
+      "triangles": 35107,
+      "min": [
+        -1.1445066928863525,
+        0.02499999850988388,
+        -0.8172177672386169
+      ],
+      "max": [
+        0.7548819184303284,
+        1.842686414718628,
+        0.871554434299469
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_inverted_fan_05_far.glb",
+      "sha256": "5713ac769c321fda5974f5b5190964237f9b296e244e0354eaa1aca2d14daf20",
+      "triangles": 15090,
+      "min": [
+        -1.1445250511169434,
+        0.024996543303132057,
+        -0.8172383308410645
+      ],
+      "max": [
+        0.7548819184303284,
+        1.8426865339279175,
+        0.8715035319328308
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "sensory_spar00": "chest",
+    "sensory_spar01": "sensory_spar00",
+    "sensory_spar10": "chest",
+    "sensory_spar11": "sensory_spar10",
+    "sensory_veil1": "sensory_spar10",
+    "sensory_spar20": "chest",
+    "sensory_spar21": "sensory_spar20",
+    "sensory_veil2": "sensory_spar20",
+    "sensory_spar30": "chest",
+    "sensory_spar31": "sensory_spar30",
+    "sensory_veil3": "sensory_spar30",
+    "sensory_spar40": "chest",
+    "sensory_spar41": "sensory_spar40",
+    "sensory_veil4": "sensory_spar40",
+    "sensory_spar50": "chest",
+    "sensory_spar51": "sensory_spar50",
+    "sensory_veil5": "sensory_spar50",
+    "sensory_spar60": "chest",
+    "sensory_spar61": "sensory_spar60",
+    "sensory_veil6": "sensory_spar60",
+    "low_oral": "chest",
+    "low_oral_petal0": "low_oral",
+    "low_oral_petal1": "low_oral",
+    "low_oral_petal2": "low_oral",
+    "low_oral_petal3": "low_oral",
+    "support0_upper": "chest",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "chest",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "chest",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "chest",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "chest",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "chest",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "chest",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "head": "chest"
+  },
+  "build_seconds": 13.998,
+  "source_render_seconds": 4.983,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "8eb847878dd10a22f03e130da72fd11471cce22ad3cce1daf80a2e0d9538f527"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

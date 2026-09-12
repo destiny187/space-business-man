@@ -1,0 +1,208 @@
+{
+  "id": "biota_tower_antennal_fans_13",
+  "name": "저수굽은다섯마디우산눈수",
+  "family": "biota_tower_antennal_fans",
+  "construction": "tower",
+  "organ_system": "antennal_fans",
+  "environment": "arid",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_tower_antennal_fans_13",
+  "kind": "tower",
+  "habitat": "수분을 보존하는 외피와 연결된 저장낭 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 0
+  },
+  "anatomy_note": "높은 몸통을 아래의 넓은 접지부가 지지·가지 끝에 펼친 감각 부채 / 만곡 배열·주요 기관 5개",
+  "recipe_sha256": "01102edc974cff001af3f1183c100f313b1397782f146ea6d4cf1c0ec70a5e5b",
+  "authored_anatomy": "Continuous tower anatomy; antennal_fans lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "ff688228e8ac27ecd658fecc332136b11a783399eb04dce434be1de197a84d52",
+  "normalized_geometry_sha256": "10553656d661e253c5fb2235dbd870a2db49c183cacbf89a5a963751dc810c4b",
+  "source": "art/blender/creature_remodel/r03/biota_tower_antennal_fans_13.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 24,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        2.076200008392334,
+        0.8349999785423279
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        6.107926127637688e-17,
+        0.10999999940395355,
+        0.9975000023841858
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.9975000023841858,
+        0.10999999940395355,
+        -0.0
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        6.107926127637688e-17,
+        0.10999999940395355,
+        -0.9975000023841858
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        -0.9975000023841858,
+        0.10999999940395355,
+        -1.2215852255275376e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.35662764156461224,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.552772844425149,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    0.0,
+    2.076200008392334,
+    0.8349999785423279
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_antennal_fans_13_near.glb",
+      "sha256": "86030c6e4cb44ad4fa9fbd171d8481b965ccdf7299f1d83391c377b63c89d648",
+      "triangles": 33974,
+      "min": [
+        -1.2997722625732422,
+        0.034999996423721313,
+        -1.2997722625732422
+      ],
+      "max": [
+        1.2997722625732422,
+        2.4781999588012695,
+        1.2997722625732422
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_tower_antennal_fans_13_far.glb",
+      "sha256": "8189e6ec649d21773ff1e3fe10b0f8923586afc4807245e1b4bc5af41a0b04b8",
+      "triangles": 14602,
+      "min": [
+        -1.2996914386749268,
+        0.034999996423721313,
+        -1.2996914386749268
+      ],
+      "max": [
+        1.2996914386749268,
+        2.4781999588012695,
+        1.2996914386749268
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "vertical0": "chest",
+    "vertical1": "vertical0",
+    "vertical2": "vertical1",
+    "head": "vertical2",
+    "oral": "head",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "vertical0",
+    "organ1": "vertical0",
+    "organ2": "vertical1",
+    "organ3": "vertical1",
+    "organ4": "vertical2"
+  },
+  "build_seconds": 8.32,
+  "source_render_seconds": 4.856,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "2ae0476305f81002dd8d4b4971f8646f1b32ae887842c6bdad66545a2176fdb0"
+  },
+  "lod_animation_reuse": {
+    "version": 2,
+    "source": "near"
+  }
+}

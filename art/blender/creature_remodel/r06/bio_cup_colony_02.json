@@ -1,0 +1,263 @@
+{
+  "id": "bio_cup_colony_02",
+  "source_id": "bio_cup_colony_02",
+  "name": "사완군수",
+  "family": "cup_colony",
+  "kind": "cup_colony",
+  "construction": "cup_colony",
+  "anatomical_type": "cup_colony",
+  "organ_system": "gills",
+  "environment": "arid",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "여러 개의 큰 입그릇이 하나의 이동성 몸통을 공유 / 사방 연결 골격",
+  "morphology": {
+    "width": 0.85,
+    "height": 1.12,
+    "mode": 1,
+    "radial_count": 4,
+    "limb_count": 4,
+    "eye_count": 4,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "aa8155",
+    "d0b981",
+    "34494e",
+    "725849"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "cup_colony",
+    "support_limbs": 4,
+    "oral_organs": 4,
+    "articulated_organs": 28
+  },
+  "version": "r06-1",
+  "build_fingerprint": "fabb36a0b535e49d0aab2329dd2d86a33316fb2716e04e6cbc3388c8019823e8",
+  "normalized_geometry_sha256": "98c206f0edaeb7415ad40ed949e60992bf6fc80eb4ff685a12bd03e8c34d4a80",
+  "source": "art/blender/creature_remodel/r06/bio_cup_colony_02.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 47,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_independent_cup0": {
+      "bone": "independent_cup0",
+      "point": [
+        4.5801794536616544e-17,
+        1.0700739622116089,
+        0.7911022305488586
+      ]
+    },
+    "Socket_independent_cup1": {
+      "bone": "independent_cup1",
+      "point": [
+        0.7480000257492065,
+        1.0700739622116089,
+        0.04310218244791031
+      ]
+    },
+    "Socket_independent_cup2": {
+      "bone": "independent_cup2",
+      "point": [
+        4.5801794536616544e-17,
+        1.0700739622116089,
+        -0.7048978209495544
+      ]
+    },
+    "Socket_independent_cup3": {
+      "bone": "independent_cup3",
+      "point": [
+        -0.7480000257492065,
+        1.0700739622116089,
+        0.04310218244791031
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "independent_cup0",
+      "point": [
+        4.5801794536616544e-17,
+        1.0700739622116089,
+        0.7911022305488586
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "independent_cup0",
+      "point": [
+        4.5801794536616544e-17,
+        1.0700739622116089,
+        0.7911022305488586
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        0.8299999833106995
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.8299999833106995,
+        0.10000000149011612,
+        -0.0
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        5.0822843720539976e-17,
+        0.10000000149011612,
+        -0.8299999833106995
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        -0.8299999833106995,
+        0.10000000149011612,
+        -1.0164568744107995e-16
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.2774201891658128,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.43000129320700986,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support2": 0.5,
+      "support3": 0.75
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    4.5801794536616544e-17,
+    1.0700739622116089,
+    0.7911022305488586
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_cup_colony_02_near.glb",
+      "sha256": "da85dd7a99ed205d7a5394be13a3825ac2d7bc6f2895b6c6b91713862bb433b4",
+      "triangles": 38842,
+      "min": [
+        -1.132059097290039,
+        0.02499999850988388,
+        -1.132059097290039
+      ],
+      "max": [
+        1.132059097290039,
+        1.1462225914001465,
+        1.132059097290039
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_cup_colony_02_far.glb",
+      "sha256": "5d4127e550747cc6b647d5ecc54014f483d2f00beec48df1c26e08c96ff1c3fd",
+      "triangles": 16696,
+      "min": [
+        -1.1319855451583862,
+        0.025012250989675522,
+        -1.1319855451583862
+      ],
+      "max": [
+        1.1319855451583862,
+        1.1462225914001465,
+        1.1319855451583862
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "radial_trunk00": "chest",
+    "radial_trunk01": "radial_trunk00",
+    "independent_cup0": "radial_trunk01",
+    "independent_cup0_petal0": "independent_cup0",
+    "independent_cup0_petal1": "independent_cup0",
+    "independent_cup0_petal2": "independent_cup0",
+    "independent_cup0_petal3": "independent_cup0",
+    "independent_cup0_petal4": "independent_cup0",
+    "radial_trunk10": "chest",
+    "radial_trunk11": "radial_trunk10",
+    "independent_cup1": "radial_trunk11",
+    "independent_cup1_petal0": "independent_cup1",
+    "independent_cup1_petal1": "independent_cup1",
+    "independent_cup1_petal2": "independent_cup1",
+    "independent_cup1_petal3": "independent_cup1",
+    "independent_cup1_petal4": "independent_cup1",
+    "radial_trunk20": "chest",
+    "radial_trunk21": "radial_trunk20",
+    "independent_cup2": "radial_trunk21",
+    "independent_cup2_petal0": "independent_cup2",
+    "independent_cup2_petal1": "independent_cup2",
+    "independent_cup2_petal2": "independent_cup2",
+    "independent_cup2_petal3": "independent_cup2",
+    "independent_cup2_petal4": "independent_cup2",
+    "radial_trunk30": "chest",
+    "radial_trunk31": "radial_trunk30",
+    "independent_cup3": "radial_trunk31",
+    "independent_cup3_petal0": "independent_cup3",
+    "independent_cup3_petal1": "independent_cup3",
+    "independent_cup3_petal2": "independent_cup3",
+    "independent_cup3_petal3": "independent_cup3",
+    "independent_cup3_petal4": "independent_cup3",
+    "support0_upper": "radial_trunk00",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "radial_trunk10",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "radial_trunk20",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "radial_trunk30",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "head": "chest"
+  },
+  "build_seconds": 10.943,
+  "source_render_seconds": 3.442,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "cad82592c041aa12d7787b735c372af77b0e9d61fc0366f1aacb71eec7c08015"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "id": "bio_split_keel_05",
+  "source_id": "bio_split_keel_05",
+  "name": "오교쌍골수",
+  "family": "split_keel",
+  "kind": "split_keel",
+  "construction": "split_keel",
+  "anatomical_type": "split_keel",
+  "organ_system": "siphons",
+  "environment": "crystal",
+  "habitat": "준비한 지상 체형. 서식 기후·지지면·공간 조건을 통과한 위치에만 출현.",
+  "locomotion_medium": "ground",
+  "anatomy_note": "두 개의 긴 몸통이 가로 근육으로 결합된 지상 동물 / 높고 좁은 칠방 골격",
+  "morphology": {
+    "width": 0.72,
+    "height": 1.4,
+    "mode": 4,
+    "radial_count": 7,
+    "limb_count": 7,
+    "eye_count": 2,
+    "lineage": 0
+  },
+  "attack": "none",
+  "palette": [
+    "526977",
+    "a1bfbd",
+    "34494e",
+    "5cabac"
+  ],
+  "host_pattern": "none",
+  "host_motion": "",
+  "production_batch": "r06",
+  "source_renderer": "BLENDER_EEVEE",
+  "authored_anatomy": {
+    "family": "split_keel",
+    "support_limbs": 7,
+    "oral_organs": 1,
+    "articulated_organs": 24
+  },
+  "version": "r06-1",
+  "build_fingerprint": "3f78374f1ddb75ee3cf4181985781ac7a5b7ec0562bd064516ea3a72ed6a1f35",
+  "normalized_geometry_sha256": "79416d90907a6f27f443da66f64231a0570db6bba3d21c3d128ba826956265de",
+  "source": "art/blender/creature_remodel/r06/bio_split_keel_05.blend",
+  "status": "game-render-reviewed",
+  "bone_count": 49,
+  "locomotion_chains": 7,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_hanging_oral": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        1.0579999685287476,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        1.0579999685287476,
+        1.0299999713897705
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "hanging_oral",
+      "point": [
+        0.0,
+        1.0579999685287476,
+        1.0299999713897705
+      ]
+    },
+    "Socket_support0": {
+      "bone": "support0_foot",
+      "point": [
+        -0.2484000027179718,
+        0.10000000149011612,
+        1.3899999856948853
+      ]
+    },
+    "Socket_support1": {
+      "bone": "support1_foot",
+      "point": [
+        0.6940439343452454,
+        0.10000000149011612,
+        1.1753891706466675
+      ]
+    },
+    "Socket_support2": {
+      "bone": "support2_foot",
+      "point": [
+        0.8041089177131653,
+        0.10000000149011612,
+        -0.8968369364738464
+      ]
+    },
+    "Socket_support3": {
+      "bone": "support3_foot",
+      "point": [
+        0.4957137405872345,
+        0.10000000149011612,
+        -1.2835522890090942
+      ]
+    },
+    "Socket_support4": {
+      "bone": "support4_foot",
+      "point": [
+        -0.4957137405872345,
+        0.10000000149011612,
+        -1.2835522890090942
+      ]
+    },
+    "Socket_support5": {
+      "bone": "support5_foot",
+      "point": [
+        -0.8041089177131653,
+        0.10000000149011612,
+        -0.8968369364738464
+      ]
+    },
+    "Socket_support6": {
+      "bone": "support6_foot",
+      "point": [
+        -0.6940439343452454,
+        0.10000000149011612,
+        1.1753891706466675
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3328455798542549,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5159106487740951,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.42857142857142855,
+      "support2": 0.8571428571428571,
+      "support3": 0.2857142857142857,
+      "support4": 0.7142857142857143,
+      "support5": 0.14285714285714285,
+      "support6": 0.5714285714285714
+    },
+    "strike_origins": []
+  },
+  "muzzle": [
+    0.0,
+    1.0579999685287476,
+    1.0299999713897705
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_split_keel_05_near.glb",
+      "sha256": "b5ed655573e073f0aa3866026909aefad543bb7d7b1d93654d8cf35b54eee28a",
+      "triangles": 35198,
+      "min": [
+        -1.112906575202942,
+        0.02499999850988388,
+        -1.587217926979065
+      ],
+      "max": [
+        1.112906575202942,
+        1.407829999923706,
+        1.6915544271469116
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r06/bio_split_keel_05_far.glb",
+      "sha256": "0a415237f6018ef0bd112c2a0e683a104835e164a9b38ecc973277c3c6d3f44c",
+      "triangles": 15130,
+      "min": [
+        -1.1129215955734253,
+        0.02499714307487011,
+        -1.5872379541397095
+      ],
+      "max": [
+        1.112917184829712,
+        1.4090043306350708,
+        1.69162118434906
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "dorsal_arch00": "chest",
+    "dorsal_arch01": "dorsal_arch00",
+    "dorsal_arch02": "dorsal_arch01",
+    "dorsal_arch10": "chest",
+    "dorsal_arch11": "dorsal_arch10",
+    "dorsal_arch12": "dorsal_arch11",
+    "transverse_muscle00": "chest",
+    "transverse_muscle01": "transverse_muscle00",
+    "transverse_muscle10": "chest",
+    "transverse_muscle11": "transverse_muscle10",
+    "transverse_muscle20": "chest",
+    "transverse_muscle21": "transverse_muscle20",
+    "transverse_muscle30": "chest",
+    "transverse_muscle31": "transverse_muscle30",
+    "transverse_muscle40": "chest",
+    "transverse_muscle41": "transverse_muscle40",
+    "transverse_muscle50": "chest",
+    "transverse_muscle51": "transverse_muscle50",
+    "transverse_muscle60": "chest",
+    "transverse_muscle61": "transverse_muscle60",
+    "hanging_oral": "chest",
+    "hanging_oral_petal0": "hanging_oral",
+    "hanging_oral_petal1": "hanging_oral",
+    "hanging_oral_petal2": "hanging_oral",
+    "hanging_oral_petal3": "hanging_oral",
+    "support0_upper": "dorsal_arch02",
+    "support0_lower": "support0_upper",
+    "support0_foot": "support0_lower",
+    "support1_upper": "dorsal_arch12",
+    "support1_lower": "support1_upper",
+    "support1_foot": "support1_lower",
+    "support2_upper": "dorsal_arch10",
+    "support2_lower": "support2_upper",
+    "support2_foot": "support2_lower",
+    "support3_upper": "dorsal_arch10",
+    "support3_lower": "support3_upper",
+    "support3_foot": "support3_lower",
+    "support4_upper": "dorsal_arch00",
+    "support4_lower": "support4_upper",
+    "support4_foot": "support4_lower",
+    "support5_upper": "dorsal_arch00",
+    "support5_lower": "support5_upper",
+    "support5_foot": "support5_lower",
+    "support6_upper": "dorsal_arch02",
+    "support6_lower": "support6_upper",
+    "support6_foot": "support6_lower",
+    "head": "chest"
+  },
+  "build_seconds": 18.695,
+  "source_render_seconds": 4.661,
+  "animation_capture": {
+    "version": 1,
+    "base_fingerprint": "fc6fbccf9f90b06758076f21de717f112f16100095617bec204bbf11ba539b6d"
+  },
+  "lod_animation_reuse": {
+    "version": 3,
+    "source": "near"
+  }
+}
