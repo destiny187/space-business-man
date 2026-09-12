@@ -1,10 +1,14 @@
 extends "res://scripts/showcase/creature_remodel_field.gd"
 ## R02 imported campaign actors. Forced presentation registration is confined to this review.
 var video:=false
+var batch_name:="r02"
 func run() -> void:
 	if "--check-scope" in OS.get_cmdline_user_args():
 		audit_scope();quit();return
-	folder=ProjectSettings.globalize_path("res://../output/creature-remodel/r02")
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--batch="):batch_name=argument.trim_prefix("--batch=")
+	assert(batch_name.is_valid_identifier())
+	folder=ProjectSettings.globalize_path("res://../output/creature-remodel/"+batch_name)
 	DirAccess.make_dir_recursive_absolute(folder)
 	video="--video" in OS.get_cmdline_user_args()
 	root.size=Vector2i(960,720);root.content_scale_size=root.size;root.msaa_3d=Viewport.MSAA_4X
@@ -19,10 +23,16 @@ func run() -> void:
 	title=Label.new();title.position=Vector2(24,18);title.add_theme_font_override("font",font);title.add_theme_font_size_override("font_size",25);title.add_theme_color_override("font_color",Color("203a36"));root.add_child(title)
 	caption=Label.new();caption.position=Vector2(26,57);caption.add_theme_font_override("font",font);caption.add_theme_font_size_override("font_size",17);caption.add_theme_color_override("font_color",Color("37574d"));root.add_child(caption)
 	var filter:=Array(OS.get_cmdline_user_args()).filter(func(x):return not x.begins_with("--"))
-	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_r02.json"))
+	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_"+batch_name+".json"))
 	for form in manifest.forms:
 		if not filter.is_empty() and form.id not in filter and form.family not in filter:continue
+		if "--unreviewed" in OS.get_cmdline_user_args():
+			var checkpoint: String=folder+"/"+form.id+"_evidence.json"
+			if FileAccess.file_exists(checkpoint):
+				var previous: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(checkpoint))
+				if previous.get("renderer","")=="forward_plus" and previous.species.asset_sha256=={"near":form.lods.near.sha256,"far":form.lods.far.sha256}:continue
 		await review_batch(form)
+		FileAccess.open(folder+"/"+form.id+"_evidence.json",FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"species":report[-1]},"\t"))
 	var evidence_name:="/diagnostic-evidence.json" if "--diagnostic" in OS.get_cmdline_user_args() else ("/video-evidence.json" if video else "/evidence.json")
 	FileAccess.open(folder+evidence_name,FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"actor":"bestiary_actor.gd","species":report},"\t"))
 	print("REMODEL_BATCH_DONE ",report.size());quit()
@@ -42,13 +52,20 @@ func center_camera(actor: Node3D,form: Dictionary) -> void:
 
 func review_batch(form: Dictionary) -> void:
 	var original:=FrontierEcologyCatalog.form(form.source_id)
-	assert(not original.is_empty() and FrontierWildlifeCombat.pattern(original)=="none")
+	assert(not original.is_empty())
+	var host_pattern: String=FrontierWildlifeCombat.pattern(original)
+	if batch_name in ["r02","r03"]:assert(host_pattern=="none")
 	Actor.RemodelRegistry.entry(original);Actor.RemodelRegistry.entries[original.id]=form
 	var actor:=Actor.new();actor.defer_far=true;actor.lod_override=0
-	actor.configure(original,{"scale":1.,"palette":original.palette});stage.add_child(actor);actor.set_process(false)
+	var ready_scenes: Array=[]
+	if "--direct" in OS.get_cmdline_user_args():
+		for lod in ["near","far"]:
+			var gltf:=GLTFDocument.new();var state:=GLTFState.new();assert(gltf.append_from_file("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"),state)==OK)
+			var model:=gltf.generate_scene(state);var packed:=PackedScene.new();assert(packed.pack(model)==OK);model.free();ready_scenes.append(packed)
+	actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes);stage.add_child(actor);actor.set_process(false)
 	assert(actor.finish_lods() and actor.models.size()==2)
 	assert(actor.ground_motion.authored_limbs.size()==int(form.locomotion_chains))
-	assert(not actor.set_state("attack"))
+	assert(actor.set_state("attack")== (host_pattern!="none"));actor.set_state("idle")
 	var host_profile:=FrontierWildlifeCombat.profile({"form_id":original.id,"look_id":FrontierEcologyCatalog.look_for_seed(original.id,0),"combat_tier":5})
 	var fast_speed: float=host_profile.speed
 	var motion=actor.ground_motion;var max_error:=0.;var max_error_at: Dictionary={};var bone_motion:=0.;var first_bones: Array=[];var root_error:=0.;var phase_checks:=0
@@ -109,7 +126,7 @@ func review_batch(form: Dictionary) -> void:
 	at.z+=.05;at.y=height(at.x,at.z);actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.);center_camera(actor,form)
 	assert(actor.visible_model==1 and actor.mouth_marker==motion.socket_nodes[1].Socket_Muzzle)
 	caption.text="원거리 LOD · 같은 골격과 발사 기관";await photograph(form.id,"far")
-	report.append({"id":form.id,"family":form.family,"species_id":original.id,"bone_count":form.bone_count,"clip_count":form.clips.size(),"limb_phase_checks":phase_checks,"root_error":root_error,"max_foot_target_error":max_error,"max_error_at":max_error_at,"bone_motion":bone_motion,"lods":2,"host_attack":"none","tested_host_flee_speed":fast_speed,"socket_samples":socket_samples,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256}})
+	report.append({"id":form.id,"family":form.family,"species_id":original.id,"bone_count":form.bone_count,"clip_count":form.clips.size(),"limb_phase_checks":phase_checks,"root_error":root_error,"max_foot_target_error":max_error,"max_error_at":max_error_at,"bone_motion":bone_motion,"lods":2,"host_attack":host_pattern,"tested_host_flee_speed":fast_speed,"socket_samples":socket_samples,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256}})
 	print("REMODEL_BATCH ",form.id," bones=",form.bone_count," feet=",phase_checks," error=",max_error);actor.free()
 
 func audit_scope() -> void:
@@ -129,10 +146,21 @@ func audit_scope() -> void:
 	var phase_before: float=actor.ground_motion.phase;var state_before: String=actor.state
 	assert(not actor.set_state("attack") and actor.state==state_before and actor.ground_motion.phase==phase_before)
 	actor.restored_down=true;actor.set_state("dormant");actor.ground_motion.tick(1./30.);actor.ground_motion.pose_authored()
+	var own_skeleton: Skeleton3D=actor.anatomical_skeletons[0];var root_bone:=own_skeleton.find_bone("root")
+	var down_pose:=own_skeleton.get_bone_global_pose(root_bone)
+	assert(down_pose.origin.y<own_skeleton.get_bone_global_rest(root_bone).origin.y-.1)
 	var down_time: float=actor.ground_motion.pose_clock
-	actor.restored_down=true;actor.ground_motion.tick(1./30.);assert(actor.ground_motion.pose_clock==down_time)
+	actor.restored_down=true;actor.ground_motion.tick(1./30.);actor.ground_motion.pose_authored();assert(actor.ground_motion.pose_clock==down_time and own_skeleton.get_bone_global_pose(root_bone).is_equal_approx(down_pose))
 	assert(actors[1].state=="idle" and actors[1].global_position==Vector3.ZERO and actors[1].models[0].get_instance_id()==untouched_node)
 	assert(actors[1].ground_motion.phase==0 and actors[1].ground_motion.ground_samples.is_empty() and actors[1].ground_motion.settling_feet.is_empty())
 	for b in untouched.get_bone_count():assert(before[b]==untouched.get_bone_global_pose(b))
 	print("REMODEL_SCOPE one actor moved/restored; peer pose, node, phase and caches unchanged; rejected attack and duplicate restored state unchanged; no world save or request publisher invoked")
+	# The growing catalogue reads one small entry on demand, once; no full batch manifest scan.
+	var lazy_form:=FrontierEcologyCatalog.form("biota_spindle_armor_01")
+	var reads_before: int=Actor.RemodelRegistry.individual_reads
+	Actor.RemodelRegistry.entry_paths[lazy_form.id]="res://data/creature_remodel/r03/biota_spindle_armor_01.json"
+	var entry:=Actor.RemodelRegistry.entry(lazy_form);assert(entry.source_id==lazy_form.id)
+	Actor.RemodelRegistry.path(lazy_form,"near");Actor.RemodelRegistry.bounds(lazy_form)
+	assert(Actor.RemodelRegistry.individual_reads==reads_before+1)
+	print("REMODEL_LAZY_METADATA one individual file read; subsequent path/bounds reuse the cached entry")
 	holder.free()
