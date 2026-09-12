@@ -20,6 +20,7 @@ def main():
     args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
     rows=recipes()
     if '--representatives' in args:rows=[next(r for r in rows if r['construction']==kind) for kind in dict.fromkeys(r['construction'] for r in rows)]
+    elif '--lineages' in args:rows=[next(r for r in rows if (r['construction'],r['morphology']['lineage'])==key) for key in dict.fromkeys((r['construction'],r['morphology']['lineage']) for r in rows)]
     elif '--all' not in args:rows=[r for r in rows if r['id'] in args or r['construction'] in args]
     assert rows
     source=ROOT/'art/blender/creature_remodel/r06';source.mkdir(parents=True,exist_ok=True)

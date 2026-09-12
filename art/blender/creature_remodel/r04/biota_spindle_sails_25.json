@@ -1,0 +1,214 @@
+{
+  "id": "biota_spindle_sails_25",
+  "name": "융빙측막분지뿔초식수",
+  "family": "biota_spindle_sails",
+  "construction": "cervid",
+  "organ_system": "sails",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "anatomy_note": "높은 네 갈래굽 다리·세운 목·분지 여과뿔 · 측막 기관 계통",
+  "source_id": "biota_spindle_sails_25",
+  "kind": "cervid",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "기저 저장층과 짧은 단열 주름 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 2,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "cervid",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "ram",
+  "host_motion": "charge",
+  "authored_anatomy": {
+    "type": "cervid",
+    "support_limb_count": 4,
+    "attachment_chains": 12,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "33f6050045b5f50f8001aebd19e48287bf657db41723b07afb3429a4279e74ae",
+  "normalized_geometry_sha256": "b5bbed5f168e824a7a00274f054750253cf9b4edc298eeddc7cf345ea9bae184",
+  "source": "art/blender/creature_remodel/r04/biota_spindle_sails_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 29,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down",
+    "charge_loop"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.6918998956680298,
+        1.6542999744415283
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.6918998956680298,
+        1.6542999744415283
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.6918998956680298,
+        1.6542999744415283
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.31001201272010803,
+        0.10000000149011612,
+        0.49364998936653137
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.31001201272010803,
+        0.10000000149011612,
+        0.49364998936653137
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.31001201272010803,
+        0.10000000149011612,
+        -0.5283499956130981
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.31001201272010803,
+        0.10000000149011612,
+        -0.5283499956130981
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3077833574384969,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4770642040296702,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    1.6918998956680298,
+    1.6542999744415283
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_spindle_sails_25_near.glb",
+      "sha256": "157ec8be1207caf36d663c4f50a4ecd15a42a7af1fb2eb0a6acfdefa0a473828",
+      "triangles": 43308,
+      "min": [
+        -0.6315886378288269,
+        0.02499999850988388,
+        -1.0057601928710938
+      ],
+      "max": [
+        0.649161696434021,
+        2.930737257003784,
+        1.6644997596740723
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_spindle_sails_25_far.glb",
+      "sha256": "17130fa4531036330c1b2f6d4f161428fd27b51d8e79ea5b6316a6193a78725f",
+      "triangles": 18614,
+      "min": [
+        -0.6315886378288269,
+        0.02499999850988388,
+        -1.007830262184143
+      ],
+      "max": [
+        0.649161696434021,
+        2.930737257003784,
+        1.6644997596740723
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1"
+  },
+  "build_seconds": 18.216,
+  "source_render_seconds": 3.897
+}

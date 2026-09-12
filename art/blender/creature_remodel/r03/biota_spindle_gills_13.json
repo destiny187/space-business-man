@@ -1,0 +1,204 @@
+{
+  "id": "biota_spindle_gills_13",
+  "name": "단열굽은다섯마디목깃도약수",
+  "family": "biota_spindle_gills",
+  "construction": "spindle",
+  "organ_system": "gills",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "source_renderer": "BLENDER_EEVEE",
+  "source_id": "biota_spindle_gills_13",
+  "kind": "spindle",
+  "habitat": "짧은 말단과 두꺼운 단열 외피 · 행성 기후와 실제 서식 층을 별도 검사한다.",
+  "attack": "bite",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "morphology": {
+    "topology": 1,
+    "radial_count": 5,
+    "limb_count": 4,
+    "width": 1.05,
+    "height": 0.92,
+    "branch_mode": 1,
+    "mode": 1,
+    "eye_count": 2
+  },
+  "anatomy_note": "목과 꼬리가 이어진 유선형 근육 몸통·넓게 펼친 깃 아가미 / 만곡 배열·주요 기관 5개",
+  "recipe_sha256": "9cf1165f31f735f75ddc0d37d22935b5cbeb63ab37733700eedbea0db3cfadc0",
+  "authored_anatomy": "Continuous spindle anatomy; gills lineage; independent load and organ chains",
+  "version": "r03-2",
+  "build_fingerprint": "ab3d2a3965d5fa8eacc06659bded39bc5bc40582851b7822ec0a083108d4085b",
+  "normalized_geometry_sha256": "cc8111058ad4c7e18c01a32ce984a88706186d7fd11b5c40aa1ef98c88fef778",
+  "source": "art/blender/creature_remodel/r03/biota_spindle_gills_13.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 28,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.9733999371528625,
+        1.7466000318527222
+      ]
+    },
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.9733999371528625,
+        1.7466000318527222
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        -4.408728404608808e-17,
+        0.9733999371528625,
+        1.7466000318527222
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -0.640500009059906,
+        0.10999999940395355,
+        -1.1150000095367432
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        0.640500009059906,
+        0.10999999940395355,
+        -1.1150000095367432
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -0.640500009059906,
+        0.10999999940395355,
+        -0.22166666388511658
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        0.640500009059906,
+        0.10999999940395355,
+        -0.22166666388511658
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3261493768063015,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.5055315340497674,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    }
+  },
+  "muzzle": [
+    -4.408728404608808e-17,
+    0.9733999371528625,
+    1.7466000318527222
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spindle_gills_13_near.glb",
+      "sha256": "161b62870cb35715f982b3e74ccfe26808c8895d43a3f294eb14cf5f6386182c",
+      "triangles": 41458,
+      "min": [
+        -0.8032498359680176,
+        0.034999996423721313,
+        -1.9355788230895996
+      ],
+      "max": [
+        0.8032499551773071,
+        1.6980268955230713,
+        1.7665998935699463
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r03/biota_spindle_gills_13_far.glb",
+      "sha256": "f2bbae0ee92b094435a3e31779c754f0fdf4ce0e407807b505e579c824d59b17",
+      "triangles": 17818,
+      "min": [
+        -0.8032498359680176,
+        0.035012952983379364,
+        -1.9355788230895996
+      ],
+      "max": [
+        0.803215503692627,
+        1.6984812021255493,
+        1.7665998935699463
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axis0_0": "chest",
+    "axis0_1": "axis0_0",
+    "axis0_2": "axis0_1",
+    "head": "axis0_2",
+    "oral": "head",
+    "orbital0_lid": "head",
+    "orbital1_lid": "head",
+    "tail0": "axis0_0",
+    "tail1": "tail0",
+    "leg0_upper": "axis0_0",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "axis0_0",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "axis0_1",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "axis0_1",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "organ0": "axis0_0",
+    "organ1": "axis0_0",
+    "organ2": "axis0_1",
+    "organ3": "axis0_2",
+    "organ4": "axis0_2"
+  },
+  "build_seconds": 21.062,
+  "source_render_seconds": 4.32
+}

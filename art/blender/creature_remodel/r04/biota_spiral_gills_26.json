@@ -1,0 +1,212 @@
+{
+  "id": "biota_spiral_gills_26",
+  "name": "차폐깃여과절갑굴착수",
+  "family": "biota_spiral_gills",
+  "construction": "armadillo",
+  "organ_system": "gills",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "anatomy_note": "띠로 나뉜 돔 등갑·짧은 굴착다리·관절 코·가느다란 고리꼬리 · 깃여과 기관 계통",
+  "source_id": "biota_spiral_gills_26",
+  "kind": "armadillo",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "저압 먼지에 노출된 감각기관을 감싸는 차폐판 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "armadillo",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "none",
+  "host_motion": "",
+  "authored_anatomy": {
+    "type": "armadillo",
+    "support_limb_count": 4,
+    "attachment_chains": 11,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "dc40671a33587009c9a185f0da92d1d61958381612f1509c38a0ed2b65076c6c",
+  "normalized_geometry_sha256": "bf671f6430f4eea7941a2d90271cfee3eb4e3fc0dfec78c34ad3cf9d91d97b15",
+  "source": "art/blender/creature_remodel/r04/biota_spiral_gills_26.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 28,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.30539995431900024,
+        1.467599868774414
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.30539995431900024,
+        1.467599868774414
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.30539995431900024,
+        1.467599868774414
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.6244000196456909,
+        0.10000000149011612,
+        0.4355350136756897
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.6244000196456909,
+        0.10000000149011612,
+        0.4355350136756897
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.6244000196456909,
+        0.10000000149011612,
+        -0.46826499700546265
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.6244000196456909,
+        0.10000000149011612,
+        -0.46826499700546265
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.19487290375072364,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.30205300081362163,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.30539995431900024,
+    1.467599868774414
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_spiral_gills_26_near.glb",
+      "sha256": "6139a408d5968203b3bc5b833ea85e64ae1c93102cc3eb1c1b71bf2a24b9d9c8",
+      "triangles": 37240,
+      "min": [
+        -0.7889999151229858,
+        0.02499999850988388,
+        -0.9333410263061523
+      ],
+      "max": [
+        0.7889999747276306,
+        1.4028935432434082,
+        1.4699997901916504
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_spiral_gills_26_far.glb",
+      "sha256": "dfef1006b12db2049599a7879db41afe78d5942b363050e04b8107997a47a899",
+      "triangles": 16004,
+      "min": [
+        -0.7889877557754517,
+        0.02499714121222496,
+        -0.9337841868400574
+      ],
+      "max": [
+        0.7889885902404785,
+        1.402657151222229,
+        1.4699997901916504
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1",
+    "organ2": "axial0"
+  },
+  "build_seconds": 15.956,
+  "source_render_seconds": 10.56
+}

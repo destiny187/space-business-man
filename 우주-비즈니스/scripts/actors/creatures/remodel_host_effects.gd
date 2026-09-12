@@ -8,6 +8,18 @@ var last_pulses:=0
 var was_blocked:=false
 var emitted_contacts:=0
 
+func contact_origin(actor: Node3D,index: int=0) -> Vector3:
+	var sources: Array=actor.remodel.motion_profile.get("strike_origins",[])
+	if not sources.is_empty():
+		var source: Dictionary=sources[index%sources.size()]
+		for skeleton: Skeleton3D in actor.anatomical_skeletons:
+			if not skeleton.is_visible_in_tree():continue
+			var bone:=skeleton.find_bone(str(source.bone))
+			if bone<0:continue
+			var rest_point:=Vector3(source.point[0],source.point[1],source.point[2])
+			return skeleton.global_transform*skeleton.get_bone_global_pose(bone)*skeleton.get_bone_global_rest(bone).affine_inverse()*rest_point
+	return actor.mouth_marker.global_position if is_instance_valid(actor.mouth_marker) else actor.global_position
+
 func sync(actor: Node3D,draw: bool) -> void:
 	terrain_probe=actor.ground_motion.probe
 	ground_level=actor.global_position.y-float(actor.combat_live.get("air_height",0))-.06
@@ -19,13 +31,14 @@ func sync(actor: Node3D,draw: bool) -> void:
 		serial=next_serial;phase=next_phase;hit_masks.clear();last_pulses=0;was_blocked=false
 		if first:
 			hit_masks=attack.get("hits",{}).duplicate();last_pulses=int(attack.get("pulses",0));was_blocked=attack.get("blocked",false)
-	var mouth: Vector3=actor.mouth_marker.global_position if is_instance_valid(actor.mouth_marker) else actor.global_position
+	var mouth:=contact_origin(actor)
 	for id in attack.get("hits",{}):
 		var mask:=int(attack.hits[id]);var prior:=int(hit_masks.get(id,0));hit_masks[id]=mask
 		if not draw or mask==prior or not actor.combat_targets.has(id):continue
 		var member: Dictionary=actor.combat_targets[id]
 		var at: Vector3=actor.get_parent().to_global(FrontierCrewWorld.vector(member.position))+Vector3.UP*.92
-		var normal: Vector3=(mouth-at).normalized()
+		var origin:=contact_origin(actor,1 if mask&2 else 0)
+		var normal: Vector3=(origin-at).normalized()
 		if normal.length_squared()<.01:normal=-actor.global_basis.z
 		var shield_now:=float(member.get("vitals",{}).get("shield",0))
 		var shield_hit: bool=float(shield_before.get(id,shield_now))>shield_now or shield_now>0

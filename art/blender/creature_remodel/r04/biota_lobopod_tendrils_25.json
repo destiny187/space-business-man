@@ -1,0 +1,226 @@
+{
+  "id": "biota_lobopod_tendrils_25",
+  "name": "융빙갈래촉지감각깃추적수",
+  "family": "biota_lobopod_tendrils",
+  "construction": "canid",
+  "organ_system": "tendrils",
+  "environment": "cold",
+  "locomotion_medium": "ground",
+  "anatomy_note": "발가락으로 딛는 네 다리·긴 주둥이·깃꼬리·삼각 감각귀 · 갈래촉지 기관 계통",
+  "source_id": "biota_lobopod_tendrils_25",
+  "kind": "canid",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "기저 저장층과 짧은 단열 주름 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "canid",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "bite",
+  "host_motion": "melee",
+  "authored_anatomy": {
+    "type": "canid",
+    "support_limb_count": 4,
+    "attachment_chains": 25,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "826f096937c77effbed07bee7c912e1f8738125a2c8d126931a5169746b86a41",
+  "normalized_geometry_sha256": "d451430ae8b6175052afd3535903e439618e28219b733f885c1ffcdbbc310593",
+  "source": "art/blender/creature_remodel/r04/biota_lobopod_tendrils_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 42,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.9424999952316284,
+        1.7170000076293945
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.28726398944854736,
+        0.10000000149011612,
+        0.5166599750518799
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.28726398944854736,
+        0.10000000149011612,
+        0.5166599750518799
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.28726398944854736,
+        0.10000000149011612,
+        -0.5521399974822998
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.28726398944854736,
+        0.10000000149011612,
+        -0.5521399974822998
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.24198504522923642,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.37507682010531646,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.9424999952316284,
+    1.7170000076293945
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_tendrils_25_near.glb",
+      "sha256": "7a0614ea91727e6f438ca513b53d1e78dbbb68a6b5428d18de961efa57b115c8",
+      "triangles": 31539,
+      "min": [
+        -0.40276387333869934,
+        0.02499999850988388,
+        -1.2824082374572754
+      ],
+      "max": [
+        0.4319082200527191,
+        2.016117811203003,
+        1.7349997758865356
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_lobopod_tendrils_25_far.glb",
+      "sha256": "9b46ba70636dfca4419c7f5dc1f95563a3a618262955f007df8de6d8dcc602ae",
+      "triangles": 13552,
+      "min": [
+        -0.40276387333869934,
+        0.024996541440486908,
+        -1.2824082374572754
+      ],
+      "max": [
+        0.431873083114624,
+        2.0159928798675537,
+        1.7349997758865356
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "axial1",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "axial0",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1"
+  },
+  "build_seconds": 14.447,
+  "source_render_seconds": 6.497
+}

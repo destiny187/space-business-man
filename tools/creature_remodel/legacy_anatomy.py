@@ -29,34 +29,66 @@ def panel(s,name,root,edge,parent,slot='shell'):
     return name
 
 def classic(s):
-    k=s.spec['construction'];m=s.spec['morphology'];mode=m['mode'];w=m['width'];h=m['height']
+    k=s.spec['construction'];m=s.spec['morphology'];mode=m['mode'];w=m['width'];h=m['height'];lineage=m.get('lineage',0)
     mammals={'grazer':'bovid','stalker':'canid','burrower':'mustelid','lithic':'rhinocerid','runner':'macropod'}
     insects={'carapace':'crab','mantid':'mantid'}
     if k in mammals|insects:
-        s.spec['construction']=(mammals|insects)[k]
+        s.spec['construction']=s.spec.get('anatomical_type',(mammals|insects)[k])
         (quadruped if k in mammals else arthropod)(s);s.spec['construction']=k
-        if k=='lithic':
+        if k=='grazer':
+            at=V(s.muzzles['oral'])
+            for side in [-1,1]:
+                pts=[at+V((side*.10,.09,0)),at+V((side*.19,-.12,-.02)),at+V((side*.12,-.27,.035))]
+                names=axis(s,'prehensile_labium'+str(side),pts,[.075,.065,.035],'mouth','oral')
+                s.oval('Soft split cropping pad',pts[-1],(.075,.10,.05),'ventral',names[-1])
+        elif k=='lithic':
             for side in [-1,1]:
                 hip=V((side*.39,0,.90));knee=V((side*.67,.06,.50));foot=V((side*.74,-.06,.1))
+                if lineage:
+                    fore=next(l for l in s.legs if l['name']=='front'+str(side));hind=next(l for l in s.legs if l['name']=='hind'+str(side))
+                    hip=V(fore['hip']).lerp(V(hind['hip']),.5);foot=V(fore['foot']).lerp(V(hind['foot']),.5)+V((side*.13,0,0));knee=hip.lerp(foot,.5)+V((side*.12,0,0))
                 limb(s,'median'+str(side),hip,knee,foot,(0,-1,0),.17,'chest',.25 if side<0 else .75)
             for j in range(4+mode%4):
-                y=-.62+j*1.24/(3+mode%4);s.oval('Interlocking mineral dermal boss',(0,y,1.49),(.35,.15,.18),'shell','chest')
+                y=-.62+j*1.24/(3+mode%4);s.oval('Interlocking mineral dermal boss',(0,y,1.49 if not lineage else s.support_height+.34),(.35,.15,.18),'shell','chest')
         elif k=='burrower':
             for side in [-1,1]:
                 foot=next(l for l in s.legs if l['name']=='front'+str(side))
                 for j in [-1,0,1]:
                     p=V(foot['foot'])+V((j*.06,-.08,.04));s.tube('Excavating shovel claw',[p,p+V((j*.045,-.23,-.01))],[.06,.008],'keratin',foot['name']+'_foot')
         elif k=='runner':
-            at=V((0,-.27,1.48));sensor(s,'cranial_crest',[at,at+V((0,.04,.3)),at+V((0,.18,.44))],'head')
+            at=V((0,-.27,1.48)) if not lineage else (s.bones['head']['a']+s.bones['head']['b'])*.5+V((0,0,.15))
+            sensor(s,'cranial_crest',[at,at+V((0,.04,.3)),at+V((0,.18,.44))],'head')
             for leg in s.legs:
                 for j in [-1,0,1]:
                     p=V(leg['foot']);s.tube('Running traction digit',[p,p+V((j*.12,-.30,.01))],[.04,.005],'keratin',leg['name']+'_foot')
         elif k=='stalker':
-            for side in [-1,1]:sensor(s,'rear_audio'+str(side),[(side*.25,.15,1.4),(side*.33,.24,1.65),(side*.42,.38,1.72)])
+            for side in [-1,1]:
+                z=1.4 if not lineage else s.support_height+.16;sensor(s,'rear_audio'+str(side),[(side*.25,.15,z),(side*.33,.24,z+.25),(side*.42,.38,z+.32)])
+        elif k=='mantid':
+            for side in [-1,1]:
+                for j in range(3):
+                    p=V((side*.22,.30+j*.23,s.support_height+.22));panel(s,'abdominal_respiration'+str(side)+'_'+str(j),p,[p+V((side*.23,.08,.20)),p+V((side*.34,-.08,.07)),p+V((side*.12,-.14,0))],'abdomen','ventral')
+                if lineage:
+                    at=(s.bones['head']['a']+s.bones['head']['b'])*.5;pts=[at+V((side*.16,.10,-.08)),at+V((side*.49,-.15,.10)),at+V((side*.43,-.66,-.10))]
+                    names=axis(s,'raptorial_secondary'+str(side),pts,[.10,.09,.065],'neck','head')
+                    for j in range(4+lineage):
+                        p=V(pts[1]).lerp(V(pts[2]),j/(4+lineage));s.tube('Opposing secondary gripping tooth',[p,p+V((-side*.09,0,.06))],[.025,.003],'keratin',names[-1])
+        elif k=='carapace':
+            for j in range(3 if lineage==4 else 2):
+                p=V((0,.08+j*.27,s.support_height+.25));axis(s,'arched_carapace'+str(j),[p+V((-.5,0,-.14)),p+V((0,0,.35)),p+V((.5,0,-.14))],[.09,.13,.09],'rib')
+            if lineage==2:
+                # The shielded beetle lineage still needs real claws for its preserved attack.
+                at=(s.bones['head']['a']+s.bones['head']['b'])*.5
+                for side in [-1,1]:
+                    pts=[at+V((side*.18,.05,-.08)),at+V((side*.44,-.26,-.03)),at+V((side*.37,-.59,.02))]
+                    names=axis(s,'raptorial'+str(side),pts,[.10,.12,.08],'neck','head')
+                    for sign in [-1,1]:
+                        p=pts[-1]+V((sign*.065,0,0));jaw='terminal_chela'+str(side)+'_'+str(sign);s.bone(jaw,p,p+V((0,-.24,0)),names[-1]);s.jaws.append(jaw)
+                        s.tube('Opposed terminal gripping claw',[p,p+V((sign*.10,-.12,.03)),p+V((-sign*.045,-.27,.02))],[.055,.046,.003],'keratin',jaw)
         return
     if k in ['coil','slug']:
-        z=.28;length=2.6+.05*mode;count=9+mode%6
-        s.bone('chest',(0,.5,z),(0,.25,z));pts=[V((.19*math.sin(i/count*math.tau),length*(.5-i/count),z+.04*math.sin(i/count*math.pi))) for i in range(count+1)]
+        z=.28;length=2.6+.05*mode+.19*lineage;count=9+mode%6+lineage*2
+        s.bone('chest',(0,.5,z),(0,.25,z));pts=[V(((.19+.045*lineage)*math.sin(i/count*math.tau*(1+.25*lineage)),length*(.5-i/count),z+.04*math.sin(i/count*math.pi))) for i in range(count+1)]
         names=axis(s,'peristaltic_axis',pts,[.09+.15*math.sin(i/count*math.pi*.85) for i in range(count+1)])
         for i,p in enumerate(pts[:-1]):
             s.oval('Ventral contractile traction pad',p-V((0,0,.16)),(.19,.16,.055),'ventral',names[i])
@@ -71,12 +103,16 @@ def classic(s):
     oral(s,'oral',(0,-.91,z),names[0],radius=.16);s.bone('head',(0,-.45,z),(0,-.85,z),names[0])
     span=(1.42 if k in ['ray','winged'] else .69)*w
     for side in [-1,1]:
-        pts=[V((side*.25,-.1,z)),V((side*span*.54,-.17,z+.07)),V((side*span,.11,z)),V((side*span*.87,.76,z-.02))]
+        pts=[V((side*.25,-.1,z)),V((side*span*.54,-.17-.07*lineage,z+.07)),V((side*span,.11-.13*lineage,z)),V((side*span*(.87-.08*lineage),.76+.06*lineage,z-.02))]
         fin=axis(s,'propulsive_fin'+str(side),pts,[.09,.06,.045,.01],'flight_wing' if k=='winged' else 'swim_fin')
         for j in range(5+mode%4):
             start=pts[0].lerp(pts[2],j/(5+mode%4));end=start+V((side*.09,.62*(1-j/(7+mode%4)),0));n='fin_ray'+str(side)+'_'+str(j)
             s.bone(n,start,end,fin[min(2,j*3//(5+mode%4))]);s.organs.append((n,'swim_ray',j*.4));s.tube('Flexible propulsive ray',[start,end],[.03,.007],'keratin',n)
         s.membrane('Continuous tensioned propulsive membrane',[pts[0],pts[1],pts[2],pts[3],V((side*.18,.49,z-.04))],'ventral')
+        if lineage in [2,4]:
+            back=[V((side*.2,.6,z)),V((side*span*.45,.9,z+.03)),V((side*span*.64,1.24,z))]
+            names=axis(s,'posterior_propulsor'+str(side),back,[.07,.045,.015],'flight_wing' if k=='winged' else 'swim_fin')
+            s.membrane('Separate posterior propulsion membrane',[back[0],back[1],back[2],V((side*.12,1.3,z))],'ventral')
     for side in [-1,1]:panel(s,'caudal_fluke'+str(side),(0,1.30,z),[(side*.35,1.58,z),(side*.22,1.89,z),(0,1.65,z)],names[-1],'ventral')
     if k=='winged':
         for side in [-1,1]:limb(s,'clasp'+str(side),(side*.17,.12,z-.1),(side*.25,.31,.42),(side*.28,.12,.1),(0,-1,0),.07,'chest',0 if side<0 else .5)
@@ -142,6 +178,14 @@ def radial_bodies(s,k,m,z,w):
                 panel(s,'oral_plate'+str(layer)+'_'+str(i),p,edge,bones[0],'ventral' if k=='tripod_bell' else 'shell')
                 stations.append((bones[0],p));
             oral(s,'central_pharynx'+str(layer),(0,0,h-.10),'chest',(0,0,1),.20,5)
+        if k=='umbrella_clutch':
+            for i,d in enumerate(directions(n)):
+                p=d*.28+V((0,0,z-.06));middle=p+d*.24+V((0,0,-.24));tip=middle-d*.12+V((0,0,-.18))
+                names=axis(s,'subumbrellar_grasper'+str(i),[p,middle,tip],[.09,.07,.055],'neck')
+                tangent=V((-d.y,d.x,0))
+                for side in [-1,1]:
+                    start=tip+tangent*.06*side;name='subumbrellar_finger'+str(i)+'_'+str(side);s.bone(name,start,start-d*.2,names[-1]);s.jaws.append(name)
+                    s.tube('Opposing subumbrellar clasp',[start,start+tangent*.08*side-d*.12,start-d*.25],[.05,.035,.005],'keratin',name)
     else:
         for i,d in enumerate(directions(n)):
             p=d*.26+V((0,0,z));tip=d*(.83+.05*(mode%3))*w+V((0,0,z+.12));middle=p.lerp(tip,.55)
@@ -178,10 +222,12 @@ def plates(s,k,m,z,w):
     elif k in ['veil_antler','inverted_fan']:
         s.oval('Low neural mantle',(0,0,z),(.44*w,.57,.24),soft=True)
         for i in range(n):
-            a=-1.05+i*2.10/max(1,n-1);root=V((0,.14,z));tip=V((math.sin(a)*.95*w,.31, z+.36+math.cos(a)*.77));names=axis(s,'sensory_spar'+str(i),[root,root.lerp(tip,.55),tip],[.07,.05,.012],'sensor')
+            a=-1.05+i*2.10/max(1,n-1);root=V((-.24 if k=='inverted_fan' else 0,.14,z))
+            tip=V(((.45+.55*math.cos(a))*w,math.sin(a)*.85,z+.15+math.cos(a)*.65)) if k=='inverted_fan' else V((math.sin(a)*.95*w,.31,z+.36+math.cos(a)*.77))
+            names=axis(s,'sensory_spar'+str(i),[root,root.lerp(tip,.55),tip],[.07,.05,.012],'sensor')
             if i:panel(s,'sensory_veil'+str(i),root,[previous,tip],names[0],'ventral')
             previous=tip
-        oral(s,'low_oral',(0,-.58,z),'chest');stations=[('chest',V((0,0,z)))]
+        oral(s,'low_oral',(0,-.58,z),'chest');stations=[('chest',V((-.28 if k=='inverted_fan' else 0,0,z)))]
     elif k=='crescent_maw':
         pts=[V((math.cos(-2.25+i/12*4.5)*.75*w,math.sin(-2.25+i/12*4.5)*.83,z)) for i in range(13)];names=axis(s,'crescent_axis',pts,[.22]*13)
         for i in [0,-1]:oral(s,'opposed_oral'+str(i),pts[i],names[0] if i==0 else names[-1],(-.1,1 if i==0 else -1,0),.18)
@@ -196,7 +242,11 @@ def plates(s,k,m,z,w):
         count=n+2;pts=[V((.10*math.sin(i*.8),.9-i*1.8/count,z+(.18*math.sin(i/count*math.pi) if k=='knuckle_chain' else 0))) for i in range(count+1)]
         names=axis(s,'serial_visceral_axis',pts,[.18 if k=='ribbon_colony' else .23]*(count+1));stations=[(names[i],pts[i]) for i in range(count)]
         for i,p in enumerate(pts[:-1]):
-            if k in ['accordion_shell','petal_mantis']:
+            if k=='accordion_shell':
+                ring=[p+V((math.cos(a)*.39*w,0,math.sin(a)*.30)) for a in [j*math.tau/24 for j in range(25)]]
+                s.tube('Articulated concertina collar',ring,[.085]*len(ring),'shell',names[i],sides=14)
+                s.tube('Flexible inter-collar fold',[q+V((0,-.10,0)) for q in ring],[.035]*len(ring),'ventral',names[i],sides=10)
+            elif k=='petal_mantis':
                 for side in [-1,1]:panel(s,'serial_plate'+str(i)+str(side),p,[p+V((side*.56*w,.16,.27)),p+V((side*.70*w,-.11,.1)),p+V((side*.22,-.23,0))],names[i],'shell')
             else:s.oval('Contractile serial visceral chamber',p,(.31,.22,.29),'ventral',names[i])
             if k in ['manymouth','ribbon_colony']:
@@ -213,7 +263,7 @@ def body(s):
         elif k in ['gyre_tower','spiral_maw','spiral_hinge','corkscrew_spine','braid_crawler','offset_halo']:stations=coils(s,k,m,z,w)
         elif k in ['walking_calyx','tripod_bell','funnel_stilt','cup_colony','crown_anchor','crown_stalker','umbrella_clutch','eye_orchard','radial_mill','root_octant']:stations=radial_bodies(s,k,m,z,w)
         else:stations=plates(s,k,m,z,w)
-        if stations is not None:
+        if stations is not None and k!='lantern_sail':
             # Supports belong to the actual nearest body station; no distant floating leg roots.
             count=int(m['limb_count'])
             for i,d in enumerate(directions(count)):
@@ -222,6 +272,7 @@ def body(s):
                 limb(s,'support'+str(i),hip,knee,foot,d,.105 if count>6 else .14,parent,(i*(count//2 if count%2 else 1)%count)/count)
                 s.oval('Load bearing joint capsule',knee,(.12,.12,.105),'shell','support'+str(i)+'_lower')
             s.support_height=z
+        elif k=='lantern_sail':s.support_height=z
         if 'head' not in s.bones:s.bone('head',(0,-.25,z),(0,-.45,z),'chest',False)
         # Small habitat organs complement, rather than replace, the family silhouette.
         sensory_surface(s,[V((side*.22,-.23,z+.18)) for side in [-1,1]],'chest')

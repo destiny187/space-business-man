@@ -1,0 +1,211 @@
+{
+  "id": "biota_mantle_sails_25",
+  "name": "퇴적측막저음낭도약수",
+  "family": "biota_mantle_sails",
+  "construction": "anuran",
+  "organ_system": "sails",
+  "environment": "basalt",
+  "locomotion_medium": "ground",
+  "anatomy_note": "넓은 얼굴·압축 뒷다리·긴 도약 발·양쪽 공명낭 · 측막 기관 계통",
+  "source_id": "biota_mantle_sails_25",
+  "kind": "anuran",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "기질에 닿는 넓은 흡착면과 여과 부속기관 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "586f70",
+    "b6bda1",
+    "33494c",
+    "bd925d"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 2,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "anuran",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "none",
+  "host_motion": "",
+  "authored_anatomy": {
+    "type": "anuran",
+    "support_limb_count": 4,
+    "attachment_chains": 10,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "2d074583682099d2e958aba50043d7032d0a7edb9aec01db82cfa5dab5677264",
+  "normalized_geometry_sha256": "212b0cac7711beb1f07cd3a1f402a297e6922425bebc40056e23c4433328880a",
+  "source": "art/blender/creature_remodel/r04/biota_mantle_sails_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 27,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.4212999641895294,
+        1.018399953842163
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.4212999641895294,
+        1.018399953842163
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.4212999641895294,
+        1.018399953842163
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.6538000106811523,
+        0.10000000149011612,
+        0.42550501227378845
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.6538000106811523,
+        0.10000000149011612,
+        0.42550501227378845
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.5738000273704529,
+        0.09000000357627869,
+        -0.07434000074863434
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.5738000273704529,
+        0.09000000357627869,
+        -0.07434000074863434
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.20566461081701243,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.3187801467663693,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.0,
+      "hind-1": 0.5,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.4212999641895294,
+    1.018399953842163
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_mantle_sails_25_near.glb",
+      "sha256": "fa90bceead25d4bdb09b1be7ea9fbca177c404dffed08017782ef9944e9e4299",
+      "triangles": 32868,
+      "min": [
+        -0.8385998010635376,
+        0.015000000596046448,
+        -0.9118976593017578
+      ],
+      "max": [
+        0.8385999202728271,
+        1.5138648748397827,
+        0.9999998807907104
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_mantle_sails_25_far.glb",
+      "sha256": "c7d85e6bd41b8e6de856b0a2e3980b81224945a35e4af2a9a51c5bcf0581d37d",
+      "triangles": 14126,
+      "min": [
+        -0.8385798335075378,
+        0.015026640146970749,
+        -0.9111279845237732
+      ],
+      "max": [
+        0.8385799527168274,
+        1.5138648748397827,
+        1.0001320838928223
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1"
+  },
+  "build_seconds": 16.397,
+  "source_render_seconds": 3.577
+}

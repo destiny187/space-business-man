@@ -1,18 +1,31 @@
 class_name FrontierNativeIncidentView
 extends RefCounted
-## Saved incident dimensions and attack timing retain their matching assets until that adapter is reviewed.
+## Native identity and host clocks are preserved; displayed anatomy supplies local collision bounds.
 const Creature=preload("res://scripts/actors/creatures/bestiary_actor.gd")
+const IncidentMotion=preload("res://scripts/actors/creatures/incident_motion.gd")
+static func make_actor(native: Dictionary,look: Dictionary,ready_scenes: Array=[]) -> Node3D:
+ var actor:=Creature.new();actor.load_far=false;actor.configure(FrontierEcologyCatalog.form(native.form_id),look,ready_scenes)
+ return actor
+static func displayed_dimensions(actor: Node3D,native: Dictionary) -> Vector3:
+ if actor.remodel.is_empty():return Vector3(float(native.width),float(native.height),float(native.length))
+ var bounds: Dictionary=actor.remodel.lods.near
+ return (Vector3(bounds.max[0],bounds.max[1],bounds.max[2])-Vector3(bounds.min[0],bounds.min[1],bounds.min[2]))*actor.base_scale
+static func displayed_center(actor: Node3D,native: Dictionary) -> Vector3:
+ if actor.remodel.is_empty():return Vector3(0,float(native.height)*.5,0)
+ var bounds: Dictionary=actor.remodel.lods.near
+ return Vector3((float(bounds.max[0])+float(bounds.min[0]))*.5,(float(bounds.max[1])-float(bounds.min[1]))*.5,(float(bounds.max[2])+float(bounds.min[2]))*.5)*actor.base_scale
 static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) -> void:
  var native: Dictionary=row.native;var root: Node3D=nodes.root
  nodes.relay.hide()
- var creature:=Creature.new();creature.load_far=false;creature.configure(FrontierEcologyCatalog.form(native.form_id),FrontierNativeIncidents.look(native),[],false);root.add_child(creature);creature.set_state("idle");nodes.creature=creature
+ var creature:=make_actor(native,FrontierNativeIncidents.look(native));root.add_child(creature);creature.set_state("idle");nodes.creature=creature
+ var dimensions:=displayed_dimensions(creature,native)
  creature.global_position=FrontierNativeIncidents.position(row)
  nodes.ground_probe=func(at: Vector3,reach: float):return Creature.GroundMotion.sample(view.surface.terrain.field,at,reach)
  nodes.native_attack=int(row.native_attack);nodes.native_footstep=0.0
- var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=minf(FrontierNativeIncidents.radius(native),float(native.height)*.45);capsule.height=maxf(float(native.height),capsule.radius*2)
- var solid:=StaticBody3D.new();root.add_child(solid);solid.add_child(shape);shape.shape=capsule;shape.position.y=float(native.height)*.5;nodes.native_solid=solid;solid.global_position=creature.global_position
+ var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=minf(FrontierNativeIncidents.radius(native),float(native.height)*.45) if creature.remodel.is_empty() else minf(minf(dimensions.x,dimensions.z)*.48,dimensions.y*.45);capsule.height=maxf(dimensions.y,capsule.radius*2)
+ var solid:=StaticBody3D.new();root.add_child(solid);solid.add_child(shape);shape.shape=capsule;shape.position=displayed_center(creature,native);nodes.native_solid=solid;solid.global_position=creature.global_position
  if native.role=="giant":
-  var box:=BoxShape3D.new();box.size=Vector3(float(native.width),float(native.height),float(native.length));shape.shape=box
+  var box:=BoxShape3D.new();box.size=dimensions;shape.shape=box
  nodes.main.scale=Vector3.ONE*clampf(FrontierNativeIncidents.radius(native)/1.5,.7,2.0)
  if native.role=="scavenger":
   nodes.stolen=view.add_model("battery",creature,Vector3(0,.6,-.3));nodes.stolen.scale=Vector3.ONE*clampf(float(native.height)*.16,.12,.45)
@@ -22,8 +35,8 @@ static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) 
  if native.role=="guardian":
   nodes.young=[]
   for side in [-1,1]:
-   var young:=Creature.new();young.load_far=false;var look:=FrontierNativeIncidents.look(native);look.scale*=float(FrontierNativeIncidents.config().young_scale)
-   young.configure(FrontierEcologyCatalog.form(native.form_id),look,[],false);root.add_child(young);young.position=Vector3(side*float(native.width)*.35,0,.8);young.set_state("feed");nodes.young.append(young)
+   var look:=FrontierNativeIncidents.look(native);look.scale*=float(FrontierNativeIncidents.config().young_scale)
+   var young:=make_actor(native,look);root.add_child(young);young.position=Vector3(side*dimensions.x*.35,0,.8);young.set_state("feed");nodes.young.append(young)
  # Authored creature geometry supplies scale; sparse ground marks are temporary field cues.
  var track_mat:=StandardMaterial3D.new();track_mat.albedo_color=Color("45423b");track_mat.roughness=1.0
  var track_radius:=clampf(FrontierNativeIncidents.radius(native)*.15,.07,.35)
@@ -38,8 +51,10 @@ static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,
  var facing: Basis=creature.global_basis
  if motion.length()>.002:facing=FrontierEcologyPlacement.surface_basis(view.surface.terrain.field.normal(goal),atan2(motion.x,motion.z))
  creature.paused=stopped
+ creature.incident_pose=IncidentMotion.sample(creature,row)
  if int(row.native_attack)>int(nodes.native_attack):
-  creature.set_state("attack");creature.elapsed=creature.windup_seconds;creature.pose();nodes.native_attack=int(row.native_attack)
+  if creature.remodel.is_empty():creature.set_state("attack");creature.elapsed=creature.windup_seconds;creature.pose()
+  nodes.native_attack=int(row.native_attack)
   if not stopped:voice(view,creature.global_position,native)
  elif creature.state!="attack":
   var wanted: String="stressed" if float(row.native_alert)>0 else ("move" if motion.length()>.002 else "feed")

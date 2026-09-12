@@ -544,6 +544,450 @@
         "near": "f7a6bf7dbab832af3f3351465adfae2b81ff63835ed16fff51d080f148a7a6e6",
         "far": "879db2bd0bf1e99b6aeb9607320203acb8f8b69ea1da0385151cc6498138ce10"
       }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 2,
+      "frames": [
+        "biota_branch_siphons_25_hit_012.png",
+        "biota_branch_siphons_25_hit_028.png",
+        "biota_branch_siphons_25_hit_040.png",
+        "biota_branch_siphons_25_hit_049.png",
+        "biota_branch_siphons_25_hit_060.png",
+        "biota_branch_siphons_25_hit_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "biota_branch_siphons_25",
+      "max_foot_target_error": 0.00077714427607134,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 2,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "12e997951ccecada5177b316f9542d327b3c792a640c73a497f40a3fbe3c204b",
+        "far": "e484b05551560725c72f7ed646e8eaf8b024d42c98f728bf5c50dea9b1f52148"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_branch_siphons_25_miss_012.png",
+        "biota_branch_siphons_25_miss_028.png",
+        "biota_branch_siphons_25_miss_040.png",
+        "biota_branch_siphons_25_miss_049.png",
+        "biota_branch_siphons_25_miss_060.png",
+        "biota_branch_siphons_25_miss_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "biota_branch_siphons_25",
+      "max_foot_target_error": 0.00077714427607134,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "12e997951ccecada5177b316f9542d327b3c792a640c73a497f40a3fbe3c204b",
+        "far": "e484b05551560725c72f7ed646e8eaf8b024d42c98f728bf5c50dea9b1f52148"
+      }
+    },
+    {
+      "clips": [
+        "attack"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_branch_siphons_25_blocked_012.png",
+        "biota_branch_siphons_25_blocked_028.png",
+        "biota_branch_siphons_25_blocked_040.png",
+        "biota_branch_siphons_25_blocked_049.png",
+        "biota_branch_siphons_25_blocked_060.png",
+        "biota_branch_siphons_25_blocked_078.png"
+      ],
+      "host_behavior": "double_sweep",
+      "host_speed": 3.6,
+      "id": "biota_branch_siphons_25",
+      "max_foot_target_error": 0.00077714427607134,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "12e997951ccecada5177b316f9542d327b3c792a640c73a497f40a3fbe3c204b",
+        "far": "e484b05551560725c72f7ed646e8eaf8b024d42c98f728bf5c50dea9b1f52148"
+      }
+    },
+    {
+      "clips": [
+        "leap_prepare",
+        "leap_air",
+        "leap_land"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_lobopod_siphons_26_hit_012.png",
+        "biota_lobopod_siphons_26_hit_028.png",
+        "biota_lobopod_siphons_26_hit_040.png",
+        "biota_lobopod_siphons_26_hit_049.png",
+        "biota_lobopod_siphons_26_hit_060.png",
+        "biota_lobopod_siphons_26_hit_078.png"
+      ],
+      "host_behavior": "leap",
+      "host_speed": 4.4,
+      "id": "biota_lobopod_siphons_26",
+      "max_foot_target_error": 0.000614644377492368,
+      "outcome": "hit",
+      "remaining_health": 78.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f7e31edd7ad6d092c0b79b3202cd2327a415647ebdee410e91fbccf2bac7e2a5",
+        "far": "eef0edc800daa5a41beb6780505300ae5997703baf12228f65abef4a167e3701"
+      }
+    },
+    {
+      "clips": [
+        "leap_prepare",
+        "leap_air",
+        "leap_land"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_lobopod_siphons_26_miss_012.png",
+        "biota_lobopod_siphons_26_miss_028.png",
+        "biota_lobopod_siphons_26_miss_040.png",
+        "biota_lobopod_siphons_26_miss_049.png",
+        "biota_lobopod_siphons_26_miss_060.png",
+        "biota_lobopod_siphons_26_miss_078.png"
+      ],
+      "host_behavior": "leap",
+      "host_speed": 4.4,
+      "id": "biota_lobopod_siphons_26",
+      "max_foot_target_error": 0.000614644377492368,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f7e31edd7ad6d092c0b79b3202cd2327a415647ebdee410e91fbccf2bac7e2a5",
+        "far": "eef0edc800daa5a41beb6780505300ae5997703baf12228f65abef4a167e3701"
+      }
+    },
+    {
+      "clips": [
+        "leap_prepare",
+        "leap_air",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_lobopod_siphons_26_blocked_012.png",
+        "biota_lobopod_siphons_26_blocked_028.png",
+        "biota_lobopod_siphons_26_blocked_040.png",
+        "biota_lobopod_siphons_26_blocked_049.png",
+        "biota_lobopod_siphons_26_blocked_060.png",
+        "biota_lobopod_siphons_26_blocked_078.png"
+      ],
+      "host_behavior": "leap",
+      "host_speed": 4.4,
+      "id": "biota_lobopod_siphons_26",
+      "max_foot_target_error": 0.000195268745301291,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "f7e31edd7ad6d092c0b79b3202cd2327a415647ebdee410e91fbccf2bac7e2a5",
+        "far": "eef0edc800daa5a41beb6780505300ae5997703baf12228f65abef4a167e3701"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_saddle_siphons_25_hit_012.png",
+        "biota_saddle_siphons_25_hit_028.png",
+        "biota_saddle_siphons_25_hit_040.png",
+        "biota_saddle_siphons_25_hit_049.png",
+        "biota_saddle_siphons_25_hit_060.png",
+        "biota_saddle_siphons_25_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_siphons_25",
+      "max_foot_target_error": 0.00178000924643129,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "2f67b8d80d572c38957a19810e7053fcee538f531af14017ee42f9b5a2db1b86",
+        "far": "2262f178c5f76eb721a0223772b20dae97bdb2a1807e10d299412405e43c34dc"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_siphons_25_miss_012.png",
+        "biota_saddle_siphons_25_miss_028.png",
+        "biota_saddle_siphons_25_miss_040.png",
+        "biota_saddle_siphons_25_miss_049.png",
+        "biota_saddle_siphons_25_miss_060.png",
+        "biota_saddle_siphons_25_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_siphons_25",
+      "max_foot_target_error": 0.000788691395428032,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "2f67b8d80d572c38957a19810e7053fcee538f531af14017ee42f9b5a2db1b86",
+        "far": "2262f178c5f76eb721a0223772b20dae97bdb2a1807e10d299412405e43c34dc"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_siphons_25_blocked_012.png",
+        "biota_saddle_siphons_25_blocked_028.png",
+        "biota_saddle_siphons_25_blocked_040.png",
+        "biota_saddle_siphons_25_blocked_049.png",
+        "biota_saddle_siphons_25_blocked_060.png",
+        "biota_saddle_siphons_25_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_siphons_25",
+      "max_foot_target_error": 0.00114595191553235,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "2f67b8d80d572c38957a19810e7053fcee538f531af14017ee42f9b5a2db1b86",
+        "far": "2262f178c5f76eb721a0223772b20dae97bdb2a1807e10d299412405e43c34dc"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_saddle_siphons_26_hit_012.png",
+        "biota_saddle_siphons_26_hit_028.png",
+        "biota_saddle_siphons_26_hit_040.png",
+        "biota_saddle_siphons_26_hit_049.png",
+        "biota_saddle_siphons_26_hit_060.png",
+        "biota_saddle_siphons_26_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_siphons_26",
+      "max_foot_target_error": 0.00100389658473432,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "abae173594327d91951d1b4b13008217d4a85103e7d9b953daa5fe3dcc934bc0",
+        "far": "a1abbe231e66872f63e89003bf5605722bb96ddb8763c00ed70fa3e20b9447b4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_siphons_26_miss_012.png",
+        "biota_saddle_siphons_26_miss_028.png",
+        "biota_saddle_siphons_26_miss_040.png",
+        "biota_saddle_siphons_26_miss_049.png",
+        "biota_saddle_siphons_26_miss_060.png",
+        "biota_saddle_siphons_26_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_siphons_26",
+      "max_foot_target_error": 0.000530798046384007,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "abae173594327d91951d1b4b13008217d4a85103e7d9b953daa5fe3dcc934bc0",
+        "far": "a1abbe231e66872f63e89003bf5605722bb96ddb8763c00ed70fa3e20b9447b4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_saddle_siphons_26_blocked_012.png",
+        "biota_saddle_siphons_26_blocked_028.png",
+        "biota_saddle_siphons_26_blocked_040.png",
+        "biota_saddle_siphons_26_blocked_049.png",
+        "biota_saddle_siphons_26_blocked_060.png",
+        "biota_saddle_siphons_26_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_saddle_siphons_26",
+      "max_foot_target_error": 0.00105839699972421,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "abae173594327d91951d1b4b13008217d4a85103e7d9b953daa5fe3dcc934bc0",
+        "far": "a1abbe231e66872f63e89003bf5605722bb96ddb8763c00ed70fa3e20b9447b4"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 1,
+      "frames": [
+        "biota_spindle_siphons_25_hit_012.png",
+        "biota_spindle_siphons_25_hit_028.png",
+        "biota_spindle_siphons_25_hit_040.png",
+        "biota_spindle_siphons_25_hit_049.png",
+        "biota_spindle_siphons_25_hit_060.png",
+        "biota_spindle_siphons_25_hit_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_spindle_siphons_25",
+      "max_foot_target_error": 0.00097389257280156,
+      "outcome": "hit",
+      "remaining_health": 76.0,
+      "rendered_contacts": 1,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "8a4e11a64cef8ef2977eb52458561cb9bad0c135f23deb5cd204ee3a452f5495",
+        "far": "a7c1961db34ee9b5608e1dbceff9c95340aa3a783c7d5faed081f216f2dd3aeb"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_spindle_siphons_25_miss_012.png",
+        "biota_spindle_siphons_25_miss_028.png",
+        "biota_spindle_siphons_25_miss_040.png",
+        "biota_spindle_siphons_25_miss_049.png",
+        "biota_spindle_siphons_25_miss_060.png",
+        "biota_spindle_siphons_25_miss_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_spindle_siphons_25",
+      "max_foot_target_error": 0.000627219851594418,
+      "outcome": "miss",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "8a4e11a64cef8ef2977eb52458561cb9bad0c135f23deb5cd204ee3a452f5495",
+        "far": "a7c1961db34ee9b5608e1dbceff9c95340aa3a783c7d5faed081f216f2dd3aeb"
+      }
+    },
+    {
+      "clips": [
+        "attack",
+        "charge_loop",
+        "blocked"
+      ],
+      "damage_events": 0,
+      "frames": [
+        "biota_spindle_siphons_25_blocked_012.png",
+        "biota_spindle_siphons_25_blocked_028.png",
+        "biota_spindle_siphons_25_blocked_040.png",
+        "biota_spindle_siphons_25_blocked_049.png",
+        "biota_spindle_siphons_25_blocked_060.png",
+        "biota_spindle_siphons_25_blocked_078.png"
+      ],
+      "host_behavior": "charge",
+      "host_speed": 12.0,
+      "id": "biota_spindle_siphons_25",
+      "max_foot_target_error": 0.000951545720454305,
+      "outcome": "blocked",
+      "remaining_health": 100,
+      "rendered_contacts": 0,
+      "root_error": 0.0,
+      "unchanged_balance": true,
+      "unrelated_actor_preserved": true,
+      "asset_sha256": {
+        "near": "8a4e11a64cef8ef2977eb52458561cb9bad0c135f23deb5cd204ee3a452f5495",
+        "far": "a7c1961db34ee9b5608e1dbceff9c95340aa3a783c7d5faed081f216f2dd3aeb"
+      }
     }
-  ]
+  ],
+  "reviewed_count": 39,
+  "runtime_motion_sha256": "ba4315172163a15346d076dc478bc7b599512da0561804ad43901bf98d89b416",
+  "scope": "Initial 24 host cases plus 15 organ-extreme cases. Latest runtime IK rechecked on five extremes and giant native actor."
 }

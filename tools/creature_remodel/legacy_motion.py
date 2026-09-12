@@ -8,6 +8,19 @@ from refine_creature_motion import pulse
 def animate(s):
     p=s.profile;rig=s.arm;kind=s.spec['construction'];host=s.spec.get('host_motion','');scene=bpy.context.scene;scene.render.fps=30;s.actions={}
     if kind=='runner':p['attack_unplanted_limbs']={'hind1':[.88,1.36]}
+    pattern=s.spec.get('host_pattern','none');contact_bones=[]
+    def tips(prefix):
+        names=[name for name in s.bones if name.startswith(prefix)]
+        return [name for name in names if not any(s.bones[child]['parent']==name for child in names)]
+    if pattern=='kick':contact_bones=['hind1_foot']
+    elif pattern=='claw':contact_bones=tips('dominant_chela') or tips('raptorial')
+    elif pattern=='scythe':
+        contact_bones=tips('raptorial') or sorted(tips('radial_trunk'),key=lambda name:s.bones[name]['b'].y)[:2]
+    if len(contact_bones)>2:
+        contact_bones=[min(group,key=lambda name:s.bones[name]['b'].y) for group in [[name for name in contact_bones if s.bones[name]['b'].x<0],[name for name in contact_bones if s.bones[name]['b'].x>=0]] if group]
+    contact_bones=sorted(contact_bones,key=lambda name:s.bones[name]['b'].x)
+    if pattern in ['kick','claw','scythe']:assert contact_bones,'Preserved attack requires an articulated contact organ'
+    p['strike_origins']=[{'bone':name,'point':[s.bones[name]['b'].x,s.bones[name]['b'].z,-s.bones[name]['b'].y]} for name in contact_bones]
     states=[('idle_loop',2),('move_loop',2),('run_loop',1.2),('feed',2.4),('attack',2.8),('hurt',.8),('blocked',.9),('stop',.6),('turn_left',1),('turn_right',1),('down',1.2)]
     if host=='charge':states.append(('charge_loop',1.2))
     if host=='leap':states.extend([('leap_prepare',.8),('leap_air',1.),('leap_land',.7)])
@@ -27,20 +40,23 @@ def animate(s):
             if state=='leap_land':wind=.50*(1-smooth(0,.7,t));strike=pulse(t,0,.06,.22)
             hurt=pulse(t,0,.09,duration) if state in ['hurt','blocked'] else 0;down=smooth(0,1.1,t) if state=='down' else 0
             root_z=(.012*math.cos(phase*2) if moving else .006*math.sin(phase))-.035*wind-s.support_height*.38*down
-            if kind in ['anuran','lagomorph','macropod'] and moving:root_z+=.08*(1-math.cos(phase))
+            if s.spec.get('anatomical_type',kind) in ['anuran','lagomorph','macropod'] and moving:root_z+=.08*(1-math.cos(phase))
+            if kind=='lantern_sail' and state not in ['down','hurt','blocked']:root_z+=.05*math.sin(phase)
+            if host=='shockwave':root_z+=s.support_height*(.10*wind-.18*strike)
             s.local('root',location=s.binds['root'].to_3x3().inverted()@V((0,-forward,root_z)))
             s.local('chest',(-.10*hurt,0,.09*hurt+.10*down),scale=(1+.006*math.sin(phase),1+.006*math.sin(phase),1-.006*math.sin(phase)))
             for name,role,offset in s.organs:
                 wave=math.sin(phase-offset);amplitude=.027 if moving else .007
-                if role=='spine':s.local(name,(0,0,(.14 if kind in ['coil','slug','swimmer','ray','corkscrew_spine','braid_crawler'] and moving else amplitude)*wave))
+                if role=='spine':s.local(name,(0,0,(.14 if kind in ['coil','slug','swimmer','ray','corkscrew_spine','braid_crawler'] and moving else amplitude)*wave),scale=(1,1+.035*wave if kind=='accordion_shell' else 1,1))
                 elif role=='flight_wing':s.local(name,(.34*math.sin(phase-offset),0,.025*wave))
                 elif role=='swim_fin':s.local(name,(.23*wave,0,.04*math.sin(phase-offset-.5)))
                 elif role=='swim_ray':s.local(name,(.05*wave,0,.018*wave))
                 elif role=='tail':s.local(name,(.018*wave,0,(.050 if moving else .020)*wave))
                 elif role=='neck':
-                    reach=.36 if name.startswith(('raptorial','prehensile_trunk','stinger_axis')) else .13
-                    alternating=(1 if '-1' in name else -1) if host=='double_sweep' else 1
-                    s.local(name,(reach*wind-reach*1.6*strike+.015*wave,0,alternating*.24*strike if host=='double_sweep' else .012*wave))
+                    reach=.36 if name.startswith(('raptorial','prehensile_trunk','stinger_axis','dominant_chela','radial_trunk')) else .13
+                    left=s.bones[name]['a'].x<0;local_strike=strike
+                    if host=='double_sweep' and state=='attack':local_strike=pulse(t,.86,1.03,1.22) if left else pulse(t,1.34,1.55,1.77)
+                    s.local(name,(reach*wind-reach*1.6*local_strike+.015*wave,0,(1 if left else -1)*.24*local_strike if host=='double_sweep' else .012*wave))
                 elif role=='mouth':s.local(name,(.08*wind-.07*strike,0,.025*wave if state=='feed' else 0))
                 elif role=='panel':s.local(name,(0,.04*wave+.14*wind-.20*strike,0))
                 elif role=='rib':s.local(name,(.015*wave,0,0),scale=(1+.04*wind,1+.04*wind,1))

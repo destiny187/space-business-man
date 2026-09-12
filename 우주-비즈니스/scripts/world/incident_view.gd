@@ -84,7 +84,7 @@ func make(row: Dictionary) -> Dictionary:
   for lineage in natives.lineages:
    var form:=FrontierEcologyCatalog.form(lineage.form_id)
    if form.category!="animal" or form.environment=="cave":continue
-   var creature:=Creature.new();creature.load_far=false;creature.configure(form,FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id),[],false);root_node.add_child(creature);creature.set_state("move");result.creature=creature
+   var creature:=Creature.new();creature.load_far=false;creature.configure(form,FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id));root_node.add_child(creature);creature.set_state("move");result.creature=creature
    result.stolen=add_model("battery",creature,Vector3(0,.6,-.3));result.stolen.scale=Vector3.ONE*.35;break
  if mode=="robot":
   var bubble:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=1.15;sphere.height=3.0;bubble.mesh=sphere;root_node.add_child(bubble);bubble.position=Vector3(0,1.5,0)

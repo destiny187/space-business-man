@@ -24,6 +24,7 @@ def audit(batch):
         assert r['root_error']<.00001 and r.get('max_foot_target_error',r.get('max_ground_foot_error',1))<.025,f['id']
         if batch!='r05':
             assert r['bone_motion']>.01 and r['limb_phase_checks']==f['locomotion_chains']
+            if batch=='r03':assert r['host_attack']=='none' and r['limb_phase_checks']==f['morphology']['limb_count']
             for state in STATES:assert (output/f"{f['id']}_{state}.png").exists()
         else:
             assert r['actual_seeded_flight_path']==f['air_motion']
@@ -45,7 +46,7 @@ def audit(batch):
     print(batch,'AUDIT',len(forms),'geometry',len(geometries),'parent graphs',len(topologies),flush=True)
     return forms,result
 
-def boards(batch,forms):
+def boards(batch,forms,prefix=''):
     media=ROOT/'docs/production/media/creature-remodel'/batch;output=ROOT/'output/creature-remodel'/batch
     font=ImageFont.truetype(str(ROOT/'우주-비즈니스/assets/fonts/NotoSansKR.ttf'),13)
     # Nine clearly legible species per page, rather than an unbounded miniature sheet.
@@ -56,7 +57,7 @@ def boards(batch,forms):
                 path=output/f"{r['id']}_{state}.png"
                 if not path.exists() and batch=='r05':path=output/f"{r['id']}_0060.png"
                 tile=Image.open(path).convert('RGB').resize((360,270),Image.Resampling.LANCZOS);x=i%3*360;y=i//3*288;canvas.paste(tile,(x,y));draw.text((x+4,y+272),r.get('anatomical_type',r['construction'])+' '+r['id'],font=font,fill='#203a36')
-            canvas.save(media/f'{state}-{page:03}.jpg',quality=94)
+            canvas.save(media/f'{prefix}{state}-{page:03}.jpg',quality=94)
 
 def enable(batch,forms):
     path=ROOT/'우주-비즈니스/data/creature_remodel_runtime.json';config=json.loads(path.read_text())
@@ -67,7 +68,7 @@ def enable(batch,forms):
     path.write_text(json.dumps(config,ensure_ascii=False,indent=2)+'\n');print(batch,'ENABLED',len(forms),flush=True)
 
 if __name__=='__main__':
-    batch=sys.argv[1];assert batch in ['r04','r05','r06']
+    batch=sys.argv[1];assert batch in ['r03','r04','r05','r06']
     forms,evidence=audit(batch)
     if '--boards' in sys.argv:boards(batch,forms)
     if '--enable-reviewed' in sys.argv:enable(batch,forms)

@@ -112,6 +112,7 @@ func tick(delta: float) -> void:
 		elif actor.combat_phase in ["attack","warning"]:next="attack"
 	elif actor.state=="attack":next="attack"
 	var host:=host_clip()
+	if not actor.incident_pose.is_empty():host=actor.incident_pose
 	if host.is_empty():host=flight_clip()
 	if not host.is_empty():next=host.clip
 	if next=="charge_loop":gait="run_loop"
@@ -236,7 +237,7 @@ func limb_phase(name: String) -> float:
 
 func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 	if art.get("air_motion",false) and actor.flight_blend>.0001:return
-	var host_grounded: bool=actor.combat_override and art.has("host_motion") and float(actor.combat_live.get("air_height",0))<=.02 and wanted_clip in ["attack","charge_loop","leap_prepare","leap_land","blocked"]
+	var host_grounded: bool=(actor.combat_override and art.has("host_motion") and float(actor.combat_live.get("air_height",0))<=.02 and wanted_clip in ["attack","charge_loop","leap_prepare","leap_land","blocked"]) or not actor.incident_pose.is_empty()
 	if actor.state=="dormant" or (actor.state=="attack" and not host_grounded) or (actor.combat_override and actor.combat_phase in ["hurt","down","attack"] and not host_grounded):
 		planted.clear();return
 	if authored_limbs.is_empty():
@@ -341,6 +342,17 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 		if stance_now:grounded_error=maxf(grounded_error,(skeleton.global_transform*skeleton.get_bone_global_pose(foot).origin).distance_to(destination))
 
 func ik(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector3) -> void:
+	var orientation:=skeleton.get_bone_global_pose(foot).basis
+	# Breathing introduces a small non-uniform parent scale. On a giant it can leave
+	# centimetres of residual error after one analytical pass. Refine rotations only.
+	for iteration in 3:
+		ik_pass(skeleton,upper,lower,foot,target)
+		var remaining:=skeleton.global_basis*(skeleton.get_bone_global_pose(foot).origin-target)
+		if remaining.length()<.002:break
+	var foot_pose:=skeleton.get_bone_global_pose(foot);foot_pose.basis=orientation
+	set_global_pose(skeleton,foot,foot_pose)
+
+func ik_pass(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector3) -> void:
 	var a:=skeleton.get_bone_global_pose(upper);var b:=skeleton.get_bone_global_pose(lower);var c:=skeleton.get_bone_global_pose(foot)
 	var length_a:=a.origin.distance_to(b.origin);var length_b:=b.origin.distance_to(c.origin)
 	var axis:=target-a.origin;var distance:=clampf(axis.length(),absf(length_a-length_b)+.001,(length_a+length_b)*.999)
@@ -355,8 +367,6 @@ func ik(skeleton: Skeleton3D,upper: int,lower: int,foot: int,target: Vector3) ->
 	b=skeleton.get_bone_global_pose(lower)
 	var current_foot:=skeleton.get_bone_global_pose(foot).origin
 	rotate_bone_toward(skeleton,lower,current_foot-b.origin,target-b.origin)
-	var foot_pose:=skeleton.get_bone_global_pose(foot);foot_pose.basis=c.basis
-	set_global_pose(skeleton,foot,foot_pose)
 
 func rotate_bone_toward(skeleton: Skeleton3D,bone: int,from: Vector3,to: Vector3) -> void:
 	if from.length()<.001 or to.length()<.001:return

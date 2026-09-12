@@ -18,7 +18,12 @@ static func entry(form: Dictionary) -> Dictionary:
 		var row: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(entry_paths[id]))
 		assert(row.source_id==id)
 		entries[id]=row;individual_reads+=1
-	return entries.get(id,{})
+	var result: Dictionary=entries.get(id,{})
+	# A source GLB can exist before Godot finishes importing it. Keep the previous
+	# playable model until both replacement LODs can actually be loaded.
+	for asset in result.get("lods",{}).values():
+		if not ResourceLoader.exists("res://"+str(asset.path).trim_prefix("우주-비즈니스/")):return {}
+	return result
 
 static func path(form: Dictionary,lod: String) -> String:
 	var row:=entry(form)

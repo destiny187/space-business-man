@@ -31,7 +31,7 @@ func review_air(form: Dictionary,field: FrontierTerrainField) -> void:
 	for lod in ["near","far"]:
 		var gltf:=GLTFDocument.new();var state:=GLTFState.new();assert(gltf.append_from_file("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"),state)==OK)
 		var model:=gltf.generate_scene(state);var packed:=PackedScene.new();assert(packed.pack(model)==OK);model.free();ready_scenes.append(packed)
-	var actor:=Actor.new();actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes);stage.add_child(actor);actor.set_process(false)
+	var actor:=Actor.new();actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes,true,form);stage.add_child(actor);actor.set_process(false)
 	var row: Dictionary={"id":"flight-remodel-review","form_id":original.id,"yaw":0.,"status":"active","introduced":false}
 	var seed_phase: float=float(FrontierUniverse.derive(field.seed_value,"flight:"+str(row.id))%48000)/1000.
 	var probe:=func(at: Vector3,_reach: float):return {"point":Vector3(at.x,field.height(at.x,at.z),at.z),"normal":field.normal(at)}

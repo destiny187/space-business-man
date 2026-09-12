@@ -1,0 +1,213 @@
+{
+  "id": "biota_tower_sails_26",
+  "name": "염류측막쌍저수등수",
+  "family": "biota_tower_sails",
+  "construction": "camelid",
+  "organ_system": "sails",
+  "environment": "arid",
+  "locomotion_medium": "ground",
+  "anatomy_note": "높은 쌍저수 등·굽은 긴 목·넓은 모래 발바닥·폐쇄 콧구멍 · 측막 기관 계통",
+  "source_id": "biota_tower_sails_26",
+  "kind": "camelid",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "외부 염류를 모으는 배출낭과 보호된 흡수면 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "987353",
+    "d8c393",
+    "3e5555",
+    "a68051"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 2,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "camelid",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "none",
+  "host_motion": "",
+  "authored_anatomy": {
+    "type": "camelid",
+    "support_limb_count": 4,
+    "attachment_chains": 12,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "c45ce7e1606fd6b5980228fef61906f5ac590022e1d7f2bb81023a1557c7ad30",
+  "normalized_geometry_sha256": "071b7024a5f932cf36cf45a5133dde77ae7a008a9268c1b17b72a0d8d809b89f",
+  "source": "art/blender/creature_remodel/r04/biota_tower_sails_26.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 29,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.5678000450134277,
+        1.7910000085830688
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.5678000450134277,
+        1.7910000085830688
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        1.5678000450134277,
+        1.7910000085830688
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.39207398891448975,
+        0.10000000149011612,
+        0.5555999875068665
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.39207398891448975,
+        0.10000000149011612,
+        0.5555999875068665
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.39207398891448975,
+        0.10000000149011612,
+        -0.5924000144004822
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.39207398891448975,
+        0.10000000149011612,
+        -0.5924000144004822
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.3111751749558811,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.4823215211816157,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    1.5678000450134277,
+    1.7910000085830688
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_tower_sails_26_near.glb",
+      "sha256": "5c3ab03e0e5e3d8e9a441726dc409468af4b57b06ac0f1999ccba0598051fc41",
+      "triangles": 43146,
+      "min": [
+        -0.5075739026069641,
+        0.02499999850988388,
+        -1.0780491828918457
+      ],
+      "max": [
+        0.5075739622116089,
+        2.314664840698242,
+        1.7894998788833618
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_tower_sails_26_far.glb",
+      "sha256": "d3fa1aeb0cf3c4cc1d344b7d44173cd7fb82e66010524fafecb5be429ba62908",
+      "triangles": 18544,
+      "min": [
+        -0.5075590014457703,
+        0.024996541440486908,
+        -1.0780999660491943
+      ],
+      "max": [
+        0.507559061050415,
+        2.314664840698242,
+        1.7894998788833618
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "pinna-1": "head",
+    "pinna1": "head",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ1": "axial1"
+  },
+  "build_seconds": 19.213,
+  "source_render_seconds": 4.62
+}

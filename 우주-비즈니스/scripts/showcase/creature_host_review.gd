@@ -29,10 +29,17 @@ func run() -> void:
 	label=Label.new();label.position=Vector2(24,20);label.add_theme_font_override("font",load("res://assets/fonts/NotoSansKR.ttf"));label.add_theme_font_size_override("font_size",23);label.add_theme_color_override("font_color",Color("203a36"));root.add_child(label)
 	var manifest: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/creature_remodel_"+batch+".json"))
 	var filter:=Array(OS.get_cmdline_user_args()).filter(func(x):return not x.begins_with("--"))
+	for id in filter:
+		if not manifest.forms.any(func(form):return form.id==id and not form.get("host_motion","").is_empty()):
+			push_error("Selected host review is not published: "+id);quit(1);return
 	for form in manifest.forms:
 		if form.get("host_motion","").is_empty():continue
 		if not filter.is_empty() and form.id not in filter:continue
+		for asset in form.lods.values():
+			if FileAccess.get_sha256("res://"+str(asset.path).trim_prefix("우주-비즈니스/"))!=asset.sha256:
+				push_error("Host review asset changed after publication: "+form.id);quit(1);return
 		for mode in (["blocked"] if "--blocked-only" in OS.get_cmdline_user_args() else ["hit","miss","blocked"]):await exercise(stage,form,mode)
+	if records.is_empty():push_error("Host review selected no cases");quit(1);return
 	FileAccess.open(folder+"/evidence.json",FileAccess.WRITE).store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"actual_host_step":true,"records":records,"failures":failures},"\t"))
 	print("REMODEL_HOST_REVIEW ",records.size()," FAILURES ",failures);quit(1 if failures else 0)
 
@@ -45,8 +52,8 @@ func exercise(stage: Node3D,form: Dictionary,outcome: String) -> void:
 	for lod in ["near","far"]:
 		var gltf:=GLTFDocument.new();var state:=GLTFState.new();assert(gltf.append_from_file("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"),state)==OK)
 		var model:=gltf.generate_scene(state);var packed:=PackedScene.new();assert(packed.pack(model)==OK);model.free();ready_scenes.append(packed)
-	var actor:=Actor.new();actor.lod_override=0;actor.configure(original,look,ready_scenes);stage.add_child(actor);actor.set_process(false)
-	var peer:=Actor.new();peer.load_far=false;peer.configure(original,look,[ready_scenes[0]]);stage.add_child(peer);peer.set_process(false);peer.hide()
+	var actor:=Actor.new();actor.lod_override=0;actor.configure(original,look,ready_scenes,true,form);stage.add_child(actor);actor.set_process(false)
+	var peer:=Actor.new();peer.load_far=false;peer.configure(original,look,[ready_scenes[0]],true,form);stage.add_child(peer);peer.set_process(false);peer.hide()
 	var untouched:=peer.models[0].get_instance_id();var untouched_phase: float=peer.ground_motion.phase
 	core.world.crew.combat={};core.world.crew.wildlife_encounters={}
 	var live:=FrontierWildlifeCombat.ensure(core.world.crew,body.id,row);live.target=actor_id;live.aim=[0,0,1];live.yaw=0

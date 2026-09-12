@@ -28,6 +28,7 @@ var combat_phase:=""
 var combat_clock:=0.0
 var combat_info: Dictionary={}
 var combat_live: Dictionary={}
+var incident_pose: Dictionary={}
 var combat_targets: Dictionary={}
 var remodel_effects: Node3D
 var combat_decal: Decal
@@ -56,8 +57,10 @@ var mouth_marker: Node3D
 var mouth_markers: Array[Node3D]=[]
 var visibility_notifier: VisibleOnScreenNotifier3D
 
-func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[],allow_remodel: bool=true) -> void:
-	definition=form;remodel=RemodelRegistry.entry(form) if allow_remodel else {};remodel_colors.clear();combat_override=false;restored_down=false;combat_pattern="none";combat_phase="";combat_clock=0.0
+func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[],allow_remodel: bool=true,review_data: Dictionary={}) -> void:
+	assert(review_data.is_empty() or not ready_scenes.is_empty(),"Direct review requires its generated scenes")
+	definition=form;remodel=review_data if not review_data.is_empty() else (RemodelRegistry.entry(form) if allow_remodel else {});remodel_colors.clear();combat_override=false;restored_down=false;combat_pattern="none";combat_phase="";combat_clock=0.0
+	incident_pose.clear()
 	deferred_far_scene=null;deferred_material_cache.clear();visible_model=-1;desired_distant=false
 	if attack_timing.is_empty():attack_timing=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/attack_presentation.json")).timing_seconds
 	var timing: Dictionary=attack_timing

@@ -1,0 +1,3145 @@
+{
+  "renderer": "forward_plus",
+  "reviewed_count": 14,
+  "unique_normalized_geometry": 14,
+  "unique_skeleton_parent_graphs": 9,
+  "original_catalog_hashes_unchanged": true,
+  "species": [
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "11805446d18a7cc98625e930d51a813e6d8f5aa844c7275cf5cbe46f2df06fa5",
+        "near": "4612227efa81a449c4f90c224d9decea9362a1114153dcc336a6cf8300a0e464"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_amphora_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 9736,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4194,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "f653659fbafad22c6ddead0646b9e996eb5aa63b931295dc55eecad9cf897309"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "be59015f50af9467553778f61687ca7ec3a30eacc88bf033d1b4583b479f4c19",
+        "near": "386cd5669a19009d1f8708445c828e8f777ffc605f77975902a6bb1a965815b9"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_02",
+      "max_ground_foot_error": 0.000358723424142227,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14324,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6129,
+          "max_weight_sum_error": 1.1920928955078125e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "796060ba3d6c2e556ef78383f6cda7fd418f9e9f92041a0001fa284f8af6c0de"
+    },
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "ff81637842bddbc74cb9f22b4d2bfa003aab725513b057d06a33b3cca0c412eb",
+        "near": "09d89e1e7bb50deac9aa762d80919aa6ff48ae4c7b53c64272dc26d98d254105"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_bilateral_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 9113,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 3926,
+          "max_weight_sum_error": 1.2654345482587814e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "9628a9fcb1a75ddd69967c0538c1bf216c67a8d0cbc6b5f4c6c0b46467809009"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "b14af689ee682ebcb90f7f78e37362201b8369facb4f688ea57486fb5d6143c1",
+        "near": "6e4dbaaa0e475e34204df6e0579973423be5263e286601e1028b36544472db2b"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_12",
+      "max_ground_foot_error": 0.000358723424142227,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 14502,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6204,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "5918b4baff0f6eb412b259b2276f8976191345d378d1ce97d46e5f1c02187d80"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "55c4f3ed3c348199e764fddf347d734488ba7951693b661489daebce69691070",
+        "near": "e4d5ec78c514f05709f65eec4bc6ccd6af7ff253725dcb5e4a90f1ff28fadbb0"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_21",
+      "max_ground_foot_error": 0.000358723424142227,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.26666666666667,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.53333333333333,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.8,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.933333333333334,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0666666666666664,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.333333333333332,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.46666666666667,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.599999999999998,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.73333333333333,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.866666666666667,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.13333333333333,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.266666666666666,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.4,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.533333333333331,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.66666666666666,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.93333333333333,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.06666666666666,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.199999999999996,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.466666666666669,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.733333333333334,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 16814,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 7221,
+          "max_weight_sum_error": 8.940696716308594e-08
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "c886274f596f75d5c48d474624aa6e19934d5250e2ddd1a85ce056168af7c54e"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "e0cb9c6b368354ebe681ea14c8078174439b75acfb41ff5ffa5042b5055bc211",
+        "near": "9fcaddac93a0b8a5dd2e37331a67852ba2676beb4896d402e431a348748012f4"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_25",
+      "max_ground_foot_error": 0.00130032410379499,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.3,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.199999999999999,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.1,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.900000000000002,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.8,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.699999999999999,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.5,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.4,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.300000000000001,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.100000000000001,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.9,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.800000000000001,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.7,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.600000000000001,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.5,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.3,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.200000000000003,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.1,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.899999999999999,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.8,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.700000000000003,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15399,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6593,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "ae7729d6f3c2f86a35ebbc1da34ecf293a6ee51decafb846ae879f9469241778"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "ceb2081ea40cbc7d9c88528dd80e01d8e97c0f1aece42938ed94fccca119e4cd",
+        "near": "dbeed1492c1dc7d8ee14e7cc672f7849400f3c02eab8cc2080df37baade5a34d"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_26",
+      "max_ground_foot_error": 0.000358723424142227,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.800000000000001,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 15404,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 6596,
+          "max_weight_sum_error": 1.1443626135587692e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "6b3d4ba6c3ce8b25841775be2734699a52ac4821d7da3b9e9d70ea84727a4e3a"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "19717c8d2d26410f28ea3ee8d67c9722f623b672976c5ac8c06005c17645b943",
+        "near": "09ce12235ef19d8b1a2a03dc7989816521fade8dff7f2408d0249dcb326fbd93"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_31",
+      "max_ground_foot_error": 0.000358723424142227,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.166666666666668,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.83333333333333,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666668,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.5,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.333333333333336,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.16666666666667,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.833333333333336,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.66666666666667,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.5,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333334,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.166666666666668,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.83333333333334,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666668,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.5,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.333333333333336,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.16666666666667,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.0,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.833333333333336,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.66666666666667,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.5,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333334,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.166666666666671,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.0,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.83333333333334,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 13552,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 5780,
+          "max_weight_sum_error": 1.2887176126241684e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "59acbf8e83cf9b290c36aa3bd316c3fbac4e334d5c772fdd09a79849370c6e03"
+    },
+    {
+      "actual_seeded_flight_path": true,
+      "asset_sha256": {
+        "far": "dcd3e20d675e6315a776cdf7bc241866e90deb1b28ed08f125bc983fe19e5000",
+        "near": "63d5f016494e16073e807c543eec31d9efe03852cbed4f3527e91c2e89218078"
+      },
+      "clips": [
+        "ground_idle_loop",
+        "takeoff",
+        "flight_loop",
+        "landing"
+      ],
+      "dormant_and_introduced_remain_grounded": true,
+      "id": "biota_bilateral_armor_50",
+      "max_ground_foot_error": 0.000358723424142227,
+      "phases": [
+        "rest",
+        "takeoff",
+        "flight",
+        "landing"
+      ],
+      "records": [
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333359,
+          "time": 2.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333288,
+          "time": 4.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333333,
+          "time": 5.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333217,
+          "time": 6.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333332,
+          "time": 7.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333155,
+          "time": 8.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.03333333333331,
+          "time": 9.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.0333333333333083,
+          "time": 10.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 1.0333333333333,
+          "time": 11.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "takeoff",
+          "pose_clock": 0.0333333333333012,
+          "time": 12.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 1.0,
+          "time": 13.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 2.0,
+          "time": 14.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 3.0,
+          "time": 15.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "takeoff",
+          "phase": "takeoff",
+          "pose_clock": 4.0,
+          "time": 16.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.86666666666667,
+          "time": 17.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 18.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.73333333333333,
+          "time": 19.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 20.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.6,
+          "time": 21.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.533333333333331,
+          "time": 22.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.46666666666667,
+          "time": 23.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 24.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 25.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.266666666666666,
+          "time": 26.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 27.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.133333333333329,
+          "time": 28.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.06666666666666,
+          "time": 29.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 2.0,
+          "time": 30.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.93333333333333,
+          "time": 31.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.86666666666666,
+          "time": 32.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.799999999999997,
+          "time": 33.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.73333333333333,
+          "time": 34.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.666666666666664,
+          "time": 35.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.59999999999999,
+          "time": 36.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.533333333333331,
+          "time": 37.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.46666666666666,
+          "time": 38.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.399999999999999,
+          "time": 39.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.33333333333333,
+          "time": 40.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.266666666666666,
+          "time": 41.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 1.2,
+          "time": 42.0
+        },
+        {
+          "blend": 1.0,
+          "clip": "flight_loop",
+          "phase": "flight",
+          "pose_clock": 0.133333333333326,
+          "time": 43.0
+        },
+        {
+          "blend": 0.896,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 1.0,
+          "time": 44.0
+        },
+        {
+          "blend": 0.648,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 2.0,
+          "time": 45.0
+        },
+        {
+          "blend": 0.352,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 3.0,
+          "time": 46.0
+        },
+        {
+          "blend": 0.104,
+          "clip": "landing",
+          "phase": "landing",
+          "pose_clock": 4.0,
+          "time": 47.0
+        },
+        {
+          "blend": 0.0,
+          "clip": "ground_idle_loop",
+          "phase": "rest",
+          "pose_clock": 0.033333333333168,
+          "time": 48.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 19789,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 8532,
+          "max_weight_sum_error": 1.341104507446289e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "ca681f1214ffa683f2306ab2d997d3fffb190a033dcfc77632d231ef330d5f46"
+    },
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "592a66ada0d1ac01a7ac8d46a0d583c599e0bf095d2d1d2ae7e43fcdf0ac728b",
+        "near": "f933d3109fc975f431c0761bdc21620998963f0627fb1666fb269adb7e06c14a"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_branch_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 8251,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 3553,
+          "max_weight_sum_error": 1.043081283569336e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "4d2662330378bfced22ea8d398770da5936ffbfc475a62f65b3bf8b72655788a"
+    },
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "a5ee05d88d198dfda955026ad5688233ff900be5741242a792585fcd2e3bbd8d",
+        "near": "e1675d0c9d8ea79a35797ee75a264ece5f830e7619a5429440bf8438e8c4ecfc"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_crown_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 8579,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 3694,
+          "max_weight_sum_error": 1.4156103134155273e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "b8a12d8c748e6ecbf16b945c70b338b0803f8f7bbb90936a4e7ddd55123fc81a"
+    },
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "d05a28de076ce13531e26b24b8e6d1a66ebdee9819121641eb5296d0db357e73",
+        "near": "0aef82ff93b7e9bb656c292be2713f6547fc6998192fe397e898b63998767598"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_flat_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 8833,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 3808,
+          "max_weight_sum_error": 1.2665987014770508e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "bf78fbfdd929edeb652474d5bea7fd20e3c4b609fa8defd3c51aafa946b5b586"
+    },
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "845f586b1c73d26b4e786d8fc81eab1d3b061436241b4d57236367a84a9d8a21",
+        "near": "2a53d3d52ae341ea5bb24b226f28fd97b637b53e753b3a2c14e1fa3a07857b4a"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_mantle_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 10152,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 4384,
+          "max_weight_sum_error": 1.0989606380462646e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "7c79159781ec4fdc71535b69e138d71d30454120d3af424f0aac0a7abea990aa"
+    },
+    {
+      "actual_seeded_flight_path": false,
+      "asset_sha256": {
+        "far": "2387ac307242f96895a409d5910202f54fed8c4ee913334b968d90c375daf647",
+        "near": "e5ce6e4cec6b5b3515bb054e46198b6c1513c131f3bbffc09a0a8d03e9c42ae5"
+      },
+      "clips": [
+        "idle_loop"
+      ],
+      "dormant_and_introduced_remain_grounded": false,
+      "id": "biota_radial_armor_09",
+      "max_ground_foot_error": 0.0,
+      "phases": [
+        "atmosphere-pose"
+      ],
+      "records": [
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 0.0333333333333333,
+          "time": 0.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 1.03333333333333,
+          "time": 1.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 2.03333333333334,
+          "time": 2.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 3.03333333333333,
+          "time": 3.0
+        },
+        {
+          "blend": -1.0,
+          "clip": "idle_loop",
+          "phase": "atmosphere-pose",
+          "pose_clock": 4.03333333333333,
+          "time": 4.0
+        }
+      ],
+      "renderer": "forward_plus",
+      "root_error": 0.0,
+      "glb_checks": {
+        "near": {
+          "weighted_vertices": 8616,
+          "max_weight_sum_error": 4.470348358154297e-08
+        },
+        "far": {
+          "weighted_vertices": 3710,
+          "max_weight_sum_error": 1.0989606380462646e-07
+        }
+      },
+      "all_loops_checked": true,
+      "source_sha256": "7e01da21add222e964b6ae7b77aa0b0a19d4f851b7d96223b2eacef0abc45ac8"
+    }
+  ]
+}

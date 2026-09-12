@@ -1,0 +1,242 @@
+{
+  "id": "biota_branch_mandibles_26",
+  "name": "차열쌍턱분할등날개수",
+  "family": "biota_branch_mandibles",
+  "construction": "beetle",
+  "organ_system": "mandibles",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "anatomy_note": "머리·가슴·배의 세 구획·세 쌍 보행지·열리는 두 장의 등날개 · 쌍턱 기관 계통",
+  "source_id": "biota_branch_mandibles_26",
+  "kind": "beetle",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "겹친 광물성 차열판·좁은 보호 기공의 가상 고온 생리 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 2,
+    "limb_count": 6,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "beetle",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "none",
+  "host_motion": "",
+  "authored_anatomy": {
+    "type": "beetle",
+    "support_limb_count": 6,
+    "attachment_chains": 12,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "dea6524b62b60c2690d7249502af3622a925c7db26a5b9f79c516eb7dff6d118",
+  "normalized_geometry_sha256": "155c9f0bbc26a4f244c8a6b2d658f0d633c0664b540eba5ab3387d9839c990eb",
+  "source": "art/blender/creature_remodel/r04/biota_branch_mandibles_26.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 40,
+  "locomotion_chains": 6,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        0.9200000762939453
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        0.9200000762939453
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.7099999785423279,
+        0.9200000762939453
+      ]
+    },
+    "Socket_leg0": {
+      "bone": "leg0_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg1": {
+      "bone": "leg1_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        0.6499999761581421
+      ]
+    },
+    "Socket_leg2": {
+      "bone": "leg2_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        -0.32499998807907104
+      ]
+    },
+    "Socket_leg3": {
+      "bone": "leg3_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        -0.32499998807907104
+      ]
+    },
+    "Socket_leg4": {
+      "bone": "leg4_foot",
+      "point": [
+        -1.0499999523162842,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    },
+    "Socket_leg5": {
+      "bone": "leg5_foot",
+      "point": [
+        1.0499999523162842,
+        0.10000000149011612,
+        -0.6200000047683716
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.36618808241810513,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.567591527748063,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.2,
+      "leg3": 0.7,
+      "leg4": 0.4,
+      "leg5": 0.9
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.7099999785423279,
+    0.9200000762939453
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_mandibles_26_near.glb",
+      "sha256": "4aea8711de46b8ebbcb7cc53d5bab25ff58a804d882456b1df0b79d808567856",
+      "triangles": 36678,
+      "min": [
+        -1.2301173210144043,
+        0.02499999850988388,
+        -1.1520823240280151
+      ],
+      "max": [
+        1.2301173210144043,
+        1.7190942764282227,
+        1.008255124092102
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_branch_mandibles_26_far.glb",
+      "sha256": "d8ebbdb4e1daedf54f09eb1a6a7b12a79fea95fdc78b799cb8b0455dde123e5d",
+      "triangles": 15762,
+      "min": [
+        -1.2301621437072754,
+        0.024997156113386154,
+        -1.1524401903152466
+      ],
+      "max": [
+        1.2301616668701172,
+        1.7194899320602417,
+        1.0085080862045288
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "abdomen": "chest",
+    "elytron-1": "abdomen",
+    "elytron1": "abdomen",
+    "head": "chest",
+    "oral": "head",
+    "oral_petal0": "oral",
+    "oral_petal1": "oral",
+    "oral_petal2": "oral",
+    "Compound receptor -1_lid": "head",
+    "antenna-10": "head",
+    "antenna-11": "antenna-10",
+    "Compound receptor 1_lid": "head",
+    "antenna10": "head",
+    "antenna11": "antenna10",
+    "leg0_upper": "chest",
+    "leg0_lower": "leg0_upper",
+    "leg0_foot": "leg0_lower",
+    "leg1_upper": "chest",
+    "leg1_lower": "leg1_upper",
+    "leg1_foot": "leg1_lower",
+    "leg2_upper": "chest",
+    "leg2_lower": "leg2_upper",
+    "leg2_foot": "leg2_lower",
+    "leg3_upper": "chest",
+    "leg3_lower": "leg3_upper",
+    "leg3_foot": "leg3_lower",
+    "leg4_upper": "chest",
+    "leg4_lower": "leg4_upper",
+    "leg4_foot": "leg4_lower",
+    "leg5_upper": "chest",
+    "leg5_lower": "leg5_upper",
+    "leg5_foot": "leg5_lower",
+    "organ0": "abdomen",
+    "organ0jaw-1": "organ0",
+    "organ0jaw1": "organ0",
+    "organ1": "chest",
+    "organ1jaw-1": "organ1",
+    "organ1jaw1": "organ1"
+  },
+  "build_seconds": 17.889,
+  "source_render_seconds": 3.572
+}

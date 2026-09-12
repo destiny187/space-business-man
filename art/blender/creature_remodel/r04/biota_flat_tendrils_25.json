@@ -1,0 +1,224 @@
+{
+  "id": "biota_flat_tendrils_25",
+  "name": "열수갈래촉지부채발암벽수",
+  "family": "biota_flat_tendrils",
+  "construction": "gekkonid",
+  "organ_system": "tendrils",
+  "environment": "thermal",
+  "locomotion_medium": "ground",
+  "anatomy_note": "큰 측안·옆으로 벌어지는 다리·세 갈래 넓은 접착 발·굵은 꼬리 · 갈래촉지 기관 계통",
+  "source_id": "biota_flat_tendrils_25",
+  "kind": "gekkonid",
+  "source_renderer": "BLENDER_EEVEE",
+  "habitat": "열을 분산하는 넓은 기관과 기질 여과관 · 실제 행성 기후와 서식 층 판정을 유지한다.",
+  "palette": [
+    "7c6659",
+    "c8b397",
+    "3e5352",
+    "bf7a47"
+  ],
+  "attack": "bite",
+  "morphology": {
+    "topology": 2,
+    "radial_count": 3,
+    "limb_count": 4,
+    "width": 1.17,
+    "height": 1.1,
+    "branch_mode": 2,
+    "anatomical_type": "gekkonid",
+    "mode": 2,
+    "eye_count": 2
+  },
+  "production_batch": "r04",
+  "host_pattern": "none",
+  "host_motion": "",
+  "authored_anatomy": {
+    "type": "gekkonid",
+    "support_limb_count": 4,
+    "attachment_chains": 23,
+    "jointed_oral_organs": 1
+  },
+  "version": "r04-1",
+  "build_fingerprint": "ecf89e67073a80576bc982fa92e24ba32107dcd86a292e112b0664a338fb9582",
+  "normalized_geometry_sha256": "41985082a6bae6c6cf43ec207052b9040074fdbde8c0e3899f3cdd6f168191cd",
+  "source": "art/blender/creature_remodel/r04/biota_flat_tendrils_25.blend",
+  "status": "built-awaiting-game-render",
+  "bone_count": 40,
+  "locomotion_chains": 4,
+  "clips": [
+    "idle_loop",
+    "move_loop",
+    "run_loop",
+    "feed",
+    "attack",
+    "hurt",
+    "blocked",
+    "stop",
+    "turn_left",
+    "turn_right",
+    "down"
+  ],
+  "sockets": {
+    "Socket_oral": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.2759999930858612,
+        1.2740999460220337
+      ]
+    },
+    "Socket_Muzzle": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.2759999930858612,
+        1.2740999460220337
+      ]
+    },
+    "Socket_Strike": {
+      "bone": "oral",
+      "point": [
+        0.0,
+        0.2759999930858612,
+        1.2740999460220337
+      ]
+    },
+    "Socket_front-1": {
+      "bone": "front-1_foot",
+      "point": [
+        -0.42605000734329224,
+        0.10000000149011612,
+        0.4849475026130676
+      ]
+    },
+    "Socket_front1": {
+      "bone": "front1_foot",
+      "point": [
+        0.42605000734329224,
+        0.10000000149011612,
+        0.4849475026130676
+      ]
+    },
+    "Socket_hind-1": {
+      "bone": "hind-1_foot",
+      "point": [
+        -0.42605000734329224,
+        0.10000000149011612,
+        -0.5193524956703186
+      ]
+    },
+    "Socket_hind1": {
+      "bone": "hind1_foot",
+      "point": [
+        0.42605000734329224,
+        0.10000000149011612,
+        -0.5193524956703186
+      ]
+    }
+  },
+  "motion_profile": {
+    "duration": 2.8,
+    "prepare": 0.78,
+    "release": [
+      1.08
+    ],
+    "active_end": 1.36,
+    "settle": 2.64,
+    "travel": 0,
+    "stride": 0.15683881594856428,
+    "stance": 0.73,
+    "period": 1.0,
+    "run": {
+      "stride": 0.24310016472027463,
+      "stance": 0.7,
+      "period": 0.6
+    },
+    "limb_phases": {
+      "front-1": 0.5,
+      "front1": 0,
+      "hind-1": 0,
+      "hind1": 0.5
+    }
+  },
+  "muzzle": [
+    0.0,
+    0.2759999930858612,
+    1.2740999460220337
+  ],
+  "lods": {
+    "near": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_flat_tendrils_25_near.glb",
+      "sha256": "c80a9b2be1bb7d21874c80abd51775f66973d4fdb5cda15245f8759324a8fdbc",
+      "triangles": 44959,
+      "min": [
+        -0.6410499215126038,
+        0.02499999850988388,
+        -1.24570631980896
+      ],
+      "max": [
+        0.6410499811172485,
+        1.3677988052368164,
+        1.2569998502731323
+      ]
+    },
+    "far": {
+      "path": "우주-비즈니스/assets/models/creature_remodel/r04/biota_flat_tendrils_25_far.glb",
+      "sha256": "17a8b091094ac359d6480e1480dabd76857c722e0a7d1c3c7d00139c3ad9a32d",
+      "triangles": 19322,
+      "min": [
+        -0.6411088705062866,
+        0.02499999850988388,
+        -1.247403860092163
+      ],
+      "max": [
+        0.6411089301109314,
+        1.3676283359527588,
+        1.2569998502731323
+      ]
+    }
+  },
+  "skeleton_topology": {
+    "root": null,
+    "chest": "root",
+    "axial0": "chest",
+    "axial1": "axial0",
+    "cervical0": "axial1",
+    "cervical1": "cervical0",
+    "head": "cervical1",
+    "oral": "head",
+    "Ocular socket -1_lid": "head",
+    "Ocular socket 1_lid": "head",
+    "front-1_upper": "axial1",
+    "front-1_lower": "front-1_upper",
+    "front-1_foot": "front-1_lower",
+    "front1_upper": "axial1",
+    "front1_lower": "front1_upper",
+    "front1_foot": "front1_lower",
+    "hind-1_upper": "axial0",
+    "hind-1_lower": "hind-1_upper",
+    "hind-1_foot": "hind-1_lower",
+    "hind1_upper": "axial0",
+    "hind1_lower": "hind1_upper",
+    "hind1_foot": "hind1_lower",
+    "caudal0": "axial0",
+    "caudal1": "caudal0",
+    "caudal2": "caudal1",
+    "organ0": "axial1",
+    "organ0tactile0": "organ0",
+    "organ0tactile1": "organ0tactile0",
+    "organ0branch-10": "organ0tactile1",
+    "organ0branch10": "organ0tactile1",
+    "organ1": "axial1",
+    "organ1tactile0": "organ1",
+    "organ1tactile1": "organ1tactile0",
+    "organ1branch-10": "organ1tactile1",
+    "organ1branch10": "organ1tactile1",
+    "organ2": "axial0",
+    "organ2tactile0": "organ2",
+    "organ2tactile1": "organ2tactile0",
+    "organ2branch-10": "organ2tactile1",
+    "organ2branch10": "organ2tactile1"
+  },
+  "build_seconds": 21.554,
+  "source_render_seconds": 3.78
+}
