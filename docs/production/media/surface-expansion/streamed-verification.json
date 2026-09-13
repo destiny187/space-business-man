@@ -1,0 +1,81 @@
+{
+  "checks": 20,
+  "failures": 0,
+  "lighting": "fixed review daylight; actual streamed scene, settled static shader comparison",
+  "profiles": {
+    "cratered": {
+      "distant_builds": 1,
+      "distant_tiles": 100,
+      "geology": "pegmatite",
+      "position": [
+        490.0,
+        5.86757659912109,
+        460.0
+      ],
+      "profile": "cratered",
+      "scatter": 378,
+      "seed": 1002291502,
+      "terrain_jobs": 75,
+      "timings": [
+        {
+          "draw_calls": 420.0,
+          "frames": 90,
+          "gpu_ms": null,
+          "median_ms": 31.029,
+          "p95_ms": 36.921,
+          "regions": true
+        }
+      ]
+    },
+    "frozen": {
+      "distant_builds": 1,
+      "distant_tiles": 110,
+      "geology": "cryogenic",
+      "position": [
+        400.0,
+        -3.70720338821411,
+        850.0
+      ],
+      "profile": "frozen",
+      "scatter": 183,
+      "seed": 666327461,
+      "terrain_jobs": 75,
+      "timings": [
+        {
+          "draw_calls": 417.0,
+          "frames": 90,
+          "gpu_ms": null,
+          "median_ms": 29.83,
+          "p95_ms": 32.046,
+          "regions": true
+        }
+      ]
+    },
+    "oxidized": {
+      "distant_builds": 1,
+      "distant_tiles": 100,
+      "geology": "metallic",
+      "position": [
+        910.0,
+        13.95152759552,
+        940.0
+      ],
+      "profile": "oxidized",
+      "scatter": 149,
+      "seed": 1256389452,
+      "terrain_jobs": 75,
+      "timings": [
+        {
+          "draw_calls": 295.0,
+          "frames": 90,
+          "gpu_ms": null,
+          "median_ms": 53.673,
+          "p95_ms": 63.154,
+          "regions": true
+        }
+      ]
+    }
+  },
+  "renderer": "forward_plus",
+  "settings": "Medium; 1280x800; uncapped; one 90 frame static sample per surface; not gameplay FPS"
+}

@@ -4,7 +4,7 @@ static var palettes: Dictionary={}
 static func ids_for(profile: Dictionary) -> Array[String]:
  var ids: Array[String]=[]
  var required: Array=profile.get("region_rocks",[str(profile.rock)]).duplicate()
- required.append_array([str(profile.deposit),"snow","ice"])
+ required.append_array([str(profile.deposit),str(profile.get("deposit_secondary",profile.deposit)),str(profile.get("snow","snow")),str(profile.get("ice","ice"))])
  for id in required:
   if not ids.has(id):ids.append(id)
  ids.sort()

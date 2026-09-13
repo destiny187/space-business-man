@@ -33,11 +33,29 @@ static func profile_for(body: Dictionary) -> Dictionary:
 	if profile.has("deposit_variants") and body.has("seed"):
 		var choice:=FrontierUniverse.derive(int(body.seed),"surface-deposit-v1:"+str(traits.get("id","")))
 		profile.deposit=profile.deposit_variants[choice%profile.deposit_variants.size()]
+	# The second deposit forms broad local patches, also on existing saved terrain.
+	# This is a render palette, never a replacement for saved geology/height rules.
+	var candidates: Array=profile.get("deposit_variants",[profile.deposit]).duplicate()
+	candidates.erase(profile.deposit)
+	profile.deposit_secondary=profile.deposit
+	if not candidates.is_empty():
+		profile.deposit_secondary=candidates[FrontierUniverse.derive(int(body.get("seed",0)),"surface-secondary-v1")%candidates.size()]
+	for cover in ["snow","ice"]:
+		var variants: Array=profile.get(cover+"_variants",[cover])
+		profile[cover]=variants[FrontierUniverse.derive(int(body.get("seed",0)),"surface-cover-v1:"+cover)%variants.size()]
 	var regions:=preload("res://scripts/world/surface_regions.gd").definition(body.get("terrain_traits",traits))
 	if not regions.is_empty():
 		profile.regions=regions;profile.region_rocks=[]
-		for id in regions.materials:profile.region_rocks.append(str(profile.rock) if id=="@rock" else str(id))
+		for slot in regions.materials.size():
+			var id: String=regions.materials[slot]
+			var variants: Array=config().get("regional_variants",{}).get(id,[id])
+			var choice:=FrontierUniverse.derive(int(body.get("seed",0)),"surface-region-art-v1:%s:%d"%[id,slot])
+			profile.region_rocks.append(str(profile.rock) if id=="@rock" else str(variants[choice%variants.size()]))
 	return profile
+static func meters_for(id: String,fallback: float) -> float:
+	for row in config().materials:
+		if row.id==id:return float(row.get("meters",fallback))
+	return fallback
 static func configure(material: ShaderMaterial,body: Dictionary) -> void:
 	var cfg:=config();var traits: Dictionary=body.get("traits",{})
 	var profile:=profile_for(body)
@@ -46,19 +64,28 @@ static func configure(material: ShaderMaterial,body: Dictionary) -> void:
 		material.set_shader_parameter("dust_color",Color(profile.deposit_color).lerp(Color(traits.get("dust",profile.deposit_color)),.2))
 	material.set_shader_parameter("surface_textures",preload("res://scripts/world/surface_palette.gd").texture(ids,cfg.materials));material.set_shader_parameter("textured_surface",true)
 	material.set_shader_parameter("rock_layer",ids.find(str(profile.rock)));material.set_shader_parameter("deposit_layer",ids.find(str(profile.deposit)))
-	material.set_shader_parameter("rock_meters",float(profile.rock_meters));material.set_shader_parameter("deposit_meters",float(profile.deposit_meters))
+	material.set_shader_parameter("rock_meters",meters_for(profile.rock,float(profile.rock_meters)));material.set_shader_parameter("deposit_meters",meters_for(profile.deposit,float(profile.deposit_meters)))
+	material.set_shader_parameter("secondary_deposit_layer",ids.find(str(profile.deposit_secondary)))
+	material.set_shader_parameter("secondary_deposit_meters",meters_for(profile.deposit_secondary,float(profile.deposit_meters)))
+	var variation: Dictionary=cfg.variety
+	material.set_shader_parameter("surface_variety",true)
+	var angle:=float(FrontierUniverse.derive(int(body.get("seed",0)),"surface-orientation-v1")%6283)/1000.0
+	material.set_shader_parameter("surface_orientation",Vector2(cos(angle),sin(angle)))
+	material.set_shader_parameter("surface_offset",Vector2(float(FrontierUniverse.derive(int(body.get("seed",0)),"surface-offset-x-v1")%4096),float(FrontierUniverse.derive(int(body.get("seed",0)),"surface-offset-z-v1")%4096)))
+	for key in ["patch_meters","warp_meters","macro_strength","secondary_threshold"]:material.set_shader_parameter(key,float(profile.get(key,variation[key])))
 	material.set_shader_parameter("regional_enabled",profile.has("regions"))
 	if profile.has("regions"):
 		var r: Dictionary=profile.regions;var rocks: Array=profile.region_rocks
 		material.set_shader_parameter("regional_layers",Vector3i(ids.find(rocks[0]),ids.find(rocks[1]),ids.find(rocks[2])))
-		material.set_shader_parameter("regional_meters",Vector3(r.meters[0],r.meters[1],r.meters[2]))
+		material.set_shader_parameter("regional_meters",Vector3(meters_for(rocks[0],r.meters[0]),meters_for(rocks[1],r.meters[1]),meters_for(rocks[2],r.meters[2])))
 		material.set_shader_parameter("regional_edges",Vector4(r.thresholds[0],r.thresholds[1],r.thresholds[2],r.thresholds[3]))
 		material.set_shader_parameter("regional_frequency",float(r.frequency));material.set_shader_parameter("regional_relief",float(r.relief))
 		material.set_shader_parameter("regional_phase",FrontierSurfaceGeology.phase(traits))
 		for key in ["deposit","low_tint","high_tint"]:material.set_shader_parameter("regional_"+key,Vector3(r[key][0],r[key][1],r[key][2]))
 		material.set_shader_parameter("regional_lava",Vector3(float(rocks[0]=="lava"),float(rocks[1]=="lava"),float(rocks[2]=="lava")))
 	for key in ["normal_strength","detail_near","detail_far","snow_meters","ice_meters","freeze_start","freeze_end"]:material.set_shader_parameter(key,float(cfg[key]))
-	material.set_shader_parameter("snow_layer",ids.find("snow"));material.set_shader_parameter("ice_layer",ids.find("ice"))
+	material.set_shader_parameter("snow_layer",ids.find(str(profile.snow)));material.set_shader_parameter("ice_layer",ids.find(str(profile.ice)))
+	material.set_shader_parameter("snow_meters",meters_for(profile.snow,float(cfg.snow_meters)));material.set_shader_parameter("ice_meters",meters_for(profile.ice,float(cfg.ice_meters)))
 	material.set_shader_parameter("native_temperature",float(traits.get("temperature",20)))
 	material.set_shader_parameter("local_temperature",float(traits.get("temperature",20)))
 	# Environment water is an index; glacial geology supplies additional retained ice.

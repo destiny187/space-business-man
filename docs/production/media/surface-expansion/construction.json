@@ -1,0 +1,27 @@
+{
+  "checks": 18,
+  "failures": 0,
+  "assertions": [
+    "initial detail coverage ready",
+    "host accepts solar construction: 원정 기록을 저장했습니다.",
+    "only footprint tiles scheduled",
+    "footprint spans tile corner",
+    "build keeps every visible tile during refresh",
+    "build keeps unrelated MultiMesh nodes",
+    "build instance count stays accurate",
+    "build supported visible tiles finish refreshing",
+    "building removes actual footprint decoration",
+    "surviving decoration retains transform and tint",
+    "host accepts demolition",
+    "demolish keeps every visible tile during refresh",
+    "demolish keeps unrelated MultiMesh nodes",
+    "demolish instance count stays accurate",
+    "demolish supported visible tiles finish refreshing",
+    "demolition restores seeded decoration",
+    "unchanged snapshots do not schedule rebuilds",
+    "isolated visual session closes"
+  ],
+  "scope": "Actual host solar build and demolition; prepared inventory and storage, memory store; unrelated geometry invalidation excluded",
+  "exit_warning": "One ObjectDB instance reported at exit; no shader/script error in the final run",
+  "source_log": "output/surface-expansion-20260913/construction-result.log"
+}

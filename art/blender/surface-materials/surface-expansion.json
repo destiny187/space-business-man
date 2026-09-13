@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "blender": "5.2.1 LTS",
+  "resolution": 1024,
+  "channels": "linear normal XY / height-tone / roughness",
+  "periodic": "integer Fourier fields and toroidal cells; same source for normal and height",
+  "materials": [
+    {
+      "id": "dune_crossbeds",
+      "name": "사층리 모래",
+      "texture": "우주-비즈니스/assets/textures/surfaces/dune_crossbeds.png",
+      "meters": 6.2,
+      "height_amplitude_m": 0.12,
+      "tint_srgb": "b89a70",
+      "sha256": "8a6fb6eeb98a205e2b72de1d25c59050da634af381e17038d3a0b2b8c433e43f"
+    },
+    {
+      "id": "wind_ripple_sand",
+      "name": "끊어진 풍성 사문",
+      "texture": "우주-비즈니스/assets/textures/surfaces/wind_ripple_sand.png",
+      "meters": 3.8,
+      "height_amplitude_m": 0.06,
+      "tint_srgb": "c5ad80",
+      "sha256": "563bcff9cc833ace16a077c77e1e715851b1589780eab482274e2595dcb26d06"
+    },
+    {
+      "id": "desert_pavement",
+      "name": "사막 포석",
+      "texture": "우주-비즈니스/assets/textures/surfaces/desert_pavement.png",
+      "meters": 4.2,
+      "height_amplitude_m": 0.17,
+      "tint_srgb": "947c68",
+      "sha256": "2984fe2651987d14cd572fcb2f99864b70a49734c28a17350d2c4a629eb1d174"
+    },
+    {
+      "id": "eroded_clay",
+      "name": "침식 점토 홈",
+      "texture": "우주-비즈니스/assets/textures/surfaces/eroded_clay.png",
+      "meters": 5.5,
+      "height_amplitude_m": 0.1,
+      "tint_srgb": "b18972",
+      "sha256": "98e2a7ee6b7f71e73ce7b0128bcf63ce280115dde39bdf7c0c20f4ecd7dc447f"
+    },
+    {
+      "id": "scoured_sandstone",
+      "name": "풍식 사암 선반",
+      "texture": "우주-비즈니스/assets/textures/surfaces/scoured_sandstone.png",
+      "meters": 7.4,
+      "height_amplitude_m": 0.2,
+      "tint_srgb": "aa805d",
+      "sha256": "7f063ca2323b7210bb2fee2334b058b906748ef3572ea45b2906c35a89476b32"
+    },
+    {
+      "id": "flint_shingle",
+      "name": "편평한 부싯돌",
+      "texture": "우주-비즈니스/assets/textures/surfaces/flint_shingle.png",
+      "meters": 3.6,
+      "height_amplitude_m": 0.15,
+      "tint_srgb": "8e8274",
+      "sha256": "463b9ea4d8b55ec78df3cc1dd9aa43ab9c06ea349636a35f54a64ea8d49ee534"
+    },
+    {
+      "id": "granite_plates",
+      "name": "화강암 박리판",
+      "texture": "우주-비즈니스/assets/textures/surfaces/granite_plates.png",
+      "meters": 7.0,
+      "height_amplitude_m": 0.24,
+      "tint_srgb": "929b9b",
+      "sha256": "4035e86b9d610b5c8d780a85249cd170dfd7e6d5238370f129076886f45b7f72"
+    },
+    {
+      "id": "schist_ridges",
+      "name": "편암 엽리",
+      "texture": "우주-비즈니스/assets/textures/surfaces/schist_ridges.png",
+      "meters": 5.8,
+      "height_amplitude_m": 0.17,
+      "tint_srgb": "78868b",
+      "sha256": "5d410bb8373e60ff9642e29ae9908f3a86618ad8cb6a8beb6c962b2942acad97"
+    },
+    {
+      "id": "vesicular_basalt",
+      "name": "기공 현무암",
+      "texture": "우주-비즈니스/assets/textures/surfaces/vesicular_basalt.png",
+      "meters": 5.0,
+      "height_amplitude_m": 0.18,
+      "tint_srgb": "696b70",
+      "sha256": "cf1818415ff33395ffecda9d6df0eb01a115b1dc1fbda5d94f3e64488cb18b7c"
+    },
+    {
+      "id": "pebble_conglomerate",
+      "name": "역암 노출면",
+      "texture": "우주-비즈니스/assets/textures/surfaces/pebble_conglomerate.png",
+      "meters": 5.6,
+      "height_amplitude_m": 0.2,
+      "tint_srgb": "9d9181",
+      "sha256": "47b6d43cfc7c269186a6da465ff6143ee564f0f03ce3be63cde1d81ad6c4ee53"
+    },
+    {
+      "id": "shale_chips",
+      "name": "박편 셰일",
+      "texture": "우주-비즈니스/assets/textures/surfaces/shale_chips.png",
+      "meters": 3.4,
+      "height_amplitude_m": 0.12,
+      "tint_srgb": "8c8a87",
+      "sha256": "9bcb76d2595bf991dfcf70e56af3995465f22afcc2ef6e4b184e9bc3543a949a"
+    },
+    {
+      "id": "mineral_veins",
+      "name": "맥상 암반",
+      "texture": "우주-비즈니스/assets/textures/surfaces/mineral_veins.png",
+      "meters": 6.8,
+      "height_amplitude_m": 0.15,
+      "tint_srgb": "8d9898",
+      "sha256": "72968a390214efb59b1dc39808344dfaa66628b89227de454a26f817c6f0a796"
+    },
+    {
+      "id": "glacier_foliation",
+      "name": "압축 빙하층",
+      "texture": "우주-비즈니스/assets/textures/surfaces/glacier_foliation.png",
+      "meters": 8.2,
+      "height_amplitude_m": 0.15,
+      "tint_srgb": "91b1bc",
+      "sha256": "0ddaad257ec10d920d0961b6d9371844e32232d92eaae035adf4a6f8b54f115d"
+    },
+    {
+      "id": "blue_ice_bubbles",
+      "name": "기포 노출 얼음",
+      "texture": "우주-비즈니스/assets/textures/surfaces/blue_ice_bubbles.png",
+      "meters": 5.6,
+      "height_amplitude_m": 0.07,
+      "tint_srgb": "85afbf",
+      "sha256": "96c6f19401430e3f72503ab3784c8de8ade19fa61c3da7fb9b8f538fbd339f3d"
+    },
+    {
+      "id": "frost_heave",
+      "name": "동결 융기토",
+      "texture": "우주-비즈니스/assets/textures/surfaces/frost_heave.png",
+      "meters": 5.4,
+      "height_amplitude_m": 0.18,
+      "tint_srgb": "a2a69e",
+      "sha256": "503e5154166994174b3a093748771cd7afbd9fecb11d5de3a2d90757f7ea262d"
+    },
+    {
+      "id": "snow_sastrugi",
+      "name": "바람 침식 설릉",
+      "texture": "우주-비즈니스/assets/textures/surfaces/snow_sastrugi.png",
+      "meters": 7.2,
+      "height_amplitude_m": 0.12,
+      "tint_srgb": "cbd4d4",
+      "sha256": "f73f03f1b04cdd043273062474896404df2a21fb1202558ca96d5da970b7321f"
+    },
+    {
+      "id": "firn_granules",
+      "name": "굳은 입상설",
+      "texture": "우주-비즈니스/assets/textures/surfaces/firn_granules.png",
+      "meters": 3.2,
+      "height_amplitude_m": 0.06,
+      "tint_srgb": "c1d0d4",
+      "sha256": "5cb69037f1ca4ce7545908932d0cc3396e9790dd4867033855f5dc8723ef346b"
+    },
+    {
+      "id": "ice_shards",
+      "name": "포개진 얼음편",
+      "texture": "우주-비즈니스/assets/textures/surfaces/ice_shards.png",
+      "meters": 4.8,
+      "height_amplitude_m": 0.17,
+      "tint_srgb": "9ab9c2",
+      "sha256": "e8bd23baab01c54bf53c6d63f9cc9c37aa8f3d3a458a94607a1e32ac4b3c2e9c"
+    }
+  ]
+}

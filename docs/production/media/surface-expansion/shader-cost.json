@@ -1,0 +1,50 @@
+{
+  "checks": 8,
+  "failures": 0,
+  "lighting": "fixed review daylight; actual streamed scene, settled static shader comparison",
+  "profiles": {
+    "cratered": {
+      "distant_builds": 1,
+      "distant_tiles": 100,
+      "geology": "pegmatite",
+      "position": [
+        490.0,
+        5.86757659912109,
+        460.0
+      ],
+      "profile": "cratered",
+      "scatter": 378,
+      "seed": 1002291502,
+      "terrain_jobs": 75,
+      "timings": [
+        {
+          "comparison": [
+            {
+              "draw_calls": 420.0,
+              "median_ms": 44.622,
+              "p95_ms": 54.183,
+              "pixels": [
+                1280.0,
+                800.0
+              ],
+              "variety": false
+            },
+            {
+              "draw_calls": 420.0,
+              "median_ms": 39.309,
+              "p95_ms": 64.174,
+              "pixels": [
+                1280.0,
+                800.0
+              ],
+              "variety": true
+            }
+          ],
+          "scope": "same active textures and settled scene; broad patterns/rotation off then on; not walking FPS"
+        }
+      ]
+    }
+  },
+  "renderer": "forward_plus",
+  "settings": "Medium; 1280x800; uncapped; one 90 frame static sample per surface; not gameplay FPS"
+}

@@ -20,7 +20,7 @@ func run() -> void:
   if rules.is_empty():continue
   var body: Dictionary={"seed":71503,"traits":traits}
   var profile:=FrontierSurfaceMaterialLibrary.profile_for(body);var ids:=Palette.ids_for(profile)
-  assert(ids.size()<=6 and ids.size()>=3)
+  assert(ids.size()<=7 and ids.size()>=3)
   var legacy: Dictionary=traits.duplicate(true);legacy.terrain_layout.erase("surface_regions")
   assert(not FrontierSurfaceMaterialLibrary.profile_for({"seed":71503,"traits":legacy}).has("region_rocks"))
   # Pre-diversity saves expose present-day preview traits, but have no terrain rules.
@@ -62,5 +62,5 @@ func run() -> void:
    await RenderingServer.frame_post_draw
    root.get_texture().get_image().save_png(folder+"/%s-%d.png"%[id,zone])
  FileAccess.open(folder+"/report.json",FileAccess.WRITE).store_string(JSON.stringify(reports,"  "))
- print("REGIONAL_REVIEW 12 families; saved rules reproduced; old worlds opt out; 3 reachable zones each; palette <=6; 9 close renders")
+ print("REGIONAL_REVIEW 12 families; saved rules reproduced; old worlds opt out; 3 reachable zones each; palette <=7; 9 close renders")
  quit()

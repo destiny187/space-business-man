@@ -18,7 +18,12 @@
         "res://assets/models/surface-details/oxidized_3.glb"
       ],
       "density": 1.0,
-      "geology_scatter": true
+      "geology_scatter": true,
+      "alignment": 0.48,
+      "aspect_range": [
+        0.85,
+        1.18
+      ]
     },
     "continental": {
       "models": [
@@ -36,7 +41,12 @@
         "res://assets/models/surface-details/cratered_2.glb",
         "res://assets/models/surface-details/cratered_3.glb"
       ],
-      "density": 1.0
+      "density": 1.0,
+      "alignment": 0.3,
+      "aspect_range": [
+        0.85,
+        1.18
+      ]
     },
     "fractured": {
       "models": [
@@ -63,7 +73,12 @@
         "res://assets/models/surface-details/frozen_2.glb",
         "res://assets/models/surface-details/frozen_3.glb"
       ],
-      "density": 0.85
+      "density": 0.85,
+      "alignment": 0.48,
+      "aspect_range": [
+        0.85,
+        1.18
+      ]
     },
     "volcanic": {
       "models": [

@@ -16,7 +16,7 @@ func run() -> void:
   var profile:=FrontierSurfaceMaterialLibrary.profile_for({"seed":71503,"traits":{"id":id}})
   var ids:=Palette.ids_for(profile)
   var a:=Palette.texture(ids,cfg.materials);var b:=Palette.texture(ids,cfg.materials)
-  assert(a==b and a.get_layers()<=4)
+  assert(a==b and a.get_layers()<=5)
   report[id]={"seeded_rocks":chosen.keys(),"active_maps":ids,"layers":a.get_layers()}
  var scene:=Node3D.new();root.add_child(scene)
  var env:=WorldEnvironment.new();env.environment=Environment.new();scene.add_child(env)
@@ -38,5 +38,5 @@ func run() -> void:
  await RenderingServer.frame_post_draw
  root.get_texture().get_image().save_png(folder+"/godot-geology.png")
  FileAccess.open(folder+"/g01-palettes.json",FileAccess.WRITE).store_string(JSON.stringify(report,"  "))
- print("GEOLOGY_REVIEW ",cfg.materials.size()," catalog maps; 12 seeded profiles; active palette <=4; live arrays shared")
+ print("GEOLOGY_REVIEW ",cfg.materials.size()," catalog maps; 12 seeded profiles; active palette <=5; live arrays shared")
  quit()

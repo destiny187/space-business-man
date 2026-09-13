@@ -101,7 +101,7 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 		var masks:=FrontierSurfaceGeology.sample(p.x,p.z,FrontierSurfaceGeology.phase(body.traits))
 		var belt:=smoothstep(-.25,.35,cluster.get_noise_2d(p.x*.28,p.z*.28))
 		density*=lerpf(.12,1.25,belt)*(1.0-masks.z*.45)
-		yaw=lerp_angle(yaw,atan2(.4,1.0)+sin(p.z*.023)*.35,.7)
+		yaw=lerp_angle(yaw,atan2(.4,1.0)+sin(p.z*.023)*.35,float(family.get("alignment",.7)))
 		if family.get("geology_scatter",false):
 			masks=FrontierSurfaceGeology.sample(p.x,p.z,FrontierSurfaceGeology.phase(body.traits))
 			var edge: float=4.0*masks.x*(1.0-masks.x)
@@ -132,7 +132,13 @@ func candidates(key: Vector2i) -> Array[Dictionary]:
 		p-=up*((.045+masks.z*.035) if family.get("geology_scatter",false) else .035)*scale_value
 		var tint:=Color.WHITE
 		if family.get("geology_scatter",false):tint=Color(1.0,1.0,1.0).lerp(Color(.62,.66,.7),masks.x*.7)
-		result.append({"id":"%d:%d:%d"%[key.x,key.y,index],"variant":variant,"tint":tint,"transform":Transform3D(basis.scaled(Vector3.ONE*scale_value),p)})
+		# Reuse the existing candidate values: no new random draws may shift later
+		# rocks when a footprint is removed/rebuilt. One mesh per existing variant.
+		var axis_scale:=Vector3.ONE
+		if family.has("aspect_range"):
+			var aspect: float=lerpf(float(family.aspect_range[0]),float(family.aspect_range[1]),fposmod(yaw*1.618+index*.371,1.0))
+			axis_scale=Vector3(aspect,lerpf(.85,1.08,patch),1.0/aspect)
+		result.append({"id":"%d:%d:%d"%[key.x,key.y,index],"variant":variant,"tint":tint,"transform":Transform3D(basis.scaled(axis_scale*scale_value),p)})
 	return result
 
 func _build(key: Vector2i) -> void:

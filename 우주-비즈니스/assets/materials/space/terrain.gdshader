@@ -37,6 +37,15 @@ uniform float rock_meters=5.;
 uniform float deposit_meters=3.5;
 uniform float snow_meters=4.5;
 uniform float ice_meters=5.5;
+uniform bool surface_variety=false;
+uniform int secondary_deposit_layer=1;
+uniform float secondary_deposit_meters=4.;
+uniform vec2 surface_orientation=vec2(1.,0.);
+uniform vec2 surface_offset=vec2(0.);
+uniform float patch_meters=42.;
+uniform float warp_meters=5.;
+uniform float macro_strength=.18;
+uniform float secondary_threshold=.54;
 uniform float normal_strength=.42;
 uniform float detail_near=25.;
 uniform float detail_far=95.;
@@ -66,6 +75,7 @@ uniform vec4 recovery_life_color:source_color=vec4(.41,.51,.30,1.);
 varying vec3 world_position;
 varying vec3 world_normal;
 varying vec3 geological_regions;
+varying vec3 surface_weathering;
 float ground_hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float ground_noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(ground_hash(i),ground_hash(i+vec2(1,0)),f.x),mix(ground_hash(i+vec2(0,1)),ground_hash(i+vec2(1)),f.x),f.y);}
 // Kept in metre coordinates with FrontierSurfaceGeology.sample (CPU placement).
@@ -81,8 +91,14 @@ vec3 geology(vec2 p){
 
 // A restored deposit replaces the native deposit fetch; it never adds a layer blend.
 vec4 packed_surface(bool recovering,vec3 at){
- if(recovering){return texture(recovery_textures,at);}
- return texture(surface_textures,at);
+ vec2 rotation=surface_variety?surface_orientation:vec2(1.,0.);
+ at.xy=vec2(rotation.x*at.x-rotation.y*at.y,rotation.y*at.x+rotation.x*at.y);
+ vec4 value;
+ if(recovering){value=texture(recovery_textures,at);}else{value=texture(surface_textures,at);}
+ // Inverse rotation keeps packed normals aligned with the rotated height field.
+ vec2 bump=value.rg*2.-1.;
+ value.rg=vec2(rotation.x*bump.x+rotation.y*bump.y,-rotation.y*bump.x+rotation.x*bump.y)*.5+.5;
+ return value;
 }
 // One packed fetch per contributing axis; linear data, no lighting baked into tone.
 vec4 layer(bool recovering,int id,float meters,vec3 p,vec3 n,vec3 weights,out vec3 bump){
@@ -95,6 +111,14 @@ vec4 layer(bool recovering,int id,float meters,vec3 p,vec3 n,vec3 weights,out ve
 void vertex(){
  world_position=(MODEL_MATRIX*vec4(VERTEX,1.)).xyz;world_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);
  geological_regions=vec3(0.,1.,0.);
+ surface_weathering=vec3(.5);
+ if(surface_variety){
+  // Three broad fields per vertex. No new map, per-fragment noise, or streaming job.
+  vec2 q=(world_position.xz+surface_offset)/patch_meters;
+  float a=ground_noise(q);
+  float b=ground_noise(q*.47+vec2(19.7,-8.2));
+  surface_weathering=vec3(a,b,ground_noise(q*.21+vec2(b*1.4,a*.8)));
+ }
  if(regional_enabled){
   // Broad geological bands are evaluated per vertex, never as per-pixel noise.
   // Same metre-space definition as surface_regions.gd for cosmetic scatter.
@@ -142,6 +166,12 @@ void fragment(){
  float terrace=sin(world_position.y*.65+sin(world_position.x*.043)*.6)*.5+.5;
  vec3 strata=mix(rock_color.rgb*.82,rock_color.rgb*1.09,smoothstep(.2,.8,terrace));
  float deposit=skin*smoothstep(.18,.88,geo.z+geo.y*.75);
+ if(surface_variety){
+  // Broad exposed/sheltered patches retain an open main surface between clusters.
+  // Cosmetic only: snow/water/environment and CPU geological placement stay intact.
+  float patch_bias=(surface_weathering.x-.5)*.85;
+  deposit=clamp(deposit+patch_bias*4.*deposit*(1.-deposit),0.,1.);
+ }
  if(regional_enabled){
   strata*=regional_low_tint*geological_regions.x+vec3(geological_regions.y)+regional_high_tint*geological_regions.z;
   deposit*=dot(geological_regions,regional_deposit);
@@ -170,6 +200,8 @@ void fragment(){
  vec3 bump=vec3(0.);float roughness=.94;
  vec4 rock=vec4(.5,.5,.5,.94);vec4 dirt=rock;
  vec3 br=vec3(0.);vec3 bd=vec3(0.);
+ vec3 texture_position=world_position;
+ if(surface_variety){texture_position+=vec3(surface_weathering.x-.5,(surface_weathering.z-.5)*.35,surface_weathering.y-.5)*warp_meters;}
  if(textured_surface && max(near_detail,lava_detail)>.001){
   vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
   int selected_rock=rock_layer;float selected_meters=rock_meters;
@@ -180,13 +212,14 @@ void fragment(){
    int zone=geological_regions.x>contact?0:(geological_regions.z>contact?2:1);
    selected_rock=regional_layers[zone];selected_meters=regional_meters[zone];
   }
-  rock=layer(false,selected_rock,selected_meters,world_position,n,weights,br);
+  rock=layer(false,selected_rock,selected_meters,texture_position,n,weights,br);
   if(near_detail>.001){
    bool recovering=recovery_surface_enabled && soil_patch>(.32+.30*geo.z);
    int deposit_id=deposit_layer;float meters=deposit_meters;
+   if(surface_variety && surface_weathering.x+geo.y*.12>secondary_threshold){deposit_id=secondary_deposit_layer;meters=secondary_deposit_meters;}
    if(recovering){deposit_id=pioneer_patch>(.38+.22*geo.x)?1:0;meters=recovery_meters[deposit_id];}
    // Reuse broad geology to bend repeated soil motifs without another noise/map read.
-   vec3 deposit_position=world_position;
+   vec3 deposit_position=texture_position;
    if(recovering){deposit_position+=vec3(geo.z-geo.x,0.,geo.y-.5)*meters*1.8;}
    dirt=layer(recovering,deposit_id,meters,deposit_position,n,weights,bd);
   }
@@ -202,7 +235,7 @@ void fragment(){
  roughness=mix(rock.a,dirt.a,deposit);bump=mix(br,bd,deposit);
  if(textured_surface && near_detail>.001 && max(ice,snow)>.01){
   vec3 weights=pow(abs(n),vec3(5.));weights/=max(.001,weights.x+weights.y+weights.z);
-  vec3 bi;vec3 bs;vec4 ti=layer(false,ice_layer,ice_meters,world_position,n,weights,bi);vec4 ts=layer(false,snow_layer,snow_meters,world_position,n,weights,bs);
+  vec3 bi;vec3 bs;vec4 ti=layer(false,ice_layer,ice_meters,texture_position,n,weights,bi);vec4 ts=layer(false,snow_layer,snow_meters,texture_position,n,weights,bs);
   ice=clamp(ice+(ti.b-tone)*ice*(1.-ice)*near_detail,0.,1.);
   ALBEDO=mix(ALBEDO,vec3(.33,.57,.66)*(.68+ti.b*.64),ice*.9);
   ALBEDO=mix(ALBEDO,vec3(.52,.62,.66)*(.70+ts.b*.55),snow);
@@ -210,6 +243,12 @@ void fragment(){
  }else{
   ALBEDO=mix(ALBEDO,vec3(.34,.58,.66),ice*.9);ALBEDO=mix(ALBEDO,vec3(.52,.62,.66),snow);
   roughness=mix(mix(roughness,.27,ice),.82,snow);
+ }
+ if(surface_variety){
+  // Readable at walking distance and beyond the normal-map fade. Large color
+  // planes survive; no high-frequency albedo grain or additional outline pass.
+  float weathering=(surface_weathering.z-.5)*2.;
+  ALBEDO*=vec3(1.)+vec3(.80,1.,1.12)*weathering*macro_strength;
  }
  ALBEDO=mix(ALBEDO,vec3(.39,.30,.20),pollution_value*managed*skin*.35);
  wet=max(wet,weather_wet*skin);ALBEDO*=1.-wet*.18;roughness=mix(roughness,.42,wet);

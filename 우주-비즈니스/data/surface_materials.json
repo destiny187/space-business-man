@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "resolution": 1024,
   "channels": "linear R/G signed tangent normal XY; B height/tone; A roughness",
   "materials": [
@@ -102,6 +102,96 @@
     {
       "id": "pioneer_mat",
       "texture": "res://assets/textures/surfaces/pioneer_mat.png"
+    },
+    {
+      "id": "dune_crossbeds",
+      "texture": "res://assets/textures/surfaces/dune_crossbeds.png",
+      "meters": 6.2
+    },
+    {
+      "id": "wind_ripple_sand",
+      "texture": "res://assets/textures/surfaces/wind_ripple_sand.png",
+      "meters": 3.8
+    },
+    {
+      "id": "desert_pavement",
+      "texture": "res://assets/textures/surfaces/desert_pavement.png",
+      "meters": 4.2
+    },
+    {
+      "id": "eroded_clay",
+      "texture": "res://assets/textures/surfaces/eroded_clay.png",
+      "meters": 5.5
+    },
+    {
+      "id": "scoured_sandstone",
+      "texture": "res://assets/textures/surfaces/scoured_sandstone.png",
+      "meters": 7.4
+    },
+    {
+      "id": "flint_shingle",
+      "texture": "res://assets/textures/surfaces/flint_shingle.png",
+      "meters": 3.6
+    },
+    {
+      "id": "granite_plates",
+      "texture": "res://assets/textures/surfaces/granite_plates.png",
+      "meters": 7
+    },
+    {
+      "id": "schist_ridges",
+      "texture": "res://assets/textures/surfaces/schist_ridges.png",
+      "meters": 5.8
+    },
+    {
+      "id": "vesicular_basalt",
+      "texture": "res://assets/textures/surfaces/vesicular_basalt.png",
+      "meters": 5
+    },
+    {
+      "id": "pebble_conglomerate",
+      "texture": "res://assets/textures/surfaces/pebble_conglomerate.png",
+      "meters": 5.6
+    },
+    {
+      "id": "shale_chips",
+      "texture": "res://assets/textures/surfaces/shale_chips.png",
+      "meters": 3.4
+    },
+    {
+      "id": "mineral_veins",
+      "texture": "res://assets/textures/surfaces/mineral_veins.png",
+      "meters": 6.8
+    },
+    {
+      "id": "glacier_foliation",
+      "texture": "res://assets/textures/surfaces/glacier_foliation.png",
+      "meters": 8.2
+    },
+    {
+      "id": "blue_ice_bubbles",
+      "texture": "res://assets/textures/surfaces/blue_ice_bubbles.png",
+      "meters": 5.6
+    },
+    {
+      "id": "frost_heave",
+      "texture": "res://assets/textures/surfaces/frost_heave.png",
+      "meters": 5.4
+    },
+    {
+      "id": "snow_sastrugi",
+      "texture": "res://assets/textures/surfaces/snow_sastrugi.png",
+      "meters": 7.2
+    },
+    {
+      "id": "firn_granules",
+      "texture": "res://assets/textures/surfaces/firn_granules.png",
+      "meters": 3.2
+    },
+    {
+      "id": "ice_shards",
+      "texture": "res://assets/textures/surfaces/ice_shards.png",
+      "meters": 4.8
     }
   ],
   "profiles": {
@@ -113,12 +203,19 @@
       "deposit_color": "b08a63",
       "rock_variants": [
         "sandstone_bedded",
-        "impact_breccia"
+        "impact_breccia",
+        "scoured_sandstone",
+        "desert_pavement"
       ],
       "deposit_variants": [
         "wind_scoured",
-        "desiccated_clay"
-      ]
+        "desiccated_clay",
+        "dune_crossbeds",
+        "wind_ripple_sand",
+        "eroded_clay",
+        "flint_shingle"
+      ],
+      "patch_meters": 34
     },
     "continental": {
       "rock": "bedrock",
@@ -127,11 +224,16 @@
       "deposit_meters": 3.4,
       "rock_variants": [
         "folded_slate",
-        "impact_breccia"
+        "impact_breccia",
+        "granite_plates",
+        "pebble_conglomerate",
+        "mineral_veins"
       ],
       "deposit_variants": [
         "stony_loam",
-        "alluvial_pebbles"
+        "alluvial_pebbles",
+        "shale_chips",
+        "desert_pavement"
       ]
     },
     "cratered": {
@@ -141,12 +243,19 @@
       "deposit_meters": 3.5,
       "rock_variants": [
         "impact_breccia",
-        "basalt_columns"
+        "basalt_columns",
+        "granite_plates",
+        "vesicular_basalt",
+        "pebble_conglomerate"
       ],
       "deposit_variants": [
         "talus_fragments",
-        "gravel"
-      ]
+        "gravel",
+        "shale_chips",
+        "flint_shingle",
+        "desert_pavement"
+      ],
+      "patch_meters": 46
     },
     "fractured": {
       "rock": "bedrock",
@@ -155,11 +264,16 @@
       "deposit_meters": 5,
       "rock_variants": [
         "frost_fracture",
-        "basalt_columns"
+        "basalt_columns",
+        "schist_ridges",
+        "mineral_veins",
+        "granite_plates"
       ],
       "deposit_variants": [
         "talus_fragments",
-        "alluvial_pebbles"
+        "alluvial_pebbles",
+        "shale_chips",
+        "flint_shingle"
       ]
     },
     "tundra": {
@@ -169,12 +283,28 @@
       "deposit_meters": 3.4,
       "rock_variants": [
         "folded_slate",
-        "frost_fracture"
+        "frost_fracture",
+        "frost_heave",
+        "glacier_foliation",
+        "schist_ridges"
       ],
       "deposit_variants": [
         "stony_loam",
-        "desiccated_clay"
-      ]
+        "desiccated_clay",
+        "frost_heave",
+        "ice_shards"
+      ],
+      "snow_variants": [
+        "snow",
+        "snow_sastrugi",
+        "firn_granules"
+      ],
+      "ice_variants": [
+        "ice",
+        "glacier_foliation",
+        "blue_ice_bubbles"
+      ],
+      "patch_meters": 48
     },
     "frozen": {
       "rock": "bedrock",
@@ -183,12 +313,28 @@
       "deposit_meters": 4,
       "rock_variants": [
         "frost_fracture",
-        "ice"
+        "ice",
+        "glacier_foliation",
+        "blue_ice_bubbles",
+        "frost_heave"
       ],
       "deposit_variants": [
         "wind_scoured",
-        "regolith"
-      ]
+        "regolith",
+        "frost_heave",
+        "ice_shards"
+      ],
+      "snow_variants": [
+        "snow",
+        "snow_sastrugi",
+        "firn_granules"
+      ],
+      "ice_variants": [
+        "ice",
+        "glacier_foliation",
+        "blue_ice_bubbles"
+      ],
+      "patch_meters": 55
     },
     "volcanic": {
       "rock": "lava",
@@ -200,7 +346,9 @@
       ],
       "deposit_variants": [
         "ash_drift",
-        "talus_fragments"
+        "talus_fragments",
+        "vesicular_basalt",
+        "shale_chips"
       ]
     },
     "salt": {
@@ -210,11 +358,15 @@
       "deposit_meters": 4,
       "rock_variants": [
         "salt_polygons",
-        "porous_tuff"
+        "porous_tuff",
+        "desert_pavement",
+        "scoured_sandstone"
       ],
       "deposit_variants": [
         "salt",
-        "desiccated_clay"
+        "desiccated_clay",
+        "eroded_clay",
+        "flint_shingle"
       ]
     },
     "ochre": {
@@ -224,11 +376,15 @@
       "deposit_meters": 4,
       "rock_variants": [
         "porous_tuff",
-        "sandstone_bedded"
+        "sandstone_bedded",
+        "scoured_sandstone",
+        "pebble_conglomerate"
       ],
       "deposit_variants": [
         "desiccated_clay",
-        "ash_drift"
+        "ash_drift",
+        "eroded_clay",
+        "dune_crossbeds"
       ]
     },
     "sedimentary": {
@@ -238,12 +394,18 @@
       "deposit_meters": 4,
       "rock_variants": [
         "sandstone_bedded",
-        "sediment"
+        "sediment",
+        "scoured_sandstone",
+        "schist_ridges",
+        "pebble_conglomerate"
       ],
       "deposit_variants": [
         "stony_loam",
-        "alluvial_pebbles"
-      ]
+        "alluvial_pebbles",
+        "shale_chips",
+        "eroded_clay"
+      ],
+      "patch_meters": 38
     },
     "crystalline": {
       "rock": "crystal",
@@ -253,11 +415,15 @@
       "deposit_color": "828e9e",
       "rock_variants": [
         "crystal",
-        "basalt_columns"
+        "basalt_columns",
+        "mineral_veins",
+        "granite_plates"
       ],
       "deposit_variants": [
         "talus_fragments",
-        "gravel"
+        "gravel",
+        "shale_chips",
+        "flint_shingle"
       ]
     },
     "alkaline": {
@@ -267,11 +433,15 @@
       "deposit_meters": 4.5,
       "rock_variants": [
         "salt_polygons",
-        "impact_breccia"
+        "impact_breccia",
+        "pebble_conglomerate",
+        "scoured_sandstone"
       ],
       "deposit_variants": [
         "desiccated_clay",
-        "salt"
+        "salt",
+        "eroded_clay",
+        "desert_pavement"
       ]
     }
   },
@@ -294,5 +464,55 @@
     "life_meters": 2.6,
     "soil_color": "76624a",
     "life_color": "69834c"
+  },
+  "variety": {
+    "patch_meters": 42.0,
+    "warp_meters": 5.0,
+    "macro_strength": 0.18,
+    "secondary_threshold": 0.54
+  },
+  "regional_variants": {
+    "bedrock": [
+      "bedrock",
+      "granite_plates",
+      "mineral_veins"
+    ],
+    "impact_breccia": [
+      "impact_breccia",
+      "granite_plates",
+      "pebble_conglomerate"
+    ],
+    "sandstone_bedded": [
+      "sandstone_bedded",
+      "scoured_sandstone"
+    ],
+    "folded_slate": [
+      "folded_slate",
+      "schist_ridges"
+    ],
+    "porous_tuff": [
+      "porous_tuff",
+      "pebble_conglomerate"
+    ],
+    "basalt_columns": [
+      "basalt_columns",
+      "vesicular_basalt"
+    ],
+    "frost_fracture": [
+      "frost_fracture",
+      "glacier_foliation"
+    ],
+    "ice": [
+      "ice",
+      "blue_ice_bubbles"
+    ],
+    "regolith": [
+      "regolith",
+      "desert_pavement"
+    ],
+    "sediment": [
+      "sediment",
+      "scoured_sandstone"
+    ]
   }
 }
