@@ -11,6 +11,7 @@ var materials: Dictionary={}
 var rows: Dictionary={}
 var selected: Dictionary={}
 var audio: FrontierAudio
+var attack_effects: Node3D
 var hint: Label
 var target_health: FrontierTargetHealth
 var signal_bar: ProgressBar
@@ -23,7 +24,9 @@ var native_warning:=""
 func configure(owner_surface: FrontierCrewSurfaceScene,eye: Camera3D) -> void:
  surface=owner_surface;camera=eye;app=surface.session.get_parent() as FrontierCrewExpedition
  audio=FrontierAudio.new();add_child(audio)
+ attack_effects=preload("res://scripts/world/coopertech_attack_effects.gd").new();attack_effects.view=self;add_child(attack_effects)
  var layer:=CanvasLayer.new();add_child(layer)
+ var threat_overlay:=preload("res://scripts/ui/coopertech_threat_overlay.gd").new();threat_overlay.view=self;layer.add_child(threat_overlay)
  var clue_overlay: Control=load("res://scripts/ui/coopertech_clue_overlay.gd").new();clue_overlay.incident=self;layer.add_child(clue_overlay)
  hint=Label.new();hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;hint.mouse_filter=Control.MOUSE_FILTER_IGNORE
  hint.add_theme_color_override("font_shadow_color",Color.BLACK);hint.add_theme_constant_override("shadow_offset_x",2);hint.add_theme_constant_override("shadow_offset_y",2);layer.add_child(hint)
@@ -175,11 +178,8 @@ func _process(delta: float) -> void:
    elif str(part.name).begins_with("Anim_Gem_"):part.visible=int(str(part.name).trim_prefix("Anim_Gem_"))>=int(row.gems)
   if nodes.has("robot_solid"):nodes.robot_solid.collision_layer=1 if row.hp>0 else 0
   if nodes.beam!=null:nodes.beam.visible=false
-  if mode=="robot" and not FrontierCooperTechSquads.enabled(row) and row.phase in ["aiming","firing"] and not stopped and not row.aim.is_empty():
-   if nodes.beam==null or nodes.get("beam_serial",-1)!=row.serial:
-    if nodes.beam!=null:nodes.beam.queue_free()
-    nodes.beam=beam(FrontierExplorationIncidents.point(row,Vector3(0,1.5,0)),FrontierCrewWorld.vector(row.aim)+Vector3.UP,Color("ff562c") if row.phase=="firing" else Color("d29b3b"),.10 if row.phase=="firing" else .018,self);nodes.beam_serial=row.serial
-   nodes.beam.visible=true
+  if mode=="robot" and not FrontierCooperTechSquads.enabled(row) and row.phase=="firing" and nodes.phase!="firing" and not stopped and not row.aim.is_empty():
+   attack_effects.shot(FrontierExplorationIncidents.point(row,Vector3(0,1.5,0)),FrontierCrewWorld.vector(row.aim)+Vector3.UP,"sentry")
   if mode=="seismic":
    main.visible=row.open
    nodes.danger_ring.visible=row.phase in ["warning","blast"] and not stopped
@@ -193,8 +193,8 @@ func _process(delta: float) -> void:
   if int(row.serial)!=int(nodes.serial):
    if not stopped:
     if row.phase!=nodes.phase and not FrontierCooperTechSquads.enabled(row):
-     var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_combat_pulse" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
-     audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
+     var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_gun_carbine" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
+     if mode!="robot" or row.phase!="firing":audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
     # Combat contacts already have host-confirmed material effects. A serial
     # update must not add an unrelated purple burst at the robot's origin.
     if mode not in ["robot","drone"]:app.feedback.effects.burst(at+Vector3.UP,Color("cbb5ff"),8)

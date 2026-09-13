@@ -74,6 +74,26 @@ static func move(world: Dictionary,row: Dictionary,f: FrontierTerrainField,desti
   if end.distance_to(FrontierCrewWorld.vector(other.position))<float(cfg.radius)+(.8 if not enabled(other) else float(spec(other).radius)):return false
  row.position=FrontierExplorationIncidents.array(end);row.yaw=fposmod(atan2(-direction.x,-direction.z),TAU);row.travel+=distance
  return true
+static func maneuver(world: Dictionary,row: Dictionary,f: FrontierTerrainField,actor: String,delta: float,obstacle: Callable) -> bool:
+ var cfg:=spec(row);var at:=FrontierCrewWorld.vector(row.position)
+ var target:=FrontierCrewWorld.vector(world.crew.members[actor].position);var radial:=target-at;radial.y=0
+ var distance:=radial.length()
+ if distance<.1:return false
+ radial/=distance
+ var lateral:=Vector3(-radial.z,0,radial.x)
+ var phase:=floori((float(row.age)+float(absi(str(row.id).hash())%100)*.037)/float(config().maneuver.side_seconds))
+ var side:=1.0 if phase%2==0 else -1.0
+ var advance:=clampf((distance-float(cfg.combat_distance))/float(config().maneuver.distance_deadband),-1,1)
+ var home:=FrontierCrewWorld.vector(row.home)
+ # Exactly two local alternatives. Keep collision, slope, water and group spacing checks.
+ for sign_value in [side,-side]:
+  var direction: Vector3=(radial*advance+lateral*sign_value*.85).normalized()
+  if at.distance_to(home)>float(config().leash)-3:direction=(home-at).normalized()
+  if move(world,row,f,at+direction*4,delta*float(cfg.combat_move_factor),actor,obstacle):
+   var facing: Vector3=target-FrontierCrewWorld.vector(row.position)
+   row.yaw=fposmod(atan2(-facing.x,-facing.z),TAU)
+   return true
+ return false
 static func aim_at(world: Dictionary,row: Dictionary,actor: String) -> void:
  var cfg:=spec(row);var member: Dictionary=world.crew.members[actor]
  var at:=FrontierCrewWorld.vector(member.position)
@@ -114,6 +134,8 @@ static func tick(world: Dictionary,row: Dictionary,delta: float,present: Array,f
  for actor in present:
   var member: Dictionary=world.crew.members[actor];var p:=FrontierCrewWorld.vector(member.position);var d:=p.distance_to(at)
   if d<nearest and clear_line(world,row,f,actor,at+Vector3.UP*float(cfg.center),p+Vector3.UP*1.2,obstacle):nearest=d;target=actor
+ if not target.is_empty() and row.phase in ["aiming","firing","cooling","projectile"]:
+  if cfg.attack!="mortar" or row.phase in ["aiming","cooling"]:maneuver(world,row,f,target,delta,obstacle)
  if row.phase=="idle":
   if row.alarmed or (not target.is_empty() and nearest<float(cfg.wake_distance)):alert(world,row);return true
   return false
@@ -135,17 +157,19 @@ static func tick(world: Dictionary,row: Dictionary,delta: float,present: Array,f
    move(world,row,f,FrontierCrewWorld.vector(world.crew.members[target].position),delta,target,obstacle)
   else:row.burst=0;aim_at(world,row,target);return true
   return false
- if row.phase=="aiming" and row.time>=float(cfg.aim_seconds):
+ var aim_duration: float=cfg.burst_aim_seconds if cfg.attack=="burst" and row.burst>0 else cfg.aim_seconds
+ if row.phase=="aiming" and row.time>=aim_duration:
   # The final marked point is locked throughout the warning. No last-frame tracking.
   shoot(world,row,f,present,obstacle,cfg.attack!="mortar");FrontierExplorationIncidents.set_phase(row,"projectile" if cfg.attack=="mortar" else "firing");return true
  if row.phase=="projectile" and row.time>=.75:
   shoot(world,row,f,present,obstacle);FrontierExplorationIncidents.set_phase(row,"firing");return true
- if row.phase=="firing" and row.time>=.35:
+ if row.phase=="firing" and row.time>=float(cfg.fire_seconds):
   row.burst+=1
   if cfg.attack=="burst" and row.burst<(2 if int(row.tier)<3 else 3) and not target.is_empty():aim_at(world,row,target)
   else:FrontierExplorationIncidents.set_phase(row,"cooling")
   return true
  if row.phase=="cooling" and row.time>=float(cfg.cool_seconds):FrontierExplorationIncidents.set_phase(row,"pursuing");return true
+ # Continuous motion follows the existing patrol snapshot path, without a disk save per step.
  return false
 static func validate(row: Dictionary) -> bool:
  if not enabled(row):return not row.has("squad_version")

@@ -60,9 +60,9 @@ func _process(delta: float) -> void:
 		if float(scan.get("progress",0))>0:timer=0
 	visible=timer>0
 	var kind: String=displayed.get("kind","")
-	position=Vector2(28,194 if kind in ["corporation","biology"] else 110)
-	if kind=="biology" and is_instance_valid(app.field_hud) and app.field_hud.environment.details.visible:
+	position=Vector2(28,194 if kind in ["corporation","biology","native_incident"] else 110)
+	if kind in ["biology","native_incident"] and is_instance_valid(app.field_hud) and app.field_hud.environment.details.visible:
 		# Expanded environmental readings occupy the left column. Keep the observed
 		# species below the radar in the other column while those readings are open.
 		position.x=get_viewport().get_visible_rect().size.x-size.x-28;position.y=218
-	if kind not in ["corporation","biology"] and size.y>get_viewport().get_visible_rect().size.y-275:position.y=85
+	if kind not in ["corporation","biology","native_incident"] and size.y>get_viewport().get_visible_rect().size.y-275:position.y=85

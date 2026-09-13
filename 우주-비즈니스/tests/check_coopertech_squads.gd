@@ -46,6 +46,19 @@ func run() -> void:
  for i in 8:robot.age+=.25;robot.time+=.25;FrontierCooperTechSquads.tick(world,robot,.25,[actor_id],f,Callable())
  check(before.distance_to(FrontierCrewWorld.vector(robot.position))>.5,"awake patrol actually moves on terrain")
  var after: Array=robot.position.duplicate();check(not FrontierCooperTechSquads.move(world,robot,f,FrontierCrewWorld.vector(robot.path[robot.patrol_index]),.25,actor_id,func(_a,_o,_d,_r):return 0.0) and after==robot.position,"physical blocker prevents robot travel")
+ # Reproduce the former stationary gunfight: aiming and firing must maneuver.
+ for candidate in world.incidents.records.values():
+  if candidate.robot_role!="raptor":continue
+  var member_at:=FrontierCrewWorld.vector(candidate.position)+Vector3(0,0,10)
+  member_at.y=f.height(member_at.x,member_at.z)+.1;world.crew.members[actor_id].position=FrontierExplorationIncidents.array(member_at)
+  for phase in ["aiming","firing","cooling"]:
+   candidate.phase=phase;candidate.time=0;candidate.age=3.0
+   var origin: Array=candidate.position.duplicate()
+   var changed:=FrontierCooperTechSquads.tick(world,candidate,.25,[actor_id],f,Callable())
+   check(origin!=candidate.position and not changed,"maneuver during "+phase+" without extra atomic save")
+   origin=candidate.position.duplicate()
+   check(not FrontierCooperTechSquads.maneuver(world,candidate,f,actor_id,.25,func(_a,_o,_d,_r):return 0.0) and origin==candidate.position,"combat movement respects physical blockers")
+  break
  # Locked mortar target and a delayed impact, with real suit shielding.
  var member: Dictionary=world.crew.members[actor_id];var cfg:=FrontierCooperTechSquads.spec(robot)
  var at:=FrontierCrewWorld.vector(robot.position)+Vector3(0,0,-9);at.y=f.height(at.x,at.z)+.1;member.position=FrontierExplorationIncidents.array(at)
@@ -122,7 +135,7 @@ func play_squads(owner: Dictionary) -> void:
  check(previous!=core.world.incidents.records[robot_key].position,"patrol positions advance in live host snapshots")
  look_at_point(FrontierCrewWorld.vector(source.home)+Vector3.UP);await capture("active-patrol")
  app.open_menu(app.inventory_panel);await create_timer(.4).timeout
- check(view.models.values().all(func(n):return not n.has("robot_marker") or not n.robot_marker.visible),"menu hides attack markers")
+ check(view.attack_effects.bullets.active.is_empty() and view.attack_effects.blasts.items.is_empty() and view.attack_effects.shells.is_empty(),"menu clears enemy tracers, ordnance and blast particles")
  check(view.models.values().all(func(n):return not n.has("robot_motor") or not n.robot_motor.playing or n.robot_motor.stream_paused),"menu pauses robot motor audio")
  app.close_menus();recorder.set_recording_active(false);var recording:=recorder.get_recording();recording.save_to_wav(folder+"/squad-runtime.wav");AudioServer.remove_bus_effect(bus,AudioServer.get_bus_effect_count(bus)-1)
  check(await app.session.close_session(),"live squad damage and positions persist")

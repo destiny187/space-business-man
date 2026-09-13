@@ -178,7 +178,7 @@ func _process(delta: float) -> void:
 	if tick<=0:
 		tick=.15
 		var camera:=lamp.get_parent() as Camera3D
-		var covered: bool=terrain.field.density(camera.global_position+Vector3.UP*8)>0
+		var covered: bool=underground>.4 or terrain.field.density(camera.global_position+Vector3.UP*8)>0
 		var energy:=0.0
 		if covered or atmosphere.daylight<.55:
 			var query:=PhysicsRayQueryParameters3D.create(camera.global_position,camera.global_position-camera.global_basis.z*60)

@@ -64,6 +64,7 @@ func armed() -> bool:
 func repair_available() -> bool:
 	return not data().is_empty() and view.navigation.get("combat_fitted",false) and float(view.navigation.get("hull",100))<100 and not view.navigation.get("combat_active",false) and view.navigation.get("mode","")=="idle" and absf(float(view.navigation.speed))<=20
 func suspend() -> void:
+	view.get_viewport().audio_listener_enable_3d=false
 	blocked=true;selected_wreck="";radio={};radio_left=0.0;hide();hud.hide()
 	skills.clear()
 	for player in audio.get_children():
@@ -74,6 +75,8 @@ func suspend() -> void:
 	for rocket in rockets.values():rocket.node.queue_free()
 	rockets.clear()
 func update(delta: float,paused: bool) -> void:
+	# Flight uses its own SubViewport/World3D; it needs an active camera listener.
+	view.get_viewport().audio_listener_enable_3d=not paused and relevant()
 	blocked=paused;hit_flash=maxf(0,hit_flash-delta);shot_flash=maxf(0,shot_flash-delta);hit_confirm=maxf(0,hit_confirm-delta)
 	missile_flash=maxf(0,missile_flash-delta)
 	if paused:suspend();return
@@ -318,8 +321,10 @@ func sound(cue: String,position: Vector3,local: bool,pitch: float=1.0) -> void:
 	var speakers: Array=[]
 	for child in audio.get_children():
 		if child is AudioStreamPlayer3D:speakers.append(child)
-	if speakers.size()>=20:speakers[0].queue_free()
+	if speakers.size()>=int(FrontierSpaceCombat.config().audio_mix.voices):speakers[0].queue_free()
 	var speaker:=AudioStreamPlayer3D.new();speaker.stream=stream;speaker.bus="SFX";speaker.pitch_scale=pitch
-	speaker.max_distance=1500;speaker.unit_size=150;speaker.max_db=-8;speaker.volume_db=-15 if local else -12;speaker.attenuation_filter_cutoff_hz=12000
+	var mix: Dictionary=FrontierSpaceCombat.config().audio_mix
+	speaker.max_distance=1500;speaker.unit_size=150;speaker.max_db=float(mix.maximum_db);speaker.volume_db=float(mix.local_db if local else mix.remote_db);speaker.attenuation_filter_cutoff_hz=12000
+	if cue in [FrontierSpaceCombat.config().audio.destroy,FrontierSpaceCombat.config().audio.get("missile_blast","")]:speaker.volume_db+=float(mix.impact_boost_db)
 	audio.add_child(speaker);speaker.global_position=view.camera.global_position if local else position
 	speaker.finished.connect(speaker.queue_free);speaker.play();audio.last_played[cue]=Time.get_ticks_msec()
