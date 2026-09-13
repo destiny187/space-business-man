@@ -39,6 +39,7 @@ func fixture() -> Dictionary:
 	member.loadout.slots[2]="fixture:pulse_2";member.loadout.selected=2
 	var at:=FrontierCrewWorld.vector(source.position)+Vector3(0,0,12);at.y=field.height(at.x,at.z)+.1;member.position=FrontierExplorationIncidents.array(at)
 	world.business.bags[actor_id]=FrontierExpeditionBusiness.inventory();world.business.bags[actor_id].iron=40;world.business.bags[actor_id].stone=40;world.business.bags[actor_id]["combat_cover_kit"]=2
+	for ammo_id in FrontierFirearms.config().ammunition:world.business.bags[actor_id][ammo_id]=int(FrontierFirearms.config().ammunition[ammo_id].amount)
 	core.input(1,1,[0,0],[0,0,-1],false,false,[],0,true)
 	return owner
 func aim() -> Array:
@@ -75,7 +76,8 @@ func run() -> void:
 	var first:=command("surface_fire",args);print("FIRST_SHOT ",first)
 	if not first.get("ok",false):quit(1);return
 	check(first.get("ok",false) and first.get("weapon",{}).get("ammo",-1)==23,"host consumes one round")
-	check(float(core.world.incidents.records[robot_key].shield)<before,"ranged robot shield hit")
+	core.ballistics.step(core.world,.1,Callable())
+	check(float(core.world.incidents.records[robot_key].shield)<before,"finite-speed robot shield hit")
 	var duplicate:=core.request(1,{"session_id":core.session_id,"sequence":serial,"revision":core.world.crew.revision,"kind":"surface_fire","args":args})
 	check(duplicate==first,"same request replays without second shot")
 	check(not command("surface_fire",args).get("ok",false),"early fire rejected")
@@ -136,6 +138,7 @@ func play_fixture(owner: Dictionary) -> void:
 	core=app.session.authority
 	core.world.business.bags[actor_id]=FrontierExpeditionBusiness.inventory();core.world.business.bags[actor_id]["iron"]=40;core.world.business.bags[actor_id]["stone"]=40;core.world.business.bags[actor_id]["combat_cover_kit"]=2
 	core.world.business.bags[actor_id]["reinforced_frame"]=2
+	for ammo_id in FrontierFirearms.config().ammunition:core.world.business.bags[actor_id][ammo_id]=int(FrontierFirearms.config().ammunition[ammo_id].amount)
 	var approach:=FrontierCrewWorld.vector(source.position)+Vector3(0,0,12);approach.y=app.surface_world.terrain.field.height(approach.x,approach.z)+.1
 	app.actors[actor_id].position=approach;app.actors[actor_id].velocity=Vector3.ZERO;core.update_position(1,approach);core.motions[actor_id]=FrontierCrewLocomotion.create()
 	if not await until(func():return app.surface_world.ready_at(app.actors[actor_id].position) and app.surface_world.incidents.models.has(robot_key),"robot and ground streamed",55):quit(1);return

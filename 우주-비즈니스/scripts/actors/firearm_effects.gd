@@ -32,9 +32,11 @@ func _ready() -> void:
 	arrays[Mesh.ARRAY_NORMAL]=PackedVector3Array([Vector3.BACK,Vector3.BACK,Vector3.BACK])
 	shard.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 
-func clear() -> void:
-	for e in active:e.node.hide();pool.append(e.node)
-	active.clear()
+func clear(preserve_rounds: bool=false) -> void:
+	for index in range(active.size()-1,-1,-1):
+		var e: Dictionary=active[index]
+		if preserve_rounds and e.kind=="ballistic":continue
+		e.node.hide();pool.append(e.node);active.remove_at(index)
 
 func spawn(kind: String,point: Vector3,color: Color,life: float,size: float) -> Dictionary:
 	if active.size()>=int(config().particle_limit):return {}
@@ -59,7 +61,18 @@ func muzzle(origin: Vector3,_direction: Vector3,family: String,socket: Node3D=nu
 
 func shot(origin: Vector3,event: Dictionary,near_clip: float=0.0) -> void:
 	var style: Dictionary=config().families.get(event.family,config().families.carbine)
-	for end in event.rays:
+	if event.get("impact_only",false):
+		for e in active:
+			if e.get("shot_id","")==str(event.get("actor",""))+":"+str(event.get("shot_serial",-1)) and e.get("round_index",0) in event.get("retired",[0]):e.age=e.life
+	if not event.get("projectiles",[]).is_empty():
+		for bullet in event.projectiles:
+			var velocity:=FrontierCrewWorld.vector(bullet.velocity)
+			var e:=spawn("ballistic",FrontierCrewWorld.vector(event.origin),Color(style.color),float(bullet.range)/maxf(1,velocity.length()),1)
+			if e.is_empty():continue
+			e.velocity=velocity;e.gravity=float(bullet.gravity);e.width=float(style.trace_width);e.length=float(style.trace_length);e.shot_id=str(event.get("actor",""))+":"+str(event.serial)
+			e.round_index=bullet.get("index",0)
+			e.near_clip=near_clip;emitted.tracer+=1
+	for end in ([] if event.get("ballistic",false) else event.rays):
 		var point:=FrontierCrewWorld.vector(end);var distance:=origin.distance_to(point)
 		if distance<.05:continue
 		var start:=origin.move_toward(point,minf(near_clip,distance*.75))
@@ -72,8 +85,8 @@ func shot(origin: Vector3,event: Dictionary,near_clip: float=0.0) -> void:
 		segment(e.node,start,start+e.direction*minf(e.length,distance*.15),e.width)
 		emitted.tracer+=1
 	for hit in event.get("contacts",[]):impact(hit)
-	if event.get("effect","")=="splash" and not event.rays.is_empty():
-		var point:=FrontierCrewWorld.vector(event.rays[0])
+	if event.get("effect","")=="splash" and not event.get("contacts",[]).is_empty():
+		var point:=FrontierCrewWorld.vector(event.contacts[0].point)
 		spawn("contact",point,Color(style.color),.08,.42)
 		spawn("arc",point,Color(style.color),.22,.85)
 
@@ -141,6 +154,12 @@ func _process(delta: float) -> void:
 				var front:=minf(float(e.distance),maxf(minf(float(e.length)*.7,float(e.distance)*.25),float(e.distance)*e.age/e.travel))
 				var back:=maxf(0,front-float(e.length)*(1-t*.6))
 				segment(node,e.start+e.direction*back,e.start+e.direction*front,float(e.width)*(1-t*.45))
+			"ballistic":
+				var time:=float(e.age)
+				var front: Vector3=e.start+e.velocity*time+Vector3.DOWN*float(e.gravity)*time*time*.5
+				var velocity: Vector3=e.velocity+Vector3.DOWN*float(e.gravity)*time
+				node.visible=front.distance_to(e.start)>float(e.get("near_clip",0))
+				segment(node,front-velocity.normalized()*minf(float(e.length),time*velocity.length()),front,float(e.width))
 			"spark":
 				var point: Vector3=e.start+e.velocity*e.age+Vector3.DOWN*2*e.age*e.age
 				segment(node,point-e.velocity*.022,point,float(e.size)*(1-t*.8))

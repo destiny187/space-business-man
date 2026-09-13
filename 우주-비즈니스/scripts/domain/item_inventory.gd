@@ -6,6 +6,7 @@ static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/inventory.json"))
 	return _config
 static func stack_size(resource: String) -> int:
+	if FrontierFirearms.config().ammunition.has(resource):return int(FrontierFirearms.config().ammunition[resource].stack)
 	return int(config().specimen_stack) if FrontierSpecimenItems.is_item(resource) else int(config().resource_stack)
 static func stacks(stock: Dictionary) -> Array:
 	var result: Array=[]
@@ -22,7 +23,11 @@ static func used(stock: Dictionary,items: int=0) -> int:
 	return count
 # Storage validation retains the former ceiling so an older save never loses cargo.
 static func storage_slots() -> int:return int(config().max_slots)
-static func limit() -> int:return storage_slots()*int(config().resource_stack)
+static func limit() -> int:
+	# A light-ammo slot contains more than the former 100-unit resource stack.
+	var largest:=int(config().resource_stack)
+	for recipe in FrontierFirearms.config().ammunition.values():largest=maxi(largest,int(recipe.stack))
+	return storage_slots()*largest
 static func capacity(member: Dictionary) -> int:
 	return mini(storage_slots(),int(member.get("loadout",{}).get("inventory_slots",config().slots))+FrontierProgressionResearch.personal(member,"logistics")+int(FrontierSuitModules.bonus(member,"slots")))
 static func room(world: Dictionary,actor: String,resource: String) -> int:

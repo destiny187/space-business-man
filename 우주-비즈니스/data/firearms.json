@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "families": {
     "carbine": {
       "name": "펄스 카빈",
@@ -16,13 +16,41 @@
       "auto": true,
       "weak": 1.5,
       "sound": "sfx_gun_carbine",
-      "effect": "steady"
+      "effect": "steady",
+      "ammo_type": "ammo_light",
+      "projectile_speed": 470,
+      "projectile_gravity": 9.8,
+      "ads_seconds": 0.18,
+      "ads_fov": 55,
+      "move_spread": 1.25,
+      "air_spread": 2.4,
+      "draw_seconds": 0.34,
+      "aim_sensitivity": 0.7236842105263158,
+      "recoil_pattern": [
+        0.1,
+        0.2,
+        0.15,
+        -0.18,
+        -0.3,
+        -0.12,
+        0.2,
+        0.32,
+        0.15
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.42,
+      "support_z": 0
     },
     "pistol": {
       "name": "니들 권총",
-      "identity": "초탄 집중 · 잠깐 조준을 멈춘 뒤 첫 발이 강합니다.",
+      "identity": "자급식 보조 권총 · 낮은 위력, 무한 예비탄. 탄창 재장전은 필요합니다.",
       "interval": 0.27,
-      "damage": 25,
+      "damage": 10,
       "magazine": 10,
       "reload": 1.05,
       "range": 42,
@@ -33,7 +61,29 @@
       "auto": false,
       "weak": 1.8,
       "sound": "sfx_gun_pistol",
-      "effect": "first_strike"
+      "effect": "first_strike",
+      "ammo_type": "",
+      "projectile_speed": 310,
+      "projectile_gravity": 9.8,
+      "ads_seconds": 0.13,
+      "ads_fov": 63,
+      "move_spread": 1.15,
+      "air_spread": 2.4,
+      "draw_seconds": 0.22,
+      "aim_sensitivity": 0.8289473684210527,
+      "recoil_pattern": [
+        0,
+        0.1,
+        -0.1
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.42,
+      "support_z": 0.03
     },
     "smg": {
       "name": "스파크 기관단총",
@@ -50,7 +100,32 @@
       "auto": true,
       "weak": 1.35,
       "sound": "sfx_gun_smg",
-      "effect": "breach_reload"
+      "effect": "breach_reload",
+      "ammo_type": "ammo_light",
+      "projectile_speed": 330,
+      "projectile_gravity": 9.8,
+      "ads_seconds": 0.13,
+      "ads_fov": 61,
+      "move_spread": 1.45,
+      "air_spread": 2.4,
+      "draw_seconds": 0.22,
+      "aim_sensitivity": 0.8026315789473685,
+      "recoil_pattern": [
+        -0.2,
+        0.35,
+        0.4,
+        -0.2,
+        -0.5,
+        0.25
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.42,
+      "support_z": 0
     },
     "shotgun": {
       "name": "브레이커 산탄총",
@@ -67,7 +142,28 @@
       "auto": false,
       "weak": 1.25,
       "sound": "sfx_gun_shotgun",
-      "effect": "scatter"
+      "effect": "scatter",
+      "ammo_type": "ammo_shell",
+      "projectile_speed": 240,
+      "projectile_gravity": 12,
+      "ads_seconds": 0.22,
+      "ads_fov": 59,
+      "move_spread": 1.6,
+      "air_spread": 2.4,
+      "draw_seconds": 0.34,
+      "aim_sensitivity": 0.7763157894736842,
+      "recoil_pattern": [
+        0.2,
+        -0.2
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.42,
+      "support_z": -0.12
     },
     "lmg": {
       "name": "앵커 경기관총",
@@ -84,7 +180,33 @@
       "auto": true,
       "weak": 1.4,
       "sound": "sfx_gun_lmg",
-      "effect": "braced"
+      "effect": "braced",
+      "ammo_type": "ammo_heavy",
+      "projectile_speed": 420,
+      "projectile_gravity": 9.8,
+      "ads_seconds": 0.29,
+      "ads_fov": 56,
+      "move_spread": 1.8,
+      "air_spread": 2.4,
+      "draw_seconds": 0.34,
+      "aim_sensitivity": 0.7368421052631579,
+      "recoil_pattern": [
+        -0.15,
+        -0.25,
+        0.1,
+        0.25,
+        0.35,
+        0.2,
+        -0.15
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.4,
+      "reload_tilt": 0.42,
+      "support_z": 0
     },
     "marksman": {
       "name": "트레이서 지정사수총",
@@ -101,7 +223,28 @@
       "auto": false,
       "weak": 2.0,
       "sound": "sfx_gun_marksman",
-      "effect": "weak_chain"
+      "effect": "weak_chain",
+      "ammo_type": "ammo_heavy",
+      "projectile_speed": 620,
+      "projectile_gravity": 8,
+      "ads_seconds": 0.24,
+      "ads_fov": 43,
+      "move_spread": 1.5,
+      "air_spread": 2.4,
+      "draw_seconds": 0.34,
+      "aim_sensitivity": 0.5657894736842105,
+      "recoil_pattern": [
+        0.1,
+        -0.12
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.42,
+      "support_z": -0.12
     },
     "sniper": {
       "name": "랜스 저격총",
@@ -118,7 +261,28 @@
       "auto": false,
       "weak": 2.6,
       "sound": "sfx_gun_sniper",
-      "effect": "precision"
+      "effect": "precision",
+      "ammo_type": "ammo_sniper",
+      "projectile_speed": 880,
+      "projectile_gravity": 6,
+      "ads_seconds": 0.33,
+      "ads_fov": 30,
+      "move_spread": 2,
+      "air_spread": 2.4,
+      "draw_seconds": 0.34,
+      "aim_sensitivity": 0.39473684210526316,
+      "recoil_pattern": [
+        0.14,
+        -0.14
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.45,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.42,
+      "support_z": -0.12
     },
     "plasma": {
       "name": "오브 플라스마 발사기",
@@ -136,7 +300,28 @@
       "weak": 1.0,
       "sound": "sfx_gun_plasma",
       "effect": "splash",
-      "blast_radius": 3.0
+      "blast_radius": 3.0,
+      "ammo_type": "ammo_plasma",
+      "projectile_speed": 32,
+      "projectile_gravity": 1.8,
+      "ads_seconds": 0.24,
+      "ads_fov": 59,
+      "move_spread": 1.45,
+      "air_spread": 2.4,
+      "draw_seconds": 0.34,
+      "aim_sensitivity": 0.7763157894736842,
+      "recoil_pattern": [
+        -0.1,
+        0.1
+      ],
+      "reload_insert": 0.64,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.6,
+      "support_z": 0
     }
   },
   "rarities": {
@@ -201,5 +386,82 @@
     "forward": 0.75,
     "side": 0.24,
     "drop": 0.12
+  },
+  "ammunition": {
+    "ammo_light": {
+      "name": "경량탄",
+      "tier": 1,
+      "cost": {
+        "iron": 2,
+        "copper": 1
+      },
+      "amount": 60,
+      "seconds": 3,
+      "model": "products/ammo_light",
+      "color": "#e6c47b",
+      "use": "펄스 카빈 · 스파크 기관단총",
+      "stack": 180
+    },
+    "ammo_heavy": {
+      "name": "중량탄",
+      "tier": 2,
+      "cost": {
+        "iron": 3,
+        "copper": 1
+      },
+      "amount": 48,
+      "seconds": 4,
+      "model": "products/ammo_heavy",
+      "color": "#9bd3b8",
+      "use": "앵커 경기관총 · 트레이서 지정사수총",
+      "stack": 120
+    },
+    "ammo_shell": {
+      "name": "산탄",
+      "tier": 2,
+      "cost": {
+        "iron": 2,
+        "stone": 1
+      },
+      "amount": 16,
+      "seconds": 4,
+      "model": "products/ammo_shell",
+      "color": "#ee9575",
+      "use": "브레이커 산탄총",
+      "stack": 48
+    },
+    "ammo_sniper": {
+      "name": "저격탄",
+      "tier": 3,
+      "cost": {
+        "refined_iron": 1,
+        "copper": 1
+      },
+      "amount": 12,
+      "seconds": 5,
+      "model": "products/ammo_sniper",
+      "color": "#a4c2ec",
+      "use": "랜스 저격총",
+      "stack": 36
+    },
+    "ammo_plasma": {
+      "name": "플라스마 셀",
+      "tier": 3,
+      "cost": {
+        "copper": 2,
+        "crystal": 1
+      },
+      "amount": 12,
+      "seconds": 6,
+      "model": "products/ammo_plasma",
+      "color": "#ccb0f5",
+      "use": "오브 플라스마 발사기",
+      "stack": 36
+    }
+  },
+  "projectiles": {
+    "limit": 256,
+    "step": 0.0166667,
+    "input_buffer_seconds": 0.8
   }
 }

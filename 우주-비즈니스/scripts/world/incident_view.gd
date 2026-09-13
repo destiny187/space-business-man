@@ -89,7 +89,7 @@ func make(row: Dictionary) -> Dictionary:
  if mode=="robot":
   var bubble:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=1.15;sphere.height=3.0;bubble.mesh=sphere;root_node.add_child(bubble);bubble.position=Vector3(0,1.5,0)
   var shield_material:=StandardMaterial3D.new();shield_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;shield_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;shield_material.albedo_color=Color(.2,.65,1,.12);shield_material.cull_mode=BaseMaterial3D.CULL_DISABLED;bubble.material_override=shield_material;result.shield=bubble
-  var solid:=StaticBody3D.new();root_node.add_child(solid);var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.6;capsule.height=2.7;shape.shape=capsule;shape.position.y=1.35;solid.add_child(shape);result.robot_solid=solid
+  var solid:=StaticBody3D.new();root_node.add_child(solid);var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.6;capsule.height=2.7;shape.shape=capsule;shape.position.y=1.35;solid.add_child(shape);result.robot_solid=solid;solid.set_meta("firearm_target",true)
  if mode=="seismic":
   main.position=Vector3(0,-7.6,-1);cargo.hide();relay.hide()
   var ring:=MeshInstance3D.new();var torus:=TorusMesh.new();torus.inner_radius=float(FrontierExplorationIncidents.config().seismic.blast_radius)-.08;torus.outer_radius=torus.inner_radius+.16;torus.rings=48;torus.ring_segments=6;ring.mesh=torus

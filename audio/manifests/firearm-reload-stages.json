@@ -1,0 +1,56 @@
+{
+  "provider": "ElevenLabs",
+  "original_manifest": "audio/manifests/ground-combat-sources.json",
+  "processing": "Mono, stage slices, 3ms/25ms fades, -8dBFS peak",
+  "status": "runtime_playback_verified_pending_listening",
+  "cues": [
+    {
+      "id": "sfx_gun_mag_out",
+      "source": "audio/source/elevenlabs/ground-combat/reload_v1.wav",
+      "source_sha256": "15cd01d110f0e575732b7f690e4f7a094c1a6364e4ec3a4028153cc6f131f849",
+      "trim": [
+        0.03,
+        0.37
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_mag_out.wav",
+      "sha256": "c2a7756f0f89a7bc3d42c081d852d8dc9b04f80e2d7b50c7352437ba275ed5cb",
+      "duration": 0.34,
+      "peak_dbfs": -8.000117030469568
+    },
+    {
+      "id": "sfx_gun_mag_in",
+      "source": "audio/source/elevenlabs/ground-combat/reload_v1.wav",
+      "source_sha256": "15cd01d110f0e575732b7f690e4f7a094c1a6364e4ec3a4028153cc6f131f849",
+      "trim": [
+        0.68,
+        1.05
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_mag_in.wav",
+      "sha256": "92acc7be78b31fd37cd399b4141f929511bf02b2cf16e44270802c9a83a34ef2",
+      "duration": 0.37,
+      "peak_dbfs": -8.000117030469568
+    },
+    {
+      "id": "sfx_gun_charge",
+      "source": "audio/source/elevenlabs/ground-combat/reload_v1.wav",
+      "source_sha256": "15cd01d110f0e575732b7f690e4f7a094c1a6364e4ec3a4028153cc6f131f849",
+      "trim": [
+        1.28,
+        1.68
+      ],
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_charge.wav",
+      "sha256": "5a2d32860bbf320296dc3a422fd2764e56527490fb169ed2c80b5585e93a6d51",
+      "duration": 0.4,
+      "peak_dbfs": -8.000117030469568
+    }
+  ],
+  "runtime_review": "docs/production/166-firearm-ammunition-and-ballistics.md",
+  "runtime_output": {
+    "source": "actual Godot SFX bus",
+    "duration": 44.42666666666667,
+    "peak_dbfs": -10.796686739856456,
+    "rms_dbfs": -31.97844952180473,
+    "clipped_samples": 0,
+    "listening": "not verified by direct listening"
+  }
+}

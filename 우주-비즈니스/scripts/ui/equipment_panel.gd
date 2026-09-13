@@ -110,6 +110,7 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	augmentation_readout=FrontierAugmentationReadout.new();tabs.add_child(augmentation_readout);augmentation_readout.configure(app)
 	dye_panel=FrontierSuitDyePanel.new();tabs.add_child(dye_panel);dye_panel.configure(app)
 	var module_panel:=FrontierSuitModulePanel.new();tabs.add_child(module_panel);module_panel.configure(app)
+	var ammunition:=preload("res://scripts/ui/ammunition_panel.gd").new();tabs.add_child(ammunition);ammunition.configure(app)
 	tabs.resized.connect(_layout)
 	tabs.tab_changed.connect(func(index: int):
 		selected_resource="";selected_item=""
@@ -378,6 +379,8 @@ func _refresh_details() -> void:
 		_metric("단발 피해",str(int(def.damage)),float(def.damage)/80)
 		if def.has("firearm"):
 			var family: Dictionary=FrontierFirearms.config().families[def.firearm]
+			var ammo_name: String="무한 예비탄" if str(family.ammo_type).is_empty() else str(FrontierFirearms.config().ammunition[family.ammo_type].name)
+			FrontierInterfaceStyle.label(stats,ammo_name+" · R 재장전",13)
 			_metric("탄창 / 사거리","%d발 / %dm"%[int(family.magazine),int(family.range)],float(family.magazine)/60)
 			var rarity: Dictionary=FrontierFirearms.config().rarities[def.get("rarity","standard")]
 			var identity:=FrontierInterfaceStyle.label(stats,str(rarity.name)+" · "+str(family.identity),12,Color(rarity.color));identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART

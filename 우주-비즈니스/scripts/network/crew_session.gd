@@ -7,6 +7,7 @@ signal notice(message: String)
 signal surface_received(value: Dictionary)
 signal response_received(sequence: int,value: Dictionary)
 signal request_started(sequence: int,kind: String,args: Dictionary)
+signal firearm_event_received(value: Dictionary)
 var local_request_guard: Callable
 var mine_sequence:=0
 var mine_ready_at:=0
@@ -151,13 +152,15 @@ func _drain_completed_requests() -> void:
 	# Publish confirmed state before feedback, without turning queued rejections
 	# or receipt replays into full surface refreshes.
 	if not authority.stopped:
-		if replies.any(func(reply):return reply.get("committed",false)):_publish();_publish_surface()
-		elif replies.any(func(reply):return reply.get("stale",false)):_publish()
+		if replies.any(func(reply):return reply.get("committed",false)):
+			_publish()
+			if replies.any(func(reply):return reply.get("committed",false) and _surface_command(reply.get("envelope",{}).get("kind",reply.get("kind","")))):_publish_surface()
+		elif replies.any(func(reply):return reply.get("stale",false) and reply.get("kind","") not in ["surface_fire","surface_reload","surface_stance"]):_publish()
 	for reply in replies:
 		if int(reply.peer)==1:_complete_request(int(reply.sequence),reply.result)
 		elif not offline and authority.peers.has(int(reply.peer)) and reply.get("actor",authority.peers[int(reply.peer)])==authority.peers[int(reply.peer)]:_response.rpc_id(int(reply.peer),int(reply.sequence),reply.result)
 func _process(delta: float) -> void:
-	if hosting:authority.pump_requests();_drain_completed_requests()
+	if hosting:authority.now=Time.get_ticks_msec()/1000.0;authority.pump_requests();_drain_completed_requests();_drain_firearm_events()
 	if not hosting or (enet==null and not offline) or authority.stopped:return
 	var now:=Time.get_ticks_msec()/1000.0
 	for peer in authority.advance_time(now):_reject_peer(peer,"참가 준비 시간이 초과됐습니다.")
@@ -172,6 +175,19 @@ func _process(delta: float) -> void:
 		_publish_surface()
 	snapshot_timer-=delta
 	if snapshot_timer<=0:snapshot_timer=1.0/float(FrontierCrewWorld.config().snapshot_hz);_publish()
+func _drain_firearm_events() -> void:
+	if authority==null or authority.gun_events.is_empty():return
+	var events: Array=authority.gun_events;authority.gun_events=[]
+	for event in events:
+		for peer in authority.peers:
+			var local:=FrontierShuttles.context(authority.world,authority.peers[peer])
+			if local.location!=event.body_id:continue
+			if int(peer)==1:firearm_event_received.emit(event)
+			elif not offline:_firearm_event.rpc_id(int(peer),session_id,event)
+@rpc("authority","call_remote","reliable",0)
+func _firearm_event(epoch: String,event: Dictionary) -> void:
+	if hosting or not active or epoch!=session_id:return
+	firearm_event_received.emit(event)
 func _publish() -> void:
 	if not hosting or authority==null or authority.stopped or authority.autonomous_pending():return
 	snapshot_serial+=1
@@ -304,11 +320,14 @@ func _request_publication_state() -> Array:
 func _publish_request_result(envelope: Dictionary,result: Dictionary,before: Array) -> void:
 	if envelope.get("kind","") in ["surface_fire","surface_reload","surface_stance"] or result.get("pending",false):return
 	if before!=_request_publication_state():
-		_publish();_publish_surface()
+		_publish()
+		if _surface_command(envelope.get("kind","")):_publish_surface()
 	elif not result.get("ok",false) and envelope.has("revision") and envelope.revision!=authority.world.crew.revision:
 		# A stale requester still needs a current snapshot to retry. An unchanged
 		# rejection/replay does not rebuild every peer's world and surface packet.
 		_publish()
+func _surface_command(kind: String) -> bool:
+	return kind not in ["equipment_ammo_craft","surface_fire","surface_reload","surface_stance"]
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:_complete_request(sequence,value)

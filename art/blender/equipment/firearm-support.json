@@ -1,0 +1,56 @@
+[
+  {
+    "id": "firearm_hand_right",
+    "source": "art/blender/equipment/firearm_hand_right.blend",
+    "model": "res://assets/models/equipment/firearm_hand_right.glb",
+    "bones": 16,
+    "clips": [
+      "grip",
+      "open",
+      "trigger"
+    ],
+    "style": "INK v1"
+  },
+  {
+    "id": "firearm_hand_left",
+    "source": "art/blender/equipment/firearm_hand_left.blend",
+    "model": "res://assets/models/equipment/firearm_hand_left.glb",
+    "bones": 16,
+    "clips": [
+      "grip",
+      "open",
+      "trigger"
+    ],
+    "style": "INK v1"
+  },
+  {
+    "id": "ammo_light",
+    "source": "art/blender/equipment/ammo_light.blend",
+    "model": "res://assets/models/products/ammo_light.glb",
+    "style": "INK v1"
+  },
+  {
+    "id": "ammo_shell",
+    "source": "art/blender/equipment/ammo_shell.blend",
+    "model": "res://assets/models/products/ammo_shell.glb",
+    "style": "INK v1"
+  },
+  {
+    "id": "ammo_sniper",
+    "source": "art/blender/equipment/ammo_sniper.blend",
+    "model": "res://assets/models/products/ammo_sniper.glb",
+    "style": "INK v1"
+  },
+  {
+    "id": "ammo_plasma",
+    "source": "art/blender/equipment/ammo_plasma.blend",
+    "model": "res://assets/models/products/ammo_plasma.glb",
+    "style": "INK v1"
+  },
+  {
+    "id": "ammo_heavy",
+    "source": "art/blender/equipment/ammo_heavy.blend",
+    "model": "res://assets/models/products/ammo_heavy.glb",
+    "style": "INK v1"
+  }
+]

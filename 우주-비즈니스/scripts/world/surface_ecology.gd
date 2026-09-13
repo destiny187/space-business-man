@@ -256,6 +256,7 @@ func _add_collision(actor: Node3D,row: Dictionary) -> void:
 	var collision_body: PhysicsBody3D=AnimatableBody3D.new() if form.get("locomotion_medium","")=="surface_air" or Wildlife.eligible(form,row) else StaticBody3D.new()
 	if collision_body is AnimatableBody3D:collision_body.sync_to_physics=false
 	collision_body.set_meta("encounter_id",row.id)
+	if form.category=="animal":collision_body.set_meta("firearm_target",true)
 	var shape:=CapsuleShape3D.new();shape.radius=radius;shape.height=height
 	var collider:=CollisionShape3D.new();collider.shape=shape;collider.position.y=height*.5
 	collision_body.add_child(collider);actor.add_child(collision_body)

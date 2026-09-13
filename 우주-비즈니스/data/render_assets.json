@@ -16362,5 +16362,75 @@
     "foliage": false,
     "generator": "tools/build_pirate_missiles.py",
     "review": "docs/production/144-pirate-missiles-and-breakout.md"
+  },
+  {
+    "id": "firearm_hand_right",
+    "title": "탄약·장갑",
+    "name": "firearm_hand_right",
+    "group": "장비",
+    "model": "res://assets/models/equipment/firearm_hand_right.glb",
+    "source": "art/blender/equipment/firearm_hand_right.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "firearm_hand_left",
+    "title": "탄약·장갑",
+    "name": "firearm_hand_left",
+    "group": "장비",
+    "model": "res://assets/models/equipment/firearm_hand_left.glb",
+    "source": "art/blender/equipment/firearm_hand_left.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "ammo_light",
+    "title": "탄약·장갑",
+    "name": "ammo_light",
+    "group": "장비",
+    "model": "res://assets/models/products/ammo_light.glb",
+    "source": "art/blender/equipment/ammo_light.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "ammo_shell",
+    "title": "탄약·장갑",
+    "name": "ammo_shell",
+    "group": "장비",
+    "model": "res://assets/models/products/ammo_shell.glb",
+    "source": "art/blender/equipment/ammo_shell.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "ammo_sniper",
+    "title": "탄약·장갑",
+    "name": "ammo_sniper",
+    "group": "장비",
+    "model": "res://assets/models/products/ammo_sniper.glb",
+    "source": "art/blender/equipment/ammo_sniper.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "ammo_plasma",
+    "title": "탄약·장갑",
+    "name": "ammo_plasma",
+    "group": "장비",
+    "model": "res://assets/models/products/ammo_plasma.glb",
+    "source": "art/blender/equipment/ammo_plasma.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "ammo_heavy",
+    "title": "탄약·장갑",
+    "name": "ammo_heavy",
+    "group": "장비",
+    "model": "res://assets/models/products/ammo_heavy.glb",
+    "source": "art/blender/equipment/ammo_heavy.blend",
+    "geometry": "firearm-support",
+    "foliage": false
   }
 ]

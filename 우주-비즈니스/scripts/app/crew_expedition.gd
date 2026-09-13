@@ -1134,6 +1134,10 @@ func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
 	if relative.length_squared()>=4:dismiss_stellar_arrival()
 	var motion:=relative*sensitivity
 	if invert_y:motion.y=-motion.y
+	if surface_world!=null and firearm!=null:
+		var gun:=firearm.tool()
+		motion*=lerpf(1.0,float(gun.get("aim_sensitivity",1.0)),firearm.ads)
+		firearm.mouse_sway=(firearm.mouse_sway+Vector2(-motion.x,-motion.y)*.8).limit_length(.045)
 	if outside and flight!=null:
 		var nav: Dictionary=session.latest.crew.navigation
 		if nav.mode=="idle" and session.latest.self_id==session.latest.crew.pilot_id:
@@ -1178,8 +1182,13 @@ func _shot_obstacle_distance(id: String,origin: Vector3,aim: Vector3,reach: floa
 	var actor: CharacterBody3D=actors[id]
 	var query:=PhysicsRayQueryParameters3D.create(origin,origin+aim*reach,1)
 	query.exclude=[actor.get_rid()]
-	var hit:=actor.get_world_3d().direct_space_state.intersect_ray(query)
-	return origin.distance_to(hit.position) if not hit.is_empty() else reach
+	# Movement capsules must not hide the smaller authored damage zones.
+	for pass_index in 16:
+		var hit:=actor.get_world_3d().direct_space_state.intersect_ray(query)
+		if hit.is_empty():return reach
+		if not hit.collider.has_meta("firearm_target"):return origin.distance_to(hit.position)
+		var excluded:=query.exclude;excluded.append(hit.rid);query.exclude=excluded
+	return 0.0
 
 func _weather_ready(id: String) -> bool:
 	if not actors.has(id) or spaces==null:return false

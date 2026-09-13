@@ -59,6 +59,7 @@ static func validate(value: Variant) -> String:
 		if id!="":seen.append(id)
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
+	if kind=="equipment_ammo_craft":return FrontierFirearms.craft_ammo(world,actor,args)
 	if kind=="equipment_research_prototype":return FrontierExpeditionResearch.assemble(world,actor,args)
 	var member: Dictionary=world.crew.members[actor]
 	if not member.has("loadout"):member.loadout=create(member.profile)
@@ -113,5 +114,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if not FrontierExpeditionBusiness.affordable(bag,recipe.cost):return "재료가 부족합니다."
 		FrontierExpeditionBusiness.transfer(bag,recipe.cost,-1)
 	data.counter+=1
-	data.items["crafted:"+str(int(data.counter))]=definition
+	var new_id: String="crafted:"+str(int(data.counter))
+	data.items[new_id]=definition
+	if recipe.has("firearm"):
+		var gun:=FrontierFirearms.item(member,new_id)
+		var state:=FrontierFirearms.ensure(member,gun)
+		state.ammo=int(gun.magazine) if str(gun.ammo_type).is_empty() else 0
 	return ""

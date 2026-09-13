@@ -8,6 +8,7 @@ static func config() -> Dictionary:
 		_config.products.merge(FrontierCombatCover.config().products)
 		_config.products.merge(FrontierPlanetSupply.config().products)
 		_config.products.merge(FrontierTerraformTier3.config().products)
+		_config.products.merge(FrontierFirearms.config().ammunition)
 		_config.products.merge(preload("res://scripts/domain/terraform_tier4.gd").config().products)
 		_config.maximum_tier=3
 	return _config
