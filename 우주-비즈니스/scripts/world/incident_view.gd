@@ -88,13 +88,9 @@ func make(row: Dictionary) -> Dictionary:
    var creature:=Creature.new();creature.load_far=false;creature.configure(form,FrontierEcologyCatalog.look(lineage.form_id,lineage.look_id));root_node.add_child(creature);creature.set_state("move");result.creature=creature
    result.stolen=add_model("battery",creature,Vector3(0,.6,-.3));result.stolen.scale=Vector3.ONE*.35;break
  if mode=="robot":
-  var bubble:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=1.15;sphere.height=3.0;bubble.mesh=sphere;root_node.add_child(bubble);bubble.position=Vector3(0,1.5,0)
-  var shield_material:=StandardMaterial3D.new();shield_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;shield_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;shield_material.albedo_color=Color(.2,.65,1,.12);shield_material.cull_mode=BaseMaterial3D.CULL_DISABLED;bubble.material_override=shield_material;result.shield=bubble
   var solid:=StaticBody3D.new();root_node.add_child(solid);var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.6;capsule.height=2.7;shape.shape=capsule;shape.position.y=1.35;solid.add_child(shape);result.robot_solid=solid;solid.set_meta("firearm_target",true)
  if FrontierCooperTechSquads.enabled(row):
   var cfg:=FrontierCooperTechSquads.spec(row)
-  result.shield.material_override.albedo_color=Color(.2,.65,1,.04)
-  result.shield.scale=Vector3(float(cfg.radius)/1.15,float(cfg.height)/3.0,float(cfg.radius)/1.15);result.shield.position.y=float(cfg.height)*.5
   var shape: CollisionShape3D=result.robot_solid.get_child(0);var box:=BoxShape3D.new();box.size=Vector3(float(cfg.radius)*1.6,float(cfg.height),float(cfg.radius)*1.6);shape.shape=box;shape.position.y=float(cfg.height)*.5
   preload("res://scripts/world/coopertech_squad_view.gd").build(self,row,result)
  if mode=="seismic":
@@ -161,7 +157,6 @@ func _process(delta: float) -> void:
   if nodes.has("storm_ring"):
    var warning: String=preload("res://scripts/world/storm_archive_view.gd").update(self,row,nodes,stopped)
    if not warning.is_empty():native_warning=warning
-  if mode=="robot":nodes.shield.visible=float(row.get("shield",0))>0 and row.hp>0 and row.phase!="idle"
   for part in nodes.parts:
    if FrontierCooperTechSquads.enabled(row) and row.robot_role!="sentry":continue
    if not part.has_meta("rest"):part.set_meta("rest",part.transform)

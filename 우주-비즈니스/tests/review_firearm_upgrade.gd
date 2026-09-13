@@ -30,6 +30,7 @@ func run() -> void:
 	await create_timer(.6).timeout
 	if "--final-edges" in OS.get_cmdline_user_args():await final_edges();return
 	for family in FrontierFirearms.config().families:
+		if family=="laser":continue # Dedicated sustained-beam review lives in review_firearm_precision.gd.
 		var definition: String=""
 		for key in FrontierEquipment.config().items:
 			if FrontierEquipment.config().items[key].get("firearm")==family:definition=key;break
@@ -63,7 +64,7 @@ func run() -> void:
 	app.open_menu(app.inventory_panel);app.inventory_panel.tabs.current_tab=6
 	root.size=Vector2i(960,640);root.content_scale_size=root.size;await create_timer(.5).timeout
 	var panel: Node=app.inventory_panel.tabs.get_child(6)
-	check(panel.cards.size()==5 and panel.cards.ammo_light.picture!=null,"five ammunition model cards")
+	check(panel.cards.size()==FrontierFirearms.config().ammunition.size() and panel.cards.ammo_light.picture!=null,"catalog ammunition model cards")
 	check(panel.size.x<=app.inventory_panel.tabs.size.x+1,"ammunition panel fits 960px")
 	await capture("ammunition-960")
 	var ammo_before:=int(app.session.latest.inventory.get("ammo_light",0));core.resolve_autonomous(true);app.session._publish();panel.refresh();panel.action.pressed.emit()

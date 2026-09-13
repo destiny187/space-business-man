@@ -1,5 +1,5 @@
 extends HBoxContainer
-## Five retained recipe cards; closed panels do no inventory or preview work.
+## Retained recipe cards from the ammunition catalog; closed panels do no inventory or preview work.
 var app: FrontierCrewExpedition
 var selected:="ammo_light"
 var cards: Dictionary={}

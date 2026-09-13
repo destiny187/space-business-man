@@ -184,6 +184,7 @@ func snapshot_shared() -> Dictionary:
 	return {"freight_vessels":FrontierFreightSalvageSurvey.vessels(world),"freight_activity":FrontierFreightSalvageSurvey.activity(scans),"shared_credits":int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits)),"orbital_terraform":terraformed,"expedition_research":world.expedition_research.duplicate(true),"main_location":world.location,"main_landing":world.crew.get("landing",{}).duplicate(),"rovers":FrontierRovers.fleet(world).duplicate(true),"rover_runtime":rover_runtime.duplicate(true),"motion":motions.duplicate(true),"motion_time":now,"supply_sites":FrontierPlanetSupply.summaries(world),"phase":phase,"lobby_ready":lobby_ready.duplicate(),"vessel_seed":int(world.manifest.seed),"vessel":world.get("vessel",{}).duplicate(true),"session_id":session_id,"galaxy_id":world.manifest.id}
 func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	if shared.is_empty():shared=snapshot_shared()
+	firearm_history.issue(viewer,float(shared.motion_time))
 	var data: Dictionary=world.crew.duplicate()
 	data.erase("survey");data.erase("corporate_traces");data.erase("freight_records");data=data.duplicate(true)
 	if world.crew.has("corporate_traces"):data.corporate_traces=world.crew.corporate_traces
@@ -406,6 +407,7 @@ var gun_checkpoint:=0.0
 var gun_dirty:=false
 var gun_receipts: Dictionary={}
 var gun_events: Array=[]
+var firearm_history:=preload("res://scripts/domain/firearm_history.gd").new()
 var ballistics:=preload("res://scripts/domain/ground_ballistics.gd").new()
 func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
 	if not resolve_autonomous():return {"ok":false,"code":"weapon_blocked"}
@@ -434,13 +436,24 @@ func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
 		if envelope.kind=="surface_reload":result=FrontierFirearms.begin_reload(member,tool,FrontierExpeditionBusiness.bag(local,actor))
 		else:
 			var args: Dictionary=envelope.args.duplicate(true);args.serial=sequence
+			args.erase("host_targets");args.erase("host_origin")
 			args.ballistic=true
+			var origin:=FrontierCrewWorld.vector(member.position)+Vector3.UP*FrontierFirearms.eye(member)
+			var history:=firearm_history.authorized(peer,actor,local.location,args.get("view_time"),now,origin)
+			if not history.is_empty():
+				var gap: Vector3=history.origin-origin
+				var clear:=FrontierCrewSurface.visible_in_field(FrontierCrewSurface.field(local),origin,history.origin)
+				if clear and (gap.length()<.03 or not shot_obstacle_provider.is_valid() or float(shot_obstacle_provider.call(actor,origin,gap.normalized(),gap.length()))>=gap.length()-.03):
+					args.host_origin=history.origin;args.host_targets=history.rows
+				else:history={}
 			args.moving=inputs.get(peer,{}).get("direction",Vector2.ZERO).length_squared()>.01
 			args.airborne=not motions.get(actor,{}).get("grounded",true)
 			if ballistics.count()+int(tool.pellets)>int(FrontierFirearms.config().projectiles.limit):return {"ok":false,"code":"weapon_busy"}
 			result=FrontierFirearms.fire(local,actor,args,shot_obstacle_provider)
-			if result.get("ok",false) and not result.get("projectiles",[]).is_empty():
-				ballistics.launch(local,actor,tool,result,envelope.args.get("ads",false))
+			if result.get("ok",false) and not history.is_empty():result.rewind_seconds=now-float(history.time)
+			result.fired_time=now-float(result.get("rewind_seconds",0))
+			if result.get("ok",false) and (result.get("beam",false) or not result.get("projectiles",[]).is_empty()):
+				if not result.get("beam",false):ballistics.launch(local,actor,tool,result,envelope.args.get("ads",false))
 				var event:=result.duplicate(true);event.actor=actor;event.body_id=local.location;gun_events.append(event)
 			FrontierShuttles.commit(world,local,actor)
 	if result.get("ok",false):
@@ -567,6 +580,8 @@ func _step_water(delta: float) -> void:
 var incident_timer:=0.0
 func step_surface(delta: float) -> void:
 	if stopped or not resolve_autonomous():return
+	firearm_history.capture(world,peers,now)
+	ballistics.history=firearm_history
 	var impacts: Array=ballistics.step(world,delta,shot_obstacle_provider)
 	if not impacts.is_empty():gun_events.append_array(impacts);gun_dirty=true
 	if not save_autonomous.is_valid():_step_surface(delta);return

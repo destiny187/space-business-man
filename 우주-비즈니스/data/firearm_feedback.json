@@ -12,21 +12,22 @@
     "lmg": {"color":"ffc990", "flash_size":0.15, "flash_time":0.045, "trace_width":0.016, "trace_length":2.0, "trace_speed":1100, "kick":0.066, "lift":0.036, "roll":0.016, "recovery":21, "sound_gain":1.0},
     "marksman": {"color":"a6e5ff", "flash_size":0.135, "flash_time":0.045, "trace_width":0.014, "trace_length":2.8, "trace_speed":1700, "kick":0.085, "lift":0.055, "roll":0.013, "recovery":19, "sound_gain":2.5},
     "sniper": {"color":"c3eaff", "flash_size":0.17, "flash_time":0.055, "trace_width":0.019, "trace_length":3.8, "trace_speed":2100, "kick":0.13, "lift":0.088, "roll":0.021, "recovery":15, "sound_gain":2.5},
-    "plasma": {"color":"bbadff", "flash_size":0.20, "flash_time":0.07, "trace_width":0.052, "trace_length":0.65, "trace_speed":650, "kick":0.09, "lift":0.047, "roll":0.018, "recovery":17, "sound_gain":2.0}
+    "plasma": {"color":"bbadff", "flash_size":0.20, "flash_time":0.07, "trace_width":0.052, "trace_length":0.65, "trace_speed":650, "kick":0.09, "lift":0.047, "roll":0.018, "recovery":17, "sound_gain":2.0},
+    "laser": {"color":"85f7e3", "flash_size":0.055, "flash_time":0.06, "trace_width":0.03, "trace_length":1.2, "trace_speed":1050, "kick":0.008, "lift":0.005, "roll":0.002, "recovery":26, "sound_gain":-5}
   },
   "impacts": {
     "surface": {"color":"cab8a1", "size":0.09, "sparks":3, "speed":1.1, "life":0.2},
     "armor": {"color":"ffd7a0", "size":0.14, "sparks":6, "speed":3.4, "life":0.19},
     "organic": {"color":"d2b99b", "size":0.12, "sparks":3, "speed":0.8, "life":0.15},
-    "shield": {"color":"a4eaff", "size":0.16, "sparks":4, "speed":1.8, "life":0.17},
-    "break": {"color":"c1f4ff", "size":0.23, "sparks":6, "speed":2.4, "life":0.23}
+    "shield": {"color":"a4eaff", "size":0.14, "sparks":1, "speed":0.6, "life":0.09, "opacity":0.65},
+    "break": {"color":"c1f4ff", "size":0.21, "sparks":2, "speed":0.8, "life":0.13, "opacity":0.8}
   },
   "confirmation": {
     "hit": {"sound":"sfx_gun_hit_armor", "gain":0, "duration":0.16},
     "organic": {"sound":"sfx_gun_hit_organic", "gain":0, "duration":0.16},
-    "shield": {"sound":"sfx_gun_hit_shield", "gain":0, "duration":0.18},
+    "shield": {"sound":"sfx_gun_hit_shield", "gain":-1, "duration":0.18},
     "weak": {"sound":"sfx_gun_hit_weak", "gain":1, "duration":0.21},
-    "break": {"sound":"sfx_gun_break", "gain":1, "duration":0.26},
+    "break": {"sound":"sfx_gun_break", "gain":3, "duration":0.20},
     "kill": {"sound":"sfx_gun_down", "gain":1, "duration":0.28}
   }
 }

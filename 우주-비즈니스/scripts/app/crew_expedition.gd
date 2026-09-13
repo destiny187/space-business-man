@@ -1134,11 +1134,11 @@ func _sync_mouse_capture() -> void:
 func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
 	if relative.length_squared()>=4:dismiss_stellar_arrival()
 	var motion:=relative*sensitivity
-	if invert_y:motion.y=-motion.y
 	if surface_world!=null and firearm!=null:
 		var gun:=firearm.tool()
 		motion*=lerpf(1.0,float(gun.get("aim_sensitivity",1.0)),firearm.ads)
 		firearm.mouse_sway=(firearm.mouse_sway+Vector2(-motion.x,-motion.y)*.8).limit_length(.045)
+	if invert_y:motion.y=-motion.y
 	if outside and flight!=null:
 		var nav: Dictionary=session.latest.crew.navigation
 		if nav.mode=="idle" and session.latest.self_id==session.latest.crew.pilot_id:

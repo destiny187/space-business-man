@@ -30,7 +30,6 @@ var muzzle_socket: Node3D
 var muzzle_model: Node3D
 var audio_rng:=RandomNumberGenerator.new()
 var damage_numbers=preload("res://scripts/actors/firearm_damage_numbers.gd").new()
-var shield_break_left:=0.0
 var reserve_ammo:=0
 var result_sequence:=-1
 var draw_left:=0.0
@@ -42,6 +41,10 @@ var ammo_icon: TextureRect
 var hands: Node3D
 var reload_cues: Dictionary={}
 var empty_latched:=false
+var recoil_impulses: Dictionary={}
+var predicted_shots:=0
+var beam_audio: Dictionary={}
+var heat_bar: ProgressBar
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app
 	process_priority=5
@@ -53,10 +56,12 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	ammo_label=Label.new();ammo_label.add_theme_font_size_override("font_size",18);ammo_label.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(ammo_label)
 	reload_bar=ProgressBar.new();reload_bar.show_percentage=false;reload_bar.mouse_filter=Control.MOUSE_FILTER_IGNORE;reload_bar.custom_minimum_size=Vector2(110,4);hud.add_child(reload_bar)
 	app.session.request_started.connect(func(sequence: int,kind: String,args: Dictionary):
-		if kind in ["surface_fire","surface_reload","surface_stance"]:pending[sequence]={"kind":kind,"item_id":args.get("item_id","")})
+		if kind in ["surface_fire","surface_reload","surface_stance"]:pending[sequence]={"kind":kind,"item_id":args.get("item_id","")}
+		if kind=="surface_fire" and args.get("item_id","")==tool().get("item_id",""):_anticipate(sequence,tool()))
 	app.session.response_received.connect(_response)
 	app.session.snapshot_received.connect(_snapshot)
 	app.session.firearm_event_received.connect(_event)
+	heat_bar=ProgressBar.new();heat_bar.show_percentage=false;heat_bar.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(heat_bar)
 	ammo_icon=TextureRect.new();ammo_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;ammo_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;ammo_icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(ammo_icon)
 func enabled() -> bool:
 	return app.session.active and not app.session.latest.is_empty() and app.session.latest.crew.members[app.session.latest.self_id].area=="surface" and not app.session.latest.crew.members[app.session.latest.self_id].aboard and app.surface_world!=null and not app.feedback.blocked() and app.placement_kind.is_empty() and not app.outside and app.rovers.seat().is_empty() and (app.test_mode or app.get_window().has_focus())
@@ -70,8 +75,9 @@ func shoot() -> void:
 	if pending.values().filter(func(p):return p.kind=="surface_fire").size()>=4:
 		input_buffered=not tool().get("auto",false);return
 	var gun:=tool()
-	if not gun.has("firearm") or reload_left>0:return
+	if not gun.has("firearm") or reload_left>0 or accepted.get("overheated",false):return
 	if int(accepted.get("ammo",gun.magazine))<=0:reload(true);return
+	if int(accepted.get("ammo",gun.magazine))<=pending.values().filter(func(p):return p.kind=="surface_fire" and p.item_id==gun.item_id).size():return
 	next_shot=maxf(.06,float(gun.interval))
 	var aim: Vector3=-app.camera.global_basis.z
 	app.session.send_request("surface_fire",{"item_id":gun.item_id,"aim":[aim.x,aim.y,aim.z],"ads":ads>.5})
@@ -94,6 +100,7 @@ func _response(sequence: int,result: Dictionary) -> void:
 		if result.get("ok",false) and result.has("rays"):result.actor=app.session.latest.self_id;present(result,false)
 		return
 	if not result.get("ok",false):
+		if recoil_impulses.has(sequence):recoil_impulses[sequence].denied=true
 		if result.has("weapon"):accepted=result.weapon.duplicate(true)
 		if result.get("code","")=="no_ammo":empty_latched=true;reserve_ammo=0
 		if result.has("error"):app.feedback.reject(result.error)
@@ -103,6 +110,7 @@ func _response(sequence: int,result: Dictionary) -> void:
 	seen[app.session.latest.self_id]=sequence
 	if result.has("weapon"):accepted=result.weapon.duplicate(true)
 	if result.get("reload",false):
+		if recoil_impulses.has(sequence):recoil_impulses[sequence].denied=true
 		reload_left=float(result.duration);reload_duration=reload_left
 		reload_cues.clear()
 	elif result.has("rays"):
@@ -134,19 +142,15 @@ func present(event: Dictionary,local: bool) -> void:
 	var family: Dictionary=FrontierFirearms.config().families[event.family]
 	if local and not impact:
 		_update_muzzle()
-		var gun:=tool()
-		kick=minf(1.25,kick+.95);kick_side=-kick_side;shot_bloom=minf(1.4,shot_bloom+.75);flash_left=float(style.flash_time)
-		if recoil_idle>1.0:recoil_index=0
-		var pattern: Array=gun.get("recoil_pattern",[0])
-		var strength:=float(gun.recoil)*(1.0-.45*ads)*(.55 if crouched and gun.effect=="braced" else 1.0)
-		app.pitch=clampf(app.pitch+strength,-1.45,1.45)
-		app.yaw+=float(pattern[recoil_index%pattern.size()])*strength
-		recoil_index+=1;recoil_idle=0.0
+		if not recoil_impulses.has(int(event.get("serial",-1))):_anticipate(int(event.get("serial",-1)),tool())
+		flash_left=float(style.flash_time)
 	if not impact:
-		app.feedback.audio.play(str(family.sound),Vector3.INF if local else origin,audio_rng.randf_range(.985,1.015),float(style.sound_gain)+audio_rng.randf_range(-.35,.0),"firearm_shot")
+		if event.get("beam",false):_beam_sound(str(event.get("actor","")),origin,local,float(event.get("weapon",{}).get("heat",0)))
+		else:app.feedback.audio.play(str(family.sound),Vector3.INF if local else origin,audio_rng.randf_range(.985,1.015),float(style.sound_gain)+audio_rng.randf_range(-.35,.0),"firearm_shot")
 		if not local or not (ads>.92 and event.effect in ["precision","weak_chain"]):
 			var flash_origin: Vector3=muzzle_socket.global_position if local and is_instance_valid(muzzle_socket) else origin
 			gun_effects.muzzle(flash_origin,-app.camera.global_basis.z,event.family,muzzle_socket if local else null)
+	if event.get("beam",false) and local and is_instance_valid(muzzle_socket):origin=muzzle_socket.global_position
 	gun_effects.shot(origin,event,4.0 if local and ads>.92 and event.effect in ["precision","weak_chain"] else 0.0)
 	var hit: Dictionary=event.get("hits",{})
 	if float(hit.get("damage",0))+float(hit.get("shield",0))>0:
@@ -157,7 +161,6 @@ func present(event: Dictionary,local: bool) -> void:
 			var cue: Dictionary=FrontierFirearmEffects.config().confirmation[hit_kind]
 			hit_duration=float(cue.duration);hit_left=hit_duration
 			if hit.broken:
-				shield_break_left=float(FrontierFirearmEffects.config().damage_numbers.break_time)
 				var crack: Dictionary=FrontierFirearmEffects.config().confirmation["break"]
 				app.feedback.audio.firearm_confirmation("sfx_gun_break_down" if hit.killed else str(crack.sound),float(crack.gain))
 			else:app.feedback.audio.firearm_confirmation(str(cue.sound),float(cue.gain))
@@ -172,12 +175,17 @@ func _update_muzzle() -> void:
 
 func _process(delta: float) -> void:
 	if app==null:return
+	_recover(delta)
+	for actor in beam_audio.keys():
+		var voice: Dictionary=beam_audio[actor];voice.left-=delta
+		if voice.left<=0 or not enabled():voice.node.stop();voice.node.queue_free();beam_audio.erase(actor)
+		else:voice.node.volume_db=-22+linear_to_db(clampf(voice.left/.04,.001,1))
 	draw_left=maxf(0,draw_left-delta);recoil_idle+=delta
 	next_shot=maxf(0,next_shot-delta);hit_left=maxf(0,hit_left-delta);flash_left=maxf(0,flash_left-delta)
-	damage_numbers.update(delta);shield_break_left=maxf(0,shield_break_left-delta)
+	damage_numbers.update(delta)
 	var active:=enabled();var gun:=tool()
 	if reserve_ammo!=0 or (not app.test_mode and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):empty_latched=false
-	if was_enabled and not active:app.feedback.audio.stop_firearm_cues();gun_effects.clear();damage_numbers.clear();shield_break_left=0;kick=0;shot_bloom=0;hit_left=0;flash_left=0
+	if was_enabled and not active:app.feedback.audio.stop_firearm_cues();gun_effects.clear();damage_numbers.clear();kick=0;shot_bloom=0;hit_left=0;flash_left=0
 	was_enabled=active
 	var firearm: bool=active and gun.has("firearm")
 	ads=move_toward(ads,1.0 if firearm and (test_ads if app.test_mode else Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)) else 0.0,delta/maxf(.05,float(gun.get("ads_seconds",.18))))
@@ -191,7 +199,7 @@ func _process(delta: float) -> void:
 		if not app.session.latest.is_empty() and (app.session.latest.crew.members[app.session.latest.self_id].area!="surface" or app.session.latest.crew.members[app.session.latest.self_id].aboard):crouched=false;last_stance=false
 	if gun.get("item_id","")!=observed_item:
 		observed_item=gun.get("item_id","");accepted={};reload_left=0;next_shot=.12;draw_left=float(gun.get("draw_seconds",.22));input_buffered=false;recoil_index=0;empty_latched=false
-		gun_effects.clear(true);damage_numbers.clear();shield_break_left=0;kick=0;shot_bloom=0;hit_left=0;flash_left=0;app.feedback.audio.stop_firearm_cues()
+		gun_effects.clear(true);damage_numbers.clear();kick=0;shot_bloom=0;hit_left=0;flash_left=0;app.feedback.audio.stop_firearm_cues()
 		if gun.has("firearm"):
 			var states: Dictionary=app.session.latest.crew.members[app.session.latest.self_id].loadout.get("weapon_states",{})
 			accepted=states.get(observed_item,{}).duplicate(true);reload_left=float(accepted.get("reload_left",0));reload_duration=maxf(.1,float(accepted.get("reload_duration",reload_left)))
@@ -204,7 +212,7 @@ func _process(delta: float) -> void:
 		var style: Dictionary=FrontierFirearmEffects.config().families[gun.firearm]
 		kick*=exp(-float(style.recovery)*delta);shot_bloom=move_toward(shot_bloom,0,delta*7)
 		var held: Node3D=app.feedback.handheld
-		held.position=held.position.lerp(Vector3(0,-.15,-.72),ads)
+		held.position=Vector3(.24,held.position.y,-.65).lerp(Vector3(0,-.15,-.60),ads)
 		var strength:=kick*lerpf(1,.52,ads)*(.6 if crouched and gun.effect=="braced" else 1.0)
 		held.position.z+=float(style.kick)*strength
 		held.rotation.x+=float(style.lift)*strength;held.rotation.z+=float(style.roll)*strength*kick_side
@@ -220,15 +228,18 @@ func _process(delta: float) -> void:
 		var phase:=1.0-reload_left/maxf(.1,reload_duration)
 		var motion:=sin(phase*PI) if reload_left>0 else 0.0
 		held.rotation.z-=motion*float(gun.reload_tilt);held.position.y-=motion*.08
-		if is_instance_valid(hands):hands.pose(gun,app.feedback.parts,phase,reload_left>0,kick)
+		if is_instance_valid(hands):hands.pose(gun,app.feedback.parts,phase,reload_left>0,kick,float(accepted.get("heat",0)))
 		if reload_left>0:
-			for cue in {"sfx_gun_mag_out":.19,"sfx_gun_mag_in":.64,"sfx_gun_charge":.82}:
-				var at: float={"sfx_gun_mag_out":.19,"sfx_gun_mag_in":.64,"sfx_gun_charge":.82}[cue]
+			for cue in {"sfx_gun_mag_out":float(gun.get("reload_out",.19)),"sfx_gun_mag_in":float(gun.get("reload_insert",.64)),"sfx_gun_charge":float(gun.get("reload_charge",.82))}:
+				var at: float={"sfx_gun_mag_out":float(gun.get("reload_out",.19)),"sfx_gun_mag_in":float(gun.get("reload_insert",.64)),"sfx_gun_charge":float(gun.get("reload_charge",.82))}[cue]
 				if phase>=at and not reload_cues.has(cue):
 					reload_cues[cue]=true
 					app.feedback.audio.play(cue,Vector3.INF,.9 if gun.firearm=="lmg" else 1.0)
 	hud.visible=firearm
 	if firearm:
+		heat_bar.visible=gun.effect=="beam"
+		heat_bar.value=float(accepted.get("heat",0))*100;heat_bar.modulate=Color("ff865d") if accepted.get("overheated",false) else Color("85f7e3")
+		heat_bar.position=ammo_label.position+Vector2(0,-10);heat_bar.size=Vector2(110,4)
 		var size:=hud.get_viewport_rect().size;ammo_label.position=Vector2(size.x*.5+45,size.y-126)
 		var display_reserve: String="∞" if str(gun.get("ammo_type","")).is_empty() else str(maxi(0,reserve_ammo))
 		ammo_label.text="%02d / %s"%[int(accepted.get("ammo",gun.magazine)),display_reserve]
@@ -241,8 +252,8 @@ func _process(delta: float) -> void:
 		input_buffered=false
 		if reload_left>0:
 			var progress:=1-reload_left/maxf(.1,reload_duration)
-			for cue in {"sfx_gun_mag_out":.19,"sfx_gun_mag_in":.64,"sfx_gun_charge":.82}:
-				if progress>={"sfx_gun_mag_out":.19,"sfx_gun_mag_in":.64,"sfx_gun_charge":.82}[cue]:reload_cues[cue]=true
+			for cue in {"sfx_gun_mag_out":float(gun.get("reload_out",.19)),"sfx_gun_mag_in":float(gun.get("reload_insert",.64)),"sfx_gun_charge":float(gun.get("reload_charge",.82))}:
+				if progress>={"sfx_gun_mag_out":float(gun.get("reload_out",.19)),"sfx_gun_mag_in":float(gun.get("reload_insert",.64)),"sfx_gun_charge":float(gun.get("reload_charge",.82))}[cue]:reload_cues[cue]=true
 	if active:app.reticle.visible=not firearm
 	hud.queue_redraw()
 func _draw() -> void:
@@ -260,16 +271,40 @@ func _draw() -> void:
 			hud.draw_line(center+axis*8,center+axis*radius,Color("c4e0d6"),1,true);hud.draw_line(center-axis*8,center-axis*radius,Color("c4e0d6"),1,true)
 	if ads>.8:hud.draw_circle(center,1.7,Color("e5f7ef"))
 	damage_numbers.draw(hud,app.camera,ads>.92 and tool().get("effect") in ["precision","weak_chain"])
-	if shield_break_left>0:
-		var crack_color:=Color(FrontierFirearmEffects.config().damage_numbers.shield_color);crack_color.a=minf(1,shield_break_left/.12)
-		damage_numbers.draw_shield(hud,center+Vector2(0,-32),crack_color,true,1-shield_break_left/float(FrontierFirearmEffects.config().damage_numbers.break_time))
 	if hit_left<=0:return
 	var color:=Color("ffd19b") if hit_kind in ["weak","kill"] else Color("a9e9ff") if hit_kind in ["shield","break"] else Color("e5f7ef")
 	var phase:=1-hit_left/hit_duration;color.a=minf(1,hit_left/.075)
 	var settle:=2.0*pow(1-phase,3)
 	for angle in [PI*.25,PI*.75,PI*1.25,PI*1.75]:
 		var direction:=Vector2(cos(angle),sin(angle));hud.draw_line(center+direction*(6+settle),center+direction*((14 if hit_kind in ["break","kill"] else 11)+settle),color,2,true)
-	if hit_kind=="break":
-		var radius:=16+phase*6
-		hud.draw_arc(center,radius,PI*.12,PI*.8,12,color,1.5,true);hud.draw_arc(center,radius,PI*1.12,PI*1.8,12,color,1.5,true)
 	if hit_kind=="kill":hud.draw_line(center+Vector2(-4,18),center+Vector2(0,21),color,2,true);hud.draw_line(center+Vector2(0,21),center+Vector2(4,18),color,2,true)
+
+func _anticipate(sequence: int,gun: Dictionary) -> void:
+	# Reversible trigger motion only. Audio, muzzle, ammunition and all hit
+	# confirmations still require the host result.
+	if not enabled() or not gun.has("firearm"):return
+	kick=minf(1.25,kick+.95);kick_side=-kick_side;shot_bloom=minf(1.4,shot_bloom+.75)
+	if recoil_idle>1:recoil_index=0
+	var pattern: Array=gun.recoil_pattern
+	var strength:=float(gun.recoil)*(1-.45*ads)*(.55 if crouched and gun.effect=="braced" else 1.0)
+	var amount:=Vector2(float(pattern[recoil_index%pattern.size()])*strength,minf(strength,1.45-app.pitch))
+	app.pitch+=amount.y;app.yaw+=amount.x
+	recoil_impulses[sequence]={"amount":amount,"age":0.0,"delay":float(gun.recovery_delay),"speed":float(gun.recovery_speed),"denied":false}
+	recoil_index+=1;recoil_idle=0;predicted_shots+=1
+func _recover(delta: float) -> void:
+	for sequence in recoil_impulses.keys():
+		var impulse: Dictionary=recoil_impulses[sequence];var previous:=float(impulse.age);impulse.age+=delta
+		var active_delta:=delta if impulse.denied else maxf(0,float(impulse.age)-maxf(previous,float(impulse.delay)))
+		var amount: Vector2=impulse.amount*(1-exp(-active_delta*(40.0 if impulse.denied else float(impulse.speed))))
+		app.pitch=clampf(app.pitch-amount.y,-1.45,1.45);app.yaw-=amount.x;impulse.amount-=amount
+		# Keep the receipt marker until slow responses have arrived, preventing
+		# a second kick after the predicted movement already recovered.
+		if impulse.age>2.0 and not pending.has(sequence):recoil_impulses.erase(sequence)
+func _beam_sound(actor: String,origin: Vector3,local: bool,heat: float) -> void:
+	if not beam_audio.has(actor):
+		var speaker: Node=AudioStreamPlayer.new() if local else AudioStreamPlayer3D.new()
+		speaker.stream=app.feedback.audio.stream("sfx_gun_laser_loop",true);speaker.bus="SFX";speaker.volume_db=-22
+		if not local:speaker.max_distance=85
+		add_child(speaker);speaker.play();beam_audio[actor]={"node":speaker,"left":.18}
+	var voice: Dictionary=beam_audio[actor];voice.left=.18;voice.node.pitch_scale=1+heat*.08
+	if not local:voice.node.global_position=origin

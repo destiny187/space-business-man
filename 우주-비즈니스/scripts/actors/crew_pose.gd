@@ -51,7 +51,8 @@ func _play(id: String,pitch: float=1.0) -> void:
 		if not player.playing:
 			player.stream=load(path);player.pitch_scale=pitch;player.play();return
 func animate(motion: Dictionary,delta: float,audible: bool=true,terrain: bool=true) -> void:
-	if skeleton==null or motion.is_empty():return
+	# A relocation can briefly publish only presentation flags before locomotion resumes.
+	if skeleton==null or not motion.has("velocity"):return
 	elapsed+=delta
 	var c:=FrontierCrewLocomotion.config()
 	var velocity:=FrontierCrewWorld.vector(motion.velocity)

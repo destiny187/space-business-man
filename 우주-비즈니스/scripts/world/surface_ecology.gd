@@ -103,6 +103,7 @@ func _process(delta: float) -> void:
 		actor.set_meta("encounter_id",row.id)
 		_add_collision(actor,row)
 		actors[row.id]=actor;encounters[row.id]=row
+		preload("res://scripts/domain/firearm_anatomy.gd").register(str(body.id)+"/"+str(row.id),actor)
 		max_load_ms=maxf(max_load_ms,float(Time.get_ticks_usec()-start)/1000.0)
 
 	_update_wildlife(delta)
@@ -196,7 +197,9 @@ func refresh() -> void:
 		if row.status=="active":active_count+=1
 		else:dormant_count+=1
 	for id in actors.keys():
-		if not selected.has(id):actors[id].queue_free();actors.erase(id);encounters.erase(id)
+		if not selected.has(id):
+			preload("res://scripts/domain/firearm_anatomy.gd").unregister(str(body.id)+"/"+str(id),actors[id])
+			actors[id].queue_free();actors.erase(id);encounters.erase(id)
 	for row in selected.values():
 		if actors.has(row.id):
 			if not Wildlife.eligible(actors[row.id].definition,row):
@@ -242,6 +245,8 @@ func target(camera: Camera3D) -> Dictionary:
 	return closest
 
 func _exit_tree() -> void:
+	for id in actors:
+		preload("res://scripts/domain/firearm_anatomy.gd").unregister(str(body.id)+"/"+str(id),actors[id])
 	for request in resource_requests.values():
 		for path in ([] if synchronous_resources else request.paths):
 			if ResourceLoader.load_threaded_get_status(path)!=ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:ResourceLoader.load_threaded_get(path)

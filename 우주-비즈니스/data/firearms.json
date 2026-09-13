@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "families": {
     "carbine": {
       "name": "펄스 카빈",
@@ -44,7 +44,34 @@
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.42,
-      "support_z": 0
+      "support_z": 0,
+      "reload_out": 0.19,
+      "reload_charge": 0.83,
+      "recovery_delay": 0.09100000000000001,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          -0.08,
+          -0.36,
+          0.08
+        ],
+        "support": [
+          0,
+          0.02,
+          -0.08
+        ],
+        "charge": [
+          0.135,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.15,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "pistol": {
       "name": "니들 권총",
@@ -76,14 +103,41 @@
         0.1,
         -0.1
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.58,
       "reload_empty_extra": 0.25,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.42,
-      "support_z": 0.03
+      "support_z": 0.03,
+      "reload_out": 0.13,
+      "reload_charge": 0.82,
+      "recovery_delay": 0.17550000000000002,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          0,
+          -0.35,
+          0.04
+        ],
+        "support": [
+          0.02,
+          -0.03,
+          0.04
+        ],
+        "charge": [
+          0.13,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.12,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "smg": {
       "name": "스파크 기관단총",
@@ -118,14 +172,41 @@
         -0.5,
         0.25
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.57,
       "reload_empty_extra": 0.25,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.42,
-      "support_z": 0
+      "support_z": 0,
+      "reload_out": 0.15,
+      "reload_charge": 0.78,
+      "recovery_delay": 0.05330000000000001,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          -0.14,
+          -0.4,
+          0.02
+        ],
+        "support": [
+          0,
+          -0.02,
+          -0.09
+        ],
+        "charge": [
+          0.135,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.13,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "shotgun": {
       "name": "브레이커 산탄총",
@@ -156,14 +237,41 @@
         0.2,
         -0.2
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.68,
       "reload_empty_extra": 0.25,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.42,
-      "support_z": -0.12
+      "support_z": -0.12,
+      "reload_out": 0.23,
+      "reload_charge": 0.87,
+      "recovery_delay": 0.18,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          0,
+          -0.37,
+          0.12
+        ],
+        "support": [
+          0,
+          -0.07,
+          -0.25
+        ],
+        "charge": [
+          0,
+          -0.1,
+          -0.24
+        ],
+        "charge_travel": 0.19,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "lmg": {
       "name": "앵커 경기관총",
@@ -199,14 +307,41 @@
         0.2,
         -0.15
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.7,
       "reload_empty_extra": 0.25,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.4,
       "reload_tilt": 0.42,
-      "support_z": 0
+      "support_z": 0,
+      "reload_out": 0.25,
+      "reload_charge": 0.87,
+      "recovery_delay": 0.08125,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          -0.3,
+          -0.35,
+          0.12
+        ],
+        "support": [
+          0,
+          -0.06,
+          -0.14
+        ],
+        "charge": [
+          0.135,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.2,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "marksman": {
       "name": "트레이서 지정사수총",
@@ -237,14 +372,41 @@
         0.1,
         -0.12
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.62,
       "reload_empty_extra": 0.25,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.42,
-      "support_z": -0.12
+      "support_z": -0.12,
+      "reload_out": 0.19,
+      "reload_charge": 0.84,
+      "recovery_delay": 0.18,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          -0.05,
+          -0.32,
+          0.04
+        ],
+        "support": [
+          0,
+          0.01,
+          -0.24
+        ],
+        "charge": [
+          0.135,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.13,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "sniper": {
       "name": "랜스 저격총",
@@ -275,14 +437,41 @@
         0.14,
         -0.14
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.61,
       "reload_empty_extra": 0.45,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.42,
-      "support_z": -0.12
+      "support_z": -0.12,
+      "reload_out": 0.22,
+      "reload_charge": 0.86,
+      "recovery_delay": 0.18,
+      "recovery_speed": 10,
+      "hand_motion": {
+        "eject": [
+          -0.14,
+          -0.3,
+          0.08
+        ],
+        "support": [
+          0,
+          0.01,
+          -0.32
+        ],
+        "charge": [
+          0.135,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.23,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
     },
     "plasma": {
       "name": "오브 플라스마 발사기",
@@ -314,14 +503,111 @@
         -0.1,
         0.1
       ],
-      "reload_insert": 0.64,
+      "reload_insert": 0.68,
       "reload_empty_extra": 0.25,
       "falloff_start": 0.6,
       "limb_multiplier": 0.75,
       "head_multiplier": 1.4,
       "reload_pull": 0.32,
       "reload_tilt": 0.6,
-      "support_z": 0
+      "support_z": 0,
+      "reload_out": 0.24,
+      "reload_charge": 0.85,
+      "recovery_delay": 0.18,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          -0.32,
+          -0.16,
+          0.07
+        ],
+        "support": [
+          0,
+          -0.03,
+          -0.24
+        ],
+        "charge": [
+          0.135,
+          0.12,
+          0.03
+        ],
+        "charge_travel": 0.11,
+        "magazine_contact": [
+          -0.08,
+          -0.28,
+          -0.1
+        ]
+      }
+    },
+    "laser": {
+      "name": "프리즘 레이저",
+      "identity": "안정화 레일 · 연속 사격의 탄착이 서서히 모입니다.",
+      "interval": 0.1,
+      "damage": 8,
+      "magazine": 60,
+      "reload": 2.1,
+      "range": 85,
+      "spread": 0.003,
+      "ads_spread": 0.0003,
+      "pellets": 1,
+      "recoil": 0.0015,
+      "auto": true,
+      "weak": 1.25,
+      "sound": "sfx_gun_laser_loop",
+      "effect": "beam",
+      "ammo_type": "ammo_energy",
+      "projectile_speed": 0,
+      "projectile_gravity": 0,
+      "ads_seconds": 0.19,
+      "ads_fov": 52,
+      "move_spread": 1.25,
+      "air_spread": 2.4,
+      "draw_seconds": 0.3,
+      "aim_sensitivity": 0.7236842105263158,
+      "recoil_pattern": [
+        0.1,
+        -0.1
+      ],
+      "reload_insert": 0.66,
+      "reload_empty_extra": 0.25,
+      "falloff_start": 0.6,
+      "limb_multiplier": 0.75,
+      "head_multiplier": 1.4,
+      "reload_pull": 0.32,
+      "reload_tilt": 0.35,
+      "support_z": 0,
+      "heat_per_shot": 0.065,
+      "cool_rate": 0.22,
+      "cool_delay": 0.3,
+      "heat_unlock": 0.28,
+      "beam_lifetime": 0.18,
+      "reload_out": 0.2,
+      "reload_charge": 0.86,
+      "recovery_delay": 0.065,
+      "recovery_speed": 14,
+      "hand_motion": {
+        "eject": [
+          -0.4,
+          -0.1,
+          0
+        ],
+        "support": [
+          0,
+          0.02,
+          -0.24
+        ],
+        "charge": [
+          -0.18,
+          0.08,
+          -0.16
+        ],
+        "charge_travel": 0.08,
+        "magazine_contact": [
+          -0.23,
+          0.02,
+          -0.12
+        ]
+      }
     }
   },
   "rarities": {
@@ -383,7 +669,7 @@
   "checkpoint_seconds": 2.0,
   "max_states": 256,
   "muzzle_clearance": {
-    "forward": 0.75,
+    "forward": 1.15,
     "side": 0.24,
     "drop": 0.12
   },
@@ -457,11 +743,31 @@
       "color": "#ccb0f5",
       "use": "오브 플라스마 발사기",
       "stack": 36
+    },
+    "ammo_energy": {
+      "name": "레이저 전지",
+      "tier": 2,
+      "cost": {
+        "copper": 2,
+        "crystal": 1
+      },
+      "amount": 100,
+      "stack": 200,
+      "seconds": 4,
+      "model": "products/ammo_energy",
+      "color": "85f7e3",
+      "use": "레이저"
     }
   },
   "projectiles": {
     "limit": 256,
     "step": 0.0166667,
     "input_buffer_seconds": 0.8
+  },
+  "rewind": {
+    "window": 0.2,
+    "sample": 0.05,
+    "samples": 6,
+    "max_origin_distance": 2.0
   }
 }

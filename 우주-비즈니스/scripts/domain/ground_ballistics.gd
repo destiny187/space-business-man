@@ -3,6 +3,7 @@ extends RefCounted
 const Targets=preload("res://scripts/domain/firearm_targets.gd")
 var shots: Array=[]
 var event_serial:=0
+var history: RefCounted
 func count() -> int:
 	var n:=0
 	for shot in shots:n+=shot.rounds.size()
@@ -10,8 +11,8 @@ func count() -> int:
 func launch(world: Dictionary,actor: String,tool: Dictionary,event: Dictionary,ads: bool) -> void:
 	var rounds: Array=[]
 	for initial in event.projectiles:
-		rounds.append({"index":initial.get("index",rounds.size()),"point":FrontierCrewWorld.vector(event.origin),"velocity":FrontierCrewWorld.vector(initial.velocity),"distance":0.0,"gravity":initial.gravity,"remaining":initial.range,"multiplier":initial.multiplier})
-	shots.append({"actor":actor,"body_id":world.location,"tool":tool.duplicate(true),"rounds":rounds,"serial":event.serial,"ads":ads,"weak":false})
+		rounds.append({"index":initial.get("index",rounds.size()),"point":FrontierCrewWorld.vector(event.origin),"velocity":FrontierCrewWorld.vector(initial.velocity),"time":float(event.get("fired_time",0)),"distance":0.0,"gravity":initial.gravity,"remaining":initial.range,"multiplier":initial.multiplier})
+	shots.append({"actor":actor,"body_id":world.location,"tool":tool.duplicate(true),"rounds":rounds,"serial":event.serial,"ads":ads,"weak":false,"catchup":float(event.get("rewind_seconds",0))})
 func step(world: Dictionary,delta: float,obstacle: Callable) -> Array:
 	var events: Array=[];var candidates: Dictionary={}
 	for index in range(shots.size()-1,-1,-1):
@@ -24,7 +25,7 @@ func step(world: Dictionary,delta: float,obstacle: Callable) -> Array:
 		var contacts: Array=[];var targets: Dictionary={};var retired: Array=[]
 		var totals: Dictionary={"damage":0.0,"shield":0.0,"broken":false,"weak":false,"killed":false,"organic":false}
 		for i in range(shot.rounds.size()-1,-1,-1):
-			var round: Dictionary=shot.rounds[i];var remaining:=delta;var ended:=false
+			var round: Dictionary=shot.rounds[i];var remaining:=delta+float(shot.get("catchup",0));var ended:=false
 			while remaining>0 and not ended:
 				var dt:=minf(remaining,float(FrontierFirearms.config().projectiles.step));remaining-=dt
 				var origin: Vector3=round.point
@@ -36,7 +37,12 @@ func step(world: Dictionary,delta: float,obstacle: Callable) -> Array:
 				else:reach=_terrain_distance(local,origin,direction,reach)
 				var cover:=FrontierCombatCover.intercept(local,shot.body_id,origin,direction,reach)
 				if not cover.is_empty():reach=minf(reach,float(cover.distance))
-				var hit:=Targets.intersect(candidates[actor],origin,direction,reach)
+				var rows: Array=candidates[actor]
+				if history!=null:
+					var frame: Dictionary=history.at(actor,shot.body_id,float(round.time)+dt*.5)
+					if not frame.is_empty():rows=frame.rows
+				round.time+=dt
+				var hit:=Targets.intersect(rows,origin,direction,reach)
 				var point:=origin+direction*reach
 				if not hit.is_empty():point=hit.point
 				round.distance+=origin.distance_to(point);round.remaining-=origin.distance_to(point);round.point=point
@@ -52,6 +58,7 @@ func step(world: Dictionary,delta: float,obstacle: Callable) -> Array:
 					_blast(local,shot,candidates[actor],point,hit.get("id",""),obstacle,contacts,targets,totals)
 				if float(round.remaining)<=.001:ended=true
 			if ended:retired.append(round.index);shot.rounds.remove_at(i)
+		shot.catchup=0.0
 		if not contacts.is_empty():
 			event_serial+=1
 			events.append({"actor":actor,"body_id":shot.body_id,"impact_only":true,"serial":event_serial,"shot_serial":shot.serial,"retired":retired,"family":shot.tool.firearm,"effect":shot.tool.effect,"item_id":shot.tool.item_id,"contacts":contacts,"damage_targets":targets.values(),"hits":totals,"rays":[]})

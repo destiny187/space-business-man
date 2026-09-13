@@ -80,11 +80,11 @@ func _process(delta: float) -> void:
 	var shield_max:=FrontierSuitModules.shield_max(member)
 	meters.shield.update_value(float(v.get("shield",0)),shield_max)
 	if last_shield>=0 and int(v.get("shield_serial",0))>last_shield:
-		shield_flash=.5
+		shield_flash=.16
 		if not app.feedback.blocked() and int(v.get("shield_break_serial",0))==last_break:app.feedback.audio.play("sfx_gun_hit_shield",Vector3.INF,.9,-2)
 	if last_break>=0 and int(v.get("shield_break_serial",0))>last_break:
 		if not app.feedback.blocked():
-			shield_crack=.4;app.feedback.audio.play("sfx_gun_break",Vector3.INF,.82,0)
+			shield_crack=.22;app.feedback.audio.firearm_confirmation("sfx_gun_break",float(FrontierFirearmEffects.config().confirmation["break"].gain))
 		notice.text="실드 소진  엄폐 후 재충전";notice_left=3
 	if last_legendary>=0 and int(v.get("legendary_serial",0))>last_legendary:
 		var effect: Dictionary=FrontierSuitModules.config().legendary.get(str(v.get("legendary_effect","")),{})
@@ -117,31 +117,24 @@ func _draw() -> void:
 	if damage_flash<=0 and shield_flash<=0 and shield_crack<=0:return
 	var view_size:=get_viewport().get_visible_rect().size
 	if damage_flash>0:draw_rect(Rect2(Vector2(3,3),view_size-Vector2(6,6)),Color(1,.35,.2,damage_flash),false,6)
-	if shield_flash>0:draw_rect(Rect2(Vector2(12,12),view_size-Vector2(24,24)),Color(.3,.7,1,shield_flash),false,4)
-	if shield_crack>0:
-		var color:=Color(.57,.85,1,minf(.8,shield_crack/.15))
-		var drift: float=(1-shield_crack/.4)*12
-		for side in [-1,1]:
-			var at:=Vector2(22+drift if side==1 else view_size.x-22-drift,view_size.y*.5)
-			for vertical in [-1,1]:
-				var points:=PackedVector2Array([at+Vector2(0,vertical*50),at+Vector2(side*15,vertical*67),at+Vector2(side*8,vertical*81),at+Vector2(side*29,vertical*111)])
-				draw_polyline(points,color,2,true)
+	if shield_flash>0 or shield_crack>0:
+		var box: Rect2=meters.shield.get_global_rect();box.position-=global_position
+		var strength:=maxf(shield_flash/.16,shield_crack/.22)
+		draw_line(box.position+Vector2(0,box.size.y+2),box.end+Vector2(0,2),Color(.57,.85,1,strength*.55),2,true)
 
-func _update_shield_echoes(delta: float) -> void:
+func _update_shield_echoes(_delta: float) -> void:
 	for id in app.actors:
 		if not app.session.latest.crew.members.has(id):continue
-		var serial:=int(app.session.latest.crew.members[id].get("vitals",{}).get("shield_serial",0))
-		if not shield_echoes.has(id):shield_echoes[id]={"serial":serial,"left":0.0}
+		var member: Dictionary=app.session.latest.crew.members[id]
+		var serial:=int(member.get("vitals",{}).get("shield_serial",0))
+		if not shield_echoes.has(id):shield_echoes[id]={"serial":serial}
 		var echo: Dictionary=shield_echoes[id]
-		if serial>int(echo.serial):echo.left=.4
-		echo.serial=serial;echo.left=maxf(0,echo.left-delta)
-		if not echo.has("mesh") or not is_instance_valid(echo.mesh):
-			var mesh:=MeshInstance3D.new();var shape:=SphereMesh.new();shape.radius=.6;shape.height=1.9;mesh.mesh=shape
-			var material:=StandardMaterial3D.new();material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.cull_mode=BaseMaterial3D.CULL_DISABLED;material.albedo_color=Color(.2,.65,1,.15);mesh.material_override=material
-			app.actors[id].add_child(mesh);mesh.position=Vector3.UP;echo.mesh=mesh
-		echo.mesh.visible=echo.left>0 and id!=app.session.latest.self_id and not app.feedback.blocked()
-		echo.mesh.material_override.albedo_color=Color(.2,.65,1,float(echo.left)*.4)
+		var here: bool=app.surface_world!=null and member.get("place_key","")==app.session.latest.crew.members[app.session.latest.self_id].get("place_key","") and member.get("connected",true)
+		if serial>int(echo.serial) and id!=app.session.latest.self_id and member.area=="surface" and not member.aboard and here and not app.feedback.blocked():
+			# Suit snapshots have no exact impact point; use a restrained chest cue.
+			var point: Vector3=app.actors[id].global_position+Vector3.UP*1.15
+			var normal: Vector3=(app.camera.global_position-point).normalized()
+			app.firearm.gun_effects.impact({"kind":"shield","point":FrontierExpeditionBusiness.array(point+normal*.25),"normal":FrontierExpeditionBusiness.array(normal)})
+		echo.serial=serial
 	for id in shield_echoes.keys():
-		if not app.actors.has(id):
-			if shield_echoes[id].has("mesh") and is_instance_valid(shield_echoes[id].mesh):shield_echoes[id].mesh.queue_free()
-			shield_echoes.erase(id)
+		if not app.actors.has(id):shield_echoes.erase(id)

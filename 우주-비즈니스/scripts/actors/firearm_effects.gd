@@ -61,6 +61,10 @@ func muzzle(origin: Vector3,_direction: Vector3,family: String,socket: Node3D=nu
 
 func shot(origin: Vector3,event: Dictionary,near_clip: float=0.0) -> void:
 	var style: Dictionary=config().families.get(event.family,config().families.carbine)
+	if event.get("beam",false):
+		_beam(origin,event,style)
+		for hit in event.get("contacts",[]):impact(hit)
+		return
 	if event.get("impact_only",false):
 		for e in active:
 			if e.get("shot_id","")==str(event.get("actor",""))+":"+str(event.get("shot_serial",-1)) and e.get("round_index",0) in event.get("retired",[0]):e.age=e.life
@@ -99,6 +103,8 @@ func impact(contact: Dictionary) -> void:
 	if normal.length_squared()<.5:normal=Vector3.UP
 	point+=normal*.018
 	var color:=Color(style.color);var size:=float(style.size)
+	if kind in ["shield","break"]:
+		_shield_contact(point,normal,style);emitted.impact+=1;return
 	var contact_flash:=spawn("contact",point,color,.065 if kind!="break" else .09,size*2.0)
 	if not contact_flash.is_empty():contact_flash.spin=rng.randf_range(-PI,PI)
 	var side:=normal.cross(Vector3.UP).normalized()
@@ -114,15 +120,6 @@ func impact(contact: Dictionary) -> void:
 		var direction: Vector3=(normal*rng.randf_range(.25,.6)+(side*cos(a)+up*sin(a))*rng.randf_range(.6,1.0)).normalized()
 		var e:=spawn("shard" if soft_contact else "spark",point,color,float(style.life)*rng.randf_range(.7,1.1),rng.randf_range(.018,.034) if soft_contact else .017)
 		if not e.is_empty():e.velocity=direction*float(style.speed)*rng.randf_range(.6,1.0);e.spin=a
-	if kind in ["shield","break"]:
-		var arc:=spawn("arc",point,color,float(style.life),size*2.8)
-		if not arc.is_empty():arc.spin=rng.randf_range(-PI,PI)
-	if kind=="break":
-		for i in 5:
-			var a:=float(i)*TAU/5+rng.randf_range(-.15,.15)
-			var outward:=side*cos(a)+up*sin(a)
-			var piece:=spawn("shard",point+outward*.06,color,.24,rng.randf_range(.04,.085))
-			if not piece.is_empty():piece.velocity=outward*rng.randf_range(.7,1.3)+normal*.2;piece.spin=a
 	emitted.impact+=1
 
 func segment(node: MeshInstance3D,start: Vector3,finish: Vector3,width: float) -> void:
@@ -150,6 +147,8 @@ func _process(delta: float) -> void:
 				if is_instance_valid(camera):
 					node.basis=camera.global_basis;node.rotate_object_local(Vector3.BACK,float(e.get("spin",0)))
 					node.scale=Vector3.ONE*float(e.size)*(1+t*.8)
+			"beam":
+				segment(node,e.start,e.end,float(e.width));node.set_instance_shader_parameter("effect_color",e.color)
 			"tracer":
 				var front:=minf(float(e.distance),maxf(minf(float(e.length)*.7,float(e.distance)*.25),float(e.distance)*e.age/e.travel))
 				var back:=maxf(0,front-float(e.length)*(1-t*.6))
@@ -169,3 +168,28 @@ func _process(delta: float) -> void:
 				node.scale=Vector3.ONE*float(e.size)*(1-t*.75)
 			"ring":node.scale=Vector3.ONE*(float(e.size)+float(e.get("growth",.3))*t)
 		if t>=1:node.hide();pool.append(node);active.remove_at(i)
+
+func _beam(origin: Vector3,event: Dictionary,style: Dictionary) -> void:
+	if event.get("rays",[]).is_empty():return
+	var key:=str(event.get("actor",""))
+	var beam: Dictionary={}
+	for entry in active:
+		if entry.kind=="beam" and entry.get("actor","")==key:beam=entry;break
+	if beam.is_empty():
+		beam=spawn("beam",origin,Color(style.color),.18,1)
+		if beam.is_empty():return
+		beam.actor=key
+	beam.age=0.0;beam.fresh=true;beam.start=origin;beam.end=FrontierCrewWorld.vector(event.rays[0]);beam.width=float(style.trace_width)
+	segment(beam.node,origin,beam.end,beam.width)
+
+func _shield_contact(point: Vector3,normal: Vector3,style: Dictionary) -> void:
+	# Ground shields read through sound and a small contact flick. No shells,
+	# expanding rings or detached shield fragments obscure the target silhouette.
+	var color:=Color(style.color);color.a=float(style.opacity)
+	var flash:=spawn("contact",point,color,float(style.life),float(style.size))
+	if not flash.is_empty():flash.spin=rng.randf_range(-.25,.25)
+	var side:=normal.cross(Vector3.UP).normalized()
+	if side.length_squared()<.5:side=Vector3.RIGHT
+	for index in int(style.sparks):
+		var spark:=spawn("spark",point,color,float(style.life),.009)
+		if not spark.is_empty():spark.velocity=(normal*.4+side*(.35 if index%2 else -.35))*float(style.speed)

@@ -1,0 +1,23 @@
+{
+  "provider": "ElevenLabs",
+  "source": "audio/source/elevenlabs/ground-combat/plasma_v1.wav",
+  "original_manifest": "audio/manifests/ground-combat-sources.json",
+  "processing": "0.20–0.60 s energy tail, 45 ms cyclic crossfade, 2.4 kHz low pass, DC removal, -12 dBFS peak",
+  "source_sha256": "b31d74ea9c87dadfc26e253e154179933c5137e44a6d5ffa0e5f5e0954261068",
+  "file": "우주-비즈니스/assets/audio/sfx_gun_laser_loop.wav",
+  "sha256": "69fc3410b03569962443a5a661c9df7f590cf7b1351a66a3e79cdef63979fa9f",
+  "duration": 0.235,
+  "new_generation": false,
+  "listening_review": "미확인; 실제 게임 재생과 수치 측정은 제작 기록 참조",
+  "runtime_review": {
+    "script": "review_firearm_precision.gd",
+    "assertions": "one looping voice during held fire, expires after release, no voice while menu open",
+    "mixed_sfx_capture": "output/firearm-precision-20260913/runtime-audio.wav",
+    "mixed_sfx_metrics": {
+      "seconds": 52.93866666666667,
+      "peak_dbfs": -11.19620563872932,
+      "clipped_samples": 0,
+      "rms_dbfs": -32.2512599066226
+    }
+  }
+}

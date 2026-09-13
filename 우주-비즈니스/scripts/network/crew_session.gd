@@ -294,6 +294,8 @@ func send_request(kind: String,args: Dictionary) -> bool:
 	if kind=="business_mine":
 		if not mining_ready():return false
 		mine_sequence=next_sequence
+	if kind=="surface_fire" and not hosting and latest.has("motion_time"):
+		args=args.duplicate();args.view_time=latest.motion_time
 	var request: Dictionary={"session_id":session_id,"sequence":next_sequence,"kind":kind,"args":args,"revision":latest.crew.revision}
 	next_sequence+=1
 	request_started.emit(int(request.sequence),kind,args)

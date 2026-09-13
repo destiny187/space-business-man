@@ -47,6 +47,11 @@ static func candidates(world: Dictionary,actor: String) -> Array:
 		var maximum:=FrontierCrewWorld.vector(geometry.max)*scale_value
 		minimum.y-=float(geometry.floor_y)*scale_value;maximum.y-=float(geometry.floor_y)*scale_value
 		row.point=point
+		var shapes: Array=preload("res://scripts/domain/firearm_anatomy.gd").shapes(key)
+		if not shapes.is_empty():
+			for shape in shapes:
+				shape.kind="animal";shape.id=key;shape.row=row;result.append(shape)
+			continue
 		result.append({"kind":"animal","id":key,"row":row,"transform":Transform3D(basis,point),"bounds":AABB(minimum,maximum-minimum),"zone":"body","weak":false})
 	for row in FrontierExplorationIncidents.records(world).values():
 		if row.body_id!=world.location or row.claimed:continue

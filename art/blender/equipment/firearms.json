@@ -94,5 +94,29 @@
     ],
     "generator": "tools/build_firearms.py",
     "style": "INK v1"
+  },
+  {
+    "id": "gun_laser",
+    "name": "프리즘 레이저",
+    "source": "art/blender/equipment/gun_laser.blend",
+    "model": "res://assets/models/equipment/gun_laser.glb",
+    "motion": [
+      "Anim_Magazine",
+      "Anim_Bolt",
+      "Anim_Heat_0",
+      "Anim_Heat_1",
+      "Anim_Heat_2",
+      "Anim_Heat_3",
+      "Anim_Heat_4",
+      "Anim_Heat_5",
+      "Anim_Heat_6"
+    ],
+    "generator": "tools/build_precision_laser.py",
+    "style": "INK v1",
+    "view_direction": [
+      -1.22,
+      0.84,
+      -1.7
+    ]
   }
 ]

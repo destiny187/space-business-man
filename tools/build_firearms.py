@@ -80,6 +80,7 @@ def weapon(family):
   for y in [-.13,-.03]:k.cyl('Recessed fastener',(x*1.04,y,.065),.013,.012,'steel',(0,math.pi/2,0))
 
 for family,spec in families.items():
+ if family=="laser":continue # Dedicated optics: tools/build_precision_laser.py
  k.reset();weapon(family);scene=bpy.context.scene;scene.unit_settings.system='METRIC'
  source=ROOT/'art/blender/equipment'/('gun_'+family+'.blend');source.parent.mkdir(parents=True,exist_ok=True)
  output=ROOT/'우주-비즈니스/assets/models/equipment'/('gun_'+family+'.glb')
@@ -93,6 +94,7 @@ for family,spec in families.items():
   bpy.ops.object.light_add(type='AREA',location=p);light=bpy.context.object;light.data.energy=e;light.data.size=3
  scene.render.engine='CYCLES';scene.cycles.samples=12;scene.render.resolution_x=720;scene.render.resolution_y=540;scene.render.resolution_percentage=100
  scene.render.filepath=str(OUT/(family+'-blender.png'));bpy.ops.render.render(write_still=True)
+records += [r for r in json.loads((ROOT/'art/blender/equipment/firearms.json').read_text()) if r['id']=='gun_laser']
 (ROOT/'art/blender/equipment/firearms.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
 p=ROOT/'우주-비즈니스/data/render_assets.json';assets=json.loads(p.read_text())
 for row in records:

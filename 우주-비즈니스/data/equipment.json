@@ -375,6 +375,43 @@
         "control_circuit": 3,
         "corrosion_alloy": 2
       }
+    },
+    "laser_2": {
+      "name": "프리즘 레이저 Mk.2",
+      "kind": "pulse",
+      "tier": 2,
+      "model": "equipment/gun_laser",
+      "preview": "gun_laser",
+      "interval": 0.1,
+      "damage": 8,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "laser",
+      "identity": "지속 광선 · 전지를 소모하고 과열 시 냉각합니다.",
+      "cost": {
+        "reinforced_frame": 1,
+        "control_circuit": 2,
+        "heat_transfer_unit": 1
+      }
+    },
+    "laser_3": {
+      "name": "프리즘 레이저 Mk.3",
+      "kind": "pulse",
+      "tier": 3,
+      "model": "equipment/gun_laser",
+      "preview": "gun_laser",
+      "interval": 0.1,
+      "damage": 11,
+      "amount": 1,
+      "radius": 1.4,
+      "firearm": "laser",
+      "identity": "지속 광선 · 전지를 소모하고 과열 시 냉각합니다.",
+      "cost": {
+        "industrial_core": 1,
+        "control_circuit": 3,
+        "corrosion_alloy": 2
+      },
+      "upgrade_from": "laser_2"
     }
   }
 }

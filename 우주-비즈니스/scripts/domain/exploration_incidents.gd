@@ -103,6 +103,7 @@ static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array
  return result
 static func create(row: Dictionary) -> Dictionary:
  var record:=row.duplicate(true)
+ record.gun_pool_version=2
  if record.has("native"):FrontierNativeIncidents.initialize(record)
  record.phase="idle";record.time=0.0;record.age=0.0;record.hp=float(config().robot.health);record.hits=0;record.open=false;record.powered=false;record.claimed=false;record.carrier="";record.battery_carrier="";record.battery_installed=false;record.battery_ground=record.battery_position.duplicate();record.cargo_ground=[];record.gems=0;record.serial=0;record.aim=[];record.target="";record.discoverer="";record.seen=false;record.materialized=false
  if definition(row.template).mode=="robot":

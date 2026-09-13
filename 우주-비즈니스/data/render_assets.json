@@ -16364,26 +16364,6 @@
     "review": "docs/production/144-pirate-missiles-and-breakout.md"
   },
   {
-    "id": "firearm_hand_right",
-    "title": "탄약·장갑",
-    "name": "firearm_hand_right",
-    "group": "장비",
-    "model": "res://assets/models/equipment/firearm_hand_right.glb",
-    "source": "art/blender/equipment/firearm_hand_right.blend",
-    "geometry": "firearm-support",
-    "foliage": false
-  },
-  {
-    "id": "firearm_hand_left",
-    "title": "탄약·장갑",
-    "name": "firearm_hand_left",
-    "group": "장비",
-    "model": "res://assets/models/equipment/firearm_hand_left.glb",
-    "source": "art/blender/equipment/firearm_hand_left.blend",
-    "geometry": "firearm-support",
-    "foliage": false
-  },
-  {
     "id": "ammo_light",
     "title": "탄약·장갑",
     "name": "ammo_light",
@@ -16463,6 +16443,21 @@
     "review": "docs/production/167-coopertech-squads.md",
     "view_direction": [
       1.22,
+      0.84,
+      -1.7
+    ]
+  },
+  {
+    "id": "gun_laser",
+    "title": "프리즘 레이저",
+    "name": "프리즘 레이저",
+    "group": "장비",
+    "model": "res://assets/models/equipment/gun_laser.glb",
+    "source": "art/blender/equipment/gun_laser.blend",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "view_direction": [
+      -1.22,
       0.84,
       -1.7
     ]
@@ -16619,5 +16614,35 @@
     ],
     "generator": "tools/build_flight_skill_devices.py",
     "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "firearm_hand_right",
+    "title": "탄약·장갑",
+    "name": "firearm_hand_right",
+    "group": "장비",
+    "model": "res://assets/models/equipment/firearm_hand_right.glb",
+    "source": "art/blender/equipment/firearm_hand_right.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "firearm_hand_left",
+    "title": "탄약·장갑",
+    "name": "firearm_hand_left",
+    "group": "장비",
+    "model": "res://assets/models/equipment/firearm_hand_left.glb",
+    "source": "art/blender/equipment/firearm_hand_left.blend",
+    "geometry": "firearm-support",
+    "foliage": false
+  },
+  {
+    "id": "ammo_energy",
+    "title": "탄약·장갑",
+    "name": "ammo_energy",
+    "group": "장비",
+    "model": "res://assets/models/products/ammo_energy.glb",
+    "source": "art/blender/equipment/ammo_energy.blend",
+    "geometry": "firearm-support",
+    "foliage": false
   }
 ]

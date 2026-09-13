@@ -43,7 +43,10 @@ def hands(side):
  def addbone(name,a,b,parent=None):bones.append((name,p(pt(a)),p(pt(b)),parent))
  def attach(name,fn):
   before=set(bpy.context.scene.objects);fn();groups[name]=groups.get(name,[])+[o for o in set(bpy.context.scene.objects)-before if o.type=='MESH']
- addbone('forearm',(.40,-.58,1.0),(.13,-.35,.30))
+ addbone('upper_arm',(.34,-.20,1.40),(.40,-.58,1.0))
+ addbone('forearm',(.40,-.58,1.0),(.13,-.35,.30),'upper_arm')
+ attach('upper_arm',lambda:capsule('Upper pressure sleeve',pt((.34,-.20,1.40)),pt((.40,-.58,1.0)),.12,'teal'))
+ attach('upper_arm',lambda:box('Shoulder ceramic shell',pt((.36,-.24,1.33)),(.23,.20,.25),'cream',.06))
  addbone('wrist',(.13,-.35,.30),(.11,-.23,.20),'forearm')
  attach('forearm',lambda:capsule('Pressure sleeve',pt((.42,-.63,1.05)),pt((.14,-.35,.31)),.105,'teal'))
  attach('forearm',lambda:box('Forearm ceramic guard',pt((.28,-.43,.60)),(.21,.13,.42),'cream',.045))
@@ -108,7 +111,7 @@ def ammo(name,recipe):
   for z in [-.065,.065]:
    long=.24 if name in ['ammo_sniper','ammo_heavy'] else .16 if name!='ammo_plasma' else .20
    r=.041 if name=='ammo_heavy' else .026 if name!='ammo_shell' else .034
-   if name=='ammo_plasma':
+   if name in ['ammo_plasma','ammo_energy']:
     box('Sealed energy cell',(x,.22,z),(.055,.22,.085),'teal',.02)
     box('Cell terminals',(x,.34,z),(.043,.028,.052),'orange',.008)
    else:
