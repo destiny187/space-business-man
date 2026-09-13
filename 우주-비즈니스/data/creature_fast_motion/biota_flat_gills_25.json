@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c9fa3b800ce47393f0750ba8e7187feaa8e05e226f45d61a851c322fb1faca54",
+  "species_id": "biota_flat_gills_25",
+  "id": "biota_flat_gills_25",
+  "kind": "gekkonid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.26543727646551424,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08687038138871375,
+    "crouch": 0.033782926095610906,
+    "body_bob": 0.033782926095610906,
+    "natural_speed": 1.0054442290360386,
+    "max_playback": 1.18,
+    "acceleration": 1.8097996122648694,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_gills_25.blend",
+  "original_source_sha256": "0fad672aeb6bb46e2d3b7351371f5cad83931b79db56f68a5e95c84ef30f593c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_gills_25.motion",
+  "asset_sha256": "f14fbe6e6d143b5331dce4f3649c22b377c18aa249e31c0ea539d65e217f2fe1",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.153
+}

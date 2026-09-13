@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "2e08dcad58b3e4b33529c7cf0f63f36984b55812525ddb11e9c9ecff0d84113f",
+  "species_id": "biota_flat_gills_26",
+  "id": "biota_flat_gills_26",
+  "kind": "skink",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2547760705744899,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08338125946074215,
+    "crouch": 0.03242604534584417,
+    "body_bob": 0.03242604534584417,
+    "natural_speed": 0.9650608733882194,
+    "max_playback": 1.18,
+    "acceleration": 1.737109572098795,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_gills_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_gills_26.blend",
+  "original_source_sha256": "6fd453dba786184ecfb5a8a9d4e395ed387cb67e2ddcdb76c50d8cdf7be5cd62",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_gills_26.motion",
+  "asset_sha256": "a81fa6cf6d225c27fda2bfdbdd9dccf4b099c509530f36e53c024dff1ef10d3c",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.101
+}

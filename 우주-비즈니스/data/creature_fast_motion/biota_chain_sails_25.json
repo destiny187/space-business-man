@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "b382df7b4c56feee2c2eeea9726c6e808b707f77b9b5bda722725400a3b5534a",
+  "species_id": "biota_chain_sails_25",
+  "id": "biota_chain_sails_25",
+  "kind": "macropod",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.6063158853348262,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.16535887781858893,
+    "crouch": 0.06430623026278459,
+    "body_bob": 0.06430623026278459,
+    "natural_speed": 2.328402017414847,
+    "max_playback": 1.18,
+    "acceleration": 4.191123631346724,
+    "turn_rate": 5.0,
+    "bone_count": 25
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_sails_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_chain_sails_25.blend",
+  "original_source_sha256": "30e50abb1134bca46db87e006a9aa98a6da02daaefaac271ee37730e7368073a",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_sails_25.motion",
+  "asset_sha256": "02a02bbecc11dea8a8550c06db3bfade68a2998079394d5f546e57f6e184e7c0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.113
+}

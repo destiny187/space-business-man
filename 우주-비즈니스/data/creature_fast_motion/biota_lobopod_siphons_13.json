@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "a8974e72931ac3ee76e293100ec0195a0639ec54a69397cdae368c7d1667c5e5",
+  "species_id": "biota_lobopod_siphons_13",
+  "id": "biota_lobopod_siphons_13",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.34080946275829005,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.11153764235725855,
+    "crouch": 0.04337574980560055,
+    "body_bob": 0.04337574980560055,
+    "natural_speed": 1.2909449346904924,
+    "max_playback": 1.18,
+    "acceleration": 2.3237008824428864,
+    "turn_rate": 5.0,
+    "bone_count": 56
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_siphons_13.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_siphons_13.blend",
+  "original_source_sha256": "2457f899b62a55911ad51b9e03b05e5b32ceb4c7f4257dad52f35d35023df933",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_siphons_13.motion",
+  "asset_sha256": "8ea68c857d4295904914db0d7b1df0a0e3a7bf8ba6899117af9bc72e3f993489",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.25
+}

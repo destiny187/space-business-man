@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fingerprint": "98b4457b4ee9b24a5a9ba530cc9c7d1c7f228291298e7d8998a4960905deccdd",
+  "species_id": "bio_lattice_beast_05",
+  "id": "bio_lattice_beast_05",
+  "kind": "lattice_beast",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5720783256926084,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support6": 0.5,
+      "support1": 0.5,
+      "support5": 0.0,
+      "support2": 0.0,
+      "support4": 0.5,
+      "support3": 0.5
+    },
+    "lift": 0.18722563386303545,
+    "crouch": 0.0728099687245138,
+    "body_bob": 0.0728099687245138,
+    "natural_speed": 2.166963354896244,
+    "max_playback": 1.18,
+    "acceleration": 3.9005340388132392,
+    "turn_rate": 5.0,
+    "bone_count": 67
+  },
+  "source": "art/blender/creature_fast_motion/bio_lattice_beast_05.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_lattice_beast_05.blend",
+  "original_source_sha256": "1b1e8d78c3b8b505ccb4aa0588bc5481de3f73807bf5ca45d3a18280d7c681d3",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_lattice_beast_05.motion",
+  "asset_sha256": "77cdf30644f3541c959c10d761c306970532cc72ae2fc7c789d4bc6d1e3fe1e2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.239
+}

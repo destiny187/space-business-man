@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "fa56e1986f02cd23b4f36cd142469dd0a1ae9338e99e8886470166493f8eacd1",
+  "species_id": "biota_ribbon_siphons_42",
+  "id": "biota_ribbon_siphons_42",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.256689672547303,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.08400752919729916,
+    "crouch": 0.03266959468783857,
+    "body_bob": 0.03266959468783857,
+    "natural_speed": 0.972309365709481,
+    "max_playback": 1.18,
+    "acceleration": 1.750156858277066,
+    "turn_rate": 5.0,
+    "bone_count": 59
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_siphons_42.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_siphons_42.blend",
+  "original_source_sha256": "fd237fb19bb49363b39dd59ace93596b50ef5d9d7b0a5bd78e7675bc0942e93b",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_siphons_42.motion",
+  "asset_sha256": "bcf3e4fcd153cca156956822248e58a20917452165783905a30a227c7b0fc71a",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.408
+}

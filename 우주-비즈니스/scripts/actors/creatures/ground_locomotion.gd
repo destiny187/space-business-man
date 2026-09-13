@@ -89,16 +89,17 @@ func drive(target: Transform3D,delta: float,sampler: Callable,stopped: bool,inte
 		if initialized:visual.global_transform=Transform3D(frame,point)
 		return
 	dt=minf(delta,.15)
+	var display_target:=target_for_display(target,dt)
 	var scale_value: float=actor.base_scale
 	if not initialized or point.distance_to(target.origin)>maxf(3.0,body_length*scale_value*float(config().teleport_lengths)):
 		point=target.origin;frame=target.basis;initialized=true
 		for contact in contacts:contact.ready=false
 	var previous:=point;var previous_frame:=frame
-	point=point.lerp(target.origin,1-exp(-dt/float(config().position_seconds)))
-	var cap: float=float(config().maximum_visual_offset)*minf(2.0,scale_value)
+	point=point.lerp(display_target.origin,position_blend(dt))
+	var cap: float=visual_offset_limit(scale_value)
 	point=target.origin+(point-target.origin).limit_length(cap)
-	var a:=frame.orthonormalized().get_rotation_quaternion();var b:=target.basis.orthonormalized().get_rotation_quaternion()
-	var limit: float=config().combat_turn_radians_per_second if actor.combat_override else config().turn_radians_per_second
+	var a:=frame.orthonormalized().get_rotation_quaternion();var b:=display_target.basis.orthonormalized().get_rotation_quaternion()
+	var limit:=turn_rate_limit()
 	frame=Basis(a.slerp(b,minf(1.0,limit*dt/maxf(.0001,a.angle_to(b)))))
 	visual.global_transform=Transform3D(frame,point)
 	var displacement:=point-previous
@@ -109,6 +110,11 @@ func drive(target: Transform3D,delta: float,sampler: Callable,stopped: bool,inte
 	# A turning animal lifts and repositions feet even when its centre stays still.
 	travel=maxf(travel,absf(turn_speed)*dt*leg_length*scale_value*.30)
 	advance(travel,dt)
+
+func target_for_display(target: Transform3D,_delta: float) -> Transform3D:return target
+func position_blend(delta: float) -> float:return 1-exp(-delta/float(config().position_seconds))
+func visual_offset_limit(scale_value: float) -> float:return float(config().maximum_visual_offset)*minf(2.,scale_value)
+func turn_rate_limit() -> float:return float(config().combat_turn_radians_per_second if actor.combat_override else config().turn_radians_per_second)
 
 func preview(delta: float) -> void:
 	if driven or not enabled or actor.paused:return

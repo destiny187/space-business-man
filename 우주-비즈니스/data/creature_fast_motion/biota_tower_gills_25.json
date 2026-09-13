@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "884b8f4f5ab770cffae2de719f77a680c06d7735aeeec6d497b4049ecf4e3e59",
+  "species_id": "biota_tower_gills_25",
+  "id": "biota_tower_gills_25",
+  "kind": "giraffoid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7332042129260481,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24868246577281486,
+    "crouch": 0.09670984780053912,
+    "body_bob": 0.09670984780053912,
+    "natural_speed": 3.7105476362654253,
+    "max_playback": 1.18,
+    "acceleration": 6.678985745277766,
+    "turn_rate": 5.0,
+    "bone_count": 32
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_gills_25.blend",
+  "original_source_sha256": "04b348271b92c6de9d40855b891b2c12ac6f4435b38b997dccb7ef634c485fc3",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_gills_25.motion",
+  "asset_sha256": "4b556f4d52cbcb4f3692a96f35142ef1e5f5509a905e3374555ea9f24b59d269",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.163
+}

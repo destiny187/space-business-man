@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "9c116de186090dc34b2ee0e30a5411b603533b48225ecf791a07789c3657ec2a",
+  "species_id": "biota_chain_antennal_fans_15",
+  "id": "biota_chain_antennal_fans_15",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2998224051237977,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg7": 0.5,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.09812369622233377,
+    "crouch": 0.03815921519757425,
+    "body_bob": 0.03815921519757425,
+    "natural_speed": 1.1356909284992336,
+    "max_playback": 1.18,
+    "acceleration": 2.0442436712986205,
+    "turn_rate": 5.0,
+    "bone_count": 50
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_antennal_fans_15.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_antennal_fans_15.blend",
+  "original_source_sha256": "39808aae6bc18d5e7ebc0effdab0d19aa95952c7301be501e514664b7615217e",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_antennal_fans_15.motion",
+  "asset_sha256": "dc51126d5b07723b2694b745f5797fe0b57885f9736b6c40d7548a91953ff928",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.322
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "96335e91eb99cd495c20ff129114a08620c3e1033f8ce0d95177c0e808e4d62e",
+  "species_id": "biota_spiral_antennal_fans_03",
+  "id": "biota_spiral_antennal_fans_03",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6264535366426767,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.20502115744669416,
+    "crouch": 0.07973045011815885,
+    "body_bob": 0.07973045011815885,
+    "natural_speed": 2.372930063040442,
+    "max_playback": 1.18,
+    "acceleration": 4.271274113472796,
+    "turn_rate": 5.0,
+    "bone_count": 46
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_antennal_fans_03.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_antennal_fans_03.blend",
+  "original_source_sha256": "e1f2228bef8dbb6bb7388b8cc9418ea3344791cdc153e49cd42a03aad1dd2f8b",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_antennal_fans_03.motion",
+  "asset_sha256": "91ba3b19a1aebf0e7045cd57c313eaad38c153c8207e39cf672cbd62cb4da71e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.241
+}

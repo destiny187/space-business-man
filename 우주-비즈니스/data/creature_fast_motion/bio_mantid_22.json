@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "2b733acd6d1d36a39e6298a7279f6a0643b460d7f58917555f3651059165bea0",
+  "species_id": "bio_mantid_22",
+  "id": "bio_mantid_22",
+  "kind": "mantid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6070308607474645,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.19866464533553382,
+    "crouch": 0.07725847318604094,
+    "body_bob": 0.07725847318604094,
+    "natural_speed": 2.299359321013123,
+    "max_playback": 1.18,
+    "acceleration": 4.1388467778236215,
+    "turn_rate": 5.0,
+    "bone_count": 61
+  },
+  "source": "art/blender/creature_fast_motion/bio_mantid_22.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_mantid_22.blend",
+  "original_source_sha256": "a02bc49cf9cdd00ee873dda6b94847a96593432399017b3117d86500d8778b3c",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_mantid_22.motion",
+  "asset_sha256": "445de2ead374ddd40e960b28adca2878657bbf3b7a8282d1d2f4ac5748f4f558",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.372
+}

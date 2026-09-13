@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "93e0058df14f29096133a02cfd6cafec14ee50d8c0ec8d1d4cfc2f8a74dcfa54",
+  "species_id": "biota_mantle_armor_25",
+  "id": "biota_mantle_armor_25",
+  "kind": "anuran",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.37877804801373754,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.0,
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.1033031040037466,
+    "crouch": 0.040173429334790345,
+    "body_bob": 0.040173429334790345,
+    "natural_speed": 1.454600798823877,
+    "max_playback": 1.18,
+    "acceleration": 2.6182814378829784,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_mantle_armor_25.blend",
+  "original_source_sha256": "2981214a0b8e0dacfe503bc25644a029436cabe93ca91e2b672603278b4b73b8",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_armor_25.motion",
+  "asset_sha256": "5fcbbda65647744d7aea66e6025e3d2f656a272cb5e72ee0f0730dd431899a9f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.268
+}

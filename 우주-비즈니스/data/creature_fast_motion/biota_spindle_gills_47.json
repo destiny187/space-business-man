@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "9b7178b8d5c8c390e21716904cc1783714966cc8dcc48296cfceb9f0be237467",
+  "species_id": "biota_spindle_gills_47",
+  "id": "biota_spindle_gills_47",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4948586967914337,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg7": 0.5,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg2": 0.5,
+      "leg1": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.1619537553135601,
+    "crouch": 0.06298201595527338,
+    "body_bob": 0.06298201595527338,
+    "natural_speed": 1.8744647605736122,
+    "max_playback": 1.18,
+    "acceleration": 3.3740365690325023,
+    "turn_rate": 5.0,
+    "bone_count": 44
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_gills_47.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_gills_47.blend",
+  "original_source_sha256": "2cc921525980dd67afae819a28fd62c0e316c57be75227a3ace416498388e67d",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_gills_47.motion",
+  "asset_sha256": "96ed521c5a046469668123b5012d42a4da6ac5598679d15679d959db22737d7f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.368
+}

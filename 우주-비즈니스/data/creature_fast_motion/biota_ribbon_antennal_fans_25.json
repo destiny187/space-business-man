@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "054e5184e1e6e6cd9ec3878001f4cb73bc3bc5d28fa29c0c144b6a19113069e1",
+  "species_id": "biota_ribbon_antennal_fans_25",
+  "id": "biota_ribbon_antennal_fans_25",
+  "kind": "mustelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.33950138399511604,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.09259128654412255,
+    "crouch": 0.03600772254493655,
+    "body_bob": 0.03600772254493655,
+    "natural_speed": 1.7181244129307491,
+    "max_playback": 1.18,
+    "acceleration": 3.0926239432753486,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_antennal_fans_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_ribbon_antennal_fans_25.blend",
+  "original_source_sha256": "33bdd124f8e878334c9864e01ca49ddaefc5483cfdd3f2a67c3a6f2452bd202c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_antennal_fans_25.motion",
+  "asset_sha256": "142b16ed58b4bf0db0b33d56c0ef14a9b59c369e46a2e140bf6f683e7010a28d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.149
+}

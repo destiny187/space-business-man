@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "e29586a0d4b8acb0f211562f27de1fa5c7cba945ae4f93e4256a73d749be5291",
+  "species_id": "biota_amphora_sails_25",
+  "id": "biota_amphora_sails_25",
+  "kind": "crab",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6070308607474645,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.19866464533553382,
+    "crouch": 0.07725847318604094,
+    "body_bob": 0.07725847318604094,
+    "natural_speed": 2.299359321013123,
+    "max_playback": 1.18,
+    "acceleration": 4.1388467778236215,
+    "turn_rate": 5.0,
+    "bone_count": 48
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_sails_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_amphora_sails_25.blend",
+  "original_source_sha256": "86a23774d01bf73f65e8d27ebbd6576aeb99101297bb623144513e380943b55d",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_sails_25.motion",
+  "asset_sha256": "993653b39ebdf1d827ba9c7744f2df7bf1e988edad7a54a4961c72c30d71f77b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.181
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "7dfbb345b5c0013e382e1c23cf0190b35f2f019fe27b8a2d873334a5b4e1d4f0",
+  "species_id": "biota_radial_gills_13",
+  "id": "biota_radial_gills_13",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5963773525638567,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.19517804265726219,
+    "crouch": 0.07590257214449087,
+    "body_bob": 0.07590257214449087,
+    "natural_speed": 2.2590051233479422,
+    "max_playback": 1.18,
+    "acceleration": 4.066209222026296,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_gills_13.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_gills_13.blend",
+  "original_source_sha256": "b83ebfb651a8e836ab0246aa9085be0db4260720a37ed8fa06aa09adfc7e58ed",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_gills_13.motion",
+  "asset_sha256": "a1b2962a9ed63bc7bf9f388fa596e6e1fe82474cf01487587beb9ea7d1a7d77b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.202
+}

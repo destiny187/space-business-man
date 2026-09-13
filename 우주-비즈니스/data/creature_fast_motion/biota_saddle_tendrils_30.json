@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "024c23090f06b6a9ed8979ffb6db1b7a4ccea617e8435bc1dc3eb48dfcde7919",
+  "species_id": "biota_saddle_tendrils_30",
+  "id": "biota_saddle_tendrils_30",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5578817732777053,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg3": 0.5,
+      "leg2": 0.0,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.1825794894363399,
+    "crouch": 0.07100313478079885,
+    "body_bob": 0.07100313478079885,
+    "natural_speed": 2.113188535142823,
+    "max_playback": 1.18,
+    "acceleration": 3.8037393632570815,
+    "turn_rate": 5.0,
+    "bone_count": 90
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_tendrils_30.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_tendrils_30.blend",
+  "original_source_sha256": "ce3efac6cc55429715d1fd0287c54634215a184d1c7ee440382b58e1ec8d4fd9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_tendrils_30.motion",
+  "asset_sha256": "7a7ef8f46fc441a03e17c883c12145413c47540aaa5dedb91ad4f8da87ace0e6",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.308
+}

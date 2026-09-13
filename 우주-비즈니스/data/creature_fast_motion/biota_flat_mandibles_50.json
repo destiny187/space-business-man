@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "2dfe0b8e064efd944201f32bac65f83d063967c632e3982dcdb6ddbb6720fd40",
+  "species_id": "biota_flat_mandibles_50",
+  "id": "biota_flat_mandibles_50",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6150365372403394,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.2012846849150201,
+    "crouch": 0.07827737746695228,
+    "body_bob": 0.07827737746695228,
+    "natural_speed": 2.3296838531831034,
+    "max_playback": 1.18,
+    "acceleration": 4.1934309357295865,
+    "turn_rate": 5.0,
+    "bone_count": 89
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_mandibles_50.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_mandibles_50.blend",
+  "original_source_sha256": "7e0a2b8d9885c168db0e03a9b6adcf6c822ef05361a1313214c76de5b180a5f2",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_mandibles_50.motion",
+  "asset_sha256": "8d42581f2ef793ce4ab2c3e1520a23a6ec4e76e44053eaa8c92a38c581f82ca2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.743
+}

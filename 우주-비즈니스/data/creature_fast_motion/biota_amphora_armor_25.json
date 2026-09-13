@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "527954130aaf4daf27488e8d6ace7bad0916e0bf6fc33ed28803fae7576df309",
+  "species_id": "biota_amphora_armor_25",
+  "id": "biota_amphora_armor_25",
+  "kind": "crab",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6070308607474645,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.19866464533553382,
+    "crouch": 0.07725847318604094,
+    "body_bob": 0.07725847318604094,
+    "natural_speed": 2.299359321013123,
+    "max_playback": 1.18,
+    "acceleration": 4.1388467778236215,
+    "turn_rate": 5.0,
+    "bone_count": 49
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_amphora_armor_25.blend",
+  "original_source_sha256": "757e89a81c897b9946584157652bb2bea7d7fdf7e6559be8b503c5633cbb1bb9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_armor_25.motion",
+  "asset_sha256": "b711aafa601bda89f5ce37c022fac014a2f87917f24b0a06b11d74a032dfa45f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.161
+}

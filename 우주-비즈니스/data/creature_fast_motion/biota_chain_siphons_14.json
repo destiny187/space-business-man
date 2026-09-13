@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "b7f2b77549398e86d4926f4ee9cb4cff769bd8a9ac3b22bb8d62193c092a57c0",
+  "species_id": "biota_chain_siphons_14",
+  "id": "biota_chain_siphons_14",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.30757040265254093,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.10065940450446792,
+    "crouch": 0.039145323973959756,
+    "body_bob": 0.039145323973959756,
+    "natural_speed": 1.1650394039868974,
+    "max_playback": 1.18,
+    "acceleration": 2.0970709271764156,
+    "turn_rate": 5.0,
+    "bone_count": 72
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_siphons_14.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_siphons_14.blend",
+  "original_source_sha256": "f50ebd807b826b1d7441bd78dd5796e04136af1f13e2a2e144e80cb6bfa5f561",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_siphons_14.motion",
+  "asset_sha256": "d236e33338e47a7fcfe66643adeb7739a67bd88861a155f3b5848a8c3ad3be84",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.313
+}

@@ -37,6 +37,7 @@ static func profile(row: Dictionary) -> Dictionary:
 		if result.has(stat):result[stat]=float(result[stat])*float(modifiers[stat][tier_index])
 	# The preview distance must also be reachable within the committed movement time.
 	if result.get("behavior","")=="charge":result.active=float(result.charge_distance)/float(result.charge_speed)
+	preload("res://scripts/domain/creature_mobility.gd").apply(result,row.form_id,scale_value)
 	return result
 static func health(row: Dictionary) -> int:return int(profile(row).health)
 static func key(body_id: String,row: Dictionary) -> String:return body_id+"/"+str(row.id)
@@ -52,6 +53,7 @@ static func ensure(crew: Dictionary,body_id: String,row: Dictionary) -> Dictiona
 	return crew.wildlife_encounters[id]
 static func set_phase(row: Dictionary,value: String) -> void:
 	row.phase=value;row.time=0.0;row.serial+=1;row.erase("attack")
+	if value not in ["chase","flee","return"]:row.move_speed=0.
 	if value=="attack":row.struck=false
 static func body_position(live: Dictionary) -> Vector3:
 	return FrontierCrewWorld.vector(live.position)+Vector3.UP*float(live.get("air_height",0))
@@ -102,10 +104,13 @@ static func valid(crew: Dictionary) -> bool:
 		for extra in ["cue_serial"]:
 			if r.has(extra) and not FrontierUniverse._finite(r[extra],0,9007199254740000):return false
 		if r.has("air_velocity") and not FrontierUniverse._finite(r.air_velocity,-100,100):return false
+		if r.has("move_speed") and not FrontierUniverse._finite(r.move_speed,0,100):return false
+		if r.has("motion_clock") and not FrontierUniverse._finite(r.motion_clock,0,9007199254740000):return false
 		if not FrontierUniverse._finite(r.get("yaw"),-PI-.001,PI+.001) or not r.get("provoked") is bool or not r.get("struck") is bool:return false
 	return true
 static func resume(crew: Dictionary) -> void:
 	for row in crew.get("wildlife_encounters",{}).values():
+		row.move_speed=0.;row.erase("motion_clock")
 		row.air_height=0.0;row.air_velocity=0.0;row.erase("attack")
 		if row.phase=="down":continue
 		row.target="";row.provoked=false;row.flinch=0.0;row.lost=0.0;set_phase(row,"return")
@@ -169,6 +174,7 @@ func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callab
 			live.target=chosen;set_phase(live,"warning")
 		live.combat_tier=info.tier
 		changed=true
+		live.motion_clock=float(live.get("motion_clock",0.))+delta
 		_step(world,row,live,info,nearby,field,delta,obstacle)
 	for id in world.crew.get("wildlife_encounters",{}).keys():
 		if not retained.has(id):world.crew.wildlife_encounters.erase(id);changed=true
@@ -225,7 +231,8 @@ static func _step(world: Dictionary,row: Dictionary,live: Dictionary,info: Dicti
 		if live.time>float(config().give_up_seconds):live.target="";live.provoked=false;set_phase(live,"return")
 		return
 	var direction:=dest-at;direction.y=0
-	if live.phase!="attack" and direction.length_squared()>.01:live.yaw=atan2(direction.x,direction.z)
+	if live.phase=="warning" and direction.length_squared()>.01:
+		live.yaw=wrapf(float(live.yaw)+clampf(wrapf(atan2(direction.x,direction.z)-float(live.yaw),-PI,PI),-float(info.get("turn_rate",5.))*delta,float(info.get("turn_rate",5.))*delta),-PI,PI)
 	if live.phase=="warning":
 		if live.time>=float(config().warning_seconds):set_phase(live,"chase")
 		return
@@ -233,7 +240,8 @@ static func _step(world: Dictionary,row: Dictionary,live: Dictionary,info: Dicti
 		var visible:=clear(world,row,target,field,at+Vector3.UP*minf(float(info.height)*.65,1.7),dest+Vector3.UP,obstacle)
 		live.lost=0.0 if visible else float(live.lost)+delta
 		if live.lost>float(config().give_up_seconds):live.target="";set_phase(live,"return");return
-		if direction.length()<=float(info.get("start_range",info.reach)) and absf(dest.y-at.y)<2.0 and visible:
+		var facing_error:=absf(wrapf(atan2(direction.x,direction.z)-float(live.yaw),-PI,PI))
+		if direction.length()<=float(info.get("start_range",info.reach)) and facing_error<.35 and float(live.get("move_speed",0.))<=float(info.speed)*.5 and absf(dest.y-at.y)<2.0 and visible:
 			live.aim=FrontierExplorationIncidents.array(direction.normalized() if direction.length()>.01 else Vector3(sin(live.yaw),0,cos(live.yaw)));set_phase(live,"attack")
 			Attacks.begin(live,info,dest,field,row)
 		else:move(world,row,live,dest,info,field,delta,obstacle,target)
@@ -243,11 +251,25 @@ static func _step(world: Dictionary,row: Dictionary,live: Dictionary,info: Dicti
 		Attacks.step(world,row,live,info,actors,field,delta,obstacle)
 static func move(world: Dictionary,row: Dictionary,live: Dictionary,destination: Vector3,info: Dictionary,field: FrontierTerrainField,delta: float,obstacle: Callable,actor: String) -> void:
 	var at:=FrontierCrewWorld.vector(live.position);var direction:=destination-at;direction.y=0
-	if direction.length()<.05:return
-	var step:=minf(direction.length(),float(info.speed)*delta)
+	if direction.length()<.05:live.move_speed=0.;return
+	var desired_yaw:=atan2(direction.x,direction.z)
+	var turn_limit:=float(info.get("turn_rate",5.))*delta
+	var previous_yaw:=float(live.yaw)
+	var turn:=wrapf(desired_yaw-float(live.yaw),-PI,PI)
+	live.yaw=wrapf(float(live.yaw)+clampf(turn,-turn_limit,turn_limit),-PI,PI)
+	var target_speed:=float(info.speed)*maxf(0.,cos(turn))
+	if live.phase=="return":target_speed*=.60
+	# Brake into the final position and before turning away from the current heading.
+	var acceleration:=float(info.get("acceleration",float(info.speed)*1.8))
+	var stopping_distance:=maxf(0.,direction.length()-(float(info.get("start_range",info.reach))*.85 if live.phase=="chase" else 0.))
+	target_speed=minf(target_speed,sqrt(2.*acceleration*stopping_distance))
+	live.move_speed=move_toward(float(live.get("move_speed",0.)),target_speed,acceleration*delta)
+	var step:=minf(direction.length(),float(live.move_speed)*delta)
+	if step<.0001:return
 	var best:=Vector3.INF;var best_gap:=INF
-	for turn in [0.0,.9,-.9,1.55,-1.55]:
-		var forward:=direction.normalized().rotated(Vector3.UP,turn)
+	for avoidance in [0.0,.9,-.9,1.55,-1.55]:
+		var yaw:=previous_yaw+clampf(turn+avoidance,-turn_limit,turn_limit)
+		var forward:=Vector3(sin(yaw),0,cos(yaw))
 		var candidate:=row.duplicate();candidate.point=at+forward*step;candidate.yaw=atan2(forward.x,forward.z)
 		var next:=FrontierEcologyPlacement.ground(field,candidate)
 		if not next.is_finite() or absf(next.y-at.y)>float(Wildlife.config().maximum_step_height):continue
@@ -256,6 +278,7 @@ static func move(world: Dictionary,row: Dictionary,live: Dictionary,destination:
 		if obstacle.is_valid() and not obstacle.call(actor,str(row.id),at,next,float(info.radius),float(info.height)):continue
 		var gap:=next.distance_to(destination)
 		if gap<best_gap:best=next;best_gap=gap
-		if is_zero_approx(turn):break
+		if is_zero_approx(avoidance):break
 	if best.is_finite():
 		live.yaw=atan2((best-at).x,(best-at).z);live.position=FrontierExplorationIncidents.array(best)
+	else:live.move_speed=0.

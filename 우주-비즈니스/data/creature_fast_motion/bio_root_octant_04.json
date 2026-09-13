@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "61fa65fd3f97ee0c816079c7a859e02b70285ff21c0973ba5b8193f5bf3d2c89",
+  "species_id": "bio_root_octant_04",
+  "id": "bio_root_octant_04",
+  "kind": "root_octant",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2925251555970954,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support5": 0.0,
+      "support1": 0.0,
+      "support4": 0.5,
+      "support2": 0.5,
+      "support3": 0.0
+    },
+    "lift": 0.0957355054681403,
+    "crouch": 0.03723047434872123,
+    "body_bob": 0.03723047434872123,
+    "natural_speed": 1.1080498318071794,
+    "max_playback": 1.18,
+    "acceleration": 1.994489697252923,
+    "turn_rate": 5.0,
+    "bone_count": 117
+  },
+  "source": "art/blender/creature_fast_motion/bio_root_octant_04.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_root_octant_04.blend",
+  "original_source_sha256": "55f53fef13e8e28b199f6dc6bbdb2eee2b9cd3b4a20be9cae67f950f0d73d104",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_root_octant_04.motion",
+  "asset_sha256": "367a800eb748f6796f32c67d8f2010b0ecb9639206b67e449b932c4959386f99",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.362
+}

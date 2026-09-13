@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "3af74d97748c9f59c241c035bc791749bd5554f0b488751f7912b2a0b0f30a8d",
+  "species_id": "biota_crown_sails_50",
+  "id": "biota_crown_sails_50",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5865159311481084,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.19195066837574454,
+    "crouch": 0.07464748214612288,
+    "body_bob": 0.07464748214612288,
+    "natural_speed": 2.2216512543488953,
+    "max_playback": 1.18,
+    "acceleration": 3.9989722578280116,
+    "turn_rate": 5.0,
+    "bone_count": 63
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_sails_50.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_sails_50.blend",
+  "original_source_sha256": "97b9ea848b89d8dcc6f0dbb9323786d677271cb18a2e479709625860aebd97f7",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_sails_50.motion",
+  "asset_sha256": "ec99bb78cc6e336e04be2c774883574b73e80597341cfdb8ce58df5032c24cdf",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.221
+}

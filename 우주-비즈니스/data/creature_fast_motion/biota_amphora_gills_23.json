@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "ccc296ba42c12e5cf26f5d8bbc6398c78c2b60db890fb5052dcf36acb5e70d67",
+  "species_id": "biota_amphora_gills_23",
+  "id": "biota_amphora_gills_23",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.7009743250740822,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg7": 0.125,
+      "leg1": 0.25,
+      "leg2": 0.375,
+      "leg6": 0.5,
+      "leg5": 0.625,
+      "leg3": 0.75,
+      "leg4": 0.875
+    },
+    "lift": 0.22940977911515414,
+    "crouch": 0.08921491410033773,
+    "body_bob": 0.08921491410033773,
+    "natural_speed": 1.6339727857204713,
+    "max_playback": 1.18,
+    "acceleration": 2.9411510142968487,
+    "turn_rate": 3.4,
+    "bone_count": 49
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_gills_23.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_gills_23.blend",
+  "original_source_sha256": "a55a63a2e49c8a9927b0ec93603d1508007da34ec00459c97768dfacd24bb4fd",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_gills_23.motion",
+  "asset_sha256": "34d859845871a018d14c211c37198a1c53a54fbd5ee936c5364a6b438c322c09",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.222
+}

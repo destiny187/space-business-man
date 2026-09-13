@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "7324569bb59c1731f6e00f4ea8da12aea88895b16ae16db18e1ab87efbf2446a",
+  "species_id": "bio_eye_orchard_10",
+  "id": "bio_eye_orchard_10",
+  "kind": "eye_orchard",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.44603309137656943,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support3": 0.0,
+      "support1": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.14597446626869545,
+    "crouch": 0.05676784799338157,
+    "body_bob": 0.05676784799338157,
+    "natural_speed": 1.6895192855173085,
+    "max_playback": 1.18,
+    "acceleration": 3.041134713931155,
+    "turn_rate": 5.0,
+    "bone_count": 64
+  },
+  "source": "art/blender/creature_fast_motion/bio_eye_orchard_10.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_eye_orchard_10.blend",
+  "original_source_sha256": "037a7c1951fc8cc9fe312e332c7a56f3efc867374d412cbb33cfe1f3e0e928dc",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_eye_orchard_10.motion",
+  "asset_sha256": "7e928a5dc5fdfc947e079c5406753906af6d408909048bca5efb42a21d7c2608",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.234
+}

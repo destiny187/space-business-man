@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "e44d23d1ac576b2130cf6013cd994c9029fc09e8ed640dd202f9f66295b7b044",
+  "species_id": "bio_cup_colony_09",
+  "id": "bio_cup_colony_09",
+  "kind": "cup_colony",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.40120598865208973,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support7": 0.0,
+      "support1": 0.0,
+      "support2": 0.5,
+      "support6": 0.5,
+      "support5": 0.0,
+      "support3": 0.0,
+      "support4": 0.5
+    },
+    "lift": 0.13130377810432026,
+    "crouch": 0.05106258037390233,
+    "body_bob": 0.05106258037390233,
+    "natural_speed": 1.5197196539851883,
+    "max_playback": 1.18,
+    "acceleration": 2.735495377173339,
+    "turn_rate": 5.0,
+    "bone_count": 75
+  },
+  "source": "art/blender/creature_fast_motion/bio_cup_colony_09.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_cup_colony_09.blend",
+  "original_source_sha256": "1ede16e14cb7d512e8a032fa65653457a0437efaae274ee4871f70934c9e667e",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_cup_colony_09.motion",
+  "asset_sha256": "b217a0742d56895bb61a35482f7e3a16d00877c233eaf62a7970cdd40f09ead6",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.31
+}

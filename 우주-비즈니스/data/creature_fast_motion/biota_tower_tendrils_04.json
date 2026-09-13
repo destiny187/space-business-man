@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "2d4a1eca51d7508502c65ee351ba77584c6b276b3ab6da56a390a5dc9b87ccbc",
+  "species_id": "biota_tower_tendrils_04",
+  "id": "biota_tower_tendrils_04",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5875582596387745,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg9": 0.1,
+      "leg1": 0.2,
+      "leg8": 0.3,
+      "leg2": 0.4,
+      "leg7": 0.5,
+      "leg3": 0.6,
+      "leg6": 0.7,
+      "leg4": 0.8,
+      "leg5": 0.9
+    },
+    "lift": 0.1922917940635989,
+    "crouch": 0.07478014213584402,
+    "body_bob": 0.07478014213584402,
+    "natural_speed": 1.369599672817656,
+    "max_playback": 1.18,
+    "acceleration": 2.465279411071781,
+    "turn_rate": 3.4,
+    "bone_count": 67
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_tendrils_04.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_tendrils_04.blend",
+  "original_source_sha256": "48cf44a77d0ae1d4e79e66d0478b150f152c3b1f66f90aebc5979bec3e62e5fe",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_tendrils_04.motion",
+  "asset_sha256": "42db9be4c04cb8b3149c19748a9c8507c9c09d72f15a8a9d769b7134d4c5f1c0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.337
+}

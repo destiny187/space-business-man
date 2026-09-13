@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "c43ac112bcea13a9762007ace5ada66cea8d8774afa80b39cd9410fd3dabd45e",
+  "species_id": "biota_radial_tendrils_11",
+  "id": "biota_radial_tendrils_11",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5963773371937043,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.19517803762703048,
+    "crouch": 0.07590257018828964,
+    "body_bob": 0.07590257018828964,
+    "natural_speed": 2.259005065127668,
+    "max_playback": 1.18,
+    "acceleration": 4.0662091172298025,
+    "turn_rate": 5.0,
+    "bone_count": 53
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_tendrils_11.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_tendrils_11.blend",
+  "original_source_sha256": "729370e1ffb09275f5e6866eafd12689059ba3845d86a68e5beaacbd5b22982f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_tendrils_11.motion",
+  "asset_sha256": "3f4d5bd5728d27b738f44ac9fe93d3be5260c32b286e4b5ea4bd9c424e989a2f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 1.006
+}

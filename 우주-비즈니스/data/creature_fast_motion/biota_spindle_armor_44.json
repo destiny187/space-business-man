@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "1bae594705a0dfadfddad8471759c00bc50935abe678c037f5fe63aac9228ecf",
+  "species_id": "biota_spindle_armor_44",
+  "id": "biota_spindle_armor_44",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4948586967914337,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg9": 0.5,
+      "leg6": 0.18,
+      "leg5": 0.6799999999999999,
+      "leg7": 0.86,
+      "leg4": 0.36,
+      "leg0": 0.54,
+      "leg2": 0.72,
+      "leg1": 0.040000000000000036,
+      "leg3": 0.21999999999999997
+    },
+    "lift": 0.1619537553135601,
+    "crouch": 0.06298201595527338,
+    "body_bob": 0.06298201595527338,
+    "natural_speed": 1.8744647605736122,
+    "max_playback": 1.18,
+    "acceleration": 3.3740365690325023,
+    "turn_rate": 5.0,
+    "bone_count": 47
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_armor_44.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_armor_44.blend",
+  "original_source_sha256": "deff26ca5b3cdbe1152499a61706c1117aced01d12e000d86b95d4a7aa3ac15e",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_armor_44.motion",
+  "asset_sha256": "73e2c1fbb8007dc0c456ef8ca5bf05b7b6d55b5cbb2f45c7524af3581ad2c559",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.185
+}

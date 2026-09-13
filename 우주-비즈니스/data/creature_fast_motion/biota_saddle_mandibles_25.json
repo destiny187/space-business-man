@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "a45bc3ef2da84d0fa064bb6cfbc9468517f062883606b2ddb5f1660baee44baf",
+  "species_id": "biota_saddle_mandibles_25",
+  "id": "biota_saddle_mandibles_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5100692828442883,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14430841187852664,
+    "crouch": 0.056119937952760365,
+    "body_bob": 0.056119937952760365,
+    "natural_speed": 2.581322281600649,
+    "max_playback": 1.18,
+    "acceleration": 4.6463801068811685,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_mandibles_25.blend",
+  "original_source_sha256": "0734239bbf1fdc81cd9440638dad7f1503346e8e9c575589ef4f14595e181ba8",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_mandibles_25.motion",
+  "asset_sha256": "8277473dd4d93b7568161beb6a65a8256d61e2adba41102c5af6fc1540daffa9",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.178
+}

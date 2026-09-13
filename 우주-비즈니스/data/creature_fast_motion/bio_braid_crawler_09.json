@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "1e8c3f15fe59a53642def18fcbbf710f2c276ea4e0f4817c1b286d6bf532fb74",
+  "species_id": "bio_braid_crawler_09",
+  "id": "bio_braid_crawler_09",
+  "kind": "braid_crawler",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.326781833975369,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support7": 0.5,
+      "support1": 0.5,
+      "support6": 0.0,
+      "support2": 0.0,
+      "support5": 0.5,
+      "support3": 0.5,
+      "support4": 0.0
+    },
+    "lift": 0.10694678202830256,
+    "crouch": 0.041590415233228775,
+    "body_bob": 0.041590415233228775,
+    "natural_speed": 1.2378099771794278,
+    "max_playback": 1.18,
+    "acceleration": 2.22805795892297,
+    "turn_rate": 5.0,
+    "bone_count": 115
+  },
+  "source": "art/blender/creature_fast_motion/bio_braid_crawler_09.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_braid_crawler_09.blend",
+  "original_source_sha256": "d3d826c32478f02a9902cb2b49c1487d56d6174f680d244e65b55af5fb03852b",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_braid_crawler_09.motion",
+  "asset_sha256": "feae27f48c7ff781b408d343a4bb782fdfa46bd1e0fdc5a9c5792c3bf32bee8b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.502
+}

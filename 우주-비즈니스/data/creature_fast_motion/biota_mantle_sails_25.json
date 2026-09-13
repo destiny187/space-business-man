@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "7ca0c7ccf2c02a6078528cd743b8342957277696e1b07a230fe836caa3a8047c",
+  "species_id": "biota_mantle_sails_25",
+  "id": "biota_mantle_sails_25",
+  "kind": "anuran",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.37351760381428667,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.0,
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.10186843740389635,
+    "crouch": 0.039615503434848584,
+    "body_bob": 0.039615503434848584,
+    "natural_speed": 1.4343994002084743,
+    "max_playback": 1.18,
+    "acceleration": 2.5819189203752537,
+    "turn_rate": 5.0,
+    "bone_count": 27
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_sails_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_mantle_sails_25.blend",
+  "original_source_sha256": "d800cdc1123b3baf86a816e0d3d6a80ddebe808157b40bc7ab4c9a5ae54f18d5",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_sails_25.motion",
+  "asset_sha256": "b2c7bfc9eb0fefca38f274ecbf5d9ee6ec0c4e86ea16536b46c0c76a14691e41",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.118
+}

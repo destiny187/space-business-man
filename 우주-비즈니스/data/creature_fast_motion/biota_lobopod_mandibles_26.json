@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "cc012cabe17b3cafe0978fea714b78812da0fab412302670737da4ee67488db0",
+  "species_id": "biota_lobopod_mandibles_26",
+  "id": "biota_lobopod_mandibles_26",
+  "kind": "felid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.4160587703975446,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.11347057374478488,
+    "crouch": 0.044127445345194125,
+    "body_bob": 0.044127445345194125,
+    "natural_speed": 2.1055605789349423,
+    "max_playback": 1.18,
+    "acceleration": 3.7900090420828962,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_mandibles_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_lobopod_mandibles_26.blend",
+  "original_source_sha256": "3292fc207fe82eee480ddd9758268214fac6f088f1211c5dbd4ea13b13b5b4e8",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_mandibles_26.motion",
+  "asset_sha256": "5c584ded2ea05f968b5d423b22900c59204e59de5f23bea631475ab7daefd83b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.206
+}

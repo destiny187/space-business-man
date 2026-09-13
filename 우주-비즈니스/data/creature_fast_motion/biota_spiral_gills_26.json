@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "887086d67698a5317e2e6e1294491ab87b64885add8877a5491d21e193d5ed73",
+  "species_id": "biota_spiral_gills_26",
+  "id": "biota_spiral_gills_26",
+  "kind": "armadillo",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.32962972046165784,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.10787881760563346,
+    "crouch": 0.04195287351330191,
+    "body_bob": 0.04195287351330191,
+    "natural_speed": 1.248597425991128,
+    "max_playback": 1.18,
+    "acceleration": 2.247475366784031,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_gills_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spiral_gills_26.blend",
+  "original_source_sha256": "5eaef076fd8310c6e723b9ad92d60dd2dac5c8e244b12714c5e730561dc8f324",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_gills_26.motion",
+  "asset_sha256": "211e854eb6067625937531bcd7d3c000653569ab6f6ced25c1282f45f96f1da7",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.286
+}

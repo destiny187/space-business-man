@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "dcdd1b1848990c9d4998bb209ef3530778c8b1386153e9004fdb399ea97aabd5",
+  "species_id": "biota_tower_mandibles_21",
+  "id": "biota_tower_mandibles_21",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.7201595944893653,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.25,
+      "leg3": 0.5,
+      "leg2": 0.75
+    },
+    "lift": 0.2356885945601559,
+    "crouch": 0.09165667566228286,
+    "body_bob": 0.09165667566228286,
+    "natural_speed": 1.678693693448404,
+    "max_playback": 1.18,
+    "acceleration": 3.0216486482071274,
+    "turn_rate": 3.4,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_mandibles_21.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_mandibles_21.blend",
+  "original_source_sha256": "55faf4b7ba9d318e1be2789bb548ad8059ed65f02f4a0b4faa1cfdc1a3a51376",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_mandibles_21.motion",
+  "asset_sha256": "17db5e865bc912b2b013026dd0557af2e6bf78dc9ebbba34a6a507ca20a9c03e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.144
+}

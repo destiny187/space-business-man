@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "3bfb57286043c35eca11db055386107ed600f00d64f566828d7d5f3592a989fa",
+  "species_id": "biota_lobopod_tendrils_07",
+  "id": "biota_lobopod_tendrils_07",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3472387897553243,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg7": 0.5,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.11364178573810611,
+    "crouch": 0.044194027787041276,
+    "body_bob": 0.044194027787041276,
+    "natural_speed": 1.315298446042895,
+    "max_playback": 1.18,
+    "acceleration": 2.367537202877211,
+    "turn_rate": 5.0,
+    "bone_count": 87
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_tendrils_07.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_tendrils_07.blend",
+  "original_source_sha256": "deb3c0c3a007cf9edd74180d7b21e8608e6c662374071d98de4176a2ac8495bc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_tendrils_07.motion",
+  "asset_sha256": "a808a43f5701430e3cf4e9e9b98c60beacba5b6bacb560d5dca3a32caa6f1b55",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.765
+}

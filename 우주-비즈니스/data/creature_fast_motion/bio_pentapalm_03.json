@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "bc625eec5beb5969d70ffaaf67cb1c5da4a585b7742d5a11a09a8160dc472684",
+  "species_id": "bio_pentapalm_03",
+  "id": "pentafold",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5724249238980375,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "ray0": 0.5,
+      "ray4": 0.0,
+      "ray1": 0.0,
+      "ray3": 0.5,
+      "ray2": 0.5
+    },
+    "lift": 0.18733906600299405,
+    "crouch": 0.07285408122338659,
+    "body_bob": 0.07285408122338659,
+    "natural_speed": 2.1682762268865057,
+    "max_playback": 1.18,
+    "acceleration": 3.9028972083957103,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/bio_pentapalm_03.blend",
+  "original_source": "art/blender/creature_remodel/r01/pentafold.blend",
+  "original_source_sha256": "0592afc41f999235819f82f1f9bca20ed7f1d6ec3eff32107cde9bf31fefbf60",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_pentapalm_03.motion",
+  "asset_sha256": "a243aca8196f1c17215b514a034a44e2e42bd1c61d0b411faf98e312a37fd959",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.245
+}

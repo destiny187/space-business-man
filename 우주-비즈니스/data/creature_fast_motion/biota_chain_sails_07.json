@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "1b9b571ee898f974f729300e7e99d20d762f79be73d8f5e95cf29c88c7b67ab2",
+  "species_id": "biota_chain_sails_07",
+  "id": "biota_chain_sails_07",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.35478061302451114,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg7": 0.5,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.1161100188080218,
+    "crouch": 0.045153896203119596,
+    "body_bob": 0.045153896203119596,
+    "natural_speed": 1.3438659584261783,
+    "max_playback": 1.18,
+    "acceleration": 2.418958725167121,
+    "turn_rate": 5.0,
+    "bone_count": 54
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_sails_07.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_sails_07.blend",
+  "original_source_sha256": "0eed92dc353bc4723ea8920b1e24ebe2d4e566be58bb28ac642019dd947be544",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_sails_07.motion",
+  "asset_sha256": "4fc331c9f7bbd4c1646d6524d0e61e244cbe471f3f6b1a7461cd2545ae6e90c9",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.266
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "fingerprint": "4b64980d2eac98855bca31ac083a0cf37c640521fad2c2b5432de039db7658db",
+  "species_id": "bio_ray_15",
+  "id": "bio_ray_15",
+  "kind": "ray",
+  "profile": {
+    "mode": "swim",
+    "medium": "water",
+    "stride": 1.4384936714172363,
+    "stance": 0.65,
+    "period": 0.65,
+    "limb_phases": {},
+    "lift": 0.18,
+    "crouch": 0.0,
+    "body_bob": 0.07,
+    "natural_speed": 3.404718748916535,
+    "max_playback": 1.18,
+    "acceleration": 6.128493748049763,
+    "turn_rate": 5.0,
+    "bone_count": 34
+  },
+  "source": "art/blender/creature_fast_motion/bio_ray_15.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_ray_15.blend",
+  "original_source_sha256": "c5ed5556fab66377d39b8cdcdfeb70c09bf17ed0127cc74453a537fd81ad549b",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_ray_15.motion",
+  "asset_sha256": "a3a0aa07d9bde389bb7059d5b28f9ffd8e75c25ac80af08ebbb36a8858a1cf10",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.108
+}

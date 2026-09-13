@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "3531efe067c7603ce665c20c7445f5ca77c0e0aa938206b4490597b9521e4674",
+  "species_id": "bio_ribbon_colony_08",
+  "id": "bio_ribbon_colony_08",
+  "kind": "ribbon_colony",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.32565174921992524,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support4": 0.0,
+      "support2": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.10657693610833915,
+    "crouch": 0.04144658626435412,
+    "body_bob": 0.04144658626435412,
+    "natural_speed": 1.2335293531057774,
+    "max_playback": 1.18,
+    "acceleration": 2.220352835590399,
+    "turn_rate": 5.0,
+    "bone_count": 98
+  },
+  "source": "art/blender/creature_fast_motion/bio_ribbon_colony_08.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_ribbon_colony_08.blend",
+  "original_source_sha256": "4a93e5fa78302809695070a8e8d2c5e074c78b391b41f1296b0901db0ff0ada1",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_ribbon_colony_08.motion",
+  "asset_sha256": "a72ac8e380716536f6ed04edeafece252d6bbaa74bd121c83e65c098c56f8226",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.426
+}

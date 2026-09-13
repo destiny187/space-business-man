@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "afaa140da381c9c19b755f0747ef49dfc379dde13c0eba242dfaf0a86d1aba84",
+  "species_id": "bio_torus_loom_09",
+  "id": "bio_torus_loom_09",
+  "kind": "annular",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.527285573261257,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support7": 0.0,
+      "support2": 0.5,
+      "support6": 0.5,
+      "support5": 0.0,
+      "support3": 0.0,
+      "support4": 0.5
+    },
+    "lift": 0.172566187612775,
+    "crouch": 0.06710907296052362,
+    "body_bob": 0.06710907296052362,
+    "natural_speed": 1.997293838110822,
+    "max_playback": 1.18,
+    "acceleration": 3.59512890859948,
+    "turn_rate": 5.0,
+    "bone_count": 51
+  },
+  "source": "art/blender/creature_fast_motion/bio_torus_loom_09.blend",
+  "original_source": "art/blender/creature_remodel/r02/bio_torus_loom_09.blend",
+  "original_source_sha256": "861ca1beda8c94c28e5900c690f9e764f65030d74a83026b17428474d53102b7",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_torus_loom_09.motion",
+  "asset_sha256": "a52ea0ad93164db102195a23293be0dace623e0d5305acf431e6b6ee52f6426f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.153
+}

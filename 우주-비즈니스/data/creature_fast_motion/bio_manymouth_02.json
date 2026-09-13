@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "220fd85038967b4fef7bc75981cfb176f937602bd831b500f51d9d55ab77b00e",
+  "species_id": "bio_manymouth_02",
+  "id": "bio_manymouth_02",
+  "kind": "manymouth",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.43810138544743665,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support4": 0.0,
+      "support2": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.1433786352373429,
+    "crouch": 0.055758358147855576,
+    "body_bob": 0.055758358147855576,
+    "natural_speed": 1.659474944876654,
+    "max_playback": 1.18,
+    "acceleration": 2.987054900777977,
+    "turn_rate": 5.0,
+    "bone_count": 87
+  },
+  "source": "art/blender/creature_fast_motion/bio_manymouth_02.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_manymouth_02.blend",
+  "original_source_sha256": "9396df938a40e8f20a24e50d84c90eacea5ac54f28aa71fe5ca49099baa787f5",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_manymouth_02.motion",
+  "asset_sha256": "428237c5b7cc9c1f8b16d11119171dd01550557a8e9f8f6dd5c5a32b20ec9a72",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.214
+}

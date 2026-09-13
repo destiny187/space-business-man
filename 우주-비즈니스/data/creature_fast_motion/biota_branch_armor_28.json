@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "13a8161a6406eb903094e5c2cabd5fbd8571197cf78c8063faf10a0a54a8556b",
+  "species_id": "biota_branch_armor_28",
+  "id": "biota_branch_armor_28",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.7936406952235519,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg9": 0.0,
+      "leg1": 0.6799999999999999,
+      "leg8": 0.18,
+      "leg2": 0.86,
+      "leg7": 0.36,
+      "leg3": 0.040000000000000036,
+      "leg6": 0.54,
+      "leg4": 0.21999999999999997,
+      "leg5": 0.3999999999999999
+    },
+    "lift": 0.25,
+    "crouch": 0.10100881575572479,
+    "body_bob": 0.10100881575572479,
+    "natural_speed": 3.0062147546346663,
+    "max_playback": 1.18,
+    "acceleration": 5.4111865583424,
+    "turn_rate": 5.0,
+    "bone_count": 123
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_armor_28.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_armor_28.blend",
+  "original_source_sha256": "06b40ffb1cc514f7ca4cdb4300566346fb314aa2704f51d2749fbef80786cad3",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_armor_28.motion",
+  "asset_sha256": "e3b58bcf8b941a452b0a182e1205e63db9ab39443b1f93771bfa34f89443e8c9",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.385
+}

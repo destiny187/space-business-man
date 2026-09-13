@@ -43,7 +43,7 @@ func record(p: Dictionary,frame: int,section: String,requested: float) -> void:
   var slip: float=actual.distance_to(previous.at) if planted and previous.get("planted",false) else -1.
   feet.append({"name":limb.name,"planted":planted,"slip_m":slip,"height_m":actual.y-float(limb.sole),"target_error_m":actual.distance_to(m.planted[limb.name]) if planted else -1.})
   p.previous[limb.name]={"at":actual,"planted":planted}
- var data: Dictionary=m.profile.run if m.gait=="run_loop" else m.profile
+ var data: Dictionary=m.gait_data()
  p.trace.append({"frame":frame,"section":section,"requested_mps":requested,"visual_mps":m.travel_speed,"clip":m.wanted_clip,"phase":m.phase,"cycle_hz":m.travel_speed/(float(data.stride)/float(data.stance)),"clip_rate":m.travel_speed/m.natural(data),"root_error_m":p.actor.global_position.distance_to(p.snapshot),"feet":feet,"body_error_m":m.body_contact_error})
 func run() -> void:
  root.size=Vector2i(1280,600);root.content_scale_size=root.size
@@ -74,7 +74,7 @@ func run() -> void:
     var p: Dictionary=panels[i];var actor=p.actor;var m=actor.ground_motion
     p.at+=Vector3(sin(yaw),0,cos(yaw))*speed/30.
     if smooth or frame%3==0:p.snapshot=p.at
-    actor.apply_combat({"phase":phase,"time":clock,"attack":{},"air_height":0.},info,false)
+    actor.apply_combat({"phase":phase,"time":clock,"motion_clock":float(frame if smooth else (frame/3)*3)/30.,"attack":{},"air_height":0.},info,false)
     actor.drive_ground(p.snapshot,Basis(Vector3.UP,yaw),1./30.,probe,false,0)
     if i==0:
      # Counterfactual only: keep the walking geometry and retime it to the same travel.
@@ -83,7 +83,7 @@ func run() -> void:
     record(p,frame,section,speed)
     var center: Vector3=m.point+Vector3.UP*1.25
     p.camera.position=center+Vector3(7,2.8,-4);p.camera.look_at(center)
-    var data: Dictionary=profile.run if m.gait=="run_loop" else profile
+    var data: Dictionary=m.gait_data()
     p.label.text="%s · %s\n%s\n%.2f m/s · 클립 %.1f배"%[art.name,"걷기만 배속" if i==0 else "현재 런타임",section,speed,m.travel_speed/m.natural(data)]
    await process_frame;await RenderingServer.frame_post_draw
    if not smooth or frame in [45,90,165,230,320]:root.get_texture().get_image().save_png(out+"/frame-%03d.png"%frame)

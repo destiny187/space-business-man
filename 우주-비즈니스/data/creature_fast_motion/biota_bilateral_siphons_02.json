@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "275f5c88886847e089ee9ba0b8e9ba2f622d17868ee8baca6fddc2f971e61235",
+  "species_id": "biota_bilateral_siphons_02",
+  "id": "biota_bilateral_siphons_02",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.667588438887831,
+    "stance": 0.65,
+    "period": 0.5555555555555556,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 1.8487064461509166,
+    "max_playback": 1.18,
+    "acceleration": 3.32767160307165,
+    "turn_rate": 5.0,
+    "bone_count": 58
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_siphons_02.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_siphons_02.blend",
+  "original_source_sha256": "5d931cd381cabf3a40b8bfca20454298e9fea3f4a9e9d3ae7db5d88434e2b653",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_siphons_02.motion",
+  "asset_sha256": "1ec973d3d292d3b7870dae4ef9c4aa374bf58f19731a3dfbc701df0b84f44ad0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.234
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "ee2f4d381544a0d1d781df76a1bc69092a4d87e77d94fa197bab6736b05decd5",
+  "species_id": "biota_branch_tendrils_26",
+  "id": "biota_branch_tendrils_26",
+  "kind": "beetle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6239493578244607,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5
+    },
+    "lift": 0.20420160801527804,
+    "crouch": 0.0794117364503859,
+    "body_bob": 0.0794117364503859,
+    "natural_speed": 2.363444537213866,
+    "max_playback": 1.18,
+    "acceleration": 4.254200166984959,
+    "turn_rate": 5.0,
+    "bone_count": 49
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_tendrils_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_branch_tendrils_26.blend",
+  "original_source_sha256": "f64cdffc32c7a7787068d7473ca355f85b829cc9645c36f44a0d288b9ec2b7ac",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_tendrils_26.motion",
+  "asset_sha256": "4dd072d457a0c05c8afcc37dbd3ca025ba97acba658bc40ebf8a892b42c10a4b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.165
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "052e978a9e2ddfe5c9f37f54da57f750b06e5b491e82a339bfaf6e8abf32e200",
+  "species_id": "biota_crown_armor_10",
+  "id": "biota_crown_armor_10",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5724592609408389,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.18735030358063817,
+    "crouch": 0.07285845139247041,
+    "body_bob": 0.07285845139247041,
+    "natural_speed": 2.1684062914425715,
+    "max_playback": 1.18,
+    "acceleration": 3.903131324596629,
+    "turn_rate": 5.0,
+    "bone_count": 63
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_armor_10.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_armor_10.blend",
+  "original_source_sha256": "412bfbd8e14c51bf391d401503b6e2717a3e379bd962f90c30001993075c72dc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_armor_10.motion",
+  "asset_sha256": "a7b866c7eb1e56bbb3a8dc8bc15986a00047e3f4cd6484f7d8dd691483eb0313",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.199
+}

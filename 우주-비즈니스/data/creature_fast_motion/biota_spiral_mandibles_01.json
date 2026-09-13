@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "9c3d3f0971a6117f0c3835c3095f23a1fe947b4e3aea0a5e7b3f80b2a7db3ed0",
+  "species_id": "biota_spiral_mandibles_01",
+  "id": "biota_spiral_mandibles_01",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6367966226354733,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.20840616740797308,
+    "crouch": 0.08104684288087843,
+    "body_bob": 0.08104684288087843,
+    "natural_speed": 2.4121084190737627,
+    "max_playback": 1.18,
+    "acceleration": 4.341795154332773,
+    "turn_rate": 5.0,
+    "bone_count": 36
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_mandibles_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_mandibles_01.blend",
+  "original_source_sha256": "1bbe0370571cff156ba68cf683b7642d3c36e9f9d6a024944fdc5277b059e736",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_mandibles_01.motion",
+  "asset_sha256": "869b01d2c25741a1885d319aaef6e01e61b59099c27a1dc56c06b2dc8afa1db9",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.123
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "795bce652aefa57f93f94c50e617029ec0e597f6dbb4e961c8e75b4821bffbfd",
+  "species_id": "biota_lobopod_armor_48",
+  "id": "biota_lobopod_armor_48",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.28437455950153423,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg9": 0.5,
+      "leg6": 0.18,
+      "leg7": 0.6799999999999999,
+      "leg5": 0.86,
+      "leg4": 0.36,
+      "leg2": 0.54,
+      "leg3": 0.040000000000000036,
+      "leg0": 0.72,
+      "leg1": 0.21999999999999997
+    },
+    "lift": 0.09306803765504755,
+    "crouch": 0.03619312575474072,
+    "body_bob": 0.03619312575474072,
+    "natural_speed": 1.0771763617482357,
+    "max_playback": 1.18,
+    "acceleration": 1.9389174511468243,
+    "turn_rate": 5.0,
+    "bone_count": 59
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_armor_48.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_armor_48.blend",
+  "original_source_sha256": "ab977126ed1651345faeb533197689905744bd87ecce2db82bd311a5207ce9d2",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_armor_48.motion",
+  "asset_sha256": "7cee3f604dca77231933c8e424c170cbf7389ac5a80e84021a7a195e32587121",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.772
+}

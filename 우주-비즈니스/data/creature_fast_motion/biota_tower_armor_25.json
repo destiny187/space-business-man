@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "78c4b7972d0745e59678b532e25f40dc8e6af0605a7cdf2be84d50e5261d866c",
+  "species_id": "biota_tower_armor_25",
+  "id": "biota_tower_armor_25",
+  "kind": "giraffoid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7333488079934904,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24869213867616352,
+    "crouch": 0.09671360948517471,
+    "body_bob": 0.09671360948517471,
+    "natural_speed": 3.7112793926796073,
+    "max_playback": 1.18,
+    "acceleration": 6.680302906823293,
+    "turn_rate": 5.0,
+    "bone_count": 32
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_armor_25.blend",
+  "original_source_sha256": "d6a63ba23dce65c65ac04223d910b2a5d3dad3d62500fbb19c66e2f243b05a70",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_armor_25.motion",
+  "asset_sha256": "710e36229affb8ecd4511811cf93d1d12aa92b9dfa586775b2f5597209afffa0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.161
+}

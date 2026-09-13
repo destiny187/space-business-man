@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "4b4a8492724f28d5060363d794ed49efbd17ae6004b21d1c90a45d25ed36af1b",
+  "species_id": "biota_bilateral_tendrils_35",
+  "id": "biota_bilateral_tendrils_35",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 1.0681415022205298,
+    "stance": 0.65,
+    "period": 0.6666666666666666,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 2.4649419282012226,
+    "max_playback": 1.18,
+    "acceleration": 4.436895470762201,
+    "turn_rate": 5.0,
+    "bone_count": 65
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_tendrils_35.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_tendrils_35.blend",
+  "original_source_sha256": "d68e5f82ef80f8c734c4b65de248bdf2d04b8254d93c40d69f9f7a32a56e7076",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_tendrils_35.motion",
+  "asset_sha256": "39594325ae13bfe3ca3277aee640b2a71937390ff180b0b2e1fe6fad80621671",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.24
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "1832c2a6982f7057fc527af71847b9f8f8f54fb38b20d628e0d2c5627231bcd8",
+  "species_id": "biota_saddle_sails_50",
+  "id": "biota_saddle_sails_50",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5984565874143568,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg0": 0.5,
+      "leg2": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.19585851951742583,
+    "crouch": 0.0761672020345545,
+    "body_bob": 0.0761672020345545,
+    "natural_speed": 2.26688101293317,
+    "max_playback": 1.18,
+    "acceleration": 4.0803858232797054,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_sails_50.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_sails_50.blend",
+  "original_source_sha256": "38be6179fc6b6b81194e93b628e0f7d5357df67a15d41a6486200ea2f51194bc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_sails_50.motion",
+  "asset_sha256": "99ad48348411a8149c353d81a29ce410c3a69f1862834f5b40fe1da3b10de54b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.222
+}

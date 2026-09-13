@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "d26a85856bfd6c0801696dc20738e8516a14a48f3a17f0226b6e830c7df18e8a",
+  "species_id": "biota_ribbon_mandibles_25",
+  "id": "biota_ribbon_mandibles_25",
+  "kind": "mustelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.33994598170623036,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.09271254046533554,
+    "crouch": 0.03605487684763049,
+    "body_bob": 0.03605487684763049,
+    "natural_speed": 1.7203744013473197,
+    "max_playback": 1.18,
+    "acceleration": 3.0966739224251754,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_ribbon_mandibles_25.blend",
+  "original_source_sha256": "836f8e357167344a4eaa8ec786f827fa06cef2380168edac616f3c817289f7e9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_mandibles_25.motion",
+  "asset_sha256": "cf4df06d3d20ac7010d96c1a56840c4d667b5c2b16106e93dae5fdeb6b9a12ad",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.31
+}

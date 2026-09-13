@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "b5053db2cb9d4e87cea2bfadc34014029779e473a1d6e59bb78696ea0d7841e9",
+  "species_id": "biota_branch_sails_37",
+  "id": "biota_branch_sails_37",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6963741492620033,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.22790426703120104,
+    "crouch": 0.08862943717880041,
+    "body_bob": 0.08862943717880041,
+    "natural_speed": 2.637780868416679,
+    "max_playback": 1.18,
+    "acceleration": 4.748005563150022,
+    "turn_rate": 5.0,
+    "bone_count": 96
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_sails_37.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_sails_37.blend",
+  "original_source_sha256": "71ab1ba33b5cbb232b2a3d62f2c489cdf0cd3049bc6285585c22ca8dface0710",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_sails_37.motion",
+  "asset_sha256": "7d10d3b4c7e8a0fdd7a7803560ac10445356f45ef37ec768e814632c1090c2e3",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.248
+}

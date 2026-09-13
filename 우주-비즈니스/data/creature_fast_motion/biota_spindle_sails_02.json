@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "80d997848c6789b5fda80bcaa8acac271ddc94e56ca5135eae7a2a0b77a3acb2",
+  "species_id": "biota_spindle_sails_02",
+  "id": "biota_spindle_sails_02",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5472333955829372,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.17909456582714303,
+    "crouch": 0.06964788671055563,
+    "body_bob": 0.06964788671055563,
+    "natural_speed": 2.0728537711474893,
+    "max_playback": 1.18,
+    "acceleration": 3.7311367880654807,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_sails_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_sails_02.blend",
+  "original_source_sha256": "62c37092dad7a94527bc79c00ca790ab00efd27c31f0eb0add9ac73907ec50a4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_sails_02.motion",
+  "asset_sha256": "73c1e39d9b0082ace9dc99fd265d988b682d9a6d4c596fe8e7e00979d6684cb0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.169
+}

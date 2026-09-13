@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "af3c090dd4744644515f8422ab05c675106baac35ea0799b3ad072de8673f2a2",
+  "species_id": "biota_chain_armor_26",
+  "id": "vaulthopper",
+  "kind": "hopper",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.8695464026345794,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.23714901890033982,
+    "crouch": 0.09222461846124327,
+    "body_bob": 0.09222461846124327,
+    "natural_speed": 3.3392718995183546,
+    "max_playback": 1.18,
+    "acceleration": 6.010689419133039,
+    "turn_rate": 5.0,
+    "bone_count": 22
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_armor_26.blend",
+  "original_source": "art/blender/creature_studies_motion/vaulthopper.blend",
+  "original_source_sha256": "9e7d6d5b9e2d3b09399a6b9c7dec63f0f63690058202079a4dc39559d39659ad",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_armor_26.motion",
+  "asset_sha256": "f07451cab0dcb23835be09951d100dfe8226d7624ff9379dcf9af67d18d6ee0c",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.079
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "1ee01caf6bc56911d0493ecf9b7ffcdd9f93e13584504e6cea4b83638cdce1b0",
+  "species_id": "biota_bilateral_armor_13",
+  "id": "biota_bilateral_armor_13",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.5563236990731926,
+    "stance": 0.65,
+    "period": 0.4166666666666667,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 2.0541182735010186,
+    "max_playback": 1.18,
+    "acceleration": 3.6974128923018337,
+    "turn_rate": 5.0,
+    "bone_count": 41
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_armor_13.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_armor_13.blend",
+  "original_source_sha256": "67ee5315ae9254432f6f9fabef2d8c27f3d9563c6e459113e7f8101f5dd56f24",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_armor_13.motion",
+  "asset_sha256": "0936c0cc638ed0e1c34cf07c30e586bbf84b87c9ca4f8bff7f82950c0c231028",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.18
+}

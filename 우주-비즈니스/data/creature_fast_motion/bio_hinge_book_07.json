@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "79cc6c3090cb34fb713ccff1bbf2df190c6a1c7d203326a336ed1f8308b555e9",
+  "species_id": "bio_hinge_book_07",
+  "id": "bio_hinge_book_07",
+  "kind": "bivalve",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4735223122523788,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support5": 0.0,
+      "support2": 0.5,
+      "support4": 0.5,
+      "support3": 0.0
+    },
+    "lift": 0.15497093855532396,
+    "crouch": 0.060266476104848206,
+    "body_bob": 0.060266476104848206,
+    "natural_speed": 1.7936451221681013,
+    "max_playback": 1.18,
+    "acceleration": 3.2285612199025824,
+    "turn_rate": 5.0,
+    "bone_count": 26
+  },
+  "source": "art/blender/creature_fast_motion/bio_hinge_book_07.blend",
+  "original_source": "art/blender/creature_remodel/r02/bio_hinge_book_07.blend",
+  "original_source_sha256": "fd9c565217de0d593cb277c7299550f37606db212c64055f137a4117d10d6bad",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_hinge_book_07.motion",
+  "asset_sha256": "d6f93b4b48f7a92bc003691ff42a5a0ef5b47a32e387fb9dd614559bde0e7a7a",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.089
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "f0d53abc23fad986d6b58a2ed2dc34b48d7fecdb9abfdf7632735d1af5af7701",
+  "species_id": "biota_radial_siphons_38",
+  "id": "biota_radial_siphons_38",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.535331714206101,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.17519947010381487,
+    "crouch": 0.06813312726259468,
+    "body_bob": 0.06813312726259468,
+    "natural_speed": 2.0277716447200795,
+    "max_playback": 1.18,
+    "acceleration": 3.649988960496143,
+    "turn_rate": 5.0,
+    "bone_count": 106
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_siphons_38.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_siphons_38.blend",
+  "original_source_sha256": "38654ddde88b5545d4f9c07351192f63b0101ae620f55da312e304890d238be2",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_siphons_38.motion",
+  "asset_sha256": "7b1a610f44021dab22b7ea0068fccc907a443dec2d45c5a41e53e4dae4c50335",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.813
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "1f5fcca32f77f59e82a4eb2129627d545afeb0765a8597be97f02429870aadfe",
+  "species_id": "biota_branch_gills_26",
+  "id": "biota_branch_gills_26",
+  "kind": "beetle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6239493578244607,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5
+    },
+    "lift": 0.20420160801527804,
+    "crouch": 0.0794117364503859,
+    "body_bob": 0.0794117364503859,
+    "natural_speed": 2.363444537213866,
+    "max_playback": 1.18,
+    "acceleration": 4.254200166984959,
+    "turn_rate": 5.0,
+    "bone_count": 37
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_gills_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_branch_gills_26.blend",
+  "original_source_sha256": "4870724cf8b413eabe7a4a5ca63cef92f8b8fdd31b762c955ba6233384c3fb57",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_gills_26.motion",
+  "asset_sha256": "b423720fc33297a3c537c7e4791b1ff91362fab8ffe9d3d8bb18f28317065dbd",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.154
+}

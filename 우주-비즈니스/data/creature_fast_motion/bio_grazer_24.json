@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "301c5f8bbf762b90c3300b2f006ad60fb0ac3d58c286c315171da573cdc8df18",
+  "species_id": "bio_grazer_24",
+  "id": "bio_grazer_24",
+  "kind": "grazer",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6233985599145347,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.20402134688112042,
+    "crouch": 0.07934163489821351,
+    "body_bob": 0.07934163489821351,
+    "natural_speed": 2.3613581814944498,
+    "max_playback": 1.18,
+    "acceleration": 4.250444726690009,
+    "turn_rate": 5.0,
+    "bone_count": 45
+  },
+  "source": "art/blender/creature_fast_motion/bio_grazer_24.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_grazer_24.blend",
+  "original_source_sha256": "d87809c2218ae9a9544608555523f59bcc69952d0bba02706bdb1a3f388173dc",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_grazer_24.motion",
+  "asset_sha256": "400ef39058de536494dd4bd250bc27ed18c38897cee11d60804c03c5384458fc",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.294
+}

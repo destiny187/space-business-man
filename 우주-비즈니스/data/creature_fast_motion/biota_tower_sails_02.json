@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "e98f1ba6a19ff989191a17608f4e47492803b3ca0cdb85ee433a04bf5e536dbf",
+  "species_id": "biota_tower_sails_02",
+  "id": "biota_tower_sails_02",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5875582672048986,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg5": 0.16666666666666666,
+      "leg1": 0.3333333333333333,
+      "leg4": 0.5,
+      "leg2": 0.6666666666666666,
+      "leg3": 0.8333333333333334
+    },
+    "lift": 0.19229179653978495,
+    "crouch": 0.07478014309880526,
+    "body_bob": 0.07478014309880526,
+    "natural_speed": 1.3695996904543088,
+    "max_playback": 1.18,
+    "acceleration": 2.465279442817756,
+    "turn_rate": 3.4,
+    "bone_count": 29
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_sails_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_sails_02.blend",
+  "original_source_sha256": "c3008704a7e902a22a13b68a2a95cff767191c6f1213116dde091b0b43ec8c35",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_sails_02.motion",
+  "asset_sha256": "61341b9475d42d177f40c7d314248fd6b88f69894e00e9bcb6a8c44ed37e07c0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.164
+}

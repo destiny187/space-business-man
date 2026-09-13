@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "f1ba6486284a7c43bc395e98a17d168c2b979be1a1b310f458bedb4c267aa117",
+  "species_id": "biota_mantle_gills_21",
+  "id": "biota_mantle_gills_21",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6851644329105449,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.22423563258890555,
+    "crouch": 0.08720274600679662,
+    "body_bob": 0.08720274600679662,
+    "natural_speed": 2.5953198216308517,
+    "max_playback": 1.18,
+    "acceleration": 4.671575678935533,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_gills_21.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_gills_21.blend",
+  "original_source_sha256": "2d1709fd7c01b287d7852076cd07b2a909ad31c27e68d157fc000a09af24b56a",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_gills_21.motion",
+  "asset_sha256": "d125be846974680331f9fecb4f74ccf4744b19ec0e406420a8b72536b30bb705",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.175
+}

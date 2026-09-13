@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "f90283afa6a9bde438a5627b298ea200833b06f82b17534194bdcf08d2c96415",
+  "species_id": "biota_radial_sails_26",
+  "id": "biota_radial_sails_26",
+  "kind": "crocodilian",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2960935434836655,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.09690334150374506,
+    "crouch": 0.037684632807011974,
+    "body_bob": 0.037684632807011974,
+    "natural_speed": 1.121566452589642,
+    "max_playback": 1.18,
+    "acceleration": 2.0188196146613557,
+    "turn_rate": 5.0,
+    "bone_count": 27
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_sails_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_radial_sails_26.blend",
+  "original_source_sha256": "87e81fe1154a8d44b8d39cb1b9a73811e952b18b55a1e658bd06225b9e67dcbc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_sails_26.motion",
+  "asset_sha256": "0970cd2866fc293c737cfb563346dc34166c1f71b06095b3f1a95f375ce5ae68",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.134
+}

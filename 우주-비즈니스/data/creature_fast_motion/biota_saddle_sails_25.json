@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "61537208bd2f4724d81d0de50f4d0621c50a742f9ff99ea99b93789ef606caaf",
+  "species_id": "biota_saddle_sails_25",
+  "id": "biota_saddle_sails_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5082495139801295,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14416201432870973,
+    "crouch": 0.05606300557227601,
+    "body_bob": 0.05606300557227601,
+    "natural_speed": 2.5721129250006554,
+    "max_playback": 1.18,
+    "acceleration": 4.62980326500118,
+    "turn_rate": 5.0,
+    "bone_count": 27
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_sails_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_sails_25.blend",
+  "original_source_sha256": "ba6aec177c5cafb63549948e0121c5de75fabc86a11113668451b17c08dbdf93",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_sails_25.motion",
+  "asset_sha256": "7daabc1a307dae7b9feeb91b3bd82d8070dfb47579bd6c2a3f55c13d7a309375",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.343
+}

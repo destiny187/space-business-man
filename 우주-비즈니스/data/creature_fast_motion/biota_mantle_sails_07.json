@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "5bfd9550fe8dd7e64700bb36bf8a9ca03078a083786e3c1dd3964948ba12b8ce",
+  "species_id": "biota_mantle_sails_07",
+  "id": "biota_mantle_sails_07",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721158747621,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.17459087428628572,
+    "crouch": 0.06789645111133336,
+    "body_bob": 0.06789645111133336,
+    "natural_speed": 2.020727711646826,
+    "max_playback": 1.18,
+    "acceleration": 3.6373098809642865,
+    "turn_rate": 5.0,
+    "bone_count": 61
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_sails_07.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_sails_07.blend",
+  "original_source_sha256": "e23d57eac4d66651c1c6e13d7e51cf6f2990f192e12a68fe01ea14260f9b91e4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_sails_07.motion",
+  "asset_sha256": "cf6c299f05b9f2291d8d41bde833f7e4b29539c2b570d90a5dfada43e9576eb9",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 1.472
+}

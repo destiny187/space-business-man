@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "f5114e7c78e1261b70ac597033bf8bce856f37d246aa14ee0c4914d268df2c99",
+  "species_id": "bio_burrower_14",
+  "id": "bio_burrower_14",
+  "kind": "burrower",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3039077401534716,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.09946071495931796,
+    "crouch": 0.03867916692862366,
+    "body_bob": 0.03867916692862366,
+    "natural_speed": 1.1511656823995136,
+    "max_playback": 1.18,
+    "acceleration": 2.0720982283191245,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/bio_burrower_14.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_burrower_14.blend",
+  "original_source_sha256": "6701188fc596efbcd7687eba81d9ae15195b1d5adc11e171eea7e95c2e8be397",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_burrower_14.motion",
+  "asset_sha256": "249c8df7f0e5c9647c7a604fe097981a9365cbfef22452d0102ae40a9e640966",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.142
+}

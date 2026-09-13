@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fingerprint": "04bda609af399066449a48d01054640331eb14d98682ae0b9d4c406833835004",
+  "species_id": "bio_crown_anchor_05",
+  "id": "bio_crown_anchor_05",
+  "kind": "crown_anchor",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5720783306904667,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support6": 0.0,
+      "support1": 0.0,
+      "support5": 0.5,
+      "support2": 0.5,
+      "support4": 0.0,
+      "support3": 0.0
+    },
+    "lift": 0.18722563549869814,
+    "crouch": 0.07280996936060484,
+    "body_bob": 0.07280996936060484,
+    "natural_speed": 2.166963373827525,
+    "max_playback": 1.18,
+    "acceleration": 3.900534072889545,
+    "turn_rate": 5.0,
+    "bone_count": 57
+  },
+  "source": "art/blender/creature_fast_motion/bio_crown_anchor_05.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_crown_anchor_05.blend",
+  "original_source_sha256": "d55fc686430b1dec2a894e420729096348cdf8a3f854cdd04b46cada14232993",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_crown_anchor_05.motion",
+  "asset_sha256": "bef8d93fb44f52f196bdc647e51185f495c6e9b2851e0450eeca43f390502d88",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.177
+}

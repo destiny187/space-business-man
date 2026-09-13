@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "11062052fc0f4cbe56a97838c4cde27fafc5b4c4cd54e41c8a7dd3a187987f2c",
+  "species_id": "biota_lobopod_antennal_fans_11",
+  "id": "biota_lobopod_antennal_fans_11",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.30075753042797265,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg7": 0.5,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg2": 0.5,
+      "leg1": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.09842973723097286,
+    "crouch": 0.03827823114537834,
+    "body_bob": 0.03827823114537834,
+    "natural_speed": 1.1392330698029265,
+    "max_playback": 1.18,
+    "acceleration": 2.050619525645268,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_antennal_fans_11.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_antennal_fans_11.blend",
+  "original_source_sha256": "0d02fcf934a56ee4fef5d1ec39ad52499beac7ec34820f1c537c06ef5b6838c4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_antennal_fans_11.motion",
+  "asset_sha256": "4634591259a09c394b9811480ef686fc58fe0d639f6ad704f1aa392e54dd9d65",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.227
+}

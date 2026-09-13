@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "5340363d268c49580a07585bd734ff6b3ae1841b5f4c2e9f27b3dbd318e45277",
+  "species_id": "biota_flat_mandibles_25",
+  "id": "biota_flat_mandibles_25",
+  "kind": "gekkonid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.26494092228093574,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08670793820103351,
+    "crouch": 0.03371975374484637,
+    "body_bob": 0.03371975374484637,
+    "natural_speed": 1.003564099548999,
+    "max_playback": 1.18,
+    "acceleration": 1.806415379188198,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_mandibles_25.blend",
+  "original_source_sha256": "f917785851f9cefe4a292d75a7b41b938a01555258ae9409359effacb895ab6c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_mandibles_25.motion",
+  "asset_sha256": "6d2b32cd0336b6923bc739c74d0c9677b548f5a9d42af2cb11cb2e5a60152f94",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.146
+}

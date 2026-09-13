@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "85ead105662bbe8110d6fb3da6a4a9ef1795b6ad975c51de2ef52632b319c279",
+  "species_id": "biota_ribbon_tendrils_04",
+  "id": "biota_ribbon_tendrils_04",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.27840036795791423,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg9": 0.5,
+      "leg6": 0.18,
+      "leg7": 0.6799999999999999,
+      "leg5": 0.86,
+      "leg4": 0.36,
+      "leg2": 0.54,
+      "leg3": 0.040000000000000036,
+      "leg0": 0.72,
+      "leg1": 0.21999999999999997
+    },
+    "lift": 0.09111284769531737,
+    "crouch": 0.035432774103734535,
+    "body_bob": 0.035432774103734535,
+    "natural_speed": 1.0545468483254326,
+    "max_playback": 1.18,
+    "acceleration": 1.8981843269857785,
+    "turn_rate": 5.0,
+    "bone_count": 79
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_tendrils_04.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_tendrils_04.blend",
+  "original_source_sha256": "bbec5d5cb158f68ef32d73294a5ed30cc4746c20699e9685bf8a5ab1baa0719a",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_tendrils_04.motion",
+  "asset_sha256": "53e2224269beaee32cf3b78f3b6763c7700621795be4d233b1a7918dbfa2f204",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.4
+}

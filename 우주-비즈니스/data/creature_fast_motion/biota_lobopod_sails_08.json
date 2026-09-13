@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "d47f5dcab2977c3d83d6104e243f63512d1e54c367b5e555f9fb346e393790c8",
+  "species_id": "biota_lobopod_sails_08",
+  "id": "biota_lobopod_sails_08",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3460831675847296,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg9": 0.5,
+      "leg6": 0.18,
+      "leg7": 0.6799999999999999,
+      "leg5": 0.86,
+      "leg4": 0.36,
+      "leg2": 0.54,
+      "leg3": 0.040000000000000036,
+      "leg0": 0.72,
+      "leg1": 0.21999999999999997
+    },
+    "lift": 0.11326358211863877,
+    "crouch": 0.04404694860169286,
+    "body_bob": 0.04404694860169286,
+    "natural_speed": 1.310921089336097,
+    "max_playback": 1.18,
+    "acceleration": 2.3596579608049746,
+    "turn_rate": 5.0,
+    "bone_count": 59
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_sails_08.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_sails_08.blend",
+  "original_source_sha256": "bc42c773c726e1f660fc113e1d84eaf8fbb45952573142b899da3ef38466d27c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_sails_08.motion",
+  "asset_sha256": "527fb265e179c4e5473122f9b3776fcb5cce36f2898056fd6c11a0a995b9695e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.545
+}

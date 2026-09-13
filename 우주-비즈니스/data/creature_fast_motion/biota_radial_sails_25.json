@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "3ace035b04a5665d41e70edff9fbc6962581a8d117dc78d63cb12c84d89410a3",
+  "species_id": "biota_radial_sails_25",
+  "id": "biota_radial_sails_25",
+  "kind": "chelonian",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.371388418969654,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.12154530075370494,
+    "crouch": 0.04726761695977415,
+    "body_bob": 0.04726761695977415,
+    "natural_speed": 1.4067743142789924,
+    "max_playback": 1.18,
+    "acceleration": 2.5321937657021865,
+    "turn_rate": 5.0,
+    "bone_count": 27
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_sails_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_radial_sails_25.blend",
+  "original_source_sha256": "90454be1181e44805bf096140510a937689a0799d570b52853a6ba06acccbcca",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_sails_25.motion",
+  "asset_sha256": "e7a023108a507bd115bd98811d25dae69ca8db716590e3d3f9641bd29759c9e4",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.247
+}

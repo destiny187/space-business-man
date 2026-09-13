@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "7d56a72c346738634b63182b27468e8efe34001b0e8e89781f8317e47248c90f",
+  "species_id": "biota_branch_tendrils_02",
+  "id": "biota_branch_tendrils_02",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6410866965220824,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.2098101915890451,
+    "crouch": 0.08159285228462866,
+    "body_bob": 0.08159285228462866,
+    "natural_speed": 2.4283586989472816,
+    "max_playback": 1.18,
+    "acceleration": 4.371045658105107,
+    "turn_rate": 5.0,
+    "bone_count": 65
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_tendrils_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_tendrils_02.blend",
+  "original_source_sha256": "e35245e011625c382eddfa2cc1547a48f90a890eac0e62854445ced164dd2577",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_tendrils_02.motion",
+  "asset_sha256": "a33ae70dda62bf91ca64e84df6c710f376482aedd662611a1e5e602c118b3ed2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.31
+}

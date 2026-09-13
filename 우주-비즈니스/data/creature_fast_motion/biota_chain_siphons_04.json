@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "f135598899cb5bc8fc52130ea6db6309ea07c91f66fa71419a221de6024fca34",
+  "species_id": "biota_chain_siphons_04",
+  "id": "biota_chain_siphons_04",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.35478061302451114,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg9": 0.5,
+      "leg6": 0.18,
+      "leg7": 0.6799999999999999,
+      "leg5": 0.86,
+      "leg4": 0.36,
+      "leg2": 0.54,
+      "leg3": 0.040000000000000036,
+      "leg0": 0.72,
+      "leg1": 0.21999999999999997
+    },
+    "lift": 0.1161100188080218,
+    "crouch": 0.045153896203119596,
+    "body_bob": 0.045153896203119596,
+    "natural_speed": 1.3438659584261783,
+    "max_playback": 1.18,
+    "acceleration": 2.418958725167121,
+    "turn_rate": 5.0,
+    "bone_count": 84
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_siphons_04.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_siphons_04.blend",
+  "original_source_sha256": "4865e3a35d38c7718d1a1353164edd1b18466a271cd8d053b081b6493426c8c4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_siphons_04.motion",
+  "asset_sha256": "3cd803c8f5a81d49fe8bb32d00bd89b9aa2b9bb7fa295adf16d697158d6da247",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.49
+}

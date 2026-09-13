@@ -88,12 +88,21 @@ static func _blocked(live: Dictionary,info: Dictionary) -> void:
 	live.attack.blocked=true;live.time=float(info.windup)+float(info.active)
 	pulse(live)
 
+static func charge_progress(elapsed: float,info: Dictionary) -> float:
+	var speed:=float(info.charge_speed);var length_value:=float(info.charge_distance)
+	var ramp:=float(info.get("charge_ramp",0.))
+	if ramp<=0:return minf(length_value,elapsed*speed)
+	var duration:=float(info.active);var t:=clampf(elapsed,0,duration)
+	if t<ramp:return speed*t*t/(2.*ramp)
+	if t>duration-ramp:return length_value-speed*(duration-t)*(duration-t)/(2.*ramp)
+	return speed*(t-ramp*.5)
+
 static func _charge(world: Dictionary,row: Dictionary,live: Dictionary,info: Dictionary,actors: Array,field: FrontierTerrainField,delta: float,obstacle: Callable) -> void:
 	var a: Dictionary=live.attack
 	if a.blocked:return
 	if a.pulses==0:pulse(live)
 	var duration:=clampf(float(live.time)-float(info.windup),0,float(info.active))
-	var distance:=minf(float(info.charge_distance),duration*float(info.charge_speed))-float(a.travel)
+	var distance:=charge_progress(duration,info)-float(a.travel)
 	var forward:=FrontierCrewWorld.vector(live.aim)
 	var steps:=maxi(1,ceili(distance/float(FrontierWildlifeCombat.config().attack_step_distance)))
 	for i in steps:

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "048e335b1e1c5f86a2573ed1b50b9ce828d5d1fcd4fdce73016884a279447d62",
+  "species_id": "biota_amphora_mandibles_25",
+  "id": "biota_amphora_mandibles_25",
+  "kind": "crab",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6070308607474645,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.19866464533553382,
+    "crouch": 0.07725847318604094,
+    "body_bob": 0.07725847318604094,
+    "natural_speed": 2.299359321013123,
+    "max_playback": 1.18,
+    "acceleration": 4.1388467778236215,
+    "turn_rate": 5.0,
+    "bone_count": 52
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_amphora_mandibles_25.blend",
+  "original_source_sha256": "d950161645b44e8274dabda4634fb91d912e170ec2668d3b8e3cd2997dfad569",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_mandibles_25.motion",
+  "asset_sha256": "90ad2d740df6f942a3924bc5cb74d60fd7aebca19074781bbd0140199ecc98a4",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.356
+}

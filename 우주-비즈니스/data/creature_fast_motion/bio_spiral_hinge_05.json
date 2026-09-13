@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fingerprint": "643638f0d511e78153c210ea4cb838bf8655f8dca9c9814b673ee1e62c7d186b",
+  "species_id": "bio_spiral_hinge_05",
+  "id": "bio_spiral_hinge_05",
+  "kind": "spiral_hinge",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6154123831134181,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support6": 0.5,
+      "support1": 0.5,
+      "support5": 0.0,
+      "support2": 0.0,
+      "support3": 0.5,
+      "support4": 0.5
+    },
+    "lift": 0.20140768901893683,
+    "crouch": 0.07832521239625322,
+    "body_bob": 0.07832521239625322,
+    "natural_speed": 2.3311075117932503,
+    "max_playback": 1.18,
+    "acceleration": 4.195993521227851,
+    "turn_rate": 5.0,
+    "bone_count": 68
+  },
+  "source": "art/blender/creature_fast_motion/bio_spiral_hinge_05.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_spiral_hinge_05.blend",
+  "original_source_sha256": "6af257162512e1d7877701caab57b37f9329cd3281b6b2f1bfaa06627be97398",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_spiral_hinge_05.motion",
+  "asset_sha256": "aabe3c2e76f8de7aebb009caa10280a2e5236814be7176ba7959a34587adc386",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.342
+}

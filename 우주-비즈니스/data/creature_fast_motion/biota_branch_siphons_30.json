@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "bf03d48e7b57b556a7583103857a70cd5d9307132cc4c1d91b5e246bc9648e61",
+  "species_id": "biota_branch_siphons_30",
+  "id": "biota_branch_siphons_30",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.7936406968986762,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.25,
+    "crouch": 0.10100881596892243,
+    "body_bob": 0.10100881596892243,
+    "natural_speed": 3.006214760979834,
+    "max_playback": 1.18,
+    "acceleration": 5.411186569763702,
+    "turn_rate": 5.0,
+    "bone_count": 189
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_siphons_30.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_siphons_30.blend",
+  "original_source_sha256": "330144bcec76c90924a5551ae6cf583f3241d0d4faecbb46f4032354608282c5",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_siphons_30.motion",
+  "asset_sha256": "c65aaac8994025a2ad4b0d5d29b4c48b1694f09b93341707fcee93f45c786a78",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.6
+}

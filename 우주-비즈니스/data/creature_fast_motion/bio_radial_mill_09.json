@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "46a0fca7e1d35b8945140cde89c5dc73c40392e8b2a1be7b4a49212606ae1d81",
+  "species_id": "bio_radial_mill_09",
+  "id": "bio_radial_mill_09",
+  "kind": "radial_mill",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.40120598865208973,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support7": 0.0,
+      "support1": 0.0,
+      "support2": 0.5,
+      "support6": 0.5,
+      "support5": 0.0,
+      "support3": 0.0,
+      "support4": 0.5
+    },
+    "lift": 0.13130377810432026,
+    "crouch": 0.05106258037390233,
+    "body_bob": 0.05106258037390233,
+    "natural_speed": 1.5197196539851883,
+    "max_playback": 1.18,
+    "acceleration": 2.735495377173339,
+    "turn_rate": 5.0,
+    "bone_count": 75
+  },
+  "source": "art/blender/creature_fast_motion/bio_radial_mill_09.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_radial_mill_09.blend",
+  "original_source_sha256": "c49d351f4f985ee0b25157c3d3e04dffb7042a4b0953b6172d074bcb728c400a",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_radial_mill_09.motion",
+  "asset_sha256": "ed2c36472c1db60114ea944a43e0a52ca9fc86815889d249c3714b9bc8e5a958",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.281
+}

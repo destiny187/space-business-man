@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "8f3ac8f7e7e32ae1f238e3d6d41a46f4da841a80289a68655428357b24d972d5",
+  "species_id": "bio_asym_pincer_04",
+  "id": "bio_asym_pincer_04",
+  "kind": "asym_pincer",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6070308607474645,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.19866464533553382,
+    "crouch": 0.07725847318604094,
+    "body_bob": 0.07725847318604094,
+    "natural_speed": 2.299359321013123,
+    "max_playback": 1.18,
+    "acceleration": 4.1388467778236215,
+    "turn_rate": 5.0,
+    "bone_count": 56
+  },
+  "source": "art/blender/creature_fast_motion/bio_asym_pincer_04.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_asym_pincer_04.blend",
+  "original_source_sha256": "acff33109ee96ed2b3caf7dece8f3755c4d02bad7e34215377b96cf9398c4cf2",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_asym_pincer_04.motion",
+  "asset_sha256": "bfefc760904213c26f650d7d193732f5272146cf2b47f90f20dc05f711ed0e6e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.411
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "538e322a4c34f827512760ed897b205a2b249b980168dade834f912ba621d069",
+  "species_id": "biota_bilateral_gills_20",
+  "id": "biota_bilateral_gills_20",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.5563236990731926,
+    "stance": 0.65,
+    "period": 0.4166666666666667,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 2.0541182735010186,
+    "max_playback": 1.18,
+    "acceleration": 3.6974128923018337,
+    "turn_rate": 5.0,
+    "bone_count": 62
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_gills_20.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_gills_20.blend",
+  "original_source_sha256": "374b011ebc8ae787773427fb5444b72cc42bb73f13288cdd2491d5b92071616a",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_gills_20.motion",
+  "asset_sha256": "711ec5da37f8c85a1293be4ca501e0e86435d982b3b104650b802d747919d607",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.257
+}

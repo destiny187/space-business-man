@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "74501b6ee29074ccb6099ae166c0a0668b20e3c31244fe8b8ab04e9a8aacfc39",
+  "species_id": "biota_flat_siphons_01",
+  "id": "biota_flat_siphons_01",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721225228282,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1745908764620165,
+    "crouch": 0.06789645195745087,
+    "body_bob": 0.06789645195745087,
+    "natural_speed": 2.0207277368288943,
+    "max_playback": 1.18,
+    "acceleration": 3.63730992629201,
+    "turn_rate": 5.0,
+    "bone_count": 47
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_siphons_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_siphons_01.blend",
+  "original_source_sha256": "e04563c332ffab6983e4d190aa235f3451dd0bfc0bf5c486f1bb11b1ff3805c1",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_siphons_01.motion",
+  "asset_sha256": "a01b52282aa1cd173570125f1f74dc7afb59001cc6ba79e77741e200a465c15d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.643
+}

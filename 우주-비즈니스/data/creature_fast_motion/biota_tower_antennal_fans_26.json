@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c82ffbeef3f9803ed682a965e2f35ff19594405e9b3a1547cd0cf5988332e840",
+  "species_id": "biota_tower_antennal_fans_26",
+  "id": "biota_tower_antennal_fans_26",
+  "kind": "camelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5623219561645589,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.17387395484515156,
+    "crouch": 0.06761764910644784,
+    "body_bob": 0.06761764910644784,
+    "natural_speed": 2.845758887472464,
+    "max_playback": 1.18,
+    "acceleration": 5.122365997450435,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_antennal_fans_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_antennal_fans_26.blend",
+  "original_source_sha256": "e8ef509ddd55528d1de1f7b07d8d7b867824a2c901e16704a05999e7b5321bfa",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_antennal_fans_26.motion",
+  "asset_sha256": "53ab9b23a3baf6915b7b7206ef4de2eec2a06cdf4531b66d076527a665200b88",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.3
+}

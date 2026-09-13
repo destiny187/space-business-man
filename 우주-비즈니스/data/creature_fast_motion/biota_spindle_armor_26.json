@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "a37c29029cc85ceca672e2b9a2cadf0b9dbc8c18c67ebe1dcc301cb3bdaeaca7",
+  "species_id": "biota_spindle_armor_26",
+  "id": "biota_spindle_armor_26",
+  "kind": "proboscid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6233985599145347,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.20402134688112042,
+    "crouch": 0.07934163489821351,
+    "body_bob": 0.07934163489821351,
+    "natural_speed": 2.3613581814944498,
+    "max_playback": 1.18,
+    "acceleration": 4.250444726690009,
+    "turn_rate": 5.0,
+    "bone_count": 37
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_armor_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spindle_armor_26.blend",
+  "original_source_sha256": "b0c2fcd8dfb4f233f058ce28d7bfe28eb44b984eaa749d09abcb285220583f52",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_armor_26.motion",
+  "asset_sha256": "ada46cfe66a1591a981b96ad418f9711e36a48b5166409cca5974413abb9d690",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.173
+}

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "90a7c089f311700a8e5ac8295dd2a6523bfb23f3ee5128ce69d12435330bc2d2",
+  "species_id": "biota_saddle_siphons_25",
+  "id": "biota_saddle_siphons_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5088476252959617,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14421008883940173,
+    "crouch": 0.0560817012153229,
+    "body_bob": 0.0560817012153229,
+    "natural_speed": 2.5751398041293605,
+    "max_playback": 1.18,
+    "acceleration": 4.635251647432849,
+    "turn_rate": 5.0,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_siphons_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_siphons_25.blend",
+  "original_source_sha256": "7428fafd85d81ad8a08e97f9cf023aef57a4c0b76fed76714a8bba39f90db134",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_siphons_25.motion",
+  "asset_sha256": "29ea981e6d8a49f8f649bf7737e6cc99dd6f96d0c1f277c13ff0ae99b143f456",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.295
+}

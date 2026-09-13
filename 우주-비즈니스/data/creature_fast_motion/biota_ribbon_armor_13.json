@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "611369b25821b255c5c96325e38e2348b3cb07a864d2f13538dab089b8a0e9fc",
+  "species_id": "biota_ribbon_armor_13",
+  "id": "biota_ribbon_armor_13",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.27516059271146787,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.0900525576146622,
+    "crouch": 0.03502043907236864,
+    "body_bob": 0.03502043907236864,
+    "natural_speed": 1.0422749723919238,
+    "max_playback": 1.18,
+    "acceleration": 1.876094950305463,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_armor_13.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_armor_13.blend",
+  "original_source_sha256": "8e9d014eff32632fae31864c5454647ac0f22e04017d4f4444816b6c3347a5d1",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_armor_13.motion",
+  "asset_sha256": "e1127ef390a3e31a5af662d8906c71ca6daa260d49643faf28d07772d24a1776",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.543
+}

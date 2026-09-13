@@ -20,9 +20,16 @@ var grounded_error:=0.0
 var body_contact_error:=0.0
 var joint_contact_error:=0.0
 var reach_debug: Dictionary={}
+var fast_profile: Dictionary={}
+var snapshot_stamp:=-1.
+var snapshot_age:=0.
+var snapshot_span:=.1
+var snapshot_from:=Transform3D.IDENTITY
+var snapshot_to:=Transform3D.IDENTITY
+var buffered:=false
 
 func configure(owner: Node3D,display: Node3D) -> void:
-	actor=owner;visual=display;art=owner.remodel;profile=art.motion_profile
+	actor=owner;visual=display;art=owner.remodel;profile=art.motion_profile.duplicate(true)
 	enabled=true;kind=art.kind
 	var bounds: Dictionary=art.lods.near
 	body_length=maxf(.2,float(bounds.max[2])-float(bounds.min[2]))
@@ -54,6 +61,11 @@ func install(lod: int) -> void:
 		names[name]=imported
 		if str(name).ends_with("_loop") or name=="feed":player.get_animation(imported).loop_mode=Animation.LOOP_LINEAR
 	clip_names.append(names)
+	var fast:=preload("res://scripts/actors/creatures/fast_motion_library.gd").install(actor,player,actor.anatomical_skeletons[lod])
+	if not fast.is_empty():
+		fast_profile=fast;profile.sprint=fast
+		for name in ["sprint_loop","sprint_charge_loop"]:
+			if player.has_animation("fast/"+name):names[name]="fast/"+name
 	players.append(player);clips.append("");clip_times.append(-1.);authored_poses.append([])
 	var nodes: Dictionary={}
 	# Explicit markers are driven from the live skin, avoiding glTF bone-empty offset differences.
@@ -64,6 +76,32 @@ func install(lod: int) -> void:
 
 func reset() -> void:
 	super.reset();planted.clear();released_feet.clear();settling_feet.clear();ground_samples.clear()
+	snapshot_stamp=-1.;buffered=false
+
+func target_for_display(target: Transform3D,delta: float) -> Transform3D:
+	buffered=(actor.combat_override and actor.combat_live.has("motion_clock") and actor.combat_phase not in ["hurt","down"] and not actor.combat_live.get("attack",{}).get("blocked",false)) or (not actor.combat_override and actor.locomotion_stamp>=0.)
+	if not buffered:snapshot_stamp=-1.;return target
+	var stamp: float=actor.combat_live.motion_clock if actor.combat_override else actor.locomotion_stamp
+	if snapshot_stamp<0 or stamp<snapshot_stamp or snapshot_to.origin.distance_to(target.origin)>maxf(3.,body_length*actor.base_scale*float(config().teleport_lengths)):
+		snapshot_stamp=stamp;snapshot_from=target;snapshot_to=target;snapshot_age=0.;return target
+	if stamp>snapshot_stamp:
+		snapshot_span=clampf(stamp-snapshot_stamp,.025,.2);snapshot_from=snapshot_to;snapshot_to=target;snapshot_stamp=stamp;snapshot_age=0.
+	else:snapshot_age+=delta
+	return snapshot_from.interpolate_with(snapshot_to,clampf(snapshot_age/snapshot_span,0,1))
+
+func position_blend(delta: float) -> float:return 1. if buffered else super.position_blend(delta)
+func visual_offset_limit(scale_value: float) -> float:
+	if not buffered:return super.visual_offset_limit(scale_value)
+	return maxf(.18,snapshot_from.origin.distance_to(snapshot_to.origin)*1.15+.05)
+
+func turn_rate_limit() -> float:
+	if fast_profile.is_empty():return super.turn_rate_limit()
+	var stance_limit:=natural(fast_profile)*float(fast_profile.max_playback)/maxf(.01,leg_length*.30)
+	return minf(super.turn_rate_limit(),minf(float(fast_profile.turn_rate),stance_limit))
+
+func gait_data() -> Dictionary:
+	if gait=="sprint_loop" and not fast_profile.is_empty():return fast_profile
+	return profile.run if gait=="run_loop" else profile
 
 func sync_visible_lod(lod: int) -> void:
 	# The hidden player may hold an old clip. Rejoin the shared pose immediately;
@@ -88,7 +126,7 @@ func ground_sample(key: String,at: Vector3,reach: float) -> Dictionary:
 func preview(delta: float) -> void:
 	if driven or actor.paused:return
 	dt=minf(delta,.15);point=actor.global_position;frame=actor.global_basis.orthonormalized();initialized=true
-	var nominal: float=natural(profile)*actor.base_scale*actor.movement_rate
+	var nominal: float=actor.flight_speed if actor.flight_speed>=0 else natural(profile)*actor.base_scale*actor.movement_rate
 	advance(nominal*dt if actor.state=="move" else 0.0,dt)
 
 func advance(travel: float,delta: float) -> void:
@@ -96,14 +134,16 @@ func advance(travel: float,delta: float) -> void:
 	travel_speed=travel/maxf(.001,delta);speed=lerpf(speed,travel_speed,1-exp(-delta/.12))
 	if actor.paused:return
 	var local_speed: float=speed/maxf(.001,actor.base_scale)
-	if gait=="move_loop" and local_speed>natural(profile)*1.45:gait="run_loop";planted.clear();released_feet.clear()
+	if not fast_profile.is_empty() and local_speed>minf(natural(profile.run)*1.08,natural(fast_profile)*.72) and gait!="sprint_loop":gait="sprint_loop";planted.clear();released_feet.clear()
+	elif gait=="sprint_loop" and local_speed<minf(natural(profile.run)*.90,natural(fast_profile)*.58):gait="run_loop";planted.clear();released_feet.clear()
+	elif gait=="move_loop" and local_speed>natural(profile)*1.45:gait="run_loop";planted.clear();released_feet.clear()
 	elif gait=="run_loop" and local_speed<natural(profile)*1.18:gait="move_loop";planted.clear();released_feet.clear()
-	var data: Dictionary=profile.run if gait=="run_loop" else profile
+	var data:=gait_data()
 	var previous_cycle:=floori(phase)
 	phase+=travel/maxf(.001,actor.base_scale)/(float(data.stride)/float(data.stance))
 	if driven and authored_limbs.is_empty() and not contacts_suspended and local_speed>.025 and previous_cycle!=floori(phase) and sound_left<=0:
 		footfalls.append(point);sound_left=float(config().footstep_seconds)
-	running=1.0 if gait=="run_loop" else 0.0
+	running=1.0 if gait in ["run_loop","sprint_loop"] else 0.0
 
 static func natural(data: Dictionary) -> float:
 	return float(data.stride)/float(data.stance)/float(data.period)
@@ -123,7 +163,8 @@ func tick(delta: float) -> void:
 	if host.is_empty():host=flight_clip()
 	if not host.is_empty():next=host.clip
 	if next=="charge_loop":gait="run_loop"
-	if next=="idle_loop" and wanted_clip in ["move_loop","run_loop"]:next="stop"
+	elif next=="sprint_charge_loop":gait="sprint_loop"
+	if next=="idle_loop" and wanted_clip in ["move_loop","run_loop","sprint_loop"]:next="stop"
 	elif next=="idle_loop" and wanted_clip=="stop" and pose_clock<.59:next="stop"
 	if not moving and next=="idle_loop" and absf(turn_speed)>.20:next="turn_left" if turn_speed<0 else "turn_right"
 	if next!=wanted_clip:
@@ -131,8 +172,8 @@ func tick(delta: float) -> void:
 	var old_clock:=pose_clock
 	if not host.is_empty():
 		pose_clock=host.clock;pose_step=maxf(0,pose_clock-old_clock)
-	elif next in ["move_loop","run_loop"]:
-		var data: Dictionary=profile.run if next=="run_loop" else profile
+	elif next in ["move_loop","run_loop","sprint_loop"]:
+		var data:=gait_data()
 		pose_clock=fposmod(phase,2.)*float(data.period)
 		pose_step=delta*travel_speed/maxf(.001,actor.base_scale)/natural(data)
 	elif next=="attack":
@@ -153,6 +194,7 @@ func flight_clip() -> Dictionary:
 	var air_time: float=float(cfg.cycle_seconds)-float(cfg.rest_seconds)
 	if phase_time<transition:return {"clip":"takeoff","clock":clampf(phase_time/transition,0,1)*5.}
 	if phase_time>air_time-transition:return {"clip":"landing","clock":clampf((phase_time-air_time+transition)/transition,0,1)*5.}
+	if gait=="sprint_loop" and not fast_profile.is_empty():return {"clip":"sprint_loop","clock":fposmod(phase,2.)*float(fast_profile.period)}
 	var clock_scale:=float(cfg.flap_hz)/float(profile.flight_reference_hz) if profile.has("flight_reference_hz") else 1.
 	return {"clip":"flight_loop","clock":fposmod(actor.flight_clock*clock_scale,2.)}
 
@@ -163,6 +205,8 @@ func host_clip() -> Dictionary:
 	if blocked and art.clips.has("blocked"):
 		return {"clip":"blocked","clock":minf(.89,maxf(0,t-wind-active))}
 	if art.get("host_motion","")=="charge" and t>=wind and t<wind+active:
+		if not fast_profile.is_empty() and clip_names[0].has("sprint_charge_loop"):
+			return {"clip":"sprint_charge_loop","clock":fposmod(phase,2.)*float(fast_profile.period)}
 		return {"clip":"charge_loop","clock":fposmod(phase,2.)*float(profile.run.period)}
 	if art.get("host_motion","")=="leap":
 		if t<wind:return {"clip":"leap_prepare","clock":.8*clampf(t/maxf(.001,wind),0,1)}
@@ -236,6 +280,7 @@ func socket_point(skeleton: Skeleton3D,socket: Dictionary) -> Vector3:
 	return skeleton.global_transform*(skeleton.get_bone_global_pose(bone)*skeleton.get_bone_global_rest(bone).affine_inverse()*v(socket.point))
 
 func limb_phase(name: String) -> float:
+	if gait=="sprint_loop" and not fast_profile.is_empty():return float(fast_profile.limb_phases.get(name,0.))
 	if profile.get("limb_phases",{}).has(name):return float(profile.limb_phases[name])
 	if kind=="quadruped":
 		return {"fore-1":0.,"fore1":.5,"hind-1":.5 if gait=="run_loop" else .75,"hind1":0. if gait=="run_loop" else .25}.get(name,0.)
@@ -246,17 +291,17 @@ func limb_phase(name: String) -> float:
 
 func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 	if art.get("air_motion",false) and actor.flight_blend>.0001:return
-	var host_grounded: bool=(actor.combat_override and art.has("host_motion") and float(actor.combat_live.get("air_height",0))<=.02 and wanted_clip in ["attack","charge_loop","leap_prepare","leap_land","blocked"]) or not actor.incident_pose.is_empty()
+	var host_grounded: bool=(actor.combat_override and art.has("host_motion") and float(actor.combat_live.get("air_height",0))<=.02 and wanted_clip in ["attack","charge_loop","sprint_charge_loop","leap_prepare","leap_land","blocked"]) or not actor.incident_pose.is_empty()
 	if actor.state=="dormant" or (actor.state=="attack" and not host_grounded) or (actor.combat_override and actor.combat_phase in ["hurt","down","attack"] and not host_grounded):
 		planted.clear();return
 	if authored_limbs.is_empty():
 		if profile.has("body_supports"):terrain_body(skeleton)
 		else:terrain_tail(skeleton)
 		return
-	var moving:=wanted_clip in ["move_loop","run_loop","charge_loop"]
-	var data: Dictionary=profile.run if gait=="run_loop" else profile
+	var moving:=wanted_clip in ["move_loop","run_loop","charge_loop","sprint_loop","sprint_charge_loop"]
+	var data:=gait_data()
 	# Leave modest knee compression for uneven ground instead of locking fully extended limbs.
-	if not authored_limbs.is_empty() and kind!="hopper":
+	if not authored_limbs.is_empty() and kind!="hopper" and gait!="sprint_loop":
 		var root_bone:=skeleton.find_bone("root")
 		var root_pose:=skeleton.get_bone_global_pose(root_bone)
 		root_pose.origin.y-=leg_length*.075
@@ -290,7 +335,7 @@ func terrain_pose(skeleton: Skeleton3D,lod: int) -> void:
 		var fraction:=fposmod(phase+limb_phase(limb.name),1.)
 		var cycle:=floori(phase+limb_phase(limb.name))
 		var stance_now: bool=not moving or fraction<float(data.stance)
-		if kind=="hopper" and moving:stance_now=fraction<.27 or fraction>=.80
+		if kind=="hopper" and moving and gait!="sprint_loop":stance_now=fraction<.27 or fraction>=.80
 		if wanted_clip.begins_with("turn_") or wanted_clip=="stop":stance_now=false
 		var lifted: Array=profile.get("attack_unplanted_limbs",{}).get(limb.name,[])
 		if wanted_clip=="attack" and not lifted.is_empty() and pose_clock>=float(lifted[0]) and pose_clock<=float(lifted[1]):stance_now=false

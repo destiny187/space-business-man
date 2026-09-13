@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "eef969fb3da8cc1834c0e50e295ad66117f13e1223f100ee8984693702c5419a",
+  "species_id": "biota_radial_antennal_fans_34",
+  "id": "biota_radial_antennal_fans_34",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.535331714206101,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.17519947010381487,
+    "crouch": 0.06813312726259468,
+    "body_bob": 0.06813312726259468,
+    "natural_speed": 2.0277716447200795,
+    "max_playback": 1.18,
+    "acceleration": 3.649988960496143,
+    "turn_rate": 5.0,
+    "bone_count": 44
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_antennal_fans_34.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_antennal_fans_34.blend",
+  "original_source_sha256": "0567097bf84c3d7e5f61a9a9159eaf77aab5e4c9f367fd4b820a47b737e858e6",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_antennal_fans_34.motion",
+  "asset_sha256": "b35b2f3f415aa639873a85b996903e380db4f044841197aede30b07342169993",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.517
+}

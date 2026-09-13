@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "fingerprint": "412eccf09e87eff0b584de5599e775122486d39f7fff38664778b4a8976099fa",
+  "species_id": "bio_swimmer_02",
+  "id": "bio_swimmer_02",
+  "kind": "swimmer",
+  "profile": {
+    "mode": "swim",
+    "medium": "water",
+    "stride": 1.4384936714172363,
+    "stance": 0.65,
+    "period": 0.65,
+    "limb_phases": {},
+    "lift": 0.18,
+    "crouch": 0.0,
+    "body_bob": 0.07,
+    "natural_speed": 3.404718748916535,
+    "max_playback": 1.18,
+    "acceleration": 6.128493748049763,
+    "turn_rate": 5.0,
+    "bone_count": 32
+  },
+  "source": "art/blender/creature_fast_motion/bio_swimmer_02.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_swimmer_02.blend",
+  "original_source_sha256": "283c32232cec4440543ea7b9110b77f040b9a9037b49982f1bda0a92ae157777",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_swimmer_02.motion",
+  "asset_sha256": "a2c809195e7d7082eb7cf160f291be2be7fc937792f7d84e8c90cd92b18a0d91",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.154
+}

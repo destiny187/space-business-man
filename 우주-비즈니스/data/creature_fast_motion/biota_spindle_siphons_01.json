@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "9316b402c8dc4737384b26a6e36ac258db121bfb9c0eaeceeadd0dc5778a8ef0",
+  "species_id": "biota_spindle_siphons_01",
+  "id": "biota_spindle_siphons_01",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.547233415224153,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.17909457225517733,
+    "crouch": 0.06964788921034676,
+    "body_bob": 0.06964788921034676,
+    "natural_speed": 2.0728538455460344,
+    "max_playback": 1.18,
+    "acceleration": 3.731136921982862,
+    "turn_rate": 5.0,
+    "bone_count": 41
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_siphons_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_siphons_01.blend",
+  "original_source_sha256": "5cf5fe84626a6c00e29434444e4a9d2dd2cebbae1d1daaf541246f7d5869e097",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_siphons_01.motion",
+  "asset_sha256": "2e89f275520d3f27f1422763cbad8eccb609da91d6cb3dce0db25d9196174f47",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.177
+}

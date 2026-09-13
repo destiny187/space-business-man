@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "4b7f5a5d4c2f71d7a68ff561e535cb631a009f9a57363de09bae551fdfbc7722",
+  "species_id": "biota_mantle_mandibles_01",
+  "id": "biota_mantle_mandibles_01",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721225228282,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1745908764620165,
+    "crouch": 0.06789645195745087,
+    "body_bob": 0.06789645195745087,
+    "natural_speed": 2.0207277368288943,
+    "max_playback": 1.18,
+    "acceleration": 3.63730992629201,
+    "turn_rate": 5.0,
+    "bone_count": 37
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_mandibles_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_mandibles_01.blend",
+  "original_source_sha256": "7a6477cf49f816e17c91f03d6ec559ac26dbd43c425c74b725287d3d0da20f6c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_mandibles_01.motion",
+  "asset_sha256": "5e325099e37f75eb6a8852c422ec35a3ab5395b63dda01a027929957be10e668",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.311
+}

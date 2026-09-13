@@ -102,6 +102,7 @@ static func position(row: Dictionary) -> Vector3:
 static func initialize(row: Dictionary) -> void:
  row.native_observed=false;row.native_distance=0.0 if row.native.role=="guardian" else path_length(row);row.native_forward=false;row.native_alert=0.0;row.native_attack=0;row.native_wait=0.0;row.native_walked=0.0
 static func tick(world: Dictionary,row: Dictionary,present: Array,delta: float,f: FrontierTerrainField) -> bool:
+ row.native_motion_clock=float(row.get("native_motion_clock",0.))+delta
  var native: Dictionary=row.native;var at:=position(row);var nearest:=INF;var closest: String=""
  for actor in present:
   var p:=FrontierCrewWorld.vector(world.crew.members[actor].position)
@@ -122,12 +123,23 @@ static func tick(world: Dictionary,row: Dictionary,present: Array,delta: float,f
   row.native_alert=0.0
  var walking: bool=row.native_observed or nearest<float(config().trigger_distance)+radius(native)
  if native.role=="guardian" and not row.native_observed:walking=false
- if row.native_wait>0 or not walking:return changed
+ if row.native_wait>0 or not walking:row.native_move_speed=0.;return changed
  var total:=path_length(row);var before:=float(row.native_distance)
  var speed:=float(native.speed)*(1.6 if native.role=="rare" and nearest<danger else 1.0)
+ var mobility:=preload("res://scripts/domain/creature_mobility.gd").profile(native.form_id)
+ var acceleration:=speed*1.8
+ if not mobility.is_empty():
+  var scale_value:=float(FrontierEcologyCatalog.look(native.form_id,native.look_id).scale)*float(native.factor)
+  speed=minf(speed,float(mobility.natural_speed)*float(mobility.max_playback)*scale_value)
+  acceleration=float(mobility.acceleration)*scale_value
+ var remaining:=total-before if row.native_forward else before
+ speed=minf(speed,sqrt(2.*acceleration*remaining))
+ row.native_move_speed=move_toward(float(row.get("native_move_speed",0.)),speed,acceleration*delta)
+ speed=float(row.native_move_speed)
  row.native_distance=clampf(before+delta*speed*(1 if row.native_forward else -1),0,total)
  row.native_walked+=absf(float(row.native_distance)-before)
- if row.native_distance==0 or row.native_distance==total:
+ if row.native_distance<=.025 or row.native_distance>=total-.025:
+  row.native_distance=0. if row.native_distance<=.025 else total;row.native_move_speed=0.
   row.native_forward=not row.native_forward;row.native_wait=2.0;row.serial+=1
  return changed or int(before/5.0)!=int(float(row.native_distance)/5.0)
 static func available(row: Dictionary) -> bool:
@@ -164,4 +176,6 @@ static func validate(world: Dictionary,row: Dictionary) -> bool:
  if expected.is_empty() or JSON.parse_string(JSON.stringify(expected))!=JSON.parse_string(JSON.stringify(row.native)):return false
  for id in ["native_distance","native_alert","native_wait","native_walked","native_attack"]:
   if not FrontierUniverse._finite(row.get(id),0,9007199254740000):return false
+ for id in ["native_motion_clock","native_move_speed"]:
+  if row.has(id) and not FrontierUniverse._finite(row[id],0,9007199254740000):return false
  return row.get("native_observed") is bool and row.get("native_forward") is bool and float(row.native_distance)<=path_length(row)+.01

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "af190d0ad45de724387d23f50d1d1ff9b501e560b02ccbe3d641d539fee4406a",
+  "species_id": "biota_saddle_antennal_fans_25",
+  "id": "biota_saddle_antennal_fans_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.509454260386154,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14425889109586063,
+    "crouch": 0.05610067987061248,
+    "body_bob": 0.05610067987061248,
+    "natural_speed": 2.578209819767986,
+    "max_playback": 1.18,
+    "acceleration": 4.640777675582375,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_antennal_fans_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_antennal_fans_25.blend",
+  "original_source_sha256": "1ffcc6b47e535e667d719633eb24331c89726dbb725f21b6c7306c1cd0ff7abb",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_antennal_fans_25.motion",
+  "asset_sha256": "83d20e67567b1cb7c9eea87ad937b6c9ccc5351e8ccfe7d93ae53591803119f2",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.235
+}

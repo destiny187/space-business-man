@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "e9a1edfda2ca6aaa1fa97927cf8e9663ed8e4156d83fe0fe8f695effffb764a6",
+  "species_id": "biota_branch_antennal_fans_22",
+  "id": "biota_branch_antennal_fans_22",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.7936406968986762,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.25,
+    "crouch": 0.10100881596892243,
+    "body_bob": 0.10100881596892243,
+    "natural_speed": 3.006214760979834,
+    "max_playback": 1.18,
+    "acceleration": 5.411186569763702,
+    "turn_rate": 5.0,
+    "bone_count": 57
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_antennal_fans_22.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_antennal_fans_22.blend",
+  "original_source_sha256": "75252b47ee3cd3bc58eee140153c23fd384dc138cbef251dda799fcd3b7b5985",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_antennal_fans_22.motion",
+  "asset_sha256": "cdfd99157aae327d7a8797cb5f031c92cda8f4b3b1ed9bb4896550728426396c",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.15
+}

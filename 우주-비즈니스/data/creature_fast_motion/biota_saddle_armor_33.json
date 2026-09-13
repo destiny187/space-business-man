@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c9e104cc9c1cc02e8fd3045a9052912e06b8e511a2e06beae1b0c6831fe65b9b",
+  "species_id": "biota_saddle_armor_33",
+  "id": "biota_saddle_armor_33",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.564599975019709,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.18477817364281385,
+    "crouch": 0.07185817863887206,
+    "body_bob": 0.07185817863887206,
+    "natural_speed": 2.1386362690140492,
+    "max_playback": 1.18,
+    "acceleration": 3.8495452842252886,
+    "turn_rate": 5.0,
+    "bone_count": 29
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_armor_33.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_armor_33.blend",
+  "original_source_sha256": "9788c3cf235458e28159841225543d2430be4f62dbf9c349e806544224dc2859",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_armor_33.motion",
+  "asset_sha256": "f01f70e426367565df5d24c58c169049bc19754c4a0fe3915ed11c0a26180fa3",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.119
+}

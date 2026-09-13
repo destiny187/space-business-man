@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "89424c3cf63b61107f63a85f355cee24507207bd44d1e687e4d6a13314182bf3",
+  "species_id": "bio_split_keel_10",
+  "id": "bio_split_keel_10",
+  "kind": "split_keel",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4900483754971505,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support4": 0.0,
+      "support2": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.16037946834452196,
+    "crouch": 0.062369793245091884,
+    "body_bob": 0.062369793245091884,
+    "natural_speed": 1.8562438465801157,
+    "max_playback": 1.18,
+    "acceleration": 3.3412389238442084,
+    "turn_rate": 5.0,
+    "bone_count": 48
+  },
+  "source": "art/blender/creature_fast_motion/bio_split_keel_10.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_split_keel_10.blend",
+  "original_source_sha256": "dd4850a77a025122a63eb9399bd13e3114db7626810f4dd8f3956fcc6494c115",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_split_keel_10.motion",
+  "asset_sha256": "482d4f5581cf94aa532a7431126da4f61723a37723841197899433396d25f26e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.211
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "e71d34ef2f632b9d431e40f44f200c360924f6f46b1ef0e2e129d7ba4b1c5b61",
+  "species_id": "biota_tower_antennal_fans_25",
+  "id": "biota_tower_antennal_fans_25",
+  "kind": "giraffoid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7329211590911152,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24866353498461094,
+    "crouch": 0.09670248582734871,
+    "body_bob": 0.09670248582734871,
+    "natural_speed": 3.7091151775866154,
+    "max_playback": 1.18,
+    "acceleration": 6.676407319655908,
+    "turn_rate": 5.0,
+    "bone_count": 32
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_antennal_fans_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_antennal_fans_25.blend",
+  "original_source_sha256": "b3c139eee8ec99a6995c70dd3d4028756cad0389acca24ff29268b4091254a57",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_antennal_fans_25.motion",
+  "asset_sha256": "29ed2bf9bcaa6704ac0987d1d8db9acdfe227f66e89ad578fcfc9e8cea9af912",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.165
+}

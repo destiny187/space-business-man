@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "602ff2080940c6d5111b5a935e5972127d238f327691789c248ff1026834c03f",
+  "species_id": "biota_tower_armor_33",
+  "id": "biota_tower_armor_33",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.6563195977355345,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.25,
+      "leg3": 0.5,
+      "leg2": 0.75
+    },
+    "lift": 0.21479550471344763,
+    "crouch": 0.08353158516634077,
+    "body_bob": 0.08353158516634077,
+    "natural_speed": 1.5298825122040431,
+    "max_playback": 1.18,
+    "acceleration": 2.7537885219672775,
+    "turn_rate": 3.4,
+    "bone_count": 24
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_armor_33.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_armor_33.blend",
+  "original_source_sha256": "424d0b2cb084ae310c1f14b5366626cb745e449e01f29931d5a6fe3a42978f78",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_armor_33.motion",
+  "asset_sha256": "1d99f3f3f08f5e9c34cd0241da6a2f96b1ed5fd312f7b0af87c1aea9a09c4d98",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.13
+}

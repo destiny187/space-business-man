@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "19cc48fba23fa30b840504cb7d9eacb6f1599824334f4af43b2b12cede47297c",
+  "species_id": "bio_crescent_maw_07",
+  "id": "bio_crescent_maw_07",
+  "kind": "crescent_maw",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.45403883455843064,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support2": 0.0,
+      "support4": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.14859452767366818,
+    "crouch": 0.05778676076198208,
+    "body_bob": 0.05778676076198208,
+    "natural_speed": 1.7198440702970856,
+    "max_playback": 1.18,
+    "acceleration": 3.0957193265347542,
+    "turn_rate": 5.0,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/bio_crescent_maw_07.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_crescent_maw_07.blend",
+  "original_source_sha256": "042ce5022d0b30dc6817aec78d63aaca26ffa99b13b3f9f299c6fa28dad6c059",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_crescent_maw_07.motion",
+  "asset_sha256": "7a598304cfe8db8c18d832a22e5cf51781f2440bca751fdec19f31b8d792cd6e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.128
+}

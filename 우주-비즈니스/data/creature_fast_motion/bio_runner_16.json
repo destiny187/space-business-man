@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "6eb30f8ac71ac906ace445d6ff7e399d59bfdf3080a585d5927cffd7943f49f7",
+  "species_id": "bio_runner_16",
+  "id": "bio_runner_16",
+  "kind": "runner",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7329211590911152,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24866353498461094,
+    "crouch": 0.09670248582734871,
+    "body_bob": 0.09670248582734871,
+    "natural_speed": 3.7091151775866154,
+    "max_playback": 1.18,
+    "acceleration": 6.676407319655908,
+    "turn_rate": 5.0,
+    "bone_count": 34
+  },
+  "source": "art/blender/creature_fast_motion/bio_runner_16.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_runner_16.blend",
+  "original_source_sha256": "6ff06280013a5cafe00336efa82060750a242780ded99a53b412fda3bea3cd44",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_runner_16.motion",
+  "asset_sha256": "4c7593d16473a76a05a730a6f332f869e22a6ac9c817dcad48f4cd496e560b64",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.169
+}

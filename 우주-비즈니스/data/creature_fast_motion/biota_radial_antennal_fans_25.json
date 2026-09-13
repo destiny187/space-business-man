@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "d8042fb2e4f1c46f018c883519e0a3ddfcb46bf72b4c8b567555fde1e1ca762a",
+  "species_id": "biota_radial_antennal_fans_25",
+  "id": "biota_radial_antennal_fans_25",
+  "kind": "chelonian",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3736689371793394,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.12229165216778379,
+    "crouch": 0.04755786473191592,
+    "body_bob": 0.04755786473191592,
+    "natural_speed": 1.415412640830831,
+    "max_playback": 1.18,
+    "acceleration": 2.5477427534954957,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_antennal_fans_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_radial_antennal_fans_25.blend",
+  "original_source_sha256": "6e460ad749ee6bc661882fa095f9fb91532f107ff3b0d9cb51932ba0a9ca75fb",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_antennal_fans_25.motion",
+  "asset_sha256": "457c3015b8188f3b36acd637dd7e1568b791a7023b03e5681b75fb6e45962eff",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.139
+}

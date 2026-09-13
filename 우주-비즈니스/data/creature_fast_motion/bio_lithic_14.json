@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fingerprint": "469405fe6ad2f3643d1e7e34391f9cfaa95ac453c79f6cc3b8302d1ea5d9acba",
+  "species_id": "bio_lithic_14",
+  "id": "bio_lithic_14",
+  "kind": "lithic",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3316896314533738,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "median-1": 0.5,
+      "median1": 0.0,
+      "hind-1": 0.0,
+      "hind1": 0.5
+    },
+    "lift": 0.10855297029383142,
+    "crouch": 0.04221504400315666,
+    "body_bob": 0.04221504400315666,
+    "natural_speed": 1.2564001191415675,
+    "max_playback": 1.18,
+    "acceleration": 2.2615202144548214,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/bio_lithic_14.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_lithic_14.blend",
+  "original_source_sha256": "781a741fa6b74a64fdd725cf02f6c55a6acf99d91c26e45c8c9da3917f85271a",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_lithic_14.motion",
+  "asset_sha256": "8f7e8db6976d2a1e846457edcb9d8aefcdee52fe065b253202314bfbd90eefaf",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.39
+}

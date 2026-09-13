@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fingerprint": "7e9d1b5df302537e655a65b04da92f8e36515192c28ee14d41a527f48785c0af",
+  "species_id": "bio_offset_halo_01",
+  "id": "bio_offset_halo_01",
+  "kind": "offset_halo",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5465165365187671,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support2": 0.3333333333333333,
+      "support1": 0.6666666666666666
+    },
+    "lift": 0.17885995740614194,
+    "crouch": 0.06955665010238854,
+    "body_bob": 0.06955665010238854,
+    "natural_speed": 1.2739313205565665,
+    "max_playback": 1.18,
+    "acceleration": 2.2930763770018197,
+    "turn_rate": 3.4,
+    "bone_count": 46
+  },
+  "source": "art/blender/creature_fast_motion/bio_offset_halo_01.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_offset_halo_01.blend",
+  "original_source_sha256": "fae554986d09cd4570f1613727ade93e762fe416d7070d34598bc2a2376e7c26",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_offset_halo_01.motion",
+  "asset_sha256": "1c8c6d70f0e62328b4d06a22f06c750f9cfdfbd3ef93afc9de96939bc5013044",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.214
+}

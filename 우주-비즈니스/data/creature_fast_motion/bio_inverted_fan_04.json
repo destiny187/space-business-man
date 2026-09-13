@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "097b83e5b71a6d56f2c81abacd8178b5231da5b35996a57a665f43f068a61ffa",
+  "species_id": "bio_inverted_fan_04",
+  "id": "bio_inverted_fan_04",
+  "kind": "inverted_fan",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.35859058064217997,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support4": 0.0,
+      "support2": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.11735691730107707,
+    "crouch": 0.04563880117264109,
+    "body_bob": 0.04563880117264109,
+    "natural_speed": 1.3582976539476515,
+    "max_playback": 1.18,
+    "acceleration": 2.4449357771057727,
+    "turn_rate": 5.0,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/bio_inverted_fan_04.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_inverted_fan_04.blend",
+  "original_source_sha256": "2ad89c69069aa9fc3d08821bd53a1de314b0b7b3adb9172ec7d61dc7490881e3",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_inverted_fan_04.motion",
+  "asset_sha256": "e1947d3764de6dc553ec1c0cc279cce7d215fe3db6106b323be991f08a53650d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.119
+}

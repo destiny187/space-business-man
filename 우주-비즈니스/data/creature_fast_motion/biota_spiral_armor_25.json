@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "073198217cd689aa5530ba4c49657699b70bfaa6150083ff7d1148f6413a4a94",
+  "species_id": "biota_spiral_armor_25",
+  "id": "biota_spiral_armor_25",
+  "kind": "pangolin",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2816870142910243,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.09218847740433521,
+    "crouch": 0.03585107454613036,
+    "body_bob": 0.03585107454613036,
+    "natural_speed": 1.0669962662538799,
+    "max_playback": 1.18,
+    "acceleration": 1.9205932792569838,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spiral_armor_25.blend",
+  "original_source_sha256": "bdf9751add9bfff3fc953b230278ece5f86659b3810739e0c6869b578b19491c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_armor_25.motion",
+  "asset_sha256": "94c2c970b82c9d07725ce76513afadef835b089f359768ffa5c32707e890142d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.287
+}

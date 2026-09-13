@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "2238ed72556f6747b05e1052a42ad30c4d1562e67b6c6345f19506eff0050c07",
+  "species_id": "biota_spiral_sails_11",
+  "id": "biota_spiral_sails_11",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5191806589130314,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.16991367018971937,
+    "crouch": 0.0660775384071131,
+    "body_bob": 0.0660775384071131,
+    "natural_speed": 1.9665934049736038,
+    "max_playback": 1.18,
+    "acceleration": 3.5398681289524867,
+    "turn_rate": 5.0,
+    "bone_count": 42
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_sails_11.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_sails_11.blend",
+  "original_source_sha256": "2104e9677a523af833aff2ad652495922484b2dde7d40bdf457a5ba4473bd2d2",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_sails_11.motion",
+  "asset_sha256": "48f4f0519b66935e78207565b98fa1c9af3e33b81ad10809804934d3d6675979",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.193
+}

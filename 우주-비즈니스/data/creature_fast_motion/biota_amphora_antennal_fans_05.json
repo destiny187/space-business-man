@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "3d31f54d45b9b51a56cbd29f6ff85d010f9f4539119681af7fcae5ff86c781fe",
+  "species_id": "biota_amphora_antennal_fans_05",
+  "id": "biota_amphora_antennal_fans_05",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5724592609586917,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.25,
+      "leg3": 0.5,
+      "leg2": 0.75
+    },
+    "lift": 0.1873503035864809,
+    "crouch": 0.07285845139474258,
+    "body_bob": 0.07285845139474258,
+    "natural_speed": 1.334403871698582,
+    "max_playback": 1.18,
+    "acceleration": 2.4019269690574476,
+    "turn_rate": 3.4,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_antennal_fans_05.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_antennal_fans_05.blend",
+  "original_source_sha256": "67009ed38b96dc189ff6a7916224ab1d0120798b0b2cad389200b3fd6679474c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_antennal_fans_05.motion",
+  "asset_sha256": "e32dd68c280e5fc2f4ff653de9b2dc7c670d4b9176178572bf7107ad926a833d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.205
+}

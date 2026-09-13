@@ -53,6 +53,7 @@ static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,
  var facing: Basis=creature.global_basis
  if motion.length()>.002:facing=FrontierEcologyPlacement.surface_basis(view.surface.terrain.field.normal(goal),atan2(motion.x,motion.z))
  creature.paused=stopped
+ creature.locomotion_stamp=float(row.get("native_motion_clock",-1.))
  creature.incident_pose=IncidentMotion.sample(creature,row)
  if int(row.native_attack)>int(nodes.native_attack):
   if creature.remodel.is_empty():creature.set_state("attack");creature.elapsed=creature.windup_seconds;creature.pose()

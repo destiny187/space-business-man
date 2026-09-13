@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "9889e5cad3e82919963620b6cedcb2c3be151e1564ff30ad25d7b2e4a40ee849",
+  "species_id": "biota_lobopod_armor_30",
+  "id": "biota_lobopod_armor_30",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.42838885100059865,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.1401999876001959,
+    "crouch": 0.05452221740007619,
+    "body_bob": 0.05452221740007619,
+    "natural_speed": 1.6226850416689342,
+    "max_playback": 1.18,
+    "acceleration": 2.9208330750040816,
+    "turn_rate": 5.0,
+    "bone_count": 51
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_armor_30.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_armor_30.blend",
+  "original_source_sha256": "edb8d01bd5de95128d9364f6ebdd81a7766ed21045f85e64991f418753fce208",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_armor_30.motion",
+  "asset_sha256": "025eac35c6daa5aceb81e4f9948a653e2a0da2ffd2cad6f74e140dc8aec1c1e5",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.299
+}

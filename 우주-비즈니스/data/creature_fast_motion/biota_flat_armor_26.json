@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "d70bf9e5eaa7c293a9ec5679272e1970ab15bef8de6e5005840b97a8d2fd6fcc",
+  "species_id": "biota_flat_armor_26",
+  "id": "biota_flat_armor_26",
+  "kind": "skink",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.25519175118131937,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08351730038661359,
+    "crouch": 0.03247895015034973,
+    "body_bob": 0.03247895015034973,
+    "natural_speed": 0.9666354211413613,
+    "max_playback": 1.18,
+    "acceleration": 1.7399437580544503,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_armor_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_armor_26.blend",
+  "original_source_sha256": "b40ab59255c3fd526468d329af993c3a35aae0d23f5378e3b7cd529779163650",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_armor_26.motion",
+  "asset_sha256": "3032fb7f1935030abde83cb10c3eca625ac246af50f331c2e2a46ff5c5f1586e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.113
+}

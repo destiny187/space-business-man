@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "1adf493690d07791383b73d453dbd9749c196f897b2b26759e0b0b5ad787d61c",
+  "species_id": "biota_lobopod_mandibles_02",
+  "id": "biota_lobopod_mandibles_02",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3529382297553115,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.11550705701082921,
+    "crouch": 0.04491941105976692,
+    "body_bob": 0.04491941105976692,
+    "natural_speed": 1.3368872339216344,
+    "max_playback": 1.18,
+    "acceleration": 2.4063970210589423,
+    "turn_rate": 5.0,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_mandibles_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_mandibles_02.blend",
+  "original_source_sha256": "85705c479521f1c8ad7835691e6b45e31c6d17d5b261763ca6aeb93f24a66f19",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_mandibles_02.motion",
+  "asset_sha256": "b2be25072084637c8237891627c7b9cb6281da38b9756879ac9f2da8777856bf",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.332
+}

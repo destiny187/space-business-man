@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "3b315f21833091be575e395d4ff1b35ac87b92aa18881a0be41d300ad0c3bb3a",
+  "species_id": "biota_amphora_tendrils_32",
+  "id": "biota_amphora_tendrils_32",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.6419994363455208,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg9": 0.1,
+      "leg1": 0.2,
+      "leg8": 0.3,
+      "leg2": 0.4,
+      "leg7": 0.5,
+      "leg3": 0.6,
+      "leg6": 0.7,
+      "leg4": 0.8,
+      "leg5": 0.9
+    },
+    "lift": 0.21010890644035224,
+    "crouch": 0.0817090191712481,
+    "body_bob": 0.0817090191712481,
+    "natural_speed": 1.4965021826235916,
+    "max_playback": 1.18,
+    "acceleration": 2.693703928722465,
+    "turn_rate": 3.4,
+    "bone_count": 68
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_tendrils_32.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_tendrils_32.blend",
+  "original_source_sha256": "7b9a6889546304882de3aa41c44d43f4140c7662ab64a06186dc2fb67af0e96a",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_tendrils_32.motion",
+  "asset_sha256": "701b519801352279ef8897af3a23c06327c9f87d1df4fe1b854581226ebf01ec",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.183
+}

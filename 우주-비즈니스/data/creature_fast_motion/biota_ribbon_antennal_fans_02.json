@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "ba89e558e9e544c7175f110c3eaf8c34f6a9e828c01412b2e9d741a65b6c0ff8",
+  "species_id": "biota_ribbon_antennal_fans_02",
+  "id": "biota_ribbon_antennal_fans_02",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.27840036795791423,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.09111284769531737,
+    "crouch": 0.035432774103734535,
+    "body_bob": 0.035432774103734535,
+    "natural_speed": 1.0545468483254326,
+    "max_playback": 1.18,
+    "acceleration": 1.8981843269857785,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_antennal_fans_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_antennal_fans_02.blend",
+  "original_source_sha256": "a276ced51b69f050620d9e4c6f26f2ba024ed111af46fa7f331911bf0969fbd0",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_antennal_fans_02.motion",
+  "asset_sha256": "23759c751476e3e6147f7969088ea7d934a6ba9813e395e98d49ecf2ec681c65",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 1.186
+}

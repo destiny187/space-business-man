@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "38e707da0731aa551b6594c7ccd31d9cbcc0a66fbec18d1af2e862844abd2629",
+  "species_id": "bio_blind_harp_04",
+  "id": "bio_blind_harp_04",
+  "kind": "blind_harp",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.43810138544743665,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support3": 0.5,
+      "support1": 0.5,
+      "support2": 0.0
+    },
+    "lift": 0.1433786352373429,
+    "crouch": 0.055758358147855576,
+    "body_bob": 0.055758358147855576,
+    "natural_speed": 1.659474944876654,
+    "max_playback": 1.18,
+    "acceleration": 2.987054900777977,
+    "turn_rate": 5.0,
+    "bone_count": 50
+  },
+  "source": "art/blender/creature_fast_motion/bio_blind_harp_04.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_blind_harp_04.blend",
+  "original_source_sha256": "1764e71aa3dfb27036d8d8e2cc1c5de45bfe833a2cd2cdd9b49d472cf5fa5309",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_blind_harp_04.motion",
+  "asset_sha256": "b7cb5002ea77ba1decb566879887bd98c727de844d266e56aba81f8d5dd786c1",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.181
+}

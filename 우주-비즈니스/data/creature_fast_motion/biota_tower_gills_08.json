@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "627917b331a2f205aa3a72ba8423733878058c3047906092c66480303ecaf1c6",
+  "species_id": "biota_tower_gills_08",
+  "id": "biota_tower_gills_08",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5875582596387745,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg9": 0.1,
+      "leg1": 0.2,
+      "leg8": 0.3,
+      "leg2": 0.4,
+      "leg7": 0.5,
+      "leg3": 0.6,
+      "leg6": 0.7,
+      "leg4": 0.8,
+      "leg5": 0.9
+    },
+    "lift": 0.1922917940635989,
+    "crouch": 0.07478014213584402,
+    "body_bob": 0.07478014213584402,
+    "natural_speed": 1.369599672817656,
+    "max_playback": 1.18,
+    "acceleration": 2.465279411071781,
+    "turn_rate": 3.4,
+    "bone_count": 47
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_gills_08.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_gills_08.blend",
+  "original_source_sha256": "5fcfb92805e37f53653d590c13206f0479467eaa991ec6f98bd8dc91dcfe68d9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_gills_08.motion",
+  "asset_sha256": "9c70145fa06f5c664f70590e39bf872c9483ba2d2ba0f9eba1a4efffd0023fca",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.208
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "9638863055a7d1de8e3db61574fb9a5176182620c998bb7b6da6a6cb549d1a94",
+  "species_id": "biota_bilateral_gills_14",
+  "id": "biota_bilateral_gills_14",
+  "kind": "bilateral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.46643741006281847,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg3": 0.5,
+      "leg2": 0.0,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.15265224329328603,
+    "crouch": 0.05936476128072235,
+    "body_bob": 0.05936476128072235,
+    "natural_speed": 1.76680837145007,
+    "max_playback": 1.18,
+    "acceleration": 3.180255068610126,
+    "turn_rate": 5.0,
+    "bone_count": 36
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_gills_14.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_bilateral_gills_14.blend",
+  "original_source_sha256": "2e5cea1155f3cd906c486ce21c567e363c03e4fe29ccf9fd2e78b235e1c42a08",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_gills_14.motion",
+  "asset_sha256": "3acbc101803426f716343369b9cb0ebf0a08d9e8082a039d818f086d7c92f1a5",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.232
+}

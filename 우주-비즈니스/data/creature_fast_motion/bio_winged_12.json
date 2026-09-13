@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "88bac94140ea0f66a28a7862286896ff94f608be602eaafeba6929e07079324f",
+  "species_id": "bio_winged_12",
+  "id": "bio_winged_12",
+  "kind": "winged",
+  "profile": {
+    "mode": "flight",
+    "medium": "air",
+    "stride": 0.667588438887831,
+    "stance": 0.65,
+    "period": 0.5555555555555556,
+    "limb_phases": {
+      "clasp-1": 0.0,
+      "clasp1": 0.5
+    },
+    "lift": 0.12979257572898822,
+    "crouch": 0.05047489056127321,
+    "body_bob": 0.05047489056127321,
+    "natural_speed": 1.8487064461509166,
+    "max_playback": 1.18,
+    "acceleration": 3.32767160307165,
+    "turn_rate": 5.0,
+    "bone_count": 42
+  },
+  "source": "art/blender/creature_fast_motion/bio_winged_12.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_winged_12.blend",
+  "original_source_sha256": "fc9e4d1887c2d32ab909297305ff2449857cf9a8ffb0ca20281668b43133260b",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_winged_12.motion",
+  "asset_sha256": "e617d5fa2aa0f4e10abdf0f63315e8c5542e122fa55496e84b486b3ee3bfcaba",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.179
+}

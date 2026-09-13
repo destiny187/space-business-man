@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "769152296ad5c4a75762f17c575d7775c2398d34059d75827cb1fd7dbe1fba29",
+  "species_id": "biota_chain_mandibles_26",
+  "id": "biota_chain_mandibles_26",
+  "kind": "lagomorph",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.3424890169427239,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.0,
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.09340609552983377,
+    "crouch": 0.036324592706046474,
+    "body_bob": 0.036324592706046474,
+    "natural_speed": 1.315242000548095,
+    "max_playback": 1.18,
+    "acceleration": 2.367435600986571,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_mandibles_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_chain_mandibles_26.blend",
+  "original_source_sha256": "54313da96eae8d8dc896074987bac7d7de28d2f2c2a3011175d4517d28d6fd5e",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_mandibles_26.motion",
+  "asset_sha256": "a6d7d574bde80c51648d0f1e399e23b955789224dd8bc1f158e391e3df320de2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.158
+}

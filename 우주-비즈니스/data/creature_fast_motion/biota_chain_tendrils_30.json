@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "d2b1890779034f3ca7d4af060e481dcd7443afac5f10affdfabb8459526cb4ba",
+  "species_id": "biota_chain_tendrils_30",
+  "id": "biota_chain_tendrils_30",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3479237014074662,
+    "stance": 0.55,
+    "period": 0.4727090133552798,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg3": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.5,
+      "leg2": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.11386593864244347,
+    "crouch": 0.04428119836095025,
+    "body_bob": 0.04428119836095025,
+    "natural_speed": 1.3382197718708029,
+    "max_playback": 1.18,
+    "acceleration": 2.408795589367445,
+    "turn_rate": 5.0,
+    "bone_count": 126
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_tendrils_30.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_tendrils_30.blend",
+  "original_source_sha256": "c2ce7a774e41bad2176f4fc9c59b500029580c270034ed9c6ca62c5f163f965c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_tendrils_30.motion",
+  "asset_sha256": "43661d5a67c3c472e4f04af31026432f6ba6e64e926b987acf04504beda49f44",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.411
+}

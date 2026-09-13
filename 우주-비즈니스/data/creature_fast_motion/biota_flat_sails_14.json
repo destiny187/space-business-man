@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "e880dbd007fd5f55f9e683907b9568c9f545c26d78c8faba7ab167ce755d318c",
+  "species_id": "biota_flat_sails_14",
+  "id": "biota_flat_sails_14",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.596377345435806,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.19517804032444558,
+    "crouch": 0.0759025712372844,
+    "body_bob": 0.0759025712372844,
+    "natural_speed": 2.25900509634775,
+    "max_playback": 1.18,
+    "acceleration": 4.06620917342595,
+    "turn_rate": 5.0,
+    "bone_count": 47
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_sails_14.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_sails_14.blend",
+  "original_source_sha256": "09163faeed92e6b4d1e20759c55528b713f44b66e11eafb6d6dc2c7791be839b",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_sails_14.motion",
+  "asset_sha256": "bf28504f2496b3cd3a2dce923de0376fcd4f4db7af0c80dc2f09dff11fb02874",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.529
+}

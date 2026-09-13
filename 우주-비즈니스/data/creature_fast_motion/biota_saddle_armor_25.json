@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "6b99503b2d25064a61ad56898bf40ffc8ae8d0c50420a8501717b021f2d9cecf",
+  "species_id": "biota_saddle_armor_25",
+  "id": "biota_saddle_armor_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.51132433141641,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14440960330027092,
+    "crouch": 0.05615929017232758,
+    "body_bob": 0.05615929017232758,
+    "natural_speed": 2.5876737419858804,
+    "max_playback": 1.18,
+    "acceleration": 4.657812735574585,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_armor_25.blend",
+  "original_source_sha256": "5a1a7b4cdaa75b99a35f8257de8f824f74576efd8b6b5899e728ab81dfb3448c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_armor_25.motion",
+  "asset_sha256": "7f6e3c21b81d8a7514a438297fdc7146834fd1783ea650e5465bd1527092243f",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.215
+}

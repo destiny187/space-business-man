@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "5da5ee75243bc103597927663ff66ea799a1b4d935aaca7524fc64a7cc5e1263",
+  "species_id": "biota_chain_gills_25",
+  "id": "biota_chain_gills_25",
+  "kind": "macropod",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.6063158853348262,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.16535887781858893,
+    "crouch": 0.06430623026278459,
+    "body_bob": 0.06430623026278459,
+    "natural_speed": 2.328402017414847,
+    "max_playback": 1.18,
+    "acceleration": 4.191123631346724,
+    "turn_rate": 5.0,
+    "bone_count": 26
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_chain_gills_25.blend",
+  "original_source_sha256": "5e7825bd8e6cc5210e58e17eb0944ef48a14a73cf8062198259a0545c4090596",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_gills_25.motion",
+  "asset_sha256": "02350ca2bf9c89b6c774b6df17b21904512cfabed45c79a8b06aa46a35361e15",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.129
+}

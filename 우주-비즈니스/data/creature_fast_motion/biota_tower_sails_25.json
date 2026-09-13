@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "9ee9cc64ab0c40802849328748f6c6bbb5e26700a995f45c4376f2ee35b1a418",
+  "species_id": "biota_tower_sails_25",
+  "id": "biota_tower_sails_25",
+  "kind": "giraffoid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7326463649494203,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24864516233600614,
+    "crouch": 0.09669534090844685,
+    "body_bob": 0.09669534090844685,
+    "natural_speed": 3.707724518974799,
+    "max_playback": 1.18,
+    "acceleration": 6.673904134154638,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_sails_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_sails_25.blend",
+  "original_source_sha256": "9d471ba6fa6f396f391170d95d8e9b9f3a51f2caa1b645fc418ba6fcffad2079",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_sails_25.motion",
+  "asset_sha256": "3c66ba91ecaf5f3f5c6f0132c186236119b3c39c17059a43f0358be357338ce2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.153
+}

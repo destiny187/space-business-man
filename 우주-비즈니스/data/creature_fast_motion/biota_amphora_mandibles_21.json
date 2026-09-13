@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "ed02c823d3a1947ed0bdc3a3e980d8df364ac55a4ca74aa19d19e1a7462db41a",
+  "species_id": "biota_amphora_mandibles_21",
+  "id": "biota_amphora_mandibles_21",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.7009743439013514,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.25,
+      "leg3": 0.5,
+      "leg2": 0.75
+    },
+    "lift": 0.2294097852768059,
+    "crouch": 0.08921491649653564,
+    "body_bob": 0.08921491649653564,
+    "natural_speed": 1.6339728296068796,
+    "max_playback": 1.18,
+    "acceleration": 2.9411510932923832,
+    "turn_rate": 3.4,
+    "bone_count": 37
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_mandibles_21.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_mandibles_21.blend",
+  "original_source_sha256": "20b46eb3b693e809818bbfc8094f304ff16869bd6695fa1db4157716c03e7f32",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_mandibles_21.motion",
+  "asset_sha256": "74c0c23c9b57c8e51f5bb7c7ae8543dba157354a2a9821dfa15921d53abbb8c4",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.105
+}

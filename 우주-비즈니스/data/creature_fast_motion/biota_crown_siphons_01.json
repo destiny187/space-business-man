@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "a84a43ddd5d4c760cae1f1911677abefa241d4ddf12c801862ec2b1cb2c342f8",
+  "species_id": "biota_crown_siphons_01",
+  "id": "biota_crown_siphons_01",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5724592609586917,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1873503035864809,
+    "crouch": 0.07285845139474258,
+    "body_bob": 0.07285845139474258,
+    "natural_speed": 2.1684062915101956,
+    "max_playback": 1.18,
+    "acceleration": 3.9031313247183523,
+    "turn_rate": 5.0,
+    "bone_count": 45
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_siphons_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_siphons_01.blend",
+  "original_source_sha256": "630d7fc6e0506ac58f3c5ddf71d46f538c025cdd176ee90450a970a89e9e54a2",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_siphons_01.motion",
+  "asset_sha256": "4c4f0b025bedf60621607ca47c9ab67c77ea4c6e5201ac9464ca56c7a664e084",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.151
+}

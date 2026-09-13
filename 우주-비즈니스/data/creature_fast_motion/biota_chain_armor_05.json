@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "3e8cd0f892f4da40959510c0b966dac745c1e58cba5e337a9594364d8f2ac7e9",
+  "species_id": "biota_chain_armor_05",
+  "id": "biota_chain_armor_05",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.36096587825623067,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.11813428742931184,
+    "crouch": 0.04594111177806572,
+    "body_bob": 0.04594111177806572,
+    "natural_speed": 1.367294993394813,
+    "max_playback": 1.18,
+    "acceleration": 2.4611309881106638,
+    "turn_rate": 5.0,
+    "bone_count": 38
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_armor_05.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_armor_05.blend",
+  "original_source_sha256": "7e8b9e46fa38b4934edde5d4966d6ba587c7d6a0bcc5cb031980f5b702162be6",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_armor_05.motion",
+  "asset_sha256": "6bba9bd76fad92bdb40933b7e58c3ea6f50148239e12b20e30ab14a6b7c69ea0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.193
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "8b06672a17c372dcda2c5ba05af8370ee2c4ead98a93fb6c3eedddc8a03d1c1f",
+  "species_id": "bio_rib_sled_08",
+  "id": "bio_rib_sled_08",
+  "kind": "rib_sled",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.35066921136773177,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support3": 0.5,
+      "support1": 0.5,
+      "support2": 0.0
+    },
+    "lift": 0.11476446917489401,
+    "crouch": 0.04463062690134768,
+    "body_bob": 0.04463062690134768,
+    "natural_speed": 1.3282924673020142,
+    "max_playback": 1.18,
+    "acceleration": 2.3909264411436255,
+    "turn_rate": 5.0,
+    "bone_count": 50
+  },
+  "source": "art/blender/creature_fast_motion/bio_rib_sled_08.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_rib_sled_08.blend",
+  "original_source_sha256": "e7c4ce27a91849959ffb97295273afdd27ce379c3b9893345b83626417679bcf",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_rib_sled_08.motion",
+  "asset_sha256": "9519351ef84d4c87e5d6939db4b447e95d87743f2135b1539eff64ef8acc44ea",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.19
+}

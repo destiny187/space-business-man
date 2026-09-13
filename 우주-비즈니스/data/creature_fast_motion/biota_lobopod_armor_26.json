@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "933524a0cc5b9155642ebab0e2c6dcf49f66e129eec34d50dcd5184c63bddcd6",
+  "species_id": "biota_lobopod_armor_26",
+  "id": "shearprowler",
+  "kind": "hexapod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5555598124412445,
+    "stance": 0.55,
+    "period": 0.38001929185170136,
+    "limb_phases": {
+      "leg0_-1": 0.0,
+      "leg0_1": 0.5,
+      "leg1_-1": 0.5,
+      "leg1_1": 0.0,
+      "leg2_-1": 0.0,
+      "leg2_1": 0.5
+    },
+    "lift": 0.18181957498077092,
+    "crouch": 0.07070761249252203,
+    "body_bob": 0.07070761249252203,
+    "natural_speed": 2.6580459770114944,
+    "max_playback": 1.18,
+    "acceleration": 4.78448275862069,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_armor_26.blend",
+  "original_source": "art/blender/creature_remodel/combat/shearprowler.blend",
+  "original_source_sha256": "a66d88da5d657e4b585036adde88863b23f609dd6fb4aa8ad53ebdb6a351dc49",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_armor_26.motion",
+  "asset_sha256": "3725db378b3b4e0af1ba60f49893f73a2fbf06a4c0f57df5aea7c38e58b9e919",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.112
+}

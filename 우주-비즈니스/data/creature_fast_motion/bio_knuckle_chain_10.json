@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "1aa19c446bb0166c4d436e1e9865da5791d599e40276d58f492ba673a0338df3",
+  "species_id": "bio_knuckle_chain_10",
+  "id": "bio_knuckle_chain_10",
+  "kind": "knuckle_chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5397992350791161,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support5": 0.0,
+      "support4": 0.5,
+      "support2": 0.5,
+      "support3": 0.0
+    },
+    "lift": 0.17666156784407433,
+    "crouch": 0.06870172082825114,
+    "body_bob": 0.06870172082825114,
+    "natural_speed": 2.044694072269379,
+    "max_playback": 1.18,
+    "acceleration": 3.6804493300848824,
+    "turn_rate": 5.0,
+    "bone_count": 36
+  },
+  "source": "art/blender/creature_fast_motion/bio_knuckle_chain_10.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_knuckle_chain_10.blend",
+  "original_source_sha256": "457816175ae8840417be38bb94e20ae755fd73c5dd4848cea6fa741655c2b0b5",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_knuckle_chain_10.motion",
+  "asset_sha256": "3ef155b2e1c88f636e9ac1bc98fc67c5884571afa32ac874b8036ae7e315a666",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.137
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c054142bcb961589330d953d4d7449b058e65a3029a469a882d1b7345c218a40",
+  "species_id": "biota_lobopod_gills_25",
+  "id": "biota_lobopod_gills_25",
+  "kind": "canid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.47692791762723613,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.13466451454864456,
+    "crouch": 0.052369533435584,
+    "body_bob": 0.052369533435584,
+    "natural_speed": 2.4136028220001826,
+    "max_playback": 1.18,
+    "acceleration": 4.344485079600329,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_lobopod_gills_25.blend",
+  "original_source_sha256": "08d4e0ff947cd658b2e8bafd5b35b9b484713cc1ba3404d452e00f0314cb50e7",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_gills_25.motion",
+  "asset_sha256": "d346c445261a652b92742c1ba7462f608d3b8b869ddd3c8f87de675ff8eb6e79",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.152
+}

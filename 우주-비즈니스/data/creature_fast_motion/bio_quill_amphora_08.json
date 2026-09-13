@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "490b4b2c50ce5bf1747a55e9b4ef7d9065b44a9321d40f2ba5305a0d80dc71b5",
+  "species_id": "bio_quill_amphora_08",
+  "id": "bio_quill_amphora_08",
+  "kind": "pressure",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5356078985202276,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support1": 0.25,
+      "support3": 0.5,
+      "support2": 0.75
+    },
+    "lift": 0.17528985769752903,
+    "crouch": 0.06816827799348352,
+    "body_bob": 0.06816827799348352,
+    "natural_speed": 1.2485032599539105,
+    "max_playback": 1.18,
+    "acceleration": 2.247305867917039,
+    "turn_rate": 3.4,
+    "bone_count": 26
+  },
+  "source": "art/blender/creature_fast_motion/bio_quill_amphora_08.blend",
+  "original_source": "art/blender/creature_remodel/r02/bio_quill_amphora_08.blend",
+  "original_source_sha256": "51099c6793dfbd2f5592490ced9e01f33ff53d9ff96dd28445a6b0a14230e344",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_quill_amphora_08.motion",
+  "asset_sha256": "6f904dde7ea05286c3bc08ecfea0041b7a4290518574d4f7be93f80690868d29",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.083
+}

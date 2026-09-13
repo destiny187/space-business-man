@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "b8dcb63fd51dcb25ed103b2c0d53295c42cc810e0dd9e541e3695755e11dff52",
+  "species_id": "bio_tripod_bell_01",
+  "id": "bio_tripod_bell_01",
+  "kind": "tripod_bell",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.4381013984517769,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support3": 0.25,
+      "support1": 0.5,
+      "support2": 0.75
+    },
+    "lift": 0.14337863949330878,
+    "crouch": 0.055758359802953426,
+    "body_bob": 0.055758359802953426,
+    "natural_speed": 1.021215381006473,
+    "max_playback": 1.18,
+    "acceleration": 1.8381876858116515,
+    "turn_rate": 3.4,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/bio_tripod_bell_01.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_tripod_bell_01.blend",
+  "original_source_sha256": "7d00f4e0182e84cefbba536b1d7969393de24e892a145663f3f952a6cfb59145",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_tripod_bell_01.motion",
+  "asset_sha256": "e29499df02158f65ac5454df68d45b3bc188e06708e537e5d54d12f6b8b6d382",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.103
+}

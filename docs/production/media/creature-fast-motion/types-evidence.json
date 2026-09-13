@@ -1,0 +1,181 @@
+{
+  "fps": 30,
+  "renderer": "forward_plus",
+  "scope": "Imported near/far LOD speed selection, authored high-speed demand and transitions. Flight/swim/float demand is a preview, not new AI.",
+  "species": [
+    {
+      "bones": 201.0,
+      "kind": "branch",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.00199205987155437,
+      "mode": "multi",
+      "seen_clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop"
+      ],
+      "species_id": "biota_branch_siphons_40"
+    },
+    {
+      "bones": 136.0,
+      "kind": "amphora",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.00197062105871737,
+      "mode": "heavy",
+      "seen_clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop"
+      ],
+      "species_id": "biota_amphora_siphons_40"
+    },
+    {
+      "bones": 40.0,
+      "kind": "serpent",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "wave",
+      "seen_clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop"
+      ],
+      "species_id": "biota_ribbon_siphons_26"
+    },
+    {
+      "bones": 156.0,
+      "kind": "avian",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "flight",
+      "seen_clips": [
+        "flight_loop",
+        "sprint_loop"
+      ],
+      "species_id": "biota_bilateral_siphons_30"
+    },
+    {
+      "bones": 93.0,
+      "kind": "mantle",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "float",
+      "seen_clips": [
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop",
+        "idle_loop"
+      ],
+      "species_id": "biota_mantle_siphons_09"
+    },
+    {
+      "bones": 40.0,
+      "kind": "swimmer",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "swim",
+      "seen_clips": [
+        "move_loop",
+        "sprint_loop",
+        "run_loop",
+        "stop",
+        "idle_loop"
+      ],
+      "species_id": "bio_swimmer_14"
+    },
+    {
+      "bones": 14.0,
+      "kind": "lantern_sail",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "swim",
+      "seen_clips": [
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop",
+        "idle_loop"
+      ],
+      "species_id": "bio_lantern_sail_01"
+    },
+    {
+      "bones": 46.0,
+      "kind": "winged",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "flight",
+      "seen_clips": [
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop",
+        "idle_loop"
+      ],
+      "species_id": "bio_winged_14"
+    },
+    {
+      "bones": 67.0,
+      "kind": "runner",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.00165799295064062,
+      "mode": "hop",
+      "seen_clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop"
+      ],
+      "species_id": "bio_runner_05"
+    },
+    {
+      "bones": 76.0,
+      "kind": "grazer",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.00106771232094616,
+      "mode": "gallop",
+      "seen_clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop"
+      ],
+      "species_id": "bio_grazer_15"
+    },
+    {
+      "bones": 25.0,
+      "kind": "glider",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.0,
+      "mode": "flight",
+      "seen_clips": [
+        "flight_loop",
+        "sprint_loop"
+      ],
+      "species_id": "biota_bilateral_armor_11"
+    },
+    {
+      "bones": 24.0,
+      "kind": "radial",
+      "max_body_error": 0.0,
+      "max_ground_error": 0.00186512421350926,
+      "mode": "heavy",
+      "seen_clips": [
+        "idle_loop",
+        "move_loop",
+        "run_loop",
+        "sprint_loop",
+        "stop"
+      ],
+      "species_id": "bio_pentapalm_01"
+    }
+  ]
+}

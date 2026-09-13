@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "315b4766c5f4e10ee710d14463e4f982e5d26d927749e97732996214e1646259",
+  "species_id": "biota_branch_armor_25",
+  "id": "biota_branch_armor_25",
+  "kind": "mantid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.7313566743800503,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.23935309343347097,
+    "crouch": 0.09308175855746095,
+    "body_bob": 0.09308175855746095,
+    "natural_speed": 2.7702904332577662,
+    "max_playback": 1.18,
+    "acceleration": 4.9865227798639795,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_branch_armor_25.blend",
+  "original_source_sha256": "ded26c9805f1dcd84ecbf84be90662a0dcca4eabcc0594b64f1ae2b9cae7463f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_armor_25.motion",
+  "asset_sha256": "a440d24e4a9d84351698e71361bbe46be7aa8e9ac308d7d58258b82c7b613e3e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.127
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "45919d69248ad6df7bee5dc0b02432bdb50b0a2c83114f517b995bc76b7f5573",
+  "species_id": "bio_pendulum_grazer_02",
+  "id": "bio_pendulum_grazer_02",
+  "kind": "cantilever",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6272043083248323,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support3": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.20526686454267237,
+    "crouch": 0.07982600287770594,
+    "body_bob": 0.07982600287770594,
+    "natural_speed": 2.3757738951698193,
+    "max_playback": 1.18,
+    "acceleration": 4.276393011305675,
+    "turn_rate": 5.0,
+    "bone_count": 26
+  },
+  "source": "art/blender/creature_fast_motion/bio_pendulum_grazer_02.blend",
+  "original_source": "art/blender/creature_remodel/r02/bio_pendulum_grazer_02.blend",
+  "original_source_sha256": "2e2d3ccbe90de4b18852bf0514c1050849db1ab7eddc0102e979daef34ae1f88",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_pendulum_grazer_02.motion",
+  "asset_sha256": "a304c6871780604716e0d5a04fa1d94d61b76b20b5a0c593a46bbb6393bb85be",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.083
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "0afeab441e91c254e9b04ffc15650e2160249c5adbc6a8727da31987cbda8c34",
+  "species_id": "biota_ribbon_gills_25",
+  "id": "biota_ribbon_gills_25",
+  "kind": "mustelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.3403913074207208,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.09283399293292385,
+    "crouch": 0.036102108362803725,
+    "body_bob": 0.036102108362803725,
+    "natural_speed": 1.722628073991502,
+    "max_playback": 1.18,
+    "acceleration": 3.100730533184704,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_ribbon_gills_25.blend",
+  "original_source_sha256": "840b0db3fa374a6544d0a79db4fb4df371ef300686b7fced1463de1c22c2812f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_gills_25.motion",
+  "asset_sha256": "7b5e7abfce7df8ec15d414c3ba1b9a3a73db3e81b6d847732d0172ed4d31f814",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.148
+}

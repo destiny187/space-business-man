@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "efcff3cc572c90803485d1dca703afe772a54111e0d326ebfbe64860e8205e25",
+  "species_id": "biota_saddle_tendrils_25",
+  "id": "biota_saddle_tendrils_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5076597649580007,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14411465285469374,
+    "crouch": 0.056044587221269794,
+    "body_bob": 0.056044587221269794,
+    "natural_speed": 2.569128365172068,
+    "max_playback": 1.18,
+    "acceleration": 4.624431057309723,
+    "turn_rate": 5.0,
+    "bone_count": 40
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_tendrils_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_tendrils_25.blend",
+  "original_source_sha256": "f7ba6d24b6d46e6fa4c83a60adedb1addba6f1b28a7b2f410f68a6f901c984fb",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_tendrils_25.motion",
+  "asset_sha256": "95907b62c696fcbde2f67a8daebfd3b95ce8211a64e18074a9f67c31bd3d8183",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.225
+}

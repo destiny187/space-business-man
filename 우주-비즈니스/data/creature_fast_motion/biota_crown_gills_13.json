@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "89ecccc7f6e1c7f391b1da120828cff27137b3b61973816293d5f8220290286f",
+  "species_id": "biota_crown_gills_13",
+  "id": "biota_crown_gills_13",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5957809541731105,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1949828577293816,
+    "crouch": 0.07582666689475952,
+    "body_bob": 0.07582666689475952,
+    "natural_speed": 2.256746038534509,
+    "max_playback": 1.18,
+    "acceleration": 4.062142869362116,
+    "turn_rate": 5.0,
+    "bone_count": 36
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_gills_13.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_gills_13.blend",
+  "original_source_sha256": "856992ec3f39c4c255cd106cb9626077b5aba0695c65b02c31e6bdb746dfb4cc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_gills_13.motion",
+  "asset_sha256": "72573197a731ddd033ed38efa546703ac7c34b4fc42cc7754701714473aaeebf",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.164
+}

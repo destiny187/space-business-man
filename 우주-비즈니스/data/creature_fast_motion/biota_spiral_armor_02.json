@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "b8ba706c28413507c906d571244722367ec2cf75c52e0c3e48ea48ebe7d433d2",
+  "species_id": "biota_spiral_armor_02",
+  "id": "biota_spiral_armor_02",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6367966226354733,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.20840616740797308,
+    "crouch": 0.08104684288087843,
+    "body_bob": 0.08104684288087843,
+    "natural_speed": 2.4121084190737627,
+    "max_playback": 1.18,
+    "acceleration": 4.341795154332773,
+    "turn_rate": 5.0,
+    "bone_count": 38
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_armor_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_armor_02.blend",
+  "original_source_sha256": "1b3252706d382e19e4532d71c2b397db7f8046280be5a24dcd6c649516fed4f8",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_armor_02.motion",
+  "asset_sha256": "51bec8d6410dc30cd3691f4162c80a54f1db12e0bcb7281ea7f87aa31e3dfd29",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.163
+}

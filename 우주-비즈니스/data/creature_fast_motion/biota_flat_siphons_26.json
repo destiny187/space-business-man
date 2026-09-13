@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "4595f6843d05cae526e59ee5fcbf07f376cd20d84929fa9fea3b5054b0feb89f",
+  "species_id": "biota_flat_siphons_26",
+  "id": "biota_flat_siphons_26",
+  "kind": "skink",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2535321432787122,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08297415598212399,
+    "crouch": 0.03226772732638156,
+    "body_bob": 0.03226772732638156,
+    "natural_speed": 0.9603490275708796,
+    "max_playback": 1.18,
+    "acceleration": 1.7286282496275833,
+    "turn_rate": 5.0,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_siphons_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_siphons_26.blend",
+  "original_source_sha256": "3584862536ee9fe5d972bbae9de7cc057ceac519e5237ac45ff5577273df2d94",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_siphons_26.motion",
+  "asset_sha256": "0b16a960cfbb6460e33b8a6057243addf66ac416e67b4fccefd770c8e925ab25",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.215
+}

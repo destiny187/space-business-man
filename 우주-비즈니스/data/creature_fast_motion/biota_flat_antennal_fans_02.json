@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "5db53161bf30ad08f8632af6d8f19ef9a237f1aebf0adf5b97483318ea672f0a",
+  "species_id": "biota_flat_antennal_fans_02",
+  "id": "biota_flat_antennal_fans_02",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721120950322,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.17459087304928322,
+    "crouch": 0.06789645063027683,
+    "body_bob": 0.06789645063027683,
+    "natural_speed": 2.0207276973296673,
+    "max_playback": 1.18,
+    "acceleration": 3.637309855193401,
+    "turn_rate": 5.0,
+    "bone_count": 41
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_antennal_fans_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_antennal_fans_02.blend",
+  "original_source_sha256": "c52eaf970a755794b65e989914c6a045f621d673e6d7768ac699a869fa9f97ff",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_antennal_fans_02.motion",
+  "asset_sha256": "150e14855ad14c31fadf4d0347acbb124667029c5b8c4f2147b5a921542b1059",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.189
+}

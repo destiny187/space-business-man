@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "890ef13171d1e8be25c14cdcfded21b0e90e1979211aab0dfe217a7d3535acde",
+  "species_id": "bio_corkscrew_spine_06",
+  "id": "bio_corkscrew_spine_06",
+  "kind": "corkscrew_spine",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.33817838589558014,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support3": 0.5,
+      "support1": 0.5,
+      "support2": 0.0
+    },
+    "lift": 0.1106765626567353,
+    "crouch": 0.04304088547761929,
+    "body_bob": 0.04304088547761929,
+    "natural_speed": 1.280978734452955,
+    "max_playback": 1.18,
+    "acceleration": 2.305761722015319,
+    "turn_rate": 5.0,
+    "bone_count": 34
+  },
+  "source": "art/blender/creature_fast_motion/bio_corkscrew_spine_06.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_corkscrew_spine_06.blend",
+  "original_source_sha256": "ab17593639cce984f775ef0d0f3bff23cd57f3988b48a8b37b306aef0f70b9ea",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_corkscrew_spine_06.motion",
+  "asset_sha256": "bc17c07fb68fdd0d60dbccb9805d2b428739eb273df8f37a98ede7007c7075c1",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.235
+}

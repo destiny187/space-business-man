@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "806ccc10537f52e0b87fbb667a8cbae398dafa08f9b1c1e36d4264384f0c1aac",
+  "species_id": "biota_saddle_siphons_26",
+  "id": "biota_saddle_siphons_26",
+  "kind": "bovid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5246894313937724,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.15531130522485864,
+    "crouch": 0.060398840920778366,
+    "body_bob": 0.060398840920778366,
+    "natural_speed": 2.6553108876203058,
+    "max_playback": 1.18,
+    "acceleration": 4.779559597716551,
+    "turn_rate": 5.0,
+    "bone_count": 45
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_siphons_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_siphons_26.blend",
+  "original_source_sha256": "14d46492a45a766a84ce85b8f305ef4029886a5b7efe125ef69163bab499e811",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_siphons_26.motion",
+  "asset_sha256": "7927117d16e0ba2f3f2996965cda95be902c8621ed1f4dcb0db16abcb1c5f429",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.291
+}

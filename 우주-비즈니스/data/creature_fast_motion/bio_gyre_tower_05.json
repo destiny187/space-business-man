@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fingerprint": "2dc8314c5877104b6b5e3e9edf846d6cdaaf636669730366166fae1dd6e1afea",
+  "species_id": "bio_gyre_tower_05",
+  "id": "bio_gyre_tower_05",
+  "kind": "gyre_tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.572078332426307,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support6": 0.14285714285714285,
+      "support1": 0.2857142857142857,
+      "support2": 0.42857142857142855,
+      "support5": 0.5714285714285714,
+      "support3": 0.7142857142857143,
+      "support4": 0.8571428571428571
+    },
+    "lift": 0.18722563606679135,
+    "crouch": 0.07280996958152998,
+    "body_bob": 0.07280996958152998,
+    "natural_speed": 1.333515926401648,
+    "max_playback": 1.18,
+    "acceleration": 2.4003286675229667,
+    "turn_rate": 3.4,
+    "bone_count": 46
+  },
+  "source": "art/blender/creature_fast_motion/bio_gyre_tower_05.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_gyre_tower_05.blend",
+  "original_source_sha256": "3619e243ae55f9e4d222c7e1aa726dd10364f82690012bd147ebfcea453f8529",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_gyre_tower_05.motion",
+  "asset_sha256": "bf5afe75f877641525d949403acaad1711db9e50dcb0eafad44b176b1081d347",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.243
+}

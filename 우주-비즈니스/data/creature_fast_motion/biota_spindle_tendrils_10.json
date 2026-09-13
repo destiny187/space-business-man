@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "e343d43584aab98b17f2446205c069bd495fd605cc0bcd072e1a1539d07f456b",
+  "species_id": "biota_spindle_tendrils_10",
+  "id": "biota_spindle_tendrils_10",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5472333955829372,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.17909456582714303,
+    "crouch": 0.06964788671055563,
+    "body_bob": 0.06964788671055563,
+    "natural_speed": 2.0728537711474893,
+    "max_playback": 1.18,
+    "acceleration": 3.7311367880654807,
+    "turn_rate": 5.0,
+    "bone_count": 89
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_tendrils_10.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_tendrils_10.blend",
+  "original_source_sha256": "d7a53beca749a8f4bf50a27e236740e2be5eee4cf30884c8eb7e0e252573e57b",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_tendrils_10.motion",
+  "asset_sha256": "79781843960f521edbf49f5ef638db583cb4b0530e645943217f10029db5e2de",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.293
+}

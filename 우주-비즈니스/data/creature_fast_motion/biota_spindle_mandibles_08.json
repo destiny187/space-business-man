@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "bd18db3099e8b60c5ab3be2bd25d4015ae6a1f4434278d22dc805fbc347b11e0",
+  "species_id": "biota_spindle_mandibles_08",
+  "id": "biota_spindle_mandibles_08",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5472333955829372,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg9": 0.5,
+      "leg6": 0.18,
+      "leg5": 0.6799999999999999,
+      "leg7": 0.86,
+      "leg4": 0.36,
+      "leg0": 0.54,
+      "leg2": 0.72,
+      "leg1": 0.040000000000000036,
+      "leg3": 0.21999999999999997
+    },
+    "lift": 0.17909456582714303,
+    "crouch": 0.06964788671055563,
+    "body_bob": 0.06964788671055563,
+    "natural_speed": 2.0728537711474893,
+    "max_playback": 1.18,
+    "acceleration": 3.7311367880654807,
+    "turn_rate": 5.0,
+    "bone_count": 71
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_mandibles_08.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_mandibles_08.blend",
+  "original_source_sha256": "84913ee599eb80cc5ec996b024d6c4b100a99e3d16af99ac9d24e67245436cb3",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_mandibles_08.motion",
+  "asset_sha256": "8f429ee23af79c8c7b2447ceb1960dcf1ddc33cd18ef2108c30c3f7abe79b5c0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.362
+}

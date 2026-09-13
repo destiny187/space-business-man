@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "2d0e64d3984930e1e29660363d443b2deba6d3b24f028e4824946ef919dd63f3",
+  "species_id": "biota_spiral_tendrils_50",
+  "id": "biota_spiral_tendrils_50",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6453831828090968,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.2112163143738862,
+    "crouch": 0.08213967781206685,
+    "body_bob": 0.08213967781206685,
+    "natural_speed": 2.4446332682162755,
+    "max_playback": 1.18,
+    "acceleration": 4.400339882789296,
+    "turn_rate": 5.0,
+    "bone_count": 102
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_tendrils_50.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_tendrils_50.blend",
+  "original_source_sha256": "41b8e458cef1fc08b72836a61c045cc59dd194211688c27dfd6f1df9c6155151",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_tendrils_50.motion",
+  "asset_sha256": "2e93cb3cd92d7434f66bffc2a9ed27b60a240e2664b8e02d5a4e3c72e9527580",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.39
+}

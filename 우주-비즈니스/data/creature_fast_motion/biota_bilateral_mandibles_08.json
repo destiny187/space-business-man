@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "9a068fa3aa4c5e5a5b34d39a0e114e5ec2518db7cfaa30e28dda7c836de7e903",
+  "species_id": "biota_bilateral_mandibles_08",
+  "id": "biota_bilateral_mandibles_08",
+  "kind": "bilateral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4719109134757473,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg5": 0.5,
+      "leg9": 0.6799999999999999,
+      "leg4": 0.18,
+      "leg6": 0.36,
+      "leg7": 0.86,
+      "leg0": 0.54,
+      "leg2": 0.72,
+      "leg1": 0.040000000000000036,
+      "leg3": 0.21999999999999997
+    },
+    "lift": 0.15444357168297182,
+    "crouch": 0.06006138898782239,
+    "body_bob": 0.06006138898782239,
+    "natural_speed": 1.7875413389232853,
+    "max_playback": 1.18,
+    "acceleration": 3.2175744100619137,
+    "turn_rate": 5.0,
+    "bone_count": 72
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_mandibles_08.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_bilateral_mandibles_08.blend",
+  "original_source_sha256": "b31935209154ee795392e3dbc2609dec988b12c04103d92942ed1b34faf100d2",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_mandibles_08.motion",
+  "asset_sha256": "818fcec4c406e817763fafa1ad56d6f0084ee0929f140666e3783a120e02f657",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.241
+}

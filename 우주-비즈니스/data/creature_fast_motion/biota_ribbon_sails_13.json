@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "fc6919b3dfb4336b0d10e62dd2fe7f15e4a97e364cbb44cce02c879eb043bd50",
+  "species_id": "biota_ribbon_sails_13",
+  "id": "biota_ribbon_sails_13",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.27516059271146787,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.0900525576146622,
+    "crouch": 0.03502043907236864,
+    "body_bob": 0.03502043907236864,
+    "natural_speed": 1.0422749723919238,
+    "max_playback": 1.18,
+    "acceleration": 1.876094950305463,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_sails_13.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_sails_13.blend",
+  "original_source_sha256": "33385e7eaddf2fa79ac90739aa97a8dd2a1bd371472b80422cd6a3d2efdd7571",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_sails_13.motion",
+  "asset_sha256": "f47b34d5bce7908557d4f650fe9d28081e0047c5c94806ad8b41500338727152",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 2.51
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "f5b5a3753c482e05fd0246b66ba1416eaf4bc706d423767309d5912b775a89c2",
+  "species_id": "biota_lobopod_gills_02",
+  "id": "biota_lobopod_gills_02",
+  "kind": "lobopod",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3529382297553115,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.11550705701082921,
+    "crouch": 0.04491941105976692,
+    "body_bob": 0.04491941105976692,
+    "natural_speed": 1.3368872339216344,
+    "max_playback": 1.18,
+    "acceleration": 2.4063970210589423,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_lobopod_gills_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_lobopod_gills_02.blend",
+  "original_source_sha256": "43e15281cf09db11b1bbaf7c38d56a4a29e995b3fb78f5ae64bc45a6d71a1d51",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_lobopod_gills_02.motion",
+  "asset_sha256": "3fc940ad5fde5f60e61ae830511fea267a0e2b5bd9b7c3d6855baaa23e1c9b33",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.34
+}

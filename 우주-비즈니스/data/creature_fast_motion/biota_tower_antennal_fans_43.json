@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "4606b5aa4762d427d48178d8c3c2ab29b44570bdfadbe765184595238f1ba85b",
+  "species_id": "biota_tower_antennal_fans_43",
+  "id": "biota_tower_antennal_fans_43",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.6045087930032794,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg7": 0.125,
+      "leg1": 0.25,
+      "leg2": 0.375,
+      "leg6": 0.5,
+      "leg5": 0.625,
+      "leg3": 0.75,
+      "leg4": 0.875
+    },
+    "lift": 0.1978392413465278,
+    "crouch": 0.07693748274587194,
+    "body_bob": 0.07693748274587194,
+    "natural_speed": 1.4091114056020497,
+    "max_playback": 1.18,
+    "acceleration": 2.5364005300836894,
+    "turn_rate": 3.4,
+    "bone_count": 36
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_antennal_fans_43.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_antennal_fans_43.blend",
+  "original_source_sha256": "055adc2e62539d9d83825638cd424ba584a0ecdc3240471302d39e970b6117b4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_antennal_fans_43.motion",
+  "asset_sha256": "e57a0020cf154906c8dbd3e1c05cb501338b58994d72f1cfe4080044b4cadf6c",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.341
+}

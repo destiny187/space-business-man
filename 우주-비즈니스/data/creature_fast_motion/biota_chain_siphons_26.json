@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "6eebc3fb2b8dcbfa00c841d2c348ed4a910e89aafc3bee288427162ba4377ab3",
+  "species_id": "biota_chain_siphons_26",
+  "id": "biota_chain_siphons_26",
+  "kind": "lagomorph",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.3422890438361892,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.0,
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.09335155740986976,
+    "crouch": 0.03630338343717158,
+    "body_bob": 0.03630338343717158,
+    "natural_speed": 1.3144740546704656,
+    "max_playback": 1.18,
+    "acceleration": 2.3660532984068383,
+    "turn_rate": 5.0,
+    "bone_count": 45
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_siphons_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_chain_siphons_26.blend",
+  "original_source_sha256": "b61a040916ba49ad4a54e4da8d1cce95179123f899ae99d33758a433365a0209",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_siphons_26.motion",
+  "asset_sha256": "93bfe85785fd2acd8759d40bf7610f7e17c7750aaa7850b94405f43c4dd3fe8b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.148
+}

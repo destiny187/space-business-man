@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "e8410e0767f161a91d3034475eb84728e02aa8900311d05fccc2d712bab262c7",
+  "species_id": "biota_bilateral_mandibles_01",
+  "id": "biota_bilateral_mandibles_01",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.667588438887831,
+    "stance": 0.65,
+    "period": 0.5555555555555556,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 1.8487064461509166,
+    "max_playback": 1.18,
+    "acceleration": 3.32767160307165,
+    "turn_rate": 5.0,
+    "bone_count": 41
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_mandibles_01.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_mandibles_01.blend",
+  "original_source_sha256": "a9b7d8691a2b6abe4ca0de7e46ae01de1d7c8c344a2d8ab075d59158aff9dcbe",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_mandibles_01.motion",
+  "asset_sha256": "7e0f8d75b7710a88769073b2fc804ae098ac81f8b1aad1f4a6441f369ce22aca",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.152
+}

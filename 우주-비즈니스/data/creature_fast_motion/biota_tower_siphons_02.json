@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "86e207816f178e6ae0fb1270253ceca681819eba83175b5566c471e65f1d34a6",
+  "species_id": "biota_tower_siphons_02",
+  "id": "biota_tower_siphons_02",
+  "kind": "tower",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5875582672048986,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg5": 0.16666666666666666,
+      "leg1": 0.3333333333333333,
+      "leg4": 0.5,
+      "leg2": 0.6666666666666666,
+      "leg3": 0.8333333333333334
+    },
+    "lift": 0.19229179653978495,
+    "crouch": 0.07478014309880526,
+    "body_bob": 0.07478014309880526,
+    "natural_speed": 1.3695996904543088,
+    "max_playback": 1.18,
+    "acceleration": 2.465279442817756,
+    "turn_rate": 3.4,
+    "bone_count": 49
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_siphons_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_tower_siphons_02.blend",
+  "original_source_sha256": "bb26141942696822c80f009f60278f061f1b3371401a747862ad007f2de41fe7",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_siphons_02.motion",
+  "asset_sha256": "e3fd7864973af03b0b53e925f72cb7c6c85fe03976a8e0a27e77d166207f77f2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.149
+}

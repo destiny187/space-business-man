@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "9ac80f93dab7e6d6fea9a296c2c785d8966458391bc99c1be09748b00b560e69",
+  "species_id": "biota_spindle_antennal_fans_18",
+  "id": "biota_spindle_antennal_fans_18",
+  "kind": "spindle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5307582389636902,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.1737026963881168,
+    "crouch": 0.06755104859537876,
+    "body_bob": 0.06755104859537876,
+    "natural_speed": 2.010447874862463,
+    "max_playback": 1.18,
+    "acceleration": 3.6188061747524336,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_antennal_fans_18.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spindle_antennal_fans_18.blend",
+  "original_source_sha256": "4f1a0a6b2a41af12291fb8c8a4af8b17c77e1a55475b0e6752283bd4a326b747",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_antennal_fans_18.motion",
+  "asset_sha256": "6df0b130f2ab59775968be19bde782d93d66df4548f2a1e828855da4c7df7323",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.227
+}

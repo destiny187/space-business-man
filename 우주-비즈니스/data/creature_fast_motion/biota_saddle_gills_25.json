@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "f12c7457be5da4088745988a94bae8252db84ae9c6b3808e2f35b6ce52e11df1",
+  "species_id": "biota_saddle_gills_25",
+  "id": "biota_saddle_gills_25",
+  "kind": "rhinocerid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5106926188211909,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.14435864699403575,
+    "crouch": 0.056139473831013906,
+    "body_bob": 0.056139473831013906,
+    "natural_speed": 2.5844768158967146,
+    "max_playback": 1.18,
+    "acceleration": 4.652058268614087,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_gills_25.blend",
+  "original_source_sha256": "073a5d23bbf0d8faacecf002b98a6ecb3114929a986080c2f6e07c86fd62e93c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_gills_25.motion",
+  "asset_sha256": "b43f1b3bad8c7713852653277f071dabe00adeb4635fa409ab4223598d6c205f",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.206
+}

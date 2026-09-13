@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "33cdf104d6656f15c4b3e51535c018d5138d77cfbfdda0e1fcf795ef5f58a44f",
+  "species_id": "biota_flat_gills_05",
+  "id": "biota_flat_gills_05",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721225228282,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1745908764620165,
+    "crouch": 0.06789645195745087,
+    "body_bob": 0.06789645195745087,
+    "natural_speed": 2.0207277368288943,
+    "max_playback": 1.18,
+    "acceleration": 3.63730992629201,
+    "turn_rate": 5.0,
+    "bone_count": 44
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_gills_05.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_gills_05.blend",
+  "original_source_sha256": "dfe4652a2658d725b7049748de3e1866c56c84a0b34e3d108073566a69ecf9a9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_gills_05.motion",
+  "asset_sha256": "71b27d61e0ba3ac0eaa9fbdb1ff1fe663b9d41bd552c044db12c84026fb8981c",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.369
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "86b956096bb32e31415284a527d60ac70f3f8badacdb741a3dc40ba2d1abac0d",
+  "species_id": "biota_spiral_siphons_01",
+  "id": "biota_spiral_siphons_01",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6367966226354733,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.20840616740797308,
+    "crouch": 0.08104684288087843,
+    "body_bob": 0.08104684288087843,
+    "natural_speed": 2.4121084190737627,
+    "max_playback": 1.18,
+    "acceleration": 4.341795154332773,
+    "turn_rate": 5.0,
+    "bone_count": 45
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_siphons_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_siphons_01.blend",
+  "original_source_sha256": "91088625410ed709342b0b696cf6a4a731c94e2f22e426e89164427cff6bd79f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_siphons_01.motion",
+  "asset_sha256": "9941cf1377921b01623e3feed6301c858afb3b6754b8ee3656b2bc542d9934d8",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.183
+}

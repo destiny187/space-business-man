@@ -1,5 +1,7 @@
 # 에셋 버전 관리 — Git LFS와 생성 결과 분리
 
+2026-09-14 추가: 동물의 압축 관절 동작 `.motion`도 LFS 바이너리다. `art/blender/creature_fast_motion`의 편집 액션 라이브러리와 `assets/animations/creatures`의 게임 모션을 함께 보존한다. 종별 JSON·제작/검수 코드는 일반 Git이다. 내보내기에 원시 `.motion`을 명시하고 Windows 패키지 검사는 해당 파일 전부의 포함 여부를 확인한다. [제작·편집·검수 경계](../production/177-creature-fast-motion-rollout.md)를 따른다.
+
 2026-09-13 사용자 요청으로 교체가 완료된 구형 동물 5,600종의 Blender/GLB와 전용 캐시를 실제 삭제한다. 이전의 구형 자산 보존 기록보다 [172 삭제·보존 범위](../production/172-retired-animal-assets.md)가 우선한다. 종 ID·카탈로그 해시·현재 식물/미생물과 승인 대표/제작 근거는 유지하며, Git 이력과 LFS 저장소는 삭제하지 않는다.
 
 

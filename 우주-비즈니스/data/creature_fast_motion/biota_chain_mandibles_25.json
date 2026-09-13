@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "b1c2d80a2ebbfd493a94387af8c661242fe2c4340c0a5016033eac70ad193245",
+  "species_id": "biota_chain_mandibles_25",
+  "id": "biota_chain_mandibles_25",
+  "kind": "macropod",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.6063158853348262,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.16535887781858893,
+    "crouch": 0.06430623026278459,
+    "body_bob": 0.06430623026278459,
+    "natural_speed": 2.328402017414847,
+    "max_playback": 1.18,
+    "acceleration": 4.191123631346724,
+    "turn_rate": 5.0,
+    "bone_count": 29
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_chain_mandibles_25.blend",
+  "original_source_sha256": "63eeabb2575f270ab918c00f9bdc1bfa8519549b68568e9b210e643b410077bb",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_mandibles_25.motion",
+  "asset_sha256": "490130adca99a50082368f1f13957287a46058f74e1ecbac0718293264ef6ad7",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.129
+}

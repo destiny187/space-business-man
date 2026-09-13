@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "cb21a59bcb2c4d9650cffb4081bdf4afcd0ad965961ffa40a186429654770bea",
+  "species_id": "biota_saddle_mandibles_02",
+  "id": "biota_saddle_mandibles_02",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5806789258079688,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg0": 0.5,
+      "leg2": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.19004037571897156,
+    "crouch": 0.07390459055737783,
+    "body_bob": 0.07390459055737783,
+    "natural_speed": 2.199541385636245,
+    "max_playback": 1.18,
+    "acceleration": 3.959174494145241,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_mandibles_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_mandibles_02.blend",
+  "original_source_sha256": "6ee995163e64189c6a4f722564838a9b79aed85f23660b3b5ebd24c637eb9782",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_mandibles_02.motion",
+  "asset_sha256": "e3a13bef873c9cb1a27b453f9a299a3376bf6a348718ec7ff9ecf59d5dc1b627",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.204
+}

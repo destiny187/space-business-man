@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "d792aa8c02d0b2276b28108d6232765a36e83d06f0f82bbb947f9a66b60f6a7b",
+  "species_id": "biota_chain_mandibles_50",
+  "id": "biota_chain_mandibles_50",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.29624669670268255,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.09695346437542338,
+    "crouch": 0.037704125034886876,
+    "body_bob": 0.037704125034886876,
+    "natural_speed": 1.1221465784192521,
+    "max_playback": 1.18,
+    "acceleration": 2.019863841154654,
+    "turn_rate": 5.0,
+    "bone_count": 78
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_mandibles_50.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_mandibles_50.blend",
+  "original_source_sha256": "8af47a58bd740f721aa10eaf8ed2fb267f57f16abae0cc8d224f3875d3d3e2f9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_mandibles_50.motion",
+  "asset_sha256": "e8700a3589046310e9ae17d09f37e5cfc46cf82fbbca044b7b48f6089a1d4bdf",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.384
+}

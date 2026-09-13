@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "30c51378ac69661b69f0b7e5b144724af8237de49bc0b71fdf46acf053afe49f",
+  "species_id": "biota_amphora_siphons_21",
+  "id": "biota_amphora_siphons_21",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.7009743439013514,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.25,
+      "leg3": 0.5,
+      "leg2": 0.75
+    },
+    "lift": 0.2294097852768059,
+    "crouch": 0.08921491649653564,
+    "body_bob": 0.08921491649653564,
+    "natural_speed": 1.6339728296068796,
+    "max_playback": 1.18,
+    "acceleration": 2.9411510932923832,
+    "turn_rate": 3.4,
+    "bone_count": 46
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_siphons_21.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_siphons_21.blend",
+  "original_source_sha256": "65901834525894d90a65d7b19cd555078fde09d330377147a39c8dd59dc5d46d",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_siphons_21.motion",
+  "asset_sha256": "e2ca1faf5a1a62f2ea43f4c4e66863ca0d6497e0428444f6cd43423defec3213",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.267
+}

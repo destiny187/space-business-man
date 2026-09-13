@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "8a5087c4a626670088ce7c5208507a5e1af209ddeeb4b9e64094efe090ab68be",
+  "species_id": "biota_crown_tendrils_03",
+  "id": "biota_crown_tendrils_03",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5724592462339838,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.18735029876748557,
+    "crouch": 0.07285844952068884,
+    "body_bob": 0.07285844952068884,
+    "natural_speed": 2.168406235734787,
+    "max_playback": 1.18,
+    "acceleration": 3.9031312243226166,
+    "turn_rate": 5.0,
+    "bone_count": 68
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_tendrils_03.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_tendrils_03.blend",
+  "original_source_sha256": "e6911b61bb0d00e18a874943bd244b48a1f64447651bc91adca99cd053b73b5f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_tendrils_03.motion",
+  "asset_sha256": "aa8665710c1e870a8aa12874e94e85ab3f328eaef548ce9e3cddb7c949f2dd90",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.28
+}

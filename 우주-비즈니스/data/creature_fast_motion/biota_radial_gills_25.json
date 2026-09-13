@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "213e109d74e4fd22de738468240c223e08a73c50412c6f99977e1503689ef259",
+  "species_id": "biota_radial_gills_25",
+  "id": "biota_radial_gills_25",
+  "kind": "chelonian",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.37596089926823856,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.12304174885142352,
+    "crouch": 0.047849568997775815,
+    "body_bob": 0.047849568997775815,
+    "natural_speed": 1.4240943154099945,
+    "max_playback": 1.18,
+    "acceleration": 2.5633697677379903,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_gills_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_radial_gills_25.blend",
+  "original_source_sha256": "108045f17876e1e5c154f8c7452d1515db1536f4fea0a3ea9b8c636a23af8ac7",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_gills_25.motion",
+  "asset_sha256": "4439b3811f1ffd80754cc4d4b5fbdf04840f5aca1f1d2af0ff498c2658aab51f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.134
+}

@@ -1,0 +1,96 @@
+{
+  "species": 5600,
+  "clips": 5671,
+  "lod_skeletons": 11200,
+  "modes": {
+    "gallop": 100,
+    "multi": 4233,
+    "heavy": 704,
+    "hop": 36,
+    "wave": 57,
+    "flight": 165,
+    "float": 245,
+    "swim": 60
+  },
+  "sources_bytes": 934238508,
+  "motions_bytes": 242379839,
+  "scope": "All motion tracks, loop closure, two existing glTF skeletons/rests, original source hashes. Not visual approval of each species.",
+  "authoring_sha256": "835c231381b0a58ba20449e9df78ee915f9247548552eaab0e221150604f0509",
+  "rendered_species": 17,
+  "rendered_frames": 3600,
+  "actual_campaign_additional_species": "biota_lobopod_siphons_25",
+  "checks": {
+    "host_movement": {
+      "checks": 22,
+      "failures": 0,
+      "log": "host_movement-check.txt"
+    },
+    "existing_attack_patterns": {
+      "checks": 20,
+      "failures": 0,
+      "log": "existing_attack_patterns-check.txt"
+    },
+    "native_incidents": {
+      "checks": 65,
+      "failures": 0,
+      "log": "native_incidents-check.txt"
+    },
+    "flight_path": {
+      "checks": 7,
+      "failures": 0,
+      "log": "flight_path-check.txt"
+    },
+    "actual_campaign": {
+      "checks": 14,
+      "failures": 0,
+      "log": "actual_campaign-check.txt"
+    }
+  },
+  "comparison": [
+    {
+      "species_id": "biota_spindle_armor_25",
+      "art_id": "sailhorn",
+      "steady_requested_mps": 3.84,
+      "steady_rate": 0.853335468190266,
+      "max_fast_rate": 1.03839923615047,
+      "max_transition_rate": 1.58658114346591,
+      "max_planted_error": 0.000688991509377956
+    },
+    {
+      "species_id": "biota_lobopod_armor_26",
+      "art_id": "shearprowler",
+      "steady_requested_mps": 2.76011494252874,
+      "steady_rate": 1.03839989739495,
+      "max_fast_rate": 1.03839989739495,
+      "max_transition_rate": 1.62083758757665,
+      "max_planted_error": 0.00189513782970607
+    },
+    {
+      "species_id": "bio_quill_amphora_01",
+      "art_id": "pressureurn",
+      "steady_requested_mps": 1.48038576264725,
+      "steady_rate": 1.03839591512352,
+      "max_fast_rate": 1.03840034687858,
+      "max_transition_rate": 1.89054870605469,
+      "max_planted_error": 2.27514919970417e-06
+    },
+    {
+      "species_id": "biota_chain_armor_26",
+      "art_id": "vaulthopper",
+      "steady_requested_mps": 3.46749994045986,
+      "steady_rate": 1.03840079464457,
+      "max_fast_rate": 1.03840079464457,
+      "max_transition_rate": 1.63889139890671,
+      "max_planted_error": 8.49192656460218e-05
+    },
+    {
+      "species_id": "biota_ribbon_armor_26",
+      "art_id": "reedserpent",
+      "steady_requested_mps": 4.025,
+      "steady_rate": 0.6637093040590735,
+      "max_fast_rate": 0.663709382687937,
+      "max_transition_rate": 1.61111497879028,
+      "max_planted_error": 0
+    }
+  ]
+}

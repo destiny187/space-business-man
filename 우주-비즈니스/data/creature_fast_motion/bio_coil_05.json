@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "fingerprint": "40cbc1c7845e0c09e09cb0c94fddc502cd454a3c340b7a556af32f3dc2fd17e6",
+  "species_id": "bio_coil_05",
+  "id": "bio_coil_05",
+  "kind": "coil",
+  "profile": {
+    "mode": "wave",
+    "medium": "ground",
+    "stride": 1.5852198028564453,
+    "stance": 0.65,
+    "period": 0.6,
+    "limb_phases": {},
+    "lift": 0.18,
+    "crouch": 0.0,
+    "body_bob": 0.07,
+    "natural_speed": 4.064666161170373,
+    "max_playback": 1.18,
+    "acceleration": 7.316399090106671,
+    "turn_rate": 5.0,
+    "bone_count": 20
+  },
+  "source": "art/blender/creature_fast_motion/bio_coil_05.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_coil_05.blend",
+  "original_source_sha256": "bf767500536ee258736d42218fc8708b6b095362fc08de452aa665c9e818128c",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_coil_05.motion",
+  "asset_sha256": "ac0af86150b32e6abee3f484f69c426f071837b11290344d0b8ca8e602300a3b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.108
+}

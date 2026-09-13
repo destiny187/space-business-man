@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "a8951292e4e3a751e40788105369f5d6d4060c677fc52e2db861ae24cbb9e0d7",
+  "species_id": "biota_radial_mandibles_01",
+  "id": "biota_radial_mandibles_01",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721225228282,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1745908764620165,
+    "crouch": 0.06789645195745087,
+    "body_bob": 0.06789645195745087,
+    "natural_speed": 2.0207277368288943,
+    "max_playback": 1.18,
+    "acceleration": 3.63730992629201,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_mandibles_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_mandibles_01.blend",
+  "original_source_sha256": "da49cb42cb85e0e3b6be21e46e9e2b20f877726b12d1bf66779d52b51b6082ed",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_mandibles_01.motion",
+  "asset_sha256": "2ef470195f2af91c9eeef3ff691e1a3e5e623f5fba374633b55b6349a9779225",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.209
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "0e087ec09c5d24cbfdf0aeb1e1412d863d89e9270cbefa02b9a292c56cb1c72b",
+  "species_id": "biota_flat_tendrils_03",
+  "id": "biota_flat_tendrils_03",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721158747621,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.17459087428628572,
+    "crouch": 0.06789645111133336,
+    "body_bob": 0.06789645111133336,
+    "natural_speed": 2.020727711646826,
+    "max_playback": 1.18,
+    "acceleration": 3.6373098809642865,
+    "turn_rate": 5.0,
+    "bone_count": 70
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_tendrils_03.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_tendrils_03.blend",
+  "original_source_sha256": "710c9789cbcaad40e377e50e7ba45fc77351072e38c9b4d2bf32f17495822201",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_tendrils_03.motion",
+  "asset_sha256": "340848ba3a05c5f4a5e7063475802bc0a58905748f8a6eac74719df5c78e7f37",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.246
+}

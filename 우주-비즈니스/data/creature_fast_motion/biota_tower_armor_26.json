@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "66d0e0c8b7835e85567e0cd3b8b3786fd7abe7947f1ee558288714c6cbca9579",
+  "species_id": "biota_tower_armor_26",
+  "id": "biota_tower_armor_26",
+  "kind": "camelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.563039509214705,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.1739267392516099,
+    "crouch": 0.06763817637562608,
+    "body_bob": 0.06763817637562608,
+    "natural_speed": 2.8493902288193573,
+    "max_playback": 1.18,
+    "acceleration": 5.128902411874844,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_armor_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_armor_26.blend",
+  "original_source_sha256": "935611ea636b4980a61f84681d0b796001700f4defe3b53804164e3c8b9fe429",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_armor_26.motion",
+  "asset_sha256": "b267722de244df10b8fc32d8df8e061baca093acb18eb24e843b49d5dc0ba27e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.144
+}

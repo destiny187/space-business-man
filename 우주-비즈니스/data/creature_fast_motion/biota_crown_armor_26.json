@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "5168656b2123390032af5e6d4ef0f127afd17e76bf5c118b6b3f9212c39c8d89",
+  "species_id": "biota_crown_armor_26",
+  "id": "biota_crown_armor_26",
+  "kind": "scorpion",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6239493599515593,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.20420160871141937,
+    "crouch": 0.07941173672110755,
+    "body_bob": 0.07941173672110755,
+    "natural_speed": 2.363444545271058,
+    "max_playback": 1.18,
+    "acceleration": 4.254200181487905,
+    "turn_rate": 5.0,
+    "bone_count": 53
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_armor_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_crown_armor_26.blend",
+  "original_source_sha256": "959d22e9e4b64eed9be7ba4a0fead25f83d17f2cc7fc990ff530901879698bbc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_armor_26.motion",
+  "asset_sha256": "faa7390a20684425dfebe74ab3bb25469d96e409a05d715fe106971fa12ed469",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.178
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "59a3a7ec016a03065222189d0c578856e911d6bc041c021460835c144763beeb",
+  "species_id": "biota_chain_gills_43",
+  "id": "biota_chain_gills_43",
+  "kind": "chain",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3118849604424413,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg7": 0.5,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.1020714415993444,
+    "crouch": 0.03969444951085616,
+    "body_bob": 0.03969444951085616,
+    "natural_speed": 1.181382425918338,
+    "max_playback": 1.18,
+    "acceleration": 2.1264883666530086,
+    "turn_rate": 5.0,
+    "bone_count": 46
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_gills_43.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_chain_gills_43.blend",
+  "original_source_sha256": "3ad937d035b16f7a79a7d4ef4fd6a3dd2ff692a86a6c12f9e7d1ca65dcacfb60",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_gills_43.motion",
+  "asset_sha256": "990a0dad98755a68d78d55b6fc6105b8c1795c0d3adb8bbfa2992471395d628d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.191
+}

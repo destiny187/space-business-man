@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "a7d40da86954300d1f79b3bf88d4621f0cf01ec5135eaa1a0dd04573cfa5c5f9",
+  "species_id": "biota_ribbon_armor_25",
+  "id": "biota_ribbon_armor_25",
+  "kind": "mustelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.3408372832952919,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.09295562271689778,
+    "crouch": 0.03614940883434914,
+    "body_bob": 0.03614940883434914,
+    "natural_speed": 1.7248850369194935,
+    "max_playback": 1.18,
+    "acceleration": 3.1047930664550885,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_ribbon_armor_25.blend",
+  "original_source_sha256": "97c164c518e807b2ad3f64388dbfb8c0be6fd30df93146a3fa50aa24307f125f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_armor_25.motion",
+  "asset_sha256": "0d202fae8ad4ca32c4c79e11871c431e582fd0e9d58acde2c51b0d6e4620d900",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.168
+}

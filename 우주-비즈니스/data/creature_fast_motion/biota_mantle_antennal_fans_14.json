@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "b6f2c6027475eadf6d426540c8c630b1ce3de85522ac2a059c9ccaf3ec13482a",
+  "species_id": "biota_mantle_antennal_fans_14",
+  "id": "biota_mantle_antennal_fans_14",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.596377345435806,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.19517804032444558,
+    "crouch": 0.0759025712372844,
+    "body_bob": 0.0759025712372844,
+    "natural_speed": 2.25900509634775,
+    "max_playback": 1.18,
+    "acceleration": 4.06620917342595,
+    "turn_rate": 5.0,
+    "bone_count": 46
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_antennal_fans_14.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_antennal_fans_14.blend",
+  "original_source_sha256": "5c53a762b1927264c129e8dc99c100cf5cb0b85cc077470101839a5b7899797d",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_antennal_fans_14.motion",
+  "asset_sha256": "3ed535d37305a256558940b553076e593b31cb46436cf649cba0f5519186ce4e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.454
+}

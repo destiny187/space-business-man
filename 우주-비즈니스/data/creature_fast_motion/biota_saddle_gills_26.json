@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "5a9f697260bc306bb09dee8e62a7f7a24fb0f2a79f4239799e4d1878671554c8",
+  "species_id": "biota_saddle_gills_26",
+  "id": "biota_saddle_gills_26",
+  "kind": "bovid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5257160635222128,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.1553903034494674,
+    "crouch": 0.060429562452570654,
+    "body_bob": 0.060429562452570654,
+    "natural_speed": 2.660506394343182,
+    "max_playback": 1.18,
+    "acceleration": 4.788911509817727,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_gills_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_gills_26.blend",
+  "original_source_sha256": "471f7c05aa0055b9f2ffd5bb105b0944ac017266227164e3ea799de0233851b8",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_gills_26.motion",
+  "asset_sha256": "35fdea9c2eee4e8650abbdd2dcae4f303d4fdeb0911d7a25e447306e57c4410a",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.256
+}

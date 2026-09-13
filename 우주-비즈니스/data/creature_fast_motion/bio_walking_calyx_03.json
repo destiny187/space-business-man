@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "c15a64d43f1ec39ced8172a746b97bb14f163dfa938c346f4ea22b0fed53f466",
+  "species_id": "bio_walking_calyx_03",
+  "id": "bio_walking_calyx_03",
+  "kind": "walking_calyx",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.4163243622192029,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support4": 0.2,
+      "support1": 0.4,
+      "support3": 0.6,
+      "support2": 0.8
+    },
+    "lift": 0.1362516094535573,
+    "crouch": 0.05298673700971673,
+    "body_bob": 0.05298673700971673,
+    "natural_speed": 0.9704530587860206,
+    "max_playback": 1.18,
+    "acceleration": 1.7468155058148371,
+    "turn_rate": 3.4,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/bio_walking_calyx_03.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_walking_calyx_03.blend",
+  "original_source_sha256": "090a4d6a6b537d3db07e7143ace70ab899aa8e626e688d451882b496acf28863",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_walking_calyx_03.motion",
+  "asset_sha256": "65bf7cef5c78c2348297ca0c90f129a628d2a42bc94dfe4dcc78e1ec90ec752f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.175
+}

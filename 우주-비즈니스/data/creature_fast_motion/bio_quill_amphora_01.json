@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fingerprint": "95cdd33dac45961206ad2867caf7051a29cc2a684ec0ba3d753b793e9b735138",
+  "species_id": "bio_quill_amphora_01",
+  "id": "pressureurn",
+  "kind": "tripod",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.6116000502462172,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "tripod1": 0.0,
+      "tripod2": 0.3333333333333333,
+      "tripod0": 0.6666666666666666
+    },
+    "lift": 0.20016001644421652,
+    "crouch": 0.0778400063949731,
+    "body_bob": 0.0778400063949731,
+    "natural_speed": 1.425641142765075,
+    "max_playback": 1.18,
+    "acceleration": 2.566154056977135,
+    "turn_rate": 3.4,
+    "bone_count": 17
+  },
+  "source": "art/blender/creature_fast_motion/bio_quill_amphora_01.blend",
+  "original_source": "art/blender/creature_studies_motion/pressureurn.blend",
+  "original_source_sha256": "55badf20c500f9f4acfccc496fb35d5fdead5bc27a658e868d2fd330fda987f4",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_quill_amphora_01.motion",
+  "asset_sha256": "2fe33e83bb6b117295c7ea3636a3b878d5e6f776c179294daa3152eddf2fe106",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.071
+}

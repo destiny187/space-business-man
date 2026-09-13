@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "1215ebdca0b2e134ca464c79a988b2ed98cd8961cfde109ca0c73dabb06ce0a6",
+  "species_id": "biota_saddle_gills_30",
+  "id": "biota_saddle_gills_30",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5578817732777053,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg3": 0.5,
+      "leg2": 0.0,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.1825794894363399,
+    "crouch": 0.07100313478079885,
+    "body_bob": 0.07100313478079885,
+    "natural_speed": 2.113188535142823,
+    "max_playback": 1.18,
+    "acceleration": 3.8037393632570815,
+    "turn_rate": 5.0,
+    "bone_count": 42
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_gills_30.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_gills_30.blend",
+  "original_source_sha256": "9adfc099fde92d82aa9002ea1adde7f782389f23bd637d7aa800a7fd24eb80ec",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_gills_30.motion",
+  "asset_sha256": "f676f20ac2e584a503313b41900bad1901a8fd39f970d9fc178591fb0ac882c0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.23
+}

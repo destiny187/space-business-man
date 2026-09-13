@@ -20,6 +20,10 @@ var movement_rate := 1.0
 # Surface flight presentation supplies a continuous takeoff/landing blend.
 var flight_blend := -1.0
 var flight_clock := -1.0
+# Actual flight displacement supplied by the world; negative keeps catalogue preview behavior.
+var flight_speed := -1.0
+# Incident authority clock shares the ground snapshot interpolator without combat ownership.
+var locomotion_stamp := -1.0
 var state := "idle"
 var combat_override:=false
 var restored_down:=false
@@ -61,6 +65,7 @@ func configure(form: Dictionary, look: Dictionary = {},ready_scenes: Array=[],re
 	assert(review_data.is_empty() or not ready_scenes.is_empty(),"Direct review requires its generated scenes")
 	definition=form;remodel=review_data if not review_data.is_empty() else RemodelRegistry.entry(form);remodel_colors.clear();combat_override=false;restored_down=false;combat_pattern="none";combat_phase="";combat_clock=0.0
 	incident_pose.clear()
+	flight_speed=-1.;flight_clock=-1.;flight_blend=-1.;locomotion_stamp=-1.
 	deferred_far_scene=null;deferred_material_cache.clear();visible_model=-1;desired_distant=false
 	if attack_timing.is_empty():attack_timing=JSON.parse_string(FileAccess.get_file_as_string("res://data/bestiary/attack_presentation.json")).timing_seconds
 	var timing: Dictionary=attack_timing

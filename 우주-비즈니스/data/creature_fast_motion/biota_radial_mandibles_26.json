@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "7921e04707f18fa26554fd6b1bf4bf5b8f648257f8f6c3549a167804fcb412f4",
+  "species_id": "biota_radial_mandibles_26",
+  "id": "biota_radial_mandibles_26",
+  "kind": "crocodilian",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.298081664293324,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.09755399922326967,
+    "crouch": 0.037937666364604876,
+    "body_bob": 0.037937666364604876,
+    "natural_speed": 1.1290972132322878,
+    "max_playback": 1.18,
+    "acceleration": 2.032374983818118,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_mandibles_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_radial_mandibles_26.blend",
+  "original_source_sha256": "bf51c1b944a9b843c4675c5d1234473dd4a873989ea681597eaf31f6cac68e83",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_mandibles_26.motion",
+  "asset_sha256": "75d0eeadfe0b34a79d99392dce152917565795c07275cce48cb904b95976e216",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.136
+}

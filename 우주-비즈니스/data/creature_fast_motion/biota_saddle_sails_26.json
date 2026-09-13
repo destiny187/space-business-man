@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "646496c3a7e0e8df5c666f57117a7835f8e088d0614e8a12db11c3f4dbd2f52d",
+  "species_id": "biota_saddle_sails_26",
+  "id": "biota_saddle_sails_26",
+  "kind": "bovid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5243569510580766,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.155285746401878,
+    "crouch": 0.06038890137850812,
+    "body_bob": 0.06038890137850812,
+    "natural_speed": 2.6536282948283225,
+    "max_playback": 1.18,
+    "acceleration": 4.7765309306909804,
+    "turn_rate": 5.0,
+    "bone_count": 29
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_sails_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_sails_26.blend",
+  "original_source_sha256": "88cd71f233fa63636618b9302502d552776589c7f66fda1ec2c93c9aee38a5f0",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_sails_26.motion",
+  "asset_sha256": "9e7ce9e0ae1369da369ea6dde329fdaef84475a5af1f1c2238cd7d4fcfc6e4fb",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.376
+}

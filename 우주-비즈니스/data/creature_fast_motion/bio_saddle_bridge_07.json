@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "7c45d2b2bc677b3d7c226c0efcfa0cefa2b1063c2d46a9d4b6d31f1cfaacc28b",
+  "species_id": "bio_saddle_bridge_07",
+  "id": "bio_saddle_bridge_07",
+  "kind": "saddle_bridge",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.45403883455843064,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support5": 0.0,
+      "support1": 0.0,
+      "support4": 0.5,
+      "support2": 0.5,
+      "support3": 0.0
+    },
+    "lift": 0.14859452767366818,
+    "crouch": 0.05778676076198208,
+    "body_bob": 0.05778676076198208,
+    "natural_speed": 1.7198440702970856,
+    "max_playback": 1.18,
+    "acceleration": 3.0957193265347542,
+    "turn_rate": 5.0,
+    "bone_count": 37
+  },
+  "source": "art/blender/creature_fast_motion/bio_saddle_bridge_07.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_saddle_bridge_07.blend",
+  "original_source_sha256": "3881abc45a8eb3b61644916b380eedc5702d1a9cb5f9efbb7352239066f882cc",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_saddle_bridge_07.motion",
+  "asset_sha256": "6d2fa6082c33a3b90a54ba1833d463afd8413dce2e15e01542ef23c0ff9dd672",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.181
+}

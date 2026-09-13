@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "e32710d371f526792b588f9d1ceddea846063f0a8c9c3e77781d7aba989ad491",
+  "species_id": "biota_amphora_sails_11",
+  "id": "biota_amphora_sails_11",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5957809541731105,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg7": 0.125,
+      "leg1": 0.25,
+      "leg2": 0.375,
+      "leg6": 0.5,
+      "leg5": 0.625,
+      "leg3": 0.75,
+      "leg4": 0.875
+    },
+    "lift": 0.1949828577293816,
+    "crouch": 0.07582666689475952,
+    "body_bob": 0.07582666689475952,
+    "natural_speed": 1.3887667929443133,
+    "max_playback": 1.18,
+    "acceleration": 2.499780227299764,
+    "turn_rate": 3.4,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_sails_11.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_sails_11.blend",
+  "original_source_sha256": "b4c1d37aba49afc93de5c4e6eac38dc952a99b1fedb82b5222afec90bd6d20b1",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_sails_11.motion",
+  "asset_sha256": "842254329f3a59dcfe3257ce8516463cbcfe8106e4e5532e7329b8e11e8b94bf",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.207
+}

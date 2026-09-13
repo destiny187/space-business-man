@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "81d33dc736ca16c0dec807a6797a51f2c9389d4740b610cc7d1ba8272415fa49",
+  "species_id": "biota_ribbon_tendrils_25",
+  "id": "biota_ribbon_tendrils_25",
+  "kind": "mustelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.33817161184438643,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.09222862141210537,
+    "crouch": 0.035866686104707654,
+    "body_bob": 0.035866686104707654,
+    "natural_speed": 1.711394796783332,
+    "max_playback": 1.18,
+    "acceleration": 3.0805106342099977,
+    "turn_rate": 5.0,
+    "bone_count": 42
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_tendrils_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_ribbon_tendrils_25.blend",
+  "original_source_sha256": "797a4e725d4f7dd7f761eb79fd351ba56fdca315112cae058f14766476963c71",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_tendrils_25.motion",
+  "asset_sha256": "1f0e566ed171bc3b58dbd865791a0b9d55e9d0eb902a0d7031daf7bce1c1e4d4",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.136
+}

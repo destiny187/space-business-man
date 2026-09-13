@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "4158fc6d6141f5d6d6cc0645d691df0685a416d33490fed2bcbc3fd15c9d4529",
+  "species_id": "bio_accordion_shell_07",
+  "id": "bio_accordion_shell_07",
+  "kind": "accordion_shell",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.45403883455843064,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support4": 0.0,
+      "support2": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.14859452767366818,
+    "crouch": 0.05778676076198208,
+    "body_bob": 0.05778676076198208,
+    "natural_speed": 1.7198440702970856,
+    "max_playback": 1.18,
+    "acceleration": 3.0957193265347542,
+    "turn_rate": 5.0,
+    "bone_count": 32
+  },
+  "source": "art/blender/creature_fast_motion/bio_accordion_shell_07.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_accordion_shell_07.blend",
+  "original_source_sha256": "56a10e80bc8bb00f8286a66620a6f9d625e773159aa038982e8852de2bf29a7a",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_accordion_shell_07.motion",
+  "asset_sha256": "0545612d0b3a1b5d11b0e6157d848c04617064cb1a89823e2d9b9ca497b89a3d",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.187
+}

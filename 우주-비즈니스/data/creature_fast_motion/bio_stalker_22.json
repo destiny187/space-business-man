@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "97c7711f9b53b4521d1ec4fd982020c47cae1d8a4d828a93588e175e3b18a054",
+  "species_id": "bio_stalker_22",
+  "id": "bio_stalker_22",
+  "kind": "stalker",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2960935434836655,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.09690334150374506,
+    "crouch": 0.037684632807011974,
+    "body_bob": 0.037684632807011974,
+    "natural_speed": 1.121566452589642,
+    "max_playback": 1.18,
+    "acceleration": 2.0188196146613557,
+    "turn_rate": 5.0,
+    "bone_count": 34
+  },
+  "source": "art/blender/creature_fast_motion/bio_stalker_22.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_stalker_22.blend",
+  "original_source_sha256": "0b48e385cd21be997a246d94e0fd715f9b3cfe82686e97d338642c43518395c8",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_stalker_22.motion",
+  "asset_sha256": "5f53e948dd6672ae656bb0358a2e60ebb748e096aeebeeedf7528c702b6b8291",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.16
+}

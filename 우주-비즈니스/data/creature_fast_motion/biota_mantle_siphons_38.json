@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "42f4a57cff42ac0051759d3a6d84be3cb1688165050120e45a6aaddb2539c0a3",
+  "species_id": "biota_mantle_siphons_38",
+  "id": "biota_mantle_siphons_38",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.535331714206101,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.17519947010381487,
+    "crouch": 0.06813312726259468,
+    "body_bob": 0.06813312726259468,
+    "natural_speed": 2.0277716447200795,
+    "max_playback": 1.18,
+    "acceleration": 3.649988960496143,
+    "turn_rate": 5.0,
+    "bone_count": 108
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_siphons_38.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_siphons_38.blend",
+  "original_source_sha256": "7f500f004b36b0a05271a737c1f3eb9b144226b6eaa8e32ddf754d4e994f26e9",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_siphons_38.motion",
+  "asset_sha256": "392bd342449a674ddacf0e6266dfca57827fc1c4b6c01d7ebb98ec4ed5592eab",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.616
+}

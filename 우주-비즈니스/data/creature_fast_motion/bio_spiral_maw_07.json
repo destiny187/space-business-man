@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "efde1450e7e77966fa02476d5536d030e73f6e5ab48103719ff6141197315995",
+  "species_id": "bio_spiral_maw_07",
+  "id": "bio_spiral_maw_07",
+  "kind": "spiral_maw",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.44603309137656943,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support3": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.14597446626869545,
+    "crouch": 0.05676784799338157,
+    "body_bob": 0.05676784799338157,
+    "natural_speed": 1.6895192855173085,
+    "max_playback": 1.18,
+    "acceleration": 3.041134713931155,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/bio_spiral_maw_07.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_spiral_maw_07.blend",
+  "original_source_sha256": "9bf1cd8e2876064945806ff11385ff9d12e6b9cc97f8d426e64c27e4e09c4f01",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_spiral_maw_07.motion",
+  "asset_sha256": "bafb4421379c4a7e2ed7350f1f2c60d316c32c5ea1dd939d70f06b6a5ac94207",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.126
+}

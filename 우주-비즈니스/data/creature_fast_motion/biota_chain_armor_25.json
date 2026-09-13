@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "0d63b77b8448129c305676ab8d7447a437815a814d4994f19ee379bb6eb31e1d",
+  "species_id": "biota_chain_armor_25",
+  "id": "biota_chain_armor_25",
+  "kind": "macropod",
+  "profile": {
+    "mode": "hop",
+    "medium": "ground",
+    "stride": 0.6063158853348262,
+    "stance": 0.42,
+    "period": 0.62,
+    "limb_phases": {
+      "hind-1": 0.0,
+      "hind1": 0.0
+    },
+    "lift": 0.16535887781858893,
+    "crouch": 0.06430623026278459,
+    "body_bob": 0.06430623026278459,
+    "natural_speed": 2.328402017414847,
+    "max_playback": 1.18,
+    "acceleration": 4.191123631346724,
+    "turn_rate": 5.0,
+    "bone_count": 26
+  },
+  "source": "art/blender/creature_fast_motion/biota_chain_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_chain_armor_25.blend",
+  "original_source_sha256": "cf45382883c4bce27cd5817258e6fa1a44deaaf95635327ac3262c454fc3f1ea",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_chain_armor_25.motion",
+  "asset_sha256": "82bf12f62df37f6bea0be08747e5746dcba6a84f44ed5a7a49431d2749fef894",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.118
+}

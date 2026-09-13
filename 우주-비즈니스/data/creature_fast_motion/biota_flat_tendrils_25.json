@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "3b5a3d51ae954621a87e3adbfb568b34ae23affe4aa69a386245e664baea6e09",
+  "species_id": "biota_flat_tendrils_25",
+  "id": "biota_flat_tendrils_25",
+  "kind": "gekkonid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.262962687890177,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08606051603678519,
+    "crouch": 0.0334679784587498,
+    "body_bob": 0.0334679784587498,
+    "natural_speed": 0.9960707874627918,
+    "max_playback": 1.18,
+    "acceleration": 1.7929274174330252,
+    "turn_rate": 5.0,
+    "bone_count": 40
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_tendrils_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_tendrils_25.blend",
+  "original_source_sha256": "d1905170c3a03dd432ef1d55d8f69562ce8d3a183872def6dd74535f0a6f5187",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_tendrils_25.motion",
+  "asset_sha256": "1e75a0d77d54e8f4fe16ab4c720d3aa9cd01d802baae43af5462c557e11f56b2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.169
+}

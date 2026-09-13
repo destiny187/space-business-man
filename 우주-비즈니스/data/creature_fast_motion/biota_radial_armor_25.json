@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "a48383733fe94524f6bed93dc1d4669a8a0a6bb9b83b702ecc25d5570d13b986",
+  "species_id": "biota_radial_armor_25",
+  "id": "biota_radial_armor_25",
+  "kind": "chelonian",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3771109688659463,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.12341813526521879,
+    "crouch": 0.047995941492029535,
+    "body_bob": 0.047995941492029535,
+    "natural_speed": 1.428450639643736,
+    "max_playback": 1.18,
+    "acceleration": 2.571211151358725,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_radial_armor_25.blend",
+  "original_source_sha256": "2488a6c354cbf64f2c4614ef4b2d8da8280e3e5644ce1bf466d704d51c0abc97",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_armor_25.motion",
+  "asset_sha256": "7cb6e2e6c21d3255887025ee7aca54ecdad4a81e827a9cf1b937a0201c1863a7",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.119
+}

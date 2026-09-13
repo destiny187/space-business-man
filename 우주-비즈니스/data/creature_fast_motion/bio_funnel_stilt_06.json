@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "1a17e70664460bfa671fe9a1415ee36a6eddf0d99ddd51da4b07e2a86e3f6b08",
+  "species_id": "bio_funnel_stilt_06",
+  "id": "bio_funnel_stilt_06",
+  "kind": "funnel_stilt",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6239192965417552,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support3": 0.0,
+      "support1": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.20419176977730166,
+    "crouch": 0.07940791046895065,
+    "body_bob": 0.07940791046895065,
+    "natural_speed": 2.363330668718769,
+    "max_playback": 1.18,
+    "acceleration": 4.253995203693784,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/bio_funnel_stilt_06.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_funnel_stilt_06.blend",
+  "original_source_sha256": "6331e7a8049d82cad064e228fce78e181638c9cd4b0e1a81646aa0785625708c",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_funnel_stilt_06.motion",
+  "asset_sha256": "af7f40593d766a18a4fd61a462238c5511037f58586b628b2ddb4cdc2de13da0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.145
+}

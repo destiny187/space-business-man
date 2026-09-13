@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "3e4ba8d478e4a7c8dfbdc90a640d6d26a851a0cdddc97caf0f1472cd1125e227",
+  "species_id": "biota_radial_sails_33",
+  "id": "biota_radial_sails_33",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.535331714206101,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.17519947010381487,
+    "crouch": 0.06813312726259468,
+    "body_bob": 0.06813312726259468,
+    "natural_speed": 2.0277716447200795,
+    "max_playback": 1.18,
+    "acceleration": 3.649988960496143,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_sails_33.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_sails_33.blend",
+  "original_source_sha256": "019a07b16a6e50bbfeadce7afd225decbe05d6fddb389396a6759710b312471f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_sails_33.motion",
+  "asset_sha256": "1cc70776ef9befd0ed6a26bc07fb6538eed29e9daf7787fd3330a9c3b0f32706",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.168
+}

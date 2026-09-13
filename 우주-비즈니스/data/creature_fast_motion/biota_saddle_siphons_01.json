@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "1169e085801bcef4d503cca9cff523a827cfcf25faaff39f1cb212c7691a471d",
+  "species_id": "biota_saddle_siphons_01",
+  "id": "biota_saddle_siphons_01",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5806789258079688,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg2": 0.0,
+      "leg3": 0.5,
+      "leg0": 0.5,
+      "leg1": 0.0
+    },
+    "lift": 0.19004037571897156,
+    "crouch": 0.07390459055737783,
+    "body_bob": 0.07390459055737783,
+    "natural_speed": 2.199541385636245,
+    "max_playback": 1.18,
+    "acceleration": 3.959174494145241,
+    "turn_rate": 5.0,
+    "bone_count": 39
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_siphons_01.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_siphons_01.blend",
+  "original_source_sha256": "98844218140e16637fc627f94da2aa4102c8d532413c0df759d3ff667d03e2af",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_siphons_01.motion",
+  "asset_sha256": "62a6666022a34a8b2280660c24d88adfd2bd85cbf60d2b2cb0bd1ca48d8b03d4",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.177
+}

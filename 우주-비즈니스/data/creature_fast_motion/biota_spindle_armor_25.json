@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "f88ae5bbf5849ec72cd9e61b3b812e95ca22a68bbcbadd342fb4ae65012213ff",
+  "species_id": "biota_spindle_armor_25",
+  "id": "sailhorn",
+  "kind": "quadruped",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.8891995774287235,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "fore-1": 0.05,
+      "fore1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24908260956761707,
+    "crouch": 0.09686545927629554,
+    "body_bob": 0.09686545927629554,
+    "natural_speed": 4.499997861481393,
+    "max_playback": 1.18,
+    "acceleration": 8.099996150666508,
+    "turn_rate": 5.0,
+    "bone_count": 23
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_armor_25.blend",
+  "original_source": "art/blender/creature_remodel/combat/sailhorn.blend",
+  "original_source_sha256": "2ff56ff089151678654f08a9ebb1c4708640b38888bed87913e8c1806a71df2d",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_armor_25.motion",
+  "asset_sha256": "749fa9006b644605da32c4d3fe1abfe08164d8e7881a7efcefef94fcc28c8dc9",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.132
+}

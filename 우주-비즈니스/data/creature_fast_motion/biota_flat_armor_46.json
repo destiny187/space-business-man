@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "eb05f236e132448ed4c59d195ce41ca5532cc491e5a6510b6cc09b46be6e362b",
+  "species_id": "biota_flat_armor_46",
+  "id": "biota_flat_armor_46",
+  "kind": "flat",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6150365372403394,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.2012846849150201,
+    "crouch": 0.07827737746695228,
+    "body_bob": 0.07827737746695228,
+    "natural_speed": 2.3296838531831034,
+    "max_playback": 1.18,
+    "acceleration": 4.1934309357295865,
+    "turn_rate": 5.0,
+    "bone_count": 53
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_armor_46.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_flat_armor_46.blend",
+  "original_source_sha256": "17852843cdd2b805ccf3623cd034f1a1801335e224a926c92c3de4ea8c0331bc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_armor_46.motion",
+  "asset_sha256": "5603bd58d8cfac192321deb9f9bd355b19ecfaad98907109ec60c4ef6e9e6f36",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.28
+}

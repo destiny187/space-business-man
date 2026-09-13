@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c12aa4b638717a878e50e005e774e8633efbd4e91214854d6138c011f80da11c",
+  "species_id": "biota_flat_mandibles_26",
+  "id": "biota_flat_mandibles_26",
+  "kind": "skink",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.25436092941443394,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.08324539508108747,
+    "crouch": 0.032373209198200685,
+    "body_bob": 0.032373209198200685,
+    "natural_speed": 0.963488368994068,
+    "max_playback": 1.18,
+    "acceleration": 1.7342790641893224,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_flat_mandibles_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_flat_mandibles_26.blend",
+  "original_source_sha256": "bdeeebef435c4a9b4fa085e2c2c22d0e9e7b80597b1721807beb763cdb7add73",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_flat_mandibles_26.motion",
+  "asset_sha256": "3ef023508d1712bd5aec9ee07ee9ab848e2c0f3264f716e18cd97c42b1c177f0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.123
+}

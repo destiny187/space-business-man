@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "734d3020b8e267258a889cb751bb45137a1f3b427530c585168fa19132079dac",
+  "species_id": "biota_tower_mandibles_25",
+  "id": "biota_tower_mandibles_25",
+  "kind": "giraffoid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7330616264154344,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24867292876437763,
+    "crouch": 0.09670613896392465,
+    "body_bob": 0.09670613896392465,
+    "natural_speed": 3.7098260446125217,
+    "max_playback": 1.18,
+    "acceleration": 6.677686880302539,
+    "turn_rate": 5.0,
+    "bone_count": 35
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_mandibles_25.blend",
+  "original_source_sha256": "58045dcc7e4b71168427bcf7011093adc521ecae950bac26e5808f349155167c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_mandibles_25.motion",
+  "asset_sha256": "62f75509d4c82d411c06882c570771b60eadb2be4b3997665b6e52be8f7869d2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.331
+}

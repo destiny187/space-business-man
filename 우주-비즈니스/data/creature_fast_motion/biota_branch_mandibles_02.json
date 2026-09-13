@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "362698b508a1026949dbb1962ab829eb1e57f4bbd83a9a33b81e52241eca776a",
+  "species_id": "biota_branch_mandibles_02",
+  "id": "biota_branch_mandibles_02",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6410866965220824,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.2098101915890451,
+    "crouch": 0.08159285228462866,
+    "body_bob": 0.08159285228462866,
+    "natural_speed": 2.4283586989472816,
+    "max_playback": 1.18,
+    "acceleration": 4.371045658105107,
+    "turn_rate": 5.0,
+    "bone_count": 57
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_mandibles_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_mandibles_02.blend",
+  "original_source_sha256": "54f0aa385b217c9c3d35b1a6af6000be542d3f017dcb9a7262276ebb2b4038f0",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_mandibles_02.motion",
+  "asset_sha256": "9dae660c76f0317f4313e720a3baafb16eb42bdb14659b7353148ee874f94c00",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.15
+}

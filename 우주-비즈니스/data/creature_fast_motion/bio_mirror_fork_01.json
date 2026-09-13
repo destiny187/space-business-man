@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fingerprint": "d9f487ef1f75124f072976ce39f3c83bbf5a786cc9329b7afe28bdaa2cabd453",
+  "species_id": "bio_mirror_fork_01",
+  "id": "bio_mirror_fork_01",
+  "kind": "forked",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5662780272625315,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support2": 0.3333333333333333,
+      "support1": 0.6666666666666666
+    },
+    "lift": 0.18532735437682848,
+    "crouch": 0.0720717489243222,
+    "body_bob": 0.0720717489243222,
+    "natural_speed": 1.3199954015443625,
+    "max_playback": 1.18,
+    "acceleration": 2.3759917227798524,
+    "turn_rate": 3.4,
+    "bone_count": 24
+  },
+  "source": "art/blender/creature_fast_motion/bio_mirror_fork_01.blend",
+  "original_source": "art/blender/creature_remodel/r02/bio_mirror_fork_01.blend",
+  "original_source_sha256": "8077dbc4ef18f79a8b77a55d3974257411a0f57ec1f813bebff8808789cb843e",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_mirror_fork_01.motion",
+  "asset_sha256": "1e5d20303e8a5373bcafe8d2766d751266c9fbbe017778dc7203af5edd78d112",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.073
+}

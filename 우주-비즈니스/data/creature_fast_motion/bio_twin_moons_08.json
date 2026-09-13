@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "78e190ffe25d209e8e2885cdd1816d6fa45390a410a772e0d76ef107456f1c5a",
+  "species_id": "bio_twin_moons_08",
+  "id": "bio_twin_moons_08",
+  "kind": "twin_moons",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5034229053052105,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support3": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.16475658719079617,
+    "crouch": 0.06407200612975407,
+    "body_bob": 0.06407200612975407,
+    "natural_speed": 1.9069049443379187,
+    "max_playback": 1.18,
+    "acceleration": 3.4324288998082535,
+    "turn_rate": 5.0,
+    "bone_count": 23
+  },
+  "source": "art/blender/creature_fast_motion/bio_twin_moons_08.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_twin_moons_08.blend",
+  "original_source_sha256": "6ffd904c24672953232406cf23ce71487430d5539f0846168876752107ca4044",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_twin_moons_08.motion",
+  "asset_sha256": "212611837da2aae741e29b721af14f7ea0c672d8d6665a61b15cc677a7d6f753",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.288
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "27ce8d98a5e0db42bc616e6399e6d883bf01d2bc6eef757d4d00429b298d033b",
+  "species_id": "bio_carapace_16",
+  "id": "bio_carapace_16",
+  "kind": "carapace",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6239493599515593,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg1": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0,
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg6": 0.5,
+      "leg7": 0.0
+    },
+    "lift": 0.20420160871141937,
+    "crouch": 0.07941173672110755,
+    "body_bob": 0.07941173672110755,
+    "natural_speed": 2.363444545271058,
+    "max_playback": 1.18,
+    "acceleration": 4.254200181487905,
+    "turn_rate": 5.0,
+    "bone_count": 57
+  },
+  "source": "art/blender/creature_fast_motion/bio_carapace_16.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_carapace_16.blend",
+  "original_source_sha256": "618fd80fa3df79ad2da656aa7e22c9905a88db7605c8f09eb78960340b1c5782",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_carapace_16.motion",
+  "asset_sha256": "af08bc564386fe10c1694367f561dd098e42fe220489ef123ce40e9802ac5ba3",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.246
+}

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c0f244b795784be23b0b64d6580df781e2046d3e8330da742dd11596d5cd502b",
+  "species_id": "bio_veil_antler_06",
+  "id": "bio_veil_antler_06",
+  "kind": "veil_antler",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4255755069951615,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support1": 0.0,
+      "support3": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.13927925683478012,
+    "crouch": 0.05416415543574783,
+    "body_bob": 0.05416415543574783,
+    "natural_speed": 1.612028435587733,
+    "max_playback": 1.18,
+    "acceleration": 2.9016511840579193,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/bio_veil_antler_06.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_veil_antler_06.blend",
+  "original_source_sha256": "c11bdec6e1865bdec8ab923689c4281c17faaadf9b05c3a876fe08306e6050f0",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_veil_antler_06.motion",
+  "asset_sha256": "07509b1331af32d903c175ddce7ad83278213d6ba375948eaf381e7425446a88",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.127
+}

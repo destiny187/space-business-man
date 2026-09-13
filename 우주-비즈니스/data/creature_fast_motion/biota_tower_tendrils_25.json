@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "d525fbeae1520925ae65a5c3487e1f88638eb0b3d1484782437fbe7202f973f5",
+  "species_id": "biota_tower_tendrils_25",
+  "id": "biota_tower_tendrils_25",
+  "kind": "giraffoid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.7325120302446881,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.24863618281417643,
+    "crouch": 0.09669184887217974,
+    "body_bob": 0.09669184887217974,
+    "natural_speed": 3.7070446874731178,
+    "max_playback": 1.18,
+    "acceleration": 6.672680437451612,
+    "turn_rate": 5.0,
+    "bone_count": 44
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_tendrils_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_tendrils_25.blend",
+  "original_source_sha256": "1f4e06b0a0e8daa82b5d69a1d65c43e56cb4b6d1579181e645c15e7ad8e62317",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_tendrils_25.motion",
+  "asset_sha256": "7f3ee0cf887fca7bc3c47abc8bd7becbe66958179946d80da728ebf419425a5b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.193
+}

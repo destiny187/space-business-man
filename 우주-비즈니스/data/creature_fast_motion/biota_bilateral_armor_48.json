@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "e8c500e7d127701a8ebbf2b1cda01b213411934ffc33c0c36b0cf24e3a866bae",
+  "species_id": "biota_bilateral_armor_48",
+  "id": "biota_bilateral_armor_48",
+  "kind": "bilateral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.442658790416763,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg8": 0.0,
+      "leg5": 0.5,
+      "leg9": 0.6799999999999999,
+      "leg4": 0.18,
+      "leg6": 0.36,
+      "leg7": 0.86,
+      "leg0": 0.54,
+      "leg2": 0.72,
+      "leg1": 0.040000000000000036,
+      "leg3": 0.21999999999999997
+    },
+    "lift": 0.1448701495909406,
+    "crouch": 0.05633839150758802,
+    "body_bob": 0.05633839150758802,
+    "natural_speed": 1.6767378424877386,
+    "max_playback": 1.18,
+    "acceleration": 3.0181281164779294,
+    "turn_rate": 5.0,
+    "bone_count": 52
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_armor_48.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_bilateral_armor_48.blend",
+  "original_source_sha256": "b9612d528606999169851c665d06bb991f6073fca83d63f6ffa126622f0391ee",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_armor_48.motion",
+  "asset_sha256": "a6c46b617466af907d21db0af1d13e37cbe40e1a0774a15e4a1e681b0c4329fd",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.192
+}

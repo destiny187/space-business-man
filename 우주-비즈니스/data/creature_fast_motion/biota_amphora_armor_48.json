@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "e8208ec8afba6d48a38ba675bb2007a0de8ab63e49db27586db4d1203e0e7a51",
+  "species_id": "biota_amphora_armor_48",
+  "id": "biota_amphora_armor_48",
+  "kind": "amphora",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5865159303395509,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "leg0": 0.0,
+      "leg9": 0.1,
+      "leg1": 0.2,
+      "leg8": 0.3,
+      "leg2": 0.4,
+      "leg7": 0.5,
+      "leg3": 0.6,
+      "leg6": 0.7,
+      "leg4": 0.8,
+      "leg5": 0.9
+    },
+    "lift": 0.19195066811112574,
+    "crouch": 0.07464748204321557,
+    "body_bob": 0.07464748204321557,
+    "natural_speed": 1.3671700007914938,
+    "max_playback": 1.18,
+    "acceleration": 2.460906001424689,
+    "turn_rate": 3.4,
+    "bone_count": 70
+  },
+  "source": "art/blender/creature_fast_motion/biota_amphora_armor_48.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_amphora_armor_48.blend",
+  "original_source_sha256": "593c63a6f37083ff3f999d28b1359ddb0ca30b8b282949cdc4c01f6ef3a3b29e",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_amphora_armor_48.motion",
+  "asset_sha256": "d228930dd068c900072639008166163030cb5455e985cde03c99ee75998c4b8e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.361
+}

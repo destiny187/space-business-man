@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "70c46c7dbb9a15b33b2726a9df5d22c7bc842527e07a0f2af8893dce01cd8684",
+  "species_id": "bio_crown_stalker_10",
+  "id": "bio_crown_stalker_10",
+  "kind": "crown_stalker",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.44603309137656943,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support3": 0.0,
+      "support1": 0.0,
+      "support2": 0.5
+    },
+    "lift": 0.14597446626869545,
+    "crouch": 0.05676784799338157,
+    "body_bob": 0.05676784799338157,
+    "natural_speed": 1.6895192855173085,
+    "max_playback": 1.18,
+    "acceleration": 3.041134713931155,
+    "turn_rate": 5.0,
+    "bone_count": 48
+  },
+  "source": "art/blender/creature_fast_motion/bio_crown_stalker_10.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_crown_stalker_10.blend",
+  "original_source_sha256": "de29d35e4f4370ae79c04490c79417aba27674a1c52415a32d54edea2bc0ce79",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_crown_stalker_10.motion",
+  "asset_sha256": "019861515c509cea337dd7f94a6f4941a65e8eaa099fe102caa5ddccadb945a6",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.207
+}

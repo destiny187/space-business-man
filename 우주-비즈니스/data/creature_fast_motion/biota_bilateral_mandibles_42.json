@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "f8e5e08cd13506738069b71052e0524cc119d788b9a54266cfe6ba0a516b9bd8",
+  "species_id": "biota_bilateral_mandibles_42",
+  "id": "biota_bilateral_mandibles_42",
+  "kind": "bilateral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.442658790416763,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg3": 0.5,
+      "leg2": 0.0,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.1448701495909406,
+    "crouch": 0.05633839150758802,
+    "body_bob": 0.05633839150758802,
+    "natural_speed": 1.6767378424877386,
+    "max_playback": 1.18,
+    "acceleration": 3.0181281164779294,
+    "turn_rate": 5.0,
+    "bone_count": 42
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_mandibles_42.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_bilateral_mandibles_42.blend",
+  "original_source_sha256": "dd276c98b904bfdec3086ee8b0c10349405419d2c038158660735b7342215ce0",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_mandibles_42.motion",
+  "asset_sha256": "f0ed45cc6a91105b5e487cb2a5a388d86b53bffbfb5244cda500772d40a4bdbd",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.208
+}

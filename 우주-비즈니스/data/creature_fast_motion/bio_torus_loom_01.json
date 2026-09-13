@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fingerprint": "e9211a86881ed89f68bf4eb722669afab32de59b924f5267629947b17e79202b",
+  "species_id": "bio_torus_loom_01",
+  "id": "annulus",
+  "kind": "annular",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.5584304681954897,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "support0": 0.0,
+      "support2": 0.3333333333333333,
+      "support1": 0.6666666666666666
+    },
+    "lift": 0.18275906231852387,
+    "crouch": 0.07107296867942596,
+    "body_bob": 0.07107296867942596,
+    "natural_speed": 1.3017027230664093,
+    "max_playback": 1.18,
+    "acceleration": 2.343064901519537,
+    "turn_rate": 3.4,
+    "bone_count": 22
+  },
+  "source": "art/blender/creature_fast_motion/bio_torus_loom_01.blend",
+  "original_source": "art/blender/creature_remodel/r01/annulus.blend",
+  "original_source_sha256": "de67520d05e4a8998d609dff2bfce9e35bad2d4ed177a0fb167afe76d939d99b",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_torus_loom_01.motion",
+  "asset_sha256": "267787c2fbfdc62925fccb44e29da6d4cb152d8c42dfb9a1aa056e7c414eec12",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.068
+}

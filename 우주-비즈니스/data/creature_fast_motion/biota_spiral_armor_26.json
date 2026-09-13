@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "d08c4664e1b73e2590e545ba6676462353c3cea18a1fd06fcaa59a7c65091b8e",
+  "species_id": "biota_spiral_armor_26",
+  "id": "biota_spiral_armor_26",
+  "kind": "armadillo",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.3303723605486004,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.1081218634522692,
+    "crouch": 0.042047391342549145,
+    "body_bob": 0.042047391342549145,
+    "natural_speed": 1.2514104566234863,
+    "max_playback": 1.18,
+    "acceleration": 2.2525388219222755,
+    "turn_rate": 5.0,
+    "bone_count": 28
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_armor_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spiral_armor_26.blend",
+  "original_source_sha256": "1ae08b93900249c4d923975074f8f656b8a2bb501929f452d43f192e27e5f16f",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_armor_26.motion",
+  "asset_sha256": "bf46f3c0e489dd1571cce220d6c03020f2ecba230f934ef21bd14e9c42e998b2",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.13
+}

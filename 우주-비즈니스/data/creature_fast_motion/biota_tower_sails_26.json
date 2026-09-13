@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "3befcbf687dc04c62ec2c0558f5831f2a0d6656f14231817992c665ef19cdd78",
+  "species_id": "biota_tower_sails_26",
+  "id": "biota_tower_sails_26",
+  "kind": "camelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5618605991772265,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.17384004442362716,
+    "crouch": 0.06760446172029946,
+    "body_bob": 0.06760446172029946,
+    "natural_speed": 2.843424084904992,
+    "max_playback": 1.18,
+    "acceleration": 5.118163352828986,
+    "turn_rate": 5.0,
+    "bone_count": 29
+  },
+  "source": "art/blender/creature_fast_motion/biota_tower_sails_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_tower_sails_26.blend",
+  "original_source_sha256": "25c9cae360e835dbfcba844bf0465adc5c1afd540803f8d278ea0b34753e5321",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_tower_sails_26.motion",
+  "asset_sha256": "fa16a4a8039cae72c64ffb84eab9fa751c43166c7a814a0bae8bcb306c6ee9c0",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.14
+}

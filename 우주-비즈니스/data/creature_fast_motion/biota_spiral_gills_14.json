@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "40323ae78b83f8492741e234986de65c92e3ca9a9d0b4035c11a1e20d65be055",
+  "species_id": "biota_spiral_gills_14",
+  "id": "biota_spiral_gills_14",
+  "kind": "spiral",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6555178902836086,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.214533127729181,
+    "crouch": 0.08342954967245929,
+    "body_bob": 0.08342954967245929,
+    "natural_speed": 2.483022311680336,
+    "max_playback": 1.18,
+    "acceleration": 4.469440161024605,
+    "turn_rate": 5.0,
+    "bone_count": 42
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_gills_14.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_spiral_gills_14.blend",
+  "original_source_sha256": "30927246451f3225d628e566bae19f9096184a6a27240dd930efd38544a333d4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_gills_14.motion",
+  "asset_sha256": "3645bd011f2fa0f092f7d6235ec83c1242ff7282419cd5817491dc90c6168e79",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.154
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "5cf4644a43114320fc63cb86ae1414d090b8ed134ffe0532132a6058349697ef",
+  "species_id": "biota_branch_gills_34",
+  "id": "biota_branch_gills_34",
+  "kind": "branch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6963741492620033,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.22790426703120104,
+    "crouch": 0.08862943717880041,
+    "body_bob": 0.08862943717880041,
+    "natural_speed": 2.637780868416679,
+    "max_playback": 1.18,
+    "acceleration": 4.748005563150022,
+    "turn_rate": 5.0,
+    "bone_count": 75
+  },
+  "source": "art/blender/creature_fast_motion/biota_branch_gills_34.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_branch_gills_34.blend",
+  "original_source_sha256": "74e789a5dc381f9bae9b460e496f7fac415a7313b3abd0b2ece68050a0bdf4b0",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_branch_gills_34.motion",
+  "asset_sha256": "8cc9278994ebd887a6fcf0810274fd4801f762df36826b5ac6a7b0399ccfa921",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.335
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "4a5cc3016c4a1504fed4f2474096ccbda73ade27f1d946ad1417945128f3f52f",
+  "species_id": "biota_bilateral_antennal_fans_19",
+  "id": "biota_bilateral_antennal_fans_19",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.5563236990731926,
+    "stance": 0.65,
+    "period": 0.4166666666666667,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 2.0541182735010186,
+    "max_playback": 1.18,
+    "acceleration": 3.6974128923018337,
+    "turn_rate": 5.0,
+    "bone_count": 59
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_antennal_fans_19.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_antennal_fans_19.blend",
+  "original_source_sha256": "a99305da114ed7130f55ffc06eac0ff04cd3eb4d31e0b1cc790fb91c248f24cc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_antennal_fans_19.motion",
+  "asset_sha256": "9c00ebe72bd0656421e34f13d8564c6a2f97ff60dbfd0e55793ce0ade7ede18b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.456
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "1c953f5e3461d2e4588ad06f9f56a6c791f4279537721ae4a3ca6a071684e95e",
+  "species_id": "biota_bilateral_sails_19",
+  "id": "biota_bilateral_sails_19",
+  "kind": "avian",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.5563236990731926,
+    "stance": 0.65,
+    "period": 0.4166666666666667,
+    "limb_phases": {
+      "landing-1": 0.0,
+      "landing1": 0.5
+    },
+    "lift": 0.14375052134293076,
+    "crouch": 0.05590298052225085,
+    "body_bob": 0.05590298052225085,
+    "natural_speed": 2.0541182735010186,
+    "max_playback": 1.18,
+    "acceleration": 3.6974128923018337,
+    "turn_rate": 5.0,
+    "bone_count": 59
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_sails_19.blend",
+  "original_source": "art/blender/creature_remodel/r05/biota_bilateral_sails_19.blend",
+  "original_source_sha256": "2748f1cf1ca95266a456ced540b6d8b7566d764e41cf5d94795e28fabe63e09c",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_sails_19.motion",
+  "asset_sha256": "8b95491cff6129f6e87594f9b3ead358604be4f9695b064e3db9a995b330b72b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.236
+}

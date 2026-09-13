@@ -4,8 +4,9 @@ class OpenField extends FrontierTerrainField:
 func run() -> void:
  var manifest:=FrontierUniverse.new_world(71491)
  var samples: Dictionary={};var large: Dictionary={};var differences: Dictionary={}
- for ordinal in range(8,1000000,313):
-  var body:=FrontierUniverse.body(manifest.manifest,ordinal)
+ # Current seeded lineages have unique homes; a fixed million-planet stride can miss every eligible role.
+ for address in manifest.manifest.native_biota.planets:
+  var body:=FrontierUniverse.body(manifest.manifest,int(address))
   if not FrontierUniverse.landable(body) or FrontierEcology.profile(body).origin!="established":continue
   for template in FrontierExplorationIncidents.config().items:
    var kind:=FrontierNativeIncidents.role(template)
@@ -29,6 +30,10 @@ func run() -> void:
   var copy: Dictionary=JSON.parse_string(JSON.stringify(row))
   var world:=manifest.duplicate(true);var actor:=FrontierCrewWorld.member(FrontierPlayerProfile.new_character("local",0),"local",0);actor.area="surface";world.crew={"members":{"owner":actor}};world.incidents={"version":1,"records":{FrontierExplorationIncidents.key(copy):copy}}
   check(FrontierNativeIncidents.validate(world,copy),kind+" individual JSON survives")
+  copy.native_motion_clock=2.5;copy.native_move_speed=.4
+  check(FrontierNativeIncidents.validate(world,JSON.parse_string(JSON.stringify(copy))),kind+" optional fast motion state survives")
+  copy.native_move_speed=-1
+  check(not FrontierNativeIncidents.validate(world,copy),kind+" rejects invalid motion velocity");copy.native_move_speed=.4
   copy.native.factor+=.1;check(not FrontierNativeIncidents.validate(world,copy),kind+" rejects forged scale");copy.native.factor-=.1
   row.native_observed=false;row.native_walked=0
   check(not FrontierNativeIncidents.available(row),kind+" no reward before observation")

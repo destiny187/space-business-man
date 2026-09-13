@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "86ce988f55e1531bfcdc6abc74a41e759fe8ae14a5906877ec8a95680c82e08c",
+  "species_id": "bio_window_sac_09",
+  "id": "bio_window_sac_09",
+  "kind": "window_sac",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4460330968520205,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support7": 0.0,
+      "support1": 0.0,
+      "support2": 0.5,
+      "support6": 0.5,
+      "support5": 0.0,
+      "support3": 0.0,
+      "support4": 0.5
+    },
+    "lift": 0.14597446806066125,
+    "crouch": 0.05676784869025716,
+    "body_bob": 0.05676784869025716,
+    "natural_speed": 1.6895193062576535,
+    "max_playback": 1.18,
+    "acceleration": 3.041134751263776,
+    "turn_rate": 5.0,
+    "bone_count": 38
+  },
+  "source": "art/blender/creature_fast_motion/bio_window_sac_09.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_window_sac_09.blend",
+  "original_source_sha256": "bb029ba38c032ebb610e30d3cd67e8e05a748abf6a9a1d972fc8f9ca8c047940",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_window_sac_09.motion",
+  "asset_sha256": "8df57ab1be4b387920fa420c860d0b9b18bc23911dd8a3b26d26d422434d210c",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.127
+}

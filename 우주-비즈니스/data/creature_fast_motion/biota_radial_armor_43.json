@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fingerprint": "06523f42fe0926dc6764765d6314a9b5564dae1822f18cf0523534844c620933",
+  "species_id": "biota_radial_armor_43",
+  "id": "biota_radial_armor_43",
+  "kind": "radial",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.6150365039945894,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg7": 0.0,
+      "leg1": 0.0,
+      "leg2": 0.5,
+      "leg6": 0.5,
+      "leg5": 0.0,
+      "leg3": 0.0,
+      "leg4": 0.5
+    },
+    "lift": 0.20128467403459288,
+    "crouch": 0.07827737323567502,
+    "body_bob": 0.07827737323567502,
+    "natural_speed": 2.3296837272522324,
+    "max_playback": 1.18,
+    "acceleration": 4.193430709054018,
+    "turn_rate": 5.0,
+    "bone_count": 47
+  },
+  "source": "art/blender/creature_fast_motion/biota_radial_armor_43.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_radial_armor_43.blend",
+  "original_source_sha256": "7ad8c8dc3246bd12ab82c6285fc19ebf9620b0565779daad56bc1283e83789f5",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_radial_armor_43.motion",
+  "asset_sha256": "5d282adcb0f9bf5241805819b93e158691b368be3a1d988fd37328328a3186d7",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.278
+}

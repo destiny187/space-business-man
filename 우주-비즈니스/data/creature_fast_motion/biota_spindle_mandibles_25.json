@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "fc6ec81a65286a1fc3c111c80aa27f9f0589cac19d2966abea34d8a50462ecef",
+  "species_id": "biota_spindle_mandibles_25",
+  "id": "biota_spindle_mandibles_25",
+  "kind": "cervid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5557781855538537,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.17195229990983452,
+    "crouch": 0.06687033885382454,
+    "body_bob": 0.06687033885382454,
+    "natural_speed": 2.812642639442579,
+    "max_playback": 1.18,
+    "acceleration": 5.062756750996643,
+    "turn_rate": 5.0,
+    "bone_count": 33
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spindle_mandibles_25.blend",
+  "original_source_sha256": "51979133fefdf06df941ac7c11f80937be57c5a77e87c3b671a09e9485d0d195",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_mandibles_25.motion",
+  "asset_sha256": "5f3202a5ed9011cd5995136deabac1c3ea9bb39dc203589f6c560cf5deeca246",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.226
+}

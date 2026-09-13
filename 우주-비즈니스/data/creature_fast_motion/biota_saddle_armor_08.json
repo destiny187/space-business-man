@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fingerprint": "e8bd45df69ce00423a6af20d83a7859651e0fd537c06f12073b007c96b0f4508",
+  "species_id": "biota_saddle_armor_08",
+  "id": "biota_saddle_armor_08",
+  "kind": "saddle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5806789258079688,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg6": 0.0,
+      "leg8": 0.18,
+      "leg7": 0.5,
+      "leg9": 0.6799999999999999,
+      "leg5": 0.86,
+      "leg0": 0.36,
+      "leg2": 0.54,
+      "leg4": 0.72,
+      "leg1": 0.040000000000000036,
+      "leg3": 0.21999999999999997
+    },
+    "lift": 0.19004037571897156,
+    "crouch": 0.07390459055737783,
+    "body_bob": 0.07390459055737783,
+    "natural_speed": 2.199541385636245,
+    "max_playback": 1.18,
+    "acceleration": 3.959174494145241,
+    "turn_rate": 5.0,
+    "bone_count": 49
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_armor_08.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_saddle_armor_08.blend",
+  "original_source_sha256": "5bc8b72684ef97f7d3707b41412ed4ab5d83820dc3c0b90666a12a358b09eacd",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_armor_08.motion",
+  "asset_sha256": "b1003a2ce266d5e658f4fb5b3346e0288523c202d77a1040bee3bfff86492f4f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.262
+}

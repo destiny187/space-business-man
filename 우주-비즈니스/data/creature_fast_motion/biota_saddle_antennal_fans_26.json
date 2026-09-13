@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "5562905988226335274a257d3e596d7a17de4b019efc72f148b6023100a6e5c1",
+  "species_id": "biota_saddle_antennal_fans_26",
+  "id": "biota_saddle_antennal_fans_26",
+  "kind": "bovid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.5250267358594365,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.15533724748550137,
+    "crouch": 0.06040892957769498,
+    "body_bob": 0.06040892957769498,
+    "natural_speed": 2.657017894025488,
+    "max_playback": 1.18,
+    "acceleration": 4.782632209245879,
+    "turn_rate": 5.0,
+    "bone_count": 30
+  },
+  "source": "art/blender/creature_fast_motion/biota_saddle_antennal_fans_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_saddle_antennal_fans_26.blend",
+  "original_source_sha256": "72f0212a9cbebc5248d49bbb9d194bfdf8f224528633a652c412e0a1c08e4437",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_saddle_antennal_fans_26.motion",
+  "asset_sha256": "2fd1bdf81be1f4fd4f9a6df8b6b99d0315dc79efb39add87e5d0ed04bf0438a2",
+  "clips": [
+    "sprint_loop",
+    "sprint_charge_loop"
+  ],
+  "seconds": 0.259
+}

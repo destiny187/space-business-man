@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "408775165578613e3f18fd0b03a2c674eb77ffc1ea04019581e88350ef7abc7c",
+  "species_id": "biota_ribbon_mandibles_38",
+  "id": "biota_ribbon_mandibles_38",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.22142984593184006,
+    "stance": 0.55,
+    "period": 0.4702109964148743,
+    "limb_phases": {
+      "leg3": 0.5,
+      "leg2": 0.0,
+      "leg4": 0.5,
+      "leg5": 0.0,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.0724679495776931,
+    "crouch": 0.0281819803913251,
+    "body_bob": 0.0281819803913251,
+    "natural_speed": 0.8562107712190826,
+    "max_playback": 1.18,
+    "acceleration": 1.5411793881943487,
+    "turn_rate": 5.0,
+    "bone_count": 81
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_mandibles_38.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_mandibles_38.blend",
+  "original_source_sha256": "540eb8c160fd097751b20ec3ae3aa37a18036974403c9b69f21c6f3c7b6a9c26",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_mandibles_38.motion",
+  "asset_sha256": "e6702ef84a90bc5179b447b3b4c381b80e2a87442431874e851ffddde273d282",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.266
+}

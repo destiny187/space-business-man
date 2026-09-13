@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fingerprint": "c560c09cc02edbdac0f4ddb89f8b4e122220736fc98a7954be371d558043130d",
+  "species_id": "bio_pendulum_grazer_01",
+  "id": "tethermaw",
+  "kind": "cantilever",
+  "profile": {
+    "mode": "heavy",
+    "medium": "ground",
+    "stride": 0.6801955251497657,
+    "stance": 0.66,
+    "period": 0.65,
+    "limb_phases": {
+      "anchor0": 0.0,
+      "anchor2": 0.3333333333333333,
+      "anchor1": 0.6666666666666666
+    },
+    "lift": 0.22260944459446877,
+    "crouch": 0.08657033956451564,
+    "body_bob": 0.08657033956451564,
+    "natural_speed": 1.5855373546614584,
+    "max_playback": 1.18,
+    "acceleration": 2.8539672383906254,
+    "turn_rate": 3.4,
+    "bone_count": 18
+  },
+  "source": "art/blender/creature_fast_motion/bio_pendulum_grazer_01.blend",
+  "original_source": "art/blender/creature_remodel/r01/tethermaw.blend",
+  "original_source_sha256": "e64a73216edfd49e2dfbf06005bd9f00f228dac0ad41eccf1714fdd6b8703d2b",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_pendulum_grazer_01.motion",
+  "asset_sha256": "405deb09975ff69c5e8ae60c51ee85edef431c246163e136c3b46a39c2f4cc49",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.065
+}

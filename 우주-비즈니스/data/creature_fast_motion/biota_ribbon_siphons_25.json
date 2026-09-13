@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "c382f522e19e3c349513c198573eda5b19c5d6dec7c9d6a8c55fd5e4f606820e",
+  "species_id": "biota_ribbon_siphons_25",
+  "id": "biota_ribbon_siphons_25",
+  "kind": "mustelid",
+  "profile": {
+    "mode": "gallop",
+    "medium": "ground",
+    "stride": 0.3390574397481586,
+    "stance": 0.38,
+    "period": 0.52,
+    "limb_phases": {
+      "front-1": 0.05,
+      "front1": 0.16999999999999998,
+      "hind-1": 0.55,
+      "hind1": 0.67
+    },
+    "lift": 0.09247021084040688,
+    "crouch": 0.035960637549047124,
+    "body_bob": 0.035960637549047124,
+    "natural_speed": 1.7158777315190212,
+    "max_playback": 1.18,
+    "acceleration": 3.0885799167342385,
+    "turn_rate": 5.0,
+    "bone_count": 45
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_siphons_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_ribbon_siphons_25.blend",
+  "original_source_sha256": "f471a7d516b8f77e65f369b03184584a03825680b80ce1c6bf3de97896dbf0a8",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_siphons_25.motion",
+  "asset_sha256": "7c998dffe596efc1c3891152e433718f5c27ed9573f74e44d6fe95a6bf71863f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.14
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "caccc464b239d432cfaea3b70fef9976351db17fa74cf76a1f29ffcabb38046e",
+  "species_id": "biota_mantle_tendrils_10",
+  "id": "biota_mantle_tendrils_10",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721120950322,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.17459087304928322,
+    "crouch": 0.06789645063027683,
+    "body_bob": 0.06789645063027683,
+    "natural_speed": 2.0207276973296673,
+    "max_playback": 1.18,
+    "acceleration": 3.637309855193401,
+    "turn_rate": 5.0,
+    "bone_count": 112
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_tendrils_10.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_tendrils_10.blend",
+  "original_source_sha256": "2c9266e89adc84b3211838a9938c5a959d6497e3e9182a47b48eefe6bc83a1a4",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_tendrils_10.motion",
+  "asset_sha256": "2ec768d95dfa3bc19e3e2ac271e67a4557a0e9b6ad92df5086f3e5b461d5456b",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.974
+}

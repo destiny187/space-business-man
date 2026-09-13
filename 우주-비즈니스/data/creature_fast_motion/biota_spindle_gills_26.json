@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "e65ed0a939deda4b77a0b7a67dae427ef8042e3b468dea011638215631201887",
+  "species_id": "biota_spindle_gills_26",
+  "id": "biota_spindle_gills_26",
+  "kind": "proboscid",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.62328949061653,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.2039856514745007,
+    "crouch": 0.07932775335119473,
+    "body_bob": 0.07932775335119473,
+    "natural_speed": 2.360945040214129,
+    "max_playback": 1.18,
+    "acceleration": 4.249701072385433,
+    "turn_rate": 5.0,
+    "bone_count": 37
+  },
+  "source": "art/blender/creature_fast_motion/biota_spindle_gills_26.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spindle_gills_26.blend",
+  "original_source_sha256": "34294fea289b593f868e03596ab627fddf141a0eb787f40cc247288219c33a85",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spindle_gills_26.motion",
+  "asset_sha256": "18fdfe03dd77b31730b4afdf7914d4a6c7a7134246cc2583b1173089b775f9da",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.161
+}

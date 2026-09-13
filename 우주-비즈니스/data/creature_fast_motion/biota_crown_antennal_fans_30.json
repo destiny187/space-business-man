@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "2d6aef0c782c04e96cc0501573b4647f5a92110fd40a739dfab7e7123290e074",
+  "species_id": "biota_crown_antennal_fans_30",
+  "id": "biota_crown_antennal_fans_30",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.7009743340000074,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.22940978203636606,
+    "crouch": 0.08921491523636459,
+    "body_bob": 0.08921491523636459,
+    "natural_speed": 2.6552058106060885,
+    "max_playback": 1.18,
+    "acceleration": 4.779370459090959,
+    "turn_rate": 5.0,
+    "bone_count": 63
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_antennal_fans_30.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_antennal_fans_30.blend",
+  "original_source_sha256": "eeb4386491511cced1d250b362275e7e4134fb7b7f222ec79e2a71bc646cecbc",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_antennal_fans_30.motion",
+  "asset_sha256": "e8fd22d60f3cbac27559ac15b06b01d0af8c259d316ffa5daaf8897a8e28b04e",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.175
+}

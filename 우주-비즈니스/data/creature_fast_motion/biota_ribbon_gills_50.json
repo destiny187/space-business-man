@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "317719d8fa8aa3cbbc477aa146def5a529c913d4658a7a15e6998ac970e3727c",
+  "species_id": "biota_ribbon_gills_50",
+  "id": "biota_ribbon_gills_50",
+  "kind": "ribbon",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.24731291158542293,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg4": 0.0,
+      "leg5": 0.5,
+      "leg3": 0.0,
+      "leg2": 0.5,
+      "leg0": 0.0,
+      "leg1": 0.5
+    },
+    "lift": 0.08093877106432022,
+    "crouch": 0.03147618874723565,
+    "body_bob": 0.03147618874723565,
+    "natural_speed": 0.9367913317629657,
+    "max_playback": 1.18,
+    "acceleration": 1.6862243971733384,
+    "turn_rate": 5.0,
+    "bone_count": 55
+  },
+  "source": "art/blender/creature_fast_motion/biota_ribbon_gills_50.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_ribbon_gills_50.blend",
+  "original_source_sha256": "27af2ba456894bec12a1d7b35f07c3bf91e275ea26c50358a575423ba4209269",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_ribbon_gills_50.motion",
+  "asset_sha256": "9c054aaf982328b5ee966da244915ce3dd4caf6ce7ff05fb02fcfa81012414d1",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.333
+}

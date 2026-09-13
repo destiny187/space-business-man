@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "b1c4bc9fdea89ff878be8f8fc265dd22435f2f1c96fc744ea6247d35df8311e9",
+  "species_id": "biota_spiral_mandibles_25",
+  "id": "biota_spiral_mandibles_25",
+  "kind": "pangolin",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.2814754004184692,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "front-1": 0.0,
+      "front1": 0.5,
+      "hind-1": 0.5,
+      "hind1": 0.0
+    },
+    "lift": 0.09211922195513536,
+    "crouch": 0.035824141871441534,
+    "body_bob": 0.035824141871441534,
+    "natural_speed": 1.0661946985548074,
+    "max_playback": 1.18,
+    "acceleration": 1.9191504573986533,
+    "turn_rate": 5.0,
+    "bone_count": 31
+  },
+  "source": "art/blender/creature_fast_motion/biota_spiral_mandibles_25.blend",
+  "original_source": "art/blender/creature_remodel/r04/biota_spiral_mandibles_25.blend",
+  "original_source_sha256": "c88e255343eb9e49c84a9835abce746575a4f79486fc79da7f209bae35f86098",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_spiral_mandibles_25.motion",
+  "asset_sha256": "5fcafe8b9be39fd7c94485b74fb0754a96e2a1c5375bc00d791a9edb9ff42bab",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.15
+}

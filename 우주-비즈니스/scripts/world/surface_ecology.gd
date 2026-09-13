@@ -108,15 +108,18 @@ func _process(delta: float) -> void:
 
 	_update_wildlife(delta)
 
-	_update_flights()
+	_update_flights(delta)
 
-func _update_flights() -> void:
+func _update_flights(delta: float=1./60.) -> void:
 	for id in actors:
 		var actor: Node3D=actors[id]
 		if actor.definition.get("locomotion_medium","")!="surface_air":continue
+		actor.paused=behavior_stopped
 		var row: Dictionary=encounters[id]
 		var home: Vector3=row.get("home_point",row.point)
 		var motion:=FrontierEcologyPlacement.flight_pose(terrain.field,row,home,flight_time)
+		var continuous: bool=actor.flight_clock>=0 and absf(float(motion.clock)-actor.flight_clock)<=maxf(.1,delta*3.)
+		actor.flight_speed=actor.position.distance_to(motion.point)/maxf(.001,delta) if continuous else -1.
 		actor.position=motion.point;actor.basis=motion.basis
 		actor.flight_blend=motion.blend;actor.flight_clock=motion.clock
 		var desired: String="move" if motion.blend>0.01 else ("dormant" if row.status=="dormant" else "idle")
@@ -128,6 +131,7 @@ func _update_wildlife(delta: float) -> void:
 		var actor: Node3D=actors[id]
 		var row: Dictionary=encounters[id]
 		if not Wildlife.eligible(actor.definition,row):
+			if actor.definition.get("locomotion_medium","")=="surface_air":continue
 			if actor.ground_motion.enabled:
 				actor.paused=behavior_stopped
 				actor.drive_ground(actor.global_position,actor.global_basis,delta,ground_probe,behavior_stopped,terrain.field.revision)
@@ -202,7 +206,7 @@ func refresh() -> void:
 			actors[id].queue_free();actors.erase(id);encounters.erase(id)
 	for row in selected.values():
 		if actors.has(row.id):
-			if not Wildlife.eligible(actors[row.id].definition,row):
+			if not Wildlife.eligible(actors[row.id].definition,row) and actors[row.id].definition.get("locomotion_medium","")!="surface_air":
 				actors[row.id].position=row.point
 				actors[row.id].basis=FrontierEcologyPlacement.surface_basis(terrain.field.normal(row.point),float(row.yaw))
 			for key in ["behavior_phase","step_elapsed","combat_serial","combat_struck","combat_pulse"]:row[key]=encounters[row.id].get(key,"" if key=="behavior_phase" else (-1 if key=="combat_serial" else (false if key=="combat_struck" else 0.0)))

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "d6f3fe078c8875017881dea1e44f58403df202f70a0ac5b4b0cfdb86d60e44dc",
+  "species_id": "biota_crown_mandibles_02",
+  "id": "biota_crown_mandibles_02",
+  "kind": "crown",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5724592609408389,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg5": 0.0,
+      "leg1": 0.0,
+      "leg4": 0.5,
+      "leg2": 0.5,
+      "leg3": 0.0
+    },
+    "lift": 0.18735030358063817,
+    "crouch": 0.07285845139247041,
+    "body_bob": 0.07285845139247041,
+    "natural_speed": 2.1684062914425715,
+    "max_playback": 1.18,
+    "acceleration": 3.903131324596629,
+    "turn_rate": 5.0,
+    "bone_count": 47
+  },
+  "source": "art/blender/creature_fast_motion/biota_crown_mandibles_02.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_crown_mandibles_02.blend",
+  "original_source_sha256": "b567781be4cc4d340e3a27dd8d08e99941ad0f2d856c4564000865b61e94a065",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_crown_mandibles_02.motion",
+  "asset_sha256": "ed0a18c821e1de9777c780e865dacb5414dce87816762d7c55c90cf787af2379",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.288
+}

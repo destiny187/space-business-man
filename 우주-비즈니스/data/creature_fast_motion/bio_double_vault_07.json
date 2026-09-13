@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fingerprint": "482b4fb96f8ba076b2be6006cc94edcd0fc22011eccc71716015ff8eda9ce621",
+  "species_id": "bio_double_vault_07",
+  "id": "bio_double_vault_07",
+  "kind": "double_vault",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.45403883455843064,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support5": 0.5,
+      "support1": 0.5,
+      "support4": 0.0,
+      "support2": 0.0,
+      "support3": 0.5
+    },
+    "lift": 0.14859452767366818,
+    "crouch": 0.05778676076198208,
+    "body_bob": 0.05778676076198208,
+    "natural_speed": 1.7198440702970856,
+    "max_playback": 1.18,
+    "acceleration": 3.0957193265347542,
+    "turn_rate": 5.0,
+    "bone_count": 48
+  },
+  "source": "art/blender/creature_fast_motion/bio_double_vault_07.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_double_vault_07.blend",
+  "original_source_sha256": "4aee323285418df038abcd9160f91b356868071aa58abea6a10c8116d713c417",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_double_vault_07.motion",
+  "asset_sha256": "46adf6bc1fd1fc85748179e2297e247e376e70972d8bb1858013776112cb8485",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.168
+}

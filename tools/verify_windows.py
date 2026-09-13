@@ -98,11 +98,13 @@ expected_models = {str(source.relative_to(project)) + ".import"
 expected_audio = {str(source.relative_to(project)) + ".import"
                   for source in (project / "assets/audio").rglob("*")
                   if source.suffix in (".wav", ".mp3")}
+expected_motions = {str(source.relative_to(project))
+                    for source in (project / "assets/animations/creatures").glob("*.motion")}
 expected_data = {str(source.relative_to(project))
                  for source in (project / "data").rglob("*.json")
                  if not any(fnmatch.fnmatchcase(source.relative_to(project).as_posix(), pattern)
                             for pattern in excluded)}
-for expected in expected_models | expected_audio | expected_data:
+for expected in expected_models | expected_audio | expected_motions | expected_data:
     assert expected in paths, "Missing current source resource: " + expected
 models = len([p for p in paths if p.startswith("assets/models/") and p.endswith(".glb.import")])
 audio = len([p for p in paths if p.startswith("assets/audio/") and p.endswith((".wav.import", ".mp3.import"))])

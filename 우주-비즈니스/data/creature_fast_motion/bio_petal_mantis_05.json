@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fingerprint": "d8ae48e2c715a710940d97605c821adbc2c628a8a43e2d987fb933a3ef7c10ac",
+  "species_id": "bio_petal_mantis_05",
+  "id": "bio_petal_mantis_05",
+  "kind": "petal_mantis",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5720783251562113,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.0,
+      "support6": 0.5,
+      "support1": 0.5,
+      "support5": 0.0,
+      "support2": 0.0,
+      "support4": 0.5,
+      "support3": 0.5
+    },
+    "lift": 0.1872256336874873,
+    "crouch": 0.07280996865624506,
+    "body_bob": 0.07280996865624506,
+    "natural_speed": 2.1669633528644363,
+    "max_playback": 1.18,
+    "acceleration": 3.9005340351559856,
+    "turn_rate": 5.0,
+    "bone_count": 56
+  },
+  "source": "art/blender/creature_fast_motion/bio_petal_mantis_05.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_petal_mantis_05.blend",
+  "original_source_sha256": "764b857c788d14bfed3248c59e18e02a9cc3e342a8750dc83c969284ca5968db",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_petal_mantis_05.motion",
+  "asset_sha256": "af8dc65562b8077b09bdbdffcd67b7254e6ec5669b8488a75e5b795e65f1420f",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.397
+}

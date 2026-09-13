@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "fingerprint": "ebfc9d145f9b793754b2358a8ac3625daae74a737be4e0c5f0882b53d139f048",
+  "species_id": "biota_bilateral_armor_11",
+  "id": "veilglider",
+  "kind": "glider",
+  "profile": {
+    "mode": "flight",
+    "medium": "surface_air",
+    "stride": 0.667588438887831,
+    "stance": 0.65,
+    "period": 0.5555555555555556,
+    "limb_phases": {
+      "hind-1": 0.0,
+      "hind1": 0.5
+    },
+    "lift": 0.20404306660870297,
+    "crouch": 0.07935008145894006,
+    "body_bob": 0.07935008145894006,
+    "natural_speed": 1.8487064461509166,
+    "max_playback": 1.18,
+    "acceleration": 3.32767160307165,
+    "turn_rate": 5.0,
+    "bone_count": 25
+  },
+  "source": "art/blender/creature_fast_motion/biota_bilateral_armor_11.blend",
+  "original_source": "art/blender/creature_remodel/flight/veilglider.blend",
+  "original_source_sha256": "850e24e1a4be3fedb04944786e8fc501ea10c3820745fc41705a84139f14e025",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_bilateral_armor_11.motion",
+  "asset_sha256": "d78b279e359053d4d6d52851eddf2b48cc946d7287decd7940e330efcce18e24",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.082
+}

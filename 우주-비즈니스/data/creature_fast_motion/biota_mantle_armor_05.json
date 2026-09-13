@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fingerprint": "9390768877265e6ebdf5f36e115cf2e8fb0f396c3ef9ce78904353a12092ffc3",
+  "species_id": "biota_mantle_armor_05",
+  "id": "biota_mantle_armor_05",
+  "kind": "mantle",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.5334721225228282,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "leg0": 0.5,
+      "leg1": 0.0,
+      "leg3": 0.0,
+      "leg2": 0.5
+    },
+    "lift": 0.1745908764620165,
+    "crouch": 0.06789645195745087,
+    "body_bob": 0.06789645195745087,
+    "natural_speed": 2.0207277368288943,
+    "max_playback": 1.18,
+    "acceleration": 3.63730992629201,
+    "turn_rate": 5.0,
+    "bone_count": 43
+  },
+  "source": "art/blender/creature_fast_motion/biota_mantle_armor_05.blend",
+  "original_source": "art/blender/creature_remodel/r03/biota_mantle_armor_05.blend",
+  "original_source_sha256": "0b97c352fe0b1578420407308ea9944f094167e37ceaffaea180529273176b58",
+  "asset": "우주-비즈니스/assets/animations/creatures/biota_mantle_armor_05.motion",
+  "asset_sha256": "bf33b6dd394145c3a2cbec52af249a92fba3360a24f5bcf0fb682c2483e0d945",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.743
+}

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "fingerprint": "53694a9458ba3735b6f73c4600db8719004c58e7948f4e94c9c37cbd4852ad68",
+  "species_id": "bio_umbrella_clutch_03",
+  "id": "bio_umbrella_clutch_03",
+  "kind": "umbrella_clutch",
+  "profile": {
+    "mode": "multi",
+    "medium": "ground",
+    "stride": 0.4163243622192029,
+    "stance": 0.55,
+    "period": 0.48,
+    "limb_phases": {
+      "support0": 0.5,
+      "support4": 0.0,
+      "support1": 0.0,
+      "support3": 0.5,
+      "support2": 0.5
+    },
+    "lift": 0.1362516094535573,
+    "crouch": 0.05298673700971673,
+    "body_bob": 0.05298673700971673,
+    "natural_speed": 1.5769862205272838,
+    "max_playback": 1.18,
+    "acceleration": 2.838575196949111,
+    "turn_rate": 5.0,
+    "bone_count": 101
+  },
+  "source": "art/blender/creature_fast_motion/bio_umbrella_clutch_03.blend",
+  "original_source": "art/blender/creature_remodel/r06/bio_umbrella_clutch_03.blend",
+  "original_source_sha256": "0aa4a1ed49c80e185bad92aa78f64b5855a76f2d189cf09be66898a619c6ddd9",
+  "asset": "우주-비즈니스/assets/animations/creatures/bio_umbrella_clutch_03.motion",
+  "asset_sha256": "5b5d0352d37f1f7b7611e24009696200ce2600a9c8aff154eb8a61f230356481",
+  "clips": [
+    "sprint_loop"
+  ],
+  "seconds": 0.231
+}
