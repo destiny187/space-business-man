@@ -1,0 +1,34 @@
+{
+  "bastion": {
+    "source": "art/blender/incidents/coopertech_bastion.blend",
+    "model": "우주-비즈니스/assets/models/incidents/coopertech_bastion.glb",
+    "bones": 11,
+    "clips": [
+      "cool",
+      "destroyed",
+      "fire",
+      "idle",
+      "ready",
+      "wake",
+      "walk"
+    ],
+    "triangles": 28480,
+    "glb_bytes": 1082788
+  },
+  "raptor": {
+    "source": "art/blender/incidents/coopertech_raptor.blend",
+    "model": "우주-비즈니스/assets/models/incidents/coopertech_raptor.glb",
+    "bones": 17,
+    "clips": [
+      "cool",
+      "destroyed",
+      "fire",
+      "idle",
+      "ready",
+      "wake",
+      "walk"
+    ],
+    "triangles": 41904,
+    "glb_bytes": 1646976
+  }
+}

@@ -211,6 +211,32 @@
       "model": "incidents/wreck",
       "hint": "주황색 방전 예고에는 표시 범위 밖이나 선체 지붕 아래로 피하세요.\n피뢰 회로를 수리하고 배터리를 직접 운반해 접지를 복구하세요.\n해치를 열고 연구 기록을 회수하면 T3 설계도를 얻습니다.",
       "icon": "wreck_beacon_trail"
+    },
+    "coopertech_bastion": {
+      "id": "coopertech_bastion",
+      "name": "쿠퍼테크 BASTION 중장갑 포격로봇",
+      "tier": 1,
+      "mode": "robot",
+      "generation": "independent",
+      "reward": {
+        "refined_iron": 6,
+        "refined_copper": 3
+      },
+      "model": "incidents/coopertech_bastion",
+      "hint": ""
+    },
+    "coopertech_raptor": {
+      "id": "coopertech_raptor",
+      "name": "쿠퍼테크 RAPTOR 4족 추적로봇",
+      "tier": 1,
+      "mode": "robot",
+      "generation": "independent",
+      "reward": {
+        "refined_iron": 3,
+        "refined_copper": 3
+      },
+      "model": "incidents/coopertech_raptor",
+      "hint": ""
     }
   }
 }

@@ -93,6 +93,7 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
  if not storm.is_empty():rows.append(storm)
  var remote: Dictionary=preload("res://scripts/domain/remote_incidents.gd").spawn(body,f,cell,rows)
  if not remote.is_empty():rows.append(remote)
+ rows.append_array(FrontierCooperTechSquads.spawn(body,f,cell,rows))
  if _tiles.size()>128:_tiles.erase(_tiles.keys()[0])
  _tiles[cache_key]=rows;return rows
 static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array:
@@ -106,6 +107,7 @@ static func create(row: Dictionary) -> Dictionary:
  record.phase="idle";record.time=0.0;record.age=0.0;record.hp=float(config().robot.health);record.hits=0;record.open=false;record.powered=false;record.claimed=false;record.carrier="";record.battery_carrier="";record.battery_installed=false;record.battery_ground=record.battery_position.duplicate();record.cargo_ground=[];record.gems=0;record.serial=0;record.aim=[];record.target="";record.discoverer="";record.seen=false;record.materialized=false
  if definition(row.template).mode=="robot":
   record.shield_max=float(config().robot.shield_tier3) if int(row.tier)>=3 else 0.0;record.shield=record.shield_max;record.shield_wait=0.0
+  if FrontierCooperTechSquads.enabled(record):FrontierCooperTechSquads.initialize(record)
  return record
 static func is_present(world: Dictionary,actor: String,row: Dictionary) -> bool:
  if not world.crew.members.has(actor):return false
@@ -148,7 +150,7 @@ static func targets(row: Dictionary) -> Array:
   if not row.open:result.append({"part":"hatch","point":point(row,Vector3(0,1.6,2.4)),"action":"도구로 해치 파괴"})
   if row.open:result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 회수"})
  elif mode=="robot":
-  if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,1.5,0)),"action":"공격무기로 교전"+(" · 실드 %.0f / %.0f"%[float(row.get("shield",0)),float(row.get("shield_max",0))] if float(row.get("shield_max",0))>0 else "")})
+  if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,float(FrontierCooperTechSquads.spec(row).center) if FrontierCooperTechSquads.enabled(row) else 1.5,0)),"action":"공격무기로 교전"+(" · 실드 %.0f / %.0f"%[float(row.get("shield",0)),float(row.get("shield_max",0))] if float(row.get("shield_max",0))>0 else "")})
   else:result.append({"part":"cargo","point":cargo_point(row),"action":"F 쿠퍼테크 부품 회수"})
  elif mode=="ice":
   if not row.open:result.append({"part":"ice","point":point(row,Vector3(0,1.3,1.6)),"action":"지형 변환기로 얼음 굴착"})
@@ -201,10 +203,13 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
   bodies[body.id]=f
   for source in nearby(body,f,p):
    if records(world).has(key(source)):continue
-   if minf(p.distance_to(FrontierCrewWorld.vector(source.position)),p.distance_to(FrontierCrewWorld.vector(source.relay)))>float(config().activation_distance):continue
+   if (p.distance_to(FrontierCrewWorld.vector(source.home)) if FrontierCooperTechSquads.enabled(source) else minf(p.distance_to(FrontierCrewWorld.vector(source.position)),p.distance_to(FrontierCrewWorld.vector(source.relay))))>float(config().activation_distance):continue
    var occupied:=false
    for building in world.get("business",{}).get("sites",{}).get(body.id,{}).get("buildings",{}).values():
     if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.position))<float(config().exclusion_radius):occupied=true;break
+   if not occupied and FrontierCooperTechSquads.enabled(source):
+    for building in world.get("business",{}).get("sites",{}).get(body.id,{}).get("buildings",{}).values():
+     if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.home))<float(FrontierCooperTechSquads.config().spawn_clearance)+float(config().exclusion_radius):occupied=true;break
    if occupied:continue
    world.incidents.records[key(source)]=create(source);changed=true
  for row in records(world).values():
@@ -222,6 +227,8 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
   if preload("res://scripts/domain/storm_archive.gd").tick(world,row,delta,present,obstacle):changed=true
   if row.has("native"):
    if FrontierNativeIncidents.tick(world,row,present,delta,bodies[row.body_id]):changed=true
+  elif mode=="robot" and row.hp>0 and FrontierCooperTechSquads.enabled(row):
+   if FrontierCooperTechSquads.tick(world,row,delta,present,bodies[row.body_id],obstacle):changed=true
   elif mode=="robot" and row.hp>0:
    row.shield_wait=maxf(0,float(row.get("shield_wait",0))-delta)
    if row.shield_wait<=0:row.shield=minf(float(row.get("shield_max",0)),float(row.get("shield",0))+float(config().robot.shield_rate)*delta)
@@ -289,6 +296,7 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
     var split:=FrontierCrewVitals.split_shield_damage(float(row.get("shield",0)),float(tool.damage)*(float(config().robot.weak_factor) if weak_hit else 1.0),float(tool.get("shield_multiplier",1.0)))
     row.shield=maxf(0,float(row.get("shield",0))-float(split.absorbed));row.shield_wait=float(config().robot.shield_delay)
     row.hp=maxf(0,row.hp-float(split.health))
+    if FrontierCooperTechSquads.enabled(row):FrontierCooperTechSquads.alert(world,row)
     if row.hp<=0:
      set_phase(row,"destroyed");FrontierSuitModules.on_kill(world.crew.members[actor])
    "drone":
@@ -375,21 +383,24 @@ static func validate(world: Dictionary) -> String:
   if not FrontierUniverse._finite(row.get("yaw"),0,TAU) or not FrontierExpeditionBusiness.integer(row.get("tier"),1,5):return "사건 생성 정보 오류"
   for field_name in ["time","age","hp","hits","gems","serial"]:
    if not FrontierUniverse._finite(row.get(field_name),0,9007199254740000):return "사건 진행 수치 오류"
+  var squad: bool=FrontierCooperTechSquads.enabled(row)
+  var shield_limit: float=float(FrontierCooperTechSquads.spec(row).shield) if squad else float(config().robot.shield_tier3)
   for field_name in ["shield","shield_max","shield_wait"]:
-   if not FrontierUniverse._finite(row.get(field_name,0),0,float(config().robot.shield_tier3)):return "사건 실드 기록 오류"
+   if not FrontierUniverse._finite(row.get(field_name,0),0,maxf(6,shield_limit) if field_name=="shield_wait" else shield_limit):return "사건 실드 기록 오류"
   if float(row.get("shield",0))>float(row.get("shield_max",0)):return "사건 실드 잔량 오류"
-  if row.hp>float(config().robot.health) or row.gems>int(config().seismic.gems):return "사건 잔량 오류"
+  if row.hp>(float(FrontierCooperTechSquads.spec(row).health) if squad else float(config().robot.health)) or row.gems>int(config().seismic.gems):return "사건 잔량 오류"
   for field_name in ["open","powered","claimed","battery_installed","seen","materialized"]:
    if not row.get(field_name) is bool:return "사건 상태 오류"
   for field_name in ["carrier","battery_carrier","target","discoverer"]:
    if not row.get(field_name) is String or (row[field_name]!="" and not world.crew.members.has(row[field_name])):return "사건 승무원 오류"
-  if row.get("phase") not in ["idle","waking","cooling","aiming","firing","destroyed","disabled","opened","recovered","quake","quiet","warning","blast"]:return "사건 단계 오류"
+  if row.get("phase") not in ["idle","patrol","pursuing","projectile","waking","cooling","aiming","firing","destroyed","disabled","opened","recovered","quake","quiet","warning","blast"]:return "사건 단계 오류"
   for field_name in ["cargo_ground","aim"]:
    if not row.get(field_name) is Array or (not row[field_name].is_empty() and not FrontierUniverse._vector3_array(row[field_name])):return "사건 위치 상태 오류"
   if not row.get("path") is Array or row.path.size()>13:return "사건 이동 경로 오류"
   for p in row.path:
    if not FrontierUniverse._vector3_array(p):return "사건 이동 지점 오류"
   if not preload("res://scripts/domain/storm_archive.gd").validate(world,row):return "폭풍 기록고의 복원 결과 오류"
+  if not FrontierCooperTechSquads.validate(row):return "쿠퍼테크 분대 기록 오류"
   if not FrontierNativeIncidents.validate(world,row):return "현지 생물 사건 기록 오류"
  return ""
 

@@ -47,7 +47,7 @@ static func incidents(source: Dictionary,actors: Array) -> Dictionary:
 		for key in source.incidents.records:
 			var row: Dictionary=source.incidents.records[key]
 			# A disconnected carrier can drop cargo even outside the active regions.
-			if row.body_id in ids or not str(row.get("carrier","")).is_empty() or not str(row.get("battery_carrier","")).is_empty():draft.incidents.records[key]=row.duplicate(true)
+			if _near_incident(source,actors,row) or not str(row.get("carrier","")).is_empty() or not str(row.get("battery_carrier","")).is_empty():draft.incidents.records[key]=row.duplicate(true)
 	draft.terrain_edits=source.terrain_edits.duplicate()
 	for id in ids:
 		if source.terrain_edits.has(id):draft.terrain_edits[id]=source.terrain_edits[id].duplicate(true)
@@ -57,6 +57,12 @@ static func water(source: Dictionary,actors: Array) -> Dictionary:
 	var draft:=source.duplicate();var ids:=bodies(source,actors)
 	draft.surface_water=source.get("surface_water",{}).duplicate()
 	for id in ids:
+static func _near_incident(source: Dictionary,actors: Array,row: Dictionary) -> bool:
+	for actor in actors:
+		if not FrontierExplorationIncidents.is_present(source,actor,row):continue
+		var at:=FrontierCrewWorld.vector(source.crew.members[actor].position)
+		if minf(at.distance_to(FrontierCrewWorld.vector(row.position)),at.distance_to(FrontierCrewWorld.vector(row.relay)))<float(FrontierExplorationIncidents.config().activation_distance)+float(FrontierCooperTechSquads.config().group_alarm_radius):return true
+	return false
 		if draft.surface_water.has(id):draft.surface_water[id]=draft.surface_water[id].duplicate(true)
 	_sites(draft,source,ids)
 	return draft

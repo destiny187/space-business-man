@@ -16432,5 +16432,39 @@
     "source": "art/blender/equipment/ammo_heavy.blend",
     "geometry": "firearm-support",
     "foliage": false
+  },
+  {
+    "id": "coopertech_bastion",
+    "title": "COOPERTECH / COMBAT",
+    "name": "BASTION 중장갑 포격로봇",
+    "group": "발견·환경",
+    "model": "res://assets/models/incidents/coopertech_bastion.glb",
+    "source": "art/blender/incidents/coopertech_bastion.blend",
+    "geometry": "coopertech-squad-rigged",
+    "foliage": false,
+    "generator": "tools/build_coopertech_squads.py",
+    "review": "docs/production/167-coopertech-squads.md",
+    "view_direction": [
+      1.22,
+      0.84,
+      -1.7
+    ]
+  },
+  {
+    "id": "coopertech_raptor",
+    "title": "COOPERTECH / COMBAT",
+    "name": "RAPTOR 4족 추적로봇",
+    "group": "발견·환경",
+    "model": "res://assets/models/incidents/coopertech_raptor.glb",
+    "source": "art/blender/incidents/coopertech_raptor.blend",
+    "geometry": "coopertech-squad-rigged",
+    "foliage": false,
+    "generator": "tools/build_coopertech_squads.py",
+    "review": "docs/production/167-coopertech-squads.md",
+    "view_direction": [
+      1.22,
+      0.84,
+      -1.7
+    ]
   }
 ]

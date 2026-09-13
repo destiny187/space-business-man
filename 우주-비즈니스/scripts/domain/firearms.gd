@@ -255,6 +255,7 @@ static func _damage(world: Dictionary,actor: String,hit: Dictionary,damage: floa
 		var split:=FrontierCrewVitals.split_shield_damage(before,damage,float(tool.get("shield_multiplier",1)))
 		row.shield=maxf(0,before-float(split.absorbed));row.shield_wait=float(FrontierExplorationIncidents.config().robot.shield_delay)
 		row.hp=maxf(0,hp-float(split.health));row.serial+=1;row.seen=true
+		if FrontierCooperTechSquads.enabled(row):FrontierCooperTechSquads.alert(world,row)
 		outcome.shield=before-row.shield;outcome.damage=hp-row.hp;outcome.broken=before>0 and row.shield<=0;outcome.killed=row.hp<=0
 		if outcome.killed:FrontierExplorationIncidents.set_phase(row,"destroyed");FrontierSuitModules.on_kill(world.crew.members[actor])
 	elif hit.kind=="drone":

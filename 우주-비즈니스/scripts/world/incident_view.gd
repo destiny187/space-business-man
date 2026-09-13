@@ -57,6 +57,7 @@ func beam(a: Vector3,b: Vector3,color: Color,radius: float,parent_node: Node3D) 
 func make(row: Dictionary) -> Dictionary:
  var mode: String=FrontierExplorationIncidents.definition(row.template).mode
  var ids: Array=[{"wreck":"wreck","power":"wreck","carry":"cliff","ice":"ice","robot":"robot","drone":"drone","scavenger":"nest","native":"nest","seismic":"gems"}[mode],"cargo","beacon"]
+ if FrontierCooperTechSquads.enabled(row):ids[0]=FrontierCooperTechSquads.spec(row).model
  if mode in ["power","wreck"]:ids.append_array(["battery","generator"])
  if mode=="scavenger":ids.append("battery")
  if row.has("native") and row.native.role!="scavenger":ids.append("gems")
@@ -90,6 +91,12 @@ func make(row: Dictionary) -> Dictionary:
   var bubble:=MeshInstance3D.new();var sphere:=SphereMesh.new();sphere.radius=1.15;sphere.height=3.0;bubble.mesh=sphere;root_node.add_child(bubble);bubble.position=Vector3(0,1.5,0)
   var shield_material:=StandardMaterial3D.new();shield_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;shield_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;shield_material.albedo_color=Color(.2,.65,1,.12);shield_material.cull_mode=BaseMaterial3D.CULL_DISABLED;bubble.material_override=shield_material;result.shield=bubble
   var solid:=StaticBody3D.new();root_node.add_child(solid);var shape:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.6;capsule.height=2.7;shape.shape=capsule;shape.position.y=1.35;solid.add_child(shape);result.robot_solid=solid;solid.set_meta("firearm_target",true)
+ if FrontierCooperTechSquads.enabled(row):
+  var cfg:=FrontierCooperTechSquads.spec(row)
+  result.shield.material_override.albedo_color=Color(.2,.65,1,.04)
+  result.shield.scale=Vector3(float(cfg.radius)/1.15,float(cfg.height)/3.0,float(cfg.radius)/1.15);result.shield.position.y=float(cfg.height)*.5
+  var shape: CollisionShape3D=result.robot_solid.get_child(0);var box:=BoxShape3D.new();box.size=Vector3(float(cfg.radius)*1.6,float(cfg.height),float(cfg.radius)*1.6);shape.shape=box;shape.position.y=float(cfg.height)*.5
+  preload("res://scripts/world/coopertech_squad_view.gd").build(self,row,result)
  if mode=="seismic":
   main.position=Vector3(0,-7.6,-1);cargo.hide();relay.hide()
   var ring:=MeshInstance3D.new();var torus:=TorusMesh.new();torus.inner_radius=float(FrontierExplorationIncidents.config().seismic.blast_radius)-.08;torus.outer_radius=torus.inner_radius+.16;torus.rings=48;torus.ring_segments=6;ring.mesh=torus
@@ -102,6 +109,7 @@ func refresh() -> void:
   if rows.has(id):continue
   if models[id].beam!=null:models[id].beam.queue_free()
   preload("res://scripts/world/storm_archive_view.gd").dispose(models[id])
+  preload("res://scripts/world/coopertech_squad_view.gd").dispose(models[id])
   models[id].root.queue_free();models.erase(id)
  for id in rows:
   if models.has(id):continue
@@ -155,6 +163,7 @@ func _process(delta: float) -> void:
    if not warning.is_empty():native_warning=warning
   if mode=="robot":nodes.shield.visible=float(row.get("shield",0))>0 and row.hp>0 and row.phase!="idle"
   for part in nodes.parts:
+   if FrontierCooperTechSquads.enabled(row) and row.robot_role!="sentry":continue
    if not part.has_meta("rest"):part.set_meta("rest",part.transform)
    var rest: Transform3D=part.get_meta("rest")
    if str(part.name).begins_with("Anim_Hatch") or str(part.name).begins_with("Anim_Ice"):
@@ -165,13 +174,13 @@ func _process(delta: float) -> void:
    elif str(part.name).begins_with("Anim_Torso"):
     var folded:=1.0 if row.phase in ["idle","destroyed"] else (1.0-clampf(float(row.time)/float(FrontierExplorationIncidents.config().robot.wake_seconds),0,1) if row.phase=="waking" else 0.0)
     part.transform=rest;part.rotation.x+=folded*1.0;part.position.y-=folded*.3
-    if row.phase in ["aiming","firing"] and not row.aim.is_empty():
+    if row.phase in ["aiming","firing"] and not row.aim.is_empty() and not FrontierCooperTechSquads.enabled(row):
      var toward:=FrontierCrewWorld.vector(row.aim)-at;part.rotation.y=atan2(toward.x,toward.z)-float(row.yaw)
    elif str(part.name).begins_with("Anim_Weak"):part.visible=row.phase=="cooling"
    elif str(part.name).begins_with("Anim_Gem_"):part.visible=int(str(part.name).trim_prefix("Anim_Gem_"))>=int(row.gems)
   if nodes.has("robot_solid"):nodes.robot_solid.collision_layer=1 if row.hp>0 else 0
   if nodes.beam!=null:nodes.beam.visible=false
-  if mode=="robot" and row.phase in ["aiming","firing"] and not stopped and not row.aim.is_empty():
+  if mode=="robot" and not FrontierCooperTechSquads.enabled(row) and row.phase in ["aiming","firing"] and not stopped and not row.aim.is_empty():
    if nodes.beam==null or nodes.get("beam_serial",-1)!=row.serial:
     if nodes.beam!=null:nodes.beam.queue_free()
     nodes.beam=beam(FrontierExplorationIncidents.point(row,Vector3(0,1.5,0)),FrontierCrewWorld.vector(row.aim)+Vector3.UP,Color("ff562c") if row.phase=="firing" else Color("d29b3b"),.10 if row.phase=="firing" else .018,self);nodes.beam_serial=row.serial
@@ -185,9 +194,10 @@ func _process(delta: float) -> void:
     if surface.viewer.position.distance_to(effect_at)<25:
      if row.phase in ["quake","blast"] and FrontierClientSettings.ensure(get_tree()).values.incident_shake:camera.h_offset=sin(elapsed*31)*.045;camera.v_offset=cos(elapsed*39)*.035
      if fmod(elapsed,.2)<delta:app.feedback.effects.burst(effect_at,Color("ffaf58") if row.phase!="quake" else Color("ac9875"),4)
+  if FrontierCooperTechSquads.enabled(row):preload("res://scripts/world/coopertech_squad_view.gd").update(self,row,nodes,delta,stopped)
   if int(row.serial)!=int(nodes.serial):
    if not stopped:
-    if row.phase!=nodes.phase:
+    if row.phase!=nodes.phase and not FrontierCooperTechSquads.enabled(row):
      var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_combat_pulse" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
      audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
     # Combat contacts already have host-confirmed material effects. A serial
@@ -212,7 +222,7 @@ func _process(delta: float) -> void:
   hint.text=""
   var robot: Dictionary=rows[selected.id]
   if app.placement_kind.is_empty() and not app.field_hud.scan_card.visible:
-   target_health.present(float(robot.hp),float(FrontierExplorationIncidents.config().robot.health),float(robot.get("shield",0)),float(robot.get("shield_max",0)))
+   target_health.present(float(robot.hp),float(robot.get("hp_max",FrontierExplorationIncidents.config().robot.health)),float(robot.get("shield",0)),float(robot.get("shield_max",0)))
  if not selected.is_empty() and selected.part=="cargo":
   var reward:=FrontierFirearmLootView.description(models[selected.id])
   if not reward.is_empty():hint.text+="\n"+reward

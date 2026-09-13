@@ -1,0 +1,46 @@
+{
+  "provider": "ElevenLabs",
+  "status": "existing_sources_runtime_playback_verified",
+  "new_generation": false,
+  "cues": [
+    {
+      "id": "sfx_robot_move",
+      "role": "주행 모터",
+      "game_file": "우주-비즈니스/assets/audio/sfx_robot_move.wav",
+      "sha256": "340ee5018963576b6f5b2e583d395af90289ac1c7ce6e18789a6deaf098c35b4",
+      "source_manifest": "elevenlabs.json"
+    },
+    {
+      "id": "sfx_incident_robot_wake",
+      "role": "집단 기동",
+      "game_file": "우주-비즈니스/assets/audio/sfx_incident_robot_wake.wav",
+      "sha256": "21edf93962982b1325bf9ef4724fd1d3e4655b962ce4076aa07064cfb515c95b",
+      "source_manifest": "exploration-incidents.json"
+    },
+    {
+      "id": "sfx_combat_pulse",
+      "role": "보초/RAPTOR 발사",
+      "game_file": "우주-비즈니스/assets/audio/sfx_combat_pulse.wav",
+      "sha256": "2b84b3941f0c23377477129b7a706eb35883cf86cecb9afcd9cb37ac49c46dc5",
+      "source_manifest": "elevenlabs.json"
+    },
+    {
+      "id": "sfx_gun_plasma",
+      "role": "BASTION 발사/착탄",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_plasma.wav",
+      "sha256": "ac3e44ee65e6b6f20fe8abec6c3fde33611fbd3c71bc44ca724f3677e898723d",
+      "source_manifest": "ground-combat-sources.json"
+    },
+    {
+      "id": "sfx_gun_charge",
+      "role": "발사 준비",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_charge.wav",
+      "sha256": "5a2d32860bbf320296dc3a422fd2764e56527490fb169ed2c80b5585e93a6d51",
+      "source_manifest": "firearm-reload-stages.json"
+    }
+  ],
+  "note": "주행음은 실제 이동 중 공간 재생, BASTION pitch 0.7 / RAPTOR 1.18. 직접 청감 미확인.",
+  "recording_seconds": 19.6266666667,
+  "peak_dbfs": -15.85796546,
+  "clipped_samples": 0
+}
