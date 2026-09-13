@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS fresh solo scene prepared
+PASS old character's step 04 does not carry into a new expedition
+PASS guide progress belongs to character and expedition
+PASS opening cannot complete movement practice
+PASS new opening is saved as version 2
+PASS opening starts close to Earth and faces Earth
+PASS opening hides atmosphere observation with no target
+PASS entire route stays near Earth with planetary clearance
+PASS ship turns naturally before a short forward departure
+PASS opening hands over stopped without jump or continued acceleration
+PASS handoff preserves final orientation including up
+PASS opening changes navigation and flight position only
+PASS stored version 1 path retains its original pose
+PASS full opening reaches Lotus welcome
+PASS welcome confirmation shows guide 01
+PASS visible guide starts at 01
+PASS guide draws below field results and welcome keeps modal depth
+PASS same expedition keeps completed practice on reread
+PASS legacy character guide record is preserved
+PASS scan and context stay clear of guidance at (1280, 800)
+PASS normal viewport keeps guidance beside scan
+PASS scan and context stay clear of guidance at (960, 640)
+PASS guidance returns after scan result closes
+PASS isolated expedition saves and closes
+EARTH_DEPARTURE_GUIDE_CHECKS 24 FAILURES 0

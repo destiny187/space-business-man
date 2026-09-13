@@ -34,7 +34,9 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	theme = FrontierInterfaceStyle.theme()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	z_index = 80
+	z_index = 0
+	# Draw guidance below field results, while the welcome modal keeps its own level.
+	get_parent().move_child(self, app.field_hud.get_index())
 	path = app.profile.path.get_base_dir() + "/play_guide.cfg"
 	seen.load(path)
 	var profile_data: Variant = JSON.parse_string(FileAccess.get_file_as_string(app.profile.path)) if FileAccess.file_exists(app.profile.path) else null
@@ -54,7 +56,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var close:=Button.new();close.text="확인";close.custom_minimum_size.y=46;box.add_child(close)
 	close.pressed.connect(func():
 		welcome_seen.set_value("read",checked_world,true);welcome_seen.save(welcome_path);letter.hide();app.cursor_released=false;app.get_viewport().gui_release_focus())
-	letter.z_index = 10
+	letter.z_index = 90
 	depart = Button.new()
 	depart.text = "G  은하 지도"
 	depart.custom_minimum_size = Vector2(180, 32)
@@ -107,12 +109,18 @@ func update_snapshot(value: Dictionary) -> void:
 		welcome_pending = false
 		letter.show()
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	var key: String = value.self_id
+	var key: String = value.galaxy_id + ":" + value.self_id
 	if player_key != key:
 		player_key = key
 		initial_system = -1
 		practice_time = 0.0
-		progress = seen.get_value("players", key, {"eligible":new_player, "travel":false, "inventory":false, "complete":false})
+		var opening: Dictionary = value.crew.navigation.get("solar_opening", {})
+		var fresh_departure: bool = not opening.is_empty() and float(opening.elapsed) < float(opening.duration)
+		var initial: Dictionary = {"eligible":new_player or fresh_departure, "travel":false, "inventory":false, "complete":false}
+		# A new expedition starts at 01 even with a returning character. Existing
+		# expeditions may retain legacy personal progress on their first read.
+		if not fresh_departure:initial = seen.get_value("players", value.self_id, initial)
+		progress = seen.get_value("players", key, initial).duplicate(true)
 		_save()
 	var nav: Dictionary = value.crew.navigation
 	if initial_system < 0:initial_system = int(nav.system)
@@ -168,7 +176,7 @@ func observe_flight_input(controls: Array, keyboard_turn: float, delta: float) -
 		_save()
 
 func _practice_allowed() -> bool:
-	if app.session.latest.is_empty():return false
+	if app.session.latest.is_empty() or app.solar_opening_active():return false
 	var value: Dictionary = app.session.latest
 	return app.session.active and value.self_id == value.crew.pilot_id and value.crew.navigation.mode == "idle" and app.orbital_scan_allowed() and not letter.visible and not app.any_menu_open() and not get_tree().has_meta("startup_loader")
 
@@ -290,7 +298,36 @@ func _process(delta: float) -> void:
 	else:
 		var near: bool = nav_ui.context_kind == "land" and nav_ui.context_ready
 		_hint("land", 5, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 속도를 조절해 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
+	_avoid_scan_result()
 	queue_redraw()
+
+func _avoid_scan_result() -> void:
+	var occupied := Rect2()
+	if app.surface_world != null:
+		occupied = _target(app.field_hud.scan_card)
+	elif app.outside and app.flight != null:
+		var overlay = app.flight.transit_overlay
+		var box: Rect2 = overlay.scan_result_rect()
+		if box.has_area():
+			var viewport_size := Vector2(app.space_view.size)
+			var scale_factor := maxf(app.exterior_view.size.x/viewport_size.x, app.exterior_view.size.y/viewport_size.y)
+			var offset: Vector2 = app.exterior_view.global_position - (viewport_size * scale_factor - app.exterior_view.size) * .5
+			occupied = Rect2(offset + box.position * scale_factor, box.size * scale_factor)
+	if not occupied.has_area():return
+	var context := _target(app.navigation_ui.context) if app.surface_world == null else Rect2()
+	# Orbital results are inside the 3D viewport texture: keep guidance outside
+	# their bounds as well as below the ground result's canvas drawing order.
+	highlight = Rect2()
+	if not _overlaps_result(occupied, context):return
+	var extent := get_viewport().get_visible_rect().size
+	for at in [Vector2(28, extent.y-card.size.y-100), Vector2(extent.x-card.size.x-28, extent.y-card.size.y-100)]:
+		card.position = at
+		if not _overlaps_result(occupied, context):return
+	card.hide()
+
+func _overlaps_result(scan: Rect2, context: Rect2) -> bool:
+	var bounds := card.get_global_rect()
+	return bounds.intersects(scan.grow(12)) or (context.has_area() and bounds.intersects(context.grow(12)))
 
 func _draw() -> void:
 	if not card.visible or not highlight.has_area():return

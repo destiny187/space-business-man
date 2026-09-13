@@ -64,31 +64,25 @@
     "fov_deceleration_end": 0.98
   },
   "solar_opening": {
-    "duration": 8.0,
+    "duration": 8.5,
     "hold": 1.5,
-    "move_end": 6.5,
-    "turn_start": 3.0,
-    "turn_end": 7.4,
+    "move_end": 8.0,
+    "turn_start": 1.5,
+    "turn_end": 5.0,
     "start_distance": 650.0,
-    "view_radii": [
-      26000.0,
-      36000.0
-    ],
-    "elevations": [
-      14000.0,
-      22000.0,
-      30000.0
-    ],
-    "view_samples": 48,
-    "focus_fraction": 0.65,
-    "clearance": 180.0,
     "camera_start": [
       0.0,
       28.0,
       110.0
     ],
     "fov": 72.0,
-    "finish_distance": 1100.0
+    "finish_distance": 950.0,
+    "move_start": 5.0,
+    "earth_view": [
+      -0.55,
+      0.82,
+      0.16
+    ]
   },
   "stellar_arrival": {
     "revisit_seconds": 2.2,

@@ -64,6 +64,12 @@ func _draw() -> void:
 		_draw_scan(font,center)
 		if nav.get("boundary",false):draw_string(font,Vector2(24,size.y-72),"항성계 외곽 — 항법도에서 성간 항해를 설정하세요",HORIZONTAL_ALIGNMENT_LEFT,-1,18,Color(1,.76,.4))
 
+func scan_result_rect() -> Rect2:
+	if scan_body.is_empty() or presentation_blocked or opening or atmosphere_ready or scan_progress<1.0 or nav.get("mode", "idle")=="jump":return Rect2()
+	var width:=minf(440,size.x*.48)
+	var pointer:=size*.5
+	return Rect2(Vector2(clampf(pointer.x-width-42,16,size.x-width-16),maxf(16,pointer.y-305)),Vector2(width,277))
+
 func _draw_scan(font: Font,center: Vector2) -> void:
 	if scan_body.is_empty() or presentation_blocked:return
 	var cyan:=Color(.45,.94,1,.95)
@@ -75,7 +81,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	var width:=minf(440,size.x*.48)
 	var pointer:=center
 	if not Rect2(Vector2.ZERO,size).has_point(pointer):pointer=center
-	var box:=Rect2(Vector2(clampf(pointer.x-width-42,16,size.x-width-16),maxf(16,pointer.y-305)),Vector2(width,277))
+	var box:=scan_result_rect()
 	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.10,.15,.88);style.border_color=Color(.35,.86,1,.7);style.set_border_width_all(1);style.set_corner_radius_all(9)
 	draw_style_box(style,box)
 	draw_polyline(PackedVector2Array([pointer+Vector2(-18,-18),box.position+Vector2(width+12,130),box.position+Vector2(width,130)]),cyan,1.5,true)

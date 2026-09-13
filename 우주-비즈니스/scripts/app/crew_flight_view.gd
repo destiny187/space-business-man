@@ -203,7 +203,7 @@ func _process(delta: float) -> void:
 		var finish_fov:=float(FrontierClientSettings.ensure(get_tree()).values.fov)
 		camera.fov=lerpf(float(FrontierSolarOpening.config().fov),finish_fov,shot.turn)
 		transit_overlay.arrival_age=opening_clock
-		engine_brake=.65 if absf(float(navigation.speed))>1 else 0.0
+		engine_brake=.65 if float(navigation.speed)<-1 else 0.0
 	# Every cabin aperture uses a common projection, so looking sideways/upwards
 	# reveals that part of the live system instead of repeating the forward view.
 	ship.get_child(0).visible=not cabin_camera
@@ -249,7 +249,6 @@ func _process(delta: float) -> void:
 		if atmosphere_overlay!=null:atmosphere_overlay.hide()
 	else:
 		transit_overlay.show()
-		if atmosphere_overlay!=null:atmosphere_overlay.show()
 
 func pick_planet(point: Vector2) -> int:
 	if navigation.get("mode","")=="jump" or (combat_view!=null and combat_view.armed()):return -1
