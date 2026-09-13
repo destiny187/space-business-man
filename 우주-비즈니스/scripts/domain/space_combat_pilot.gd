@@ -51,7 +51,10 @@ static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 		return
 	enemy.maneuver_age+=dt
 	var age:=float(enemy.maneuver_age);var duration:=float(enemy.maneuver_duration)
-	var side:=float(enemy.side);var speed:=FrontierSpaceCombat.point(enemy.velocity).length()
+	var impact:=FrontierSpaceCollision.drift(enemy)
+	var side:=float(enemy.side);var speed:=(FrontierSpaceCombat.point(enemy.velocity)-impact).length()
+	impact*=exp(-float(FrontierSpaceCollision.config().drift_decay)*dt)
+	enemy.impact_velocity=FrontierSpaceCombat.arr(impact)
 	var desired:=FrontierSpaceSkills.decoy_target(world,position,target+heading*float(nav.speed)*float(cfg.aim_lead_seconds))
 	var requested_speed:=float(def.speed)
 	match str(enemy.maneuver):
@@ -105,12 +108,10 @@ static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 	enemy.roll=lerpf(float(enemy.roll),clampf(-turn,-float(cfg.bank_limit),float(cfg.bank_limit)),1-exp(-dt*float(cfg.bank_response)))
 	enemy.direction=FrontierSpaceCombat.arr(direction)
 	enemy.up=FrontierSpaceCombat.arr(Quaternion(facing,direction)*frame.y)
-	var velocity:=direction*speed
+	var velocity:=direction*speed+impact
 	var next:=position+velocity*dt
 	var shift:=next-position
-	var nearest:=position+shift*clampf((target-position).dot(shift)/maxf(shift.length_squared(),.0001),0,1)
-	var clears_player:=nearest.distance_to(target)>=clearance or next.distance_to(target)>position.distance_to(target)
-	if clears_player and FrontierSpaceCombat.clear_position(world,int(e.system),next,float(def.radius)+12) and (shift.length()<.001 or FrontierSpaceCombat.blocked_distance(world,int(e.system),position,direction,shift.length()+float(def.radius))>=shift.length()+float(def.radius)):
+	if FrontierSpaceCombat.clear_position(world,int(e.system),next,float(def.radius)+12) and (shift.length()<.001 or FrontierSpaceCombat.blocked_distance(world,int(e.system),position,direction,shift.length()+float(def.radius))>=shift.length()+float(def.radius)):
 		enemy.position=FrontierSpaceCombat.arr(next)
 	else:
 		velocity=Vector3.ZERO

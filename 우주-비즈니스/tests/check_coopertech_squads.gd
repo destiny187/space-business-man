@@ -115,7 +115,11 @@ func play_squads(owner: Dictionary) -> void:
   await capture("bastion-aiming")
  if await until(func():return core.world.incidents.records[robot_key].phase=="projectile","BASTION launches visible shell",8):
   await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(folder+"/bastion-projectile.png")
- await until(func():return core.world.incidents.records[robot_key].phase=="cooling","BASTION enters recovery window",8)
+ # The stationary observer must remain alive while checking the artillery state machine,
+ # just as in the RAPTOR burst observation below. A rescue pauses active incident actors.
+ await until(func():
+  core.world.crew.members[actor_id].vitals.health=100.0
+  return core.world.incidents.records[robot_key].phase=="cooling","BASTION enters recovery window",8)
  check(view.audio.last_played.has("sfx_gun_plasma") and view.audio.last_played.has("sfx_incident_robot_wake"),"ElevenLabs wake and artillery cues play")
  var raptor_id: String=""
  for r in squad_sources:

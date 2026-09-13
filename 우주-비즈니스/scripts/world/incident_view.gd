@@ -118,6 +118,8 @@ func _process(delta: float) -> void:
  if surface==null or surface.session.latest.is_empty():return
  elapsed+=delta;refresh_time-=delta
  if refresh_time<=0:refresh_time=.25;refresh()
+ # Keep model discovery throttled, but consume the newest motion snapshot every frame.
+ rows=surface.session.latest.get("incidents",{}).get("records",{})
  var stopped:=blocked();target_health.hide();hint.visible=not stopped;signal_label.visible=not stopped;signal_bar.visible=not stopped
  for speaker in audio.get_children():
   if speaker is AudioStreamPlayer or speaker is AudioStreamPlayer3D:speaker.stream_paused=stopped

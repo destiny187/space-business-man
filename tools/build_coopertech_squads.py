@@ -9,6 +9,7 @@ ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'tools'))
 import ink_blender as ink
 import build_ink_industry as k
 import corporate_marks
+import coopertech_biped_pose as biped
 OUT=ROOT/'art/blender/incidents';GAME=ROOT/'우주-비즈니스/assets/models/incidents';REVIEW=ROOT/'docs/production/media/coopertech-squads'
 for path in [OUT,GAME,REVIEW]:path.mkdir(parents=True,exist_ok=True)
 def p(v):return Vector((v[0],-v[2],v[1]))
@@ -39,7 +40,8 @@ def build(kind):
  global bones,parts
  palette();bones=[];parts={}
  joint('root',(0,0,0),(0,.3,0),'')
- joint('body',(0,1.55,0) if kind=='bastion' else (0,.85,0),(0,2.1,0) if kind=='bastion' else (0,1.1,0))
+ if kind=='bastion':joint('pelvis',(0,1.55,0),(0,1.85,0))
+ joint('body',(0,1.55,0) if kind=='bastion' else (0,.85,0),(0,2.1,0) if kind=='bastion' else (0,1.1,0),'pelvis' if kind=='bastion' else 'root')
  if kind=='bastion':
   def body():
    box('Reactor cradle',(0,1.6,0),(1.3,.55,1.05),'dark',.1)
@@ -79,7 +81,7 @@ def build(kind):
   capture(weapon)
   for side in [-1,1]:
    x=side*.83
-   joint('hip_'+str(side),(x,1.55,0),(x, .85,.1))
+   joint('hip_'+str(side),(x,1.55,0),(x, .85,.1),'pelvis')
    capture(lambda: (rod('Hip servo',(x-.22,1.45,0),(x+.22,1.45,0),.24),box('Thigh armor',(x,1.15,0),(.59,.6,.63),'armor',.08),rod('Hydraulic ram',(x+side*.28,1.45,.3),(x+side*.28,.83,.28),.075)))
    joint('knee_'+str(side),(x,.8,.1),(x,.28,-.04),'hip_'+str(side))
    capture(lambda: (rod('Knee axle',(x-.3,.8,.1),(x+.3,.8,.1),.21),plate('Tapered shin',[(x-.26,.2),(x+.26,.2),(x+.35,.83),(x+.2,1.02),(x-.2,1.02),(x-.35,.83)],-.37,.12),box('Shin insignia',(x,.62,-.41),(.34,.11,.06),'red',.012)))
@@ -141,6 +143,7 @@ def build(kind):
   bone=arm.edit_bones.new(name);bone.head=a;bone.tail=b
   if parent:bone.parent=arm.edit_bones[parent]
  bpy.ops.object.mode_set(mode='OBJECT');mesh.parent=rig;mod=mesh.modifiers.new('Mechanical joint skin','ARMATURE');mod.object=rig
+ if kind=='bastion':biped.set_planted_rest(rig,mesh,.17)
  for clip in ['idle','ready','walk','wake','fire','cool','destroyed']:
   rig.animation_data_create();action=bpy.data.actions.new(clip);rig.animation_data.action=action
   for frame in range(1,26,2):
@@ -152,7 +155,7 @@ def build(kind):
      if name=='body':bone.rotation_euler.x=.42*fold;bone.location.y=-.25*fold
      if name.startswith('hip_'):bone.rotation_euler.x=.35*fold
      if name.startswith('knee_'):bone.rotation_euler.x=-.5*fold
-    if clip=='walk':
+    if clip=='walk' and kind!='bastion':
      if name.startswith(('hip_','knee_','foot_')):
       side=-1 if name.split('_')[1]=='-1' else 1;fore=-1 if name.endswith('_-1') else 1
       phase=t*math.tau+(math.pi if (side*fore<0 if kind=='raptor' else side<0) else 0)
@@ -161,6 +164,9 @@ def build(kind):
      if name=='body':bone.location.y=abs(math.sin(t*math.tau))*.035
     if name=='weapon' and clip=='fire':bone.location.y=-math.sin(t*math.pi)*.18
     if name=='core':bone.scale=(1,1,1) if clip=='cool' else (.18,.18,.18)
+   if clip=='walk' and kind=='bastion':bpy.context.view_layer.update();biped.walk(rig,t)
+   for name,a,b,parent in bones:
+    bone=rig.pose.bones[name]
     for key in ['rotation_euler','location','scale']:bone.keyframe_insert(key,frame=frame,group=name)
   track=rig.animation_data.nla_tracks.new();track.name=clip;track.strips.new(clip,1,action);track.mute=True
  rig.animation_data.action=None

@@ -6,7 +6,7 @@ static func active(nav: Dictionary) -> bool:
  var shot: Dictionary=nav.get("solar_opening",{})
  return not shot.is_empty() and float(shot.elapsed)<float(shot.duration)
 static func valid(shot: Variant) -> bool:
- if not shot is Dictionary or shot.get("version") not in [1,2]:return false
+ if not shot is Dictionary or not FrontierExpeditionBusiness.integer(shot.get("version"),1,2):return false
  for key in ["start","finish","focus","start_focus"]:
   if not FrontierUniverse._vector3_array(shot.get(key)):return false
  for key in ["hold","move_end","turn_start","turn_end"]:

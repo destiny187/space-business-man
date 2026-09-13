@@ -194,7 +194,7 @@ static func _carve(world: Dictionary,row: Dictionary) -> bool:
  var start:=FrontierCrewWorld.vector(row.relay);var end:=FrontierCrewWorld.vector(row.position)
  for i in 9:edits.append({"center":array(start.lerp(end,float(i)/8.0)),"radius":3.8 if i<8 else 8.0})
  world.terrain_edits[row.body_id]=edits;row.materialized=true;return true
-static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callable(),connected: Array=[]) -> bool:
+static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callable(),connected: Array=[],defer_squad_motion: bool=false) -> bool:
  if connected.is_empty():connected=actors
  ensure(world);var changed:=false;var bodies: Dictionary={}
  for actor in actors:
@@ -229,7 +229,7 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
   if row.has("native"):
    if FrontierNativeIncidents.tick(world,row,present,delta,bodies[row.body_id]):changed=true
   elif mode=="robot" and row.hp>0 and FrontierCooperTechSquads.enabled(row):
-   if FrontierCooperTechSquads.tick(world,row,delta,present,bodies[row.body_id],obstacle):changed=true
+   if FrontierCooperTechSquads.tick(world,row,delta,present,bodies[row.body_id],obstacle,defer_squad_motion):changed=true
   elif mode=="robot" and row.hp>0:
    row.shield_wait=maxf(0,float(row.get("shield_wait",0))-delta)
    if row.shield_wait<=0:row.shield=minf(float(row.get("shield_max",0)),float(row.get("shield",0))+float(config().robot.shield_rate)*delta)

@@ -135,8 +135,9 @@
     "salvage": "sfx_pickup_resource",
     "recover": "sfx_vessel_brake",
     "enemy_shot": "sfx_combat_pulse",
-    "missile_launch": "sfx_ship_missile_launch",
-    "missile_blast": "sfx_ship_missile_blast"
+    "missile_launch": "sfx_ship_missile_launch_v2",
+    "missile_blast": "sfx_ship_missile_blast_v2",
+    "collision": "sfx_ship_hull_collision"
   },
   "radio": {
     "seconds": 4.0,
@@ -269,5 +270,132 @@
     "maximum_db": -6.0,
     "impact_boost_db": 2.0,
     "voices": 20
+  },
+  "collision": {
+    "restitution": 0.22,
+    "skin": 0.35,
+    "damage_threshold": 12.0,
+    "damage_scale": 0.0025,
+    "maximum_damage": 85.0,
+    "drift_decay": 2.2,
+    "hulls": {
+      "aster": {
+        "center": [
+          0.0,
+          1.2,
+          0.44
+        ],
+        "radius": 25,
+        "mass": 10
+      },
+      "atlas": {
+        "center": [
+          0.0,
+          2.43,
+          1.24
+        ],
+        "radius": 25,
+        "mass": 16
+      },
+      "finch": {
+        "center": [
+          0.0,
+          2.947,
+          0.345
+        ],
+        "radius": 13,
+        "mass": 2
+      },
+      "gunship": {
+        "center": [
+          0.0,
+          1.234,
+          2.312
+        ],
+        "radius": 27.63,
+        "mass": 9
+      },
+      "interdictor": {
+        "center": [
+          0.0,
+          0.562,
+          1.812
+        ],
+        "radius": 31.52,
+        "mass": 9
+      },
+      "kestrel": {
+        "center": [
+          0.0,
+          -0.07,
+          3.88
+        ],
+        "radius": 25,
+        "mass": 10
+      },
+      "mule": {
+        "center": [
+          0.0,
+          1.135,
+          0.925
+        ],
+        "radius": 25,
+        "mass": 16
+      },
+      "orion": {
+        "center": [
+          0.0,
+          0.77,
+          0.44
+        ],
+        "radius": 25,
+        "mass": 10
+      },
+      "ox": {
+        "center": [
+          0.0,
+          1.1,
+          1.24
+        ],
+        "radius": 25,
+        "mass": 16
+      },
+      "peregrine": {
+        "center": [
+          0.0,
+          2.341,
+          -1.16
+        ],
+        "radius": 25,
+        "mass": 10
+      },
+      "raider": {
+        "center": [
+          0.0,
+          1.643,
+          -1.5
+        ],
+        "radius": 24.09,
+        "mass": 4
+      },
+      "spectre": {
+        "center": [
+          0.0,
+          2.186,
+          -1.16
+        ],
+        "radius": 25,
+        "mass": 10
+      },
+      "swift": {
+        "center": [
+          1.066,
+          1.135,
+          -0.751
+        ],
+        "radius": 27.89,
+        "mass": 10
+      }
+    }
   }
 }

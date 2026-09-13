@@ -1,0 +1,56 @@
+{
+  "bastion": {
+    "air_frames": 0,
+    "max_planted_frame_displacement_m": 0.000676281924825162,
+    "planted_rotation_rad": 0.000690533954184502,
+    "stance_samples": 706,
+    "worst": {
+      "error": 0.000298301689326763,
+      "frame": 142,
+      "limb": 1,
+      "lower": 0.586939811706543,
+      "rest": [
+        -0.829999804496765,
+        0.229997128248215,
+        -0.0400034785270691
+      ],
+      "upper": 0.756637036800385
+    }
+  },
+  "raptor": {
+    "air_frames": 0,
+    "max_planted_frame_displacement_m": 0.000345833424944431,
+    "planted_rotation_rad": 0.000690533954184502,
+    "stance_samples": 1386,
+    "worst": {
+      "error": 0.00000051273855206091,
+      "frame": 3,
+      "limb": 1,
+      "lower": 0.509902000427246,
+      "rest": [
+        1.0,
+        0.159999907016754,
+        -0.809999942779541
+      ],
+      "upper": 0.630713939666748
+    }
+  },
+  "sentry": {
+    "air_frames": 0,
+    "max_planted_frame_displacement_m": 0.000919419166166335,
+    "planted_rotation_rad": 0.0,
+    "stance_samples": 702,
+    "worst": {
+      "error": 0.000423860619775951,
+      "frame": 116,
+      "limb": 1,
+      "lower": 0.730000019073486,
+      "rest": [
+        0.480000019073486,
+        0.300000131130219,
+        0.0000000298023223876953
+      ],
+      "upper": 0.48723691701889
+    }
+  }
+}

@@ -76,7 +76,7 @@ func suspend() -> void:
 	rockets.clear()
 func update(delta: float,paused: bool) -> void:
 	# Flight uses its own SubViewport/World3D; it needs an active camera listener.
-	view.get_viewport().audio_listener_enable_3d=not paused and relevant()
+	view.get_viewport().audio_listener_enable_3d=not paused and not view.navigation.is_empty() and view.navigation.mode!="jump"
 	blocked=paused;hit_flash=maxf(0,hit_flash-delta);shot_flash=maxf(0,shot_flash-delta);hit_confirm=maxf(0,hit_confirm-delta)
 	missile_flash=maxf(0,missile_flash-delta)
 	if paused:suspend();return
@@ -136,7 +136,9 @@ func update(delta: float,paused: bool) -> void:
 			var heading:=FrontierSpaceCombat.point(enemy.direction)
 			if e.phase in ["escaped","victory","recovered"]:p+=heading*(float(e.elapsed)*float(cfg.speed)+float(e.elapsed)*float(e.elapsed)*30)
 			var row:=model(key,cfg.model,cfg.lod)
-			row.root.position=row.root.position.lerp(p,1-exp(-delta*14)) if row.get("placed",false) else p;row.placed=true
+			var contact_changed: bool=int(row.get("contact_serial",0))!=int(enemy.get("contact_serial",0))
+			row.root.position=row.root.position.lerp(p,1-exp(-delta*14)) if row.get("placed",false) and not contact_changed else p;row.placed=true
+			row.contact_serial=int(enemy.get("contact_serial",0))
 			var facing:=FrontierSpaceCombatPilot.orientation(enemy)
 			row.root.quaternion=row.root.quaternion.slerp(facing.get_rotation_quaternion(),1-exp(-delta*8))
 			row.near.visible=p.distance_to(view.camera.global_position)<1200;row.far.visible=not row.near.visible
@@ -171,7 +173,10 @@ func update(delta: float,paused: bool) -> void:
 		if source.distance_to(view.ship.position)>4500 and target.distance_to(view.ship.position)>4500:continue
 		if str(event.kind).begins_with("skill_"):skills.event(event)
 		if FrontierSpaceCombat.config().get("radio",{}).get("lines",{}).has(event.kind):receive_radio(event)
-		if event.kind=="missile_blast":
+		if event.kind=="collision":
+			fx.impact((source+target)*.5,source,int(event.serial))
+			if id() in str(event.id).split("|"):hit_flash=.35
+		elif event.kind=="missile_blast":
 			fx.missile_burst(target,source,int(event.serial));missile_blasts+=1
 			if rockets.has(str(event.id)):rockets[str(event.id)].node.queue_free();rockets.erase(str(event.id))
 		elif event.kind=="missile_launch":
@@ -210,7 +215,7 @@ func update(delta: float,paused: bool) -> void:
 			if shielded or event.kind=="break":fx.shield(center,source,radius,event.kind=="break",shield_anchor)
 			else:fx.impact(target,source,int(event.serial))
 		var cue: String=FrontierSpaceCombat.config().audio.get("enemy_shot" if event.kind=="enemy_shot" else event.kind,"")
-		if not cue.is_empty() and event.kind not in ["destroy","warning"]:sound(cue,target if event.kind in ["impact","break","missile_blast"] else source,event.id==id(),1.3 if event.kind=="missile_launch" else (.85 if event.kind=="enemy_shot" else 1.0))
+		if not cue.is_empty() and event.kind not in ["destroy","warning"]:sound(cue,target if event.kind in ["impact","break","missile_blast"] else source,event.id==id(),(.85 if event.kind=="enemy_shot" else 1.0))
 	last_serial=event_serial
 	var operation: Dictionary=data().get("ships",{}).get(id(),{}).get("operation",{})
 	if not operation.is_empty() and operation.kind=="space_salvage":

@@ -53,18 +53,18 @@
       "health": 120,
       "shield": 50,
       "damage": 16,
-      "speed": 3.5,
+      "speed": 1.15,
       "wake_distance": 16,
       "range": 27,
       "aim_seconds": 0.9,
       "cool_seconds": 1.8,
       "wake_seconds": 2.6,
       "radius": 0.65,
-      "height": 2.85,
-      "center": 1.7,
+      "height": 2.69,
+      "center": 1.54,
       "muzzle": [
         -0.99,
-        1.56,
+        1.4,
         -0.95
       ],
       "attack": "pulse",
@@ -72,7 +72,12 @@
       "combat_distance": 20,
       "combat_move_factor": 0.8,
       "fire_seconds": 0.28,
-      "burst_aim_seconds": 0.9
+      "burst_aim_seconds": 0.9,
+      "stride": 1.15,
+      "foot_lift": 0.17,
+      "gait_seconds": 1.0,
+      "max_gait_rate": 1.2,
+      "acceleration": 1.6
     },
     "bastion": {
       "template": "coopertech_bastion",
@@ -80,18 +85,18 @@
       "health": 220,
       "shield": 90,
       "damage": 30,
-      "speed": 2.5,
+      "speed": 0.92,
       "wake_distance": 18,
       "range": 36,
       "aim_seconds": 1.6,
       "cool_seconds": 2.2,
       "wake_seconds": 3.1,
       "radius": 1.1,
-      "height": 3.6,
-      "center": 1.85,
+      "height": 3.43,
+      "center": 1.68,
       "muzzle": [
         0.9,
-        2.85,
+        2.68,
         -1.3
       ],
       "attack": "mortar",
@@ -99,7 +104,12 @@
       "combat_distance": 26,
       "combat_move_factor": 0.72,
       "fire_seconds": 0.28,
-      "burst_aim_seconds": 1.6
+      "burst_aim_seconds": 1.6,
+      "stride": 1.15,
+      "foot_lift": 0.2,
+      "gait_seconds": 1.25,
+      "max_gait_rate": 1.15,
+      "acceleration": 1.1
     },
     "raptor": {
       "template": "coopertech_raptor",
@@ -107,7 +117,7 @@
       "health": 95,
       "shield": 25,
       "damage": 14,
-      "speed": 7.0,
+      "speed": 1.375,
       "wake_distance": 16,
       "range": 30,
       "aim_seconds": 0.55,
@@ -126,11 +136,24 @@
       "combat_distance": 11,
       "combat_move_factor": 1.0,
       "fire_seconds": 0.16,
-      "burst_aim_seconds": 0.14
+      "burst_aim_seconds": 0.14,
+      "stride": 1.1,
+      "foot_lift": 0.25,
+      "gait_seconds": 0.8,
+      "max_gait_rate": 1.3,
+      "acceleration": 3.0
     }
   },
   "maneuver": {
-    "side_seconds": 2.2,
+    "side_seconds": 4.5,
     "distance_deadband": 2.5
+  },
+  "motion": {
+    "tick_seconds": 0.05,
+    "turn_radians": 0.85,
+    "minimum_speed": 0.08,
+    "prediction_seconds": 0.1,
+    "side_stride_factor": 0.52,
+    "back_stride_factor": 0.72
   }
 }

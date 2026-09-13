@@ -1,0 +1,151 @@
+[
+  {
+    "mode": "n_space_fixed",
+    "take": "system_exploration",
+    "offset": 0.4,
+    "source_seconds": 6,
+    "frames": 192,
+    "grade": "space",
+    "gain": 0.7,
+    "extra_source_frames": 2
+  },
+  {
+    "mode": "n_space_fixed",
+    "take": "hyperspeed_transit",
+    "offset": 0.7,
+    "source_seconds": 8.8,
+    "frames": 192,
+    "grade": "space",
+    "gain": 1,
+    "extra_source_frames": 2
+  },
+  {
+    "mode": "physics_crossing",
+    "take": "missile_crossing",
+    "offset": 0,
+    "source_seconds": 3.6,
+    "frames": 216,
+    "grade": "space",
+    "gain": 0.85
+  },
+  {
+    "mode": "n_iron",
+    "take": "mine_iron",
+    "offset": 0.8,
+    "source_seconds": 1.2,
+    "frames": 72,
+    "grade": "ground",
+    "gain": 0.9
+  },
+  {
+    "mode": "n_sulfur",
+    "take": "mine_sulfur",
+    "offset": 0.25,
+    "source_seconds": 1.2,
+    "frames": 72,
+    "grade": "ground",
+    "gain": 1
+  },
+  {
+    "mode": "n_content",
+    "take": "mine_lithium",
+    "offset": 0.35,
+    "source_seconds": 0.8,
+    "frames": 48,
+    "grade": "ground",
+    "gain": 1
+  },
+  {
+    "mode": "n_dig",
+    "take": "dig_and_descend",
+    "offset": 0.2,
+    "source_seconds": 3.2,
+    "frames": 192,
+    "grade": "cave",
+    "gain": 1
+  },
+  {
+    "mode": "n_content",
+    "take": "gem_diamond",
+    "offset": 2.1,
+    "source_seconds": 2.4,
+    "frames": 144,
+    "grade": "cave",
+    "gain": 1
+  },
+  {
+    "mode": "n_content",
+    "take": "cave_analysis_result",
+    "offset": 0.05,
+    "source_seconds": 4,
+    "frames": 240,
+    "grade": "cave",
+    "gain": 0.9
+  },
+  {
+    "mode": "physics_ground",
+    "take": "smg_3",
+    "offset": 0.4,
+    "source_seconds": 2.4,
+    "frames": 144,
+    "grade": "ground",
+    "gain": 1
+  },
+  {
+    "mode": "physics_ground",
+    "take": "shotgun_3",
+    "offset": 1.8,
+    "source_seconds": 1.6,
+    "frames": 96,
+    "grade": "ground",
+    "gain": 1
+  },
+  {
+    "mode": "physics_ground",
+    "take": "lmg_3",
+    "offset": 1.4,
+    "source_seconds": 1.6,
+    "frames": 96,
+    "grade": "ground",
+    "gain": 1
+  },
+  {
+    "mode": "physics_ground",
+    "take": "sniper_3",
+    "offset": 0,
+    "source_seconds": 3.2,
+    "frames": 192,
+    "grade": "ground",
+    "gain": 1
+  },
+  {
+    "mode": "terra_radius",
+    "take": "build_and_restore",
+    "offset": 0,
+    "source_seconds": 10,
+    "frames": 480,
+    "grade": "terra",
+    "gain": 0.3,
+    "extra_source_frames": 2
+  },
+  {
+    "mode": "terra_radius",
+    "take": "build_and_restore",
+    "offset": 10,
+    "source_seconds": 24,
+    "frames": 336,
+    "grade": "terra",
+    "gain": 0.25,
+    "extra_source_frames": 2
+  },
+  {
+    "mode": "terra_radius",
+    "take": "restored_glide",
+    "offset": 0.3,
+    "source_seconds": 3.2,
+    "frames": 192,
+    "grade": "terra",
+    "gain": 0.4,
+    "fade_out": 0.3
+  }
+]

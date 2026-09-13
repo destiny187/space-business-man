@@ -14,24 +14,29 @@ def build_robot(p, api):
         bm=bmesh.new();bm.from_mesh(mesh);bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces));bm.to_mesh(mesh);bm.free()
         o=bpy.data.objects.new(name,mesh);bpy.context.collection.objects.link(o)
         return finish(o,name,m,parent,.025)
-    # Wide planted stance, narrow ankles and long articulated shins.
+    pelvis=empty("Anim_Pelvis",(0,0,1.4),p)
+    legs=[]
+    # Actual thigh attachment, knee axle and ankle form one mechanical chain.
     for s in [-1,1]:
         x=s*.48
-        box('Split magnetic heel',(x,.13,.14),(.52,.58,.28),dark,p,.045)
-        plate('Wedge sabaton',[(x-.29,.06),(x+.29,.06),(x+.25,.27),(x-.21,.34)],-.61,.15,armor,p)
-        for dx in [-.17,.17]:box('Traction toe',(x+dx,-.49,.10),(.085,.38,.12),steel,p,.018)
-        leg=empty('Anim_Leg_'+str(s),(x,0,.3),p)
+        hip=empty('Anim_Hip_'+str(s),(s*.30,.05,1.48),pelvis)
+        leg=empty('Anim_Knee_'+str(s),(x,0,1.03),hip)
+        foot=empty('Anim_Foot_'+str(s),(x,0,.3),leg)
+        legs.append((hip,leg,foot))
+        box('Split magnetic heel',(x,.13,.14),(.52,.58,.28),dark,foot,.045)
+        plate('Wedge sabaton',[(x-.29,.06),(x+.29,.06),(x+.25,.27),(x-.21,.34)],-.61,.15,armor,foot)
+        for dx in [-.17,.17]:box('Traction toe',(x+dx,-.49,.10),(.085,.38,.12),steel,foot,.018)
         cylinder('Shin actuator',(x,.03,.29),(x,.03,.99),.13,dark,leg)
         cylinder('Exposed return piston',(x+s*.16,.11,.35),(x+s*.16,.11,.94),.045,steel,leg)
         plate('Tapered shin shield',[(x-.16,.35),(x+.16,.35),(x+.25,.91),(x+.17,1.08),(x-.22,.96)],-.27,-.02,armor,leg)
         box('Shin identifier',(x,-.298,.77),(.22,.035,.09),marking,leg,.012)
         cylinder('Knee bearing',(x-.23,0,1.03),(x+.23,0,1.03),.19,steel,leg)
         plate('Angular kneecap',[(x-.22,1.00),(x, .87),(x+.22,1.00),(x+.15,1.21),(x-.15,1.21)],-.31,-.07,edge,leg)
-        cylinder('Load bearing thigh',(x,.05,1.1),(s*.30,.05,1.48),.17,dark,leg)
-        box('Thigh guard',(x*.85,-.08,1.29),(.3,.32,.40),armor,leg,.035,rot=(0,s*-.16,0))
-    torso=empty('Anim_Torso',(0,0,1.4),p)
-    plate('Armoured pelvis',[(-.42,1.3),(.42,1.3),(.51,1.55),(.34,1.64),(-.34,1.64),(-.51,1.55)],-.28,.29,armor,torso)
-    for z in [1.57,1.67,1.77]:box('Abdominal flexure',(0,-.31,z),(.52,.13,.045),steel,torso,.012)
+        cylinder('Load bearing thigh',(x,.05,1.1),(s*.30,.05,1.48),.17,dark,hip)
+        box('Thigh guard',(x*.85,-.08,1.29),(.3,.32,.40),armor,hip,.035,rot=(0,s*-.16,0))
+    torso=empty('Anim_Torso',(0,0,1.7),pelvis)
+    plate('Armoured pelvis',[(-.42,1.3),(.42,1.3),(.51,1.55),(.34,1.64),(-.34,1.64),(-.51,1.55)],-.28,.29,armor,pelvis)
+    for z in [1.57,1.67,1.77]:box('Abdominal flexure',(0,-.31,z),(.52,.13,.045),steel,pelvis,.012)
     # Chest tapers down. Head sits behind raised collar, not on a toy-like neck.
     plate('Reactor load frame',[(-.36,1.69),(.36,1.69),(.71,2.29),(.50,2.48),(-.50,2.48),(-.71,2.29)],-.22,.38,dark,torso)
     for s in [-1,1]:
@@ -77,4 +82,11 @@ def build_robot(p, api):
             box('Gauntlet sensor',(-1.02,-.376,1.58),(.2,.032,.043),red,arm,.01)
     # Raised, sparse manufacturer's serial plate; no friendly chest screen.
     box('Serial plaque',(-.48,-.513,2.13),(.21,.024,.14),marking,torso,.012)
+    # Bend the knees in the exported rest stance while keeping both soles on the floor.
+    from coopertech_biped_pose import plant_nodes
+    bpy.context.view_layer.update()
+    targets=[foot.matrix_world.translation.copy() for _,_,foot in legs]
+    pelvis.location.z-=.16
+    bpy.context.view_layer.update()
+    for chain,target in zip(legs,targets):plant_nodes(*chain,target)
     return p

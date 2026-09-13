@@ -3,8 +3,12 @@ extends RefCounted
 static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) -> void:
  nodes.relay.hide()
  var player: AnimationPlayer=nodes.main.find_child("AnimationPlayer",true,false)
- nodes.robot_animation=player;nodes.robot_clip="";nodes.robot_step=0.0;nodes.robot_attack=int(row.attack_serial);nodes.robot_phase=row.phase;nodes.robot_travel=float(row.travel)
+ nodes.robot_animation=player;nodes.robot_clip="";nodes.robot_step=0.0;nodes.robot_attack=int(row.attack_serial);nodes.robot_phase=row.phase;nodes.robot_pose_clock=float(row.time);nodes.robot_travel=float(row.travel)
  nodes.robot_weapon={}
+ var sampler: Callable
+ if view.surface!=null:sampler=func(at: Vector3):return {"height":view.surface.terrain.field.height(at.x,at.z)}
+ nodes.locomotion=preload("res://scripts/world/coopertech_locomotion.gd").new()
+ nodes.locomotion.configure(nodes,row,sampler)
  if player!=null and player.has_animation("fire"):
   var fire: Animation=player.get_animation("fire")
   for track in fire.get_track_count():
@@ -17,32 +21,29 @@ static func dispose(_nodes: Dictionary) -> void:
  pass
 static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,delta: float,stopped: bool) -> void:
  var cfg:=FrontierCooperTechSquads.spec(row);var root: Node3D=nodes.root
- var before:=root.global_position
- if not stopped:
-  root.global_position=root.global_position.lerp(FrontierCrewWorld.vector(row.position),1-exp(-delta*16));root.rotation.y=lerp_angle(root.rotation.y,float(row.yaw),1-exp(-delta*14))
- var moving: bool=not stopped and row.hp>0 and row.phase not in ["idle","waking","destroyed"] and root.global_position.distance_to(before)>.001
- if not stopped:nodes.robot_travel+=root.global_position.distance_to(before)
+ nodes.locomotion.update_position(row,delta,stopped)
+ var moving: bool=nodes.locomotion.moving
+ if not stopped:nodes.robot_travel+=nodes.locomotion.travel
+ if not stopped:nodes.robot_pose_clock=float(row.time) if row.phase!=nodes.robot_phase else maxf(float(row.time),float(nodes.robot_pose_clock)+delta)
  var player: AnimationPlayer=nodes.robot_animation
  if player!=null:
-  var clip: String="walk" if moving else ("idle" if row.phase=="idle" else ("wake" if row.phase=="waking" else ("destroyed" if row.hp<=0 else ("fire" if row.phase in ["projectile","firing"] else ("cool" if row.phase=="cooling" else "ready")))))
+  var clip: String="cool" if row.phase=="cooling" else ("ready" if moving else ("idle" if row.phase=="idle" else ("wake" if row.phase=="waking" else ("destroyed" if row.hp<=0 else ("fire" if row.phase in ["projectile","firing"] else ("cool" if row.phase=="cooling" else "ready"))))))
   if player.has_animation(clip):
-   if nodes.robot_clip!=clip:player.play(clip);nodes.robot_clip=clip
+   if nodes.robot_clip!=clip:player.play(clip,.12);nodes.robot_clip=clip
    player.pause()
    if not stopped:
     var duration:=player.get_animation(clip).length
-    var progress: float=fposmod(float(nodes.robot_travel)/(2.4 if row.robot_role=="bastion" else 2.1),1.0) if clip=="walk" else (clampf(float(row.time)/float(cfg.wake_seconds),0,1) if clip=="wake" else (clampf(float(row.time)/float(cfg.fire_seconds),0,1) if clip=="fire" else 0.0))
+    var progress: float=clampf(float(nodes.robot_pose_clock)/float(cfg.wake_seconds),0,1) if clip=="wake" else (clampf(float(nodes.robot_pose_clock)/float(cfg.fire_seconds),0,1) if clip=="fire" else (clampf(float(nodes.robot_pose_clock),0,1) if clip=="destroyed" else 0.0))
     player.seek(progress*duration,true)
  if moving and row.phase in ["projectile","firing"] and not nodes.robot_weapon.is_empty():
   var upper: Dictionary=nodes.robot_weapon
-  var time:=clampf(float(row.time)/float(cfg.fire_seconds),0,1)*float(upper.animation.length)
+  var time:=clampf(float(nodes.robot_pose_clock)/float(cfg.fire_seconds),0,1)*float(upper.animation.length)
   upper.skeleton.set_bone_pose_position(upper.bone,upper.animation.position_track_interpolate(upper.track,time))
- if row.robot_role=="sentry":
-  nodes.main.rotation.y=PI
-  for part in nodes.parts:
-   if str(part.name).begins_with("Anim_Leg_") and part.has_meta("rest"):
-    part.transform=part.get_meta("rest");part.rotation.x=sin(float(nodes.robot_travel)*TAU/2.0+(PI if str(part.name).ends_with("-1") else 0))*.22 if moving else 0.0
+ nodes.locomotion.feet(row,delta,stopped)
  var motor: AudioStreamPlayer3D=nodes.robot_motor;motor.stream_paused=stopped
- if moving and not motor.playing:motor.pitch_scale=.7 if row.robot_role=="bastion" else 1.18;motor.play()
+ if moving:
+  motor.pitch_scale=(.7 if row.robot_role=="bastion" else 1.05)*lerpf(.8,1.15,clampf(nodes.locomotion.velocity.length()/float(cfg.speed),0,1))
+  if not motor.playing:motor.play()
  elif not moving and not stopped:motor.stop()
  # Consume each authoritative attack once, including while menus suppress presentation.
  var new_attack: bool=int(row.attack_serial)>int(nodes.robot_attack)

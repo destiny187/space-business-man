@@ -14,6 +14,7 @@ var weather_presence: Dictionary={}
 var weather_timer:=0.0
 var wildlife_combat:=FrontierWildlifeCombat.new()
 var wildlife_timer:=0.0
+var squad_motion_timer:=0.0
 var wildlife_obstacle_provider: Callable
 var lotus_clearance_provider: Callable
 var world: Dictionary={}
@@ -665,12 +666,19 @@ func _step_surface(delta: float) -> void:
 			if inputs.get(peer,{}).get("controls_enabled",true) and world.crew.members[peers[peer]].area=="surface" and not world.crew.members[peers[peer]].aboard:active.append(peers[peer])
 		if not active.is_empty():
 			var incident_draft:=WorldDraft.incidents(world,active)
-			var changed:=FrontierExplorationIncidents.tick(incident_draft,minf(incident_timer,.35),active,shot_obstacle_provider,peers.values())
+			var changed:=FrontierExplorationIncidents.tick(incident_draft,minf(incident_timer,.35),active,shot_obstacle_provider,peers.values(),true)
 			if changed:
 				incident_draft.crew.revision+=1
 				if not save_world.call(incident_draft):stopped=true;error="탐험 사건 저장 실패";return
 			world=incident_draft
 		incident_timer=0.0
+	squad_motion_timer+=delta
+	if squad_motion_timer>=float(FrontierCooperTechSquads.config().motion.tick_seconds):
+		var active_motion: Array=[]
+		for peer in peers:
+			if inputs.get(peer,{}).get("controls_enabled",true) and world.crew.members[peers[peer]].area=="surface":active_motion.append(peers[peer])
+		world=preload("res://scripts/domain/coopertech_motion.gd").step(world,minf(squad_motion_timer,.1),active_motion,shot_obstacle_provider)
+		squad_motion_timer=0.0
 	# Later runtime updates must not mutate branches shared with the unpublished baseline.
 	if staged_autonomous:world=WorldDraft.water(world,peers.values())
 	_step_water(delta)

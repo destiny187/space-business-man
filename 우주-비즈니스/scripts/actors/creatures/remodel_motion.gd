@@ -93,14 +93,14 @@ func preview(delta: float) -> void:
 
 func advance(travel: float,delta: float) -> void:
 	idle_clock+=delta;sound_left=maxf(0,sound_left-delta)
-	travel_speed=travel/maxf(.001,delta);speed=travel_speed
+	travel_speed=travel/maxf(.001,delta);speed=lerpf(speed,travel_speed,1-exp(-delta/.12))
 	if actor.paused:return
-	var local_speed: float=travel_speed/maxf(.001,actor.base_scale)
+	var local_speed: float=speed/maxf(.001,actor.base_scale)
 	if gait=="move_loop" and local_speed>natural(profile)*1.45:gait="run_loop";planted.clear();released_feet.clear()
 	elif gait=="run_loop" and local_speed<natural(profile)*1.18:gait="move_loop";planted.clear();released_feet.clear()
 	var data: Dictionary=profile.run if gait=="run_loop" else profile
 	var previous_cycle:=floori(phase)
-	phase+=local_speed*delta/(float(data.stride)/float(data.stance))
+	phase+=travel/maxf(.001,actor.base_scale)/(float(data.stride)/float(data.stance))
 	if driven and authored_limbs.is_empty() and not contacts_suspended and local_speed>.025 and previous_cycle!=floori(phase) and sound_left<=0:
 		footfalls.append(point);sound_left=float(config().footstep_seconds)
 	running=1.0 if gait=="run_loop" else 0.0

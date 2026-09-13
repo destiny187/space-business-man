@@ -10,6 +10,7 @@ static func spec(row: Dictionary) -> Dictionary:
  var result: Dictionary=config().roles.get(row.get("robot_role","sentry"),config().roles.sentry).duplicate()
  var tier: Dictionary=config().tiers[str(int(row.tier))]
  for stat in ["health","damage","speed","shield"]:result[stat]=float(result[stat])*float(tier[stat])
+ result.speed=minf(float(result.speed),float(result.stride)/float(result.gait_seconds)*float(result.max_gait_rate))
  result.aim_seconds*=float(tier.aim)
  return result
 static func spawn(body: Dictionary,f: FrontierTerrainField,cell: Vector2i,existing: Array) -> Array:
@@ -61,17 +62,24 @@ static func clear_line(world: Dictionary,row: Dictionary,f: FrontierTerrainField
  if distance<.05:return true
  if not FrontierCombatCover.intercept(world,row.body_id,start,(end-start)/distance,distance).is_empty():return false
  return not obstacle.is_valid() or float(obstacle.call(actor,start,(end-start)/distance,distance))>=distance-.4
-static func move(world: Dictionary,row: Dictionary,f: FrontierTerrainField,destination: Vector3,delta: float,actor: String,obstacle: Callable) -> bool:
+static func move(world: Dictionary,row: Dictionary,f: FrontierTerrainField,destination: Vector3,delta: float,actor: String,obstacle: Callable,factor: float=1.0) -> bool:
  var cfg:=spec(row);var start:=FrontierCrewWorld.vector(row.position);var flat:=destination-start;flat.y=0
- var distance:=minf(flat.length(),float(cfg.speed)*delta)
- if distance<.04:return false
- var direction:=flat.normalized();var end:=start+direction*distance;end.y=f.height(end.x,end.z)
- if absf(end.y-start.y)>maxf(.35,distance*.65) or (FrontierSurfaceDrainage.liquid(f.traits) and end.y< -2.5):return false
+ var velocity:=FrontierCrewWorld.vector(row.get("move_velocity",[0,0,0]));velocity.y=0
+ var local_direction:=flat.normalized().rotated(Vector3.UP,-float(row.yaw))
+ var gait_factor:=lerpf(1.0,float(config().motion.side_stride_factor),absf(local_direction.x))
+ if local_direction.z>0:gait_factor*=lerpf(1.0,float(config().motion.back_stride_factor),local_direction.z)
+ var wanted:=flat.normalized()*minf(float(cfg.speed)*factor*gait_factor,flat.length()/maxf(.001,delta))
+ velocity=velocity.move_toward(wanted,float(cfg.acceleration)*delta)
+ var distance:=minf(flat.length(),velocity.length()*delta)
+ if distance<.001:row.move_velocity=[0,0,0];return false
+ var direction:=velocity.normalized();var end:=start+direction*distance;end.y=f.height(end.x,end.z)
+ if absf(end.y-start.y)>maxf(.35,distance*.65) or (FrontierSurfaceDrainage.liquid(f.traits) and end.y< -2.5):row.move_velocity=[0,0,0];return false
  # Terrain support, authored cover and physical world props all block travel.
- if not clear_line(world,row,f,actor,start+Vector3.UP*.8,end+direction*float(cfg.radius)+Vector3.UP*.8,obstacle):return false
+ if not clear_line(world,row,f,actor,start+Vector3.UP*.8,end+direction*float(cfg.radius)+Vector3.UP*.8,obstacle):row.move_velocity=[0,0,0];return false
  for other in FrontierExplorationIncidents.records(world).values():
   if other.id==row.id or other.body_id!=row.body_id or other.hp<=0 or FrontierExplorationIncidents.definition(other.template).mode!="robot":continue
-  if end.distance_to(FrontierCrewWorld.vector(other.position))<float(cfg.radius)+(.8 if not enabled(other) else float(spec(other).radius)):return false
+  if end.distance_to(FrontierCrewWorld.vector(other.position))<float(cfg.radius)+(.8 if not enabled(other) else float(spec(other).radius)):row.move_velocity=[0,0,0];return false
+ row.move_velocity=FrontierExplorationIncidents.array((end-start)/maxf(.001,delta))
  row.position=FrontierExplorationIncidents.array(end);row.yaw=fposmod(atan2(-direction.x,-direction.z),TAU);row.travel+=distance
  return true
 static func maneuver(world: Dictionary,row: Dictionary,f: FrontierTerrainField,actor: String,delta: float,obstacle: Callable) -> bool:
@@ -81,15 +89,17 @@ static func maneuver(world: Dictionary,row: Dictionary,f: FrontierTerrainField,a
  if distance<.1:return false
  radial/=distance
  var lateral:=Vector3(-radial.z,0,radial.x)
- var phase:=floori((float(row.age)+float(absi(str(row.id).hash())%100)*.037)/float(config().maneuver.side_seconds))
- var side:=1.0 if phase%2==0 else -1.0
+ var phase: float=(float(row.get("motion_clock",row.age))+float(absi(str(row.id).hash())%100)*.037)/float(config().maneuver.side_seconds)
+ var side:=sin(phase*PI)
  var advance:=clampf((distance-float(cfg.combat_distance))/float(config().maneuver.distance_deadband),-1,1)
  var home:=FrontierCrewWorld.vector(row.home)
  # Exactly two local alternatives. Keep collision, slope, water and group spacing checks.
  for sign_value in [side,-side]:
-  var direction: Vector3=(radial*advance+lateral*sign_value*.85).normalized()
+  var drive: Vector3=radial*advance+lateral*sign_value*.85
+  var intensity:=minf(1.0,drive.length())
+  var direction: Vector3=drive.normalized()
   if at.distance_to(home)>float(config().leash)-3:direction=(home-at).normalized()
-  if move(world,row,f,at+direction*4,delta*float(cfg.combat_move_factor),actor,obstacle):
+  if move(world,row,f,at+direction*4,delta,actor,obstacle,float(cfg.combat_move_factor)*intensity):
    var facing: Vector3=target-FrontierCrewWorld.vector(row.position)
    row.yaw=fposmod(atan2(-facing.x,-facing.z),TAU)
    return true
@@ -127,14 +137,15 @@ static func shoot(world: Dictionary,row: Dictionary,f: FrontierTerrainField,pres
    var line:=end-start;var t:=clampf((at-start).dot(line)/maxf(.01,line.length_squared()),0,1)
    hit=at.distance_to(start+line*t)<(.42 if member.loadout.get("crouched",false) else .62) and clear_line(world,row,f,actor,start,at,obstacle)
   if hit:FrontierExplorationIncidents.hurt(world,actor,float(cfg.damage),"blast" if cfg.attack=="mortar" else "combat")
-static func tick(world: Dictionary,row: Dictionary,delta: float,present: Array,f: FrontierTerrainField,obstacle: Callable) -> bool:
+static func tick(world: Dictionary,row: Dictionary,delta: float,present: Array,f: FrontierTerrainField,obstacle: Callable,defer_motion: bool=false) -> bool:
  var cfg:=spec(row);var at:=FrontierCrewWorld.vector(row.position);var target: String="";var nearest:=float(cfg.range)
  row.shield_wait=maxf(0,float(row.shield_wait)-delta)
  if row.shield_wait<=0:row.shield=minf(float(row.shield_max),float(row.shield)+float(row.shield_max)*.12*delta)
  for actor in present:
   var member: Dictionary=world.crew.members[actor];var p:=FrontierCrewWorld.vector(member.position);var d:=p.distance_to(at)
   if d<nearest and clear_line(world,row,f,actor,at+Vector3.UP*float(cfg.center),p+Vector3.UP*1.2,obstacle):nearest=d;target=actor
- if not target.is_empty() and row.phase in ["aiming","firing","cooling","projectile"]:
+ row.drive_actor=target
+ if not defer_motion and not target.is_empty() and row.phase in ["aiming","firing","cooling","projectile"]:
   if cfg.attack!="mortar" or row.phase in ["aiming","cooling"]:maneuver(world,row,f,target,delta,obstacle)
  if row.phase=="idle":
   if row.alarmed or (not target.is_empty() and nearest<float(cfg.wake_distance)):alert(world,row);return true
@@ -146,15 +157,15 @@ static func tick(world: Dictionary,row: Dictionary,delta: float,present: Array,f
   if not target.is_empty():alert(world,row);FrontierExplorationIncidents.set_phase(row,"pursuing");return true
   var destination:=FrontierCrewWorld.vector(row.path[int(row.patrol_index)])
   if at.distance_to(destination)<1.1:row.patrol_index=(int(row.patrol_index)+1)%12
-  elif not move(world,row,f,destination,delta,present[0],obstacle):row.patrol_index=(int(row.patrol_index)+1)%12
+  elif not defer_motion and not move(world,row,f,destination,delta,present[0],obstacle):row.patrol_index=(int(row.patrol_index)+1)%12
   return false
  if row.phase=="pursuing":
   var home:=FrontierCrewWorld.vector(row.home)
   if target.is_empty() or at.distance_to(home)>float(config().leash):
-   move(world,row,f,home,delta,present[0],obstacle)
+   if not defer_motion:move(world,row,f,home,delta,present[0],obstacle)
    if row.time>3:row.alarmed=false;FrontierExplorationIncidents.set_phase(row,"patrol");return true
   elif nearest>(16.0 if cfg.attack=="burst" else 24.0) and row.time<2.2:
-   move(world,row,f,FrontierCrewWorld.vector(world.crew.members[target].position),delta,target,obstacle)
+   if not defer_motion:move(world,row,f,FrontierCrewWorld.vector(world.crew.members[target].position),delta,target,obstacle)
   else:row.burst=0;aim_at(world,row,target);return true
   return false
  var aim_duration: float=cfg.burst_aim_seconds if cfg.attack=="burst" and row.burst>0 else cfg.aim_seconds
@@ -176,6 +187,9 @@ static func validate(row: Dictionary) -> bool:
  if not config().roles.has(row.get("robot_role")) or row.template!=config().roles[row.robot_role].template:return false
  if not row.get("squad_id") is String or row.get("start_mode") not in ["dormant","patrol"]:return false
  var cfg:=spec(row)
+ if row.has("move_velocity") and not FrontierUniverse._vector3_array(row.move_velocity):return false
+ if row.has("motion_clock") and not FrontierUniverse._finite(row.motion_clock,0,9007199254740000):return false
+ if row.has("drive_actor") and not row.drive_actor is String:return false
  if not FrontierUniverse._finite(row.get("hp_max"),float(cfg.health),float(cfg.health)):return false
  if not FrontierUniverse._finite(row.get("travel"),0,9007199254740000) or not FrontierExpeditionBusiness.integer(row.get("patrol_index"),0,11):return false
  if not FrontierExpeditionBusiness.integer(row.get("burst"),0,3) or not FrontierExpeditionBusiness.integer(row.get("attack_serial"),0,9007199254740000) or not row.get("alarmed") is bool:return false

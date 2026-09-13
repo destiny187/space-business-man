@@ -236,6 +236,9 @@ static func damage_ship(world: Dictionary,id: String,amount: float,source: Vecto
 static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictionary,now: float) -> bool:
 	var r:=record(world)
 	if r.is_empty() or peers.is_empty():return false
+	var collision_starts: Dictionary={}
+	for id in r.flights:collision_starts[id]=point(r.flights[id].position)
+	for enemy in r.encounter.get("enemies",[]):collision_starts[str(enemy.id)]=point(enemy.position)
 	var cfg:=config();r.clock+=delta;r.cooldown=maxf(0,r.cooldown-delta)
 	var pilots: Dictionary={}
 	for peer in peers:
@@ -293,8 +296,8 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 			var reason:=complete_operation(world,pilots[id].actor,op.kind,op.id)
 			stats.operation_error=reason;changed=true
 	var e: Dictionary=r.encounter
-	if e.is_empty():return changed
-	if not pilots.has(e.carrier):return changed
+	if e.is_empty():return FrontierSpaceCollision.step(world,delta,collision_starts) or changed
+	if not pilots.has(e.carrier):return FrontierSpaceCollision.step(world,delta,collision_starts) or changed
 	var pilot: Dictionary=pilots[e.carrier];var local:=local_world(world,e.carrier);var nav: Dictionary=local.crew.navigation
 	var input: Dictionary=inputs.get(pilot.peer,{});var controls: Array=input.get("flight_controls",[])
 	var ready:=float(input.get("expires",-1))>=now and controls.size()>=6 and float(controls[5])>.5
@@ -316,7 +319,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if e.recovery>=float(cfg.recovery_seconds):nav.hull=float(cfg.recovery_hull);ship_state(world,e.carrier).shield=FrontierVesselSkills.shield_max(world,e.carrier)*.5;finish(world,"recovered");changed=true
 		commit(world,local,e.carrier);return changed
 	if float(nav.get("hull",100))<=0:
-		e.phase="recovering";e.projectiles=[];nav.combat_recovery=true;nav.speed=0.0
+		e.phase="recovering";e.projectiles=[];nav.combat_recovery=true;nav.speed=0.0;nav.impact_velocity=[0,0,0]
 		var destination:=point(nav.position)
 		for i in 12:
 			var p:=point(nav.position)+Vector3(cos(i*TAU/12),.3,sin(i*TAU/12))*1000
@@ -339,6 +342,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if enemy.hull<=0:continue
 		living+=1
 		FrontierSpaceCombatPilot.step(world,enemy,delta)
+	if FrontierSpaceCollision.step(world,delta,collision_starts):changed=true
 	FrontierSpaceCombatPilot.projectiles(world,delta)
 	living=0
 	for enemy in e.enemies:
@@ -389,6 +393,9 @@ static func complete_operation(world: Dictionary,actor: String,kind: String,wrec
 	return "이미 회수했거나 다른 포드입니다."
 static func valid(r: Variant) -> bool:
 	if not r is Dictionary or r.get("version")!=1:return false
+	if not r.get("hull_contacts",{}) is Dictionary or r.get("hull_contacts",{}).size()>256:return false
+	for key in r.get("hull_contacts",{}):
+		if not key is String or key.length()>400 or not r.hull_contacts[key] is bool:return false
 	for key in ["clock","cooldown","safe_journeys","serial","event_serial"]:
 		if not FrontierUniverse._finite(r.get(key),0,9007199254740000):return false
 	if not r.get("ships") is Dictionary or r.ships.size()>7 or not r.get("flights") is Dictionary or r.flights.size()>7:return false
@@ -417,6 +424,7 @@ static func valid(r: Variant) -> bool:
 		if not e.get("enemies") is Array or e.enemies.size()>int(FrontierVesselSkills.config().maximum_enemies) or not FrontierSpaceSkills.valid_encounter(e):return false
 		for enemy in e.enemies:
 			if not enemy is Dictionary or not enemy.get("id") is String or not config().enemy.has(enemy.get("kind")):return false
+			if not FrontierSpaceCollision.valid_motion(enemy):return false
 			if enemy.has("up") and not FrontierCrewNavigation.valid_up(enemy.up):return false
 			for key in ["maximum_hull","maximum_shield"]:
 				if enemy.has(key) and not FrontierUniverse._finite(enemy[key],0,1e12):return false

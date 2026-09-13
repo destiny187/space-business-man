@@ -48,6 +48,8 @@ static func build(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary) 
 static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,delta: float,stopped: bool) -> void:
  var native: Dictionary=row.native;var creature: Node3D=nodes.creature;var previous:=creature.global_position;var goal:=FrontierNativeIncidents.position(row)
  var motion:=goal-previous
+ if motion.length()>.002:nodes.native_motion_hold=.35
+ elif not stopped:nodes.native_motion_hold=maxf(0,float(nodes.get("native_motion_hold",0.0))-delta)
  var facing: Basis=creature.global_basis
  if motion.length()>.002:facing=FrontierEcologyPlacement.surface_basis(view.surface.terrain.field.normal(goal),atan2(motion.x,motion.z))
  creature.paused=stopped
@@ -57,7 +59,7 @@ static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,
   nodes.native_attack=int(row.native_attack)
   if not stopped:voice(view,creature.global_position,native)
  elif creature.state!="attack":
-  var wanted: String="stressed" if float(row.native_alert)>0 else ("move" if motion.length()>.002 else "feed")
+  var wanted: String="stressed" if float(row.native_alert)>0 else ("move" if float(nodes.get("native_motion_hold",0.0))>0 or creature.ground_motion.velocity.length()>.08 else "feed")
   if creature.state!=wanted:creature.set_state(wanted)
  creature.drive_ground(goal,facing,delta,nodes.ground_probe,stopped)
  nodes.native_solid.global_position=creature.global_position

@@ -173,7 +173,9 @@ func _process(delta: float) -> void:
 	orbit_clock+=delta;update_orbits(orbit_clock)
 	var presented:=_transit_presentation(delta,presentation_paused)
 	transit_overlay.nav=presented
-	ship.position=_display_position(presented) if navigation.mode=="jump" else ship.position.lerp(_display_position(navigation),minf(delta*14,1))
+	var contact_changed: bool=int(ship.get_meta("contact_serial",0))!=int(navigation.get("contact_serial",0))
+	ship.set_meta("contact_serial",int(navigation.get("contact_serial",0)))
+	ship.position=_display_position(presented) if navigation.mode=="jump" else (_display_position(navigation) if contact_changed else ship.position.lerp(_display_position(navigation),1-exp(-delta*14)))
 	if navigation.mode=="jump":
 		var previous_basis:=ship.basis
 		ship.quaternion=_transit_rotation(presented)

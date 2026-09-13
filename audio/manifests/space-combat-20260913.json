@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-13",
+  "provider": "ElevenLabs web Sound Effects",
+  "settings": {
+    "duration_seconds": 2,
+    "loop": false,
+    "prompt_influence": 0.3,
+    "model": "not exposed in UI"
+  },
+  "generation_notes": "Launch prompt was accidentally submitted twice (4 candidates each); blast and collision each generated once (4 candidates). Selected launch is take 1 of the later batch. No further regeneration used to recover stalled downloads.",
+  "jobs": [
+    {
+      "id": "sfx_ship_missile_launch_v2",
+      "prompt": "A single spacecraft missile launching from a heavy mechanical rack, immediate tight metal release clack and deep compressed ignition thump, followed by a powerful short gritty rocket exhaust rushing away. Punchy modern science fiction combat game sound, dry close perspective, detailed and restrained, under one second with a short natural decay. No electronic chirps, whistles, cartoon boing, laser, music, voices, alarm, or long cinematic rumble.",
+      "source": "audio/source/elevenlabs/space-combat-20260913/missile-launch-take1.wav",
+      "source_sha256": "2ae6b2a00925492fe8495998ad52b0e70dde57c1617b8724875c171daa45bad9",
+      "take": 1,
+      "game_file": "우주-비즈니스/assets/audio/sfx_ship_missile_launch_v2.wav",
+      "sha256": "4b193911d913f8bdf85d741ac9d53927c6efdc7b223a309b7cd4998607fa53cb",
+      "duration": 1.65,
+      "channels": 1,
+      "sample_rate": 48000,
+      "peak_db": -4.73,
+      "processing": "35 Hz high-pass; stereo to mono; retain immediate onset; 2 ms / 80 ms edge fades; trim tail; peak normalize"
+    },
+    {
+      "id": "sfx_ship_missile_blast_v2",
+      "prompt": "One guided missile striking a spacecraft hull. Immediate hard sharp impact crack, compact deep explosive punch, layered tearing metal fragments and a short gritty debris tail. Modern high quality sci-fi combat sound, powerful but controlled, dry isolated event, all energy starts immediately, decays within 1.5 seconds. No laser tones, squeaks, cartoon boing, rising whistle, music, voices or long rumbling drone.",
+      "source": "audio/source/elevenlabs/space-combat-20260913/missile-blast-take1.wav",
+      "source_sha256": "ea38b27295469fc1dcec13bc17e4a353635af01022bcae0e18f39474190f0909",
+      "take": 1,
+      "game_file": "우주-비즈니스/assets/audio/sfx_ship_missile_blast_v2.wav",
+      "sha256": "15dab53f1e307b0f1155903c55529bdb15359a20be7ae265329a887a37d2743d",
+      "duration": 1.25,
+      "channels": 1,
+      "sample_rate": 48000,
+      "peak_db": -3.1,
+      "processing": "35 Hz high-pass; stereo to mono; retain immediate onset; 2 ms / 80 ms edge fades; trim tail; peak normalize"
+    },
+    {
+      "id": "sfx_ship_hull_collision",
+      "prompt": "Two heavy armored spacecraft hulls collide once. A sudden weighty metal crunch and low resonant chassis thud, short scraping steel and rattling fragments trailing for one second. Dry close detailed game foley, forceful mechanical contact, not an explosion, no fire, no gunshots, no laser or cartoon tones, no music, no voices.",
+      "source": "audio/source/elevenlabs/space-combat-20260913/hull-collision-take1.wav",
+      "source_sha256": "a2e1cf82fc10e429062009fc8b183a1211bc78fd616bdf835b5cd46450de016d",
+      "take": 1,
+      "game_file": "우주-비즈니스/assets/audio/sfx_ship_hull_collision.wav",
+      "sha256": "e007fc103344b4dd347eb63619e51a3980a404ced2f654f38d60548d94e89b92",
+      "duration": 1.1,
+      "channels": 1,
+      "sample_rate": 48000,
+      "peak_db": -3.74,
+      "processing": "35 Hz high-pass; stereo to mono; retain immediate onset; 2 ms / 80 ms edge fades; trim tail; peak normalize"
+    }
+  ],
+  "verification": "Actual expedition weapon launch, missile impact and hull contact played all three streams; menu stopped them; 8.27 s SFX recording peak 0.341 and zero clipped samples. Subjective listening not claimed."
+}

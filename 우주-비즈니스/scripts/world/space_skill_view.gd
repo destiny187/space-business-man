@@ -22,7 +22,7 @@ func configure(owner_view: FrontierSpaceCombatView) -> void:
 	charge=MeshInstance3D.new();var orb:=SphereMesh.new();orb.radius=1;orb.height=2;orb.radial_segments=20;orb.rings=10;charge.mesh=orb
 	charge_material=StandardMaterial3D.new();charge_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;charge_material.albedo_color=Color("91efef");charge_material.emission_enabled=true;charge_material.emission=Color("91efef");charge_material.emission_energy_multiplier=2
 	charge.material_override=charge_material;add_child(charge);charge.hide()
-	for cue in ["sfx_shield_break","sfx_ship_missile_launch","sfx_gun_ship_pulse","ui_discovery"]:combat.audio.stream(cue)
+	for cue in ["sfx_shield_break","sfx_vessel_boost","sfx_gun_ship_pulse","ui_discovery"]:combat.audio.stream(cue)
 func clear() -> void:
 	for node in objects.values():node.queue_free()
 	objects.clear();barrier.hide();charge.hide()
@@ -79,7 +79,7 @@ func event(row: Dictionary) -> void:
 				var a:=Vector3(cos(i*TAU/12),0,sin(i*TAU/12));fx.line(source+a*14,source+a*radius,Color("83d9c5"),.3,.32)
 			fx.shield(combat.view.ship.position,source+combat.view.ship.global_basis.y*10,28);cue="sfx_shield_break"
 		"skill_tether":fx.line(source,target,Color("a3deef"),.38,.52)
-		"skill_boost":fx.vent(combat.view.ship.position,combat.view.ship.global_basis.z*18,int(row.serial));cue="sfx_ship_missile_launch"
+		"skill_boost":fx.vent(combat.view.ship.position,combat.view.ship.global_basis.z*18,int(row.serial));cue="sfx_vessel_boost"
 		"skill_barrier":cue="ui_discovery"
 		"skill_vent":fx.vent(source,Vector3.UP*10,int(row.serial));cue="sfx_shield_break"
 		"skill_deploy":fx.spark(source,Color("b5ffed"),3,.25);cue="ui_discovery"

@@ -14,6 +14,7 @@ static func validate(value: Variant) -> String:
 	for entry in [["system",249999],["target",999999]]:
 		if not FrontierUniverse._finite(value.get(entry[0]),0,entry[1]) or value[entry[0]]!=floorf(value[entry[0]]):return "공동 항로 주소 오류"
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
+	if not FrontierSpaceCollision.valid_motion(value):return "선체 충돌 속도 오류"
 	if value.has("up") and not valid_up(value.up):return "선체 회전축 오류"
 	if not FrontierUniverse._finite(value.get("orbit_time",0),0,1e12):return "궤도 시간 오류"
 	if value.has("traffic_patrols") and not FrontierSpacePatrol.valid_state(value.traffic_patrols):return "경비 편대 기록 오류"
@@ -86,6 +87,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if nav.mode=="jump" and not nav.has("first_stellar_system") and int(nav.system)==0:nav.first_stellar_system=FrontierUniverse.system_index(world.manifest,int(nav.target))
 		if nav.mode=="jump":nav.energy=float(nav.get("energy",100.0))-energy_cost
 		nav.erase("station_docked");nav.station_target=false;nav.manual=false;nav.boundary=false;nav.boosting=false
+		nav.impact_velocity=[0,0,0]
 		nav.jump_left=float(world.manifest.settings.flight.get("transit_seconds",12.0)) if nav.mode=="jump" else 0.0
 		if nav.mode=="jump":
 			var source:=FrontierUniverse.system(world.manifest,int(nav.system))
@@ -121,6 +123,13 @@ static func step(world: Dictionary,delta: float) -> bool:
 	nav.damage_cooldown=maxf(0,float(nav.get("damage_cooldown",0))-delta)
 	if nav.damage_cooldown<=0 and not nav.get("combat_fitted",false):nav.hull=minf(100,nav.hull+float(cfg_state.get("hull_repair",4))*delta)
 	if nav.mode!="jump" and not nav.get("boosting",false):nav.energy=minf(100,nav.energy+float(cfg_state.get("energy_recharge",12))*delta)
+	if nav.has("impact_recovery_left"):
+		nav.impact_recovery_left=maxf(0,float(nav.impact_recovery_left)-delta);nav.speed=0;nav.impact_velocity=[0,0,0]
+		if nav.impact_recovery_left<=0:
+			nav.erase("impact_recovery_left");nav.combat_recovery=false;nav.hull=float(FrontierSpaceCombat.config().recovery_hull)
+			var id: String="shuttle:"+str(world.local_shuttle) if world.has("local_shuttle") else "crew"
+			FrontierSpaceCombat.ship_state(world,id).shield=FrontierVesselSkills.shield_max(world,id)*.5
+			return true
 	stellar_hazard(world,delta)
 	var old_time: float=float(nav.get("orbit_time",0))
 	nav.orbit_time=old_time+delta
@@ -310,11 +319,14 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	nav.direction=FrontierExpeditionBusiness.array(direction);nav.up=FrontierExpeditionBusiness.array(frame.y)
 	nav.precision=precision
 	# A stationary roll only changes this vessel's axes, without rebuilding celestial obstacles.
-	if is_zero_approx(float(nav.speed)):
+	var impact:=FrontierSpaceCollision.drift(nav)*exp(-float(FrontierSpaceCollision.config().drift_decay)*delta)
+	if impact.length()<.05:impact=Vector3.ZERO
+	if nav.has("impact_velocity"):nav.impact_velocity=FrontierSpaceCombat.arr(impact)
+	if is_zero_approx(float(nav.speed)) and impact.is_zero_approx():
 		nav.proximity_braking=false
 		return
 	var start:=FrontierCrewWorld.vector(nav.position)
-	var end:=start+direction*float(nav.speed)*delta
+	var end:=start+(direction*float(nav.speed)+impact)*delta
 	var boundary: float=FrontierUniverse.system_layout(world.manifest,int(nav.system)).boundary
 	nav.boundary=end.length()>boundary-800
 	if end.length()>boundary:end=end.limit_length(boundary);nav.speed=0
@@ -348,7 +360,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		if safe_speed<float(nav.speed):
 			nav.proximity_braking=true
 			nav.speed=move_toward(float(nav.speed),safe_speed,deceleration*delta)
-			end=(start+direction*float(nav.speed)*delta).limit_length(boundary)
+			end=(start+(direction*float(nav.speed)+impact)*delta).limit_length(boundary)
 	var segment:=end-start
 	for obstacle in obstacles:
 		var offset: Vector3=start-obstacle.point
@@ -356,7 +368,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		if nearest.length()<float(obstacle.radius) and offset.dot(segment)<0:
 			if absf(nav.speed)>120 and float(nav.get("damage_cooldown",0))<=0:
 				nav.hull=maxf(0,float(nav.get("hull",100))-minf(45,absf(nav.speed)*.025));nav.damage_cooldown=8.0
-			end=start;nav.speed=0;break
+			end=start;nav.speed=0;nav.impact_velocity=[0,0,0];break
 	nav.position=[end.x,end.y,end.z];nav.direction=[direction.x,direction.y,direction.z]
 	world.flight_position=nav.position.duplicate()
 
