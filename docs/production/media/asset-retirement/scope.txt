@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+REMODEL_SCOPE one actor moved/restored; peer pose, node, phase and caches unchanged; rejected attack and duplicate restored state unchanged; no world save or request publisher invoked
+REMODEL_LAZY_METADATA one individual file read; subsequent path/bounds reuse the cached entry
+REMODEL_REQUIRED_ASSET missing imports retain canonical paths; no retired model fallback or peer reset

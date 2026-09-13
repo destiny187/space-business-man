@@ -52,8 +52,8 @@ func exercise(stage: Node3D,form: Dictionary,outcome: String) -> void:
 	for lod in ["near","far"]:
 		var gltf:=GLTFDocument.new();var state:=GLTFState.new();assert(gltf.append_from_file("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"),state)==OK)
 		var model:=gltf.generate_scene(state);var packed:=PackedScene.new();assert(packed.pack(model)==OK);model.free();ready_scenes.append(packed)
-	var actor:=Actor.new();actor.lod_override=0;actor.configure(original,look,ready_scenes,true,form);stage.add_child(actor);actor.set_process(false)
-	var peer:=Actor.new();peer.load_far=false;peer.configure(original,look,[ready_scenes[0]],true,form);stage.add_child(peer);peer.set_process(false);peer.hide()
+	var actor:=Actor.new();actor.lod_override=0;actor.configure(original,look,ready_scenes,form);stage.add_child(actor);actor.set_process(false)
+	var peer:=Actor.new();peer.load_far=false;peer.configure(original,look,[ready_scenes[0]],form);stage.add_child(peer);peer.set_process(false);peer.hide()
 	var untouched:=peer.models[0].get_instance_id();var untouched_phase: float=peer.ground_motion.phase
 	core.world.crew.combat={};core.world.crew.wildlife_encounters={}
 	var live:=FrontierWildlifeCombat.ensure(core.world.crew,body.id,row);live.target=actor_id;live.aim=[0,0,1];live.yaw=0

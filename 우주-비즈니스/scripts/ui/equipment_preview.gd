@@ -42,7 +42,7 @@ func show_specimen(sample: Dictionary) -> void:
 	var definition:=FrontierEcologyCatalog.form(sample.form_id)
 	var path: String=FrontierEcologyCatalog.model_key(definition)
 	show_model(path)
-	var geometry: Dictionary=definition.get("geometry",{}).get("near",{})
+	var geometry: Dictionary=preload("res://scripts/actors/creatures/remodel_registry.gd").bounds(definition)
 	if geometry.has("min") and geometry.has("max"):
 		var low:=Vector3(geometry.min[0],geometry.min[1],geometry.min[2]);var high:=Vector3(geometry.max[0],geometry.max[1],geometry.max[2])
 		model.position=-(low+high)*.5
@@ -56,6 +56,15 @@ func show_specimen(sample: Dictionary) -> void:
 			var role:=material.resource_name.trim_prefix("Bio_")
 			var index: int=["main","secondary","accent"].find(role)
 			if index>=0:material.set_shader_parameter("base_color",Color(look.palette[index]).linear_to_srgb())
+			else:
+				var key:=str(material.resource_name)
+				index=0 if key in ["Study_skin_vertex_paint","Study_skin"] else (1 if key=="Study_ventral" else (2 if key=="Study_shell" else -1))
+				if index<0:continue
+				if not material.has_meta("specimen_base_color"):material.set_meta("specimen_base_color",material.get_shader_parameter("base_color"))
+				var before:=Color(definition.palette[index]);var after:=Color(look.palette[index])
+				var multiplier:=Color(after.r/maxf(.001,before.r),after.g/maxf(.001,before.g),after.b/maxf(.001,before.b))
+				var original: Color=material.get_meta("specimen_base_color")
+				material.set_shader_parameter("base_color",(original.srgb_to_linear()*multiplier).linear_to_srgb())
 	request_render()
 
 func frame_specimen(bounds: AABB) -> void:

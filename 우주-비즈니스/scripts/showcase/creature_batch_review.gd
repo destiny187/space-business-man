@@ -68,7 +68,7 @@ func make_actor(form: Dictionary) -> Node3D:
 		for lod in ["near","far"]:
 			var gltf:=GLTFDocument.new();var state:=GLTFState.new();assert(gltf.append_from_file("res://"+str(form.lods[lod].path).trim_prefix("우주-비즈니스/"),state)==OK)
 			var model:=gltf.generate_scene(state);var packed:=PackedScene.new();assert(packed.pack(model)==OK);model.free();ready_scenes.append(packed)
-	actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes,true,form if not ready_scenes.is_empty() else {});stage.add_child(actor);actor.set_process(false)
+	actor.configure(original,{"scale":1.,"palette":original.palette},ready_scenes,form if not ready_scenes.is_empty() else {});stage.add_child(actor);actor.set_process(false)
 	assert(actor.finish_lods() and actor.models.size()==2)
 	return actor
 
@@ -233,13 +233,13 @@ func audit_scope() -> void:
 	var valid_lods: Dictionary=pending_art.lods.duplicate(true)
 	pending_art.lods.near.path="우주-비즈니스/assets/models/creature_remodel/review_missing_import.glb"
 	Actor.RemodelRegistry.entries[pending_form.id]=pending_art
-	assert(Actor.RemodelRegistry.entry(pending_form).is_empty())
-	var fallback:=Actor.new();fallback.load_far=false;fallback.configure(pending_form,{"scale":1.,"palette":original.palette});holder.add_child(fallback)
-	assert(fallback.remodel.is_empty() and fallback.models.size()==1)
-	var fallback_node: int=fallback.models[0].get_instance_id()
+	assert(Actor.RemodelRegistry.entry(pending_form)==pending_art)
+	assert(Actor.RemodelRegistry.path(pending_form,"near").ends_with("review_missing_import.glb"))
+	assert(FrontierEcologyCatalog.model_key(pending_form)=="creature_remodel/review_missing_import")
+	# Repairing the metadata does not recreate already installed peer actors.
 	pending_art.lods=valid_lods
-	assert(not Actor.RemodelRegistry.entry(pending_form).is_empty())
-	assert(fallback.remodel.is_empty() and fallback.models[0].get_instance_id()==fallback_node)
+	assert(Actor.RemodelRegistry.entry(pending_form)==pending_art)
+	assert(actors[1].models[0].get_instance_id()==untouched_node)
 	Actor.RemodelRegistry.entries.erase(pending_form.id)
-	print("REMODEL_IMPORT_FALLBACK unfinished import keeps prior model; completed resources become available without resetting the existing actor")
+	print("REMODEL_REQUIRED_ASSET missing imports retain canonical paths; no retired model fallback or peer reset")
 	holder.free()

@@ -1,0 +1,76 @@
+{
+  "date": "2026-09-13",
+  "baseline_commit": "8e97d578440918ca36030865744984790aa0da1d",
+  "deleted": {
+    "retired_animal_blend": {
+      "files": 5600,
+      "bytes": 2024182755,
+      "allocated_bytes": 2035478528
+    },
+    "retired_animal_backup": {
+      "files": 1513,
+      "bytes": 339689182,
+      "allocated_bytes": 342794240
+    },
+    "retired_animal_cache": {
+      "files": 22400,
+      "bytes": 6282166817,
+      "allocated_bytes": 6349910016
+    },
+    "retired_animal_glb": {
+      "files": 11200,
+      "bytes": 10688287416,
+      "allocated_bytes": 10711289856
+    },
+    "retired_animal_import": {
+      "files": 11200,
+      "bytes": 13623761,
+      "allocated_bytes": 45875200
+    },
+    "temporary_import_projects": {
+      "files": 58682,
+      "bytes": 37606561189,
+      "allocated_bytes": 37781524480
+    },
+    "retired_animal_reproducible_captures": {
+      "files": 14450,
+      "bytes": 773435756,
+      "allocated_bytes": 802521088
+    },
+    "superseded_import_receipts": {
+      "files": 8,
+      "bytes": 4180789,
+      "allocated_bytes": 4198400
+    },
+    "total": {
+      "files": 125053,
+      "bytes": 57732127665,
+      "allocated_bytes": 58073591808
+    }
+  },
+  "tracked_deletions": 28008,
+  "deleted_path_list_sha256": "698f626e27880a80be5cd5ad97ace546befb0a5be8041b7ae989a43640673bf1",
+  "protected_paths_checked": 24003,
+  "catalog_sha256": {
+    "forms": "a143b6bdb6a3b1cbd2cab9d61581cd23dbedf6d8a4a69252cc00be389da98216",
+    "xenofauna_forms": "72da71f91bc388c99a37d285d3080832d702d11c08df5eb9eee53ad2250de19c",
+    "xenoflora_forms": "87ba057c9591741645b31c8199460736d6459d0587108789d850337ff653e7d5",
+    "biota_forms": "c06cd11212594ec7b929f77d055daa3582c3b23d396ae1fb9f93bd66e57234e5"
+  },
+  "repository_du_kib": {
+    "before": 209191844,
+    "after": 155821960
+  },
+  "verification": {
+    "current_lods_available": 16000,
+    "animals": 5600,
+    "plants_and_microbes": 2400,
+    "runtime_sample_animals": 6,
+    "runtime_sample_other": 2,
+    "renderer": "Godot 4.7.2 / Metal Forward+ / Apple M2",
+    "runtime_failures": 0,
+    "scope_check": "Passed: one actor, duplicate/rejected state, lazy metadata, canonical missing-import path",
+    "initial_harness_issue": "Synthetic sample ID was not a 64-character hex hash; corrected the fixture and reran. No game save rule was changed."
+  },
+  "retained": "Current models and Blender sources, species/save catalogues, 2400 plants/microbes, UI images, approved/native review evidence, production tools and tests, builds, user saves, Git and LFS history."
+}

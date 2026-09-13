@@ -1,4 +1,5 @@
 extends SceneTree
+const Presentation=preload("res://scripts/actors/creatures/remodel_registry.gd")
 const Ink=preload("res://scripts/actors/ink_style.gd")
 var forms: Array=[]
 var appearances: Array=[]
@@ -39,7 +40,7 @@ func run() -> void:
 		var record_path: String=destination+"records/"+form.id+".json"
 		if not FileAccess.file_exists(record_path):continue
 		var old: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(record_path))
-		if old.get("model_sha256","")==form.lods.near.sha256:continue
+		if old.get("model_sha256","")==visual_lod(form,"near").sha256:continue
 		DirAccess.remove_absolute(record_path)
 		DirAccess.remove_absolute(destination+"lod/"+form.id+".png")
 		for k in range(20):DirAccess.remove_absolute(destination+"variants/"+appearances[i*20+k].id+".png")
@@ -71,11 +72,12 @@ func run() -> void:
 			var portrait:=root.get_texture().get_image()
 			portrait.resize(480,400,Image.INTERPOLATE_LANCZOS)
 			assert(portrait.save_png(ProjectSettings.globalize_path("res://assets/ui/previews/"+form.id+".png"))==OK)
-			var report: Dictionary={"id":form.id,"native":[1440,1200],"portrait":[480,400],"model_sha256":form.lods.near.sha256,"engine":Engine.get_version_info().string,"status":"rendered-unreviewed"}
+			var report: Dictionary={"id":form.id,"native":[1440,1200],"portrait":[480,400],"model_sha256":visual_lod(form,"near").sha256,"engine":Engine.get_version_info().string,"status":"rendered-unreviewed"}
 			if form.has("eye_design"):
 				var head: Node3D=studio.subject.find_child("Anim_Head",true,false)
-				var point: Vector2=studio.camera.unproject_position(head.global_position)
-				report["head_pixel"]=[point.x,point.y]
+				if head!=null:
+					var point: Vector2=studio.camera.unproject_position(head.global_position)
+					report["head_pixel"]=[point.x,point.y]
 			FileAccess.open(destination+"records/"+form.id+".json",FileAccess.WRITE).store_string(JSON.stringify(report))
 			print("BESTIARY_NATIVE ",i+1,"/",forms.size()," ",form.id)
 			await process_frame
@@ -94,10 +96,7 @@ func run() -> void:
 				assert(root.get_texture().get_image().save_png(destination+"lighting/"+form.id+"-"+mode+".png")==OK)
 			key.rotation_degrees=Vector3(-48,-32,0)
 			key.light_energy=1.35
-			var far_form: Dictionary=form.duplicate(true)
-			far_form.lods.near=far_form.lods.far
-			if far_form.has("geometry"):far_form.geometry.near=far_form.geometry.far
-			select(far_form)
+			select(form,"far")
 			await draw()
 			assert(root.get_texture().get_image().save_png(destination+"lod/"+form.id+".png")==OK)
 			print("BESTIARY_LIGHT_LOD ",i+1,"/",forms.size())
@@ -120,8 +119,15 @@ func run() -> void:
 				if FileAccess.file_exists(path):continue
 				for c in range(3):
 					for mat in slots.get(["main","secondary","accent"][c],[]):mat.set_shader_parameter("base_color",Color(look.palette[c]).linear_to_srgb())
+					var roles: Array=[["Study_skin_vertex_paint","Study_skin"],["Study_ventral"],["Study_shell"]][c]
+					for role in roles:
+						for mat in slots.get(role,[]):
+							if not mat.has_meta("variant_base_color"):mat.set_meta("variant_base_color",mat.get_shader_parameter("base_color"))
+							var before:=Color(form.palette[c]);var after:=Color(look.palette[c])
+							var original: Color=mat.get_meta("variant_base_color")
+							mat.set_shader_parameter("base_color",(original.srgb_to_linear()*Color(after.r/maxf(.001,before.r),after.g/maxf(.001,before.g),after.b/maxf(.001,before.b))).linear_to_srgb())
 				studio.subject.scale=Vector3.ONE*float(look.scale)
-				studio.subject.position.y=-float(form.get("geometry",{}).get("near",{}).get("floor_y",0))*float(look.scale)
+				studio.subject.position.y=-float(Presentation.bounds(form).get("floor_y",0))*float(look.scale)
 				await draw()
 				assert(root.get_texture().get_image().save_png(path)==OK)
 			print("BESTIARY_VARIANTS ",(i+1)*20,"/",appearances.size())
@@ -129,14 +135,18 @@ func run() -> void:
 	print("BESTIARY_RENDER_COMPLETE stage=",stage_filter," forms=",indices.size())
 	quit()
 
-func sample(form: Dictionary) -> Dictionary:
-	return {"id":form.id,"title":"LIFE ATLAS / "+str(form.family_name),"name":str(form.name)+" · "+str(form.environment_label),"model":"res://"+str(form.lods.near.path).trim_prefix("우주-비즈니스/"),"foliage":form.category!="animal"}
+func visual_lod(form: Dictionary,lod: String) -> Dictionary:
+	var current: Dictionary=Presentation.entry(form)
+	return (current if not current.is_empty() else form).lods[lod]
 
-func select(form: Dictionary) -> void:
+func sample(form: Dictionary,lod: String="near") -> Dictionary:
+	return {"id":form.id,"title":"LIFE ATLAS / "+str(form.family_name),"name":str(form.name)+" · "+str(form.environment_label),"model":Presentation.path(form,lod),"foliage":form.category!="animal"}
+
+func select(form: Dictionary,lod: String="near") -> void:
 	studio.cache.clear()
-	studio.samples=[sample(form)]
+	studio.samples=[sample(form,lod)]
 	studio.select_sample(0)
-	studio.subject.position.y=-float(form.get("geometry",{}).get("near",{}).get("floor_y",0))
+	studio.subject.position.y=-float(Presentation.bounds(form,lod).get("floor_y",0))
 	studio.studio_ground.position.y=-.025
 	# Keep a long enough orthographic camera distance to avoid a near-plane floor cut.
 	var direction: Vector3=(studio.camera.position-studio.target).normalized()

@@ -137,12 +137,9 @@ func audit_registry() -> void:
 		actor.flight_blend=1.;actor.flight_clock=24.;actor.ground_motion.tick(1./30.);actor.ground_motion.pose_authored()
 		assert(actor.ground_motion.wanted_clip=="flight_loop")
 		actor.free()
-	# Saved incident art retains its established dimensions until its own adapter is complete.
-	var old_form:=FrontierEcologyCatalog.form(manifest.enabled_ground_species[0])
-	var old_actor:=Actor.new();old_actor.load_far=false;old_actor.configure(old_form,{},[],false)
-	assert(old_actor.remodel.is_empty() and not old_actor.joints[0].is_empty());old_actor.free()
-	for id in manifest.pending_host_attack_adaptation:
-		var form:=FrontierEcologyCatalog.form(id)
-		assert(Actor.RemodelRegistry.entry(form).is_empty() and FrontierWildlifeCombat.pattern(form)!="none")
-		assert(Actor.RemodelRegistry.path(form,"near").ends_with(str(form.lods.near.path).trim_prefix("우주-비즈니스/")))
-	print("REMODEL_REGISTRY ",manifest.enabled_ground_species.size()," surface species; imported prewarm/deferred LOD; incident opt-out; host motion adapters checked")
+	# Native incidents use the same required presentation after catalogue asset retirement.
+	var incident_form:=FrontierEcologyCatalog.form(manifest.enabled_ground_species[0])
+	var incident_actor:=FrontierNativeIncidentView.make_actor({"form_id":incident_form.id},{})
+	assert(incident_actor.remodel.source_id==incident_form.id and incident_actor.models.size()==1);incident_actor.free()
+	assert(manifest.pending_host_attack_adaptation.is_empty())
+	print("REMODEL_REGISTRY ",manifest.enabled_ground_species.size()," surface species; imported prewarm/deferred LOD; native incident presentation; host motion adapters checked")

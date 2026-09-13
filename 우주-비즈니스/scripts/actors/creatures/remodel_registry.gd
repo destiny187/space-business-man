@@ -19,10 +19,9 @@ static func entry(form: Dictionary) -> Dictionary:
 		assert(row.source_id==id)
 		entries[id]=row;individual_reads+=1
 	var result: Dictionary=entries.get(id,{})
-	# A source GLB can exist before Godot finishes importing it. Keep the previous
-	# playable model until both replacement LODs can actually be loaded.
-	for asset in result.get("lods",{}).values():
-		if not ResourceLoader.exists("res://"+str(asset.path).trim_prefix("우주-비즈니스/")):return {}
+	# All animal replacements are required assets. Missing imports must never
+	# redirect previews or actors to the retired catalogue paths.
+	assert(form.get("category","")!="animal" or not result.is_empty(),"Missing animal presentation: "+id)
 	return result
 
 static func path(form: Dictionary,lod: String) -> String:

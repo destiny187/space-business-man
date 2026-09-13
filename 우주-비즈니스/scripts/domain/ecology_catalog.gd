@@ -130,7 +130,7 @@ static func all_appearances() -> Array:
 	prepare();return _appearance_rows
 
 static func model_key(definition: Dictionary) -> String:
-	return str(definition.lods.near.path).trim_prefix("우주-비즈니스/assets/models/").trim_suffix(".glb")
+	return preload("res://scripts/actors/creatures/remodel_registry.gd").path(definition,"near").trim_prefix("res://assets/models/").trim_suffix(".glb")
 
 static func choose_diverse(seed_value: int,environment: String,category: String,count: int,flora_enabled: bool=false) -> Array:
 	prepare()
