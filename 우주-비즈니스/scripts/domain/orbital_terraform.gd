@@ -62,6 +62,7 @@ static func describe(body: Dictionary,site: Dictionary) -> Dictionary:
 		var group: Dictionary=groups[key];var count:=float(group.points.size());var center: Vector3=group.sum.normalized()
 		var radius:=float(config().minimum_visible_radius)
 		for point in group.points:radius=maxf(radius,center.angle_to(point)+.02)
+		radius*=float(config().visible_radius_scale)
 		patches.append({"point":[center.x,center.y,center.z,radius],"values":[snappedf(group.green/count,.01),snappedf(group.wet/count,.01),snappedf(group.temperature/count,.5),snappedf(group.air/count,.01)]})
 	if patches.is_empty() and air_cells.is_empty():return {}
 	return {"version":1,"completed":completed,"patches":patches,"air_size":air_size,"air_cells":air_cells}

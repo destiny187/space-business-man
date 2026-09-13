@@ -39,3 +39,13 @@ Godot 4.7.2 Forward+ / Metal 실제 창에서 다음을 확인했다.
 [복원 전](media/orbital-terraforming/before.png) · [진행 중](media/orbital-terraforming/recovering.png) · [복원 후](media/orbital-terraforming/restored.png) · [원거리](media/orbital-terraforming/restored-far.png) · [실제 항성지도](media/orbital-terraforming/navigation.png) · [작은 화면](media/orbital-terraforming/navigation-960.png)
 
 재확인할 때 첫 스크립트가 만든 격리 `world.json`을 두 번째 스크립트가 읽는다. 이 파일은 재생성 결과다. 두 번째 실행에는 반드시 `--crew-ui-test --crew-folder=/tmp/space-orbital-play`처럼 별도 저장 폴더를 지정한다.
+
+## 2026-09-13 — 지역 녹지 표시 확대
+
+사용자 요청에 따라 `orbital_terraforming.json`의 `visible_radius_scale=1.5`를 각 공간 묶음의 최종 표시 반경에 적용한다. 기존 최소 반경과 실제 분포로 계산한 큰 묶음 모두 같은 비율로 넓어진다. 최소 표시 각반경은 0.14 → 0.21 rad이며 **반경 기준 1.5배**다. 녹지와 같은 지역 마스크를 사용하는 물·해빙·지역 구름 표현도 경계가 함께 넓어진다. 별도 대기 원장의 전달 범위, 지상 시설 처리 면적·재료 소비·계약 평가·보상은 그대로다.
+
+렌더용 요약을 다시 계산할 때 적용하므로 기존 저장에도 게임 재실행 후 반영된다. 지형과 저장 구조의 이행은 없다. 복원 환경값과 지질을 혼합하는 기존 경계 및 미작업 행성 제외를 유지한다.
+
+행동 범위 확인: 호스트 사업 기록 → 리비전별 요약 캐시 → 스냅샷 → 현재 항성계의 변경된 행성 재질/열린 지도 카드 경로를 추적했다. 추가 처리는 기존 최대 16개 묶음별 반경 곱셈 하나이며 메시·지형 재생성, 추가 저장·요청·전체 캐시 무효화를 넣지 않았다. 기존 사업 목록의 캐시 확인과 현재 항성계의 요약 비교 순회는 남는다. 닫힌 카드의 갱신/렌더 중단과 실패·중복 요청의 기존 거래 경로를 변경하지 않았다.
+
+Godot 4.7.2 / Metal Forward+ 실제 창에서 기존 `check_orbital_terraform.gd`를 임시 실행 래퍼로 사용해 복원 전·중·후, 정산/호스트 발행, JSON 재로드·원본 보존, 재방문·원거리 LOD를 최소 확인했다. 복원 완료 화면에서 행성 재질의 이전 반경과 새 반경을 비교해 녹지 확대와 남아 있는 황무지를 확인했다. 관련 확인 16개, 실패 0. 로그는 `/tmp/check_green_radius.log`, 화면·검수용 저장은 `output/green-radius-20260913/`에 두었다. 사용자 저장, 전체 플레이·다중 클라이언트·Windows는 이번에 검사하지 않았다. 신규 모델·음원·영구 테스트는 추가하지 않았다.

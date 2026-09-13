@@ -37,8 +37,23 @@ static func key_at(site: Dictionary,p: Vector2) -> String:
  var size: float=rules(site).cell_size
  return "%d:%d"%[floori(p.x/size),floori(p.y/size)]
 static func radius(site: Dictionary,b: Dictionary) -> float:
- if int(site.free_terraform.tier)==1 and b.get("type","") in ["water","thermal","biolab"]:return float(rules(site).intro_radius)
- return float(rules(site).radius.get(b.get("type",""),0))
+ var kind: String=b.get("type","")
+ var result:=float(rules(site).radius.get(kind,0))
+ if kind in ["water","thermal","biolab"]:
+  if int(site.free_terraform.tier)==1:result=float(rules(site).intro_radius)
+  # Live balance applies to saved facilities without rewriting their world rules or cells.
+  result*=float(FrontierSurfaceRegions.config().surface_restoration_radius_scale)
+ return result
+static func nearby_cells(site: Dictionary,p: Vector2,r: float) -> Array:
+ var result: Array=[];var size: float=rules(site).cell_size
+ for x in range(floori((p.x-r)/size),ceili((p.x+r)/size)):
+  for z in range(floori((p.y-r)/size),ceili((p.y+r)/size)):
+   var key: String="%d:%d"%[x,z]
+   var cell: Dictionary=site.free_terraform.cells.get(key,{})
+   if cell.is_empty():continue
+   var distance:=Vector2(cell.position[0]-p.x,cell.position[2]-p.y).length()
+   if distance<r:result.append([key,cell,1-smoothstep(r*.4,r,distance)])
+ return result
 static func in_pollution(site: Dictionary,p: Vector2) -> bool:
  if not site.has("tier3"):return false
  var center: Array=site.free_terraform.source
@@ -79,21 +94,19 @@ static func begin(world: Dictionary,site: Dictionary,dt: float) -> void:
   if b.type not in rules(site).radius:continue
   ensure_cells(site,body,Vector2(b.position[0],b.position[2]),radius(site,b))
   if b.type!="biolab" or not b.active:continue
-  for key in site.free_terraform.cells:
-   var c: Dictionary=site.free_terraform.cells[key];var distance:=Vector2(c.position[0]-b.position[0],c.position[2]-b.position[2]).length()
-   if distance>radius(site,b):continue
-   var strength:=FrontierProductionTier2.factor(b)*(1-smoothstep(radius(site,b)*.4,radius(site,b),distance))
+  for pair in nearby_cells(site,Vector2(b.position[0],b.position[2]),radius(site,b)):
+   var key: String=pair[0]
+   var strength:=FrontierProductionTier2.factor(b)*float(pair[2])
    var previous: Dictionary=site.free_terraform.soil_winners.get(key,{})
    if strength>float(previous.get("strength",-1)) or (is_equal_approx(strength,float(previous.get("strength",-1))) and str(b.id)<str(previous.get("id",""))):site.free_terraform.soil_winners[key]={"id":b.id,"strength":strength}
  if site.has("tier3"):
   site.tier3.suppression=0.0;site.tier3.supply_seconds=0.0;site.tier3.source_status="오염 구역 내부 제어 장치 필요"
 static func covered(site: Dictionary,b: Dictionary) -> Array:
- var result: Array=[];var r:=radius(site,b)
- for key in site.free_terraform.cells:
-  var cell: Dictionary=site.free_terraform.cells[key];var distance:=Vector2(cell.position[0]-b.position[0],cell.position[2]-b.position[2]).length()
-  if distance>=r:continue
+ var result: Array=[]
+ for pair in nearby_cells(site,Vector2(b.position[0],b.position[2]),radius(site,b)):
+  var key: String=pair[0]
   if b.type=="biolab" and site.free_terraform.soil_winners.get(key,{}).get("id","")!=b.id:continue
-  result.append([cell,1-smoothstep(r*.4,r,distance)])
+  result.append([pair[1],pair[2]])
  return result
 static func process(world: Dictionary,site: Dictionary,dt: float) -> void:
  var body:=FrontierUniverse.body_from_id(world.manifest,world.location)
