@@ -62,6 +62,7 @@ static func ship_transfer(world: Dictionary,actor: String,kind: String,args: Dic
 	elif member.area!="cabin" or position.distance_to(FrontierCrewWorld.vector(FrontierCrewWorld.config().locker_position))>float(FrontierCrewWorld.config().interaction_distance):return "선내 창고 가까이 이동하세요."
 	var site:=ship_site(world.crew)
 	if world.has("local_shuttle"):site["slot_capacity"]=int(FrontierShuttles.config().cargo_slots)
+	else:site["slot_capacity"]=FrontierVesselSkills.cargo_capacity(world.get("vessel",{}))
 	if args.has("item_id"):
 		var error:=warehouse_equipment(world,actor,{"item_id":args.item_id,"withdraw":kind=="withdraw"},site)
 		if not error.is_empty():return error

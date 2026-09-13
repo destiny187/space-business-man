@@ -719,7 +719,8 @@ func collect_flight_controls() -> Array:
 	return [float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),
 		clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT)),
 		float(armed and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)),float(ready),float(armed and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)),
-		float(Input.is_physical_key_pressed(KEY_Q))-float(Input.is_physical_key_pressed(KEY_E)),float(Input.is_physical_key_pressed(KEY_SPACE)),float(Input.is_physical_key_pressed(KEY_ALT))]
+		float(Input.is_physical_key_pressed(KEY_Q))-float(Input.is_physical_key_pressed(KEY_E)),float(Input.is_physical_key_pressed(KEY_SPACE)),float(Input.is_physical_key_pressed(KEY_ALT)),
+		float(armed and Input.is_physical_key_pressed(KEY_1)),float(armed and Input.is_physical_key_pressed(KEY_2))]
 
 func interact_flight() -> void:
 	if not orbital_scan_allowed():return

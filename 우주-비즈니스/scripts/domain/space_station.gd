@@ -48,6 +48,12 @@ static func market(m: Dictionary,index: int,station_id: String="") -> Dictionary
   prices[id]=maxi(1,roundi(float(row.price)*float(90+roll%21)/100.0))
  var hull: String="swift" if int(station.seed)%2==0 else "mule"
  stock["hull:"+hull]=1;prices["hull:"+hull]=int(config().hulls[hull].price)
+ # New hulls are available one region before their rated capability, avoiding a purchase lock.
+ var region:=FrontierVesselAccess.system_tier(m,index)
+ for id in config().hulls:
+  var row: Dictionary=config().hulls[id]
+  if int(row.get("ship_tier",1))<3 or region<int(row.ship_tier)-1:continue
+  stock["hull:"+id]=1;prices["hull:"+id]=int(row.price)
  return {"stock":stock,"prices":prices}
 static func snapshot(world: Dictionary) -> Dictionary:
  var index:=int(world.crew.navigation.system)
@@ -59,7 +65,7 @@ static func snapshot(world: Dictionary) -> Dictionary:
  station.prices=offers.prices
  station.sale_ratio=offers.get("sale_ratio",config().sale_ratio)
  station.capacities=offers.get("capacities",{})
- station.services={"goods":true,"ships":not station.get("fixed_port",false),"blueprints":not station.get("fixed_port",false),"owned":true,"refits":not station.get("fixed_port",false)}
+ station.services={"goods":true,"ships":not station.get("fixed_port",false),"blueprints":not station.get("fixed_port",false),"owned":true,"refits":not station.get("fixed_port",false),"skills":not station.get("fixed_port",false)}
  station.blueprints=FrontierFacilityBlueprints.offers(world)
  if station.get("fixed_port",false):station.blueprints=[]
  station.credits=int(world.get("business",{}).get("credits",FrontierExpeditionBusiness.config().starting_credits))
@@ -84,10 +90,13 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
  for id in active.values():
   if not world.crew.members[id].aboard:return "승무원이 모두 승선한 상태에서 거래하세요."
  if not world.has("business"):world.business=FrontierExpeditionBusiness.create()
- if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
  if not world.has("vessel"):world.vessel=FrontierVesselRefit.create(int(world.manifest.seed),world.crew.world_id)
  var vessel: Dictionary=world.vessel
  if not vessel.has("hulls"):vessel.hulls=["kestrel"];vessel.hull="kestrel"
+ if action.begins_with("station_skill_"):
+  if station.get("fixed_port",false):return "전투 스킬은 일반 정거장에서 정비하세요."
+  return FrontierVesselSkills.apply(world,action,args)
+ if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
  var offers:=Economy.project(world,station,market(world.manifest,int(nav.system),station.id))
  var stock: Dictionary=offers.stock
  var id: String=str(args.get("item",""))
@@ -114,6 +123,11 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
    vessel.hull=id
    var error:=FrontierVesselRefit.constraints(world)
    if not error.is_empty():return error
+   var cargo:Dictionary=world.crew.get("cargo",{}).duplicate();cargo.stone=int(world.crew.get("rock",0))
+   if FrontierItemInventory.used(cargo,world.crew.get("cargo_equipment",{}).size())>FrontierVesselSkills.cargo_capacity(vessel):return "화물을 먼저 내려야 적재량이 작은 선체로 교체할 수 있습니다."
+   world.crew.cargo_slots=FrontierVesselSkills.cargo_capacity(vessel)
+   var combat_ship: Dictionary=FrontierSpaceSkills.stats(world)
+   if not combat_ship.is_empty():combat_ship.shield=minf(float(combat_ship.shield),FrontierVesselSkills.shield_max(world))
   "station_buy", "station_sell":
    if not offers.prices.has(id):return "이 정거장에서 취급하지 않는 상품입니다."
    if not id.begins_with("hull:") and args.has("quote") and args.quote!=offers.market_epoch:return "시세가 갱신되었습니다. 새 가격을 확인한 뒤 다시 거래하세요."
@@ -211,7 +225,10 @@ static func validate(world: Dictionary) -> String:
    index=int(key)
   var original:=market(world.manifest,index,key)
   var stock: Variant=markets[key]
-  if definition(world.manifest,index,int(nav.get("first_stellar_system",-1)),0,key).is_empty() or original.is_empty() or not stock is Dictionary or stock.size()!=original.stock.size():return "정거장 재고 구조 오류"
+  if definition(world.manifest,index,int(nav.get("first_stellar_system",-1)),0,key).is_empty() or original.is_empty() or not stock is Dictionary or stock.size()>original.stock.size():return "정거장 재고 구조 오류"
+  for id in original.stock:
+   if stock.has(id):continue
+   if not str(id).begins_with("hull:") or int(config().hulls[str(id).trim_prefix("hull:")].get("ship_tier",1))<3:return "기존 정거장 재고 누락"
   for id in stock:
    if not original.stock.has(id) or not FrontierExpeditionBusiness.integer(stock[id],0,1 if id.begins_with("hull:") else int(original.get("capacities",{}).get(id,config().max_stock))):return "정거장 재고 수량 오류"
  return Economy.validate(world)

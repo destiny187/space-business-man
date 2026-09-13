@@ -1,5 +1,7 @@
 # 우주 비즈니스맨 — 프로젝트 작업 지침
 
+2026-09-13 역할 선체·스킬: KESTREL 균형 탐사·SWIFT 고속 탐사·MULE 수송 계열의 T3/T5 신형, 선체 고유 능력의 별도 확보·1/2 장착과 공유 강화를 연결한다. 초기 수치·실제 모델/원정 확인·기존 저장 경계는 [168 제작 기록](docs/production/168-advanced-hulls-and-skills.md), 규칙은 [전투 소관](docs/game/28-pirate-interdiction.md)을 따른다.
+
 2026-09-12 시작·현장 사용성 최종 정정: 지구에서 조금만 출발하며 돌아보는 시작, 지형 중심 지역지도, 착륙선 소형선 호출, 카드 직접 건설·휠 네 방향 회전, Cr+재료 공동 설비 연구·새 Mk.2 제작소, 내부 T 표기/지면 흔적 제거와 시야거리 5단계는 [현재 구현·기존 저장 경계](docs/production/156-start-and-field-polish.md)를 따른다. 아래 과거 넓은 태양계 전경·무연구 제작소 전제보다 이번 요청이 우선한다.
 
 2026-09-10 기업 교체 확정: 전투로봇 제조사는 **쿠퍼가 설립하고 사장으로 이끄는 쿠퍼테크(CooperTech)**다. 이전 일루티·일루미나티 신봉 설정과 그 심볼은 폐기했다. 현재 설정·전투로봇 심볼은 [기업 소관](docs/game/23-corporations-and-space-presence.md), 기존 사건 ID를 유지하는 호환 경계는 [전환 기록](docs/production/106-coopertech-rebrand.md)을 따른다.

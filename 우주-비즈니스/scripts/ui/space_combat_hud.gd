@@ -14,23 +14,31 @@ func _ready() -> void:
 	key_style=FrontierInterfaceStyle.box(Color.TRANSPARENT,MINT,0)
 	status_column=VBoxContainer.new();status_column.mouse_filter=Control.MOUSE_FILTER_IGNORE;status_column.add_theme_constant_override("separation",12);add_child(status_column)
 	weapon_column=VBoxContainer.new();weapon_column.mouse_filter=Control.MOUSE_FILTER_IGNORE;weapon_column.add_theme_constant_override("separation",12);add_child(weapon_column)
-	for entry in [["shield","실드"],["health","선체"],["stamina","추진"],["ship_cannon","함포"],["ship_missile","유도 미사일"]]:
-		var meter:=FrontierStatusMeter.new();meter.configure(entry[0],entry[1]);meters[entry[0]]=meter
-		(weapon_column if entry[0] in ["ship_cannon","ship_missile"] else status_column).add_child(meter)
+	for entry in [["shield","실드"],["health","선체"],["stamina","추진"],["ship_cannon","함포"],["ship_missile","기체 스킬"],["skill_one","1번 스킬"],["skill_two","2번 스킬"]]:
+		var meter:=FrontierStatusMeter.new();meter.configure("ship_missile" if entry[0] in ["skill_one","skill_two"] else entry[0],entry[1]);meters[entry[0]]=meter
+		(weapon_column if entry[0] in ["ship_cannon","ship_missile","skill_one","skill_two"] else status_column).add_child(meter)
 func refresh_meters() -> void:
 	if status_column==null or presentation==null:return
 	var v:=presentation.view;var id:=presentation.id();var stats: Dictionary=presentation.data().get("ships",{}).get(id,{})
 	status_column.visible=not stats.is_empty();weapon_column.visible=not stats.is_empty() and id=="crew" and presentation.relevant()
-	status_column.position=Vector2(28,size.y-170);weapon_column.position=Vector2(size.x-220,size.y-250)
+	status_column.position=Vector2(28,size.y-170);weapon_column.position=Vector2(size.x-220,size.y-310)
 	if stats.is_empty():return
-	meters.shield.update_value(float(stats.shield),float(FrontierSpaceCombat.config().shield if id=="crew" else FrontierSpaceCombat.config().finch_shield))
+	meters.shield.update_value(float(stats.shield),FrontierVesselSkills.shield_max({"vessel":v.refits.vessel},id))
 	meters.health.update_value(float(v.navigation.get("hull",100)),100,float(v.navigation.get("hull",100))<35)
 	meters.stamina.update_value(float(v.navigation.get("energy",100)),100,float(v.navigation.get("energy",100))<25)
 	meters.ship_cannon.update_value(float(stats.heat)*100,100,stats.overheated)
 	meters.ship_cannon.value_label.text="LMB   %d%%"%roundi(float(stats.heat)*100)
-	var cooldown:=float(stats.get("missile_cooldown",0));var maximum:=float(FrontierSpaceCombat.config().missile.cooldown)
-	meters.ship_missile.update_value(maximum-cooldown,maximum)
-	meters.ship_missile.value_label.text="RMB   "+("%.1fs"%cooldown if cooldown>0 else ("2" if not presentation.locked_target.is_empty() else "—"))
+	for slot in [0,1,2]:
+		var skill:=FrontierVesselSkills.slot_skill(v.refits.vessel,slot);var def:=FrontierVesselSkills.definition(skill)
+		var meter:FrontierStatusMeter=meters[["ship_missile","skill_one","skill_two"][slot]]
+		var key:String=["RMB","1","2"][slot]
+		if def.is_empty():meter.update_value(0,0);meter.value_label.text=key+"   —";continue
+		var cooldown:=float(stats.get("skill_cooldowns",{}).get(skill,0));var maximum:=float(def.cooldown)
+		meter.update_value(maximum-cooldown,maximum);meter.symbol.texture=load(def.icon);meter.tooltip_text=def.name
+		meter.value_label.text=key+"   "+("%.1fs"%cooldown if cooldown>0 else "✓")
+		var charging:Dictionary=stats.get("charge",{})
+		if charging.get("id")==skill:
+			meter.update_value(float(def.charge)-float(charging.left),float(def.charge));meter.value_label.text=key+"   "+"%.1fs"%float(charging.left)
 func label_at(p: Vector2,text: String,color: Color=WHITE,px: int=15) -> void:
 	draw_string_outline(font,p,text,HORIZONTAL_ALIGNMENT_LEFT,-1,px,4,Color(.02,.04,.06,.8*color.a));draw_string(font,p,text,HORIZONTAL_ALIGNMENT_LEFT,-1,px,color)
 func bar(p: Vector2,value: float,maximum: float,width: float,color: Color=MINT) -> void:
@@ -103,14 +111,17 @@ func _draw() -> void:
 					draw_colored_polygon(PackedVector2Array([edge+ray*10,edge-ray*6+ray.orthogonal()*5,edge-ray*6-ray.orthogonal()*5]),WARN)
 				continue
 			var cfg: Dictionary=FrontierSpaceCombat.config().enemy[enemy.kind]
-			if str(enemy.id)==presentation.locked_target:
+			if str(enemy.id) in presentation.locked_targets:
 				draw_arc(at,14,0,TAU,32,MINT,2,true);missile_icon(at+Vector2(0,-35),MINT)
+				var skill:=FrontierVesselSkills.signature_skill(v.refits.vessel)
+				label_at(at+Vector2(10,-31),"×%d"%int(FrontierVesselSkills.value(v.refits.vessel,skill,"salvo",1)),MINT,12)
+			if float(enemy.get("mark_left",0))>0:draw_circle(at+Vector2(0,20),4,MINT,false,1.5,true)
 			var radius:=clampf(v.camera.unproject_position(p+v.camera.global_basis.x*float(cfg.radius)).distance_to(at)+8,20,110)
 			for side in [-1,1]:
 				var x: float=radius*side
 				draw_polyline(PackedVector2Array([at+Vector2(x-side*7,-radius*.5),at+Vector2(x,-radius*.5),at+Vector2(x,radius*.5),at+Vector2(x-side*7,radius*.5)]),Color(WARN,.7),1.2,true)
-			bar(at+Vector2(-30,-radius*.5-17),float(enemy.shield),float(cfg.shield),60,MINT);bar(at+Vector2(-30,-radius*.5-11),float(enemy.hull),float(cfg.hull),60,WARN)
-			if at.distance_to(center)<200:label_at(at+Vector2(radius+8,5),str(cfg.name),WARN,13)
+			bar(at+Vector2(-30,-radius*.5-17),float(enemy.shield),float(enemy.get("maximum_shield",cfg.shield)),60,MINT);bar(at+Vector2(-30,-radius*.5-11),float(enemy.hull),float(enemy.get("maximum_hull",cfg.hull)),60,WARN)
+			if at.distance_to(center)<200 and str(enemy.id)==presentation.locked_target:label_at(at+Vector2(radius+8,5),str(cfg.name),WARN,13)
 			if float(enemy.windup)>0:draw_arc(at,radius+5,-PI*.5,TAU*(1-float(enemy.windup)/float(cfg.windup))-PI*.5,32,WARN,2,true)
 
 	for wreck in presentation.visible_wrecks:

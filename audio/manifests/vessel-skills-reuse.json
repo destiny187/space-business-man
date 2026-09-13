@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-13",
+  "new_generation": false,
+  "provider": "Existing ElevenLabs recordings reused",
+  "provenance_manifests": [
+    "audio/manifests/pirate-combat-reuse.json",
+    "audio/manifests/pirate-missiles-reuse.json"
+  ],
+  "jobs": [
+    {
+      "id": "sfx_robot_charge",
+      "game_file": "우주-비즈니스/assets/audio/sfx_robot_charge.wav",
+      "sha256": "af245eff3f2ec9476c80553e1e58b928159acdca1048ee934a15d0803152e68c",
+      "seconds": 4.955,
+      "use": "authoritative charge loop; stop on discharge/menu",
+      "status": "existing_elevenlabs_reuse"
+    },
+    {
+      "id": "sfx_gun_ship_pulse",
+      "game_file": "우주-비즈니스/assets/audio/sfx_gun_ship_pulse.wav",
+      "sha256": "ae7307752f19fb2ab76e4e7e2acd6c54c10618cbd003df66fe8e44a944f04677",
+      "seconds": 0.14497916666666666,
+      "use": "lance and spear discharge",
+      "status": "existing_elevenlabs_reuse"
+    },
+    {
+      "id": "sfx_ship_missile_launch",
+      "game_file": "우주-비즈니스/assets/audio/sfx_ship_missile_launch.wav",
+      "sha256": "7dc07aefa02064d0c979ad791b7e5b1f6d1b0565a5c24a947b2468ae9646c26a",
+      "seconds": 0.4799791666666667,
+      "use": "multi-target missile launch and boost",
+      "status": "existing_elevenlabs_reuse"
+    },
+    {
+      "id": "sfx_shield_break",
+      "game_file": "우주-비즈니스/assets/audio/sfx_shield_break.wav",
+      "sha256": "bbdb28fa9ba9afbdfe936fc158ac717d01adc064bafa2808c834ff89fca5ac35",
+      "seconds": 0.23585416666666667,
+      "use": "pulse, vent and impact",
+      "status": "existing_elevenlabs_reuse"
+    },
+    {
+      "id": "ui_discovery",
+      "game_file": "우주-비즈니스/assets/audio/ui_discovery.wav",
+      "sha256": "18af86476099fd5e1108472cfe59d1e15296b35b85b5d2e2aee75e398d13edbb",
+      "seconds": 2.0,
+      "use": "barrier and deploy",
+      "status": "existing_elevenlabs_reuse"
+    }
+  ],
+  "runtime_review": {
+    "scene": "res://scenes/app/crew_expedition.tscn",
+    "verified": [
+      "host charge playback",
+      "missile and charged lance discharge playback",
+      "charge sound stops when fired"
+    ],
+    "not_verified": [
+      "subjective listening and final sound mix",
+      "six-player network mix"
+    ],
+    "record": "docs/production/168-advanced-hulls-and-skills.md"
+  }
+}

@@ -18,6 +18,12 @@ var braking:=0.0
 var rolling:=0.0
 var blocked:=false
 var cache: Dictionary={}
+var hull_sockets: Array=[]
+func set_hull(model: Node3D) -> void:
+	hull_sockets.clear()
+	for side in ["L","R"]:
+		var socket:=model.find_child("Socket_Exhaust_"+side,true,false)
+		if socket is Node3D:hull_sockets.append(socket)
 func _ready() -> void:
 	for side in [-1,1]:
 		var jet:=_jet(120,.20,.85);jet.position=Vector3(side*5,.12,7.48);add_child(jet);jets.append(jet)
@@ -45,6 +51,8 @@ func _process(delta: float) -> void:
 	thrust=lerpf(thrust,target_thrust,minf(1.0,delta*float(FrontierOrbitalPresentation.config().drive.response)))
 	heat=move_toward(heat,thrust,delta/(.3 if thrust>heat else float(FrontierOrbitalPresentation.config().drive.cooldown_seconds)))
 	for i in jets.size():
+		if not landing_mode and hull_sockets.size()==jets.size() and is_instance_valid(hull_sockets[i]):
+			jets[i].global_transform=hull_sockets[i].global_transform;lights[i].global_position=jets[i].global_position
 		jets[i].emitting=thrust>.025
 		var material: ParticleProcessMaterial=jets[i].process_material
 		material.initial_velocity_min=lerpf(4,36 if target_boost else 18,thrust);material.initial_velocity_max=material.initial_velocity_min*1.3

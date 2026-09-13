@@ -202,6 +202,7 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 		data.members[id]["place_key"]=FrontierShuttles.area_key(world,id) if world.crew.members.has(id) else "cabin"
 	if local.has("local_shuttle"):
 		for key in ["navigation","landing","cargo","cargo_equipment","rock","pilot_id","cargo_slots"]:data[key]=local.crew[key]
+	else:data.cargo_slots=FrontierVesselSkills.cargo_capacity(world.get("vessel",{}))
 	var target_id:=FrontierUniverse.body_id(world.manifest,int(local.crew.navigation.target))
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
@@ -295,7 +296,7 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	var rover_draft:=rover_runtime.duplicate(true) if envelope.kind.begins_with("rover_") else rover_runtime
-	if envelope.kind.begins_with("rover_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit","suit_module"]:FrontierItemInventory.merge_legacy(draft,actor)
+	if envelope.kind.begins_with("rover_") or (envelope.kind.begins_with("station_") and not envelope.kind.begins_with("station_skill_")) or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit","suit_module"]:FrontierItemInventory.merge_legacy(draft,actor)
 	if not envelope.kind.begins_with("lotus_") and not envelope.kind.begins_with("space_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var flood_reason:=FrontierFacilityFlooding.guard(canonical,actor,envelope.kind,envelope.args)
 	if not flood_reason.is_empty():return failure(flood_reason)
@@ -376,7 +377,7 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 		for id in draft.crew.receipts:
 			if float(draft.crew.receipts[id].result.revision)<revision:revision=float(draft.crew.receipts[id].result.revision);oldest=id
 		draft.crew.receipts.erase(oldest)
-	if not WorldDraft.personal_equipment(envelope.kind):FrontierSpecimenItems.prune(draft)
+	if not WorldDraft.personal_equipment(envelope.kind) and not envelope.kind.begins_with("station_skill_"):FrontierSpecimenItems.prune(draft)
 	var submit: Callable=save_autonomous if envelope.kind=="business_mine" else save_request
 	if submit.is_valid():
 		if not submit.call(draft):return failure("저장을 시작하지 못했습니다. 변경은 확정되지 않았습니다.")
@@ -454,7 +455,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if jump_request<0 or jump_request>9007199254740000:return false
-	if flight_controls.size() not in [3,4,6,7,10]:return false
+	if flight_controls.size() not in [3,4,6,7,10,12]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if vehicle_controls.size() not in [0,4]:return false

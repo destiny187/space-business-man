@@ -52,7 +52,14 @@
       "roles": [
         "exploration",
         "industry"
-      ]
+      ],
+      "signature_skill": "seeker_salvo",
+      "passive": "tracking",
+      "combat_shield": 100,
+      "combat_speed": 230,
+      "cargo_slots": 10,
+      "ship_tier": 1,
+      "preview": "res://assets/ui/previews/hull_kestrel.png"
     },
     "swift": {
       "name": "SWIFT",
@@ -66,7 +73,14 @@
       "hangar": 2,
       "roles": [
         "exploration"
-      ]
+      ],
+      "signature_skill": "ion_lance",
+      "passive": "cooling",
+      "combat_shield": 85,
+      "combat_speed": 280,
+      "cargo_slots": 10,
+      "ship_tier": 1,
+      "preview": "res://assets/ui/previews/hull_swift.png"
     },
     "mule": {
       "name": "MULE",
@@ -81,7 +95,142 @@
       "roles": [
         "logistics",
         "trade"
-      ]
+      ],
+      "signature_skill": "repulsor_pulse",
+      "passive": "bulwark",
+      "combat_shield": 135,
+      "combat_speed": 210,
+      "cargo_slots": 18,
+      "ship_tier": 1,
+      "preview": "res://assets/ui/previews/hull_mule.png"
+    },
+    "aster": {
+      "name": "ASTER",
+      "role": "심우주 균형 탐사선",
+      "ship_tier": 3,
+      "price": 64000,
+      "model": "res://assets/models/ships/aster.glb",
+      "preview": "res://assets/ui/previews/hull_aster.png",
+      "speed": 1.12,
+      "mass": 43,
+      "maximum_mass": 65,
+      "reactor_power": 18,
+      "hangar": 3,
+      "roles": [
+        "exploration"
+      ],
+      "signature_skill": "survey_echo",
+      "passive": "tracking",
+      "combat_shield": 135,
+      "combat_speed": 250,
+      "cargo_slots": 16
+    },
+    "peregrine": {
+      "name": "PEREGRINE",
+      "role": "고속 선회 탐사선",
+      "ship_tier": 3,
+      "price": 72000,
+      "model": "res://assets/models/ships/peregrine.glb",
+      "preview": "res://assets/ui/previews/hull_peregrine.png",
+      "speed": 1.42,
+      "mass": 37,
+      "maximum_mass": 60,
+      "reactor_power": 18,
+      "hangar": 3,
+      "roles": [
+        "exploration"
+      ],
+      "signature_skill": "vector_spears",
+      "passive": "cooling",
+      "combat_shield": 110,
+      "combat_speed": 320,
+      "cargo_slots": 14
+    },
+    "ox": {
+      "name": "OX",
+      "role": "장거리 중량 수송선",
+      "ship_tier": 3,
+      "price": 76000,
+      "model": "res://assets/models/ships/ox.glb",
+      "preview": "res://assets/ui/previews/hull_ox.png",
+      "speed": 0.98,
+      "mass": 49,
+      "maximum_mass": 88,
+      "reactor_power": 22,
+      "hangar": 7,
+      "roles": [
+        "logistics",
+        "trade"
+      ],
+      "signature_skill": "tractor_snare",
+      "passive": "bulwark",
+      "combat_shield": 185,
+      "combat_speed": 230,
+      "cargo_slots": 28
+    },
+    "orion": {
+      "name": "ORION",
+      "role": "은하핵 장기 탐사선",
+      "ship_tier": 5,
+      "price": 290000,
+      "model": "res://assets/models/ships/orion.glb",
+      "preview": "res://assets/ui/previews/hull_orion.png",
+      "speed": 1.25,
+      "mass": 49,
+      "maximum_mass": 79,
+      "reactor_power": 25,
+      "hangar": 4,
+      "roles": [
+        "exploration"
+      ],
+      "signature_skill": "constellation",
+      "passive": "tracking",
+      "combat_shield": 200,
+      "combat_speed": 280,
+      "cargo_slots": 22
+    },
+    "spectre": {
+      "name": "SPECTRE",
+      "role": "은하핵 고속 탐사선",
+      "ship_tier": 5,
+      "price": 315000,
+      "model": "res://assets/models/ships/spectre.glb",
+      "preview": "res://assets/ui/previews/hull_spectre.png",
+      "speed": 1.65,
+      "mass": 41,
+      "maximum_mass": 71,
+      "reactor_power": 24,
+      "hangar": 3,
+      "roles": [
+        "exploration"
+      ],
+      "signature_skill": "phase_lance",
+      "passive": "cooling",
+      "combat_shield": 160,
+      "combat_speed": 360,
+      "cargo_slots": 18
+    },
+    "atlas": {
+      "name": "ATLAS",
+      "role": "은하핵 대형 수송선",
+      "ship_tier": 5,
+      "price": 340000,
+      "model": "res://assets/models/ships/atlas.glb",
+      "preview": "res://assets/ui/previews/hull_atlas.png",
+      "speed": 1.05,
+      "mass": 59,
+      "maximum_mass": 98,
+      "reactor_power": 30,
+      "hangar": 10,
+      "roles": [
+        "logistics",
+        "trade"
+      ],
+      "signature_skill": "bastion_wave",
+      "passive": "bulwark",
+      "combat_shield": 270,
+      "combat_speed": 250,
+      "cargo_slots": 40
     }
   },
   "approach_speed": 1400,

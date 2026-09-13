@@ -102,6 +102,8 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 	return ""
 static func validate(value: Variant,seed_value: int,realm: String="") -> String:
 	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or value.get("id")!=create(seed_value,realm).id:return "원정선 개조 원형·식별 오류"
+	var skill_error:=FrontierVesselSkills.validate(value)
+	if not skill_error.is_empty():return skill_error
 	var access_error:=FrontierVesselAccess.validate(value)
 	if not access_error.is_empty():return access_error
 	if value.has("hull") or value.has("hulls"):

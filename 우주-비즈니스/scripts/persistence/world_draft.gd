@@ -10,6 +10,10 @@ static func _crew(source: Dictionary,actors: Array) -> Dictionary:
 		if source.crew.members.has(actor):draft.crew.members[actor]=source.crew.members[actor].duplicate(true)
 	return draft
 static func request(source: Dictionary,actor: String,kind: String) -> Dictionary:
+	if kind.begins_with("station_skill_") and source.has("vessel") and source.has("business"):
+		var skill_draft:=_crew(source,[actor]);skill_draft.crew.receipts=source.crew.receipts.duplicate()
+		skill_draft.vessel=source.vessel.duplicate(true);skill_draft.business=source.business.duplicate()
+		return skill_draft
 	if not personal_equipment(kind) or not source.get("business",{}).has("bags"):return Snapshot.copy(source)
 	var draft:=_crew(source,[actor]);draft.crew.receipts=source.crew.receipts.duplicate()
 	draft.business=source.business.duplicate();draft.business.bags=source.business.bags.duplicate()

@@ -8,7 +8,8 @@ static func epoch(world:Dictionary)->int:
  return floori(float(world.crew.navigation.orbit_time)/float(config().cycle_seconds))
 static func project(world:Dictionary,station:Dictionary,base:Dictionary)->Dictionary:
  var result:Dictionary=base.duplicate(true)
- result.stock=world.get("station_markets",{}).get(station.id,base.stock).duplicate()
+ result.stock=base.stock.duplicate()
+ result.stock.merge(world.get("station_markets",{}).get(station.id,{}),true)
  var current:=epoch(world)
  # Unvisited markets have full base stock. Legacy inventories are anchored at session start.
  var elapsed:=maxi(0,current-int(world.get("station_market_epochs",{}).get(station.id,current)))

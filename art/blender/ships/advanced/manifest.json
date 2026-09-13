@@ -1,0 +1,158 @@
+[
+  {
+    "id": "aster",
+    "tier": 3,
+    "source": "art/blender/ships/advanced/aster.blend",
+    "output": "우주-비즈니스/assets/models/ships/aster.glb",
+    "triangles": 26792,
+    "meshes": 18,
+    "style": "ink-v1",
+    "forward": "Blender +Y / Godot -Z",
+    "sockets": [
+      "Socket_Exhaust_L",
+      "Socket_Exhaust_R"
+    ],
+    "motion": [
+      "Anim_Radiator_L",
+      "Anim_Radiator_R",
+      "Anim_Nozzle_L",
+      "Anim_Nozzle_R"
+    ],
+    "review": "docs/production/168-advanced-hulls-and-skills.md",
+    "render_review": [
+      "Blender Cycles CPU",
+      "Godot Metal Forward+ INK"
+    ],
+    "flight_review": "individual flight/landing not exercised"
+  },
+  {
+    "id": "peregrine",
+    "tier": 3,
+    "source": "art/blender/ships/advanced/peregrine.blend",
+    "output": "우주-비즈니스/assets/models/ships/peregrine.glb",
+    "triangles": 25236,
+    "meshes": 15,
+    "style": "ink-v1",
+    "forward": "Blender +Y / Godot -Z",
+    "sockets": [
+      "Socket_Exhaust_L",
+      "Socket_Exhaust_R"
+    ],
+    "motion": [
+      "Anim_Radiator_L",
+      "Anim_Radiator_R",
+      "Anim_Nozzle_L",
+      "Anim_Nozzle_R"
+    ],
+    "review": "docs/production/168-advanced-hulls-and-skills.md",
+    "render_review": [
+      "Blender Cycles CPU",
+      "Godot Metal Forward+ INK"
+    ],
+    "flight_review": "individual flight/landing not exercised"
+  },
+  {
+    "id": "ox",
+    "tier": 3,
+    "source": "art/blender/ships/advanced/ox.blend",
+    "output": "우주-비즈니스/assets/models/ships/ox.glb",
+    "triangles": 30492,
+    "meshes": 18,
+    "style": "ink-v1",
+    "forward": "Blender +Y / Godot -Z",
+    "sockets": [
+      "Socket_Exhaust_L",
+      "Socket_Exhaust_R"
+    ],
+    "motion": [
+      "Anim_Radiator_L",
+      "Anim_Radiator_R",
+      "Anim_Nozzle_L",
+      "Anim_Nozzle_R"
+    ],
+    "review": "docs/production/168-advanced-hulls-and-skills.md",
+    "render_review": [
+      "Blender Cycles CPU",
+      "Godot Metal Forward+ INK"
+    ],
+    "flight_review": "individual flight/landing not exercised"
+  },
+  {
+    "id": "orion",
+    "tier": 5,
+    "source": "art/blender/ships/advanced/orion.blend",
+    "output": "우주-비즈니스/assets/models/ships/orion.glb",
+    "triangles": 28588,
+    "meshes": 18,
+    "style": "ink-v1",
+    "forward": "Blender +Y / Godot -Z",
+    "sockets": [
+      "Socket_Exhaust_L",
+      "Socket_Exhaust_R"
+    ],
+    "motion": [
+      "Anim_Radiator_L",
+      "Anim_Radiator_R",
+      "Anim_Nozzle_L",
+      "Anim_Nozzle_R"
+    ],
+    "review": "docs/production/168-advanced-hulls-and-skills.md",
+    "render_review": [
+      "Blender Cycles CPU",
+      "Godot Metal Forward+ INK"
+    ],
+    "flight_review": "ORION normal expedition purchase/equip, radiator and exhaust verified"
+  },
+  {
+    "id": "spectre",
+    "tier": 5,
+    "source": "art/blender/ships/advanced/spectre.blend",
+    "output": "우주-비즈니스/assets/models/ships/spectre.glb",
+    "triangles": 26184,
+    "meshes": 15,
+    "style": "ink-v1",
+    "forward": "Blender +Y / Godot -Z",
+    "sockets": [
+      "Socket_Exhaust_L",
+      "Socket_Exhaust_R"
+    ],
+    "motion": [
+      "Anim_Radiator_L",
+      "Anim_Radiator_R",
+      "Anim_Nozzle_L",
+      "Anim_Nozzle_R"
+    ],
+    "review": "docs/production/168-advanced-hulls-and-skills.md",
+    "render_review": [
+      "Blender Cycles CPU",
+      "Godot Metal Forward+ INK"
+    ],
+    "flight_review": "individual flight/landing not exercised"
+  },
+  {
+    "id": "atlas",
+    "tier": 5,
+    "source": "art/blender/ships/advanced/atlas.blend",
+    "output": "우주-비즈니스/assets/models/ships/atlas.glb",
+    "triangles": 35240,
+    "meshes": 15,
+    "style": "ink-v1",
+    "forward": "Blender +Y / Godot -Z",
+    "sockets": [
+      "Socket_Exhaust_L",
+      "Socket_Exhaust_R"
+    ],
+    "motion": [
+      "Anim_Radiator_L",
+      "Anim_Radiator_R",
+      "Anim_Nozzle_L",
+      "Anim_Nozzle_R"
+    ],
+    "review": "docs/production/168-advanced-hulls-and-skills.md",
+    "render_review": [
+      "Blender Cycles CPU",
+      "Godot Metal Forward+ INK"
+    ],
+    "flight_review": "individual flight/landing not exercised"
+  }
+]

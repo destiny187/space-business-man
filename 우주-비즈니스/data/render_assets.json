@@ -16466,5 +16466,158 @@
       0.84,
       -1.7
     ]
+  },
+  {
+    "id": "aster",
+    "title": "우주선 / 전투 스킬",
+    "name": "ASTER · 심우주 균형 탐사선",
+    "group": "장비",
+    "model": "res://assets/models/ships/aster.glb",
+    "source": "art/blender/ships/advanced/aster.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_advanced_hulls.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "peregrine",
+    "title": "우주선 / 전투 스킬",
+    "name": "PEREGRINE · 고속 선회 탐사선",
+    "group": "장비",
+    "model": "res://assets/models/ships/peregrine.glb",
+    "source": "art/blender/ships/advanced/peregrine.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_advanced_hulls.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "ox",
+    "title": "우주선 / 전투 스킬",
+    "name": "OX · 장거리 중량 수송선",
+    "group": "장비",
+    "model": "res://assets/models/ships/ox.glb",
+    "source": "art/blender/ships/advanced/ox.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_advanced_hulls.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "orion",
+    "title": "우주선 / 전투 스킬",
+    "name": "ORION · 은하핵 장기 탐사선",
+    "group": "장비",
+    "model": "res://assets/models/ships/orion.glb",
+    "source": "art/blender/ships/advanced/orion.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_advanced_hulls.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "spectre",
+    "title": "우주선 / 전투 스킬",
+    "name": "SPECTRE · 은하핵 고속 탐사선",
+    "group": "장비",
+    "model": "res://assets/models/ships/spectre.glb",
+    "source": "art/blender/ships/advanced/spectre.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_advanced_hulls.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "atlas",
+    "title": "우주선 / 전투 스킬",
+    "name": "ATLAS · 은하핵 대형 수송선",
+    "group": "장비",
+    "model": "res://assets/models/ships/atlas.glb",
+    "source": "art/blender/ships/advanced/atlas.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_advanced_hulls.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "combat_skill_emitter",
+    "title": "우주선 / 전투 스킬",
+    "name": "커패시터 발사 장치",
+    "group": "장비",
+    "model": "res://assets/models/ships/combat_skill_emitter.glb",
+    "source": "art/blender/ships/advanced/combat_skill_emitter.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_flight_skill_devices.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "combat_decoy",
+    "title": "우주선 / 전투 스킬",
+    "name": "미끼 비콘",
+    "group": "장비",
+    "model": "res://assets/models/ships/combat_decoy.glb",
+    "source": "art/blender/ships/advanced/combat_decoy.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_flight_skill_devices.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
+  },
+  {
+    "id": "combat_mine",
+    "title": "우주선 / 전투 스킬",
+    "name": "후방 기뢰",
+    "group": "장비",
+    "model": "res://assets/models/ships/combat_mine.glb",
+    "source": "art/blender/ships/advanced/combat_mine.blend",
+    "geometry": "new",
+    "foliage": false,
+    "view_direction": [
+      1.2,
+      0.85,
+      -1.7
+    ],
+    "generator": "tools/build_flight_skill_devices.py",
+    "review": "docs/production/168-advanced-hulls-and-skills.md"
   }
 ]

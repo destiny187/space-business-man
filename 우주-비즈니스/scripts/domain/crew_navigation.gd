@@ -248,7 +248,7 @@ static func orientation(nav: Dictionary) -> Basis:
 		up=Vector3.RIGHT if absf(direction.dot(Vector3.UP))>.98 else Vector3.UP
 	return Basis.looking_at(direction,up)
 static func stopped_input() -> Array:
-	return [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0]
+	return [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0]
 
 ## Slots 0..6 remain compatible. New slots: roll, brake, precision maneuvering.
 ## Held keys are transient; speed and orientation alone persist.
@@ -276,12 +276,15 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		nav.energy=maxf(reserve,float(nav.get("energy",100))-drain*delta)
 		if nav.energy<=reserve:nav.boost_depleted=true;nav.boosting=false
 	var normal_maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)
-	if nav.get("combat_active",false):normal_maximum=minf(normal_maximum,float(FrontierSpaceCombat.config().combat_speed))
+	if nav.get("combat_active",false):normal_maximum=minf(normal_maximum,FrontierVesselSkills.combat_speed(world))
+	var skill_movement:=FrontierSpaceSkills.movement(world)
+	normal_maximum*=skill_movement.x
 	var maximum: float=normal_maximum*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
 	if precision:maximum=minf(maximum,float(handling.precision_speed))
 	if float(nav.get("hull",100))<=0:maximum=0
 	var previous_speed: float=float(nav.speed)
 	var acceleration: float=float(handling.precision_acceleration) if precision else float(cfg.acceleration)*float(handling.acceleration_factor)
+	acceleration*=skill_movement.x
 	var deceleration: float=float(cfg.acceleration)*float(handling.braking_factor)
 	if braking or maximum<=0:
 		nav.speed=move_toward(previous_speed,0,deceleration*delta)
@@ -298,6 +301,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		nav.speed=clampf(previous_speed+throttle*acceleration*delta,0,maximum)
 	var speed_ratio:=clampf(absf(float(nav.speed))/maxf(normal_maximum,1),0,1)
 	var turn_rate:=float(cfg.get("turn_speed",1.0))*lerpf(float(handling.slow_turn_multiplier),float(handling.fast_turn_multiplier),speed_ratio)
+	turn_rate*=skill_movement.y
 	var frame:=orientation(nav)
 	frame=frame*Basis(Vector3.UP,-float(controls[1])*turn_rate*delta)
 	frame=frame*Basis(Vector3.RIGHT,float(controls[2])*turn_rate*delta)

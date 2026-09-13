@@ -71,7 +71,7 @@ static func recalled(world: Dictionary,actor: String) -> void:
 	emit(r,"recover",int(ship.navigation.system),point(ship.navigation.position),point(ship.navigation.position),"shuttle:"+actor)
 static func ship_state(world: Dictionary,id: String) -> Dictionary:
 	var r:=record(world)
-	if not r.ships.has(id):r.ships[id]={"shield":float(config().finch_shield if id!="crew" else config().shield),"heat":0.0,"overheated":false,"cooldown":0.0,"hit_age":100.0}
+	if not r.ships.has(id):r.ships[id]={"shield":FrontierVesselSkills.shield_max(world,id),"heat":0.0,"overheated":false,"cooldown":0.0,"hit_age":100.0}
 	var local:=local_world(world,id);local.crew.navigation.combat_fitted=true
 	commit(world,local,id)
 	return r.ships[id]
@@ -104,13 +104,15 @@ static func begin(world: Dictionary,id: String,variant: String) -> bool:
 	var right:=heading.cross(Vector3.UP).normalized()
 	if right.length_squared()<.5:right=Vector3.RIGHT
 	var enemies: Array=[]
-	var kinds: Array=config().formation if id=="crew" else ["raider"]
+	var battle_tier:=tier(world,int(nav.system))
+	var kinds: Array=config().get("formations",{}).get("5" if battle_tier>=5 else "3" if battle_tier>=3 else "2",config().formation) if id=="crew" else ["raider"]
 	for i in kinds.size():
-		var p: Vector3=origin+heading*(270.0+i*55)+right*[-105.0,95.0,175.0][i]+Vector3.UP*(50.0+i*12)
+		var p: Vector3=origin+heading*(270.0+i*55)+right*((float(i)-float(kinds.size()-1)*.5)*130)+Vector3.UP*(50.0+i*12)
 		if not clear_position(world,int(nav.system),p,100):return false
-		var cfg: Dictionary=config().enemy[kinds[i]]
-		enemies.append({"id":str(r.serial)+":"+str(i),"kind":kinds[i],"position":arr(p),"direction":arr(-heading),"hull":float(cfg.hull),"shield":float(cfg.shield),"cooldown":1.0+i,"windup":0.0,"aim":arr(origin),"age":float(i)*2,"hit_age":100.0})
-	nav.mode="idle";nav.manual=true;nav.speed=minf(float(nav.speed),float(config().combat_speed));nav.combat_active=true;nav.erase("freight_anchor")
+		var cfg: Dictionary=config().enemy[kinds[i]].duplicate()
+		var strength:=float(config().get("tier_health",{}).get(str(battle_tier),1.0));cfg.hull*=strength;cfg.shield*=strength
+		enemies.append({"id":str(r.serial)+":"+str(i),"kind":kinds[i],"position":arr(p),"direction":arr(-heading),"hull":float(cfg.hull),"shield":float(cfg.shield),"maximum_hull":float(cfg.hull),"maximum_shield":float(cfg.shield),"cooldown":1.0+i,"windup":0.0,"aim":arr(origin),"age":float(i)*2,"hit_age":100.0})
+	nav.mode="idle";nav.manual=true;nav.speed=minf(float(nav.speed),FrontierVesselSkills.combat_speed(local));nav.combat_active=true;nav.erase("freight_anchor")
 	r.encounter={"id":"pirate:"+str(r.serial),"variant":variant,"carrier":id,"system":int(nav.system),"origin":arr(origin),"heading":arr(heading),"target":int(nav.target),"phase":"warning","warning":float(config().warning_seconds),"elapsed":0.0,"escape":0.0,"resume":0.0,"recovery":0.0,"salvage":0.0,"salvage_id":"","enemies":enemies,"projectiles":[]}
 	ship_state(world,id);commit(world,local,id)
 	emit(r,"warning",int(nav.system),origin,origin,id)
@@ -195,10 +197,16 @@ static func fire(world: Dictionary,actor: String,aim: Vector3) -> bool:
 	emit(r,"shot",int(nav.system),origin,origin+ray*reach,id)
 	if not selected.is_empty():
 		damage_enemy(world,selected,float(config().fire_damage),origin,origin+ray*reach)
+		if FrontierSpaceStation.hull(world.get("vessel",{})).get("passive")=="tracking":
+			var passive:=FrontierVesselSkills.passive(world.get("vessel",{}));var marked:bool=float(selected.get("mark_left",0))>0
+			selected.mark_multiplier=maxf(float(selected.get("mark_multiplier",1)),float(passive.damage_multiplier)) if marked else float(passive.damage_multiplier)
+			selected.mark_left=maxf(float(selected.get("mark_left",0)),float(passive.marked_seconds))
 	return true
-static func damage_enemy(world: Dictionary,enemy: Dictionary,amount: float,source: Vector3,at: Vector3) -> void:
-	if float(enemy.hull)<=0:return
+static func damage_enemy(world: Dictionary,enemy: Dictionary,amount: float,source: Vector3,at: Vector3,shield_only: bool=false) -> void:
+	if float(enemy.hull)<=0 or amount<=0:return
 	var r:=record(world);var e: Dictionary=r.encounter
+	if float(enemy.get("mark_left",0))>0:amount*=float(enemy.get("mark_multiplier",1.0))
+	if shield_only:amount=minf(amount,float(enemy.shield))
 	var absorbed:=minf(float(enemy.shield),amount)
 	enemy.shield-=absorbed;enemy.hull=maxf(0,enemy.hull-(amount-absorbed));enemy.hit_age=0.0
 	emit(r,"break" if absorbed>0 and enemy.shield<=0 else "impact",int(e.system),source,at,enemy.id)
@@ -207,28 +215,7 @@ static func damage_enemy(world: Dictionary,enemy: Dictionary,amount: float,sourc
 		while r.wrecks.size()>int(config().maximum_wrecks):r.wrecks.pop_front()
 		emit(r,"destroy",int(e.system),point(enemy.position),point(enemy.position),enemy.id)
 static func launch_missile(world: Dictionary,actor: String,aim: Vector3) -> bool:
-	var r:=record(world);var e: Dictionary=r.get("encounter",{})
-	if not same_space(world,actor,e) or e.phase not in ["warning","combat"] or float(e.resume)>0:return false
-	if carrier(world,actor)!="crew" or actor!=world.crew.pilot_id or world.crew.navigation.mode!="idle":return false
-	var stats:=ship_state(world,"crew");var cfg: Dictionary=config().missile
-	if float(stats.get("missile_cooldown",0))>0 or e.get("projectiles",[]).size()+int(cfg.salvo_count)>int(config().presentation.projectile_limit):return false
-	var nav: Dictionary=world.crew.navigation;var heading:=point(nav.direction).normalized()
-	if not aim.is_finite() or aim.dot(heading)<float(config().aim_dot):return false
-	var frame:=FrontierCrewNavigation.orientation(nav);var origin:=point(nav.position)+frame*point(cfg.muzzle)
-	var camera:=point(nav.position)+frame*point(config().presentation.camera)
-	var selected:=missile_target(e,camera,aim)
-	if selected.is_empty():return false
-	var target:=point(selected.position);var offset:=target-origin
-	if blocked_distance(world,int(e.system),origin,offset.normalized(),offset.length())<offset.length()-float(config().enemy[selected.kind].radius):return false
-	stats.missile_cooldown=float(cfg.cooldown)
-	for i in int(cfg.salvo_count):
-		var side: float=-1.0 if i%2==0 else 1.0
-		var muzzle:=point(cfg.muzzle);muzzle.x=absf(muzzle.x)*side
-		var source:=point(nav.position)+frame*muzzle
-		var ray: Vector3=(heading+frame.x*side*float(cfg.fan_side)+frame.y*(float(cfg.fan_up)+i*.12)).normalized()
-		emit(r,"missile_launch",int(e.system),source,target,"crew")
-		e.projectiles.append({"id":str(r.event_serial),"owner":"crew","side":"crew","kind":"missile","target_id":str(selected.id),"position":arr(source),"velocity":arr(ray*float(cfg.initial_speed)),"life":float(cfg.life),"age":0.0,"damage":float(cfg.damage),"radius":float(cfg.radius)})
-	return true
+	return FrontierSpaceSkills.activate(world,actor,0,aim)
 static func missile_target(e: Dictionary,origin: Vector3,aim: Vector3) -> Dictionary:
 	var best:=float(config().missile.lock_dot);var target: Dictionary={}
 	for enemy in e.get("enemies",[]):
@@ -240,7 +227,9 @@ static func missile_target(e: Dictionary,origin: Vector3,aim: Vector3) -> Dictio
 
 static func damage_ship(world: Dictionary,id: String,amount: float,source: Vector3=Vector3.INF) -> void:
 	var local:=local_world(world,id);var stats:=ship_state(world,id);var nav: Dictionary=local.crew.navigation
+	if id=="crew":amount=FrontierSpaceSkills.absorb(world,amount,source)
 	var absorbed:=minf(float(stats.shield),amount);stats.shield-=absorbed;stats.hit_age=0.0
+	if id=="crew" and absorbed>0 and stats.shield<=0:FrontierSpaceSkills.on_break(world)
 	nav.hull=maxf(0,float(nav.get("hull",100))-(amount-absorbed));nav.damage_cooldown=8.0
 	emit(record(world),"break" if absorbed>0 and stats.shield<=0 else "impact",int(nav.system),source if source.is_finite() else point(nav.position)+Vector3.UP,point(nav.position),id)
 	commit(world,local,id)
@@ -257,7 +246,8 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		stats.missile_cooldown=maxf(0,float(stats.get("missile_cooldown",0))-delta)
 		stats.heat=maxf(0,stats.heat-float(cfg.heat_cooling)*delta)
 		if stats.heat<=.2:stats.overheated=false
-		if stats.hit_age>=float(cfg.shield_delay):stats.shield=minf(float(cfg.shield if id=="crew" else cfg.finch_shield),stats.shield+float(cfg.shield_rate)*delta)
+		if stats.hit_age>=float(cfg.shield_delay):stats.shield=minf(FrontierVesselSkills.shield_max(world,id),stats.shield+float(cfg.shield_rate)*delta)
+	FrontierSpaceSkills.tick_ship(world,delta)
 	var changed:=false
 	for id in pilots:
 		var local:=local_world(world,id);var nav: Dictionary=local.crew.navigation
@@ -323,7 +313,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 	else:e.elapsed+=delta
 	if e.phase=="recovering":
 		e.recovery+=delta;nav.position=arr(point(nav.position).move_toward(point(e.recovery_point),250*delta));nav.speed=0.0
-		if e.recovery>=float(cfg.recovery_seconds):nav.hull=float(cfg.recovery_hull);ship_state(world,e.carrier).shield=float(cfg.shield if e.carrier=="crew" else cfg.finch_shield)*.5;finish(world,"recovered");changed=true
+		if e.recovery>=float(cfg.recovery_seconds):nav.hull=float(cfg.recovery_hull);ship_state(world,e.carrier).shield=FrontierVesselSkills.shield_max(world,e.carrier)*.5;finish(world,"recovered");changed=true
 		commit(world,local,e.carrier);return changed
 	if float(nav.get("hull",100))<=0:
 		e.phase="recovering";e.projectiles=[];nav.combat_recovery=true;nav.speed=0.0
@@ -339,6 +329,8 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 			var wreck_count: int=r.wrecks.size()
 			if float(buttons[4])>.5:fire(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
 			if buttons.size()>=7 and float(buttons[6])>.5:launch_missile(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
+			for skill_slot in [1,2]:
+				if buttons.size()>9+skill_slot and float(buttons[9+skill_slot])>.5:FrontierSpaceSkills.activate(world,pilots[id].actor,skill_slot,member_input.get("aim",Vector3.FORWARD))
 			if r.wrecks.size()!=wreck_count:changed=true
 	if not e.has("projectiles"):e.projectiles=[]
 	var living:=0;var pos:=point(nav.position)
@@ -392,7 +384,7 @@ static func complete_operation(world: Dictionary,actor: String,kind: String,wrec
 		var cargo: Dictionary=local.crew.get("cargo",{}).duplicate(true)
 		for resource in wreck.loot:cargo[resource]=int(cargo.get(resource,0))+int(wreck.loot[resource])
 		var counted:=cargo.duplicate();counted.stone=int(local.crew.get("rock",0))
-		if FrontierItemInventory.used(counted,local.crew.get("cargo_equipment",{}).size())>int(local.crew.get("cargo_slots",FrontierItemInventory.config().warehouse_slots)):return "화물창 공간이 부족합니다. 포드는 현장에 남습니다."
+		if FrontierItemInventory.used(counted,local.crew.get("cargo_equipment",{}).size())>(int(FrontierShuttles.config().cargo_slots) if id!="crew" else FrontierVesselSkills.cargo_capacity(world.get("vessel",{}))):return "화물창 공간이 부족합니다. 포드는 현장에 남습니다."
 		local.crew.cargo=cargo;commit(world,local,id);r.wrecks.remove_at(i);emit(r,"salvage",int(nav.system),point(nav.position),point(wreck.position),id);return ""
 	return "이미 회수했거나 다른 포드입니다."
 static func valid(r: Variant) -> bool:
@@ -401,7 +393,7 @@ static func valid(r: Variant) -> bool:
 		if not FrontierUniverse._finite(r.get(key),0,9007199254740000):return false
 	if not r.get("ships") is Dictionary or r.ships.size()>7 or not r.get("flights") is Dictionary or r.flights.size()>7:return false
 	for s in r.ships.values():
-		if not s is Dictionary:return false
+		if not s is Dictionary or not FrontierSpaceSkills.valid_ship(s):return false
 		for key in ["shield","heat","cooldown","hit_age"]:
 			if not FrontierUniverse._finite(s.get(key),0,1e12):return false
 		if not s.get("overheated") is bool or not s.get("operation",{}) is Dictionary or not s.get("operation_error","") is String:return false
@@ -422,10 +414,12 @@ static func valid(r: Variant) -> bool:
 		for key in ["warning","elapsed","escape","resume","recovery","salvage"]:
 			if not FrontierUniverse._finite(e.get(key),0,1e12):return false
 		if e.phase=="recovering" and not FrontierUniverse._vector3_array(e.get("recovery_point")):return false
-		if not e.get("enemies") is Array or e.enemies.size()>3:return false
+		if not e.get("enemies") is Array or e.enemies.size()>int(FrontierVesselSkills.config().maximum_enemies) or not FrontierSpaceSkills.valid_encounter(e):return false
 		for enemy in e.enemies:
 			if not enemy is Dictionary or not enemy.get("id") is String or not config().enemy.has(enemy.get("kind")):return false
 			if enemy.has("up") and not FrontierCrewNavigation.valid_up(enemy.up):return false
+			for key in ["maximum_hull","maximum_shield"]:
+				if enemy.has(key) and not FrontierUniverse._finite(enemy[key],0,1e12):return false
 			for key in ["position","direction","aim"]:
 				if not FrontierUniverse._vector3_array(enemy.get(key)):return false
 			for key in ["hull","shield","cooldown","windup","age","hit_age"]:

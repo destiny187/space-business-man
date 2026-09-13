@@ -52,7 +52,7 @@ static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 	enemy.maneuver_age+=dt
 	var age:=float(enemy.maneuver_age);var duration:=float(enemy.maneuver_duration)
 	var side:=float(enemy.side);var speed:=FrontierSpaceCombat.point(enemy.velocity).length()
-	var desired:=target+heading*float(nav.speed)*float(cfg.aim_lead_seconds)
+	var desired:=FrontierSpaceSkills.decoy_target(world,position,target+heading*float(nav.speed)*float(cfg.aim_lead_seconds))
 	var requested_speed:=float(def.speed)
 	match str(enemy.maneuver):
 		"approach":
@@ -93,6 +93,7 @@ static func step(world: Dictionary,enemy: Dictionary,delta: float) -> void:
 		# Steer off the hull before the pass; never push/teleport a craft out of a safety sphere.
 		var away: Vector3=-lateral.normalized() if lateral.length()>1 else frame.x*side
 		desired_direction=(facing+away*(1.0-lateral.length()/clearance)*2).normalized()
+	if float(enemy.get("slow_left",0))>0:requested_speed*=clampf(float(enemy.get("slow_factor",1)),.25,1.0)
 	var angle:=facing.angle_to(desired_direction)
 	requested_speed*=lerpf(1.0,float(cfg.minimum_speed_factor),clampf(angle/(PI*.5),0,1))
 	speed=move_toward(speed,requested_speed,float(def.acceleration)*dt)
@@ -144,6 +145,9 @@ static func projectiles(world: Dictionary,delta: float) -> void:
 		var reach:=FrontierSpaceCombat.blocked_distance(world,int(e.system),start,ray,distance)
 		var hit: Dictionary={};var hit_distance:=reach
 		var targets: Array=e.enemies if friendly else [{"id":e.carrier,"position":nav.position,"hull":nav.get("hull",100),"radius":13.0 if e.carrier!="crew" else 22.0}]
+		if not friendly:
+			for device in e.get("deployables",[]):
+				if device.kind=="decoy":targets.append({"id":str(device.id),"position":device.position,"hull":1.0,"radius":6.0,"decoy":true})
 		for candidate in targets:
 			if float(candidate.hull)<=0:continue
 			var radius:=float(bolt.radius)+float(FrontierSpaceCombat.config().enemy[candidate.kind].radius if friendly else candidate.radius)
@@ -156,6 +160,10 @@ static func projectiles(world: Dictionary,delta: float) -> void:
 		var at:=start+ray*hit_distance
 		if not hit.is_empty():
 			if friendly:FrontierSpaceCombat.damage_enemy(world,hit,float(bolt.damage),start,at)
+			elif hit.get("decoy",false):
+				for device in e.get("deployables",[]).duplicate():
+					if device.id==hit.id:e.deployables.erase(device)
+				FrontierSpaceCombat.emit(r,"missile_blast",int(e.system),start,at,str(hit.id))
 			else:FrontierSpaceCombat.damage_ship(world,e.carrier,float(bolt.damage),start)
 		if not hit.is_empty() or bolt.life<=0 or reach<distance:
 			if missile:FrontierSpaceCombat.emit(r,"missile_blast",int(e.system),start,at,str(bolt.id))

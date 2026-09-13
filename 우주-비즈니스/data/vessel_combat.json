@@ -1,0 +1,393 @@
+{
+  "version": 1,
+  "maximum_upgrade": 4,
+  "starter_skills": [
+    "vector_burst",
+    "forward_barrier"
+  ],
+  "default_slots": [
+    "vector_burst",
+    "forward_barrier"
+  ],
+  "upgrade_costs": [
+    1800,
+    4200,
+    9000,
+    16000
+  ],
+  "tier_cost_factor": {
+    "1": 1,
+    "3": 2,
+    "5": 4
+  },
+  "maximum_deployables": 8,
+  "maximum_enemies": 5,
+  "passives": {
+    "tracking": {
+      "name": "추적 보조",
+      "description": "기본 공격으로 표시한 적에게 후속 공격 피해 증가",
+      "marked_seconds": 5,
+      "damage_multiplier": 1.18
+    },
+    "cooling": {
+      "name": "기동 냉각",
+      "description": "부스트 유지 후 종료하면 잠시 기본 무장 방열 증가",
+      "boost_seconds": 1.5,
+      "duration": 3,
+      "cooldown": 12,
+      "multiplier": 2
+    },
+    "bulwark": {
+      "name": "비상 차폐",
+      "description": "실드 파괴 시 잠시 받는 피해 감소",
+      "duration": 3,
+      "cooldown": 28,
+      "damage_multiplier": 0.5
+    }
+  },
+  "skills": {
+    "seeker_salvo": {
+      "name": "다중 유도탄",
+      "kind": "missile",
+      "tier": 1,
+      "price": 8500,
+      "cooldown": 7,
+      "description": "전방의 여러 표적에 곡선 유도탄을 분산 발사합니다.",
+      "icon": "res://assets/ui/flight_skills/seeker_salvo.svg",
+      "targets": [
+        2,
+        3,
+        3,
+        4,
+        4
+      ],
+      "salvo": [
+        1,
+        1,
+        2,
+        2,
+        3
+      ],
+      "damage": 26,
+      "range": 1150,
+      "lock_dot": 0.84
+    },
+    "ion_lance": {
+      "name": "이온 관통포",
+      "kind": "lance",
+      "tier": 1,
+      "price": 9000,
+      "cooldown": 7,
+      "description": "짧게 충전한 뒤 일직선의 적을 관통합니다.",
+      "icon": "res://assets/ui/flight_skills/ion_lance.svg",
+      "charge": 0.55,
+      "damage": [
+        70,
+        78,
+        86,
+        94,
+        102
+      ],
+      "targets": [
+        1,
+        1,
+        2,
+        2,
+        3
+      ],
+      "range": 1400,
+      "width": 12
+    },
+    "repulsor_pulse": {
+      "name": "방어 EMP",
+      "kind": "pulse",
+      "tier": 1,
+      "price": 9000,
+      "cooldown": 13,
+      "description": "가까이 붙은 적에게 피해를 주고 추진을 잠시 약화합니다.",
+      "icon": "res://assets/ui/flight_skills/repulsor_pulse.svg",
+      "damage": [
+        32,
+        38,
+        44,
+        50,
+        56
+      ],
+      "range": [
+        240,
+        265,
+        290,
+        315,
+        340
+      ],
+      "duration": 3,
+      "slow": 0.55
+    },
+    "survey_echo": {
+      "name": "공명 탐지파",
+      "kind": "mark",
+      "tier": 3,
+      "price": 26000,
+      "cooldown": 12,
+      "description": "전방 적을 표시하고 후속 공격의 피해를 높입니다.",
+      "icon": "res://assets/ui/flight_skills/survey_echo.svg",
+      "damage": [
+        24,
+        28,
+        32,
+        36,
+        40
+      ],
+      "range": 1000,
+      "lock_dot": 0.45,
+      "duration": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "multiplier": 1.3
+    },
+    "vector_spears": {
+      "name": "벡터 산탄포",
+      "kind": "spears",
+      "tier": 3,
+      "price": 28000,
+      "cooldown": 8,
+      "description": "전방으로 빠른 이온탄을 펼쳐 접근하는 적을 견제합니다.",
+      "icon": "res://assets/ui/flight_skills/vector_spears.svg",
+      "damage": [
+        23,
+        26,
+        29,
+        32,
+        35
+      ],
+      "salvo": [
+        3,
+        3,
+        5,
+        5,
+        7
+      ],
+      "range": 1350,
+      "speed": 760,
+      "spread": 0.055
+    },
+    "tractor_snare": {
+      "name": "견인 구속기",
+      "kind": "snare",
+      "tier": 3,
+      "price": 27000,
+      "cooldown": 14,
+      "description": "표적을 연결해 잠시 감속시키고 실드에 지속 피해를 줍니다.",
+      "icon": "res://assets/ui/flight_skills/tractor_snare.svg",
+      "damage": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ],
+      "duration": [
+        3,
+        3.5,
+        4,
+        4.5,
+        5
+      ],
+      "range": 800,
+      "lock_dot": 0.9,
+      "slow": 0.4
+    },
+    "constellation": {
+      "name": "성좌 유도탄",
+      "kind": "missile",
+      "tier": 5,
+      "price": 82000,
+      "cooldown": 10,
+      "description": "넓게 확보한 편대에 고위력 유도탄을 분산 발사합니다.",
+      "icon": "res://assets/ui/flight_skills/constellation.svg",
+      "targets": [
+        2,
+        3,
+        3,
+        4,
+        4
+      ],
+      "salvo": [
+        1,
+        1,
+        2,
+        2,
+        3
+      ],
+      "damage": 44,
+      "range": 1500,
+      "lock_dot": 0.7
+    },
+    "phase_lance": {
+      "name": "위상 관통포",
+      "kind": "lance",
+      "tier": 5,
+      "price": 88000,
+      "cooldown": 12,
+      "description": "긴 충전 뒤 넓은 사선을 관통하는 고출력 일격입니다.",
+      "icon": "res://assets/ui/flight_skills/phase_lance.svg",
+      "charge": 1.15,
+      "damage": [
+        155,
+        172,
+        189,
+        206,
+        223
+      ],
+      "targets": [
+        2,
+        2,
+        3,
+        3,
+        4
+      ],
+      "range": 1800,
+      "width": 20
+    },
+    "bastion_wave": {
+      "name": "성채 충격파",
+      "kind": "pulse",
+      "tier": 5,
+      "price": 85000,
+      "cooldown": 18,
+      "description": "주변 적을 감속시키고 자신의 실드를 일부 복구합니다.",
+      "icon": "res://assets/ui/flight_skills/bastion_wave.svg",
+      "damage": [
+        68,
+        79,
+        90,
+        101,
+        112
+      ],
+      "range": [
+        300,
+        325,
+        350,
+        375,
+        400
+      ],
+      "duration": 3.5,
+      "slow": 0.5,
+      "shield_restore": [
+        25,
+        30,
+        35,
+        40,
+        45
+      ]
+    },
+    "vector_burst": {
+      "name": "과출력 추진",
+      "kind": "boost",
+      "tier": 1,
+      "price": 6500,
+      "cooldown": 16,
+      "description": "잠시 가속과 선회 반응을 높입니다.",
+      "icon": "res://assets/ui/flight_skills/vector_burst.svg",
+      "duration": [
+        2,
+        2.3,
+        2.6,
+        2.9,
+        3.2
+      ],
+      "speed_multiplier": 1.4,
+      "turn_multiplier": 1.45,
+      "heat": 0.18
+    },
+    "forward_barrier": {
+      "name": "전방 방벽",
+      "kind": "barrier",
+      "tier": 1,
+      "price": 6500,
+      "cooldown": 17,
+      "description": "기수 쪽에서 들어오는 공격을 잠시 막습니다.",
+      "icon": "res://assets/ui/flight_skills/forward_barrier.svg",
+      "duration": [
+        2.5,
+        2.8,
+        3.1,
+        3.4,
+        3.7
+      ],
+      "dot": 0.3,
+      "capacity": [
+        70,
+        85,
+        100,
+        115,
+        130
+      ]
+    },
+    "decoy_beacon": {
+      "name": "미끼 비콘",
+      "kind": "decoy",
+      "tier": 3,
+      "price": 23000,
+      "cooldown": 18,
+      "description": "비콘을 투하해 적의 다음 조준을 유도합니다.",
+      "icon": "res://assets/ui/flight_skills/decoy_beacon.svg",
+      "duration": [
+        3,
+        3.5,
+        4,
+        4.5,
+        5
+      ],
+      "range": 850,
+      "model": "res://assets/models/ships/combat_decoy.glb"
+    },
+    "wake_mines": {
+      "name": "후방 기뢰",
+      "kind": "mine",
+      "tier": 3,
+      "price": 24000,
+      "cooldown": 14,
+      "description": "지나간 경로에 기뢰를 남겨 추격하는 적을 견제합니다.",
+      "icon": "res://assets/ui/flight_skills/wake_mines.svg",
+      "duration": 12,
+      "damage": [
+        85,
+        100,
+        115,
+        130,
+        145
+      ],
+      "range": 85,
+      "salvo": [
+        1,
+        1,
+        2,
+        2,
+        3
+      ],
+      "arm_seconds": 0.8,
+      "model": "res://assets/models/ships/combat_mine.glb"
+    },
+    "vent_cycle": {
+      "name": "긴급 방열",
+      "kind": "vent",
+      "tier": 1,
+      "price": 7000,
+      "cooldown": 20,
+      "description": "축적한 무장 열을 즉시 배출하고 과열 잠금을 해제합니다.",
+      "icon": "res://assets/ui/flight_skills/vent_cycle.svg",
+      "cooling": [
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        1.0
+      ]
+    }
+  }
+}

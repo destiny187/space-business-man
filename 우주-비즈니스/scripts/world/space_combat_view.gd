@@ -29,6 +29,8 @@ var radio: Dictionary={}
 var radio_left:=0.0
 var warned_encounters: Dictionary={}
 var locked_target: String=""
+var locked_targets: Array=[]
+var skills: FrontierSpaceSkillView
 var missile_mount: Node3D
 var missile_parts: Array=[]
 var missile_flash:=0.0
@@ -47,6 +49,7 @@ func configure(owner_view: FrontierCrewFlightView) -> void:
 	key_light=DirectionalLight3D.new();key_light.light_cull_mask=COMBAT_LAYER;key_light.light_color=Color("e1edff");add_child(key_light)
 	rim_light=DirectionalLight3D.new();rim_light.light_cull_mask=COMBAT_LAYER;rim_light.light_color=Color("f9c18b");add_child(rim_light)
 	audio=FrontierAudio.new();add_child(audio)
+	skills=FrontierSpaceSkillView.new();add_child(skills);skills.configure(self)
 	for cue in FrontierSpaceCombat.config().audio.values():audio.stream(cue)
 	var layer:=CanvasLayer.new();add_child(layer)
 	hud=load("res://scripts/ui/space_combat_hud.gd").new();hud.presentation=self;layer.add_child(hud)
@@ -62,6 +65,7 @@ func repair_available() -> bool:
 	return not data().is_empty() and view.navigation.get("combat_fitted",false) and float(view.navigation.get("hull",100))<100 and not view.navigation.get("combat_active",false) and view.navigation.get("mode","")=="idle" and absf(float(view.navigation.speed))<=20
 func suspend() -> void:
 	blocked=true;selected_wreck="";radio={};radio_left=0.0;hide();hud.hide()
+	skills.clear()
 	for player in audio.get_children():
 		if player is AudioStreamPlayer or player is AudioStreamPlayer3D:player.stop()
 	last_serial=int(data().get("event_serial",0));fx.clear();key_light.light_energy=0;rim_light.light_energy=0;light_blend=0
@@ -77,7 +81,13 @@ func update(delta: float,paused: bool) -> void:
 	if radio_left<=0 or not relevant():radio={}
 	show();hud.visible=view.exterior and not data().is_empty()
 	visible_enemies=[];visible_wrecks=[];selected_wreck="";locked_target=""
-	if armed():locked_target=str(FrontierSpaceCombat.missile_target(encounter(),view.camera.global_position,-view.camera.global_basis.z).get("id",""))
+	locked_targets=[]
+	if armed():
+		var vessel: Dictionary=view.refits.vessel;var skill:=FrontierVesselSkills.signature_skill(vessel);var def:=FrontierVesselSkills.definition(skill)
+		if def.kind in ["missile","snare","mark"]:
+			var selected:=FrontierSpaceSkills.targets(encounter(),view.camera.global_position,-view.camera.global_basis.z,FrontierVesselSkills.value(vessel,skill,"range"),FrontierVesselSkills.value(vessel,skill,"lock_dot",.9),int(FrontierVesselSkills.value(vessel,skill,"targets",1)))
+			for enemy in selected:locked_targets.append(str(enemy.id))
+			if not locked_targets.is_empty():locked_target=locked_targets[0]
 	if relevant() and encounter().phase=="warning" and encounter().carrier==id() and not warned_encounters.has(encounter().id):
 		warned_encounters[encounter().id]=true
 		audio.play(FrontierSpaceCombat.config().audio.warning)
@@ -91,13 +101,14 @@ func update(delta: float,paused: bool) -> void:
 	if not data().is_empty() and view.refits.hull_id!="finch":
 		if not is_instance_valid(mount):
 			mount=preloaded.mount.instantiate();FrontierInkStyle.apply(mount,cache);view.ship.add_child(mount);mount.position=Vector3(0,3.1,3);mount.scale=Vector3.ONE*2
-			mount_parts=parts(mount)
+			mount.set_meta("vessel_attachment",true);mount_parts=parts(mount)
 		mount.visible=view.exterior
 		if not is_instance_valid(missile_mount):
 			missile_mount=preloaded.missile_mount.instantiate();FrontierInkStyle.apply(missile_mount,cache);view.ship.add_child(missile_mount)
 			missile_mount.position=FrontierSpaceCombat.point(FrontierSpaceCombat.config().missile.mount_position)
+			missile_mount.set_meta("vessel_attachment",true)
 			missile_mount.scale=Vector3.ONE*float(FrontierSpaceCombat.config().missile.mount_scale);missile_parts=parts(missile_mount)
-		missile_mount.visible=view.exterior
+		missile_mount.visible=view.exterior and FrontierVesselSkills.definition(FrontierVesselSkills.signature_skill(view.refits.vessel)).kind=="missile"
 		for part in missile_parts:
 			if str(part.node.name).begins_with("Anim_LaunchDoor_"):part.node.rotation.x=lerpf(part.node.rotation.x,-1.5 if missile_flash>0 else 0.0,1-exp(-delta*15))
 		for part in mount_parts:
@@ -155,6 +166,7 @@ func update(delta: float,paused: bool) -> void:
 		if int(event.serial)<=last_serial or int(event.system)!=view.current_system:continue
 		var source:=FrontierSpaceCombat.point(event.origin);var target:=FrontierSpaceCombat.point(event.target)
 		if source.distance_to(view.ship.position)>4500 and target.distance_to(view.ship.position)>4500:continue
+		if str(event.kind).begins_with("skill_"):skills.event(event)
 		if FrontierSpaceCombat.config().get("radio",{}).get("lines",{}).has(event.kind):receive_radio(event)
 		if event.kind=="missile_blast":
 			fx.missile_burst(target,source,int(event.serial));missile_blasts+=1
@@ -202,6 +214,7 @@ func update(delta: float,paused: bool) -> void:
 		for w in visible_wrecks:
 			if w.id==operation.id:fx.line(view.ship.position+Vector3.UP*4,FrontierSpaceCombat.point(w.position),Color("83d9c5"),.25,delta*1.2);break
 	fx.step(delta)
+	skills.update(delta)
 	hud.refresh_meters()
 	hud.queue_redraw()
 func receive_radio(event: Dictionary) -> void:
