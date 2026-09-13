@@ -12,11 +12,10 @@ static func profile(id: String) -> Dictionary:
 static func apply(info: Dictionary,id: String,scale_value: float) -> void:
  var data:=profile(id)
  if data.is_empty():return
- var limit:=float(data.natural_speed)*float(data.max_playback)*scale_value
- info.speed=minf(info.speed,limit)
+ # Gameplay owns top speed. The skeletal cycle follows actual distance, even
+ # above the authored reference rate; animation must not slow chase or escape.
  info.acceleration=float(data.acceleration)*scale_value
  info.turn_rate=float(data.turn_rate)
  if info.get("behavior","")=="charge":
-  info.charge_speed=minf(info.charge_speed,limit)
   info.charge_ramp=minf(.24,float(info.charge_distance)/float(info.charge_speed)*.20)
   info.active=float(info.charge_distance)/float(info.charge_speed)+float(info.charge_ramp)

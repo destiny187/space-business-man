@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS natural native home landing
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:305183","ordinal":305183,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:305183","combat_tier":4,"form_id":"biota_lobopod_siphons_25","home_point":"(37.4736, 2.031343, 20.76)","id":"surface:1:0:0","introduced":false,"layer":"surface","look_id":"biota_lobopod_siphons_25_p00_s03","point":"(37.4736, 2.031343, 20.76)","status":"active","terrestrial":true,"yaw":0.433539786195391}}
+PASS host terrain fixture
+PASS animation preserves fast gameplay chase and charge speeds biota_spindle_armor_25
+PASS real chase respects gameplay speed and acceleration biota_spindle_armor_25
+PASS 180-degree escape turns without instant reversal biota_spindle_armor_25
+PASS animation preserves fast gameplay chase and charge speeds biota_lobopod_armor_26
+PASS real chase respects gameplay speed and acceleration biota_lobopod_armor_26
+PASS 180-degree escape turns without instant reversal biota_lobopod_armor_26
+PASS animation preserves fast gameplay chase and charge speeds bio_quill_amphora_01
+PASS real chase respects gameplay speed and acceleration bio_quill_amphora_01
+PASS 180-degree escape turns without instant reversal bio_quill_amphora_01
+PASS animation preserves fast gameplay chase and charge speeds biota_chain_armor_26
+PASS real chase respects gameplay speed and acceleration biota_chain_armor_26
+PASS 180-degree escape turns without instant reversal biota_chain_armor_26
+PASS animation preserves fast gameplay chase and charge speeds biota_ribbon_armor_26
+PASS real chase respects gameplay speed and acceleration biota_ribbon_armor_26
+PASS 180-degree escape turns without instant reversal biota_ribbon_armor_26
+PASS gameplay charge speed keeps actual swept hit and contact stop
+PASS ramped charge reaches previewed distance
+PASS new clocks and velocity survive JSON save/snapshot transport
+PASS resume cancels transient charge and interpolation history
+PASS reject negative saved speed
+CREATURE_FAST_MOVEMENT 22 FAILURES 0

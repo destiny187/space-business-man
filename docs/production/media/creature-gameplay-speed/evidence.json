@@ -1,0 +1,105 @@
+{
+  "renderer": "forward_plus",
+  "fps": 30,
+  "snapshot_hz": 10,
+  "rendered_species": 2,
+  "rendered_frames": 720,
+  "scope": "Same gameplay speed on both panels, sustained charge speed preview; actual host collision check recorded separately.",
+  "comparison": [
+    {
+      "species_id": "biota_spindle_armor_25",
+      "section": "chase_flee",
+      "requested_mps": 3.84,
+      "actual_display_mps": 3.84000778198242,
+      "new_clip_rate": 0.853335468190266,
+      "walk_only_rate": 3.95637165416371,
+      "clips": [
+        "sprint_loop"
+      ],
+      "max_planted_error_m": 1.00370129985095e-06
+    },
+    {
+      "species_id": "biota_spindle_armor_25",
+      "section": "charge_or_turn",
+      "requested_mps": 17.4,
+      "actual_display_mps": 17.400036948067772,
+      "new_clip_rate": 3.866676714895086,
+      "walk_only_rate": 17.92731079497892,
+      "clips": [
+        "sprint_charge_loop"
+      ],
+      "max_planted_error_m": 3.73719217350299e-07
+    },
+    {
+      "species_id": "bio_quill_amphora_01",
+      "section": "chase_flee",
+      "requested_mps": 4.025,
+      "actual_display_mps": 4.025001207987471,
+      "new_clip_rate": 2.8232919822872535,
+      "walk_only_rate": 10.19666972690162,
+      "clips": [
+        "sprint_loop"
+      ],
+      "max_planted_error_m": 4.33928363463565e-07
+    },
+    {
+      "species_id": "bio_quill_amphora_01",
+      "section": "charge_or_turn",
+      "requested_mps": 4.025,
+      "actual_display_mps": 4.02500152587891,
+      "new_clip_rate": 2.82329220526864,
+      "walk_only_rate": 10.1966705322266,
+      "clips": [
+        "sprint_loop"
+      ],
+      "max_planted_error_m": 1.16343619538384e-06
+    }
+  ],
+  "host_check": {
+    "charge_cap": 17.4,
+    "charge_contact_travel": 1.62164270877838,
+    "charge_max_mps": 16.9342041015625,
+    "checks": 22,
+    "failures": 0,
+    "health_after_charge": 58.72,
+    "movement": [
+      {
+        "max_acceleration": 7.12799661258653,
+        "max_actual_mps": 3.83998870849609,
+        "max_turn_per_tick": 0.25001402042029,
+        "species_id": "biota_spindle_armor_25",
+        "speed_cap": 3.84
+      },
+      {
+        "max_acceleration": 4.21034482758621,
+        "max_actual_mps": 5.05241394042969,
+        "max_turn_per_tick": 0.250004682563009,
+        "species_id": "biota_lobopod_armor_26",
+        "speed_cap": 5.632
+      },
+      {
+        "max_acceleration": 2.25821557013988,
+        "max_actual_mps": 2.70984649658203,
+        "max_turn_per_tick": 0.170020254054838,
+        "species_id": "bio_quill_amphora_01",
+        "speed_cap": 4.025
+      },
+      {
+        "max_acceleration": 5.28940668883707,
+        "max_actual_mps": 4.02500152587891,
+        "max_turn_per_tick": 0.250009989843782,
+        "species_id": "biota_chain_armor_26",
+        "speed_cap": 4.025
+      },
+      {
+        "max_acceleration": 9.60601519775391,
+        "max_actual_mps": 4.02500152587891,
+        "max_turn_per_tick": 0.250011068153067,
+        "species_id": "biota_ribbon_armor_26",
+        "speed_cap": 4.025
+      }
+    ]
+  },
+  "native_incident_checks": 65,
+  "native_incident_failures": 0
+}

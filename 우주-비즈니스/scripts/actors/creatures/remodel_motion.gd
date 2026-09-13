@@ -140,6 +140,8 @@ func advance(travel: float,delta: float) -> void:
 	elif gait=="run_loop" and local_speed<natural(profile)*1.18:gait="move_loop";planted.clear();released_feet.clear()
 	var data:=gait_data()
 	var previous_cycle:=floori(phase)
+	# Do not cap cadence at the authored reference rate: fast gameplay movement
+	# must advance the new gait faster as well, including escape and charge.
 	phase+=travel/maxf(.001,actor.base_scale)/(float(data.stride)/float(data.stance))
 	if driven and authored_limbs.is_empty() and not contacts_suspended and local_speed>.025 and previous_cycle!=floori(phase) and sound_left<=0:
 		footfalls.append(point);sound_left=float(config().footstep_seconds)

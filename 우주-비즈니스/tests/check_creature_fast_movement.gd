@@ -14,7 +14,9 @@ func run() -> void:
   world.crew.wildlife_encounters={};world.crew.combat={}
   var info:=FrontierWildlifeCombat.profile(row);var p:=Mobility.profile(id)
   var scale_value:=float(FrontierEcologyCatalog.look(id,row.look_id).scale)
-  check(not p.is_empty() and float(info.speed)<=float(p.natural_speed)*float(p.max_playback)*scale_value+.001,"authored speed cap "+id)
+  var requested: Dictionary={"speed":12.,"behavior":"charge","charge_speed":24.,"charge_distance":8.}
+  Mobility.apply(requested,id,scale_value)
+  check(not p.is_empty() and requested.speed==12. and requested.charge_speed==24.,"animation preserves fast gameplay chase and charge speeds "+id)
   var live:=FrontierWildlifeCombat.ensure(world.crew,body.id,row);live.target=actor_id;live.yaw=0
   FrontierWildlifeCombat.set_phase(live,"chase")
   var previous:=home;var max_speed:=0.;var max_accel:=0.;var before_speed:=0.;var travel:=0.
@@ -23,7 +25,7 @@ func run() -> void:
    var at:=FrontierCrewWorld.vector(live.position);var step:=Vector2(at.x-previous.x,at.z-previous.z).length()
    max_speed=maxf(max_speed,step/.05);max_accel=maxf(max_accel,(float(live.move_speed)-before_speed)/.05)
    before_speed=float(live.move_speed);travel+=step;previous=at
-  check(travel>.15 and max_speed<=float(info.speed)+.015 and max_accel<=float(info.acceleration)+.015,"real chase accelerates within stride cap "+id)
+  check(travel>.15 and max_speed<=float(info.speed)+.015 and max_accel<=float(info.acceleration)+.015,"real chase respects gameplay speed and acceleration "+id)
   FrontierWildlifeCombat.set_phase(live,"flee")
   var max_turn:=0.
   for frame in 30:
@@ -45,7 +47,7 @@ func run() -> void:
   var at:=FrontierCrewWorld.vector(live.position)
   max_charge_speed=maxf(max_charge_speed,Vector2(at.x-prior.x,at.z-prior.z).length()/.025);prior=at
   if member.vitals.health<100:break
- check(max_charge_speed<=float(info.charge_speed)+.03 and prior.distance_to(home)>.2 and member.vitals.health<100 and live.attack.blocked,"authored charge cap keeps actual swept hit and contact stop")
+ check(max_charge_speed<=float(info.charge_speed)+.03 and prior.distance_to(home)>.2 and member.vitals.health<100 and live.attack.blocked,"gameplay charge speed keeps actual swept hit and contact stop")
  check(absf(Attacks.charge_progress(info.active,info)-float(info.charge_distance))<.001,"ramped charge reaches previewed distance")
  live.motion_clock=2.;live.move_speed=1.
  var roundtrip: Dictionary=JSON.parse_string(JSON.stringify(world.crew))

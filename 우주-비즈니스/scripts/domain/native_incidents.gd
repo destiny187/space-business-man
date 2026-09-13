@@ -130,7 +130,6 @@ static func tick(world: Dictionary,row: Dictionary,present: Array,delta: float,f
  var acceleration:=speed*1.8
  if not mobility.is_empty():
   var scale_value:=float(FrontierEcologyCatalog.look(native.form_id,native.look_id).scale)*float(native.factor)
-  speed=minf(speed,float(mobility.natural_speed)*float(mobility.max_playback)*scale_value)
   acceleration=float(mobility.acceleration)*scale_value
  var remaining:=total-before if row.native_forward else before
  speed=minf(speed,sqrt(2.*acceleration*remaining))
