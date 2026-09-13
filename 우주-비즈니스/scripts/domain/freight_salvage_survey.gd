@@ -19,12 +19,13 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 	progress+=delta/FrontierFreightSalvage.seconds(local.manifest,target.id,stage)
 	scan.progress=minf(.99,progress);authority.scans[peer]=scan
 	if progress<1:return true
-	var draft: Dictionary=authority.world.duplicate(true)
-	if not draft.crew.has("freight_records"):draft.crew.freight_records={}
+	var draft: Dictionary=authority.world.duplicate()
+	draft.crew=authority.world.crew.duplicate()
+	draft.crew.freight_records=authority.world.crew.get("freight_records",{}).duplicate()
 	draft.crew.freight_records.erase(target.id)
 	draft.crew.freight_records[target.id]={"stage":stage+1,"carrier":"" if stage==0 else vessel,"at":float(local.crew.navigation.orbit_time)}
 	if stage+1==FrontierFreightSalvage.last_stage(target.id):
-		if not draft.has("business"):draft.business=FrontierExpeditionBusiness.create()
+		draft.business=draft.business.duplicate() if draft.has("business") else FrontierExpeditionBusiness.create()
 		draft.business.credits+=int(target.payment)
 	draft.crew.revision+=1
 	if not authority.save_world.call(draft):
@@ -40,5 +41,5 @@ static func vessels(world: Dictionary) -> Array:
 	var result: Array=[]
 	for observer in FrontierSpaceTraffic.observers(world):
 		var nav: Dictionary=world.crew.navigation if observer.id=="crew" else world.crew.shuttles[str(observer.id).trim_prefix("shuttle:")].navigation
-		observer.direction=nav.direction.duplicate();result.append(observer)
+		observer.direction=nav.direction.duplicate();observer.up=FrontierExpeditionBusiness.array(FrontierCrewNavigation.orientation(nav).y);result.append(observer)
 	return result

@@ -123,7 +123,7 @@ func update(delta: float,paused: bool) -> void:
 			if e.phase in ["escaped","victory","recovered"]:p+=heading*(float(e.elapsed)*float(cfg.speed)+float(e.elapsed)*float(e.elapsed)*30)
 			var row:=model(key,cfg.model,cfg.lod)
 			row.root.position=row.root.position.lerp(p,1-exp(-delta*14)) if row.get("placed",false) else p;row.placed=true
-			var facing:=FrontierSpaceCombatPilot.basis(heading)*Basis(Vector3.FORWARD,float(enemy.get("roll",0)))
+			var facing:=FrontierSpaceCombatPilot.orientation(enemy)
 			row.root.quaternion=row.root.quaternion.slerp(facing.get_rotation_quaternion(),1-exp(-delta*8))
 			row.near.visible=p.distance_to(view.camera.global_position)<1200;row.far.visible=not row.near.visible
 			animate(row,enemy,delta)

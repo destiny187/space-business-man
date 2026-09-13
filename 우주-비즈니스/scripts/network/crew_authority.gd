@@ -440,7 +440,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if jump_request<0 or jump_request>9007199254740000:return false
-	if flight_controls.size() not in [3,4,6,7]:return false
+	if flight_controls.size() not in [3,4,6,7,10]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if vehicle_controls.size() not in [0,4]:return false

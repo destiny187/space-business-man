@@ -2,7 +2,7 @@ class_name FrontierCrewNavigation
 extends RefCounted
 static func create(world: Dictionary) -> Dictionary:
 	var ordinal:=FrontierUniverse.ordinal_of(world.manifest,world.location)
-	var nav: Dictionary={"system":FrontierUniverse.system_index(world.manifest,ordinal),"target":FrontierUniverse.ordinal_of(world.manifest,world.get("navigation_target",world.location)),"position":world.flight_position.duplicate(),"direction":[0.0,0.0,-1.0],"speed":0.0,"mode":"idle","jump_left":0.0,"orbit_time":0.0}
+	var nav: Dictionary={"system":FrontierUniverse.system_index(world.manifest,ordinal),"target":FrontierUniverse.ordinal_of(world.manifest,world.get("navigation_target",world.location)),"position":world.flight_position.duplicate(),"direction":[0.0,0.0,-1.0],"up":[0.0,1.0,0.0],"speed":0.0,"mode":"idle","jump_left":0.0,"orbit_time":0.0}
 	if world.has("solar_opening"):
 		nav.solar_opening=world.solar_opening.duplicate(true);world.erase("solar_opening")
 		var pose:=FrontierSolarOpening.pose(nav.solar_opening,float(nav.solar_opening.elapsed))
@@ -14,6 +14,7 @@ static func validate(value: Variant) -> String:
 	for entry in [["system",249999],["target",999999]]:
 		if not FrontierUniverse._finite(value.get(entry[0]),0,entry[1]) or value[entry[0]]!=floorf(value[entry[0]]):return "공동 항로 주소 오류"
 	if not FrontierUniverse._vector3_array(value.get("position")) or not FrontierUniverse._vector3_array(value.get("direction")):return "공동 선체 위치 오류"
+	if value.has("up") and not valid_up(value.up):return "선체 회전축 오류"
 	if not FrontierUniverse._finite(value.get("orbit_time",0),0,1e12):return "궤도 시간 오류"
 	if value.has("traffic_patrols") and not FrontierSpacePatrol.valid_state(value.traffic_patrols):return "경비 편대 기록 오류"
 	if value.has("freight_anchor_source") and not value.freight_anchor_source is bool:return "부품 수령 기준 오류"
@@ -41,6 +42,7 @@ static func validate(value: Variant) -> String:
 				if not FrontierUniverse._vector3_array(route.get(key)):return "출발 항로 벡터 오류"
 			for key in ["departure_direction","initial_direction"]:
 				if not is_equal_approx(FrontierCrewWorld.vector(route[key]).length(),1.0):return "출발 방향 길이 오류"
+		if route.has("initial_up") and not valid_up(route.initial_up):return "출발 회전축 오류"
 		if not FrontierUniverse._finite(route.get("duration"),1,120) or not FrontierUniverse._finite(route.get("progress"),0,1):return "성간 항로 진행 오류"
 		if route.has("alignment_seconds") and not FrontierUniverse._finite(route.alignment_seconds,.01,float(route.duration)-.01):return "성간 정렬 시간 오류"
 		if route.has("revisit") and not route.revisit is bool:return "항성계 재방문 기록 오류"
@@ -99,6 +101,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			nav.transit.departure_origin=nav.position.duplicate()
 			nav.transit.departure_direction=FrontierExpeditionBusiness.array(direction)
 			nav.transit.initial_direction=FrontierExpeditionBusiness.array(initial)
+			nav.transit.initial_up=FrontierExpeditionBusiness.array(orientation(nav).y)
 			nav.transit.alignment_seconds=alignment_seconds(initial,direction)
 			nav.jump_left=float(nav.jump_left)*(1.0-float(FrontierUniverse.presentation().stellar_transition.departure_start))+float(nav.transit.alignment_seconds)
 			nav.transit.duration=nav.jump_left
@@ -192,6 +195,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 			nav.speed=move_toward(float(nav.speed),minf(float(cfg.cruise_speed)*propulsion,maxf(12,separation-float(cfg.arrival_clearance))),float(cfg.acceleration)*propulsion*delta)
 			position+=direction*minf(float(nav.speed)*delta,maxf(0,separation-float(cfg.arrival_clearance)))
 	nav.position=[position.x,position.y,position.z];nav.direction=[direction.x,direction.y,direction.z]
+	nav.up=FrontierExpeditionBusiness.array(orientation({"direction":nav.direction}).y)
 	world.flight_position=nav.position.duplicate()
 	if nav.mode!="idle":world.location=FrontierUniverse.body_id(world.manifest,FrontierUniverse.first_ordinal(world.manifest,int(nav.system)))
 	return nav.mode=="idle"
@@ -233,25 +237,37 @@ static func phase(nav: Dictionary) -> String:
 	if p<.90:return "성간 항해 · 감속"
 	return "성간 항해 · 항성계 진입"
 
-## Controls are transient network input, never persisted as held keys.
+## Direction and transported up preserve roll through poles and save/reconnect.
+static func valid_up(value: Variant) -> bool:
+	return FrontierUniverse._vector3_array(value) and is_equal_approx(FrontierCrewWorld.vector(value).length(),1.0)
+static func orientation(nav: Dictionary) -> Basis:
+	var direction:=FrontierCrewWorld.vector(nav.get("direction",[0,0,-1])).normalized()
+	if direction.length_squared()<.5:direction=Vector3.FORWARD
+	var up:=FrontierCrewWorld.vector(nav.get("up",[0,1,0])).normalized()
+	if up.length_squared()<.5 or absf(direction.dot(up))>.999:
+		up=Vector3.RIGHT if absf(direction.dot(Vector3.UP))>.98 else Vector3.UP
+	return Basis.looking_at(direction,up)
+static func stopped_input() -> Array:
+	return [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0]
+
+## Slots 0..6 remain compatible. New slots: roll, brake, precision maneuvering.
+## Held keys are transient; speed and orientation alone persist.
 static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if FrontierSolarOpening.active(world.crew.navigation):return
 	var nav: Dictionary=world.crew.navigation
 	if nav.mode!="idle" or FrontierCrewSurface.landed(world) or nav.get("combat_recovery",false):return
-	if float(controls[0])==0 and float(controls[1])==0 and float(controls[2])==0 and not nav.get("manual",false):return
+	var roll_input:=float(controls[7]) if controls.size()>7 else 0.0
+	var braking:=controls.size()>8 and float(controls[8])>.5
+	var precision:=controls.size()>9 and float(controls[9])>.5
+	var throttle:=float(controls[0])
+	var boost_requested: bool=controls.size()>3 and float(controls[3])>.5 and throttle>=0 and not braking and not precision
+	if throttle==0 and float(controls[1])==0 and float(controls[2])==0 and roll_input==0 and not boost_requested and not braking and not precision and not nav.get("manual",false):return
 	for member in world.crew.members.values():
 		if member.get("connected",true) and not member.aboard:return
-	if float(controls[0])!=0:nav.erase("station_docked");nav.erase("freight_anchor")
+	if throttle!=0 or boost_requested:nav.erase("station_docked");nav.erase("freight_anchor")
 	nav.manual=true
 	var cfg: Dictionary=world.manifest.settings.flight
-	var direction:=FrontierCrewWorld.vector(nav.direction).normalized()
-	if direction.length_squared()<.5:direction=Vector3.FORWARD
-	direction=direction.rotated(Vector3.UP,-float(controls[1])*float(cfg.get("turn_speed",1.0))*delta)
-	var right:=direction.cross(Vector3.UP).normalized()
-	if right.length_squared()>.5:
-		var pitched:=direction.rotated(right,float(controls[2])*float(cfg.get("turn_speed",1.0))*delta)
-		if absf(pitched.y)<.98:direction=pitched
-	var boost_requested: bool=controls.size()>3 and float(controls[3])>.5 and float(controls[0])>0
+	var handling: Dictionary=FrontierFlightTelemetry.config().handling
 	var reserve: float=float(cfg.get("transit_energy_cost",30)) if nav.get("combat_active",false) and not world.has("local_shuttle") else 0.0
 	if not boost_requested or float(nav.get("energy",100))>=reserve+25:nav.boost_depleted=false
 	nav.boosting=boost_requested and not nav.get("boost_depleted",false) and float(nav.get("energy",100))>reserve and float(nav.get("hull",100))>0
@@ -259,11 +275,40 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		var drain: float=float(FrontierSpaceCombat.config().combat_boost_drain) if nav.get("combat_active",false) else float(cfg.get("boost_drain",22))
 		nav.energy=maxf(reserve,float(nav.get("energy",100))-drain*delta)
 		if nav.energy<=reserve:nav.boost_depleted=true;nav.boosting=false
-	var maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
-	if nav.get("combat_active",false):maximum=minf(maximum,float(FrontierSpaceCombat.config().combat_speed)*(2.2 if nav.boosting else 1.0))
+	var normal_maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)
+	if nav.get("combat_active",false):normal_maximum=minf(normal_maximum,float(FrontierSpaceCombat.config().combat_speed))
+	var maximum: float=normal_maximum*(float(cfg.get("boost_multiplier",2.2)) if nav.boosting else 1.0)
+	if precision:maximum=minf(maximum,float(handling.precision_speed))
 	if float(nav.get("hull",100))<=0:maximum=0
 	var previous_speed: float=float(nav.speed)
-	nav.speed=move_toward(float(nav.speed),float(controls[0])*maximum,float(cfg.acceleration)*delta*3)
+	var acceleration: float=float(handling.precision_acceleration) if precision else float(cfg.acceleration)*float(handling.acceleration_factor)
+	var deceleration: float=float(cfg.acceleration)*float(handling.braking_factor)
+	if braking or maximum<=0:
+		nav.speed=move_toward(previous_speed,0,deceleration*delta)
+	elif precision:
+		# Reverse requires the deliberate precision modifier; release it to brake to zero.
+		nav.speed=move_toward(previous_speed,throttle*(maximum if throttle>=0 else float(handling.reverse_speed)),(deceleration if absf(previous_speed)>maximum else acceleration)*delta)
+	elif previous_speed<0:
+		nav.speed=move_toward(previous_speed,0,deceleration*delta)
+	elif previous_speed>maximum:
+		nav.speed=move_toward(previous_speed,maximum,deceleration*delta)
+	elif nav.boosting:
+		nav.speed=move_toward(previous_speed,maximum,acceleration*delta)
+	else:
+		nav.speed=clampf(previous_speed+throttle*acceleration*delta,0,maximum)
+	var speed_ratio:=clampf(absf(float(nav.speed))/maxf(normal_maximum,1),0,1)
+	var turn_rate:=float(cfg.get("turn_speed",1.0))*lerpf(float(handling.slow_turn_multiplier),float(handling.fast_turn_multiplier),speed_ratio)
+	var frame:=orientation(nav)
+	frame=frame*Basis(Vector3.UP,-float(controls[1])*turn_rate*delta)
+	frame=frame*Basis(Vector3.RIGHT,float(controls[2])*turn_rate*delta)
+	frame=(frame*Basis(Vector3.BACK,roll_input*float(handling.roll_speed)*delta)).orthonormalized()
+	var direction: Vector3=-frame.z
+	nav.direction=FrontierExpeditionBusiness.array(direction);nav.up=FrontierExpeditionBusiness.array(frame.y)
+	nav.precision=precision
+	# A stationary roll only changes this vessel's axes, without rebuilding celestial obstacles.
+	if is_zero_approx(float(nav.speed)):
+		nav.proximity_braking=false
+		return
 	var start:=FrontierCrewWorld.vector(nav.position)
 	var end:=start+direction*float(nav.speed)*delta
 	var boundary: float=FrontierUniverse.system_layout(world.manifest,int(nav.system)).boundary
@@ -285,10 +330,9 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 		for moon in int(body.get("moons",0)):
 			obstacles.append({"point":center(ordinal,world.manifest,float(nav.orbit_time))+FrontierUniverse.moon_offset(body,moon,float(nav.orbit_time)),"radius":FrontierUniverse.moon_radius(body,moon)+50})
 	nav.proximity_braking=false
-	if float(controls[0])>0:
-		var safe_speed: float=maximum
+	if float(nav.speed)>0:
+		var safe_speed: float=float(nav.speed)
 		var brake: Dictionary=FrontierFlightTelemetry.config()
-		var deceleration: float=float(cfg.acceleration)*float(brake.brake_acceleration_factor)
 		for obstacle in obstacles:
 			var offset: Vector3=obstacle.point-start
 			var along: float=offset.dot(direction)
@@ -297,9 +341,9 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 			if along>0 and cross_distance<envelope:
 				var free_path:=maxf(0,along-sqrt(maxf(0,envelope*envelope-cross_distance*cross_distance)))
 				safe_speed=minf(safe_speed,maxf(float(brake.minimum_approach_speed),sqrt(2*deceleration*free_path)*.75))
-		if safe_speed<maximum:
+		if safe_speed<float(nav.speed):
 			nav.proximity_braking=true
-			nav.speed=move_toward(previous_speed,minf(float(controls[0])*maximum,safe_speed),deceleration*delta)
+			nav.speed=move_toward(float(nav.speed),safe_speed,deceleration*delta)
 			end=(start+direction*float(nav.speed)*delta).limit_length(boundary)
 	var segment:=end-start
 	for obstacle in obstacles:

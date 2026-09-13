@@ -384,7 +384,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if authority.autonomous_pending():pending_navigation_delta=minf(.1,pending_navigation_delta+delta);return
 	delta=minf(.1,delta+pending_navigation_delta);pending_navigation_delta=0.0
-	var controls: Array=[0.0,0.0,0.0]
+	var controls: Array=FrontierCrewNavigation.stopped_input()
 	for peer in authority.peers:
 		if authority.peers[peer]==authority.world.crew.pilot_id and authority.inputs.has(peer) and authority.inputs[peer].expires>=authority.now:
 			controls=authority.inputs[peer].get("flight_controls",controls)
@@ -397,7 +397,7 @@ func _physics_process(delta: float) -> void:
 		if not FrontierShuttles.aboard(authority.world,actor):continue
 		var local:=FrontierShuttles.context(authority.world,actor)
 		var input: Dictionary=authority.inputs.get(peer,{})
-		var local_controls: Array=input.get("flight_controls",[0.0,0.0,0.0]) if float(input.get("expires",-1))>=authority.now else [0.0,0.0,0.0]
+		var local_controls: Array=input.get("flight_controls",FrontierCrewNavigation.stopped_input()) if float(input.get("expires",-1))>=authority.now else FrontierCrewNavigation.stopped_input()
 		if FrontierSpaceTraffic.enabled(authority.world.manifest):local.crew.navigation.orbit_time=float(authority.world.crew.navigation.orbit_time)-minf(delta,.1)
 		FrontierCrewNavigation.steer(local,local_controls,minf(delta,.1))
 		if FrontierCrewNavigation.step(local,minf(delta,.1)):arrived=true

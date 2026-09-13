@@ -37,10 +37,10 @@ func run() -> void:
 	app.test_mode=false;app.cursor_released=false;app.mouse_resume_guard=false;app.movement_timer=0;root.grab_focus()
 	var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;Input.parse_input_event(press)
 	await process_frame;Input.flush_buffered_events();app._physics_process(.06)
-	if root.has_focus():check(authority.inputs[1].flight_controls.size()==7 and authority.inputs[1].flight_controls[4]>.5,"ordinary mouse input collects the ship firing flag")
+	if root.has_focus():check(authority.inputs[1].flight_controls.size()==10 and authority.inputs[1].flight_controls[4]>.5,"ordinary mouse input collects the ship firing flag")
 	else:
 		print("SKIP focused mouse input: native window focus unavailable")
-		check(authority.inputs[1].flight_controls.size()<6,"unfocused window prevents weapon-ready input")
+		check(authority.inputs[1].flight_controls==FrontierCrewNavigation.stopped_input(),"unfocused window prevents weapon-ready input")
 	var release: InputEventMouseButton=press.duplicate();release.pressed=false;Input.parse_input_event(release);app.test_mode=true
 	if "--collector-only" in OS.get_cmdline_user_args():
 		await capture("live-input-final");await app.session.close_session();app.queue_free();await process_frame

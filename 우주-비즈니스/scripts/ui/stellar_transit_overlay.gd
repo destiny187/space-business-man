@@ -111,7 +111,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 		draw_string(font,origin+Vector2(0,157),"복원 수역  녹화 저지대  유지 중",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 		draw_string(font,origin+Vector2(0,190),"관리 구역  지표 착륙·개발 제한",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
 	else:draw_string(font,origin+Vector2(0,108),report.detail,HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
-	draw_string(font,origin+Vector2(0,224),("E 유지  대기층 관측    Tab 항성 지도" if atmosphere_ready else "E 접근    Tab 항성 지도"),HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
+	draw_string(font,origin+Vector2(0,224),("F 유지  대기층 관측    Tab 항성 지도" if atmosphere_ready else "F 접근    Tab 항성 지도"),HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 
 func _draw_vitals(font: Font) -> void:
 	if nav.get("combat_fitted",false):return
@@ -155,7 +155,7 @@ func _draw_arrival(font: Font) -> void:
 
 func _draw_speed(font: Font) -> void:
 	var width:=minf(360,size.x*.43)
-	draw_string(font,Vector2(size.x-width-24,size.y-91),"%.0f m/s"%absf(float(nav.speed)),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
+	draw_string(font,Vector2(size.x-width-24,size.y-91),"%.0f m/s"%float(nav.speed),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
 
 func _draw_motion(font: Font,center: Vector2) -> void:
 	var cfg:=FrontierFlightTelemetry.config()

@@ -32,7 +32,7 @@ func _draw() -> void:
 	for i in FrontierFreightSalvage.last_stage(row.id):draw_circle(at+Vector2(81+i*20,51),4,cyan if int(row.stage)>i else Color("405562"))
 	draw_string(font,at+Vector2(14,81),FrontierFreightSalvage.states(row.id)[int(row.stage)],HORIZONTAL_ALIGNMENT_LEFT,width-28,14,cyan)
 	draw_string(font,at+Vector2(14,105),FrontierFlightTelemetry.distance_label(float(row.distance)),HORIZONTAL_ALIGNMENT_LEFT,width-28,13,muted)
-	draw_string(font,at+Vector2(14,128),row.source_name if FrontierFreightSalvage.maintenance(row.id) and int(row.stage)==1 else (row.port_name if int(row.stage)>0 else "E 유지로 현장 확인"),HORIZONTAL_ALIGNMENT_LEFT,width-28,12,muted)
+	draw_string(font,at+Vector2(14,128),row.source_name if FrontierFreightSalvage.maintenance(row.id) and int(row.stage)==1 else (row.port_name if int(row.stage)>0 else "F 유지로 현장 확인"),HORIZONTAL_ALIGNMENT_LEFT,width-28,12,muted)
 	var hint: String=row.reason
-	if hint.is_empty():hint="E 유지  "+(["고장 진단","교체 부품 적재","카트리지 설치","정비·재가동"] if FrontierFreightSalvage.maintenance(row.id) else ["송장 식별","윈치로 회수","항만에 인계"])[int(row.stage)]
+	if hint.is_empty():hint="F 유지  "+(["고장 진단","교체 부품 적재","카트리지 설치","정비·재가동"] if FrontierFreightSalvage.maintenance(row.id) else ["송장 식별","윈치로 회수","항만에 인계"])[int(row.stage)]
 	draw_string(font,at+Vector2(14,162),hint,HORIZONTAL_ALIGNMENT_LEFT,width-28,14,cyan)

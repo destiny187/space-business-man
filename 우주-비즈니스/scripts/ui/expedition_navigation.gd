@@ -351,7 +351,10 @@ func _update_context() -> void:
 		context.text="F  FINCH  화물 / 출항 / 합류" if not value.get("local_shuttle","").is_empty() else "F  착륙선 단말  정산 / 출항"
 	else:
 		if nav.mode!="idle" or not app.outside:return
-		if app.flight!=null and not app.flight.atmosphere_target.is_empty():return
+		if app.flight!=null:
+			if not app.flight.atmosphere_target.is_empty():return
+			if is_instance_valid(app.flight.freight_view) and not app.flight.freight_view.selected.is_empty():return
+			if is_instance_valid(app.flight.trace_view) and not app.flight.trace_view.selected.is_empty():return
 		var station: Dictionary=value.get("station",{})
 		var sighted:=app.flight.station_in_sight()
 		if not sighted.is_empty():station=FrontierSpaceStation.current(app.session.manifest,nav,sighted)

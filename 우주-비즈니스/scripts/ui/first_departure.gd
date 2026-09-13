@@ -142,7 +142,7 @@ func solar_step() -> String:
 func departure_reason(ordinal: int) -> String:
 	var current := solar_step()
 	if current.is_empty() or FrontierUniverse.system_index(app.session.manifest, ordinal) == 0:return ""
-	return {"move":"WASD 이동 연습을 먼저 마치세요.", "boost":"W + Shift 가속 연습을 먼저 마치세요.", "scan":"화성을 바라보고 스캔을 마치세요."}[current]
+	return {"move":"W/S 속도·A/D 선회 연습을 먼저 마치세요.", "boost":"Shift 부스트 연습을 먼저 마치세요.", "scan":"화성을 바라보고 스캔을 마치세요."}[current]
 
 func request_reason(kind: String, args: Dictionary) -> String:
 	if kind not in ["navigate", "depart", "tutorial_depart"] or solar_step().is_empty():return ""
@@ -159,7 +159,7 @@ func observe_flight_input(controls: Array, keyboard_turn: float, delta: float) -
 	if not _practice_allowed() or current not in ["move", "boost"]:return
 	if practice_step != current:practice_step = current;practice_time = 0.0
 	var moving := absf(float(controls[0])) > 0 and absf(float(nav.speed)) > 1.0
-	var practicing: bool = (moving or (keyboard_turn != 0 and turned)) if current == "move" else (moving and controls.size() > 3 and float(controls[3]) > .5 and nav.get("boosting", false))
+	var practicing: bool = (moving or (keyboard_turn != 0 and turned)) if current == "move" else (absf(float(nav.speed)) > 1 and controls.size() > 3 and float(controls[3]) > .5 and nav.get("boosting", false))
 	if not practicing:return
 	practice_time += minf(delta, .1)
 	if practice_time >= float(rules[current + "_seconds"]):
@@ -272,12 +272,12 @@ func _process(delta: float) -> void:
 	elif not solar_step().is_empty():
 		match solar_step():
 			"move":
-				_hint("move", 1, "태양계에서 움직여보세요", "W / S  전진 / 후진    A / D  좌우 선회\n마우스로 주위를 둘러보며 비행하세요.")
+				_hint("move", 1, "전진과 회전을 익혀보세요", "W  전진 가속    S  감속·정지\n키를 놓으면 속도를 유지합니다.\n마우스 / A·D  기수 선회\nQ / E  기체 좌우 회전(롤)")
 			"boost":
-				_hint("boost", 2, "추진기를 가속해보세요", "W를 누른 채 Shift를 눌러 가속하세요.\n키를 놓으면 감속하며 에너지가 충전됩니다.")
+				_hint("boost", 2, "부스트와 제동을 익혀보세요", "Shift  전진 부스트    Space  제동\n감속하면 더 빠르게 선회합니다.\nAlt + W/S  저속 정밀 전후진\nAlt를 놓으면 후진을 멈춥니다.")
 			"scan":
 				var mars: Dictionary = app.flight.planets.get(int(rules.scan_ordinal), {})
-				_hint("scan", 3, "화성을 스캔해보세요", "화성 표식으로 시선을 돌려보세요.\n가운데 스캔 원이 찰 때까지 바라보세요.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
+				_hint("scan", 3, "화성을 스캔해보세요", "화성을 바라보고 스캔 원을 채우세요.\n우주 조사·화물 작업은 F를 길게,\n대상 접근·잔해 인양은 F를 누르세요.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
 	elif not progress.get("travel", false) or int(nav.system) == 0:
 		var stars = nav_ui.nearby_stars
 		var marker := _star_marker()
@@ -289,7 +289,7 @@ func _process(delta: float) -> void:
 			_hint("aim", 4, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n화면 가장자리 화살표는 뒤쪽 별의 방향입니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 	else:
 		var near: bool = nav_ui.context_kind == "land" and nav_ui.context_ready
-		_hint("land", 5, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
+		_hint("land", 5, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 속도를 조절해 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
 	queue_redraw()
 
 func _draw() -> void:

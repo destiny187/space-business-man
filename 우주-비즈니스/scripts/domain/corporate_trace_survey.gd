@@ -15,11 +15,16 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 	progress+=delta/float(cfg.identify_seconds if stage==0 else cfg.inspect_seconds)
 	authority.scans[peer]={"kind":"corporate_trace","id":target.id,"stage":stage,"progress":minf(.99,progress)}
 	if progress<1:return
-	var draft: Dictionary=authority.world.duplicate(true)
-	if not draft.crew.has("corporate_traces"):draft.crew.corporate_traces={}
+	var draft: Dictionary=authority.world.duplicate()
+	draft.crew=authority.world.crew.duplicate()
+	draft.crew.corporate_traces=authority.world.crew.get("corporate_traces",{}).duplicate()
 	# Reinsert so bounded snapshots retain the latest updated record, not only new IDs.
 	draft.crew.corporate_traces.erase(target.id);draft.crew.corporate_traces[target.id]=stage+1
-	if stage+1==2:FrontierCooperTechClues.capture(draft,target)
+	if stage+1==2 and target.company=="coopertech" and FrontierCooperTechClues.enabled(draft.manifest):
+		draft.coopertech_clues=authority.world.get("coopertech_clues",{}).duplicate()
+		draft.incidents=authority.world.get("incidents",{"version":1,"records":{}}).duplicate()
+		draft.incidents.records=draft.incidents.records.duplicate()
+		FrontierCooperTechClues.capture(draft,target)
 	draft.crew.revision+=1
 	if not authority.save_world.call(draft):
 		authority.scans.erase(peer);authority.stopped=true;authority.error="기업 활동 조사 저장 실패로 공동 세계를 정지했습니다.";return

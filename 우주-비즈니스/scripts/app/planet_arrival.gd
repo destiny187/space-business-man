@@ -400,7 +400,7 @@ func _tick_launch(delta: float) -> void:
   engine.pitch_scale=lerpf(1.2,.8,t);engine.volume_db=lerpf(-17,-25,t)
   if t>=1:
    phase="exit_handover";age=0;engine.stop()
-   caption.text="직접 조종 · W/S 추진 · 마우스 방향" if app.session.latest.self_id==app.session.latest.crew.pilot_id else "우주 비행 · 호스트 조종"
+   caption.text="직접 조종  W/S 속도  Q/E 롤  마우스 방향" if app.session.latest.self_id==app.session.latest.crew.pilot_id else "우주 비행 · 호스트 조종"
  elif phase=="exit_handover":
   var t:=clampf(age/float(config.escape_handover_seconds),0,1)
   for bar in bars:bar.modulate.a=1-t

@@ -28,7 +28,7 @@ func configure(view: FrontierCrewFlightView) -> void:
 	cable=MeshInstance3D.new();add_child(cable);var cylinder:=CylinderMesh.new();cylinder.top_radius=.18;cylinder.bottom_radius=.18;cylinder.height=1;cable.mesh=cylinder
 	var mat:=StandardMaterial3D.new();mat.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;mat.albedo_color=Color("90dfeb");cable.material_override=mat;cable.hide()
 func socket(vessel: Dictionary) -> Transform3D:
-	var transform: Transform3D=flight.ship.global_transform if vessel.id==flight.freight_carrier else Transform3D(flight._flight_basis(FrontierCrewWorld.vector(vessel.direction)),FrontierCrewWorld.vector(vessel.position))
+	var transform: Transform3D=flight.ship.global_transform if vessel.id==flight.freight_carrier else Transform3D(FrontierCrewNavigation.orientation(vessel),FrontierCrewWorld.vector(vessel.position))
 	return transform.translated_local(Vector3(0,-25 if vessel.id=="crew" else -20,5))
 func update(delta: float,t: float,blocked: bool) -> void:
 	selected={};scanning=false;overlay.row={};overlay.markers=[];overlay.carry={};cable.hide()

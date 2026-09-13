@@ -23,7 +23,7 @@ func _ready() -> void:
 		var filter:=AudioEffectLowPassFilter.new();filter.cutoff_hz=float(config.cabin_cutoff_hz);AudioServer.add_bus_effect(bus,filter)
 	for key in config.layers:
 		var player:=AudioStreamPlayer.new();player.name=key;player.bus="SFX";player.volume_db=-80;player.stream=library.stream(config.layers[key],true);add_child(player);layers[key]=player;gains[key]=0.0
-func update(delta: float,nav: Dictionary,thrust: float,turn: Vector2,brake: float,finch: bool,exterior: bool,blocked: bool) -> void:
+func update(delta: float,nav: Dictionary,thrust: float,turn: Vector2,brake: float,finch: bool,exterior: bool,blocked: bool,roll: float=0.0) -> void:
 	paused=blocked
 	for event in events:
 		if is_instance_valid(event):event.stream_paused=blocked
@@ -49,7 +49,7 @@ func update(delta: float,nav: Dictionary,thrust: float,turn: Vector2,brake: floa
 	if jumping:
 		if progress<.2:transition_gain=lerpf(.12,.8,progress/.2)
 		elif progress>.92:transition_gain=1.0-smoothstep(.92,.98,progress)
-	var rcs:=clampf(maxf(turn.length()*.5,brake),0,1)
+	var rcs:=clampf(maxf(maxf(turn.length()*.5,absf(roll)*.5),brake),0,1)
 	var targets: Dictionary={
 		"reactor":(.07+thrust*.93)*(float(config.finch_bass) if finch else 1.0)*(0.55 if exterior else 1.0),
 		"turbine":thrust*(.12 if finch else 1.0),

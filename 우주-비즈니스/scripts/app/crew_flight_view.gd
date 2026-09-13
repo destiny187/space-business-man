@@ -57,6 +57,7 @@ var refits: FrontierVesselVisuals
 var orbital_debris: FrontierOrbitalDebris
 var engine_turn:=Vector2.ZERO
 var engine_brake:=0.0
+var engine_roll:=0.0
 func _ready() -> void:
 	test_mode=true
 	flight_config=state.manifest.settings.flight
@@ -108,7 +109,7 @@ func update_navigation(value: Dictionary) -> void:
 	if navigation.is_empty() or render_system!=current_system:
 		_load_system(render_system);ship.position=_display_position(value)
 		if initial_view:
-			ship.quaternion=_transit_rotation(value) if value.mode=="jump" else _flight_basis(FrontierCrewWorld.vector(value.direction)).get_rotation_quaternion()
+			ship.quaternion=_transit_rotation(value) if value.mode=="jump" else FrontierCrewNavigation.orientation(value).get_rotation_quaternion()
 			transit_camera_rotation=ship.quaternion
 	_apply_transit_visibility(value)
 	if render_system!=announced_system and value.mode!="jump":
@@ -127,10 +128,13 @@ func update_navigation(value: Dictionary) -> void:
 	if not navigation.is_empty():
 		var dt:=maxf(.02,float(value.get("orbit_time",0))-float(navigation.get("orbit_time",0)))
 		var next_direction:=FrontierCrewWorld.vector(value.direction)
-		var local_turn:=_flight_basis(FrontierCrewWorld.vector(navigation.direction)).inverse()*next_direction
+		var previous_frame:=FrontierCrewNavigation.orientation(navigation)
+		var local_turn:=previous_frame.inverse()*next_direction
+		var next_up:=FrontierCrewNavigation.orientation(value).y
+		engine_roll=clampf(previous_frame.y.signed_angle_to(next_up,-previous_frame.z)/dt,-1,1)
 		engine_turn=Vector2(clampf(local_turn.x/dt,-1,1),clampf(local_turn.y/dt,-1,1))
 		engine_brake=clampf((absf(float(navigation.speed))-absf(float(value.speed)))/dt/300.0,0,1)
-		if float(value.speed)<-1:engine_brake=maxf(engine_brake,clampf(absf(float(value.speed))/700.0,0,1))
+		if float(value.speed)<-1:engine_brake=maxf(engine_brake,clampf(absf(float(value.speed))/float(FrontierFlightTelemetry.config().handling.reverse_speed),0,1))
 	navigation=value.duplicate(true)
 	if FrontierSolarOpening.active(value):opening_clock=float(value.solar_opening.elapsed)
 	transit_overlay.nav=navigation
@@ -151,7 +155,7 @@ func _process(delta: float) -> void:
 	if not pending_navigation.is_empty():
 		update_navigation(pending_navigation)
 		ship.position=_display_position(navigation)
-		ship.quaternion=_transit_rotation(navigation) if navigation.mode=="jump" else _flight_basis(FrontierCrewWorld.vector(navigation.direction)).get_rotation_quaternion()
+		ship.quaternion=_transit_rotation(navigation) if navigation.mode=="jump" else FrontierCrewNavigation.orientation(navigation).get_rotation_quaternion()
 		transit_camera_rotation=ship.quaternion
 	if navigation.is_empty():return
 	if navigation.mode=="jump":step_preparation()
@@ -165,13 +169,12 @@ func _process(delta: float) -> void:
 	var presented:=_transit_presentation(delta,presentation_paused)
 	transit_overlay.nav=presented
 	ship.position=_display_position(presented) if navigation.mode=="jump" else ship.position.lerp(_display_position(navigation),minf(delta*14,1))
-	var facing:=FrontierCrewWorld.vector(navigation.direction)
 	if navigation.mode=="jump":
 		var previous_basis:=ship.basis
 		ship.quaternion=_transit_rotation(presented)
 		var local_turn:=previous_basis.inverse()*(-ship.basis.z)
 		engine_turn=Vector2(clampf(local_turn.x/maxf(delta,.001),-1,1),clampf(local_turn.y/maxf(delta,.001),-1,1))
-	else:ship.quaternion=ship.quaternion.slerp(_flight_basis(facing).get_rotation_quaternion(),1.0-exp(-delta*6.0))
+	else:ship.quaternion=ship.quaternion.slerp(FrontierCrewNavigation.orientation(navigation).get_rotation_quaternion(),1.0-exp(-delta*6.0))
 	camera.position=(Vector3(0,8,21) if refits.hull_id=="finch" else Vector3(0,16,57)) if exterior else (Vector3(0,5.3,-1.2) if refits.hull_id=="finch" else Vector3(0,2,-18))
 	if exterior and combat_view.relevant() and refits.hull_id!="finch":camera.position=FrontierSpaceCombat.point(FrontierSpaceCombat.config().presentation.camera)
 	camera.rotation=(Vector3(-.15,0,0) if exterior else Vector3.ZERO)+Vector3(look_offset.y,look_offset.x,0)
@@ -224,8 +227,8 @@ func _process(delta: float) -> void:
 	var boosted: bool=in_transit or navigation.get("boosting",false)
 	if not in_transit:thrust*=1.0-engine_brake
 	drive.set_thrust(thrust,boosted)
-	drive.set_motion(engine_turn,engine_brake,presentation_paused)
-	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_paused)
+	drive.set_motion(engine_turn,engine_brake,presentation_paused,engine_roll)
+	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_paused,engine_roll)
 
 func pick_planet(point: Vector2) -> int:
 	if navigation.get("mode","")=="jump" or (combat_view!=null and combat_view.armed()):return -1
@@ -276,7 +279,7 @@ func _transit_rotation(value: Dictionary) -> Quaternion:
 	var progress:=float(FrontierCrewNavigation.transit_progress(value))
 	var departure:=_flight_basis(departure_heading).get_rotation_quaternion()
 	if progress<float(cfg.departure_start):
-		return _flight_basis(departure_initial).get_rotation_quaternion().slerp(departure,smoothstep(0,float(cfg.departure_start),progress))
+		return FrontierCrewNavigation.orientation({"direction":FrontierExpeditionBusiness.array(departure_initial),"up":value.get("transit",{}).get("initial_up",[0,1,0])}).get_rotation_quaternion().slerp(departure,smoothstep(0,float(cfg.departure_start),progress))
 	# Carry the turn through the hidden system swap instead of changing facing at its boundary.
 	return departure.slerp(_flight_basis(arrival_heading).get_rotation_quaternion(),smoothstep(float(cfg.departure_fade_start),float(cfg.arrival_fade_end),progress))
 

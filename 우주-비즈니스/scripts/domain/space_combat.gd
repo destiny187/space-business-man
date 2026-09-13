@@ -171,7 +171,7 @@ static func fire(world: Dictionary,actor: String,aim: Vector3) -> bool:
 	if stats.cooldown>0 or stats.overheated:return false
 	var direction:=point(nav.direction).normalized()
 	if not aim.is_finite() or aim.dot(direction)<float(config().aim_dot):return false
-	var frame:=FrontierSpaceCombatPilot.basis(direction)
+	var frame:=FrontierCrewNavigation.orientation(nav)
 	var origin:=point(nav.position)+frame*point(config().presentation.muzzle)
 	# Third-person aiming converges from the camera reticle; muzzle geometry still blocks the ray.
 	var camera_origin:=point(nav.position)+frame*point(config().presentation.camera)
@@ -214,7 +214,7 @@ static func launch_missile(world: Dictionary,actor: String,aim: Vector3) -> bool
 	if float(stats.get("missile_cooldown",0))>0 or e.get("projectiles",[]).size()+int(cfg.salvo_count)>int(config().presentation.projectile_limit):return false
 	var nav: Dictionary=world.crew.navigation;var heading:=point(nav.direction).normalized()
 	if not aim.is_finite() or aim.dot(heading)<float(config().aim_dot):return false
-	var frame:=FrontierSpaceCombatPilot.basis(heading);var origin:=point(nav.position)+frame*point(cfg.muzzle)
+	var frame:=FrontierCrewNavigation.orientation(nav);var origin:=point(nav.position)+frame*point(cfg.muzzle)
 	var camera:=point(nav.position)+frame*point(config().presentation.camera)
 	var selected:=missile_target(e,camera,aim)
 	if selected.is_empty():return false
@@ -338,7 +338,7 @@ static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictio
 		if float(member_input.get("expires",-1))>=now and buttons.size()>=6 and float(buttons[5])>.5:
 			var wreck_count: int=r.wrecks.size()
 			if float(buttons[4])>.5:fire(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
-			if buttons.size()==7 and float(buttons[6])>.5:launch_missile(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
+			if buttons.size()>=7 and float(buttons[6])>.5:launch_missile(world,pilots[id].actor,member_input.get("aim",Vector3.FORWARD))
 			if r.wrecks.size()!=wreck_count:changed=true
 	if not e.has("projectiles"):e.projectiles=[]
 	var living:=0;var pos:=point(nav.position)
@@ -425,6 +425,7 @@ static func valid(r: Variant) -> bool:
 		if not e.get("enemies") is Array or e.enemies.size()>3:return false
 		for enemy in e.enemies:
 			if not enemy is Dictionary or not enemy.get("id") is String or not config().enemy.has(enemy.get("kind")):return false
+			if enemy.has("up") and not FrontierCrewNavigation.valid_up(enemy.up):return false
 			for key in ["position","direction","aim"]:
 				if not FrontierUniverse._vector3_array(enemy.get(key)):return false
 			for key in ["hull","shield","cooldown","windup","age","hit_age"]:
@@ -435,7 +436,7 @@ static func valid(r: Variant) -> bool:
 					if not FrontierUniverse._finite(enemy.get(key),0,1e12):return false
 				for key in ["roll","side"]:
 					if not FrontierUniverse._finite(enemy.get(key),-1,1):return false
-				for key in ["velocity","pass_end","break_end"]:
+				for key in ["velocity","pass_end","break_end","pass_direction"]:
 					if enemy.has(key) and not FrontierUniverse._vector3_array(enemy[key]):return false
 		if not e.get("projectiles",[]) is Array or e.get("projectiles",[]).size()>int(config().presentation.projectile_limit):return false
 		for bolt in e.get("projectiles",[]):

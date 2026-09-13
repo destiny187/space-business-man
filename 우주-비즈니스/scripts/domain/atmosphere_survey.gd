@@ -40,7 +40,10 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 	authority.scans[peer]=scan
 	if progress<1:return true
 	if not selected.is_empty():
-		var draft:=authority.world.duplicate(true)
+		var draft:=authority.world.duplicate()
+		draft.crew=authority.world.crew.duplicate()
+		draft.ecology=authority.world.ecology.duplicate()
+		for key in ["planets","observations","species_names"]:draft.ecology[key]=authority.world.ecology.get(key,{}).duplicate()
 		FrontierEcology.ensure_planet(draft.ecology,body)
 		FrontierEcology.scan(draft.ecology,body.id,selected)
 		draft.ecology.observations[id].observed_layer="atmosphere"

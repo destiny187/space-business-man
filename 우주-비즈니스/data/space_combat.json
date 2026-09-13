@@ -52,7 +52,7 @@
       "flank_distance": 95,
       "acceleration": 145,
       "turn_speed": 4.5,
-      "approach_seconds": 2.4,
+      "approach_seconds": 0.65,
       "strike_seconds": 2.7,
       "break_seconds": 1.7,
       "burst_count": 2,
@@ -60,7 +60,8 @@
       "projectile_speed": 390,
       "projectile_radius": 2.5,
       "pass_clearance": 85,
-      "weapon": "pulse"
+      "weapon": "pulse",
+      "avoidance_margin_factor": 2.0
     },
     "interdictor": {
       "name": "해적 교란선",
@@ -83,7 +84,7 @@
       "flank_distance": 90,
       "acceleration": 75,
       "turn_speed": 2.8,
-      "approach_seconds": 3.2,
+      "approach_seconds": 0.9,
       "strike_seconds": 0.75,
       "break_seconds": 2.4,
       "burst_count": 1,
@@ -113,7 +114,7 @@
       "flank_distance": 90,
       "acceleration": 115,
       "turn_speed": 2.8,
-      "approach_seconds": 3.2,
+      "approach_seconds": 0.9,
       "strike_seconds": 1.0,
       "break_seconds": 2.4,
       "burst_count": 2,
@@ -219,5 +220,20 @@
     "fan_side": 0.72,
     "fan_up": 0.32,
     "turn_speed": 2.6
+  },
+  "maneuver": {
+    "turn_speed_slow": 1.8,
+    "turn_speed_fast": 0.8,
+    "minimum_speed_factor": 0.3,
+    "align_speed_factor": 0.22,
+    "gunship_strike_speed_factor": 0.85,
+    "aim_lead_seconds": 0.25,
+    "fire_dot": 0.94,
+    "pass_length": 320.0,
+    "pass_offset_factor": 1.65,
+    "avoidance_seconds": 1.35,
+    "bank_limit": 0.85,
+    "bank_response": 4.0,
+    "avoidance_margin_factor": 1.3
   }
 }
