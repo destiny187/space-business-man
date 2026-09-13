@@ -129,6 +129,7 @@ func _build_crew() -> void:
 	app.roster=FrontierInterfaceStyle.label(column,"",15)
 	var invite:=_button(column,"초대 코드 복사",func():DisplayServer.clipboard_set(app.session.invite_code);app.status.value="초대 코드를 복사했습니다.");invite.name="InviteCodeCopy";invite.hide()
 	app.ready_button=_button(column,"준비",app.toggle_ready)
+	var watch:=_button(column,"호스트 비행 관전  F8",func():app.close_menus();app.observer.toggle());watch.name="ObserveHost"
 	app.pilot_choices=OptionButton.new();column.add_child(app.pilot_choices)
 	var transfer:=_button(column,"조종 권한 전달",app.assign_pilot);transfer.name="TransferPilot"
 	var kick:=_button(column,"선택 승무원 내보내기",app.kick_selected);kick.name="Kick"
@@ -190,6 +191,10 @@ func refresh(value: Dictionary) -> void:
 	invite.text="초대 코드  "+FrontierCrewConnectionOptions.display_code(app.session.invite_code)+"  복사"
 	shuttle_recovery.update_snapshot(value)
 	app.ready_button.visible=not app.session.offline
+	var watch: Button=crew_frame.find_child("ObserveHost",true,false)
+	watch.visible=not app.session.hosting
+	watch.disabled=not FrontierCrewObservation.available(value,app.session.hosting)
+	watch.tooltip_text="호스트가 비행 중일 때 마우스로 둘러볼 수 있습니다."
 	app.ready_button.text="준비 취소" if members[value.self_id].ready else "준비 완료"
 	if app.crew_ids!=members.keys():
 		app.crew_ids=members.keys();app.pilot_choices.clear()

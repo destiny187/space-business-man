@@ -16644,5 +16644,113 @@
     "source": "art/blender/equipment/ammo_energy.blend",
     "geometry": "firearm-support",
     "foliage": false
+  },
+  {
+    "id": "kestrel_interior",
+    "title": "선박 / 선내",
+    "name": "KESTREL 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/kestrel.glb",
+    "source": "art/blender/crew/interiors/kestrel.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "swift_interior",
+    "title": "선박 / 선내",
+    "name": "SWIFT 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/swift.glb",
+    "source": "art/blender/crew/interiors/swift.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "mule_interior",
+    "title": "선박 / 선내",
+    "name": "MULE 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/mule.glb",
+    "source": "art/blender/crew/interiors/mule.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "aster_interior",
+    "title": "선박 / 선내",
+    "name": "ASTER 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/aster.glb",
+    "source": "art/blender/crew/interiors/aster.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "peregrine_interior",
+    "title": "선박 / 선내",
+    "name": "PEREGRINE 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/peregrine.glb",
+    "source": "art/blender/crew/interiors/peregrine.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "ox_interior",
+    "title": "선박 / 선내",
+    "name": "OX 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/ox.glb",
+    "source": "art/blender/crew/interiors/ox.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "orion_interior",
+    "title": "선박 / 선내",
+    "name": "ORION 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/orion.glb",
+    "source": "art/blender/crew/interiors/orion.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "spectre_interior",
+    "title": "선박 / 선내",
+    "name": "SPECTRE 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/spectre.glb",
+    "source": "art/blender/crew/interiors/spectre.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
+  },
+  {
+    "id": "atlas_interior",
+    "title": "선박 / 선내",
+    "name": "ATLAS 선내",
+    "group": "우주선",
+    "model": "res://assets/models/crew/interiors/atlas.glb",
+    "source": "art/blender/crew/interiors/atlas.blend",
+    "geometry": "role-authored-interior",
+    "foliage": false,
+    "generator": "tools/build_vessel_interiors.py",
+    "review": "docs/production/171-vessel-interiors-and-observer.md"
   }
 ]

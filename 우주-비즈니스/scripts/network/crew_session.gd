@@ -249,6 +249,7 @@ func _acknowledge(epoch: String) -> void:
 	pending_connections.erase(peer);surface_packets.erase(peer);_publish();_publish_surface()
 func _valid_snapshot(value: Variant) -> bool:
 	if not value is Dictionary or value.get("phase") not in ["lobby","playing"] or not value.get("lobby_ready") is Dictionary or value.get("session_id")!=session_id or not value.get("crew") is Dictionary or not value.crew.has("navigation"):return false
+	if not FrontierCrewObservation.valid(value.get("host_view",{}),value.crew):return false
 	if not value.get("self_id") is String or not value.crew.get("members") is Dictionary or not value.crew.members.has(value.self_id) or not value.get("active") is bool:return false
 	if not value.get("vessel") is Dictionary or not value.get("vessel_seed") is int:return false
 	if not value.vessel.is_empty() and not FrontierVesselRefit.validate(value.vessel,value.vessel_seed,world_id).is_empty():return false

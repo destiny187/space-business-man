@@ -65,6 +65,7 @@ func _shuttle_snapshot(value: Dictionary) -> void:
 	known_shuttle_state=state
 
 func blocked() -> bool:
+	if app.observer!=null and app.observer.input_blocked():return true
 	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:

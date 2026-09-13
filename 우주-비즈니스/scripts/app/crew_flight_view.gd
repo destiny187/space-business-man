@@ -17,6 +17,11 @@ var scan_target: int=-1
 var scan_progress:=0.0
 var scanned: Dictionary={}
 var exterior:=false
+var cabin_camera:=false
+var cabin_pose:=Transform3D.IDENTITY
+var cabin_fov:=76.0
+var observation_mode:=false
+var observation_distance:=64.0
 var look_offset:=Vector2.ZERO
 var transit_overlay: Control
 var transit_audio: FrontierAudio
@@ -199,6 +204,16 @@ func _process(delta: float) -> void:
 		camera.fov=lerpf(float(FrontierSolarOpening.config().fov),finish_fov,shot.turn)
 		transit_overlay.arrival_age=opening_clock
 		engine_brake=.65 if absf(float(navigation.speed))>1 else 0.0
+	# Every cabin aperture uses a common projection, so looking sideways/upwards
+	# reveals that part of the live system instead of repeating the forward view.
+	ship.get_child(0).visible=not cabin_camera
+	if cabin_camera and not opening:
+		camera.position=FrontierCrewWorld.vector(FrontierVesselInterior.config().window_origin)+cabin_pose.origin
+		camera.basis=cabin_pose.basis;camera.fov=cabin_fov
+	if observation_mode:
+		var orbit:=Basis.from_euler(Vector3(look_offset.y,look_offset.x,0))
+		camera.position=orbit*Vector3(0,8,observation_distance*(.45 if refits.hull_id=="finch" else 1.0))
+		camera.look_at(ship.global_position+ship.global_basis.y*3,ship.global_basis.y)
 
 	combat_view.update(delta,presentation_paused or opening or transition_preparing)
 	warning_clock=maxf(0,warning_clock-delta)
@@ -229,6 +244,12 @@ func _process(delta: float) -> void:
 	drive.set_thrust(thrust,boosted)
 	drive.set_motion(engine_turn,engine_brake,presentation_paused,engine_roll)
 	vessel_sound.update(delta,navigation,thrust,engine_turn,engine_brake,refits.hull_id=="finch",exterior,presentation_paused,engine_roll)
+	if cabin_camera or observation_mode:
+		transit_overlay.hide();combat_view.hud.hide()
+		if atmosphere_overlay!=null:atmosphere_overlay.hide()
+	else:
+		transit_overlay.show()
+		if atmosphere_overlay!=null:atmosphere_overlay.show()
 
 func pick_planet(point: Vector2) -> int:
 	if navigation.get("mode","")=="jump" or (combat_view!=null and combat_view.armed()):return -1

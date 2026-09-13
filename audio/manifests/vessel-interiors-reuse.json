@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "date": "2026-09-13",
+  "provider": "Existing ElevenLabs recordings reused",
+  "scope": "Role-authored cabins and guest host-flight observer",
+  "cues": {
+    "sfx_pickup_resource": "Local camera entry/return confirmation; existing UI bus"
+  },
+  "ship_sound": "FrontierVesselSound retains its cabin mix when outside=false. The observer uses the exterior mix of the observed host ship; covered local flight audio is suspended.",
+  "new_generation": false,
+  "verification": "Playback-state confirmation in the focused live ENet guest check. No new sound file; final listening/mix approval remains separate.",
+  "review": "docs/production/171-vessel-interiors-and-observer.md",
+  "jobs": [
+    {
+      "id": "sfx_pickup_resource",
+      "game_file": "우주-비즈니스/assets/audio/sfx_pickup_resource.wav",
+      "sha256": "519140878cc64d09d52ef53eb70352943ebb233a6b07560fbbb6a2bdf5edec20",
+      "seconds": 0.6,
+      "status": "existing_elevenlabs_reuse"
+    }
+  ],
+  "provenance_manifests": [
+    "audio/manifests/elevenlabs.json",
+    "audio/manifests/crew-stations-reuse.json",
+    "audio/manifests/space-polish.json"
+  ]
+}

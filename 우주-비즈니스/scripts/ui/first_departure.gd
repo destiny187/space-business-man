@@ -264,11 +264,11 @@ func _process(delta: float) -> void:
 	elif not value.get("local_shuttle", "").is_empty():
 		_hint("shuttle", 1, "공동 원정선으로 합류", "소형선은 같은 항성계 안에서 이동합니다.\n다음 항성계 항해는 공동 원정선에서 시작하세요.")
 	elif value.self_id != value.crew.pilot_id:
-		_hint("crew", 1, "승무원 항해 준비", "P  승무원에서 준비 상태를 켜세요.\n항로 선택과 출발은 조종사가 진행합니다.")
+		_hint("crew", 1, "승무원 항해 준비", "P  승무원에서 준비 상태를 켜세요.\nC  선내 / 외부 시점\nF8  호스트 관전  마우스 둘러보기  휠 거리\nF8 또는 Esc로 원래 시점에 돌아옵니다.")
 	elif app.navigation_frame.visible:
 		_hint("return_view", 1, "우주 화면에서 항해하기", "Tab으로 지도를 닫고 주변 항성계 표식을 찾아보세요.")
 	elif not app.outside:
-		_hint("outside", 1, "우주를 둘러보세요", "C  우주선 바깥 시점으로 전환하세요.")
+		_hint("outside", 1, "우주를 둘러보세요", "마우스로 정면·측면·천창을 둘러보세요.\nC  우주선 바깥 시점으로 전환하세요.")
 	elif not solar_step().is_empty():
 		match solar_step():
 			"move":

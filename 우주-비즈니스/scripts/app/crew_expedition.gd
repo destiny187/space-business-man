@@ -69,6 +69,8 @@ var test_direction:=Vector2.ZERO
 var test_camera_position:=Vector3.ZERO
 var spaces:=FrontierCrewSpaces.new()
 var cabin_root: Node3D
+var interior: FrontierVesselInterior
+var observer: FrontierCrewObserver
 var surface_world: FrontierCrewSurfaceScene
 var surface_panel: FrontierEcologyWorkflow
 var surface_status: FrontierResourceReadout
@@ -149,6 +151,7 @@ func _ready() -> void:
 	var rover_factory:=FrontierRoverWorkshop.new();business_panel.tabs.add_child(rover_factory);rover_factory.configure(self,true)
 	arrival=load("res://scripts/app/planet_arrival.gd").new();add_child(arrival);arrival.configure(self)
 	onboarding=FrontierFirstDeparture.new();navigation_frame.get_parent().add_child(onboarding);onboarding.theme=ui_theme;onboarding.configure(self)
+	observer=FrontierCrewObserver.new();add_child(observer);observer.configure(self)
 	navigation_ui.get_parent().move_child(navigation_ui,-1)
 	planet_map=FrontierPlanetMap.new();ui.add_child(planet_map);planet_map.configure(self)
 	for frame in menu_frames()+[waiting_screen,onboarding.letter]:
@@ -179,22 +182,7 @@ func _apply_client_settings() -> void:
 
 func _build_cabin() -> void:
 	cabin_root=Node3D.new();cabin_root.name="Cabin";add_child(cabin_root)
-	var room: Node3D=load("res://assets/models/crew/kestrel_cabin.glb").instantiate()
-	cabin_root.add_child(room);FrontierInkStyle.apply(room,cache)
-	_collision(Vector3(0,-.25,0),Vector3(8,.5,16))
-	for side in [-1,1]:
-		_collision(Vector3(side*3.9,2,0),Vector3(.3,4,16))
-		for z in [-4,-1,2]:_collision(Vector3(side*2.65,.9,z),Vector3(1.18,1.8,1.2))
-		_collision(Vector3(side*2.7,.8,-6.6),Vector3(1.8,1.6,1.2))
-	for z in [-7.9,7.9]:_collision(Vector3(0,2,z),Vector3(8,4,.3))
-	_collision(Vector3(0,.6,5.6),Vector3(1.85,1.3,1.0))
-	var environment:=WorldEnvironment.new();var env:=Environment.new()
-	env.background_mode=Environment.BG_COLOR;env.background_color=Color("152b39")
-	env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("89aaa8");env.ambient_light_energy=.4
-	env.tonemap_mode=Environment.TONE_MAPPER_FILMIC;environment.environment=env;cabin_root.add_child(environment)
-	for z in [-5,1,6]:
-		var lamp:=OmniLight3D.new();lamp.position=Vector3(0,3.4,z);lamp.light_color=Color("e3edcd");lamp.light_energy=1.25;lamp.omni_range=7;lamp.shadow_enabled=true;cabin_root.add_child(lamp)
-	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-28,-30,0);sun.light_energy=.25;sun.light_color=Color("c8e5ed");cabin_root.add_child(sun)
+	interior=FrontierVesselInterior.new();cabin_root.add_child(interior)
 	camera=Camera3D.new();camera.position=Vector3(0,1.72,6.7);camera.fov=76;camera.current=true;add_child(camera)
 	FrontierInkStyle.attach(camera)
 	get_viewport().screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
@@ -335,8 +323,7 @@ func _setup_flight() -> void:
 	flight.scanned=navigation_journal.scan_flags()
 	flight.planet_scanned.connect(func(ordinal: int):navigation_journal.scanned(ordinal);_refresh_scan_detail();chart.queue_redraw())
 	exterior_view.texture=space_view.get_texture()
-	var window:=MeshInstance3D.new();var quad:=QuadMesh.new();quad.size=Vector2(7.3,2.35);window.mesh=quad;window.position=Vector3(0,2.16,-7.72)
-	var material:=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_texture=space_view.get_texture();material.uv1_scale=Vector3(1,.515,1);material.uv1_offset=Vector3(0,.2425,0);window.material_override=material;window.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;cabin_root.add_child(window)
+	interior.bind_exterior(space_view.get_texture())
 func _spawn_actor(id: String,member: Dictionary) -> void:
 	var actor:=CharacterBody3D.new();actor.name="Crew_"+id;actor.collision_layer=2;actor.collision_mask=1;actor.floor_snap_length=.7;actor.position=FrontierCrewWorld.vector(member.position)
 	var collision:=CollisionShape3D.new();var capsule:=CapsuleShape3D.new();capsule.radius=.29;capsule.height=1.86;collision.shape=capsule;collision.position.y=.93;actor.add_child(collision);add_child(actor)
@@ -399,6 +386,7 @@ func _apply_snapshot(value: Dictionary) -> void:
 		waiting_ready.text="준비 취소" if value.lobby_ready.get(value.self_id,false) else "준비 완료"
 		return
 	waiting_screen.hide();cabin_root.show();help_text.show()
+	interior.update_hull(str(value.get("vessel",{}).get("hull","kestrel")))
 	if flight==null:_setup_flight()
 	onboarding.update_snapshot(value)
 	flight.transition_preparing=arrival.active
@@ -460,7 +448,9 @@ func _apply_snapshot(value: Dictionary) -> void:
 	lobby.hide();panel.show()
 	navigation_ui.refresh(value)
 	_sync_surface_view()
+	if observer!=null:observer.update_snapshot(value)
 func orbital_scan_allowed() -> bool:
+	if observer!=null and observer.input_blocked():return false
 	return get_window().has_focus() and flight!=null and outside and surface_world==null and flight.scan_enabled and not flight.presentation_blocked and not cursor_released and _mouse_look_allowed() and not feedback.blocked() and not (onboarding!=null and onboarding.letter.visible) and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not FrontierClientSettings.ensure(get_tree()).is_open() and get_viewport().gui_get_focus_owner()==null
 
 func _physics_process(delta: float) -> void:
@@ -497,7 +487,7 @@ func _physics_process(delta: float) -> void:
 		var keyboard_turn:=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)) if not test_mode else 0.0
 		if float(flight_controls[5])>.5:scan_aim=-flight.camera.global_basis.z
 		if flight_controls.slice(0,4).any(func(value):return absf(float(value))>.01) or absf(float(flight_controls[7]))>.01 or (outside and scanning):dismiss_stellar_arrival()
-		if onboarding!=null:onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
+		if onboarding!=null and not (observer!=null and observer.input_blocked()):onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
@@ -628,6 +618,10 @@ func _process(delta: float) -> void:
 	if actors.has(session.latest.self_id):camera.position=actors[session.latest.self_id].position+Vector3(0,1.15 if firearm.crouched else 1.72,0)+camera_correction
 	if test_mode and test_camera_position!=Vector3.ZERO:camera.position=test_camera_position
 	camera.rotation=Vector3(pitch,yaw,0)
+	interior.active=not outside and surface_world==null and not (observer!=null and observer.active)
+	if flight!=null:
+		flight.cabin_camera=not outside and surface_world==null
+		flight.cabin_pose=camera.transform;flight.cabin_fov=camera.fov
 	_update_surface_hud()
 	_update_business_placement()
 	arrival.tick(delta)
@@ -636,6 +630,16 @@ func _input(event: InputEvent) -> void:
 	if get_tree().has_meta("startup_loader"):return
 	if arrival!=null and arrival.active:return
 	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
+	if observer!=null and session.active and session.latest.get("phase")=="playing":
+		if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_F8 and not any_menu_open() and not solar_opening_active() and not (onboarding!=null and onboarding.letter.visible):
+			observer.toggle();get_viewport().set_input_as_handled();return
+		if observer.active:
+			if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_ESCAPE:observer.stop()
+			elif event is InputEventMouseButton and event.pressed:
+				if event.button_index==MOUSE_BUTTON_WHEEL_UP:observer.zoom(-1)
+				elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:observer.zoom(1)
+			else:_look_input(event)
+			get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo and session.active and session.latest.get("phase")=="playing":
 		if event.physical_keycode==KEY_ESCAPE:
 			if not placement_kind.is_empty():cancel_placement();_menu_changed()
@@ -661,6 +665,7 @@ func _look_input(event: InputEvent) -> void:
 		_mouse_look(event.screen_relative,preferences.mouse_sensitivity(),bool(preferences.values.invert_y))
 		get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
+	if observer!=null and observer.input_blocked():return
 	if solar_opening_active():return
 	if arrival!=null and arrival.active:return
 	if event is InputEventMouseButton and mouse_resume_guard:return
@@ -712,6 +717,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		use_equipped()
 ## The same collector drives normal play and the focused flight check.
 func collect_flight_controls() -> Array:
+	if observer!=null and observer.input_blocked():return FrontierCrewObservation.neutral_input()
 	if test_mode or not orbital_scan_allowed() or arrival.active or not get_window().has_focus():return FrontierCrewNavigation.stopped_input()
 	var keyboard_turn:=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A))
 	var ready: bool=not flight.navigation.is_empty() and flight.navigation.mode!="jump" and not get_tree().has_meta("startup_loader")
@@ -896,6 +902,7 @@ func surface_action(kind: String) -> void:
 # Arrival needs the main camera for terrain warmup and handover, even under cover.
 func _sync_main_render() -> void:
 	var covered: bool=session!=null and session.active and outside and surface_world==null and exterior_view.is_visible_in_tree() and not (arrival!=null and arrival.active)
+	if observer!=null and observer.active:covered=true
 	if covered and not main_render_suspended and not get_viewport().disable_3d:
 		get_viewport().disable_3d=true;main_render_suspended=true
 	elif not covered and main_render_suspended:
@@ -1122,6 +1129,7 @@ func _mouse_look_allowed() -> bool:
 	if session==null or not session.active or session.latest.get("phase")!="playing":return false
 	if waiting_screen!=null and waiting_screen.is_visible_in_tree():return false
 	if lobby!=null and lobby.is_visible_in_tree():return false
+	if observer!=null and observer.active:return not FrontierClientSettings.ensure(get_tree()).is_open() and not FrontierCursorPolicy.modal_open(get_tree())
 	return not any_menu_open() and feedback!=null and not feedback.blocked() and (onboarding==null or not onboarding.letter.visible)
 
 func _sync_mouse_capture() -> void:
@@ -1132,6 +1140,8 @@ func _sync_mouse_capture() -> void:
 	if not capture:mouse_steering=Vector2.ZERO
 
 func _mouse_look(relative: Vector2,sensitivity: float,invert_y: bool) -> void:
+	if observer!=null and observer.active:
+		observer.look(relative*sensitivity*Vector2(1,-1 if invert_y else 1));return
 	if relative.length_squared()>=4:dismiss_stellar_arrival()
 	var motion:=relative*sensitivity
 	if surface_world!=null and firearm!=null:

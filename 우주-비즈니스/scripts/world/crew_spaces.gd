@@ -22,6 +22,7 @@ func sync() -> void:
 			var viewport:=SubViewport.new();viewport.size=Vector2i(16,16);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_DISABLED;app.add_child(viewport)
 			var stage:=Node3D.new();viewport.add_child(stage)
 			var entry: Dictionary={"viewport":viewport,"root":stage,"terrain":null,"edits":0,"business":null,"wildlife":{}}
+			if key=="cabin":FrontierVesselInterior.build_collisions(stage)
 			if key.begins_with("surface:"):
 				var body_id:=key.trim_prefix("surface:");var body:=FrontierUniverse.body_from_id(world.manifest,body_id)
 				var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/terrain.gdshader")
