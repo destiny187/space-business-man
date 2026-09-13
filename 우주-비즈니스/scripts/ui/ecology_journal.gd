@@ -55,7 +55,7 @@ func refresh() -> void:
 	form_ids.sort()
 	for id in form_ids:
 		var form:=FrontierEcologyCatalog.form(id)
-		discoveries.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(form)),form.name)
+		discoveries.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(form)),FrontierSpeciesNames.display(ecology,form.id))
 	if form_ids.is_empty():discoveries.add_item("생명체를 조준하고 E를 길게 눌러 스캔하세요.")
 	elif selected in form_ids:discoveries.select(form_ids.find(selected))
 	update_detail()
@@ -65,7 +65,7 @@ func refresh() -> void:
 	sample_ids.sort()
 	for id in sample_ids:
 		var row: Dictionary=ecology.specimens[id]
-		cargo.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(row.form_id))),"%s  %s"%[FrontierEcologyCatalog.form(row.form_id).name,FrontierUniverse.body_from_id(app.state.manifest,row.source_body).name])
+		cargo.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(row.form_id))),"%s  %s"%[FrontierSpeciesNames.display(ecology,row.form_id),FrontierUniverse.body_from_id(app.state.manifest,row.source_body).name])
 	if sample_ids.is_empty():cargo.add_item("표본 없음  스캔 후 4m 이내에서 Q")
 	elif selected_sample in sample_ids:cargo.select(sample_ids.find(selected_sample))
 	lab.value="화물 %d / %d  창고 광물 %d\n기초 분석과 시험 구획은 우주선 24m 이내에서 이용합니다."%[sample_ids.size(),int(FrontierEcologyCatalog.config().cargo_capacity),int(app.logistics.depot_rock)]

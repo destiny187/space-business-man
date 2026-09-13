@@ -137,7 +137,7 @@ func _process(dt: float) -> void:
 	_load_one_model()
 	var camera:=get_viewport().get_camera_3d()
 	for node in nodes.values():
-		if camera!=null:node.get_meta("label").visible=labels_enabled and node.position.distance_to(camera.global_position)<18
+		if camera!=null:node.get_meta("label").visible=labels_enabled and node.get_meta("business_kind")!="vein" and node.position.distance_to(camera.global_position)<18
 		var previous: Vector3=node.position
 		if node.has_meta("destination"):
 			node.position=node.position.lerp(node.get_meta("destination"),minf(dt*8,1))
@@ -216,7 +216,8 @@ func _update_entity(id: String) -> void:
 	elif kind=="vein":
 		if not vein_rows.has(id):return
 		var row: Dictionary=vein_rows[id]
-		nodes[row.id].get_meta("label").text="%s · %d\n%s"%[FrontierCatalog.entry("resources",row.resource).name,int(site.get("remaining",{}).get(row.id,row.capacity)),"F 채광"]
+		# Mineral identity and amounts are provided by targeting and completed scans.
+		nodes[row.id].get_meta("label").text=""
 		nodes[row.id].get_meta("visual").scale=nodes[row.id].get_meta("visual").get_meta("original_scale",Vector3.ONE)*lerpf(.55,1,float(site.get("remaining",{}).get(row.id,row.capacity))/float(row.capacity))
 	elif kind=="building":
 		if not site.get("buildings",{}).has(id):return

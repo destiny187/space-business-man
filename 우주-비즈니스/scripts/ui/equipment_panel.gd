@@ -224,7 +224,7 @@ func _process(delta: float) -> void:
 	credit.text="%s"%int(ledger.get("credits",FrontierExpeditionBusiness.config().starting_credits))
 	if tabs.current_tab>2:return
 	var available:=FrontierItemInventory.capacity(member)
-	var view_state: Array=[data,bag,member.carried,available,tabs.current_tab]
+	var view_state: Array=[data,bag,member.carried,available,tabs.current_tab,app.session.latest.get("biota_revision",0)]
 	if tabs.current_tab==2:view_state.append_array([depot,storage_site.get("stored_equipment",{}),FrontierItemInventory.warehouse_capacity(storage_site),using_ship(),personal,storage_pending.size()])
 	var key:=JSON.stringify(view_state)
 	if key==last_key:return
@@ -242,7 +242,7 @@ func _process(delta: float) -> void:
 		var stack_indices: Dictionary={}
 		for stack in FrontierItemInventory.stacks(bag):
 			var id: String=stack.resource
-			var tile:=_reuse_tile(owned,_stack_key(stack_indices,id));tile.picture=FrontierResourceIcons.texture(id);tile.amount=str(int(stack.amount));tile.caption=FrontierCatalog.entry("resources",id).name;FrontierItemBrowser.tag(tile,tile.caption,FrontierItemBrowser.kind(id),int(bag[id]));tile.tooltip_text=FrontierCatalog.entry("resources",id).name+"  최대 %d개"%FrontierItemInventory.stack_size(id)
+			var tile:=_reuse_tile(owned,_stack_key(stack_indices,id));tile.picture=FrontierResourceIcons.texture(id);tile.amount=str(int(stack.amount));tile.caption=app.session.resource_name(id);FrontierItemBrowser.tag(tile,tile.caption,FrontierItemBrowser.kind(id),int(bag[id]));tile.tooltip_text=app.session.resource_name(id)+"  최대 %d개"%FrontierItemInventory.stack_size(id)
 			tile.custom_minimum_size=Vector2(84,96)
 			if not tile.has_meta("resource"):tile.pressed.connect(func():selected_resource=str(tile.get_meta("resource"));selected_item="";_refresh_details();_highlight())
 			tile.set_meta("resource",id);tile.queue_redraw()
@@ -342,7 +342,7 @@ func _refresh_details() -> void:
 			title.text="빈 보관함";category.text="공동 창고";preview.show_model("");action.text="선택한 아이템 없음";action.disabled=true;return
 		action.show()
 		var resource:=FrontierCatalog.entry("resources",selected_resource)
-		title.text=resource.name;category.text="CARGO / "+("내 배낭" if storage.selected==0 else "공동 창고")
+		title.text=app.session.resource_name(selected_resource);category.text="CARGO / "+("내 배낭" if storage.selected==0 else "공동 창고")
 		if FrontierSpecimenItems.is_item(selected_resource):
 			var sample: Dictionary=resource.sample
 			category.text="생체 표본 / 내 아이템"
@@ -430,7 +430,7 @@ func _refresh_storage(available: int) -> void:
 		var source: Dictionary=bag if side=="bag" else depot
 		var stack_indices: Dictionary={}
 		for stack in FrontierItemInventory.stacks(source):
-			_storage_tile(grid,_stack_key(stack_indices,stack.resource),{"resource":stack.resource,"amount":stack.amount,"source":side},FrontierResourceIcons.texture(stack.resource),str(stack.amount),FrontierCatalog.entry("resources",stack.resource).name)
+			_storage_tile(grid,_stack_key(stack_indices,stack.resource),{"resource":stack.resource,"amount":stack.amount,"source":side},FrontierResourceIcons.texture(stack.resource),str(stack.amount),app.session.resource_name(stack.resource))
 	for stored in storage_site.get("stored_equipment",{}).values():
 		var mine: bool=stored.owner==app.session.latest.self_id
 		var def: Dictionary=FrontierEquipment.config().items[stored.definition]
@@ -486,7 +486,7 @@ func _refresh_transfer() -> void:
 	var label: String=""
 	if storage_selection.has("resource"):
 		var resource: String=storage_selection.resource
-		if int((depot if incoming else bag).get(resource,0))>0:label=FrontierCatalog.entry("resources",resource).name
+		if int((depot if incoming else bag).get(resource,0))>0:label=app.session.resource_name(resource)
 	elif storage_selection.has("equipment_item"):
 		var item: String=storage_selection.equipment_item
 		if not incoming and data.items.has(item):label=FrontierEquipment.config().items[data.items[item]].name

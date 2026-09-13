@@ -18,11 +18,17 @@ var selected_entry: Dictionary={}
 var last_signature:=""
 var query_delay:=0.0
 var was_visible:=false
+var editing_name:=false
+var rename_input: LineEdit
+var rename_save: Button
+var rename_note: Label
+var rename_sequence:=0
+var rename_form:=""
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	add_theme_constant_override("separation",18)
 	var list:=VBoxContainer.new();list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;add_child(list)
-	search=LineEdit.new();search.placeholder_text="발견한 이름 검색";search.clear_button_enabled=true;search.max_length=100;list.add_child(search)
+	search=LineEdit.new();search.placeholder_text="이름 / 발견 번호 검색";search.clear_button_enabled=true;search.max_length=100;list.add_child(search)
 	search.text_changed.connect(func(_s):page_index=0;query_delay=.25)
 	var filters:=HBoxContainer.new();list.add_child(filters)
 	category=OptionButton.new();filters.add_child(category)
@@ -44,10 +50,17 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size.y=120;detail_column.add_child(preview);preview.hide()
 	details=VBoxContainer.new();detail_column.add_child(details)
 	app.session.discoveries_received.connect(_receive)
+	app.session.response_received.connect(_rename_response)
 func _process(delta: float) -> void:
 	if not is_visible_in_tree():was_visible=false;return
+	if selected_entry.get("kind","")=="biology":
+		var height:=110.0 if get_viewport_rect().size.y<720 else 170.0
+		if preview.custom_minimum_size.y!=height:
+			preview.custom_minimum_size.y=height
+			if editing_name:call_deferred("_reveal_name_controls")
 	grid.columns=clampi(int((get_viewport_rect().size.x-132)/2/92),1,6)
 	var signature:=str(app.session.latest.get("weather",{}).get("observed",0))+str(app.session.latest.get("discoveries",{}))+str(app.session.latest.get("coopertech_clues",{}))+str(app.session.latest.get("location",""))+str(app.session.latest.get("crew",{}).get("survey",{}))+str(app.session.latest.get("crew",{}).get("corporations",{}))+str(app.session.latest.get("crew",{}).get("corporate_traces",{}))+str(app.session.latest.get("crew",{}).get("freight_records",{}))+str(app.session.surface.get("ecology",{}).get("observations",{}))
+	signature+=str(app.session.latest.get("biota_revision",0))
 	if not was_visible or signature!=last_signature:last_signature=signature;refresh()
 	was_visible=true
 	if query_delay>0:
@@ -76,10 +89,12 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 		tile.pressed.connect(func():select(entry))
 		if entry.key==selected_entry.get("key",""):retained=entry
 	if retained.is_empty() and not value.entries.is_empty():retained=value.entries[0]
-	select(retained)
+	# Background discoveries must not destroy a name being typed (including IME).
+	if not editing_name or retained.get("key","")!=selected_entry.get("key",""):select(retained)
 	if value.entries.is_empty():
 		var empty:=FrontierInterfaceStyle.label(grid,"E를 유지해 현장의 생물·광물·장비를 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "장비의 표식을 E로 조사하면 기업이 기록됩니다." if category.selected==5 and search.text.is_empty() else "조건에 맞는 발견이 없습니다.",14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 func select(entry: Dictionary) -> void:
+	editing_name=false
 	if entry.get("key","")!=selected_entry.get("key",""):detail_scroll.scroll_vertical=0
 	selected_entry=entry
 	for tile in grid.get_children():
@@ -162,14 +177,14 @@ func select(entry: Dictionary) -> void:
 		if not entry.row.clue.is_empty():
 			var clue: Dictionary=entry.row.clue
 			FrontierInterfaceStyle.label(details,"광맥 단서  %s  %.0f / %.0f"%[FrontierCatalog.entry("resources",clue.resource).name,float(clue.position[0]),float(clue.position[2])],13)
-		if not entry.row.sample.is_empty():FrontierInterfaceStyle.label(details,"확보 계통  "+str(FrontierEcologyCatalog.form(entry.row.sample.form_id).name),13)
+		if not entry.row.sample.is_empty():FrontierInterfaceStyle.label(details,"확보 계통  "+str(entry.row.get("sample_name","미등록 생물")),13)
 	elif entry.kind=="incident":
 		var d:=FrontierExplorationIncidents.definition(entry.row.template)
 		if d.mode=="robot":FrontierCorporateIdentity.add_to(details,"coopertech_robot")
 		preview.show()
 		if entry.row.has("native"):
 			preview.show_specimen(entry.row.native)
-			var individual:=FrontierInterfaceStyle.label(details,FrontierNativeIncidents.title(entry.row.native)+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+			var individual:=FrontierInterfaceStyle.label(details,str(entry.row.get("native_name","미등록 생물"))+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		else:preview.show_model(d.model)
 		FrontierInterfaceStyle.label(details,"회수 완료" if entry.row.claimed else "현장 진행 중",13)
 		if entry.row.has("blueprint"):
@@ -183,6 +198,7 @@ func select(entry: Dictionary) -> void:
 		for resource in reward:
 			var line:=HBoxContainer.new();details.add_child(line);line.add_child(FrontierResourceIcons.view(resource,24));FrontierInterfaceStyle.label(line,str(int(reward[resource])),14)
 	elif entry.kind=="biology":
+		_add_name_editor(entry)
 		for index in app.form_options.item_count:
 			if app.form_options.get_item_metadata(index)==entry.row.form_id:app.form_options.select(index);break
 		var form:=FrontierEcologyCatalog.form(entry.row.form_id)
@@ -207,3 +223,38 @@ func select(entry: Dictionary) -> void:
 		if FrontierMinerals.entry(entry.row.resource).get("category")=="gem":uses.append("개인 증강  우주선 증강 장치")
 		if not uses.is_empty():
 			var note:=FrontierInterfaceStyle.label(details,"사용처  "+"  ".join(uses),13);note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+
+func _add_name_editor(entry: Dictionary) -> void:
+	var identity: Dictionary=entry.row.get("identity",{})
+	var code: String=identity.get("code","")
+	if code.is_empty():return
+	if not str(identity.get("name","")).is_empty():FrontierInterfaceStyle.label(details,code,13,FrontierInterfaceStyle.MUTED)
+	var change:=Button.new();change.text="이름 바꾸기";change.tooltip_text="이 원정의 공동 도감에 저장합니다.";details.add_child(change)
+	var editor:=VBoxContainer.new();details.add_child(editor);editor.hide()
+	rename_input=LineEdit.new();rename_input.placeholder_text=code;rename_input.text=identity.get("name","");rename_input.max_length=FrontierSpeciesNames.MAX_NAME;rename_input.clear_button_enabled=true;editor.add_child(rename_input)
+	var buttons:=HBoxContainer.new();editor.add_child(buttons)
+	rename_save=Button.new();rename_save.text="저장";buttons.add_child(rename_save);rename_save.pressed.connect(_save_name)
+	var reset:=Button.new();reset.text="번호로 되돌리기";buttons.add_child(reset);reset.pressed.connect(func():rename_input.text="";_save_name())
+	var cancel:=Button.new();cancel.text="취소";buttons.add_child(cancel);cancel.pressed.connect(func():editing_name=false;refresh())
+	rename_note=FrontierInterfaceStyle.label(editor,"",12,FrontierInterfaceStyle.MUTED);rename_note.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	rename_input.text_submitted.connect(func(_text):_save_name())
+	change.pressed.connect(func():editing_name=true;editor.show();change.hide();rename_input.grab_focus();rename_input.select_all();call_deferred("_reveal_name_controls"))
+func _reveal_name_controls() -> void:
+	await get_tree().process_frame
+	if editing_name and is_instance_valid(rename_input):detail_scroll.ensure_control_visible(rename_input.get_parent())
+func _save_name() -> void:
+	if rename_sequence!=0 or selected_entry.get("kind","")!="biology":return
+	var reason:=FrontierSpeciesNames.name_error(rename_input.text)
+	if not reason.is_empty():rename_note.text=reason;return
+	rename_sequence=app.session.next_sequence;rename_form=selected_entry.row.form_id
+	rename_save.disabled=true;rename_note.text="저장 중…"
+	var accepted:=app.session.send_request("ecology_rename",{"form_id":rename_form,"name":rename_input.text,"previous_name":selected_entry.row.identity.name})
+	if not accepted and rename_sequence!=0:
+		rename_sequence=0;rename_save.disabled=false;rename_note.text="저장하지 못했습니다. 연결 상태와 안내를 확인하세요."
+func _rename_response(sequence: int,value: Dictionary) -> void:
+	if sequence!=rename_sequence or rename_sequence==0:return
+	rename_sequence=0
+	if selected_entry.get("row",{}).get("form_id","")!=rename_form:return
+	if value.get("ok",false):editing_name=false;refresh()
+	elif is_instance_valid(rename_note):
+		rename_save.disabled=false;rename_note.text=str(value.get("error","이름을 저장하지 못했습니다."))

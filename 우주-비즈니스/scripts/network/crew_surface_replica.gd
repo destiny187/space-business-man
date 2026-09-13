@@ -38,7 +38,7 @@ static func packet(world: Dictionary,actor: String,business_shared: Dictionary={
 			if world.ecology.get("species_research",{}).has(row.form_id):studies[row.form_id]=true
 	return {"water":FrontierSurfaceWater.packet(world.get("surface_water",{}).get(id,FrontierSurfaceWater.create()),position),"sky_region":world.get("celestial_regions",{}).get(id,{}).duplicate(true),"engineering":world.get("engineering",FrontierFieldEngineering.create()).duplicate(true),"business":FrontierExpeditionBusiness.public_view(world,actor,business_shared),"version":1,"body_id":id,"epoch":world.crew.landing.epoch,"terrain_settings":world.terrain_settings.duplicate(true),"terrain_settings_hash":world.terrain_settings_hash,
 		"edits":world.terrain_edits.get(id,[]).duplicate(true),"rules_hash":world.ecology.rules_hash,"catalog_hash":world.ecology.catalog_hash,
-		"ecology":{"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo,"species_research":studies}}
+		"ecology":{"species_names":FrontierSpeciesNames.for_view(world,actor),"planets":{id:record},"observations":observations,"research":world.ecology.research.duplicate(true),"specimens":cargo,"species_research":studies}}
 
 static func validate(value: Variant,manifest: Dictionary) -> bool:
 	if not value is Dictionary or not FrontierSurfaceWater.valid(value.get("water",FrontierSurfaceWater.create()),int(FrontierSurfaceWater.config().snapshot_cells)):return false

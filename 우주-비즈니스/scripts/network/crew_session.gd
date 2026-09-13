@@ -486,6 +486,11 @@ func _surface_state(epoch: String,serial: int,data: PackedByteArray) -> void:
 	received_surface_serial=serial;surface=value;surface_received.emit(value)
 
 # A requested page travels once on the reliable channel, outside movement/surface snapshots.
+func species_name(form_id: String) -> String:
+	return FrontierSpeciesNames.display({"species_names":latest.get("biota_names",{})},form_id)
+func resource_name(id: String) -> String:
+	if FrontierSpecimenItems.is_item(id):return species_name(FrontierSpecimenItems.decode(id).get("form_id",""))+" 표본"
+	return str(FrontierCatalog.entry("resources",id).get("name",id))
 func request_discoveries(serial: int,query: String,kind: String,body_id: String,page_index: int) -> void:
 	if not active:return
 	if hosting:discoveries_received.emit(serial,FrontierDiscoveryIndex.page(authority.world,query,kind,body_id,page_index))

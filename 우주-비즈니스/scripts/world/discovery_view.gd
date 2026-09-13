@@ -123,11 +123,11 @@ func _process(delta: float) -> void:
 	hint.size=Vector2(minf(540,get_viewport().get_visible_rect().size.x-40),74);hint.position=Vector2((get_viewport().get_visible_rect().size.x-hint.size.x)*.5,get_viewport().get_visible_rect().size.y*.67)
 	if selected.is_empty():hint.text="";return
 	var d:=FrontierExplorationDiscoveries.definition(selected.template);var index:=FrontierExplorationDiscoveries.stage(world,selected)
-	if index>=d.stages.size():hint.text=d.name+"  조사 완료";return
-	var step: Dictionary=d.stages[index]
 	var known:=FrontierExplorationDiscoveries.known(world,selected)
-	hint.text="%s  %d/%d\n%s  %s"%[d.name,index+1,d.stages.size(),"F" if known else "E 유지",step.label]
-	if d.mode=="archive":hint.text+="\n"+str(FrontierFacilityBlueprints.definitions()[FrontierFacilityBlueprints.archive_blueprint(world,selected)].name)
+	if not known:hint.text="E  스캔";return
+	if index>=d.stages.size():hint.text="조사 완료";return
+	var step: Dictionary=d.stages[index]
+	hint.text="F  "+str(step.label)
 	if not str(step.tool).is_empty():hint.text+="  ["+("지형 변환기" if step.tool=="terrain" else "채집기")+"]"
 	for resource in step.cost:hint.text+="  %s %d"%[FrontierCatalog.entry("resources",resource).name,int(step.cost[resource])]
 func interact() -> bool:

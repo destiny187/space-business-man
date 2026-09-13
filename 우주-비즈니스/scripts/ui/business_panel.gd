@@ -399,7 +399,7 @@ func update_engineering() -> void:
 		engineering_steps[i].modulate=FrontierInterfaceStyle.ACCENT if done[i] else FrontierInterfaceStyle.MUTED
 	research_detail.text=def.description
 	if not analyzed:research_detail.text+="\n관련 생물을 E로 조사한 뒤 착륙선에서 분석하세요."
-	elif not form_id.is_empty():research_detail.text+="\n연구 표본  "+FrontierEcologyCatalog.form(form_id).name
+	elif not form_id.is_empty():research_detail.text+="\n연구 표본  "+FrontierSpeciesNames.display(knowledge,form_id)
 	var cfg:=FrontierFieldEngineering.config()
 	engineering_progress.visible=stage in ["prototype","trial"]
 	if engineering_progress.visible:

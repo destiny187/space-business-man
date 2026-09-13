@@ -81,6 +81,7 @@ var industry_timer:=0.0
 var last_mine: Dictionary={}
 var rover_spawn_validator: Callable
 var rover_runtime: Dictionary={"seats":{},"exits":{},"tasks":{},"status":{}}
+var naming_views: Dictionary={}
 var orbital_terraform:=FrontierOrbitalTerraform.new()
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierCrewSurface.reset_cache()
@@ -117,6 +118,7 @@ func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
 	FrontierExplorationIncidents.ensure(world)
 	FrontierExpeditionResearch.ensure(world)
 	FrontierSpecimenItems.ensure(world)
+	FrontierSpeciesNames.ensure(world.ecology);naming_views.clear()
 	for id in world.crew.members:
 		FrontierCrewAugmentation.ensure(world.crew.members[id])
 		FrontierExpeditionBusiness.release_carrier(world,id);FrontierCrewWorld.disconnect_member(world.crew,id);FrontierShuttles.resume(world,id)
@@ -208,7 +210,11 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	var site: Dictionary=world.get("business",{}).get("sites",{}).get(target_id,{})
 	var vessel_stats:=FrontierVesselRefit.stats(local)
 	if local.has("local_shuttle"):vessel_stats.stellar_range=0.0
-	return {"host_view":shared.host_view,"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"orbital_terraform":shared.orbital_terraform,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	var names_key:=str(world.crew.revision)+":"+actor+":"+str(local.location)
+	if not naming_views.has(names_key):
+		if naming_views.size()>12:naming_views.clear()
+		naming_views[names_key]=FrontierSpeciesNames.for_view(world,actor)
+	return {"host_view":shared.host_view,"biota_names":naming_views[names_key],"biota_revision":int(world.ecology.get("naming_revision",0)),"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"orbital_terraform":shared.orbital_terraform,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
 func pump_requests() -> void:
 	if stopped:
 		for queued in queued_requests:completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":failure(error)})
@@ -292,13 +298,13 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 		if remaining>0:
 			var waiting:=failure("채광 도구가 준비 중입니다.");waiting.code="mining_cooldown";waiting.retry_after=remaining;return waiting
 	if envelope.kind in ["surface_dig","surface_attack","surface_incident_tool"] and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("도구가 준비 중입니다.")
-	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch"]:return failure("먼저 로버에서 내리세요.")
+	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch","ecology_rename"]:return failure("먼저 로버에서 내리세요.")
 	var canonical:=WorldDraft.request(world,actor,envelope.kind)
 	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	var rover_draft:=rover_runtime.duplicate(true) if envelope.kind.begins_with("rover_") else rover_runtime
 	if envelope.kind.begins_with("rover_") or (envelope.kind.begins_with("station_") and not envelope.kind.begins_with("station_skill_")) or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit","suit_module"]:FrontierItemInventory.merge_legacy(draft,actor)
-	if not envelope.kind.begins_with("lotus_") and not envelope.kind.begins_with("space_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall"]:return failure("착륙선에서 내린 뒤 실행하세요.")
+	if not envelope.kind.begins_with("lotus_") and not envelope.kind.begins_with("space_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall","ecology_rename"]:return failure("착륙선에서 내린 뒤 실행하세요.")
 	var flood_reason:=FrontierFacilityFlooding.guard(canonical,actor,envelope.kind,envelope.args)
 	if not flood_reason.is_empty():return failure(flood_reason)
 	var facility_id:=str(envelope.args.get("building_id",envelope.args.get("facility_id","")))
@@ -315,6 +321,7 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 			solver.record=draft.get("surface_water",{}).get(draft.crew.landing.body_id,FrontierSurfaceWater.create())
 			water_hit=solver.intersect(origin,aim,reach)
 	if envelope.kind in ["space_salvage","space_repair"]:reason=FrontierSpaceCombat.apply(draft,actor,envelope.kind,envelope.args)
+	elif envelope.kind=="ecology_rename":reason=FrontierSpeciesNames.rename(draft.ecology,envelope.args)
 	elif envelope.kind=="suit_module":reason=FrontierSuitModules.apply(draft,actor,envelope.args)
 	elif envelope.kind in ["surface_incident","surface_incident_tool"]:
 		reason=FrontierExplorationIncidents.apply(draft,actor,envelope.args,envelope.kind=="surface_incident_tool",shot_obstacle_provider)

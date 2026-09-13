@@ -587,7 +587,7 @@ func _process(delta: float) -> void:
 	if session!=null and session.latest.get("phase")=="playing":
 		status.get_parent().visible=false
 		navigation_toggle.get_parent().visible=false
-		if flight!=null:
+	if flight!=null:
 			flight.scan_enabled=outside and _mouse_look_allowed() and not cursor_released
 			flight.presentation_blocked=feedback.blocked() or (onboarding!=null and onboarding.letter.visible) or surface_world!=null or not get_window().has_focus()
 	if session==null or session.latest.is_empty() or not session.active or session.latest.get("phase")!="playing":return
@@ -838,11 +838,10 @@ func _update_surface_hud() -> void:
 
 	if not surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(surface_target.form_id)
-		text+="\n"+str(form.name)
+		text+="\n생명체"
 		if form.category=="animal":text+="  체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierWildlifeCombat.health(surface_target))),FrontierWildlifeCombat.health(surface_target)]
 		var progress: Dictionary=session.latest.get("scan",{})
-		var known: bool=session.surface.ecology.observations.has(surface_world.body.id+":"+form.id)
-		text+="\nQ 생체 표본" if known else "\nE 유지  스캔 %d%%"%int(float(progress.get("progress",0))*100)
+		if float(progress.get("progress",0))>0 and not progress.get("known",false):text+="\n스캔 %d%%"%int(float(progress.progress)*100)
 	else:text+="\nI 아이템 / 제작    1–5 장비 전환    E 내장 스캐너"
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
 	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
@@ -865,18 +864,20 @@ func _refresh_surface_options() -> void:
 		for row in ecological.research.values():
 			if row.form_id not in ids:ids.append(row.form_id)
 		ids.sort()
-		if form_options.get_meta("source_ids",["uninitialized"])!=ids:
+		if form_options.get_meta("source_ids",["uninitialized"])!=ids or form_options.get_meta("name_revision",-1)!=session.latest.get("biota_revision",0):
+			form_options.set_meta("name_revision",session.latest.get("biota_revision",0))
 			form_options.set_meta("source_ids",ids.duplicate());form_options.clear()
-			for id in ids:form_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(id))),FrontierEcologyCatalog.form(id).name);form_options.set_item_metadata(form_options.item_count-1,id)
+			for id in ids:form_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(id))),session.species_name(id));form_options.set_item_metadata(form_options.item_count-1,id)
 			if selected in ids:form_options.select(ids.find(selected))
 			if ids.is_empty():form_options.add_item("스캔한 생명체 없음");form_options.set_item_metadata(0,"")
 	if not sample_options.get_popup().visible:
 		var selected: String=str(sample_options.get_item_metadata(sample_options.selected)) if sample_options.selected>=0 else ""
 		var carried_samples:=FrontierSpecimenItems.carried(session.latest.get("inventory",{}))
 		var ids: Array=ecological.specimens.keys().filter(func(id):return ecological.specimens[id].state=="cargo" and carried_samples.has(id));ids.sort()
-		if sample_options.get_meta("source_ids",["uninitialized"])!=ids:
+		if sample_options.get_meta("source_ids",["uninitialized"])!=ids or sample_options.get_meta("name_revision",-1)!=session.latest.get("biota_revision",0):
+			sample_options.set_meta("name_revision",session.latest.get("biota_revision",0))
 			sample_options.set_meta("source_ids",ids.duplicate());sample_options.clear()
-			for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),FrontierEcologyCatalog.form(ecological.specimens[id].form_id).name);sample_options.set_item_metadata(sample_options.item_count-1,id)
+			for id in ids:sample_options.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(ecological.specimens[id].form_id))),session.species_name(ecological.specimens[id].form_id));sample_options.set_item_metadata(sample_options.item_count-1,id)
 			if selected in ids:sample_options.select(ids.find(selected))
 			if ids.is_empty():sample_options.add_item("내 아이템창에 표본 없음");sample_options.set_item_metadata(0,"")
 

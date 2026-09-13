@@ -124,6 +124,7 @@ func _read(candidate: String) -> Dictionary:
 		return {}
 	if candidate==path:verified_digest=encoded.sha256_text()
 	FrontierExpeditionResearch.ensure(parser.data)
+	if parser.data.has("ecology"):FrontierSpeciesNames.ensure(parser.data.ecology)
 	return parser.data
 
 func has_history() -> bool:

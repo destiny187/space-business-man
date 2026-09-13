@@ -52,4 +52,5 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 			authority.scans.erase(peer);authority.stopped=true;authority.error="대기층 관측 저장 실패로 공동 세계를 정지했습니다.";return true
 		authority.world=draft
 	scan.progress=1.0;scan.known=true
+	if not selected.is_empty():scan.name=FrontierSpeciesNames.display(authority.world.ecology,selected.form_id)
 	return true

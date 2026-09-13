@@ -97,11 +97,13 @@ static func status(record: Dictionary,form: Dictionary,point: Vector3,layer: Str
 	return "active"
 
 static func scan(ecology: Dictionary,body_id: String,encounter: Dictionary) -> String:
+	FrontierSpeciesNames.ensure(ecology)
 	var form:=FrontierEcologyCatalog.form(encounter.form_id)
 	var key: String=body_id+":"+encounter.form_id
 	if ecology.observations.has(key):return "이미 기록한 생명체입니다. 중복 연구 보상은 없습니다."
 	ecology.observations[key]={"body_id":body_id,"form_id":form.id,"look_id":encounter.look_id,"origin":"native" if not encounter.get("introduced",false) else "introduced"}
-	return "스캔 완료 · "+str(form.name)+" · 우주선 연구실에서 분석할 수 있습니다."
+	FrontierSpeciesNames.register(ecology,form.id)
+	return "스캔 완료 · "+FrontierSpeciesNames.display(ecology,form.id)+" · 우주선 연구실에서 분석할 수 있습니다."
 
 static func analyze(ecology: Dictionary,form_id: String,logistics: Dictionary) -> String:
 	var form:=FrontierEcologyCatalog.form(form_id)
@@ -255,6 +257,8 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 		else:
 			if sample.destination==sample.source_body or not value.planets.has(sample.destination) or not value.planets[sample.destination].introductions.has(id):return "이식 목적지 오류"
 	if int(value.get("item_storage_version",0))==0 and cargo_count>int(FrontierEcologyCatalog.config().cargo_capacity):return "표본 보관 용량 초과"
+	var naming_error:=FrontierSpeciesNames.validate(value)
+	if not naming_error.is_empty():return naming_error
 	return preload("res://scripts/domain/species_functions.gd").validate(value)
 
 static func _identity_valid(row: Dictionary) -> bool:

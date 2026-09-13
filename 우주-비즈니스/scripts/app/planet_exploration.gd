@@ -321,7 +321,7 @@ func _process_ecology(delta: float) -> void:
 	if not id.is_empty():
 		var form:=FrontierEcologyCatalog.form(current_encounter.form_id)
 		var known: bool=state.ecology.observations.has(body_id+":"+form.id)
-		ecology_hud.text="%s\n%s · %s\n%s"%[form.name,form.environment_label,"휴면" if current_encounter.status=="dormant" else "활성","Q 표본 확보 · J 연구 기록" if known else "E 길게 누르기 · 생태 스캔"]
+		ecology_hud.text="%s\n%s · %s\n%s"%[FrontierSpeciesNames.display(state.ecology,form.id) if known else "미등록 생물",form.environment_label,"휴면" if current_encounter.status=="dormant" else "활성","Q 표본 확보 · J 연구 기록" if known else "E 길게 누르기 · 생태 스캔"]
 		if scan_held and not known:
 			scan_progress+=minf(delta,.1)
 			ecology_hud.text+=" · %d%%"%mini(100,int(scan_progress/float(FrontierEcologyCatalog.config().scan_seconds)*100))

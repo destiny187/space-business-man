@@ -28,7 +28,7 @@ func update(body: Dictionary,scan: Dictionary,blocked: bool) -> void:
 	if active and not sample.is_empty():
 		preview.present(sample,scan.get("origin","")=="dormant")
 		if scan.get("known",false):
-			heading.text=FrontierEcologyCatalog.form(sample.form_id).name
+			heading.text=str(scan.get("name","미등록 생물"))
 			detail.text="관측 기록 저장  J 도감\nF를 놓고 다시 유지하면 다음 신호 조사"
 		else:detail.text="생체 구조 분석 중  F 유지"
 	elif active and scan.get("known",false):detail.text="관측 가능한 생명 신호 없음" if scan.get("empty",true) else "현재 관측 가능한 종을 모두 기록했습니다."

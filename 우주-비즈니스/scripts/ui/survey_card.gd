@@ -1,6 +1,7 @@
 class_name FrontierSurveyCard
 extends PanelContainer
 ## Short visual result from the host. Displays no speculative trait as an implemented bonus.
+const RESULT_SECONDS:=4.0
 var app: FrontierCrewExpedition
 var content: VBoxContainer
 var title: Label
@@ -38,20 +39,25 @@ func present(info: Dictionary) -> void:
 		var label:=FrontierInterfaceStyle.label(row,note.text,13);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;label.custom_minimum_size.x=280
 	condition.text=info.condition;action.text=info.get("action","")+"  J  조사 기록"
 func _process(delta: float) -> void:
-	if app.session.latest.is_empty():hide();return
+	if app.session.latest.is_empty():timer=0;previous="";hide();return
 	var scan: Dictionary=app.session.latest.get("scan",{})
+	var token: String=""
 	if scan.get("known",false) and scan.has("info"):
-		var token:=JSON.stringify(scan.info)
+		token=str(app.session.latest.get("session_id",""))+"/"+str(app.session.latest.get("location",""))+"/"+str(scan.info.kind)+"/"+str(scan.get("id",""))
+	if app.surface_world==null or app.feedback==null or app.feedback.blocked():
+		# Consume a stale snapshot while blocked; reopening a menu is not a scan.
+		timer=0;previous=token;hide();return
+	timer=maxf(0,timer-delta)
+	if not token.is_empty():
 		if token!=previous:
 			var new_subject: bool=displayed.get("id","")!=scan.get("id","")
 			present(scan.info)
 			if new_subject and scan.info.kind=="mineral":app.feedback.audio.play("ui_discovery")
 			previous=token
-		timer=4
+			timer=RESULT_SECONDS
 	else:
+		previous=""
 		if float(scan.get("progress",0))>0:timer=0
-		timer=maxf(0,timer-delta)
-		if timer<=0:previous=""
 	visible=timer>0
 	var kind: String=displayed.get("kind","")
 	position=Vector2(28,194 if kind in ["corporation","biology"] else 110)

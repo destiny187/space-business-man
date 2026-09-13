@@ -283,6 +283,7 @@ func _wildlife_cue(point: Vector3,kind: String) -> void:
 	if app.onboarding!=null and app.onboarding.letter.visible:return
 	if FrontierWildlifeCombat.config().audio.has(kind):
 		app.feedback.audio.play(FrontierWildlifeCombat.config().audio[kind],point,float(FrontierWildlifeCombat.config().audio_pitch.get(kind,1.0)))
-		if kind in ["hurt","down"]:app.feedback.effects.burst(point+Vector3.UP*.6,Color("cdb994"),4)
+		# Damage contacts already supply their own material effect. Keep this
+		# creature cue audible without adding a second ring across the body.
 	elif kind=="alert":app.feedback.audio.play("sfx_creature_call",point)
-	else:app.feedback.effects.burst(point,Color("a89677"),2)
+	elif kind=="step":app.feedback.effects.foot_dust(point)

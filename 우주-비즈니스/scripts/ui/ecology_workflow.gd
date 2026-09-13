@@ -69,12 +69,12 @@ func refresh(near: bool) -> void:
 		var sample: Dictionary=ecology.specimens[id]
 		if carried.has(id) and sample.state=="cargo" and sample.form_id==form.id and sample.source_body!=app.session.latest.location:candidates[id]=sample
 	samples.visible=established and not introduced
-	var signature:=str(candidates)+str(app.sample_options.selected)
+	var signature:=str(candidates)+str(app.sample_options.selected)+str(entry.name)
 	if signature!=sample_signature:
 		sample_signature=signature
 		for child in samples.get_children():samples.remove_child(child);child.queue_free()
 		for id in candidates:
-			var tile:=Button.new();tile.text=form.name;tile.icon=FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(form));samples.add_child(tile)
+			var tile:=Button.new();tile.text=entry.name;tile.icon=FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(form));samples.add_child(tile)
 			tile.toggle_mode=true
 			tile.button_pressed=app.sample_options.selected>=0 and app.sample_options.get_item_metadata(app.sample_options.selected)==id
 			tile.pressed.connect(func():

@@ -54,6 +54,12 @@ func burst(position_value: Vector3,color: Color,count: int = 12) -> void:
 	for i in range(count): _spawn("spark",position_value,Vector3.ZERO,color,randf_range(0.25,0.65),randf_range(0.025,0.065))
 	_spawn("ring",position_value,Vector3.ZERO,color,0.32,0.18)
 
+func foot_dust(point: Vector3) -> void:
+	# Foot contact is a small ground cue, not an expanding impact ring.
+	for i in 2:
+		var e:=_spawn("spark",point+Vector3.UP*.025,Vector3.ZERO,Color("a89677"),randf_range(.16,.24),randf_range(.012,.027))
+		if not e.is_empty():e.velocity=Vector3(randf_range(-.4,.4),randf_range(.15,.4),randf_range(-.4,.4))
+
 func pulse(origin: Vector3,destination: Vector3,solid_impact: bool=true) -> void:
 	emitted.pulse += 1
 	for i in range(5): _spawn("spark",origin,Vector3.ZERO,Color("ffcf83"),0.10,0.035)

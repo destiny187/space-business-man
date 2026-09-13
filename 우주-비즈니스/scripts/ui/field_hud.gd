@@ -14,6 +14,7 @@ var target_name: Label
 var target_action: Label
 var target_icon: TextureRect
 var target_bar: ProgressBar
+var target_health: FrontierTargetHealth
 var equipment_name: Label
 var cooldown: ProgressBar
 var navigation: HBoxContainer
@@ -40,6 +41,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var labels:=VBoxContainer.new();labels.add_theme_constant_override("separation",4);labels.mouse_filter=Control.MOUSE_FILTER_IGNORE;row.add_child(labels)
 	target_name=FrontierInterfaceStyle.label(labels,"",15);target_action=FrontierInterfaceStyle.label(labels,"",12,FrontierInterfaceStyle.ACCENT)
 	target_bar=ProgressBar.new();target_bar.show_percentage=false;target_bar.custom_minimum_size=Vector2(190,3);labels.add_child(target_bar)
+	target_health=FrontierTargetHealth.new();add_child(target_health)
 	var weapon:=VBoxContainer.new();weapon.name="Weapon";weapon.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(weapon)
 	equipment_name=FrontierInterfaceStyle.label(weapon,"",14);cooldown=ProgressBar.new();cooldown.show_percentage=false;cooldown.custom_minimum_size=Vector2(170,3);weapon.add_child(cooldown)
 	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",FrontierInterfaceStyle.SPACE);add_child(navigation)
@@ -94,27 +96,34 @@ func _process(delta: float) -> void:
 	equipment_name.text=tool.get("name","I  장비 준비")
 	equipment_name.get_parent().visible=app.rovers==null or app.rovers.seat().is_empty()
 	cooldown.value=100*(1-clampf(app.dig_timer/maxf(.1,float(tool.get("interval",1))),0,1))
-	context.hide();target_bar.hide()
+	context.hide();target_bar.hide();target_health.hide();target_icon.show();target_name.show();target_action.show()
 	var target:=app.surface_world.business_view.target(app.camera,app.actors[app.session.latest.self_id])
 	if target.get("kind")=="vein":
 		var vein:=FrontierExpeditionBusiness.find_vein(app.surface_world.body,target.id)
-		target_icon.texture=FrontierResourceIcons.texture(vein.resource);target_name.text=FrontierCatalog.entry("resources",vein.resource).name+" 광맥"
+		var known: bool=app.session.latest.crew.get("survey",{}).has(FrontierSurfaceSurvey.key(app.surface_world.body.id,{"kind":"mineral","resource":vein.resource}))
+		target_icon.visible=known
+		target_icon.texture=FrontierResourceIcons.texture(vein.resource) if known else null
+		target_name.text=FrontierCatalog.entry("resources",vein.resource).name+" 광맥" if known else "미확인 광맥"
 		var usable: bool=tool.get("kind")=="miner" and int(tool.get("tier",0))>=int(vein.required_tier)
 		target_action.text="클릭 유지  채집" if usable else "채집기 %s 필요"%["I","II","III"][int(vein.required_tier)-1]
 		target_action.modulate=Color.WHITE if usable else FrontierInterfaceStyle.WARNING
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		if site.is_empty():target_action.text="광맥 조준  클릭 유지로 채집"
 		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
-		target_action.text+="  E 유지  조사\nR  로봇 1대 지시  "+("고등급 자동 선정" if app.preferred_robot_id.is_empty() else app.preferred_robot_id+" 우선")
+		if tool.get("kind")=="miner":target_action.text+="  R  로봇 지시"
+		if not known:target_action.text+="  E  스캔"
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)
-		target_name.text=form.name;target_icon.texture=FrontierResourceIcons.texture(FrontierResourceIcons.specimen_id(form))
-		var known: bool=app.session.surface.ecology.observations.has(app.surface_world.body.id+":"+form.id)
-		target_action.text="Q  표본 채집  E  활용 정보" if known else "E 유지  스캔";target_action.modulate=Color.WHITE;context.show()
-		if form.category=="animal" and tool.get("kind")=="pulse":
-			target_bar.show();target_bar.max_value=FrontierWildlifeCombat.health(app.surface_target);target_bar.value=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),target_bar.max_value)
-			target_action.text="클릭  발사" if target_bar.value>0 else "무력화"
+		# Identity, portraits and specimen uses belong to the short completed scan,
+		# even when this species is already recorded in the journal.
+		target_name.text="";target_name.hide();target_icon.texture=null;target_icon.hide()
+		target_action.text="E  스캔";target_action.modulate=Color.WHITE;context.show()
+		if form.category=="animal":
+			context.hide();target_name.text="";target_action.text=""
+			var maximum:=FrontierWildlifeCombat.health(app.surface_target)
+			var remaining: float=app.session.latest.crew.get("combat",{}).get(app.surface_world.body.id+"/"+str(app.surface_target.id),maximum)
+			target_health.present(remaining,maximum)
 	elif not target.is_empty():
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 		var row: Dictionary=site.get("buildings",{}).get(target.id,{})
@@ -128,15 +137,17 @@ func _process(delta: float) -> void:
 
 	if not app.placement_kind.is_empty():
 		var def:=app.placement_definition()
+		target_icon.show();target_name.show();target_action.show()
 		target_icon.texture=load("res://assets/ui/interface/ship.svg") if app.placement_kind=="shuttle" else FrontierInterfaceStyle.icon(def.model)
 		target_name.text=("✓ 배치 가능  " if app.placement_valid else "× 배치 불가  ")+str(def.name)
 		target_action.text=("클릭 호출  휠 회전" if app.placement_kind=="shuttle" else "클릭 건설  휠 회전  "+FrontierCatalog.cost_text(def.cost)) if app.placement_valid else app.placement_reason
 		target_action.modulate=FrontierInterfaceStyle.ACCENT if app.placement_valid else FrontierInterfaceStyle.WARNING
 		target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
-		context.show();target_bar.hide()
-	else:target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
+		context.show();target_bar.hide();target_health.hide()
+	else:target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=0 if not app.surface_target.is_empty() else 260
+	context.size=context.get_combined_minimum_size()
 	context.position.x=minf(context.position.x,size.x-context.size.x-24)
-	if scan_card.visible:context.hide()
+	if scan_card.visible:context.hide();target_health.hide()
 
 class DayDial extends Control:
 	var height:=1.0
