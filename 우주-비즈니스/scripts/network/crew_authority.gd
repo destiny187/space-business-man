@@ -213,14 +213,14 @@ func pump_requests() -> void:
 		queued_requests.clear();return
 	if not resolve_autonomous() or queued_requests.is_empty():return
 	var queued: Dictionary=queued_requests.pop_front()
+	if queued.envelope.kind=="surface_fire" and now-float(queued.get("queued_at",now))>float(FrontierFirearms.config().projectiles.input_buffer_seconds):
+		completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":{"ok":false,"code":"trigger_expired","firearm_action":"surface_fire"}});return
 	var before: Array=[world.crew.revision,phase,lobby_ready.duplicate()]
 	var result:=request(int(queued.peer),queued.envelope,true) if peers.get(int(queued.peer))==queued.actor else failure("요청한 승무원이 세션을 떠났습니다.")
 	if not result.get("pending",false):completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":result,"committed":before!=[world.crew.revision,phase,lobby_ready],"kind":queued.envelope.kind,"stale":queued.envelope.get("revision",world.crew.revision)!=world.crew.revision})
 func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 	if stopped or not peers.has(peer):return failure("참가 동기화가 끝나지 않았습니다.")
 	if not envelope is Dictionary or envelope.get("session_id")!=session_id:return failure("지난 세션의 요청입니다.")
-	if queued.envelope.kind=="surface_fire" and now-float(queued.get("queued_at",now))>float(FrontierFirearms.config().projectiles.input_buffer_seconds):
-		completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":{"ok":false,"code":"trigger_expired","firearm_action":"surface_fire"}});return
 	if not envelope.get("kind") is String or not envelope.get("args") is Dictionary:return failure("요청 형식 오류")
 	if JSON.stringify(envelope).length()>int(FrontierCrewWorld.config().maximum_message_bytes):return failure("요청 크기 초과")
 	if not FrontierUniverse._finite(envelope.get("sequence"),1,9007199254740000) or envelope.sequence!=floorf(envelope.sequence):return failure("요청 순번 오류")
@@ -404,6 +404,8 @@ func _finish_request(actor: String,envelope: Dictionary,water_hit: Dictionary,ro
 var gun_checkpoint:=0.0
 var gun_dirty:=false
 var gun_receipts: Dictionary={}
+var gun_events: Array=[]
+var ballistics:=preload("res://scripts/domain/ground_ballistics.gd").new()
 func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
 	if not resolve_autonomous():return {"ok":false,"code":"weapon_blocked"}
 	var actor: String=peers[peer]
@@ -411,8 +413,6 @@ func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
 	var sequence:=int(envelope.sequence)
 	var digest:=FrontierUniverse.fingerprint({"kind":envelope.kind,"args":envelope.args})
 	var receipt: Dictionary=gun_receipts.get(actor,{})
-var gun_events: Array=[]
-var ballistics:=preload("res://scripts/domain/ground_ballistics.gd").new()
 	if sequence==int(receipt.get("sequence",-1)):
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("발사 순번이 중복됐습니다.")
 	if sequence<=int(member.last_sequence):return failure("지난 발사 요청입니다.")
@@ -433,21 +433,21 @@ var ballistics:=preload("res://scripts/domain/ground_ballistics.gd").new()
 		if envelope.kind=="surface_reload":result=FrontierFirearms.begin_reload(member,tool,FrontierExpeditionBusiness.bag(local,actor))
 		else:
 			var args: Dictionary=envelope.args.duplicate(true);args.serial=sequence
+			args.ballistic=true
+			args.moving=inputs.get(peer,{}).get("direction",Vector2.ZERO).length_squared()>.01
+			args.airborne=not motions.get(actor,{}).get("grounded",true)
+			if ballistics.count()+int(tool.pellets)>int(FrontierFirearms.config().projectiles.limit):return {"ok":false,"code":"weapon_busy"}
 			result=FrontierFirearms.fire(local,actor,args,shot_obstacle_provider)
+			if result.get("ok",false) and not result.get("projectiles",[]).is_empty():
+				ballistics.launch(local,actor,tool,result,envelope.args.get("ads",false))
+				var event:=result.duplicate(true);event.actor=actor;event.body_id=local.location;gun_events.append(event)
 			FrontierShuttles.commit(world,local,actor)
 	if result.get("ok",false):
 		member=world.crew.members[actor]
 		member.last_sequence=sequence;member.weapon_event=result.duplicate(true);member.weapon_event.serial=sequence
 		result.sequence=sequence;result.revision=world.crew.revision
 		gun_receipts[actor]={"sequence":sequence,"digest":digest,"result":result.duplicate(true)}
-			args.ballistic=true
-			args.moving=inputs.get(peer,{}).get("direction",Vector2.ZERO).length_squared()>.01
-			args.airborne=not motions.get(actor,{}).get("grounded",true)
-			if ballistics.count()+int(tool.pellets)>int(FrontierFirearms.config().projectiles.limit):return {"ok":false,"code":"weapon_busy"}
 		gun_dirty=true
-			if result.get("ok",false) and not result.get("projectiles",[]).is_empty():
-				ballistics.launch(local,actor,tool,result,envelope.args.get("ads",false))
-				var event:=result.duplicate(true);event.actor=actor;event.body_id=local.location;gun_events.append(event)
 	return result
 func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[],weather_ready: bool=false) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
@@ -566,6 +566,8 @@ func _step_water(delta: float) -> void:
 var incident_timer:=0.0
 func step_surface(delta: float) -> void:
 	if stopped or not resolve_autonomous():return
+	var impacts: Array=ballistics.step(world,delta,shot_obstacle_provider)
+	if not impacts.is_empty():gun_events.append_array(impacts);gun_dirty=true
 	if not save_autonomous.is_valid():_step_surface(delta);return
 	var previous:=world
 	var persist:=save_world
@@ -573,8 +575,6 @@ func step_surface(delta: float) -> void:
 	_step_surface(delta)
 	save_world=persist
 	if not staged_autonomous:return
-	var impacts: Array=ballistics.step(world,delta,shot_obstacle_provider)
-	if not impacts.is_empty():gun_events.append_array(impacts);gun_dirty=true
 	var candidate:=world
 	world=previous
 	if stopped:return
