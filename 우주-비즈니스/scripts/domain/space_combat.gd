@@ -115,6 +115,7 @@ static func begin(world: Dictionary,id: String,variant: String) -> bool:
 		enemies.append({"id":str(r.serial)+":"+str(i),"kind":kinds[i],"position":arr(p),"direction":arr(-heading),"hull":float(cfg.hull),"shield":float(cfg.shield),"maximum_hull":float(cfg.hull),"maximum_shield":float(cfg.shield),"cooldown":1.0+i,"windup":0.0,"aim":arr(origin),"age":float(i)*2,"hit_age":100.0})
 	nav.mode="idle";nav.manual=true;nav.speed=minf(float(nav.speed),FrontierVesselSkills.combat_speed(local));nav.combat_active=true;nav.erase("freight_anchor")
 	r.encounter={"id":"pirate:"+str(r.serial),"variant":variant,"carrier":id,"system":int(nav.system),"origin":arr(origin),"heading":arr(heading),"target":int(nav.target),"phase":"warning","warning":float(config().warning_seconds),"elapsed":0.0,"escape":0.0,"resume":0.0,"recovery":0.0,"salvage":0.0,"salvage_id":"","enemies":enemies,"projectiles":[]}
+	preload("res://scripts/domain/mission_rescue.gd").begin(world,r.encounter)
 	ship_state(world,id);commit(world,local,id)
 	emit(r,"warning",int(nav.system),origin,origin,id)
 	return true
@@ -149,6 +150,7 @@ static func finish(world: Dictionary,outcome: String) -> void:
 	nav.combat_active=false;nav.combat_recovery=false
 	for enemy in e.enemies:enemy.windup=0.0
 	e.phase=outcome;e.elapsed=0.0
+	preload("res://scripts/domain/mission_rescue.gd").finish(world,e,outcome)
 	e.projectiles=e.get("projectiles",[]).filter(func(bolt):return bolt.get("side","pirate")=="crew") if outcome=="victory" else []
 	r.cooldown=float(config().cooldown_seconds);r.safe_journeys=int(config().safe_journeys)
 	commit(world,local,e.carrier);emit(r,"escaped",int(e.system),point(nav.position),point(nav.position),e.carrier)
@@ -419,6 +421,7 @@ static func valid(r: Variant) -> bool:
 	var e: Variant=r.get("encounter")
 	if not e is Dictionary:return false
 	if not e.is_empty():
+		if not preload("res://scripts/domain/mission_rescue.gd").valid(e):return false
 		if not e.get("id") is String or not e.get("carrier") is String or e.get("variant") not in ["stellar_arrival","local_transit"] or e.get("phase") not in ["warning","combat","recovering","escaped","victory","recovered"]:return false
 		if not FrontierExpeditionBusiness.integer(e.get("system"),0,249999) or not FrontierExpeditionBusiness.integer(e.get("target"),0,999999):return false
 		for key in ["origin","heading"]:

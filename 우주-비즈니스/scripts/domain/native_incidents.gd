@@ -72,6 +72,7 @@ static func look(native: Dictionary) -> Dictionary:
 static func title(native: Dictionary,ecology: Dictionary={}) -> String:
  return str(config().variants[native.variant].name)+" · "+FrontierSpeciesNames.display(ecology,native.form_id)
 static func reward(row: Dictionary) -> Dictionary:
+ if FrontierActiveMissions.enabled(row):return FrontierActiveMissions.reward(row)
  if not row.has("native"):return FrontierExplorationIncidents.definition(row.template).reward
  var native: Dictionary=row.native;var result: Dictionary={}
  for resource in config().roles[native.role].reward:

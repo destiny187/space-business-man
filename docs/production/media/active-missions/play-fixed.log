@@ -1,0 +1,127 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS play fixture saved
+PASS actual Forward+ expedition loaded
+PASS mission model ready aerial_sensor_recovery
+PASS observe native airborne rig
+PASS native flier leaves landing perch
+PASS actual view selects cargo
+PASS host executes cargo
+PASS actual view selects delivery
+PASS host executes delivery
+PASS campaign completed aerial_sensor_recovery
+PASS mission model ready cliff_relay_run
+PASS actual view selects rotate_0
+PASS host executes rotate_0
+PASS actual view selects rotate_0
+PASS host executes rotate_0
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_1
+PASS host executes rotate_1
+PASS actual view selects rotate_2
+PASS host executes rotate_2
+PASS actual view selects rotate_2
+PASS host executes rotate_2
+PASS actual view selects rotate_2
+PASS host executes rotate_2
+PASS actual view selects rotate_2
+PASS host executes rotate_2
+PASS actual view selects rotate_2
+PASS host executes rotate_2
+PASS actual view selects rotate_2
+PASS host executes rotate_2
+PASS actual view selects finish
+PASS host executes finish
+PASS campaign completed cliff_relay_run
+PASS mission model ready coopertech_relay_raid
+PASS actual view selects power_0
+PASS host executes power_0
+PASS actual view selects power_1
+PASS host executes power_1
+PASS actual view selects cargo
+PASS host executes cargo
+PASS actual view selects delivery
+PASS host executes delivery
+PASS campaign completed coopertech_relay_raid
+PASS mission model ready freighter_rescue_chain
+PASS actual view selects crate_0
+PASS host executes crate_0
+PASS actual view selects delivery
+PASS host executes delivery
+PASS actual view selects crate_1
+PASS host executes crate_1
+PASS actual view selects delivery
+PASS host executes delivery
+PASS actual view selects finish
+PASS host executes finish
+PASS campaign completed freighter_rescue_chain
+PASS mission model ready runaway_convoy_intercept
+PASS actual view selects barrier
+PASS host executes barrier
+PASS moving vehicle interpolates
+MISSION_RESPONSE { "ok": false, "error": "세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.", "revision": 61.0 }
+FAIL: actual firearm stops moving drive
+FAIL: campaign completed runaway_convoy_intercept
+PASS mission model ready stranded_survey_rover
+PASS actual view selects clear_0
+PASS host executes clear_0
+PASS actual view selects clear_0
+PASS host executes clear_0
+PASS actual view selects clear_0
+PASS host executes clear_0
+PASS actual view selects clear_1
+PASS host executes clear_1
+PASS actual view selects clear_1
+PASS host executes clear_1
+PASS actual view selects clear_1
+PASS host executes clear_1
+PASS actual view selects clear_2
+PASS host executes clear_2
+PASS actual view selects clear_2
+PASS host executes clear_2
+PASS actual view selects clear_2
+PASS host executes clear_2
+PASS actual view selects clear_3
+PASS host executes clear_3
+PASS actual view selects clear_3
+PASS host executes clear_3
+PASS actual view selects clear_3
+MISSION_RESPONSE { "ok": false, "error": "도구가 준비 중입니다.", "revision": 129.0 }
+FAIL: host executes clear_3
+PASS actual view selects battery
+PASS host executes battery
+PASS actual view selects socket
+PASS host executes socket
+PASS actual view selects rover_toggle
+PASS host executes rover_toggle
+FAIL: escort repaired rover through physical cleared route
+FAIL: campaign completed stranded_survey_rover
+PASS mission model ready vent_field_extraction
+PASS actual view selects mine_0
+PASS host executes mine_0
+PASS actual view selects mine_1
+PASS host executes mine_1
+PASS actual view selects mine_2
+PASS host executes mine_2
+PASS actual view selects mine_3
+PASS host executes mine_3
+PASS actual view selects finish
+PASS host executes finish
+PASS campaign completed vent_field_extraction
+PASS actual mission save closes
+PASS mission session reloads
+ACTIVE_MISSION_PLAY 121 FAILURES 5

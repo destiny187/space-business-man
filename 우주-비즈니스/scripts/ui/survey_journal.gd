@@ -187,6 +187,8 @@ func select(entry: Dictionary) -> void:
 			var individual:=FrontierInterfaceStyle.label(details,str(entry.row.get("native_name","미등록 생물"))+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		else:preview.show_model(d.model)
 		FrontierInterfaceStyle.label(details,"회수 완료" if entry.row.claimed else "현장 진행 중",13)
+		if FrontierActiveMissions.enabled(entry.row):
+			FrontierInterfaceStyle.label(details,FrontierActiveMissions.progress_text(entry.row),13)
 		if entry.row.has("blueprint"):
 			var license: Dictionary=FrontierFacilityBlueprints.definitions().get(entry.row.blueprint,{})
 			FrontierInterfaceStyle.label(details,("중복 설계  부품으로 회수" if entry.row.get("blueprint_duplicate",false) else "공동 설계 해금")+"  "+str(license.get("name",entry.row.blueprint)),13,FrontierInterfaceStyle.ACCENT)

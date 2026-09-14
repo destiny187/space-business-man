@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS play fixture saved
+PASS actual Forward+ expedition loaded
+PASS mission model ready cliff_relay_run
+PASS mission model ready freighter_rescue_chain
+PASS actual view selects crate_0
+PASS host executes crate_0
+PASS actual host drops cargo
+PASS dropped cargo has one visible instance
+PASS actual view selects crate_0
+PASS host executes crate_0
+PASS actual view selects delivery
+PASS host executes delivery
+PASS actual mission save closes
+PASS mission session reloads
+ACTIVE_MISSION_PLAY 14 FAILURES 0
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

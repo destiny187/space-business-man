@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "new_audio_generated": false,
+  "status": "existing_elevenlabs_assets_reused",
+  "mapping": {
+    "rotate": "sfx_incident_beacon",
+    "connect": "sfx_orbital_complete",
+    "switch": "sfx_discovery_excavate",
+    "carry": "sfx_discovery_excavate",
+    "stop": "sfx_incident_robot_wake",
+    "hit": "sfx_gun_carbine",
+    "blast": "sfx_incident_quake",
+    "complete": "sfx_factory_complete",
+    "work": "sfx_discovery_excavate",
+    "vehicle_motion": "sfx_robot_work"
+  },
+  "source_manifests": {
+    "sfx_discovery_excavate": [
+      "audio/manifests/exploration-discoveries.json"
+    ],
+    "sfx_factory_complete": [
+      "audio/manifests/elevenlabs.json"
+    ],
+    "sfx_orbital_complete": [
+      "audio/manifests/space-experience.json"
+    ],
+    "sfx_robot_work": [
+      "audio/manifests/elevenlabs.json"
+    ],
+    "sfx_incident_quake": [
+      "audio/manifests/exploration-incidents.json"
+    ],
+    "sfx_gun_carbine": [
+      "audio/manifests/ground-weapon-feedback.json",
+      "audio/manifests/ground-combat.json",
+      "audio/manifests/ground-combat-signal-check.json",
+      "audio/manifests/ground-combat-sources.json"
+    ],
+    "sfx_incident_robot_wake": [
+      "audio/manifests/exploration-incidents.json",
+      "audio/manifests/coopertech-squads.json"
+    ],
+    "sfx_incident_beacon": [
+      "audio/manifests/exploration-incidents.json"
+    ]
+  },
+  "verification": "실제 Forward+ 원정의 호스트 결과/분출/차량 이동에서 재생하고 SFX 버스를 녹음했다. 최종 청감·음량 조정은 미완료."
+}

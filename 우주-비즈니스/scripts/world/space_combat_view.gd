@@ -50,6 +50,7 @@ func configure(owner_view: FrontierCrewFlightView) -> void:
 	key_light=DirectionalLight3D.new();key_light.light_cull_mask=COMBAT_LAYER;key_light.light_color=Color("e1edff");add_child(key_light)
 	rim_light=DirectionalLight3D.new();rim_light.light_cull_mask=COMBAT_LAYER;rim_light.light_color=Color("f9c18b");add_child(rim_light)
 	audio=FrontierAudio.new();add_child(audio)
+	var rescue:=preload("res://scripts/world/mission_rescue_view.gd").new();add_child(rescue);rescue.configure(self)
 	skills=FrontierSpaceSkillView.new();add_child(skills);skills.configure(self)
 	for cue in FrontierSpaceCombat.config().audio.values():audio.stream(cue)
 	var layer:=CanvasLayer.new();add_child(layer)

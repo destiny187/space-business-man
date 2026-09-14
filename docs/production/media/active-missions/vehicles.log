@@ -1,0 +1,56 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS play fixture saved
+PASS actual Forward+ expedition loaded
+PASS mission model ready runaway_convoy_intercept
+PASS actual view selects barrier
+PASS host executes barrier
+PASS moving vehicle interpolates
+MISSION_RESPONSE { "ok": false, "code": "weapon_blocked", &"firearm_action": "surface_fire" }
+PASS actual firearm stops moving drive
+PASS actual view selects cargo
+PASS host executes cargo
+PASS actual view selects delivery
+PASS host executes delivery
+PASS campaign completed runaway_convoy_intercept
+PASS mission model ready stranded_survey_rover
+PASS actual view selects clear_0
+PASS host executes clear_0
+PASS actual view selects clear_0
+PASS host executes clear_0
+PASS actual view selects clear_0
+PASS host executes clear_0
+PASS actual view selects clear_1
+PASS host executes clear_1
+PASS actual view selects clear_1
+PASS host executes clear_1
+PASS actual view selects clear_1
+PASS host executes clear_1
+PASS actual view selects clear_2
+PASS host executes clear_2
+PASS actual view selects clear_2
+PASS host executes clear_2
+PASS actual view selects clear_2
+PASS host executes clear_2
+PASS actual view selects clear_3
+PASS host executes clear_3
+PASS actual view selects clear_3
+PASS host executes clear_3
+PASS actual view selects clear_3
+PASS host executes clear_3
+PASS actual view selects battery
+PASS host executes battery
+PASS actual view selects socket
+PASS host executes socket
+PASS actual view selects rover_toggle
+PASS host executes rover_toggle
+PASS escort repaired rover through physical cleared route
+PASS actual view selects finish
+PASS host executes finish
+PASS campaign completed stranded_survey_rover
+PASS actual mission save closes
+PASS mission session reloads
+ACTIVE_MISSION_PLAY 49 FAILURES 0
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

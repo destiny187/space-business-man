@@ -9,7 +9,17 @@ static func _crew(source: Dictionary,actors: Array) -> Dictionary:
 	for actor in actors:
 		if source.crew.members.has(actor):draft.crew.members[actor]=source.crew.members[actor].duplicate(true)
 	return draft
-static func request(source: Dictionary,actor: String,kind: String) -> Dictionary:
+static func request(source: Dictionary,actor: String,kind: String,args: Dictionary={}) -> Dictionary:
+	var mission: Dictionary=source.get("incidents",{}).get("records",{}).get(str(args.get("id","")),{})
+	if kind in ["surface_incident","surface_incident_tool"] and FrontierActiveMissions.enabled(mission):
+		var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()
+		d.incidents=source.incidents.duplicate();d.incidents.records=source.incidents.records.duplicate()
+		d.incidents.records[str(args.id)]=mission.duplicate(true)
+		d.business=source.business.duplicate();d.business.bags=source.business.bags.duplicate()
+		d.business.bags[actor]=FrontierExpeditionBusiness.bag(source,actor).duplicate()
+		if FrontierShuttles.aboard(source,actor):
+			d.crew.shuttles=source.crew.shuttles.duplicate();d.crew.shuttles[actor]=source.crew.shuttles[actor].duplicate()
+		return d
 	if kind.begins_with("station_skill_") and source.has("vessel") and source.has("business"):
 		var skill_draft:=_crew(source,[actor]);skill_draft.crew.receipts=source.crew.receipts.duplicate()
 		skill_draft.vessel=source.vessel.duplicate(true);skill_draft.business=source.business.duplicate()

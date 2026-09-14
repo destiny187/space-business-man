@@ -94,6 +94,7 @@ static func tile(body: Dictionary,f: FrontierTerrainField,cell: Vector2i) -> Arr
  var remote: Dictionary=preload("res://scripts/domain/remote_incidents.gd").spawn(body,f,cell,rows)
  if not remote.is_empty():rows.append(remote)
  rows.append_array(FrontierCooperTechSquads.spawn(body,f,cell,rows))
+ rows.append_array(FrontierActiveMissions.spawn(body,f,cell,rows))
  if _tiles.size()>128:_tiles.erase(_tiles.keys()[0])
  _tiles[cache_key]=rows;return rows
 static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array:
@@ -131,6 +132,7 @@ static func moving_point(row: Dictionary) -> Vector3:
   return point(row,Vector3(sin(float(row.age)*.38)*7,2.0+sin(float(row.age)*.71)*.35,cos(float(row.age)*.38)*5))
  return point(row,Vector3(0,.7,0))
 static func cargo_point(row: Dictionary) -> Vector3:
+ if FrontierActiveMissions.enabled(row):return FrontierActiveMissions.cargo_point(row)
  if not row.cargo_ground.is_empty():return FrontierCrewWorld.vector(row.cargo_ground)
  match definition(row.template).mode:
   "wreck","power":return point(row,Vector3(0,.65,-4.4))
@@ -139,6 +141,7 @@ static func cargo_point(row: Dictionary) -> Vector3:
   "ice":return point(row,Vector3(0,.45,-2))
  return point(row,Vector3(0,.7,0))
 static func targets(row: Dictionary) -> Array:
+ if FrontierActiveMissions.enabled(row):return FrontierActiveMissions.targets(row)
  if row.claimed:return []
  var mode: String=definition(row.template).mode
  var result: Array=[]
@@ -207,10 +210,10 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
    if (p.distance_to(FrontierCrewWorld.vector(source.home)) if FrontierCooperTechSquads.enabled(source) else minf(p.distance_to(FrontierCrewWorld.vector(source.position)),p.distance_to(FrontierCrewWorld.vector(source.relay))))>float(config().activation_distance):continue
    var occupied:=false
    for building in world.get("business",{}).get("sites",{}).get(body.id,{}).get("buildings",{}).values():
-    if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.position))<float(config().exclusion_radius):occupied=true;break
+    if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.position))<(100.0 if FrontierActiveMissions.enabled(source) else float(config().exclusion_radius)):occupied=true;break
    if not occupied and FrontierCooperTechSquads.enabled(source):
     for building in world.get("business",{}).get("sites",{}).get(body.id,{}).get("buildings",{}).values():
-     if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.home))<float(FrontierCooperTechSquads.config().spawn_clearance)+float(config().exclusion_radius):occupied=true;break
+     if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.home))<(100.0 if source.has("mission_parent") else float(FrontierCooperTechSquads.config().spawn_clearance)+float(config().exclusion_radius)):occupied=true;break
    if occupied:continue
    world.incidents.records[key(source)]=create(source);changed=true
  for row in records(world).values():
@@ -221,12 +224,15 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
    var actor: String=row[slot]
    if actor!="" and (actor not in connected or not is_present(world,actor,row) or int(world.crew.members[actor].get("vitals",{}).get("rescue_serial",0))>int(row.get(slot+"_rescue",0))):
     row["cargo_ground" if slot=="carrier" else "battery_ground"]=array(point(row,Vector3(0,.7,3))) if slot=="carrier" else row.battery_position.duplicate();row[slot]="";changed=true
+    if slot=="carrier" and FrontierActiveMissions.enabled(row):row.cargo_ground=array(FrontierCrewWorld.vector(row.relay)+Vector3(2,.7,0))
   if present.is_empty() or (row.claimed and definition(row.template).mode!="seismic"):continue
   row.age+=delta;row.time+=delta
   var p:=FrontierCrewWorld.vector(world.crew.members[present[0]].position);var mode: String=definition(row.template).mode
   if not row.seen and p.distance_to(FrontierCrewWorld.vector(row.position))<35:row.seen=true;row.discoverer=present[0];changed=true
   if preload("res://scripts/domain/storm_archive.gd").tick(world,row,delta,present,obstacle):changed=true
-  if row.has("native"):
+  if FrontierActiveMissions.enabled(row):
+   if FrontierActiveMissions.tick(world,row,delta,present,bodies[row.body_id],obstacle):changed=true
+  elif row.has("native"):
    if FrontierNativeIncidents.tick(world,row,present,delta,bodies[row.body_id]):changed=true
   elif mode=="robot" and row.hp>0 and FrontierCooperTechSquads.enabled(row):
    if FrontierCooperTechSquads.tick(world,row,delta,present,bodies[row.body_id],obstacle,defer_squad_motion):changed=true
@@ -278,7 +284,9 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
   var slot: String="carrier" if carried.carrier==actor else ("battery_carrier" if carried.battery_carrier==actor else "")
   if slot.is_empty():return "직접 운반 중인 화물만 내려놓을 수 있습니다."
   carried["cargo_ground" if slot=="carrier" else "battery_ground"]=array(FrontierCrewWorld.vector(world.crew.members[actor].position)+Vector3.UP*.35)
-  carried[slot]="";carried.serial+=1;return ""
+  carried[slot]="";carried.serial+=1
+  if FrontierActiveMissions.enabled(carried):carried.mission.revision=int(carried.mission.get("revision",0))+1
+  return ""
  var aim:=FrontierCrewSurface.direction(args.get("aim"));var hit:=target(world,actor,aim)
  if hit.is_empty() or args.get("id")!=hit.id or args.get("part")!=hit.part:return "실제 사건 대상을 조준하세요."
  var row: Dictionary=records(world)[hit.id];var mode: String=definition(row.template).mode
@@ -286,6 +294,7 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
  if not tool_action and origin.distance_to(hit.point)>float(config().action_distance):return "대상 가까이 접근하세요."
  if obstacle.is_valid() and float(obstacle.call(actor,origin,aim,origin.distance_to(hit.point)))<origin.distance_to(hit.point)-.7:return "엄폐물에 가려져 있습니다."
  var tool:=FrontierEquipment.active(world.crew.members[actor])
+ if FrontierActiveMissions.enabled(row):return FrontierActiveMissions.apply(world,actor,row,hit.part,tool_action,tool)
  if tool_action:
   var expected: String="pulse" if hit.part in ["robot","drone"] else ("miner" if hit.part=="gems" else "terrain")
   if tool.get("kind")!=expected:return "공격무기가 필요합니다." if expected=="pulse" else ("채집기가 필요합니다." if expected=="miner" else "지형 변환기가 필요합니다.")
@@ -401,6 +410,7 @@ static func validate(world: Dictionary) -> String:
   for p in row.path:
    if not FrontierUniverse._vector3_array(p):return "사건 이동 지점 오류"
   if not preload("res://scripts/domain/storm_archive.gd").validate(world,row):return "폭풍 기록고의 복원 결과 오류"
+  if not FrontierActiveMissions.validate(row):return "활동형 미션 저장 오류"
   if not FrontierCooperTechSquads.validate(row):return "쿠퍼테크 분대 기록 오류"
   if not FrontierNativeIncidents.validate(world,row):return "현지 생물 사건 기록 오류"
  return ""

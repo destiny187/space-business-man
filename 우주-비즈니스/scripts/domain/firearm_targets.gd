@@ -57,6 +57,9 @@ static func candidates(world: Dictionary,actor: String) -> Array:
 		if row.body_id!=world.location or row.claimed:continue
 		var mode: String=FrontierExplorationIncidents.definition(row.template).mode
 		var key:=FrontierExplorationIncidents.key(row)
+		if FrontierActiveMissions.enabled(row) and row.template=="runaway_convoy_intercept" and not row.open:
+			var p:=FrontierActiveMissions.vec(row.mission.moving)+Vector3(1.25,.75,0).rotated(Vector3.UP,float(row.mission.moving_yaw))
+			result.append({"kind":"mission","id":key,"transform":Transform3D(Basis(Vector3.UP,float(row.mission.moving_yaw)),p),"bounds":AABB(Vector3(-.35,-.35,-1.15),Vector3(.7,.7,2.3)),"zone":"core","weak":true,"anchor":p+Vector3.UP})
 		if mode=="drone" and not row.open:
 			result.append({"kind":"drone","id":key,"transform":Transform3D(Basis.IDENTITY,FrontierExplorationIncidents.moving_point(row)),"bounds":AABB(Vector3.ONE*-.42,Vector3.ONE*.84),"zone":"body","weak":false})
 		if mode!="robot" or row.hp<=0:continue

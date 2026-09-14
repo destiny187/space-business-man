@@ -237,6 +237,105 @@
       },
       "model": "incidents/coopertech_raptor",
       "hint": ""
+    },
+    "cliff_relay_run": {
+      "id": "cliff_relay_run",
+      "name": "절벽 중계망 복구",
+      "tier": 2,
+      "max_tier": 3,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "refined_copper": 6,
+        "control_circuit": 2
+      },
+      "model": "incidents/mission_relay",
+      "hint": "착지점에서 추진 잔량을 회복하세요. 안테나를 돌려 다음 수신부에 연결하고 정상의 기록을 회수하세요."
+    },
+    "runaway_convoy_intercept": {
+      "id": "runaway_convoy_intercept",
+      "name": "폭주 수송대 저지",
+      "tier": 2,
+      "max_tier": 5,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "refined_iron": 8,
+        "refined_copper": 6
+      },
+      "model": "incidents/mission_convoy",
+      "hint": "수송기 측면 구동부를 사격하거나 앞쪽 차단기를 내리세요. 호위 사이로 화물을 회수 신호기에 운반하세요."
+    },
+    "vent_field_extraction": {
+      "id": "vent_field_extraction",
+      "name": "분출 지대 이동 채굴",
+      "tier": 2,
+      "max_tier": 5,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "sapphire": 3,
+        "refined_iron": 4
+      },
+      "model": "incidents/mission_vent",
+      "hint": "분출구의 빛과 증기를 보고 피하세요. 안전한 틈에 각 결정층을 채굴하고 회수 신호기에서 정산하세요."
+    },
+    "coopertech_relay_raid": {
+      "id": "coopertech_relay_raid",
+      "name": "쿠퍼테크 재가동 시설 침투",
+      "tier": 3,
+      "max_tier": 5,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "control_circuit": 4,
+        "reinforced_frame": 3
+      },
+      "model": "incidents/mission_vault",
+      "hint": "외부 전원을 모두 차단해 격실을 여세요. 순찰을 피하거나 제압하고 코어를 직접 운반하세요."
+    },
+    "aerial_sensor_recovery": {
+      "id": "aerial_sensor_recovery",
+      "name": "비행 생물 센서 회수",
+      "tier": 2,
+      "max_tier": 5,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "control_circuit": 2,
+        "refined_copper": 5
+      },
+      "model": "incidents/mission_sensor",
+      "hint": "현지 비행종이 내려오는 휴식처를 관찰하세요. 개체가 다시 날아간 틈에 센서를 회수하고 신호기로 돌아오세요."
+    },
+    "stranded_survey_rover": {
+      "id": "stranded_survey_rover",
+      "name": "탐사 로버 구난",
+      "tier": 2,
+      "max_tier": 5,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "reinforced_frame": 2,
+        "refined_iron": 6
+      },
+      "model": "incidents/mission_rover",
+      "hint": "지형 변환기로 이동로의 잔해를 제거하세요. 배터리를 연결하고 로버 가까이에서 안전 지점까지 동행하세요."
+    },
+    "freighter_rescue_chain": {
+      "id": "freighter_rescue_chain",
+      "name": "수송선 구조와 지상 회수",
+      "tier": 3,
+      "max_tier": 5,
+      "mode": "mission",
+      "generation": "independent",
+      "reward": {
+        "reinforced_frame": 4,
+        "control_circuit": 4,
+        "refined_copper": 8
+      },
+      "model": "incidents/mission_lander",
+      "hint": "우주에서 구조한 수송선의 착륙 현장입니다. 흩어진 화물을 하나씩 찾아 수송선 신호기에 운반하세요."
     }
   }
 }

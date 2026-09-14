@@ -58,6 +58,7 @@ func beam(a: Vector3,b: Vector3,color: Color,radius: float,parent_node: Node3D) 
  if right.length()<.1:right=Vector3.RIGHT
  node.basis=Basis(right,up,right.cross(up)).orthonormalized();return node
 func make(row: Dictionary) -> Dictionary:
+ if FrontierActiveMissions.enabled(row):return preload("res://scripts/world/active_mission_view.gd").build(self,row)
  var mode: String=FrontierExplorationIncidents.definition(row.template).mode
  var ids: Array=[{"wreck":"wreck","power":"wreck","carry":"cliff","ice":"ice","robot":"robot","drone":"drone","scavenger":"nest","native":"nest","seismic":"gems"}[mode],"cargo","beacon"]
  if FrontierCooperTechSquads.enabled(row):ids[0]=FrontierCooperTechSquads.spec(row).model
@@ -133,75 +134,78 @@ func _process(delta: float) -> void:
   var at:=FrontierCrewWorld.vector(row.position);var distance_value:=surface.viewer.position.distance_to(at)
   if row.carrier==actor_id or row.battery_carrier==actor_id:delivery=row
   if mode in ["wreck","power"] and not row.claimed and distance_value<signal_distance:signal_distance=distance_value;signal_row=row
-  var main: Node3D=nodes.main
-  nodes.cargo.visible=not row.claimed and mode!="seismic" and (row.open if mode in ["wreck","power","ice","drone"] else (row.hp<=0 if mode=="robot" else true))
-  FrontierFirearmLootView.update(self,nodes,row)
-  nodes.cargo.scale=Vector3.ONE
-  nodes.cargo.global_position=FrontierExplorationIncidents.cargo_point(row)-Vector3.UP*.35
-  if row.carrier!="" and app.actors.has(row.carrier):nodes.cargo.global_position=app.actors[row.carrier].position+Vector3(0,1,-.75).rotated(Vector3.UP,app.actors[row.carrier].rotation.y)
-  if row.carrier==actor_id:
-   nodes.cargo.global_transform=Transform3D(camera.global_basis.scaled(Vector3.ONE*.24),camera.to_global(Vector3(-.42,-.4,-1)))
-  if nodes.has("battery"):
-   nodes.battery.scale=Vector3.ONE
-   nodes.battery.visible=not row.battery_installed and not row.claimed and (mode=="power" or int(row.tier)>=2)
-   nodes.battery.global_position=FrontierCrewWorld.vector(row.battery_ground)
-   if row.battery_carrier!="" and app.actors.has(row.battery_carrier):nodes.battery.global_position=app.actors[row.battery_carrier].position+Vector3(0,1,-.6).rotated(Vector3.UP,app.actors[row.battery_carrier].rotation.y)
-  if nodes.has("battery") and row.battery_carrier==actor_id:
-   nodes.battery.global_transform=Transform3D(camera.global_basis.scaled(Vector3.ONE*.3),camera.to_global(Vector3(-.46,-.4,-.9)))
-  if mode=="drone":
-   main.global_position=main.global_position.lerp(FrontierExplorationIncidents.moving_point(row),1-exp(-delta*12)) if not row.open else FrontierExplorationIncidents.cargo_point(row)+Vector3.UP
-   if not row.open:nodes.cargo.visible=true;nodes.cargo.global_position=main.global_position-Vector3.UP*1.0
-  if row.has("native"):
-   FrontierNativeIncidentView.update(self,row,nodes,delta,stopped)
-  elif nodes.has("creature"):
-   var creature: Node3D=nodes.creature;var previous:=creature.global_position;creature.global_position=creature.global_position.lerp(FrontierExplorationIncidents.moving_point(row)-Vector3.UP*.35,1-exp(-delta*12))
-   var motion:=creature.global_position-previous
-   if motion.length()>.005:creature.rotation.y=atan2(-motion.x,-motion.z)-float(row.yaw)
-   creature.paused=stopped;nodes.stolen.visible=not row.claimed
-   if creature.mouth_marker!=null:nodes.stolen.global_position=creature.mouth_marker.global_position
-  if nodes.has("storm_ring"):
-   var warning: String=preload("res://scripts/world/storm_archive_view.gd").update(self,row,nodes,stopped)
-   if not warning.is_empty():native_warning=warning
-  for part in nodes.parts:
-   if FrontierCooperTechSquads.enabled(row) and row.robot_role!="sentry":continue
-   if not part.has_meta("rest"):part.set_meta("rest",part.transform)
-   var rest: Transform3D=part.get_meta("rest")
-   if str(part.name).begins_with("Anim_Hatch") or str(part.name).begins_with("Anim_Ice"):
-    part.visible=not row.open
-    for shape in part.find_children("*","CollisionShape3D",true,false):shape.set_deferred("disabled",row.open)
-    if not row.open:part.position=rest.origin+Vector3(sin(elapsed*13)*float(row.hits)*.008,0,0)
-   elif str(part.name).begins_with("Anim_Rotor") and not stopped and not row.open:part.rotation.y+=delta*32
-   elif str(part.name).begins_with("Anim_Torso"):
-    var folded:=1.0 if row.phase in ["idle","destroyed"] else (1.0-clampf(float(row.time)/float(FrontierExplorationIncidents.config().robot.wake_seconds),0,1) if row.phase=="waking" else 0.0)
-    part.transform=rest;part.rotation.x+=folded*1.0;part.position.y-=folded*.3
-    if row.phase in ["aiming","firing"] and not row.aim.is_empty() and not FrontierCooperTechSquads.enabled(row):
-     var toward:=FrontierCrewWorld.vector(row.aim)-at;part.rotation.y=atan2(toward.x,toward.z)-float(row.yaw)
-   elif str(part.name).begins_with("Anim_Weak"):part.visible=row.phase=="cooling"
-   elif str(part.name).begins_with("Anim_Gem_"):part.visible=int(str(part.name).trim_prefix("Anim_Gem_"))>=int(row.gems)
-  if nodes.has("robot_solid"):nodes.robot_solid.collision_layer=1 if row.hp>0 else 0
-  if nodes.beam!=null:nodes.beam.visible=false
-  if mode=="robot" and not FrontierCooperTechSquads.enabled(row) and row.phase=="firing" and nodes.phase!="firing" and not stopped and not row.aim.is_empty():
-   attack_effects.shot(FrontierExplorationIncidents.point(row,Vector3(0,1.5,0)),FrontierCrewWorld.vector(row.aim)+Vector3.UP,"sentry")
-  if mode=="seismic":
-   main.visible=row.open
-   nodes.danger_ring.visible=row.phase in ["warning","blast"] and not stopped
-   nodes.danger_ring.scale=Vector3.ONE*(1+sin(elapsed*14)*.025)
-   if not stopped and row.phase in ["quake","warning","blast"]:
-    var effect_at:=FrontierCrewWorld.vector(row.relay) if not row.open else FrontierExplorationIncidents.point(row,Vector3(0,-6.5,0))
-    if surface.viewer.position.distance_to(effect_at)<25:
-     if row.phase in ["quake","blast"] and FrontierClientSettings.ensure(get_tree()).values.incident_shake:camera.h_offset=sin(elapsed*31)*.045;camera.v_offset=cos(elapsed*39)*.035
-     if fmod(elapsed,.2)<delta:app.feedback.effects.burst(effect_at,Color("ffaf58") if row.phase!="quake" else Color("ac9875"),4)
-  if FrontierCooperTechSquads.enabled(row):preload("res://scripts/world/coopertech_squad_view.gd").update(self,row,nodes,delta,stopped)
-  if int(row.serial)!=int(nodes.serial):
-   if not stopped:
-    if row.phase!=nodes.phase and not FrontierCooperTechSquads.enabled(row):
-     var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_gun_carbine" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
-     if mode!="robot" or row.phase!="firing":audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
-    # Combat contacts already have host-confirmed material effects. A serial
-    # update must not add an unrelated purple burst at the robot's origin.
-    if mode not in ["robot","drone"]:app.feedback.effects.burst(at+Vector3.UP,Color("cbb5ff"),8)
-    event_serial+=1
-   nodes.serial=int(row.serial);nodes.phase=str(row.phase)
+  if FrontierActiveMissions.enabled(row):
+   preload("res://scripts/world/active_mission_view.gd").update(self,row,nodes,delta,stopped)
+  else:
+   var main: Node3D=nodes.main
+   nodes.cargo.visible=not row.claimed and mode!="seismic" and (row.open if mode in ["wreck","power","ice","drone"] else (row.hp<=0 if mode=="robot" else true))
+   FrontierFirearmLootView.update(self,nodes,row)
+   nodes.cargo.scale=Vector3.ONE
+   nodes.cargo.global_position=FrontierExplorationIncidents.cargo_point(row)-Vector3.UP*.35
+   if row.carrier!="" and app.actors.has(row.carrier):nodes.cargo.global_position=app.actors[row.carrier].position+Vector3(0,1,-.75).rotated(Vector3.UP,app.actors[row.carrier].rotation.y)
+   if row.carrier==actor_id:
+    nodes.cargo.global_transform=Transform3D(camera.global_basis.scaled(Vector3.ONE*.24),camera.to_global(Vector3(-.42,-.4,-1)))
+   if nodes.has("battery"):
+    nodes.battery.scale=Vector3.ONE
+    nodes.battery.visible=not row.battery_installed and not row.claimed and (mode=="power" or int(row.tier)>=2)
+    nodes.battery.global_position=FrontierCrewWorld.vector(row.battery_ground)
+    if row.battery_carrier!="" and app.actors.has(row.battery_carrier):nodes.battery.global_position=app.actors[row.battery_carrier].position+Vector3(0,1,-.6).rotated(Vector3.UP,app.actors[row.battery_carrier].rotation.y)
+   if nodes.has("battery") and row.battery_carrier==actor_id:
+    nodes.battery.global_transform=Transform3D(camera.global_basis.scaled(Vector3.ONE*.3),camera.to_global(Vector3(-.46,-.4,-.9)))
+   if mode=="drone":
+    main.global_position=main.global_position.lerp(FrontierExplorationIncidents.moving_point(row),1-exp(-delta*12)) if not row.open else FrontierExplorationIncidents.cargo_point(row)+Vector3.UP
+    if not row.open:nodes.cargo.visible=true;nodes.cargo.global_position=main.global_position-Vector3.UP*1.0
+   if row.has("native"):
+    FrontierNativeIncidentView.update(self,row,nodes,delta,stopped)
+   elif nodes.has("creature"):
+    var creature: Node3D=nodes.creature;var previous:=creature.global_position;creature.global_position=creature.global_position.lerp(FrontierExplorationIncidents.moving_point(row)-Vector3.UP*.35,1-exp(-delta*12))
+    var motion:=creature.global_position-previous
+    if motion.length()>.005:creature.rotation.y=atan2(-motion.x,-motion.z)-float(row.yaw)
+    creature.paused=stopped;nodes.stolen.visible=not row.claimed
+    if creature.mouth_marker!=null:nodes.stolen.global_position=creature.mouth_marker.global_position
+   if nodes.has("storm_ring"):
+    var warning: String=preload("res://scripts/world/storm_archive_view.gd").update(self,row,nodes,stopped)
+    if not warning.is_empty():native_warning=warning
+   for part in nodes.parts:
+    if FrontierCooperTechSquads.enabled(row) and row.robot_role!="sentry":continue
+    if not part.has_meta("rest"):part.set_meta("rest",part.transform)
+    var rest: Transform3D=part.get_meta("rest")
+    if str(part.name).begins_with("Anim_Hatch") or str(part.name).begins_with("Anim_Ice"):
+     part.visible=not row.open
+     for shape in part.find_children("*","CollisionShape3D",true,false):shape.set_deferred("disabled",row.open)
+     if not row.open:part.position=rest.origin+Vector3(sin(elapsed*13)*float(row.hits)*.008,0,0)
+    elif str(part.name).begins_with("Anim_Rotor") and not stopped and not row.open:part.rotation.y+=delta*32
+    elif str(part.name).begins_with("Anim_Torso"):
+     var folded:=1.0 if row.phase in ["idle","destroyed"] else (1.0-clampf(float(row.time)/float(FrontierExplorationIncidents.config().robot.wake_seconds),0,1) if row.phase=="waking" else 0.0)
+     part.transform=rest;part.rotation.x+=folded*1.0;part.position.y-=folded*.3
+     if row.phase in ["aiming","firing"] and not row.aim.is_empty() and not FrontierCooperTechSquads.enabled(row):
+      var toward:=FrontierCrewWorld.vector(row.aim)-at;part.rotation.y=atan2(toward.x,toward.z)-float(row.yaw)
+    elif str(part.name).begins_with("Anim_Weak"):part.visible=row.phase=="cooling"
+    elif str(part.name).begins_with("Anim_Gem_"):part.visible=int(str(part.name).trim_prefix("Anim_Gem_"))>=int(row.gems)
+   if nodes.has("robot_solid"):nodes.robot_solid.collision_layer=1 if row.hp>0 else 0
+   if nodes.beam!=null:nodes.beam.visible=false
+   if mode=="robot" and not FrontierCooperTechSquads.enabled(row) and row.phase=="firing" and nodes.phase!="firing" and not stopped and not row.aim.is_empty():
+    attack_effects.shot(FrontierExplorationIncidents.point(row,Vector3(0,1.5,0)),FrontierCrewWorld.vector(row.aim)+Vector3.UP,"sentry")
+   if mode=="seismic":
+    main.visible=row.open
+    nodes.danger_ring.visible=row.phase in ["warning","blast"] and not stopped
+    nodes.danger_ring.scale=Vector3.ONE*(1+sin(elapsed*14)*.025)
+    if not stopped and row.phase in ["quake","warning","blast"]:
+     var effect_at:=FrontierCrewWorld.vector(row.relay) if not row.open else FrontierExplorationIncidents.point(row,Vector3(0,-6.5,0))
+     if surface.viewer.position.distance_to(effect_at)<25:
+      if row.phase in ["quake","blast"] and FrontierClientSettings.ensure(get_tree()).values.incident_shake:camera.h_offset=sin(elapsed*31)*.045;camera.v_offset=cos(elapsed*39)*.035
+      if fmod(elapsed,.2)<delta:app.feedback.effects.burst(effect_at,Color("ffaf58") if row.phase!="quake" else Color("ac9875"),4)
+   if FrontierCooperTechSquads.enabled(row):preload("res://scripts/world/coopertech_squad_view.gd").update(self,row,nodes,delta,stopped)
+   if int(row.serial)!=int(nodes.serial):
+    if not stopped:
+     if row.phase!=nodes.phase and not FrontierCooperTechSquads.enabled(row):
+      var sound: String="sfx_incident_quake" if row.phase in ["quake","blast"] else ("sfx_incident_robot_wake" if row.phase=="waking" else ("sfx_gun_carbine" if row.phase=="firing" else ("sfx_creature_call" if row.has("native") else "sfx_discovery_excavate")))
+      if mode!="robot" or row.phase!="firing":audio.play(sound,FrontierCrewWorld.vector(row.relay) if mode=="seismic" else at)
+     # Combat contacts already have host-confirmed material effects. A serial
+     # update must not add an unrelated purple burst at the robot's origin.
+     if mode not in ["robot","drone"]:app.feedback.effects.burst(at+Vector3.UP,Color("cbb5ff"),8)
+     event_serial+=1
+    nodes.serial=int(row.serial);nodes.phase=str(row.phase)
   if stopped:continue
   for part in FrontierExplorationIncidents.targets(row):
    var difference: Vector3=part.point-camera.global_position;var along: float=difference.dot(-camera.global_basis.z)
@@ -215,6 +219,9 @@ func _process(delta: float) -> void:
  hint.text="" if selected.is_empty() else str(selected.action)
  if not selected.is_empty() and rows[selected.id].has("native"):
   hint.text=str(selected.action)
+ if not selected.is_empty() and selected.part=="drive" and FrontierActiveMissions.enabled(rows[selected.id]):
+  var vehicle: Dictionary=rows[selected.id]
+  if app.placement_kind.is_empty() and not app.field_hud.scan_card.visible:target_health.present(float(vehicle.mission.drive_hp),float(FrontierActiveMissions.rules(vehicle).drive_hp),0,0)
  if not selected.is_empty() and selected.part=="robot":
   hint.text=""
   var robot: Dictionary=rows[selected.id]
@@ -239,19 +246,24 @@ func _process(delta: float) -> void:
   signal_label.text=("회수 신호기 " if delivery.carrier==actor_id else "전원 소켓 ")+("◀ " if direction.dot(camera.global_basis.x)<0 else "▶ ")+str(roundi(direction.length()))+"m"
  if FrontierExplorationIncidents.carriers(surface.session.latest,actor_id):
   if hint.text.is_empty():hint.text="화물 운반 중 · 회수 신호기로 이동 · X 내려놓기"
+func action_args(id: String,part: String) -> Dictionary:
+ var args: Dictionary={"id":id,"part":part,"aim":FrontierExplorationIncidents.array(-camera.global_basis.z)}
+ if rows.has(id) and FrontierActiveMissions.enabled(rows[id]):args.expected_mission_revision=int(rows[id].mission.get("revision",0))
+ return args
 func interact() -> bool:
  if blocked() or selected.is_empty():return false
- surface.session.send_request("surface_incident",{"id":selected.id,"part":selected.part,"aim":FrontierExplorationIncidents.array(-camera.global_basis.z)});return true
+ surface.session.send_request("surface_incident",action_args(selected.id,selected.part));return true
 func use_tool() -> bool:
- if blocked() or selected.is_empty() or selected.part not in ["hatch","ice","robot","drone","gems"]:return false
- surface.session.send_request("surface_incident_tool",{"id":selected.id,"part":selected.part,"aim":FrontierExplorationIncidents.array(-camera.global_basis.z)});return true
+ if blocked() or selected.is_empty():return false
+ if selected.part not in ["hatch","ice","robot","drone","gems"] and not str(selected.part).begins_with("mine_") and not str(selected.part).begins_with("clear_"):return false
+ surface.session.send_request("surface_incident_tool",action_args(selected.id,selected.part));return true
 
 func _unhandled_input(event: InputEvent) -> void:
  if not event is InputEventKey or not event.pressed or event.echo or event.physical_keycode!=KEY_X or blocked():return
  var actor: String=surface.session.latest.self_id
  for id in rows:
   if rows[id].carrier==actor or rows[id].battery_carrier==actor:
-   surface.session.send_request("surface_incident",{"id":id,"part":"drop"});get_viewport().set_input_as_handled();return
+   surface.session.send_request("surface_incident",action_args(id,"drop"));get_viewport().set_input_as_handled();return
 
 func presentation_ready(at: Vector3) -> bool:
  for id in surface.session.latest.get("incidents",{}).get("records",{}):

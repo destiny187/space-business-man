@@ -257,6 +257,10 @@ static func _target(world: Dictionary,actor: String,origin: Vector3,aim: Vector3
 	return result
 static func _damage(world: Dictionary,actor: String,hit: Dictionary,damage: float,tool: Dictionary,ads: bool) -> Dictionary:
 	var outcome: Dictionary={"damage":0.0,"shield":0.0,"broken":false,"weak":hit.get("weak",false),"killed":false}
+	if hit.kind=="mission":
+		var row: Dictionary=world.incidents.records.get(hit.id,{})
+		if row.is_empty() or row.open or row.claimed:return outcome
+		return FrontierActiveMissions.drive_hit(row,damage)
 	if hit.kind=="robot":
 		var row: Dictionary=world.incidents.records[hit.id]
 		if row.hp<=0:return outcome

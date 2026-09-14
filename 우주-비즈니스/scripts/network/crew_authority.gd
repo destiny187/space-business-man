@@ -277,7 +277,13 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 		var receipt: Dictionary=world.crew.receipts[key]
 		return receipt.result.duplicate(true) if receipt.digest==digest else failure("같은 요청 번호의 내용이 달라졌습니다.")
 	if sequence<=int(world.crew.members[actor].last_sequence):return failure("이미 확정된 오래된 요청입니다.")
-	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","suit_module","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) and envelope.get("revision")!=world.crew.revision:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
+	var mission_revision_ok:=false
+	if envelope.kind in ["surface_incident","surface_incident_tool"] and envelope.args.has("expected_mission_revision"):
+		var mission_row: Dictionary=FrontierExplorationIncidents.records(world).get(str(envelope.args.get("id","")),{})
+		if not FrontierActiveMissions.enabled(mission_row):return failure("현재 활동형 미션을 선택하세요.")
+		if envelope.args.expected_mission_revision!=int(mission_row.mission.get("revision",0)):return failure("현장 목표 상태가 바뀌었습니다. 다시 선택하세요.")
+		mission_revision_ok=true
+	if (envelope.kind in ["withdraw","deposit","recover","pilot","navigate","depart","tutorial_depart","land","launch","suit_dye","suit_module","augmentation_upgrade","research_contribute"] or envelope.kind.begins_with("surface_") or envelope.kind.begins_with("business_") or envelope.kind.begins_with("station_") or envelope.kind.begins_with("vessel_") or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("rover_") or envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) and envelope.get("revision")!=world.crew.revision and not mission_revision_ok:return failure("세계 상태가 바뀌었습니다. 최신 상태에서 다시 요청하세요.")
 	if envelope.kind=="shuttle_recall":
 		var target: String=str(envelope.args.get("character_id",""))
 		if peer!=1:return failure("호스트만 이탈 승무원을 회수할 수 있습니다.")
@@ -301,7 +307,7 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 			var waiting:=failure("채광 도구가 준비 중입니다.");waiting.code="mining_cooldown";waiting.retry_after=remaining;return waiting
 	if envelope.kind in ["surface_dig","surface_attack","surface_incident_tool"] and now<float(last_dig.get(actor,-100))+float(FrontierEquipment.active(world.crew.members[actor]).get("interval",.45)):return failure("도구가 준비 중입니다.")
 	if not FrontierRovers.seated(rover_runtime,actor).is_empty() and envelope.kind not in ["rover_exit","rover_switch","ecology_rename"]:return failure("먼저 로버에서 내리세요.")
-	var canonical:=WorldDraft.request(world,actor,envelope.kind)
+	var canonical:=WorldDraft.request(world,actor,envelope.kind,envelope.args)
 	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
 	# A solo pilot's readiness belongs to the travel transaction. Publishing a
@@ -393,7 +399,7 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 		for id in draft.crew.receipts:
 			if float(draft.crew.receipts[id].result.revision)<revision:revision=float(draft.crew.receipts[id].result.revision);oldest=id
 		draft.crew.receipts.erase(oldest)
-	if not WorldDraft.personal_equipment(envelope.kind) and not envelope.kind.begins_with("station_skill_"):FrontierSpecimenItems.prune(draft)
+	if not WorldDraft.personal_equipment(envelope.kind) and not envelope.kind.begins_with("station_skill_") and not (envelope.kind in ["surface_incident","surface_incident_tool"] and FrontierActiveMissions.enabled(draft.incidents.records.get(str(envelope.args.get("id","")),{}))):FrontierSpecimenItems.prune(draft)
 	var submit: Callable=save_autonomous if envelope.kind=="business_mine" else save_request
 	if submit.is_valid():
 		if not submit.call(draft):return failure("저장을 시작하지 못했습니다. 변경은 확정되지 않았습니다.")
