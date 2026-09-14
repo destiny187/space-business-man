@@ -27,5 +27,5 @@ func _draw() -> void:
 	draw_string(font,at+Vector2(60,72),["표식 식별","활동 기록 조사","공동 기록 확보"][stage],HORIZONTAL_ALIGNMENT_LEFT,width-72,14,cyan)
 	draw_string(font,at+Vector2(14,101),FrontierFlightTelemetry.distance_label(float(row.distance)),HORIZONTAL_ALIGNMENT_LEFT,width-28,14,muted)
 	var hint: String=row.reason
-	if hint.is_empty():hint="F 유지  "+("표식 식별" if stage==0 else "활동 기록 읽기")
+	if hint.is_empty():hint=FrontierPlayInput.text("scan")+" 유지  "+("표식 식별" if stage==0 else "활동 기록 읽기")
 	draw_string(font,at+Vector2(14,134),hint,HORIZONTAL_ALIGNMENT_LEFT,width-28,14,cyan)

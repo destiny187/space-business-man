@@ -13,6 +13,7 @@ var previous_hull:=100.0
 var previous_braking:=false
 var warning_clock:=0.0
 var scan_enabled:=true
+var scan_held:=false
 var scan_target: int=-1
 var scan_progress:=0.0
 var scanned: Dictionary={}
@@ -376,10 +377,11 @@ func _update_planet_scan(delta: float) -> void:
 		transit_overlay.scan_body={};return
 	var body:=FrontierUniverse.body(state.manifest,target)
 	if scanned.has(body.id):scan_progress=1.0
-	else:
+	elif scan_held:
 		scan_progress=minf(1.0,scan_progress+delta/float(flight_config.get("scan_seconds",1.8)))
 		if scan_progress>=1.0:
 			scanned[body.id]=true;soundscape.complete();planet_scanned.emit(target)
+	else:scan_progress=0.0
 	transit_overlay.scan_body=body
 	transit_overlay.scan_progress=scan_progress
 

@@ -30,10 +30,11 @@ func update(t: float,blocked: bool) -> void:
 	if not selected.is_empty():
 		var body:=FrontierUniverse.body(flight.state.manifest,int(selected.body))
 		if flight.scanned.has(body.id):progress=1.0
-		else:
+		elif flight.scan_held:
 			progress=minf(1,progress+delta/float(flight.flight_config.get("scan_seconds",1.8)))
 			if progress>=1:
 				flight.scanned[body.id]=true;flight.soundscape.complete();flight.planet_scanned.emit(int(body.ordinal))
+		else:progress=0.0
 		selected.progress=progress
 	overlay.row=selected;overlay.queue_redraw()
 func hidden(point: Vector3) -> bool:

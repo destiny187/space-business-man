@@ -150,7 +150,7 @@ func solar_step() -> String:
 func departure_reason(ordinal: int) -> String:
 	var current := solar_step()
 	if current.is_empty() or FrontierUniverse.system_index(app.session.manifest, ordinal) == 0:return ""
-	return {"move":"W/S 속도·A/D 선회 연습을 먼저 마치세요.", "boost":"Shift 부스트 연습을 먼저 마치세요.", "scan":"화성을 바라보고 스캔을 마치세요."}[current]
+	return {"move":"W/S 속도·A/D 선회 연습을 먼저 마치세요.", "boost":"Shift 부스트 연습을 먼저 마치세요.", "scan":"화성을 바라보고 T를 유지해 스캔하세요."}[current]
 
 func request_reason(kind: String, args: Dictionary) -> String:
 	if kind not in ["navigate", "depart", "tutorial_depart"] or solar_step().is_empty():return ""
@@ -286,19 +286,19 @@ func _process(delta: float) -> void:
 				_hint("boost", 2, "부스트와 제동을 익혀보세요", "Shift  전진 부스트    Space  제동\n감속하면 더 빠르게 선회합니다.\nAlt + W/S  저속 정밀 전후진\nAlt를 놓으면 후진을 멈춥니다.")
 			"scan":
 				var mars: Dictionary = app.flight.planets.get(int(rules.scan_ordinal), {})
-				_hint("scan", 3, "화성을 스캔해보세요", "화성을 바라보고 스캔 원을 채우세요.\n우주 조사·화물 작업은 F를 길게,\n대상 접근·잔해 인양은 F를 누르세요.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
+				_hint("scan", 3, "화성을 스캔해보세요", "화성을 바라보고 T를 유지해 분석하세요.\n우주·지상 스캔은 T, 연결·상호작용은 F입니다.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
 	elif not progress.get("travel", false) or int(nav.system) == 0:
 		var stars = nav_ui.nearby_stars
 		var marker := _star_marker()
 		if marker.is_empty():
-			_hint("finding", 4, "주변 항성계 탐색 중", "항속거리 안의 항성계 표식을 준비하고 있습니다.")
+			_hint("finding", 4, "주변 항성계 탐색 중", "물체가 없는 우주 공간을 5초 바라보세요.\n그 방향의 항성계 이동 표식이 나타납니다.")
 		elif not stars.hovered.is_empty():
 			_hint("depart", 4, "이 별로 바로 이동", "태양계를 더 둘러본 뒤 출발해도 좋아요.\nF 또는 왼쪽 클릭으로 출발합니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 		else:
-			_hint("aim", 4, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n화면 가장자리 화살표는 뒤쪽 별의 방향입니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
+			_hint("aim", 4, "주변 항성계 표식 찾기", "마우스로 청록색 표식을 조준하세요.\n다른 방향은 빈 우주를 5초 바라보면 찾을 수 있습니다.", Rect2(marker.point - Vector2(12,12),Vector2(24,24)))
 	else:
 		var near: bool = nav_ui.context_kind == "land" and nav_ui.context_ready
-		_hint("land", 5, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 속도를 조절해 접근하세요.\n주시 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
+		_hint("land", 5, "행성 탐사 시작", "F  착륙하세요." if near else "마우스로 행성을 찾고 W/S로 속도를 조절해 접근하세요.\nT 스캔으로 착륙 가능 여부 확인  가까이서 F", _target(nav_ui.context) if near else _planet_marker())
 	_avoid_scan_result()
 	queue_redraw()
 

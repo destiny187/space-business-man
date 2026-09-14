@@ -77,7 +77,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	draw_arc(center,22,-PI*.5,TAU*scan_progress-PI*.5,64,cyan,3,true)
 	if atmosphere_ready:return
 	if scan_progress<1.0:
-		draw_string(font,center+Vector2(-38,44),"분석 중",HORIZONTAL_ALIGNMENT_LEFT,-1,15,cyan);return
+		draw_string(font,center+Vector2(-38,44),"분석 중" if scan_progress>0 else FrontierPlayInput.text("scan")+" 스캔",HORIZONTAL_ALIGNMENT_LEFT,-1,15,cyan);return
 	var width:=minf(440,size.x*.48)
 	var pointer:=center
 	if not Rect2(Vector2.ZERO,size).has_point(pointer):pointer=center

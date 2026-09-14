@@ -491,8 +491,11 @@ func _physics_process(delta: float) -> void:
 		var scanning: bool=(test_scan if test_mode else FrontierPlayInput.pressed("scan")) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if feedback.blocked() or (onboarding!=null and onboarding.letter.visible):direction=Vector2.ZERO;scanning=false
 		var scan_aim: Vector3=-camera.global_basis.z
+		flight.scan_held=orbital_scan_allowed() and (test_scan if test_mode else FrontierPlayInput.pressed("scan"))
 		if orbital_scan_allowed():
-			scanning=test_scan if test_mode else FrontierPlayInput.pressed("interact")
+			var freight: Dictionary=flight.freight_view.selected if is_instance_valid(flight.freight_view) else {}
+			var scan_action: String="interact" if not freight.is_empty() and int(freight.get("stage",0))>0 else "scan"
+			scanning=test_scan if test_mode else FrontierPlayInput.pressed(scan_action)
 			scan_aim=-flight.camera.global_basis.z
 		var flight_controls:=collect_flight_controls()
 		var keyboard_turn:=float(FrontierPlayInput.pressed("flight_right"))-float(FrontierPlayInput.pressed("flight_left")) if not test_mode else 0.0

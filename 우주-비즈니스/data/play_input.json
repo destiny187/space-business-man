@@ -52,11 +52,12 @@
     "key": "Shift"
   },
   "scan": {
-    "label": "지상 조사",
+    "label": "대상 스캔",
     "contexts": [
-      "ground"
+      "ground",
+      "flight"
     ],
-    "key": 69
+    "key": 84
   },
   "collect": {
     "label": "표본 회수",

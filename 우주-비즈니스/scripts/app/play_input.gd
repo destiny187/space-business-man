@@ -58,6 +58,9 @@ static func hint(source: String,context: String) -> String:
 	for id in definitions():
 		var row: Dictionary=definitions()[id]
 		if "global" in row.contexts or context in row.contexts:mapping[OS.get_keycode_string(default_code(id))]=text(id)
+	# Historical ground copy used E for the scanner. Keep saved/custom bindings
+	# reflected in those hints while the flight E key remains right roll.
+	if context=="ground":mapping["E"]=text("scan")
 	var regex:=RegEx.new();regex.compile("(?<![A-Za-z0-9_])(?:Space|Shift|Ctrl|Alt|Tab|F8|[A-Z])(?![A-Za-z0-9_])")
 	var result:="";var offset:=0
 	for found in regex.search_all(source):
