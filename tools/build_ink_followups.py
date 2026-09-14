@@ -441,6 +441,9 @@ def render(kind):
 
 
 def build(kind):
+    if kind in ['factory','charger','solar','reactor']:
+        import build_field_facilities
+        build_field_facilities.build([kind]);return
     g.reset()
     if kind.startswith('mesa_'):mesa(int(kind[-1]))
     else:globals()[kind]()

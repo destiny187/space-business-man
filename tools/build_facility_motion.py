@@ -26,10 +26,10 @@ def part(name,loc,scale,mat,parent=None,cylinder=False):
 
 records=[]
 asset_manifest=json.loads((ROOT/'art/blender/manifest.json').read_text())
-remodeled={row['id'] for row in asset_manifest if row.get('generator')=='tools/build_ink_industry.py'}
+remodeled={row['id'] for row in asset_manifest if row.get('generator') in ['tools/build_ink_industry.py','tools/build_field_facilities.py']}
 for kind in ['atmosphere','thermal','water','biolab']:
     if kind in remodeled:
-        print('INK_INDUSTRY_MOTION_PRESERVED',kind,'— mechanisms are authored by tools/build_ink_industry.py',flush=True)
+        print('INK_INDUSTRY_MOTION_PRESERVED',kind,'— mechanisms are authored by the asset generator',flush=True)
         continue
     src=ROOT/'art/blender'/f'{kind}.blend';out=ROOT/'우주-비즈니스/assets/models'/f'{kind}.glb'
     bpy.ops.wm.open_mainfile(filepath=str(src))

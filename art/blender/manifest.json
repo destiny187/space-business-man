@@ -559,80 +559,90 @@
     "source": "art/blender/storage.blend",
     "game": "우주-비즈니스/assets/models/storage.glb",
     "editable_objects": 62,
-    "export_objects": 5,
-    "generator": "tools/build_locus_storage.py",
+    "export_objects": 6,
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
     "material_preset": "ink-industrial-v1",
-    "geometry": "ink-family-remodeled"
+    "geometry": "field-industry-refined",
+    "triangles": 26752,
+    "motion_pivots": {}
   },
   {
     "id": "solar",
     "source": "art/blender/solar.blend",
     "game": "우주-비즈니스/assets/models/solar.glb",
-    "editable_objects": 41,
-    "export_objects": 7,
-    "generator": "tools/build_ink_followups.py",
+    "editable_objects": 69,
+    "export_objects": 14,
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
-    "geometry": "ink-family-remodeled",
+    "geometry": "field-industry-refined",
     "material_preset": "ink-industrial-v1",
-    "triangles": 16448,
+    "triangles": 32736,
     "motion_pivots": {}
   },
   {
     "id": "charger",
     "source": "art/blender/charger.blend",
     "game": "우주-비즈니스/assets/models/charger.glb",
-    "editable_objects": 29,
+    "editable_objects": 61,
     "export_objects": 7,
-    "generator": "tools/build_ink_followups.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
-    "geometry": "ink-family-remodeled",
+    "geometry": "field-industry-refined",
     "material_preset": "ink-industrial-v1",
-    "triangles": 12352,
+    "triangles": 27156,
     "motion_pivots": {}
   },
   {
     "id": "factory",
     "source": "art/blender/factory.blend",
     "game": "우주-비즈니스/assets/models/factory.glb",
-    "editable_objects": 39,
+    "editable_objects": 72,
     "export_objects": 6,
-    "generator": "tools/build_ink_followups.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
-    "geometry": "ink-family-remodeled",
+    "geometry": "field-industry-refined",
     "material_preset": "ink-industrial-v1",
-    "triangles": 15172,
+    "triangles": 35744,
     "motion_pivots": {}
   },
   {
     "id": "atmosphere",
     "source": "art/blender/atmosphere.blend",
     "game": "우주-비즈니스/assets/models/atmosphere.glb",
-    "editable_objects": 39,
+    "editable_objects": 67,
     "export_objects": 8,
-    "generator": "tools/build_ink_industry.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
     "material_preset": "ink-industrial-v1",
-    "geometry": "ink-family-remodeled",
-    "triangles": 21796,
+    "geometry": "field-industry-refined",
+    "triangles": 39528,
     "motion_pivots": {
       "Anim_Fan_Process": [
-        1.0,
-        0.0,
-        0.0,
-        1.1799999475479126,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        2.119999885559082,
-        0.0,
-        0.0,
-        0.0,
-        1.0
+        [
+          1.0,
+          0.0,
+          0.0,
+          1.1799999475479126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          2.119999885559082
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
       ]
     }
   },
@@ -640,31 +650,39 @@
     "id": "thermal",
     "source": "art/blender/thermal.blend",
     "game": "우주-비즈니스/assets/models/thermal.glb",
-    "editable_objects": 43,
+    "editable_objects": 74,
     "export_objects": 8,
-    "generator": "tools/build_ink_industry.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
     "material_preset": "ink-industrial-v1",
-    "geometry": "ink-family-remodeled",
-    "triangles": 18564,
+    "geometry": "field-industry-refined",
+    "triangles": 38424,
     "motion_pivots": {
       "Anim_Fan_Process": [
-        1.0,
-        0.0,
-        0.0,
-        1.1799999475479126,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        2.119999885559082,
-        0.0,
-        0.0,
-        0.0,
-        1.0
+        [
+          1.0,
+          0.0,
+          0.0,
+          1.1799999475479126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          2.119999885559082
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
       ]
     }
   },
@@ -672,31 +690,39 @@
     "id": "water",
     "source": "art/blender/water.blend",
     "game": "우주-비즈니스/assets/models/water.glb",
-    "editable_objects": 37,
+    "editable_objects": 73,
     "export_objects": 9,
-    "generator": "tools/build_ink_industry.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
     "material_preset": "ink-industrial-v1",
-    "geometry": "ink-family-remodeled",
-    "triangles": 22532,
+    "geometry": "field-industry-refined",
+    "triangles": 49716,
     "motion_pivots": {
       "Anim_Piston_Process": [
-        1.0,
-        0.0,
-        0.0,
-        1.1799999475479126,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        1.5499999523162842,
-        0.0,
-        0.0,
-        0.0,
-        1.0
+        [
+          1.0,
+          0.0,
+          0.0,
+          1.1799999475479126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          1.5499999523162842
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
       ]
     }
   },
@@ -704,31 +730,39 @@
     "id": "biolab",
     "source": "art/blender/biolab.blend",
     "game": "우주-비즈니스/assets/models/biolab.glb",
-    "editable_objects": 55,
+    "editable_objects": 94,
     "export_objects": 12,
-    "generator": "tools/build_ink_industry.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
     "material_preset": "ink-industrial-v1",
-    "geometry": "ink-family-remodeled",
-    "triangles": 34112,
+    "geometry": "field-industry-refined",
+    "triangles": 59320,
     "motion_pivots": {
       "Anim_Agitator_Process": [
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        3.119999885559082,
-        0.0,
-        0.0,
-        0.0,
-        1.0
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          3.119999885559082
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
       ]
     }
   },
@@ -736,13 +770,13 @@
     "id": "reactor",
     "source": "art/blender/reactor.blend",
     "game": "우주-비즈니스/assets/models/reactor.glb",
-    "editable_objects": 30,
+    "editable_objects": 58,
     "export_objects": 7,
-    "generator": "tools/build_ink_followups.py",
+    "generator": "tools/build_field_facilities.py",
     "blender": "5.2.1 LTS",
-    "geometry": "ink-family-remodeled",
+    "geometry": "field-industry-refined",
     "material_preset": "ink-industrial-v1",
-    "triangles": 18624,
+    "triangles": 38036,
     "motion_pivots": {}
   },
   {

@@ -7,6 +7,10 @@ from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 import ink_blender as ink
+if __name__ == "__main__":
+ import build_field_facilities
+ build_field_facilities.build(["storage"])
+ raise SystemExit(0)
 OUT=ROOT/'art/blender';GAME=ROOT/'우주-비즈니스/assets/models'
 REVIEW=ROOT/'docs/production/media/ink-family';REVIEW.mkdir(parents=True,exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)

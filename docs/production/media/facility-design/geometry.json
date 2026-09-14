@@ -1,0 +1,200 @@
+[
+  {
+    "id": "solar",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 69,
+    "export_objects": 14,
+    "triangles": 32736,
+    "motion_pivots": {},
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "charger",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 61,
+    "export_objects": 7,
+    "triangles": 27156,
+    "motion_pivots": {},
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "factory",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 72,
+    "export_objects": 6,
+    "triangles": 35744,
+    "motion_pivots": {},
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "storage",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 62,
+    "export_objects": 6,
+    "triangles": 26752,
+    "motion_pivots": {},
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "atmosphere",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 67,
+    "export_objects": 8,
+    "triangles": 39528,
+    "motion_pivots": {
+      "Anim_Fan_Process": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          1.1799999475479126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          2.119999885559082
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "thermal",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 74,
+    "export_objects": 8,
+    "triangles": 38424,
+    "motion_pivots": {
+      "Anim_Fan_Process": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          1.1799999475479126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          2.119999885559082
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "water",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 73,
+    "export_objects": 9,
+    "triangles": 49716,
+    "motion_pivots": {
+      "Anim_Piston_Process": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          1.1799999475479126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          1.5499999523162842
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "biolab",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 94,
+    "export_objects": 12,
+    "triangles": 59320,
+    "motion_pivots": {
+      "Anim_Agitator_Process": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          3.119999885559082
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "blender": "5.2.1 LTS"
+  },
+  {
+    "id": "reactor",
+    "generator": "tools/build_field_facilities.py",
+    "geometry": "field-industry-refined",
+    "editable_objects": 58,
+    "export_objects": 7,
+    "triangles": 38036,
+    "motion_pivots": {},
+    "blender": "5.2.1 LTS"
+  }
+]

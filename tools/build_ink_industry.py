@@ -333,6 +333,10 @@ def main():
     requested=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else KINDS
     if not requested:requested=KINDS
     if set(requested)-set(KINDS):raise SystemExit('Unknown industry asset')
+    if any(kind!='miner' for kind in requested):
+        import build_field_facilities
+        build_field_facilities.build([kind for kind in requested if kind!='miner'])
+        requested=[kind for kind in requested if kind=='miner']
     records=json.loads((SOURCE/'manifest.json').read_text())
     for kind in requested:
         reset()
