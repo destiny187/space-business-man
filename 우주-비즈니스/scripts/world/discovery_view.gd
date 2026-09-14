@@ -124,7 +124,7 @@ func _process(delta: float) -> void:
 	if selected.is_empty():hint.text="";return
 	var d:=FrontierExplorationDiscoveries.definition(selected.template);var index:=FrontierExplorationDiscoveries.stage(world,selected)
 	var known:=FrontierExplorationDiscoveries.known(world,selected)
-	if not known:hint.text="E  스캔";return
+	if not known:hint.text=FrontierPlayInput.hint("T  스캔","ground");return
 	if index>=d.stages.size():hint.text="조사 완료";return
 	var step: Dictionary=d.stages[index]
 	hint.text="F  "+str(step.label)

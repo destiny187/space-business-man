@@ -15,6 +15,8 @@ var path: String
 var player_key := ""
 var new_player := false
 var progress: Dictionary = {}
+var pending_actions: Dictionary={}
+var graduation_left:=0.0
 var card: PanelContainer
 var title: Label
 var detail: Label
@@ -94,6 +96,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.hide()
 	app.session.response_received.connect(_response)
+	app.session.request_started.connect(func(sequence,kind,_args):
+		if kind in ["business_mine","business_build","equipment_craft"]:pending_actions[sequence]=kind)
 	app.session.local_request_guard = request_reason
 
 func update_snapshot(value: Dictionary) -> void:
@@ -121,6 +125,8 @@ func update_snapshot(value: Dictionary) -> void:
 		# expeditions may retain legacy personal progress on their first read.
 		if not fresh_departure:initial = seen.get_value("players", value.self_id, initial)
 		progress = seen.get_value("players", key, initial).duplicate(true)
+		if int(progress.get("guide_version",0))<2:
+			progress.mined=bool(progress.get("complete",false));progress.complete=false;progress.guide_version=2
 		_save()
 	var nav: Dictionary = value.crew.navigation
 	if initial_system < 0:initial_system = int(nav.system)
@@ -186,17 +192,52 @@ func can_open_map() -> bool:
 	var value: Dictionary = app.session.latest
 	return value.get("phase") == "playing" and value.crew.get("landing", {}).is_empty() and value.crew.navigation.mode == "idle" and value.get("local_shuttle", "").is_empty()
 
-func _response(_sequence: int, result: Dictionary) -> void:
-	if not enabled() or not result.get("ok", false) or app.surface_world == null:return
-	for amount in result.get("gains", {}).values():
-		if int(amount) > 0 and not progress.get("complete", false):
-			progress.complete = true
-			_save()
+func _response(sequence: int, result: Dictionary) -> void:
+	var kind: String=pending_actions.get(sequence,"");pending_actions.erase(sequence)
+	if not enabled() or not result.get("ok",false) or app.surface_world==null:return
+	if kind=="business_mine" and not result.get("gains",{}).is_empty():progress.mined=true;_save()
+	if kind=="business_build":progress.built=true;_save()
+
+func restoration_goal() -> String:
+	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
+	var values: Dictionary=site.get("environment",app.surface_world.body.get("traits",{}))
+	if float(values.get("temperature",20))>40 or float(values.get("temperature",20))<0:return "thermal"
+	if float(values.get("pressure",0))<60:return "atmosphere"
+	if float(values.get("water",0))<60:return "water"
+	return "biolab"
+
+func field_instruction() -> void:
+	var value: Dictionary=app.session.latest
+	var tool:=FrontierEquipment.active(value.crew.members[value.self_id])
+	if not progress.get("inventory",false) or tool.get("kind")!="miner":
+		_hint("equipment",6,"채집 장비 준비","I  채집기를 선택해 번호 슬롯에 장착하세요.\n사용할 번호 키로 장비를 꺼냅니다.");return
+	if not progress.get("field_scan",false):
+		_hint("field_scan",7,"주변 광맥을 먼저 조사하세요","광맥을 바라보고 T를 유지하세요.\n스캔 결과에서 자원과 수량을 확인할 수 있습니다.");return
+	if not progress.get("mined",false):
+		_hint("mine",8,"첫 광물 채집","조사한 광맥을 조준하고 왼쪽 클릭을 유지하세요.\n채집한 자원은 내 배낭에 들어갑니다.");return
+	if not progress.get("materials_review",false):
+		_hint("materials",9,"자원의 사용처 확인","I  방금 모은 자원을 선택하세요.\n만들 수 있는 장비·시설과 필요한 수량이 나옵니다.\n우측 클릭으로 수량을 골라 내려놓을 수 있습니다.");return
+	if not progress.get("built",false):
+		var solar:=FrontierFacilityResearch.construction("solar")
+		_hint("build",10,"첫 전력 설비 배치","B  "+solar.name+" 선택 → 바닥에 배치하세요.\n필요 재료: "+FrontierCatalog.cost_text(solar.cost)+"\n휠로 회전 · 왼쪽 클릭 설치 · Esc 취소");return
+	if not progress.get("terraform_view",false):
+		_hint("terraform",11,"이 행성의 복원 목표 확인","Tab → 테라포밍에서 부족한 환경 수치를 보세요.\n설비가 필요한 지역과 처리 범위를 확인합니다.");return
+	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
+	var running:=false
+	for building in site.get("buildings",{}).values():
+		if building.type in ["thermal","atmosphere","water","biolab"] and building.get("working",false):running=true;break
+	if running:
+		_hint("independent",12,"복원 설비가 가동 중입니다","테라포밍 수치와 지표의 변화를 확인하세요.\n이제 다른 자원·행성도 자유롭게 탐험할 수 있습니다.\n반복 채집이 필요하면 착륙선 F → 공동 설비 연구에서 로봇 자동화를 준비하세요.")
+		graduation_left+=.1
+		if graduation_left>=8:progress.complete=true;_save()
+		return
+	var goal:=FrontierFacilityResearch.construction(restoration_goal())
+	_hint("restore",12,"부족한 환경을 개선하세요","B  "+goal.name+"를 필요한 지역에 배치하세요.\n필요 재료: "+FrontierCatalog.cost_text(goal.cost)+"\nF 시설에서 전력·원료 부족 이유를 확인합니다.\n자동화는 선택입니다. 필요한 만큼 직접 작업해도 됩니다.")
 
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
 	text=FrontierPlayInput.hint(text,"ground" if app.surface_world!=null else "flight")
 	step = id
-	counter.text = "플레이 가이드    %02d / 07" % number
+	counter.text = "플레이 가이드    %02d / 12" % number
 	title.text = heading
 	detail.text = text
 	highlight = target
@@ -258,6 +299,11 @@ func _process(delta: float) -> void:
 	if app.surface_world != null and app.inventory_panel.visible and not progress.get("inventory", false):
 		progress.inventory = true
 		_save()
+	if app.surface_world!=null:
+		if app.inventory_panel.visible and progress.get("mined",false) and not progress.get("materials_review",false):progress.materials_review=true;_save()
+		if app.planet_map.visible and app.planet_map.modes.current_tab==1 and not progress.get("terraform_view",false):progress.terraform_view=true;_save()
+		var scan: Dictionary=app.session.latest.get("scan",{})
+		if scan.get("known",false) and scan.get("info",{}).get("kind","")=="mineral" and not progress.get("field_scan",false):progress.field_scan=true;_save()
 	var nav_ui = app.navigation_ui
 	if app.any_menu_open() and not app.navigation_frame.visible:queue_redraw();return
 	card.position = Vector2(28, 170)
@@ -265,11 +311,7 @@ func _process(delta: float) -> void:
 	var value: Dictionary = app.session.latest
 	var nav: Dictionary = value.crew.navigation
 	if app.surface_world != null:
-		var tool := FrontierEquipment.active(value.crew.members[value.self_id])
-		if not progress.get("inventory", false) or tool.get("kind") != "miner":
-			_hint("equipment", 6, "채집 장비 준비", "I  아이템에서 채집기를 제작 / 번호 슬롯에 장착하세요.\n장착한 번호 키로 채집기를 꺼내세요.")
-		else:
-			_hint("mine", 7, "첫 광물 채집", "광맥을 조준하고 왼쪽 클릭을 유지하세요.\nB 건설  F 대상 작업  자동화는 선택입니다.", Rect2(get_viewport().get_visible_rect().size * .5 - Vector2(18,18), Vector2(36,36)))
+		field_instruction()
 	elif not value.get("local_shuttle", "").is_empty():
 		_hint("shuttle", 1, "공동 원정선으로 합류", "소형선은 같은 항성계 안에서 이동합니다.\n다음 항성계 항해는 공동 원정선에서 시작하세요.")
 	elif value.self_id != value.crew.pilot_id:

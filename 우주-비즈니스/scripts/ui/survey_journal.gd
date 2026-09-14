@@ -92,7 +92,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	# Background discoveries must not destroy a name being typed (including IME).
 	if not editing_name or retained.get("key","")!=selected_entry.get("key",""):select(retained)
 	if value.entries.is_empty():
-		var empty:=FrontierInterfaceStyle.label(grid,"E를 유지해 현장의 생물·광물·장비를 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "장비의 표식을 E로 조사하면 기업이 기록됩니다." if category.selected==5 and search.text.is_empty() else "조건에 맞는 발견이 없습니다.",14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		var empty:=FrontierInterfaceStyle.label(grid,FrontierPlayInput.hint("T를 유지해 현장의 생물·광물·장비를 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "장비의 표식을 T로 조사하면 기업이 기록됩니다." if category.selected==5 and search.text.is_empty() else "조건에 맞는 발견이 없습니다.","ground"),14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 func select(entry: Dictionary) -> void:
 	editing_name=false
 	if entry.get("key","")!=selected_entry.get("key",""):detail_scroll.scroll_vertical=0

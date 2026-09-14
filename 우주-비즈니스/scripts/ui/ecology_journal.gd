@@ -56,7 +56,7 @@ func refresh() -> void:
 	for id in form_ids:
 		var form:=FrontierEcologyCatalog.form(id)
 		discoveries.add_icon_item(FrontierResourceIcons.menu_texture(FrontierResourceIcons.specimen_id(form)),FrontierSpeciesNames.display(ecology,form.id))
-	if form_ids.is_empty():discoveries.add_item("생명체를 조준하고 E를 길게 눌러 스캔하세요.")
+	if form_ids.is_empty():discoveries.add_item(FrontierPlayInput.hint("생명체를 조준하고 T를 길게 눌러 스캔하세요.","ground"))
 	elif selected in form_ids:discoveries.select(form_ids.find(selected))
 	update_detail()
 	sample_ids.clear();cargo.clear()

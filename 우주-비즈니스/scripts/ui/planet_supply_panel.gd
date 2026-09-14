@@ -11,6 +11,7 @@ var last_key: String=""
 func configure(owner_panel: FrontierBusinessPanel) -> void:
 	panel=owner_panel
 	heading=panel.label(self,"")
+	panel.label(self,"행성 시설을 계약 정산 후에도 보유하는 이용권입니다.\n착륙선 단말은 이용권을 관리하며 생산은 직접 지은 지상 시설에서 진행합니다.",13)
 	var chain:=HBoxContainer.new();chain.alignment=BoxContainer.ALIGNMENT_CENTER;add_child(chain)
 	for id in ["alloy_frame","cryo_cell","industrial_core"]:
 		var tile:=FrontierItemTile.new();tile.picture=FrontierResourceIcons.texture(id);tile.caption=FrontierProductionTier2.product(id).name;tile.grade=3
