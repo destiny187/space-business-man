@@ -477,8 +477,13 @@ func try_place_building() -> void:
 
 func refresh_building_cost() -> void:
 	var bag: Dictionary=ledger.get("bags",{}).get(actor_id,{})
+	if not FrontierFacilityResearch.construction_unlocked(ledger,selected(building)):
+		for index in building.item_count:
+			if FrontierFacilityResearch.construction_unlocked(ledger,str(building.get_item_metadata(index))):building.select(index);break
 	for kind in building_cards:
 		var card: Button=building_cards[kind]
+		card.visible=FrontierFacilityResearch.construction_unlocked(ledger,kind)
+		if not card.visible:continue
 		card.set_pressed_no_signal(kind==selected(building))
 		var tier: int=FrontierFacilityResearch.construction(kind).get("tier",1)
 		if tier>=3:

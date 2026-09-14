@@ -24,6 +24,13 @@ static func construction(kind: String) -> Dictionary:
 static func gate(ledger: Dictionary,key: String) -> String:
  if not config().projects.has(key) or owned(ledger,key):return ""
  return "착륙선 연구 → 공동 설비에서 "+str(config().projects[key].name)+" 연구가 필요합니다."
+static func construction_unlocked(ledger: Dictionary,kind: String) -> bool:
+ if kind=="factory" and not owned(ledger,"factory"):return false
+ var definition:=construction(kind)
+ if not FrontierEarlyAccess.available(ledger,str(definition.get("tech",""))):return false
+ var tier:=int(definition.get("tier",1))
+ var blueprint:=FrontierFacilityBlueprints.required({"type":kind},tier)
+ return tier<3 or blueprint.is_empty() or blueprint in ledger.get("facility_blueprints",[])
 static func reason(world: Dictionary,actor: String,key: String) -> String:
  if not config().projects.has(key):return "설비 연구를 선택하세요."
  if actor!=world.crew.owner_id:return "공동 설비 연구는 호스트가 구매합니다."

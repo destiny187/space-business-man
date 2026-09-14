@@ -14,12 +14,8 @@ var action: Button
 var signature:=""
 var pending_sequence:=-1
 func configure(owner_app: FrontierCrewExpedition,shared_view: bool=false) -> void:
-	app=owner_app;shared_only=shared_view;selected="industry" if shared_only else "mining";name="공동 설비" if shared_only else "개인 성능";add_theme_constant_override("separation",10)
+	app=owner_app;shared_only=shared_view;selected="industry" if shared_only else "mining";name="생산 효율" if shared_only else "개인 성능";add_theme_constant_override("separation",10)
 	var content: Node=self
-	if shared_only:
-		var pages:=TabContainer.new();pages.size_flags_vertical=Control.SIZE_EXPAND_FILL;add_child(pages)
-		var facilities:=FrontierFacilityResearchPanel.new();pages.add_child(facilities);facilities.configure(app)
-		var efficiency:=VBoxContainer.new();efficiency.name="생산 효율";pages.add_child(efficiency);content=efficiency
 	var choices:=HBoxContainer.new();content.add_child(choices)
 	for key in FrontierProgressionResearch.config().fields:
 		if (key=="industry")!=shared_only:continue

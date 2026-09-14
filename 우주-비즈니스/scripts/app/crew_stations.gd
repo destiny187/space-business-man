@@ -28,8 +28,9 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	var close:=Button.new();close.text="닫기  Esc";header.add_child(close);close.pressed.connect(panel.hide)
 	research_tabs=TabContainer.new();research_tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;research_tabs.use_hidden_tabs_for_min_size=false;column.add_child(research_tabs)
 	research=FrontierExpeditionResearchPanel.new();research_tabs.add_child(research);research.configure(app);research.name="표본 분석"
-	var shared:=FrontierProgressionResearchPanel.new();research_tabs.add_child(shared);shared.configure(app,true)
+	var facilities:=FrontierFacilityResearchPanel.new();research_tabs.add_child(facilities);facilities.configure(app);facilities.name="공동 설비"
 	ecology_holder=HBoxContainer.new();ecology_holder.name="생태 작업";research_tabs.add_child(ecology_holder)
+	var shared:=FrontierProgressionResearchPanel.new();research_tabs.add_child(shared);shared.configure(app,true)
 	augmentation_tabs=TabContainer.new();augmentation_tabs.size_flags_vertical=Control.SIZE_EXPAND_FILL;augmentation_tabs.use_hidden_tabs_for_min_size=false;column.add_child(augmentation_tabs)
 	augmentation=FrontierAugmentationPanel.new();augmentation_tabs.add_child(augmentation);augmentation.configure(app);augmentation.name="신체 증강"
 	var equipment:=FrontierEquipmentWorkshop.new();augmentation_tabs.add_child(equipment);equipment.configure(app)

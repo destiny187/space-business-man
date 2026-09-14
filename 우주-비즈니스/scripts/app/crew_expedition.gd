@@ -1022,7 +1022,7 @@ func open_warehouse_management() -> void:
 	open_station("base" if closest.is_empty() else "storage",closest,true)
 func station_action(kind: String) -> void:
 	match kind:
-		"research":close_menus();toggle_research()
+		"research":stations.navigate("research",1)
 		"lotus":lotus.toggle()
 		"shuttles":business_panel.tabs.current_tab=business_panel.shuttle_panel.get_index();business_panel.shuttle_panel.update_snapshot(session.latest)
 		"augmentation":stations.navigate("augmentation")
@@ -1032,7 +1032,6 @@ func station_action(kind: String) -> void:
 			open_station("base")
 		"cargo":
 			open_menu(inventory_panel);inventory_panel.warehouse_choice.select(1);inventory_panel.tabs.current_tab=2
-		"research":stations.navigate("research")
 		"shipyard":toggle_shipyard()
 		"launch":
 			close_menus()
