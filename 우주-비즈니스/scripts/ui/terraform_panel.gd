@@ -28,6 +28,8 @@ var supply_rows: VBoxContainer
 var supply_mode: OptionButton
 var preparation: FrontierT3PreparationPanel
 var supply_signature:=""
+var facility_link: Button
+var selected_facility: Dictionary={}
 var buttons: Array[Button]=[]
 func configure(owner_app: FrontierCrewExpedition) -> void:
  app=owner_app;size_flags_vertical=Control.SIZE_EXPAND_FILL
@@ -49,6 +51,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  preparation=FrontierT3PreparationPanel.new();supply_content.add_child(preparation);preparation.configure(app);preparation.hide()
  legend=FrontierInterfaceStyle.label(self,"",13,FrontierInterfaceStyle.MUTED)
  info=FrontierInterfaceStyle.label(self,"",15);info.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;info.custom_minimum_size.y=66
+ facility_link=Button.new();facility_link.hide();add_child(facility_link)
+ facility_link.pressed.connect(func():preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":"location","position":selected_facility.position}))
 func for_buttons() -> void:
  for i in buttons.size():buttons[i].button_pressed=i==layer
 func _process(dt: float) -> void:
@@ -57,6 +61,7 @@ func _process(dt: float) -> void:
  if clock<=0:clock=.5;refresh()
 func refresh() -> void:
  for_buttons()
+ facility_link.hide()
  if app.surface_world==null:return
  body=app.surface_world.body;site=app.session.surface.get("business",{}).get("sites",{}).get(body.id,{})
  if cached_body!=body.id:cached_body=body.id;focus=Vector2(app.camera.position.x,app.camera.position.z);chosen=focus;terrain_key="";globe_relief=[]
@@ -83,6 +88,14 @@ func refresh() -> void:
   terrain_texture=ImageTexture.create_from_image(image)
  legend.text=["대기: 낮은 적합도 → 높은 적합도    구체 드래그 회전 / 오른쪽 지도 드래그·휠 확대","수질: 주황 부족 → 청록 확보    저지대 이점과 실제 침수는 별도 판정","토양: 갈색 미개량 → 녹색 개량    사각 구획 합집합 · 중첩 효과 없음","오염: 보라 고정 작업 구역 / 주황 잔류 오염    구역 안에서만 전문 처리"][layer]
  var p:=chosen if chosen.is_finite() else focus;var cell:=FrontierFreeTerraform.sample(site,p)
+ selected_facility={};var nearest:=INF
+ for facility in site.get("buildings",{}).values():
+  if facility.type not in [["atmosphere","heater"],["water"],["biolab"],["source_control"]][layer]:continue
+  var distance:=p.distance_to(Vector2(facility.position[0],facility.position[2]))
+  if distance<=FrontierFreeTerraform.radius(site,facility) and distance<nearest:nearest=distance;selected_facility=facility
+ if not selected_facility.is_empty():
+  facility_link.show();facility_link.text=("▶ " if selected_facility.get("working",false) else "Ⅱ ")+FrontierCatalog.entry("buildings",selected_facility.type).name+" · "+str(selected_facility.get("status",""))+" · 위치 보기"
+
  info.text=FrontierFreeTerraform.detail(site)+"\n"
  if layer==0:info.text+="선택 지점 산소 %.1f%% · 기압 %.2f bar · 독성 %.1f"%[float(cell.environment.oxygen)*100,float(cell.environment.pressure),float(cell.environment.toxicity)]
  elif layer==1:info.text+="선택 지점 급수 %.0f · 염류 %.0f · 저지대 효율 ×%.2f · 실제 수면은 현장 확인"%[float(cell.environment.water),float(cell.restoration2.salinity),FrontierFreeTerraform.water_gain(site,body,p)]

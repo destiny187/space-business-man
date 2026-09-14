@@ -1,5 +1,6 @@
 class_name FrontierBusinessPanel
 extends PanelContainer
+signal work_target(request: Dictionary)
 signal command(kind: String,args: Dictionary)
 signal prefer_robot(id: String)
 var work_cards: GridContainer
@@ -24,6 +25,12 @@ var robot_controls: VBoxContainer
 var recovery_controls: VBoxContainer
 var warehouse_stock: OptionButton
 var robot_job_status: Label
+var robot_energy: ProgressBar
+var robot_cargo: ProgressBar
+var robot_help: Button
+var robot_action: Dictionary={}
+var settlement_summary: Label
+var settlement_buttons: Array[Button]=[]
 var warehouse_grid: GridContainer
 var warehouse_key: String=""
 var facility_picture: FrontierEquipmentPreview
@@ -137,6 +144,9 @@ func _ready() -> void:
 	factory=option(robot_tab);factory.hide()
 	robot=option(robot_tab)
 	robot_job_status=label(robot_tab,"")
+	robot_energy=ProgressBar.new();robot_energy.custom_minimum_size.y=18;robot_energy.tooltip_text="배터리";robot_job_status.get_parent().add_child(robot_energy)
+	robot_cargo=ProgressBar.new();robot_cargo.custom_minimum_size.y=18;robot_cargo.tooltip_text="운반 중인 화물 / 적재량";robot_job_status.get_parent().add_child(robot_cargo)
+	robot_help=button(robot_job_status.get_parent(),"작업 위치 보기",func():work_target.emit(robot_action))
 	robot_controls=VBoxContainer.new();robot_tab.add_child(robot_controls)
 	vein=option(robot_controls);vein.hide()
 	work_cards=GridContainer.new();work_cards.columns=5;robot_controls.add_child(work_cards)
@@ -183,8 +193,12 @@ func _ready() -> void:
 		var title:=label(row,{"atmosphere":"대기","temperature":"온도","water":"물","ecology":"생태"}[category]);title.custom_minimum_size.x=50;title.size_flags_horizontal=0
 		var bar:=ProgressBar.new();bar.custom_minimum_size=Vector2(200,22);bar.size_flags_horizontal=Control.SIZE_EXPAND_FILL;row.add_child(bar);environment_bars[category]=bar
 	environment_label=label(contract_tab,"")
-	button(contract_tab,"시설 / 재고 인계 후 정산…",confirm_settlement)
-	button(contract_tab,"생산 거점 유지하며 정산…",func():confirm_settlement(true))
+	settlement_summary=label(contract_tab,"")
+	button(contract_tab,"복원 범위 / 멈춘 설비 확인",func():work_target.emit({"kind":"environment"}))
+	settlement_buttons.append(button(contract_tab,"시설 / 재고 인계 후 정산…",confirm_settlement))
+	settlement_buttons.append(button(contract_tab,"생산 거점 유지하며 정산…",func():confirm_settlement(true)))
+	button(contract_tab,"공동 연구 보기",func():station_action.emit("research"))
+	button(contract_tab,"선박 정비 / 다음 항해 준비",func():station_action.emit("shipyard"))
 	label(contract_tab,"전체 인계는 계약 대금 전액, 생산 거점 유지는 60%를 받습니다. 유지하려면 착륙선의 생산 이용권이 필요합니다. 인계한 자산은 되돌릴 수 없습니다.")
 	tabs.add_child(facility_tab)
 	var ship_tab:=VBoxContainer.new();ship_tab.name="착륙선";tabs.add_child(ship_tab)
@@ -277,6 +291,10 @@ func refresh_context(current: Dictionary) -> void:
 				warehouse_grid.add_child(tile)
 	var target_robot: Dictionary=current.get("robots",{}).get(context_id,{})
 	robot_job_status.text="Mk.%d  %s  %s"%[int(target_robot.get("tier",1)),"자동" if target_robot.get("auto_enabled",false) else "지정 광맥" if not target_robot.get("manual_target","").is_empty() else "대기",str(target_robot.get("status",""))]
+	robot_energy.value=float(target_robot.get("battery",0))
+	robot_cargo.max_value=FrontierProductionTier2.robot_capacity(target_robot);robot_cargo.value=FrontierExpeditionBusiness.total(target_robot.get("cargo",{}))
+	robot_cargo.tooltip_text="화물 %d / %d개"%[int(robot_cargo.value),int(robot_cargo.max_value)]
+	robot_action=preload("res://scripts/ui/work_guidance.gd").robot_action(target_robot);robot_help.text=robot_action.label
 	if context_kind not in ["build","ship","base"]:
 		var row: Dictionary=current.get("robots" if context_kind=="robot" else "buildings",{}).get(context_id,{})
 		if context_kind!="robot" and not row.is_empty() and facility_picture.is_visible_in_tree():
@@ -349,6 +367,10 @@ func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,resear
 			if str(vein.get_item_metadata(i))==str(selected_robot.get("resource_filter","")):vein.select(i);break
 	if work_cards.is_visible_in_tree():refresh_work_cards(veins)
 	if tabs.get_current_tab_control().name!="환경 / 계약".validate_node_name():return
+	var settled: bool=not current.get("settlement",{}).is_empty()
+	for button in settlement_buttons:button.disabled=settled or actor_id!=ledger.get("owner_id",actor_id)
+	settlement_summary.text=("✓ 정산 지급 %d Cr · 공동 자금 %d Cr"%[int(current.settlement.get("payment",0)),int(ledger.credits)]) if settled else "이미 받은 중간 지급 %d Cr"%FrontierRegionalTerraform.paid(current)
+	settlement_summary.text+="\n"+preload("res://scripts/ui/work_guidance.gd").asset_summary(current)
 	var e: Dictionary=current.environment;var report:=FrontierEvaluator.environment_report(current,body_id)
 	for category in environment_bars:
 		environment_bars[category].visible=report.observed
@@ -369,8 +391,11 @@ func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,resear
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행  %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement(retain: bool=false) -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
-	var payment:=FrontierPlanetSupply.settlement_payment(ledger.get("sites",{}).get(body_id,{}),planet_tier,retain)
-	var dialog:=ConfirmationDialog.new();dialog.title="지역 복원 계약 인계";dialog.dialog_text="복원 계약 대금 %d Cr\n현장 시설 / 로봇 / 재고를 인계하고 복원 대금을 한 번 받습니다.\n격납고로 회수한 로봇과 영구 기술은 유지됩니다.\n조건 미충족 시 자산을 변경하지 않습니다."%payment;dialog.dialog_text=("남은 복원 대금 %d Cr\n총대금의 60%%에서 중간 지급액을 제외합니다.\n인계 대금 40%%를 포기하고 시설 / 로봇 / 재고와 생산 이용권을 유지합니다.\n호스트 세션 중에는 다른 행성에서도 생산합니다. 원료 / 전력 / 창고 조건에 따라 대기합니다."%payment) if retain else dialog.dialog_text;dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(510,190))
+	var current: Dictionary=ledger.sites[body_id]
+	var payment:=FrontierPlanetSupply.settlement_payment(current,planet_tier,retain)
+	var dialog:=ConfirmationDialog.new();dialog.ok_button_text="정산 확정";dialog.cancel_button_text="돌아가기";dialog.title="생산 거점 보유 정산" if retain else "지역 복원 계약 인계"
+	dialog.dialog_text="이번 지급 %d Cr · 이미 받은 중간 지급 %d Cr\n공동 자금 %d → %d Cr\n%s\n%s\n격납고 회수 자산·개인 배낭·영구 기술 유지\n확정 시 현재 조건을 다시 확인합니다."%[payment,FrontierRegionalTerraform.paid(current),int(ledger.credits),int(ledger.credits)+payment,preload("res://scripts/ui/work_guidance.gd").asset_summary(current),"현장 자산·생산 이용권 보유 (전력·원료 필요)" if retain else "위 현장 자산과 이용권을 인계합니다."]
+	dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(620,260))
 
 func engineering_command(stage: String) -> void:
 	command.emit("business_research_"+stage,{"project":selected(research_project),"building_id":selected(research_facility)})

@@ -526,6 +526,7 @@ func _show_uses(resource: String) -> void:
 		if definition.cost.has(resource):uses.append({"name":definition.name,"model":definition.model,"cost":definition.cost,"where":"건설  B  내 배낭 재료","target":"building","id":id})
 	var research: Dictionary=app.session.latest.get("expedition_research",{}).get("projects",{}).get("deep_mining",{})
 	if research.get("evidence",{}).has(resource):uses.push_front({"name":"심부 정밀 채집 연구","model":"ore_"+resource,"cost":{resource:int(FrontierExpeditionResearch.config().projects.deep_mining.analysis_samples)},"where":"우주선 표본 연구대  F","target":"research","id":"deep_mining"})
+	var source_link:=Button.new();source_link.text="확인한 산지 위치";stats.add_child(source_link);source_link.pressed.connect(func():preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":"resource","resource":resource}))
 	FrontierInterfaceStyle.label(stats,"알려진 사용처",13,FrontierInterfaceStyle.ACCENT)
 	if uses.is_empty():FrontierInterfaceStyle.label(stats,"확인된 제작 / 연구 사용처 없음",12,FrontierInterfaceStyle.MUTED)
 	for use in uses.slice(0,3):
@@ -543,16 +544,19 @@ func _open_use(use: Dictionary) -> void:
 	var background:=ColorRect.new();background.color=FrontierInterfaceStyle.INK;background.mouse_filter=Control.MOUSE_FILTER_IGNORE;usage_dialog.add_child(background);usage_dialog.move_child(background,0);background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var content:=VBoxContainer.new();content.position=Vector2(18,18);content.size=Vector2(484,290);usage_dialog.add_child(content)
 	var model:=FrontierEquipmentPreview.new();model.custom_minimum_size=Vector2(484,145);content.add_child(model);model.show_model(use.model)
-	FrontierInterfaceStyle.label(content,use.where,14,FrontierInterfaceStyle.ACCENT)
+	FrontierInterfaceStyle.label(content,FrontierPlayInput.hint(use.where,"ground"),14,FrontierInterfaceStyle.ACCENT)
 	var cost:=FrontierResourceReadout.new();cost.custom_minimum_size.x=0;cost.value="현재 최고 단계" if use.cost.is_empty() else "필요 재료  "+FrontierCatalog.cost_text(use.cost);content.add_child(cost)
-	if use.target!="product":
-		var link:=Button.new();link.text={"recipe":"제작 설계 보기","building":"건설 설계 보기","body":"내 신체 능력 보기","research":"공동 연구 기록 보기"}[use.target];content.add_child(link)
-		link.pressed.connect(_navigate_use.bind(use))
+	var owned: Dictionary=bag
+	if use.target=="product":owned=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id if app.surface_world!=null else "",{}).get("inventory",{})
+	cost.show_cost(use.cost,owned,true)
+	var link:=Button.new();link.text={"product":"제작소 열기 / 위치 보기","recipe":"제작 설계 보기","building":"건설 설계 보기","body":"내 신체 능력 보기","research":"공동 연구 기록 보기"}[use.target];content.add_child(link)
+	link.pressed.connect(_navigate_use.bind(use))
 	usage_dialog.popup_centered(Vector2i(520,360))
 
 func _navigate_use(use: Dictionary) -> void:
 	usage_dialog.hide()
 	match use.target:
+		"product":preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":"factory","product":use.id})
 		"recipe":tabs.current_tab=1;browsers["제작"].search.clear();selected_definition=use.id;last_key="";_filter_items();_refresh_details();_highlight()
 		"body":tabs.current_tab=3
 		"research":app.close_menus();app.toggle_research();app.research_frame.tabs.current_tab=0

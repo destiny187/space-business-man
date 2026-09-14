@@ -32,6 +32,7 @@ var cue_left:=0.0
 var observed_body: String=""
 var known_buildings: Dictionary={}
 var known_robots: Dictionary={}
+var business_receipts: Dictionary={}
 var known_shuttle_state: String=""
 var known_observations:=0
 var last_veins: Dictionary={}
@@ -56,6 +57,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	app.session.response_received.connect(_response)
 	app.session.surface_received.connect(_surface)
 	app.session.snapshot_received.connect(_shuttle_snapshot)
+	app.session.snapshot_received.connect(_business_snapshot)
 
 func _shuttle_snapshot(value: Dictionary) -> void:
 	var state:=str(value.get("crew",{}).get("shuttles",{}).get(value.get("self_id",""),{}).get("state",""))
@@ -185,6 +187,7 @@ func _surface(packet: Dictionary) -> void:
 	known_buildings=buildings.duplicate(true);known_robots=robots.duplicate();known_observations=observations;last_veins=site.get("remaining",{}).duplicate()
 
 func _process(delta: float) -> void:
+	if not app.session.active:business_receipts.clear()
 	if app==null:return
 	elapsed+=delta;work_left=maxf(0,work_left-delta);cue_left=maxf(0,cue_left-delta)
 	var active: bool=app.session.active and app.surface_world!=null
@@ -333,3 +336,18 @@ func _replace_tool(model: String) -> void:
 
 func _tool_lighting() -> void:
 	for mesh in handheld.find_children("*","GeometryInstance3D",true,false):mesh.layers=HANDHELD_LAYER
+
+func _business_snapshot(value: Dictionary) -> void:
+	if value.get("phase")!="playing":business_receipts.clear();return
+	for id in value.get("business",{}).get("sites",{}):
+		var site: Dictionary=value.business.sites[id]
+		var now: Dictionary={"paid":site.get("regional_paid",{}).duplicate(),"settlement":site.get("settlement",{}).duplicate()}
+		var before: Dictionary=business_receipts.get(id,{})
+		business_receipts[id]=now
+		# First snapshot of a place/session is a baseline, never a replay of rewards.
+		if before.is_empty():continue
+		var amount:=0;var stages:=0
+		for stage in now.paid:
+			if not before.paid.has(stage):amount+=int(now.paid[stage]);stages+=1
+		if stages>0:show_cue("지역 복원 %d단계 달성 · +%d Cr"%[stages,amount])
+		if before.settlement.is_empty() and not now.settlement.is_empty():show_cue("정산 완료 · +%d Cr · 공동 자금 %d Cr"%[int(now.settlement.payment),int(value.business.credits)])

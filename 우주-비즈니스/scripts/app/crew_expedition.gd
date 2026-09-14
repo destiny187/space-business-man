@@ -260,6 +260,13 @@ func _build_ui() -> void:
 	business_panel.command.connect(func(kind: String,args: Dictionary):
 		if business_panel.context_kind not in ["build","ship","base","robot"]:args["access_facility_id"]=business_panel.context_id
 		session.send_request(kind,args))
+	business_panel.work_target.connect(func(request: Dictionary):preload("res://scripts/ui/work_guidance.gd").navigate(self,request))
+	session.request_started.connect(func(sequence: int,kind: String,_args: Dictionary):
+		if kind=="business_produce":
+			business_panel.production_panel.pending[sequence]=true
+			if business_panel.production_panel.is_visible_in_tree():business_panel.production_panel.refresh())
+	session.response_received.connect(func(sequence: int,_result: Dictionary):
+		if business_panel.production_panel.pending.erase(sequence) and business_panel.production_panel.is_visible_in_tree():business_panel.production_panel.refresh())
 	business_panel.place_building.connect(begin_placement)
 	business_panel.shuttle_panel.deploy_requested.connect(begin_shuttle_placement)
 	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시  "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
@@ -1010,6 +1017,7 @@ func open_warehouse_management() -> void:
 	open_station("base" if closest.is_empty() else "storage",closest,true)
 func station_action(kind: String) -> void:
 	match kind:
+		"research":close_menus();toggle_research()
 		"lotus":lotus.toggle()
 		"shuttles":business_panel.tabs.current_tab=business_panel.shuttle_panel.get_index();business_panel.shuttle_panel.update_snapshot(session.latest)
 		"augmentation":stations.navigate("augmentation")

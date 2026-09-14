@@ -48,19 +48,12 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	var row: Dictionary=rows[id]
 	if position.distance_to(FrontierCrewWorld.vector(row.position))>8:return "대상 8m 이내로 접근하세요."
 	if kind=="business_produce":
-		if row.type!="factory":return "현장 제작소에서 제품을 생산하세요."
-		if not row.get("production",{}).is_empty():return "이 제작소는 제품을 생산 중입니다."
-		for job in site.jobs.values():
-			if job.factory_id==id:return "로봇 제작을 먼저 완료하세요."
-		if FrontierFieldEngineering.uses(world,world.location,id):return "공학 실험을 먼저 완료하세요."
 		var key:=str(args.get("product",""));var recipe:=product(key)
-		if recipe.is_empty():return "지원하지 않는 제품입니다."
 		var batches: Variant=args.get("batches",1)
 		if not FrontierExpeditionBusiness.integer(batches,1,int(config().maximum_batch)):return "생산 묶음 수를 확인하세요."
-		var cost:=batch_cost(recipe,int(batches))
-		var reason:=FrontierPlanetSupply.production_reason(FrontierUniverse.body_from_id(world.manifest,world.location),row,recipe)
+		var reason:=recipe_reason(site,id,recipe,FrontierUniverse.body_from_id(world.manifest,world.location),int(batches),world.get("engineering",{}))
 		if not reason.is_empty():return reason
-		if not FrontierExpeditionBusiness.affordable(site.inventory,cost):return "현장 창고의 묶음 생산 재료가 부족합니다."
+		var cost:=batch_cost(recipe,int(batches))
 		FrontierExpeditionBusiness.transfer(site.inventory,cost,-1)
 		row.production={"product":key,"progress":0.0,"remaining":int(batches),"total":int(batches)};return ""
 	if kind not in ["business_facility_upgrade","business_robot_upgrade"]:return "지원하지 않는 생산 작업입니다."
@@ -150,3 +143,35 @@ static func validate_building(b: Dictionary) -> bool:
 	if b.type!="factory" or not job.get("product") is String or product(job.product).is_empty():return false
 	if not FrontierExpeditionBusiness.integer(job.get("total",1),1,int(config().maximum_batch)) or not FrontierExpeditionBusiness.integer(job.get("remaining",1),1,int(job.get("total",1))):return false
 	return FrontierUniverse._finite(job.get("progress"),0,float(product(job.product).seconds))
+
+static func recipe_reason(site: Dictionary,id: String,recipe: Dictionary,body: Dictionary,batches: int=1,engineering: Dictionary={}) -> String:
+	var row: Dictionary=site.get("buildings",{}).get(id,{})
+	if row.get("type","")!="factory":return "현장 제작소에서 제품을 생산하세요."
+	if not row.get("production",{}).is_empty():return "이 제작소는 제품을 생산 중입니다."
+	for job in site.get("jobs",{}).values():
+		if job.factory_id==id:return "로봇 제작을 먼저 완료하세요."
+	for project in engineering.get("projects",{}).values():
+		if project.get("body_id","")==body.get("id","") and project.get("facility_id","")==id and project.get("stage","") in ["prototype","trial"]:return "공학 실험을 먼저 완료하세요."
+	if recipe.is_empty():return "지원하지 않는 제품입니다."
+	var reason:=FrontierPlanetSupply.production_reason(body,row,recipe)
+	if not reason.is_empty():return reason
+	if not FrontierExpeditionBusiness.affordable(site.get("inventory",{}),batch_cost(recipe,batches)):return "현장 창고의 묶음 생산 재료가 부족합니다."
+	return ""
+
+static func available_batches(site: Dictionary,id: String,recipe: Dictionary,body: Dictionary,engineering: Dictionary={}) -> int:
+	if not recipe_reason(site,id,recipe,body,1,engineering).is_empty():return 0
+	var safe:=0
+	for count in range(1,int(config().maximum_batch)+1):
+		var cost:=batch_cost(recipe,count)
+		if not FrontierExpeditionBusiness.affordable(site.inventory,cost):break
+		var draft:=site.duplicate();draft.inventory=site.inventory.duplicate()
+		FrontierExpeditionBusiness.transfer(draft.inventory,cost,-1)
+		# Materials for queued products are already spent; reserve every remaining output.
+		for factory in site.buildings.values():
+			var job: Dictionary=factory.get("production",{})
+			if not job.is_empty():draft.inventory[job.product]=int(draft.inventory.get(job.product,0))+int(product(job.product).amount)*int(job.get("remaining",1))
+		var product_id: String=""
+		for key in config().products:
+			if product(key)==recipe:product_id=key;break
+		if FrontierItemInventory.warehouse_fits(draft,{product_id:int(recipe.amount)*count}):safe=count
+	return safe
