@@ -13,12 +13,14 @@ func run() -> void:
  app=load("res://scenes/app/crew_expedition.tscn").instantiate();root.add_child(app);current_scene=app;await process_frame;app.start_solo()
  if not await until(func():return app.session.active and app.flight!=null and not has_meta("startup_loader") and not app.preparing_first_snapshot,"actual orbital scene",90):quit(1);return
  app.onboarding.letter.hide();app.close_menus();app.outside=true;app.exterior_view.show();app.if_flight_view();app.set_physics_process(false);app.set_process(false)
- var flight:=app.flight;flight.set_process(false);flight.scan_enabled=true;flight.presentation_blocked=false
+ var flight:=app.flight;app.session.set_process(false);flight.set_process(false);flight.set_physics_process(false);flight.camera.set_as_top_level(true);flight.scan_enabled=true;flight.presentation_blocked=false
  flight.traffic.selected={};flight.corporate_view.selected={};flight.trace_view.selected={};flight.freight_view.selected={}
  var entry: Dictionary=flight.planets[3]
  var center: Vector3=entry.node.global_position
  flight.camera.global_position=center+Vector3(0,0,FrontierUniverse.navigation_radius(FrontierUniverse.body(world.manifest,3))*4)
  flight.camera.look_at(center,Vector3.UP)
+ flight.transit_overlay.opening=false;flight.transit_overlay.presentation_blocked=false;flight.transit_overlay.arrival_name=""
+ app.onboarding.set_process(false);app.onboarding.hide()
  flight.scanned.clear();flight.scan_held=false;flight._update_planet_scan(3)
  check(flight.scan_target==3 and flight.scan_progress==0,"looking at planet alone never scans")
  flight.scan_held=true;flight._update_planet_scan(.5)
@@ -28,6 +30,8 @@ func run() -> void:
  flight.scan_held=true;flight._update_planet_scan(3)
  check(flight.scan_progress==1 and not flight.scanned.is_empty(),"explicit scan completes and stores planet result")
  check(FrontierPlayInput.default_code("scan")==KEY_T,"T is common scan default")
+ flight._update_scan_surface(false);flight.transit_overlay.queue_redraw()
+ check(not flight.scan_optics.overlays.is_empty(),"planet analysis follows actual surface meshes")
  await capture("planet-t-scan")
  var stars=app.navigation_ui.nearby_stars;stars.set_process(false);stars.clear_gaze()
  check(not stars.advance_gaze(Vector3.FORWARD,false,4.9),"no route hints before five seconds")

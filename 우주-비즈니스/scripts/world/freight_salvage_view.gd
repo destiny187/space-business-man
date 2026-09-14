@@ -93,7 +93,7 @@ func update(delta: float,t: float,blocked: bool) -> void:
 		stages[id]=stage
 		var point:=FrontierCrewWorld.vector(FrontierFreightSalvage.endpoint(row,stage))
 		if int(row.system)==flight.current_system and not blocked and flight.navigation.get("mode","")!="jump" and not flight.camera.is_position_behind(point) and flight.camera.global_position.distance_to(point)<float(FrontierFreightSalvage.rules(m).signal_distance) and not flight.corporate_view.hidden(point):
-			if stage!=2 or vessel_id==flight.freight_carrier:overlay.markers.append({"point":flight.camera.unproject_position(point),"stage":stage,"complete":stage==FrontierFreightSalvage.last_stage(id)})
+			if (stage!=2 or vessel_id==flight.freight_carrier) and flight.hints.show_hint(id+"/"+str(stage),point,flight.camera,Vector2(flight.get_viewport().get_visible_rect().size)):overlay.markers.append({"point":flight.camera.unproject_position(point),"stage":stage,"complete":stage==FrontierFreightSalvage.last_stage(id)})
 	if not blocked and flight.scan_enabled and not flight.navigation.is_empty():
 		var nav: Dictionary=flight.navigation.duplicate();nav.orbit_time=t
 		selected=FrontierFreightSalvage.target(m,nav,-flight.camera.global_basis.z,records,flight.freight_carrier)

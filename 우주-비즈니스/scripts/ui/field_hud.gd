@@ -119,14 +119,11 @@ func _process(delta: float) -> void:
 		target_icon.visible=known
 		target_icon.texture=FrontierResourceIcons.texture(vein.resource) if known else null
 		target_name.text=FrontierCatalog.entry("resources",vein.resource).name+" 광맥" if known else "미확인 광맥"
-		var usable: bool=tool.get("kind")=="miner" and int(tool.get("tier",0))>=int(vein.required_tier)
-		target_action.text="클릭 유지  채집" if usable else "채집기 %s 필요"%["I","II","III"][int(vein.required_tier)-1]
-		target_action.modulate=Color.WHITE if usable else FrontierInterfaceStyle.WARNING
 		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
-		if site.is_empty():target_action.text="광맥 조준  클릭 유지로 채집"
-		else:target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=site.get("remaining",{}).get(vein.id,vein.capacity)
-		if tool.get("kind")=="miner":target_action.text+="  R  로봇 지시"
-		if not known:target_action.text+="  E  스캔"
+		var remaining:=int(site.get("remaining",{}).get(vein.id,vein.capacity))
+		target_action.text="잔량 %d / 총 %d개"%[remaining,int(vein.capacity)]
+		target_action.modulate=Color.WHITE
+		target_bar.show();target_bar.max_value=vein.capacity;target_bar.value=remaining
 		context.show()
 	elif not app.surface_target.is_empty():
 		var form:=FrontierEcologyCatalog.form(app.surface_target.form_id)

@@ -61,7 +61,7 @@ func survey(point: Vector3,progress: float,complete: bool=false,radius: float=1.
 		if is_instance_valid(subject):_attach_survey(subject)
 	surface_material.set_shader_parameter("progress",progress)
 	surface_material.set_shader_parameter("complete",complete)
-	scan_shell.visible=overlays.is_empty();scan_shell.global_position=point
+	scan_shell.visible=false;scan_shell.global_position=point
 	scan_shell.scale=Vector3.ONE*radius
 	scan_material.set_shader_parameter("progress",progress)
 	scan_material.set_shader_parameter("complete",complete)
@@ -79,7 +79,7 @@ func _attach_survey(subject: Node3D) -> void:
 	if subject is MeshInstance3D:meshes.append(subject)
 	for node in meshes:
 		var mesh: MeshInstance3D=node
-		if mesh.mesh==null or not mesh.is_visible_in_tree():continue
+		if mesh.mesh==null or not mesh.is_visible_in_tree() or str(mesh.name).begins_with("Orbital"):continue
 		var bounds:=mesh.get_aabb()
 		for corner in 8:
 			var position_value:=mesh.to_global(bounds.get_endpoint(corner))

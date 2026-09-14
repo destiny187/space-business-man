@@ -2,7 +2,6 @@ class_name FrontierBusinessPanel
 extends PanelContainer
 signal work_target(request: Dictionary)
 signal command(kind: String,args: Dictionary)
-signal prefer_robot(id: String)
 var work_cards: GridContainer
 var work_signature: String=""
 var filter_context: String=""
@@ -152,11 +151,9 @@ func _ready() -> void:
 	work_cards=GridContainer.new();work_cards.columns=5;robot_controls.add_child(work_cards)
 	button(robot_controls,"선택 작업 시작",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
 	button(robot_controls,"현재 위치를 중심으로 시작",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
-	label(robot_controls,"작업 범위 80m  발견한 광물만 표시  R: 조준한 광맥 지시")
+	label(robot_controls,"이 로봇의 작업 범위 80m · 발견한 광물을 선택해 작업을 시작하세요.")
 	button(robot_controls,"작업 중지  창고로 복귀",func():command.emit("business_robot_return",{"robot_id":selected(robot)}))
 	button(robot_controls,"긴급 충전  50 Cr",func():command.emit("business_robot_rescue",{"robot_id":selected(robot)}))
-	button(robot_controls,"R 지시 우선 로봇으로 선택",func():prefer_robot.emit(selected(robot)))
-	button(robot_controls,"R 지시 로봇 자동 선정",func():prefer_robot.emit(""))
 	recovery_controls=VBoxContainer.new();robot_tab.add_child(recovery_controls)
 	button(recovery_controls,"창고 근처 로봇을 격납고로 회수",func():command.emit("business_robot_recover",{"robot_id":selected(robot)}))
 	hangar=option(recovery_controls)

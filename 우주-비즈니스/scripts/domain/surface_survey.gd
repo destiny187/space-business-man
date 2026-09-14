@@ -78,7 +78,7 @@ static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionar
 	var remaining: int=int(site.get("remaining",{}).get(row.id,row.capacity))
 	var tool:=FrontierEquipment.active(world.crew.members[actor])
 	var usable: bool=tool.get("kind")=="miner" and int(tool.get("tier",0))>=int(row.required_tier)
-	var action: String="클릭 유지  채집" if usable else "채집기 %d등급 장착 필요"%int(row.required_tier)
+	var action: String="잔량 %d / 총 %d개"%[remaining,int(row.capacity)]
 	if remaining<=0:action="고갈된 광맥"
 	var usage: PackedStringArray=[]
 	for recipe in FrontierEquipment.config().items.values():

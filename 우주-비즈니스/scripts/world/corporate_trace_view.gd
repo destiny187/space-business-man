@@ -26,7 +26,7 @@ func update(t: float,blocked: bool) -> void:
 		stages[row.id]=stage
 		var distance:=flight.camera.global_position.distance_to(model.global_position)
 		if not blocked and flight.navigation.get("mode","")!="jump" and distance<float(FrontierCorporateTraces.rules(flight.state.manifest).signal_distance) and not flight.camera.is_position_behind(model.global_position) and not flight.corporate_view.hidden(model.global_position):
-			overlay.markers.append({"point":flight.camera.unproject_position(model.global_position),"stage":stage})
+			if flight.hints.show_hint(row.id+"/"+str(stage),model.global_position,flight.camera,Vector2(flight.get_viewport().get_visible_rect().size)):overlay.markers.append({"point":flight.camera.unproject_position(model.global_position),"stage":stage})
 	for node in mechanisms:
 		if str(node.name).begins_with("Anim_Beacon"):node.rotation.y=fposmod(t*.7,TAU)
 		elif str(node.name).begins_with("Anim_ServiceArm"):node.rotation.y=sin(t*.18)*.15

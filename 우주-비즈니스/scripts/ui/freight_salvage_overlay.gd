@@ -24,8 +24,7 @@ func _draw() -> void:
 		draw_string(font,at+Vector2(12,75),carry.port_name,HORIZONTAL_ALIGNMENT_LEFT,width-24,12,muted)
 	if row.is_empty():return
 	var center:=size*.5;var width:=minf(332,size.x*.42);var at:=Vector2(minf(center.x+48,size.x-width-14),maxf(28,center.y-155))
-	draw_rect(Rect2(at,Vector2(width,184)),Color(.025,.055,.075,.96));draw_line(at,at+Vector2(0,184),cyan,2)
-	draw_arc(center,32,-PI*.5,-PI*.5+TAU*maxf(.015,float(row.progress)),48,cyan,2,true)
+	FrontierSpaceGuidance.readout(self,Rect2(at,Vector2(width,184)),center,float(row.progress))
 	var row_picture: Texture2D=load(FrontierFreightSalvage.icon(row.id))
 	if row_picture!=null:draw_texture_rect(row_picture,Rect2(at+Vector2(3,4),Vector2(70,56)),false)
 	draw_string(font,at+Vector2(75,30),row.name if int(row.stage)>0 else ("정지 작업장 SOS" if FrontierFreightSalvage.maintenance(row.id) else "미식별 화물 SOS"),HORIZONTAL_ALIGNMENT_LEFT,width-85,16,Color.WHITE)

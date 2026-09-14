@@ -15,9 +15,7 @@ func _draw() -> void:
 		elif mark.stage==0:draw_string(font,p+Vector2(14,-12),"미확인 신호",HORIZONTAL_ALIGNMENT_LEFT,-1,12,muted)
 	if row.is_empty():return
 	var center:=size*.5;var width:=minf(326,size.x*.4);var at:=Vector2(minf(center.x+52,size.x-width-18),maxf(28,center.y-155))
-	draw_rect(Rect2(at,Vector2(width,156)),Color(.025,.055,.075,.94))
-	draw_line(at,at+Vector2(0,156),cyan,2)
-	draw_arc(center,32,-PI*.5,-PI*.5+TAU*maxf(.015,float(row.progress)),48,cyan,2,true)
+	FrontierSpaceGuidance.readout(self,Rect2(at,Vector2(width,156)),center,float(row.progress))
 	var stage:=int(row.stage)
 	if stage>0:draw_texture_rect(marks[row.company],Rect2(at+Vector2(12,12),Vector2(36,36)),false)
 	else:draw_arc(at+Vector2(30,30),12,0,TAU,24,muted,2,true)

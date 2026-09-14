@@ -14,6 +14,8 @@ var previous_braking:=false
 var warning_clock:=0.0
 var scan_enabled:=true
 var scan_held:=false
+var hints=preload("res://scripts/ui/space_hint_memory.gd").new()
+var scan_optics:=FrontierFieldToolEffects.new()
 var scan_target: int=-1
 var scan_progress:=0.0
 var scanned: Dictionary={}
@@ -65,6 +67,7 @@ var engine_turn:=Vector2.ZERO
 var engine_brake:=0.0
 var engine_roll:=0.0
 func _ready() -> void:
+	add_child(scan_optics)
 	test_mode=true
 	flight_config=state.manifest.settings.flight
 	_setup_space();_build_ui();ui_root.hide()
@@ -223,13 +226,14 @@ func _process(delta: float) -> void:
 	if navigation.get("star_warning",false) and warning_clock<=0 and not presentation_blocked:
 		transit_audio.play("sfx_stellar_warning");warning_clock=2.2 if navigation.get("star_danger",false) else 4.0
 	if not navigation.get("star_warning",false):warning_clock=0
-	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size))
+	transit_overlay.guidance=FrontierSpaceGuidance.read(state.manifest,navigation,camera,Vector2(get_viewport().get_visible_rect().size)).filter(func(mark):return mark.kind=="hazard" or hints.show_hint(mark.id,mark.world_point,camera,Vector2(get_viewport().get_visible_rect().size)))
 	if is_instance_valid(traffic):traffic.update(delta,orbit_clock,presentation_paused or opening)
 	if is_instance_valid(trace_view):trace_view.update(orbit_clock,presentation_paused or opening)
 	if is_instance_valid(corporate_view):corporate_view.update(orbit_clock,presentation_paused or opening)
 	if is_instance_valid(freight_view):freight_view.update(delta,orbit_clock,presentation_paused or opening)
 	if opening:scan_target=-1;scan_progress=0.0;transit_overlay.scan_body={}
 	else:_update_planet_scan(delta)
+	_update_scan_surface(presentation_paused or opening)
 	var atmosphere_blocked:=_update_atmosphere(delta,presentation_paused or opening)
 	var site_scanning: bool=is_instance_valid(corporate_view) and not corporate_view.selected.is_empty() and corporate_view.progress<1.0
 	var trace_scanning: bool=(trace_scan.get("kind","")=="atmosphere" and float(trace_scan.get("progress",0))>0 and float(trace_scan.get("progress",0))<1 and not atmosphere_blocked) or (is_instance_valid(trace_view) and trace_view.scanning) or (is_instance_valid(freight_view) and freight_view.scanning)
@@ -409,3 +413,18 @@ func station_in_sight() -> String:
 			if not hidden:best=id;alignment=dot
 	return best
 func looking_at_station() -> bool:return not station_in_sight().is_empty()
+
+func _update_scan_surface(blocked: bool) -> void:
+	var subject: Node3D=null
+	var progress_value:=scan_progress
+	if not blocked and scan_progress>0 and planets.has(scan_target):subject=planets[scan_target].node
+	if not blocked:
+		for view in [corporate_view,trace_view,freight_view]:
+			if not is_instance_valid(view) or view.selected.is_empty() or float(view.selected.get("progress",0))<=0:continue
+			var id: String=view.selected.id
+			if view==corporate_view:subject=corporate_models.get(id)
+			elif view==trace_view:subject=view.models.get(id)
+			else:subject=view.receivers.get(id) if FrontierFreightSalvage.maintenance(id) or int(view.selected.stage)==2 else view.models.get(id)
+			progress_value=float(view.selected.progress)
+	if is_instance_valid(subject):scan_optics.survey(subject.global_position,progress_value,progress_value>=1,1,subject)
+	else:scan_optics.stop_survey()

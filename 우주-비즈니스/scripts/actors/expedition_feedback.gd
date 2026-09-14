@@ -253,6 +253,8 @@ func _process(delta: float) -> void:
 		elif scan.has("point"):scan_point=FrontierCrewWorld.vector(scan.point)+Vector3.UP*.45
 		elif scan.get("info",{}).has("point"):scan_point=FrontierCrewWorld.vector(scan.info.point)+Vector3.UP*.45
 		if subject==null and app.surface_world.business_view.nodes.has(current_id):subject=app.surface_world.business_view.nodes[current_id]
+		if subject==null and app.surface_world.discoveries!=null:subject=app.surface_world.discoveries.models.get(current_id)
+		if subject==null and app.surface_world.incidents!=null:subject=app.surface_world.incidents.models.get(current_id,{}).get("main")
 		if scan_point.is_finite():optics.survey(scan_point,progress,scan_complete_left>0,1.25,subject)
 		else:optics.stop_survey()
 	else:optics.stop_survey()

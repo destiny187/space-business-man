@@ -97,7 +97,6 @@ var station_market: FrontierStationMarketPanel
 var shipyard_panel: FrontierShipyardPanel
 var research_actions: Array[Control]=[]
 var business_panel: FrontierBusinessPanel
-var preferred_robot_id: String=""
 var placement_kind: String=""
 var placement_rotation:=0
 var placement_shuttle_holder:=""
@@ -269,7 +268,6 @@ func _build_ui() -> void:
 		if business_panel.production_panel.pending.erase(sequence) and business_panel.production_panel.is_visible_in_tree():business_panel.production_panel.refresh())
 	business_panel.place_building.connect(begin_placement)
 	business_panel.shuttle_panel.deploy_requested.connect(begin_shuttle_placement)
-	business_panel.prefer_robot.connect(func(id: String):preferred_robot_id=id;close_menus();feedback.show_cue("현장 지시  "+("고등급 자동 선정" if id.is_empty() else id+" 우선")))
 	business_panel.station_action.connect(station_action)
 	station_market=FrontierStationMarketPanel.new();ui.add_child(station_market)
 	station_market.command.connect(func(kind: String,args: Dictionary):
@@ -326,6 +324,7 @@ func _setup_flight() -> void:
 	flight=FrontierCrewFlightView.new();flight.state={"manifest":session.manifest};space_view.add_child(flight)
 	navigation_journal=FrontierNavigationJournal.new();navigation_journal.configure(session.manifest,session.world_id,session.latest.self_id)
 	flight.soundscape.bind_session(session)
+	flight.hints.configure(session.world_id,session.latest.self_id)
 	navigation_records.journal=navigation_journal;chart.journal=navigation_journal
 	flight.scanned=navigation_journal.scan_flags()
 	flight.planet_scanned.connect(func(ordinal: int):navigation_journal.scanned(ordinal);_refresh_scan_detail();chart.queue_redraw())
@@ -709,7 +708,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			session.send_request("space_repair",{});return
 		if FrontierPlayInput.matches(event,"reload") and surface_world!=null and not feedback.blocked():
 			if FrontierEquipment.active(session.latest.crew.members[session.latest.self_id]).has("firearm"):firearm.reload()
-			else:order_robot()
 			return
 		if FrontierPlayInput.matches(event,"view") and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
 		if FrontierPlayInput.matches(event,"galaxy") and onboarding.can_open_map() and _mouse_look_allowed():navigation_ui.open_galaxy();return
@@ -1039,11 +1037,6 @@ func station_action(kind: String) -> void:
 		"launch":
 			close_menus()
 			session.send_request("surface_board",{})
-func order_robot() -> void:
-	var target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
-	if target.get("kind")!="vein":feedback.reject("광맥을 조준하고 R로 로봇에게 지시하세요.");return
-	session.send_request("business_assign",{"vein_id":target.id,"robot_id":preferred_robot_id})
-
 func placement_definition() -> Dictionary:
 	return {"name":"FINCH","model":"ships/finch","cost":{}} if placement_kind=="shuttle" else FrontierFacilityResearch.construction(placement_kind)
 func begin_shuttle_placement(holder: String) -> void:

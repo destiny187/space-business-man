@@ -13,9 +13,11 @@ var action: Label
 var timer:=0.0
 var previous:=""
 var displayed: Dictionary={}
+var target_point:=Vector3.INF
+var anchor:=Vector2.ZERO
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;mouse_filter=Control.MOUSE_FILTER_IGNORE;theme=FrontierInterfaceStyle.theme()
-	add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color("10191fe8"),Color.TRANSPARENT,12))
+	add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(Color.TRANSPARENT,Color.TRANSPARENT,12))
 	content=VBoxContainer.new();content.add_theme_constant_override("separation",7);content.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(content)
 	var header:=HBoxContainer.new();header.mouse_filter=Control.MOUSE_FILTER_IGNORE;content.add_child(header)
 	icon=TextureRect.new();icon.custom_minimum_size=Vector2(40,40);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;header.add_child(icon)
@@ -28,7 +30,8 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	hide()
 func present(info: Dictionary) -> void:
 	displayed=info.duplicate(true)
-	z_index=5 if info.kind=="corporation" else 0
+	z_index=5
+	target_point=FrontierCrewWorld.vector(info.point) if info.has("point") else Vector3.INF
 	title.text=info.name;subtitle.text=info.subtitle;icon.texture=FrontierResourceIcons.texture(info.icon)
 	if info.kind=="corporation":icon.texture=load(FrontierCorporations.icon_path(info.company))
 	for child in facts.get_children():facts.remove_child(child);child.queue_free()
@@ -59,10 +62,14 @@ func _process(delta: float) -> void:
 		previous=""
 		if float(scan.get("progress",0))>0:timer=0
 	visible=timer>0
-	var kind: String=displayed.get("kind","")
-	position=Vector2(28,194 if kind in ["corporation","biology","native_incident"] else 110)
-	if kind in ["biology","native_incident"] and is_instance_valid(app.field_hud) and app.field_hud.environment.details.visible:
-		# Expanded environmental readings occupy the left column. Keep the observed
-		# species below the radar in the other column while those readings are open.
-		position.x=get_viewport().get_visible_rect().size.x-size.x-28;position.y=218
-	if kind not in ["corporation","biology","native_incident"] and size.y>get_viewport().get_visible_rect().size.y-275:position.y=85
+	if not target_point.is_finite() or app.camera.is_position_behind(target_point):hide();return
+	if app.surface_world.ecology.actors.has(displayed.get("id","")):
+		target_point=app.surface_world.ecology.actors[displayed.id].global_position+Vector3.UP*.7
+	var screen:=get_viewport().get_visible_rect().size
+	var projected:=app.camera.unproject_position(target_point)
+	if not Rect2(Vector2.ZERO,screen).has_point(projected):hide();return
+	position=Vector2(clampf(projected.x+48,16,screen.x-size.x-16),clampf(projected.y-size.y*.5,72,maxf(72,screen.y-size.y-100)))
+	anchor=projected-position
+	queue_redraw()
+func _draw() -> void:
+	if visible:FrontierSpaceGuidance.readout(self,Rect2(Vector2.ZERO,size),anchor)

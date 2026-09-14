@@ -73,8 +73,9 @@ func scan_result_rect() -> Rect2:
 func _draw_scan(font: Font,center: Vector2) -> void:
 	if scan_body.is_empty() or presentation_blocked:return
 	var cyan:=Color(.45,.94,1,.95)
-	draw_arc(center,22,-PI*.5,TAU-PI*.5,64,Color(.2,.5,.6,.35),3,true)
-	draw_arc(center,22,-PI*.5,TAU*scan_progress-PI*.5,64,cyan,3,true)
+	if scan_progress<1:
+		draw_line(center+Vector2(-24,23),center+Vector2(24,23),Color(.2,.5,.6,.35),2)
+		draw_line(center+Vector2(-24,23),center+Vector2(-24+48*scan_progress,23),cyan,2)
 	if atmosphere_ready:return
 	if scan_progress<1.0:
 		draw_string(font,center+Vector2(-38,44),"분석 중" if scan_progress>0 else FrontierPlayInput.text("scan")+" 스캔",HORIZONTAL_ALIGNMENT_LEFT,-1,15,cyan);return
@@ -82,10 +83,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 	var pointer:=center
 	if not Rect2(Vector2.ZERO,size).has_point(pointer):pointer=center
 	var box:=scan_result_rect()
-	var style:=StyleBoxFlat.new();style.bg_color=Color(.025,.10,.15,.88);style.border_color=Color(.35,.86,1,.7);style.set_border_width_all(1);style.set_corner_radius_all(9)
-	draw_style_box(style,box)
-	draw_polyline(PackedVector2Array([pointer+Vector2(-18,-18),box.position+Vector2(width+12,130),box.position+Vector2(width,130)]),cyan,1.5,true)
-	for i in 15:draw_line(box.position+Vector2(1,i*10+5),box.position+Vector2(width-1,i*10+5),Color(.3,.8,1,.035),1)
+	FrontierSpaceGuidance.readout(self,box,pointer,scan_progress)
 	var origin:=box.position+Vector2(18,27)
 	draw_string(font,origin,"스캔 완료",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,cyan)
 	draw_string(font,origin+Vector2(0,33),scan_body.name,HORIZONTAL_ALIGNMENT_LEFT,width-36,27,Color(.88,.98,1))
