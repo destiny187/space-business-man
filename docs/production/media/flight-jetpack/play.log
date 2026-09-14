@@ -1,0 +1,47 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS natural native home landing
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:464983","ordinal":464983,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:464983","combat_tier":5,"form_id":"biota_bilateral_mandibles_26","home_point":"(14.4432, 2.051992, 41.0064)","id":"surface:0:1:0","introduced":false,"layer":"surface","look_id":"biota_bilateral_mandibles_26_p04_s03","point":"(14.4432, 2.051992, 41.0064)","status":"active","terrestrial":true,"yaw":1.30061935858617}}
+PASS natural aggressive surface-air home
+PASS flight play fixture saved
+PASS flight field Forward+ ready
+PASS natural flying rig loaded
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 2 }
+PASS craft through actual inventory request
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 3 }
+PASS back equipment confirmed by host
+PASS campaign movement input ready
+PASS player grounded before jump
+PASS normal jump leaves terrain
+PASS initial held Space remains a normal jump in campaign
+PASS second held Space engages host thrust
+PASS real campaign player gains height
+PASS confirmed jet thrust plays existing ElevenLabs SFX
+PASS release stops campaign thrust
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 4 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 5 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 6 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 7 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 8 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 9 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 10 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 11 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 12 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 13 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 14 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 15 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 16 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 17 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 18 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 19 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 20 }
+FLIGHT_REQUEST { "ok": true, "error": "", "sequence": 21 }
+PASS natural flight AI attacks in actual campaign
+PASS equipped firearm defeats moving flier
+PASS downed flying native stores its final position
+PASS flight and equipment save closes
+PASS backpack and downed flier reload
+FLIGHT_JETPACK_PLAY 20 FAILURES 0
+WARNING: 1 ObjectDB instance was leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

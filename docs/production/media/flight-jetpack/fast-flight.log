@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS world path preserves ground_idle_loop
+PASS world path preserves takeoff
+PASS world path preserves flight_loop
+PASS world path preserves landing
+PASS world flight measures continuous displacement without ground follower
+PASS higher flight demand selects authored fast wing motion
+PASS transported bird stays in its existing isolation plot without native combat
+PASS pause freezes flight gait
+CREATURE_FAST_FLIGHT 8 FAILURES 0

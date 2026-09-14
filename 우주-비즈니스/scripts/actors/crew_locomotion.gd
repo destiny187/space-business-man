@@ -17,8 +17,11 @@ static func valid(value: Variant) -> bool:
 	var shot: Variant=value.get("water_shot",{})
 	if not shot is Dictionary:return false
 	if not shot.is_empty() and (not FrontierUniverse._finite(shot.get("serial"),0,9007199254740000) or not FrontierUniverse._vector3_array(shot.get("point")) or not shot.get("entering") is bool):return false
+	if not FrontierUniverse._finite(value.get("jet_charge",0),0,float(config().jetpack.capacity_seconds)):return false
+	for key in ["jet_armed","jet_active"]:
+		if not value.get(key,false) is bool:return false
 	return FrontierUniverse._finite(value.get("yaw"),-TAU,TAU)
-static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0,swim_vertical: float=0.0,jump_factor: float=1.0) -> void:
+static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0,swim_vertical: float=0.0,jump_factor: float=1.0,jump_held: bool=false,jetpack: bool=false) -> void:
 	var c:=config()
 	var was_grounded: bool=motion.grounded
 	var old_depth:=float(motion.get("water_depth",0))
@@ -35,6 +38,10 @@ static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,spe
 	motion.coyote=float(c.coyote_seconds) if was_grounded else maxf(0,float(motion.coyote)-delta)
 	motion.buffer=maxf(0,float(motion.buffer)-delta)
 	motion.landing=maxf(0,float(motion.landing)-delta)
+	var new_press:=jump_request>int(motion.jump_request)
+	if was_grounded or swimming or not enabled or not jetpack:motion.jet_armed=false
+	elif new_press and motion.takeoff<=0:motion.jet_armed=true
+	if not jump_held:motion.jet_armed=false
 	if jump_request>int(motion.jump_request):
 		motion.jump_request=jump_request
 		motion.buffer=float(c.jump_buffer_seconds) if enabled else 0.0
@@ -63,6 +70,16 @@ static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,spe
 			body.velocity.y=3.0;motion.buffer=0.0
 	if swimming and enabled and absf(swim_vertical)>.05:
 		body.velocity.y=move_toward(body.velocity.y,clampf(swim_vertical,-1,1)*float(c.swim_vertical_speed),delta*5.0)
+	var jet: Dictionary=c.jetpack
+	var charge:=float(motion.get("jet_charge",jet.capacity_seconds))
+	if was_grounded:charge=minf(float(jet.capacity_seconds),charge+delta*float(jet.recharge_per_second))
+	motion.jet_active=jetpack and enabled and not swimming and not was_grounded and jump_held and motion.get("jet_armed",false) and charge>0
+	if motion.jet_active:
+		body.velocity.y=move_toward(body.velocity.y,float(jet.up_speed),float(jet.thrust_acceleration)*delta)
+		charge=maxf(0.,charge-delta);motion.buffer=0.
+	# A reserved landing brake remains available after the ascent battery is spent.
+	if jetpack and not swimming:body.velocity.y=maxf(body.velocity.y,-float(jet.descent_speed))
+	motion.jet_charge=charge
 	body.floor_snap_length=float(c.floor_snap) if body.velocity.y<=0 and not swimming else 0.0
 	var impact:=maxf(0,-body.velocity.y)
 	body.move_and_slide()

@@ -50,7 +50,7 @@ func sync_behavior(time: float,points: Array[Vector3],stopped: bool=false,crew: 
 
 func _process(delta: float) -> void:
 	if not behavior_stopped:behavior_elapsed=minf(.1,behavior_elapsed+delta)
-	flight_time+=delta
+	if not behavior_stopped:flight_time+=delta
 	refresh_timer-=delta
 	if refresh_timer<=0:
 		refresh_timer=.8
@@ -117,12 +117,33 @@ func _update_flights(delta: float=1./60.) -> void:
 		actor.paused=behavior_stopped
 		var row: Dictionary=encounters[id]
 		var home: Vector3=row.get("home_point",row.point)
-		var motion:=FrontierEcologyPlacement.flight_pose(terrain.field,row,home,flight_time)
-		var continuous: bool=actor.flight_clock>=0 and absf(float(motion.clock)-actor.flight_clock)<=maxf(.1,delta*3.)
-		actor.flight_speed=actor.position.distance_to(motion.point)/maxf(.001,delta) if continuous else -1.
+		var motion:=FrontierWildlifeCombat.pose(terrain.field,row,home,flight_time,behavior_observers,behavior_crew,str(body.id))
+		var combat: Dictionary=motion.get("combat",{})
+		var was_combat: bool=actor.combat_override
+		if not combat.is_empty():
+			actor.apply_combat(combat,FrontierWildlifeCombat.profile(row),behavior_stopped,behavior_crew.get("members",{}))
+			var serial:=int(combat.serial)
+			if serial!=int(row.get("combat_serial",serial)) and not behavior_stopped:
+				var cue: String={"warning":"warning","attack":"windup","hurt":"hurt","down":"down"}.get(combat.phase,"")
+				if cue!="":wildlife_cue.emit(motion.point,cue)
+			row.combat_serial=serial
+			var pulse:=int(combat.get("cue_serial",0))
+			if pulse>int(row.get("combat_pulse",pulse)) and not behavior_stopped:wildlife_cue.emit(motion.point,"strike")
+			row.combat_pulse=pulse
+		else:actor.combat_override=false
+		actor.restored_down=motion.phase=="incapacitated"
+		if not motion.has("blend"):motion.blend=0.0
+		if behavior_stopped:continue
+		var continuous: bool=(not combat.is_empty() and was_combat) or (combat.is_empty() and actor.flight_clock>=0 and absf(float(motion.clock)-actor.flight_clock)<=maxf(.1,delta*3.))
+		var previous: Vector3=actor.visual_root.global_position
 		actor.position=motion.point;actor.basis=motion.basis
+		if not combat.is_empty():
+			actor.visual_root.global_transform=actor.ground_motion.target_for_display(actor.global_transform,delta)
+		else:
+			actor.visual_root.transform=Transform3D.IDENTITY;actor.ground_motion.snapshot_stamp=-1.
+		actor.flight_speed=previous.distance_to(actor.visual_root.global_position)/maxf(.001,delta) if continuous else -1.
 		actor.flight_blend=motion.blend;actor.flight_clock=motion.clock
-		var desired: String="move" if motion.blend>0.01 else ("dormant" if row.status=="dormant" else "idle")
+		var desired: String="dormant" if motion.phase in ["down","incapacitated"] else ("move" if motion.blend>0.01 else ("dormant" if row.status=="dormant" else "idle"))
 		if actor.state!=desired:actor.set_state(desired)
 		row.point=motion.point;row.flight_phase=motion.phase
 
@@ -130,8 +151,8 @@ func _update_wildlife(delta: float) -> void:
 	for id in actors:
 		var actor: Node3D=actors[id]
 		var row: Dictionary=encounters[id]
+		if actor.definition.get("locomotion_medium","")=="surface_air":continue
 		if not Wildlife.eligible(actor.definition,row):
-			if actor.definition.get("locomotion_medium","")=="surface_air":continue
 			if actor.ground_motion.enabled:
 				actor.paused=behavior_stopped
 				actor.drive_ground(actor.global_position,actor.global_basis,delta,ground_probe,behavior_stopped,terrain.field.revision)

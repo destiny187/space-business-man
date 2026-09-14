@@ -20,5 +20,12 @@
   "swim_vertical_speed": 2.2,
   "swim_stroke_seconds": 1.35,
   "water_contact_depth": 0.055,
-  "water_leave_depth": 0.018
+  "water_leave_depth": 0.018,
+  "jetpack": {
+    "capacity_seconds": 8.0,
+    "recharge_per_second": 2.0,
+    "up_speed": 8.0,
+    "thrust_acceleration": 24.0,
+    "descent_speed": 9.0
+  }
 }

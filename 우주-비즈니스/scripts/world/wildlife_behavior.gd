@@ -8,7 +8,7 @@ static func config()->Dictionary:
  if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/wildlife_behavior.json"))
  return _config
 static func eligible(form: Dictionary,candidate: Dictionary)->bool:
- return form.get("category")=="animal" and FrontierEcologyCatalog.ground_form(form) and form.get("locomotion_medium","") not in ["surface_air","atmosphere"] and not candidate.get("introduced",false)
+ return form.get("category")=="animal" and (form.get("locomotion_medium","")=="surface_air" or (FrontierEcologyCatalog.ground_form(form) and form.get("locomotion_medium","")!="atmosphere")) and not candidate.get("introduced",false)
 static func route(field: FrontierTerrainField,row: Dictionary,home: Vector3)->Array[Vector3]:
  var key:=str(field.get_instance_id())+":"+str(field.revision)+":"+str(row.id)+":"+str(row.look_id)+":"+str(home)
  if routes.has(key):return routes[key]
@@ -43,6 +43,10 @@ static func pose(field: FrontierTerrainField,row: Dictionary,home: Vector3,time:
  if not eligible(form,row) or row.get("status","active")!="active":
   if row.get("status")=="dormant":result.state="dormant"
   return result
+ if form.get("locomotion_medium","")=="surface_air" and row.get("status","active")=="active":
+  var flight:=FrontierEcologyPlacement.flight_pose(field,row,home,time)
+  flight.state="move" if flight.blend>.01 else "idle";flight.alert=false
+  return flight
  var cfg:=config()
  var walk: float=cfg.walk_seconds
  var cycle: float=walk*2+float(cfg.feed_seconds)+float(cfg.rest_seconds)

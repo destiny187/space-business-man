@@ -103,6 +103,18 @@
       "attack_radius": 4.2,
       "recovery_damage_multiplier": 1.25,
       "impact_delay": 0.15
+    },
+    "aerial": {
+      "health": 85,
+      "damage": 14,
+      "speed": 6.5,
+      "reach": 2.0,
+      "windup": 0.8,
+      "active": 1.0,
+      "recovery": 1.4,
+      "behavior": "aerial",
+      "start_range": 8.0,
+      "flight_attack_speed": 13.0
     }
   },
   "audio": {
@@ -304,5 +316,17 @@
         ]
       }
     }
+  },
+  "flight": {
+    "maximum_height": 48.0,
+    "leash_radius": 42.0,
+    "turn_rate": 3.6,
+    "acceleration": 12.0,
+    "climb_speed": 5.0,
+    "escape_height": 12.0,
+    "flee_multiplier": 1.5,
+    "approach_height": 2.0,
+    "attack_distance": 12.0,
+    "contact_radius": 0.55
   }
 }

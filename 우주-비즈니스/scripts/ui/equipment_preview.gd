@@ -34,6 +34,8 @@ func show_model(path: String) -> void:
 		bounds=box if first else bounds.merge(box);first=false
 	var center:=bounds.get_center();model.position-=center
 	camera.size=bounds.size.length()*1.16;camera.position=Vector3(1,.65,-1.5).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
+	if path=="equipment/jetpack_mk2":
+		camera.position=Vector3(1,.65,1.5).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
 	if path.begins_with("equipment/gun_"):
 		frame_specimen(bounds)
 		camera.position=Vector3(1,.35,-.45).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO);_fit_specimen()

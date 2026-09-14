@@ -88,7 +88,7 @@ static func target(world: Dictionary,actor: String,aim: Vector3,wildlife_observe
 		row.status=state
 		var motion:=FrontierEcologyPlacement.flight_pose(terrain,row,point,float(world.crew.navigation.orbit_time)) if form.get("locomotion_medium","")=="surface_air" else {}
 		var up:=terrain.normal(point)
-		if not motion.is_empty():point=motion.point;up=motion.basis.y
+		if not motion.is_empty() and not Wildlife.eligible(form,row):point=motion.point;up=motion.basis.y
 		if Wildlife.eligible(form,row):
 			var behavior:=FrontierWildlifeCombat.pose(terrain,row,point,float(world.crew.navigation.orbit_time),wildlife_observers,world.crew,id)
 			point=behavior.point;up=behavior.basis.y;row.behavior_yaw=behavior.basis.get_euler().y

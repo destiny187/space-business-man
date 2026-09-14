@@ -14,7 +14,7 @@ static func begin(live: Dictionary,info: Dictionary,destination: Vector3,field: 
 
 static func valid(attack: Variant,crew: Dictionary) -> bool:
 	if not attack is Dictionary:return false
-	if attack.get("mode") not in ["melee","charge","leap","shockwave","double_sweep"]:return false
+	if attack.get("mode") not in ["melee","charge","leap","shockwave","double_sweep","aerial"]:return false
 	for field_name in ["origin","goal"]:
 		if not FrontierUniverse._vector3_array(attack.get(field_name)):return false
 	if not attack.get("blocked") is bool or not FrontierUniverse._finite(attack.get("travel"),0,32) or not FrontierUniverse._finite(attack.get("pulses"),0,3):return false

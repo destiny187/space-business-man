@@ -20,6 +20,9 @@ static func create(profile: Dictionary) -> Dictionary:
 	return result
 static func state(member: Dictionary) -> Dictionary:
 	return member.get("loadout",create(member.profile))
+static func jetpack(member: Dictionary) -> bool:
+	var data: Dictionary=member.get("loadout",{})
+	return config().items.get(data.get("items",{}).get(data.get("back_slot",""),""),{}).get("kind","")=="jetpack"
 static func active(member: Dictionary) -> Dictionary:
 	var data:=state(member)
 	var id: String=data.slots[int(data.selected)]
@@ -53,9 +56,12 @@ static func validate(value: Variant) -> String:
 	for id in value.items:
 		if not id is String or not config().items.has(value.items[id]):return "장비 정의"
 	if not FrontierExpeditionBusiness.integer(value.get("suit_tier",1),1,2):return "탐험복 개조 등급"
+	var back: Variant=value.get("back_slot","")
+	if not back is String or (back!="" and (not value.items.has(back) or config().items[value.items[back]].kind!="jetpack")):return "등 장비 소유권"
 	var seen: Array=[]
 	for id in value.slots:
 		if not id is String or (id!="" and (not value.items.has(id) or id in seen)):return "슬롯 소유권"
+		if id!="" and config().items[value.items[id]].kind=="jetpack":return "제트팩은 등 장착 전용입니다."
 		if id!="":seen.append(id)
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
@@ -70,6 +76,11 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 		if kind=="equipment_select":data.selected=slot;return ""
 		var id: String=str(args.get("item_id",""))
 		if id!="" and not data.items.has(id):return "내가 소유한 장비만 장착할 수 있습니다."
+		if args.has("back") and not args.back is bool:return "등 장착 요청 형식"
+		if args.get("back",false):
+			if id!="" and config().items[data.items[id]].kind!="jetpack":return "등 장착 장비를 선택하세요."
+			data.back_slot=id;return ""
+		if id!="" and config().items[data.items[id]].kind=="jetpack":return "제트팩은 등 장착을 사용하세요."
 		for i in data.slots.size():
 			if data.slots[i]==id:data.slots[i]=""
 		data.slots[slot]=id;return ""

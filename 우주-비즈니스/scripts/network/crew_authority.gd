@@ -471,7 +471,7 @@ func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
 		gun_receipts[actor]={"sequence":sequence,"digest":digest,"result":result.duplicate(true)}
 		gun_dirty=true
 	return result
-func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[],weather_ready: bool=false) -> bool:
+func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scanning: bool=false,sprinting: bool=false,flight_controls: Array=[0.0,0.0,0.0],jump_request: int=0,controls_enabled: bool=true,vehicle_controls: Array=[],weather_ready: bool=false,jump_held: bool=false) -> bool:
 	if phase!="playing" or stopped or not peers.has(peer) or sequence<=int(input_sequences.get(peer,0)) or not direction is Array or direction.size()!=2:return false
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
@@ -486,7 +486,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	if not seat.is_empty() and int(seat.seat)==0:scanning=false
 	var aim: Vector3=Vector3.FORWARD if aim_value is Array and aim_value.is_empty() else FrontierCrewSurface.direction(aim_value)
 	if aim==Vector3.ZERO:return false
-	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled,"vehicle_controls":vehicle_controls.duplicate(),"weather_ready":weather_ready}
+	input_sequences[peer]=sequence;inputs[peer]={"direction":Vector2(direction[0],direction[1]).limit_length(),"expires":now+float(FrontierCrewSurface.config().scan_input_expiry),"aim":aim,"scanning":scanning,"sprinting":sprinting,"flight_controls":flight_controls.duplicate(),"jump_request":jump_request,"controls_enabled":controls_enabled,"vehicle_controls":vehicle_controls.duplicate(),"weather_ready":weather_ready,"jump_held":jump_held}
 	return true
 func direction_for(peer: int) -> Vector2:
 	if not inputs.has(peer) or inputs[peer].expires<now:return Vector2.ZERO

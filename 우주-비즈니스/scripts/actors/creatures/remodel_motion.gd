@@ -201,6 +201,13 @@ func flight_clip() -> Dictionary:
 	return {"clip":"flight_loop","clock":fposmod(actor.flight_clock*clock_scale,2.)}
 
 func host_clip() -> Dictionary:
+	if actor.combat_override and actor.combat_info.get("behavior","")=="aerial":
+		if actor.combat_phase in ["down","hurt"]:return {}
+		if actor.combat_phase=="attack" and actor.combat_clock<actor.windup_seconds:
+			return {"clip":"attack","clock":attack_clock()}
+		if actor.flight_blend<=.01 and actor.combat_phase=="warning":return {"clip":"ground_idle_loop","clock":fposmod(idle_clock,2.)}
+		var data: Dictionary=fast_profile if gait=="sprint_loop" else profile
+		return {"clip":"sprint_loop" if gait=="sprint_loop" else "flight_loop","clock":fposmod(phase,2.)*float(data.period)}
 	if not actor.combat_override or actor.combat_phase!="attack":return {}
 	var t: float=actor.combat_clock;var wind: float=actor.windup_seconds;var active: float=actor.active_seconds
 	var blocked: bool=actor.combat_live.get("attack",{}).get("blocked",false)

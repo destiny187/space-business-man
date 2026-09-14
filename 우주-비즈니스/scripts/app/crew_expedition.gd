@@ -331,9 +331,10 @@ func _spawn_actor(id: String,member: Dictionary) -> void:
 	var label:=Label3D.new();label.render_priority=110;label.outline_render_priority=109;label.outline_size=4;label.text=member.profile.name;label.font=ui_theme.default_font;label.font_size=52;label.pixel_size=.0035;label.position.y=2.2;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;actor.add_child(label)
 	var appearance:=FrontierSuitAppearance.new();appearance.configure(visual);appearance.sync(member)
 	var pose:=FrontierCrewPose.new();actor.add_child(pose);pose.configure(visual)
+	var jetpack_visual:=preload("res://scripts/actors/jetpack_visual.gd").new();actor.add_child(jetpack_visual);jetpack_visual.configure(visual,pose.skeleton)
 	pose.landed.connect(func(point: Vector3,strength: float):
 		if surface_world!=null and not feedback.blocked():feedback.effects.burst(point+Vector3.UP*.06,Color("a99f88"),int(3+strength*5)))
-	actors[id]=actor;visuals[id]={"appearance":appearance,"model":visual,"label":label,"last":actor.position,"pose":pose,"replica":FrontierCrewMotionReplica.new(),"area":member.area,"motion":FrontierCrewLocomotion.create()}
+	actors[id]=actor;visuals[id]={"jetpack":jetpack_visual,"appearance":appearance,"model":visual,"label":label,"last":actor.position,"pose":pose,"replica":FrontierCrewMotionReplica.new(),"area":member.area,"motion":FrontierCrewLocomotion.create()}
 	if session.hosting:session.authority.motions[id]=FrontierCrewLocomotion.create()
 var first_snapshot_pending: Dictionary = {}
 var preparing_first_snapshot := false
@@ -469,6 +470,7 @@ func _physics_process(delta: float) -> void:
 		if not surface_world.ready_at(incident_at) or (surface_world.incidents!=null and not surface_world.incidents.presentation_ready(incident_at)):controls_enabled=false
 	var jump_pressed:=test_jump if test_mode else FrontierInput.pressed("jump")
 	if jump_pressed and not jump_held and controls_enabled:jump_request+=1;movement_timer=0
+	if jump_held!=jump_pressed:movement_timer=0
 	jump_held=jump_pressed
 	movement_timer-=delta
 	if movement_timer<=0 or (not session.hosting and not outside):
@@ -491,7 +493,7 @@ func _physics_process(delta: float) -> void:
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
 		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
-		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled),surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position) and not arrival.active)
+		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled),surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position) and not arrival.active,jump_pressed and controls_enabled)
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		session.authority.shot_obstacle_provider=_shot_obstacle_distance
@@ -520,7 +522,7 @@ func _physics_process(delta: float) -> void:
 			if FrontierCrewSurface.landed(local):
 				var ground:=spaces.terrain_for(id)
 				if ground==null or not ground.ready_at(actor.position):
-					actor.velocity=Vector3.ZERO;motion.buffer=0.0;motion.takeoff=0.0;motion.jump_request=int(input.get("jump_request",0));continue
+					actor.velocity=Vector3.ZERO;motion.jet_active=false;motion.jet_armed=false;motion.buffer=0.0;motion.takeoff=0.0;motion.jump_request=int(input.get("jump_request",0));continue
 				speed=float(FrontierCrewSurface.config().movement_speed)*multiplier*FrontierCrewAugmentation.multiplier(member,"mobility")*FrontierSuitModules.factor(member,"mobility");gravity=float(FrontierCrewSurface.config().gravity)
 				if FrontierExplorationIncidents.carriers(session.authority.world,id):speed*=(float(FrontierExplorationIncidents.config().carrier_speed_factor)+(1.0-float(FrontierExplorationIncidents.config().carrier_speed_factor))*FrontierSuitModules.bonus(member,"carry"))
 				var next:=actor.position+Vector3(direction.x,0,direction.y)*speed*delta
@@ -531,7 +533,7 @@ func _physics_process(delta: float) -> void:
 			_crouch_body(actor,low)
 			if low:speed*=.55
 			var old_land: int=motion.land_serial
-			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)),FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"))
+			FrontierCrewLocomotion.step(actor,motion,direction,speed,gravity,int(input.get("jump_request",0)),delta,enabled,session.authority.water_depth(id,actor.position),_swim_vertical(direction,input.get("aim",Vector3.FORWARD)),FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"),bool(input.get("jump_held",false)),member.area=="surface" and FrontierEquipment.jetpack(member))
 			motion.input_ack=int(session.authority.input_sequences.get(peer,0))
 			if member.area=="surface" and int(motion.land_serial)>old_land and FrontierCrewVitals.land(member,float(motion.impact)):
 				actor.position=FrontierCrewWorld.vector(FrontierCrewSurface.config().landing_spawn_positions[0]);actor.velocity=Vector3.ZERO
@@ -552,7 +554,7 @@ func _predict_local(delta: float,enabled: bool) -> void:
 		body.position=prediction_snapshot.position;body.velocity=FrontierCrewWorld.vector(confirmed.velocity)
 		predicted_motion=confirmed.duplicate(true)
 		for frame in prediction_history:
-			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled,float(frame.get("water",0)),float(frame.get("swim_vertical",0)),float(frame.get("jump_factor",1)))
+			FrontierCrewLocomotion.step(body,predicted_motion,frame.direction,frame.speed,frame.gravity,frame.jump,frame.delta,frame.enabled,float(frame.get("water",0)),float(frame.get("swim_vertical",0)),float(frame.get("jump_factor",1)),bool(frame.get("jump_held",false)),bool(frame.get("jetpack",false)))
 		var correction:=previous-body.position
 		camera_correction=(camera_correction+correction).limit_length(.3) if correction.length()<1.0 else Vector3.ZERO
 		prediction_snapshot.clear()
@@ -566,8 +568,8 @@ func _predict_local(delta: float,enabled: bool) -> void:
 	_crouch_body(body,on_surface and firearm.crouched)
 	if on_surface and firearm.crouched:speed*=.55
 	var gravity:=float(FrontierCrewSurface.config().gravity) if on_surface else float(FrontierCrewLocomotion.config().cabin_gravity)
-	var frame: Dictionary={"jump_factor":FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"),"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
-	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical),float(frame.jump_factor))
+	var frame: Dictionary={"jump_held":jump_held,"jetpack":on_surface and FrontierEquipment.jetpack(member),"jump_factor":FrontierCrewAugmentation.multiplier(member,"jump")*FrontierSuitModules.factor(member,"jump"),"swim_vertical":_swim_vertical(local_direction,-camera.global_basis.z),"water":surface_world.water_depth(body.position) if on_surface and surface_world!=null else 0.0,"sequence":session.movement_sequence,"direction":local_direction,"speed":speed,"gravity":gravity,"jump":jump_request,"delta":delta,"enabled":enabled}
+	FrontierCrewLocomotion.step(body,predicted_motion,local_direction,speed,gravity,jump_request,delta,enabled,float(frame.water),float(frame.swim_vertical),float(frame.jump_factor),bool(frame.jump_held),bool(frame.jetpack))
 	prediction_history.append(frame)
 	# Bounded replay: stale links cannot build an unbounded local simulation backlog.
 	if prediction_history.size()>90:prediction_history.pop_front()
@@ -612,6 +614,8 @@ func _process(delta: float) -> void:
 			var confirmed: Dictionary=session.authority.motions.get(id,{}) if session.hosting else session.latest.get("motion",{}).get(id,{})
 			surface_world.water_interactions.observe(id,actor.position,confirmed,not feedback.blocked() and not outside and members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and members[id].get("connected",true))
 		var here: bool=members[id].get("place_key","")==members[session.latest.self_id].get("place_key","") and members[id].get("connected",true)
+		var confirmed_jet: Dictionary=session.authority.motions.get(id,{}) if session.hosting else session.latest.get("motion",{}).get(id,{})
+		visual.jetpack.sync(FrontierEquipment.jetpack(members[id]),bool(confirmed_jet.get("jet_active",false)),not own and here and not arrival.active,here and not any_menu_open() and not outside and (test_mode or get_window().has_focus()))
 		visual.model.visible=not own and not arrival.active and here;visual.label.visible=not own and not arrival.active and here
 		if not session.hosting:actor.collision_layer=2 if here else 0;actor.collision_mask=1 if here else 0
 	camera_correction=camera_correction.lerp(Vector3.ZERO,1-exp(-delta*18))

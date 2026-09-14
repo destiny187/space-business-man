@@ -1,6 +1,7 @@
 class_name FrontierWildlifeCombat
 extends RefCounted
 ## Host owns decisions, positions, attack clocks and damage. Models only present them.
+const Air=preload("res://scripts/domain/flying_wildlife.gd")
 const Attacks=preload("res://scripts/domain/wildlife_attacks.gd")
 const Wildlife=preload("res://scripts/world/wildlife_behavior.gd")
 static var _config: Dictionary={}
@@ -11,6 +12,7 @@ static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/wildlife_combat.json"))
 	return _config
 static func pattern(form: Dictionary) -> String:
+	if Air.eligible(form,{}):return "aerial"
 	var result: String=config().anatomical_attacks.get(form.get("construction",""),form.get("attack","none"))
 	return result if config().patterns.has(result) and FrontierEcologyCatalog.ground_form(form) and form.get("locomotion_medium","") not in ["surface_air","atmosphere"] else "none"
 static func profile(row: Dictionary) -> Dictionary:
@@ -21,6 +23,7 @@ static func profile(row: Dictionary) -> Dictionary:
 	if kind!="none":
 		var roll:=FrontierUniverse.derive(47023,str(form.id)+":temperament-v1")%100
 		result.nature="proactive" if roll<int(config().proactive_percent) else ("territorial" if roll<int(config().proactive_percent)+int(config().territorial_percent) else "retaliatory")
+	if kind=="aerial" and FrontierUniverse.derive(47023,str(form.id)+":temperament-v1")%100>=60:result.nature="flee"
 	var bounds: Dictionary=form.geometry.near
 	var scale_value:=float(FrontierEcologyCatalog.look(row.form_id,row.look_id).get("scale",1.0))
 	result.height=maxf(.3,(float(bounds.max[1])-float(bounds.floor_y))*scale_value)
@@ -37,6 +40,7 @@ static func profile(row: Dictionary) -> Dictionary:
 		if result.has(stat):result[stat]=float(result[stat])*float(modifiers[stat][tier_index])
 	# The preview distance must also be reachable within the committed movement time.
 	if result.get("behavior","")=="charge":result.active=float(result.charge_distance)/float(result.charge_speed)
+	if kind=="aerial":result.speed*=1.+tier_index*.08;result.flight_attack_speed*=1.+tier_index*.08
 	preload("res://scripts/domain/creature_mobility.gd").apply(result,row.form_id,scale_value)
 	return result
 static func health(row: Dictionary) -> int:return int(profile(row).health)
@@ -49,6 +53,8 @@ static func ensure(crew: Dictionary,body_id: String,row: Dictionary) -> Dictiona
 		if crew.wildlife_encounters.size()>=int(config().maximum_encounters):return {}
 		var at: Vector3=row.point;var home: Vector3=row.get("home_point",at)
 		crew.wildlife_encounters[id]={"body_id":body_id,"encounter_id":row.id,"form_id":row.form_id,"look_id":row.look_id,"home":FrontierExplorationIncidents.array(home),"position":FrontierExplorationIncidents.array(at),"yaw":wrapf(float(row.get("behavior_yaw",row.yaw)),-PI,PI),"phase":"calm","time":0.0,"target":"","provoked":false,"aim":[0,0,-1],"struck":false,"serial":0,"hurt_serial":0,"flinch":0.0,"lost":0.0}
+	if Air.eligible(FrontierEcologyCatalog.form(row.form_id),row) and not crew.wildlife_encounters[id].has("flight_blend"):
+		crew.wildlife_encounters[id].flight_blend=clampf((FrontierCrewWorld.vector(crew.wildlife_encounters[id].position).y-FrontierCrewWorld.vector(crew.wildlife_encounters[id].home).y)/.8,0,1)
 	crew.wildlife_encounters[id].combat_tier=clampi(int(row.get("combat_tier",1)),1,5)
 	return crew.wildlife_encounters[id]
 static func set_phase(row: Dictionary,value: String) -> void:
@@ -81,6 +87,7 @@ static func hit(world: Dictionary,actor: String,row: Dictionary,amount: float) -
 static func pose(field: FrontierTerrainField,row: Dictionary,home: Vector3,time: float,observers: Array[Vector3],crew: Dictionary,body_id: String) -> Dictionary:
 	var live:=state(crew,body_id,row)
 	if live.is_empty():return Wildlife.pose(field,row,home,time,observers,Wildlife.stopped(crew,body_id,row,home))
+	if Air.eligible(FrontierEcologyCatalog.form(row.form_id),row):return Air.pose(live)
 	var at:=body_position(live)
 	var phase: String=live.phase
 	return {"point":at,"basis":FrontierEcologyPlacement.surface_basis(field.normal(at),float(live.yaw)),"state":"attack" if phase=="attack" else ("dormant" if phase=="down" else ("move" if phase in ["chase","flee","return"] else ("stressed" if phase in ["warning","hurt"] else "idle"))),"phase":phase,"alert":phase=="warning","clock":float(live.time),"combat":live}
@@ -100,6 +107,9 @@ static func valid(crew: Dictionary) -> bool:
 			if not FrontierUniverse._finite(r.get(field_name),0,9007199254740000):return false
 		if r.has("attack") and not Attacks.valid(r.attack,crew):return false
 		if r.has("combat_tier") and not FrontierExpeditionBusiness.integer(r.combat_tier,1,5):return false
+		for field_name in ["flight_fall","flight_blend"]:
+			if r.has(field_name) and not FrontierUniverse._finite(r[field_name],0,1000 if field_name=="flight_fall" else 1):return false
+		if r.has("flight_pitch") and not FrontierUniverse._finite(r.flight_pitch,-.66,.66):return false
 		if r.has("air_height") and not FrontierUniverse._finite(r.air_height,0,4):return false
 		for extra in ["cue_serial"]:
 			if r.has(extra) and not FrontierUniverse._finite(r[extra],0,9007199254740000):return false
@@ -158,9 +168,14 @@ func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callab
 		retained[id]=true
 		nearby=nearby.filter(func(actor):return actor in active)
 		if nearby.is_empty():continue
-		if int(world.crew.get("combat",{}).get(id,1))==0 and float(state(world.crew,row.body_id,row).get("air_height",0))<=0:continue
+		if int(world.crew.get("combat",{}).get(id,1))==0 and float(state(world.crew,row.body_id,row).get("air_height",0))<=0 and not Air.eligible(FrontierEcologyCatalog.form(row.form_id),row):continue
 		var local:=FrontierShuttles.context(world,nearby[0]);var field:=FrontierCrewSurface.field(local)
 		var info:=profile(row);var live:=state(world.crew,row.body_id,row)
+		if live.is_empty() and info.pattern=="aerial" and int(world.crew.get("combat",{}).get(id,1))==0:
+			live=ensure(world.crew,row.body_id,row)
+			if not live.is_empty():
+				live.position=world.crew.get("wildlife_stops",{}).get(id,{}).get("position",FrontierExplorationIncidents.array(row.point)).duplicate()
+				set_phase(live,"down")
 		if live.is_empty():
 			if info.nature in ["flee","retaliatory"]:continue
 			var points: Array[Vector3]=[]
@@ -176,6 +191,7 @@ func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callab
 		changed=true
 		live.motion_clock=float(live.get("motion_clock",0.))+delta
 		_step(world,row,live,info,nearby,field,delta,obstacle)
+		if live.get("flight_resume",false):world.crew.wildlife_encounters.erase(id)
 	for id in world.crew.get("wildlife_encounters",{}).keys():
 		if not retained.has(id):world.crew.wildlife_encounters.erase(id);changed=true
 	return changed
@@ -198,6 +214,7 @@ static func choose(world: Dictionary,row: Dictionary,info: Dictionary,actors: Ar
 	return result
 static func _step(world: Dictionary,row: Dictionary,live: Dictionary,info: Dictionary,actors: Array,field: FrontierTerrainField,delta: float,obstacle: Callable) -> void:
 	live.time+=delta;live.flinch=maxf(0,float(live.flinch)-delta)
+	if info.get("behavior","")=="aerial":Air.step(world,row,live,info,actors,field,delta,obstacle);return
 	if float(live.get("air_height",0))>0 and (live.phase!="attack" or info.get("behavior","")!="leap" or live.get("attack",{}).get("blocked",false)):
 		live.air_velocity=float(live.get("air_velocity",0))-float(config().fall_gravity)*delta
 		live.air_height=maxf(0,float(live.air_height)+float(live.air_velocity)*delta)

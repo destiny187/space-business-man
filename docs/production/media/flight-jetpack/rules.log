@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS natural native home landing
+NATIVE_FIXTURE {"body":"galaxy:galaxy-v3:71503:planet:305183","ordinal":305183,"row":{"body_id":"galaxy:galaxy-v3:71503:planet:305183","combat_tier":4,"form_id":"biota_lobopod_siphons_25","home_point":"(37.4736, 2.031343, 20.76)","id":"surface:1:0:0","introduced":false,"layer":"surface","look_id":"biota_lobopod_siphons_25_p00_s03","point":"(37.4736, 2.031343, 20.76)","status":"active","terrestrial":true,"yaw":0.433539786195391}}
+PASS isolated terrain fixture
+PASS T2 backpack recipe crafts with valid processed materials
+PASS back slot preserves equipped weapon slots
+PASS owned back slot survives equipment validation
+PASS backpack cannot replace a handheld tool
+PASS reject unowned backpack in save
+PASS holding initial jump does not engage jetpack
+PASS second press and hold rises with collision movement
+PASS release immediately stops powered ascent and battery drain
+PASS disabled input cannot keep thrust active
+PASS removing backpack disables thrust
+PASS empty battery and new movement fields validate
+PASS surface-air species enters host aerial combat
+PASS warning rotation across PI remains save-valid
+PASS warn approach and swept contact damage an airborne player
+PASS one damage result per committed aerial attack
+PASS flight stays above terrain and reaches player height
+PASS blocked approach cannot damage through cover
+PASS passive flier escapes after being hurt
+PASS downed flier falls to terrain and stays down
+PASS aerial attack and landing records validate after JSON transport
+PASS save resume preserves downed location
+FLIGHT_JETPACK 23 FAILURES 0

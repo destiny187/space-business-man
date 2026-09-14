@@ -145,6 +145,7 @@ static func warehouse_equipment(world: Dictionary,actor: String,args: Dictionary
 		for field in ["weapon_states","weapon_rolls"]:
 			if data.get(field,{}).has(id):site.stored_equipment[key][field]=data[field][id].duplicate(true);data[field].erase(id)
 		data.items.erase(id)
+		if data.get("back_slot","")==id:data.back_slot=""
 		for i in data.slots.size():
 			if data.slots[i]==id:data.slots[i]=""
 	return ""

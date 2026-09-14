@@ -35,7 +35,7 @@ static func candidates(world: Dictionary,actor: String) -> Array:
 		row.status=state
 		var motion:=FrontierEcologyPlacement.flight_pose(terrain,row,point,float(world.crew.navigation.orbit_time)) if form.get("locomotion_medium","")=="surface_air" else {}
 		var basis:=Basis(Vector3.UP,float(row.get("yaw",0)))
-		if not motion.is_empty():point=motion.point;basis=motion.basis
+		if not motion.is_empty() and not Wildlife.eligible(form,row):point=motion.point;basis=motion.basis
 		if Wildlife.eligible(form,row):
 			var behavior:=FrontierWildlifeCombat.pose(terrain,row,point,float(world.crew.navigation.orbit_time),wildlife_observers,world.crew,id)
 			point=behavior.point;basis=behavior.basis;row.behavior_yaw=basis.get_euler().y

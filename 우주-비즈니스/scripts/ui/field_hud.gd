@@ -23,6 +23,8 @@ var toast: PanelContainer
 var toast_label: Label
 var toast_left:=0.0
 var save_left:=0.0
+var jet_meter: ProgressBar
+var jet_hint: Label
 func configure(owner_app: FrontierCrewExpedition) -> void:
 	app=owner_app;theme=FrontierInterfaceStyle.theme();mouse_filter=Control.MOUSE_FILTER_IGNORE;set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	instruments=FrontierFieldInstruments.new();add_child(instruments);instruments.configure(app)
@@ -44,6 +46,9 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	target_health=FrontierTargetHealth.new();add_child(target_health)
 	var weapon:=VBoxContainer.new();weapon.name="Weapon";weapon.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(weapon)
 	equipment_name=FrontierInterfaceStyle.label(weapon,"",14);cooldown=ProgressBar.new();cooldown.show_percentage=false;cooldown.custom_minimum_size=Vector2(170,3);weapon.add_child(cooldown)
+	var jet_row:=VBoxContainer.new();jet_row.name="Jetpack";add_child(jet_row)
+	jet_hint=FrontierInterfaceStyle.label(jet_row,"Space · 공중에서 다시 길게",12)
+	jet_meter=ProgressBar.new();jet_meter.show_percentage=false;jet_meter.custom_minimum_size=Vector2(170,6);jet_row.add_child(jet_meter)
 	navigation=HBoxContainer.new();navigation.add_theme_constant_override("separation",FrontierInterfaceStyle.SPACE);add_child(navigation)
 	var rows: Array=[["inventory","I","아이템  장비",app.toggle_inventory],["build","B","건설",app.toggle_business],["scan","J","연구",app.toggle_research],["ship","Tab","지도",app.toggle_navigation]]
 	for entry in rows:
@@ -76,6 +81,13 @@ func _process(delta: float) -> void:
 	visible=on_surface and app.feedback!=null and not app.feedback.blocked()
 	if not visible:return
 	save_left=maxf(0,save_left-delta);saved.visible=save_left>0
+	var jet_id: String=app.session.latest.self_id
+	var equipped:=FrontierEquipment.jetpack(app.session.latest.crew.members[jet_id])
+	get_node("Jetpack").visible=equipped;get_node("Jetpack").position=Vector2(get_viewport().get_visible_rect().size.x-240,get_viewport().get_visible_rect().size.y-150)
+	if equipped:
+		var motion: Dictionary=app.session.authority.motions.get(jet_id,{}) if app.session.hosting else app.predicted_motion
+		jet_meter.value=100.*float(motion.get("jet_charge",FrontierCrewLocomotion.config().jetpack.capacity_seconds))/float(FrontierCrewLocomotion.config().jetpack.capacity_seconds)
+		jet_hint.text="제트팩 충전 중" if motion.get("grounded",false) and jet_meter.value<99 else ("추진 중 · Space 놓으면 하강" if motion.get("jet_active",false) else "Space · 공중에서 다시 길게")
 	var position: Vector3=app.actors[app.session.latest.self_id].position
 	place.text=app.surface_world.body.name
 	var depth:=maxf(0,app.surface_world.terrain.field.height(position.x,position.z)-position.y)

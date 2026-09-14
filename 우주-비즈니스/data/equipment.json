@@ -412,6 +412,19 @@
         "corrosion_alloy": 2
       },
       "upgrade_from": "laser_2"
+    },
+    "jetpack_2": {
+      "name": "기동 제트팩 Mk.2",
+      "kind": "jetpack",
+      "tier": 2,
+      "model": "equipment/jetpack_mk2",
+      "preview": "jetpack_mk2",
+      "cost": {
+        "reinforced_frame": 2,
+        "control_circuit": 2,
+        "heat_transfer_unit": 2
+      },
+      "interval": 0.1
     }
   }
 }

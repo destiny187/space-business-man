@@ -370,7 +370,7 @@ func _refresh_details() -> void:
 	action.show()
 	var def: Dictionary=FrontierEquipment.config().items[selected_definition]
 	if tabs.current_tab==0 and not selected_item.is_empty():def=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],selected_item)
-	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환"}[def.kind]
+	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환","jetpack":"MOBILITY / 등 장착"}[def.kind]
 	if def.has("firearm"):category.text+=" · "+str(FrontierFirearms.config().rarities[def.get("rarity","standard")].name)
 	preview.show_model(def.model)
 	_metric("장비 등급","%s"%["I","II","III"][int(def.tier)-1],float(def.tier)/3,FrontierInterfaceStyle.WARNING)
@@ -384,6 +384,8 @@ func _refresh_details() -> void:
 			_metric("탄창 / 사거리","%d발 / %dm"%[int(family.magazine),int(family.range)],float(family.magazine)/60)
 			var rarity: Dictionary=FrontierFirearms.config().rarities[def.get("rarity","standard")]
 			var identity:=FrontierInterfaceStyle.label(stats,str(rarity.name)+" · "+str(family.identity),12,Color(rarity.color));identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	elif def.kind=="jetpack":
+		_metric("추진 시간","%.0f초"%float(FrontierCrewLocomotion.config().jetpack.capacity_seconds),1.0);FrontierInterfaceStyle.label(stats,"점프 후 Space 다시 길게 · 착지 충전",12)
 	else:_metric("굴착 반경","%.1fm"%float(def.radius),float(def.radius)/1.7)
 	var current:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	if not current.is_empty() and current.kind==def.kind and current.tier!=def.tier:
@@ -400,6 +402,9 @@ func _refresh_details() -> void:
 		upgrade_action.hide()
 		action.text="현재 슬롯 비우기";action.disabled=data.slots[int(data.selected)]==""
 		if response_left<=0:message.text="장비를 선택하고 아래 슬롯에 놓으세요.";message.modulate=Color.WHITE
+		if def.kind=="jetpack":
+			action.text="등 장비 해제" if data.get("back_slot","")==selected_item else "등에 장착";action.disabled=false
+			message.text="총기를 든 채 사용 · 점프 후 Space 다시 길게"
 func _slot(slot: int) -> void:
 	if visible and tabs.current_tab==0 and not selected_item.is_empty():_equip(selected_item,slot)
 	else:app.session.send_request("equipment_select",{"slot":slot})
@@ -410,6 +415,7 @@ func _action() -> void:
 	elif not selected_resource.is_empty():
 		var resource:=selected_resource;tabs.current_tab=2
 		storage_selection={"resource":resource,"source":"bag"};last_key=""
+	elif selected_definition=="jetpack_2":app.session.send_request("equipment_equip",{"item_id":"" if data.get("back_slot","")==selected_item else selected_item,"slot":0,"back":true})
 	else:app.session.send_request("equipment_equip",{"item_id":"","slot":int(data.selected)})
 
 func _refresh_storage(available: int) -> void:

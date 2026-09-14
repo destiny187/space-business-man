@@ -28,6 +28,9 @@ func run() -> void:
  actor.flight_speed=float(actor.ground_motion.fast_profile.natural_speed)*1.18
  for i in 20:actor.ground_motion.preview(1./60.);actor.ground_motion.tick(1./60.);actor.pose(true)
  check(actor.ground_motion.wanted_clip=="sprint_loop","higher flight demand selects authored fast wing motion")
+ view.encounters.bird.introduced=true
+ view.flight_time=22.-seed_phase;view._update_flights(1./60.)
+ check(actor.position.is_equal_approx(Vector3.ZERO) and not FrontierWildlifeCombat.Air.eligible(form,view.encounters.bird),"transported bird stays in its existing isolation plot without native combat")
  view.behavior_stopped=true;var clock: float=actor.ground_motion.phase
  view._update_flights(1./60.);actor.ground_motion.preview(1./60.);actor.ground_motion.tick(1./60.)
  check(actor.paused and actor.ground_motion.phase==clock,"pause freezes flight gait")

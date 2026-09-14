@@ -152,6 +152,7 @@ static func transfer(world: Dictionary,actor: String,r: Dictionary,args: Diction
 			if not loadout.items.has(item):return "내 장비를 선택하세요."
 			if FrontierItemInventory.used(r.cargo,r.equipment.size())>=int(config().cargo_slots):return "차량 화물칸이 가득 찼습니다."
 			r.equipment[key]={"owner":actor,"item_id":item,"definition":loadout.items[item]};loadout.items.erase(item)
+			if loadout.get("back_slot","")==item:loadout.back_slot=""
 			for i in loadout.slots.size():
 				if loadout.slots[i]==item:loadout.slots[i]=""
 	else:
