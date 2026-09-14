@@ -14,6 +14,7 @@ func check(ok: bool,label: String) -> void:
  if not ok:failures+=1
 func attach(authority: FrontierCrewAuthority,store: FrontierWorldStore) -> void:
  authority.save_autonomous=store.begin_commit
+ authority.save_error=func():return store.last_error
  authority.poll_autonomous=func():
   if not store.poll_checkpoint():return -1
   return 0 if store.has_pending() else 1
@@ -62,8 +63,24 @@ func run() -> void:
  check(authority.completed_requests.back().result.ok and store.read_state().flight_position[0]==44,"queued transaction uses confirmed production state")
  var broken:=FrontierWorldStore.new(folder+"/missing/sub/world.json")
  attach(authority,broken);authority.step_surface(.1)
- check(authority.autonomous_pending() and not authority.resolve_autonomous(true) and authority.stopped,"worker failure stops authority")
+ check(authority.autonomous_pending() and not authority.resolve_autonomous(true) and not authority.stopped,"worker failure warns without stopping authority")
  check(authority.world.flight_position[0]==44,"failed production remains unpublished")
+ authority.update_position(1,Vector3(6,7,8))
+ check(authority.can_simulate_member(owner.character_id) and authority.world.crew.members[owner.character_id].position==[6.0,7.0,8.0],"movement remains available after failed save")
+ var failed_writes: Array=[0]
+ authority.save_autonomous=func(_value):failed_writes[0]+=1;return false
+ authority.automatic_retry_at=0
+ authority.step_surface(.1)
+ check(not authority.stopped and not authority.autonomous_pending() and authority.world.flight_position[0]==44,"submission rejection preserves confirmed world and session")
+ authority.step_surface(.1)
+ check(failed_writes[0]==1,"failed automatic submission backs off instead of retrying every frame")
+ attach(authority,store);authority.automatic_retry_at=0
+ authority.step_surface(.1)
+ check(authority.resolve_autonomous(true) and authority.world.flight_position[0]==46 and store.read_state().flight_position[0]==46,"recovery applies one production result without duplicating rejected results")
+ authority.save_world=func(_value):return false
+ check(not authority.checkpoint() and not authority.stopped,"checkpoint failure keeps authority running")
+ check(not authority.close() and not authority.stopped and not authority.peers.is_empty(),"failed exit save preserves active session for retry")
+ authority.save_world=store.write
  var invalid:=world.duplicate(true);invalid.version=-1
  check(not store.begin_commit(invalid) and not store.has_pending(),"invalid mandatory snapshot rejected before worker")
  var moving:=BatchAuthority.new();moving.world=Snapshot.copy(authority.world)

@@ -42,6 +42,24 @@ var queued_requests: Array=[]
 var autonomous_runtime_fields: Dictionary={}
 var completed_requests: Array=[]
 var autonomous_sequences: Dictionary={}
+signal save_warning(message: String)
+var save_error: Callable
+var automatic_retry_at:=0
+var last_save_warning:=""
+var last_save_warning_at:=-10000
+
+func report_save_failure(context: String) -> void:
+	var detail: String=str(save_error.call()) if save_error.is_valid() else "원인 정보 없음"
+	error=context+": "+detail
+	var ticks:=Time.get_ticks_msec()
+	if error!=last_save_warning or ticks-last_save_warning_at>=10000:
+		last_save_warning=error;last_save_warning_at=ticks
+		push_warning(error)
+		save_warning.emit("저장 실패 · 재시도 예정. 최근 진행은 저장되지 않을 수 있습니다.")
+
+func _automatic_save_failed(context: String) -> void:
+	automatic_retry_at=Time.get_ticks_msec()+5000
+	report_save_failure(context)
 
 func autonomous_pending() -> bool:return not autonomous_world.is_empty()
 func can_simulate_member(id: String) -> bool:
@@ -53,7 +71,8 @@ func resolve_autonomous(wait: bool=false) -> bool:
 	var status: int=finish_autonomous.call() if wait else poll_autonomous.call()
 	if status==0:return false
 	if status<0:
-		autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear();autonomous_sequences.clear();autonomous_runtime_fields.clear();stopped=true;error="저장 실패로 세계를 정지했습니다."
+		autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear();autonomous_sequences.clear();autonomous_runtime_fields.clear()
+		_automatic_save_failed("자동 진행 저장 실패")
 		if not pending_request.is_empty():
 			pending_request.result=failure(error);completed_requests.append(pending_request);pending_request={}
 		return false
@@ -530,21 +549,20 @@ func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	return true
 func close() -> bool:
 	if not resolve_autonomous(true):return false
-	stopped=true
-	queued_requests.clear()
 	var draft:=WorldSnapshot.copy(world)
 	FrontierRovers.brake_all(draft)
 	for id in peers.values():
 		FrontierExpeditionBusiness.release_carrier(draft,id);FrontierCrewWorld.disconnect_member(draft.crew,id)
 	draft.crew.revision+=1
 	if not save_world.call(draft):error="마지막 호스트 저장에 실패했습니다.";return false
+	stopped=true;queued_requests.clear()
 	world=draft;peers.clear();pending.clear();inputs.clear();return true
 func failure(message: String) -> Dictionary:return {"ok":false,"error":message,"revision":world.get("crew",{}).get("revision",0)}
 
 func checkpoint() -> bool:
 	if not resolve_autonomous(true):return false
 	if stopped:return false
-	if not save_world.call(world):stopped=true;error="항해 상태 저장 실패로 세계를 정지했습니다.";return false
+	if not save_world.call(world):report_save_failure("항해 상태 저장 실패");return false
 	return true
 
 var flight_combat_timer:=0.0
@@ -558,7 +576,7 @@ func step_flight_combat(delta: float) -> void:
 	if changed or (not FrontierSpaceCombat.record(world).get("encounter",{}).is_empty() and flight_combat_checkpoint>=2):
 		world.crew.revision+=1;flight_combat_checkpoint=0.0
 		if changed or not save_flight_checkpoint.is_valid():checkpoint()
-		elif not save_flight_checkpoint.call(world):stopped=true;error="비행 전투 체크포인트 저장 실패로 세계를 정지했습니다."
+		elif not save_flight_checkpoint.call(world):report_save_failure("비행 전투 체크포인트 저장 실패")
 
 var water_solvers: Dictionary={}
 var water_timer:=0.0
@@ -615,6 +633,7 @@ func step_surface(delta: float) -> void:
 		if elements.changed:gun_dirty=true
 		impacts.append_array(elements.events)
 	if not impacts.is_empty():gun_events.append_array(impacts);gun_dirty=true
+	if Time.get_ticks_msec()<automatic_retry_at:return
 	if not save_autonomous.is_valid():_step_surface(delta);return
 	var previous:=world
 	var persist:=save_world
@@ -625,7 +644,7 @@ func step_surface(delta: float) -> void:
 	var candidate:=world
 	world=previous
 	if stopped:return
-	if not save_autonomous.call(candidate):stopped=true;error="자동 진행 저장 제출 실패로 세계를 정지했습니다.";return
+	if not save_autonomous.call(candidate):_automatic_save_failed("자동 진행 저장 제출 실패");return
 	_hold_candidate(candidate)
 
 func _hold_candidate(candidate: Dictionary,request_commit: bool=false) -> void:
