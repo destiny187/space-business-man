@@ -55,7 +55,7 @@ var cargo_browser: FrontierItemBrowser
 var detail_scroll: ScrollContainer
 var cargo_summary: Label
 var quantity_buttons: Array[Button]=[]
-var usage_dialog: AcceptDialog
+var usage_dialog: FrontierGameModal
 var detail_shell: VBoxContainer
 func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	app=owner_app;theme=FrontierInterfaceStyle.theme()
@@ -538,23 +538,22 @@ func _show_uses(resource: String) -> void:
 
 func _open_use(use: Dictionary) -> void:
 	if is_instance_valid(usage_dialog):usage_dialog.queue_free()
-	usage_dialog=AcceptDialog.new();usage_dialog.title=use.name;usage_dialog.exclusive=true;usage_dialog.ok_button_text="닫기";add_child(usage_dialog)
-	usage_dialog.add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,12))
-	usage_dialog.add_theme_stylebox_override("embedded_border",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,12))
-	var background:=ColorRect.new();background.color=FrontierInterfaceStyle.INK;background.mouse_filter=Control.MOUSE_FILTER_IGNORE;usage_dialog.add_child(background);usage_dialog.move_child(background,0);background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var content:=VBoxContainer.new();content.position=Vector2(18,18);content.size=Vector2(484,290);usage_dialog.add_child(content)
-	var model:=FrontierEquipmentPreview.new();model.custom_minimum_size=Vector2(484,145);content.add_child(model);model.show_model(use.model)
+	usage_dialog=FrontierGameModal.new();add_child(usage_dialog)
+	usage_dialog.configure(use.name,"사용처 보기","알려진 사용처","build",true)
+	usage_dialog.secondary.text="닫기"
+	usage_dialog.confirmed.connect(_navigate_use.bind(use));usage_dialog.canceled.connect(usage_dialog.queue_free)
+	var content:=usage_dialog.content
+	var model:=FrontierEquipmentPreview.new();model.custom_minimum_size=Vector2(0,180);content.add_child(model);model.show_model(use.model)
 	FrontierInterfaceStyle.label(content,FrontierPlayInput.hint(use.where,"ground"),14,FrontierInterfaceStyle.ACCENT)
 	var cost:=FrontierResourceReadout.new();cost.custom_minimum_size.x=0;cost.value="현재 최고 단계" if use.cost.is_empty() else "필요 재료  "+FrontierCatalog.cost_text(use.cost);content.add_child(cost)
 	var owned: Dictionary=bag
 	if use.target=="product":owned=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id if app.surface_world!=null else "",{}).get("inventory",{})
 	cost.show_cost(use.cost,owned,true)
-	var link:=Button.new();link.text={"product":"제작소 열기 / 위치 보기","recipe":"제작 설계 보기","building":"건설 설계 보기","body":"내 신체 능력 보기","research":"공동 연구 기록 보기"}[use.target];content.add_child(link)
-	link.pressed.connect(_navigate_use.bind(use))
-	usage_dialog.popup_centered(Vector2i(520,360))
+	usage_dialog.primary.text={"product":"제작소 열기 / 위치 보기","recipe":"제작 설계 보기","building":"건설 설계 보기","body":"내 신체 능력 보기","research":"공동 연구 기록 보기"}[use.target]
+	usage_dialog.present(Vector2i(660,560))
 
 func _navigate_use(use: Dictionary) -> void:
-	usage_dialog.hide()
+	usage_dialog.hide();usage_dialog.queue_free()
 	match use.target:
 		"product":preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":"factory","product":use.id})
 		"recipe":tabs.current_tab=1;browsers["제작"].search.clear();selected_definition=use.id;last_key="";_filter_items();_refresh_details();_highlight()

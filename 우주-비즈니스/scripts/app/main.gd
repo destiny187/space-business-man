@@ -416,15 +416,14 @@ func _act(error: String,success: String = "완료했습니다.") -> bool:
 	return error.is_empty()
 
 func _confirm(text_value: String,action: Callable) -> void:
-	var dialog := ConfirmationDialog.new()
-	dialog.title = "작업 확인"
-	dialog.dialog_text = text_value
-	dialog.ok_button_text = "확정"
-	dialog.cancel_button_text = "취소"
+	var dialog := FrontierGameModal.new()
 	ui.add_child(dialog)
+	dialog.configure("작업 확인","확정","사업 관리","build",true)
+	var result:=dialog.section("이 작업의 결과")
+	dialog.paragraph(text_value,FrontierInterfaceStyle.TEXT,result)
 	dialog.confirmed.connect(func(): action.call(); dialog.queue_free())
 	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(460,180))
+	dialog.present(Vector2i(620,400))
 
 func _number(value: int) -> String:
 	var raw: String = str(value)

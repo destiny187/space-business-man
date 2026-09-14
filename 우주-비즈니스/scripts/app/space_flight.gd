@@ -389,17 +389,14 @@ func land() -> bool:
 	return true
 
 func _observations() -> void:
-	var popup := AcceptDialog.new()
-	popup.title = "실제 관측 자료 · NASA Exoplanet Archive / PS"
-	var lines: PackedStringArray = []
+	var popup:=FrontierGameModal.new();ui_root.add_child(popup)
+	popup.configure("실제 관측 자료","닫기","NASA Exoplanet Archive / PS","scan")
 	for record in state.manifest.catalog.records:
-		lines.append("%s  |  반지름 %s 지구반지름  |  평형 온도 %s K" % [record.name,str(record.values.radius.value),str(record.values.equilibrium_temperature.value)])
-	lines.append("\n평형 온도는 지표 실측값이 아닙니다. 출처와 오차는 동봉 카탈로그에 보존합니다.\n성도의 천체·지형·생명은 가상이며, 위 관측 천체와 구분합니다.")
-	popup.dialog_text = "\n".join(lines)
-	popup.confirmed.connect(popup.queue_free)
-	popup.canceled.connect(popup.queue_free)
-	ui_root.add_child(popup)
-	popup.popup_centered(Vector2i(760,260))
+		var card:=popup.section(record.name)
+		popup.metric(card,"반지름",str(record.values.radius.value)+" 지구반지름")
+		popup.metric(card,"평형 온도",str(record.values.equilibrium_temperature.value)+" K")
+	popup.paragraph("평형 온도는 지표 실측값이 아닙니다. 출처와 오차는 동봉 카탈로그에 보존합니다.\n성도의 천체·지형·생명은 가상이며, 위 관측 천체와 구분합니다.")
+	popup.confirmed.connect(popup.queue_free);popup.canceled.connect(popup.queue_free);popup.present(Vector2i(760,600))
 
 func _build_system_art(system_value: Dictionary) -> void:
 	if is_instance_valid(system_art):remove_child(system_art);system_art.queue_free()

@@ -393,9 +393,25 @@ func confirm_settlement(retain: bool=false) -> void:
 	if ledger.is_empty() or not ledger.sites.has(body_id):return
 	var current: Dictionary=ledger.sites[body_id]
 	var payment:=FrontierPlanetSupply.settlement_payment(current,planet_tier,retain)
-	var dialog:=ConfirmationDialog.new();dialog.ok_button_text="정산 확정";dialog.cancel_button_text="돌아가기";dialog.title="생산 거점 보유 정산" if retain else "지역 복원 계약 인계"
-	dialog.dialog_text="이번 지급 %d Cr · 이미 받은 중간 지급 %d Cr\n공동 자금 %d → %d Cr\n%s\n%s\n격납고 회수 자산·개인 배낭·영구 기술 유지\n확정 시 현재 조건을 다시 확인합니다."%[payment,FrontierRegionalTerraform.paid(current),int(ledger.credits),int(ledger.credits)+payment,preload("res://scripts/ui/work_guidance.gd").asset_summary(current),"현장 자산·생산 이용권 보유 (전력·원료 필요)" if retain else "위 현장 자산과 이용권을 인계합니다."]
-	dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(620,260))
+	var dialog:=FrontierGameModal.new();add_child(dialog)
+	dialog.configure("생산 거점 보유 정산" if retain else "지역 복원 계약 인계","거점 보유하고 정산" if retain else "인계하고 정산","복원 계약  /  정산 검토","build",true)
+	var payment_card:=dialog.section("")
+	dialog.metric(payment_card,"이번 지급",FrontierGameModal.number(payment)+" Cr","",true)
+	dialog.metric(payment_card,"공동 자금",FrontierGameModal.number(int(ledger.credits))+"  →  "+FrontierGameModal.number(int(ledger.credits)+payment)+" Cr")
+	dialog.paragraph("이미 받은 중간 지급  "+FrontierGameModal.number(FrontierRegionalTerraform.paid(current))+" Cr  (이번 지급에서 제외)",FrontierInterfaceStyle.MUTED,payment_card)
+	var assets:=dialog.section("현장에 보유" if retain else "계약과 함께 인계")
+	var counts:=preload("res://scripts/ui/work_guidance.gd").asset_counts(current)
+	var cards:=GridContainer.new();cards.columns=4;cards.add_theme_constant_override("h_separation",12);assets.add_child(cards)
+	for entry in [["build","시설",counts.buildings,"개"],["build","로봇",counts.robots,"대"],["inventory","재고",counts.inventory,"개"],["shield","보관 장비",counts.equipment,"개"]]:
+		var card:=VBoxContainer.new();card.size_flags_horizontal=Control.SIZE_EXPAND_FILL;card.add_theme_constant_override("separation",4);cards.add_child(card)
+		var icon:=FrontierInterfaceStyle.interface_icon(entry[0],32);card.add_child(icon)
+		if entry[1] in ["시설","로봇"]:icon.texture=FrontierInterfaceStyle.icon("factory" if entry[1]=="시설" else "miner")
+		var amount:=FrontierInterfaceStyle.label(card,FrontierGameModal.number(entry[2])+entry[3],22);amount.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		var caption:=dialog.paragraph(entry[1],FrontierInterfaceStyle.MUTED,card);caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	dialog.paragraph("생산 이용권 유지  /  가동에는 전력과 원료가 필요합니다." if retain else "이 현장의 자산과 생산 이용권을 넘깁니다.",FrontierInterfaceStyle.WARNING,assets)
+	dialog.notice("계속 보유   격납고 회수 자산 / 개인 배낭 / 영구 기술")
+	dialog.paragraph("확정 시 현재 조건을 다시 확인합니다.")
+	dialog.confirmed.connect(func():command.emit("business_settle",{"retain":retain});dialog.queue_free());dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(760,650))
 
 func engineering_command(stage: String) -> void:
 	command.emit("business_research_"+stage,{"project":selected(research_project),"building_id":selected(research_facility)})

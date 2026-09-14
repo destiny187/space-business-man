@@ -24,9 +24,9 @@ func run() -> void:
 	await process_frame
 	check(scroll.scroll_vertical>0,"last action remains reachable by scrolling")
 	app.show_equipment();await process_frame
-	var popup: AcceptDialog
+	var popup: FrontierGameModal
 	for child in app.get_children():
-		if child is AcceptDialog:popup=child
+		if child is FrontierGameModal:popup=child
 	check(popup!=null and popup.visible and popup.theme.default_font!=null,"equipment popup opens with Korean font")
 	var before: float=app.session.authority.now
 	await create_timer(.3).timeout

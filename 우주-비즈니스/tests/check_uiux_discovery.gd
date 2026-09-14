@@ -86,7 +86,7 @@ func run() -> void:
 	records.journal.mark(ordinal,"scanned");records.refresh()
 	check(records.pages.has(ordinal),"scanned minerals find planet records")
 	records.popup_centered();await capture("navigation-search-960");records.hide()
-	var dialog:=FrontierResourceListDialog.new();app.add_child(dialog);dialog.configure("거점 창고",app.session.surface.business.sites[app.session.latest.location].inventory);dialog.popup_centered(Vector2i(510,400));await capture("resources-960")
+	var dialog:=FrontierResourceListDialog.new();app.add_child(dialog);dialog.show_stock("거점 창고",app.session.surface.business.sites[app.session.latest.location].inventory);dialog.present(Vector2i(650,570));await capture("resources-960")
 	var zero:=false
 	for tile in dialog.grid.get_children():
 		if tile.caption=="다이아몬드":zero=true

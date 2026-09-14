@@ -792,12 +792,17 @@ func kick_selected() -> void:
 func show_equipment() -> void:
 	if surface_world!=null:toggle_inventory();return
 	if profile.data.is_empty():return
-	var dialog:=AcceptDialog.new();dialog.theme=ui_theme;dialog.title="내 캐릭터  소유 장비"
-	var lines: PackedStringArray=[profile.data.character.name]
+	var dialog:=FrontierGameModal.new();add_child(dialog)
+	dialog.configure(profile.data.character.name,"닫기","내 캐릭터  /  소유 장비","inventory")
+	var equipment:=dialog.section("함께 가져가는 기본 장비")
 	for item in profile.data.character.equipment:
-		lines.append("%s  %s  %s" % [{"pressure_suit":"탐험복","survey_scanner":"조사 스캐너","rock_tool":"굴착 도구"}[item.definition],{"standard":"기본","improved":"개량","rare":"희귀"}[item.grade]," / ".join(item.traits.map(func(value: String):return {"efficient":"절전","sturdy":"내구 강화","expanded_cargo":"확장 적재"}[value])) if not item.traits.is_empty() else "기본 특성"])
-	lines.append("\n이 장비는 다른 호스트의 원정에서도 유지됩니다.")
-	dialog.dialog_text="\n".join(lines);dialog.confirmed.connect(dialog.queue_free);dialog.canceled.connect(dialog.queue_free);add_child(dialog);dialog.popup_centered(Vector2i(580,240))
+		var item_name: String={"pressure_suit":"탐험복","survey_scanner":"조사 스캐너","rock_tool":"굴착 도구"}[item.definition]
+		var grade: String={"standard":"기본","improved":"개량","rare":"희귀"}[item.grade]
+		var traits: String=" / ".join(item.traits.map(func(value: String):return {"efficient":"절전","sturdy":"내구 강화","expanded_cargo":"확장 적재"}[value])) if not item.traits.is_empty() else "기본 특성"
+		var icon: String={"pressure_suit":"shield","survey_scanner":"scan","rock_tool":"build"}[item.definition]
+		dialog.item_card(equipment,load("res://assets/ui/interface/"+icon+".svg"),item_name,grade+"  /  "+traits)
+	dialog.paragraph("다른 호스트의 원정에서도 소유 장비가 유지됩니다.",FrontierInterfaceStyle.ACCENT)
+	dialog.confirmed.connect(dialog.queue_free);dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(660,570))
 
 func _sync_recovery(records: Dictionary) -> void:
 	for id in recovery_models.keys():

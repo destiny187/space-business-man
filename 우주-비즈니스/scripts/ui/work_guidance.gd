@@ -46,9 +46,13 @@ static func robot_action(robot: Dictionary) -> Dictionary:
 	if "충전기" in status:return {"kind":"power","label":"발전·충전 시설 위치"}
 	return {"kind":"location","position":robot.get("position",[0,0,0]),"label":"로봇 작업 위치 보기"}
 
-static func asset_summary(site: Dictionary) -> String:
+static func asset_counts(site: Dictionary) -> Dictionary:
 	var amount:=0;var equipment:=0
 	var stocks: Array=site.get("regions",{}).values() if not site.get("regions",{}).is_empty() else [site]
 	for stock in stocks:
 		amount+=FrontierExpeditionBusiness.total(stock.get("inventory",{}));equipment+=stock.get("stored_equipment",{}).size()
-	return "시설 %d개 · 로봇 %d대 · 재고 %d개 · 보관 장비 %d개"%[site.get("buildings",{}).size(),site.get("robots",{}).size(),amount,equipment]
+	return {"buildings":site.get("buildings",{}).size(),"robots":site.get("robots",{}).size(),"inventory":amount,"equipment":equipment}
+
+static func asset_summary(site: Dictionary) -> String:
+	var counts:=asset_counts(site)
+	return "시설 %d개 · 로봇 %d대 · 재고 %d개 · 보관 장비 %d개"%[counts.buildings,counts.robots,counts.inventory,counts.equipment]

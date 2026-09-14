@@ -72,7 +72,7 @@ func run() -> void:
 	app.business_panel.update(app.session.surface.business,app.surface_world.body.id,app.session.latest.self_id,int(body.planet_tier),{}, {},body)
 	app.business_panel.confirm_settlement(false);await capture("settlement-960")
 	for child in app.business_panel.get_children():
-		if child is ConfirmationDialog:check(child.dialog_text.contains("이미 받은") and child.dialog_text.contains("재고"),"settlement distinguishes paid amounts and actual assets");child.queue_free()
+		if child is FrontierGameModal:check(child.content.get_child_count()==3,"settlement separates payment, assets and validation");child.queue_free()
 	app.close_menus();app.planet_map.modes.current_tab=1;app.open_menu(app.planet_map);app.planet_map.terraform.layer=1;app.planet_map.terraform.chosen=Vector2(site().buildings["t3:play:3"].position[0],site().buildings["t3:play:3"].position[2]);app.planet_map.refresh();await capture("environment-960")
 	check(app.planet_map.terraform.facility_link.visible,"actual water plant linked to affected environment")
 	var notification: Dictionary={"phase":"playing","business":{"credits":100,"sites":{"audit":{"regional_paid":{"stage:1":20},"settlement":{}}}}}

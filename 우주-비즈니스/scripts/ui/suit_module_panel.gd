@@ -19,7 +19,6 @@ var selected:=""
 var signature:=""
 var pending:=-1
 var member: Dictionary={}
-var confirm: ConfirmationDialog
 var filter: OptionButton
 func configure(owner_app: FrontierCrewExpedition) -> void:
  app=owner_app;name="모듈";add_theme_constant_override("separation",FrontierInterfaceStyle.SPACE*2)
@@ -44,18 +43,38 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  var buttons:=HBoxContainer.new();right.add_child(buttons)
  equip=Button.new();equip.text="장착";equip.size_flags_horizontal=Control.SIZE_EXPAND_FILL;buttons.add_child(equip);equip.pressed.connect(func():request("equip"))
  remove=Button.new();remove.text="해제";buttons.add_child(remove);remove.pressed.connect(func():request("unequip"))
- salvage=Button.new();salvage.text="분해";buttons.add_child(salvage);salvage.pressed.connect(func():confirm.dialog_text=FrontierSuitModules.title(member.modules.items[selected])+"\n정제 철 %d개로 분해합니다."%int(member.modules.items[selected].tier);confirm.popup_centered())
+ salvage=Button.new();salvage.text="분해";buttons.add_child(salvage);salvage.pressed.connect(confirm_salvage)
  starter_row=HBoxContainer.new();add_child(starter_row)
  starter=Button.new();starter.text="기초 실드 조립";starter_row.add_child(starter);starter.pressed.connect(func():request("starter"))
  starter_cost=FrontierResourceReadout.new();starter_cost.custom_minimum_size.x=0;starter_cost.size_flags_horizontal=Control.SIZE_EXPAND_FILL;starter_cost.size_flags_vertical=Control.SIZE_SHRINK_CENTER;starter_row.add_child(starter_cost)
  status=FrontierInterfaceStyle.label(self,"탐험에서 모듈 획득  선택 후 장착하거나 교체",13,FrontierInterfaceStyle.MUTED);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
- confirm=ConfirmationDialog.new();confirm.exclusive=true;confirm.title="모듈 분해";confirm.ok_button_text="분해";add_child(confirm);confirm.confirmed.connect(func():request("salvage"));confirm.canceled.connect(func():pass)
+
  app.session.request_started.connect(func(seq,kind,_args):
   if kind=="suit_module":pending=seq)
  app.session.response_received.connect(func(seq,result):
   if seq!=pending:return
   pending=-1;status.text="장비 적용 완료" if result.get("ok",false) else str(result.get("error","실행 실패"));signature=""
   if result.get("ok",false):app.feedback.audio.play("sfx_build_place"))
+func confirm_salvage() -> void:
+ if pending>=0 or not member.get("modules",{}).get("items",{}).has(selected):return
+ var item: Dictionary=member.modules.items[selected]
+ var item_id:=selected
+ var revision:=int(FrontierSuitModules.state(member).get("revision",0))
+ var dialog:=FrontierGameModal.new();add_child(dialog)
+ dialog.configure("모듈 분해","분해하고 재료 받기","탐험복  /  모듈 정비","shield",true)
+ var source:=dialog.section("분해할 모듈")
+ var definition: Dictionary=FrontierSuitModules.config().slots[item.slot]
+ var image_path: String="res://assets/ui/previews/"+definition.model+".png"
+ var picture: Texture2D=load(image_path) if ResourceLoader.exists(image_path) else FrontierResourceIcons.texture(definition.model.get_file())
+ dialog.item_card(source,picture,FrontierSuitModules.title(item),"분해하면 이 모듈이 사라집니다.")
+ var output:=dialog.section("돌려받는 재료");dialog.resources(output,{"refined_iron":int(item.tier)})
+ dialog.confirmed.connect(func():
+  if pending<0:
+   status.text="호스트 결과 확인 중…"
+   if not app.session.send_request("suit_module",{"action":"salvage","id":item_id,"revision":revision}):status.text="연결 상태를 확인하세요."
+  dialog.queue_free())
+ dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(660,530))
+
 func request(action: String) -> void:
  if pending>=0:return
  status.text="호스트 결과 확인 중…"

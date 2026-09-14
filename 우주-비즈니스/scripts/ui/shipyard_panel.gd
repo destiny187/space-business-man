@@ -149,11 +149,31 @@ func send(action: String) -> void:
 	if pending:return
 	var args:=arguments()
 	if action in ["vessel_draw","vessel_salvage"]:
-		var dialog:=ConfirmationDialog.new();dialog.title="모듈 추첨" if action=="vessel_draw" else "모듈 분해";add_child(dialog)
+		var dialog:=FrontierGameModal.new();add_child(dialog)
+		var drawing:=action=="vessel_draw"
+		dialog.configure("모듈 추첨" if drawing else "모듈 분해","비용 지불하고 추첨" if drawing else "분해하고 부품 받기","원정선  /  모듈 정비","ship",true)
 		var cfg:=FrontierVesselRefit.config()
-		if action=="vessel_draw":dialog.dialog_text="%d Cr  %s\n표준 %d%%  개량 %d%%  희귀 %d%%\n%d회 뒤 선택 종류의 개량 등급 확정\n중복은 연구 부품 %d개로 전환됩니다."%[cfg.draw_credits,FrontierCatalog.cost_text(cfg.draw_materials),cfg.weights[0],cfg.weights[1],cfg.weights[2],int(cfg.pity_interval)-int(vessel.get("draws",0))%int(cfg.pity_interval),cfg.duplicate_parts]
-		else:dialog.dialog_text=FrontierVesselRefit.definition(vessel.modules[args.module_id].type).name+"을 분해하고 연구 부품 %d개를 받습니다."%int(cfg.salvage_parts[FrontierVesselRefit.grade_index(vessel.modules[args.module_id].grade)])
-		dialog.confirmed.connect(func():submit(action,args);dialog.queue_free());dialog.canceled.connect(dialog.queue_free);dialog.popup_centered(Vector2i(470,220));return
+		if drawing:
+			var costs:=dialog.section("지불할 비용")
+			dialog.metric(costs,FrontierVesselRefit.definition(args.module_type).name,FrontierGameModal.number(int(cfg.draw_credits))+" Cr","ship",true)
+			dialog.resources(costs,cfg.draw_materials)
+			var chances:=dialog.section("등급별 추첨 확률")
+			var odds:=HBoxContainer.new();chances.add_child(odds)
+			for i in 3:
+				var grade:=VBoxContainer.new();grade.size_flags_horizontal=Control.SIZE_EXPAND_FILL;odds.add_child(grade)
+				dialog.paragraph(["표준","개량","희귀"][i],FrontierInterfaceStyle.MUTED,grade)
+				FrontierInterfaceStyle.label(grade,str(cfg.weights[i])+"%",24)
+				var bar:=ProgressBar.new();bar.value=cfg.weights[i];bar.show_percentage=false;bar.custom_minimum_size.y=4;grade.add_child(bar)
+			dialog.paragraph("%d회 뒤 선택 종류의 개량 등급 확정"%(int(cfg.pity_interval)-int(vessel.get("draws",0))%int(cfg.pity_interval)),FrontierInterfaceStyle.ACCENT)
+			dialog.paragraph("중복 모듈은 연구 부품 %d개로 전환됩니다."%int(cfg.duplicate_parts))
+		else:
+			var source:=dialog.section("분해할 모듈")
+			var definition:=FrontierVesselRefit.definition(vessel.modules[args.module_id].type)
+			dialog.item_card(source,load("res://assets/ui/previews/vessel_"+str(definition.model).get_file()+".png"),definition.name,{"standard":"표준","improved":"개량","rare":"희귀"}[vessel.modules[args.module_id].grade])
+			dialog.paragraph("분해하면 이 모듈이 사라집니다.",FrontierInterfaceStyle.WARNING,source)
+			var output:=dialog.section("돌려받는 재료")
+			dialog.metric(output,"연구 부품",str(int(cfg.salvage_parts[FrontierVesselRefit.grade_index(vessel.modules[args.module_id].grade)]))+"개","build",true)
+		dialog.confirmed.connect(func():submit(action,args);dialog.queue_free());dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(720,620));return
 	submit(action,args)
 func submit(action: String,args: Dictionary) -> void:
 	if pending:return

@@ -51,7 +51,7 @@ func run() -> void:
 	app.open_station("factory","fixture:factory")
 	check(app.feedback.blocked(),"menu blocks field input and factory audio")
 	app.close_menus();app.navigation_records.supply_sites=app.session.latest.supply_sites
-	app.navigation_records.filter.select(3);app.navigation_records.refresh();app.navigation_records.popup_centered()
+	app.navigation_records.filter.select(3);app.navigation_records.refresh();app.navigation_records.present(Vector2i(760,620))
 	check(app.navigation_records.entries.item_count==2,"supply destination records populated")
 	await capture("supply-navigation-960")
 	app.navigation_records.hide()

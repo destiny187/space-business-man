@@ -80,11 +80,11 @@ func run() -> void:
  credits=int(world().business.credits)
  press_button(app.business_panel,"지역 복원 계약 정산")
  await process_frame
- var confirmation: ConfirmationDialog=null
+ var confirmation: FrontierGameModal=null
  for node in app.business_panel.get_children():
-  if node is ConfirmationDialog and node.visible:confirmation=node
+  if node is FrontierGameModal and node.visible:confirmation=node
  check(confirmation!=null,"settlement confirmation reachable")
- if confirmation!=null:confirmation.confirmed.emit()
+ if confirmation!=null:confirmation.accept()
  await process_frame
  check(site().state=="settled" and int(world().business.credits)==credits+6000,"UI confirmation settles once and pays reward")
  tab_named("착륙선");await create_timer(.2).timeout

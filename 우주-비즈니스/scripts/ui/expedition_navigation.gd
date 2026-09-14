@@ -78,8 +78,8 @@ func _build_map() -> void:
 	map_mode=_button(heading,"은하 보기",func():app.chart.galaxy=not app.chart.galaxy;app.chart.reset_view();_map_mode())
 	_button(heading,"이동 가능한 근처",func():app.chart.focus_nearby();_map_mode())
 	_button(heading,"교역 신호",find_station_route)
-	_button(heading,"생산 거점",func():app.navigation_records.filter.select(3);app.navigation_records.page=0;app.navigation_records.refresh();app.navigation_records.popup_centered())
-	_button(heading,"기록",func():app.navigation_records.refresh();app.navigation_records.popup_centered())
+	_button(heading,"생산 거점",func():app.navigation_records.filter.select(3);app.navigation_records.page=0;app.navigation_records.refresh();app.navigation_records.present(Vector2i(760,620)))
+	_button(heading,"기록",func():app.navigation_records.refresh();app.navigation_records.present(Vector2i(760,620)))
 	_button(heading,"닫기  Tab",app.close_menus)
 	var body:=HBoxContainer.new();body.size_flags_vertical=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",18);app.panel.add_child(body)
 	app.chart=load("res://scripts/ui/galaxy_chart.gd").new();app.chart.size_flags_horizontal=Control.SIZE_EXPAND_FILL;app.chart.size_flags_vertical=Control.SIZE_EXPAND_FILL;body.add_child(app.chart)
@@ -255,7 +255,7 @@ func refresh_survey() -> void:
 	more.pressed.connect(func():
 		var stock: Dictionary={}
 		for id in report.resources:stock[id]=1
-		var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.configure(body.name+"  원격 관측 광물",stock,false);dialog.popup_centered(Vector2i(510,400)))
+		var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.show_stock(body.name+"  원격 관측 광물",stock,false);dialog.present(Vector2i(650,570)))
 	var environment: Dictionary=body.traits.duplicate();environment.ecology=0;environment.stable_seconds=0
 	var scores:=FrontierEvaluator.scores(environment)
 	survey_bars.water.value=report.water

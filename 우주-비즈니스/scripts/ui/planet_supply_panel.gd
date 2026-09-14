@@ -51,7 +51,7 @@ func update(ledger: Dictionary,body: Dictionary,actor: String,owner: bool) -> vo
 		for id in row.inventory:
 			if int(row.inventory[id])>0:count+=1
 		var more:=panel.button(column,"창고 전체  %d종"%count,func():
-			var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.configure(str(row.name)+"  현장 창고",row.inventory);dialog.popup_centered(Vector2i(510,400)))
+			var dialog:=FrontierResourceListDialog.new();add_child(dialog);dialog.show_stock(str(row.name)+"  현장 창고",row.inventory);dialog.present(Vector2i(650,570)))
 		more.tooltip_text="전 품목 검색  보유 재고만 표시"
 		for job in row.get("production",[]):
 			var product:=FrontierProductionTier2.product(job.product)
