@@ -303,6 +303,12 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 	var canonical:=WorldDraft.request(world,actor,envelope.kind)
 	var draft:=canonical if (envelope.kind.begins_with("shuttle_") or envelope.kind.begins_with("lotus_") or envelope.kind.begins_with("space_")) else FrontierShuttles.context(canonical,actor)
 	var group:=FrontierShuttles.peer_group(world,actor,peers)
+	# A solo pilot's readiness belongs to the travel transaction. Publishing a
+	# separate ready commit first invalidates the immediately following request.
+	if envelope.args.get("auto_ready",false):
+		if envelope.kind not in ["depart","land","launch","station_approach"] or group.size()!=1 or actor!=draft.crew.pilot_id:return failure("단독 조종사의 항해만 자동 준비할 수 있습니다.")
+		var ready_reason:=FrontierCrewWorld.apply(draft.crew,actor,"ready",{"value":true},group)
+		if not ready_reason.is_empty():return failure(ready_reason)
 	var rover_draft:=rover_runtime.duplicate(true) if envelope.kind.begins_with("rover_") else rover_runtime
 	if envelope.kind.begins_with("rover_") or (envelope.kind.begins_with("station_") and not envelope.kind.begins_with("station_skill_")) or envelope.kind.begins_with("equipment_") or envelope.kind.begins_with("business_") or envelope.kind in ["surface_dig","withdraw","deposit","suit_module"]:FrontierItemInventory.merge_legacy(draft,actor)
 	if not envelope.kind.begins_with("lotus_") and not envelope.kind.begins_with("space_") and FrontierCrewSurface.landed(draft) and draft.crew.members[actor].aboard and envelope.kind not in ["surface_unboard","surface_board","launch","ready","shuttle_recall","ecology_rename"]:return failure("착륙선에서 내린 뒤 실행하세요.")

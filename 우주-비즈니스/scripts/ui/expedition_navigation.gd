@@ -410,8 +410,7 @@ func interact() -> bool:
 		app.open_station("ship");return true
 	var value: Dictionary=app.session.latest
 	if value.self_id!=value.crew.pilot_id:app.toggle_ready();return true
-	if app.session.offline or not value.get("local_shuttle","").is_empty():app.session.send_request("ready",{"value":true})
-	app.session.send_request(context_kind,{"ordinal":context_ordinal} if context_kind=="land" else {})
+	app.session.send_travel_request(context_kind,{"ordinal":context_ordinal} if context_kind=="land" else {})
 	return true
 
 func open_galaxy(reset: bool=true) -> void:

@@ -287,6 +287,10 @@ func _rejected(message: String) -> void:
 	active=false;notice.emit(message)
 func mining_ready() -> bool:
 	return mine_sequence==0 and Time.get_ticks_msec()>=mine_ready_at and not latest.is_empty() and int(latest.crew.revision)>=mine_revision
+func send_travel_request(kind: String,args: Dictionary={}) -> bool:
+	args=args.duplicate()
+	if offline or not latest.get("local_shuttle","").is_empty():args.auto_ready=true
+	return send_request(kind,args)
 func send_request(kind: String,args: Dictionary) -> bool:
 	if not active or latest.is_empty():notice.emit("참가 동기화가 끝난 뒤 실행하세요.");return false
 	if local_request_guard.is_valid():

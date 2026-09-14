@@ -1079,10 +1079,7 @@ func start_solo(fresh: bool=false) -> void:
 func depart_selected() -> void:
 	navigation_ui.start_route(selected_ordinal)
 func travel_action(action: String) -> void:
-	if session.offline or not session.latest.get("local_shuttle","").is_empty():
-		session.send_request("ready",{"value":true})
-		if not session.latest.crew.members[session.latest.self_id].ready:return
-	session.send_request(action,{})
+	session.send_travel_request(action)
 	get_viewport().gui_release_focus()
 func toggle_navigation() -> void:
 	if not session.active or session.latest.get("phase")!="playing":return
@@ -1175,9 +1172,8 @@ func open_trade_station() -> void:
 	if station_market.in_range():open_menu(station_market)
 func approach_trade_station(station_id: String="") -> void:
 	if session.latest.crew.navigation.mode!="idle":return
-	if session.offline:session.send_request("ready",{"value":true})
 	if station_id.is_empty() and flight!=null:station_id=flight.station_in_sight()
-	session.send_request("station_approach",{"station":station_id});close_menus()
+	session.send_travel_request("station_approach",{"station":station_id});close_menus()
 
 static func _swim_vertical(direction: Vector2,aim: Vector3) -> float:
 	return direction.dot(Vector2(aim.x,aim.z).normalized())*aim.y
