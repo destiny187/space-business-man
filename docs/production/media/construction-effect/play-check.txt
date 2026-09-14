@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS landed design review
+PASS valid unchanged construction footprint
+PASS placement terrain ready
+PASS loaded buildings do not replay construction
+PASS B card opens valid new-model ghost
+PASS new model keeps wheel rotation
+PASS host installs rendered building
+PASS placed Blender model arrives
+PASS installed rotation matches ghost
+PASS accepted model owns construction effect
+PASS placement sound played
+PASS real model reveal and matching hologram
+PASS unrelated model identities retained
+PASS repeated surface packet does not replay
+PASS finite animation restores building
+PASS per-instance clipping restored
+PASS completion sound played
+PASS rejection reply
+PASS invalid placement rejected
+PASS rejected request emits no construction
+PASS original construction cost charged once
+PASS placed building save closes
+PASS placed building survives reload
+CONSTRUCTION_EFFECT_PLAY 23 FAILURES 0

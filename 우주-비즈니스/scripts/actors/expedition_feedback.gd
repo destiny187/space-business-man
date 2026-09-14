@@ -150,7 +150,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("인수 완료")
 		"business_build":
 			# The shared surface packet presents construction to every observer.
-			show_cue("건설 완료")
+			pass # The model arrival starts and finishes the shared construction presentation.
 		"business_register","business_lease","business_lease_release","business_toggle","business_demolish":
 			effects.construction(point);audio.play("sfx_build_place",point)
 		"surface_study","surface_analyze","surface_restore","surface_introduce","business_research_install":
@@ -170,8 +170,7 @@ func _surface(packet: Dictionary) -> void:
 	if observed_body==str(packet.body_id)+":"+str(packet.epoch):
 		for id in buildings:
 			if not known_buildings.has(id):
-				var p:=FrontierCrewWorld.vector(buildings[id].position)
-				effects.construction(p);audio.play("sfx_build_place",p)
+				app.surface_world.business_view.present_construction(id,audio)
 		for id in buildings:
 			if known_buildings.has(id) and int(buildings[id].get("product_serial",0))>int(known_buildings[id].get("product_serial",0)):
 				var p:=FrontierCrewWorld.vector(buildings[id].position)

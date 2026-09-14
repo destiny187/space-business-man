@@ -12,6 +12,8 @@ var requested_models: Dictionary={}
 var prepared_models: Dictionary={}
 var occluder_shapes: Dictionary={}
 var synchronous_resources:=DisplayServer.get_name()=="headless"
+var construction_requests: Dictionary={}
+var construction_effects: Array[Node]=[]
 var ghosts: Node3D
 var restore_amount:=0.0
 var visual_temperature: float=NAN
@@ -117,7 +119,7 @@ func accept(value: Dictionary) -> void:
 	for id in nodes.keys():
 		if not wanted.has(id):nodes[id].queue_free();nodes.erase(id)
 	for id in pending_models.keys():
-		if not wanted.has(id):pending_models.erase(id)
+		if not wanted.has(id):pending_models.erase(id);construction_requests.erase(id)
 	FrontierSurfaceRecovery.shader_regions(terrain.material,body,ledger)
 	if not registered:return
 	restore_amount=float(site.environment.ecology)/100.0
@@ -148,12 +150,12 @@ func _process(dt: float) -> void:
 	_load_one_model()
 	var camera:=get_viewport().get_camera_3d()
 	for node in nodes.values():
-		if camera!=null:node.get_meta("label").visible=labels_enabled and node.get_meta("business_kind")!="vein" and node.position.distance_to(camera.global_position)<18
+		if camera!=null:node.get_meta("label").visible=labels_enabled and not node.get_meta("constructing",false) and node.get_meta("business_kind")!="vein" and node.position.distance_to(camera.global_position)<18
 		var previous: Vector3=node.position
 		if node.has_meta("destination"):
 			node.position=node.position.lerp(node.get_meta("destination"),minf(dt*8,1))
 		var parts: Array=node.get_meta("parts")
-		if parts.is_empty():continue
+		if parts.is_empty() or node.get_meta("constructing",false):continue
 		# Keep collision/interpolation and phase clocks current for every peer.
 		# Only local model articulation sleeps while the renderer cannot see it.
 		var distance_value: float=node.position.distance_to(previous)
@@ -198,6 +200,7 @@ func _load_one_model() -> void:
 		if not prepared_models.has(model):continue
 		_entity(id,model,row.point,row.radius,row.kind)
 		pending_models.erase(id);_update_entity(id)
+		_start_construction(id)
 		break
 func _vein_point(row: Dictionary) -> Vector3:
 	if not vein_points.has(row.id):vein_points[row.id]=FrontierMineralWorld.point(terrain.field,row)
@@ -285,3 +288,23 @@ func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
 	pack.scale=Vector3.ONE*(.8 if robot else 1.25)
 	node.set_meta("tier2_visual",true)
 	FrontierFieldVisibility.fit(node,node.get_meta("visibility_notifier"))
+
+func present_construction(id: String,speaker: FrontierAudio) -> void:
+	construction_requests[id]={"at":Time.get_ticks_msec(),"audio":weakref(speaker)}
+	_start_construction(id)
+func _start_construction(id: String) -> void:
+	if not construction_requests.has(id) or not nodes.has(id):return
+	var request: Dictionary=construction_requests[id];construction_requests.erase(id)
+	var settings:=FrontierConstructionPresentation.config()
+	if Time.get_ticks_msec()-int(request.at)>int(settings.max_delay_ms):return
+	construction_effects=construction_effects.filter(func(effect):return is_instance_valid(effect) and not effect.is_queued_for_deletion())
+	if construction_effects.size()>=int(settings.max_active):return
+	var node: Node3D=nodes[id]
+	var camera:=get_viewport().get_camera_3d()
+	if camera!=null and camera.global_position.distance_to(node.global_position)>float(settings.range):return
+	if node.get_meta("constructing",false):return
+	var row: Dictionary=ledger.get("sites",{}).get(body.id,{}).get("buildings",{}).get(id,{})
+	if FrontierCombatCover.is_cover(row):node.get_meta("visual").scale.y=1.0
+	var effect:=FrontierConstructionPresentation.new()
+	effect.configure(node,request.audio.get_ref(),float(row.get("assembly_left",0.0)))
+	construction_effects.append(effect)

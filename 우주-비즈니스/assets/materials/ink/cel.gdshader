@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode cull_disabled;
+instance uniform float construction_level = 1e20;
 uniform vec4 base_color : source_color = vec4(1.);
 uniform bool use_vertex_color = false;
 #define INK_SPACE_LIGHTING
@@ -26,6 +27,7 @@ void vertex(){
  if(presence_foliage){vec3 at=(MODEL_MATRIX*vec4(VERTEX,1.)).xyz;VERTEX.xz+=presence_wind*sin(presence_time*1.8+at.x*.16+at.z*.12)*pow(clamp(VERTEX.y,0.,2.5),1.3)*.055;}
  orbital_point=normalize(VERTEX);space_world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;}
 void fragment(){
+ if(space_world_position.y>construction_level)discard;
  ALBEDO=base_color.rgb*(use_vertex_color ? COLOR.rgb : vec3(1.));
  if(space_lighting && separate_clouds){
   vec3 shadow_point=normalize(orbital_point+normalize(local_sun_direction)*.018);
@@ -36,6 +38,8 @@ void fragment(){
  METALLIC=0.;
  SPECULAR=0.;
  EMISSION=emission_color.rgb*min(emission_strength,.4);
+ float weld=1.-smoothstep(.015,.10,abs(space_world_position.y-construction_level));
+ EMISSION+=vec3(.55,.9,.75)*weld*.65;
  if(space_lighting && city_strength>0.0){
   float night=1.0-smoothstep(-.12,.08,dot(orbital_point,normalize(local_sun_direction)));
   float land=step(COLOR.b*.9,COLOR.g)*step(COLOR.r*.75,COLOR.g);

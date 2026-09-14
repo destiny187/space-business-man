@@ -62,7 +62,7 @@ static func present(node: Node3D,row: Dictionary) -> void:
 	node.rotation.y=float(row.yaw)
 	var visual: Node3D=node.get_meta("visual");var assembled:=1-clampf(float(row.get("assembly_left",0))/float(config().assembly_seconds),0,1)
 	var intact:=float(row.get("cover_hp",0))>0
-	visual.scale.y=lerpf(.08,1,assembled) if intact else .12
+	visual.scale.y=(1.0 if node.get_meta("constructing",false) else lerpf(.08,1,assembled)) if intact else .12
 	for child in node.get_children():
 		if child is CollisionShape3D:child.disabled=not ready(row)
 		elif child is OccluderInstance3D:child.visible=ready(row)
