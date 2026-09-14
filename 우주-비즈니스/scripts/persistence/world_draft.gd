@@ -10,6 +10,9 @@ static func _crew(source: Dictionary,actors: Array) -> Dictionary:
 		if source.crew.members.has(actor):draft.crew.members[actor]=source.crew.members[actor].duplicate(true)
 	return draft
 static func request(source: Dictionary,actor: String,kind: String,args: Dictionary={}) -> Dictionary:
+	if kind=="guide_progress":
+		var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()
+		d.crew.play_guide=source.crew.get("play_guide",{}).duplicate();return d
 	var mission: Dictionary=source.get("incidents",{}).get("records",{}).get(str(args.get("id","")),{})
 	if kind in ["surface_incident","surface_incident_tool"] and FrontierActiveMissions.enabled(mission):
 		var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()

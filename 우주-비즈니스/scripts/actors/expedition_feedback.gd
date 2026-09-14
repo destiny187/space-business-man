@@ -71,6 +71,7 @@ func blocked() -> bool:
 	return app.any_menu_open() or (app.arrival!=null and app.arrival.active) or FrontierCursorPolicy.modal_open(get_tree()) or app.inventory_panel.visible or app.business_panel.visible or app.shipyard_panel.visible or app.research_frame.visible or app.navigation_frame.visible or FrontierClientSettings.ensure(get_tree()).is_open()
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
+	if kind=="guide_progress":return
 	if kind in ["deposit","withdraw"] or kind.begins_with("shuttle_"):
 		pending[sequence]={"kind":kind,"created":Time.get_ticks_msec()};return
 	if app.surface_world==null or kind in ["surface_fire","surface_reload","surface_stance"]:return

@@ -13,6 +13,8 @@ static func member(profile: Dictionary,hash_value: String,index: int) -> Diction
 static func vector(value: Array) -> Vector3:return Vector3(value[0],value[1],value[2])
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.get("version")!=1 or not FrontierPlayerProfile.identifier(value.get("world_id")):return "협동 세계 버전·ID 오류"
+	var guide_error:=FrontierSharedPlayGuide.validate(value.get("play_guide",{}))
+	if not guide_error.is_empty():return guide_error
 	if not value.get("members") is Dictionary or not value.members.has(value.get("owner_id")) or not value.members.has(value.get("pilot_id")):return "승무원 소유·조종 기록 오류"
 	if not FrontierUniverse._finite(value.get("revision"),0,9007199254740000) or value.revision!=floorf(value.revision):return "협동 변경 순번 오류"
 	if not FrontierUniverse._finite(value.get("rock"),0,100000000) or value.rock!=floorf(value.rock):return "공동 창고 수량 오류"

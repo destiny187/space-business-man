@@ -336,7 +336,7 @@ func _publish_request_result(envelope: Dictionary,result: Dictionary,before: Arr
 		# rejection/replay does not rebuild every peer's world and surface packet.
 		_publish()
 func _surface_command(kind: String) -> bool:
-	return kind not in ["equipment_ammo_craft","surface_fire","surface_reload","surface_stance"]
+	return kind not in ["guide_progress","equipment_ammo_craft","surface_fire","surface_reload","surface_stance"]
 @rpc("authority","call_remote","reliable",0)
 func _response(sequence: int,value: Dictionary) -> void:
 	if not hosting:_complete_request(sequence,value)

@@ -32,3 +32,5 @@ tools/godot.sh --script res://tests/check_construction_effect_play.gd -- --crew-
 ```
 
 착륙한 테스트 원정의 `world.json`·`profile.json`을 위 격리 폴더에 준비한다. 테스트는 해당 격리 저장에 건물 1개를 추가한다.
+
+2026-09-14 후속: [191 공동 가이드 실제 원정](191-shared-play-guide.md)에서 동료의 건설 연출을 일시 정지 없이 끝까지 재생하고 SFX 출력 파형을 기록했다. 처음 단계별 사진 검수에 더해 실제 시간 진행을 확인했으며 주관적 청음·외부망 동시 재생 판정은 구분한다.

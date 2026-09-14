@@ -1,6 +1,6 @@
 class_name FrontierFirstDeparture
 extends Control
-## Personal teaching with an optional first-departure gate; actions use normal host paths.
+## Shared expedition milestones; each player controls visibility and welcome acknowledgement.
 var app: FrontierCrewExpedition
 var letter: ColorRect
 var welcome_text: Label
@@ -16,6 +16,9 @@ var player_key := ""
 var new_player := false
 var progress: Dictionary = {}
 var pending_actions: Dictionary={}
+var shared_inflight: Array=[]
+var shared_retry_at:=0
+var merging_shared:=false
 var graduation_left:=0.0
 var card: PanelContainer
 var title: Label
@@ -97,7 +100,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	card.hide()
 	app.session.response_received.connect(_response)
 	app.session.request_started.connect(func(sequence,kind,_args):
-		if kind in ["business_mine","business_build","equipment_craft"]:pending_actions[sequence]=kind)
+		if kind in ["business_mine","business_build","equipment_craft","guide_progress"]:pending_actions[sequence]=kind)
 	app.session.local_request_guard = request_reason
 
 func update_snapshot(value: Dictionary) -> void:
@@ -116,23 +119,40 @@ func update_snapshot(value: Dictionary) -> void:
 	var key: String = value.galaxy_id + ":" + value.self_id
 	if player_key != key:
 		player_key = key
+		shared_inflight.clear();shared_retry_at=0
 		initial_system = -1
 		practice_time = 0.0
 		var opening: Dictionary = value.crew.navigation.get("solar_opening", {})
 		var fresh_departure: bool = not opening.is_empty() and float(opening.elapsed) < float(opening.duration)
 		var initial: Dictionary = {"eligible":new_player or fresh_departure, "travel":false, "inventory":false, "complete":false}
 		# A new expedition starts at 01 even with a returning character. Existing
-		# expeditions may retain legacy personal progress on their first read.
-		if not fresh_departure:initial = seen.get_value("players", value.self_id, initial)
+		# expeditions retain their expedition-scoped personal progress.
 		progress = seen.get_value("players", key, initial).duplicate(true)
 		if int(progress.get("guide_version",0))<2:
 			progress.mined=bool(progress.get("complete",false));progress.complete=false;progress.guide_version=2
 		_save()
+	progress.eligible=true
+	merging_shared=true
+	var changed:=false
+	for milestone in value.crew.get("play_guide",{}):
+		if not progress.get(milestone,false):progress[milestone]=true;changed=true
+	if changed:_save()
+	merging_shared=false
 	var nav: Dictionary = value.crew.navigation
 	if initial_system < 0:initial_system = int(nav.system)
 	if nav.mode != "jump" and int(nav.system) != initial_system and not progress.get("travel", false):
 		progress.travel = true
 		_save()
+
+func _share_progress() -> void:
+	if merging_shared or not shared_inflight.is_empty() or Time.get_ticks_msec()<shared_retry_at or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase")!="playing":return
+	var shared: Dictionary=app.session.latest.crew.get("play_guide",{})
+	var steps: Array=[]
+	for key in FrontierSharedPlayGuide.KEYS:
+		if progress.get(key,false) and not shared.get(key,false):steps.append(key)
+	if steps.is_empty():return
+	shared_inflight=steps;shared_retry_at=Time.get_ticks_msec()+2000
+	app.session.send_request("guide_progress",{"steps":steps})
 
 func _save() -> void:
 	if player_key.is_empty():return
@@ -194,6 +214,8 @@ func can_open_map() -> bool:
 
 func _response(sequence: int, result: Dictionary) -> void:
 	var kind: String=pending_actions.get(sequence,"");pending_actions.erase(sequence)
+	if kind=="guide_progress":
+		shared_inflight.clear();shared_retry_at=Time.get_ticks_msec()+2000;return
 	if not enabled() or not result.get("ok",false) or app.surface_world==null:return
 	if kind=="business_mine" and not result.get("gains",{}).is_empty():progress.mined=true;_save()
 	if kind=="business_build":progress.built=true;_save()
@@ -208,8 +230,7 @@ func restoration_goal() -> String:
 
 func field_instruction() -> void:
 	var value: Dictionary=app.session.latest
-	var tool:=FrontierEquipment.active(value.crew.members[value.self_id])
-	if not progress.get("inventory",false) or tool.get("kind")!="miner":
+	if not progress.get("inventory",false):
 		_hint("equipment",6,"채집 장비 준비","I  채집기를 선택해 번호 슬롯에 장착하세요.\n사용할 번호 키로 장비를 꺼냅니다.");return
 	if not progress.get("field_scan",false):
 		_hint("field_scan",7,"주변 광맥을 먼저 조사하세요","광맥을 바라보고 T를 유지하세요.\n스캔 결과에서 자원과 수량을 확인할 수 있습니다.");return
@@ -219,7 +240,7 @@ func field_instruction() -> void:
 		_hint("materials",9,"자원의 사용처 확인","I  방금 모은 자원을 선택하세요.\n만들 수 있는 장비·시설과 필요한 수량이 나옵니다.\n우측 클릭으로 수량을 골라 내려놓을 수 있습니다.");return
 	if not progress.get("built",false):
 		var solar:=FrontierFacilityResearch.construction("solar")
-		_hint("build",10,"첫 전력 설비 배치","B  "+solar.name+" 선택 → 바닥에 배치하세요.\n필요 재료: "+FrontierCatalog.cost_text(solar.cost)+"\n휠로 회전 · 왼쪽 클릭 설치 · Esc 취소");return
+		_hint("build",10,"첫 전력 설비 배치","B  "+solar.name+" 선택 → 바닥에 배치하세요.\n누구든 한 명이 설치하면 함께 진행됩니다.\n필요 재료: "+FrontierCatalog.cost_text(solar.cost)+"\n휠로 회전 · 왼쪽 클릭 설치 · Esc 취소");return
 	if not progress.get("terraform_view",false):
 		_hint("terraform",11,"이 행성의 복원 목표 확인","Tab → 테라포밍에서 부족한 환경 수치를 보세요.\n설비가 필요한 지역과 처리 범위를 확인합니다.");return
 	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
@@ -237,7 +258,7 @@ func field_instruction() -> void:
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
 	text=FrontierPlayInput.hint(text,"ground" if app.surface_world!=null else "flight")
 	step = id
-	counter.text = "플레이 가이드    %02d / 12" % number
+	counter.text = "공동 플레이 가이드    %02d / 12" % number
 	title.text = heading
 	detail.text = text
 	highlight = target
@@ -288,22 +309,24 @@ func _process(delta: float) -> void:
 	clock += delta
 	if clock < .1:return
 	clock = 0
+	_share_progress()
 	card.hide()
 	highlight = Rect2()
 	step = ""
 	if app.flight!=null and app.outside and app.flight.combat_view!=null and app.flight.combat_view.relevant():depart.hide();queue_redraw();return
+	if not app.session.latest.is_empty() and app.session.active:
+		# Record the equipment visit without drawing world guidance over item/body controls.
+		if app.surface_world != null and app.inventory_panel.visible and not progress.get("inventory", false):
+			progress.inventory = true
+			_save()
+		if app.surface_world!=null:
+			if app.inventory_panel.visible and progress.get("mined",false) and not progress.get("materials_review",false):progress.materials_review=true;_save()
+			if app.planet_map.visible and app.planet_map.modes.current_tab==1 and not progress.get("terraform_view",false):progress.terraform_view=true;_save()
+			var scan: Dictionary=app.session.latest.get("scan",{})
+			if scan.get("known",false) and scan.get("info",{}).get("kind","")=="mineral" and not progress.get("field_scan",false):progress.field_scan=true;_save()
 	if app.solar_opening_active() or letter.visible or not enabled() or app.session.latest.is_empty() or not app.session.active or app.session.latest.get("phase") != "playing":queue_redraw();return
 	if app.session.latest.crew.navigation.mode=="jump" or (app.flight!=null and app.flight.transit_overlay.presenting_arrival()):queue_redraw();return
 	if get_tree().has_meta("startup_loader") or FrontierClientSettings.ensure(get_tree()).is_open() or (app.arrival != null and app.arrival.active):queue_redraw();return
-	# Record the equipment visit without drawing world guidance over item/body controls.
-	if app.surface_world != null and app.inventory_panel.visible and not progress.get("inventory", false):
-		progress.inventory = true
-		_save()
-	if app.surface_world!=null:
-		if app.inventory_panel.visible and progress.get("mined",false) and not progress.get("materials_review",false):progress.materials_review=true;_save()
-		if app.planet_map.visible and app.planet_map.modes.current_tab==1 and not progress.get("terraform_view",false):progress.terraform_view=true;_save()
-		var scan: Dictionary=app.session.latest.get("scan",{})
-		if scan.get("known",false) and scan.get("info",{}).get("kind","")=="mineral" and not progress.get("field_scan",false):progress.field_scan=true;_save()
 	var nav_ui = app.navigation_ui
 	if app.any_menu_open() and not app.navigation_frame.visible:queue_redraw();return
 	card.position = Vector2(28, 170)
