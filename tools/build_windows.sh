@@ -2,6 +2,7 @@
 set -euo pipefail
 GAME_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$GAME_ROOT/builds/windows" "$GAME_ROOT/test-results"
+python3 "$GAME_ROOT/tools/stamp_build_version.py"
 GAME_STAGE="$(mktemp -d "$GAME_ROOT/builds/windows/.export-XXXXXX")"
 trap 'rm -rf -- "$GAME_STAGE"' EXIT
 "$GAME_ROOT/tools/godot.sh" --headless --editor --quit > "$GAME_ROOT/test-results/windows-import.log" 2>&1

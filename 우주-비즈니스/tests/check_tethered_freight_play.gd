@@ -21,17 +21,29 @@ func run() -> void:
 	app.test_scan=false;await create_timer(.2).timeout;place(180);app.test_scan=true
 	await create_timer(.7).timeout;publish_view()
 	var view: FrontierFreightSalvageView=app.flight.freight_view
-	check(view.scanning and view.winch.playing and view.cable.visible,"held recovery drives winch sound and physical cable")
-	check(view.models[event.id].global_position.distance_to(FrontierCrewWorld.vector(event.position))>1,"actual pod moves toward ship during recovery")
+	check(view.scanning and view.winch.playing and not view.cable.visible,"held connection fills gauge with sound before cable appears")
+	check(view.models[event.id].global_position.distance_to(FrontierCrewWorld.vector(event.position))<.01,"cargo stays at source throughout held connection")
+	check(view.cradles.is_empty() and view.overlay.carry.is_empty(),"connection creates no cradle or premature carried cargo")
 	await capture("freight-winch-hud")
+	if failures:await app.session.close_session();quit(1);return
 	app.open_menu(app.inventory_panel);await create_timer(.2).timeout
 	check(not app.orbital_scan_allowed() and not app.session.authority.inputs[1].scanning,"menu cancels actual held recovery input")
-	view.update(.1,0,true);check(not view.winch.playing and view.overlay.row.is_empty(),"blocked presentation silences winch and hides cargo targeting")
-	app.close_menus();app.test_scan=false;publish_view();await create_timer(.2).timeout;app.test_scan=true
+	var cancel_time:=float(app.session.authority.world.crew.navigation.orbit_time)
+	view.update(.1,cancel_time,true);check(not view.winch.playing and view.overlay.row.is_empty(),"blocked presentation silences winch and hides cargo targeting")
+	var source:=FrontierFreightSalvage.definition(m,event.id,cancel_time)
+	check(view.models[event.id].global_position.distance_to(FrontierCrewWorld.vector(source.position))<.01 and not view.cable.visible,"cancelled connection leaves cargo in place without cable")
+	app.close_menus();app.test_scan=false;root.grab_focus();root.gui_release_focus();app.cursor_released=false;publish_view();await create_timer(.2).timeout;app.test_scan=true
 	if not await stage(2,7):quit(1);return
 	app.test_scan=false;publish_view()
 	check(view.cable.visible and not view.overlay.carry.is_empty(),"saved cargo retains visible towing cable and status")
 	check(view.models[event.id].global_position.distance_to(view.socket({"id":"crew"}).origin)>20,"cargo trails behind the hull")
+	check(view.cradles.is_empty(),"confirmed tether uses no loading cradle")
+	var cargo_before: Vector3=view.models[event.id].global_position
+	var nav: Dictionary=app.session.authority.world.crew.navigation
+	nav.position=FrontierExpeditionBusiness.array(FrontierCrewWorld.vector(nav.position)+Vector3(35,0,-100))
+	await create_timer(.2).timeout;publish_view()
+	check(not app.session.authority.inputs[1].scanning and view.cable.visible and int(FrontierFreightSalvage.records(app.session.authority.world)[event.id].stage)==2,"released F retains confirmed tether while ship moves")
+	check(view.models[event.id].global_position.distance_to(cargo_before)>1,"towed cargo follows ship after F release")
 	check(app.flight.soundscape.library.last_played.has("sfx_lotus_touchdown"),"saved clamp lock plays reused ElevenLabs cargo cue")
 	app.business_panel.vessel_terminal.update_snapshot(app.session.latest)
 	check(app.business_panel.vessel_terminal.freight_card.visible,"ship terminal reflects occupied external cradle")

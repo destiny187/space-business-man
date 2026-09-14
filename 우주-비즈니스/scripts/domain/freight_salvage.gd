@@ -93,7 +93,7 @@ static func reason(m: Dictionary,nav: Dictionary,target: Dictionary,rows: Dictio
 	var stage:=int(target.stage);var cfg:=rules(m)
 	if stage==last_stage(target.id):return "작업 완료 · 대금 지급 · J"
 	if stage>0 and not pilot:return "조종사가 회수 장치를 운용합니다"
-	if stage==1 and not carried(rows,vessel).is_empty():return "회수 거치대 사용 중 · 기존 화물을 인계하세요"
+	if stage==1 and not carried(rows,vessel).is_empty():return "화물 운반 중 · 기존 화물을 인계하세요"
 	var limit:=float(cfg.identify_distance if stage==0 else (cfg.recover_distance if stage==1 else cfg.handover_distance))
 	if maintenance(target.id):
 		if stage==0:limit=float(FrontierMineMaintenance.rules(m).diagnose_distance)

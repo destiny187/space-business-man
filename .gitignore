@@ -6,6 +6,8 @@ test-results/
 *.log
 .env
 __pycache__/
+# Generated from the source commit immediately before exporting the game.
+/우주-비즈니스/data/build_version.json
 
 # Local captures, benchmark workspaces, and generated videos; keep sources in tools/.
 /output/

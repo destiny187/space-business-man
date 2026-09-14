@@ -60,11 +60,18 @@ func update(delta: float,t: float,blocked: bool) -> void:
 			maintenance_motion(receiver,t,stage==4,active)
 			repairing=repairing or (active and scan.get("carrier","")==flight.freight_carrier)
 		var vessel_id: String=scan.get("carrier",record.carrier)
-		var moving: bool=not scan.is_empty() and stage in [1,2] and vessels.has(vessel_id)
+		var connecting: bool=not service and stage==1 and not scan.is_empty()
+		var moving: bool=not connecting and not scan.is_empty() and stage in [1,2] and vessels.has(vessel_id)
+		transferring=transferring or connecting
 		if stage==2 and not vessels.has(vessel_id):continue
 		if not models.has(id):models[id]=model(str(row.model).get_file())
 		var pod: Node3D=models[id];pod.show()
 		var loose:=Transform3D(Basis.IDENTITY if service else Basis.from_euler(Vector3(sin(t*.18)*.13,t*.055+float(row.seed%10),cos(t*.16)*.1)),FrontierCrewWorld.vector(row.position))
+		# Hold the source pose while connecting; progress must never pull cargo into a rig.
+		if connecting:
+			if not pod.has_meta("connection_basis"):pod.set_meta("connection_basis",pod.basis if stages.has(id) else loose.basis)
+			loose.basis=pod.get_meta("connection_basis")
+		else:pod.remove_meta("connection_basis")
 		var destination:=Transform3D(Basis.IDENTITY,FrontierCrewWorld.vector(row.receiver))
 		var held:=Transform3D.IDENTITY
 		if vessels.has(vessel_id):
@@ -85,7 +92,9 @@ func update(delta: float,t: float,blocked: bool) -> void:
 				if length>1:
 					cable.show();cable.position=(from+transform.origin)*.5;cable.basis=Basis(Quaternion(Vector3.UP,(transform.origin-from).normalized()));cable.scale.y=length
 		if stage==2 and not service and not moving:
-			if pod.has_meta("tethered"):transform=pod.global_transform.interpolate_with(held,1-exp(-delta*float(FrontierFlightTelemetry.config().cargo_tether.follow_response)))
+			# Start from the loose pod on confirmation, without teleporting behind the ship.
+			if stages.has(id) and int(stages[id])<2:transform=pod.global_transform
+			elif pod.has_meta("tethered"):transform=pod.global_transform.interpolate_with(held,1-exp(-delta*float(FrontierFlightTelemetry.config().cargo_tether.follow_response)))
 			pod.set_meta("tethered",true)
 			if vessel_id==flight.freight_carrier and not blocked:
 				var from:=socket(vessels[vessel_id]).origin
@@ -93,7 +102,7 @@ func update(delta: float,t: float,blocked: bool) -> void:
 				if offset.length()>1:
 					cable.show();cable.global_position=from+offset*.5;cable.basis=Basis(Quaternion(Vector3.UP,offset.normalized()));cable.scale.y=offset.length()
 		# Follow moving ports immediately; ease only the release of an interrupted transfer.
-		if pod.has_meta("moving") and pod.get_meta("moving") and not moving and stage<3:pod.global_transform=pod.global_transform.interpolate_with(transform,minf(1,delta*6))
+		if (service or stage==2) and pod.has_meta("moving") and pod.get_meta("moving") and not moving and stage<3:pod.global_transform=pod.global_transform.interpolate_with(transform,minf(1,delta*6))
 		else:pod.global_transform=transform
 		pod.set_meta("moving",moving or (pod.global_position.distance_to(transform.origin)>1))
 		if stages.has(id) and stage>int(stages[id]) and not blocked:

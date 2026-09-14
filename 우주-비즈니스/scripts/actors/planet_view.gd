@@ -239,8 +239,7 @@ func rebuild(p: Dictionary) -> void:
 			world_root.add_child(obj)
 		orbital_camera.current = true
 		handheld.visible = false
-		orbital_camera.position = Vector3(18,13,22)
-		orbital_camera.look_at(Vector3(0,0,-1))
+		_frame_home_preview()
 		return
 	for node in p.nodes:
 		if node.amount > 0: _entity("resource",node.id,"ore_"+node.resource,node.position,1.6,float(node.scale),int(p.seed))
@@ -562,6 +561,15 @@ func _physics_process(delta: float) -> void:
 	_update_target()
 	if not build_kind.is_empty(): _update_ghost()
 
+func _frame_home_preview() -> void:
+	orbital_camera.position = Vector3(18+sin(elapsed*0.08)*3,13,22)
+	var target_point := Vector3(0,0,-1)
+	orbital_camera.look_at(target_point)
+	# Shift only the home camera left, placing the landscape to the right of the menu.
+	var shift := -orbital_camera.basis.x*7.5
+	orbital_camera.position += shift
+	orbital_camera.look_at(target_point+shift)
+
 func _process(delta: float) -> void:
 	elapsed += delta
 	light_clock += delta
@@ -573,8 +581,7 @@ func _process(delta: float) -> void:
 	effects.running = controls_enabled
 	if campaign == null: return
 	if campaign.planet.is_empty():
-		orbital_camera.position = Vector3(18+sin(elapsed*0.08)*3,13,22)
-		orbital_camera.look_at(Vector3(0,0,-1))
+		_frame_home_preview()
 		return
 	handheld.visible = not orbit_mode
 	var mining: bool = controls_enabled and not orbit_mode and build_kind.is_empty() and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and target.get("kind","") == "resource" and FrontierCatalog.total(campaign.planet.player.cargo) < 140

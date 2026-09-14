@@ -2,6 +2,7 @@
 set -euo pipefail
 GAME_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$GAME_ROOT/builds/macos"
+python3 "$GAME_ROOT/tools/stamp_build_version.py"
 "$GAME_ROOT/tools/godot.sh" --headless --editor --quit
 "$GAME_ROOT/tools/godot.sh" --headless --export-release macOS "$GAME_ROOT/builds/macos/Locus-Space-Business.zip"
 /usr/bin/ditto -xk "$GAME_ROOT/builds/macos/Locus-Space-Business.zip" "$GAME_ROOT/builds/macos"

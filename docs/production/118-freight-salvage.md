@@ -1,5 +1,7 @@
 # SP09 — 유실 화물 회수와 항만 인계
 
+2026-09-14 후속: 아래 SP09 당시의 E/거치대 회수는 [현재 견인 규칙](../game/23-corporations-and-space-presence.md)으로 변경됐다. F 연결 게이지 도중 남아 있던 포드 이동을 재현·제거했고, 완료 후 키를 놓아도 선으로 연결해 운반한다. [192 수정·확인](192-freight-hold-and-home-version.md).
+
 2026-09-10 구현. [기업·우주 설계](../game/23-corporations-and-space-presence.md), [커밋 계획 SP09](../planning/16-space-corporations-commits.md)를 따른다. 실제 CARRIER 포드를 식별하고 선박 외부 거치대에 싣고 지정 항만까지 운반해 한 번 정산한다. SP08의 기록 조사를 실제 화물 이동으로 확장했다.
 
 ## 배치와 화물의 연속성

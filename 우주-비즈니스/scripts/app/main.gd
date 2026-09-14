@@ -304,6 +304,17 @@ func _build_title_screen() -> void:
 	column.add_theme_constant_override("separation",0)
 	margin.add_child(column)
 	_title_menu(column)
+	var version := _label(menu,preload("res://scripts/app/build_version.gd").label(),13,FrontierInterfaceStyle.MUTED)
+	version.name = "BuildVersion"
+	version.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	version.offset_left = -430
+	version.offset_right = -24
+	version.offset_top = -42
+	version.offset_bottom = -20
+	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	version.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	version.add_theme_color_override("font_shadow_color",Color("10191f"))
+	version.add_theme_constant_override("shadow_outline_size",3)
 
 func _title_menu(column: VBoxContainer) -> void:
 	var title := _label(column,"우주\n비즈니스맨",48,FrontierInterfaceStyle.TEXT)

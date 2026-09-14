@@ -1,5 +1,7 @@
 # 우주 비즈니스맨 — 프로젝트 작업 지침
 
+2026-09-14 버전 표시 확정: 홈 우측 하단은 날짜+소스 커밋 버전을 표시한다. 새 변경을 push할 때 커밋이 바뀌면 소스 실행의 버전도 자동 갱신된다. 배포는 `tools/build_macos.sh`/`tools/build_windows.sh`로 버전을 내장하고, 직접 내보낼 때는 먼저 `python3 tools/stamp_build_version.py`를 실행한다. 기존 실행 파일이 push만으로 갱신된다고 안내하지 않는다. [버전 소관](docs/release/01-playing-and-building.md).
+
 2026-09-14 추가 확정: 누구든 자기 배낭 재료로 건설하며, 한 명이 달성한 튜토리얼 단계는 원정 전체가 공유한다. 늦은 입장·저장 재개도 공용 진행을 받는다. 가이드 숨김/편지 읽음은 개인 설정이며 [공동 가이드 기록](docs/production/191-shared-play-guide.md)의 17개 규칙·16개 실제 원정 확인 범위를 따른다.
 
 2026-09-14 건설물 형태 고도화: 주요 현장 설비 9종의 Blender 원본·게임 모델·건설 카드를 교체했다. 기존 배치/가동 축과 최신 재생성 경로·검수 범위는 [189 제작 기록](docs/production/189-field-facility-design.md)을 따른다.
