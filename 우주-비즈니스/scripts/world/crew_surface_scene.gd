@@ -143,16 +143,24 @@ func _update_interest() -> void:
 	if session.hosting:
 		var site:=FrontierExpeditionBusiness.site(FrontierShuttles.context(session.authority.world,session.latest.self_id))
 		for robot in site.get("robots",{}).values():points.append(FrontierExpeditionBusiness.point(robot.position))
+	# Departure changes the member's area before the ground presentation ends.
+	# Preserve only that presentation's local footprint, not every old chunk.
+	for point in presentation_points:
+		if point not in points:points.append(point)
 	terrain.update_interests(points)
 	if session.hosting:ecology.observers=points
 	else:ecology.observers.clear()
-	var anchor:=terrain.field.key_at(viewer.position)
+	var anchor:=terrain.field.key_at(_terrain_viewpoint())
 	if anchor.x!=last_anchor.x or anchor.z!=last_anchor.z:last_anchor=anchor;_refresh_distant()
+
+func _terrain_viewpoint() -> Vector3:
+	if not presentation_points.is_empty() and session.latest.crew.get("landing",{}).is_empty():return presentation_points[0]
+	return viewer.position
 
 func _refresh_distant() -> void:
 	rendered_distance=float(preferences.values.view_distance)
-	distant.request_rebuild(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.material,float(preferences.values.view_distance))
-	distant.request_fallback(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.chunks)
+	distant.request_rebuild(terrain.field,terrain.field.key_at(_terrain_viewpoint()),int(config.active_radius),terrain.material,float(preferences.values.view_distance))
+	distant.request_fallback(terrain.field,terrain.field.key_at(_terrain_viewpoint()),int(config.active_radius),terrain.chunks)
 	fallback_jobs=terrain.completed_jobs;fallback_distant_builds=distant.build_count
 
 func _process(delta: float) -> void:
@@ -165,7 +173,7 @@ func _process(delta: float) -> void:
 	fallback_tick-=delta
 	if fallback_tick<=0 and (fallback_jobs!=terrain.completed_jobs or fallback_distant_builds!=distant.build_count):
 		fallback_tick=.5;fallback_jobs=terrain.completed_jobs;fallback_distant_builds=distant.build_count
-		distant.request_fallback(terrain.field,terrain.field.key_at(viewer.position),int(config.active_radius),terrain.chunks)
+		distant.request_fallback(terrain.field,terrain.field.key_at(_terrain_viewpoint()),int(config.active_radius),terrain.chunks)
 	if applied_edits<incoming.size() and terrain.batch.is_empty():
 		var edit: Dictionary=incoming[applied_edits]
 		terrain.dig(FrontierCrewWorld.vector(edit.center),float(edit.radius));applied_edits+=1

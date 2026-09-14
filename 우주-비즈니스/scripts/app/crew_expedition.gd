@@ -520,7 +520,7 @@ func _physics_process(delta: float) -> void:
 			if int(actor.get_meta("incident_rescue",0))!=int(member.get("incident_rescue",0)):
 				actor.position=FrontierCrewWorld.vector(member.position);actor.velocity=Vector3.ZERO;actor.set_meta("incident_rescue",int(member.get("incident_rescue",0)))
 			var local:=FrontierShuttles.context(session.authority.world,id)
-			if (member.has("shuttle_id") and member.area=="cabin") or (FrontierCrewSurface.landed(local) and member.aboard) or (arrival.active and arrival.phase in ["ascent","escape_loading","escape","exit_handover"] and FrontierShuttles.area_key(session.authority.world,id)==FrontierShuttles.area_key(session.authority.world,session.latest.self_id)):
+			if (member.has("shuttle_id") and member.area=="cabin") or (FrontierCrewSurface.landed(local) and member.aboard) or (arrival.active and arrival.phase in ["launch_preparing","ascent","escape_loading","escape","exit_handover"] and FrontierShuttles.area_key(session.authority.world,id)==FrontierShuttles.area_key(session.authority.world,session.latest.self_id)):
 				actor.velocity=Vector3.ZERO;continue
 			var motion: Dictionary=session.authority.motions.get(id,FrontierCrewLocomotion.create())
 			session.authority.motions[id]=motion
@@ -549,7 +549,7 @@ func _physics_process(delta: float) -> void:
 			session.authority.update_position(peer,actor.position)
 func _predict_local(delta: float,enabled: bool) -> void:
 	if not rovers.seat().is_empty():prediction_history.clear();predicted_motion.clear();return
-	if outside or (arrival.active and arrival.phase in ["boarding","ascent","escape_loading","escape","exit_handover"]):prediction_history.clear();predicted_motion.clear();return
+	if outside or (arrival.active and arrival.phase in ["boarding","launch_preparing","ascent","escape_loading","escape","exit_handover"]):prediction_history.clear();predicted_motion.clear();return
 	var id: String=session.latest.self_id
 	if not actors.has(id):return
 	var body: CharacterBody3D=actors[id]
@@ -830,7 +830,7 @@ func _sync_surface_view() -> void:
 	if session.latest.is_empty() or session.latest.get("phase")!="playing":return
 	var landing: Dictionary=session.latest.crew.get("landing",{})
 	if landing.is_empty():
-		if arrival.active and arrival.phase=="ascent":return
+		if arrival.active and arrival.phase in ["launch_preparing","ascent"]:return
 		if surface_world!=null:remove_child(surface_world);surface_world.queue_free();surface_world=null
 		if cabin_root.get_parent()==null:add_child(cabin_root)
 		if space_view!=null:space_view.render_target_update_mode=SubViewport.UPDATE_ALWAYS

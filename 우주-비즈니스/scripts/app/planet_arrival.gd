@@ -112,7 +112,7 @@ func tick(delta: float) -> void:
    var old_tint: Color=material.get_shader_parameter("tint")
    material.set_shader_parameter("tint",old_tint.lerp(target_tint,1-exp(-delta*2)))
  flow_material.set_shader_parameter("heat",(smoothstep(.35,.85,age/float(config.approach_seconds)) if phase=="approach" else (1-smoothstep(0,.35,age/float(config.descent_seconds)) if phase=="descent" else .6))*profile.air)
- if phase in ["boarding","ascent","escape_loading","escape","exit_handover"]:
+ if phase in ["boarding","launch_preparing","ascent","escape_loading","escape","exit_handover"]:
   _tick_launch(delta);return
  if app.session.latest.get("crew",{}).get("landing",{}).is_empty():cancel();return
  age+=delta
@@ -228,8 +228,8 @@ func _surface_ready() -> bool:
  var surface:=app.surface_world
  return prepared and surface.landing_view_ready()
 
-func _prepare_descent() -> void:
- if not app.surface_world.refits.requested_hull.is_empty():return
+func _prepare_descent(for_launch: bool=false) -> bool:
+ if app.surface_world==null or not app.surface_world.refits.requested_hull.is_empty():return false
  app.surface_world.seat_vessel()
  prepared=true
  ship_home=app.surface_world.landing_ship.position;ship_rotation=app.surface_world.landing_ship.rotation
@@ -243,16 +243,17 @@ func _prepare_descent() -> void:
  else:effects=app.surface_world.landing_effects
  dust=effects.emitters[0]
 
- var initial_ship:=ship_home+Vector3(0,float(config.descent_height),0)+FrontierCrewWorld.vector(config.descent_offset)
+ var initial_ship:=ship_home if for_launch else ship_home+Vector3(0,float(config.descent_height),0)+FrontierCrewWorld.vector(config.descent_offset)
  app.surface_world.landing_ship.position=initial_ship
  landing_camera.position=initial_ship+app.surface_world.landing_ship.basis*Vector3(34,18,42)*(.38 if finch else 1.0);landing_camera.look_at(initial_ship)
  app.surface_world.business_view.labels_enabled=false
- var points: Array[Vector3]=[app.actors[app.session.latest.self_id].position]
+ var points: Array[Vector3]=[ship_home if for_launch else app.actors[app.session.latest.self_id].position]
  for t in [0.0,.5,1.0]:
   var p: Vector3=ship_home+FrontierCrewWorld.vector(config.descent_offset)*t+app.surface_world.landing_ship.basis*Vector3(34,0,42)*(.38 if finch else 1.0)
   p.y=app.surface_world.terrain.field.height(p.x,p.z)+1
   points.append(p)
  app.surface_world.prepare_landing_view(points)
+ return true
 
 func _warm_camera() -> void:
  if warm_frames<2:
@@ -270,7 +271,7 @@ func _begin_descent() -> void:
  phase="descent";age=0;caption.text=app.surface_world.body.name+"  ·  착륙 지점으로 하강"
 
 func cancel() -> void:
- var leaving:=phase in ["ascent","escape_loading","escape","exit_handover"]
+ var leaving:=phase in ["launch_preparing","ascent","escape_loading","escape","exit_handover"]
  active=false;phase="";hide();landing_audio.finish();unboard.hide()
  if is_instance_valid(walker):walker.queue_free();walker=null
  if is_instance_valid(effects):effects.update(0,0,0 if leaving else 1,false)
@@ -306,7 +307,7 @@ func begin_boarding() -> void:
 func begin_launch() -> void:
  # Called only when the host snapshot actually clears the landing state.
  unboard.hide()
- active=true;phase="ascent";age=0;warm_frames=0;show();app.close_menus()
+ active=true;prepared=false;phase="launch_preparing";age=0;warm_frames=0;show();app.close_menus()
  vessel_overlay=load("res://scripts/ui/arrival_vessel.gd").new();add_child(vessel_overlay);move_child(vessel_overlay,1);vessel_overlay.configure({"hull":"finch"} if not app.session.latest.get("local_shuttle","").is_empty() else app.session.latest.get("vessel",{}));vessel_overlay.hide()
  app.flight.set_process(false);app.flight.transit_overlay.hide();app.flight.vessel_sound.suspend()
  var nav: Dictionary=app.session.latest.crew.navigation
@@ -323,14 +324,27 @@ func begin_launch() -> void:
  if is_instance_valid(landing_camera):landing_camera.queue_free()
  landing_camera=null
  if app.surface_world!=null:
-  _prepare_descent()
-  app.surface_world.landing_ship.position=ship_home
+  # A FINCH swap is asynchronous. Keep a valid ground view and its terrain
+  # until the requested hull, drive and ascent camera have all been prepared.
+  ship_home=app.surface_world.landing_ship.position;ship_rotation=app.surface_world.landing_ship.rotation
+  app.surface_world.prepare_landing_view([ship_home])
+  landing_camera=Camera3D.new();app.add_child(landing_camera);landing_camera.far=app.camera.far;landing_camera.fov=65
   landing_camera.position=ship_home+Vector3(34,18,42);landing_camera.look_at(ship_home+Vector3(0,1,-4))
+  landing_camera.make_current();caption.text=body.name+"  ·  이륙 준비"
+  _prepare_ascent()
  else:
   phase="escape_loading";cover.set_shader_parameter("cover",1.0)
   _prepare_escape()
- audio.play("sfx_vessel_boost");engine.pitch_scale=.7;engine.volume_db=-22;engine.play()
  app.session.send_input(Vector2.ZERO,Vector3.FORWARD,false,false,[0.0,0.0,0.0])
+
+func _prepare_ascent() -> void:
+ if app.surface_world==null or not app.surface_world.refits.requested_hull.is_empty():return
+ if is_instance_valid(landing_camera):landing_camera.queue_free()
+ landing_camera=null
+ if not _prepare_descent(true):return
+ phase="ascent";age=0
+ caption.text=app.surface_world.body.name+"  ·  이륙"
+ audio.play("sfx_vessel_boost");engine.pitch_scale=.7;engine.volume_db=-22;engine.play()
 
 func _prepare_escape() -> void:
  app._sync_surface_view()
@@ -358,6 +372,8 @@ func _tick_launch(delta: float) -> void:
     total+=1
     if member.aboard:boarded+=1
   caption.text=("조종석 · " if app.session.latest.self_id==app.session.latest.crew.pilot_id else "탑승 완료 · ")+"승무원 %d/%d · 전원 탑승 시 자동 이륙"%[boarded,total]
+ elif phase=="launch_preparing":
+  _prepare_ascent()
  elif phase=="ascent":
   var t:=clampf(age/float(config.ascent_seconds),0,1)
   var rise:=t*t

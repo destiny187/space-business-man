@@ -72,7 +72,7 @@ func blocked() -> bool:
 
 func _requested(sequence: int,kind: String,args: Dictionary) -> void:
 	if kind in ["deposit","withdraw"] or kind.begins_with("shuttle_"):
-		pending[sequence]={"kind":kind};return
+		pending[sequence]={"kind":kind,"created":Time.get_ticks_msec()};return
 	if app.surface_world==null or kind in ["surface_fire","surface_reload","surface_stance"]:return
 	# Keep the point at request time, including when the client turns while awaiting the host.
 	var point:=app.camera.global_position-app.camera.global_basis.z*4
