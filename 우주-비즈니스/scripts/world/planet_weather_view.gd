@@ -10,6 +10,7 @@ var tick:=0.0
 var elapsed:=0.0
 var wet:=0.0
 var strength:=0.0
+var cloud_cover:=0.0
 var rain: AudioStreamPlayer
 var acid: AudioStreamPlayer
 var thunder: AudioStreamPlayer3D
@@ -58,14 +59,17 @@ func _process(delta: float) -> void:
 	var active: bool=surface.session.active and state.get("body_id","")==surface.body.id and camera!=null and camera.current
 	var e: Dictionary=state.get("event",{}) if active else {}
 	var clock:=float(state.get("clock",0));var desired:=FrontierPlanetWeather.intensity(e,clock,camera.global_position) if active else 0.0
-	strength=move_toward(strength,desired,delta*.6);wet=move_toward(wet,strength,delta*(.09 if strength>wet else .025))
+	var cloud_rules: Dictionary=surface.atmosphere.config().rain_clouds
+	var desired_cloud:=cloud_amount(e,clock,camera.global_position,float(cloud_rules.lead_seconds),float(cloud_rules.clear_seconds)) if active else 0.0
+	cloud_cover=move_toward(cloud_cover,desired_cloud,delta*float(cloud_rules.response))
+	strength=move_toward(strength,desired*smoothstep(.5,.85,cloud_cover),delta*.6);wet=move_toward(wet,strength,delta*(.09 if strength>wet else .025))
 	visible=active
 	var in_front: bool=not e.is_empty() and Vector2(camera.global_position.x-float(e.center[0]),camera.global_position.z-float(e.center[2])).length()<float(FrontierPlanetWeather.config().front_radius)
 	var display_state: Dictionary=state.duplicate(false)
 	if e.get("kind","")=="acid" and float(state.get("personal",{}).get("acid_factor",1))<=.01:
 		display_state.event=e.duplicate();display_state.event.kind="rain"
 	badge.visible=active and in_front;badge.accept(display_state if active and in_front else {},strength)
-	surface.atmosphere.weather_strength=strength
+	surface.atmosphere.weather_strength=strength;surface.atmosphere.weather_clouds=cloud_cover
 	surface.terrain.material.set_shader_parameter("weather_wet",wet)
 	if active and int(e.get("serial",-1))!=notice_serial:
 		notice_serial=int(e.get("serial",-1))
@@ -122,3 +126,9 @@ func lightning(seed_value: int) -> ImmediateMesh:
 		for vertex in [previous-side,previous+side,point+side,previous-side,point+side,point-side]:mesh.surface_add_vertex(vertex)
 		previous=point
 	mesh.surface_end();return mesh
+
+static func cloud_amount(event: Dictionary,clock: float,point: Vector3,lead: float,trail: float) -> float:
+	if event.is_empty():return 0.0
+	var distance:=Vector2(point.x-float(event.center[0]),point.z-float(event.center[2])).length()
+	var coverage:=1.0-smoothstep(float(FrontierPlanetWeather.config().front_radius)*.8,float(FrontierPlanetWeather.config().front_radius),distance)
+	return coverage*smoothstep(float(event.start)-lead,float(event.start),clock)*(1.0-smoothstep(float(event.end),float(event.end)+trail,clock))

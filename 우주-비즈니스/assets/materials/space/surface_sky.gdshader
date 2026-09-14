@@ -4,6 +4,7 @@ uniform vec4 horizon : source_color = vec4(.5,.6,.7,1);
 uniform vec4 cloud_color : source_color = vec4(.8,.85,.9,1);
 uniform float atmosphere = 1.0;
 uniform float cloud_amount = 0.0;
+uniform float storm_cover = 0.0;
 uniform float seed_phase = 0.0;
 uniform bool celestial_active = false;
 uniform vec3 sun_direction = vec3(0.0,1.0,0.0);
@@ -17,6 +18,7 @@ void sky() {
  vec3 d=normalize(EYEDIR);
  float altitude=max(d.y,0.0);
  vec3 color=mix(horizon.rgb,zenith.rgb,pow(altitude,.42));
+ float sky_transmission=1.0;
  if(d.y>0.01) {
   // Tiny stars belong to the full-resolution sky, never the changing radiance map.
   if(!AT_CUBEMAP_PASS) {
@@ -30,22 +32,27 @@ void sky() {
   float cloud=smoothstep(.60-cloud_amount*.24,.83-cloud_amount*.15,n);
   cloud*=cloud_amount*smoothstep(.02,.20,altitude);
   float shade=smoothstep(.32,.65,n);
-  color=mix(color,cloud_color.rgb*mix(.72,1.,shade),cloud*.86);
+  float bank=storm_cover*smoothstep(.005,.12,altitude)*mix(.88,1.0,smoothstep(.25,.65,n));
+  float opacity=max(cloud*.86,bank);
+  float bands=floor(shade*3.0)/3.0;
+  vec3 bank_color=cloud_color.rgb*mix(.34,.72,bands);
+  color=mix(color,mix(cloud_color.rgb*mix(.72,1.,shade),bank_color,storm_cover),opacity);
+  sky_transmission=1.0-opacity;
   }
  }
  if(celestial_active && d.y>0.0) {
   float alignment=max(dot(d,sun_direction),0.0);
   float visible=smoothstep(-.015,.025,sun_direction.y);
   vec3 sun_color=mix(vec3(1.0,.51,.23),vec3(1.0,.94,.80),smoothstep(0.,.25,sun_direction.y));
-  color+=sun_color*pow(alignment,64.0)*.22*atmosphere*visible;
+  color+=sun_color*pow(alignment,64.0)*.22*atmosphere*visible*sky_transmission;
   float angular_distance=length(cross(d,sun_direction));
   float edge=max(length(fwidth(d))*.6,sun_radius*.12);
   float disk=(1.0-smoothstep(sun_radius-edge,sun_radius+edge,angular_distance))*step(0.0,dot(d,sun_direction));
-  color+=sun_color*disk*2.5*visible;
+  color+=sun_color*disk*2.5*visible*sky_transmission;
  } else if(!celestial_active && LIGHT0_ENABLED) {
   float alignment=max(dot(d,LIGHT0_DIRECTION),0.0);
-  color+=LIGHT0_COLOR*pow(alignment,32.0)*.18*atmosphere;
-  color+=LIGHT0_COLOR*smoothstep(.99955,.99987,alignment)*2.5;
+  color+=LIGHT0_COLOR*pow(alignment,32.0)*.18*atmosphere*sky_transmission;
+  color+=LIGHT0_COLOR*smoothstep(.99955,.99987,alignment)*2.5*sky_transmission;
  }
  if(d.y<0.)color=mix(horizon.rgb,zenith.rgb*.16,pow(-d.y,.32));
  COLOR=color;
