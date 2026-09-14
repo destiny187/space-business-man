@@ -63,13 +63,13 @@ static func set_phase(row: Dictionary,value: String) -> void:
 	if value=="attack":row.struck=false
 static func body_position(live: Dictionary) -> Vector3:
 	return FrontierCrewWorld.vector(live.position)+Vector3.UP*float(live.get("air_height",0))
-static func hit(world: Dictionary,actor: String,row: Dictionary,amount: float) -> Dictionary:
+static func hit(world: Dictionary,actor: String,row: Dictionary,amount: float,react: bool=true) -> Dictionary:
 	var id:=key(world.location,row)
 	if not world.crew.has("combat"):world.crew.combat={}
 	var before:=int(world.crew.combat.get(id,health(row)))
 	var current:=state(world.crew,world.location,row)
 	var info:=profile(row)
-	if not current.is_empty() and Attacks.recovery(current,info):amount*=float(info.get("recovery_damage_multiplier",1.0))
+	if react and not current.is_empty() and Attacks.recovery(current,info):amount*=float(info.get("recovery_damage_multiplier",1.0))
 	var hp:=maxi(0,before-roundi(amount));world.crew.combat[id]=hp
 	var form:=FrontierEcologyCatalog.form(row.form_id)
 	if Wildlife.eligible(form,row) and before>0:
@@ -77,7 +77,7 @@ static func hit(world: Dictionary,actor: String,row: Dictionary,amount: float) -
 		if not live.is_empty():
 			live.target=actor;live.provoked=true;live.hurt_serial+=1;live.lost=0.0
 			if hp==0:set_phase(live,"down")
-			elif live.flinch<=0 and not Attacks.airborne(live,info):
+			elif react and live.flinch<=0 and not Attacks.airborne(live,info):
 				set_phase(live,"hurt");live.flinch=float(config().flinch_cooldown)
 	if hp==0 and before>0:
 		if not world.crew.has("wildlife_stops"):world.crew.wildlife_stops={}
@@ -187,6 +187,7 @@ func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable=Callab
 			live=ensure(world.crew,row.body_id,row)
 			if live.is_empty():continue
 			live.target=chosen;set_phase(live,"warning")
+		info.speed*=FrontierWeaponElements.slow(world.crew,"animal:"+id)
 		live.combat_tier=info.tier
 		changed=true
 		live.motion_clock=float(live.get("motion_clock",0.))+delta

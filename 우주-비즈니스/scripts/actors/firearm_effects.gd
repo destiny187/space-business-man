@@ -60,7 +60,14 @@ func muzzle(origin: Vector3,_direction: Vector3,family: String,socket: Node3D=nu
 	emitted.muzzle+=1
 
 func shot(origin: Vector3,event: Dictionary,near_clip: float=0.0) -> void:
-	var style: Dictionary=config().families.get(event.family,config().families.carbine)
+	var style: Dictionary=config().families.get(event.family,config().families.carbine).duplicate()
+	if event.get("element_id","kinetic")!="kinetic":style.color=FrontierWeaponLoot.config().elements[event.element_id].color
+	for contact in event.get("contacts",[]):
+		contact.element_id=event.get("element_id","kinetic")
+		if contact.get("legendary",false) and contact.has("from"):
+			var start:=FrontierCrewWorld.vector(contact.from);var finish:=FrontierCrewWorld.vector(contact.point)
+			var arc:=spawn("spark",start,Color(style.color),.12,1.)
+			if not arc.is_empty():segment(arc.node,start,finish,.008)
 	if event.get("beam",false):
 		_beam(origin,event,style)
 		for hit in event.get("contacts",[]):impact(hit)
@@ -103,6 +110,7 @@ func impact(contact: Dictionary) -> void:
 	if normal.length_squared()<.5:normal=Vector3.UP
 	point+=normal*.018
 	var color:=Color(style.color);var size:=float(style.size)
+	if contact.get("element_id","kinetic")!="kinetic":color=Color(FrontierWeaponLoot.config().elements[contact.element_id].color)
 	if kind in ["shield","break"]:
 		_shield_contact(point,normal,style);emitted.impact+=1;return
 	var contact_flash:=spawn("contact",point,color,.065 if kind!="break" else .09,size*2.0)

@@ -9,6 +9,7 @@ func count() -> int:
 	for shot in shots:n+=shot.rounds.size()
 	return n
 func launch(world: Dictionary,actor: String,tool: Dictionary,event: Dictionary,ads: bool) -> void:
+	tool=tool.duplicate();tool.shot_key=str(event.serial);tool.shot_origin=event.origin;tool.shot_damage=float(event.get("shot_damage",tool.damage))
 	var rounds: Array=[]
 	for initial in event.projectiles:
 		rounds.append({"index":initial.get("index",rounds.size()),"point":FrontierCrewWorld.vector(event.origin),"velocity":FrontierCrewWorld.vector(initial.velocity),"time":float(event.get("fired_time",0)),"distance":0.0,"gravity":initial.gravity,"remaining":initial.range,"multiplier":initial.multiplier})
@@ -51,8 +52,11 @@ func step(world: Dictionary,delta: float,obstacle: Callable) -> Array:
 					var outcome:=_damage(local,shot,hit,float(round.distance),float(round.multiplier))
 					_collect(targets,totals,hit,outcome)
 					contacts.append(_contact(hit,outcome,direction));ended=true
+					for extra in FrontierWeaponElements.followup(local,actor,shot.tool,hit,outcome,candidates[actor],direction,obstacle):
+						_collect(targets,totals,extra.hit,extra.outcome)
+						var contact:=_contact(extra.hit,extra.outcome,direction);contact.element_id=shot.tool.element_id;contact.legendary=true;contact.from=FrontierExpeditionBusiness.array(hit.point);contacts.append(contact)
 				elif surface:
-					if not cover.is_empty():FrontierCombatCover.damage(cover,float(shot.tool.damage)*float(round.multiplier))
+					if not cover.is_empty():FrontierCombatCover.damage(cover,float(shot.tool.get("shot_damage",shot.tool.damage))*float(round.multiplier))
 					contacts.append({"point":FrontierExpeditionBusiness.array(point),"normal":FrontierExpeditionBusiness.array(-direction),"kind":"surface"});ended=true
 				if ended and shot.tool.effect=="splash":
 					_blast(local,shot,candidates[actor],point,hit.get("id",""),obstacle,contacts,targets,totals)
@@ -61,7 +65,7 @@ func step(world: Dictionary,delta: float,obstacle: Callable) -> Array:
 		shot.catchup=0.0
 		if not contacts.is_empty():
 			event_serial+=1
-			events.append({"actor":actor,"body_id":shot.body_id,"impact_only":true,"serial":event_serial,"shot_serial":shot.serial,"retired":retired,"family":shot.tool.firearm,"effect":shot.tool.effect,"item_id":shot.tool.item_id,"contacts":contacts,"damage_targets":targets.values(),"hits":totals,"rays":[]})
+			events.append({"actor":actor,"body_id":shot.body_id,"impact_only":true,"serial":event_serial,"shot_serial":shot.serial,"retired":retired,"family":shot.tool.firearm,"element_id":shot.tool.get("element_id","kinetic"),"effect":shot.tool.effect,"item_id":shot.tool.item_id,"contacts":contacts,"damage_targets":targets.values(),"hits":totals,"rays":[]})
 			var state: Dictionary=member.loadout.get("weapon_states",{}).get(shot.tool.item_id,{})
 			if not state.is_empty():
 				if totals.broken:state.breach=true
@@ -87,7 +91,7 @@ func _terrain_distance(world: Dictionary,origin: Vector3,direction: Vector3,reac
 	return reach
 func _damage(world: Dictionary,shot: Dictionary,hit: Dictionary,distance: float,multiplier: float) -> Dictionary:
 	var start:=float(shot.tool.range)*float(shot.tool.get("falloff_start",.6))
-	var amount:=float(shot.tool.damage)*multiplier*lerpf(1,.55,clampf((distance-start)/(float(shot.tool.range)-start),0,1))
+	var amount:=float(shot.tool.get("shot_damage",shot.tool.damage))*multiplier*lerpf(1,.55,clampf((distance-start)/(float(shot.tool.range)-start),0,1))
 	return FrontierFirearms._damage(world,shot.actor,hit,amount,shot.tool,shot.ads)
 func _collect(targets: Dictionary,totals: Dictionary,hit: Dictionary,result: Dictionary) -> void:
 	FrontierFirearms._record_damage(targets,hit,result)
@@ -108,5 +112,6 @@ func _blast(world: Dictionary,shot: Dictionary,rows: Array,point: Vector3,direct
 		if not FrontierCombatCover.intercept(world,shot.body_id,point+direction*.06,direction,gap).is_empty():continue
 		if obstacle.is_valid() and float(obstacle.call(shot.actor,point+direction*.06,direction,gap))<gap-.4:continue
 		var hit: Dictionary=row.duplicate();hit.point=center;hit.weak=false;hit.zone="body"
-		var outcome:=FrontierFirearms._damage(world,shot.actor,hit,float(shot.tool.damage)*.6*(1-gap/radius),shot.tool,false)
+		var splash_tool: Dictionary=shot.tool.duplicate();splash_tool.legendary_id="";splash_tool.splash_secondary=true;splash_tool.splash_factor=.6*(1-gap/radius)
+		var outcome:=FrontierFirearms._damage(world,shot.actor,hit,float(shot.tool.get("shot_damage",shot.tool.damage))*.6*(1-gap/radius),splash_tool,false)
 		_collect(targets,totals,hit,outcome);contacts.append(_contact(hit,outcome,-direction))

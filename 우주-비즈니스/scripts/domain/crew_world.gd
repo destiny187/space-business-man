@@ -35,6 +35,7 @@ static func validate(value: Variant) -> String:
 	if value.has("corporations") and not FrontierCorporations.valid(value.corporations):return "기업 식별 기록 오류"
 	if value.has("corporate_traces") and not FrontierCorporateTraces.valid(value.corporate_traces):return "기업 활동 조사 기록 오류"
 	if value.has("freight_records") and not FrontierFreightSalvage.valid(value.freight_records,value):return "유실 화물 적재 기록 오류"
+	if not FrontierWeaponElements.valid(value):return "무기 속성 상태 기록 오류"
 	if not FrontierWildlifeCombat.valid(value):return "생물 교전 기록 오류"
 	if value.has("wildlife_stops"):
 		if not value.wildlife_stops is Dictionary or not value.get("combat",{}) is Dictionary:return "생물 정지 기록 형식 오류"

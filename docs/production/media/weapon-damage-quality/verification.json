@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-14",
+  "results": {
+    "damage": {
+      "checks": 17,
+      "failures": 0,
+      "log": "output/weapon-loot/damage.log"
+    },
+    "damage-play": {
+      "checks": 13,
+      "failures": 0,
+      "log": "output/weapon-loot/damage-play.log"
+    },
+    "damage-ui-final": {
+      "checks": 8,
+      "failures": 0,
+      "log": "output/weapon-loot/damage-ui-final.log"
+    }
+  },
+  "exit_warning": "2 ObjectDB instances in isolated Forward+ review; cause not diagnosed"
+}

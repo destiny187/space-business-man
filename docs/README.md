@@ -1,5 +1,9 @@
 # 게임 설계 문서 목차
 
+2026-09-14 **피해 품질 ±20% 적용** — [187 제작 기록](production/187-weapon-damage-quality.md): 새 총기에 최소~최대 피해와 등급 독립 품질을 저장하고 호스트 사격별 추첨·평균 DPS·960px 표시를 연결했다. 기존 보유품/확정 전리품은 고정 피해를 보존한다. 매직 개조/설치형 제작대 자체는 별도다.
+
+2026-09-14 **후속 승인·첫 구현** — [무기 드롭·속성 공격](game/29-weapon-loot-and-elements.md): 현재 T1~T3에 다섯 등급·무작위 옵션·5속성·전설 네 종·현장 회수·속성 제작·잠금/분해와 기존 저장 호환을 연결했다. Blender/Forward+·실제 사격/소리·F 회수·960px·저장 확인 및 상위 티어/계승 등 후속 범위는 [186 제작 기록](production/186-weapon-loot-and-elements.md)을 따른다.
+
 2026-09-14 [활동형 현장 미션 7종](production/185-active-field-missions.md): 절벽 중계망은 T2·T3, 나머지는 최소 티어부터 T5까지 목표 수·위험·보상이 증가한다. 실제 이동·도구·운반과 우주 구조→지상 회수, 기존 저장 보존·원정 확인·남은 검수 경계는 제작 기록을 따른다. [초기 기획](planning/18-active-field-missions.md)은 설계 이력이다.
 
 2026-09-14 [게임 공통 모달 교체](production/184-game-modal-redesign.md): 정산·분해·추첨·자원·장비·사용처·항해 기록과 구 장면 확인/관측 창을 게임 프레임·카드·고정 행동으로 교체했다. 1280/960 및 130% UI의 실제 렌더·입력/거래 경계는 제작 기록을 따른다.
@@ -306,6 +310,7 @@
 | [탐험·이벤트·문명](game/06-exploration-and-civilizations.md) | 발견 종류, 보상, 선택과 장기 결과 |
 | [우주 탐험·우주선](game/07-space-exploration-and-ships.md) | 항해·후보 선정·개발 권한·선체/모듈 성장·해적·사건 |
 | [항해 중 해적 습격](game/28-pirate-interdiction.md) | 두 이동 구간의 해적 습격·원정선 방어/도주·인양, 독립 포탑/전투정 후속 |
+| [무기 드롭·속성 공격](game/29-weapon-loot-and-elements.md) | 티어와 등급 분리·옵션·속성·전설·저장 호환의 소관. 현재 T1~T3 첫 구현과 상위 후속 구분 |
 | [오픈월드·지하](game/08-open-world-and-underground.md) | 지역·수직 탐험·굴착·발견 밀도·위험·재방문 |
 | [행성 날씨와 자연재해](game/26-weather-and-natural-hazards.md) | T2 위험 기상·낮은 빈도·차양/접지·정화와 첫 구현/후속 후보 경계 |
 | [발견·연구·생태](game/09-discovery-research-and-ecology.md) | 원리 연구·고유 생물 출현·표본·이식·생물 모방·열 사례 |

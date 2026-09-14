@@ -33,7 +33,7 @@ static func capture(world: Dictionary,trace: Dictionary) -> void:
 	if found.is_empty():return
 	var row: Dictionary=found.row;var key:=FrontierExplorationIncidents.key(row)
 	FrontierExplorationIncidents.ensure(world)
-	if not world.incidents.records.has(key):world.incidents.records[key]=FrontierExplorationIncidents.create(row)
+	if not world.incidents.records.has(key):world.incidents.records[key]=FrontierExplorationIncidents.create(row,int(world.manifest.seed))
 	if not world.has("coopertech_clues"):world.coopertech_clues={}
 	world.coopertech_clues[trace.id]={"body":found.body,"incident":key}
 static func describe(world: Dictionary,id: String) -> Dictionary:

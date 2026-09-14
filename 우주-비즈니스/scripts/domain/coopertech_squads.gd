@@ -11,6 +11,7 @@ static func spec(row: Dictionary) -> Dictionary:
  var tier: Dictionary=config().tiers[str(int(row.tier))]
  for stat in ["health","damage","speed","shield"]:result[stat]=float(result[stat])*float(tier[stat])
  result.speed=minf(float(result.speed),float(result.stride)/float(result.gait_seconds)*float(result.max_gait_rate))
+ result.speed*=float(row.get("element_slow",1.0))
  result.aim_seconds*=float(tier.aim)
  return result
 static func spawn(body: Dictionary,f: FrontierTerrainField,cell: Vector2i,existing: Array) -> Array:

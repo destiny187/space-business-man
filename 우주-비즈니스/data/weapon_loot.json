@@ -1,0 +1,264 @@
+{
+  "version": 2,
+  "rarities": [
+    "standard",
+    "improved",
+    "rare",
+    "epic",
+    "legendary"
+  ],
+  "option_counts": [
+    0,
+    1,
+    2,
+    3,
+    3
+  ],
+  "weights": {
+    "general": [
+      52,
+      30,
+      14,
+      3.5,
+      0.5
+    ],
+    "cache": [
+      25,
+      38,
+      27,
+      9,
+      1
+    ],
+    "elite": [
+      10,
+      28,
+      42,
+      17,
+      3
+    ]
+  },
+  "drop_chance": 0.65,
+  "max_statuses": 256,
+  "status_tick": 0.25,
+  "buildup_threshold": 1.0,
+  "buildup_cap": 0.8,
+  "buildup_decay": 0.5,
+  "shield_cap": 2.0,
+  "elements": {
+    "kinetic": {
+      "name": "물리",
+      "color": "d2d8da",
+      "shield": 1,
+      "health": 1,
+      "armor": 1,
+      "duration": 0,
+      "slow": 0,
+      "cost": {}
+    },
+    "thermal": {
+      "name": "열",
+      "color": "ff884f",
+      "shield": 0.9,
+      "health": 0.9,
+      "armor": 0.9,
+      "duration": 3,
+      "slow": 0,
+      "cost": {
+        "copper": 3,
+        "crystal": 1
+      }
+    },
+    "cryo": {
+      "name": "냉기",
+      "color": "9cdeff",
+      "shield": 0.9,
+      "health": 0.9,
+      "armor": 0.9,
+      "duration": 2,
+      "slow": 0.2,
+      "cost": {
+        "ice": 5,
+        "crystal": 1
+      }
+    },
+    "shock": {
+      "name": "전격",
+      "color": "bfacff",
+      "shield": 1.25,
+      "health": 0.9,
+      "armor": 0.9,
+      "duration": 0,
+      "slow": 0,
+      "cost": {
+        "copper": 5,
+        "crystal": 1
+      }
+    },
+    "corrosive": {
+      "name": "부식",
+      "color": "b6dc65",
+      "shield": 0.9,
+      "health": 1,
+      "armor": 1.2,
+      "duration": 0,
+      "slow": 0,
+      "cost": {
+        "iron": 3,
+        "crystal": 2
+      }
+    }
+  },
+  "affixes": {
+    "damage": {
+      "name": "직접 피해",
+      "stat": "damage",
+      "min": 0.05,
+      "max": 0.1,
+      "group": "power",
+      "mode": "up"
+    },
+    "weak": {
+      "name": "약점 피해",
+      "stat": "weak",
+      "min": 0.08,
+      "max": 0.18,
+      "group": "power",
+      "mode": "up"
+    },
+    "reload": {
+      "name": "재장전 시간",
+      "stat": "reload",
+      "min": 0.08,
+      "max": 0.15,
+      "group": "reload",
+      "mode": "down"
+    },
+    "recoil": {
+      "name": "반동",
+      "stat": "recoil",
+      "min": 0.1,
+      "max": 0.22,
+      "group": "recoil",
+      "mode": "down"
+    },
+    "ads": {
+      "name": "정조준 전환",
+      "stat": "ads_seconds",
+      "min": 0.1,
+      "max": 0.2,
+      "group": "ads",
+      "mode": "down"
+    },
+    "magazine": {
+      "name": "탄창",
+      "stat": "magazine",
+      "min": 0.1,
+      "max": 0.2,
+      "group": "magazine",
+      "mode": "up"
+    },
+    "draw": {
+      "name": "무기 교체",
+      "stat": "draw_seconds",
+      "min": 0.1,
+      "max": 0.2,
+      "group": "draw",
+      "mode": "down"
+    },
+    "buildup": {
+      "name": "상태 축적",
+      "stat": "buildup",
+      "min": 0.1,
+      "max": 0.25,
+      "group": "buildup",
+      "mode": "up"
+    },
+    "duration": {
+      "name": "상태 지속",
+      "stat": "duration",
+      "min": 0.1,
+      "max": 0.25,
+      "group": "duration",
+      "mode": "up"
+    },
+    "heat": {
+      "name": "열 발생",
+      "stat": "heat_per_shot",
+      "min": 0.08,
+      "max": 0.15,
+      "group": "heat",
+      "mode": "down"
+    },
+    "cool": {
+      "name": "냉각 속도",
+      "stat": "cool_rate",
+      "min": 0.1,
+      "max": 0.2,
+      "group": "cool",
+      "mode": "up"
+    },
+    "velocity": {
+      "name": "탄속",
+      "stat": "projectile_speed",
+      "min": 0.1,
+      "max": 0.2,
+      "group": "velocity",
+      "mode": "up"
+    }
+  },
+  "legendaries": {
+    "ember": {
+      "name": "잔화",
+      "family": "carbine",
+      "element": "thermal",
+      "description": "자신이 연소시킨 적을 직접 격파하면 주변 적 하나에 연소를 옮깁니다.",
+      "model": "equipment/legend_ember",
+      "radius": 8.0,
+      "factor": 0.35,
+      "cooldown": 1.5
+    },
+    "shatter": {
+      "name": "쇄빙",
+      "family": "shotgun",
+      "element": "cryo",
+      "description": "냉각된 적에게 12m 안에서 탄립 4개를 맞히면 냉각을 소모해 파쇄합니다.",
+      "model": "equipment/legend_shatter",
+      "radius": 12.0,
+      "factor": 2.0,
+      "cooldown": 2.0,
+      "pellets": 4
+    },
+    "arc": {
+      "name": "도약 전류",
+      "family": "smg",
+      "element": "shock",
+      "description": "같은 적에게 2초 안에 3회 명중하면 주변 적 둘에게 전류가 도약합니다.",
+      "model": "equipment/legend_arc",
+      "radius": 8.0,
+      "factor": 0.35,
+      "cooldown": 1.5
+    },
+    "pierce": {
+      "name": "천공",
+      "family": "sniper",
+      "element": "kinetic",
+      "description": "약점 명중 후 같은 직선상의 뒤쪽 적 하나를 관통합니다.",
+      "model": "equipment/legend_pierce",
+      "radius": 25.0,
+      "factor": 0.55,
+      "cooldown": 1.5
+    }
+  },
+  "thermal_dps_factor": 0.1,
+  "salvage": {
+    "iron": 2,
+    "copper": 1
+  },
+  "damage_quality": {
+    "version": 1,
+    "quality_min": 0.8,
+    "quality_max": 1.2,
+    "base_min_factor": 0.8,
+    "base_max_factor": 1.2
+  }
+}

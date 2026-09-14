@@ -102,14 +102,15 @@ static func nearby(body: Dictionary,f: FrontierTerrainField,p: Vector3) -> Array
  for x in range(cell.x-1,cell.x+2):
   for z in range(cell.y-1,cell.y+2):result.append_array(tile(body,f,Vector2i(x,z)))
  return result
-static func create(row: Dictionary) -> Dictionary:
+static func create(row: Dictionary,weapon_seed: int=-1) -> Dictionary:
  var record:=row.duplicate(true)
- record.gun_pool_version=2
+ record.gun_pool_version=3
  if record.has("native"):FrontierNativeIncidents.initialize(record)
  record.phase="idle";record.time=0.0;record.age=0.0;record.hp=float(config().robot.health);record.hits=0;record.open=false;record.powered=false;record.claimed=false;record.carrier="";record.battery_carrier="";record.battery_installed=false;record.battery_ground=record.battery_position.duplicate();record.cargo_ground=[];record.gems=0;record.serial=0;record.aim=[];record.target="";record.discoverer="";record.seen=false;record.materialized=false
  if definition(row.template).mode=="robot":
   record.shield_max=float(config().robot.shield_tier3) if int(row.tier)>=3 else 0.0;record.shield=record.shield_max;record.shield_wait=0.0
   if FrontierCooperTechSquads.enabled(record):FrontierCooperTechSquads.initialize(record)
+ if weapon_seed>=0:record.gun_reward_v2=FrontierWeaponLoot.generate(weapon_seed,record)
  return record
 static func is_present(world: Dictionary,actor: String,row: Dictionary) -> bool:
  if not world.crew.members.has(actor):return false
@@ -215,7 +216,7 @@ static func tick(world: Dictionary,delta: float,actors: Array,obstacle: Callable
     for building in world.get("business",{}).get("sites",{}).get(body.id,{}).get("buildings",{}).values():
      if FrontierCrewWorld.vector(building.position).distance_to(FrontierCrewWorld.vector(source.home))<(100.0 if source.has("mission_parent") else float(FrontierCooperTechSquads.config().spawn_clearance)+float(config().exclusion_radius)):occupied=true;break
    if occupied:continue
-   world.incidents.records[key(source)]=create(source);changed=true
+   world.incidents.records[key(source)]=create(source,int(world.manifest.seed));changed=true
  for row in records(world).values():
   var present: Array=[]
   for actor in actors:
@@ -410,6 +411,12 @@ static func validate(world: Dictionary) -> String:
   for p in row.path:
    if not FrontierUniverse._vector3_array(p):return "사건 이동 지점 오류"
   if not preload("res://scripts/domain/storm_archive.gd").validate(world,row):return "폭풍 기록고의 복원 결과 오류"
+  if row.has("gun_reward_v2"):
+   var gun: Variant=row.gun_reward_v2
+   if not gun is Dictionary:return "총기 전리품 형식 오류"
+   if not gun.is_empty():
+    var gun_definition: Dictionary=FrontierEquipment.config().items.get(gun.get("definition",""),{})
+    if gun.get("roll_version")!=2 or not FrontierWeaponLoot.valid(gun,gun_definition):return "총기 전리품 옵션 오류"
   if not FrontierActiveMissions.validate(row):return "활동형 미션 저장 오류"
   if not FrontierCooperTechSquads.validate(row):return "쿠퍼테크 분대 기록 오류"
   if not FrontierNativeIncidents.validate(world,row):return "현지 생물 사건 기록 오류"

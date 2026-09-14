@@ -16,8 +16,10 @@ static func item(member: Dictionary,id: String) -> Dictionary:
 	var roll: Dictionary=data.get("weapon_rolls",{}).get(id,{"rarity":"standard"})
 	result.rarity=roll.get("rarity","standard")
 	var rarity: Dictionary=config().rarities[result.rarity]
-	result.damage=roundi(float(result.damage)*float(rarity.damage))
-	result.reload=float(result.reload)*float(rarity.reload)
+	if int(roll.get("roll_version",1))!=2:
+		result.damage=roundi(float(result.damage)*float(rarity.damage))
+		result.reload=float(result.reload)*float(rarity.reload)
+	FrontierWeaponLoot.apply(result,roll)
 	result.item_id=id
 	return result
 static func ensure(member: Dictionary,tool: Dictionary) -> Dictionary:
@@ -44,6 +46,8 @@ static func tick(member: Dictionary,delta: float) -> void:
 	for id in data.get("weapon_states",{}):
 		var s: Dictionary=data.weapon_states[id]
 		s.cooldown=maxf(0,float(s.cooldown)-delta);s.idle=minf(60,float(s.idle)+delta)
+		for timer in ["legend_wait","arc_left"]:
+			if s.has(timer):s[timer]=maxf(0,float(s[timer])-delta)
 		if s.has("heat"):
 			var thermal:=item(member,id)
 			if s.idle>float(thermal.get("cool_delay",.3)):s.heat=maxf(0,float(s.heat)-delta*float(thermal.get("cool_rate",.22)))
@@ -98,20 +102,25 @@ static func validate(data: Dictionary) -> String:
 			var row: Dictionary=records[id]
 			if field=="weapon_rolls":
 				if not config().rarities.has(row.get("rarity","")):return "총기 희귀도"
+				if not FrontierWeaponLoot.valid(row,FrontierEquipment.config().items.get(data.get("items",{}).get(id,""),{})):return "총기 옵션 기록"
 			else:
 				for key in ["ammo","reload_left","cooldown","idle","streak","weak_streak"]:
 					if not FrontierUniverse._finite(row.get(key),0,10000):return "총기 탄창 상태"
+				if not FrontierExpeditionBusiness.integer(row.get("damage_shots",0),0,9007199254740000):return "총기 사격 난수 순서"
+				for timer in ["legend_wait","arc_left"]:
+					if not FrontierUniverse._finite(row.get(timer,0),0,10):return "전설 발동 대기"
 				if not FrontierUniverse._finite(row.get("heat",0),0,1) or not row.get("overheated",false) is bool:return "총기 냉각 기록"
 				if row.ammo!=floorf(row.ammo) or not row.get("breach") is bool:return "총기 탄창 형식"
 				if not FrontierExpeditionBusiness.integer(row.get("reload_rounds",0),0,10000) or not FrontierUniverse._finite(row.get("reload_duration",0),0,120):return "장전 예약 탄약 형식"
 				if row.has("ammo_version") and (row.ammo_version!=2 or float(row.reload_left)>float(row.get("reload_duration",0))):return "장전 진행 기록"
 				var definition: Dictionary=FrontierEquipment.config().items.get(data.get("items",{}).get(id,""),{})
-				if definition.has("firearm") and int(row.ammo)+int(row.get("reload_rounds",0))>int(config().families[definition.firearm].magazine):return "탄창과 장전 예약 한도"
+				if definition.has("firearm") and int(row.ammo)+int(row.get("reload_rounds",0))>int(item({"loadout":data,"profile":{"equipment":[]}},id).magazine):return "탄창과 장전 예약 한도"
 	if not data.get("crouched",false) is bool:return "낮은 자세 형식"
 	return ""
 static func eye(member: Dictionary) -> float:return 1.15 if member.get("loadout",{}).get("crouched",false) else 1.72
 static func loot(seed_value: int,row: Dictionary) -> Dictionary:
 	if row.get("gun_claimed",false):return {}
+	if int(row.get("gun_pool_version",1))>=3:return FrontierWeaponLoot.generate(seed_value,row)
 	var seed:=FrontierUniverse.derive(seed_value,FrontierExplorationIncidents.key(row)+":firearm-v1")
 	var rng:=RandomNumberGenerator.new();rng.seed=seed
 	if rng.randf()>float(config().drop_chance):return {}
@@ -137,7 +146,11 @@ static func drop(world: Dictionary,actor: String,row: Dictionary) -> String:
 	var item_id: String="crafted:"+str(int(member.loadout.counter))
 	member.loadout.items[item_id]=reward.definition
 	if not member.loadout.has("weapon_rolls"):member.loadout.weapon_rolls={}
-	member.loadout.weapon_rolls[item_id]={"rarity":reward.rarity,"source":row.id}
+	member.loadout.weapon_rolls[item_id]=reward.duplicate(true)
+	member.loadout.weapon_rolls[item_id].source=row.id
+	if int(reward.get("roll_version",1))==2:
+		var gun:=item(member,item_id);var state:=ensure(member,gun)
+		state.ammo=int(gun.magazine) if str(gun.ammo_type).is_empty() else 0
 	row.gun_claimed=true;row.gun_drop=reward.duplicate();row.gun_drop.item_id=item_id;row.gun_drop.owner=actor
 	return ""
 static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Callable=Callable()) -> Dictionary:
@@ -148,6 +161,7 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 	var aim:=FrontierCrewSurface.direction(args.get("aim"))
 	if aim==Vector3.ZERO or not args.get("ads",false) is bool:return {"ok":false,"error":"조준 방향 오류"}
 	if not member.loadout.get("weapon_states",{}).has(tool.item_id) and member.loadout.get("weapon_states",{}).size()>=int(config().max_states):return {"ok":false,"error":"총기 상태 보관 한도입니다."}
+	tool.shot_key=str(args.get("serial",0));tool.shot_origin=FrontierExpeditionBusiness.array(FrontierCrewWorld.vector(member.position)+Vector3.UP*eye(member))
 	var s:=ensure(member,tool)
 	if s.get("overheated",false):return {"ok":false,"code":"overheated","weapon":s.duplicate(true)}
 	if s.cooldown>.001 or s.reload_left>0:return {"ok":false,"code":"weapon_busy","weapon":s.duplicate(true)}
@@ -160,6 +174,7 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 	var muzzle_offset:=aim*float(clearance.forward)+lateral*float(clearance.side)*(0.0 if ads else 1.0)-Vector3.UP*float(clearance.drop)
 	if not FrontierCrewSurface.visible_in_field(terrain,origin,origin+muzzle_offset) or (obstacle.is_valid() and float(obstacle.call(actor,origin,muzzle_offset.normalized(),muzzle_offset.length()))<muzzle_offset.length()-.03):
 		return {"ok":false,"code":"muzzle_blocked","error":"총구 앞의 공간을 확보하세요."}
+	tool.shot_damage=FrontierWeaponLoot.sample_damage(world,actor,tool,s)
 	if args.has("host_origin"):origin=args.host_origin
 	if tool.effect=="beam":return _beam(world,actor,tool,s,args,origin,aim,obstacle)
 	var spread:=float(tool.ads_spread if ads else tool.spread)
@@ -196,7 +211,7 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 		if not hit.is_empty():
 			point=hit.point
 			if hit.kind=="animal":totals.organic=true
-			var damage:=float(tool.damage)*multiplier*lerpf(1.0,.55,clampf((origin.distance_to(point)-float(tool.range)*.5)/(float(tool.range)*.5),0,1))
+			var damage:=float(tool.shot_damage)*multiplier*lerpf(1.0,.55,clampf((origin.distance_to(point)-float(tool.range)*.5)/(float(tool.range)*.5),0,1))
 			var outcome:=_damage(world,actor,hit,damage,tool,ads)
 			_record_damage(damage_targets,hit,outcome)
 			contact_kind="break" if outcome.broken else "shield" if outcome.shield>0 else "organic" if hit.kind=="animal" else "armor"
@@ -210,7 +225,7 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 				if not FrontierCrewSurface.visible_in_field(terrain,point-direction*.1,center):continue
 				if obstacle.is_valid() and float(obstacle.call(actor,point-direction*.15,(center-point).normalized(),gap))<gap-.8:continue
 				var splash_hit: Dictionary={"kind":"robot","id":FrontierExplorationIncidents.key(row),"weak":false,"point":center,"anchor":center+Vector3.UP*.75}
-				var splash:=_damage(world,actor,splash_hit,float(tool.damage)*.6*(1-gap/float(tool.blast_radius)),tool,false)
+				var splash:=_damage(world,actor,splash_hit,float(tool.shot_damage)*.6*(1-gap/float(tool.blast_radius)),tool,false)
 				_record_damage(damage_targets,splash_hit,splash)
 				contacts.append({"point":[center.x,center.y,center.z],"normal":[-direction.x,-direction.y,-direction.z],"kind":"break" if splash.broken else "shield" if splash.shield>0 else "armor","splash":true})
 				totals.damage+=float(splash.damage);totals.shield+=float(splash.shield);totals.broken=totals.broken or splash.broken;totals.killed=totals.killed or splash.killed
@@ -221,7 +236,7 @@ static func fire(world: Dictionary,actor: String,args: Dictionary,obstacle: Call
 	if not args.get("ballistic",false):s.weak_streak=(int(s.weak_streak)+1)%3 if totals.weak else 0
 	if totals.broken:s.breach=true
 	FrontierSuitModules.enter_combat(member)
-	return {"ok":true,"weapon":s.duplicate(true),"hits":totals,"damage_targets":damage_targets.values(),"rays":rays,"contacts":contacts,"origin":[origin.x,origin.y,origin.z],"family":tool.firearm,"effect":tool.effect,"serial":args.get("serial",0),"item_id":tool.item_id,"reserve":reserve(tool,FrontierExpeditionBusiness.bag(world,actor)),"projectiles":projectiles,"ballistic":args.get("ballistic",false)}
+	return {"ok":true,"weapon":s.duplicate(true),"hits":totals,"damage_targets":damage_targets.values(),"rays":rays,"contacts":contacts,"origin":[origin.x,origin.y,origin.z],"family":tool.firearm,"element_id":tool.get("element_id","kinetic"),"effect":tool.effect,"serial":args.get("serial",0),"item_id":tool.item_id,"reserve":reserve(tool,FrontierExpeditionBusiness.bag(world,actor)),"projectiles":projectiles,"shot_damage":float(tool.shot_damage),"ballistic":args.get("ballistic",false)}
 
 static func _record_damage(targets: Dictionary,hit: Dictionary,outcome: Dictionary) -> void:
 	# Drones count hits, not HP. Preserve their marker without inventing an HP loss.
@@ -268,7 +283,7 @@ static func _damage(world: Dictionary,actor: String,hit: Dictionary,damage: floa
 		if hit.get("zone")=="limb":damage*=float(tool.get("limb_multiplier",.75))
 		elif hit.get("zone")=="head":damage*=float(tool.get("head_multiplier",1.4))
 		elif outcome.weak:damage*=float(tool.weak) if ads else 1.25
-		var split:=FrontierCrewVitals.split_shield_damage(before,damage,float(tool.get("shield_multiplier",1)))
+		var split:=FrontierWeaponElements.split(hit,tool,before,damage)
 		row.shield=maxf(0,before-float(split.absorbed));row.shield_wait=float(FrontierExplorationIncidents.config().robot.shield_delay)
 		row.hp=maxf(0,hp-float(split.health));row.serial+=1;row.seen=true
 		if FrontierCooperTechSquads.enabled(row):FrontierCooperTechSquads.alert(world,row)
@@ -282,8 +297,10 @@ static func _damage(world: Dictionary,actor: String,hit: Dictionary,damage: floa
 	else:
 		if hit.get("zone")=="head":damage*=float(tool.get("head_multiplier",1.4))
 		elif hit.get("zone")=="limb":damage*=float(tool.get("limb_multiplier",.75))
-		var result:=FrontierWildlifeCombat.hit(world,actor,hit.row,damage)
+		damage*=FrontierWeaponElements.health_factor(hit,tool)
+		var result:=FrontierWildlifeCombat.hit(world,actor,hit.row,damage,not tool.get("secondary",false))
 		outcome.damage=result.damage;outcome.killed=result.killed
+	FrontierWeaponElements.after_hit(world,actor,hit,damage,tool,outcome)
 	return outcome
 
 static func _beam(world: Dictionary,actor: String,tool: Dictionary,state: Dictionary,args: Dictionary,origin: Vector3,aim: Vector3,obstacle: Callable) -> Dictionary:
@@ -300,15 +317,15 @@ static func _beam(world: Dictionary,actor: String,tool: Dictionary,state: Dictio
 	var targets: Dictionary={};var contacts: Array=[];var point:=origin+aim*reach
 	if not hit.is_empty():
 		point=hit.point
-		var result:=_damage(world,actor,hit,float(tool.damage),tool,bool(args.get("ads",false)))
+		var result:=_damage(world,actor,hit,float(tool.shot_damage),tool,bool(args.get("ads",false)))
 		_record_damage(targets,hit,result)
 		for key in ["damage","shield","broken","weak","killed"]:totals[key]=result[key]
 		totals.organic=hit.kind=="animal"
 		contacts.append({"point":FrontierExpeditionBusiness.array(point),"normal":FrontierExpeditionBusiness.array(-aim),"kind":"break" if result.broken else "shield" if result.shield>0 else "organic" if hit.kind=="animal" else "armor"})
 	elif reach<float(tool.range):
-		if not cover.is_empty():FrontierCombatCover.damage(cover,float(tool.damage))
+		if not cover.is_empty():FrontierCombatCover.damage(cover,float(tool.shot_damage))
 		contacts.append({"point":FrontierExpeditionBusiness.array(point),"normal":FrontierExpeditionBusiness.array(-aim),"kind":"surface"})
 	state.ammo-=1;state.cooldown=float(tool.interval);state.idle=0.0;state.streak+=1
 	state.heat=minf(1,float(state.heat)+float(tool.heat_per_shot));state.overheated=state.heat>=1.0
 	FrontierSuitModules.enter_combat(world.crew.members[actor])
-	return {"ok":true,"beam":true,"ballistic":true,"projectiles":[],"family":tool.firearm,"effect":tool.effect,"serial":args.get("serial",0),"item_id":tool.item_id,"weapon":state.duplicate(true),"reserve":reserve(tool,FrontierExpeditionBusiness.bag(world,actor)),"origin":FrontierExpeditionBusiness.array(origin),"rays":[FrontierExpeditionBusiness.array(point)],"contacts":contacts,"damage_targets":targets.values(),"hits":totals}
+	return {"ok":true,"beam":true,"ballistic":true,"projectiles":[],"family":tool.firearm,"element_id":tool.get("element_id","kinetic"),"effect":tool.effect,"serial":args.get("serial",0),"item_id":tool.item_id,"weapon":state.duplicate(true),"reserve":reserve(tool,FrontierExpeditionBusiness.bag(world,actor)),"origin":FrontierExpeditionBusiness.array(origin),"rays":[FrontierExpeditionBusiness.array(point)],"contacts":contacts,"damage_targets":targets.values(),"hits":totals}

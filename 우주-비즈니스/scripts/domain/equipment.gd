@@ -65,6 +65,7 @@ static func validate(value: Variant) -> String:
 		if id!="":seen.append(id)
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
+	if kind in ["equipment_weapon_lock","equipment_weapon_salvage"]:return FrontierWeaponLoot.manage(world,actor,kind,args)
 	if kind=="equipment_ammo_craft":return FrontierFirearms.craft_ammo(world,actor,args)
 	if kind=="equipment_research_prototype":return FrontierExpeditionResearch.assemble(world,actor,args)
 	var member: Dictionary=world.crew.members[actor]
@@ -110,7 +111,10 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	var definition: String=str(args.get("definition",""))
 	if not config().items.has(definition):return "제작 설계도 오류"
 	if data.items.size()>=FrontierItemInventory.capacity(member):return "장비 보관 한도에 도달했습니다."
-	var recipe: Dictionary=config().items[definition]
+	var recipe: Dictionary=config().items[definition].duplicate()
+	var element:=str(args.get("element_id","kinetic"))
+	if not FrontierWeaponLoot.config().elements.has(element):return "공격 속성을 확인하세요."
+	if recipe.has("firearm"):recipe.cost=FrontierWeaponLoot.cost(recipe,element)
 	var access:=FrontierExpeditionResearch.craft_reason(world,definition)
 	if not access.is_empty():return access
 	if definition!="miner_1" and not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),recipe.cost):return "재료가 부족합니다."
@@ -128,6 +132,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	var new_id: String="crafted:"+str(int(data.counter))
 	data.items[new_id]=definition
 	if recipe.has("firearm"):
+		if not data.has("weapon_rolls"):data.weapon_rolls={}
+		data.weapon_rolls[new_id]=FrontierWeaponLoot.roll(definition,"standard",FrontierUniverse.derive(int(world.manifest.seed),actor+":"+new_id),element)
 		var gun:=FrontierFirearms.item(member,new_id)
 		var state:=FrontierFirearms.ensure(member,gun)
 		state.ammo=int(gun.magazine) if str(gun.ammo_type).is_empty() else 0

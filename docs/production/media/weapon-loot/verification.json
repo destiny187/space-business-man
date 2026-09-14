@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-14",
+  "engine": "Godot 4.7.2 / Forward+ Metal Apple M2",
+  "results": {
+    "rules": {
+      "checks": 29,
+      "failures": 0,
+      "log": "output/weapon-loot/check-final.log"
+    },
+    "legend_effects": {
+      "checks": 15,
+      "failures": 0,
+      "log": "output/weapon-loot/legends.log"
+    },
+    "real_expedition": {
+      "checks": 29,
+      "failures": 0,
+      "log": "output/weapon-loot/play.log"
+    },
+    "revised_ui_and_reload": {
+      "checks": 8,
+      "failures": 0,
+      "log": "output/weapon-loot/ui-final.log"
+    },
+    "action_boundaries": {
+      "checks": 11,
+      "failures": 0,
+      "log": "output/weapon-loot/boundaries.log"
+    }
+  },
+  "scope": "Isolated fixtures and representative actual expedition. No full regression, six-player WAN, all-species, or long-duration loot balance claim."
+}

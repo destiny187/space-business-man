@@ -36,7 +36,7 @@ func show_model(path: String) -> void:
 	camera.size=bounds.size.length()*1.16;camera.position=Vector3(1,.65,-1.5).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
 	if path=="equipment/jetpack_mk2":
 		camera.position=Vector3(1,.65,1.5).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO)
-	if path.begins_with("equipment/gun_"):
+	if path.begins_with("equipment/gun_") or path.begins_with("equipment/legend_"):
 		frame_specimen(bounds)
 		camera.position=Vector3(1,.35,-.45).normalized()*bounds.size.length()*3;camera.look_at(Vector3.ZERO);_fit_specimen()
 	request_render()

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "legend_ember",
+    "title": "잔화",
+    "name": "잔화",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "source": "art/blender/equipment/legend_ember.blend",
+    "model": "res://assets/models/equipment/legend_ember.glb",
+    "generator": "tools/build_legendary_weapons.py",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "style": "INK v1"
+  },
+  {
+    "id": "legend_shatter",
+    "title": "쇄빙",
+    "name": "쇄빙",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "source": "art/blender/equipment/legend_shatter.blend",
+    "model": "res://assets/models/equipment/legend_shatter.glb",
+    "generator": "tools/build_legendary_weapons.py",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "style": "INK v1"
+  },
+  {
+    "id": "legend_arc",
+    "title": "도약 전류",
+    "name": "도약 전류",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "source": "art/blender/equipment/legend_arc.blend",
+    "model": "res://assets/models/equipment/legend_arc.glb",
+    "generator": "tools/build_legendary_weapons.py",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "style": "INK v1"
+  },
+  {
+    "id": "legend_pierce",
+    "title": "천공",
+    "name": "천공",
+    "group": "장비",
+    "geometry": "ink-family-remodeled",
+    "foliage": false,
+    "source": "art/blender/equipment/legend_pierce.blend",
+    "model": "res://assets/models/equipment/legend_pierce.glb",
+    "generator": "tools/build_legendary_weapons.py",
+    "motion": [
+      "Anim_Bolt",
+      "Anim_Magazine"
+    ],
+    "style": "INK v1"
+  }
+]

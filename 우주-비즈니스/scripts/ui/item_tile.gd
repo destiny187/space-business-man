@@ -15,6 +15,7 @@ var unavailable:=false
 var compact_slot:=false
 var rarity_color:=Color.TRANSPARENT
 var rarity_label: String=""
+var element_icon: Texture2D
 var placeholder_icon:=false
 func _init() -> void:
 	custom_minimum_size=Vector2(88,96);mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
@@ -41,6 +42,7 @@ func _draw() -> void:
 	if slot>=0:draw_string(font,Vector2(8,17),FrontierPlayInput.text("slot_"+str(slot+1)),HORIZONTAL_ALIGNMENT_LEFT,-1,12,FrontierInterfaceStyle.ACCENT if selected else FrontierInterfaceStyle.MUTED)
 	for i in grade:draw_rect(Rect2(size.x-9-i*6,8,3,8),FrontierInterfaceStyle.WARNING)
 	if not rarity_label.is_empty():draw_string(font,Vector2(7,17),rarity_label,HORIZONTAL_ALIGNMENT_LEFT,size.x-34,12,rarity_color)
+	if element_icon!=null:draw_texture_rect(element_icon,Rect2(7,size.y-45,20,20),false)
 	if unavailable:
 		var p:=Vector2(size.x-16,size.y-18)
 		draw_rect(Rect2(p,Vector2(8,7)),FrontierInterfaceStyle.WARNING,false,1)

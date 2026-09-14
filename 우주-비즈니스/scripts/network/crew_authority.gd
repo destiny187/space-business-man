@@ -598,12 +598,19 @@ func _step_water(delta: float) -> void:
 	solver.record=world.surface_water[id]
 	if not solver.interests.is_empty():solver.step(delta*keys.size())
 
+var weapon_status_timer:=0.0
 var incident_timer:=0.0
 func step_surface(delta: float) -> void:
 	if stopped or not resolve_autonomous():return
 	firearm_history.capture(world,peers,now)
 	ballistics.history=firearm_history
 	var impacts: Array=ballistics.step(world,delta,shot_obstacle_provider)
+	weapon_status_timer+=delta
+	if weapon_status_timer>=float(FrontierWeaponLoot.config().status_tick):
+		var elements:=FrontierWeaponElements.tick(world,weapon_status_timer,peers.values())
+		weapon_status_timer=0.
+		if elements.changed:gun_dirty=true
+		impacts.append_array(elements.events)
 	if not impacts.is_empty():gun_events.append_array(impacts);gun_dirty=true
 	if not save_autonomous.is_valid():_step_surface(delta);return
 	var previous:=world

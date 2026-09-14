@@ -56,6 +56,7 @@ var detail_scroll: ScrollContainer
 var cargo_summary: Label
 var quantity_buttons: Array[Button]=[]
 var usage_dialog: FrontierGameModal
+var weapon_element: String="kinetic"
 var detail_shell: VBoxContainer
 func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	app=owner_app;theme=FrontierInterfaceStyle.theme()
@@ -224,7 +225,8 @@ func _process(delta: float) -> void:
 	credit.text="%s"%int(ledger.get("credits",FrontierExpeditionBusiness.config().starting_credits))
 	if tabs.current_tab>2:return
 	var available:=FrontierItemInventory.capacity(member)
-	var view_state: Array=[data,bag,member.carried,available,tabs.current_tab,app.session.latest.get("biota_revision",0)]
+	var inventory_state:=data.duplicate();inventory_state.erase("weapon_states")
+	var view_state: Array=[inventory_state,bag,member.carried,available,tabs.current_tab,app.session.latest.get("biota_revision",0)]
 	if tabs.current_tab==2:view_state.append_array([depot,storage_site.get("stored_equipment",{}),FrontierItemInventory.warehouse_capacity(storage_site),using_ship(),personal,storage_pending.size()])
 	var key:=JSON.stringify(view_state)
 	if key==last_key:return
@@ -268,11 +270,13 @@ func _refresh_hotbar() -> void:
 	if key==last_hotbar_key:return
 	last_hotbar_key=key
 	for i in data.slots.size():
-		var def: Dictionary=FrontierEquipment.config().items.get(data.items.get(data.slots[i],""),{})
-		var tile:=hotbuttons[i];tile.picture=null if def.is_empty() else FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.get("tier",0));tile.selected=i==int(data.selected);tile.caption="";tile.tooltip_text=FrontierPlayInput.text("slot_"+str(i+1))+"  "+str(def.get("name","빈 슬롯"));tile.queue_redraw()
+		var def:=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],data.slots[i])
+		var tile:=hotbuttons[i];tile.element_icon=null
+		tile.picture=null if def.is_empty() else FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.get("tier",0));tile.selected=i==int(data.selected);tile.caption="";tile.tooltip_text=FrontierPlayInput.text("slot_"+str(i+1))+"  "+str(def.get("name","빈 슬롯"));tile.queue_redraw()
 		if def.has("firearm"):
 			var rarity: String=str(data.get("weapon_rolls",{}).get(data.slots[i],{}).get("rarity","standard"))
 			tile.rarity_color=Color(str(FrontierFirearms.config().rarities[rarity].color))
+			tile.element_icon=load("res://assets/ui/interface/element_"+str(def.element_id)+".svg")
 		else:tile.rarity_color=Color.TRANSPARENT
 func _begin_tiles(grid: Node) -> void:
 	grid.set_meta("tile_order",0)
@@ -296,12 +300,17 @@ func _stack_key(indices: Dictionary,resource: String) -> String:
 	return "resource:"+resource+":"+str(index)
 func _tile(parent: Node,id: String,definition: String) -> void:
 	var def: Dictionary=FrontierEquipment.config().items[definition]
+	if not id.is_empty() and def.has("firearm"):def=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],id)
 	var tile:=_reuse_tile(parent,"equipment:"+(definition if id.is_empty() else id));tile.item_id=id;tile.set_meta("definition",definition);tile.picture=FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.tier);tile.caption=def.name;tile.tooltip_text=def.name;FrontierItemBrowser.tag(tile,def.name,"equipment")
-	tile.rarity_color=Color.TRANSPARENT;tile.rarity_label=""
+	tile.rarity_color=Color.TRANSPARENT;tile.rarity_label="";tile.element_icon=null
 	if def.has("firearm"):
 		var rarity: String=str(data.get("weapon_rolls",{}).get(id,{}).get("rarity","standard"))
 		var quality: Dictionary=FrontierFirearms.config().rarities[rarity]
-		tile.rarity_color=Color(str(quality.color));tile.rarity_label=str(quality.name);tile.tooltip_text+=" · "+str(quality.name)
+		tile.rarity_color=Color(str(quality.color));tile.rarity_label=str(quality.name);tile.tooltip_text+="  "+str(quality.name)
+		if not id.is_empty():
+			tile.element_icon=load("res://assets/ui/interface/element_"+str(def.element_id)+".svg")
+			tile.tooltip_text+="\n"+FrontierWeaponLoot.details(def)
+			FrontierItemBrowser.tag(tile,def.name+" "+str(quality.name)+" "+str(FrontierWeaponLoot.config().elements[def.element_id].name),"equipment")
 	if parent==owned:tile.custom_minimum_size=Vector2(84,96)
 	if parent==recipes:
 		tile.unavailable=int(data.kit)<=0 if definition=="miner_1" else not FrontierExpeditionBusiness.affordable(bag,def.cost)
@@ -369,21 +378,20 @@ func _refresh_details() -> void:
 		title.text="아이템 선택";category.text="내 아이템";preview.show_model("");action.hide();message.text="";return
 	action.show()
 	var def: Dictionary=FrontierEquipment.config().items[selected_definition]
+	if def.has("firearm") and tabs.current_tab==1:
+		var record:=FrontierWeaponLoot.roll(selected_definition,"standard",0,weapon_element)
+		record.damage_profile=FrontierWeaponLoot.damage_profile(float(def.damage))
+		def=FrontierFirearms.item({"profile":{"equipment":[]},"loadout":{"items":{"preview":selected_definition},"weapon_rolls":{"preview":record}}},"preview")
+		def.cost=FrontierWeaponLoot.cost(FrontierEquipment.config().items[selected_definition],weapon_element)
 	if tabs.current_tab==0 and not selected_item.is_empty():def=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],selected_item)
 	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환","jetpack":"MOBILITY / 등 장착"}[def.kind]
 	if def.has("firearm"):category.text+=" · "+str(FrontierFirearms.config().rarities[def.get("rarity","standard")].name)
 	preview.show_model(def.model)
-	_metric("장비 등급","%s"%["I","II","III"][int(def.tier)-1],float(def.tier)/3,FrontierInterfaceStyle.WARNING)
+	if not def.has("firearm"):_metric("장비 등급","%s"%["I","II","III","IV","V"][int(def.tier)-1],float(def.tier)/3,FrontierInterfaceStyle.WARNING)
 	if def.kind=="miner":_metric("채집량","%d개"%int(def.amount),float(def.amount)/5);_metric("작업 간격","%.2f초"%float(def.interval),.3/float(def.interval))
 	elif def.kind=="pulse":
-		_metric("단발 피해",str(int(def.damage)),float(def.damage)/80)
-		if def.has("firearm"):
-			var family: Dictionary=FrontierFirearms.config().families[def.firearm]
-			var ammo_name: String="무한 예비탄" if str(family.ammo_type).is_empty() else str(FrontierFirearms.config().ammunition[family.ammo_type].name)
-			FrontierInterfaceStyle.label(stats,ammo_name+" · R 재장전",13)
-			_metric("탄창 / 사거리","%d발 / %dm"%[int(family.magazine),int(family.range)],float(family.magazine)/60)
-			var rarity: Dictionary=FrontierFirearms.config().rarities[def.get("rarity","standard")]
-			var identity:=FrontierInterfaceStyle.label(stats,str(rarity.name)+" · "+str(family.identity),12,Color(rarity.color));identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		if def.has("firearm"):_weapon_details(def)
+		else:_metric("단발 피해",str(int(def.damage)),float(def.damage)/80)
 	elif def.kind=="jetpack":
 		_metric("추진 시간","%.0f초"%float(FrontierCrewLocomotion.config().jetpack.capacity_seconds),1.0);FrontierInterfaceStyle.label(stats,"점프 후 Space 다시 길게 · 착지 충전",12)
 	else:_metric("굴착 반경","%.1fm"%float(def.radius),float(def.radius)/1.7)
@@ -411,7 +419,7 @@ func _slot(slot: int) -> void:
 func _equip(id: String,slot: int) -> void:
 	if visible and data.items.has(id):app.session.send_request("equipment_equip",{"item_id":id,"slot":slot})
 func _action() -> void:
-	if tabs.current_tab==1:app.session.send_request("equipment_craft",{"definition":selected_definition})
+	if tabs.current_tab==1:app.session.send_request("equipment_craft",{"definition":selected_definition,"element_id":weapon_element})
 	elif not selected_resource.is_empty():
 		var resource:=selected_resource;tabs.current_tab=2
 		storage_selection={"resource":resource,"source":"bag"};last_key=""
@@ -565,3 +573,43 @@ func _navigate_use(use: Dictionary) -> void:
 				for i in app.business_panel.building.item_count:
 					if app.business_panel.building.get_item_metadata(i)==use.id:
 						app.business_panel.building.select(i);app.business_panel.refresh_building_cost();break
+
+func _weapon_details(gun: Dictionary) -> void:
+	var spec: Dictionary=FrontierWeaponLoot.config().elements[gun.element_id]
+	var icon_row:=HBoxContainer.new();stats.add_child(icon_row);icon_row.add_child(FrontierInterfaceStyle.interface_icon("element_"+str(gun.element_id),24))
+	if tabs.current_tab==1:
+		var choice:=OptionButton.new();icon_row.add_child(choice);choice.size_flags_horizontal=Control.SIZE_EXPAND_FILL;choice.tooltip_text="제작할 공격 속성"
+		for id in FrontierWeaponLoot.config().elements:choice.add_item(FrontierWeaponLoot.config().elements[id].name+" 공격")
+		choice.select(FrontierWeaponLoot.config().elements.keys().find(weapon_element))
+		choice.item_selected.connect(func(index):weapon_element=FrontierWeaponLoot.config().elements.keys()[index];_refresh_details())
+	else:FrontierInterfaceStyle.label(icon_row,str(spec.name)+" 공격",13,Color(spec.color))
+	var lines:=FrontierWeaponLoot.details(gun).split("\n");lines.remove_at(0);lines.remove_at(0)
+	if not lines.is_empty():
+		var text:=FrontierInterfaceStyle.label(stats,"\n".join(lines),12);text.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	var neutral_dps:=FrontierWeaponLoot.dps(gun)*float(spec.get("health",1.0))
+	var limits:=FrontierWeaponLoot.damage_range(gun)*float(spec.get("health",1.0))
+	if tabs.current_tab==1:FrontierInterfaceStyle.label(stats,"제작 시 피해 품질 80~120%",12,FrontierInterfaceStyle.WARNING)
+	var numbers:=FrontierInterfaceStyle.label(stats,"%s %.1f~%.1f × %d\n평균 %.1f DPS  ·  탄창 %d발\n장전 %.2f초  ·  %dm"%["기준 피해" if tabs.current_tab==1 else "직접 피해",limits.x,limits.y,int(gun.pellets),neutral_dps,int(gun.magazine),float(gun.reload),int(gun.range)],12);numbers.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;numbers.tooltip_text="일반 체력 대상 · 장전 포함 지속 사격 · 약점, 지속 피해와 전설 효과 제외"
+	var family: Dictionary=FrontierFirearms.config().families[gun.firearm]
+	var ammo_name: String="무한 예비탄" if str(family.ammo_type).is_empty() else str(FrontierFirearms.config().ammunition[family.ammo_type].name)
+	var identity:=FrontierInterfaceStyle.label(stats,ammo_name+" · R 재장전\n"+str(family.identity),12,FrontierInterfaceStyle.MUTED);identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	var current:=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],str(data.slots[int(data.selected)]))
+	if current.has("firearm") and current.get("item_id","")!=gun.get("item_id",""):
+		var current_dps:=FrontierWeaponLoot.dps(current)*float(FrontierWeaponLoot.config().elements[current.element_id].get("health",1.0))
+		var comparison:=FrontierInterfaceStyle.label(stats,"현재 %s 대비\n직접 지속 피해 %+.1f DPS  장전 %+.2f초"%[current.name,neutral_dps-current_dps,float(gun.reload)-float(current.reload)],12);comparison.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	if tabs.current_tab==0:
+		var row:=HBoxContainer.new();stats.add_child(row)
+		var lock:=Button.new();lock.text="잠금 해제" if gun.locked else "잠금";row.add_child(lock)
+		var id:=selected_item
+		lock.pressed.connect(func():app.session.send_request("equipment_weapon_lock",{"item_id":id,"locked":not gun.locked}))
+		var recycle:=Button.new();recycle.text="분해…";row.add_child(recycle);recycle.disabled=gun.locked or id in data.slots
+		recycle.pressed.connect(func():_weapon_salvage(id))
+func _weapon_salvage(id: String) -> void:
+	var member: Dictionary=app.session.latest.crew.members[app.session.latest.self_id];var gun:=FrontierFirearms.item(member,id)
+	var dialog:=FrontierGameModal.new();add_child(dialog)
+	dialog.configure("총기 분해","부품과 탄약 회수","무기 정비","build",true)
+	dialog.item_card(dialog.content,FrontierInterfaceStyle.icon(gun.model),gun.name,FrontierWeaponLoot.details(gun))
+	dialog.resources(dialog.section("회수할 부품과 남은 탄약"),FrontierWeaponLoot.salvage(member,id))
+	dialog.paragraph("이 총기는 소모됩니다. 수납 공간이 부족하면 총기와 탄약을 보존합니다.")
+	dialog.confirmed.connect(func():app.session.send_request("equipment_weapon_salvage",{"item_id":id});dialog.queue_free())
+	dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(620,510))

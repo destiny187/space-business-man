@@ -8,7 +8,7 @@ static func update(view: FrontierIncidentView,nodes: Dictionary,row: Dictionary)
 		nodes.gun_loot=FrontierFirearms.loot(seed_value,row)
 	if nodes.gun_loot.is_empty():return
 	if not nodes.has("gun_model"):
-		var definition: Dictionary=FrontierEquipment.config().items[nodes.gun_loot.definition]
+		var definition:=FrontierFirearms.item({"profile":{"equipment":[]},"loadout":{"items":{"preview":nodes.gun_loot.definition},"weapon_rolls":{"preview":nodes.gun_loot}}},"preview")
 		var path: String="res://assets/models/"+definition.model+".glb"
 		if not view.requests.has(path):ResourceLoader.load_threaded_request(path);view.requests[path]=true
 		if not view.scenes.has(path):
@@ -17,11 +17,11 @@ static func update(view: FrontierIncidentView,nodes: Dictionary,row: Dictionary)
 		var model: Node3D=view.scenes[path].instantiate();nodes.cargo.add_child(model);model.position=Vector3(0,.85,0);model.rotation=Vector3(0,PI*.25,PI*.5)
 		FrontierInkStyle.apply(model,view.materials);nodes.gun_model=model
 		var color:=Color(str(FrontierFirearms.config().rarities[nodes.gun_loot.rarity].color))
-		var signal_node:=view.beam(Vector3(0,.65,0),Vector3(0,1.8,0),Color(color,.5),.022,nodes.cargo);nodes.gun_signal=signal_node
+		var signal_node:=view.beam(Vector3(0,.70,0),Vector3(0,.92,0),Color(color,.5),.022,nodes.cargo);nodes.gun_signal=signal_node
 	nodes.gun_model.visible=not row.claimed
 	nodes.gun_signal.visible=not row.claimed
 static func description(nodes: Dictionary) -> String:
 	var reward: Dictionary=nodes.get("gun_loot",{})
 	if reward.is_empty():return ""
-	var definition: Dictionary=FrontierEquipment.config().items[reward.definition]
-	return str(FrontierFirearms.config().rarities[reward.rarity].name)+" · "+str(definition.name)
+	var definition:=FrontierFirearms.item({"profile":{"equipment":[]},"loadout":{"items":{"preview":reward.definition},"weapon_rolls":{"preview":reward}}},"preview")
+	return str(FrontierFirearms.config().rarities[reward.rarity].name)+"  "+str(definition.name)+"  "+str(FrontierWeaponLoot.config().elements[definition.element_id].name)

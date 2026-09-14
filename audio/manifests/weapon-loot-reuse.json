@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-14",
+  "provider": "ElevenLabs Sound Effects (existing production recordings)",
+  "mode": "reuse",
+  "source_manifest": "audio/manifests/ground-combat-sources.json",
+  "purpose": "Four legendary guns retain their family attack and reload sound identity. No new generation is claimed.",
+  "clips": [
+    {
+      "id": "sfx_gun_carbine",
+      "path": "우주-비즈니스/assets/audio/sfx_gun_carbine.wav",
+      "sha256": "b2a731b564510dd79a621a5c78c02c29da9b97b19c15e2d4edefe446bb1acb25",
+      "seconds": 0.23
+    },
+    {
+      "id": "sfx_gun_shotgun",
+      "path": "우주-비즈니스/assets/audio/sfx_gun_shotgun.wav",
+      "sha256": "294573a7b70bfb4fc91ea71b1cbf320e19f9c69d30b55251336e5ac7172344f3",
+      "seconds": 0.36
+    },
+    {
+      "id": "sfx_gun_smg",
+      "path": "우주-비즈니스/assets/audio/sfx_gun_smg.wav",
+      "sha256": "803f59a31279e9287302878983e0d2f659d681f18d69fe508ce3f0c1301d06eb",
+      "seconds": 0.135
+    },
+    {
+      "id": "sfx_gun_sniper",
+      "path": "우주-비즈니스/assets/audio/sfx_gun_sniper.wav",
+      "sha256": "c1c47d0701a5a01881a6bc9cbbcdc6826d1134f0297059094273d258f440bca6",
+      "seconds": 0.37
+    }
+  ],
+  "runtime_capture": {
+    "seconds": 11.605,
+    "peak_16bit": 14453,
+    "nonzero_samples": 953255,
+    "path": "/tmp/weapon-loot-play-20260914/runtime-audio.wav"
+  },
+  "verification": "Actual Forward+ expedition played the four family attack IDs and captured SFX bus. No subjective listening evaluation or new element-specific recording."
+}
