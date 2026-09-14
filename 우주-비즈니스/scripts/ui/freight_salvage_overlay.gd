@@ -19,7 +19,7 @@ func _draw() -> void:
 		draw_rect(Rect2(at,Vector2(width,86)),Color(.025,.055,.075,.94))
 		var cargo_picture: Texture2D=load(FrontierFreightSalvage.icon(carry.id))
 		if cargo_picture!=null:draw_texture_rect(cargo_picture,Rect2(at+Vector2(4,5),Vector2(78,64)),false)
-		draw_string(font,at+Vector2(86,26),"회수 거치대  1 / 1",HORIZONTAL_ALIGNMENT_LEFT,width-92,14,cyan)
+		draw_string(font,at+Vector2(86,26),"외부 장착  1 / 1" if FrontierFreightSalvage.maintenance(carry.id) else "견인 연결  1 / 1",HORIZONTAL_ALIGNMENT_LEFT,width-92,14,cyan)
 		draw_string(font,at+Vector2(86,48),"작업장으로 운반 중" if FrontierFreightSalvage.maintenance(carry.id) else "항만으로 운반 중",HORIZONTAL_ALIGNMENT_LEFT,width-92,12,Color.WHITE)
 		draw_string(font,at+Vector2(12,75),carry.port_name,HORIZONTAL_ALIGNMENT_LEFT,width-24,12,muted)
 	if row.is_empty():return
@@ -33,5 +33,5 @@ func _draw() -> void:
 	draw_string(font,at+Vector2(14,105),FrontierFlightTelemetry.distance_label(float(row.distance)),HORIZONTAL_ALIGNMENT_LEFT,width-28,13,muted)
 	draw_string(font,at+Vector2(14,128),row.source_name if FrontierFreightSalvage.maintenance(row.id) and int(row.stage)==1 else (row.port_name if int(row.stage)>0 else FrontierPlayInput.text("scan")+" 유지로 현장 확인"),HORIZONTAL_ALIGNMENT_LEFT,width-28,12,muted)
 	var hint: String=row.reason
-	if hint.is_empty():hint=FrontierPlayInput.text("scan" if int(row.stage)==0 else "interact")+" 유지  "+(["고장 진단","교체 부품 적재","카트리지 설치","정비·재가동"] if FrontierFreightSalvage.maintenance(row.id) else ["송장 식별","윈치로 회수","항만에 인계"])[int(row.stage)]
+	if hint.is_empty():hint=FrontierPlayInput.text("scan" if int(row.stage)==0 else "interact")+" 유지  "+(["고장 진단","교체 부품 적재","카트리지 설치","정비·재가동"] if FrontierFreightSalvage.maintenance(row.id) else ["송장 식별","견인 연결","항만에 인계"])[int(row.stage)]
 	draw_string(font,at+Vector2(14,162),hint,HORIZONTAL_ALIGNMENT_LEFT,width-28,14,cyan)

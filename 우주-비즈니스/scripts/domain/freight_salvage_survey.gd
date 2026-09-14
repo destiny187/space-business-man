@@ -12,7 +12,7 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 	var scan: Dictionary={"kind":"freight","id":target.id,"stage":stage,"carrier":vessel,"progress":0.0,"reason":reason}
 	if not reason.is_empty():authority.scans[peer]=scan;return true
 	if stage>0 or FrontierFreightSalvage.maintenance(target.id):
-		local.crew.navigation.freight_anchor_source=stage==1 and FrontierFreightSalvage.maintenance(target.id)
+		local.crew.navigation.freight_anchor_source=stage==1
 		local.crew.navigation.freight_anchor=target.id;local.crew.navigation.speed=0;local.crew.navigation.erase("station_docked")
 	var previous: Dictionary=authority.scans.get(peer,{})
 	var progress: float=float(previous.get("progress",0)) if previous.get("kind","")=="freight" and previous.get("id","")==target.id and int(previous.get("stage",-1))==stage and previous.get("carrier","")==vessel else 0.0
@@ -30,6 +30,8 @@ static func step(authority: FrontierCrewAuthority,peer: int,local: Dictionary,de
 	draft.crew.revision+=1
 	if not authority.save_world.call(draft):
 		authority.scans.erase(peer);authority.stopped=true;authority.error="화물 인계 저장 실패로 공동 세계를 정지했습니다.";return true
+	if stage==1 and not FrontierFreightSalvage.maintenance(target.id):
+		local.crew.navigation.erase("freight_anchor");local.crew.navigation.erase("freight_anchor_source")
 	authority.world=draft;scan.stage=stage+1;scan.progress=0.0;scan.known=stage+1==FrontierFreightSalvage.last_stage(target.id);authority.scans[peer]=scan
 	return true
 static func activity(scans: Dictionary) -> Array:

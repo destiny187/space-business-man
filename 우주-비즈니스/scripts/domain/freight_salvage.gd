@@ -19,8 +19,8 @@ static func seconds(m: Dictionary,id: String,stage: int) -> float:
 	if maintenance(id):
 		var service:=FrontierMineMaintenance.rules(m)
 		return float([service.diagnose_seconds,cfg.recover_seconds,cfg.handover_seconds,service.repair_seconds][stage])
-	return float([cfg.identify_seconds,cfg.recover_seconds,cfg.handover_seconds][stage])
-const STATES := ["미확인 구조 신호","회수 대기","선박에 적재","항만 인계 완료"]
+	return float([cfg.identify_seconds,FrontierFlightTelemetry.config().cargo_tether.connect_seconds,cfg.handover_seconds][stage])
+const STATES := ["미확인 구조 신호","견인 연결 대기","견인 연결됨","항만 인계 완료"]
 static func rules(m: Dictionary) -> Dictionary:return m.settings.get("corporate_space",{}).get("salvage",{})
 static func records(world: Dictionary) -> Dictionary:return world.get("crew",{}).get("freight_records",{})
 static func address(system: int) -> String:return "freight-v1:"+str(system)
@@ -99,6 +99,7 @@ static func reason(m: Dictionary,nav: Dictionary,target: Dictionary,rows: Dictio
 		if stage==0:limit=float(FrontierMineMaintenance.rules(m).diagnose_distance)
 		elif stage==3:limit=float(FrontierMineMaintenance.rules(m).repair_distance)
 	if float(target.distance)>limit:return "%.0fm 이내로 접근"%limit
+	if stage==1 and not maintenance(target.id) and absf(float(nav.get("speed",0)))>float(FrontierFlightTelemetry.config().cargo_tether.stationary_speed):return "정지한 뒤 F를 유지해 견인 연결"
 	if absf(float(nav.get("speed",0)))>float(cfg.max_speed):return "속도를 %.0fm/s 이하로 낮추세요"%float(cfg.max_speed)
 	return ""
 static func missing_pod(m: Dictionary,ship: Dictionary) -> bool:

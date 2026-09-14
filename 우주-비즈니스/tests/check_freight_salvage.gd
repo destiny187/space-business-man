@@ -18,7 +18,7 @@ func stage() -> int:return int(FrontierFreightSalvage.records(core.world).get(ev
 func place(distance: float,receiver: bool=false,system: int=0) -> void:
 	var local:=FrontierShuttles.context(core.world,owner.character_id)
 	event=FrontierFreightSalvage.definition(core.world.manifest,FrontierFreightSalvage.address(system),0)
-	var nav: Dictionary=local.crew.navigation;nav.system=system;nav.target=int(event.body);nav.orbit_time=0;nav.mode="idle";nav.speed=0;nav.manual=true;nav.direction=[0,0,-1]
+	var nav: Dictionary=local.crew.navigation;nav.erase("solar_opening");nav.system=system;nav.target=int(event.body);nav.orbit_time=0;nav.mode="idle";nav.speed=0;nav.manual=true;nav.direction=[0,0,-1]
 	nav.position=FrontierExpeditionBusiness.array(FrontierCrewWorld.vector(event.receiver if receiver else event.position)+Vector3(0,0,distance))
 	local.flight_position=nav.position.duplicate();local.location=event.body_id;local.navigation_target=event.body_id
 	FrontierShuttles.commit(core.world,local,owner.character_id)

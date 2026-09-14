@@ -201,7 +201,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 					if side.length_squared()<.1:side=Vector3.RIGHT
 					waypoint=moon_point+side*(clearance+300)
 			direction=(waypoint-position).normalized()
-			nav.speed=move_toward(float(nav.speed),minf(float(cfg.cruise_speed)*propulsion,maxf(12,separation-float(cfg.arrival_clearance))),float(cfg.acceleration)*propulsion*delta)
+			nav.speed=approach_speed(world,float(cfg.cruise_speed),separation-float(cfg.arrival_clearance),float(cfg.acceleration)*propulsion,delta)
 			position+=direction*minf(float(nav.speed)*delta,maxf(0,separation-float(cfg.arrival_clearance)))
 	nav.position=[position.x,position.y,position.z];nav.direction=[direction.x,direction.y,direction.z]
 	nav.up=FrontierExpeditionBusiness.array(orientation({"direction":nav.direction}).y)
@@ -264,7 +264,10 @@ static func stopped_input() -> Array:
 static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if FrontierSolarOpening.active(world.crew.navigation):return
 	var nav: Dictionary=world.crew.navigation
-	if nav.mode!="idle" or FrontierCrewSurface.landed(world) or nav.get("combat_recovery",false):return
+	if nav.mode=="jump" or FrontierCrewSurface.landed(world) or nav.get("combat_recovery",false):return
+	if nav.mode=="approach":
+		var requested: bool=controls.size()>3 and float(controls[3])>.5 and (controls.size()<=8 or float(controls[8])<.5)
+		update_boost(world,requested,delta);return
 	var roll_input:=float(controls[7]) if controls.size()>7 else 0.0
 	var braking:=controls.size()>8 and float(controls[8])>.5
 	var precision:=controls.size()>9 and float(controls[9])>.5
@@ -277,13 +280,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	nav.manual=true
 	var cfg: Dictionary=world.manifest.settings.flight
 	var handling: Dictionary=FrontierFlightTelemetry.config().handling
-	var reserve: float=float(cfg.get("transit_energy_cost",30)) if nav.get("combat_active",false) and not world.has("local_shuttle") else 0.0
-	if not boost_requested or float(nav.get("energy",100))>=reserve+25:nav.boost_depleted=false
-	nav.boosting=boost_requested and not nav.get("boost_depleted",false) and float(nav.get("energy",100))>reserve and float(nav.get("hull",100))>0
-	if nav.boosting:
-		var drain: float=float(FrontierSpaceCombat.config().combat_boost_drain) if nav.get("combat_active",false) else float(cfg.get("boost_drain",22))
-		nav.energy=maxf(reserve,float(nav.get("energy",100))-drain*delta)
-		if nav.energy<=reserve:nav.boost_depleted=true;nav.boosting=false
+	update_boost(world,boost_requested,delta)
 	var normal_maximum: float=float(cfg.get("manual_speed",700))*float(FrontierVesselRefit.stats(world).speed)
 	if nav.get("combat_active",false):normal_maximum=minf(normal_maximum,FrontierVesselSkills.combat_speed(world))
 	var skill_movement:=FrontierSpaceSkills.movement(world)
@@ -476,3 +473,22 @@ static func departure_direction(manifest: Dictionary,index: int,origin: Vector3,
 			var candidate: Vector3=(forward*cos(angle)+(up*cos(turn)+right*sin(turn))*sin(angle)).normalized()
 			if departure_clear(origin,candidate,obstacles):return candidate
 	return Vector3.ZERO
+
+static func update_boost(world: Dictionary,boost_requested: bool,delta: float) -> void:
+	var nav: Dictionary=world.crew.navigation
+	var cfg: Dictionary=world.manifest.settings.flight
+	var reserve: float=float(cfg.get("transit_energy_cost",30)) if nav.get("combat_active",false) and not world.has("local_shuttle") else 0.0
+	if not boost_requested or float(nav.get("energy",100))>=reserve+25:nav.boost_depleted=false
+	nav.boosting=boost_requested and not nav.get("boost_depleted",false) and float(nav.get("energy",100))>reserve and float(nav.get("hull",100))>0
+	if nav.boosting:
+		var drain: float=float(FrontierSpaceCombat.config().combat_boost_drain) if nav.get("combat_active",false) else float(cfg.get("boost_drain",22))
+		nav.energy=maxf(reserve,float(nav.get("energy",100))-drain*delta)
+		if nav.energy<=reserve:nav.boost_depleted=true;nav.boosting=false
+
+static func approach_speed(world: Dictionary,normal: float,gap: float,acceleration: float,delta: float) -> float:
+	var nav: Dictionary=world.crew.navigation
+	var multiplier: float=float(world.manifest.settings.flight.get("boost_multiplier",2.2)) if nav.get("boosting",false) else 1.0
+	var maximum:=normal*float(FrontierVesselRefit.stats(world).speed)*multiplier
+	if float(nav.get("hull",100))<=0:maximum=0
+	var braking:=sqrt(2.0*acceleration*maxf(0,gap))
+	return minf(braking,move_toward(float(nav.speed),minf(maximum,braking),acceleration*delta))

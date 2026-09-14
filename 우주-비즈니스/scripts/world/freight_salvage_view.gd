@@ -69,7 +69,8 @@ func update(delta: float,t: float,blocked: bool) -> void:
 		var held:=Transform3D.IDENTITY
 		if vessels.has(vessel_id):
 			held=socket(vessels[vessel_id])
-			if stage==2 or moving:
+			if not service:held=held.translated_local(Vector3(0,0,float(FrontierFlightTelemetry.config().cargo_tether.trail_distance)))
+			if service and (stage==2 or moving):
 				if not cradles.has(vessel_id):cradles[vessel_id]=model("freight_cradle")
 				cradles[vessel_id].show();cradles[vessel_id].global_transform=held
 				var progress:=float(scan.get("progress",0))
@@ -80,9 +81,17 @@ func update(delta: float,t: float,blocked: bool) -> void:
 			if stage==2 and is_instance_valid(receiver):clamps(receiver,1.0-smoothstep(.85,1,float(scan.progress)))
 			transform=loose.interpolate_with(held,p) if stage==1 else held.interpolate_with(destination,p)
 			if vessel_id==flight.freight_carrier and not blocked:
-				var from:=held.origin if stage==1 else destination.origin;var length:=from.distance_to(transform.origin)
+				var from:=socket(vessels[vessel_id]).origin if stage==1 and not service else (held.origin if stage==1 else destination.origin);var length:=from.distance_to(transform.origin)
 				if length>1:
 					cable.show();cable.position=(from+transform.origin)*.5;cable.basis=Basis(Quaternion(Vector3.UP,(transform.origin-from).normalized()));cable.scale.y=length
+		if stage==2 and not service and not moving:
+			if pod.has_meta("tethered"):transform=pod.global_transform.interpolate_with(held,1-exp(-delta*float(FrontierFlightTelemetry.config().cargo_tether.follow_response)))
+			pod.set_meta("tethered",true)
+			if vessel_id==flight.freight_carrier and not blocked:
+				var from:=socket(vessels[vessel_id]).origin
+				var offset:=transform.origin-from
+				if offset.length()>1:
+					cable.show();cable.global_position=from+offset*.5;cable.basis=Basis(Quaternion(Vector3.UP,offset.normalized()));cable.scale.y=offset.length()
 		# Follow moving ports immediately; ease only the release of an interrupted transfer.
 		if pod.has_meta("moving") and pod.get_meta("moving") and not moving and stage<3:pod.global_transform=pod.global_transform.interpolate_with(transform,minf(1,delta*6))
 		else:pod.global_transform=transform

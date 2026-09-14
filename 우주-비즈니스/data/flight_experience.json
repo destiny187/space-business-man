@@ -19,5 +19,11 @@
     "precision_acceleration": 22.0
   },
   "proximity_hint_distance": 5000,
-  "proximity_hint_seconds": 4
+  "proximity_hint_seconds": 4,
+  "cargo_tether": {
+    "connect_seconds": 2.0,
+    "stationary_speed": 5.0,
+    "trail_distance": 65.0,
+    "follow_response": 4.0
+  }
 }

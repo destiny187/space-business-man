@@ -36,3 +36,7 @@ static func eta_label(value: Dictionary) -> String:
 	if float(value.eta)<0:return "목적지 방향으로 비행"
 	if float(value.eta)>=3600:return "예상 1시간 이상"
 	return "예상 %d:%02d"%[int(ceil(value.eta))/60,int(ceil(value.eta))%60]
+
+static func speed_label(nav: Dictionary) -> String:
+	if nav.get("mode","")=="jump":return "항로 %.0f%% · %d초"%[float(nav.get("transit",{}).get("progress",0))*100,int(ceil(float(nav.get("jump_left",0))))]
+	return "%.0f m/s"%float(nav.get("speed",0))

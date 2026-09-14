@@ -186,7 +186,7 @@ static func step_approach(world: Dictionary,delta: float) -> bool:
    if side.length_squared()<.5:side=Vector3.RIGHT
    direction=(obstacle.point+side*(float(obstacle.radius)+600)-point).normalized()
  var gap:=maxf(0,point.distance_to(target)-float(config().approach_distance))
- nav.speed=move_toward(float(nav.speed),minf(float(config().approach_speed)*float(FrontierVesselRefit.stats(world).speed),sqrt(2.0*float(config().approach_acceleration)*gap)),float(config().approach_acceleration)*delta)
+ nav.speed=FrontierCrewNavigation.approach_speed(world,float(config().approach_speed),gap,float(config().approach_acceleration),delta)
  point+=direction*minf(float(nav.speed)*delta,gap)
  nav.position=FrontierExpeditionBusiness.array(point);nav.direction=FrontierExpeditionBusiness.array(direction);world.flight_position=nav.position.duplicate()
  if gap>3:return false

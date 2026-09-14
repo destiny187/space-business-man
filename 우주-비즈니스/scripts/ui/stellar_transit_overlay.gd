@@ -159,7 +159,7 @@ func _draw_arrival(font: Font) -> void:
 
 func _draw_speed(font: Font) -> void:
 	var width:=minf(360,size.x*.43)
-	draw_string(font,Vector2(size.x-width-24,size.y-91),"%.0f m/s"%float(nav.speed),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
+	draw_string(font,Vector2(size.x-width-24,size.y-91),FrontierFlightTelemetry.speed_label(nav),HORIZONTAL_ALIGNMENT_RIGHT,width,24,Color(.8,.95,1))
 
 func _draw_motion(font: Font,center: Vector2) -> void:
 	var cfg:=FrontierFlightTelemetry.config()
