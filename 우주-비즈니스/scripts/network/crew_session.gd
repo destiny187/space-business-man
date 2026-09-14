@@ -238,7 +238,9 @@ func _admitted(value: Dictionary) -> void:
 	if not _valid_manifest(value.get("manifest")) or value.manifest.id!=value.snapshot.get("galaxy_id"):notice.emit("은하 생성 정의 오류");enet.close();return
 	manifest=preload("res://scripts/persistence/world_snapshot.gd").own_manifest(value.manifest)
 	if not value.get("token") is String or not profile.remember(world_id,value.token):notice.emit(profile.error);enet.close();return
-	latest=value.snapshot;snapshot_received.emit(latest)
+	# Do not start expensive world presentation while admission is still pending.
+	# The first active snapshot after acknowledgement opens the game normally.
+	latest=value.snapshot
 	_acknowledge.rpc_id(1,session_id)
 @rpc("any_peer","call_remote","reliable",0)
 func _acknowledge(epoch: String) -> void:

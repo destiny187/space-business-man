@@ -214,6 +214,7 @@ func apply_all() -> void:
 	if "planet_surface_quality" in keys:RenderingServer.global_shader_parameter_set("orbital_surface_quality",int(values.planet_surface_quality))
 	if "fps" in keys:Engine.max_fps=int(values.fps)
 	if "vsync" in keys:DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if values.vsync else DisplayServer.VSYNC_DISABLED)
+	if "sfx_volume" in keys or "ambient_volume" in keys:FrontierAudioMix.ensure(get_tree()).apply_volumes(values)
 	if "volume" in keys:AudioServer.set_bus_volume_db(0,linear_to_db(maxf(.0001,values.volume)));AudioServer.set_bus_mute(0,values.volume<=0)
 	if "shadow_size" in keys:RenderingServer.directional_shadow_atlas_set_size(int(values.shadow_size),true)
 	if "shadow_filter" in keys:
@@ -357,6 +358,8 @@ func _build() -> void:
 	_check(input,"탐험 사건 화면 흔들림","incident_shake")
 	_number(input,"전체 음량","volume",.05)
 	_number(input,"배경음악 음량","music_volume",.05)
+	_number(input,"효과음 음량","sfx_volume",.05)
+	_number(input,"환경음 음량","ambient_volume",.05)
 	_build_bindings()
 	notice=Label.new();notice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;notice.text="프레임이 낮으면 전체 품질이나 렌더 해상도를 낮춰 보세요.";column.add_child(notice)
 	var buttons:=HBoxContainer.new();column.add_child(buttons)

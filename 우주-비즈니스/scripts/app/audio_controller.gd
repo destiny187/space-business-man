@@ -18,10 +18,7 @@ func _exit_tree() -> void:
 	emitters.clear()
 
 func _ready() -> void:
-	for bus_name in ["SFX","Ambience","UI","Voice","Music"]:
-		if AudioServer.get_bus_index(bus_name) < 0:
-			AudioServer.add_bus()
-			AudioServer.set_bus_name(AudioServer.bus_count-1,bus_name)
+	FrontierAudioMix.ensure(get_tree())
 	ambient = AudioStreamPlayer.new()
 	ambient.bus = "Ambience"
 	ambient.volume_db = -20
@@ -73,31 +70,38 @@ func play(id: String,location: Vector3 = Vector3.INF,pitch: float = 1.0,gain_db:
 	if now-int(last_played.get(id,-10000)) < cooldown: return
 	var audio: AudioStream = stream(id)
 	if audio == null: return
+	var critical: bool=location==Vector3.INF and id in ["sfx_shield_break","sfx_gun_break","sfx_gun_hit_shield","sfx_stellar_warning"]
+	if critical:FrontierAudioMix.ensure(get_tree()).warning()
+	var voices:=get_tree().get_nodes_in_group("local_audio_cues").filter(func(node):return not node.is_queued_for_deletion())
+	if voices.size()>=int(FrontierAudioMix.ensure(get_tree()).config.one_shot_voices):
+		var ordinary:=voices.filter(func(node):return not node.get_meta("critical_audio",false))
+		if ordinary.is_empty() and not critical:return
+		var retiring: Node=ordinary[0] if not ordinary.is_empty() else voices[0];retiring.stop();retiring.queue_free()
 	if role=="firearm_shot":
-		var voices:=get_children().filter(func(node):return node.get_meta("audio_role","")==role and not node.is_queued_for_deletion())
-		if voices.size()>=int(FrontierFirearmEffects.config().shot_voices):voices[0].stop();voices[0].queue_free()
+		var shots:=get_children().filter(func(node):return node.get_meta("audio_role","")==role and not node.is_queued_for_deletion())
+		if shots.size()>=int(FrontierFirearmEffects.config().shot_voices):shots[0].stop();shots[0].queue_free()
 	last_played[id] = now
 	if location == Vector3.INF:
 		var speaker := AudioStreamPlayer.new()
 		speaker.stream = audio
 		speaker.pitch_scale=clampf(pitch,.25,4.0)
-		speaker.set_meta("cue",id)
+		speaker.set_meta("cue",id);speaker.set_meta("critical_audio",critical)
 		speaker.set_meta("audio_role",role)
 		speaker.bus = "UI" if id.begins_with("ui_") else "SFX"
 		speaker.volume_db = -10+gain_db
-		add_child(speaker)
+		add_child(speaker);speaker.add_to_group("local_audio_cues")
 		speaker.finished.connect(speaker.queue_free)
 		speaker.play()
 	else:
 		var speaker := AudioStreamPlayer3D.new()
 		speaker.stream = audio
 		speaker.pitch_scale=clampf(pitch,.25,4.0)
-		speaker.set_meta("cue",id)
+		speaker.set_meta("cue",id);speaker.set_meta("critical_audio",critical)
 		speaker.set_meta("audio_role",role)
 		speaker.bus = "SFX"
 		speaker.volume_db = -8+gain_db
 		speaker.max_distance = 30
-		add_child(speaker)
+		add_child(speaker);speaker.add_to_group("local_audio_cues")
 		speaker.global_position = location
 		speaker.finished.connect(speaker.queue_free)
 		speaker.play()
@@ -134,12 +138,12 @@ func update_world(p: Dictionary,paused: bool) -> void:
 	var listener := Vector2(float(p.player.position[0]),float(p.player.position[1]))
 	for robot in p.robots:
 		var location := Vector2(float(robot.position[0]),float(robot.position[1]))
-		if listener.distance_to(location) > 30 or wanted.size() >= 12: continue
+		if listener.distance_to(location) > 30: continue
 		if robot.status == "전투 작전 중" and not paused: play("sfx_combat_pulse",Vector3(location.x,1.5,location.y))
 		var sound: String = ""
 		if robot.status == "채광 중": sound = "sfx_robot_work"
 		elif robot.status == "충전 중": sound = "sfx_robot_charge"
-		elif robot.status.ends_with("이동") or robot.status == "자원 운반": sound = "sfx_robot_move"
+		elif robot.status.ends_with("이동") or "운반" in robot.status or "복귀" in robot.status: sound = "sfx_robot_move"
 		if not sound.is_empty(): wanted[robot.id] = [sound,Vector3(location.x,0.8,location.y)]
 	if not paused:
 		for event in p.events:
@@ -150,11 +154,14 @@ func update_world(p: Dictionary,paused: bool) -> void:
 		if not b.get("active",false):continue
 		if b.type=="factory" and (not b.get("production",{}).is_empty() or b.get("working",false)):
 			var at:=Vector2(float(b.position[0]),float(b.position[1]))
-			if listener.distance_to(at)<35 and wanted.size()<12:wanted[b.id]=["sfx_robot_work",Vector3(at.x,1.5,at.y)]
+			if listener.distance_to(at)<35:wanted[b.id]=["sfx_robot_work",Vector3(at.x,1.5,at.y)]
 			continue
 		if b.type not in ["atmosphere","thermal","water","biolab","source_control"] or not b.get("working",b.active):continue
 		var location := Vector2(float(b.position[0]),float(b.position[1]))
-		if listener.distance_to(location) < 35 and wanted.size() < 12: wanted[b.id] = [{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop","source_control":"sfx_terraform_active"}[b.type],Vector3(location.x,1.5,location.y)]
+		if listener.distance_to(location) < 35: wanted[b.id] = [{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop","source_control":"sfx_terraform_active"}[b.type],Vector3(location.x,1.5,location.y)]
+	var ordered: Array=wanted.keys()
+	ordered.sort_custom(func(a,b):return listener.distance_squared_to(Vector2(wanted[a][1].x,wanted[a][1].z))<listener.distance_squared_to(Vector2(wanted[b][1].x,wanted[b][1].z)))
+	for id in ordered.slice(int(FrontierAudioMix.ensure(get_tree()).config.industrial_voices)):wanted.erase(id)
 	for id in emitters.keys():
 		if not wanted.has(id):
 			var retiring: AudioStreamPlayer3D=emitters[id]
@@ -166,7 +173,7 @@ func update_world(p: Dictionary,paused: bool) -> void:
 		if not emitters.has(id):
 			if stream(value[0],true) == null: continue
 			var emitter := AudioStreamPlayer3D.new()
-			emitter.bus = "SFX"
+			emitter.bus = "Industry"
 			emitter.max_distance = 35
 			emitter.unit_size = 8
 			emitter.volume_db = -50

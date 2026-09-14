@@ -142,3 +142,5 @@ audio/
 2026-09-07 정거장 교역에는 기존 ElevenLabs 진입·획득·제작 완료·실패·기계 반복 음원을 재사용했다. 호스트 거래 결과 후 재생하고 거래창 종료 시 환경음을 중단한다. 신규 생성은 없으며 [매핑 기록](../../audio/manifests/space-station-reuse.json)과 [실행 검증](42-space-stations-and-hulls.md)을 따른다.
 
 2026-09-09 사용자 요청: 행성 BGM을 T1~T5 각 2분 기악곡으로 구분한다. 티어가 높아질수록 리듬·음색·화성의 긴장감을 높인다. [제작 및 적용](102-transparent-ui-and-planet-music.md), [생성 이력](../../audio/manifests/planet-tier-music.json)을 따른다.
+
+2026-09-14 기존 플레이의 표시/믹스/복귀 고도화 실제 범위는 [Q07~Q09 제작 기록](../production/183-polish-combat-audio-and-coop.md)을 따른다. 초기 구현과 전수 체감·외부망 검수를 구분한다.

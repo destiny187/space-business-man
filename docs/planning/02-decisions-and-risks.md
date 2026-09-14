@@ -1039,3 +1039,5 @@ CooperTech 출처 기록은 기존 시드 폐기 로봇의 동일 ID를 참조�
 사용자 정정: 가로 30~50초 안에서 고티어 무기·전투·우주 이동·완성 기지의 임팩트를 우선하고, 같은 행성 위치의 변화를 빠르게 보여 준다. [45초 편집과 촬영 연출의 범위](../production/151-instagram-impact-trailer.md)를 따른다.
 
 2026-09-14 사용자 승인: 기존 완성도 Q01~Q09를 세 묶음으로 실행·순차 커밋한다. 첫 Q01~Q03의 실제 범위는 [181](../production/181-polish-settings-input-and-industry.md), 미확인 체감/출시 범위는 해당 제작 기록에 둔다.
+
+2026-09-14 세 묶음 순차 구현: [181](../production/181-polish-settings-input-and-industry.md) → [182](../production/182-polish-production-and-restoration.md) → [183](../production/183-polish-combat-audio-and-coop.md). 실제 접속 검사에 따라 참가 확인 후 화면 준비·기존 캐릭터 위치 보존을 적용했다. 기존 연결 종료 회수 상자 규칙은 유지한다.

@@ -1,6 +1,8 @@
 extends RefCounted
 ## Only confirmed, per-target HP/shield deltas enter this short-lived display.
+static var layout_rules: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/play_presentation.json"))
 var entries: Array[Dictionary]=[]
+var last_bounds: Array[Rect2]=[]
 var settings: Dictionary
 var font: FontVariation
 
@@ -36,7 +38,7 @@ func update(delta: float) -> void:
 
 func draw(hud: Control,camera: Camera3D,scope: bool) -> void:
 	var viewport:=hud.get_viewport_rect().size
-	var occupied: Array[Rect2]=[]
+	var occupied: Array[Rect2]=[];last_bounds.clear()
 	for entry in entries:
 		if camera.is_position_behind(entry.anchor):continue
 		var point:=camera.unproject_position(entry.anchor)
@@ -48,12 +50,11 @@ func draw(hud: Control,camera: Camera3D,scope: bool) -> void:
 		var value:=str(maxi(1,roundi(float(entry.amount))))
 		var width:=font.get_string_size(value,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x
 		point+=Vector2(18,-12-float(settings.rise)*progress)
-		point.x=clampf(point.x,24,viewport.x-width-24);point.y=maxf(size+8,point.y)
-		var bounds:=Rect2(point-Vector2(22,size),Vector2(width+26,size+6))
-		# Nearby splash targets keep independent, readable totals.
-		for previous in occupied:
-			if bounds.intersects(previous):point.y=previous.position.y-6;bounds.position.y=point.y-size
-		occupied.append(bounds)
+		var area:=Rect2(Vector2.ONE*float(layout_rules.damage_number_margin),viewport-Vector2.ONE*float(layout_rules.damage_number_margin)*2)
+		var center:=Rect2(viewport*.5-Vector2.ONE*float(layout_rules.damage_number_center_radius),Vector2.ONE*float(layout_rules.damage_number_center_radius)*2)
+		var bounds:=place(Rect2(point-Vector2(22,size),Vector2(width+40,size+12)),occupied,area,center)
+		if not bounds.has_area():continue
+		point=bounds.position+Vector2(22,size);occupied.append(bounds);last_bounds.append(bounds)
 		var color: Color=entry.color;color.a=clampf((float(settings.life)-age)/.23,0,1)
 		var outline:=Color(.025,.035,.055,color.a)
 		hud.draw_string_outline(font,point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,5,outline)
@@ -74,3 +75,13 @@ static func draw_shield(hud: Control,center: Vector2,color: Color,broken: bool,p
 		hud.draw_polyline(points,color,1.8,true)
 	if broken:
 		hud.draw_polyline(PackedVector2Array([center+Vector2(0,-5),center+Vector2(-2,0),center+Vector2(2,1),center+Vector2(0,5)]),color,1.5,true)
+
+static func place(wanted: Rect2,occupied: Array[Rect2],area: Rect2,avoid: Rect2) -> Rect2:
+	if wanted.size.x>area.size.x or wanted.size.y>area.size.y:return Rect2()
+	for column in [0,1,-1,2,-2]:
+		for row in [0,-1,1,-2,2]:
+			var point:=wanted.position+Vector2(column*(wanted.size.x+8),row*(wanted.size.y+6))
+			point.x=clampf(point.x,area.position.x,area.end.x-wanted.size.x);point.y=clampf(point.y,area.position.y,area.end.y-wanted.size.y)
+			var candidate:=Rect2(point,wanted.size)
+			if not candidate.intersects(avoid) and not occupied.any(func(previous):return previous.grow(2).intersects(candidate)):return candidate
+	return Rect2()

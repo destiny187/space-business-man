@@ -3,6 +3,11 @@ extends Control
 var app: FrontierCrewExpedition
 var pause_frame: PanelContainer
 var crew_frame: PanelContainer
+var departure_status: Label
+var connection_status: Label
+var resume_button: Button
+var session_problem: Label
+var confirmed_session:=false
 var shuttle_recovery: FrontierShuttleRecoveryPanel
 var mini: Control
 var context: Button
@@ -115,10 +120,12 @@ func _build_map() -> void:
 func _build_pause() -> void:
 	pause_frame=_frame();var column:=_column(pause_frame)
 	FrontierInterfaceStyle.label(column,"메뉴",25)
-	_button(column,"계속하기  Esc",app.close_menus)
+	resume_button=_button(column,"계속하기  Esc",app.close_menus)
 	_button(column,"설정",func():FrontierClientSettings.ensure(get_tree()).open())
 	_button(column,"우주선 정비  K",app.toggle_shipyard)
 	_button(column,"승무원  P",func():app.open_menu(crew_frame))
+	session_problem=FrontierInterfaceStyle.label(column,"",14,FrontierInterfaceStyle.WARNING);session_problem.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;session_problem.hide()
+	app.session.notice.connect(_session_notice)
 	_button(column,"시작 화면으로",func():_leave(false))
 	_button(column,"게임 종료",func():_leave(true))
 func _build_crew() -> void:
@@ -127,6 +134,8 @@ func _build_crew() -> void:
 	var column:=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;column.add_theme_constant_override("separation",12);scroll.add_child(column)
 	FrontierInterfaceStyle.label(column,"승무원",24)
 	app.roster=FrontierInterfaceStyle.label(column,"",15)
+	departure_status=FrontierInterfaceStyle.label(column,"",14,FrontierInterfaceStyle.WARNING);departure_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	connection_status=FrontierInterfaceStyle.label(column,"",13,FrontierInterfaceStyle.MUTED)
 	var invite:=_button(column,"초대 코드 복사",func():DisplayServer.clipboard_set(app.session.invite_code);app.status.value="초대 코드를 복사했습니다.");invite.name="InviteCodeCopy";invite.hide()
 	app.ready_button=_button(column,"준비",app.toggle_ready)
 	var watch:=_button(column,"호스트 비행 관전  F8",func():app.close_menus();app.observer.toggle());watch.name="ObserveHost"
@@ -182,10 +191,15 @@ func refresh(value: Dictionary) -> void:
 	mini.galaxy=nav.mode=="jump"
 	if selected_preview<0:show_target(int(nav.target))
 	var members: Dictionary=value.crew.members
-	var lines: PackedStringArray=[]
-	for id in members:
-		lines.append(("✓  " if members[id].ready else "○  ")+members[id].profile.name+("  연결 끊김" if not members[id].get("connected",false) else "")+("  ◈ 조종" if id==value.crew.pilot_id else ""))
-	app.roster.text="\n".join(lines)
+	confirmed_session=value.get("phase","")=="playing"
+	departure_status.visible=not app.session.offline
+	app.roster.text=preload("res://scripts/ui/crew_status.gd").roster(value)
+	var blockers:=preload("res://scripts/ui/crew_status.gd").blockers(value,value.crew.get("landing",{}).is_empty())
+	departure_status.text="다음 항해 대기 · "+blockers if not blockers.is_empty() else "현재 선박의 승무원 준비 완료"
+	connection_status.text="호스트 위치·장비 수신 · 지표 준비 중" if app.preparing_first_snapshot else "호스트 확정 위치·장비 반영됨"
+	var recovery_items:=0
+	for crate in value.get("business",{}).get("crates",{}).values():recovery_items+=FrontierExpeditionBusiness.total(crate.get("inventory",{}))
+	if recovery_items>0:connection_status.text+=" · 회수 보관 화물 %d개"%recovery_items
 	var invite: Button=crew_frame.find_child("InviteCodeCopy",true,false)
 	invite.visible=not app.session.invite_code.is_empty()
 	invite.text="초대 코드  "+FrontierCrewConnectionOptions.display_code(app.session.invite_code)+"  복사"
@@ -391,11 +405,12 @@ func _update_context() -> void:
 	if not app.session.offline:
 		var ready_count:=0;var connected_count:=0
 		for member in value.crew.members.values():
-			if member.get("connected",true) and (value.get("local_shuttle","").is_empty() or member.get("shuttle_id","")==value.self_id):
+			if member.get("connected",true) and preload("res://scripts/ui/crew_status.gd").group(value,str(member.profile.character_id)):
 				connected_count+=1
 				if member.ready:ready_count+=1
 		context.text+="    준비 %d/%d"%[ready_count,connected_count]
 		if pilot and not own.ready:context.text+="  [P]"
+	context.text=FrontierPlayInput.hint(context.text,"flight")
 	context.disabled=not context_ready;context.reset_size();context.show()
 func interact() -> bool:
 	if context_kind.is_empty() or not context.visible:return false
@@ -473,3 +488,9 @@ func _access_info(ordinal: int) -> void:
 	if not guide_reason.is_empty():route.disabled=true;route.text="태양계 가이드 진행 중";route.tooltip_text=guide_reason
 	elif not reason.is_empty():route.disabled=true;route.text="항해 내성 부족";route.tooltip_text=reason
 	elif not selecting_route:route.text="행성 접근";route.tooltip_text=""
+
+func _session_notice(message: String) -> void:
+	if app.session.active:session_problem.hide();resume_button.disabled=false;return
+	if not confirmed_session:return
+	session_problem.text=message+"\n시작 화면으로 돌아갈 때 저장을 다시 시도합니다. 실패하면 현재 화면을 유지합니다."
+	resume_button.disabled=true;session_problem.show();app.open_menu(pause_frame)

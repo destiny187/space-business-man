@@ -175,7 +175,8 @@ func acknowledge(peer: int,received_session: String) -> Dictionary:
 		# Equipment stays a reference to the owner's profile. World cargo never
 		# gets written into the owner's equipment list.
 		draft.crew.members[id].profile=entry.profile.duplicate(true)
-	FrontierCrewSurface.spawn_member(draft,draft.crew.members[id],peers.size())
+	# Returning characters retain the position/area already confirmed by the host.
+	if not entry.known:FrontierCrewSurface.spawn_member(draft,draft.crew.members[id],peers.size())
 	draft.crew.members[id].erase("shuttle_recalled")
 	draft.crew.revision+=1
 	FrontierSpecimenItems.prune(draft)

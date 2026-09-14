@@ -29,6 +29,10 @@ var combat_override:=false
 var restored_down:=false
 var combat_pattern:="none"
 var combat_phase:=""
+var combat_source_clock:=-1.0
+var combat_source_serial:=-1
+var combat_clock_limit:=0.0
+static var combat_lead: float=JSON.parse_string(FileAccess.get_file_as_string("res://data/play_presentation.json")).combat_clock_lead
 var combat_clock:=0.0
 var combat_info: Dictionary={}
 var combat_live: Dictionary={}
@@ -187,6 +191,8 @@ func set_state(value: String) -> bool:
 	return true
 
 func _process(delta: float) -> void:
+	if combat_override and not paused:
+		combat_clock=minf(combat_clock+delta,combat_clock_limit);elapsed=combat_clock
 	if ground_motion!=null:ground_motion.preview(delta)
 	if not paused and not combat_override:
 		elapsed+=delta*(movement_rate if state=="move" else 1.0)
@@ -287,7 +293,25 @@ func drive_ground(at: Vector3,facing: Basis,delta: float,sampler: Callable,stopp
 	else:global_transform=Transform3D(facing,at)
 
 func apply_combat(live: Dictionary,profile: Dictionary,stopped: bool,targets: Dictionary={}) -> void:
-	combat_override=true;restored_down=false;combat_pattern=profile.pattern;combat_phase=live.phase;combat_clock=float(live.time)
+	var raw:=float(live.time)
+	if not combat_override or live.phase!=combat_phase or int(live.get("serial",0))!=combat_source_serial or raw<combat_source_clock or stopped:combat_clock=raw
+	else:combat_clock=maxf(raw,combat_clock)
+	combat_source_clock=raw;combat_source_serial=int(live.get("serial",0))
+	combat_clock_limit=raw+combat_lead
+	if live.phase=="attack":
+		var contact:=float(profile.get("windup",.7));var release:=contact+float(profile.get("active",.3))
+		var boundaries: Array=[contact,release]
+		var mode: String=profile.get("behavior","melee")
+		if mode=="double_sweep":boundaries.append(contact+float(profile.first_strike));boundaries.append(contact+float(profile.first_strike)+float(profile.second_strike))
+		elif mode=="shockwave":boundaries.append(contact+float(profile.impact_delay))
+		elif mode=="melee":boundaries.append(contact+float(profile.get("active",.3))*.45)
+		for boundary in boundaries:
+			if raw<float(boundary):combat_clock_limit=minf(combat_clock_limit,float(boundary)-.0001)
+		if raw<contact:combat_clock_limit=minf(combat_clock_limit,contact-.0001)
+		elif raw<release:combat_clock_limit=minf(combat_clock_limit,release-.0001)
+		else:combat_clock_limit=minf(combat_clock_limit,release+float(profile.get("recovery",1.1)))
+	combat_clock=clampf(combat_clock,raw,maxf(raw,combat_clock_limit))
+	combat_override=true;restored_down=false;combat_pattern=profile.pattern;combat_phase=live.phase
 	combat_info=profile;combat_live=live;combat_targets=targets
 	paused=stopped;elapsed=combat_clock
 	windup_seconds=float(profile.get("windup",.7));active_seconds=float(profile.get("active",.3));recovery_seconds=float(profile.get("recovery",1.1))

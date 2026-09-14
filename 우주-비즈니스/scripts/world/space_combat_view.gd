@@ -330,6 +330,7 @@ func dying(row: Dictionary,enemy: Dictionary,delta: float) -> void:
 		fx.explosion(row.near,velocity,hash(str(enemy.id)));row.destroyed=true;row.root.hide()
 		sound(str(FrontierSpaceCombat.config().audio.destroy),row.root.position,false,.85)
 func sound(cue: String,position: Vector3,local: bool,pitch: float=1.0) -> void:
+	if local and cue in [FrontierSpaceCombat.config().audio.impact,FrontierSpaceCombat.config().audio.shield_impact,FrontierSpaceCombat.config().audio["break"],FrontierSpaceCombat.config().audio.collision]:FrontierAudioMix.ensure(get_tree()).warning()
 	var stream:=audio.stream(cue)
 	if stream==null:return
 	# A dedicated flight distance curve and finite voice count; ground sounds retain their own range.

@@ -187,8 +187,8 @@ func _surface(packet: Dictionary) -> void:
 	known_buildings=buildings.duplicate(true);known_robots=robots.duplicate();known_observations=observations;last_veins=site.get("remaining",{}).duplicate()
 
 func _process(delta: float) -> void:
-	if not app.session.active:business_receipts.clear()
 	if app==null:return
+	if not app.session.active:business_receipts.clear()
 	elapsed+=delta;work_left=maxf(0,work_left-delta);cue_left=maxf(0,cue_left-delta)
 	var active: bool=app.session.active and app.surface_world!=null
 	if blocked() or (not app.test_mode and not app.get_window().has_focus()):audio.stop_wildlife_cues()
