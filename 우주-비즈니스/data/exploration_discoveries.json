@@ -58,7 +58,8 @@
       "sound": "wind",
       "radius": 5.5,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "meteor_glass": {
       "id": "meteor_glass",
@@ -90,15 +91,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "crystal": 3
-      },
+      "reward": {},
       "knowledge": "충격 방향과 내마모 시료를 확보했습니다.",
       "model": "discoveries/meteor_glass",
       "sound": "grit",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "dew_basin": {
       "id": "dew_basin",
@@ -130,15 +130,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "ice": 4
-      },
+      "reward": {},
       "knowledge": "응결 표면과 집수 원리를 기록했습니다.",
       "model": "discoveries/dew_basin",
       "sound": "water",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "salt_bloom": {
       "id": "salt_bloom",
@@ -170,16 +169,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "stone": 5,
-        "crystal": 2
-      },
+      "reward": {},
       "knowledge": "수분별 결정 성장과 염분 분리 원리를 기록했습니다.",
       "model": "discoveries/salt_bloom",
       "sound": "grit",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "molting_trail": {
       "id": "molting_trail",
@@ -222,15 +219,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "phosphate": 4
-      },
+      "reward": {},
       "knowledge": "탈피터와 서식 방향을 기록했습니다.",
       "model": "discoveries/molting_trail",
       "sound": "grit",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "fossil_ripples": {
       "id": "fossil_ripples",
@@ -273,15 +269,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "stone": 5
-      },
+      "reward": {},
       "knowledge": "과거 수역과 이동 흔적을 기록했습니다.",
       "model": "discoveries/fossil_ripples",
       "sound": "grit",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "seed_pockets": {
       "id": "seed_pockets",
@@ -319,7 +314,8 @@
       "sound": "nature",
       "radius": 2.6,
       "sample": true,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "iron_sand_ribbons": {
       "id": "iron_sand_ribbons",
@@ -351,15 +347,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "iron": 6
-      },
+      "reward": {},
       "knowledge": "주변 철 광화대의 위치를 기록했습니다.",
       "model": "discoveries/iron_sand_ribbons",
       "sound": "grit",
       "radius": 2.6,
       "sample": false,
-      "clue": true
+      "clue": true,
+      "catalogue_only": true
     },
     "shell_shelter": {
       "id": "shell_shelter",
@@ -397,7 +392,8 @@
       "sound": "nature",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "fallen_survey_pod": {
       "id": "fallen_survey_pod",
@@ -494,15 +490,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "sapphire": 1
-      },
+      "reward": {},
       "knowledge": "수정 공동을 개방하고 보석을 회수했습니다.",
       "model": "discoveries/hollow_geode",
       "sound": "crystal",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "luminous_tidepool": {
       "id": "luminous_tidepool",
@@ -551,7 +546,8 @@
       "sound": "water",
       "radius": 2.6,
       "sample": true,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "buried_aqueduct": {
       "id": "buried_aqueduct",
@@ -594,15 +590,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "ice": 6
-      },
+      "reward": {},
       "knowledge": "수로를 열었습니다. 저장돼 있던 유한한 물이 흘러나옵니다.",
       "model": "discoveries/buried_aqueduct",
       "sound": "water",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "thermal_chimneys": {
       "id": "thermal_chimneys",
@@ -645,15 +640,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "sulfur": 5
-      },
+      "reward": {},
       "knowledge": "분출 간격과 열 교환 구조를 기록했습니다.",
       "model": "discoveries/thermal_chimneys",
       "sound": "thermal",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "spore_sails": {
       "id": "spore_sails",
@@ -702,7 +696,8 @@
       "sound": "nature",
       "radius": 2.6,
       "sample": true,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "magnetic_arch": {
       "id": "magnetic_arch",
@@ -734,15 +729,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "iron": 8
-      },
+      "reward": {},
       "knowledge": "자성 집진 구조와 주변 금속 분포를 기록했습니다.",
       "model": "discoveries/magnetic_arch",
       "sound": "crystal",
       "radius": 5.5,
       "sample": false,
-      "clue": true
+      "clue": true,
+      "catalogue_only": true
     },
     "submerged_recorder": {
       "id": "submerged_recorder",
@@ -825,15 +819,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "phosphate": 9
-      },
+      "reward": {},
       "knowledge": "산란장과 과거 먹이망의 증거를 확보했습니다.",
       "model": "discoveries/fossil_nest",
       "sound": "grit",
       "radius": 2.6,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "mirror_canyon": {
       "id": "mirror_canyon",
@@ -876,15 +869,14 @@
           "seconds": 3.0
         }
       ],
-      "reward": {
-        "crystal": 5
-      },
+      "reward": {},
       "knowledge": "선택 반사·차광 구조와 경관을 기록했습니다.",
       "model": "discoveries/mirror_canyon",
       "sound": "crystal",
       "radius": 5.5,
       "sample": false,
-      "clue": false
+      "clue": false,
+      "catalogue_only": true
     },
     "abandoned_drill": {
       "id": "abandoned_drill",

@@ -130,6 +130,10 @@ static func scan(world: Dictionary,row: Dictionary,actor: String) -> void:
 		world.discoveries.records[id]=record
 	var record: Dictionary=world.discoveries.records[id]
 	record.scanned_stage=record.stage
+	var d:=definition(row.template)
+	if d.get("catalogue_only",false) and d.mode in ["observe","miner"]:
+		record.stage=d.stages.size();record.scanned_stage=record.stage;record.claimed=true
+		if d.clue:_clue(world,row,record)
 static func result(world: Dictionary,row: Dictionary) -> Dictionary:
 	var d:=definition(row.template);var index:=stage(world,row);var finished: bool=index>=d.stages.size()
 	return {"kind":"discovery","id":row.id,"name":d.name,"icon":"scan","point":FrontierExpeditionBusiness.array(row.point) if row.get("point") is Vector3 else row.position,"subtitle":"탐험 발견  %d/%d"%[mini(index,d.stages.size()),d.stages.size()],"notes":[{"icon":"scan","text":d.knowledge if finished else d.stages[index].label}],"condition":"J 발견 기록에 장소와 조사 성과를 보존합니다.","action":"조사 완료" if finished else "F  "+str(d.stages[index].label)}
@@ -141,7 +145,7 @@ static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
 	var index:=stage(world,row);var d:=definition(row.template)
 	if index>=d.stages.size():return "이미 조사를 마친 장소입니다."
 	if args.get("stage")!=index:return "조사 단계가 바뀌었습니다."
-	if not known(world,row):return "E를 유지해 현재 지점을 먼저 조사하세요."
+	if not known(world,row):return "T를 유지해 현재 지점을 먼저 조사하세요."
 	var point:=work_point(row,index)
 	if (FrontierCrewWorld.vector(world.crew.members[actor].position)+Vector3.UP).distance_to(point)>float(config().interaction_distance):return "조사 지점 4.5m 안으로 접근하세요."
 	var step: Dictionary=d.stages[index]
@@ -174,7 +178,7 @@ static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
 			elif not FrontierFacilityBlueprints.register(world,blueprint,"exploration",record_key(row)):return "기록 복원 결과를 등록하지 못했습니다."
 			record.blueprint=blueprint;record.blueprint_duplicate=duplicate
 		# Host rolls once from this world/place; reopening cannot change the result.
-		if d.mode!="archive" and FrontierUniverse.derive(int(world.manifest.seed),record_key(row)+":module")%100<35:
+		if not d.get("catalogue_only",false) and d.mode!="archive" and FrontierUniverse.derive(int(world.manifest.seed),record_key(row)+":module")%100<35:
 			var module_error:=FrontierSuitModules.drop(world,actor,record_key(row),int(FrontierUniverse.body_from_id(world.manifest,row.body_id).planet_tier),"discovery")
 			if not module_error.is_empty():return module_error
 		record.claimed=true
