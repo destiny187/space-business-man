@@ -17,7 +17,7 @@ var region: Dictionary={}
 var region_key:=""
 var occupied: Dictionary={}
 var shoreline: Node3D
-var water_quality:=1
+var water_quality:=-1
 var source_requests: Array[Dictionary]=[]
 var foundations: Array[Vector4]=[]
 var foundation_key:=""
@@ -198,6 +198,7 @@ func nearest_water(p: Vector3) -> Dictionary:
  return result
 
 func _quality_changed() -> void:
+ if water_quality==FrontierWaterQuality.level(get_tree()):return
  water_quality=FrontierWaterQuality.level(get_tree())
  FrontierWaterQuality.apply(material,water_quality)
  if ocean!=null:

@@ -194,6 +194,7 @@ func _response(_sequence: int, result: Dictionary) -> void:
 			_save()
 
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
+	text=FrontierPlayInput.hint(text,"ground" if app.surface_world!=null else "flight")
 	step = id
 	counter.text = "플레이 가이드    %02d / 07" % number
 	title.text = heading

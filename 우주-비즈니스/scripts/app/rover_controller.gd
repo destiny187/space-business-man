@@ -47,7 +47,7 @@ func local() -> Dictionary:
 func controls(enabled: bool) -> Array:
 	if not test_controls.is_empty():return test_controls if enabled else [0.0,0.0,1.0,0.0]
 	if not enabled:return [0.0,0.0,1.0,0.0]
-	return [float(FrontierInput.pressed("forward"))-float(FrontierInput.pressed("backward")),float(FrontierInput.pressed("right"))-float(FrontierInput.pressed("left")),float(FrontierInput.pressed("jump")),float(FrontierInput.pressed("rover_interact"))]
+	return [float(FrontierPlayInput.pressed("forward"))-float(FrontierPlayInput.pressed("backward")),float(FrontierPlayInput.pressed("right"))-float(FrontierPlayInput.pressed("left")),float(FrontierPlayInput.pressed("rover_brake")),float(FrontierPlayInput.pressed("interact"))]
 func physics(delta: float) -> void:
 	var rows:=local()
 	for id in actors.keys():

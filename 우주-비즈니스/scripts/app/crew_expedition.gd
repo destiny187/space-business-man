@@ -183,7 +183,7 @@ func _apply_client_settings() -> void:
 func _build_cabin() -> void:
 	cabin_root=Node3D.new();cabin_root.name="Cabin";add_child(cabin_root)
 	interior=FrontierVesselInterior.new();cabin_root.add_child(interior)
-	camera=Camera3D.new();camera.position=Vector3(0,1.72,6.7);camera.fov=76;camera.current=true;add_child(camera)
+	camera=Camera3D.new();camera.set_meta("player_fov",true);camera.position=Vector3(0,1.72,6.7);camera.fov=76;camera.current=true;add_child(camera)
 	FrontierInkStyle.attach(camera)
 	get_viewport().screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
 func _collision(position_value: Vector3,size: Vector3) -> void:
@@ -456,7 +456,7 @@ func orbital_scan_allowed() -> bool:
 
 func _physics_process(delta: float) -> void:
 	if preparing_first_snapshot:return
-	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":return
+	if not session.active or session.latest.is_empty() or session.latest.get("phase")!="playing":FrontierPlayInput.release_toggles();return
 	spaces.sync()
 	if business_panel.visible and actors.has(session.latest.self_id) and not business_panel.context_in_range(actors[session.latest.self_id].position):close_menus()
 	rovers.physics(delta)
@@ -465,35 +465,37 @@ func _physics_process(delta: float) -> void:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
 		if tool.get("kind")=="miner" or tool.get("auto",false):use_equipped()
 	var controls_enabled:=_locomotion_enabled()
+	var preferences:=FrontierClientSettings.ensure(get_tree())
+	var sprinting:=FrontierPlayInput.state("sprint",FrontierPlayInput.pressed("sprint"),controls_enabled and not outside and rovers.seat().is_empty() and surface_world!=null,bool(preferences.values.toggle_sprint))
 	if surface_world!=null and actors.has(session.latest.self_id):
 		var incident_at: Vector3=actors[session.latest.self_id].position
 		if not surface_world.ready_at(incident_at) or (surface_world.incidents!=null and not surface_world.incidents.presentation_ready(incident_at)):controls_enabled=false
-	var jump_pressed:=test_jump if test_mode else FrontierInput.pressed("jump")
+	var jump_pressed:=test_jump if test_mode else FrontierPlayInput.pressed("jump")
 	if jump_pressed and not jump_held and controls_enabled:jump_request+=1;movement_timer=0
 	if jump_held!=jump_pressed:movement_timer=0
 	jump_held=jump_pressed
 	movement_timer-=delta
 	if movement_timer<=0 or (not session.hosting and not outside):
 		movement_timer=.05
-		var direction:=test_direction if test_mode else Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
+		var direction:=test_direction if test_mode else Vector2(float(FrontierPlayInput.pressed("right"))-float(FrontierPlayInput.pressed("left")),float(FrontierPlayInput.pressed("backward"))-float(FrontierPlayInput.pressed("forward")))
 		if (onboarding!=null and onboarding.letter.visible) or inventory_panel.visible or outside or navigation_frame.visible or business_panel.visible or shipyard_panel.visible or research_frame.visible or get_viewport().gui_get_focus_owner() is LineEdit:direction=Vector2.ZERO
 		direction=direction.rotated(-yaw).limit_length()
 		if not session.latest.crew.get("landing",{}).is_empty() and (surface_world==null or not surface_world.ready_at(actors[session.latest.self_id].position)):direction=Vector2.ZERO
-		var scanning: bool=(test_scan if test_mode else Input.is_physical_key_pressed(KEY_E)) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
+		var scanning: bool=(test_scan if test_mode else FrontierPlayInput.pressed("scan")) and surface_world!=null and not inventory_panel.visible and not business_panel.visible and not shipyard_panel.visible and not research_frame.visible and not navigation_frame.visible and not get_viewport().gui_get_focus_owner() is LineEdit
 		if feedback.blocked() or (onboarding!=null and onboarding.letter.visible):direction=Vector2.ZERO;scanning=false
 		var scan_aim: Vector3=-camera.global_basis.z
 		if orbital_scan_allowed():
-			scanning=test_scan if test_mode else Input.is_physical_key_pressed(KEY_F)
+			scanning=test_scan if test_mode else FrontierPlayInput.pressed("interact")
 			scan_aim=-flight.camera.global_basis.z
 		var flight_controls:=collect_flight_controls()
-		var keyboard_turn:=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)) if not test_mode else 0.0
+		var keyboard_turn:=float(FrontierPlayInput.pressed("flight_right"))-float(FrontierPlayInput.pressed("flight_left")) if not test_mode else 0.0
 		if float(flight_controls[5])>.5:scan_aim=-flight.camera.global_basis.z
 		if flight_controls.slice(0,4).any(func(value):return absf(float(value))>.01) or absf(float(flight_controls[7]))>.01 or (outside and scanning):dismiss_stellar_arrival()
 		if onboarding!=null and not (observer!=null and observer.input_blocked()):onboarding.observe_flight_input(flight_controls,keyboard_turn,.05)
 		mouse_steering=Vector2.ZERO
 		local_direction=direction if controls_enabled else Vector2.ZERO
-		local_sprint=(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning
-		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else Input.is_physical_key_pressed(KEY_SHIFT)) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled),surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position) and not arrival.active,jump_pressed and controls_enabled)
+		local_sprint=(test_sprint if test_mode else sprinting) and direction.length_squared()>0 and not scanning
+		session.send_input(direction,scan_aim,scanning,(test_sprint if test_mode else sprinting) and direction.length_squared()>0 and not scanning,flight_controls,jump_request,controls_enabled,rovers.controls(controls_enabled),surface_world!=null and actors.has(session.latest.self_id) and surface_world.ready_at(actors[session.latest.self_id].position) and not arrival.active,jump_pressed and controls_enabled)
 	if not session.hosting:_predict_local(delta,controls_enabled)
 	if session.hosting and not session.authority.stopped:
 		session.authority.shot_obstacle_provider=_shot_obstacle_distance
@@ -635,7 +637,7 @@ func _input(event: InputEvent) -> void:
 	if arrival!=null and arrival.active:return
 	if FrontierClientSettings.ensure(get_tree()).is_open() or FrontierCursorPolicy.modal_open(get_tree()):return
 	if observer!=null and session.active and session.latest.get("phase")=="playing":
-		if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_F8 and not any_menu_open() and not solar_opening_active() and not (onboarding!=null and onboarding.letter.visible):
+		if event is InputEventKey and event.pressed and not event.echo and FrontierPlayInput.matches(event,"observer") and not any_menu_open() and not solar_opening_active() and not (onboarding!=null and onboarding.letter.visible):
 			observer.toggle();get_viewport().set_input_as_handled();return
 		if observer.active:
 			if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_ESCAPE:observer.stop()
@@ -652,14 +654,14 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled();return
 		if solar_opening_active() or (onboarding!=null and onboarding.letter.visible):return
 		if not get_viewport().gui_get_focus_owner() is LineEdit:
-			if event.physical_keycode in [KEY_W,KEY_A,KEY_S,KEY_D,KEY_SHIFT,KEY_Q,KEY_E,KEY_F,KEY_SPACE,KEY_ALT]:dismiss_stellar_arrival()
-			match event.physical_keycode:
-				KEY_TAB:toggle_navigation()
-				KEY_I:toggle_inventory()
-				KEY_B:toggle_business()
-				KEY_J:toggle_research()
-				KEY_K:toggle_shipyard()
-				KEY_P:open_menu(navigation_ui.crew_frame)
+			if not FrontierPlayInput.action(event,FrontierPlayInput.definitions().keys()).is_empty():dismiss_stellar_arrival()
+			match FrontierPlayInput.action(event,["map","inventory","build","journal","shipyard","crew"]):
+				"map":toggle_navigation()
+				"inventory":toggle_inventory()
+				"build":toggle_business()
+				"journal":toggle_research()
+				"shipyard":toggle_shipyard()
+				"crew":open_menu(navigation_ui.crew_frame)
 				_:return _look_input(event)
 			get_viewport().set_input_as_handled();return
 	_look_input(event)
@@ -687,21 +689,22 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if get_viewport().gui_get_focus_owner() is LineEdit and event.physical_keycode!=KEY_ESCAPE:return
-		if FrontierInput.matches(event,"rover_seat") and not rovers.seat().is_empty():session.send_request("rover_switch",{"id":rovers.seat().id});return
-		if FrontierInput.matches(event,"camera") and not rovers.seat().is_empty():rovers.chase=not rovers.chase;return
-		if event.physical_keycode>=KEY_1 and event.physical_keycode<=KEY_5 and surface_world!=null and not feedback.blocked():
-			session.send_request("equipment_select",{"slot":event.physical_keycode-KEY_1});return
-		if event.physical_keycode==KEY_H and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
-		if event.physical_keycode==KEY_R and outside and surface_world==null and flight!=null and flight.combat_view!=null and flight.combat_view.repair_available():
+		if FrontierPlayInput.matches(event,"rover_seat") and not rovers.seat().is_empty():session.send_request("rover_switch",{"id":rovers.seat().id});return
+		if FrontierPlayInput.matches(event,"rover_camera") and not rovers.seat().is_empty():rovers.chase=not rovers.chase;return
+		var slot_action:=FrontierPlayInput.action(event,["slot_1","slot_2","slot_3","slot_4","slot_5"])
+		if not slot_action.is_empty() and surface_world!=null and not feedback.blocked():
+			session.send_request("equipment_select",{"slot":int(slot_action.trim_prefix("slot_"))-1});return
+		if FrontierPlayInput.matches(event,"environment") and surface_world!=null and not feedback.blocked():field_hud.environment.toggle_details();return
+		if FrontierPlayInput.matches(event,"flight_repair") and outside and surface_world==null and flight!=null and flight.combat_view!=null and flight.combat_view.repair_available():
 			session.send_request("space_repair",{});return
-		if event.physical_keycode==KEY_R and surface_world!=null and not feedback.blocked():
+		if FrontierPlayInput.matches(event,"reload") and surface_world!=null and not feedback.blocked():
 			if FrontierEquipment.active(session.latest.crew.members[session.latest.self_id]).has("firearm"):firearm.reload()
 			else:order_robot()
 			return
-		if event.physical_keycode==KEY_C and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
-		if event.physical_keycode==KEY_G and onboarding.can_open_map() and _mouse_look_allowed():navigation_ui.open_galaxy();return
-		if event.physical_keycode==KEY_Q and surface_world!=null:surface_action("surface_collect")
-		if FrontierInput.matches(event,"rover_interact") and _mouse_look_allowed():
+		if FrontierPlayInput.matches(event,"view") and surface_world==null and _mouse_look_allowed():outside=not outside;exterior_view.visible=outside;if_flight_view();get_viewport().gui_release_focus()
+		if FrontierPlayInput.matches(event,"galaxy") and onboarding.can_open_map() and _mouse_look_allowed():navigation_ui.open_galaxy();return
+		if FrontierPlayInput.matches(event,"collect") and surface_world!=null:surface_action("surface_collect")
+		if FrontierPlayInput.matches(event,"interact") and _mouse_look_allowed():
 			if outside and surface_world==null:
 				interact_flight();return
 			if not (surface_world!=null and surface_world.incidents!=null and surface_world.incidents.interact()) and not (surface_world!=null and surface_world.discoveries!=null and surface_world.discoveries.interact()) and not lotus.interact() and not stations.interact() and not rovers.interact() and not navigation_ui.interact():interact_business()
@@ -723,14 +726,14 @@ func _unhandled_input(event: InputEvent) -> void:
 func collect_flight_controls() -> Array:
 	if observer!=null and observer.input_blocked():return FrontierCrewObservation.neutral_input()
 	if test_mode or not orbital_scan_allowed() or arrival.active or not get_window().has_focus():return FrontierCrewNavigation.stopped_input()
-	var keyboard_turn:=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A))
+	var keyboard_turn:=float(FrontierPlayInput.pressed("flight_right"))-float(FrontierPlayInput.pressed("flight_left"))
 	var ready: bool=not flight.navigation.is_empty() and flight.navigation.mode!="jump" and not get_tree().has_meta("startup_loader")
 	var armed: bool=flight.combat_view!=null and flight.combat_view.armed() and not mouse_resume_guard
-	return [float(Input.is_physical_key_pressed(KEY_W))-float(Input.is_physical_key_pressed(KEY_S)),
-		clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(Input.is_physical_key_pressed(KEY_SHIFT)),
+	return [float(FrontierPlayInput.pressed("flight_forward"))-float(FrontierPlayInput.pressed("flight_backward")),
+		clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(FrontierPlayInput.pressed("flight_boost")),
 		float(armed and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)),float(ready),float(armed and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)),
-		float(Input.is_physical_key_pressed(KEY_Q))-float(Input.is_physical_key_pressed(KEY_E)),float(Input.is_physical_key_pressed(KEY_SPACE)),float(Input.is_physical_key_pressed(KEY_ALT)),
-		float(armed and Input.is_physical_key_pressed(KEY_1)),float(armed and Input.is_physical_key_pressed(KEY_2))]
+		float(FrontierPlayInput.pressed("flight_roll_left"))-float(FrontierPlayInput.pressed("flight_roll_right")),float(FrontierPlayInput.pressed("flight_brake")),float(FrontierPlayInput.pressed("flight_precision")),
+		float(armed and FrontierPlayInput.pressed("flight_skill_1")),float(armed and FrontierPlayInput.pressed("flight_skill_2"))]
 
 func interact_flight() -> void:
 	if not orbital_scan_allowed():return
@@ -944,6 +947,7 @@ func open_menu(frame: Control) -> void:
 	if opening:frame.show()
 	_menu_changed()
 func _menu_changed() -> void:
+	FrontierPlayInput.release_toggles()
 	cursor_released=false;mouse_steering=Vector2.ZERO
 	mouse_resume_guard=Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	if any_menu_open():

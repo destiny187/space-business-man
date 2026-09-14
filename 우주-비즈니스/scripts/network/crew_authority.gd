@@ -685,7 +685,7 @@ func _step_surface(delta: float) -> void:
 	industry_timer+=delta
 	if industry_timer>=1.0:
 		industry_timer-=1.0
-		var draft:=WorldSnapshot.copy(world)
+		var draft:=WorldDraft.industry(world)
 		var operated:=FrontierLotusSupport.tick(draft,1.0,lotus_clearance_provider)
 		for body_id in draft.get("business",{}).get("sites",{}):
 			if not FrontierPlanetSupply.operating(draft.business.sites[body_id]):continue

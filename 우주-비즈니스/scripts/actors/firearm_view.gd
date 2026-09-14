@@ -188,9 +188,11 @@ func _process(delta: float) -> void:
 	if was_enabled and not active:app.feedback.audio.stop_firearm_cues();gun_effects.clear();damage_numbers.clear();kick=0;shot_bloom=0;hit_left=0;flash_left=0
 	was_enabled=active
 	var firearm: bool=active and gun.has("firearm")
-	ads=move_toward(ads,1.0 if firearm and (test_ads if app.test_mode else Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)) else 0.0,delta/maxf(.05,float(gun.get("ads_seconds",.18))))
+	var preferences:=FrontierClientSettings.ensure(get_tree())
+	var aiming:=FrontierPlayInput.state("aim",Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT),firearm,bool(preferences.values.toggle_aim))
+	ads=move_toward(ads,1.0 if firearm and (test_ads if app.test_mode else aiming) else 0.0,delta/maxf(.05,float(gun.get("ads_seconds",.18))))
 	stance_retry=maxf(0,stance_retry-delta)
-	if active and stance_retry<=0 and not app.test_mode:crouched=Input.is_physical_key_pressed(KEY_CTRL)
+	if active and stance_retry<=0 and not app.test_mode:crouched=FrontierPlayInput.pressed("crouch")
 	if active and stance_retry<=0 and crouched!=last_stance:
 		last_stance=crouched
 		app.session.send_request("surface_stance",{"crouched":crouched})
@@ -207,7 +209,7 @@ func _process(delta: float) -> void:
 	if reload_left>0:
 		reload_left=maxf(0,reload_left-delta)
 
-	if app.surface_world!=null:app.camera.fov=lerpf(76,float(gun.get("ads_fov",57)),ads)
+	if app.surface_world!=null:app.camera.fov=lerpf(float(preferences.values.fov),float(gun.get("ads_fov",57)),ads)
 	if firearm and app.feedback.handheld!=null:
 		var style: Dictionary=FrontierFirearmEffects.config().families[gun.firearm]
 		kick*=exp(-float(style.recovery)*delta);shot_bloom=move_toward(shot_bloom,0,delta*7)

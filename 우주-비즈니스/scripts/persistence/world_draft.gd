@@ -76,3 +76,15 @@ static func plots(source: Dictionary,ids: Array) -> Dictionary:
 		var row: Dictionary=source.ecology.planets[id]
 		draft.ecology.planets[id]=row.duplicate();draft.ecology.planets[id].plot=row.plot.duplicate(true)
 	return draft
+
+static func industry(source: Dictionary) -> Dictionary:
+	# Industry writes operating sites, shared credits, assembly, field trials and
+	# supply deliveries. Geological edits and biological discovery history are read-only.
+	var draft:=source.duplicate()
+	for key in ["crew","lotus","rovers","engineering","expedition_research"]:
+		if source.has(key):draft[key]=source[key].duplicate(true)
+	if source.has("business"):
+		draft.business=source.business.duplicate();draft.business.sites=source.business.sites.duplicate()
+		for id in source.business.sites:
+			if FrontierPlanetSupply.operating(source.business.sites[id]):draft.business.sites[id]=source.business.sites[id].duplicate(true)
+	return draft

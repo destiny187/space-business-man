@@ -1,0 +1,301 @@
+{
+  "forward": {
+    "label": "이동 앞으로",
+    "contexts": [
+      "ground",
+      "cabin",
+      "rover"
+    ],
+    "key": 87
+  },
+  "backward": {
+    "label": "이동 뒤로",
+    "contexts": [
+      "ground",
+      "cabin",
+      "rover"
+    ],
+    "key": 83
+  },
+  "left": {
+    "label": "이동 왼쪽",
+    "contexts": [
+      "ground",
+      "cabin",
+      "rover"
+    ],
+    "key": 65
+  },
+  "right": {
+    "label": "이동 오른쪽",
+    "contexts": [
+      "ground",
+      "cabin",
+      "rover"
+    ],
+    "key": 68
+  },
+  "jump": {
+    "label": "점프 / 상승",
+    "contexts": [
+      "ground",
+      "cabin"
+    ],
+    "key": "Space"
+  },
+  "sprint": {
+    "label": "지상 질주",
+    "contexts": [
+      "ground",
+      "cabin"
+    ],
+    "key": "Shift"
+  },
+  "scan": {
+    "label": "지상 조사",
+    "contexts": [
+      "ground"
+    ],
+    "key": 69
+  },
+  "collect": {
+    "label": "표본 회수",
+    "contexts": [
+      "ground"
+    ],
+    "key": 81
+  },
+  "reload": {
+    "label": "재장전 / 로봇 지시",
+    "contexts": [
+      "ground"
+    ],
+    "key": 82
+  },
+  "crouch": {
+    "label": "낮은 자세",
+    "contexts": [
+      "ground"
+    ],
+    "key": "Ctrl"
+  },
+  "environment": {
+    "label": "환경 상세",
+    "contexts": [
+      "ground"
+    ],
+    "key": 72
+  },
+  "slot_1": {
+    "label": "장비 슬롯 1",
+    "contexts": [
+      "ground"
+    ],
+    "key": 49
+  },
+  "slot_2": {
+    "label": "장비 슬롯 2",
+    "contexts": [
+      "ground"
+    ],
+    "key": 50
+  },
+  "slot_3": {
+    "label": "장비 슬롯 3",
+    "contexts": [
+      "ground"
+    ],
+    "key": 51
+  },
+  "slot_4": {
+    "label": "장비 슬롯 4",
+    "contexts": [
+      "ground"
+    ],
+    "key": 52
+  },
+  "slot_5": {
+    "label": "장비 슬롯 5",
+    "contexts": [
+      "ground"
+    ],
+    "key": 53
+  },
+  "flight_forward": {
+    "label": "비행 가속",
+    "contexts": [
+      "flight"
+    ],
+    "key": 87
+  },
+  "flight_backward": {
+    "label": "비행 감속",
+    "contexts": [
+      "flight"
+    ],
+    "key": 83
+  },
+  "flight_left": {
+    "label": "비행 좌선회",
+    "contexts": [
+      "flight"
+    ],
+    "key": 65
+  },
+  "flight_right": {
+    "label": "비행 우선회",
+    "contexts": [
+      "flight"
+    ],
+    "key": 68
+  },
+  "flight_boost": {
+    "label": "비행 부스트",
+    "contexts": [
+      "flight"
+    ],
+    "key": "Shift"
+  },
+  "flight_roll_left": {
+    "label": "좌측 롤",
+    "contexts": [
+      "flight"
+    ],
+    "key": 81
+  },
+  "flight_roll_right": {
+    "label": "우측 롤",
+    "contexts": [
+      "flight"
+    ],
+    "key": 69
+  },
+  "flight_brake": {
+    "label": "비행 제동",
+    "contexts": [
+      "flight"
+    ],
+    "key": "Space"
+  },
+  "flight_precision": {
+    "label": "정밀 비행",
+    "contexts": [
+      "flight"
+    ],
+    "key": "Alt"
+  },
+  "flight_repair": {
+    "label": "비행 긴급 수리",
+    "contexts": [
+      "flight"
+    ],
+    "key": 82
+  },
+  "flight_skill_1": {
+    "label": "비행 스킬 1",
+    "contexts": [
+      "flight"
+    ],
+    "key": 49
+  },
+  "flight_skill_2": {
+    "label": "비행 스킬 2",
+    "contexts": [
+      "flight"
+    ],
+    "key": 50
+  },
+  "rover_brake": {
+    "label": "로버 제동",
+    "contexts": [
+      "rover"
+    ],
+    "key": "Space"
+  },
+  "rover_seat": {
+    "label": "로버 좌석",
+    "contexts": [
+      "rover"
+    ],
+    "key": 88
+  },
+  "rover_camera": {
+    "label": "로버 카메라",
+    "contexts": [
+      "rover"
+    ],
+    "key": 86
+  },
+  "view": {
+    "label": "선내 / 외부 시점",
+    "contexts": [
+      "cabin",
+      "flight"
+    ],
+    "key": 67
+  },
+  "galaxy": {
+    "label": "은하 지도",
+    "contexts": [
+      "cabin",
+      "flight"
+    ],
+    "key": 71
+  },
+  "interact": {
+    "label": "대상 상호작용",
+    "contexts": [
+      "global"
+    ],
+    "key": 70
+  },
+  "map": {
+    "label": "지역 / 항성계 지도",
+    "contexts": [
+      "global"
+    ],
+    "key": "Tab"
+  },
+  "inventory": {
+    "label": "아이템",
+    "contexts": [
+      "global"
+    ],
+    "key": 73
+  },
+  "build": {
+    "label": "건설",
+    "contexts": [
+      "global"
+    ],
+    "key": 66
+  },
+  "journal": {
+    "label": "연구 기록",
+    "contexts": [
+      "global"
+    ],
+    "key": 74
+  },
+  "shipyard": {
+    "label": "선박 관리",
+    "contexts": [
+      "global"
+    ],
+    "key": 75
+  },
+  "crew": {
+    "label": "승무원",
+    "contexts": [
+      "global"
+    ],
+    "key": 80
+  },
+  "observer": {
+    "label": "호스트 관전",
+    "contexts": [
+      "global"
+    ],
+    "key": "F8"
+  }
+}

@@ -264,12 +264,12 @@ func _process(delta: float) -> void:
 		selected_definition=data.items[selected_item]
 	_layout();_refresh_details();_highlight()
 func _refresh_hotbar() -> void:
-	var key:=JSON.stringify([data.items,data.slots,data.selected,data.get("weapon_rolls",{})])
+	var key:=JSON.stringify([data.items,data.slots,data.selected,data.get("weapon_rolls",{}),FrontierPlayInput.overrides])
 	if key==last_hotbar_key:return
 	last_hotbar_key=key
 	for i in data.slots.size():
 		var def: Dictionary=FrontierEquipment.config().items.get(data.items.get(data.slots[i],""),{})
-		var tile:=hotbuttons[i];tile.picture=null if def.is_empty() else FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.get("tier",0));tile.selected=i==int(data.selected);tile.caption="";tile.tooltip_text=str(i+1)+"  "+str(def.get("name","빈 슬롯"));tile.queue_redraw()
+		var tile:=hotbuttons[i];tile.picture=null if def.is_empty() else FrontierInterfaceStyle.icon(def.model);tile.grade=int(def.get("tier",0));tile.selected=i==int(data.selected);tile.caption="";tile.tooltip_text=FrontierPlayInput.text("slot_"+str(i+1))+"  "+str(def.get("name","빈 슬롯"));tile.queue_redraw()
 		if def.has("firearm"):
 			var rarity: String=str(data.get("weapon_rolls",{}).get(data.slots[i],{}).get("rarity","standard"))
 			tile.rarity_color=Color(str(FrontierFirearms.config().rarities[rarity].color))

@@ -38,7 +38,7 @@ func _draw() -> void:
 	else:
 		draw_line(size*.5-Vector2(7,5),size*.5+Vector2(7,-5),FrontierInterfaceStyle.LINE,1)
 		draw_line(size*.5-Vector2(0,12),size*.5+Vector2(0,2),FrontierInterfaceStyle.LINE,1)
-	if slot>=0:draw_string(font,Vector2(8,17),str(slot+1),HORIZONTAL_ALIGNMENT_LEFT,-1,12,FrontierInterfaceStyle.ACCENT if selected else FrontierInterfaceStyle.MUTED)
+	if slot>=0:draw_string(font,Vector2(8,17),FrontierPlayInput.text("slot_"+str(slot+1)),HORIZONTAL_ALIGNMENT_LEFT,-1,12,FrontierInterfaceStyle.ACCENT if selected else FrontierInterfaceStyle.MUTED)
 	for i in grade:draw_rect(Rect2(size.x-9-i*6,8,3,8),FrontierInterfaceStyle.WARNING)
 	if not rarity_label.is_empty():draw_string(font,Vector2(7,17),rarity_label,HORIZONTAL_ALIGNMENT_LEFT,size.x-34,12,rarity_color)
 	if unavailable:

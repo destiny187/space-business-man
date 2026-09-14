@@ -56,7 +56,7 @@ func update_snapshot(value: Dictionary) -> void:
 	view.update_terraforming(value.get("orbital_terraform",{}))
 	view.refits.flight_mode=true;view.refits.update_loadout({"hull":"finch"} if descriptor.shuttle else value.get("vessel",{}))
 	view.update_navigation(descriptor.navigation)
-	caption.text="%s 관전   마우스 둘러보기   휠 거리   F8 돌아가기" % str(descriptor.name)
+	caption.text="%s 관전   마우스 둘러보기   휠 거리   %s 돌아가기" % [str(descriptor.name),FrontierPlayInput.text("observer")]
 	revision+=1
 
 func stop(message: String="") -> void:
@@ -79,8 +79,8 @@ func input_blocked() -> bool:return active or release_pending
 func _process(_delta: float) -> void:
 	if release_pending and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		var held:=false
-		for key in [KEY_W,KEY_A,KEY_S,KEY_D,KEY_Q,KEY_E,KEY_SHIFT,KEY_SPACE,KEY_ALT,KEY_1,KEY_2,KEY_F]:
-			if Input.is_physical_key_pressed(key):held=true;break
+		for action in FrontierPlayInput.definitions():
+			if FrontierPlayInput.pressed(action):held=true;break
 		if not held:release_pending=false
 	if not active:return
 	if not app.session.active or app.arrival.active or not FrontierCrewObservation.available(app.session.latest,app.session.hosting):stop();return

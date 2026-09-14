@@ -1,5 +1,7 @@
 # 사운드·ElevenLabs 제작
 
+2026-09-14 **보강 계획·미구현**: [Q08 음향 명세](../planning/17-existing-play-polish-plan.md)에 기존 음원의 개인 음량·중첩·거리·루프·위험음 우선순위를 구체화했다. 실제 재생/출력 확인과 청감 평가를 분리하고, 부족한 원본만 ElevenLabs로 제작한다. 이번에는 음원 생성/편집·믹스 적용을 하지 않았다.
+
 2026-09-13 미사일 발사·폭발과 선체 충돌 3종을 ElevenLabs로 신규 생성하고 게임에 연결했다. [175 제작·재생/청감 경계](175-flight-collision-and-audio.md)와 [원본/가공 이력](../../audio/manifests/space-combat-20260913.json)을 따른다.
 
 2026-09-12 지상 타격감 후속: 기존 ElevenLabs 8계열 발사 원본을 다시 가공하고 장갑·생물·실드·약점·파괴·격파 확인음을 연결했다. 신규 생성 여부·실제 재생·청감 경계는 [145 제작 기록](145-ground-weapon-feedback.md), 발사·일반 명중 파일 해시는 [v2 이력](../../audio/manifests/ground-weapon-feedback.json), 후속 실드 파괴·동시 격파 2종은 [v3 이력](../../audio/manifests/ground-shield-feedback.json)이 소관이다.

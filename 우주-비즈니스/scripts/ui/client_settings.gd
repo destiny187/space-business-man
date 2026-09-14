@@ -2,12 +2,21 @@ class_name FrontierClientSettings
 extends CanvasLayer
 ## Local presentation only: never stored in the host's simulation manifest.
 signal changed
+signal options_changed(keys: Array)
 const BASE_MOUSE_SENSITIVITY:=0.0025
-const DEFAULTS={"planet_surface_quality":1,"incident_shake":true,"water_quality":1,"tutorial_mode":0,"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":4800.0,"shadow_distance":120.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":1.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"music_volume":0.65,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":2,"local_shadow_size":1024}
-const LIMITS={"planet_surface_quality":[0,2],"water_quality":[0,2],"tutorial_mode":[0,2],"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,10000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"music_volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
+const DEFAULTS={"ui_scale":1.0,"toggle_aim":false,"toggle_sprint":false,"sfx_volume":1.0,"ambient_volume":1.0,"planet_surface_quality":1,"incident_shake":true,"water_quality":1,"tutorial_mode":0,"preset":1,"scale":1.0,"msaa":1,"fxaa":false,"taa":false,"vsync":true,"fps":60,"view_distance":4800.0,"shadow_distance":120.0,"shadow_size":2048,"shadows":true,"local_shadows":true,"ssao":true,"ssil":false,"ssr":false,"glow":true,"fog":1.0,"lod":1.0,"fov":76.0,"sensitivity":1.0,"invert_y":false,"volume":0.8,"music_volume":0.65,"show_fps":false,"window_mode":0,"resolution":0,"upscaler":0,"sharpness":.2,"shadow_filter":2,"local_shadow_size":1024}
+const LIMITS={"ui_scale":[1.0,1.3],"sfx_volume":[0,1],"ambient_volume":[0,1],"planet_surface_quality":[0,2],"water_quality":[0,2],"tutorial_mode":[0,2],"scale":[.5,1.5],"msaa":[0,3],"fps":[0,240],"view_distance":[600,10000],"shadow_distance":[40,500],"shadow_size":[1024,4096],"fog":[0,2],"lod":[1,8],"fov":[60,100],"sensitivity":[.1,10.0],"volume":[0,1],"music_volume":[0,1],"preset":[0,3],"window_mode":[0,2],"resolution":[0,4],"upscaler":[0,1],"sharpness":[0,2],"shadow_filter":[0,5],"local_shadow_size":[1024,4096]}
 const RESOLUTIONS=[Vector2i(1280,800),Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080),Vector2i(2560,1440)]
 var values: Dictionary=DEFAULTS.duplicate()
 var path="user://client_settings.json"
+var bindings: Dictionary={}
+var binding_buttons: Dictionary={}
+var binding_target: String=""
+var applied: Dictionary={}
+var save_due:=0
+var sensitivity_dragging:=false
+var node_applications:=0
+var save_count:=0
 var overlay: Control
 var tabs: TabContainer
 var notice: Label
@@ -89,10 +98,15 @@ func _ready() -> void:
 	apply_all()
 
 func load_settings() -> void:
-	values=DEFAULTS.duplicate()
+	if save_due>0:flush_settings()
+	values=DEFAULTS.duplicate();bindings.clear()
 	var data: Variant=JSON.parse_string(FileAccess.get_file_as_string(path)) if FileAccess.file_exists(path) else null
 	if not data is Dictionary and FileAccess.file_exists(path+".bak"):data=JSON.parse_string(FileAccess.get_file_as_string(path+".bak"))
-	if not data is Dictionary:return
+	if not data is Dictionary:
+		FrontierPlayInput.configure({})
+		return
+	bindings=FrontierPlayInput.sanitize(data.get("play_bindings",{}))
+	FrontierPlayInput.configure(bindings)
 	for key in DEFAULTS:
 		var value: Variant=data.get(key,DEFAULTS[key])
 		if key=="sensitivity" and data.has(key) and data.get("sensitivity_format","")!="multiplier_v1" and (value is float or value is int) and is_finite(float(value)):
@@ -110,6 +124,8 @@ func load_settings() -> void:
 func save_settings() -> bool:
 	var stored:=values.duplicate()
 	stored.sensitivity_format="multiplier_v1"
+	stored.play_bindings=bindings.duplicate();stored.input_version=1
+	save_count+=1
 	# An unconfirmed display mode must never survive a crash/restart.
 	for key in display_previous:stored[key]=display_previous[key]
 	var file:=FileAccess.open(path+".tmp",FileAccess.WRITE)
@@ -126,9 +142,17 @@ func open() -> void:
 	overlay.show();Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	overlay.grab_focus()
 func close() -> void:
+	binding_target=""
+	flush_settings()
 	if not display_previous.is_empty():_revert_display()
 	overlay.hide();get_viewport().gui_release_focus()
 func _input(event: InputEvent) -> void:
+	if is_open() and not binding_target.is_empty() and event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode!=KEY_ESCAPE:
+			var reason:=FrontierPlayInput.rebind(bindings,binding_target,event.physical_keycode)
+			notice.text=reason if not reason.is_empty() else "키를 변경했습니다."
+			if reason.is_empty():queue_save()
+		binding_target="";_sync_bindings();get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode==KEY_F10:
 			if is_open():close()
@@ -136,6 +160,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		elif is_open() and event.physical_keycode==KEY_ESCAPE:close();get_viewport().set_input_as_handled()
 func _process(_delta: float) -> void:
+	if save_due>0 and Time.get_ticks_msec()>=save_due and not (sensitivity_dragging):flush_settings()
 	if keep_display_button!=null:keep_display_button.visible=not display_previous.is_empty()
 	fps_label.visible=values.show_fps
 	if fps_label.visible:fps_label.text="%d FPS  %.1f ms" % [Engine.get_frames_per_second(),1000.0/maxi(1,Engine.get_frames_per_second())]
@@ -144,43 +169,76 @@ func _process(_delta: float) -> void:
 		notice.text="화면이 보이면 ‘화면 변경 유지’를 누르세요. %d초 후 복구" % ceili(remaining/1000.0)
 		if remaining<=0:_revert_display()
 func _added(node: Node) -> void:
+	if node is Control:FrontierUIScale.apply_later(node,float(values.ui_scale))
 	if node is Viewport or node is WorldEnvironment or node is Camera3D or node is Light3D:_apply_added.call_deferred(node.get_instance_id())
 func _apply_added(id: int) -> void:
 	var node:=instance_from_id(id) as Node
 	if node!=null and node.get_tree()==get_tree():_apply_node(node)
-func _apply_node(node: Node) -> void:
+func _apply_node(node: Node,keys: Array=[]) -> void:
 	if not is_instance_valid(node):return
-	if node is Viewport:
-		node.scaling_3d_mode=values.upscaler;node.fsr_sharpness=values.sharpness;node.positional_shadow_atlas_size=values.local_shadow_size
-		node.scaling_3d_scale=values.scale;node.msaa_3d=values.msaa;node.screen_space_aa=1 if values.fxaa else 0;node.use_taa=values.taa;node.mesh_lod_threshold=values.lod
+	node.add_to_group("local_presentation_settings")
+	var fields: Array=values.keys() if keys.is_empty() else keys
+	var properties: Dictionary={}
+	if node is Viewport:properties={"upscaler":"scaling_3d_mode","sharpness":"fsr_sharpness","local_shadow_size":"positional_shadow_atlas_size","scale":"scaling_3d_scale","msaa":"msaa_3d","taa":"use_taa","lod":"mesh_lod_threshold"}
+	for key in properties:
+		if key in fields:node.set(properties[key],values[key]);node_applications+=1
+	if node is Viewport and "fxaa" in fields:node.screen_space_aa=1 if values.fxaa else 0
 	if node is Camera3D:
 		if not node.has_meta("original_far"):node.set_meta("original_far",node.far)
-		node.far=maxf(float(node.get_meta("original_far")),float(values.view_distance)*1.6);node.fov=values.fov
+		if "view_distance" in fields:node.far=maxf(float(node.get_meta("original_far")),float(values.view_distance)*1.6)
+		if "fov" in fields and node.get_meta("player_fov",false):node.fov=values.fov
 	if node is WorldEnvironment and node.environment!=null:
 		var env: Environment=node.environment
-		env.ssao_enabled=values.ssao;env.ssil_enabled=values.ssil;env.ssr_enabled=values.ssr;env.glow_enabled=values.glow
+		for key in ["ssao","ssil","ssr","glow"]:
+			if key in fields:env.set(key+"_enabled",values[key])
 		if not node.has_meta("original_fog"):node.set_meta("original_fog",env.fog_enabled);node.set_meta("original_density",env.fog_density)
-		env.fog_enabled=node.get_meta("original_fog") and values.fog>0;env.fog_density=float(node.get_meta("original_density"))*float(values.fog)
-	if node is DirectionalLight3D:
+		if "fog" in fields:env.fog_enabled=node.get_meta("original_fog") and values.fog>0;env.fog_density=float(node.get_meta("original_density"))*float(values.fog)
+	if node is Light3D:
 		if not node.has_meta("original_shadow"):node.set_meta("original_shadow",node.shadow_enabled)
-		node.shadow_enabled=node.get_meta("original_shadow") and values.shadows;node.directional_shadow_max_distance=values.shadow_distance
-	elif node is Light3D:
-		if not node.has_meta("original_shadow"):node.set_meta("original_shadow",node.shadow_enabled)
-		node.shadow_enabled=node.get_meta("original_shadow") and values.local_shadows
+		var key: String="shadows" if node is DirectionalLight3D else "local_shadows"
+		if key in fields:node.shadow_enabled=node.get_meta("original_shadow") and values[key]
+		if node is DirectionalLight3D and "shadow_distance" in fields:node.directional_shadow_max_distance=values.shadow_distance
 func _walk(node: Node) -> void:
-	_apply_node(node)
+	if node is Viewport or node is Camera3D or node is WorldEnvironment or node is Light3D:_apply_node(node)
 	for child in node.get_children():_walk(child)
 func apply_all() -> void:
-	RenderingServer.global_shader_parameter_set("orbital_surface_quality",int(values.planet_surface_quality))
-	Engine.max_fps=int(values.fps)
-	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if values.vsync else DisplayServer.VSYNC_DISABLED)
-	AudioServer.set_bus_volume_db(0,linear_to_db(maxf(.0001,values.volume)))
-	AudioServer.set_bus_mute(0,values.volume<=0)
-	RenderingServer.directional_shadow_atlas_set_size(int(values.shadow_size),true)
-	RenderingServer.directional_soft_shadow_filter_set_quality(int(values.shadow_filter))
-	RenderingServer.positional_soft_shadow_filter_set_quality(int(values.shadow_filter))
-	_walk(get_tree().root)
-	changed.emit()
+	var keys: Array=[]
+	for key in values:
+		if applied.get(key)!=values[key]:keys.append(key)
+	if keys.is_empty():return
+	if applied.is_empty():_walk(get_tree().root)
+	else:
+		var rendering: Array=keys.filter(func(key):return key not in ["sensitivity","invert_y","volume","music_volume","sfx_volume","ambient_volume","toggle_aim","toggle_sprint","tutorial_mode","incident_shake","show_fps","ui_scale","preset","window_mode","resolution","water_quality","fps","vsync"])
+		if not rendering.is_empty():
+			for node in get_tree().get_nodes_in_group("local_presentation_settings"):_apply_node(node,rendering)
+	if "planet_surface_quality" in keys:RenderingServer.global_shader_parameter_set("orbital_surface_quality",int(values.planet_surface_quality))
+	if "fps" in keys:Engine.max_fps=int(values.fps)
+	if "vsync" in keys:DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if values.vsync else DisplayServer.VSYNC_DISABLED)
+	if "volume" in keys:AudioServer.set_bus_volume_db(0,linear_to_db(maxf(.0001,values.volume)));AudioServer.set_bus_mute(0,values.volume<=0)
+	if "shadow_size" in keys:RenderingServer.directional_shadow_atlas_set_size(int(values.shadow_size),true)
+	if "shadow_filter" in keys:
+		RenderingServer.directional_soft_shadow_filter_set_quality(int(values.shadow_filter));RenderingServer.positional_soft_shadow_filter_set_quality(int(values.shadow_filter))
+	if "ui_scale" in keys:FrontierUIScale.apply_tree(get_tree(),float(values.ui_scale))
+	applied=values.duplicate()
+	options_changed.emit(keys)
+	if keys.any(func(key):return key in ["view_distance","water_quality","planet_surface_quality"]):changed.emit()
+func queue_save() -> void:save_due=Time.get_ticks_msec()+300
+func flush_settings() -> void:
+	if save_due==0:return
+	save_due=0
+	if not save_settings() and notice!=null:notice.text="설정 저장 실패: 디스크 공간과 쓰기 권한을 확인해 주세요."
+func _exit_tree() -> void:flush_settings()
+func _sync_bindings() -> void:
+	for key in binding_buttons:binding_buttons[key].text=FrontierPlayInput.text(key)
+func _build_bindings() -> void:
+	var page:=_page("키 설정")
+	for key in FrontierPlayInput.definitions():
+		var entry: Dictionary=FrontierPlayInput.definitions()[key]
+		var row:=_row(page,entry.label);var button:=Button.new();button.custom_minimum_size=Vector2(180,32);row.add_child(button);binding_buttons[key]=button
+		button.pressed.connect(func():binding_target=key;notice.text=entry.label+"에 사용할 키를 누르세요. Esc 취소")
+	var reset:=Button.new();reset.text="기본 키 복원";page.add_child(reset)
+	reset.pressed.connect(func():bindings.clear();FrontierPlayInput.configure(bindings);queue_save();_sync_bindings())
+	_sync_bindings()
 func _apply_display() -> void:
 	var modes=[DisplayServer.WINDOW_MODE_WINDOWED,DisplayServer.WINDOW_MODE_MAXIMIZED,DisplayServer.WINDOW_MODE_FULLSCREEN]
 	DisplayServer.window_set_mode(modes[int(values.window_mode)])
@@ -191,7 +249,7 @@ func _revert_display() -> void:
 	for key in display_previous:values[key]=display_previous[key]
 	display_previous.clear();_apply_display();_sync();notice.text="이전 화면 설정으로 복구했습니다."
 func set_option(key: String,value: Variant) -> void:
-	if rebuilding:return
+	if rebuilding or values.get(key)==value:return
 	if key in ["window_mode","resolution"]:
 		if display_previous.is_empty():display_previous={"window_mode":values.window_mode,"resolution":values.resolution}
 		values[key]=value;display_deadline=Time.get_ticks_msec()+15000;_apply_display()
@@ -199,8 +257,8 @@ func set_option(key: String,value: Variant) -> void:
 		values[key]=value
 		if key in ["planet_surface_quality","scale","msaa","fxaa","taa","view_distance","shadow_distance","shadow_size","shadows","local_shadows","ssao","ssil","ssr","glow","fog","lod","upscaler","sharpness","shadow_filter","local_shadow_size"]:values.preset=3
 		apply_all()
-		if not save_settings():notice.text="설정 저장 실패: 디스크 공간과 쓰기 권한을 확인해 주세요."
-		else:notice.text="적용 / 저장했습니다. 온라인 세계는 설정 중에도 계속 진행됩니다."
+		queue_save()
+		notice.text="적용했습니다."
 	_sync()
 func _preset(index: int) -> void:
 	if rebuilding or index==3:return
@@ -249,6 +307,8 @@ func _sensitivity(page: VBoxContainer) -> void:
 	var spin:=SpinBox.new();spin.min_value=LIMITS.sensitivity[0];spin.max_value=LIMITS.sensitivity[1];spin.step=.01;spin.custom_minimum_size.x=110;row.add_child(spin);controls.sensitivity=spin
 	spin.tooltip_text="기본 1.00  0.50은 절반, 2.00은 두 배 속도  숫자를 직접 입력할 수 있습니다."
 	sensitivity_slider.tooltip_text=spin.tooltip_text
+	sensitivity_slider.drag_started.connect(func():sensitivity_dragging=true)
+	sensitivity_slider.drag_ended.connect(func(_changed: bool):sensitivity_dragging=false;flush_settings())
 	sensitivity_slider.value_changed.connect(func(value: float):set_option("sensitivity",value))
 	spin.value_changed.connect(func(value: float):set_option("sensitivity",value))
 	var reset:=Button.new();reset.text="기본 1.00";reset.pressed.connect(func():set_option("sensitivity",1.0));row.add_child(reset)
@@ -286,7 +346,10 @@ func _build() -> void:
 	_check(display,"수직 동기화","vsync")
 	_choice(display,"프레임 제한","fps",["무제한","30 FPS","60 FPS","90 FPS","120 FPS","144 FPS","240 FPS"],[0,30,60,90,120,144,240])
 	_check(display,"프레임 표시","show_fps")
+	_choice(display,"UI 크기","ui_scale",["100%","115%","130%"],[1.0,1.15,1.3])
 	var input:=_page("조작  소리")
+	_check(input,"조준 전환 방식","toggle_aim")
+	_check(input,"지상 질주 전환 방식","toggle_sprint")
 	_choice(input,"플레이 가이드","tutorial_mode",["처음 플레이어만","항상 표시","끄기"],[0,1,2])
 	_number(input,"시야각","fov",1,"°")
 	_sensitivity(input)
@@ -294,6 +357,7 @@ func _build() -> void:
 	_check(input,"탐험 사건 화면 흔들림","incident_shake")
 	_number(input,"전체 음량","volume",.05)
 	_number(input,"배경음악 음량","music_volume",.05)
+	_build_bindings()
 	notice=Label.new();notice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;notice.text="프레임이 낮으면 전체 품질이나 렌더 해상도를 낮춰 보세요.";column.add_child(notice)
 	var buttons:=HBoxContainer.new();column.add_child(buttons)
 	for entry in [["닫기  Esc / F10",close],["화면 변경 유지",func():display_previous.clear();notice.text="화면 설정을 저장했습니다." if save_settings() else "설정 저장 실패"],["기본값 복원",func():

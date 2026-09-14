@@ -80,6 +80,9 @@ func _process(delta: float) -> void:
 	app.navigation_toggle.get_parent().visible=false
 	visible=on_surface and app.feedback!=null and not app.feedback.blocked()
 	if not visible:return
+	for i in navigation.get_child_count():
+		var button:=navigation.get_child(i);var key: String=FrontierPlayInput.text(["inventory","build","journal","map"][i])
+		button.get_child(1).text=key;button.tooltip_text=["아이템", "건설", "연구", "지도"][i]+" ["+key+"]"
 	save_left=maxf(0,save_left-delta);saved.visible=save_left>0
 	var jet_id: String=app.session.latest.self_id
 	var equipped:=FrontierEquipment.jetpack(app.session.latest.crew.members[jet_id])
@@ -157,6 +160,8 @@ func _process(delta: float) -> void:
 		target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=260
 		context.show();target_bar.hide();target_health.hide()
 	else:target_action.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;target_action.custom_minimum_size.x=0 if not app.surface_target.is_empty() else 260
+	target_action.text=FrontierPlayInput.hint(target_action.text,"ground")
+	jet_hint.text=FrontierPlayInput.hint(jet_hint.text,"ground")
 	context.size=context.get_combined_minimum_size()
 	context.position.x=minf(context.position.x,size.x-context.size.x-24)
 	if scan_card.visible:context.hide();target_health.hide()

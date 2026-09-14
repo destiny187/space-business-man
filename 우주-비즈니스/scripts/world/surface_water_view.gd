@@ -22,6 +22,7 @@ var mask_building:=false
 var mask_ready:=false
 var clock_value:=0.0
 var maximum_usec:=0
+var water_quality:=-1
 func configure(owner_surface: FrontierCrewSurfaceScene) -> void:
  surface=owner_surface;visual=MeshInstance3D.new();add_child(visual);visual.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
  material=ShaderMaterial.new();material.shader=load("res://assets/materials/space/physical_water.gdshader");visual.material_override=material
@@ -112,4 +113,6 @@ func nearest_water(p: Vector3) -> Dictionary:
  return result
 
 func _quality_changed() -> void:
- FrontierWaterQuality.apply(material,FrontierWaterQuality.level(get_tree()))
+ if water_quality==FrontierWaterQuality.level(get_tree()):return
+ water_quality=FrontierWaterQuality.level(get_tree())
+ FrontierWaterQuality.apply(material,water_quality)
