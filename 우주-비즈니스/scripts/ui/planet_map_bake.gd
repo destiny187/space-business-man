@@ -6,6 +6,7 @@ var map_min: Vector2
 var map_size: Vector2
 var key: String
 var result: Image
+var resolution:=Vector2i(320,200)
 func configure(source: FrontierTerrainField,planet: Dictionary,origin: Vector2,extent: Vector2,bake_key: String) -> void:
  field=FrontierTerrainField.new()
  field.configure(source.seed_value,[],source.span,source.traits)
@@ -14,7 +15,7 @@ func configure(source: FrontierTerrainField,planet: Dictionary,origin: Vector2,e
 func run() -> void:
  result=bake()
 func bake() -> Image:
- var width:=320;var height:=200
+ var width:=resolution.x;var height:=resolution.y
  var image:=Image.create(width,height,false,Image.FORMAT_RGBA8)
  var heights:=PackedFloat32Array();heights.resize((width+1)*(height+1))
  for z in height+1:

@@ -37,7 +37,7 @@ static func navigate(app: FrontierCrewExpedition,request: Dictionary) -> void:
 		return
 	app.planet_map.modes.current_tab=0;app.planet_map.refresh()
 	app.planet_map.waypoint=Vector2(found.position[0],found.position[2]);app.planet_map.focus=app.planet_map.waypoint
-	app.planet_map.layers.select(1 if kind=="resource" else 3)
+	app.planet_map.layers.select(1 if kind=="resource" else 2)
 	app.open_menu(app.planet_map);app.planet_map.update_detail();app.planet_map.canvas.queue_redraw()
 
 static func robot_action(robot: Dictionary) -> Dictionary:
