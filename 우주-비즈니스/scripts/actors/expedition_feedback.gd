@@ -144,7 +144,9 @@ func _response(sequence: int,value: Dictionary) -> void:
 			intake_point=point;intake_resource=request.resource
 			effects.suction(point,handheld,request.resource,12)
 			audio.play("sfx_pickup_resource")
-		"business_store_equipment","business_withdraw","business_deposit","business_recover_crate","surface_collect","surface_resupply":
+		"equipment_drop":
+			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("아이템 내려놓기 완료")
+		"equipment_pickup","business_store_equipment","business_withdraw","business_deposit","business_recover_crate","surface_collect","surface_resupply":
 			effects.burst(point,Color("82f5d2"),10);audio.play("sfx_pickup_resource");show_cue("인수 완료")
 		"business_build":
 			# The shared surface packet presents construction to every observer.

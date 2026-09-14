@@ -121,7 +121,7 @@ func _ready() -> void:
 	facility_status=label(facility_tab,"")
 	facility=option(facility_tab)
 	button(facility_tab,"가동 / 정지 · 엄폐물 수리",func():command.emit("business_toggle",{"building_id":selected(facility)}))
-	button(facility_tab,"시설 철거 · 엄폐물은 남은 내구도만큼 반환",func():command.emit("business_demolish",{"building_id":selected(facility)}))
+	button(facility_tab,"시설 해체 · 자원 50%를 바닥에 회수",func():command.emit("business_demolish",{"building_id":selected(facility)}))
 	label(build_tab,"시설 선택 → 지면 클릭    휠 90° 회전    Esc 취소",12)
 	var research_tab:=VBoxContainer.new();research_tab.name="기술";tabs.add_child(research_tab)
 	technology=option(research_tab)
@@ -436,7 +436,7 @@ func update_engineering() -> void:
 		engineering_steps[i].text=("✓ " if done[i] else "%d "%(i+1))+["분석","시제품","현장 시험","개조"][i]
 		engineering_steps[i].modulate=FrontierInterfaceStyle.ACCENT if done[i] else FrontierInterfaceStyle.MUTED
 	research_detail.text=def.description
-	if not analyzed:research_detail.text+="\n관련 생물을 E로 조사한 뒤 착륙선에서 분석하세요."
+	if not analyzed:research_detail.text+=FrontierPlayInput.hint("\n관련 생물을 T로 조사한 뒤 착륙선에서 분석하세요.","ground")
 	elif not form_id.is_empty():research_detail.text+="\n연구 표본  "+FrontierSpeciesNames.display(knowledge,form_id)
 	var cfg:=FrontierFieldEngineering.config()
 	engineering_progress.visible=stage in ["prototype","trial"]

@@ -3,7 +3,7 @@ extends RefCounted
 ## Unknown commands retain the conservative full transaction draft.
 const Snapshot=preload("res://scripts/persistence/world_snapshot.gd")
 static func personal_equipment(kind: String) -> bool:
-	return kind in ["equipment_weapon_lock","equipment_weapon_salvage","equipment_select","equipment_equip","equipment_craft","equipment_ammo_craft","equipment_upgrade","equipment_suit_upgrade"]
+	return kind in ["equipment_drop","equipment_pickup","equipment_weapon_lock","equipment_weapon_salvage","equipment_select","equipment_equip","equipment_craft","equipment_ammo_craft","equipment_upgrade","equipment_suit_upgrade"]
 static func _crew(source: Dictionary,actors: Array) -> Dictionary:
 	var draft:=source.duplicate();draft.crew=source.crew.duplicate();draft.crew.members=source.crew.members.duplicate()
 	for actor in actors:
@@ -28,6 +28,7 @@ static func request(source: Dictionary,actor: String,kind: String,args: Dictiona
 	var draft:=_crew(source,[actor]);draft.crew.receipts=source.crew.receipts.duplicate()
 	draft.business=source.business.duplicate();draft.business.bags=source.business.bags.duplicate()
 	draft.business.bags[actor]=FrontierExpeditionBusiness.bag(source,actor).duplicate()
+	if kind in ["equipment_drop","equipment_pickup"]:draft.business.crates=source.business.crates.duplicate()
 	if FrontierShuttles.aboard(source,actor):
 		draft.crew.shuttles=source.crew.shuttles.duplicate();draft.crew.shuttles[actor]=source.crew.shuttles[actor].duplicate()
 	return draft

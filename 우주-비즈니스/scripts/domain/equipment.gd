@@ -65,6 +65,7 @@ static func validate(value: Variant) -> String:
 		if id!="":seen.append(id)
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary) -> String:
+	if kind in ["equipment_drop","equipment_pickup"]:return preload("res://scripts/domain/item_drops.gd").apply(world,actor,kind,args)
 	if kind in ["equipment_weapon_lock","equipment_weapon_salvage"]:return FrontierWeaponLoot.manage(world,actor,kind,args)
 	if kind=="equipment_ammo_craft":return FrontierFirearms.craft_ammo(world,actor,args)
 	if kind=="equipment_research_prototype":return FrontierExpeditionResearch.assemble(world,actor,args)

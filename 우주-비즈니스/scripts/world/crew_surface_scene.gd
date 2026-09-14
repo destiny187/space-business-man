@@ -115,9 +115,12 @@ func accept(packet: Dictionary) -> void:
 		ecology.refresh_timer=0;accepted_ecology=packet.ecology
 	var business: Dictionary=packet.get("business",{})
 	if not accepted_packet or edits_changed or accepted_business!=business:
-		business_view.accept(business);surface_details.accept(business);atmosphere.accept(business)
-		if presence!=null:presence.accept(business)
-		if hydrology!=null:hydrology.accept(business)
+		if accepted_packet and not edits_changed and accepted_business.get("sites",{})==business.get("sites",{}):
+			business_view.accept_crates(business)
+		else:
+			business_view.accept(business);surface_details.accept(business);atmosphere.accept(business)
+			if presence!=null:presence.accept(business)
+			if hydrology!=null:hydrology.accept(business)
 		accepted_business=business
 	_update_shuttles()
 	if physical_water!=null:physical_water.accept(packet.get("water",FrontierSurfaceWater.create()))

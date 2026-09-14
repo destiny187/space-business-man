@@ -870,7 +870,7 @@ func _update_surface_hud() -> void:
 		if business_target.get("kind")=="vein":
 			var vein:=FrontierExpeditionBusiness.find_vein(surface_world.body,business_target.id)
 			text+="  채집기 %d등급 필요"%int(vein.get("required_tier",1))
-	surface_status.value=text
+	surface_status.value=FrontierPlayInput.hint(text,"ground")
 	surface_status.visible=not inventory_panel.visible and not business_panel.visible and not research_frame.visible and not shipyard_panel.visible
 
 func _refresh_surface_options() -> void:
@@ -987,7 +987,7 @@ func interact_business() -> void:
 	match target.get("kind",""):
 		"vein":session.send_request("business_mine",{"vein_id":target.id})
 		"base":open_station("base",target.id)
-		"crate":session.send_request("business_recover_crate",{"crate_id":target.id})
+		"crate":session.send_request("equipment_pickup",{"crate_id":target.id})
 		"robot":open_station("robot",target.id)
 		"building":
 			var row: Dictionary=session.surface.get("business",{}).get("sites",{}).get(surface_world.body.id,{}).get("buildings",{}).get(target.id,{})

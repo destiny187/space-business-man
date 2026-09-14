@@ -253,14 +253,7 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 		if not def.requires.is_empty() and def.requires not in ledger.technologies:return "선행 기술이 필요합니다."
 		if ledger.credits<int(def.price):return "공동 크레딧이 부족합니다."
 		ledger.credits-=int(def.price);ledger.technologies.append(key);return ""
-	if kind=="business_recover_crate":
-		var id: String=str(args.get("crate_id",""))
-		if not ledger.crates.has(id):return "이미 회수한 사업 화물입니다."
-		var crate: Dictionary=ledger.crates[id]
-		if crate.body_id!=world.location or point(crate.position).distance_to(position)>4:return "같은 행성의 회수 화물에 접근하세요."
-		if not FrontierItemInventory.fits(world,actor,crate.inventory):return "배낭을 먼저 비우세요."
-		if not ledger.bags.has(actor):ledger.bags[actor]=inventory()
-		transfer(ledger.bags[actor],crate.inventory,1);ledger.crates.erase(id);return ""
+	if kind=="business_recover_crate":return preload("res://scripts/domain/item_drops.gd").apply(world,actor,"equipment_pickup",args)
 	if current.state=="settled":return "정산된 계약의 시설과 창고는 인계됐습니다."
 	if kind=="business_withdraw":return FrontierProductionTier2.apply(world,actor,kind,args)
 	if kind=="business_store_equipment":return FrontierItemInventory.warehouse_equipment(world,actor,args)
@@ -319,13 +312,12 @@ static func apply_local(world: Dictionary,actor: String,kind: String,args: Dicti
 			if FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 공학 실험을 완료한 뒤 철거하세요."
 			for job in current.jobs.values():
 				if job.factory_id==id:return "제작이 끝난 뒤 제작소를 철거하세요."
-			var refund: Dictionary=FrontierCatalog.entry("buildings",building.type).cost.duplicate()
+			var refund: Dictionary=(FrontierFacilityResearch.construction(building.type).cost if building.get("research_built",false) else FrontierCatalog.entry("buildings",building.type).cost).duplicate()
 			transfer(refund,FrontierProductionTier2.upgrade_refund(building),1)
-			if not FrontierItemInventory.warehouse_fits(current,refund,-int(FrontierItemInventory.config().warehouse_slots) if building.type=="storage" else 0):return "철거 후 창고 용량과 반환 재료 공간이 부족합니다."
-			if FrontierCombatCover.is_cover(building):
-				var ratio:=float(building.cover_hp)/float(FrontierCombatCover.config().buildings[building.type].health)
-				for resource in refund:refund[resource]=floori(float(refund[resource])*ratio)
-			transfer(current.inventory,refund,1);current.buildings.erase(id);return ""
+			if building.type=="storage" and not FrontierItemInventory.warehouse_fits(current,{},-int(FrontierItemInventory.config().warehouse_slots)):return "창고 안의 보관물을 먼저 옮기세요."
+			for resource in refund:refund[resource]=floori(float(refund[resource])*.5)
+			preload("res://scripts/domain/item_drops.gd").create(world,building.position,refund)
+			current.buildings.erase(id);return ""
 		for job in current.jobs.values():
 			if job.factory_id==id:return "이 제작소는 로봇을 제작 중입니다."
 		if not building.active or not building.enabled:return "전력이 공급되는 가동 제작소가 필요합니다."
@@ -509,6 +501,7 @@ static func validate(value: Variant,manifest: Dictionary) -> String:
 	for id in value.crates:
 		var crate: Variant=value.crates[id]
 		if not id is String or not crate is Dictionary or not crate.get("body_id") is String or FrontierUniverse.ordinal_of(manifest,crate.body_id)<0 or not FrontierUniverse._vector3_array(crate.get("position")) or not valid_inventory(crate.get("inventory"),FrontierItemInventory.limit()) or total(crate.inventory)>FrontierItemInventory.limit():return "사업 회수 화물 오류"
+		if not preload("res://scripts/domain/item_drops.gd").valid(crate.get("equipment",{})):return "회수 장비 기록 오류"
 	for id in value.sites:
 		if not id is String or FrontierUniverse.ordinal_of(manifest,id)<0:return "개발 행성 주소 오류"
 		var current: Variant=value.sites[id]

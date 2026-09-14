@@ -58,6 +58,17 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 		label.position.y=top
 	root.set_meta("visibility_notifier",FrontierFieldVisibility.watch(root))
 	nodes[id]=root;return root
+func accept_crates(value: Dictionary) -> void:
+	var previous: Dictionary=ledger.get("crates",{});ledger=value
+	for id in previous:
+		if value.get("crates",{}).has(id):continue
+		if nodes.has(id):nodes[id].queue_free();nodes.erase(id)
+		pending_models.erase(id)
+	for id in value.get("crates",{}):
+		var row: Dictionary=value.crates[id]
+		if not nodes.has(id):_queue_entity(id,"crew/recovery_crate",FrontierExpeditionBusiness.point(row.position),.5,"crate")
+		else:_update_entity(id)
+
 func accept(value: Dictionary) -> void:
 	ledger=value
 	if point_revision!=terrain.field.revision:
@@ -212,7 +223,10 @@ func _update_entity(id: String) -> void:
 	if kind=="base":
 		node.get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고 · 반납/인수"
 	elif kind=="crate":
-		if ledger.get("crates",{}).has(id):node.get_meta("label").text="사업 회수 화물 · F\n"+FrontierCatalog.stock_text(ledger.crates[id].inventory)
+		if ledger.get("crates",{}).has(id):
+			var crate: Dictionary=ledger.crates[id]
+			var gear: Dictionary=crate.get("equipment",{})
+			node.get_meta("label").text="내려놓은 아이템 · F 회수\n"+(FrontierEquipment.config().items[gear.definition].name if not gear.is_empty() else FrontierCatalog.stock_text(crate.inventory))
 	elif kind=="vein":
 		if not vein_rows.has(id):return
 		var row: Dictionary=vein_rows[id]

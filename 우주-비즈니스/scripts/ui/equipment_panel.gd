@@ -137,7 +137,7 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	withdraw_count=SpinBox.new();withdraw_count.min_value=1;withdraw_count.max_value=FrontierItemInventory.limit();withdraw_count.value=1;withdraw_count.prefix="인수";detail.add_child(withdraw_count)
 	var footer:=HBoxContainer.new();warehouse_supplements.append(footer);column.add_child(footer)
 	FrontierInterfaceStyle.label(footer,"장비 선택 → 아래 번호 슬롯 클릭    끌어놓기 가능",12,FrontierInterfaceStyle.MUTED)
-	var info:=FrontierInterfaceStyle.label(footer,"E  내장 스캐너",12,FrontierInterfaceStyle.ACCENT);info.size_flags_horizontal=Control.SIZE_EXPAND_FILL;info.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+	var info:=FrontierInterfaceStyle.label(footer,FrontierPlayInput.text("scan")+"  내장 스캐너",12,FrontierInterfaceStyle.ACCENT);info.size_flags_horizontal=Control.SIZE_EXPAND_FILL;info.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
 	hotbar=HBoxContainer.new();hotbar.theme=theme;hotbar.add_theme_constant_override("separation",6);parent.add_child(hotbar)
 	for i in int(FrontierEquipment.config().slots):
 		var tile:=FrontierItemTile.new();tile.custom_minimum_size=Vector2(80,80);tile.compact_slot=true;tile.slot=i;tile.pressed.connect(func():_slot(i));tile.item_dropped.connect(func(id: String):_equip(id,i));hotbar.add_child(tile);hotbuttons.append(tile)
@@ -286,6 +286,8 @@ func _reuse_tile(grid: Node,key: String) -> FrontierItemTile:
 	var cache: Dictionary=grid.get_meta("tile_cache")
 	if not cache.has(key):
 		var created:=FrontierItemTile.new();created.set_meta("tile_key",key);grid.add_child(created);cache[key]=created
+		if grid in [owned,storage_owned]:created.gui_input.connect(func(event):
+			if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:_drop_dialog(created);created.accept_event())
 	var tile: FrontierItemTile=cache[key]
 	tile.set_meta("retained",true)
 	var order:=int(grid.get_meta("tile_order",0));grid.move_child(tile,mini(order,grid.get_child_count()-1));grid.set_meta("tile_order",order+1)
@@ -613,3 +615,19 @@ func _weapon_salvage(id: String) -> void:
 	dialog.paragraph("이 총기는 소모됩니다. 수납 공간이 부족하면 총기와 탄약을 보존합니다.")
 	dialog.confirmed.connect(func():app.session.send_request("equipment_weapon_salvage",{"item_id":id});dialog.queue_free())
 	dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(620,510))
+
+func _drop_dialog(tile: FrontierItemTile) -> void:
+	var payload: Dictionary=tile.cargo_payload
+	var item: String=payload.get("equipment_item",tile.item_id)
+	var resource: String=payload.get("resource",tile.get_meta("resource",""))
+	if item.is_empty() and resource.is_empty():return
+	var maximum:=1 if not item.is_empty() else int(bag.get(resource,0))
+	if maximum<=0:return
+	var dialog:=FrontierGameModal.new();add_child(dialog)
+	dialog.configure("아이템 내려놓기","내려놓기","개인 배낭","inventory",true)
+	dialog.item_card(dialog.section("지표에 남길 아이템"),tile.picture,tile.caption,"다른 승무원도 회수할 수 있습니다.")
+	var count:=SpinBox.new();count.min_value=1;count.max_value=maximum;count.step=1;count.value=1;dialog.section("수량").add_child(count)
+	dialog.primary.text="1개 내려놓기";count.value_changed.connect(func(value):dialog.primary.text="%d개 내려놓기"%int(value))
+	var args: Dictionary={"item_id":item} if not item.is_empty() else {"resource":resource}
+	dialog.confirmed.connect(func():args.amount=int(count.value);app.session.send_request("equipment_drop",args);dialog.queue_free())
+	dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(430,480))
