@@ -135,4 +135,5 @@ func _draw() -> void:
 	if presentation.repair_available():
 		keycap(Vector2(260,size.y-113),"R");work_icon(Vector2(298,size.y-113),true)
 		label_at(Vector2(336,size.y-95),"%d Cr"%int(FrontierSpaceCombat.config().repair_cost),WHITE,13)
+	presentation.damage_numbers.draw(self,v.camera,false)
 	draw_radio()

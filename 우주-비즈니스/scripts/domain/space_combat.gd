@@ -75,8 +75,9 @@ static func ship_state(world: Dictionary,id: String) -> Dictionary:
 	var local:=local_world(world,id);local.crew.navigation.combat_fitted=true
 	commit(world,local,id)
 	return r.ships[id]
-static func emit(r: Dictionary,kind: String,system: int,origin: Vector3,target: Vector3,id: String="") -> void:
+static func emit(r: Dictionary,kind: String,system: int,origin: Vector3,target: Vector3,id: String="",damage: Dictionary={}) -> void:
 	r.event_serial+=1;r.events.append({"serial":r.event_serial,"kind":kind,"system":system,"origin":arr(origin),"target":arr(target),"id":id})
+	if not damage.is_empty():r.events.back().damage=damage
 	while r.events.size()>32:r.events.pop_front()
 static func clear_position(world: Dictionary,system: int,p: Vector3,radius: float=160.0) -> bool:
 	if p.length()+radius>float(FrontierUniverse.system_layout(world.manifest,system).boundary):return false
@@ -207,9 +208,11 @@ static func damage_enemy(world: Dictionary,enemy: Dictionary,amount: float,sourc
 	var r:=record(world);var e: Dictionary=r.encounter
 	if float(enemy.get("mark_left",0))>0:amount*=float(enemy.get("mark_multiplier",1.0))
 	if shield_only:amount=minf(amount,float(enemy.shield))
+	if amount<=0:return
+	var hull_before:=float(enemy.hull)
 	var absorbed:=minf(float(enemy.shield),amount)
 	enemy.shield-=absorbed;enemy.hull=maxf(0,enemy.hull-(amount-absorbed));enemy.hit_age=0.0
-	emit(r,"break" if absorbed>0 and enemy.shield<=0 else "impact",int(e.system),source,at,enemy.id)
+	emit(r,"break" if absorbed>0 and enemy.shield<=0 else "impact",int(e.system),source,at,enemy.id,{"hull":hull_before-float(enemy.hull),"shield":absorbed,"killed":enemy.hull<=0})
 	if enemy.hull<=0:
 		r.wrecks.append({"id":str(e.id)+"/"+str(enemy.id),"system":int(e.system),"position":enemy.position.duplicate(),"kind":enemy.kind,"loot":config().enemy[enemy.kind].loot.duplicate(true)})
 		while r.wrecks.size()>int(config().maximum_wrecks):r.wrecks.pop_front()
@@ -228,10 +231,12 @@ static func missile_target(e: Dictionary,origin: Vector3,aim: Vector3) -> Dictio
 static func damage_ship(world: Dictionary,id: String,amount: float,source: Vector3=Vector3.INF) -> void:
 	var local:=local_world(world,id);var stats:=ship_state(world,id);var nav: Dictionary=local.crew.navigation
 	if id=="crew":amount=FrontierSpaceSkills.absorb(world,amount,source)
+	if amount<=0:return
+	var hull_before:=float(nav.get("hull",100))
 	var absorbed:=minf(float(stats.shield),amount);stats.shield-=absorbed;stats.hit_age=0.0
 	if id=="crew" and absorbed>0 and stats.shield<=0:FrontierSpaceSkills.on_break(world)
 	nav.hull=maxf(0,float(nav.get("hull",100))-(amount-absorbed));nav.damage_cooldown=8.0
-	emit(record(world),"break" if absorbed>0 and stats.shield<=0 else "impact",int(nav.system),source if source.is_finite() else point(nav.position)+Vector3.UP,point(nav.position),id)
+	emit(record(world),"break" if absorbed>0 and stats.shield<=0 else "impact",int(nav.system),source if source.is_finite() else point(nav.position)+Vector3.UP,point(nav.position),id,{"hull":hull_before-float(nav.hull),"shield":absorbed,"killed":nav.hull<=0})
 	commit(world,local,id)
 static func tick(world: Dictionary,delta: float,inputs: Dictionary,peers: Dictionary,now: float) -> bool:
 	var r:=record(world)
@@ -456,4 +461,9 @@ static func valid(r: Variant) -> bool:
 			if FrontierCatalog.entry("resources",resource).is_empty() or not FrontierExpeditionBusiness.integer(w.loot[resource],1,10000):return false
 	for event in r.events:
 		if not event is Dictionary or not FrontierExpeditionBusiness.integer(event.get("serial"),1,9007199254740000) or not event.get("kind") is String or not event.get("id") is String or not FrontierExpeditionBusiness.integer(event.get("system"),0,249999) or not FrontierUniverse._vector3_array(event.get("origin")) or not FrontierUniverse._vector3_array(event.get("target")):return false
+		if event.has("damage"):
+			if event.kind not in ["impact","break"] or not event.damage is Dictionary:return false
+			for key in ["hull","shield"]:
+				if not FrontierUniverse._finite(event.damage.get(key),0,1e12):return false
+			if not event.damage.get("killed") is bool:return false
 	return true

@@ -21,6 +21,7 @@ var hit_bearing: float=-PI*.5
 var hit_shielded:=false
 var shot_flash:=0.0
 var hit_confirm:=0.0
+var damage_numbers=preload("res://scripts/actors/firearm_damage_numbers.gd").new()
 var blocked:=true
 var visible_enemies: Array=[]
 var visible_wrecks: Array=[]
@@ -67,6 +68,7 @@ func suspend() -> void:
 	view.get_viewport().audio_listener_enable_3d=false
 	blocked=true;selected_wreck="";radio={};radio_left=0.0;hide();hud.hide()
 	skills.clear()
+	damage_numbers.clear();hit_confirm=0;hit_flash=0
 	for player in audio.get_children():
 		if player is AudioStreamPlayer or player is AudioStreamPlayer3D:player.stop()
 	last_serial=int(data().get("event_serial",0));fx.clear();key_light.light_energy=0;rim_light.light_energy=0;light_blend=0
@@ -80,6 +82,8 @@ func update(delta: float,paused: bool) -> void:
 	blocked=paused;hit_flash=maxf(0,hit_flash-delta);shot_flash=maxf(0,shot_flash-delta);hit_confirm=maxf(0,hit_confirm-delta)
 	missile_flash=maxf(0,missile_flash-delta)
 	if paused:suspend();return
+	damage_numbers.update(delta)
+	if not relevant():damage_numbers.clear()
 	radio_left=maxf(0,radio_left-delta)
 	if radio_left<=0 or not relevant():radio={}
 	show();hud.visible=view.exterior and not data().is_empty()
@@ -196,6 +200,7 @@ func update(delta: float,paused: bool) -> void:
 					if socket!=null:muzzle=socket.global_position
 			fx.spark(muzzle,Color("caffed") if event.kind=="shot" else Color("ffe6a2"),1.4,.1)
 		elif event.kind in ["impact","break"]:
+			var damage: Dictionary=event.get("damage",{})
 			var shield_anchor: Node3D=view.ship if event.id==id() else null
 			var shielded:=false;var center:=target;var radius:=22.0 if id()=="crew" else 13.0
 			if event.id==id():
@@ -203,20 +208,25 @@ func update(delta: float,paused: bool) -> void:
 				var local_source: Vector3=view.camera.global_basis.inverse()*(source-center)
 				var screen_source:=Vector2(local_source.x,-local_source.y)
 				hit_bearing=screen_source.angle() if screen_source.length()>2 else -PI*.5
-				shielded=float(data().get("ships",{}).get(id(),{}).get("shield",0))>0;hit_shielded=shielded or event.kind=="break"
+				shielded=float(damage.get("shield",data().get("ships",{}).get(id(),{}).get("shield",0)))>0;hit_shielded=shielded or event.kind=="break"
 			else:
-				hit_confirm=.16
 				for enemy in encounter().get("enemies",[]):
 					if str(enemy.id)==str(event.id):
-						center=FrontierSpaceCombat.point(enemy.position);radius=float(FrontierSpaceCombat.config().enemy[enemy.kind].radius);shielded=enemy.shield>0
+						hit_confirm=.16
+						center=FrontierSpaceCombat.point(enemy.position);radius=float(FrontierSpaceCombat.config().enemy[enemy.kind].radius);shielded=float(damage.get("shield",enemy.shield))>0
 						var key: String="enemy:"+str(encounter().id)+":"+str(enemy.id)
 						if models.has(key):shield_anchor=models[key].root
+						if relevant() and view.exterior and not damage.is_empty():
+							damage_numbers.add([{"id":key,"anchor":FrontierSpaceCombat.arr(center),"damage":damage.hull,"shield":damage.shield,"broken":event.kind=="break","killed":damage.killed,"kind":"ship"}])
 						break
 			if shielded or event.kind=="break":fx.shield(center,source,radius,event.kind=="break",shield_anchor)
 			else:fx.impact(target,source,int(event.serial))
 		var cue: String=FrontierSpaceCombat.config().audio.get("enemy_shot" if event.kind=="enemy_shot" else event.kind,"")
+		if event.kind=="impact" and float(event.get("damage",{}).get("shield",0))>0:cue=FrontierSpaceCombat.config().audio.shield_impact
 		if not cue.is_empty() and event.kind not in ["destroy","warning"]:sound(cue,target if event.kind in ["impact","break","missile_blast"] else source,event.id==id(),(.85 if event.kind=="enemy_shot" else 1.0))
 	last_serial=event_serial
+	for entry in damage_numbers.entries:
+		if models.has(entry.id):entry.anchor=models[entry.id].root.position
 	var operation: Dictionary=data().get("ships",{}).get(id(),{}).get("operation",{})
 	if not operation.is_empty() and operation.kind=="space_salvage":
 		for w in visible_wrecks:

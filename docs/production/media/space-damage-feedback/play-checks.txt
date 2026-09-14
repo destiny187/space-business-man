@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS prepare encounter in actual expedition
+PASS combat save passes full world validation
+PASS current expedition loads combat
+PASS actual host cannon fires
+PASS host pulse displays 16 shield damage
+PASS shield impact plays ElevenLabs shield cue
+PASS same snapshot does not replay or add damage
+PASS mixed shield and hull hit shows 26 with break icon
+PASS shield break plays existing break cue
+PASS bare hull hit shows actual hull damage
+PASS hull impact plays existing armor impact cue
+PASS successive hull hits stack per enemy
+PASS host launches signature missiles
+PASS actual missile contact displays confirmed hull loss
+PASS missile damage retains its impact sound
+PASS own shield damage retains directional hit feedback
+PASS menu clears damage numbers and stops hit audio
+PASS damage during menu does not replay on resume
+PASS current expedition saves new feedback fields
+SPACE_DAMAGE_PLAY 19 FAILURES 0
