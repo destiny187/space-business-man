@@ -74,6 +74,34 @@ func accept_crates(value: Dictionary) -> void:
 		if not nodes.has(id):_queue_entity(id,"crew/recovery_crate",FrontierExpeditionBusiness.point(row.position),.5,"crate")
 		else:_update_entity(id)
 
+func accept_remaining(value: Dictionary) -> bool:
+	# Mining changes ore quantities, not the set of nearby regions or facilities.
+	# Fall back for terrain edits, district switches and any other site change.
+	if point_revision!=terrain.field.revision:return false
+	var previous: Dictionary=ledger.get("sites",{}).get(body.id,{})
+	var current: Dictionary=value.get("sites",{}).get(body.id,{})
+	if previous.is_empty() or current.is_empty():return false
+	var before:=previous.duplicate();before.erase("remaining")
+	var after:=current.duplicate();after.erase("remaining")
+	if before!=after:return false
+	var old_remaining: Dictionary=previous.get("remaining",{})
+	var remaining: Dictionary=current.get("remaining",{})
+	var changed:=old_remaining.duplicate()
+	changed.merge(remaining,true)
+	accept_crates(value)
+	for id in changed:
+		if old_remaining.get(id)==remaining.get(id):continue
+		if not vein_rows.has(id):continue
+		var row: Dictionary=vein_rows[id]
+		if int(remaining.get(id,row.capacity))<=0:
+			if nodes.has(id):nodes[id].queue_free();nodes.erase(id)
+			pending_models.erase(id)
+		elif nodes.has(id):_update_entity(id)
+		else:
+			var point:=_vein_point(row)
+			if point.is_finite() and not FrontierExpeditionBusiness.thermal_locked(body,current,row):_queue_entity(id,"ore_"+row.resource,point,1.1,"vein")
+	return true
+
 func accept(value: Dictionary) -> void:
 	ledger=value
 	if point_revision!=terrain.field.revision:

@@ -117,6 +117,8 @@ func accept(packet: Dictionary) -> void:
 	if not accepted_packet or accepted_business!=business:
 		if accepted_packet and not edits_changed and accepted_business.get("sites",{})==business.get("sites",{}):
 			business_view.accept_crates(business)
+		elif accepted_packet and not edits_changed and business_view.accept_remaining(business):
+			pass
 		else:
 			business_view.accept(business);surface_details.accept(business);atmosphere.accept(business)
 			if presence!=null:presence.accept(business)

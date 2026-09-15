@@ -348,6 +348,9 @@ func _refresh_details() -> void:
 	if tabs.current_tab==2:
 		_refresh_transfer()
 		return
+	# Body, dye, modules and ammunition own their details. A retained recipe
+	# is a base definition, not a resolved firearm instance on these tabs.
+	if tabs.current_tab not in [0,1]:return
 
 	if tabs.current_tab==0 and not selected_resource.is_empty():
 		var source: Dictionary=depot if tabs.current_tab==2 and storage.selected==1 else bag
