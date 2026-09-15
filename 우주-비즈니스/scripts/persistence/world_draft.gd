@@ -28,7 +28,7 @@ static func request(source: Dictionary,actor: String,kind: String,args: Dictiona
 				d.business.bags[actor]=FrontierExpeditionBusiness.bag(source,actor).duplicate()
 			return d
 	var mission: Dictionary=source.get("incidents",{}).get("records",{}).get(str(args.get("id","")),{})
-	if kind in ["surface_incident","surface_incident_tool"] and FrontierActiveMissions.enabled(mission):
+	if kind in ["surface_incident","surface_incident_tool"] and (FrontierActiveMissions.enabled(mission) or (args.has("loot_key") and not mission.is_empty() and not preload("res://scripts/domain/storm_archive.gd").enabled(mission))):
 		var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()
 		d.incidents=source.incidents.duplicate();d.incidents.records=source.incidents.records.duplicate()
 		d.incidents.records[str(args.id)]=mission.duplicate(true)

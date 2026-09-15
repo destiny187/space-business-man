@@ -44,6 +44,7 @@ var skill_upgrade:Button
 var skill_slots:Array[Button]=[]
 var skill_cards:Dictionary={}
 var rendered_mode:=""
+var logistics: Button
 func _ready() -> void:
  theme=FrontierInterfaceStyle.theme()
  set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -55,6 +56,7 @@ func _ready() -> void:
  heading=label(header,"WAYFARER  교역",24);heading.size_flags_horizontal=Control.SIZE_EXPAND_FILL
  money=label(header,"",18);money.autowrap_mode=TextServer.AUTOWRAP_OFF;money.custom_minimum_size.x=120;money.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
  button(header,"닫기  Esc",hide)
+ logistics=button(column,"운송 개조",open_logistics)
  var tabs:=HBoxContainer.new();column.add_child(tabs)
  for tab in [["goods","물자 거래"],["blueprints","전문 설비 설계도"],["ships","선체 구매"],["owned","보유 선체"],["refits","항해 개장"],["skills","전투 스킬"]]:
   var key: String=tab[0]
@@ -122,6 +124,7 @@ func in_range() -> bool:
  var nav: Dictionary=data.crew.navigation
  return data.crew.get("landing",{}).is_empty() and nav.mode=="idle" and absf(float(nav.speed))<=5 and FrontierCrewWorld.vector(nav.position).distance_to(FrontierCrewWorld.vector(data.station.position))<=float(FrontierSpaceStation.config().trade_distance)
 func rebuild() -> void:
+ logistics.visible=mode in ["ships","owned","refits"] and not data.get("station",{}).get("fixed_port",false)
  if grid==null:return
  if mode!="skills" or rendered_mode!="skills":
   for node in grid.get_children():grid.remove_child(node);node.queue_free()
@@ -290,7 +293,7 @@ func response(sequence: int,value: Dictionary) -> void:
  if not pending or sequence!=pending_sequence:return
  pending=false
  var ok: bool=value.get("ok",false)
- message.text=("스킬 정비 완료" if pending_kind.begins_with("station_skill_") else "항해 개장 완료  항성 지도에서 새 항로를 확인하세요" if pending_kind=="station_navigation_refit" else "공동 설계도 확보  제작소에서 생산  개조하세요" if pending_kind=="station_blueprint" else "선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
+ message.text=("운송 개조 완료" if pending_kind=="station_logistics" else "스킬 정비 완료" if pending_kind.begins_with("station_skill_") else "항해 개장 완료  항성 지도에서 새 항로를 확인하세요" if pending_kind=="station_navigation_refit" else "공동 설계도 확보  제작소에서 생산  개조하세요" if pending_kind=="station_blueprint" else "선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
  var sounds: Dictionary=FrontierSpaceStation.config().audio
  audio.play(sounds.hull if ok and (pending_kind in ["station_equip","station_navigation_refit"] or selected.begins_with("hull:")) else sounds.trade if ok else sounds.failure)
  refresh_detail()
@@ -334,3 +337,20 @@ func update_cycle()->void:
  refresh_bar.max_value=int(station.get("cycle_seconds",600));refresh_bar.value=refresh_bar.max_value-remaining
  refresh_label.text="갱신 %02d:%02d"%[remaining/60,remaining%60]
  market_cycle.tooltip_text="주기마다 선호 물자와 시세가 바뀝니다. 부족 재고는 평상시 재고의 %d%%씩 보충하고 초과 재고는 같은 양만큼 매입 여유로 돌아옵니다."%roundi(float(FrontierSpaceStation.Economy.config().restock_fraction)*100)
+
+func open_logistics() -> void:
+ if data.is_empty() or pending:return
+ var level:=FrontierRovers.research(data.crew.members[data.self_id])
+ var dialog:=FrontierGameModal.new();add_child(dialog)
+ dialog.configure("운송 개조","개조" if level<2 else "닫기","정거장 선박 서비스","ship",level<2)
+ var section:=dialog.section("적재 / 하역" if level>0 else "현장 물류")
+ dialog.paragraph("운송 개조 완료  적재 / 하역 5초" if level>=2 else "적재 / 하역 시간을 8초에서 5초로 줄입니다." if level==1 else "현장 물류 1단계를 개방합니다.",FrontierInterfaceStyle.MUTED,section)
+ if level<2:
+  var cost: Dictionary=FrontierRovers.config().transport.research_cost if level==1 else FrontierRovers.config().research_cost
+  var readout:=FrontierResourceReadout.new();section.add_child(readout);readout.value="내 배낭  "+FrontierCatalog.cost_text(cost)
+ dialog.confirmed.connect(func():
+  if level<2:
+   pending=true;pending_kind="station_logistics";pending_sequence=-1;message.text="운송 개조 승인 중…"
+   command.emit("station_logistics",{"station":data.station.id,"expected_level":level})
+  dialog.queue_free())
+ dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(520,390))

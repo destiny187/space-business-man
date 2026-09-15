@@ -18,8 +18,8 @@ static func update(view: FrontierIncidentView,nodes: Dictionary,row: Dictionary)
 		FrontierInkStyle.apply(model,view.materials);nodes.gun_model=model
 		var color:=Color(str(FrontierFirearms.config().rarities[nodes.gun_loot.rarity].color))
 		var signal_node:=view.beam(Vector3(0,.70,0),Vector3(0,.92,0),Color(color,.5),.022,nodes.cargo);nodes.gun_signal=signal_node
-	nodes.gun_model.visible=not row.claimed
-	nodes.gun_signal.visible=not row.claimed
+	nodes.gun_model.visible=not row.claimed and not row.get("gun_claimed",false)
+	nodes.gun_signal.visible=not row.claimed and not row.get("gun_claimed",false)
 static func description(nodes: Dictionary) -> String:
 	var reward: Dictionary=nodes.get("gun_loot",{})
 	if reward.is_empty():return ""

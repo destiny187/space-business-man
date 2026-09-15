@@ -34,7 +34,27 @@ func configure(owner_surface: FrontierCrewSurfaceScene) -> void:
   shoreline=load("res://scripts/world/surface_shoreline.gd").new();add_child(shoreline);shoreline.configure(self)
  FrontierClientSettings.ensure(get_tree()).changed.connect(_quality_changed)
  _quality_changed()
- surface.terrain.geometry_changed.connect(invalidate)
+ surface.terrain.geometry_changed.connect(_invalidate_excavation)
+func _invalidate_excavation() -> void:
+ var area:=surface.terrain.last_edit
+ var affected: Dictionary={}
+ for key in tiles:
+  for point in tiles[key].samples:
+   if Vector2(point.x-area.x,point.z-area.z).length()<=area.w+20:affected[key]=true;break
+ for job in jobs:
+  for point in job.points:
+   if Vector2(point.x-area.x,point.z-area.z).length()<=area.w+20:affected[job.key]=true;break
+ if affected.is_empty():return
+ for key in affected:
+  if tiles.has(key):tiles[key].node.queue_free();tiles.erase(key)
+ for i in range(jobs.size()-1,-1,-1):
+  if affected.has(jobs[i].key):jobs.remove_at(i)
+ for cell in occupied.keys():
+  if affected.has(occupied[cell]):occupied.erase(cell)
+ anchor=Vector2i(99999,99999)
+ if affected.has("managed"):region_key=""
+ refresh=0
+
 func invalidate() -> void:
  # Removed support must not leave suspended water over a new excavation.
  for row in tiles.values():row.node.queue_free()

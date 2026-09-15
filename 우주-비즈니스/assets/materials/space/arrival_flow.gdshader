@@ -18,7 +18,7 @@ void fragment() {
  float narrow=pow(max(0.0,1.0-abs(fract((p.x+p.y*0.22)*45.0)-0.5)*2.0),22.0);
  float streak=narrow*smoothstep(0.65,0.86,trail)*(1.0-smoothstep(0.91,1.0,trail));
  float hull_clear=smoothstep(0.08,0.22,length(p*vec2(1.0,1.6)));
- float bow=exp(-abs(length((p-vec2(0.0,0.07))*vec2(1.0,2.0))-0.20)*100.0);
+ float bow=0.0; // No decorative orange bow ring.
  float front=smoothstep(0.02,0.08,p.y);
  vec2 drift=vec2(clock*0.32,-clock*0.85);
  vec2 cloud_p=UV*vec2(4.5,5.5)+drift;

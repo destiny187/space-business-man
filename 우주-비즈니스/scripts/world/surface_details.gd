@@ -43,7 +43,7 @@ func configure(stream: FrontierTerrainStreamer,planet: Dictionary,observer: Node
 			mat.set_shader_parameter("presence_grounded",true)
 			mat.set_shader_parameter("contact_color",Color(body.traits.dust))
 			mat.set_shader_parameter("contact_frost",1.0 if float(body.traits.temperature)<0 and float(body.traits.water)>5 else 0.0)
-	terrain.geometry_changed.connect(invalidate)
+	terrain.geometry_changed.connect(func():_invalidate_area(terrain.last_edit))
 
 func invalidate() -> void:
 	dirty=true

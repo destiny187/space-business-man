@@ -42,7 +42,7 @@ static func speed_label(nav: Dictionary) -> String:
 		var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
 		var p:=FrontierCrewNavigation.transit_progress(nav)
 		var ramp:=clampf((p-float(cfg.departure_start))/(float(cfg.swap_progress)-float(cfg.departure_start)),0,1) if p<float(cfg.swap_progress) else clampf((1-p)/(1-float(cfg.swap_progress)),0,1)
-		var speed:=float(cfg.estimated_peak_c)*ramp*ramp
+		var speed:=float(cfg.estimated_peak_c)*pow(ramp,4.0 if p<float(cfg.swap_progress) else 2.0)
 		if speed<1:return "추정 속도  %.0f km/s"%(speed*299792.458)
 		return "추정 속도  %.0f만 c"%(speed/10000.0) if speed>=10000 else "추정 속도  %.0f c"%speed
 

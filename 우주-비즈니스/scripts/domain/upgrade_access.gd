@@ -2,7 +2,7 @@ class_name FrontierUpgradeAccess
 extends RefCounted
 ## The same physical stations serve personal refits and shared research.
 static func station_for(kind: String,args: Dictionary) -> String:
-	if kind in ["equipment_upgrade","equipment_suit_upgrade","rover_research","rover_research2"]:return "augmentation"
+	if kind in ["equipment_upgrade","equipment_suit_upgrade"]:return "augmentation"
 	if kind=="business_facility_research":return "research"
 	if kind=="business_efficiency":return "research" if args.get("field")=="industry" else "augmentation"
 	if kind in ["surface_study","surface_analyze","surface_restore","surface_introduce","surface_resupply"]:return "research"

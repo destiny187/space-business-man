@@ -429,7 +429,7 @@ func request(peer: int,envelope: Variant,from_queue: bool=false) -> Dictionary:
 		for id in draft.crew.receipts:
 			if float(draft.crew.receipts[id].result.revision)<revision:revision=float(draft.crew.receipts[id].result.revision);oldest=id
 		draft.crew.receipts.erase(oldest)
-	if not WorldDraft.personal_equipment(envelope.kind) and not envelope.kind.begins_with("station_skill_") and not (envelope.kind in ["surface_incident","surface_incident_tool"] and FrontierActiveMissions.enabled(draft.incidents.records.get(str(envelope.args.get("id","")),{}))):FrontierSpecimenItems.prune(draft)
+	if not WorldDraft.personal_equipment(envelope.kind) and not envelope.kind.begins_with("station_skill_") and not (envelope.kind in ["surface_incident","surface_incident_tool"] and (envelope.args.has("loot_key") or FrontierActiveMissions.enabled(draft.incidents.records.get(str(envelope.args.get("id","")),{})))):FrontierSpecimenItems.prune(draft)
 	var submit: Callable=save_autonomous if envelope.kind=="business_mine" else save_request
 	if submit.is_valid():
 		if not submit.call(draft):return failure("저장을 시작하지 못했습니다. 변경은 확정되지 않았습니다.")
@@ -519,7 +519,7 @@ func input(peer: int,sequence: int,direction: Variant,aim_value: Variant=[],scan
 	for axis in direction:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if jump_request<0 or jump_request>9007199254740000:return false
-	if flight_controls.size() not in [3,4,6,7,10,12]:return false
+	if flight_controls.size() not in [3,4,6,7,10,12,13]:return false
 	for axis in flight_controls:
 		if not FrontierUniverse._finite(axis,-1,1):return false
 	if vehicle_controls.size() not in [0,4]:return false

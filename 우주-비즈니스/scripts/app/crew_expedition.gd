@@ -469,7 +469,7 @@ func _physics_process(delta: float) -> void:
 	dig_timer=maxf(0,dig_timer-delta)
 	if rovers.seat().is_empty() and surface_world!=null and not test_mode and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and dig_timer<=0 and not mouse_resume_guard and not feedback.blocked() and placement_kind.is_empty() and get_viewport().gui_get_hovered_control()==null:
 		var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
-		if tool.get("kind")=="miner" or tool.get("auto",false):use_equipped()
+		if tool.get("kind") in ["miner","terrain"] or tool.get("auto",false):use_equipped()
 	var controls_enabled:=_locomotion_enabled()
 	var preferences:=FrontierClientSettings.ensure(get_tree())
 	var sprinting:=FrontierPlayInput.state("sprint",FrontierPlayInput.pressed("sprint"),controls_enabled and not outside and rovers.seat().is_empty() and surface_world!=null,bool(preferences.values.toggle_sprint))
@@ -741,7 +741,8 @@ func collect_flight_controls() -> Array:
 		clampf(mouse_steering.x/.05+keyboard_turn,-1,1),clampf(mouse_steering.y/.05,-1,1),float(FrontierPlayInput.pressed("flight_boost")),
 		float(armed and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)),float(ready),float(armed and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)),
 		float(FrontierPlayInput.pressed("flight_roll_left"))-float(FrontierPlayInput.pressed("flight_roll_right")),float(FrontierPlayInput.pressed("flight_brake")),float(FrontierPlayInput.pressed("flight_precision")),
-		float(armed and FrontierPlayInput.pressed("flight_skill_1")),float(armed and FrontierPlayInput.pressed("flight_skill_2"))]
+		float(armed and FrontierPlayInput.pressed("flight_skill_1")),float(armed and FrontierPlayInput.pressed("flight_skill_2")),
+		float(["flight_forward","flight_backward","flight_left","flight_right","flight_roll_left","flight_roll_right","flight_brake","flight_boost","flight_precision"].any(func(key):return FrontierPlayInput.pressed(key)))]
 
 func interact_flight() -> void:
 	if not orbital_scan_allowed():return

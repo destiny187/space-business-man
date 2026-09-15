@@ -11,6 +11,7 @@ static func config() -> Dictionary:
 	value.planet_rules=FrontierPlanetTraits.rules().duplicate(true)
 	value.underground_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/underground.json"))
 	value.ground_rules=FrontierGroundProgression.config().duplicate(true)
+	value.starter_planet_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/starter_planet.json"))
 	value.resource_rules=JSON.parse_string(FileAccess.get_file_as_string("res://data/mineral_world.json"))
 	value.regional_rules=FrontierSurfaceRegions.config().duplicate(true)
 	value.planetary_cycles=FrontierPlanetaryCycles.config()
@@ -41,6 +42,8 @@ static func generate(seed_value: int, settings: Dictionary = {}) -> Dictionary:
 	var result: Dictionary={"schema_version": 2, "id": "galaxy:%s:%d" % [cfg.generator_version, seed_value],
 		"seed": seed_value, "settings": cfg,
 		"catalog": JSON.parse_string(FileAccess.get_file_as_string(catalog_path))}
+	if cfg.has("starter_planet_rules") and not cfg.has("starter_planet_ordinal"):
+		cfg.starter_planet_ordinal=FrontierCrewNavigation.first_destination(result)
 	if FrontierNativeBiota.enabled(result):result.native_biota=FrontierNativeBiota.create(result)
 	return result
 
@@ -146,6 +149,12 @@ static func _make_body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dic
 		result.rings=(result.kind in ["gas_giant","ice_giant"] and (layout.theme=="giant_court" or derive(seed_value,"rings")%3==0))
 		result.moons=1+derive(seed_value,"moons")%2 if layout.theme=="satellites" or result.kind in ["gas_giant","ice_giant"] else 0
 	if result.origin=="fictional":result.traits=FrontierPlanetTraits.make(result,cfg.get("planet_rules",{}))
+	if ordinal==int(cfg.get("starter_planet_ordinal",-1)) and cfg.has("starter_planet_rules"):
+		var starter: Dictionary=cfg.starter_planet_rules
+		result.starter_planet=true;result.planet_tier=1
+		result.traits.water=maxf(float(result.traits.water),float(starter.minimum_water))
+		for climate in ["temperature","pressure","oxygen"]:result.traits[climate]=starter[climate]
+		result.traits.toxicity=minf(float(result.traits.toxicity),float(starter.maximum_toxicity))
 	result.terrain_traits=result.get("traits",{}) if cfg.has("planet_rules") else {}
 	if cfg.has("ecology_rules") and result.origin=="fictional":result.ecology_rules=cfg.ecology_rules
 	if m.has("native_biota") and result.origin=="fictional":result.native_ecology=m.native_biota.planets.get(str(ordinal),{"origin":"sterile","lineages":[]})
@@ -159,6 +168,9 @@ static func _make_body(m: Dictionary, ordinal: int, corporate: bool=true) -> Dic
 		result.terrain_traits.underground.family=family
 	if cfg.has("ground_rules") and result.origin=="fictional" and int(result.planet_tier)<=2:result.ground_rules=cfg.ground_rules
 	if cfg.has("resource_rules"):result.mineral_profile=FrontierMineralWorld.profile(result,cfg.resource_rules)
+	if result.get("starter_planet",false):
+		for resource in cfg.starter_planet_rules.resources:
+			if resource not in result.mineral_profile.primary and resource not in result.mineral_profile.secondary:result.mineral_profile.secondary.append(resource)
 	if cfg.has("regional_rules") and result.origin=="fictional" and result.get("landable",true):result.regional_rules=cfg.regional_rules
 	if cfg.has("planetary_cycles"):result.astro=FrontierPlanetaryCycles.metadata(m,result)
 	# Fictional future management is separate from the unmodified reference/orbit data.

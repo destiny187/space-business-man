@@ -35,7 +35,6 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	augmentation=FrontierAugmentationPanel.new();augmentation_tabs.add_child(augmentation);augmentation.configure(app);augmentation.name="신체 증강"
 	var equipment:=FrontierEquipmentWorkshop.new();augmentation_tabs.add_child(equipment);equipment.configure(app)
 	var personal:=FrontierProgressionResearchPanel.new();augmentation_tabs.add_child(personal);personal.configure(app)
-	var transport:=FrontierRoverWorkshop.new();augmentation_tabs.add_child(transport);transport.configure(app)
 	panel.hide()
 	hint=FrontierInterfaceStyle.label(ui,"",16);hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hint.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_stylebox_override("normal",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,8));hint.hide()

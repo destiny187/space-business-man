@@ -96,8 +96,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			var origin:=FrontierCrewWorld.vector(nav.position)
 			var initial:=FrontierCrewWorld.vector(nav.direction).normalized()
 			if initial.length_squared()<.5:initial=Vector3.FORWARD
-			var route_offset:=Vector2(destination.map_position[0]-source.map_position[0],destination.map_position[1]-source.map_position[1])
-			var preferred:=Vector3(route_offset.x,0,route_offset.y).normalized()
+			var preferred:=initial
 			var direction:=departure_direction(world.manifest,int(nav.system),origin,preferred,float(nav.orbit_time),float(nav.jump_left)+float(FrontierUniverse.presentation().stellar_transition.alignment_max_seconds))
 			if direction==Vector3.ZERO:return "안전한 출발 방향을 찾지 못했습니다. 천체에서 조금 떨어진 뒤 다시 출발하세요."
 			nav.transit.departure_origin=nav.position.duplicate()
@@ -267,7 +266,10 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 	if nav.mode=="jump" or FrontierCrewSurface.landed(world) or nav.get("combat_recovery",false):return
 	if nav.mode=="approach":
 		var requested: bool=controls.size()>3 and float(controls[3])>.5 and (controls.size()<=8 or float(controls[8])<.5)
-		update_boost(world,requested,delta);return
+		var moving: bool=float(controls[12])>.5 if controls.size()>12 else (absf(float(controls[0]))>0 or absf(float(controls[7]))>0 if controls.size()>7 else absf(float(controls[0]))>0)
+		if not moving:
+			update_boost(world,requested,delta);return
+		nav.mode="idle";nav.manual=true;nav.station_target=false
 	var roll_input:=float(controls[7]) if controls.size()>7 else 0.0
 	var braking:=controls.size()>8 and float(controls[8])>.5
 	var precision:=controls.size()>9 and float(controls[9])>.5
@@ -371,6 +373,7 @@ static func steer(world: Dictionary,controls: Array,delta: float) -> void:
 
 static var departure_cache: Dictionary={}
 static func first_destination(manifest: Dictionary) -> int:
+	if manifest.settings.has("starter_planet_ordinal"):return int(manifest.settings.starter_planet_ordinal)
 	var cache_key: String=str(FrontierPlanetaryCycles.enabled(manifest))+":"+manifest.id+":"+str(manifest.settings.get("system_rules",{}).get("version",0))+":"+str(manifest.settings.get("ground_rules",{}).get("version",0))+":"+str(manifest.settings.planet_count)+":"+str(manifest.settings.get("galaxy_layout",{}))
 	if departure_cache.has(cache_key):return departure_cache[cache_key]
 	var origin:=FrontierUniverse.system(manifest,0)

@@ -636,7 +636,11 @@ func _drop_dialog(tile: FrontierItemTile) -> void:
 	dialog.configure("아이템 내려놓기","내려놓기","개인 배낭","inventory",true)
 	dialog.item_card(dialog.section("지표에 남길 아이템"),tile.picture,tile.caption,"다른 승무원도 회수할 수 있습니다.")
 	var count:=SpinBox.new();count.min_value=1;count.max_value=maximum;count.step=1;count.value=1;dialog.section("수량").add_child(count)
+	var shortcuts:=HBoxContainer.new();shortcuts.add_theme_constant_override("separation",12);count.get_parent().add_child(shortcuts)
+	for preset in ["최대","+10"]:
+		var button:=Button.new();button.text=preset;button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;shortcuts.add_child(button)
+		button.pressed.connect(func():count.value=maximum if preset=="최대" else mini(maximum,int(count.value)+10))
 	dialog.primary.text="1개 내려놓기";count.value_changed.connect(func(value):dialog.primary.text="%d개 내려놓기"%int(value))
 	var args: Dictionary={"item_id":item} if not item.is_empty() else {"resource":resource}
 	dialog.confirmed.connect(func():args.amount=int(count.value);app.session.send_request("equipment_drop",args);dialog.queue_free())
-	dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(430,480))
+	dialog.canceled.connect(dialog.queue_free);dialog.present(Vector2i(430,520))

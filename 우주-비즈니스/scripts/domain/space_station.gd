@@ -85,6 +85,17 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
    if not world.crew.members[id].aboard or not world.crew.members[id].ready:return "승무원 모두 승선  준비한 뒤 접근하세요."
   nav.station_id=station.id;nav.erase("station_docked");nav.station_target=true;nav.mode="approach";nav.manual=false;nav.boosting=false
   return ""
+ if action=="station_logistics":
+  if not available(world,station) or station.get("fixed_port",false):return "선체를 판매하는 정거장 가까이에서 정지하세요."
+  var member: Dictionary=world.crew.members[actor]
+  if not member.aboard:return "승선 후 정거장에서 운송 개조를 진행하세요."
+  var level:=FrontierRovers.research(member)
+  if level>=2:return "운송 개조를 모두 마쳤습니다."
+  if args.get("expected_level")!=level:return "운송 개조 단계가 바뀌었습니다. 다시 확인하세요."
+  var cost: Dictionary=FrontierRovers.config().transport.research_cost if level==1 else FrontierRovers.config().research_cost
+  if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),cost):return "내 배낭의 운송 개조 부품이 부족합니다."
+  FrontierExpeditionBusiness.transfer(world.business.bags[actor],cost,-1)
+  member.loadout.field_logistics=level+1;return ""
  if actor!=world.crew.owner_id:return "공동 자금 거래와 선체 교체는 호스트가 확정합니다."
  if not available(world,station):return "정거장 가까이 접근한 뒤 정지하세요."
  for id in active.values():

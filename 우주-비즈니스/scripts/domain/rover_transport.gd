@@ -12,6 +12,7 @@ static func transport_busy(runtime: Dictionary) -> bool:
 		if task.kind in ["load","unload"]:return true
 	return false
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,runtime: Dictionary) -> String:
+	if kind in ["rover_research","rover_research2"]:return "선체를 판매하는 정거장에서 운송 개조를 진행하세요."
 	var f:=FrontierRovers.ensure(world);var member: Dictionary=world.crew.members[actor]
 	if not FrontierCrewSurface.landed(world) or member.aboard:return "착륙 후 우주선에서 내린 뒤 실행하세요."
 	if not FrontierRovers.seated(runtime,actor).is_empty():return "먼저 로버에서 내리세요."

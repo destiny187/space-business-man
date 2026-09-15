@@ -122,7 +122,7 @@ func _stream() -> void:
 		var visual: MeshInstance3D
 		if tiles.has(key):visual=tiles[key].node
 		else:
-			visual=MeshInstance3D.new();visual.name="Far_%d_%d"%[key.x,key.y];add_child(visual)
+			visual=MeshInstance3D.new();visual.ignore_occlusion_culling=true;visual.name="Far_%d_%d"%[key.x,key.y];add_child(visual)
 		visual.mesh=prepared_tiles[key].mesh
 		tiles[key]={"node":visual,"signature":prepared_tiles[key].signature}
 	for tile in tiles.values():tile.node.material_override=packet.material
@@ -139,6 +139,7 @@ func terrain_bounds() -> AABB:
 	return bounds
 
 func _install(arrays: Array,terrain_material: Material) -> void:
+	ignore_occlusion_culling=true
 	var result:=ArrayMesh.new();result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	mesh=result;material_override=terrain_material;build_count+=1
 	var fallback:=get_node_or_null("StreamingFallback") as MeshInstance3D
@@ -241,6 +242,7 @@ func _install_fallback(data: Dictionary) -> void:
 	var start:=Time.get_ticks_usec()
 	var result:=ArrayMesh.new();result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,data.arrays)
 	fallback.mesh=result;fallback.material_override=material_override
+	fallback.ignore_occlusion_culling=true
 	max_fallback_upload_ms=maxf(max_fallback_upload_ms,(Time.get_ticks_usec()-start)/1000.0)
 
 func request_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks: int,chunks: Dictionary) -> void:
@@ -249,8 +251,7 @@ func request_fallback(field: FrontierTerrainField,anchor: Vector3i,radius_chunks
 		fallback=MeshInstance3D.new();fallback.name="StreamingFallback";add_child(fallback)
 	if fallback_field!=field or fallback_revision!=field.revision:
 		fallback_field=field;fallback_revision=field.revision;fallback_cells.clear()
-		# Never keep an old lid over a newly excavated opening.
-		fallback.mesh=null
+		# Keep remote coverage until the replacement is ready; fine chunks own excavation.
 	var edits: Dictionary={}
 	for chunk_edits in field.edits_by_chunk.values():
 		for edit in chunk_edits:edits[str(edit.center)+str(edit.radius)]=edit

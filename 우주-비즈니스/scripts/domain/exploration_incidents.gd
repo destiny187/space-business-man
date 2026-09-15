@@ -295,6 +295,19 @@ static func apply(world: Dictionary,actor: String,args: Dictionary,tool_action: 
  if not tool_action and origin.distance_to(hit.point)>float(config().action_distance):return "대상 가까이 접근하세요."
  if obstacle.is_valid() and float(obstacle.call(actor,origin,aim,origin.distance_to(hit.point)))<origin.distance_to(hit.point)-.7:return "엄폐물에 가려져 있습니다."
  var tool:=FrontierEquipment.active(world.crew.members[actor])
+ if args.has("loot_key"):
+  if tool_action or FrontierActiveMissions.enabled(row) or hit.part not in ["cargo","delivery"]:return "회수할 화물을 선택하세요."
+  if hit.part=="cargo" and mode in ["carry","drone"]:return "회수 지점까지 화물을 운반하세요."
+  if hit.part=="delivery" and row.carrier!=actor:return "화물을 운반하는 승무원이 회수하세요."
+  if not FrontierNativeIncidents.available(row):return "생물을 분석하고 이동한 뒤 회수하세요."
+  var error:=take_loot(world,actor,row,str(args.loot_key))
+  if not error.is_empty():return error
+  if loot_contents(int(world.manifest.seed),row).is_empty():
+   if preload("res://scripts/domain/storm_archive.gd").enabled(row):
+    error=preload("res://scripts/domain/storm_archive.gd").recover(world,actor,row)
+    if not error.is_empty():return error
+   row.claimed=true;row.carrier="";set_phase(row,"recovered")
+  row.seen=true;row.serial+=1;return ""
  if FrontierActiveMissions.enabled(row):return FrontierActiveMissions.apply(world,actor,row,hit.part,tool_action,tool)
  if tool_action:
   var expected: String="pulse" if hit.part in ["robot","drone"] else ("miner" if hit.part=="gems" else "terrain")
@@ -418,6 +431,13 @@ static func validate(world: Dictionary) -> String:
    if not gun.is_empty():
     var gun_definition: Dictionary=FrontierEquipment.config().items.get(gun.get("definition",""),{})
     if gun.get("roll_version")!=2 or not FrontierWeaponLoot.valid(gun,gun_definition):return "총기 전리품 옵션 오류"
+  if row.has("loot_taken"):
+   if not row.loot_taken is Dictionary:return "화물 회수 기록 오류"
+   var original: Dictionary=row.duplicate();original.erase("loot_taken");original.claimed=false;original.gun_claimed=false
+   var limits: Dictionary={}
+   for entry in loot_contents(int(world.manifest.seed),original):limits[entry.key]=entry.amount
+   for loot_key in row.loot_taken:
+    if not limits.has(loot_key) or not FrontierExpeditionBusiness.integer(row.loot_taken[loot_key],1,int(limits[loot_key])):return "화물 회수 수량 오류"
   if not FrontierActiveMissions.validate(row):return "활동형 미션 저장 오류"
   if not FrontierCooperTechSquads.validate(row):return "쿠퍼테크 분대 기록 오류"
   if not FrontierNativeIncidents.validate(world,row):return "현지 생물 사건 기록 오류"
@@ -425,11 +445,50 @@ static func validate(world: Dictionary) -> String:
 
 static func recover(world: Dictionary,actor: String,row: Dictionary) -> String:
  if not FrontierNativeIncidents.available(row):return "생물을 분석하고 이동한 뒤 현장 보상을 회수하세요."
- var error:=FrontierSuitModules.drop(world,actor,key(row),int(row.tier),str(definition(row.template).mode))
- if not error.is_empty():return error
- var result:=reward(world,actor,FrontierNativeIncidents.reward(row),str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),"")))
- if not result.is_empty():return result
- var firearm_error:=FrontierFirearms.drop(world,actor,row)
- if not firearm_error.is_empty():return firearm_error
+ var remaining:=loot_contents(int(world.manifest.seed),row)
+ while not remaining.is_empty():
+  var error:=take_loot(world,actor,row,remaining[0].key)
+  if not error.is_empty():return error
+  remaining=loot_contents(int(world.manifest.seed),row)
  if preload("res://scripts/domain/storm_archive.gd").enabled(row):return preload("res://scripts/domain/storm_archive.gd").recover(world,actor,row)
+ return ""
+
+static func loot_contents(seed_value: int,row: Dictionary) -> Array:
+ var entries: Array=[]
+ if row.get("claimed",false):return entries
+ var taken: Dictionary=row.get("loot_taken",{})
+ var source: String=str(definition(row.template).mode)
+ if not taken.has("module"):
+  var module:=FrontierSuitModules.roll(FrontierUniverse.derive(seed_value,key(row)),int(row.tier),source)
+  entries.append({"key":"module","name":FrontierSuitModules.title(module),"kind":"module","slot":module.slot,"amount":1})
+ var resources:=FrontierNativeIncidents.reward(row)
+ for resource in resources:
+  var remaining:=int(resources[resource])-int(taken.get("resource:"+resource,0))
+  if remaining>0:entries.append({"key":"resource:"+resource,"name":FrontierCatalog.entry("resources",resource).get("name",resource),"kind":"resource","resource":resource,"amount":remaining})
+ var equipment: String=str(definition(row.template).get("equipment",{}).get(str(int(row.tier)),""))
+ if not equipment.is_empty() and not taken.has("equipment"):entries.append({"key":"equipment","name":FrontierEquipment.config().items[equipment].name,"kind":"equipment","definition":equipment,"amount":1})
+ var gun:=FrontierFirearms.loot(seed_value,row)
+ if not gun.is_empty():
+  var tool:=FrontierFirearms.item({"profile":{"equipment":[]},"loadout":{"items":{"preview":gun.definition},"weapon_rolls":{"preview":gun}}},"preview")
+  entries.append({"key":"gun","name":str(FrontierFirearms.config().rarities[gun.rarity].name)+" "+str(tool.name)+" "+str(FrontierWeaponLoot.config().elements[tool.element_id].name),"kind":"equipment","definition":gun.definition,"amount":1})
+ return entries
+
+static func take_loot(world: Dictionary,actor: String,row: Dictionary,loot_key: String) -> String:
+ var entry: Dictionary={}
+ for candidate in loot_contents(int(world.manifest.seed),row):
+  if candidate.key==loot_key:entry=candidate;break
+ if entry.is_empty():return "이미 회수한 아이템입니다."
+ var error: String=""
+ var amount:=1
+ match entry.kind:
+  "module":error=FrontierSuitModules.drop(world,actor,key(row),int(row.tier),str(definition(row.template).mode))
+  "resource":
+   amount=mini(int(entry.amount),mini(FrontierItemInventory.stack_size(entry.resource),FrontierItemInventory.room(world,actor,entry.resource)))
+   if amount<=0:return "배낭 공간이 부족합니다. 선택한 물자는 화물에 남습니다."
+   error=reward(world,actor,{entry.resource:amount})
+  "equipment":
+   error=FrontierFirearms.drop(world,actor,row) if loot_key=="gun" else reward(world,actor,{},entry.definition)
+ if not error.is_empty():return error
+ if not row.has("loot_taken"):row.loot_taken={}
+ row.loot_taken[loot_key]=int(row.loot_taken.get(loot_key,0))+amount
  return ""

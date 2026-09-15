@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 	if factory:
 		var site: Dictionary=ledger.get("sites",{}).get(app.session.latest.location,{})
 		var building: Dictionary=site.get("buildings",{}).get(app.business_panel.context_id,{})
-		if level<1:reason="착륙선 증강 장치에서 현장 물류 I을 연구하세요"
+		if level<1:reason="선체 판매 정거장에서 운송 개조를 진행하세요"
 		elif not building.get("active",false):reason="제작소의 전력 / 가동 상태를 확인하세요"
 		elif not FrontierExpeditionBusiness.affordable(site.get("inventory",{}),FrontierRovers.config().cost):reason="공동 창고의 부품이 부족합니다"
 		for job in app.rovers.fleet().jobs.values():

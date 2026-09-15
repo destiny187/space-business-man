@@ -18,6 +18,7 @@ var hints=preload("res://scripts/ui/space_hint_memory.gd").new()
 var scan_optics:=FrontierFieldToolEffects.new()
 var scan_target: int=-1
 var scan_progress:=0.0
+var scan_completion_left:=0.0
 var scanned: Dictionary={}
 var exterior:=false
 var cabin_camera:=false
@@ -58,7 +59,6 @@ var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
 var arrival_heading:=Vector3.FORWARD
-var departure_focus:=Vector3.ZERO
 var transit_clock:=0.0
 var transit_camera_rotation:=Quaternion.IDENTITY
 var transit_geometry: Array[GeometryInstance3D]=[]
@@ -103,10 +103,6 @@ func update_navigation(value: Dictionary) -> void:
 		departure_origin=ship.position if not navigation.is_empty() else FrontierCrewWorld.vector(value.position)
 		var route: Dictionary=value.get("transit",{})
 		if route.has("departure_origin"):departure_origin=FrontierCrewWorld.vector(route.departure_origin)
-		var nearest:=INF
-		for entry in planets.values():
-			var distance: float=entry.node.global_position.distance_squared_to(departure_origin)
-			if distance<nearest:nearest=distance;departure_focus=entry.node.global_position
 		departure_initial=FrontierCrewWorld.vector(route.get("initial_direction",value.direction)).normalized()
 		departure_heading=FrontierCrewWorld.vector(route.departure_direction) if route.has("departure_direction") else FrontierCrewNavigation.departure_direction(state.manifest,int(value.system),departure_origin,departure_initial,float(value.get("orbit_time",0)),float(route.get("duration",12)))
 		if departure_heading==Vector3.ZERO:departure_heading=departure_initial
@@ -201,13 +197,9 @@ func _process(delta: float) -> void:
 		var local_camera:=camera.transform
 		camera.global_position=ship.position+follow_basis*local_camera.origin
 		camera.global_basis=follow_basis*local_camera.basis
+		# Pull back along the current flight camera while the ship accelerates.
 		var phase:=FrontierCrewNavigation.transit_progress(presented)
-		if exterior and phase<float(FrontierUniverse.presentation().stellar_transition.swap_progress):
-			var reveal:=smoothstep(0,.12,phase)*(1.0-smoothstep(.32,.48,phase))
-			var toward:=departure_focus-camera.global_position
-			if toward.length_squared()>1:
-				var framing:=Basis.looking_at(toward.normalized(),Vector3.UP).get_rotation_quaternion()
-				camera.global_basis=Basis(camera.global_basis.get_rotation_quaternion().slerp(framing,reveal))
+		if exterior:camera.global_position+=follow_basis.z*32.0*smoothstep(0,.25,phase)*(1.0-smoothstep(.7,1.0,phase))
 	var base_fov:=float(FrontierClientSettings.ensure(get_tree()).values.fov)
 	if navigation.mode=="jump":camera.fov=_transit_fov(presented,base_fov)
 	else:camera.fov=lerpf(camera.fov,minf(110.0,base_fov+20) if navigation.get("boosting",false) else base_fov,minf(delta*3,1))
@@ -290,7 +282,7 @@ func _display_position(value: Dictionary) -> Vector3:
 		var entry:=FrontierUniverse.entry_position(state.manifest,int(value.target),elapsed)
 		var focus:=FrontierUniverse.entry_focus(state.manifest,int(value.target),elapsed)
 		return entry+(entry-focus).normalized()*float(cfg.distant_offset)*pow(1.0-clampf((p-midpoint)/(1.0-midpoint),0,1),3.0)
-	return departure_origin+departure_heading*float(cfg.distant_offset)*pow(clampf((p-float(cfg.departure_start))/(midpoint-float(cfg.departure_start)),0,1),3.0)
+	return departure_origin+departure_heading*float(cfg.distant_offset)*pow(clampf((p-float(cfg.departure_start))/(midpoint-float(cfg.departure_start)),0,1),5.0)
 
 func _transit_presentation(delta: float,paused: bool) -> Dictionary:
 	if navigation.mode!="jump":return navigation
@@ -383,12 +375,13 @@ func _update_atmosphere(delta: float,paused: bool) -> bool:
 	return atmosphere_blocked
 
 func _update_planet_scan(delta: float) -> void:
+	scan_completion_left=maxf(0,scan_completion_left-delta)
 	var target: int=pick_planet(Vector2(get_viewport().get_visible_rect().size)*.5) if scan_enabled and not presentation_blocked and not transit_overlay.presenting_arrival() else -1
 	if is_instance_valid(traffic) and not traffic.selected.is_empty():target=-1
 	if is_instance_valid(corporate_view) and not corporate_view.selected.is_empty():target=-1
 	if is_instance_valid(trace_view) and not trace_view.selected.is_empty():target=-1
 	if is_instance_valid(freight_view) and not freight_view.selected.is_empty():target=-1
-	if target!=scan_target:scan_target=target;scan_progress=0.0
+	if target!=scan_target:scan_target=target;scan_progress=0.0;scan_completion_left=0.0
 	if target<0:
 		transit_overlay.scan_body={};return
 	var body:=FrontierUniverse.body(state.manifest,target)
@@ -396,7 +389,7 @@ func _update_planet_scan(delta: float) -> void:
 	elif scan_held:
 		scan_progress=minf(1.0,scan_progress+delta/float(flight_config.get("scan_seconds",1.8)))
 		if scan_progress>=1.0:
-			scanned[body.id]=true;soundscape.complete();planet_scanned.emit(target)
+			scanned[body.id]=true;scan_completion_left=1.2;soundscape.complete();planet_scanned.emit(target)
 	else:scan_progress=0.0
 	transit_overlay.scan_body=body
 	transit_overlay.scan_progress=scan_progress
@@ -429,7 +422,7 @@ func looking_at_station() -> bool:return not station_in_sight().is_empty()
 func _update_scan_surface(blocked: bool) -> void:
 	var subject: Node3D=null
 	var progress_value:=scan_progress
-	if not blocked and scan_progress>0 and planets.has(scan_target):subject=planets[scan_target].node
+	if not blocked and (scan_held or scan_completion_left>0) and scan_progress>0 and planets.has(scan_target):subject=planets[scan_target].node
 	if not blocked:
 		for view in [corporate_view,trace_view,freight_view]:
 			if not is_instance_valid(view) or view.selected.is_empty() or float(view.selected.get("progress",0))<=0:continue

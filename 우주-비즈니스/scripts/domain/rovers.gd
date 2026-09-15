@@ -80,6 +80,7 @@ static func craft_reason(world: Dictionary,actor: String,id: String) -> String:
 	if not FrontierExpeditionBusiness.affordable(s.inventory,config().cost):return "공동 창고의 로버 부품이 부족합니다."
 	return ""
 static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,runtime: Dictionary) -> String:
+	if kind in ["rover_research","rover_research2"]:return "선체를 판매하는 정거장에서 운송 개조를 진행하세요."
 	if kind in ["rover_transport_upgrade","rover_research2","rover_upgrade","rover_load","rover_unload","rover_cancel"]:return FrontierRoverTransport.apply(world,actor,kind,args,runtime)
 	if not FrontierCrewSurface.landed(world):return "행성에 착륙한 뒤 차량을 사용하세요."
 	var member: Dictionary=world.crew.members[actor];var actor_pos:=FrontierCrewWorld.vector(member.position)

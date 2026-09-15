@@ -9,6 +9,7 @@ var wanted: Dictionary = {}
 var jobs: Dictionary = {}
 var revisions: Dictionary = {}
 var batch: Dictionary = {}
+var last_edit:=Vector4.ZERO
 var staged: Dictionary = {}
 var prepared: Dictionary = {}
 var retired: Array[Node3D]=[]
@@ -69,6 +70,7 @@ func dig(center: Vector3,radius: float) -> Dictionary:
 	var edit: Dictionary={"center":[center.x,center.y,center.z],"radius":radius}
 	candidates_dirty=true
 	var affected: Array[Vector3i]=field.add_edit(edit)
+	last_edit=Vector4(center.x,center.y,center.z,radius)
 	for key in affected:
 		revisions[key]=int(revisions.get(key,0))+1
 		if wanted.has(key):batch[key]=true
@@ -172,7 +174,7 @@ func _prepare_visual(data: Dictionary) -> Node3D:
 	var node:=Node3D.new()
 	var mesh:=FrontierTerrainMesher.mesh(data)
 	if mesh.get_surface_count()>0:
-		var visual:=MeshInstance3D.new();visual.mesh=mesh;visual.material_override=material
+		var visual:=MeshInstance3D.new();visual.mesh=mesh;visual.material_override=material;visual.ignore_occlusion_culling=true
 		node.add_child(visual)
 		# Reuse worker arrays, including caves and excavation holes. Install/remove
 		# with the visible chunk, so an old occluder cannot seal a newly opened tunnel.

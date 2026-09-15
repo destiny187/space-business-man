@@ -34,7 +34,14 @@ var synchronous_resources:=DisplayServer.get_name()=="headless"
 func configure(world_ecology: Dictionary,planet: Dictionary,stream: FrontierTerrainStreamer,player: Node3D) -> void:
 	ecology=world_ecology;body=planet;terrain=stream;viewer=player
 	ground_probe=func(at: Vector3,reach: float):return Actor.GroundMotion.sample(terrain.field,at,reach)
-	terrain.geometry_changed.connect(invalidate)
+	terrain.geometry_changed.connect(_invalidate_excavation)
+
+func _invalidate_excavation() -> void:
+	var area:=terrain.last_edit
+	for id in ground_cache.keys():
+		var point: Vector3=ground_cache[id]
+		if not point.is_finite() or Vector2(point.x-area.x,point.z-area.z).length()<=area.w+4:ground_cache.erase(id)
+	last_center=Vector3.INF;refresh_timer=0
 
 func invalidate() -> void:
 	last_center=Vector3.INF;refresh_timer=0;ground_cache.clear()

@@ -10,7 +10,7 @@ var elapsed:=0.0
 func configure(owner_hydro: FrontierSurfaceHydrology) -> void:
  hydro=owner_hydro
  material=ShaderMaterial.new();material.shader=load("res://assets/materials/space/shoreline.gdshader")
- hydro.surface.terrain.geometry_changed.connect(invalidate)
+ # Shoreline follows the immutable sea/height intersection; no excavation rebuild.
 func invalidate() -> void:
  for node in tiles.values():node.queue_free()
  tiles.clear();pending.clear();job={};anchor=Vector2i(99999,99999)

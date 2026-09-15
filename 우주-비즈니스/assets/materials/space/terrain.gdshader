@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode cull_disabled;
 uniform float weather_wet : hint_range(0.0,1.0)=0.0;
 #define INK_SURFACE_ROUGHNESS
 #include "res://assets/materials/ink/cel_light.gdshaderinc"

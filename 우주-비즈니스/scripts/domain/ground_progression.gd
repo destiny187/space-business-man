@@ -18,7 +18,7 @@ static func intro_candidate(body: Dictionary) -> bool:
 	# Prefer a meaningful, bounded restoration task; never change the generated climate.
 	return float(t.temperature)>-55 and float(t.temperature)<65 and float(t.toxicity)<85 and processing_seconds(body)>=150 and processing_seconds(body)<=float(body.get("ground_rules",config()).intro_max_processing_seconds) and starter(body).size()>=5
 static func starter(body: Dictionary) -> Array:
-	var key: String=body.id+":"+FrontierUniverse.fingerprint(body.ground_rules)
+	var key: String=body.id+":"+str(body.get("starter_planet",false))+":"+FrontierUniverse.fingerprint(body.ground_rules)
 	if _starter_cache.has(key):return _starter_cache[key].duplicate(true)
 	var field:=FrontierTerrainField.new();field.configure(int(body.streams.terrain),[],24.0,body.get("terrain_traits",{}))
 	var rows: Array=[]
@@ -55,6 +55,7 @@ static func valid(value: Variant) -> bool:
 	return true
 
 static func absent_starter(body: Dictionary) -> String:
+	if body.get("starter_planet",false):return ""
 	if int(body.get("ground_rules",{}).get("version",0))<4:return ""
 	var profile: Dictionary=body.get("mineral_profile",{})
 	var pool: Array=profile.get("primary",[])+profile.get("secondary",[])

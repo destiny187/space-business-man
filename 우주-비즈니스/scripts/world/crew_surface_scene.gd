@@ -82,7 +82,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	ecology.wildlife_cue.connect(_wildlife_cue)
 	lamp=SpotLight3D.new();lamp.light_cull_mask=((1 << 20)-1)^FrontierExpeditionFeedback.HANDHELD_LAYER;lamp.position=Vector3(.15,-.1,0);lamp.light_color=Color("d5f0eb");lamp.spot_range=60;lamp.spot_angle=48;lamp.shadow_enabled=true;lamp.light_energy=0;camera.add_child(lamp)
 	terrain.geometry_changed.connect(func():
-		_refresh_distant() # Ecology already subscribes to geometry_changed.
+		distant.request_fallback(terrain.field,terrain.field.key_at(_terrain_viewpoint()),int(config.active_radius),terrain.chunks)
 		if business_view!=null:business_view.accept(business_view.ledger)
 	)
 	business_view=FrontierBusinessSiteView.new();add_child(business_view);business_view.configure(terrain,body);business_view.accept(packet.get("business",{}))
@@ -108,13 +108,13 @@ func _ecology(packet: Dictionary) -> Dictionary:
 func accept(packet: Dictionary) -> void:
 	if packet.body_id!=body.id or int(packet.epoch)!=epoch:return
 	var edits_changed: bool=packet.edits!=incoming
-	if edits_changed:ecology.invalidate();incoming=packet.edits.duplicate(true)
+	if edits_changed:incoming=packet.edits.duplicate(true)
 	water_columns=packet.get("water_columns",{})
 	ecology.ecology=_ecology(packet)
 	if not accepted_packet or edits_changed or accepted_ecology!=packet.ecology:
 		ecology.refresh_timer=0;accepted_ecology=packet.ecology
 	var business: Dictionary=packet.get("business",{})
-	if not accepted_packet or edits_changed or accepted_business!=business:
+	if not accepted_packet or accepted_business!=business:
 		if accepted_packet and not edits_changed and accepted_business.get("sites",{})==business.get("sites",{}):
 			business_view.accept_crates(business)
 		else:

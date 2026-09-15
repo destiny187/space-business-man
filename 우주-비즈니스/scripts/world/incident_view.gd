@@ -252,6 +252,10 @@ func action_args(id: String,part: String) -> Dictionary:
  return args
 func interact() -> bool:
  if blocked() or selected.is_empty():return false
+ var row: Dictionary=rows[selected.id]
+ var mode: String=FrontierExplorationIncidents.definition(row.template).mode
+ if not FrontierActiveMissions.enabled(row) and (selected.part=="delivery" or (selected.part=="cargo" and mode not in ["carry","drone"])):
+  open_loot(action_args(selected.id,selected.part));return true
  surface.session.send_request("surface_incident",action_args(selected.id,selected.part));return true
 func use_tool() -> bool:
  if blocked() or selected.is_empty():return false
@@ -270,3 +274,68 @@ func presentation_ready(at: Vector3) -> bool:
   var row: Dictionary=surface.session.latest.incidents.records[id]
   if minf(at.distance_to(FrontierCrewWorld.vector(row.position)),at.distance_to(FrontierCrewWorld.vector(row.relay)))<35 and not models.has(id):return false
  return true
+
+func open_loot(args: Dictionary) -> void:
+ var dialog:=FrontierGameModal.new();app.add_child(dialog)
+ dialog.configure("현장 화물","닫기","아이템 회수","inventory")
+ var pair:=HBoxContainer.new();pair.add_theme_constant_override("separation",20);dialog.content.add_child(pair)
+ var left:=VBoxContainer.new();left.size_flags_horizontal=Control.SIZE_EXPAND_FILL;pair.add_child(left)
+ FrontierInterfaceStyle.label(left,"화물  클릭 또는 배낭으로 끌어놓기",14)
+ var loot_grid:=GridContainer.new();loot_grid.columns=3;left.add_child(loot_grid)
+ var right:=VBoxContainer.new();right.size_flags_horizontal=Control.SIZE_EXPAND_FILL;pair.add_child(right)
+ var capacity:=FrontierInterfaceStyle.label(right,"내 배낭",14)
+ var destination:=FrontierCargoDropArea.new();destination.destination="bag";destination.custom_minimum_size=Vector2(280,220);right.add_child(destination)
+ var bag_grid:=GridContainer.new();bag_grid.columns=3;destination.add_child(bag_grid)
+ var message:=FrontierInterfaceStyle.label(dialog.content,"모듈은 I의 모듈 케이스에 보관합니다.",14);message.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+ var pending: Dictionary={"sequence":-1}
+ var take:=func(payload: Dictionary):
+  if pending.sequence>=0:return
+  var request:=args.duplicate();request.loot_key=payload.loot_key
+  pending.sequence=surface.session.next_sequence
+  message.text="회수 중…"
+  if not surface.session.send_request("surface_incident",request):pending.sequence=-1;message.text="요청을 보내지 못했습니다. 다시 선택하세요."
+ destination.cargo_dropped.connect(take)
+ var rendered: Dictionary={"key":""}
+ var refresh:=func():
+  var latest_row: Dictionary=surface.session.latest.get("incidents",{}).get("records",{}).get(str(args.id),{})
+  var own: Dictionary=surface.session.latest.crew.members[surface.session.latest.self_id]
+  var key:=str([latest_row.get("claimed",false),latest_row.get("loot_taken",{}),latest_row.get("gun_claimed",false),surface.session.latest.get("inventory",{}),own.loadout.items,own.loadout.get("weapon_rolls",{})])
+  if rendered.key==key:return
+  rendered.key=key
+  for grid in [loot_grid,bag_grid]:
+   for tile in grid.get_children():grid.remove_child(tile);tile.queue_free()
+  var row: Dictionary=surface.session.latest.get("incidents",{}).get("records",{}).get(str(args.id),{})
+  if row.is_empty():return
+  for entry in FrontierExplorationIncidents.loot_contents(int(surface.session.manifest.seed),row):
+   var tile:=FrontierItemTile.new();tile.caption=entry.name;tile.tooltip_text=entry.name;tile.amount=str(entry.amount)
+   tile.picture=loot_icon(entry);tile.cargo_payload={"source":"incident","loot_key":entry.key};loot_grid.add_child(tile)
+   tile.pressed.connect(func():take.call(tile.cargo_payload))
+  var member: Dictionary=surface.session.latest.crew.members[surface.session.latest.self_id]
+  var bag: Dictionary=surface.session.latest.get("inventory",{})
+  capacity.text="내 배낭  %d / %d칸"%[FrontierItemInventory.used(bag,member.loadout.items.size()),FrontierItemInventory.capacity(member)]
+  for id in bag:
+   if int(bag[id])<=0:continue
+   var tile:=FrontierItemTile.new();tile.caption=surface.session.resource_name(id);tile.picture=FrontierResourceIcons.texture(id);tile.amount=str(int(bag[id]));bag_grid.add_child(tile)
+  for id in member.loadout.items:
+   var definition: Dictionary=FrontierFirearms.item(member,str(id))
+   var tile:=FrontierItemTile.new();tile.caption=definition.get("name",id);tile.picture=loot_icon({"kind":"equipment","definition":member.loadout.items[id]});bag_grid.add_child(tile)
+ var response:=func(sequence: int,result: Dictionary):
+  if sequence!=pending.sequence:return
+  pending.sequence=-1;message.text="회수 완료" if result.get("ok",false) else str(result.get("error","회수 실패"))
+  refresh.call()
+ var snapshot:=func(_value: Dictionary):refresh.call()
+ surface.session.response_received.connect(response);surface.session.snapshot_received.connect(snapshot)
+ dialog.tree_exiting.connect(func():
+  if surface.session.response_received.is_connected(response):surface.session.response_received.disconnect(response)
+  if surface.session.snapshot_received.is_connected(snapshot):surface.session.snapshot_received.disconnect(snapshot))
+ dialog.confirmed.connect(dialog.queue_free);dialog.canceled.connect(dialog.queue_free)
+ refresh.call();dialog.present(Vector2i(900,620))
+
+func loot_icon(entry: Dictionary) -> Texture2D:
+ if entry.kind=="resource":return FrontierResourceIcons.texture(entry.resource)
+ if entry.kind=="module":
+  var spec: Dictionary=FrontierSuitModules.config().slots[entry.slot]
+  var preview: String="res://assets/ui/previews/"+str(spec.model)+".png"
+  return load(preview) if ResourceLoader.exists(preview) else FrontierResourceIcons.texture(str(spec.model).get_file())
+ var definition: Dictionary=FrontierEquipment.config().items.get(str(entry.get("definition","")),{})
+ return FrontierInterfaceStyle.icon(str(definition.get("model","equipment/terrain_shaper")))
