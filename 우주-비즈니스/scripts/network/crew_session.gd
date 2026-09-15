@@ -64,6 +64,10 @@ func host(local_profile: FrontierPlayerProfile,world_store: FrontierWorldStore,p
 		if store.has_history():notice.emit(store.last_error);return false
 		state=FrontierUniverse.new_world(int(Crypto.new().generate_random_bytes(4).decode_u32(0)&0x7fffffff))
 	authority=FrontierCrewAuthority.new()
+	authority.save_error=func():return store.last_error
+	authority.save_warning.connect(func(message: String):
+		notice.emit(message)
+		if active and not offline:_save_notice.rpc(message))
 	if not authority.start(state,profile.data.character,store.write):notice.emit(authority.error);return false
 	authority.save_flight_checkpoint=store.begin_checkpoint
 	authority.save_autonomous=store.begin_commit
@@ -387,6 +391,9 @@ func close_session() -> bool:
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	return true
 @rpc("authority","call_remote","reliable",0)
+func _save_notice(message: String) -> void:
+	notice.emit(message)
+@rpc("authority","call_remote","reliable",0)
 func _closed(message: String) -> void:
 	active=false;notice.emit(message)
 func _exit_tree() -> void:
@@ -402,7 +409,7 @@ func _physics_process(delta: float) -> void:
 	if authority.autonomous_pending() and not authority.resolve_autonomous():
 		if not authority.stopped:pending_simulation_delta=minf(.1,pending_simulation_delta+delta);return
 	if not authority.stopped and not store.poll_checkpoint():
-		authority.stopped=true;authority.error="체크포인트 저장 실패: "+store.last_error
+		authority.report_save_failure("체크포인트 저장 실패")
 	elif not authority.stopped:
 		delta=minf(.1,delta+pending_simulation_delta);pending_simulation_delta=0.0
 		authority.step_surface(minf(delta,.1))
@@ -441,9 +448,7 @@ func _physics_process(delta: float) -> void:
 	if arrived or checkpoint_timer<=0:
 		checkpoint_timer=5.0
 		if not (authority.checkpoint() if arrived else store.begin_checkpoint(authority.world)):
-			authority.stopped=true;authority.error="항해 상태 저장 실패: "+store.last_error
-			active=false;notice.emit(authority.error)
-			if not offline:_closed.rpc(authority.error)
+			authority.report_save_failure("항해 상태 저장 실패")
 
 func _valid_manifest(value: Variant) -> bool:
 	if not value is Dictionary or not FrontierUniverse._finite(value.get("seed"),0,2147483647):return false

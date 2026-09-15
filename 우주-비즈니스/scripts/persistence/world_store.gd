@@ -85,7 +85,7 @@ func _accept_write(result: Dictionary) -> bool:
 static func _write_snapshot(save_path: String,state: Dictionary,previous_digest: String,manifest_text: String="") -> Dictionary:
 	var encoded:=WorldSnapshot.encode(state,manifest_text)
 	var file:=FileAccess.open(save_path+".tmp",FileAccess.WRITE)
-	if file==null:return {"error":"탐험 저장 파일을 열 수 없습니다."}
+	if file==null:return {"error":"탐험 저장 파일을 열 수 없습니다: "+error_string(FileAccess.get_open_error())}
 	file.store_string(encoded);file.flush()
 	var result:=file.get_error();file.close()
 	var recorded:=FileAccess.get_file_as_string(save_path+".tmp")
@@ -98,8 +98,10 @@ static func _write_snapshot(save_path: String,state: Dictionary,previous_digest:
 		var old:=FileAccess.get_file_as_string(save_path)
 		var known_good:=not previous_digest.is_empty() and old.sha256_text()==previous_digest
 		var backup_path:=save_path+".bak" if known_good else save_path+".preserved-%d"%Time.get_ticks_usec()
-		if DirAccess.copy_absolute(save_path,backup_path)!=OK:return {"error":"탐험 백업을 만들 수 없습니다."}
-	if DirAccess.rename_absolute(save_path+".tmp",save_path)!=OK:return {"error":"탐험 저장을 교체하지 못했습니다."}
+		var backup_error:=DirAccess.copy_absolute(save_path,backup_path)
+		if backup_error!=OK:return {"error":"탐험 백업을 만들 수 없습니다: "+error_string(backup_error)}
+	var rename_error:=DirAccess.rename_absolute(save_path+".tmp",save_path)
+	if rename_error!=OK:return {"error":"탐험 저장을 교체하지 못했습니다: "+error_string(rename_error)}
 	return {"digest":encoded.sha256_text()}
 
 func read_state() -> Dictionary:
