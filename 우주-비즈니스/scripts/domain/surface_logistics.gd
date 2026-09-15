@@ -15,7 +15,7 @@ static func validate(value: Variant,terrain_settings: Dictionary={}) -> String:
 	if robot.get("phase") not in ["idle","pickup","return"]:return "로봇 작업 상태 오류"
 	var bounds: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json")) if terrain_settings.is_empty() else terrain_settings
 	for point in [robot.position,robot.target]:
-		if absf(point[0])>float(bounds.region_half_extent) or absf(point[2])>float(bounds.region_half_extent) or point[1]<float(bounds.minimum_depth)+2 or point[1]>float(bounds.maximum_height)+float(bounds.cell_size)*int(bounds.chunk_cells)-2:return "로봇이 탐사 가능 영역 밖에 있습니다."
+		if absf(point[0])>float(bounds.region_half_extent) or absf(point[2])>float(bounds.region_half_extent) or point[1]<minf(-512.0,float(bounds.minimum_depth))+2 or point[1]>float(bounds.maximum_height)+float(bounds.cell_size)*int(bounds.chunk_cells)-2:return "로봇이 탐사 가능 영역 밖에 있습니다."
 	if robot.phase=="return" and robot.target!=[-4.0,2.0,4.0]:return "로봇 하역 위치 오류"
 	return ""
 static func load_cargo(state: Dictionary) -> int:

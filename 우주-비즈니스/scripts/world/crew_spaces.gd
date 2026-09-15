@@ -27,6 +27,7 @@ func sync() -> void:
 				var body_id:=key.trim_prefix("surface:");var body:=FrontierUniverse.body_from_id(world.manifest,body_id)
 				var material:=ShaderMaterial.new();material.shader=load("res://assets/materials/space/terrain.gdshader")
 				var terrain:=FrontierTerrainStreamer.new();terrain.configure(int(body.streams.terrain),world.terrain_edits.get(body_id,[]),material,world.terrain_settings,body.get("terrain_traits",{}));stage.add_child(terrain)
+				var vessels:=preload("res://scripts/world/remote_landed_vessels.gd").new();stage.add_child(vessels);vessels.configure(terrain);entry.vessels=vessels
 				entry.terrain=terrain;entry.edits=world.terrain_edits.get(body_id,[]).size()
 				var business:=FrontierBusinessSiteView.new();stage.add_child(business);business.configure(terrain,body);business.accept(world.get("business",{}));entry.business=business
 			spaces[key]=entry
@@ -46,7 +47,9 @@ func sync() -> void:
 		var points: Array[Vector3]=[]
 		for peer in app.session.authority.peers:
 			var id: String=app.session.authority.peers[peer]
-			if FrontierShuttles.area_key(world,id)==key and app.actors.has(id):points.append(app.actors[id].position)
+			if FrontierShuttles.area_key(world,id)==key and app.actors.has(id):
+				if points.is_empty():entry.vessels.sync(world,id)
+				points.append(app.actors[id].position)
 		entry.terrain.update_interests(points)
 		entry.business.accept(world.get("business",{}))
 		_sync_wildlife(entry,world,body_id)

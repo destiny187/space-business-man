@@ -30,12 +30,15 @@ var max_collision_ms:=0.0
 var max_commit_ms:=0.0
 var closed := false
 var occlusion_enabled:=false
+var column_floors: Dictionary={}
+var collision_gate: Callable
 
 func _ready() -> void:
 	occlusion_enabled=FrontierFieldVisibility.acquire(get_viewport())
 
 func configure(seed_value: int,edits: Array,terrain_material: Material,settings: Dictionary={},traits: Dictionary={}) -> void:
 	config=JSON.parse_string(FileAccess.get_file_as_string("res://data/terrain.json")) if settings.is_empty() else settings.duplicate(true)
+	column_floors.clear()
 	seed_number=seed_value
 	span=float(config.cell_size)*int(config.chunk_cells)
 	material=terrain_material
@@ -49,6 +52,7 @@ func update_interests(points: Array[Vector3]) -> void:
 	var signature:=str(anchors)
 	if signature==interest_signature:return
 	interest_signature=signature
+	if column_floors.size()>1024:column_floors.clear()
 	candidates_dirty=true
 	wanted.clear()
 	var radius:=int(config.active_radius)
@@ -56,7 +60,7 @@ func update_interests(points: Array[Vector3]) -> void:
 		for x in range(anchor.x-radius,anchor.x+radius+1):
 			for z in range(anchor.z-radius,anchor.z+radius+1):
 				for y in range(anchor.y-int(config.vertical_radius),anchor.y+int(config.vertical_radius)+1):
-					if y*span<float(config.minimum_depth) or y*span>float(config.maximum_height):continue
+					if not chunk_in_bounds(Vector3i(x,y,z)):continue
 					var key:=Vector3i(x,y,z)
 					var priority: float=Vector3(key-anchor).length_squared()
 					wanted[key]=minf(priority,float(wanted.get(key,INF)))
@@ -64,6 +68,16 @@ func update_interests(points: Array[Vector3]) -> void:
 	retire_keys.clear()
 	for key in chunks:
 		if not wanted.has(key):retire_keys.append(key)
+
+func chunk_in_bounds(key: Vector3i) -> bool:
+	var column:=Vector2i(key.x,key.z)
+	if not column_floors.has(column):
+		var floor_y:=float(config.minimum_depth)
+		for x in [0.0,.5,1.0]:
+			for z in [0.0,.5,1.0]:
+				floor_y=minf(floor_y,field.height((key.x+x)*span,(key.z+z)*span)-FrontierTerrainField.MAXIMUM_DIG_DEPTH-span)
+		column_floors[column]=floor_y
+	return (key.y+1)*span>=float(column_floors[column]) and key.y*span<=float(config.maximum_height)
 
 func dig(center: Vector3,radius: float) -> Dictionary:
 	if not batch.is_empty():return {}
@@ -77,6 +91,7 @@ func dig(center: Vector3,radius: float) -> Dictionary:
 	return edit
 
 func ready_at(point: Vector3) -> bool:
+	if collision_gate.is_valid() and not collision_gate.call():return false
 	var key:=field.key_at(point)
 	# Player capsule and its floor can occupy opposite sides of a chunk boundary.
 	return chunks.has(key) and chunks.has(field.key_at(point-Vector3.UP*2))
@@ -89,7 +104,7 @@ func ready_for(points: Array[Vector3]) -> bool:
 		for x in range(anchor.x-radius,anchor.x+radius+1):
 			for z in range(anchor.z-radius,anchor.z+radius+1):
 				for y in range(anchor.y-int(config.vertical_radius),anchor.y+int(config.vertical_radius)+1):
-					if y*span<float(config.minimum_depth) or y*span>float(config.maximum_height):continue
+					if not chunk_in_bounds(Vector3i(x,y,z)):continue
 					var key:=Vector3i(x,y,z)
 					if not chunks.has(key) or int(chunks[key].revision)!=int(revisions.get(key,0)):return false
 	return batch.is_empty()

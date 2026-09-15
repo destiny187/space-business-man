@@ -16,6 +16,7 @@ var seen: Dictionary={}
 var pending: Dictionary={}
 var accepted: Dictionary={}
 var hud: Control
+var reload_hint: Label
 var ammo_label: Label
 var reload_bar: ProgressBar
 var observed_item: String=""
@@ -40,6 +41,9 @@ var input_buffered:=false
 var ammo_icon: TextureRect
 var hands: Node3D
 var reload_cues: Dictionary={}
+var reload_intent: String=""
+var reload_deadline:=0
+var reload_retry_at:=0
 var empty_latched:=false
 var recoil_impulses: Dictionary={}
 var predicted_shots:=0
@@ -51,9 +55,10 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	audio_rng.randomize()
 	gun_effects=FrontierFirearmEffects.new();app.add_child(gun_effects);gun_effects.camera=app.camera
 	var layer:=CanvasLayer.new();add_child(layer)
-	hud=Control.new();hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);hud.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(hud)
+	hud=Control.new();hud.theme=app.ui_theme;hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);hud.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(hud)
 	hud.draw.connect(_draw)
-	ammo_label=Label.new();ammo_label.add_theme_font_size_override("font_size",18);ammo_label.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(ammo_label)
+	ammo_label=Label.new();ammo_label.add_theme_font_size_override("font_size",18);ammo_label.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(ammo_label);FrontierInterfaceStyle.hud_shadow(ammo_label)
+	reload_hint=Label.new();reload_hint.add_theme_font_size_override("font_size",13);reload_hint.mouse_filter=Control.MOUSE_FILTER_IGNORE;hud.add_child(reload_hint);FrontierInterfaceStyle.hud_shadow(reload_hint)
 	reload_bar=ProgressBar.new();reload_bar.show_percentage=false;reload_bar.mouse_filter=Control.MOUSE_FILTER_IGNORE;reload_bar.custom_minimum_size=Vector2(110,4);hud.add_child(reload_bar)
 	app.session.request_started.connect(func(sequence: int,kind: String,args: Dictionary):
 		if kind in ["surface_fire","surface_reload","surface_stance"]:pending[sequence]={"kind":kind,"item_id":args.get("item_id","")}
@@ -86,7 +91,12 @@ func reload(automatic: bool=false) -> void:
 	if automatic and empty_latched:return
 	var gun:=tool()
 	if gun.has("firearm") and reload_left<=0 and not pending.values().any(func(p):return p.kind=="surface_reload"):
-		app.session.send_request("surface_reload",{"item_id":gun.item_id})
+		reload_intent=gun.item_id;reload_deadline=Time.get_ticks_msec()+1500
+		_send_reload()
+func _send_reload() -> void:
+	reload_retry_at=Time.get_ticks_msec()+120
+	app.session.send_request("surface_reload",{"item_id":reload_intent})
+
 func _response(sequence: int,result: Dictionary) -> void:
 	if not pending.has(sequence):return
 	var request: Dictionary=pending[sequence];pending.erase(sequence)
@@ -99,6 +109,7 @@ func _response(sequence: int,result: Dictionary) -> void:
 	if request.item_id!=tool().get("item_id",""):
 		if result.get("ok",false) and result.has("rays"):result.actor=app.session.latest.self_id;present(result,false)
 		return
+	if request.kind=="surface_reload" and result.get("code","") not in ["weapon_busy","weapon_blocked"]:reload_intent=""
 	if not result.get("ok",false):
 		if recoil_impulses.has(sequence):recoil_impulses[sequence].denied=true
 		if result.has("weapon"):accepted=result.weapon.duplicate(true)
@@ -184,6 +195,8 @@ func _process(delta: float) -> void:
 	next_shot=maxf(0,next_shot-delta);hit_left=maxf(0,hit_left-delta);flash_left=maxf(0,flash_left-delta)
 	damage_numbers.update(delta)
 	var active:=enabled();var gun:=tool()
+	if not active or gun.get("item_id","")!=reload_intent or Time.get_ticks_msec()>reload_deadline:reload_intent=""
+	if not reload_intent.is_empty() and Time.get_ticks_msec()>=reload_retry_at and not pending.values().any(func(p):return p.kind=="surface_reload"):_send_reload()
 	if reserve_ammo!=0 or (not app.test_mode and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):empty_latched=false
 	if was_enabled and not active:app.feedback.audio.stop_firearm_cues();gun_effects.clear();damage_numbers.clear();kick=0;shot_bloom=0;hit_left=0;flash_left=0
 	was_enabled=active
@@ -242,7 +255,10 @@ func _process(delta: float) -> void:
 		heat_bar.visible=gun.effect=="beam"
 		heat_bar.value=float(accepted.get("heat",0))*100;heat_bar.modulate=Color("ff865d") if accepted.get("overheated",false) else Color("85f7e3")
 		heat_bar.position=ammo_label.position+Vector2(0,-10);heat_bar.size=Vector2(110,4)
-		var size:=hud.get_viewport_rect().size;ammo_label.position=Vector2(size.x*.5+45,size.y-126)
+		var size:=hud.get_viewport_rect().size;ammo_label.position=Vector2(size.x-202,size.y-160)
+		reload_hint.position=ammo_label.position+Vector2(0,38)
+		reload_hint.text="재장전 중" if reload_left>0 else FrontierPlayInput.text("reload")+" 재장전"
+		heat_bar.position=ammo_label.position+Vector2(0,-10)
 		var display_reserve: String="∞" if str(gun.get("ammo_type","")).is_empty() else str(maxi(0,reserve_ammo))
 		ammo_label.text="%02d / %s"%[int(accepted.get("ammo",gun.magazine)),display_reserve]
 		ammo_icon.texture=FrontierResourceIcons.texture(str(gun.ammo_type)) if not str(gun.get("ammo_type","")).is_empty() else null

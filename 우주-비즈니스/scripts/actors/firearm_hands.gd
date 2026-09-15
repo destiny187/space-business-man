@@ -52,6 +52,12 @@ func pose(gun: Dictionary,parts: Array[Node],phase: float,reloading: bool,kick: 
 	_arm("left",wrist,-1.0)
 	_fingers("right",0,kick)
 	_fingers("left",(1-contact)*sin(phase*PI)*.35 if reloading else 0.0,0)
+func pose_tool(right_contact: Vector3,left_contact: Vector3,working: float) -> void:
+	_arm("right",right_contact,1.0)
+	_arm("left",left_contact,-1.0)
+	_fingers("right",0,working*.35)
+	_fingers("left",0,0)
+
 func _arm(side: String,target: Vector3,sign_value: float) -> void:
 	if not skeletons.has(side):return
 	var skeleton: Skeleton3D=skeletons[side]

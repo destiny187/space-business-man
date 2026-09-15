@@ -21,7 +21,7 @@ static func valid(value: Variant) -> bool:
 	for key in ["jet_armed","jet_active"]:
 		if not value.get(key,false) is bool:return false
 	return FrontierUniverse._finite(value.get("yaw"),-TAU,TAU)
-static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0,swim_vertical: float=0.0,jump_factor: float=1.0,jump_held: bool=false,jetpack: bool=false) -> void:
+static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,speed: float,gravity: float,jump_request: int,delta: float,enabled: bool=true,water_depth: float=0.0,swim_vertical: float=0.0,jump_factor: float=1.0,jump_held: bool=false,jetpack: bool=false,terrain: FrontierTerrainField=null) -> void:
 	var c:=config()
 	var was_grounded: bool=motion.grounded
 	var old_depth:=float(motion.get("water_depth",0))
@@ -83,9 +83,16 @@ static func step(body: CharacterBody3D,motion: Dictionary,direction: Vector2,spe
 	body.floor_snap_length=float(c.floor_snap) if body.velocity.y<=0 and not swimming else 0.0
 	var impact:=maxf(0,-body.velocity.y)
 	body.move_and_slide()
+	var density_grounded:=false
+	if terrain!=null and not body.is_on_floor():
+		var safe:=terrain.safe_motion(start,body.position)
+		if safe!=body.position:
+			density_grounded=impact>0 and terrain.normal(safe+Vector3.UP*.12).y>.65
+			body.position=safe;body.velocity=Vector3.ZERO
+
 	# A jump consumes grace even while the previous frame was on the floor.
 	if launched:motion.coyote=0.0
-	motion.grounded=body.is_on_floor()
+	motion.grounded=body.is_on_floor() or density_grounded
 	if motion.grounded and not was_grounded and impact>1.5 and water_depth<.5:
 		motion.land_serial+=1;motion.impact=impact;motion.landing=float(c.landing_seconds)
 	var travel:=Vector2(body.position.x-start.x,body.position.z-start.z)

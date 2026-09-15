@@ -47,7 +47,8 @@
     "geometry": "ink-family-remodeled",
     "foliage": false,
     "generator": "tools/build_ink_followups.py",
-    "review": "docs/production/52-legacy-art-completion.md"
+    "review": "docs/production/52-legacy-art-completion.md",
+    "hand_assembly_generator": "tools/build_field_tool_hands.py"
   },
   {
     "id": "base",
@@ -9043,7 +9044,8 @@
     "model": "res://assets/models/equipment/terrain_shaper.glb",
     "source": "art/blender/equipment/terrain_shaper.blend",
     "geometry": "visual-prototype",
-    "foliage": false
+    "foliage": false,
+    "hand_assembly_generator": "tools/build_field_tool_hands.py"
   },
   {
     "id": "solar_mercury",
@@ -9936,7 +9938,8 @@
     "model": "res://assets/models/equipment/miner_mk2.glb",
     "group": "2티어",
     "geometry": "gameplay-prototype",
-    "foliage": false
+    "foliage": false,
+    "hand_assembly_generator": "tools/build_field_tool_hands.py"
   },
   {
     "id": "pulse_mk2",
@@ -9954,7 +9957,8 @@
     "model": "res://assets/models/equipment/terrain_mk2.glb",
     "group": "2티어",
     "geometry": "gameplay-prototype",
-    "foliage": false
+    "foliage": false,
+    "hand_assembly_generator": "tools/build_field_tool_hands.py"
   },
   {
     "id": "crew_surveyor_suit",

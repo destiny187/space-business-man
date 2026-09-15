@@ -230,7 +230,7 @@ func _physics_process(delta: float) -> void:
 	player.velocity.x=direction.x*move_speed;player.velocity.z=direction.z*move_speed
 	if not player.is_on_floor():player.velocity.y-=float(config.gravity)*delta
 	player.move_and_slide()
-	if player.position.y<float(config.minimum_depth)+2 or maxf(absf(player.position.x),absf(player.position.z))>float(config.region_half_extent):rescue()
+	if terrain.field.is_bedrock(player.position+Vector3.UP) or maxf(absf(player.position.x),absf(player.position.z))>float(config.region_half_extent):rescue()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.physical_keycode==KEY_E:
@@ -260,7 +260,6 @@ func dig() -> bool:
 	query.exclude=[player.get_rid()]
 	var hit: Dictionary=get_world_3d().direct_space_state.intersect_ray(query)
 	if hit.is_empty() or not hit.collider.has_meta("terrain_chunk"):message.value="굴착할 지층에 가까이 접근하세요.";return false
-	if hit.position.y<float(config.minimum_depth)+5:message.value="현재 장비의 굴착 깊이 한계입니다.";return false
 	if terrain.field.is_bedrock(hit.position):message.value="최초 지표 아래 200m 기반암은 굴착할 수 없습니다.";return false
 	var edit: Dictionary=terrain.dig(hit.position,float(config.dig_radius))
 	if edit.is_empty():return false

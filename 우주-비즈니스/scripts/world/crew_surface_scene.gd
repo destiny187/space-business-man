@@ -7,6 +7,7 @@ var shuttle_models: Dictionary={}
 var landing_ship: Node3D
 var landing_effects: FrontierLandingSurfaceEffects
 var seated_hull: String="kestrel"
+var collision_signature: String=""
 var session: FrontierCrewSession
 var viewer: Node3D
 var terrain: FrontierTerrainStreamer
@@ -98,6 +99,7 @@ func configure(connection: FrontierCrewSession,packet: Dictionary,player: Node3D
 	incidents=FrontierIncidentView.new();add_child(incidents);incidents.configure(self,camera)
 	weather_view=FrontierPlanetWeatherView.new();weather_view.name="Weather";add_child(weather_view);weather_view.configure(self,camera)
 	var deep_gallery=preload("res://scripts/world/deep_cave_view.gd").new();deep_gallery.name="DeepGallery";add_child(deep_gallery);deep_gallery.configure(self)
+	_update_ground_collision()
 	_update_interest()
 	session.snapshot_received.connect(_shuttle_snapshot)
 	_update_shuttles()
@@ -173,6 +175,7 @@ func _process(delta: float) -> void:
 	if session.hosting and session.authority.world.has("ecology"):ecology.ecology=session.authority.world.ecology
 	refits.update_loadout({"hull":"finch"} if not session.latest.get("local_shuttle","").is_empty() else session.latest.get("vessel",{}))
 	if refits.requested_hull.is_empty() and seated_hull!=refits.hull_id:seat_vessel()
+	_update_ground_collision()
 	_update_interest()
 	_animate_shuttles(delta)
 	fallback_tick-=delta
@@ -217,7 +220,9 @@ func prepare_landing_view(points: Array[Vector3]) -> void:
 func landing_view_ready() -> bool:
 	var points: Array[Vector3]=[viewer.position]
 	if not terrain.ready_for(points) or applied_edits!=incoming.size():return false
+	if collision_signature!=refits.hull_id+":"+refits.signature or not refits.requested_hull.is_empty() or not refits.requested.is_empty():return false
 	if distant.mesh==null or distant.task_id!=-1 or not distant.queued.is_empty():return false
+	if fallback_jobs!=terrain.completed_jobs or distant.fallback_task!=-1 or not distant.fallback_queue.is_empty():return false
 	# Candidates are discovered only after their supporting terrain exists.
 	if not presentation_ecology_refreshed:
 		ecology.refresh();presentation_ecology_refreshed=true
@@ -246,6 +251,7 @@ func _update_shuttles() -> void:
 		var ship: Node3D=load(FrontierShuttles.config().model).instantiate();add_child(ship);FrontierInkStyle.apply(ship,{})
 		var point:=FrontierCrewWorld.vector(fleet[id].deployment.position)
 		ship.position=point;ship.rotation.y=float(fleet[id].deployment.yaw);shuttle_models[id]=ship
+		preload("res://scripts/world/vessel_ground_collision.gd").install(ship)
 		var label:=Label3D.new();label.text="LOTUS 공용 FINCH" if fleet[id].get("company",false) else "FINCH  "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
 	_animate_shuttles(0)
 func _animate_shuttles(delta: float) -> void:
@@ -257,8 +263,16 @@ func _animate_shuttles(delta: float) -> void:
 		if not craft.has("deployment"):continue
 		var deployment: Dictionary=craft.deployment
 		var age:=now-float(deployment.time)
+		shuttle_models[id].get_node("GroundHullCollision").collision_layer=1 if age>=float(FrontierShuttles.config().deployment_seconds) else 0
 		shuttle_models[id].rotation.y=float(deployment.yaw)
 		shuttle_models[id].position=FrontierCrewWorld.vector(deployment.position)+Vector3.UP*18*(1-smoothstep(0,float(FrontierShuttles.config().deployment_seconds),age))
+
+func _update_ground_collision() -> void:
+	if not refits.requested_hull.is_empty() or not refits.requested.is_empty():return
+	var next: String=refits.hull_id+":"+refits.signature
+	if next==collision_signature:return
+	preload("res://scripts/world/vessel_ground_collision.gd").install(landing_ship)
+	collision_signature=next
 
 func seat_vessel() -> void:
 	seated_hull=refits.hull_id

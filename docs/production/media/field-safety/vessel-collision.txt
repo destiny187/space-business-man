@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS remote host world installs common hull collision
+PASS unchanged snapshot keeps same collision body
+PASS remote walking waits for replacement hull collision
+PASS hull replacement installs new collision once
+LANDED_VESSEL_COLLISION 4 FAILURES 0

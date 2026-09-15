@@ -1,0 +1,40 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward+ - Using Device #0: Apple - Apple M2 (Apple8)
+
+PASS start isolated host
+PASS land fixture:
+PASS landed fixture saved
+PASS startup loader waits and completes
+PASS cover stays until planetary terrain and models are ready
+PASS all local terrain collision chunks installed before reveal
+PASS normal walking stays available after loading
+PASS common landed hull collider exists
+PASS common landed hull physical ray hits side of actual hull
+PASS common landed hull character body cannot pass through
+PASS shared FINCH available
+PASS deployed FINCH displayed
+PASS FINCH collider exists
+PASS FINCH physical ray hits side of actual hull
+PASS FINCH character body cannot pass through
+PASS equip miner_1
+PASS Blender hand contacts connected miner_1
+PASS hand IK reaches miner_1
+PASS equip miner_2
+PASS Blender hand contacts connected miner_2
+PASS hand IK reaches miner_2
+PASS equip terrain_1
+PASS Blender hand contacts connected terrain_1
+PASS hand IK reaches terrain_1
+PASS equip terrain_2
+PASS Blender hand contacts connected terrain_2
+PASS hand IK reaches terrain_2
+PASS pistol equipped
+PASS one shot updates remaining rounds
+PASS bottom-right ammo and R hint
+REJECT { "ok": false, "code": "weapon_blocked", &"firearm_action": "surface_reload" }
+PASS R starts authoritative reload
+PASS reload refills magazine
+PASS ammo and reload hint fit small window
+PASS menu hides firearm overlay
+PASS save after firing and reload
+FIELD_SAFETY_PLAY 35 FAILURES 0

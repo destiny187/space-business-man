@@ -109,6 +109,8 @@ func _run() -> void:
 	# _ready may yield between expensive initialization stages.
 	while not target.get_meta("startup_complete", false):
 		await get_tree().process_frame
+	if target.has_method("prepare_startup_world"):
+		await target.prepare_startup_world(self)
 	await checkpoint(92, "첫 화면 렌더 준비")
 	var old_mode := target.process_mode
 	target.process_mode = Node.PROCESS_MODE_DISABLED

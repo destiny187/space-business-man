@@ -8,6 +8,8 @@ var audio: FrontierAudio
 var effects: FrontierEffects
 var equipped_model: String="manual_tool"
 var handheld: Node3D
+var tool_hands: Node3D
+var hand_contacts: Dictionary={}
 var muzzle: OmniLight3D
 var parts: Array[Node]=[]
 var swim_lower:=0.0
@@ -220,12 +222,22 @@ func _process(delta: float) -> void:
 	swim_lower=lerpf(swim_lower,1.0 if swimming else 0.0,1-exp(-delta*6))
 	var bob: float=sin(elapsed*(4.65 if swimming else 9 if moving else 2))*(.018 if moving else .005)*(1-intake_strength*.75)
 	handheld.position=Vector3(.36-intake_strength*.035,-.30+bob+intake_strength*.015,-.92+recoil*.10-intake_strength*.025)
+	if tool.get("kind")=="terrain":handheld.position.x=.28;handheld.position.z=-.68+recoil*.10
 	handheld.position.y-=swim_lower*.08;handheld.position.x+=sin(elapsed*4.65)*.018*swim_lower;handheld.position.y+=sin(elapsed*4.65)*.012*swim_lower
 	handheld.rotation=Vector3(recoil*.10+sin(elapsed*73)*intake_strength*.002,0,-.03+sin(elapsed*59)*intake_strength*.003)
 	for part in parts:
 		if part.name.begins_with("Anim_Fan"):part.rotate_z(delta*(2+intake_strength*65))
 		elif part.name.begins_with("Anim_Piston") or part.name.begins_with("Anim_Collar"):
 			part.position=part.get_meta("rest")+Vector3(0,0,recoil*.065+sin(elapsed*47)*intake_strength*.002)
+	if enabled and tool.get("kind") in ["miner","terrain"]:
+		if not is_instance_valid(tool_hands):
+			hand_contacts.clear()
+			for side in ["Right","Left"]:
+				var sockets:=handheld.find_children("Socket_Hand"+side,"Node3D",true,false)
+				if not sockets.is_empty():hand_contacts[side]=handheld.to_local(sockets[0].global_position)
+			if hand_contacts.size()==2:
+				tool_hands=preload("res://scripts/actors/firearm_hands.gd").new();tool_hands.configure(handheld)
+		if is_instance_valid(tool_hands):tool_hands.pose_tool(hand_contacts.Right,hand_contacts.Left,maxf(intake_strength,recoil))
 	optics.update_intake(intake_point,handheld.to_global(Vector3(0,0,-.78)),app.camera,intake_strength if enabled else 0.0,delta)
 	intake_tick-=delta
 	if mining and intake_tick<=0:
@@ -329,6 +341,7 @@ func _industry_effects() -> void:
 		effects.burst(actor.global_position+Vector3.UP*2,color,2)
 
 func _replace_tool(model: String) -> void:
+	tool_hands=null;hand_contacts.clear()
 	work_left=0;intake_strength=0;recoil=0;recoil_velocity=0;optics.reset();effects.clear()
 	handheld.get_parent().remove_child(handheld);handheld.queue_free()
 	equipped_model=model;handheld=load("res://assets/models/"+model+".glb").instantiate()

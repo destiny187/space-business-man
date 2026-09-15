@@ -1,6 +1,8 @@
 class_name FrontierTerrainField
 extends RefCounted
 ## Positive density is rock. Carving removes mass; it never changes the seed.
+const MAXIMUM_DIG_DEPTH := 200.0
+
 var noise := FastNoiseLite.new()
 var detail := FastNoiseLite.new()
 var regions := FastNoiseLite.new()
@@ -131,8 +133,7 @@ func density_at_height(p: Vector3,original_surface: float) -> float:
 		value=legacy_cave_density(p,value)
 	for edit in edits_by_chunk.get(key_at(p),[]):
 		value=minf(value,p.distance_to(Vector3(edit.center[0],edit.center[1],edit.center[2]))-float(edit.radius))
-	if caves!=null:
-		value=maxf(value,original_surface-float(traits.underground.maximum_depth)-p.y)
+	value=maxf(value,original_surface-MAXIMUM_DIG_DEPTH-p.y)
 	return value
 
 func legacy_cave_density(p: Vector3,value: float) -> float:
@@ -161,4 +162,27 @@ func normal(p: Vector3,surface_height: float=NAN) -> Vector3:
 	return result
 
 func is_bedrock(p: Vector3) -> bool:
-	return caves!=null and height(p.x,p.z)-p.y>=float(traits.underground.maximum_depth)-.1
+	return height(p.x,p.z)-p.y>=MAXIMUM_DIG_DEPTH-.1
+
+## Sweep the feet through the same density used to build collision. A thin
+## triangulation seam must not let a falling capsule enter solid ground.
+func safe_motion(from: Vector3,to: Vector3) -> Vector3:
+	var offset:=Vector3.UP*.12
+	var start:=from+offset
+	var end:=to+offset
+	if density(start)>0.0:return to # Existing mesh contact can slightly differ from the sampled surface.
+	var distance:=start.distance_to(end)
+	if distance<.0001:return to
+	var count:=maxi(1,ceili(distance/.25))
+	var safe:=start
+	for i in range(1,count+1):
+		var point:=start.lerp(end,float(i)/count)
+		if density(point)>0.0:
+			var solid:=point
+			for iteration in 8:
+				var middle: Vector3=(safe+solid)*.5
+				if density(middle)>0.0:solid=middle
+				else:safe=middle
+			return safe-offset+normal(safe)*.015
+		safe=point
+	return to

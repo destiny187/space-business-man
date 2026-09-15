@@ -461,7 +461,7 @@ var gun_events: Array=[]
 var firearm_history:=preload("res://scripts/domain/firearm_history.gd").new()
 var ballistics:=preload("res://scripts/domain/ground_ballistics.gd").new()
 func firearm_command(peer: int,envelope: Dictionary) -> Dictionary:
-	if not resolve_autonomous():return {"ok":false,"code":"weapon_blocked"}
+	if not resolve_autonomous():return {"ok":false,"code":"weapon_busy"}
 	var actor: String=peers[peer]
 	var member: Dictionary=world.crew.members[actor]
 	var sequence:=int(envelope.sequence)
