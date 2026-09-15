@@ -40,7 +40,7 @@ func _ready() -> void:
 	get_window().size=Vector2i(1440,900)
 	get_window().content_scale_size=Vector2i(1600,1000)
 	get_window().content_scale_mode=Window.CONTENT_SCALE_MODE_VIEWPORT
-	DisplayServer.window_set_title("우주 비즈니스맨 · 생물 아트 도감")
+	DisplayServer.window_set_title("우주 비즈니스맨  생물 아트 도감")
 	get_viewport().msaa_3d=Viewport.MSAA_4X
 	get_viewport().screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
 	regular=FontVariation.new()
@@ -89,7 +89,7 @@ func _ready() -> void:
 	actor.lod_override=0
 	add_child(actor)
 	actor.attack_cue.connect(func(phase: String):
-		state_info.text={"windup":"공격 전조","active":"공격 동작 · 효과","recovery":"회복 동작","complete":"대기"}.get(phase,phase))
+		state_info.text={"windup":"공격 전조","active":"공격 동작  효과","recovery":"회복 동작","complete":"대기"}.get(phase,phase))
 	build_ui()
 	for i in range(forms.size()):
 		if not eye_revisions or forms[i].has("eye_design"):filtered.append(i)
@@ -168,19 +168,19 @@ func build_ui() -> void:
 	info=text(panel,"",Vector2(24,271),17,"52665f")
 	info.size.x=318
 	info.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	button(panel,"1 · 대기",Vector2(24,405),Vector2(153,46),change_state.bind("idle"))
-	button(panel,"2 · 이동",Vector2(189,405),Vector2(153,46),change_state.bind("move"))
-	button(panel,"3 · 섭식/활동",Vector2(24,467),Vector2(153,46),change_state.bind("feed"))
-	attack_button=button(panel,"4 · 공격 시연",Vector2(189,467),Vector2(153,46),change_state.bind("attack"))
+	button(panel,"1  대기",Vector2(24,405),Vector2(153,46),change_state.bind("idle"))
+	button(panel,"2  이동",Vector2(189,405),Vector2(153,46),change_state.bind("move"))
+	button(panel,"3  섭식/활동",Vector2(24,467),Vector2(153,46),change_state.bind("feed"))
+	attack_button=button(panel,"4  공격 시연",Vector2(189,467),Vector2(153,46),change_state.bind("attack"))
 	button(panel,"휴면",Vector2(24,529),Vector2(153,46),change_state.bind("dormant"))
 	button(panel,"스트레스",Vector2(189,529),Vector2(153,46),change_state.bind("stressed"))
 	state_info=text(panel,"대기",Vector2(24,601),23)
-	light_button=button(panel,"조명 · 주광",Vector2(24,650),Vector2(153,46),cycle_light)
+	light_button=button(panel,"조명  주광",Vector2(24,650),Vector2(153,46),cycle_light)
 	button(panel,"효과 켜기/끄기",Vector2(189,650),Vector2(153,46),func():actor.show_effects=not actor.show_effects;actor.update_fx())
 	button(panel,"근거리 / 원거리 모델",Vector2(24,710),Vector2(318,46),func():actor.lod_override=1-actor.lod_override)
-	text(panel,"모델·기관 동작과 조명 검수\n실제 서식은 행성 고유 생태를 따름",Vector2(24,780),16,"52665f")
+	text(panel,"모델  기관 동작과 조명 검수\n실제 서식은 행성 고유 생태를 따름",Vector2(24,780),16,"52665f")
 	status=text(ui,"",Vector2(54,883),20)
-	text(ui,"← → 모델   ·   ↑ ↓ 변형   ·   1–4 동작   ·   Space 정지   ·   R 회전   ·   드래그/휠   ·   Esc 종료",Vector2(54,950),16)
+	text(ui,"← → 모델  ↑ ↓ 변형  1–4 동작  Space 정지  R 회전  드래그/휠  Esc 종료",Vector2(54,950),16)
 
 func select_form(index: int) -> void:
 	selected=posmod(index,forms.size())
@@ -189,7 +189,7 @@ func select_form(index: int) -> void:
 	headline.text=forms[selected].name
 	subtitle.text=forms[selected].environment_label+"  /  "+{"animal":"동물","plant":"식생","microbe":"미생물 군락"}[forms[selected].category]
 	attack_button.disabled=forms[selected].attack=="none"
-	attack_button.text="공격 없음" if attack_button.disabled else "4 · 공격 시연"
+	attack_button.text="공격 없음" if attack_button.disabled else "4  공격 시연"
 	state_info.text="대기"
 	frame_subject()
 	update_labels()
@@ -220,12 +220,12 @@ func frame_subject() -> void:
 
 func update_labels() -> void:
 	info.add_theme_font_size_override("font_size",17);info.tooltip_text=""
-	info.text="%s\n\n모델 %03d / %d · 변형 %02d / 20\n공격 유형: %s"%[forms[selected].habitat_note,selected+1,forms.size(),variant+1,{"none":"없음","ram":"돌진","bite":"물기","kick":"차기","claw":"집게","scythe":"베기","slam":"내려치기","dive":"급강하","spit":"분사"}.get(forms[selected].attack,"")]
+	info.text="%s\n\n모델 %03d / %d  변형 %02d / 20\n공격 유형: %s"%[forms[selected].habitat_note,selected+1,forms.size(),variant+1,{"none":"없음","ram":"돌진","bite":"물기","kick":"차기","claw":"집게","scythe":"베기","slam":"내려치기","dive":"급강하","spit":"분사"}.get(forms[selected].attack,"")]
 	if forms[selected].has("sensory_type"):
-		info.text="눈 %d개 · %s\n모델 %03d / %d · 변형 %02d / 20"%[forms[selected].eye_count,forms[selected].sensory_type,selected+1,forms.size(),variant+1]
+		info.text="눈 %d개  %s\n모델 %03d / %d  변형 %02d / 20"%[forms[selected].eye_count,forms[selected].sensory_type,selected+1,forms.size(),variant+1]
 	if forms[selected].get("collection","")=="biota-7000":
 		info.add_theme_font_size_override("font_size",14);info.tooltip_text=forms[selected].anatomy_note
-		info.text="%s · 주요 기관 %d개\n%s\n유형 골격 %d개 본\n모델 %04d / %d · 변형 %02d / 20"%[forms[selected].family_name,int(forms[selected].body_plan.radial_count),forms[selected].adaptation_note,int(forms[selected].rig.bone_count),selected+1,forms.size(),variant+1]
+		info.text="%s  주요 기관 %d개\n%s\n유형 골격 %d개 본\n모델 %04d / %d  변형 %02d / 20"%[forms[selected].family_name,int(forms[selected].body_plan.radial_count),forms[selected].adaptation_note,int(forms[selected].rig.bone_count),selected+1,forms.size(),variant+1]
 	status.text=appearances[selected*20+variant].id+"   /   "+str(appearances.size())+"개 외형 프로필"
 
 func step_variant(direction: int) -> void:
@@ -253,7 +253,7 @@ func cycle_light() -> void:
 	light_index=(light_index+1)%3
 	light.rotation_degrees=[Vector3(-48,-32,0),Vector3(-25,145,0),Vector3(-65,-110,0)][light_index]
 	light.light_energy=[1.3,1.1,.42][light_index]
-	light_button.text="조명 · "+["주광","역광","그늘"][light_index]
+	light_button.text="조명  "+["주광","역광","그늘"][light_index]
 
 func _process(delta: float) -> void:
 	if orbit:
@@ -299,7 +299,7 @@ func capture_attacks() -> void:
 			actor.elapsed=stage.time
 			actor.paused=true
 			actor.pose()
-			state_info.text={"windup":"공격 전조","active":"공격 동작 · 효과","recovery":"회복 동작"}[stage.name]
+			state_info.text={"windup":"공격 전조","active":"공격 동작  효과","recovery":"회복 동작"}[stage.name]
 			await get_tree().process_frame
 			RenderingServer.force_draw(false)
 			var img:=get_viewport().get_texture().get_image()

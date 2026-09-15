@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "buildings": {
+    "dew_condenser": {
+      "name": "응결 집수기",
+      "model": "dew_condenser",
+      "tier": 1,
+      "tech": "",
+      "power": 4,
+      "radius": 2.0,
+      "cost": {
+        "iron": 25,
+        "copper": 15,
+        "stone": 12
+      },
+      "description": "습한 대기의 수분을 모아 냉각한 얼음을 현장 창고로 보냅니다. 대기 15kPa, 습도 18% 이상, 현장 온도 -10~55°C에서 작동합니다."
+    },
+    "geothermal_generator": {
+      "name": "열수 발전기",
+      "model": "geothermal_generator",
+      "tier": 1,
+      "tech": "",
+      "power": -18,
+      "radius": 2.3,
+      "cost": {
+        "iron": 35,
+        "copper": 20,
+        "stone": 20
+      },
+      "description": "조사를 완료한 열수 굴뚝 48m 이내에서 18kW를 공급합니다. 다른 장소에도 설치할 수 있지만 열원이 없으면 멈춥니다."
+    }
+  },
+  "projects": {
+    "dew_condenser": {
+      "name": "응결 집수기 설계",
+      "model": "dew_condenser",
+      "price": 350,
+      "cost": {
+        "iron": 12,
+        "copper": 8
+      },
+      "effect": "습한 대기의 수분을 모아 냉각한 얼음을 현장 창고로 보냅니다. 대기 15kPa, 습도 18% 이상, 현장 온도 -10~55°C에서 작동합니다. 기본 및 강화 설계를 개방합니다.",
+      "discoveries": [
+        "dew_basin"
+      ]
+    },
+    "geothermal_generator": {
+      "name": "열수 발전기 설계",
+      "model": "geothermal_generator",
+      "price": 500,
+      "cost": {
+        "iron": 12,
+        "copper": 8
+      },
+      "effect": "조사를 완료한 열수 굴뚝 48m 이내에서 18kW를 공급합니다. 다른 장소에도 설치할 수 있지만 열원이 없으면 멈춥니다. 기본 및 강화 설계를 개방합니다.",
+      "discoveries": [
+        "thermal_chimneys"
+      ]
+    }
+  },
+  "upgrades": {
+    "dew_condenser": {
+      "cost": {
+        "heat_transfer_unit": 2,
+        "reinforced_frame": 1
+      },
+      "factor": 1.5,
+      "effect": "집수 속도 +50%"
+    },
+    "geothermal_generator": {
+      "cost": {
+        "heat_transfer_unit": 2,
+        "reinforced_frame": 1
+      },
+      "factor": 1.5,
+      "effect": "발전량 +50%"
+    }
+  },
+  "condenser": {
+    "minimum_pressure": 15,
+    "minimum_moisture": 0.18,
+    "minimum_temperature": -10,
+    "maximum_temperature": 55,
+    "seconds": 12
+  },
+  "geothermal": {
+    "source_radius": 48
+  }
+}

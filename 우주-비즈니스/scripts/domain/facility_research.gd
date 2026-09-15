@@ -3,7 +3,9 @@ extends RefCounted
 ## Shared licenses are separate from historical catalog/save hashes.
 static var _config: Dictionary={}
 static func config() -> Dictionary:
- if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/facility_research.json"))
+ if _config.is_empty():
+  _config=JSON.parse_string(FileAccess.get_file_as_string("res://data/facility_research.json"))
+  _config.projects.merge(FrontierDiscoveryIndustry.config().projects)
  return _config
 static func owned(ledger: Dictionary,key: String) -> bool:
  return key in ledger.get("facility_research",[])
@@ -25,7 +27,7 @@ static func gate(ledger: Dictionary,key: String) -> String:
  if not config().projects.has(key) or owned(ledger,key):return ""
  return "착륙선 연구 → 공동 설비에서 "+str(config().projects[key].name)+" 연구가 필요합니다."
 static func construction_unlocked(ledger: Dictionary,kind: String) -> bool:
- if kind=="factory" and not owned(ledger,"factory"):return false
+ if (kind=="factory" or FrontierDiscoveryIndustry.building(kind)) and not owned(ledger,kind):return false
  var definition:=construction(kind)
  if not FrontierEarlyAccess.available(ledger,str(definition.get("tech",""))):return false
  var tier:=int(definition.get("tier",1))
@@ -39,6 +41,9 @@ static func reason(world: Dictionary,actor: String,key: String) -> String:
  var ledger: Dictionary=world.get("business",{})
  if owned(ledger,key):return "연구 완료"
  var def: Dictionary=config().projects[key]
+ if not FrontierDiscoveryIndustry.proof(world,key):
+  var source: Dictionary=FrontierExplorationIncidents.definition(def.discoveries[0]) if def.get("source","")=="incidents" else FrontierExplorationDiscoveries.definition(def.discoveries[0])
+  return "먼저 "+str(source.name)+" 조사를 완료하세요."
  if int(ledger.get("credits",0))<int(def.price):return "공동 크레딧이 부족합니다."
  if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),def.cost):return "내 배낭에 연구 재료를 준비하세요."
  return ""

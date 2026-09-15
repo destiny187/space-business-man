@@ -269,7 +269,7 @@ func craft(model: String) -> String:
 	for index in range(int(FrontierCatalog.entry("grades", grade).traits)):
 		var selected: int = rng.randi_range(0, pool.size() - 1)
 		traits.append(pool.pop_at(selected))
-	var robot: Dictionary = {"id": _id(next, "robot"), "model": model, "name": "%s · %03d" % ["MINE" if definition.role == "miner" else "WARD", next.counter], "grade": grade, "traits": traits, "health": 100.0, "filter": "all"}
+	var robot: Dictionary = {"id": _id(next, "robot"), "model": model, "name": "%s  %03d" % ["MINE" if definition.role == "miner" else "WARD", next.counter], "grade": grade, "traits": traits, "health": 100.0, "filter": "all"}
 	_reset_robot(robot, [3.5, 4.5])
 	next.planet.jobs.append({"id": job_id, "factory_id": factory_id, "model": model, "progress": 0.0, "seconds": definition.seconds, "cost": definition.cost.duplicate(), "result": robot})
 	return _commit(next)
@@ -343,11 +343,11 @@ func choose_event(event_id: String, choice: String) -> String:
 	selected.choice = choice
 	var reward: String = "기록을 보존했습니다."
 	if event.kind == "ruin":
-		if choice == "preserve": reward = "유적 보존 · 행성 평가 +1,600 Cr"
+		if choice == "preserve": reward = "유적 보존  행성 평가 +1,600 Cr"
 		elif choice == "extract":
 			next.profile.credits += 1800
 			next.planet.cash_income += 1800
-			reward = "유물 지구 반출 · 1,800 Cr 수령"
+			reward = "유물 지구 반출  1,800 Cr 수령"
 		elif choice == "analyze":
 			if "ancient" not in next.profile.technologies:
 				next.profile.technologies.append("ancient")
@@ -355,16 +355,16 @@ func choose_event(event_id: String, choice: String) -> String:
 			else:
 				next.profile.credits += 1200
 				next.planet.cash_income += 1200
-				reward = "중복 설계도 연구 보상 · 1,200 Cr"
+				reward = "중복 설계도 연구 보상  1,200 Cr"
 	elif event.kind == "microbe" and choice == "cultivate":
 		next.planet.microbes = true
-		reward = "황산 적응 미생물 정착 · 독성 감소·산소 생성력 55"
+		reward = "황산 적응 미생물 정착  독성 감소  산소 생성력 55"
 	elif event.kind == "animal":
-		if choice == "protect": reward = "서식지 보존 · 생태 정착 촉진·평가 +800 Cr"
+		if choice == "protect": reward = "서식지 보존  생태 정착 촉진  평가 +800 Cr"
 		else:
 			next.profile.credits += 900
 			next.planet.cash_income += 900
-			reward = "야생동물 지구 반출·판매 · 900 Cr"
+			reward = "야생동물 지구 반출  판매  900 Cr"
 	elif event.kind == "civilization":
 		if choice == "protect":
 			var candidates: Array = []
@@ -375,17 +375,17 @@ func choose_event(event_id: String, choice: String) -> String:
 			if not candidates.is_empty() and rng.randf() > 0.35:
 				var key: String = candidates[rng.randi_range(0, candidates.size() - 1)]
 				next.profile.technologies.append(key)
-				reward = "문명의 선물 · " + FrontierCatalog.entry("technologies", key).name
+				reward = "문명의 선물  " + FrontierCatalog.entry("technologies", key).name
 			else:
 				next.profile.credits += 2400
 				next.planet.cash_income += 2400
-				reward = "문명의 보물 · 2,400 Cr"
+				reward = "문명의 보물  2,400 Cr"
 			reward += " / 행성 판매 단가 55% 감소"
 		else:
 			selected.choice = choice + "_pending"
 			next.planet.conflict = event_id
 			next.planet.conflict_order = choice
-			reward = "경비로봇 작전 개시 · 현장에서 진행 상황을 확인하세요."
+			reward = "경비로봇 작전 개시  현장에서 진행 상황을 확인하세요."
 	selected.reward = reward
 	next.transactions[_id(next, "event")] = {"event": event_id, "choice": choice}
 	return _commit(next)

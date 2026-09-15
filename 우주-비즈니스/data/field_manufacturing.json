@@ -1,0 +1,8 @@
+{
+  "buildings": {
+    "metalworks": {"name":"금속 가공 공장","description":"전력 6 kW. 광석을 정제하고 보강 프레임과 고합금 프레임을 생산합니다. 원료와 완성품은 현장 창고를 이용합니다.","cost":{"iron":45,"copper":20,"stone":30},"tech":"robotics","power":6,"radius":3.1,"model":"metalworks"},
+    "equipment_workbench": {"name":"장비 제작대","description":"기본 장비와 무기를 제작합니다. F로 열고 내 배낭의 재료를 사용합니다. 별도 전력이 필요하지 않습니다.","cost":{"iron":15,"copper":8,"stone":10},"tech":"robotics","power":0,"radius":1.6,"model":"equipment_workbench"}
+  },
+  "metal_products":["refined_iron","refined_copper","reinforced_frame","alloy_frame"],
+  "interaction_distance":8.0
+}

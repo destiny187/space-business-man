@@ -64,13 +64,13 @@ func review(original: Dictionary,form: Dictionary) -> void:
 	title.text=form.name;camera.size=6.7 if form.id=="tethermaw" else 5.6
 	for i in 300:
 		var t:=float(i)/30.;var local_speed: float=actor.ground_motion.natural(form.motion_profile)
-		var label:="걷기 · 지지발과 경사 접지"
-		if t>=1.8 and t<4.7:local_speed*=lerpf(1.,2.5,smoothstep(1.8,2.6,t));label="가속 · 실제 이동량에 맞춘 빠른 보행"
-		elif t>=4.7 and t<5.5:local_speed*=1.-smoothstep(4.7,5.5,t);label="감속 · 정지"
-		elif t>=5.5 and t<6.3:local_speed=0.;angle=(t-5.5)*1.1;label="정지 선회 · 발 재배치"
-		elif t>=6.3 and t<7.2:local_speed=0.;label="일시정지 · 관절과 위치 유지"
-		elif t>=7.2 and t<8.5:local_speed*=2.0;label="먼 거리 LOD · 보행 위상 유지";actor.lod_override=1
-		elif t>=8.5:local_speed=0.;label="크기·색 변이 · 섭식";actor.lod_override=0
+		var label:="걷기  지지발과 경사 접지"
+		if t>=1.8 and t<4.7:local_speed*=lerpf(1.,2.5,smoothstep(1.8,2.6,t));label="가속  실제 이동량에 맞춘 빠른 보행"
+		elif t>=4.7 and t<5.5:local_speed*=1.-smoothstep(4.7,5.5,t);label="감속  정지"
+		elif t>=5.5 and t<6.3:local_speed=0.;angle=(t-5.5)*1.1;label="정지 선회  발 재배치"
+		elif t>=6.3 and t<7.2:local_speed=0.;label="일시정지  관절과 위치 유지"
+		elif t>=7.2 and t<8.5:local_speed*=2.0;label="먼 거리 LOD  보행 위상 유지";actor.lod_override=1
+		elif t>=8.5:local_speed=0.;label="크기  색 변이  섭식";actor.lod_override=0
 		if i==255:
 			var variant: Array=original.palette.duplicate();variant[0]="53748c";variant[1]="b2bc9b"
 			actor.apply_appearance({"scale":1.35,"palette":variant});actor.ground_motion.reset();actor.set_state("feed");camera.size*=1.25

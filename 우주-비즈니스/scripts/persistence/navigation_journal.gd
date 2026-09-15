@@ -104,7 +104,7 @@ func status(ordinal: int) -> String:
 	if record.get("visited",false):parts.append("✓ 방문")
 	if record.get("scanned",false):parts.append("◉ 스캔")
 	if parts.is_empty():parts.append("미스캔")
-	return " · ".join(parts)
+	return "  ".join(parts)
 func ordinals(filter_index: int=0,query: String="") -> Array[int]:
 	var ids: Dictionary=data.bodies.duplicate()
 	for id in data.favorites:ids[id]=data.bodies.get(id,{})

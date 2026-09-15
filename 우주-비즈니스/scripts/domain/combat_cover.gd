@@ -9,7 +9,7 @@ static func create(row: Dictionary,yaw: float) -> void:
 	row.yaw=wrapf(yaw,-PI,PI);row.cover_hp=float(config().buildings[row.type].health);row.assembly_left=float(config().assembly_seconds)
 static func status(row: Dictionary) -> String:
 	if float(row.get("assembly_left",0))>0:return "조립 중"
-	return "파손 · F 수리" if row.get("cover_hp",0)<=0 else "내구도 %d / %d"%[int(row.cover_hp),int(config().buildings[row.type].health)]
+	return "파손  F 수리" if row.get("cover_hp",0)<=0 else "내구도 %d / %d"%[int(row.cover_hp),int(config().buildings[row.type].health)]
 static func ready(row: Dictionary) -> bool:return is_cover(row) and float(row.get("assembly_left",0))<=0 and float(row.get("cover_hp",0))>0
 static func valid(row: Dictionary) -> bool:
 	if not is_cover(row):return true

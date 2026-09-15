@@ -79,7 +79,7 @@ func exercise(stage: Node3D,form: Dictionary,outcome: String) -> void:
 		if float(member.vitals.health)<prior_health:damage_events+=1;prior_health=member.vitals.health
 		presentation_unchanged=presentation_unchanged and JSON.stringify(live)==before_live
 		var center:=at+Vector3.UP*1.;camera.size=5.4;camera.position=center+Vector3(6,4.2,9);camera.look_at(center)
-		label.text=form.name+" · "+str(info.behavior)+" · "+outcome+" · "+actor.ground_motion.wanted_clip
+		label.text=form.name+"  "+str(info.behavior)+"  "+outcome+"  "+actor.ground_motion.wanted_clip
 		if "--video" in OS.get_cmdline_user_args() and outcome=="hit" or i in [12,28,40,49,60,78]:
 			await process_frame;await RenderingServer.frame_post_draw
 			var filename: String=form.id+"_"+outcome+"_%03d.png"%i
@@ -101,7 +101,7 @@ func exercise(stage: Node3D,form: Dictionary,outcome: String) -> void:
 		actor.apply_combat(down_live,info,false);actor._process(1./30.);assert(actor.ground_motion.wanted_clip=="down")
 		var skeleton: Skeleton3D=actor.anatomical_skeletons[0];var bone:=skeleton.find_bone("root")
 		assert(skeleton.get_bone_global_pose(bone).origin.y<skeleton.get_bone_global_rest(bone).origin.y-.1)
-		label.text=form.name+" · 무력화"
+		label.text=form.name+"  무력화"
 		await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(folder+"/"+form.id+"_down.png")
 		actor.combat_override=false;actor.restored_down=true;actor._process(1./30.);assert(is_equal_approx(actor.ground_motion.pose_clock,1.19))
 	actor.free();peer.free()

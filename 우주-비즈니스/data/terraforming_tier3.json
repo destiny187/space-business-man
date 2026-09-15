@@ -30,7 +30,7 @@
       "model": "products/mineral_filter",
       "icon": "mineral_filter",
       "color": "#efb46f",
-      "use": "가스·수질의 선택적 분리 장치"
+      "use": "가스  수질의 선택적 분리 장치"
     },
     "neutralizer_pack": {
       "name": "수질 중화 팩",
@@ -46,7 +46,7 @@
       "model": "products/soil_base",
       "icon": "soil_base",
       "color": "#efb46f",
-      "use": "산성 수질 유입 억제·잔류 오염 처리"
+      "use": "산성 수질 유입 억제  잔류 오염 처리"
     },
     "sorbent_pack": {
       "name": "가스 흡착 팩",
@@ -62,7 +62,7 @@
       "model": "products/mineral_filter",
       "icon": "mineral_filter",
       "color": "#efb46f",
-      "use": "반응성 가스 유입 억제·잔류 가스 포집"
+      "use": "반응성 가스 유입 억제  잔류 가스 포집"
     },
     "circulation_module": {
       "name": "순환 모듈",
@@ -78,7 +78,7 @@
       "model": "products/heat_transfer_unit",
       "icon": "heat_transfer_unit",
       "color": "#efb46f",
-      "use": "폐쇄 순환 설비의 펌프·회수부"
+      "use": "폐쇄 순환 설비의 펌프  회수부"
     },
     "regional_heat_module": {
       "name": "지역 열교환 모듈",
@@ -123,7 +123,7 @@
       },
       "factor": 2.0,
       "power": 7,
-      "effect": "반응성 가스 포집 · 흡착 팩 필요",
+      "effect": "반응성 가스 포집  흡착 팩 필요",
       "model": "terraform3/atmosphere_module",
       "support_radius": 3.0
     },
@@ -136,7 +136,7 @@
       },
       "factor": 2.0,
       "power": 7,
-      "effect": "산성 수질 정화 · 투입한 얼음의 유효 급수량 증가",
+      "effect": "산성 수질 정화  투입한 얼음의 유효 급수량 증가",
       "model": "terraform3/water_module",
       "water_gain_factor": 1.5,
       "support_radius": 3.0
@@ -162,7 +162,7 @@
       },
       "factor": 2.0,
       "power": 8,
-      "effect": "정화된 구획의 표준 선구종 정착 · 배양 팩 필요",
+      "effect": "정화된 구획의 표준 선구종 정착  배양 팩 필요",
       "model": "terraform3/biolab_module",
       "support_radius": 3.0
     }

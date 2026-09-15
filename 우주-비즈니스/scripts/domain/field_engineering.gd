@@ -5,7 +5,7 @@ static var _config: Dictionary={}
 static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/field_engineering.json"))
 	return _config
-static func signature() -> String:return FrontierUniverse.fingerprint(config())
+static func signature() -> String:return FrontierContentTextIdentity.canonical(config())
 static func create() -> Dictionary:return {"version":1,"rules_hash":signature(),"projects":{}}
 static func definition(key: String) -> Dictionary:return config().projects.get(key,{})
 static func evidence(ecology: Dictionary,key: String) -> Dictionary:
@@ -92,7 +92,7 @@ static func trial_ready(site: Dictionary,building: Dictionary) -> bool:
 		return int(site.inventory.ice)>0 and float(site.environment.ecology)<100 and minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60
 	return true
 static func validate(value: Variant,manifest: Dictionary) -> String:
-	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or not value.get("projects") is Dictionary:return "현장 공학 연구 버전·형식 오류"
+	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or not value.get("projects") is Dictionary:return "현장 공학 연구 버전  형식 오류"
 	if value.projects.size()>config().projects.size():return "연구 과제 수 오류"
 	for key in value.projects:
 		if not key is String or definition(key).is_empty():return "알 수 없는 공학 과제"

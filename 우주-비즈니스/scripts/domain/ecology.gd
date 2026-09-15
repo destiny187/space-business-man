@@ -3,7 +3,7 @@ extends RefCounted
 ## Sparse world history; a scan never creates a physical specimen.
 static func create() -> Dictionary:
 	return {"version":"ecology-v1","catalog_hash":FrontierEcologyCatalog.signature(),
-		"rules_hash":FrontierUniverse.fingerprint(FrontierEcologyCatalog.config()),
+		"rules_hash":FrontierContentTextIdentity.canonical(FrontierEcologyCatalog.config()),
 		"planets":{},"observations":{},"research":{},"specimens":{}}
 
 static func profile(body: Dictionary) -> Dictionary:
@@ -103,7 +103,7 @@ static func scan(ecology: Dictionary,body_id: String,encounter: Dictionary) -> S
 	if ecology.observations.has(key):return "이미 기록한 생명체입니다. 중복 연구 보상은 없습니다."
 	ecology.observations[key]={"body_id":body_id,"form_id":form.id,"look_id":encounter.look_id,"origin":"native" if not encounter.get("introduced",false) else "introduced"}
 	FrontierSpeciesNames.register(ecology,form.id)
-	return "스캔 완료 · "+FrontierSpeciesNames.display(ecology,form.id)+" · 우주선 연구실에서 분석할 수 있습니다."
+	return "스캔 완료  "+FrontierSpeciesNames.display(ecology,form.id)+"  우주선 연구실에서 분석할 수 있습니다."
 
 static func analyze(ecology: Dictionary,form_id: String,logistics: Dictionary) -> String:
 	var form:=FrontierEcologyCatalog.form(form_id)
@@ -117,8 +117,8 @@ static func analyze(ecology: Dictionary,form_id: String,logistics: Dictionary) -
 	if int(logistics.depot_rock)<cost:return "실험용 광물 %d개가 착륙지 창고에 필요합니다."%cost
 	logistics.depot_rock-=cost
 	ecology.research[form.environment]={"form_id":form_id,"stage":"analyzed"}
-	if form.get("locomotion_medium","")=="atmosphere":return "대기층 생리 분석 완료 · 부유 구조와 기질 교환 기록"
-	return "대조 실험 완료 · "+str(FrontierEcologyCatalog.habitat(form).principle)+" · 국소 서식지 복원 장치 해금"
+	if form.get("locomotion_medium","")=="atmosphere":return "대기층 생리 분석 완료  부유 구조와 기질 교환 기록"
+	return "대조 실험 완료  "+str(FrontierEcologyCatalog.habitat(form).principle)+"  국소 서식지 복원 장치 해금"
 
 static func collect(ecology: Dictionary,body_id: String,encounter: Dictionary) -> String:
 	if FrontierEcologyCatalog.form(encounter.form_id).get("locomotion_medium","")=="atmosphere":return "대기층 생명체는 궤도에서 관측합니다. 지상 표본 채집 대상이 아닙니다."
@@ -145,7 +145,7 @@ static func restore_plot(ecology: Dictionary,body_id: String,environment_id: Str
 	if int(logistics.depot_rock)<cost:return "장치 제작용 광물 %d개가 착륙지 창고에 필요합니다."%cost
 	logistics.depot_rock-=cost
 	record.plot={"environment":environment_id,"center":[point.x,point.y,point.z],"support":"ship_tether","biomass":0.0,"age_seconds":0.0,"support_remaining":float(FrontierEcologyCatalog.config().plot_support_seconds)}
-	return "우주선 연결 실험 구획 설치 · 반경 %dm · 전력·수분 순환·급이 지원 가동"%int(FrontierEcologyCatalog.config().plot_radius)
+	return "우주선 연결 실험 구획 설치  반경 %dm  전력  수분 순환  급이 지원 가동"%int(FrontierEcologyCatalog.config().plot_radius)
 
 static func introduce(ecology: Dictionary,body_id: String,sample_id: String,point: Vector3,layer: String) -> String:
 	if not ecology.specimens.has(sample_id) or ecology.specimens[sample_id].state!="cargo":return "운송 중인 실물 표본이 필요합니다."
@@ -168,10 +168,10 @@ static func resupply_plot(ecology: Dictionary,body_id: String,logistics: Diction
 	if plot.is_empty():return "먼저 관리 구획을 설치하세요."
 	var cfg:=FrontierEcologyCatalog.config()
 	if float(plot.support_remaining)>float(cfg.plot_support_seconds)-60:return "지원 팩이 아직 충분합니다."
-	if int(logistics.depot_rock)<int(cfg.plot_resupply_rock_cost):return "여과·영양 팩 제작용 광물 %d개가 착륙지 창고에 필요합니다."%int(cfg.plot_resupply_rock_cost)
+	if int(logistics.depot_rock)<int(cfg.plot_resupply_rock_cost):return "여과  영양 팩 제작용 광물 %d개가 착륙지 창고에 필요합니다."%int(cfg.plot_resupply_rock_cost)
 	logistics.depot_rock-=int(cfg.plot_resupply_rock_cost)
 	plot.support_remaining=float(cfg.plot_support_seconds)
-	return "여과·영양 팩을 보충하고 우주선 지원 연결을 정비했습니다."
+	return "여과  영양 팩을 보충하고 우주선 지원 연결을 정비했습니다."
 
 static func advance(ecology: Dictionary,body_id: String,seconds: float) -> void:
 	var record: Dictionary=ecology.planets[body_id]
@@ -190,9 +190,9 @@ static func advance(ecology: Dictionary,body_id: String,seconds: float) -> void:
 
 static func validate(value: Variant,manifest: Dictionary) -> String:
 	if not value is Dictionary or value.get("version")!="ecology-v1":return "생태 저장 버전 오류"
-	if value.get("catalog_hash")!=FrontierEcologyCatalog.signature() or value.get("rules_hash")!=FrontierUniverse.fingerprint(FrontierEcologyCatalog.config()):return "생태 원형 또는 규칙 버전이 달라 원본 저장을 보존합니다."
+	if value.get("catalog_hash")!=FrontierEcologyCatalog.signature() or value.get("rules_hash")!=FrontierContentTextIdentity.canonical(FrontierEcologyCatalog.config()):return "생태 원형 또는 규칙 버전이 달라 원본 저장을 보존합니다."
 	if manifest.settings.has("ecology_rules") and not FrontierEcologyCatalog.extension_compatible(str(manifest.settings.ecology_rules.get("catalog_hash",""))):return "추가 생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
-	if manifest.settings.get("ecology_rules",{}).has("flora_catalog_hash") and manifest.settings.ecology_rules.flora_catalog_hash!=FrontierEcologyCatalog.flora_signature():return "추가 식물·미생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
+	if manifest.settings.get("ecology_rules",{}).has("flora_catalog_hash") and manifest.settings.ecology_rules.flora_catalog_hash!=FrontierEcologyCatalog.flora_signature():return "추가 식물  미생물 카탈로그 버전이 달라 원본 저장을 보존합니다."
 	if not FrontierExpeditionBusiness.integer(value.get("item_storage_version",0),0,1):return "표본 아이템 저장 버전 오류"
 	for key in ["planets","observations","research","specimens"]:
 		if not value.get(key) is Dictionary:return "생태 기록 형식 오류: "+key

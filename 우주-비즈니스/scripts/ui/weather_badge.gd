@@ -13,8 +13,8 @@ func accept(value: Dictionary,amount: float) -> void:
 	warning.text=""
 	if e.is_empty():return
 	var clock:=float(state.get("clock",0));var kind:=str(e.kind)
-	if kind!="rain" and clock<float(e.start):warning.text="%s  ·  %.0f초 후   %s"%["산성비" if kind=="acid" else "뇌우",float(e.start)-clock,"지붕·동굴을 확인하세요" if kind=="acid" else "낙뢰 표식을 살피세요"]
-	elif strength>.1 and kind=="acid" and float(personal.get("exposure",0))>2:warning.text="산성비 노출  ·  지붕 아래로 이동"
+	if kind!="rain" and clock<float(e.start):warning.text="%s  %.0f초 후   %s"%["산성비" if kind=="acid" else "뇌우",float(e.start)-clock,"지붕  동굴을 확인하세요" if kind=="acid" else "낙뢰 표식을 살피세요"]
+	elif strength>.1 and kind=="acid" and float(personal.get("exposure",0))>2:warning.text="산성비 노출  지붕 아래로 이동"
 func _draw() -> void:
 	var e: Dictionary=state.get("event",{})
 	if e.is_empty():return

@@ -52,9 +52,9 @@ func sample() -> void:
   if node.get_meta("business_kind","")!="building" or p.distance_squared_to(node.position)>10000:continue
   var record: Dictionary=s.business_view.ledger.get("sites",{}).get(s.body.id,{}).get("buildings",{}).get(id,{})
   var type_id: String=record.get("type","")
-  var running: bool=record.get("working",false) if type_id in ["atmosphere","thermal","water","biolab"] else type_id=="factory" and not record.get("production",{}).is_empty()
+  var running: bool=record.get("working",false) if type_id in ["atmosphere","thermal","water","biolab","dew_condenser","geothermal_generator"] else type_id=="factory" and not record.get("production",{}).is_empty()
   if not running or not record.get("active",false):continue
-  node.set_meta("scenery_sound",{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop"}.get(type_id,"sfx_robot_work"));machines.append(node)
+  node.set_meta("scenery_sound",{"atmosphere":"sfx_terraform_active","thermal":"sfx_thermal_loop","water":"sfx_water_loop","biolab":"sfx_biolab_loop","dew_condenser":"sfx_water_loop","geothermal_generator":"sfx_thermal_loop"}.get(type_id,"sfx_robot_work"));machines.append(node)
  machines.sort_custom(func(a: Node3D,b: Node3D)->bool:return p.distance_squared_to(a.position)<p.distance_squared_to(b.position))
  if machines.size()>4:machines.resize(4)
  for machine in machines:

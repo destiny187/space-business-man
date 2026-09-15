@@ -37,17 +37,18 @@
   "star_damage_per_second": 8,
   "star_damage_max_per_second": 28,
   "entry_overview": {
-    "minimum_clearance": 12000,
+    "minimum_clearance": 500,
     "elevation": 0.8,
     "side_offset": 0.25,
-    "focus_orbit_fraction": 0.35,
-    "boundary_fraction": 0.97
+    "focus_orbit_fraction": 1.0,
+    "boundary_fraction": 0.97,
+    "planet_radius_multiple": 4.5
   },
   "stellar_transition": {
     "swap_progress": 0.5,
     "departure_start": 0.2,
-    "departure_fade_start": 0.34,
-    "arrival_fade_end": 0.64,
+    "departure_fade_start": 0.44,
+    "arrival_fade_end": 0.58,
     "distant_offset": 240000,
     "camera_far": 500000,
     "camera_follow_speed": 5.0,
@@ -59,9 +60,11 @@
     "alignment_max_seconds": 3.6,
     "alignment_peak_degrees_per_second": 75.0,
     "fov_gain": 20.0,
-    "fov_acceleration_end": 0.36,
-    "fov_deceleration_start": 0.72,
-    "fov_deceleration_end": 0.98
+    "fov_acceleration_end": 0.49,
+    "fov_deceleration_start": 0.52,
+    "fov_deceleration_end": 0.96,
+    "flight_seconds": 18.0,
+    "estimated_peak_c": 1800000.0
   },
   "solar_opening": {
     "duration": 8.5,

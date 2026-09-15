@@ -10,7 +10,7 @@
   },
   "technologies": {
     "robotics": {"name": "입문 로봇공학", "price": 300, "requires": "", "description": "mine사의 채광로봇 제작. 광맥 채굴과 자원 운반을 자동화합니다.", "rare": false},
-    "atmosphere": {"name": "대기 공학", "price": 600, "requires": "robotics", "description": "대기 처리기를 건설하여 기압·산소·독성을 조절합니다.", "rare": false},
+    "atmosphere": {"name": "대기 공학", "price": 600, "requires": "robotics", "description": "대기 처리기를 건설하여 기압  산소  독성을 조절합니다.", "rare": false},
     "thermal": {"name": "열 제어", "price": 500, "requires": "atmosphere", "description": "기후 조절탑이 온도를 18°C로 안정화합니다.", "rare": false},
     "water": {"name": "수자원 순환", "price": 400, "requires": "atmosphere", "description": "얼음을 물로 바꾸는 수자원 설비를 해금합니다.", "rare": false},
     "biotech": {"name": "생태 정착", "price": 500, "requires": "water", "description": "생태 배양기로 미생물을 정착시키고 식생을 복원합니다.", "rare": false},
@@ -25,10 +25,10 @@
     "solar": {"name": "태양광 발전기", "description": "전력 +16 kW. 기지 내 시설과 충전기에 전력을 공급합니다.", "cost": {"iron": 20, "copper": 10, "stone": 10}, "tech": "", "power": -16, "radius": 2.2, "model": "solar"},
     "charger": {"name": "로봇 충전 패드", "description": "전력 2 kW. 배터리가 낮은 로봇이 자동으로 귀환합니다.", "cost": {"iron": 15, "copper": 10}, "tech": "", "power": 2, "radius": 1.4, "model": "charger"},
     "factory": {"name": "자율장비 제작기", "description": "전력 4 kW. 구매한 기술과 현지 자원으로 로봇을 제작합니다.", "cost": {"iron": 40, "copper": 15, "stone": 20}, "tech": "robotics", "power": 4, "radius": 2.4, "model": "factory"},
-    "atmosphere": {"name": "대기 처리기", "description": "전력 6 kW. 독성을 제거하고 산소·기압을 거주 목표로 조절합니다.", "cost": {"iron": 70, "copper": 25, "stone": 30}, "tech": "atmosphere", "power": 6, "radius": 2.2, "model": "atmosphere"},
+    "atmosphere": {"name": "대기 처리기", "description": "전력 6 kW. 독성을 제거하고 산소  기압을 거주 목표로 조절합니다.", "cost": {"iron": 70, "copper": 25, "stone": 30}, "tech": "atmosphere", "power": 6, "radius": 2.2, "model": "atmosphere"},
     "thermal": {"name": "기후 조절탑", "description": "전력 6 kW. 혹한과 고온을 완화합니다.", "cost": {"iron": 60, "copper": 20, "stone": 30}, "tech": "thermal", "power": 6, "radius": 1.8, "model": "thermal"},
     "water": {"name": "수자원 순환기", "description": "전력 4 kW. 얼음 1개를 4초마다 소비해 물을 확보합니다.", "cost": {"iron": 40, "copper": 15, "stone": 30}, "tech": "water", "power": 4, "radius": 2.0, "model": "water"},
-    "biolab": {"name": "생태 배양기", "description": "전력 4 kW. 적절한 대기·온도·물 조건에서 생태를 정착시킵니다.", "cost": {"iron": 40, "copper": 20, "ice": 30}, "tech": "biotech", "power": 4, "radius": 2.0, "model": "biolab"},
+    "biolab": {"name": "생태 배양기", "description": "전력 4 kW. 적절한 대기  온도  물 조건에서 생태를 정착시킵니다.", "cost": {"iron": 40, "copper": 20, "ice": 30}, "tech": "biotech", "power": 4, "radius": 2.0, "model": "biolab"},
     "reactor": {"name": "고대 에너지 코어", "description": "전력 +60 kW. 고대 기술을 복원한 고성능 발전 설비입니다.", "cost": {"iron": 80, "copper": 40, "crystal": 15}, "tech": "ancient", "power": -60, "radius": 2.2, "model": "reactor"}
   },
   "robots": {

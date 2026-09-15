@@ -27,7 +27,7 @@ static func validate_world(world: Dictionary) -> String:
  var water: Variant=world.get("surface_water",{})
  if not water is Dictionary:return "행성 물 저장 형식 오류"
  for id in water:
-  if not id is String or FrontierUniverse.ordinal_of(world.manifest,id)<0 or not valid(water[id],int(config().maximum_cells_per_planet)):return "행성 물 부피·좌표 오류"
+  if not id is String or FrontierUniverse.ordinal_of(world.manifest,id)<0 or not valid(water[id],int(config().maximum_cells_per_planet)):return "행성 물 부피  좌표 오류"
  return ""
 static func depth(record: Dictionary,p: Vector3) -> float:
  var c:=cell(p);var result:=0.0

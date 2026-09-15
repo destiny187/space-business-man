@@ -208,12 +208,12 @@ static func pollution_average(site: Dictionary) -> float:
   if in_pollution(site,Vector2(c.position[0],c.position[2])):value+=float(c.pollution);count+=1
  return value/maxi(1,count)
 static func settlement_reason(site: Dictionary) -> String:
- if float(site.free_terraform.area)<goal(site):return "생활권 복원 면적 %.0f / %.0f m² · 테라포밍 탭을 확인하세요."%[float(site.free_terraform.area),goal(site)]
+ if float(site.free_terraform.area)<goal(site):return "생활권 복원 면적 %.0f / %.0f m²  테라포밍 탭을 확인하세요."%[float(site.free_terraform.area),goal(site)]
  if site.has("tier3") and (pollution_average(site)>float(rules(site).pollution_target) or float(site.tier3.controlled_seconds)<float(rules(site).targets[str(int(site.free_terraform.tier))].stable)):return "오염 구역 내부에서 잔류 오염을 처리하고 유입 억제를 유지하세요."
  return ""
 static func detail(site: Dictionary) -> String:
- var result: String="생활권 %.0f / %.0f m² · %.0f초 유지"%[float(site.free_terraform.area),goal(site),float(rules(site).targets[str(int(site.free_terraform.tier))].stable)]
- if site.has("tier3"):result+="\n오염 구역 잔류 %.1f / %.0f · 유입 억제 %.0f%%"%[pollution_average(site),float(rules(site).pollution_target),float(site.tier3.suppression)*100]
+ var result: String="생활권 %.0f / %.0f m²  %.0f초 유지"%[float(site.free_terraform.area),goal(site),float(rules(site).targets[str(int(site.free_terraform.tier))].stable)]
+ if site.has("tier3"):result+="\n오염 구역 잔류 %.1f / %.0f  유입 억제 %.0f%%"%[pollution_average(site),float(rules(site).pollution_target),float(site.tier3.suppression)*100]
  return result
 static func valid(site: Dictionary,body: Dictionary) -> bool:
  if not enabled(body):return not active(site)
@@ -316,12 +316,12 @@ static func local_machine(world: Dictionary,site: Dictionary,body: Dictionary,b:
    var gain:=water_gain(site,body,Vector2(b.position[0],b.position[2]))
    var count:=input_cycles(site,b,"ice",dt,float(cfg.water_cycle_seconds)/factor,"work")
    spread(needed,"environment","water",count*float(cfg.water_per_ice)*gain*(1.5 if int(b.get("tier",1))==3 else 1.0)/coefficient,100)
-   b.status+=" · 저지대 ×%.2f"%gain
+   b.status+="  저지대 ×%.2f"%gain
   elif b.type=="biolab":
    var proxy: Dictionary={"t3_fuel":float(b.get("bio_fuel",0))}
    var used:=FrontierTerraformTier3.fuel(site,proxy,"ice",dt,float(cfg.biolab_nutrient_seconds));b.bio_fuel=proxy.t3_fuel
    b.working=spread(needed,"environment","ecology",used*float(cfg.biolab_rate)*factor/coefficient,100)>0
- elif b.type=="biolab":b.status="토양·급수·온도·대기 조건 확인"
+ elif b.type=="biolab":b.status="토양  급수  온도  대기 조건 확인"
  if int(b.get("tier",1))<2:return
  var restore: Dictionary=FrontierProductionTier2.config().restoration
  var key: String="salinity" if b.type=="water" else "soil"

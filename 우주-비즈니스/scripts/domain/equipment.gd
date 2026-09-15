@@ -108,7 +108,8 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 			FrontierExpeditionBusiness.transfer(stock,target.cost,-1);data.items[id]=key;return ""
 		return "현재 최고 개조 단계입니다."
 	if kind!="equipment_craft":return "지원하지 않는 장비 작업"
-	if member.area!="surface":return "착륙 후 휴대 제작기를 사용하세요."
+	var station_reason:=FrontierFieldManufacturing.equipment_reason(member,FrontierExpeditionBusiness.site(world))
+	if not station_reason.is_empty():return station_reason
 	var definition: String=str(args.get("definition",""))
 	if not config().items.has(definition):return "제작 설계도 오류"
 	if data.items.size()>=FrontierItemInventory.capacity(member):return "장비 보관 한도에 도달했습니다."

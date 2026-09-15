@@ -62,7 +62,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 func _shuttle_snapshot(value: Dictionary) -> void:
 	var state:=str(value.get("crew",{}).get("shuttles",{}).get(value.get("self_id",""),{}).get("state",""))
 	if known_shuttle_state=="assembling" and state=="docked":
-		show_cue("FINCH 조립 완료 · 착륙선 단말에서 호출하세요.")
+		show_cue("FINCH 조립 완료  착륙선 단말에서 호출하세요.")
 		if not blocked():audio.play("sfx_factory_complete")
 	known_shuttle_state=state
 
@@ -112,7 +112,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 	if not value.get("ok",false):reject(str(value.get("error","작업할 수 없습니다")));return
 	var point: Vector3=request.point
 	match request.kind:
-		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대 · 광맥 작업 지시")
+		"business_assign":audio.play("sfx_build_place");show_cue("로봇 한 대  광맥 작업 지시")
 		"business_robot_auto":audio.play("sfx_build_place");show_cue("자동 채광 설정 적용")
 		"business_craft":audio.play("sfx_build_place");show_cue("로봇 조립 시작")
 		"surface_incident_tool":
@@ -123,7 +123,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"surface_incident":
 			effects.burst(point,Color("82f5d2"),8);audio.play("sfx_lotus_open")
 			var recovered: String=value.get("incident",{}).get("equipment","")
-			if recovered!="":show_cue(str(FrontierEquipment.config().items[recovered].name)+" 회수 · I에서 장착")
+			if recovered!="":show_cue(str(FrontierEquipment.config().items[recovered].name)+" 회수  I에서 장착")
 		"surface_discovery":
 			work_left=.28;recoil=.35;effects.burst(point,Color("cbb5ff"),8)
 			if FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id]).get("kind")=="terrain":effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point)
@@ -132,8 +132,8 @@ func _response(sequence: int,value: Dictionary) -> void:
 			recoil_velocity=15;recoil=.65;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point,not value.has("water_hit"));audio.play("sfx_combat_pulse")
 		"equipment_upgrade","equipment_suit_upgrade":audio.play("sfx_factory_complete");show_cue("Mk.2 개조 완료")
 		"business_produce":audio.play("sfx_build_place");show_cue("제품 생산 예약")
-		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("시설·로봇 개조 완료")
-		"equipment_craft","equipment_ammo_craft":audio.play("sfx_factory_complete");show_cue("제작 완료 · 아이템창에서 슬롯에 장착하세요")
+		"business_facility_upgrade","business_robot_upgrade":effects.construction(point);audio.play("sfx_factory_complete");show_cue("시설  로봇 개조 완료")
+		"equipment_craft","equipment_ammo_craft":audio.play("sfx_factory_complete");show_cue("제작 완료  아이템창에서 슬롯에 장착하세요")
 		"equipment_equip","equipment_select":audio.play("sfx_build_place");work_left=0;recoil=.3;cue_left=0
 		"surface_dig":
 			recoil=1;work_left=.25;effects.pulse(handheld.to_global(Vector3(0,0,-.78)),point)
@@ -155,7 +155,7 @@ func _response(sequence: int,value: Dictionary) -> void:
 		"business_register","business_lease","business_lease_release","business_toggle","business_demolish":
 			effects.construction(point);audio.play("sfx_build_place",point)
 		"surface_study","surface_analyze","surface_restore","surface_introduce","business_research_install":
-			effects.construction(point);audio.play("ui_discovery");show_cue("연구 · 생태 기록 갱신")
+			effects.construction(point);audio.play("ui_discovery");show_cue("연구  생태 기록 갱신")
 		"business_settle":audio.play("ui_planet_sold");show_cue("복원 계약 정산 완료")
 		_:audio.play("sfx_pickup_resource")
 
@@ -319,7 +319,7 @@ func _industry_effects() -> void:
 		elif robot.status=="충전 중":effects.burst(actor.global_position+Vector3.UP*.5,Color("82f5d2"),3)
 	for building in site.get("buildings",{}).values():
 		if not visuals.has(building.id) or not building.active:continue
-		if building.type=="factory" and (not building.get("production",{}).is_empty() or building.get("working",false)):
+		if building.type in ["factory","metalworks"] and (not building.get("production",{}).is_empty() or building.get("working",false)):
 			var actor: Node3D=visuals[building.id]
 			if actor.global_position.distance_to(app.camera.global_position)<25:effects.burst(actor.global_position+Vector3.UP*1.5,Color("efb46f"),3)
 		if building.type not in ["atmosphere","thermal","water","biolab","source_control"] or not building.get("working",false):continue
@@ -353,5 +353,5 @@ func _business_snapshot(value: Dictionary) -> void:
 		var amount:=0;var stages:=0
 		for stage in now.paid:
 			if not before.paid.has(stage):amount+=int(now.paid[stage]);stages+=1
-		if stages>0:show_cue("지역 복원 %d단계 달성 · +%d Cr"%[stages,amount])
-		if before.settlement.is_empty() and not now.settlement.is_empty():show_cue("정산 완료 · +%d Cr · 공동 자금 %d Cr"%[int(now.settlement.payment),int(value.business.credits)])
+		if stages>0:show_cue("지역 복원 %d단계 달성  +%d Cr"%[stages,amount])
+		if before.settlement.is_empty() and not now.settlement.is_empty():show_cue("정산 완료  +%d Cr  공동 자금 %d Cr"%[int(now.settlement.payment),int(value.business.credits)])

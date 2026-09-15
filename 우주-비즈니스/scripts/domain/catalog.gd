@@ -18,6 +18,8 @@ static func entry(category: String, key: String) -> Dictionary:
 	if category=="resources" and not table(category).has(key):
 		var product:=FrontierProductionTier2.product(key)
 		return product if not product.is_empty() else FrontierMinerals.entry(key)
+	if category=="buildings" and FrontierDiscoveryIndustry.building(key):return FrontierDiscoveryIndustry.config().buildings[key]
+	if category=="buildings" and FrontierFieldManufacturing.config().buildings.has(key):return FrontierFieldManufacturing.config().buildings[key]
 	if category=="buildings" and FrontierCombatCover.config().buildings.has(key):return FrontierCombatCover.config().buildings[key]
 	if category=="buildings" and not table(category).has(key):return FrontierPlanetWeather.config().buildings.get(key,FrontierTerraformTier3.config().buildings.get(key,{}))
 	if category=="buildings" and key=="factory":

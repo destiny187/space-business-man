@@ -127,6 +127,6 @@ func paint_cycles() -> void:
 	environment.ambient_light_color=Color("8197bc").lerp(current.horizon.lerp(Color("b5cbd4"),.65),daylight)
 	sun.light_color=current.light.lerp(Color("ffb77e"),dusk*.8)
 func cycle_label() -> String:
-	if cycles.is_empty():return "기존 세계 · 고정 하늘"
-	if body.astro.spin_state=="synchronous":return "동주기 · "+("낮 면" if sky_state.sun_height>.1 else ("밤 면" if sky_state.sun_height<-.1 else "황혼대"))
+	if cycles.is_empty():return "기존 세계  고정 하늘"
+	if body.astro.spin_state=="synchronous":return "동주기  "+("낮 면" if sky_state.sun_height>.1 else ("밤 면" if sky_state.sun_height<-.1 else "황혼대"))
 	return "낮" if sky_state.sun_height>.15 else ("밤" if sky_state.sun_height<-.12 else "황혼")

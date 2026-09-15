@@ -17,5 +17,5 @@ func run() -> void:
  var normal:=FrontierCrewNavigation.approach_speed(world,900,100000,500,.1)
  check(not nav.boosting and boost>normal,"release returns to regular approach speed")
  check(FrontierCrewNavigation.approach_speed(world,900,1,500,.1)<=sqrt(1000.0),"close arrival clamps braking even from high speed")
- check(not FrontierFlightTelemetry.speed_label({"mode":"jump","speed":700,"jump_left":8,"transit":{"progress":.5}}).contains("m/s"),"interstellar UI reports progress and ETA rather than local speed")
+ check(not FrontierFlightTelemetry.speed_label({"mode":"jump","speed":700,"jump_left":8,"transit":{"progress":.5}}).contains("m/s"),"interstellar UI reports approximate multiples of light speed")
  print("APPROACH_BOOST failures ",failures);quit(1 if failures else 0)

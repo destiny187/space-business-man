@@ -368,11 +368,11 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	var r:=record(world)
 	if r.is_empty():return "이 원정에는 해적 전투 규칙이 없습니다."
 	var id:=carrier(world,actor);var local:=FrontierShuttles.context(world,actor);var nav: Dictionary=local.crew.navigation
-	if FrontierCrewSurface.landed(local) or not local.crew.members[actor].aboard or actor!=local.crew.pilot_id or nav.mode!="idle" or engagement(world,id):return "교전을 벗어나 선박을 정지한 뒤 회수·정비하세요."
+	if FrontierCrewSurface.landed(local) or not local.crew.members[actor].aboard or actor!=local.crew.pilot_id or nav.mode!="idle" or engagement(world,id):return "교전을 벗어나 선박을 정지한 뒤 회수  정비하세요."
 	if absf(float(nav.speed))>20:return "선박 속도를 낮춰 주세요."
 	if kind not in ["space_repair","space_salvage"]:return "지원하지 않는 선박 작업입니다."
 	var stats:=ship_state(world,id)
-	if not stats.get("operation",{}).is_empty():return "현재 회수·정비가 진행 중입니다."
+	if not stats.get("operation",{}).is_empty():return "현재 회수  정비가 진행 중입니다."
 	if kind=="space_repair" and float(nav.get("hull",100))>=100:return "선체가 정상입니다."
 	if kind=="space_salvage":
 		var found:=false

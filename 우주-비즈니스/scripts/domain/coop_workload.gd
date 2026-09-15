@@ -15,11 +15,11 @@ static func reward(site: Dictionary,tier: int) -> int:
 static func description(site: Dictionary,tier: int,count: int) -> String:
 	if site.has("coop_workload"):
 		var row: Dictionary=site.coop_workload
-		return "참여 %d명 확정 · 처리 대상 ×%.2f · 계약 %d Cr"%[int(row.participant_count),float(row.coefficient),int(row.reward)]
+		return "참여 %d명 확정  처리 대상 ×%.2f  계약 %d Cr"%[int(row.participant_count),float(row.coefficient),int(row.reward)]
 	if site.get("workload_eligible",false) or (site.is_empty() and tier in [1,2]):
 		var factor:=coefficient(tier,count)
-		return "시작 예상 %d명 · 처리 대상 ×%.2f · 계약 %d Cr\n첫 시설 운영·등록 성공 시 확정"%[count,factor,roundi(base_reward(tier)*factor)]
-	return "기존 계약 규모 유지 · 계약 %d Cr"%base_reward(tier)
+		return "시작 예상 %d명  처리 대상 ×%.2f  계약 %d Cr\n첫 시설 운영  등록 성공 시 확정"%[count,factor,roundi(base_reward(tier)*factor)]
+	return "기존 계약 규모 유지  계약 %d Cr"%base_reward(tier)
 static func activate(site: Dictionary,body: Dictionary,count: int) -> void:
 	if not site.get("workload_eligible",false) or site.has("coop_workload"):return
 	var e: Dictionary=site.environment

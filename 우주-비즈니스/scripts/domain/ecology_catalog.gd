@@ -37,7 +37,7 @@ static func prepare() -> void:
 	if not _forms.is_empty():return
 	var forms_text:=FileAccess.get_file_as_string("res://data/bestiary/forms.json")
 	var looks_text:=FileAccess.get_file_as_string("res://data/bestiary/appearances.json")
-	_signature=(forms_text.sha256_text()+looks_text.sha256_text()).sha256_text()
+	_signature=(FrontierContentTextIdentity.raw(forms_text)+looks_text.sha256_text()).sha256_text()
 	for row in JSON.parse_string(forms_text).forms:
 		_forms[row.id]=row
 		if row.family not in config().ground_families:continue
@@ -52,7 +52,7 @@ static func prepare() -> void:
 	if FileAccess.file_exists(extra_forms) and FileAccess.file_exists(extra_looks):
 		var extension_text:=FileAccess.get_file_as_string(extra_forms)
 		var appearance_text:=FileAccess.get_file_as_string(extra_looks)
-		_extension_signature=(extension_text.sha256_text()+appearance_text.sha256_text()).sha256_text()
+		_extension_signature=(FrontierContentTextIdentity.raw(extension_text)+appearance_text.sha256_text()).sha256_text()
 		for row in JSON.parse_string(extension_text).forms:
 			_forms[row.id]=row
 			if not ground_form(row):continue
@@ -67,7 +67,7 @@ static func prepare() -> void:
 	if FileAccess.file_exists(flora_forms) and FileAccess.file_exists(flora_looks):
 		var forms_extension:=FileAccess.get_file_as_string(flora_forms)
 		var looks_extension:=FileAccess.get_file_as_string(flora_looks)
-		_flora_signature=(forms_extension.sha256_text()+looks_extension.sha256_text()).sha256_text()
+		_flora_signature=(FrontierContentTextIdentity.raw(forms_extension)+looks_extension.sha256_text()).sha256_text()
 		for row in JSON.parse_string(forms_extension).forms:
 			_forms[row.id]=row
 			if not ground_form(row):continue
@@ -82,7 +82,7 @@ static func prepare() -> void:
 		var biota_text:=FileAccess.get_file_as_string(biota_forms)
 		var variants_text:=FileAccess.get_file_as_string(biota_looks)
 		var habitat_text:=FileAccess.get_file_as_string("res://data/bestiary/biota_habitats.json")
-		_biota_signature=(biota_text.sha256_text()+variants_text.sha256_text()+habitat_text.sha256_text()).sha256_text()
+		_biota_signature=(FrontierContentTextIdentity.raw(biota_text)+variants_text.sha256_text()+FrontierContentTextIdentity.raw(habitat_text)).sha256_text()
 		for row in JSON.parse_string(biota_text).forms:_forms[row.id]=row
 		_appearance_rows.append_array(JSON.parse_string(variants_text).appearances)
 	for row in _appearance_rows:

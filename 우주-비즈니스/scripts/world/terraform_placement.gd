@@ -38,8 +38,8 @@ func _process(dt: float) -> void:
  label.text=("자연 낙뢰 보호 %.0fm" if weather else "영향 반경 %.0fm")%radius
  if kind=="water":
   var box:=FrontierFacilityFlooding.bounds({"type":"water","tier":1})
-  label.text+="\n저지대 ×%.2f · 침수 시 정지\n설비 상단 %.1fm / 기준 해수면 −4m"%[FrontierFreeTerraform.water_gain(site,body,p),global_position.y+box.end.y]
- elif kind=="biolab":label.text+="\n중첩 후보 %d대 · 겹친 토양 효과 1회"%overlaps
- elif kind=="source_control":label.text+="\n"+("오염 구역 내부 · 전문 처리 가능" if inside else "오염 구역 외부 · 효과 없음")
- elif kind=="atmosphere":label.text+="\n구면 분포·전달은 Tab 테라포밍"
+  label.text+="\n저지대 ×%.2f  침수 시 정지\n설비 상단 %.1fm / 기준 해수면 −4m"%[FrontierFreeTerraform.water_gain(site,body,p),global_position.y+box.end.y]
+ elif kind=="biolab":label.text+="\n중첩 후보 %d대  겹친 토양 효과 1회"%overlaps
+ elif kind=="source_control":label.text+="\n"+("오염 구역 내부  전문 처리 가능" if inside else "오염 구역 외부  효과 없음")
+ elif kind=="atmosphere":label.text+="\n구면 분포  전달은 Tab 테라포밍"
  label.modulate=tint

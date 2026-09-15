@@ -36,13 +36,13 @@ func review_incident(test: Dictionary) -> void:
 	var at:=Vector3(0,height(0,0),0);var max_error:=0.;var socket_motion:=0.;var first_socket:=Vector3.ZERO;var worst: Dictionary={}
 	var cfg: Dictionary=FrontierNativeIncidents.config();var snapshot: Dictionary={}
 	for i in 180:
-		var t:=float(i)/30.;var label:="거대 개체 · 세 축 4배" if test.role=="giant" else "운반 개체 · 말단 구강"
+		var t:=float(i)/30.;var label:="거대 개체  세 축 4배" if test.role=="giant" else "운반 개체  말단 구강"
 		if test.role=="guardian":
 			var warning_time:=float(cfg.guard_warning)
 			row.native_alert=minf(t,warning_time)
 			if t>=warning_time:row.native_attack=1;row.native_wait=maxf(0,float(cfg.guard_cooldown)-(t-warning_time))
 			if t>4.8:row.native_alert=0.;row.native_wait=0.
-			actor.incident_pose=NativeMotion.sample(actor,row);label="둥지 보호 · 실제 경고/시도 시계"
+			actor.incident_pose=NativeMotion.sample(actor,row);label="둥지 보호  실제 경고/시도 시계"
 			if i==30:assert(not actor.incident_pose.is_empty())
 			if i==165:assert(actor.incident_pose.is_empty())
 			var wanted: String="stressed" if row.native_alert>0 else "idle"
@@ -59,7 +59,7 @@ func review_incident(test: Dictionary) -> void:
 		if i==0:first_socket=socket
 		else:socket_motion=maxf(socket_motion,socket.distance_to(first_socket))
 		for j in peer_skeleton.get_bone_count():assert(peer_skeleton.get_bone_pose(j)==peer_poses[j])
-		var focus:=actor.global_transform*center;camera.size=maxf(dimensions.x,maxf(dimensions.y,dimensions.z))*1.0+1.5;camera.position=focus+Vector3(4.2,3.,7.5)*maxf(1,actor.base_scale);camera.look_at(focus);title.text=str(original.name)+" · "+label
+		var focus:=actor.global_transform*center;camera.size=maxf(dimensions.x,maxf(dimensions.y,dimensions.z))*1.0+1.5;camera.position=focus+Vector3(4.2,3.,7.5)*maxf(1,actor.base_scale);camera.look_at(focus);title.text=str(original.name)+"  "+label
 		if i in [0,30,60,90,120,150,179]:
 			await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(folder+"/"+test.id+"_%03d.png"%i)
 	if max_error>=.025 or socket_motion<=.01:print("INCIDENT_DIAGNOSTIC ",test.id," max=",max_error," socket=",socket_motion," ",worst)

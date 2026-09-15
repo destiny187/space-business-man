@@ -307,7 +307,7 @@ func build_overlay() -> void:
 	var help := Label.new()
 	help.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	help.position = Vector2(40,get_viewport().get_visible_rect().size.y-44)
-	help.text = "1 전경   2 로봇 상세   3 풍경     |     드래그 회전 · 휠 확대     |     SPACE 자동 회전   H UI   F12 촬영   ESC 종료"
+	help.text = "1 전경   2 로봇 상세   3 풍경     |     드래그 회전  휠 확대     |     SPACE 자동 회전   H UI   F12 촬영   ESC 종료"
 	help.add_theme_font_override("font",load("res://assets/fonts/NotoSansKR.ttf"))
 	help.add_theme_font_size_override("font_size",20)
 	help.modulate = Color(.9,.91,.82,.85)

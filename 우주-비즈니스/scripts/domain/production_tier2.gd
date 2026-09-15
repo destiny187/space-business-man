@@ -10,6 +10,8 @@ static func config() -> Dictionary:
 		_config.products.merge(FrontierTerraformTier3.config().products)
 		_config.products.merge(FrontierFirearms.config().ammunition)
 		_config.products.merge(preload("res://scripts/domain/terraform_tier4.gd").config().products)
+		for id in FrontierFieldManufacturing.config().metal_products:_config.products[id].station="metalworks"
+		_config.facility_upgrades.merge(FrontierDiscoveryIndustry.config().upgrades)
 		_config.maximum_tier=3
 	return _config
 static func product(id: String) -> Dictionary:return config().products.get(id,{})
@@ -68,7 +70,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary)
 	if robot and next_tier>2:def={}
 	if def.is_empty():return "이 시설은 현재 개조 대상이 아닙니다."
 	if not robot:
-		if not row.get("production",{}).is_empty() or FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 제작·실험을 먼저 완료하세요."
+		if not row.get("production",{}).is_empty() or FrontierFieldEngineering.uses(world,world.location,id):return "진행 중인 제작  실험을 먼저 완료하세요."
 		for job in site.jobs.values():
 			if job.factory_id==id:return "로봇 제작을 먼저 완료하세요."
 	if not robot and next_tier==3 and FrontierTerraformTier3.config().upgrades.has(row.get("type","")):
@@ -97,13 +99,13 @@ static func tick(site: Dictionary,dt: float) -> void:
 		var recipe:=product(job.product)
 		if not row.active:continue
 		job.progress=minf(float(recipe.seconds),float(job.progress)+dt*factor(row))
-		row.status=recipe.name+" · %d%%"%int(float(job.progress)/float(recipe.seconds)*100)
+		row.status=recipe.name+"  %d%%"%int(float(job.progress)/float(recipe.seconds)*100)
 		if float(job.progress)<float(recipe.seconds):continue
-		if not FrontierItemInventory.warehouse_fits(site,{job.product:int(recipe.amount)}):row.status="창고 가득 참 · 완성품 출고 대기";continue
+		if not FrontierItemInventory.warehouse_fits(site,{job.product:int(recipe.amount)}):row.status="창고 가득 참  완성품 출고 대기";continue
 		site.inventory[job.product]=int(site.inventory.get(job.product,0))+int(recipe.amount)
 		job.remaining=int(job.get("remaining",1))-1;row.product_serial=int(row.get("product_serial",0))+1
-		if int(job.remaining)<=0:row.production={};row.status=recipe.name+" · 생산 완료"
-		else:job.progress=0.0;row.status=recipe.name+" · %d묶음 남음"%int(job.remaining)
+		if int(job.remaining)<=0:row.production={};row.status=recipe.name+"  생산 완료"
+		else:job.progress=0.0;row.status=recipe.name+"  %d묶음 남음"%int(job.remaining)
 static func batch_cost(recipe: Dictionary,batches: int) -> Dictionary:
 	var result: Dictionary={}
 	for item in recipe.cost:result[item]=int(recipe.cost[item])*batches
@@ -140,13 +142,13 @@ static func validate_building(b: Dictionary) -> bool:
 	var job: Variant=b.get("production",{})
 	if not job is Dictionary:return false
 	if job.is_empty():return true
-	if b.type!="factory" or not job.get("product") is String or product(job.product).is_empty():return false
+	if b.type not in ["factory","metalworks"] or not job.get("product") is String or product(job.product).is_empty():return false
 	if not FrontierExpeditionBusiness.integer(job.get("total",1),1,int(config().maximum_batch)) or not FrontierExpeditionBusiness.integer(job.get("remaining",1),1,int(job.get("total",1))):return false
 	return FrontierUniverse._finite(job.get("progress"),0,float(product(job.product).seconds))
 
 static func recipe_reason(site: Dictionary,id: String,recipe: Dictionary,body: Dictionary,batches: int=1,engineering: Dictionary={}) -> String:
 	var row: Dictionary=site.get("buildings",{}).get(id,{})
-	if row.get("type","")!="factory":return "현장 제작소에서 제품을 생산하세요."
+	if row.get("type","")!=recipe.get("station","factory"):return "금속 가공 공장에서 생산하세요." if recipe.get("station","")=="metalworks" else "현장 제작소에서 조립하세요."
 	if not row.get("production",{}).is_empty():return "이 제작소는 제품을 생산 중입니다."
 	for job in site.get("jobs",{}).values():
 		if job.factory_id==id:return "로봇 제작을 먼저 완료하세요."

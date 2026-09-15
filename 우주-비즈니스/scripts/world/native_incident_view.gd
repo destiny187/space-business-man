@@ -81,7 +81,7 @@ static func update(view: FrontierIncidentView,row: Dictionary,nodes: Dictionary,
  if not stopped and footfall.is_finite() and view.surface.viewer.position.distance_to(footfall)<20:
   view.surface._wildlife_cue(footfall,"step")
  if not stopped and float(row.native_alert)>0 and view.surface.viewer.position.distance_to(goal)<FrontierNativeIncidents.radius(native)+6:
-  view.native_warning="둥지 보호 개체가 경고합니다 · 뒤로 물러나세요"
+  view.native_warning="둥지 보호 개체가 경고합니다  뒤로 물러나세요"
 
 static func voice(view: FrontierIncidentView,at: Vector3,native: Dictionary) -> void:
  var count:=view.audio.get_child_count();view.audio.play("sfx_creature_call",at)

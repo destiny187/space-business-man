@@ -53,6 +53,7 @@ func resolve_autonomous(wait: bool=false) -> bool:
 	var status: int=finish_autonomous.call() if wait else poll_autonomous.call()
 	if status==0:return false
 	if status<0:
+		pending_scan_receipts.clear()
 		autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear();autonomous_sequences.clear();autonomous_runtime_fields.clear();stopped=true;error="저장 실패로 세계를 정지했습니다."
 		if not pending_request.is_empty():
 			pending_request.result=failure(error);completed_requests.append(pending_request);pending_request={}
@@ -61,6 +62,9 @@ func resolve_autonomous(wait: bool=false) -> bool:
 		for field in autonomous_runtime_fields[id]:autonomous_world.crew.members[id][field]=world.crew.members[id][field]
 	autonomous_runtime_fields.clear()
 	world=autonomous_world;autonomous_world={};autonomous_mobile.clear();autonomous_vehicles.clear()
+	for peer in pending_scan_receipts:
+		scan_receipts[peer]={"until":now+6.0,"scan":pending_scan_receipts[peer]}
+	pending_scan_receipts.clear()
 	for id in autonomous_sequences:world.crew.members[id].last_sequence=autonomous_sequences[id]
 	autonomous_sequences.clear()
 	if not pending_request.is_empty():
@@ -75,6 +79,9 @@ var stopped:=false
 var error:=""
 var now:=0.0
 var scans: Dictionary={}
+var scan_receipts: Dictionary={}
+var pending_scan_receipts: Dictionary={}
+var scan_receipt_serial:=0
 var last_dig: Dictionary={}
 var scan_timer:=0.0
 var ecology_timer:=0.0
@@ -85,6 +92,7 @@ var rover_runtime: Dictionary={"seats":{},"exits":{},"tasks":{},"status":{}}
 var naming_views: Dictionary={}
 var orbital_terraform:=FrontierOrbitalTerraform.new()
 func start(source: Dictionary,profile: Dictionary,persist: Callable) -> bool:
+	scans.clear();scan_receipts.clear();pending_scan_receipts.clear();scan_receipt_serial=0
 	FrontierCrewSurface.reset_cache()
 	weather_presence.clear();weather_timer=0.0;wildlife_combat.cache.clear();wildlife_timer=0.0
 	error=FrontierPlayerProfile.validate_character(profile)
@@ -216,7 +224,7 @@ func snapshot(viewer: int=1,shared: Dictionary={}) -> Dictionary:
 	if not naming_views.has(names_key):
 		if naming_views.size()>12:naming_views.clear()
 		naming_views[names_key]=FrontierSpeciesNames.for_view(world,actor)
-	return {"host_view":shared.host_view,"biota_names":naming_views[names_key],"biota_revision":int(world.ecology.get("naming_revision",0)),"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"orbital_terraform":shared.orbital_terraform,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":scans.get(viewer,{"progress":0.0}).duplicate(true)}
+	return {"host_view":shared.host_view,"biota_names":naming_views[names_key],"biota_revision":int(world.ecology.get("naming_revision",0)),"weather":FrontierPlanetWeather.snapshot(world,actor,weather_presence),"coopertech_clues":FrontierCooperTechClues.snapshot(world,local.location),"freight_vessels":shared.freight_vessels,"freight_activity":shared.freight_activity,"shared_credits":shared.shared_credits,"orbital_terraform":shared.orbital_terraform,"incidents":FrontierExplorationIncidents.snapshot(world,actor),"discoveries":FrontierExplorationDiscoveries.snapshot(world,local.location),"lotus":FrontierLotusSupport.snapshot(world,actor),"expedition_research":shared.expedition_research,"main_location":shared.main_location,"main_landing":shared.main_landing,"local_shuttle":actor if local.has("local_shuttle") else "","rovers":shared.rovers,"rover_runtime":shared.rover_runtime,"station":{} if local.has("local_shuttle") else FrontierSpaceStation.snapshot(world),"inventory":FrontierExpeditionBusiness.bag(world,str(visible.get(viewer,""))).duplicate(true),"motion":shared.motion,"motion_time":shared.motion_time,"supply_sites":shared.supply_sites,"navigation_site":{"state":site.get("state","")},"phase":shared.phase,"lobby_ready":shared.lobby_ready,"vessel_seed":shared.vessel_seed,"vessel":shared.vessel,"vessel_stats":vessel_stats,"session_id":shared.session_id,"crew":FrontierCrewWorld.public_snapshot(data,peers),"self_id":visible.get(viewer,""),"active":peers.has(viewer),"galaxy_id":shared.galaxy_id,"location":local.location,"scan":_presented_scan(viewer)}
 func pump_requests() -> void:
 	if stopped:
 		for queued in queued_requests:completed_requests.append({"peer":queued.peer,"actor":queued.actor,"sequence":queued.envelope.sequence,"result":failure(error)})
@@ -515,7 +523,7 @@ func update_position(peer: int,position: Vector3) -> void:
 func disconnect_member(peer: int,reserve_slot: bool=true) -> bool:
 	if not resolve_autonomous(true):return false
 	if peers.has(peer):motions.erase(peers[peer])
-	_drop_pending(peer);inputs.erase(peer);input_sequences.erase(peer);scans.erase(peer)
+	_drop_pending(peer);inputs.erase(peer);input_sequences.erase(peer);scans.erase(peer);scan_receipts.erase(peer);pending_scan_receipts.erase(peer)
 	if not peers.has(peer):return true
 	var id: String=peers[peer]
 	var draft:=WorldSnapshot.copy(world)
@@ -627,6 +635,25 @@ func step_surface(delta: float) -> void:
 	if stopped:return
 	if not save_autonomous.call(candidate):stopped=true;error="자동 진행 저장 제출 실패로 세계를 정지했습니다.";return
 	_hold_candidate(candidate)
+
+func _complete_scan(peer: int,info: Dictionary,id: String) -> void:
+	var old: Dictionary=scans.get(peer,{})
+	var receipt: int=int(old.get("receipt",0))
+	if old.get("id","")!=id or not old.get("known",false) or receipt==0:
+		scan_receipt_serial+=1;receipt=scan_receipt_serial
+	var result: Dictionary={"id":id,"progress":1.0,"known":true,"info":info,"receipt":receipt}
+	scans[peer]=result
+	if staged_autonomous:pending_scan_receipts[peer]=result
+	elif int(scan_receipts.get(peer,{}).get("scan",{}).get("receipt",0))!=receipt:
+		scan_receipts[peer]={"until":now+6.0,"scan":result}
+
+func _presented_scan(peer: int) -> Dictionary:
+	var current: Dictionary=scans.get(peer,{})
+	if not current.get("known",false) and float(current.get("progress",0))>0:return current.duplicate(true)
+	var receipt: Dictionary=scan_receipts.get(peer,{})
+	if float(receipt.get("until",-1))>=now:return receipt.scan.duplicate(true)
+	if current.get("known",false) and pending_scan_receipts.has(peer):return {"progress":.99}
+	return current.duplicate(true)
 
 func _hold_candidate(candidate: Dictionary,request_commit: bool=false) -> void:
 	autonomous_world=candidate
@@ -748,7 +775,7 @@ func _step_surface(delta: float) -> void:
 		var target:=FrontierSurfaceSurvey.target(local,actor,inputs[peer].aim,Wildlife.observers(world,peers,local.location))
 		if target.is_empty():scans.erase(peer);continue
 		if FrontierSurfaceSurvey.known(local,target):
-			scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor)};continue
+			_complete_scan(peer,FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor),target.id);continue
 		var progress: float=float(scans.get(peer,{}).get("progress",0)) if scans.get(peer,{}).get("id","")==target.id and int(scans.get(peer,{}).get("discovery_stage",0))==int(FrontierExplorationDiscoveries.stage(local,target) if target.kind=="discovery" else 0) else 0.0
 		var scan_seconds:=float(FrontierCrewSurface.config().scan_seconds)
 		if target.kind=="native_incident":scan_seconds=float(FrontierNativeIncidents.config().roles[world.incidents.records[target.id].native.role].watch)
@@ -766,4 +793,4 @@ func _step_surface(delta: float) -> void:
 		draft.crew.revision+=1
 		if not save_world.call(draft):stopped=true;error="스캔 저장 실패로 공동 세계를 정지했습니다.";return
 		world=draft
-		scans[peer]={"id":target.id,"progress":1.0,"known":true,"info":FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor)}
+		_complete_scan(peer,FrontierSurfaceSurvey.result(FrontierShuttles.context(world,actor),target,actor),target.id)

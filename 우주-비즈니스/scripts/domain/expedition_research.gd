@@ -81,14 +81,14 @@ static func contribute(world: Dictionary,actor: String,args: Dictionary,station:
 static func validate(world: Dictionary) -> String:
 	if not world.has("expedition_research"):return ""
 	var value: Variant=world.expedition_research
-	if not value is Dictionary or value.size()!=4 or not FrontierExpeditionBusiness.integer(value.get("version"),1,2) or value.get("origin") not in ["new","legacy"]:return "공동 연구 버전·이행 기록 오류"
+	if not value is Dictionary or value.size()!=4 or not FrontierExpeditionBusiness.integer(value.get("version"),1,2) or value.get("origin") not in ["new","legacy"]:return "공동 연구 버전  이행 기록 오류"
 	if not value.get("licenses") is Dictionary or not value.get("projects") is Dictionary or value.projects.size()!=config().projects.size():return "공동 연구 원장 형식 오류"
 	var licenses: Array=[]
 	for id in config().projects:
 		var definition: Dictionary=config().projects[id];licenses.append(definition.license)
 		var project: Variant=value.projects.get(id)
 		if not project is Dictionary or project.size()!=(3 if value.version==1 else 4) or project.get("stage") not in (["unseen","discovered","analyzed"] if value.version==1 else ["unseen","discovered","analyzed","prototyped"]):return "공동 연구 단계 오류"
-		if not project.get("evidence") is Dictionary or project.evidence.size()>definition.sample_resources.size() or not project.get("contributions") is Dictionary or project.contributions.size()>128:return "공동 연구 증거·기여 형식 오류"
+		if not project.get("evidence") is Dictionary or project.evidence.size()>definition.sample_resources.size() or not project.get("contributions") is Dictionary or project.contributions.size()>128:return "공동 연구 증거  기여 형식 오류"
 		for resource in project.evidence:
 			var row: Variant=project.evidence[resource]
 			if resource not in definition.sample_resources or not row is Dictionary or row.size()!=5:return "공동 연구 표본 증거 오류"
@@ -107,8 +107,8 @@ static func validate(world: Dictionary) -> String:
 			var proof: Variant=project.get("prototype")
 			if not proof is Dictionary:return "시제품 기록 형식 오류"
 			if not proof.is_empty():
-				if proof.size()!=3 or not proof.get("actor") is String or not world.get("crew",{}).get("members",{}).has(proof.actor) or not proof.get("item_id") is String or not proof.item_id.begins_with("crafted:") or proof.item_id.length()>64:return "시제품 제작자·장비 기록 오류"
-				if not proof.get("body_id") is String or FrontierUniverse.ordinal_of(world.manifest,proof.body_id)<0 or stage!="analyzed":return "시제품 제작 위치·선행 분석 오류"
+				if proof.size()!=3 or not proof.get("actor") is String or not world.get("crew",{}).get("members",{}).has(proof.actor) or not proof.get("item_id") is String or not proof.item_id.begins_with("crafted:") or proof.item_id.length()>64:return "시제품 제작자  장비 기록 오류"
+				if not proof.get("body_id") is String or FrontierUniverse.ordinal_of(world.manifest,proof.body_id)<0 or stage!="analyzed":return "시제품 제작 위치  선행 분석 오류"
 				stage="prototyped"
 		if project.stage!=stage:return "공동 연구 단계와 증거 불일치"
 	for license in value.licenses:

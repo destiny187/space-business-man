@@ -245,7 +245,7 @@ static func validate_world(world: Dictionary) -> String:
 	if not shuttle_error.is_empty():return shuttle_error
 	if landed(world):
 		var id: String=world.crew.landing.body_id
-		if FrontierUniverse.ordinal_of(world.manifest,id)<0 or id!=world.location or not world.has("terrain_settings") or not world.get("ecology") is Dictionary or not world.ecology.get("planets") is Dictionary or not world.ecology.planets.has(id):return "공동 착륙에 고정 지형·생태 기록이 필요합니다."
+		if FrontierUniverse.ordinal_of(world.manifest,id)<0 or id!=world.location or not world.has("terrain_settings") or not world.get("ecology") is Dictionary or not world.ecology.get("planets") is Dictionary or not world.ecology.planets.has(id):return "공동 착륙에 고정 지형  생태 기록이 필요합니다."
 		if not world.crew.get("navigation") is Dictionary or world.crew.navigation.mode!="idle":return "착륙과 성간 항해가 동시에 진행될 수 없습니다."
 	for crate in world.crew.recovery.values():
 		if crate.area=="surface" and (not crate.get("body_id") is String or FrontierUniverse.ordinal_of(world.manifest,crate.body_id)<0):return "지표 회수 화물의 행성 주소 오류"

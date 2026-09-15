@@ -70,7 +70,7 @@ static func look(native: Dictionary) -> Dictionary:
  var result:=FrontierEcologyCatalog.look(native.form_id,native.look_id).duplicate(true)
  result.scale=float(result.scale)*float(native.factor);result.palette=native.palette.duplicate();return result
 static func title(native: Dictionary,ecology: Dictionary={}) -> String:
- return str(config().variants[native.variant].name)+" · "+FrontierSpeciesNames.display(ecology,native.form_id)
+ return str(config().variants[native.variant].name)+"  "+FrontierSpeciesNames.display(ecology,native.form_id)
 static func reward(row: Dictionary) -> Dictionary:
  if FrontierActiveMissions.enabled(row):return FrontierActiveMissions.reward(row)
  if not row.has("native"):return FrontierExplorationIncidents.definition(row.template).reward
@@ -168,7 +168,7 @@ static func observe(world: Dictionary,id: String) -> void:
  FrontierEcology.scan(world.ecology,row.body_id,{"form_id":row.native.form_id,"look_id":row.native.look_id})
 static func info(world: Dictionary,target: Dictionary) -> Dictionary:
  var row: Dictionary=world.incidents.records[target.id]
- return {"kind":"native_incident","name":title(row.native,world.ecology),"subtitle":"현지 서식종 · %.2fm · 기본 개체의 %.0f%%"%[float(row.native.height),float(row.native.factor)*100],"icon":FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(row.native.form_id)),"action":"분석 완료 · 생물과 거리를 두고 탈락물/은닉품 회수" if row.native_observed else "E 유지 · 현지 특이 개체 분석","id":target.id,"point":FrontierExplorationIncidents.array(target.point),"notes":[],"condition":FrontierExplorationIncidents.definition(row.template).hint}
+ return {"kind":"native_incident","name":title(row.native,world.ecology),"subtitle":"현지 서식종  %.2fm  기본 개체의 %.0f%%"%[float(row.native.height),float(row.native.factor)*100],"icon":FrontierResourceIcons.specimen_id(FrontierEcologyCatalog.form(row.native.form_id)),"action":"분석 완료  생물과 거리를 두고 탈락물/은닉품 회수" if row.native_observed else "E 유지  현지 특이 개체 분석","id":target.id,"point":FrontierExplorationIncidents.array(target.point),"notes":[],"condition":FrontierExplorationIncidents.definition(row.template).hint}
 static func validate(world: Dictionary,row: Dictionary) -> bool:
  if not row.has("native"):return FrontierExplorationIncidents.definition(row.template).mode!="native"
  if not row.native is Dictionary or role(row.template).is_empty():return false

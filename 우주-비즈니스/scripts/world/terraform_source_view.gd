@@ -30,7 +30,7 @@ func accept(ledger: Dictionary) -> void:
  var tint:=Color(record.rules.profiles[record.profile].get("color","b5bf51" if record.profile=="acid_water" else "bc91ce"))
  material.albedo_color=tint.lerp(Color("638f8a"),float(record.suppression));plume.process_material.color=tint
  plume.amount_ratio=maxf(.05,1-float(record.suppression));plume.emitting=true
- label.text=record.rules.profiles[record.profile].name+"\n유입 억제 %.0f%% · %s"%[float(record.suppression)*100,record.source_status]
+ label.text=record.rules.profiles[record.profile].name+"\n유입 억제 %.0f%%  %s"%[float(record.suppression)*100,record.source_status]
 func _process(_dt: float) -> void:
  if marker==null:return
  var camera:=get_viewport().get_camera_3d()

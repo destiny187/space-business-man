@@ -149,7 +149,7 @@ func _share_progress() -> void:
 	var shared: Dictionary=app.session.latest.crew.get("play_guide",{})
 	var steps: Array=[]
 	for key in FrontierSharedPlayGuide.KEYS:
-		if progress.get(key,false) and not shared.get(key,false):steps.append(key)
+		if key!="supply_requested" and progress.get(key,false) and not shared.get(key,false):steps.append(key)
 	if steps.is_empty():return
 	shared_inflight=steps;shared_retry_at=Time.get_ticks_msec()+2000
 	app.session.send_request("guide_progress",{"steps":steps})
@@ -162,7 +162,7 @@ func _save() -> void:
 func enabled() -> bool:
 	var settings := FrontierClientSettings.current(get_tree())
 	var mode: int = int(settings.values.get("tutorial_mode", 0)) if settings != null else 0
-	return not progress.get("complete", false) and (mode == 1 or (mode == 0 and progress.get("eligible", false)))
+	return (not progress.get("complete", false) or not progress.get("supply_requested",false)) and (mode == 1 or (mode == 0 and progress.get("eligible", false)))
 
 func solar_step() -> String:
 	if not enabled() or progress.get("travel", false) or progress.get("complete", false) or app.session.latest.is_empty():return ""
@@ -176,7 +176,7 @@ func solar_step() -> String:
 func departure_reason(ordinal: int) -> String:
 	var current := solar_step()
 	if current.is_empty() or FrontierUniverse.system_index(app.session.manifest, ordinal) == 0:return ""
-	return {"move":"W/S 속도·A/D 선회 연습을 먼저 마치세요.", "boost":"Shift 부스트 연습을 먼저 마치세요.", "scan":"화성을 바라보고 T를 유지해 스캔하세요."}[current]
+	return {"move":"W/S 속도  A/D 선회 연습을 먼저 마치세요.", "boost":"Shift 부스트 연습을 먼저 마치세요.", "scan":"화성을 바라보고 T를 유지해 스캔하세요."}[current]
 
 func request_reason(kind: String, args: Dictionary) -> String:
 	if kind not in ["navigate", "depart", "tutorial_depart"] or solar_step().is_empty():return ""
@@ -230,30 +230,31 @@ func restoration_goal() -> String:
 
 func field_instruction() -> void:
 	var value: Dictionary=app.session.latest
-	if not progress.get("inventory",false):
-		_hint("equipment",6,"채집 장비 준비","I  채집기를 선택해 번호 슬롯에 장착하세요.\n사용할 번호 키로 장비를 꺼냅니다.");return
 	if not progress.get("field_scan",false):
-		_hint("field_scan",7,"주변 광맥을 먼저 조사하세요","광맥을 바라보고 T를 유지하세요.\n스캔 결과에서 자원과 수량을 확인할 수 있습니다.");return
+		_hint("field_scan",6,"주변 광맥을 먼저 조사하세요","광맥을 바라보고 T를 유지하세요.\n스캔 결과에서 자원과 수량을 확인할 수 있습니다.");return
 	if not progress.get("mined",false):
-		_hint("mine",8,"첫 광물 채집","조사한 광맥을 조준하고 왼쪽 클릭을 유지하세요.\n채집한 자원은 내 배낭에 들어갑니다.");return
+		_hint("mine",7,"첫 광물 채집","조사한 광맥을 조준하고 왼쪽 클릭을 유지하세요.\n채집한 자원은 내 배낭에 들어갑니다.");return
 	if not progress.get("materials_review",false):
-		_hint("materials",9,"자원의 사용처 확인","I  방금 모은 자원을 선택하세요.\n만들 수 있는 장비·시설과 필요한 수량이 나옵니다.\n우측 클릭으로 수량을 골라 내려놓을 수 있습니다.");return
+		_hint("materials",8,"자원의 사용처 확인","I  방금 모은 자원을 선택하세요.\n만들 수 있는 장비  시설과 필요한 수량이 나옵니다.\n우측 클릭으로 수량을 골라 내려놓을 수 있습니다.");return
 	if not progress.get("built",false):
 		var solar:=FrontierFacilityResearch.construction("solar")
-		_hint("build",10,"첫 전력 설비 배치","B  "+solar.name+" 선택 → 바닥에 배치하세요.\n누구든 한 명이 설치하면 함께 진행됩니다.\n필요 재료: "+FrontierCatalog.cost_text(solar.cost)+"\n휠로 회전 · 왼쪽 클릭 설치 · Esc 취소");return
+		_hint("build",9,"첫 전력 설비 배치","B  "+solar.name+" 선택 → 바닥에 배치하세요.\n누구든 한 명이 설치하면 함께 진행됩니다.\n필요 재료: "+FrontierCatalog.cost_text(solar.cost)+"\n휠로 회전  왼쪽 클릭 설치  Esc 취소");return
 	if not progress.get("terraform_view",false):
-		_hint("terraform",11,"이 행성의 복원 목표 확인","Tab → 테라포밍에서 부족한 환경 수치를 보세요.\n설비가 필요한 지역과 처리 범위를 확인합니다.");return
+		_hint("terraform",10,"이 행성의 복원 목표 확인","Tab → 테라포밍에서 부족한 환경 수치를 보세요.\n설비가 필요한 지역과 처리 범위를 확인합니다.");return
+	if progress.get("complete",false):
+		_hint("supply",12,"마지막 준비: 현장 보급 요청","착륙선 가까이에서 F → Lotus 보급을 여세요.\n필요한 원료를 골라 요청하면 비행선이 상자를 투하합니다.\n요청 비용과 무료 보급 잔여 횟수를 확인하세요.")
+		return
 	var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.surface_world.body.id,{})
 	var running:=false
 	for building in site.get("buildings",{}).values():
 		if building.type in ["thermal","atmosphere","water","biolab"] and building.get("working",false):running=true;break
 	if running:
-		_hint("independent",12,"복원 설비가 가동 중입니다","테라포밍 수치와 지표의 변화를 확인하세요.\n이제 다른 자원·행성도 자유롭게 탐험할 수 있습니다.\n반복 채집이 필요하면 착륙선 F → 공동 설비 연구에서 로봇 자동화를 준비하세요.")
+		_hint("independent",11,"복원 설비가 가동 중입니다","테라포밍 수치와 지표의 변화를 확인하세요.\n이제 다른 자원  행성도 자유롭게 탐험할 수 있습니다.\n반복 채집이 필요하면 착륙선 F → 공동 설비 연구에서 로봇 자동화를 준비하세요.")
 		graduation_left+=.1
 		if graduation_left>=8:progress.complete=true;_save()
 		return
 	var goal:=FrontierFacilityResearch.construction(restoration_goal())
-	_hint("restore",12,"부족한 환경을 개선하세요","B  "+goal.name+"를 필요한 지역에 배치하세요.\n필요 재료: "+FrontierCatalog.cost_text(goal.cost)+"\nF 시설에서 전력·원료 부족 이유를 확인합니다.\n자동화는 선택입니다. 필요한 만큼 직접 작업해도 됩니다.")
+	_hint("restore",11,"부족한 환경을 개선하세요","B  "+goal.name+"를 필요한 지역에 배치하세요.\n필요 재료: "+FrontierCatalog.cost_text(goal.cost)+"\nF 시설에서 전력  원료 부족 이유를 확인합니다.\n자동화는 선택입니다. 필요한 만큼 직접 작업해도 됩니다.")
 
 func _hint(id: String, number: int, heading: String, text: String, target: Rect2 = Rect2()) -> void:
 	text=FrontierPlayInput.hint(text,"ground" if app.surface_world!=null else "flight")
@@ -342,16 +343,16 @@ func _process(delta: float) -> void:
 	elif app.navigation_frame.visible:
 		_hint("return_view", 1, "우주 화면에서 항해하기", "Tab으로 지도를 닫고 주변 항성계 표식을 찾아보세요.")
 	elif not app.outside:
-		_hint("outside", 1, "우주를 둘러보세요", "마우스로 정면·측면·천창을 둘러보세요.\nC  우주선 바깥 시점으로 전환하세요.")
+		_hint("outside", 1, "우주를 둘러보세요", "마우스로 정면  측면  천창을 둘러보세요.\nC  우주선 바깥 시점으로 전환하세요.")
 	elif not solar_step().is_empty():
 		match solar_step():
 			"move":
-				_hint("move", 1, "전진과 회전을 익혀보세요", "W  전진 가속    S  감속·정지\n키를 놓으면 속도를 유지합니다.\n마우스 / A·D  기수 선회\nQ / E  기체 좌우 회전(롤)")
+				_hint("move", 1, "전진과 회전을 익혀보세요", "W  전진 가속    S  감속  정지\n키를 놓으면 속도를 유지합니다.\n마우스 / A  D  기수 선회\nQ / E  기체 좌우 회전(롤)")
 			"boost":
 				_hint("boost", 2, "부스트와 제동을 익혀보세요", "Shift  전진 부스트    Space  제동\n감속하면 더 빠르게 선회합니다.\nAlt + W/S  저속 정밀 전후진\nAlt를 놓으면 후진을 멈춥니다.")
 			"scan":
 				var mars: Dictionary = app.flight.planets.get(int(rules.scan_ordinal), {})
-				_hint("scan", 3, "화성을 스캔해보세요", "화성을 바라보고 T를 유지해 분석하세요.\n우주·지상 스캔은 T, 연결·상호작용은 F입니다.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
+				_hint("scan", 3, "화성을 스캔해보세요", "화성을 바라보고 T를 유지해 분석하세요.\n우주  지상 스캔은 T, 연결  상호작용은 F입니다.", _world_marker(mars.node.global_position) if not mars.is_empty() else Rect2())
 	elif not progress.get("travel", false) or int(nav.system) == 0:
 		var stars = nav_ui.nearby_stars
 		var marker := _star_marker()

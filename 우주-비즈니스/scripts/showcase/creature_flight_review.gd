@@ -35,7 +35,7 @@ func run() -> void:
 		root_error=maxf(root_error,actor.global_position.distance_to(motion.point));max_foot_error=maxf(max_foot_error,actor.ground_motion.grounded_error)
 		phases[motion.phase]=true;clips[actor.ground_motion.wanted_clip]=true
 		var center: Vector3=motion.point+Vector3.UP*1.25;camera.position=center+Vector3(6,4.3,9);camera.look_at(center)
-		title.text="겹막 활공수 · "+str(motion.phase)+" · "+actor.ground_motion.wanted_clip
+		title.text="겹막 활공수  "+str(motion.phase)+"  "+actor.ground_motion.wanted_clip
 		if i in [60,375,435,540,1080,1320,1410] or "--video" in OS.get_cmdline_user_args() and i%2==0:
 			await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(folder+"/veilglider_%04d.png"%i)
 		if i%30==0:records.append({"time":t,"phase":motion.phase,"blend":motion.blend,"clip":actor.ground_motion.wanted_clip,"pose_clock":actor.ground_motion.pose_clock})

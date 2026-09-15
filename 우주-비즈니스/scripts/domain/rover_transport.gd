@@ -24,7 +24,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="rover_research2":
 		if not near_ship(world,actor):return "착륙선 연구실에 접근하세요."
 		if FrontierRovers.research(member)!=1:return "현장 물류 I을 연구했으며 II가 없는 캐릭터가 진행할 수 있습니다."
-		if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().research_cost):return "가방에 제어 회로 2·열전달 유닛 1이 필요합니다."
+		if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().research_cost):return "가방에 제어 회로 2  열전달 유닛 1이 필요합니다."
 		FrontierExpeditionBusiness.transfer(world.business.bags[actor],config().research_cost,-1);member.loadout.field_logistics=2;return ""
 	var id:=str(args.get("id",ship(f) if kind=="rover_unload" else ""));var r: Dictionary=f.vehicles.get(id,{})
 	if r.is_empty():return "운용할 로버를 선택하세요."
@@ -39,7 +39,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		start(runtime,r,actor,"upgrade",float(FrontierRovers.config().upgrade.seconds),member.position);return ""
 	if kind not in ["rover_load","rover_unload"]:return "지원하지 않는 운송 작업입니다."
 	if level(f)<1:return "선박 정비소에서 차량 적재 개조 I을 제작하세요."
-	if transport_busy(runtime):return "다른 차량 적재·하역이 진행 중입니다."
+	if transport_busy(runtime):return "다른 차량 적재  하역이 진행 중입니다."
 	if not near_ship(world,actor):return "착륙선 적재 구역에 접근하세요."
 	if kind=="rover_load":
 		if not ship(f).is_empty():return "선박의 차량 한 자리가 사용 중입니다."
@@ -63,7 +63,7 @@ static func interrupted(world: Dictionary,r: Dictionary,task: Dictionary,active:
 	if task.kind!="unload" and r.body_id!=world.location:return "현장을 떠나 차량 작업을 취소했습니다."
 	if not near_ship(world,task.actor) and task.kind in ["load","unload"]:return "적재 구역을 벗어나 작업을 취소했습니다."
 	if task.kind=="upgrade" and not FrontierRovers.within(world,task.actor,r,8):return "정비 구역을 벗어나 작업을 취소했습니다."
-	if float(r.health)<float(task.health) or FrontierRovers.point(r).distance_to(FrontierCrewWorld.vector(task.vehicle_origin))>.4 or not FrontierRovers.stopped(r):return "차량 이동·피해로 작업을 취소했습니다."
+	if float(r.health)<float(task.health) or FrontierRovers.point(r).distance_to(FrontierCrewWorld.vector(task.vehicle_origin))>.4 or not FrontierRovers.stopped(r):return "차량 이동  피해로 작업을 취소했습니다."
 	return ""
 static func finish(world: Dictionary,r: Dictionary,task: Dictionary) -> String:
 	var f:=FrontierRovers.ensure(world)
@@ -85,7 +85,7 @@ static func valid(f: Dictionary) -> String:
 	if not FrontierExpeditionBusiness.integer(f.get("transport_level",0),0,1) or not f.get("ship_vehicle","") is String:return "차량 적재 개조 기록 오류"
 	var aboard:=ship(f)
 	if not aboard.is_empty():
-		if level(f)<1 or not f.vehicles.has(aboard) or f.vehicles[aboard].location_kind!="ship" or units(f.vehicles[aboard])>float(config().capacity):return "선박 차량 자리·하중 오류"
+		if level(f)<1 or not f.vehicles.has(aboard) or f.vehicles[aboard].location_kind!="ship" or units(f.vehicles[aboard])>float(config().capacity):return "선박 차량 자리  하중 오류"
 	for id in f.vehicles:
 		if f.vehicles[id].location_kind=="ship" and id!=aboard:return "선박 차량 중복 위치 오류"
 	return ""

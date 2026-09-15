@@ -27,8 +27,8 @@ static func make(body: Dictionary,definition: Dictionary={}) -> Dictionary:
 static func describe(body: Dictionary) -> String:
 	var t: Dictionary=body.get("traits",{})
 	if t.is_empty():return ""
-	if not FrontierUniverse.landable(body):return t.name+" · 고체 지표 없음"
-	if t.id=="volcanic":return "불타는 화산 · 냉각 후 고온 광맥 개방"
+	if not FrontierUniverse.landable(body):return t.name+"  고체 지표 없음"
+	if t.id=="volcanic":return "불타는 화산  냉각 후 고온 광맥 개방"
 	var water: String="수자원 풍부" if float(t.water)>40 else ("수자원 일부" if float(t.water)>10 else "건조")
 	var air: String="대기 양호" if float(t.oxygen)>=.15 and float(t.toxicity)<15 and float(t.pressure)>.6 else "대기 개선 필요"
-	return t.name+" · "+water+" · "+air
+	return t.name+"  "+water+"  "+air

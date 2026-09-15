@@ -38,7 +38,7 @@ func run() -> void:
 	var a:=core();writes=0
 	var before:=a.world.duplicate(true)
 	depart=envelope(a,1,"depart",{"auto_ready":true})
-	var submitted:=a.request(1,depart)
+	var submitted:=a.request(1,depart);print("SUBMITTED ",submitted)
 	check(submitted.get("pending",false) and a.world==before,"combined travel waits for save without publishing readiness or energy cost")
 	check(a.request(1,depart).get("pending",false) and writes==1,"pending duplicate creates only one save")
 	a.resolve_autonomous(true)

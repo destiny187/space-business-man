@@ -27,7 +27,7 @@ static func validate_character(value: Variant) -> String:
 	for item in value.equipment:
 		if not item is Dictionary or not identifier(item.get("id")) or ids.has(item.id):return "장비 식별자 오류"
 		if item.get("definition") not in cfg.equipment or definitions.has(item.definition):return "현재 버전이 지원하지 않는 장비입니다. 원본은 보존됩니다."
-		if item.get("grade") not in cfg.grades or not item.get("traits") is Array or item.traits.size()>3:return "장비 등급·특성 오류"
+		if item.get("grade") not in cfg.grades or not item.get("traits") is Array or item.traits.size()>3:return "장비 등급  특성 오류"
 		var traits: Dictionary={}
 		for gear_trait in item.traits:
 			if gear_trait not in cfg.traits or traits.has(gear_trait):return "지원하지 않는 장비 특성입니다."

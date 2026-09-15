@@ -20,7 +20,7 @@ func run() -> void:
 	for form in forms:
 		if not form.id in ["annulus","pentafold","tethermaw"]:continue
 		var actor:=Body.new();stage.add_child(actor);actor.load_form(form);title.text=form.name
-		caption.text={"annulus":"근육 고리 · 안쪽 여과관 · 세 지지발","pentafold":"다섯 방사 관절 · 발끝 섭식부","tethermaw":"세 목 관절 · 몸통에서 떨어진 공격 머리"}[form.id]
+		caption.text={"annulus":"근육 고리  안쪽 여과관  세 지지발","pentafold":"다섯 방사 관절  발끝 섭식부","tethermaw":"세 목 관절  몸통에서 떨어진 공격 머리"}[form.id]
 		var center:=Vector3(0,1.0,.10 if form.id!="tethermaw" else 1.0)
 		camera.size=4.8 if form.id!="tethermaw" else 5.6;camera.position=center+Vector3(4.0,3.2,7.5);camera.look_at(center)
 		for warmup in 5:actor.advance(1.0/30);await process_frame

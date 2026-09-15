@@ -58,6 +58,7 @@ var departure_heading:=Vector3.FORWARD
 var departure_initial:=Vector3.FORWARD
 var departure_origin:=Vector3.ZERO
 var arrival_heading:=Vector3.FORWARD
+var departure_focus:=Vector3.ZERO
 var transit_clock:=0.0
 var transit_camera_rotation:=Quaternion.IDENTITY
 var transit_geometry: Array[GeometryInstance3D]=[]
@@ -102,6 +103,10 @@ func update_navigation(value: Dictionary) -> void:
 		departure_origin=ship.position if not navigation.is_empty() else FrontierCrewWorld.vector(value.position)
 		var route: Dictionary=value.get("transit",{})
 		if route.has("departure_origin"):departure_origin=FrontierCrewWorld.vector(route.departure_origin)
+		var nearest:=INF
+		for entry in planets.values():
+			var distance: float=entry.node.global_position.distance_squared_to(departure_origin)
+			if distance<nearest:nearest=distance;departure_focus=entry.node.global_position
 		departure_initial=FrontierCrewWorld.vector(route.get("initial_direction",value.direction)).normalized()
 		departure_heading=FrontierCrewWorld.vector(route.departure_direction) if route.has("departure_direction") else FrontierCrewNavigation.departure_direction(state.manifest,int(value.system),departure_origin,departure_initial,float(value.get("orbit_time",0)),float(route.get("duration",12)))
 		if departure_heading==Vector3.ZERO:departure_heading=departure_initial
@@ -196,6 +201,13 @@ func _process(delta: float) -> void:
 		var local_camera:=camera.transform
 		camera.global_position=ship.position+follow_basis*local_camera.origin
 		camera.global_basis=follow_basis*local_camera.basis
+		var phase:=FrontierCrewNavigation.transit_progress(presented)
+		if exterior and phase<float(FrontierUniverse.presentation().stellar_transition.swap_progress):
+			var reveal:=smoothstep(0,.12,phase)*(1.0-smoothstep(.32,.48,phase))
+			var toward:=departure_focus-camera.global_position
+			if toward.length_squared()>1:
+				var framing:=Basis.looking_at(toward.normalized(),Vector3.UP).get_rotation_quaternion()
+				camera.global_basis=Basis(camera.global_basis.get_rotation_quaternion().slerp(framing,reveal))
 	var base_fov:=float(FrontierClientSettings.ensure(get_tree()).values.fov)
 	if navigation.mode=="jump":camera.fov=_transit_fov(presented,base_fov)
 	else:camera.fov=lerpf(camera.fov,minf(110.0,base_fov+20) if navigation.get("boosting",false) else base_fov,minf(delta*3,1))
@@ -277,8 +289,8 @@ func _display_position(value: Dictionary) -> Vector3:
 		var elapsed: float=value.get("orbit_time",0)
 		var entry:=FrontierUniverse.entry_position(state.manifest,int(value.target),elapsed)
 		var focus:=FrontierUniverse.entry_focus(state.manifest,int(value.target),elapsed)
-		return entry+(entry-focus).normalized()*float(cfg.distant_offset)*(1.0-smoothstep(midpoint,1.0,p))
-	return departure_origin+departure_heading*float(cfg.distant_offset)*smoothstep(float(cfg.departure_start),midpoint,p)
+		return entry+(entry-focus).normalized()*float(cfg.distant_offset)*pow(1.0-clampf((p-midpoint)/(1.0-midpoint),0,1),3.0)
+	return departure_origin+departure_heading*float(cfg.distant_offset)*pow(clampf((p-float(cfg.departure_start))/(midpoint-float(cfg.departure_start)),0,1),3.0)
 
 func _transit_presentation(delta: float,paused: bool) -> Dictionary:
 	if navigation.mode!="jump":return navigation

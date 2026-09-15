@@ -22,7 +22,7 @@ static func action(event: InputEvent,ids: Array) -> String:
 static func configure(value: Dictionary) -> void:
 	overrides=value.duplicate();toggles.clear();held.clear()
 static func conflict(values: Dictionary,id: String,key: int) -> String:
-	if key<=0 or key in [KEY_ESCAPE,KEY_F10]:return "Esc와 F10은 메뉴 열기·취소에 사용합니다."
+	if key<=0 or key in [KEY_ESCAPE,KEY_F10]:return "Esc와 F10은 메뉴 열기  취소에 사용합니다."
 	for other in definitions():
 		if other==id or int(values.get(other,default_code(other)))!=key:continue
 		var contexts: Array=definitions()[id].contexts

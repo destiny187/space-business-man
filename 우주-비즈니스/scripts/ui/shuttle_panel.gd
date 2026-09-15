@@ -17,7 +17,7 @@ func configure(owner_panel: FrontierBusinessPanel) -> void:
 	preview=FrontierEquipmentPreview.new();preview.custom_minimum_size=Vector2(270,200);preview.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;add_child(preview);preview.show_model("ships/finch");preview.camera.size*=.7
 	panel.label(self,"FINCH  1인승 항성계 운송선",22)
 	var scope:=panel.label(self,"1인승    화물 4칸    항성계 내부 운송")
-	scope.tooltip_text="W/S 속도  마우스·A/D 선회  Q/E 롤  Shift 부스트  Space 제동  Alt+W/S 저속 전후진  F 상호작용. 성간 이동은 공동 원정선에 합류하세요."
+	scope.tooltip_text="W/S 속도  마우스  A/D 선회  Q/E 롤  Shift 부스트  Space 제동  Alt+W/S 저속 전후진  F 상호작용. 성간 이동은 공동 원정선에 합류하세요."
 	cost=FrontierResourceReadout.new();add_child(cost);cost.value=FrontierCatalog.cost_text(FrontierShuttles.config().cost)
 	choices=OptionButton.new();add_child(choices)
 	deploy_button=panel.button(self,"기체 선택 → 호출 위치 지정",func():

@@ -239,7 +239,7 @@ func _show_menu(kind: String) -> void:
 			button.add_theme_stylebox_override("normal",_style(Color("24443f"),MINT,5,13))
 			button.add_theme_color_override("font_color",MINT)
 	var spacer := Control.new(); spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL; sidebar.add_child(spacer)
-	_button(sidebar,"저장 · 복구",func(): _show_menu("pause"))
+	_button(sidebar,"저장  복구",func(): _show_menu("pause"))
 	_label(sidebar,"AVAILABLE CAPITAL",10,MUTED)
 	_label(sidebar,_number(campaign.profile.credits)+" Cr",22,ORANGE)
 	_label(sidebar,"EARTH / 지구 본부" if campaign.planet.is_empty() else "REMOTE / 연결 일시정지",11,MUTED)
@@ -450,7 +450,7 @@ func _buy_contract(kind: String) -> void:
 	selected_crew.clear(); selected_recovery.clear()
 	world.rebuild(campaign.planet)
 	_close_menu()
-	toast("원격 연결 완료 · 화면 왼쪽의 개척 가이드를 따라 시작하세요.")
+	toast("원격 연결 완료  화면 왼쪽의 개척 가이드를 따라 시작하세요.")
 	audio.play("ui_discovery")
 
 func _earth_menu() -> void:
@@ -464,14 +464,14 @@ func _earth_menu() -> void:
 		_label(content,campaign.planet.name,26)
 		_paragraph(content,"현재 행성에서 자동화와 환경 개선을 진행하고 있습니다. 현지에서도 기술 연구와 수송 계약을 이용할 수 있습니다.")
 		_primary(_button(content,"현장으로 연결  →",_close_menu))
-		_button(content,"평가·판매 내역 보기",func(): _show_menu("planet"))
+		_button(content,"평가  판매 내역 보기",func(): _show_menu("planet"))
 	else:
 		if not campaign.state.last_report.is_empty():
 			var report: Dictionary = campaign.state.last_report
 			var summary: VBoxContainer = _card(body)
 			_label(summary,"CONTRACT COMPLETE   /   "+report.grade,13,MINT)
-			_label(summary,report.planet_name+" · 매각 완료",25)
-			_paragraph(summary,"대금 %s Cr  ·  로봇 %d대 회수" % [_number(report.price),report.recovered])
+			_label(summary,report.planet_name+"  매각 완료",25)
+			_paragraph(summary,"대금 %s Cr  로봇 %d대 회수" % [_number(report.price),report.recovered])
 		if campaign.profile.round == 0 and not show_all_planets:
 			var card: VBoxContainer = _card(body)
 			var row: HBoxContainer = _row(card)
@@ -483,7 +483,7 @@ func _earth_menu() -> void:
 			_paragraph(column,"기초 광물이 풍부한 작은 위성입니다. 원격 장비로 자원을 모으고 첫 로봇을 만드세요.")
 			_paragraph(column,"01  직접 채집   →   02  첫 자동화   →   03  테라포밍",MINT)
 			_primary(_button(column,"%s Cr  /  첫 행성 구매  →" % _number(FrontierCatalog.entry("planets","basalt").price),func(): _buy_contract("basalt")))
-			_label(column,"계약 후 잔여 자금 %s Cr · 개척 가이드 제공" % _number(int(campaign.profile.credits)-int(FrontierCatalog.entry("planets","basalt").price)),12,MUTED)
+			_label(column,"계약 후 잔여 자금 %s Cr  개척 가이드 제공" % _number(int(campaign.profile.credits)-int(FrontierCatalog.entry("planets","basalt").price)),12,MUTED)
 			_button(body,"다른 행성도 살펴보기",func(): show_all_planets = true; _show_menu("earth"))
 		else:
 			var row: HBoxContainer = _row(body)
@@ -496,18 +496,18 @@ func _earth_menu() -> void:
 				_label(card,definition.prefix+"  /  EXPLORATION",11,MINT)
 				_label(card,definition.name,23)
 				_paragraph(card,definition.description)
-				_label(card,"%d°C  ·  독성 %d  ·  %.2f bar" % [definition.temperature,definition.toxicity,definition.pressure],12,MUTED)
+				_label(card,"%d°C  독성 %d  %.2f bar" % [definition.temperature,definition.toxicity,definition.pressure],12,MUTED)
 				_primary(_button(card,"%s Cr  /  행성 구매" % _number(definition.price),func(): _buy_contract(kind),campaign.profile.credits < definition.price))
 	if campaign.profile.round == 0 and campaign.planet.is_empty() and not show_all_planets: return
 	var ship: Dictionary = FrontierCatalog.all().ships[int(campaign.profile.ship)]
 	var transport: VBoxContainer = _card(body)
 	_label(transport,"궤도 물류   /   " + ship.name,21)
-	_paragraph(transport,"로봇 수송 %d슬롯  ·  궤도 회수 기술 %s" % [ship.slots,"보유" if campaign.has_tech("recovery") else "미보유"])
+	_paragraph(transport,"로봇 수송 %d슬롯  궤도 회수 기술 %s" % [ship.slots,"보유" if campaign.has_tech("recovery") else "미보유"])
 	if int(campaign.profile.ship) < 3:
 		var upgrade: Dictionary = FrontierCatalog.all().ships[int(campaign.profile.ship)+1]
-		_button(transport,"%s · %d슬롯으로 업그레이드  /  %s Cr" % [upgrade.name,upgrade.slots,_number(upgrade.price)],func(): _act(campaign.upgrade_ship(),"수송 계약을 업그레이드했습니다."),campaign.profile.credits < upgrade.price)
+		_button(transport,"%s  %d슬롯으로 업그레이드  /  %s Cr" % [upgrade.name,upgrade.slots,_number(upgrade.price)],func(): _act(campaign.upgrade_ship(),"수송 계약을 업그레이드했습니다."),campaign.profile.credits < upgrade.price)
 	if campaign.planet.is_empty() and not campaign.profile.hangar.is_empty():
-		_label(body,"지구 보관소 · 다음 행성에 보낼 로봇",20)
+		_label(body,"지구 보관소  다음 행성에 보낼 로봇",20)
 		for robot in campaign.profile.hangar:
 			var id: String = robot.id
 			var checkbox := CheckBox.new()
@@ -517,7 +517,7 @@ func _earth_menu() -> void:
 				if on and id not in selected_crew: selected_crew.append(id)
 				elif not on: selected_crew.erase(id))
 			body.add_child(checkbox)
-	_paragraph(body,"입문 추천: 첫 위성 구매 → 철·구리 채집 → 입문 로봇공학 구매 → 제작기·전력·충전기 건설 → 로봇 제작.")
+	_paragraph(body,"입문 추천: 첫 위성 구매 → 철  구리 채집 → 입문 로봇공학 구매 → 제작기  전력  충전기 건설 → 로봇 제작.")
 
 func _technology_menu() -> void:
 	_paragraph(body,"설계도는 다음 행성에도 남습니다. 지금 필요한 기술부터 선택하세요.")
@@ -540,16 +540,16 @@ func _technology_menu() -> void:
 			_label(text_column,definition.name,20)
 			_paragraph(card,definition.description)
 			if not definition.requires.is_empty() and not campaign.has_tech(definition.requires):
-				_label(card,"선행 · "+FrontierCatalog.entry("technologies",definition.requires).name,12,ORANGE)
+				_label(card,"선행  "+FrontierCatalog.entry("technologies",definition.requires).name,12,ORANGE)
 			elif rare and campaign.profile.round < 1: _label(card,"첫 행성 판매 후 거래 가능",12,ORANGE)
-			var buy: Button = _button(card,"✓  연구 완료" if owned else "%s Cr · 연구 시작" % _number(definition.price),func(): _act(campaign.buy_technology(id),definition.name+" 연구 완료"),owned or campaign.profile.credits < definition.price or not campaign.has_tech(definition.requires) or (rare and campaign.profile.round < 1))
+			var buy: Button = _button(card,"✓  연구 완료" if owned else "%s Cr  연구 시작" % _number(definition.price),func(): _act(campaign.buy_technology(id),definition.name+" 연구 완료"),owned or campaign.profile.credits < definition.price or not campaign.has_tech(definition.requires) or (rare and campaign.profile.round < 1))
 			if not owned: _primary(buy)
 
 func _building_menu() -> void:
 	if campaign.planet.is_empty(): _paragraph(body,"먼저 행성 계약을 시작하세요. 착륙 기지가 배치된 뒤 시설을 건설할 수 있습니다."); return
 	var guide: Dictionary = FrontierOnboarding.current(campaign.state)
 	if guide.get("id","") in ["solar","charger","factory"]:
-		_paragraph(body,"지금 추천  ·  "+guide.title+"   /   "+guide.counter,MINT)
+		_paragraph(body,"지금 추천  "+guide.title+"   /   "+guide.counter,MINT)
 	else: _paragraph(body,"기지 보관함의 재료를 사용합니다. 배치 미리보기에서 위치를 정하고 설치하세요.")
 	var grid := GridContainer.new(); grid.columns = 3; grid.add_theme_constant_override("h_separation",14); grid.add_theme_constant_override("v_separation",14); body.add_child(grid)
 	var order: Array = ["solar","charger","factory","storage","atmosphere","thermal","water","biolab","reactor"]
@@ -575,7 +575,7 @@ func _building_menu() -> void:
 		var row: HBoxContainer = _row(_card(body))
 		_label(row,"%s  /  %s" % [FrontierCatalog.entry("buildings",building.type).name,building.get("status","대기")],16).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_button(row,"정지" if building.enabled else "재가동",func(): _act(campaign.toggle_building(id)))
-		_button(row,"철거·환불",func(): _confirm("시설을 철거하고 건설 재료를 보관함으로 반환합니다.",func(): _act(campaign.demolish(id),"시설을 철거했습니다.")))
+		_button(row,"철거  환불",func(): _confirm("시설을 철거하고 건설 재료를 보관함으로 반환합니다.",func(): _act(campaign.demolish(id),"시설을 철거했습니다.")))
 
 func _resource_cost(parent: Node,source: String,color: Color) -> void:
 	var readout:=FrontierResourceReadout.new()
@@ -589,7 +589,7 @@ func _cost_status(cost: Dictionary) -> String:
 	var parts: PackedStringArray = []
 	for key in cost:
 		parts.append("%s %d / %d" % [FrontierCatalog.entry("resources",key).name,campaign.planet.inventory.get(key,0),cost[key]])
-	return " · ".join(parts)
+	return "  ".join(parts)
 
 func _craft_status(model: String) -> String:
 	var definition: Dictionary = FrontierCatalog.entry("robots",model)
@@ -605,8 +605,8 @@ func _craft_status(model: String) -> String:
 
 func _robots_menu() -> void:
 	if campaign.planet.is_empty(): _paragraph(body,"행성에서 제작기를 건설하면 로봇을 제작할 수 있습니다. 회수한 로봇의 출발 편성은 사업 본부에서 설정하세요."); return
-	_paragraph(body,"등급: 보급 70% · 개량 25% · 희귀 5%. 완성 시 등급과 특성이 공개되며 영구 보존됩니다.")
-	_button(body,"보관함·초과 자원 관리",func(): _show_menu("cargo"))
+	_paragraph(body,"등급: 보급 70%  개량 25%  희귀 5%. 완성 시 등급과 특성이 공개되며 영구 보존됩니다.")
+	_button(body,"보관함  초과 자원 관리",func(): _show_menu("cargo"))
 	var models: HBoxContainer = _row(body)
 	for key in FrontierCatalog.table("robots"):
 		var model: String = key
@@ -616,21 +616,21 @@ func _robots_menu() -> void:
 		_preview(card,model,150)
 		_label(card,definition.name,16)
 		_resource_cost(card,_cost_status(definition.cost),MINT if FrontierCatalog.can_pay(campaign.planet.inventory,definition.cost) else ORANGE)
-		_paragraph(card,"제작 %d초  /  %s" % [definition.seconds,"채광·운반 자동화" if definition.role == "miner" else "문명 작전·기지 경비"])
+		_paragraph(card,"제작 %d초  /  %s" % [definition.seconds,"채광  운반 자동화" if definition.role == "miner" else "문명 작전  기지 경비"])
 		var reason: String = _craft_status(model)
 		_primary(_button(card,"제작 주문  →" if reason.is_empty() else reason,func(): _act(campaign.craft(model),"제작을 시작했습니다. 현장으로 돌아가면 시간이 진행됩니다."),not reason.is_empty()))
 	for job in campaign.planet.jobs:
 		var id: String = job.id
 		var row: HBoxContainer = _row(_card(body))
 		_label(row,"제작 중  %s   %.0f / %.0f초" % [FrontierCatalog.entry("robots",job.model).name,job.progress,job.seconds],16).size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_button(row,"취소·재료 반환",func(): _act(campaign.cancel_craft(id)))
+		_button(row,"취소  재료 반환",func(): _act(campaign.cancel_craft(id)))
 	_label(body,"현지 로봇  /  %d대" % campaign.planet.robots.size(),22,MINT)
 	for robot in campaign.planet.robots:
 		var id: String = robot.id
 		var column: VBoxContainer = _card(body)
 		var row: HBoxContainer = _row(column)
 		var grade: Dictionary = FrontierCatalog.entry("grades",robot.grade)
-		_label(row,"%s  ·  %s" % [robot.name,grade.name],20,Color(grade.color)).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_label(row,"%s  %s" % [robot.name,grade.name],20,Color(grade.color)).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_label(row,"배터리 %.0f%%  /  내구 %.0f%%" % [robot.battery,robot.health],14,MUTED)
 		_paragraph(column,"%s   /   %s   /   화물 %d" % [_trait_text(robot),robot.status,FrontierCatalog.total(robot.cargo)])
 		var actions: HBoxContainer = _row(column)
@@ -643,13 +643,13 @@ func _robots_menu() -> void:
 			option.selected = 0 if robot.filter == "all" else keys.find(robot.filter)+1
 			option.item_selected.connect(func(index: int): _act(campaign.assign_robot(id,"all" if index == 0 else keys[index-1]),"작업 대상을 변경했습니다."))
 			actions.add_child(option)
-		_button(actions,"기지 회수·수리",func(): _act(campaign.rescue_robot(id),"수동장비 구조 서비스로 로봇을 복구했습니다."))
+		_button(actions,"기지 회수  수리",func(): _act(campaign.rescue_robot(id),"수동장비 구조 서비스로 로봇을 복구했습니다."))
 		_button(actions,"작업 정지" if robot.enabled else "작업 재개",func(): _act(campaign.toggle_robot(id)))
 
 func _trait_text(robot: Dictionary) -> String:
 	var names: PackedStringArray = []
 	for key in robot.traits: names.append(FrontierCatalog.entry("traits",key).name)
-	return " · ".join(names)
+	return "  ".join(names)
 
 func _planet_menu() -> void:
 	if campaign.planet.is_empty(): _paragraph(body,"평가할 활성 행성이 없습니다. 사업 본부에서 다음 행성을 선택하세요."); return
@@ -662,7 +662,7 @@ func _planet_menu() -> void:
 	header.add_child(column)
 	_label(column,"%s   /   적합도 %.1f" % [p.name,report.score],25)
 	_paragraph(column,"예상 매각 대금  %s Cr" % _number(report.price),PAPER)
-	if report.restricted: _paragraph(column,"B등급 이상에는 대기·온도·물 각각 60 이상, 120초 안정화가 필요합니다.",ORANGE)
+	if report.restricted: _paragraph(column,"B등급 이상에는 대기  온도  물 각각 60 이상, 120초 안정화가 필요합니다.",ORANGE)
 	var names: Dictionary = {"atmosphere":"대기 적합도", "temperature":"온도 적합도", "water":"수자원", "ecology":"생태 정착", "stability":"안정성"}
 	for key in names:
 		var row: HBoxContainer = _row(body)
@@ -673,7 +673,7 @@ func _planet_menu() -> void:
 		progress.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.add_child(progress)
 		_label(row,"%.1f" % report.scores[key],16,MINT).custom_minimum_size.x = 60
-	_paragraph(body,"기본 환경 가치 %s  +  잔존 시설·로봇 %s  +  발견 가치 %s  −  정리 비용 %s  ×  문명 계수 %.2f" % [_number(report.base),_number(report.residual),_number(report.discoveries),_number(report.cleanup),report.civilization])
+	_paragraph(body,"기본 환경 가치 %s  +  잔존 시설  로봇 %s  +  발견 가치 %s  −  정리 비용 %s  ×  문명 계수 %.2f" % [_number(report.base),_number(report.residual),_number(report.discoveries),_number(report.cleanup),report.civilization])
 	_label(body,"회수 로봇 선택  /  %d대 중 %d슬롯" % [selected_recovery.size(),campaign.ship_slots()],21,MINT)
 	if not campaign.has_tech("recovery"): _paragraph(body,"궤도 회수 기술과 수송 슬롯을 구매하면 로봇을 다음 행성에 데려갈 수 있습니다.")
 	for robot in p.robots:
@@ -687,9 +687,9 @@ func _planet_menu() -> void:
 			elif not on: selected_recovery.erase(id)
 			_show_menu("planet"))
 		body.add_child(checkbox)
-	_paragraph(body,"회수하지 않은 시설·로봇·현지 자원은 행성에 남습니다. 진행 중인 제작은 재료를 반환하고 종료합니다. 판매 후에는 이 행성에 다시 접근할 수 없습니다.")
+	_paragraph(body,"회수하지 않은 시설  로봇  현지 자원은 행성에 남습니다. 진행 중인 제작은 재료를 반환하고 종료합니다. 판매 후에는 이 행성에 다시 접근할 수 없습니다.")
 	var planet_id: String = p.id
-	_button(body,"%s Cr에 판매 · 사업 정산" % _number(report.price),func():
+	_button(body,"%s Cr에 판매  사업 정산" % _number(report.price),func():
 		_confirm("%s을 %s Cr에 판매합니다.\n선택한 로봇 %d대만 회수하며 나머지 현지 자산은 행성에 남습니다." % [p.name,_number(report.price),selected_recovery.size()],func():
 			var error: String = campaign.sell_planet(planet_id,selected_recovery)
 			if not error.is_empty(): toast(error); return
@@ -703,13 +703,13 @@ func _planet_menu() -> void:
 func _journal_menu() -> void:
 	if campaign.planet.is_empty():
 		_paragraph(body,"영구 도감에 기록한 발견: %d종. 새 행성에서 이상 신호를 조사하면 발견 기록이 추가됩니다." % campaign.profile.codex.size())
-		var codex_names: Dictionary = {"ruin":"고대 문명의 잔해 · 보존, 유물 반출, 기술 분석", "microbe":"황산 적응 미생물 · 산소 생성력 55, 활동 온도 −45~90°C", "animal":"모슬링 · 생태 정착을 돕는 야생동물", "civilization":"지적 문명 · 보호 또는 전투 작전의 대상"}
+		var codex_names: Dictionary = {"ruin":"고대 문명의 잔해  보존, 유물 반출, 기술 분석", "microbe":"황산 적응 미생물  산소 생성력 55, 활동 온도 −45~90°C", "animal":"모슬링  생태 정착을 돕는 야생동물", "civilization":"지적 문명  보호 또는 전투 작전의 대상"}
 		for key in campaign.profile.codex: _paragraph(_card(body),codex_names[key],PAPER)
 		_label(body,"사업 정산 이력",22,MINT)
 		for report in campaign.profile.history:
-			_paragraph(_card(body),"%s  ·  %s등급  ·  매각 %s Cr  ·  순현금 변화 %s Cr  ·  %d대 회수" % [report.planet_name,report.grade,_number(report.price),_number(report.profit),report.recovered],PAPER)
+			_paragraph(_card(body),"%s  %s등급  매각 %s Cr  순현금 변화 %s Cr  %d대 회수" % [report.planet_name,report.grade,_number(report.price),_number(report.profit),report.recovered],PAPER)
 		return
-	var names: Dictionary = {"ruin":"고대 문명의 잔해", "microbe":"황산 적응 미생물", "animal":"야생동물 · 모슬링", "civilization":"지적 문명의 거주지"}
+	var names: Dictionary = {"ruin":"고대 문명의 잔해", "microbe":"황산 적응 미생물", "animal":"야생동물  모슬링", "civilization":"지적 문명의 거주지"}
 	_paragraph(body,"레이더의 보라색 원은 이상 신호입니다. 현장에서 접근해 E로 스캔하면 선택 가능한 행동이 공개됩니다.")
 	for event in campaign.planet.events:
 		var id: String = event.id
@@ -719,7 +719,7 @@ func _journal_menu() -> void:
 		row.add_child(column)
 		_label(column,names[event.kind] if event.discovered else "미확인 이상 신호",21)
 		var distance: float = FrontierCampaign.point(event.position).distance_to(FrontierCampaign.point(campaign.planet.player.position))
-		_paragraph(column,"위치 [%d, %d]  ·  %.0fm" % [event.position[0],event.position[1],distance])
+		_paragraph(column,"위치 [%d, %d]  %.0fm" % [event.position[0],event.position[1],distance])
 		if not event.choice.is_empty(): _paragraph(column,event.reward,MINT)
 		_button(row,"보고서 열기",func(): selected_event = id; _show_menu("event"),not event.discovered)
 
@@ -740,10 +740,10 @@ func _event_menu() -> void:
 		_button(body,"발견 목록",func(): _show_menu("journal"))
 		return
 	var choices: Dictionary = {
-		"ruin":[["preserve","유적 보존","행성 판매 가치 +1,600 Cr. 유적을 현지에 남깁니다."],["extract","유물 반출·판매","지구로 반출하여 1,800 Cr를 받습니다. 행성 잔존 가산은 사라집니다."],["analyze","고대 기술 분석","분석 기술 필요. 고대 에너지 코어 기술을 해독합니다."]],
-		"microbe":[["cultivate","배양·환경 정착","독성 감소와 산소 생성을 시작합니다."],["observe","관찰 기록만 남기기","원래의 군집을 유지하고 도감에 기록합니다."]],
-		"animal":[["protect","서식지 보호","물·온도 조건 충족 시 생태 정착 촉진. 행성 가치 +800 Cr."],["capture","지구 반출·판매","모슬링을 반출하여 900 Cr를 받습니다. 현지 생태 효과는 얻지 못합니다."]],
-		"civilization":[["protect","살려두기·보호","무작위 기술 또는 보물을 받습니다. 행성 판매 단가가 55% 하락합니다."],["destroy","전투 AI로 파괴","경비로봇이 필요합니다. 전투·수리 부담과 정리 비용 600 Cr가 발생합니다."],["enslave","노예화·강제 통제","경비로봇이 필요합니다. 작전 완료 후 채광 +20%, 행성 판매 가치 −20%."]]}
+		"ruin":[["preserve","유적 보존","행성 판매 가치 +1,600 Cr. 유적을 현지에 남깁니다."],["extract","유물 반출  판매","지구로 반출하여 1,800 Cr를 받습니다. 행성 잔존 가산은 사라집니다."],["analyze","고대 기술 분석","분석 기술 필요. 고대 에너지 코어 기술을 해독합니다."]],
+		"microbe":[["cultivate","배양  환경 정착","독성 감소와 산소 생성을 시작합니다."],["observe","관찰 기록만 남기기","원래의 군집을 유지하고 도감에 기록합니다."]],
+		"animal":[["protect","서식지 보호","물  온도 조건 충족 시 생태 정착 촉진. 행성 가치 +800 Cr."],["capture","지구 반출  판매","모슬링을 반출하여 900 Cr를 받습니다. 현지 생태 효과는 얻지 못합니다."]],
+		"civilization":[["protect","살려두기  보호","무작위 기술 또는 보물을 받습니다. 행성 판매 단가가 55% 하락합니다."],["destroy","전투 AI로 파괴","경비로봇이 필요합니다. 전투  수리 부담과 정리 비용 600 Cr가 발생합니다."],["enslave","노예화  강제 통제","경비로봇이 필요합니다. 작전 완료 후 채광 +20%, 행성 판매 가치 −20%."]]}
 	for item in choices[event.kind]:
 		var choice: String = item[0]
 		var card: VBoxContainer = _card(body)
@@ -768,10 +768,10 @@ func _settings_menu() -> void:
 		campaign.profile.settings.graphics = key
 		world.apply_graphics(key)
 		quality_detail.text = FrontierGraphics.data().profiles[key].description
-		toast("그래픽 품질을 적용했습니다. 설정·진행 저장으로 보관할 수 있습니다."))
+		toast("그래픽 품질을 적용했습니다. 설정  진행 저장으로 보관할 수 있습니다."))
 	_paragraph(graphics_card,"즉시 적용됩니다. 화면이 끊기면 ‘균형’ 또는 ‘성능 우선’으로 낮추세요. UI 해상도는 유지됩니다.",MUTED)
-	_paragraph(body,"수동장비 조작: WASD 이동 · Shift 질주 · Space 점프 · 마우스 시점 · 좌클릭 연속 채광 · E 스캔/반납")
-	_paragraph(body,"건설: B 목록 · 마우스 위치 선택 · Q 회전 · 좌클릭 설치 · 우클릭 취소. V는 현장 전체를 보는 관찰 카메라입니다.")
+	_paragraph(body,"수동장비 조작: WASD 이동  Shift 질주  Space 점프  마우스 시점  좌클릭 연속 채광  E 스캔/반납")
+	_paragraph(body,"건설: B 목록  마우스 위치 선택  Q 회전  좌클릭 설치  우클릭 취소. V는 현장 전체를 보는 관찰 카메라입니다.")
 	_label(body,"마우스 감도",20)
 	var slider := HSlider.new()
 	slider.min_value = 0.0008
@@ -800,8 +800,8 @@ func _settings_menu() -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if value else DisplayServer.WINDOW_MODE_WINDOWED)
 		campaign.profile.settings.fullscreen = value)
 	body.add_child(fullscreen)
-	_button(body,"설정·진행 저장",func(): _act(campaign.save(),"저장했습니다."))
-	_label(body,"키 설정  ·  ESC 취소 / 마우스 좌·우클릭 고정",20)
+	_button(body,"설정  진행 저장",func(): _act(campaign.save(),"저장했습니다."))
+	_label(body,"키 설정  ESC 취소 / 마우스 좌  우클릭 고정",20)
 	for action in FrontierInput.DEFAULTS:
 		var key: String = action
 		var row: HBoxContainer = _row(body)
@@ -824,7 +824,7 @@ func _help_menu() -> void:
 	var enabled: bool = campaign.profile.get("onboarding",{}).get("enabled",false)
 	var guide_card: VBoxContainer = _card(body)
 	_label(guide_card,"개척 가이드",23,MINT)
-	_paragraph(guide_card,"실제 이동·채집·반납·건설·자동 운반을 확인해 다음 단계로 안내합니다. 순서는 강제하지 않으며, 진행도는 사업 기록에 함께 저장됩니다.")
+	_paragraph(guide_card,"실제 이동  채집  반납  건설  자동 운반을 확인해 다음 단계로 안내합니다. 순서는 강제하지 않으며, 진행도는 사업 기록에 함께 저장됩니다.")
 	_button(guide_card,"가이드 숨기기" if enabled else "가이드 켜기",func(): _act(campaign.set_guide(not enabled),"개척 가이드 설정을 변경했습니다."))
 	if not guide.is_empty():
 		_label(guide_card,"지금 할 일  /  "+guide.title,20)
@@ -840,16 +840,16 @@ func _help_menu() -> void:
 		_label(col,FrontierOnboarding.TITLES[i],17,MINT if done else PAPER)
 		_paragraph(col,FrontierOnboarding.DESCRIPTIONS[i])
 	_label(body,"M-02 도구 운용",22,MINT)
-	_paragraph(body,"좌클릭 유지: 광물 흡입. 우클릭: 펄스 파쇄·사격. 과열되면 잠시 냉각해야 합니다. 펄스는 가까운 광물을 파쇄하고, 승인된 문명 작전에 화력을 보탭니다. 중립 발견에는 피해를 주지 않습니다.")
+	_paragraph(body,"좌클릭 유지: 광물 흡입. 우클릭: 펄스 파쇄  사격. 과열되면 잠시 냉각해야 합니다. 펄스는 가까운 광물을 파쇄하고, 승인된 문명 작전에 화력을 보탭니다. 중립 발견에는 피해를 주지 않습니다.")
 
 	var lessons: Array = [
-		["01  원격 연결","당신은 지구에서 수동장비를 조종합니다. 마우스로 둘러보고 이동 키로 광맥에 접근하세요. 좌클릭을 누르면 채광합니다. 화물 한도는 140이며 기지·보관함 근처에서 상호작용 키로 반납합니다."],
-		["02  첫 작업팀","기술 상점에서 입문 로봇공학을 구매하세요. 태양광 발전기 → 충전 패드 → 로봇 제작기를 건설한 뒤 로봇 메뉴에서 채광로봇을 주문합니다. 철 100·구리 10이 필요하며 현장에서 18초 후 출고됩니다."],
-		["03  자동화 관리","로봇 메뉴에서 자원을 지정할 수 있습니다. 배터리가 부족하면 전력이 공급되는 충전기로 복귀합니다. 보관함 포화 시 저장고를 확장하고, 경로가 막히거나 장비가 파손되면 기지 회수·수리를 사용하세요."],
-		["04  행성을 바꾸는 설비","대기·온도·물·생태 기술과 설비를 준비하세요. 발전량이 수요보다 커야 모두 가동됩니다. 물 순환기는 얼음을 소비하고 생태 배양기는 대기·온도·물이 개선된 뒤 작동합니다. 시설 관리에서 대기 이유를 확인할 수 있습니다."],
-		["05  발견과 매각","보라색 레이더 신호에 접근해 조사하세요. 발견마다 보상과 행성 가치가 달라집니다. 대기·온도·물 적합도 각각 60 이상을 120초 유지하면 B등급 이상이 가능합니다. 평가 메뉴에서 가격 내역을 확인하고 판매합니다."],
-		["06  다음 사업","궤도 회수 기술과 우주선 슬롯을 구매하면 판매 전에 로봇을 선택해 지구로 회수할 수 있습니다. 다음 행성 구매 전 보관소에서 출발 로봇을 선택하세요. 기술은 영구 보유하고 로봇 등급·특성은 유지됩니다."],
-		["저장과 복구","메뉴를 열면 시간이 멈춥니다. 현장에서는 60초마다 자동 저장하며 중요한 구매·제작 완료·매각도 저장합니다. 진행이 막히면 일시정지 메뉴의 사업 안전 시작점으로 복구할 수 있습니다. 현재 회차의 진행은 되돌아갑니다."]]
+		["01  원격 연결","당신은 지구에서 수동장비를 조종합니다. 마우스로 둘러보고 이동 키로 광맥에 접근하세요. 좌클릭을 누르면 채광합니다. 화물 한도는 140이며 기지  보관함 근처에서 상호작용 키로 반납합니다."],
+		["02  첫 작업팀","기술 상점에서 입문 로봇공학을 구매하세요. 태양광 발전기 → 충전 패드 → 로봇 제작기를 건설한 뒤 로봇 메뉴에서 채광로봇을 주문합니다. 철 100  구리 10이 필요하며 현장에서 18초 후 출고됩니다."],
+		["03  자동화 관리","로봇 메뉴에서 자원을 지정할 수 있습니다. 배터리가 부족하면 전력이 공급되는 충전기로 복귀합니다. 보관함 포화 시 저장고를 확장하고, 경로가 막히거나 장비가 파손되면 기지 회수  수리를 사용하세요."],
+		["04  행성을 바꾸는 설비","대기  온도  물  생태 기술과 설비를 준비하세요. 발전량이 수요보다 커야 모두 가동됩니다. 물 순환기는 얼음을 소비하고 생태 배양기는 대기  온도  물이 개선된 뒤 작동합니다. 시설 관리에서 대기 이유를 확인할 수 있습니다."],
+		["05  발견과 매각","보라색 레이더 신호에 접근해 조사하세요. 발견마다 보상과 행성 가치가 달라집니다. 대기  온도  물 적합도 각각 60 이상을 120초 유지하면 B등급 이상이 가능합니다. 평가 메뉴에서 가격 내역을 확인하고 판매합니다."],
+		["06  다음 사업","궤도 회수 기술과 우주선 슬롯을 구매하면 판매 전에 로봇을 선택해 지구로 회수할 수 있습니다. 다음 행성 구매 전 보관소에서 출발 로봇을 선택하세요. 기술은 영구 보유하고 로봇 등급  특성은 유지됩니다."],
+		["저장과 복구","메뉴를 열면 시간이 멈춥니다. 현장에서는 60초마다 자동 저장하며 중요한 구매  제작 완료  매각도 저장합니다. 진행이 막히면 일시정지 메뉴의 사업 안전 시작점으로 복구할 수 있습니다. 현재 회차의 진행은 되돌아갑니다."]]
 	for lesson in lessons:
 		var card: VBoxContainer = _card(body)
 		_label(card,lesson[0],21,MINT)
@@ -870,11 +870,11 @@ func _cargo_menu() -> void:
 
 func _pause_menu() -> void:
 	_paragraph(body,"메뉴를 연 동안 시뮬레이션은 일시정지됩니다. F5로 빠르게 저장할 수 있습니다.")
-	_button(body,"조작·사업 도움말",func(): _show_menu("help"))
-	if not campaign.planet.is_empty(): _button(body,"보관함·초과 자원 관리",func(): _show_menu("cargo"))
+	_button(body,"조작  사업 도움말",func(): _show_menu("help"))
+	if not campaign.planet.is_empty(): _button(body,"보관함  초과 자원 관리",func(): _show_menu("cargo"))
 	_button(body,"진행 저장",func(): _act(campaign.save(),"현재 진행을 저장했습니다."))
 	_button(body,"마지막 저장 불러오기",func(): _confirm("저장 이후 진행은 사라집니다.",_continue_game))
-	_button(body,"사업 안전 시작점으로 복구",func(): _confirm("현재 회차의 진행·구매·보상을 모두 되돌리고 마지막 지구 출발 전 상태로 복구합니다.",func():
+	_button(body,"사업 안전 시작점으로 복구",func(): _confirm("현재 회차의 진행  구매  보상을 모두 되돌리고 마지막 지구 출발 전 상태로 복구합니다.",func():
 		var error: String = campaign.restart_business()
 		if not error.is_empty(): toast(error); return
 		_apply_settings()
@@ -944,7 +944,7 @@ func _input(event: InputEvent) -> void:
 	if not error.is_empty(): toast(error); return
 	binding_target = ""
 	_show_menu("settings")
-	toast("키를 변경했습니다. 설정·진행 저장으로 보존하세요.")
+	toast("키를 변경했습니다. 설정  진행 저장으로 보존하세요.")
 
 func _unhandled_input(event: InputEvent) -> void:
 	var settings:=FrontierClientSettings.current(get_tree())
@@ -1011,7 +1011,7 @@ func _mine_target(target: Dictionary,amount: int) -> void:
 func _fire_pulse() -> void:
 	if overheated:
 		pulse_time = 0.4
-		toast("도구 냉각 중 · 잠시 발사를 멈추세요.")
+		toast("도구 냉각 중  잠시 발사를 멈추세요.")
 		return
 	pulse_time = float(FrontierCatalog.all().manual_tool.pulse_interval)
 	tool_heat = minf(100,tool_heat+float(FrontierCatalog.all().manual_tool.pulse_heat))

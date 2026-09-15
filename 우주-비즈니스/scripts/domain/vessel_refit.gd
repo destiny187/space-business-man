@@ -4,7 +4,7 @@ static var _config: Dictionary={}
 static func config() -> Dictionary:
 	if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/vessel_refit.json"))
 	return _config
-static func signature() -> String:return FrontierUniverse.fingerprint(config())
+static func signature() -> String:return FrontierContentTextIdentity.canonical(config())
 static func create(seed_value: int,realm: String="") -> Dictionary:
 	return {"version":1,"rules_hash":signature(),"id":(realm+":kestrel:"+str(seed_value)).sha256_text(),"counter":0,"draws":0,"parts":0,"modules":{},"loadout":{"propulsion":"","utility":""},"last_draw":{}}
 static func grade_index(grade: String) -> int:return config().grades.find(grade)
@@ -36,7 +36,7 @@ static func add_module(vessel: Dictionary,kind: String,grade: String) -> String:
 	var id: String="module:"+str(int(vessel.counter))
 	vessel.modules[id]={"id":id,"type":kind,"grade":grade};return id
 static func apply(world: Dictionary,actor: String,action: String,args: Dictionary) -> String:
-	if actor!=world.crew.owner_id:return "호스트가 공동 원정선의 제작·개조를 확정합니다."
+	if actor!=world.crew.owner_id:return "호스트가 공동 원정선의 제작  개조를 확정합니다."
 	if not FrontierCrewSurface.landed(world) or FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(FrontierCrewSurface.config().ship_position))>float(FrontierCrewSurface.config().boarding_distance):return "착륙한 우주선 주변에서 정비하세요."
 	if not world.has("business"):return "먼저 무료 사업 등록으로 공동 사업 장부를 여세요."
 	if not world.has("vessel"):world.vessel=create(int(world.manifest.seed),world.crew.world_id)
@@ -79,7 +79,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 			if not vessel.modules.has(id) or id in vessel.loadout.values():return "해제한 보유 모듈을 선택하세요."
 			vessel.parts+=int(config().salvage_parts[grade_index(vessel.modules[id].grade)]);vessel.modules.erase(id)
 		_:return "지원하지 않는 선박 정비 작업입니다."
-	if int(world.business.credits)<credits or int(vessel.parts)<parts or (not materials.is_empty() and not FrontierExpeditionBusiness.affordable(site.inventory,materials)):return "공동 크레딧·현장 재료·연구 부품이 부족합니다."
+	if int(world.business.credits)<credits or int(vessel.parts)<parts or (not materials.is_empty() and not FrontierExpeditionBusiness.affordable(site.inventory,materials)):return "공동 크레딧  현장 재료  연구 부품이 부족합니다."
 	if action=="vessel_build":add_module(vessel,kind,"standard")
 	elif action=="vessel_upgrade":vessel.modules[id].grade=config().grades[grade_index(vessel.modules[id].grade)+1]
 	elif action=="vessel_draw":
@@ -101,7 +101,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
 	for member in world.crew.members.values():member.ready=false
 	return ""
 static func validate(value: Variant,seed_value: int,realm: String="") -> String:
-	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or value.get("id")!=create(seed_value,realm).id:return "원정선 개조 원형·식별 오류"
+	if not value is Dictionary or value.get("version")!=1 or value.get("rules_hash")!=signature() or value.get("id")!=create(seed_value,realm).id:return "원정선 개조 원형  식별 오류"
 	var skill_error:=FrontierVesselSkills.validate(value)
 	if not skill_error.is_empty():return skill_error
 	var access_error:=FrontierVesselAccess.validate(value)
@@ -113,7 +113,7 @@ static func validate(value: Variant,seed_value: int,realm: String="") -> String:
 			if not id is String or not FrontierSpaceStation.config().hulls.has(id) or hull_seen.has(id):return "보유 선체 정의 오류"
 			hull_seen[id]=true
 	for key in ["counter","draws","parts"]:
-		if not FrontierExpeditionBusiness.integer(value.get(key),0,10000000):return "원정선 제작·추첨 기록 오류"
+		if not FrontierExpeditionBusiness.integer(value.get(key),0,10000000):return "원정선 제작  추첨 기록 오류"
 	if not value.get("modules") is Dictionary or value.modules.size()>int(config().maximum_modules) or not value.get("loadout") is Dictionary or value.loadout.size()!=config().slots.size() or not value.get("last_draw") is Dictionary:return "원정선 모듈 구조 오류"
 	var seen: Dictionary={}
 	for id in value.modules:

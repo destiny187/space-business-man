@@ -126,7 +126,7 @@ func refresh_details() -> void:
 		FrontierVesselCapabilityReadout.populate(readout,stats.navigation_capabilities,next)
 		if next<=5:
 			var refit: Dictionary=FrontierVesselAccess.config().refits[str(next)]
-			details.value="%s\n%d Cr  %s\n현재 선체에 영구 적용 · 임무 모듈 슬롯 유지\n정거장 부품 포함 개장: %d Cr"%[refit.name,refit.field_credits,FrontierCatalog.cost_text(refit.materials),refit.station_credits]
+			details.value="%s\n%d Cr  %s\n현재 선체에 영구 적용  임무 모듈 슬롯 유지\n정거장 부품 포함 개장: %d Cr"%[refit.name,refit.field_credits,FrontierCatalog.cost_text(refit.materials),refit.station_credits]
 		else:details.value="최고 항해 내성을 갖추었습니다. 선체 역할과 임무 모듈을 자유롭게 선택하세요."
 	if not module.is_empty():
 		var def:=FrontierVesselRefit.definition(module.type)

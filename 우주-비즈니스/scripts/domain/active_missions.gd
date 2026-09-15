@@ -19,9 +19,9 @@ static func progress_text(row: Dictionary) -> String:
  if row.carrier!="":return "회수 신호기로 화물 운반 중"
  var m: Dictionary=row.mission
  match row.template:
-  "runaway_convoy_intercept":return "수송기 정지 · 화물 회수 가능" if row.open else "수송기 구동부  %.0f / %.0f"%[float(m.drive_hp),float(rules(row).drive_hp)]
+  "runaway_convoy_intercept":return "수송기 정지  화물 회수 가능" if row.open else "수송기 구동부  %.0f / %.0f"%[float(m.drive_hp),float(rules(row).drive_hp)]
   "aerial_sensor_recovery":return "관찰  %.1f / %.1f초"%[float(m.observed),float(rules(row).observe_seconds)]
-  "stranded_survey_rover":return "안전 지점 도착 · 구난 성과 회수" if row.open else "잔해 제거  %d / %d · 배터리 %s"%[m.steps.filter(func(v):return int(v)>=int(rules(row).blocker_hits)).size(),m.steps.size(),"연결됨" if row.battery_installed else "필요"]
+  "stranded_survey_rover":return "안전 지점 도착  구난 성과 회수" if row.open else "잔해 제거  %d / %d  배터리 %s"%[m.steps.filter(func(v):return int(v)>=int(rules(row).blocker_hits)).size(),m.steps.size(),"연결됨" if row.battery_installed else "필요"]
  return "완료한 목표  %d / %d"%[m.steps.filter(func(v):return int(v)>0).size(),m.steps.size()]
 static func bird(body: Dictionary) -> Dictionary:
  if _birds.has(body.id):return _birds[body.id]
@@ -132,8 +132,8 @@ static func targets(row: Dictionary) -> Array:
  match row.template:
   "cliff_relay_run":
    for i in 3:
-    if int(m.steps[i])==0:result.append({"part":"rotate_"+str(i),"point":vec(m.anchors[i])+Vector3(0,1.1,1.0),"action":"F 안테나 회전 · 다음 수신부 연결"})
-   if int(m.steps[0])*int(m.steps[1])*int(m.steps[2])>0:result.append({"part":"finish","point":cargo_point(row),"action":"F 복구 기록·부품 회수"})
+    if int(m.steps[i])==0:result.append({"part":"rotate_"+str(i),"point":vec(m.anchors[i])+Vector3(0,1.1,1.0),"action":"F 안테나 회전  다음 수신부 연결"})
+   if int(m.steps[0])*int(m.steps[1])*int(m.steps[2])>0:result.append({"part":"finish","point":cargo_point(row),"action":"F 복구 기록  부품 회수"})
   "runaway_convoy_intercept":
    if not row.open:
     result.append({"part":"drive","point":vec(m.moving)+Vector3(1.25,.75,0).rotated(Vector3.UP,float(m.moving_yaw)),"action":"구동부를 사격해 수송기 정지"})
@@ -145,17 +145,17 @@ static func targets(row: Dictionary) -> Array:
    if complete_steps(row):result.append({"part":"cargo","point":cargo_point(row),"action":"F 격실 코어 들기"})
   "vent_field_extraction":
    for i in m.anchors.size():
-    if int(m.steps[i])==0:result.append({"part":"mine_"+str(i),"point":vec(m.anchors[i])+Vector3.UP*.7,"action":"채집기로 결정층 채굴 · 분출 전조 주의"})
+    if int(m.steps[i])==0:result.append({"part":"mine_"+str(i),"point":vec(m.anchors[i])+Vector3.UP*.7,"action":"채집기로 결정층 채굴  분출 전조 주의"})
    if complete_steps(row):result.append({"part":"finish","point":vec(row.relay)+Vector3.UP*.8,"action":"F 채굴 성과 회수"})
   "aerial_sensor_recovery":
-   result.append({"part":"cargo","point":cargo_point(row),"action":"F 센서 들기" if float(m.observed)>=float(rules(row).observe_seconds) and bird_away(row) else "거리를 두고 관찰 · 새가 날아간 틈에 접근"})
+   result.append({"part":"cargo","point":cargo_point(row),"action":"F 센서 들기" if float(m.observed)>=float(rules(row).observe_seconds) and bird_away(row) else "거리를 두고 관찰  새가 날아간 틈에 접근"})
   "stranded_survey_rover":
    for i in m.anchors.size():
     if int(m.steps[i])<int(rules(row).blocker_hits):result.append({"part":"clear_"+str(i),"point":vec(m.anchors[i])+Vector3(0,.7,1.3),"action":"지형 변환기로 이동로 잔해 제거"})
    if not row.battery_installed:
     if row.battery_carrier=="":result.append({"part":"battery","point":vec(row.battery_ground)+Vector3.UP*.3,"action":"F 구난 배터리 들기"})
     result.append({"part":"socket","point":vec(m.moving)+Vector3(1.25,1,0),"action":"F 구난 배터리 연결"})
-   else:result.append({"part":"rover_toggle","point":vec(m.moving)+Vector3(1.25,1,0),"action":"F 로버 정지" if m.running else "F 로버 출발 · 가까이서 동행"})
+   else:result.append({"part":"rover_toggle","point":vec(m.moving)+Vector3(1.25,1,0),"action":"F 로버 정지" if m.running else "F 로버 출발  가까이서 동행"})
    if row.open:result.append({"part":"finish","point":vec(row.relay)+Vector3.UP*.8,"action":"F 구난 부품 회수"})
   "freighter_rescue_chain":
    if int(m.cargo_index)>=0 and not row.cargo_ground.is_empty():

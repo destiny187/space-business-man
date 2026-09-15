@@ -63,6 +63,8 @@ static func stocks(world: Dictionary) -> Array:
 	for ship in world.get("crew",{}).get("shuttles",{}).values():result.append(ship.get("cargo",{}))
 	for rover in world.get("rovers",{}).get("vehicles",{}).values():result.append(rover.get("cargo",{}))
 	for site in business.get("sites",{}).values():
+		for building in site.get("buildings",{}).values():
+			if building.get("type","")=="luminous_vivarium":result.append(building.get("specimen_stock",{}))
 		for robot in site.get("robots",{}).values():result.append(robot.get("cargo",{}))
 	for robot in business.get("hangar",{}).values():result.append(robot.get("cargo",{}))
 	return result

@@ -76,7 +76,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if not access_error.is_empty():return access_error
 		var destination_system:=FrontierUniverse.system_index(world.manifest,int(nav.target))
 		var distance:=FrontierUniverse.map_position(world.manifest,int(nav.system)).distance_to(FrontierUniverse.map_position(world.manifest,destination_system))
-		if destination_system!=int(nav.system) and distance>FrontierVesselRefit.stellar_range(world)+.001:return "항속거리 초과 · 가까운 항성계를 경유하거나 비행체를 업그레이드하세요."
+		if destination_system!=int(nav.system) and distance>FrontierVesselRefit.stellar_range(world)+.001:return "항속거리 초과  가까운 항성계를 경유하거나 비행체를 업그레이드하세요."
 		if float(nav.get("hull",100))<=0:return "선체 응급 수리가 끝날 때까지 기다려 주세요."
 		for id in active.values():
 			if not crew.members[id].aboard or not crew.members[id].ready:return "연결된 승무원 모두 승선하고 준비해야 출항할 수 있습니다."
@@ -88,7 +88,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if nav.mode=="jump":nav.energy=float(nav.get("energy",100.0))-energy_cost
 		nav.erase("station_docked");nav.station_target=false;nav.manual=false;nav.boundary=false;nav.boosting=false
 		nav.impact_velocity=[0,0,0]
-		nav.jump_left=float(world.manifest.settings.flight.get("transit_seconds",12.0)) if nav.mode=="jump" else 0.0
+		nav.jump_left=maxf(float(world.manifest.settings.flight.get("transit_seconds",12.0)),float(FrontierUniverse.presentation().stellar_transition.flight_seconds)) if nav.mode=="jump" else 0.0
 		if nav.mode=="jump":
 			var source:=FrontierUniverse.system(world.manifest,int(nav.system))
 			var destination:=FrontierUniverse.system(world.manifest,FrontierUniverse.system_index(world.manifest,int(nav.target)))
@@ -105,7 +105,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 			nav.transit.initial_direction=FrontierExpeditionBusiness.array(initial)
 			nav.transit.initial_up=FrontierExpeditionBusiness.array(orientation(nav).y)
 			nav.transit.alignment_seconds=alignment_seconds(initial,direction)
-			nav.jump_left=float(nav.jump_left)*(1.0-float(FrontierUniverse.presentation().stellar_transition.departure_start))+float(nav.transit.alignment_seconds)
+			nav.jump_left=maxf(float(FrontierUniverse.presentation().stellar_transition.flight_seconds),float(nav.jump_left)*(1.0-float(FrontierUniverse.presentation().stellar_transition.departure_start))+float(nav.transit.alignment_seconds))
 			nav.transit.duration=nav.jump_left
 			nav.transit.revisit=visited_system(world,destination_system)
 			nav.direction=[direction.x,direction.y,direction.z]
@@ -201,7 +201,7 @@ static func step(world: Dictionary,delta: float) -> bool:
 					if side.length_squared()<.1:side=Vector3.RIGHT
 					waypoint=moon_point+side*(clearance+300)
 			direction=(waypoint-position).normalized()
-			nav.speed=approach_speed(world,float(cfg.cruise_speed),separation-float(cfg.arrival_clearance),float(cfg.acceleration)*propulsion,delta)
+			nav.speed=approach_speed(world,float(cfg.get("manual_speed",700)),separation-float(cfg.arrival_clearance),float(cfg.acceleration)*propulsion,delta)
 			position+=direction*minf(float(nav.speed)*delta,maxf(0,separation-float(cfg.arrival_clearance)))
 	nav.position=[position.x,position.y,position.z];nav.direction=[direction.x,direction.y,direction.z]
 	nav.up=FrontierExpeditionBusiness.array(orientation({"direction":nav.direction}).y)
@@ -237,14 +237,14 @@ static func visited_system(world: Dictionary,index: int) -> bool:
 
 static func phase(nav: Dictionary) -> String:
 	if nav.get("station_target",false) and nav.mode=="approach":return "정거장 접근"
-	if nav.mode=="jump" and transit_progress(nav)<float(FrontierUniverse.presentation().stellar_transition.departure_start):return "성간 항해 · 안전 항로 정렬"
+	if nav.mode=="jump" and transit_progress(nav)<float(FrontierUniverse.presentation().stellar_transition.departure_start):return "성간 항해  안전 항로 정렬"
 	if nav.mode!="jump":return "행성 접근" if nav.mode=="approach" else ("직접 조종" if nav.get("manual",false) else "궤도 대기")
 	var p:=transit_progress(nav)
-	if p<.12:return "성간 항해 · 충전"
-	if p<.30:return "성간 항해 · 가속"
-	if p<.72:return "성간 항해 · 초고속 순항"
-	if p<.90:return "성간 항해 · 감속"
-	return "성간 항해 · 항성계 진입"
+	if p<.12:return "성간 항해  충전"
+	if p<.30:return "성간 항해  가속"
+	if p<.72:return "성간 항해  초고속 순항"
+	if p<.90:return "성간 항해  감속"
+	return "성간 항해  항성계 진입"
 
 ## Direction and transported up preserve roll through poles and save/reconnect.
 static func valid_up(value: Variant) -> bool:

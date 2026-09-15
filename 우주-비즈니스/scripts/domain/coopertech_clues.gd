@@ -2,7 +2,7 @@ class_name FrontierCooperTechClues
 extends RefCounted
 ## Orbital evidence references one existing seeded ground incident; rewards remain ground-owned.
 const TEMPLATE := "illuti_dormant_combat_robot" # Retained save/content ID, displayed as CooperTech.
-const STATES := ["지상 좌표 확보","현장 로봇 발견","부품 회수 · 사건 종결"]
+const STATES := ["지상 좌표 확보","현장 로봇 발견","부품 회수  사건 종결"]
 static func enabled(m: Dictionary) -> bool:return m.settings.get("corporate_space",{}).get("coopertech_links",{}).get("version",0)==1
 static func records(world: Dictionary) -> Dictionary:return world.get("coopertech_clues",{})
 static func candidate(world: Dictionary,trace: Dictionary) -> Dictionary:

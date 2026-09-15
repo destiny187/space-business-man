@@ -92,7 +92,7 @@ func _receive(reply_serial: int,value: Dictionary) -> void:
 	# Background discoveries must not destroy a name being typed (including IME).
 	if not editing_name or retained.get("key","")!=selected_entry.get("key",""):select(retained)
 	if value.entries.is_empty():
-		var empty:=FrontierInterfaceStyle.label(grid,FrontierPlayInput.hint("T를 유지해 현장의 생물·광물·장비를 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "장비의 표식을 T로 조사하면 기업이 기록됩니다." if category.selected==5 and search.text.is_empty() else "조건에 맞는 발견이 없습니다.","ground"),14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		var empty:=FrontierInterfaceStyle.label(grid,FrontierPlayInput.hint("T를 유지해 현장의 생물  광물  장비를 조사하세요." if search.text.is_empty() and category.selected==0 and location.selected==0 else "장비의 표식을 T로 조사하면 기업이 기록됩니다." if category.selected==5 and search.text.is_empty() else "조건에 맞는 발견이 없습니다.","ground"),14);empty.custom_minimum_size.x=220;empty.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 func select(entry: Dictionary) -> void:
 	editing_name=false
 	if entry.get("key","")!=selected_entry.get("key",""):detail_scroll.scroll_vertical=0
@@ -153,7 +153,7 @@ func select(entry: Dictionary) -> void:
 			var line:=Label.new();line.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;line.text=text;line.add_theme_font_size_override("font_size",14);line.add_theme_color_override("font_color",FrontierInterfaceStyle.TEXT);details.add_child(line)
 		var clue: Dictionary=app.session.latest.get("coopertech_clues",{}).get(entry.row.id,{})
 		if not clue.is_empty():
-			var ground:=Button.new();ground.text="폐기 로봇 좌표 · "+FrontierCooperTechClues.STATES[int(clue.stage)];details.add_child(ground)
+			var ground:=Button.new();ground.text="폐기 로봇 좌표  "+FrontierCooperTechClues.STATES[int(clue.stage)];details.add_child(ground)
 			ground.pressed.connect(func():app.close_menus();app.navigation_ui.show_target(int(clue.body)))
 	elif entry.kind=="discovery":
 		var d:=FrontierExplorationDiscoveries.definition(entry.row.template)
@@ -162,6 +162,9 @@ func select(entry: Dictionary) -> void:
 		var text: String=d.knowledge if entry.row.claimed else "다음 조사  "+str(d.stages[index].label)
 		var label:=FrontierInterfaceStyle.label(details,text,14);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		FrontierInterfaceStyle.label(details,"조사 %d / %d"%[index,d.stages.size()],13)
+		var use_hint:=FrontierDiscoveryExhibits.usage(entry.row.template,"discoveries",entry.row.claimed,FrontierFacilityResearch.owned(app.session.surface.get("business",{}),"exhibit_"+str(entry.row.template)))
+		if not use_hint.is_empty():
+			var usage:=FrontierInterfaceStyle.label(details,use_hint,14);usage.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		var at: Array=entry.row.position
 		FrontierInterfaceStyle.label(details,"현장 좌표  %.0f / %.0f"%[float(at[0]),float(at[2])],13)
 		if d.mode=="archive":
@@ -184,9 +187,10 @@ func select(entry: Dictionary) -> void:
 		preview.show()
 		if entry.row.has("native"):
 			preview.show_specimen(entry.row.native)
-			var individual:=FrontierInterfaceStyle.label(details,str(entry.row.get("native_name","미등록 생물"))+" · %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+			var individual:=FrontierInterfaceStyle.label(details,str(entry.row.get("native_name","미등록 생물"))+"  %.2fm / 기본 개체 %.0f%%"%[float(entry.row.native.height),float(entry.row.native.factor)*100],13);individual.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		else:preview.show_model(d.model)
 		FrontierInterfaceStyle.label(details,"회수 완료" if entry.row.claimed else "현장 진행 중",13)
+		var usage:=FrontierInterfaceStyle.label(details,FrontierDiscoveryExhibits.usage(entry.row.template,"incidents",entry.row.claimed,FrontierFacilityResearch.owned(app.session.surface.get("business",{}),"exhibit_"+str(entry.row.template))),14);usage.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		if FrontierActiveMissions.enabled(entry.row):
 			FrontierInterfaceStyle.label(details,FrontierActiveMissions.progress_text(entry.row),13)
 		if entry.row.has("blueprint"):

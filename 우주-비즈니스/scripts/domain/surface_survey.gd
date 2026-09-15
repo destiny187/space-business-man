@@ -60,10 +60,15 @@ static func biology_info(form: Dictionary,ecology: Dictionary={}) -> Dictionary:
 	var notes: Array=[{"icon":"scan","text":"관찰 → 기초 분석 → 서식지 복원"},{"icon":"inventory","text":"실물 표본 → 다른 행성 시험 구획 이식"}]
 	if form.get("locomotion_medium","")=="atmosphere":notes=[{"icon":"scan","text":"궤도 관측 → 대기층 생리 분석"}]
 	for project in FrontierFieldEngineering.config().projects.values():
-		if form.environment in project.environments:notes.append({"icon":"build","text":project.name+" · 연구·설치 후 처리 속도 +%d%%"%roundi((float(project.factor)-1)*100)})
+		if form.environment in project.environments:notes.append({"icon":"build","text":project.name+"  연구  설치 후 처리 속도 +%d%%"%roundi((float(project.factor)-1)*100)})
 	var habitat:=FrontierEcologyCatalog.habitat(form)
-	return {"kind":"biology","name":FrontierSpeciesNames.display(ecology,form.id),"code":FrontierSpeciesNames.identity(ecology,form.id).get("code",""),"icon":FrontierResourceIcons.specimen_id(form),"subtitle":form.environment_label+" · "+form.habitat_note,"notes":notes,"condition":"정착 조건: %s · %.0f~%.0f°C"%[habitat.get("label",form.environment_label),float(habitat.get("temperature",[0,0])[0]),float(habitat.get("temperature",[0,0])[1])]}
+	return {"kind":"biology","name":FrontierSpeciesNames.display(ecology,form.id),"code":FrontierSpeciesNames.identity(ecology,form.id).get("code",""),"icon":FrontierResourceIcons.specimen_id(form),"subtitle":form.environment_label+"  "+form.habitat_note,"notes":notes,"condition":"정착 조건: %s  %.0f~%.0f°C"%[habitat.get("label",form.environment_label),float(habitat.get("temperature",[0,0])[0]),float(habitat.get("temperature",[0,0])[1])]}
 static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionary:
+	var info:=_result(world,row,actor)
+	info.id=row.id
+	if row.get("point") is Vector3:info.point=FrontierExpeditionBusiness.array(row.point)
+	return info
+static func _result(world: Dictionary,row: Dictionary,actor: String) -> Dictionary:
 	if row.kind=="weather":return FrontierPlanetWeather.info(row)
 	if row.kind=="corporation":return FrontierCorporations.info(row)
 	if row.kind=="native_incident":return FrontierNativeIncidents.info(world,row)
@@ -71,7 +76,7 @@ static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionar
 	if row.kind=="biology":
 		var info:=biology_info(FrontierEcologyCatalog.form(row.form_id),world.ecology)
 		info.id=row.id;info.point=[row.point.x,row.point.y,row.point.z];info.form_id=row.form_id
-		info.action="Q  표본 채집 · 4m 이내" if not row.get("introduced",false) else "이식 개체 · 현장 보존"
+		info.action="Q  표본 채집  4m 이내" if not row.get("introduced",false) else "이식 개체  현장 보존"
 		if world.ecology.planets[world.crew.landing.body_id].collected.has(row.id):info.action="표본 확보 완료"
 		return info
 	var site:=FrontierExpeditionBusiness.site(world)
@@ -85,7 +90,7 @@ static func result(world: Dictionary,row: Dictionary,actor: String) -> Dictionar
 		if int(recipe.get("cost",{}).get(row.resource,0))>0:usage.append(recipe.name)
 	for recipe in FrontierProductionTier2.config().products.values():
 		if int(recipe.cost.get(row.resource,0))>0:usage.append(recipe.name)
-	return {"kind":"mineral","id":row.id,"name":FrontierCatalog.entry("resources",row.resource).name,"icon":row.resource,"point":[row.point.x,row.point.y,row.point.z],"subtitle":"광물 조사 · 채집기 %d등급 필요"%int(row.required_tier),"remaining":remaining,"capacity":int(row.capacity),"notes":[{"icon":"inventory","text":"매장량 %d / %d"%[remaining,int(row.capacity)]},{"icon":"build","text":"제작: "+(" · ".join(usage.slice(0,2)) if not usage.is_empty() else "현장 재료 · 상세 용도 조사 중")}],"condition":"같은 행성의 같은 자원은 기록을 공유합니다.","action":action}
+	return {"kind":"mineral","id":row.id,"name":FrontierCatalog.entry("resources",row.resource).name,"icon":row.resource,"point":[row.point.x,row.point.y,row.point.z],"subtitle":"광물 조사  채집기 %d등급 필요"%int(row.required_tier),"remaining":remaining,"capacity":int(row.capacity),"notes":[{"icon":"inventory","text":"매장량 %d / %d"%[remaining,int(row.capacity)]},{"icon":"build","text":"제작: "+("  ".join(usage.slice(0,2)) if not usage.is_empty() else "현장 재료  상세 용도 조사 중")}],"condition":"같은 행성의 같은 자원은 기록을 공유합니다.","action":action}
 static func valid(records: Variant) -> bool:
 	if not records is Dictionary or records.size()>1000000*FrontierMinerals.all().size():return false
 	for id in records:

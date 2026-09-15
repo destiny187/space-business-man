@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "buildings": {
+    "shell_refuge": {
+      "name": "껍질 쉼터",
+      "model": "shell_refuge",
+      "tier": 1,
+      "tech": "",
+      "power": 0,
+      "radius": 3.6,
+      "cost": {
+        "stone": 30,
+        "iron": 10
+      },
+      "description": "껍질 지붕 아래에서 비와 산성비를 피합니다. 전력과 소모품이 필요 없으며 낙뢰와 침수는 막지 않습니다."
+    },
+    "luminous_vivarium": {
+      "name": "발광 배양 수조",
+      "model": "luminous_vivarium",
+      "tier": 1,
+      "tech": "",
+      "power": 1,
+      "radius": 1.5,
+      "cost": {
+        "stone": 16,
+        "copper": 12,
+        "iron": 8
+      },
+      "description": "F에서 실제 온대, 습지 또는 해양 미생물 표본을 넣습니다. 전력 1kW와 현장 온도 0~55°C에서 주변 10m를 비춥니다. 표본은 회수 가능하며 자원이나 생태 수치를 생산하지 않습니다."
+    },
+    "flood_sentinel": {
+      "name": "침수 경보기",
+      "model": "flood_sentinel",
+      "tier": 1,
+      "tech": "",
+      "power": 1,
+      "radius": 1.2,
+      "cost": {
+        "iron": 14,
+        "copper": 12,
+        "stone": 8
+      },
+      "description": "전력 1kW로 30m 안의 시설 기초 침수를 감지하고 빛과 소리로 알립니다. 물을 제거하거나 미래 수위를 예측하지 않습니다. 경고음만 끌 수 있습니다."
+    },
+    "resonance_garden": {
+      "name": "공명 정원",
+      "model": "resonance_garden",
+      "tier": 1,
+      "tech": "",
+      "power": 0,
+      "radius": 2.1,
+      "cost": {
+        "stone": 24,
+        "copper": 6
+      },
+      "description": "16m 안에서 바람 같은 돌기둥의 공명음을 감상합니다. F에서 소리를 끄거나 세 가지 음높이로 바꿉니다. 전력과 소모품이 필요 없고 능력치 효과는 없습니다."
+    }
+  },
+  "projects": {
+    "shell_refuge": {
+      "name": "껍질 쉼터 설계",
+      "model": "shell_refuge",
+      "price": 200,
+      "cost": {
+        "iron": 6,
+        "copper": 4
+      },
+      "effect": "껍질 지붕 아래에서 비와 산성비를 피합니다. 전력과 소모품이 필요 없으며 낙뢰와 침수는 막지 않습니다.",
+      "discoveries": [
+        "shell_shelter"
+      ]
+    },
+    "luminous_vivarium": {
+      "name": "발광 배양 수조 설계",
+      "model": "luminous_vivarium",
+      "price": 200,
+      "cost": {
+        "iron": 6,
+        "copper": 4
+      },
+      "effect": "F에서 실제 온대, 습지 또는 해양 미생물 표본을 넣습니다. 전력 1kW와 현장 온도 0~55°C에서 주변 10m를 비춥니다. 표본은 회수 가능하며 자원이나 생태 수치를 생산하지 않습니다.",
+      "discoveries": [
+        "luminous_tidepool"
+      ]
+    },
+    "flood_sentinel": {
+      "name": "침수 경보기 설계",
+      "model": "flood_sentinel",
+      "price": 200,
+      "cost": {
+        "iron": 6,
+        "copper": 4
+      },
+      "effect": "전력 1kW로 30m 안의 시설 기초 침수를 감지하고 빛과 소리로 알립니다. 물을 제거하거나 미래 수위를 예측하지 않습니다. 경고음만 끌 수 있습니다.",
+      "discoveries": [
+        "submerged_recorder"
+      ]
+    },
+    "resonance_garden": {
+      "name": "공명 정원 설계",
+      "model": "resonance_garden",
+      "price": 200,
+      "cost": {
+        "iron": 6,
+        "copper": 4
+      },
+      "effect": "16m 안에서 바람 같은 돌기둥의 공명음을 감상합니다. F에서 소리를 끄거나 세 가지 음높이로 바꿉니다. 전력과 소모품이 필요 없고 능력치 효과는 없습니다.",
+      "discoveries": [
+        "singing_stones"
+      ]
+    }
+  },
+  "tank": {
+    "minimum_temperature": 0,
+    "maximum_temperature": 55,
+    "environments": [
+      "wetland",
+      "marine",
+      "temperate"
+    ],
+    "light_range": 10
+  },
+  "alarm": {
+    "radius": 30,
+    "interval": 1.0,
+    "sound_interval": 5,
+    "sound": "sfx_incident_beacon"
+  },
+  "garden": {
+    "radius": 16,
+    "sound": "amb_discovery_resonance",
+    "pitches": [
+      0.82,
+      1.0,
+      1.18
+    ]
+  },
+  "water_bounds": {
+    "shell_refuge": {
+      "min": [
+        -2.890000104904175,
+        0.0,
+        -2.125
+      ],
+      "max": [
+        2.890000104904175,
+        3.19132924079895,
+        2.1449999809265137
+      ]
+    },
+    "luminous_vivarium": {
+      "min": [
+        -1.3314809799194336,
+        -0.06000000238418579,
+        -1.1799999475479126
+      ],
+      "max": [
+        1.3314809799194336,
+        1.3899999856948853,
+        1.1799999475479126
+      ]
+    },
+    "flood_sentinel": {
+      "min": [
+        -0.9510578513145447,
+        -0.050000011920928955,
+        -0.8999999165534973
+      ],
+      "max": [
+        1.0,
+        1.909999966621399,
+        0.8999999165534973
+      ]
+    },
+    "resonance_garden": {
+      "min": [
+        -1.8070099353790283,
+        -0.06999999284744263,
+        -1.6499998569488525
+      ],
+      "max": [
+        1.8070099353790283,
+        3.3513293266296387,
+        1.6499998569488525
+      ]
+    }
+  }
+}

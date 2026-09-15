@@ -3,7 +3,7 @@
   "families": {
     "carbine": {
       "name": "펄스 카빈",
-      "identity": "안정화 레일 · 연속 사격의 탄착이 서서히 모입니다.",
+      "identity": "안정화 레일  연속 사격의 탄착이 서서히 모입니다.",
       "interval": 0.14,
       "damage": 13,
       "magazine": 24,
@@ -75,7 +75,7 @@
     },
     "pistol": {
       "name": "니들 권총",
-      "identity": "자급식 보조 권총 · 낮은 위력, 무한 예비탄. 탄창 재장전은 필요합니다.",
+      "identity": "자급식 보조 권총  낮은 위력, 무한 예비탄. 탄창 재장전은 필요합니다.",
       "interval": 0.27,
       "damage": 10,
       "magazine": 10,
@@ -141,7 +141,7 @@
     },
     "smg": {
       "name": "스파크 기관단총",
-      "identity": "실드 추격 · 실드 파괴 후 다음 재장전이 빨라집니다.",
+      "identity": "실드 추격  실드 파괴 후 다음 재장전이 빨라집니다.",
       "interval": 0.082,
       "damage": 8,
       "magazine": 32,
@@ -210,7 +210,7 @@
     },
     "shotgun": {
       "name": "브레이커 산탄총",
-      "identity": "부채꼴 산탄 · 가까이 붙을수록 여러 탄이 함께 적중합니다.",
+      "identity": "부채꼴 산탄  가까이 붙을수록 여러 탄이 함께 적중합니다.",
       "interval": 0.82,
       "damage": 10,
       "magazine": 6,
@@ -275,7 +275,7 @@
     },
     "lmg": {
       "name": "앵커 경기관총",
-      "identity": "고정 사격 · 낮은 자세에서는 반동과 탄퍼짐이 줄어듭니다.",
+      "identity": "고정 사격  낮은 자세에서는 반동과 탄퍼짐이 줄어듭니다.",
       "interval": 0.125,
       "damage": 12,
       "magazine": 60,
@@ -345,7 +345,7 @@
     },
     "marksman": {
       "name": "트레이서 지정사수총",
-      "identity": "약점 연계 · 약점 연속 명중의 세 번째 발이 강화됩니다.",
+      "identity": "약점 연계  약점 연속 명중의 세 번째 발이 강화됩니다.",
       "interval": 0.43,
       "damage": 32,
       "magazine": 12,
@@ -410,7 +410,7 @@
     },
     "sniper": {
       "name": "랜스 저격총",
-      "identity": "냉각 코어 관측 · 정조준한 약점에 높은 정밀 피해를 줍니다.",
+      "identity": "냉각 코어 관측  정조준한 약점에 높은 정밀 피해를 줍니다.",
       "interval": 1.25,
       "damage": 68,
       "magazine": 4,
@@ -475,7 +475,7 @@
     },
     "plasma": {
       "name": "오브 플라스마 발사기",
-      "identity": "집속 파열 · 충돌 지점 주변에 엄폐로 차단되는 폭발을 만듭니다.",
+      "identity": "집속 파열  충돌 지점 주변에 엄폐로 차단되는 폭발을 만듭니다.",
       "interval": 1.15,
       "damage": 42,
       "magazine": 4,
@@ -541,7 +541,7 @@
     },
     "laser": {
       "name": "프리즘 레이저",
-      "identity": "안정화 레일 · 연속 사격의 탄착이 서서히 모입니다.",
+      "identity": "안정화 레일  연속 사격의 탄착이 서서히 모입니다.",
       "interval": 0.1,
       "damage": 8,
       "magazine": 60,
@@ -685,7 +685,7 @@
       "seconds": 3,
       "model": "products/ammo_light",
       "color": "#e6c47b",
-      "use": "펄스 카빈 · 스파크 기관단총",
+      "use": "펄스 카빈  스파크 기관단총",
       "stack": 180
     },
     "ammo_heavy": {
@@ -699,7 +699,7 @@
       "seconds": 4,
       "model": "products/ammo_heavy",
       "color": "#9bd3b8",
-      "use": "앵커 경기관총 · 트레이서 지정사수총",
+      "use": "앵커 경기관총  트레이서 지정사수총",
       "stack": 120
     },
     "ammo_shell": {

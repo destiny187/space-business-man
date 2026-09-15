@@ -121,7 +121,7 @@ static func _planet(p: Dictionary,ids: Dictionary) -> String:
 static func _robot(value: Variant,ids: Dictionary) -> String:
 	if not value is Dictionary: return "로봇 형식 오류"
 	var r: Dictionary = value
-	if not _identity(r,ids): return "로봇 ID·소유권 중복 오류"
+	if not _identity(r,ids): return "로봇 ID  소유권 중복 오류"
 	for key in ["model","grade","name","status","target","filter"]:
 		if not r.get(key) is String: return "로봇 필드 형식 오류: "+key
 	if FrontierCatalog.entry("robots",r.model).is_empty() or FrontierCatalog.entry("grades",r.grade).is_empty(): return "알 수 없는 로봇 정의"

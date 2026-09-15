@@ -27,6 +27,9 @@ static func intensity(event: Dictionary,clock: float,p: Vector3) -> float:
 static func buildings(local: Dictionary) -> Dictionary:return FrontierExpeditionBusiness.site(local).get("buildings",{})
 static func canopy(local: Dictionary,p: Vector3) -> bool:
 	for row in buildings(local).values():
+		if row.type=="shell_refuge" and not row.get("submerged",false):
+			var inside: Vector3=(p-FrontierCrewWorld.vector(row.position)).rotated(Vector3.UP,-float(row.get("yaw",0)))
+			if absf(inside.x)<2.1 and absf(inside.z)<1.7 and inside.y>-.3 and inside.y<.15+2.8*sqrt(maxf(0.,1.-pow(inside.x/2.7,2))):return true
 		if row.type!="field_canopy":continue
 		var d:=p-FrontierCrewWorld.vector(row.position)
 		if absf(d.x)<2.82 and absf(d.z)<2.28 and d.y>-.3 and d.y<3.0:return true
@@ -157,7 +160,7 @@ static func observe(world: Dictionary,row: Dictionary) -> void:
 	world.weather.observations[row.id]={"body_id":row.body_id,"weather_kind":row.weather_kind}
 static func info(row: Dictionary) -> Dictionary:
 	var kind: String=row.weather_kind
-	return {"kind":"weather","name":{"rain":"비","acid":"산성비","thunder":"뇌우"}.get(kind,"기상"),"icon":"scan","subtitle":"행성 기상 관측","notes":[{"icon":"scan","text":"대기 성분과 지면 환경에 따른 현장 기상"},{"icon":"build","text":{"rain":"차양 아래에서 빗소리의 변화를 들을 수 있습니다.","acid":"차양·동굴로 피하거나 환경 정화로 부식성을 줄입니다.","thunder":"낙뢰 예고 지점을 벗어나거나 접지봉 18m 안으로 이동합니다."}.get(kind,"")}],"condition":"행성·기상별 한 번 기록 · 채집·생산 손실 없음","action":"J  발견 기록"}
+	return {"kind":"weather","name":{"rain":"비","acid":"산성비","thunder":"뇌우"}.get(kind,"기상"),"icon":"scan","subtitle":"행성 기상 관측","notes":[{"icon":"scan","text":"대기 성분과 지면 환경에 따른 현장 기상"},{"icon":"build","text":{"rain":"차양 아래에서 빗소리의 변화를 들을 수 있습니다.","acid":"차양  동굴로 피하거나 환경 정화로 부식성을 줄입니다.","thunder":"낙뢰 예고 지점을 벗어나거나 접지봉 18m 안으로 이동합니다."}.get(kind,"")}],"condition":"행성  기상별 한 번 기록  채집  생산 손실 없음","action":"J  발견 기록"}
 static func valid(state: Variant) -> bool:
 	if not state is Dictionary or state.get("version")!=1 or not FrontierUniverse._finite(state.get("clock"),0,9007199254740000):return false
 	if not state.get("planets") is Dictionary or not state.get("observations") is Dictionary:return false

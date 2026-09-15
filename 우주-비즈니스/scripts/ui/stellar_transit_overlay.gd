@@ -48,12 +48,6 @@ func _draw() -> void:
 			var ray:=Vector2(cos(angle),sin(angle))
 			var point:=center+ray*radius*size.length()*.55
 			draw_line(point,point+ray*(12+strength*170)*radius,Color(.45,.85,1,strength*radius*.8),1.5,true)
-		var elapsed:=float(nav.get("transit",{}).get("progress",0.0))
-		var width:=minf(180,size.x*.24)
-		var origin:=Vector2(center.x-width*.5,size.y-48)
-		draw_line(origin,origin+Vector2(width,0),Color(.5,.7,.73,.22),2,true)
-		draw_line(origin,origin+Vector2(width*elapsed,0),Color(FrontierInterfaceStyle.ACCENT,.7),2,true)
-		draw_circle(origin+Vector2(width*elapsed,0),2.5,Color(FrontierInterfaceStyle.ACCENT,.85))
 		_draw_speed(font)
 	elif presenting_arrival():_draw_speed(font)
 	else:
@@ -113,7 +107,7 @@ func _draw_scan(font: Font,center: Vector2) -> void:
 		draw_texture_rect(space_y_mark,Rect2(origin+Vector2(0,87),Vector2(38,38)),false)
 		draw_string(font,origin+Vector2(48,113),"Space Y 관리 행성",HORIZONTAL_ALIGNMENT_LEFT,width-84,18,cyan)
 		draw_string(font,origin+Vector2(0,157),"복원 수역  녹화 저지대  유지 중",HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
-		draw_string(font,origin+Vector2(0,190),"관리 구역  지표 착륙·개발 제한",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
+		draw_string(font,origin+Vector2(0,190),"관리 구역  지표 착륙  개발 제한",HORIZONTAL_ALIGNMENT_LEFT,width-36,14,Color(1,.76,.45))
 	else:draw_string(font,origin+Vector2(0,108),report.detail,HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 	draw_string(font,origin+Vector2(0,224),("F 유지  대기층 관측    Tab 항성 지도" if atmosphere_ready else "F 접근    Tab 항성 지도"),HORIZONTAL_ALIGNMENT_LEFT,width-36,15,cyan)
 

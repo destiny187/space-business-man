@@ -113,5 +113,5 @@ static func validate_regions(world: Dictionary) -> String:
 	if not world.has("celestial_regions"):return ""
 	if not world.celestial_regions is Dictionary or not enabled(world.manifest):return "천체 지역 기록 오류"
 	for id in world.celestial_regions:
-		if not id is String or FrontierUniverse.ordinal_of(world.manifest,id)<0 or not valid_region(world.celestial_regions[id]):return "천체 지역 위도·경도 오류"
+		if not id is String or FrontierUniverse.ordinal_of(world.manifest,id)<0 or not valid_region(world.celestial_regions[id]):return "천체 지역 위도  경도 오류"
 	return ""

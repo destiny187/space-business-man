@@ -74,7 +74,7 @@ func _draw() -> void:
    draw_polyline(PackedVector2Array([point-direction*5+side*4,point+direction*3,point-direction*5-side*4]),color,1.5,true)
   if focused:
    var name_value: String=FrontierUniverse.system(app.session.manifest,int(marker.index)).star.name
-   var text_value: String=name_value+"  %.1f 항로 단위"%float(marker.distance)+("\n"+str(marker.guide_reason) if not marker.guide_reason.is_empty() else "\n항해 내성 부족 · 선박 정비 K" if marker.blocked else "\n클릭 / F  고속 항해")
+   var text_value: String=name_value+"  %.1f 항로 단위"%float(marker.distance)+("\n"+str(marker.guide_reason) if not marker.guide_reason.is_empty() else "\n항해 내성 부족  선박 정비 K" if marker.blocked else "\n클릭 / F  고속 항해")
    var base:=Vector2(clampf(point.x+18,16,size.x-300),clampf(point.y-12,35,size.y-65))
    for i in text_value.split("\n").size():
     draw_string(get_theme_default_font(),base+Vector2(0,i*23),text_value.split("\n")[i],HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color.WHITE)

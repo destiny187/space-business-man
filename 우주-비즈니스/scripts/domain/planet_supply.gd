@@ -29,10 +29,10 @@ static func apply(world: Dictionary,actor: String,kind: String) -> String:
 		if not site.get("production_lease",false):return "반납할 생산 이용권이 없습니다."
 		if site.state=="active":return "진행 중인 복원 계약을 먼저 정산하세요."
 		for zone in site.get("regions",{}).values():
-			if not zone.get("stored_equipment",{}).is_empty() or FrontierExpeditionBusiness.total(zone.inventory)>0:return "모든 지역 창고의 재고·장비를 회수하세요."
-		if not site.buildings.is_empty() or not site.robots.is_empty() or not site.jobs.is_empty() or not site.get("stored_equipment",{}).is_empty() or FrontierExpeditionBusiness.total(site.inventory)>0:return "시설을 철거하고 로봇·창고 재고·장비를 모두 회수한 뒤 이용권을 반납하세요."
+			if not zone.get("stored_equipment",{}).is_empty() or FrontierExpeditionBusiness.total(zone.inventory)>0:return "모든 지역 창고의 재고  장비를 회수하세요."
+		if not site.buildings.is_empty() or not site.robots.is_empty() or not site.jobs.is_empty() or not site.get("stored_equipment",{}).is_empty() or FrontierExpeditionBusiness.total(site.inventory)>0:return "시설을 철거하고 로봇  창고 재고  장비를 모두 회수한 뒤 이용권을 반납하세요."
 		site.erase("production_lease");site.state="exploration" if site.settlement.is_empty() else "settled";return ""
-	if site.state=="settled":return "이미 인계한 시설·창고의 이용권은 되살릴 수 없습니다. 다른 행성을 선택하세요."
+	if site.state=="settled":return "이미 인계한 시설  창고의 이용권은 되살릴 수 없습니다. 다른 행성을 선택하세요."
 	if site.get("production_lease",false):return "이미 보유한 생산 거점 이용권입니다."
 	if count(world.business)>=int(config().maximum_leases):return "생산 거점 한도입니다. 비운 거점의 이용권을 반납하세요."
 	if int(world.business.credits)<int(config().lease_price):return "생산 거점 이용권 비용이 부족합니다."
@@ -40,9 +40,9 @@ static func apply(world: Dictionary,actor: String,kind: String) -> String:
 	if site.state=="exploration":site.state="supply"
 	return ""
 static func production_reason(body: Dictionary,building: Dictionary,recipe: Dictionary) -> String:
-	if int(building.get("tier",1))<int(recipe.get("factory_tier",1)):return "Mk.%d 제작소가 필요합니다."%int(recipe.factory_tier)
+	if building.type!="metalworks" and int(building.get("tier",1))<int(recipe.get("factory_tier",1)):return "Mk.%d 제작소가 필요합니다."%int(recipe.factory_tier)
 	var required:=str(recipe.get("supply_role",""))
-	if not required.is_empty() and role(body)!=required:return role_name(required)+" 행성에서 현지 부품을 제작·운송하세요."
+	if not required.is_empty() and role(body)!=required:return role_name(required)+" 행성에서 현지 부품을 제작  운송하세요."
 	return ""
 static func settlement_payment(site: Dictionary,tier: int,retain: bool) -> int:
 	var reward:=FrontierCoopWorkload.reward(site,tier)

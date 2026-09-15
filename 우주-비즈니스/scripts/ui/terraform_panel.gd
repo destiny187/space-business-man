@@ -44,7 +44,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
    var p: Array=site.free_terraform.source if FrontierFreeTerraform.active(site) else site.regions["region:1"].center
    focus=Vector2(p[0],p[2]);chosen=focus;layer=3;for_buttons();refresh())
  canvas=Control.new();canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL;canvas.custom_minimum_size=Vector2(300,230);canvas.clip_contents=true;add_child(canvas);canvas.draw.connect(draw_view);canvas.gui_input.connect(input_view)
- supply_mode=OptionButton.new();supply_mode.add_item("가동 보급 · 5분");supply_mode.add_item("전문 설비 준비");add_child(supply_mode);supply_mode.hide();supply_mode.item_selected.connect(func(_i):supply_scroll.scroll_vertical=0;refresh())
+ supply_mode=OptionButton.new();supply_mode.add_item("가동 보급  5분");supply_mode.add_item("전문 설비 준비");add_child(supply_mode);supply_mode.hide();supply_mode.item_selected.connect(func(_i):supply_scroll.scroll_vertical=0;refresh())
  supply_scroll=ScrollContainer.new();supply_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;supply_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;add_child(supply_scroll);supply_scroll.hide()
  var supply_content:=VBoxContainer.new();supply_content.size_flags_horizontal=Control.SIZE_EXPAND_FILL;supply_scroll.add_child(supply_content)
  supply_rows=VBoxContainer.new();supply_rows.add_theme_constant_override("separation",12);supply_content.add_child(supply_rows)
@@ -67,7 +67,7 @@ func refresh() -> void:
  if cached_body!=body.id:cached_body=body.id;focus=Vector2(app.camera.position.x,app.camera.position.z);chosen=focus;terrain_key="";globe_relief=[]
  canvas.visible=layer!=4;supply_scroll.visible=layer==4;supply_mode.visible=layer==4
  if layer==4:refresh_supply();return
- if not FrontierFreeTerraform.active(site):info.text="기존 저장의 지역 복원 규칙입니다. 자유 배치·구면 분포는 새 세계에 적용됩니다.";canvas.queue_redraw();return
+ if not FrontierFreeTerraform.active(site):info.text="기존 저장의 지역 복원 규칙입니다. 자유 배치  구면 분포는 새 세계에 적용됩니다.";canvas.queue_redraw();return
  if globe_relief.is_empty():
   var cfg: Dictionary=site.free_terraform.rules;var f:=app.surface_world.terrain.field
   for z in int(cfg.air_rows):
@@ -86,7 +86,7 @@ func refresh() -> void:
     if fposmod(h,10)<.65:color=color.darkened(.22)
     image.set_pixel(x,z,color)
   terrain_texture=ImageTexture.create_from_image(image)
- legend.text=["대기: 낮은 적합도 → 높은 적합도    구체 드래그 회전 / 오른쪽 지도 드래그·휠 확대","수질: 주황 부족 → 청록 확보    저지대 이점과 실제 침수는 별도 판정","토양: 갈색 미개량 → 녹색 개량    사각 구획 합집합 · 중첩 효과 없음","오염: 보라 고정 작업 구역 / 주황 잔류 오염    구역 안에서만 전문 처리"][layer]
+ legend.text=["대기: 낮은 적합도 → 높은 적합도    구체 드래그 회전 / 오른쪽 지도 드래그  휠 확대","수질: 주황 부족 → 청록 확보    저지대 이점과 실제 침수는 별도 판정","토양: 갈색 미개량 → 녹색 개량    사각 구획 합집합  중첩 효과 없음","오염: 보라 고정 작업 구역 / 주황 잔류 오염    구역 안에서만 전문 처리"][layer]
  var p:=chosen if chosen.is_finite() else focus;var cell:=FrontierFreeTerraform.sample(site,p)
  selected_facility={};var nearest:=INF
  for facility in site.get("buildings",{}).values():
@@ -94,14 +94,14 @@ func refresh() -> void:
   var distance:=p.distance_to(Vector2(facility.position[0],facility.position[2]))
   if distance<=FrontierFreeTerraform.radius(site,facility) and distance<nearest:nearest=distance;selected_facility=facility
  if not selected_facility.is_empty():
-  facility_link.show();facility_link.text=("▶ " if selected_facility.get("working",false) else "Ⅱ ")+FrontierCatalog.entry("buildings",selected_facility.type).name+" · "+str(selected_facility.get("status",""))+" · 위치 보기"
+  facility_link.show();facility_link.text=("▶ " if selected_facility.get("working",false) else "Ⅱ ")+FrontierCatalog.entry("buildings",selected_facility.type).name+"  "+str(selected_facility.get("status",""))+"  위치 보기"
 
  info.text=FrontierFreeTerraform.detail(site)+"\n"
- if layer==0:info.text+="선택 지점 산소 %.1f%% · 기압 %.2f bar · 독성 %.1f"%[float(cell.environment.oxygen)*100,float(cell.environment.pressure),float(cell.environment.toxicity)]
- elif layer==1:info.text+="선택 지점 급수 %.0f · 염류 %.0f · 저지대 효율 ×%.2f · 실제 수면은 현장 확인"%[float(cell.environment.water),float(cell.restoration2.salinity),FrontierFreeTerraform.water_gain(site,body,p)]
- elif layer==2:info.text+="선택 지점 토양 %.0f · 생태 %.0f · 정착 %.0f%%"%[float(cell.restoration2.soil),float(cell.environment.ecology),float(cell.colonization)]
- else:info.text+="선택 지점 "+("오염 작업 구역 내부" if FrontierFreeTerraform.in_pollution(site,p) else "오염 작업 구역 외부")+" · 잔류 %.1f"%float(cell.pollution)
- if int(site.free_terraform.tier)==4 and layer==3:info.text+=" · %.1f°C · "%float(cell.environment.temperature)+site.tier3.rules.profiles[site.tier3.profile].name
+ if layer==0:info.text+="선택 지점 산소 %.1f%%  기압 %.2f bar  독성 %.1f"%[float(cell.environment.oxygen)*100,float(cell.environment.pressure),float(cell.environment.toxicity)]
+ elif layer==1:info.text+="선택 지점 급수 %.0f  염류 %.0f  저지대 효율 ×%.2f  실제 수면은 현장 확인"%[float(cell.environment.water),float(cell.restoration2.salinity),FrontierFreeTerraform.water_gain(site,body,p)]
+ elif layer==2:info.text+="선택 지점 토양 %.0f  생태 %.0f  정착 %.0f%%"%[float(cell.restoration2.soil),float(cell.environment.ecology),float(cell.colonization)]
+ else:info.text+="선택 지점 "+("오염 작업 구역 내부" if FrontierFreeTerraform.in_pollution(site,p) else "오염 작업 구역 외부")+"  잔류 %.1f"%float(cell.pollution)
+ if int(site.free_terraform.tier)==4 and layer==3:info.text+="  %.1f°C  "%float(cell.environment.temperature)+site.tier3.rules.profiles[site.tier3.profile].name
  canvas.queue_redraw()
 func local_rect() -> Rect2:return Rect2(Vector2(canvas.size.x*.43,38),Vector2(canvas.size.x*.57-16,maxf(40,canvas.size.y-72)))
 func globe_center() -> Vector2:return Vector2(canvas.size.x*.215,canvas.size.y*.50)
@@ -159,10 +159,10 @@ func draw_view() -> void:
    if v.z>0:canvas.draw_circle(project(v),maxf(1.5,globe_radius()*.004),color_for(cell))
  var player:=Vector2(app.camera.position.x,app.camera.position.z);var pv: Vector3=view*FrontierFreeTerraform.globe_vector(site,player)
  if pv.z>0:canvas.draw_arc(project(pv),6,0,TAU,16,Color.WHITE,2,true)
- text_at(Vector2(16,22),"행성 구체 · "+["대기 적합도","수질 상태","토양 개량","잔류 오염"][layer],Color("83d9c5"),16)
+ text_at(Vector2(16,22),"행성 구체  "+["대기 적합도","수질 상태","토양 개량","잔류 오염"][layer],Color("83d9c5"),16)
  text_at(Vector2(16,canvas.size.y-12),"밝은 점: 현장 기록  /  어두운 지표: 초기 상태",Color("a6b6b9"),11)
  if terrain_texture!=null:canvas.draw_texture_rect(terrain_texture,rect,false)
- text_at(rect.position+Vector2(10,-12),"현장 확대 · %.0f m 폭"%(rect.size.x*meters),Color("83d9c5"),16)
+ text_at(rect.position+Vector2(10,-12),"현장 확대  %.0f m 폭"%(rect.size.x*meters),Color("83d9c5"),16)
  # Cell boundaries remain an instrument overlay; placement is not snapped to their centers.
  for cell in site.free_terraform.cells.values():
   var p:=at(Vector2(cell.position[0],cell.position[2]));var side:=float(cfg.cell_size)/meters
@@ -211,10 +211,10 @@ func refresh_supply() -> void:
  preparation.visible=supply_mode.selected==1;supply_rows.visible=supply_mode.selected==0
  if preparation.visible:
   preparation.update_context(site,body,chosen if chosen.is_finite() else focus)
-  legend.text="현재 제작법 기준 · 묶음 생산 여분 반영 · 현장 사이 자동 운송 없음"
+  legend.text="현재 제작법 기준  묶음 생산 여분 반영  현장 사이 자동 운송 없음"
   info.text="지도에서 위치를 선택해 해당 현장 재고를 확인하세요. 완제품과 선행 부품이 있으면 필요한 원료가 줄어듭니다."
   return
- legend.text="5분 연속 가동 상한  /  이미 투입한 팩 제외  /  목표 도달·정전·침수 시 실제 소비 감소"
+ legend.text="5분 연속 가동 상한  /  이미 투입한 팩 제외  /  목표 도달  정전  침수 시 실제 소비 감소"
  info.text="해당 현장 창고로 직접 운반하세요. 다른 현장의 재고는 사용하지 않습니다."
  if not site.has("tier3"):info.text="전문 복원 현장에 설치한 설비의 보급 계획을 표시합니다."
  var speed:=FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(app.session.surface))

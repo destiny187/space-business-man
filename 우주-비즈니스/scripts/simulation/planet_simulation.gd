@@ -26,7 +26,7 @@ func step(campaign: FrontierCampaign, delta: float) -> void:
 		var event: Dictionary = FrontierCampaign.find_by_id(p.events, p.conflict)
 		if not event.is_empty() and event.health <= 0:
 			event.choice = p.conflict_order
-			event.reward = "작전 완료 · 문명 파괴" if event.choice == "destroy" else "통제 확립 · 채광 생산 +20%, 판매 가치 20% 감소"
+			event.reward = "작전 완료  문명 파괴" if event.choice == "destroy" else "통제 확립  채광 생산 +20%, 판매 가치 20% 감소"
 			p.conflict_resolved = p.conflict_order
 			p.conflict = ""
 			if event.choice == "destroy":
@@ -93,7 +93,7 @@ func _craft(p: Dictionary, delta: float, campaign: FrontierCampaign) -> bool:
 			robot.position = [spawn.x, spawn.y]
 			p.robots.append(robot)
 			completed.append(job)
-			pending_messages.append("%s 등급 로봇 제작 완료 · %s" % [FrontierCatalog.entry("grades", robot.grade).name, robot.name])
+			pending_messages.append("%s 등급 로봇 제작 완료  %s" % [FrontierCatalog.entry("grades", robot.grade).name, robot.name])
 	for job in completed: p.jobs.erase(job)
 	return not completed.is_empty()
 
@@ -136,8 +136,8 @@ func _environment(p: Dictionary) -> void:
 
 func _robot(p: Dictionary, r: Dictionary, dt: float, campaign: FrontierCampaign) -> void:
 	if not r.enabled: r.status = "수동 대기"; return
-	if r.health <= 0: r.status = "파손 · 구조 필요"; return
-	if r.battery <= 0: r.status = "배터리 고갈 · 구조 필요"; return
+	if r.health <= 0: r.status = "파손  구조 필요"; return
+	if r.battery <= 0: r.status = "배터리 고갈  구조 필요"; return
 	var def: Dictionary = FrontierCatalog.entry("robots", r.model)
 	var speed: float = def.speed * float(FrontierCatalog.entry("grades", r.grade).multiplier)
 	var low: float = maxf(20, FrontierCampaign.point(r.position).length() * 0.32 + 10)
@@ -253,14 +253,14 @@ func _travel(r: Dictionary, destination: Vector2, speed: float, dt: float) -> bo
 	if r.get("path_token", "") != goal_token or r.path.is_empty():
 		r.path = []
 		var start: Vector2i = _cell(origin)
-		if _cell_solid(start) or _cell_solid(goal_cell): r.status = "경로 없음 · 구조 또는 시설 이동"; return false
+		if _cell_solid(start) or _cell_solid(goal_cell): r.status = "경로 없음  구조 또는 시설 이동"; return false
 		var route: PackedVector2Array = nav.get_point_path(start, goal_cell)
 		for item in route: r.path.append([item.x, item.y])
 		if not r.path.is_empty():
 			r.path.pop_front()
 			r.path.append([destination.x,destination.y])
 		r.path_token = goal_token
-		if r.path.is_empty(): r.status = "경로 없음 · 시설 배치 확인"; return false
+		if r.path.is_empty(): r.status = "경로 없음  시설 배치 확인"; return false
 	while not r.path.is_empty() and origin.distance_to(FrontierCampaign.point(r.path[0])) < 0.3:
 		r.path.pop_front()
 	if r.path.is_empty(): return origin.distance_to(destination) < 2.0

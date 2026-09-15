@@ -33,4 +33,4 @@ static func inputs(body: Dictionary) -> Dictionary:
 static func summary(body: Dictionary) -> String:
 	if int(body.get("ground_rules",{}).get("version",0))<2 or int(body.planet_tier)!=2:return ""
 	var items:=inputs(body)
-	return ("현지 복원 추천 · 규소/인산염 외곽 탐사\n" if items.size()==2 else "지역 처리재 "+("규소" if items.has("water") else "인산염" if items.has("biolab") else "기초 재료")+"\n")
+	return ("현지 복원 추천  규소/인산염 외곽 탐사\n" if items.size()==2 else "지역 처리재 "+("규소" if items.has("water") else "인산염" if items.has("biolab") else "기초 재료")+"\n")

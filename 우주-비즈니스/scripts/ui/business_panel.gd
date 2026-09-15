@@ -36,6 +36,10 @@ var facility_picture: FrontierEquipmentPreview
 var facility_status: Label
 var production_panel: FrontierProductionPanel
 var building_cards: Dictionary={}
+var build_category: OptionButton
+var build_empty: Label
+var utility_panel: FrontierDiscoveryUtilityPanel
+var facility_toggle: Button
 var summary: FrontierResourceReadout
 var stock: FrontierResourceReadout
 var environment_bars: Dictionary={}
@@ -97,6 +101,9 @@ func _ready() -> void:
 	robot_factory=load("res://scripts/ui/robot_factory_panel.gd").new();tabs.add_child(robot_factory);robot_factory.configure(self)
 	production_panel=FrontierProductionPanel.new();tabs.add_child(production_panel);production_panel.configure(self)
 	var build_tab:=VBoxContainer.new();build_tab.name="건설";tabs.add_child(build_tab)
+	build_category=option(build_tab);build_category.add_item("현장 설비");build_category.add_item("발견 장식")
+	build_category.item_selected.connect(func(_i):refresh_building_cost())
+	build_empty=label(build_tab,"완료한 발견을 착륙선에서 연구하면 장식을 제작할 수 있습니다.",14)
 	building=option(build_tab)
 	for key in FrontierExpeditionBusiness.config().buildings:
 		var def:=FrontierCatalog.entry("buildings",key);building.add_item(def.name);building.set_item_metadata(building.item_count-1,key)
@@ -120,8 +127,9 @@ func _ready() -> void:
 	facility_picture=FrontierEquipmentPreview.new();facility_picture.custom_minimum_size=Vector2(150,150);facility_picture.size_flags_horizontal=Control.SIZE_SHRINK_CENTER;facility_tab.add_child(facility_picture)
 	facility_status=label(facility_tab,"")
 	facility=option(facility_tab)
-	button(facility_tab,"가동 / 정지 · 엄폐물 수리",func():command.emit("business_toggle",{"building_id":selected(facility)}))
-	button(facility_tab,"시설 해체 · 자원 50%를 바닥에 회수",func():command.emit("business_demolish",{"building_id":selected(facility)}))
+	utility_panel=FrontierDiscoveryUtilityPanel.new();facility_tab.add_child(utility_panel);utility_panel.configure(self)
+	facility_toggle=button(facility_tab,"가동 / 정지  엄폐물 수리",func():command.emit("business_toggle",{"building_id":selected(facility)}))
+	button(facility_tab,"시설 해체  자원 50%를 바닥에 회수",func():command.emit("business_demolish",{"building_id":selected(facility)}))
 	label(build_tab,"시설 선택 → 지면 클릭    휠 90° 회전    Esc 취소",12)
 	var research_tab:=VBoxContainer.new();research_tab.name="기술";tabs.add_child(research_tab)
 	technology=option(research_tab)
@@ -151,7 +159,7 @@ func _ready() -> void:
 	work_cards=GridContainer.new();work_cards.columns=5;robot_controls.add_child(work_cards)
 	button(robot_controls,"선택 작업 시작",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true}))
 	button(robot_controls,"현재 위치를 중심으로 시작",func():command.emit("business_robot_auto",{"robot_id":selected(robot),"resource":selected(vein),"enabled":true,"reset_anchor":true}))
-	label(robot_controls,"이 로봇의 작업 범위 80m · 발견한 광물을 선택해 작업을 시작하세요.")
+	label(robot_controls,"이 로봇의 작업 범위 80m  발견한 광물을 선택해 작업을 시작하세요.")
 	button(robot_controls,"작업 중지  창고로 복귀",func():command.emit("business_robot_return",{"robot_id":selected(robot)}))
 	button(robot_controls,"긴급 충전  50 Cr",func():command.emit("business_robot_rescue",{"robot_id":selected(robot)}))
 	recovery_controls=VBoxContainer.new();robot_tab.add_child(recovery_controls)
@@ -234,8 +242,13 @@ func set_context(kind: String,id: String="") -> void:
 		"ship":allowed=["착륙선","환경 / 계약","생산 거점","소형선"]
 		"base","storage":allowed=["창고","로봇"]
 		"factory":allowed=["로봇 제작","로버 제작","시험기 조립","생산 / 개조","생물공학","시설 관리","소형선"]
+		"metalworks","dew_condenser","geothermal_generator":allowed=["생산 / 개조","시설 관리"]
 		"robot":allowed=["로봇","생산 / 개조"]
 		_:allowed=["시설 관리","생산 / 개조"]
+	if FrontierDiscoveryExhibits.is_exhibit(kind) or FrontierDiscoveryUtilities.building(kind):allowed=["시설 관리"]
+	facility_toggle.visible=not FrontierDiscoveryExhibits.is_exhibit(kind) and kind not in ["shell_refuge","resonance_garden"]
+	utility_panel.visible=FrontierDiscoveryUtilities.building(kind)
+	facility_toggle.text="전원 켜기 / 끄기" if FrontierDiscoveryUtilities.building(kind) else "가동 / 정지  엄폐물 수리"
 	if kind in ["atmosphere","thermal","water","biolab"]:allowed.append("생물공학")
 	if kind=="storage":allowed.append("시설 관리")
 	allowed=allowed.map(func(title):return str(title).validate_node_name())
@@ -243,6 +256,7 @@ func set_context(kind: String,id: String="") -> void:
 	for i in tabs.get_tab_count():
 		tabs.set_tab_hidden(i,str(tabs.get_tab_control(i).name) not in allowed)
 		tabs.set_tab_title(i,str(tabs.get_tab_control(i).name).replace(" _ "," / "))
+		if FrontierDiscoveryIndustry.building(kind) and str(tabs.get_tab_control(i).name)=="생산 _ 개조":tabs.set_tab_title(i,"가동 / 강화")
 	for i in tabs.get_tab_count():
 		if str(tabs.get_tab_control(i).name)==allowed[0]:tabs.current_tab=i;break
 	if kind=="factory":_factory_page()
@@ -256,7 +270,7 @@ func set_context(kind: String,id: String="") -> void:
 	facility.hide();research_facility.hide();robot.visible=kind in ["base","storage"]
 	research_prototype_button.visible=kind=="factory"
 	research_trial_button.visible=kind!="factory";research_install_button.visible=kind!="factory"
-	production_panel.produce.visible=kind=="factory"
+	production_panel.produce.visible=kind in ["factory","metalworks"]
 	production_panel.targets.hide()
 	var available: Dictionary={}
 	for key in FrontierFieldEngineering.config().projects:
@@ -297,6 +311,8 @@ func refresh_context(current: Dictionary) -> void:
 		if context_kind!="robot" and not row.is_empty() and facility_picture.is_visible_in_tree():
 			facility_picture.show_model(FrontierCatalog.entry("buildings",row.type).model)
 			facility_status.text=FrontierCatalog.entry("buildings",row.type).description if row.type in FrontierPlanetWeather.config().buildings else "Mk.%d  %s"%[int(row.get("tier",1)),row.get("status","")]
+		if FrontierDiscoveryIndustry.building(str(row.get("type",""))):facility_status.text=FrontierDiscoveryIndustry.name(row)+"\n"+str(row.get("status",""))+"\n"+str(FrontierCatalog.entry("buildings",row.type).description)
+		utility_panel.refresh(row)
 		if FrontierCombatCover.is_cover(row):facility_status.text=FrontierCombatCover.status(row)+"\n수리: "+FrontierCatalog.cost_text(FrontierCombatCover.config().buildings[row.type].repair)
 		if row.is_empty() or not FrontierPlanetSupply.operating(current):hide()
 func context_in_range(position: Vector3) -> bool:
@@ -366,7 +382,7 @@ func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,resear
 	if tabs.get_current_tab_control().name!="환경 / 계약".validate_node_name():return
 	var settled: bool=not current.get("settlement",{}).is_empty()
 	for button in settlement_buttons:button.disabled=settled or actor_id!=ledger.get("owner_id",actor_id)
-	settlement_summary.text=("✓ 정산 지급 %d Cr · 공동 자금 %d Cr"%[int(current.settlement.get("payment",0)),int(ledger.credits)]) if settled else "이미 받은 중간 지급 %d Cr"%FrontierRegionalTerraform.paid(current)
+	settlement_summary.text=("✓ 정산 지급 %d Cr  공동 자금 %d Cr"%[int(current.settlement.get("payment",0)),int(ledger.credits)]) if settled else "이미 받은 중간 지급 %d Cr"%FrontierRegionalTerraform.paid(current)
 	settlement_summary.text+="\n"+preload("res://scripts/ui/work_guidance.gd").asset_summary(current)
 	var e: Dictionary=current.environment;var report:=FrontierEvaluator.environment_report(current,body_id)
 	for category in environment_bars:
@@ -383,7 +399,7 @@ func _paint_update(value: Dictionary,id: String,actor: String,tier: int=1,resear
 		var completed:=0
 		for region in current.regions.values():
 			if FrontierRegionalTerraform.ready(region):completed+=1
-		environment_label.text+="\n지역 복원 %d / %d  ·  중간 지급 %d Cr\nTab 지도에서 남은 현장을 확인하세요."%[completed,current.regions.size(),FrontierRegionalTerraform.paid(current)]
+		environment_label.text+="\n지역 복원 %d / %d  중간 지급 %d Cr\nTab 지도에서 남은 현장을 확인하세요."%[completed,current.regions.size(),FrontierRegionalTerraform.paid(current)]
 	guidance.text="계약 인계 완료  다음 목적지에서 재투자하세요." if current.state=="settled" else "F 상호작용  B 건설  I 아이템"
 	if not current.jobs.is_empty():guidance.text+="\n제작 진행  %.0f / %.0f초"%[float(current.jobs.values()[0].progress),float(current.jobs.values()[0].seconds)]
 func confirm_settlement(retain: bool=false) -> void:
@@ -479,7 +495,7 @@ func refresh_building_cost() -> void:
 			if FrontierFacilityResearch.construction_unlocked(ledger,str(building.get_item_metadata(index))):building.select(index);break
 	for kind in building_cards:
 		var card: Button=building_cards[kind]
-		card.visible=FrontierFacilityResearch.construction_unlocked(ledger,kind)
+		card.visible=FrontierFacilityResearch.construction_unlocked(ledger,kind) and (build_category.selected==1)==FrontierDiscoveryExhibits.is_exhibit(kind)
 		if not card.visible:continue
 		card.set_pressed_no_signal(kind==selected(building))
 		var tier: int=FrontierFacilityResearch.construction(kind).get("tier",1)
@@ -487,6 +503,8 @@ func refresh_building_cost() -> void:
 			var blueprint:=FrontierFacilityBlueprints.required({"type":kind},tier)
 			card.tooltip_text="공동 원정 설계도 필요" if blueprint not in ledger.get("facility_blueprints",[]) else FrontierFacilityResearch.construction(kind).get("description","")
 		card.get_meta("cost_readout").show_cost(FrontierFacilityResearch.construction(kind).cost,bag,false,22)
+	build_empty.visible=not building_cards.values().any(func(card):return card.visible)
+	building_cost.visible=not build_empty.visible
 	var cost: Dictionary=FrontierFacilityResearch.construction(selected(building)).cost
 	building_cost.show_cost(cost,bag,true)
 

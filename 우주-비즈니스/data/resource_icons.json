@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "scope": "2026-09-06 PRD 명시 품목·범주·가상 사례 및 현재 연구 기록. 경제 품목 확정표가 아닌 UI 자산 목록.",
+  "scope": "2026-09-06 PRD 명시 품목  범주  가상 사례 및 현재 연구 기록. 경제 품목 확정표가 아닌 UI 자산 목록.",
   "icons": [
     {
       "id": "iron",
@@ -68,7 +68,7 @@
     {
       "id": "water",
       "name": "물",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -77,7 +77,7 @@
     {
       "id": "volatile",
       "name": "휘발성 물질",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/07-space-exploration-and-ships.md",
       "status": "prd",
       "aliases": [],
@@ -86,7 +86,7 @@
     {
       "id": "element",
       "name": "원소",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -95,7 +95,7 @@
     {
       "id": "mineral_sample",
       "name": "광물 시료",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -104,7 +104,7 @@
     {
       "id": "meteorite_sample",
       "name": "운석 시료",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -113,7 +113,7 @@
     {
       "id": "frozen_sample",
       "name": "동결 표본",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/07-space-exploration-and-ships.md",
       "status": "prd",
       "aliases": [],
@@ -122,7 +122,7 @@
     {
       "id": "inert_sample",
       "name": "비활성 시료",
-      "group": "채집·물질",
+      "group": "채집  물질",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -275,7 +275,7 @@
     {
       "id": "bio_sample",
       "name": "생체 표본",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "implemented",
       "aliases": [],
@@ -284,7 +284,7 @@
     {
       "id": "microbe_sample",
       "name": "미생물 표본",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "implemented",
       "aliases": [],
@@ -293,7 +293,7 @@
     {
       "id": "animal_sample",
       "name": "동물 표본",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "implemented",
       "aliases": [],
@@ -302,7 +302,7 @@
     {
       "id": "plant_sample",
       "name": "식생 표본",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "implemented",
       "aliases": [],
@@ -311,7 +311,7 @@
     {
       "id": "dormant_culture",
       "name": "휴면 배양체",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -320,7 +320,7 @@
     {
       "id": "spores",
       "name": "포자",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -329,7 +329,7 @@
     {
       "id": "egg",
       "name": "알",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -338,7 +338,7 @@
     {
       "id": "seed",
       "name": "씨앗",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -347,7 +347,7 @@
     {
       "id": "tissue_sample",
       "name": "조직 시료",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -356,7 +356,7 @@
     {
       "id": "substrate",
       "name": "기질",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -365,7 +365,7 @@
     {
       "id": "feed",
       "name": "먹이",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -374,7 +374,7 @@
     {
       "id": "oxidizer",
       "name": "산화제",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -383,7 +383,7 @@
     {
       "id": "enzyme",
       "name": "효소",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -392,7 +392,7 @@
     {
       "id": "standard_culture",
       "name": "표준 균주",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "implemented",
       "aliases": [],
@@ -401,7 +401,7 @@
     {
       "id": "support_pack",
       "name": "지원 팩",
-      "group": "생태·표본",
+      "group": "생태  표본",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "implemented",
       "aliases": [],
@@ -499,7 +499,7 @@
     },
     {
       "id": "cultural_knowledge",
-      "name": "환경·문화 지식",
+      "name": "환경  문화 지식",
       "group": "지식 자산",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "knowledge",
@@ -545,7 +545,7 @@
     {
       "id": "ancient_artifact",
       "name": "유물",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "prd",
       "aliases": [],
@@ -554,7 +554,7 @@
     {
       "id": "relic_fragment",
       "name": "유물 조각",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/08-open-world-and-underground.md",
       "status": "prd",
       "aliases": [],
@@ -563,7 +563,7 @@
     {
       "id": "fuel",
       "name": "항로 연료",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/07-space-exploration-and-ships.md",
       "status": "prd",
       "aliases": [],
@@ -572,7 +572,7 @@
     {
       "id": "supplies",
       "name": "보급품",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/05-economy-and-progression.md",
       "status": "prd",
       "aliases": [],
@@ -581,7 +581,7 @@
     {
       "id": "landing_kit",
       "name": "착륙 키트",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/05-economy-and-progression.md",
       "status": "prd",
       "aliases": [],
@@ -590,7 +590,7 @@
     {
       "id": "ship_module",
       "name": "우주선 모듈",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/07-space-exploration-and-ships.md",
       "status": "prd",
       "aliases": [],
@@ -599,7 +599,7 @@
     {
       "id": "prototype",
       "name": "시제품",
-      "group": "항해·유적",
+      "group": "항해  유적",
       "source": "docs/game/07-space-exploration-and-ships.md",
       "status": "prd",
       "aliases": [],
@@ -635,7 +635,7 @@
     {
       "id": "power",
       "name": "전력",
-      "group": "운영 자원·지표",
+      "group": "운영 자원  지표",
       "source": "docs/game/04-terraforming-and-sales.md",
       "status": "metric",
       "aliases": [],
@@ -644,7 +644,7 @@
     {
       "id": "oxygen",
       "name": "산소",
-      "group": "운영 자원·지표",
+      "group": "운영 자원  지표",
       "source": "docs/game/09-discovery-research-and-ecology.md",
       "status": "metric",
       "aliases": [],
@@ -653,7 +653,7 @@
     {
       "id": "battery",
       "name": "배터리",
-      "group": "운영 자원·지표",
+      "group": "운영 자원  지표",
       "source": "docs/game/03-robots-and-automation.md",
       "status": "metric",
       "aliases": [],
@@ -662,7 +662,7 @@
     {
       "id": "biomass",
       "name": "생물량",
-      "group": "운영 자원·지표",
+      "group": "운영 자원  지표",
       "source": "우주-비즈니스/data/ecology.json",
       "status": "metric",
       "aliases": [],
@@ -671,7 +671,7 @@
     {
       "id": "aluminum",
       "name": "알루미늄",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -680,7 +680,7 @@
     {
       "id": "silicon",
       "name": "규소",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -689,7 +689,7 @@
     {
       "id": "titanium",
       "name": "티타늄",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -698,7 +698,7 @@
     {
       "id": "nickel",
       "name": "니켈",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -707,7 +707,7 @@
     {
       "id": "lithium",
       "name": "리튬",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -716,7 +716,7 @@
     {
       "id": "sulfur",
       "name": "황",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -725,7 +725,7 @@
     {
       "id": "phosphate",
       "name": "인산염",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -734,7 +734,7 @@
     {
       "id": "rare_earth",
       "name": "희토류",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -743,7 +743,7 @@
     {
       "id": "stellarite_ore",
       "name": "성핵광",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -752,7 +752,7 @@
     {
       "id": "darkstone_ore",
       "name": "암흑광",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -761,7 +761,7 @@
     {
       "id": "ruby",
       "name": "루비",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -770,7 +770,7 @@
     {
       "id": "sapphire",
       "name": "사파이어",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -779,7 +779,7 @@
     {
       "id": "emerald",
       "name": "에메랄드",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],
@@ -788,7 +788,7 @@
     {
       "id": "diamond",
       "name": "다이아몬드",
-      "group": "광물·보석",
+      "group": "광물  보석",
       "source": "docs/game/14-minerals-gems-and-enhancement.md",
       "status": "implemented",
       "aliases": [],

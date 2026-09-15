@@ -862,7 +862,7 @@ func _update_surface_hud() -> void:
 		if form.category=="animal":text+="  체력 %d/%d"%[int(session.latest.crew.get("combat",{}).get(surface_world.body.id+"/"+str(surface_target.id),FrontierWildlifeCombat.health(surface_target))),FrontierWildlifeCombat.health(surface_target)]
 		var progress: Dictionary=session.latest.get("scan",{})
 		if float(progress.get("progress",0))>0 and not progress.get("known",false):text+="\n스캔 %d%%"%int(float(progress.progress)*100)
-	else:text+="\nI 아이템 / 제작    1–5 장비 전환    E 내장 스캐너"
+	else:text+="\nI 아이템    1–5 장비 전환    T 내장 스캐너"
 	if not surface_world.ready_at(position):text+="\n안전한 지형을 불러오는 중입니다."
 	var business_target:=surface_world.business_view.target(camera,actors[session.latest.self_id])
 	if not business_target.is_empty():
@@ -1000,6 +1000,8 @@ func open_station(kind: String,id: String="",management: bool=false) -> void:
 	var facility_row: Dictionary=current_site.get("buildings",{}).get(id,{})
 	if facility_row.get("submerged",false):feedback.reject(FrontierFacilityFlooding.STATUS);return
 	if status.value==FrontierFacilityFlooding.STATUS:status.value=""
+	if kind=="equipment_workbench" and not management:
+		open_menu(inventory_panel);inventory_panel.workbench_id=id;inventory_panel.heading_text.text="L O C U S   /   장비 제작대";inventory_panel.tabs.set_tab_hidden(1,false);inventory_panel.tabs.current_tab=1;return
 	if kind in ["base","storage"] and not management:
 		open_menu(inventory_panel);inventory_panel.warehouse_choice.select(0);inventory_panel.tabs.current_tab=2;return
 	close_menus()
@@ -1070,6 +1072,7 @@ func _update_business_placement() -> void:
 	var packet: Dictionary=session.surface
 	var world: Dictionary=FrontierShuttles.context(session.authority.world,session.latest.self_id) if session.hosting else {"manifest":session.manifest,"location":surface_world.body.id,"business":packet.get("business",{}),"crew":session.latest.crew,"terrain_settings":packet.terrain_settings,"terrain_edits":{surface_world.body.id:packet.edits}}
 	if not session.hosting:world["lotus"]=session.latest.get("lotus",{})
+	if not session.hosting:world["discoveries"]=session.latest.get("discoveries",{})
 	var current:=FrontierExpeditionBusiness.site(world)
 	var reason: String="착륙 지표를 준비 중입니다." if current.is_empty() else "" if placement_kind=="shuttle" else FrontierExpeditionBusiness.build_reason(world,session.latest.self_id,placement_kind,placement_point,session.latest.crew.members.keys().reduce(func(acc: Dictionary,id: String):acc[id]=id;return acc,{}))
 	if placement_kind=="shuttle":reason=FrontierShuttles.deployment_reason(world,session.latest.self_id,placement_shuttle_holder,placement_point)
@@ -1079,6 +1082,9 @@ func _update_business_placement() -> void:
 	placement_valid=on_surface and reason.is_empty() and surface_world.ready_at(placement_point)
 	ghost_material.albedo_color=Color(.3,.9,.6,.45) if placement_valid else Color(.95,.25,.15,.45)
 	status.value=("클릭 호출  휠 회전  Esc 취소" if placement_kind=="shuttle" else "클릭 건설  휠 회전  "+FrontierCatalog.cost_text(placement_definition().cost)) if placement_valid else reason
+	if placement_valid and FrontierDiscoveryIndustry.building(placement_kind):
+		var suitability:=FrontierDiscoveryIndustry.conditions(world,current,{"type":placement_kind,"position":FrontierExpeditionBusiness.array(placement_point)})
+		status.value+="\n"+str(suitability.reason)+( "" if suitability.ready else "  설치 가능, 가동 조건 미충족")
 
 func start_solo(fresh: bool=false) -> void:
 	if network_busy:return
@@ -1119,7 +1125,7 @@ func toggle_inventory() -> void:
 func use_equipped() -> void:
 	if not rovers.seat().is_empty():return
 	var tool:=FrontierEquipment.active(session.latest.crew.members[session.latest.self_id])
-	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 제작한 장비를 장착하세요.");return
+	if tool.is_empty():feedback.reject("빈 슬롯입니다. I에서 보유 장비를 장착하세요.");return
 	if tool.kind=="miner" and not session.mining_ready():return
 	if tool.has("firearm"):firearm.shoot();return
 	dig_timer=float(tool.interval)

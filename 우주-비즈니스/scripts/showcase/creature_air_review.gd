@@ -43,7 +43,7 @@ func review_air(form: Dictionary,field: FrontierTerrainField) -> void:
 		root_error=maxf(root_error,actor.global_position.distance_to(motion.point));max_foot_error=maxf(max_foot_error,actor.ground_motion.grounded_error)
 		phases[motion.phase]=true;clips[actor.ground_motion.wanted_clip]=true
 		var center: Vector3=motion.point+Vector3.UP*1.1;camera.size=maxf(float(form.lods.near.max[0])-float(form.lods.near.min[0]),float(form.lods.near.max[1])-float(form.lods.near.min[1]))*1.35+1.5;camera.position=center+Vector3(6,4.3,9);camera.look_at(center)
-		title.text=str(form.name)+" · "+str(motion.phase)+" · "+actor.ground_motion.wanted_clip
+		title.text=str(form.name)+"  "+str(motion.phase)+"  "+actor.ground_motion.wanted_clip
 		if i in [0,60,120,375,435,540,1080,1320,1410] or "--video" in OS.get_cmdline_user_args() and i%2==0:
 			await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(folder+"/"+str(form.id)+"_%04d.png"%i)
 		if i%30==0:records.append({"time":t,"phase":motion.phase,"blend":motion.blend,"clip":actor.ground_motion.wanted_clip,"pose_clock":actor.ground_motion.pose_clock})

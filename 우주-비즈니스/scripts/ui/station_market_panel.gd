@@ -59,7 +59,7 @@ func _ready() -> void:
  for tab in [["goods","물자 거래"],["blueprints","전문 설비 설계도"],["ships","선체 구매"],["owned","보유 선체"],["refits","항해 개장"],["skills","전투 스킬"]]:
   var key: String=tab[0]
   service_tabs[key]=button(tabs,tab[1],func():mode=key;selected="";rebuild())
- browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품·설계도·선체 검색";browser.changed.connect(rebuild)
+ browser=FrontierItemBrowser.new();column.add_child(browser);browser.order.hide();browser.search.placeholder_text="상품  설계도  선체 검색";browser.changed.connect(rebuild)
  sale_only=CheckButton.new();sale_only.text="내가 판매할 수 있는 물자";column.add_child(sale_only);sale_only.toggled.connect(func(_v):rebuild())
  market_cycle=HBoxContainer.new();market_cycle.add_theme_constant_override("separation",10);column.add_child(market_cycle)
  demand_icon=TextureRect.new();demand_icon.custom_minimum_size=Vector2(28,28);demand_icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;demand_icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;market_cycle.add_child(demand_icon)
@@ -238,7 +238,7 @@ func refresh_detail() -> void:
  elif mode=="blueprints":
   var def: Dictionary=FrontierFacilityBlueprints.definitions()[selected]
   title_label.text=def.name;role.text=FrontierInterfaceStyle.player_text(def.use)+"\n완성 설계 / 원정대 공동 사용"
-  unit_price.text="제작 재료·설치 조건은 별도  |  동일 설계의 추가 연구 없음"
+  unit_price.text="제작 재료  설치 조건은 별도  |  동일 설계의 추가 연구 없음"
   show_blueprint_model(str(def.model))
   var owned:=blueprint_owned(selected)
   buy.text="공동 보유" if owned else "설계도 구매  %d Cr"%int(def.price)
@@ -270,7 +270,7 @@ func refresh_detail() -> void:
   if mode=="refits":
    var refit: Dictionary=FrontierVesselAccess.config().refits[selected]
    title_label.text=str(refit.name)
-   unit_price.text="현재 선체 %s에 영구 적용 · 부품 포함\n임무 모듈 슬롯 유지 / 선체별 순차 개장"%def.name
+   unit_price.text="현재 선체 %s에 영구 적용  부품 포함\n임무 모듈 슬롯 유지 / 선체별 순차 개장"%def.name
    var next:=FrontierVesselAccess.next_refit(vessel)
    buy.text="개장 완료" if int(selected)<next else "선행 개장 필요" if int(selected)>next else "항해 개장  %d Cr"%int(refit.station_credits)
    buy.disabled=buy.disabled or int(selected)!=next or int(station.credits)<int(refit.station_credits)
@@ -290,7 +290,7 @@ func response(sequence: int,value: Dictionary) -> void:
  if not pending or sequence!=pending_sequence:return
  pending=false
  var ok: bool=value.get("ok",false)
- message.text=("스킬 정비 완료" if pending_kind.begins_with("station_skill_") else "항해 개장 완료  항성 지도에서 새 항로를 확인하세요" if pending_kind=="station_navigation_refit" else "공동 설계도 확보  제작소에서 생산·개조하세요" if pending_kind=="station_blueprint" else "선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
+ message.text=("스킬 정비 완료" if pending_kind.begins_with("station_skill_") else "항해 개장 완료  항성 지도에서 새 항로를 확인하세요" if pending_kind=="station_navigation_refit" else "공동 설계도 확보  제작소에서 생산  개조하세요" if pending_kind=="station_blueprint" else "선체 구매 완료  보유 선체에서 교체하세요" if pending_kind=="station_buy" and selected.begins_with("hull:") else "교역 완료" if pending_kind!="station_equip" else "선체 교체 완료") if ok else str(value.get("error","교역 실패"))
  var sounds: Dictionary=FrontierSpaceStation.config().audio
  audio.play(sounds.hull if ok and (pending_kind in ["station_equip","station_navigation_refit"] or selected.begins_with("hull:")) else sounds.trade if ok else sounds.failure)
  refresh_detail()

@@ -140,7 +140,7 @@ func visual_lod(form: Dictionary,lod: String) -> Dictionary:
 	return (current if not current.is_empty() else form).lods[lod]
 
 func sample(form: Dictionary,lod: String="near") -> Dictionary:
-	return {"id":form.id,"title":"LIFE ATLAS / "+str(form.family_name),"name":str(form.name)+" · "+str(form.environment_label),"model":Presentation.path(form,lod),"foliage":form.category!="animal"}
+	return {"id":form.id,"title":"LIFE ATLAS / "+str(form.family_name),"name":str(form.name)+"  "+str(form.environment_label),"model":Presentation.path(form,lod),"foliage":form.category!="animal"}
 
 func select(form: Dictionary,lod: String="near") -> void:
 	studio.cache.clear()

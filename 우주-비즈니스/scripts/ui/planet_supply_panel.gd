@@ -27,7 +27,7 @@ func update(ledger: Dictionary,body: Dictionary,actor: String,owner: bool) -> vo
 	var allowed:=FrontierUniverse.landable(body) if not body.is_empty() else false
 	var leased: bool=site.get("production_lease",false)
 	var role:=FrontierPlanetSupply.role(body) if allowed else ""
-	heading.text="%s  생산 거점 %d/%d"%[FrontierPlanetSupply.role_name(role),ledger.get("supply_sites",[]).size(),int(FrontierPlanetSupply.config().maximum_leases)]
+	heading.text="보유 생산 거점 %d/%d"%[ledger.get("supply_sites",[]).size(),int(FrontierPlanetSupply.config().maximum_leases)]
 	lease.visible=allowed and not leased and site.get("state","")!="settled"
 	lease.disabled=not owner or int(ledger.get("credits",0))<int(FrontierPlanetSupply.config().lease_price) or ledger.get("supply_sites",[]).size()>=int(FrontierPlanetSupply.config().maximum_leases)
 	release.visible=leased and site.get("state")!="active";release.disabled=not owner

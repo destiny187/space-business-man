@@ -25,7 +25,7 @@ func run() -> void:
 	var portrait:=root.get_texture().get_image()
 	portrait.resize(480,400,Image.INTERPOLATE_LANCZOS)
 	assert(portrait.save_png(ProjectSettings.globalize_path("res://assets/ui/previews/"+requested+".png"))==OK)
-	var groups: Dictionary={"장비":"equipment","시설":"buildings","자원":"resources","발견·환경":"environment","승인 기준작":"references"}
+	var groups: Dictionary={"장비":"equipment","시설":"buildings","자원":"resources","발견  환경":"environment","승인 기준작":"references"}
 	var group: String=rows[selected].group
 	var count:=0
 	for i in selected:

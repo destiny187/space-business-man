@@ -244,7 +244,7 @@ func _update_shuttles() -> void:
 		var ship: Node3D=load(FrontierShuttles.config().model).instantiate();add_child(ship);FrontierInkStyle.apply(ship,{})
 		var point:=FrontierCrewWorld.vector(fleet[id].deployment.position)
 		ship.position=point;ship.rotation.y=float(fleet[id].deployment.yaw);shuttle_models[id]=ship
-		var label:=Label3D.new();label.text="LOTUS 공용 FINCH" if fleet[id].get("company",false) else "FINCH · "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
+		var label:=Label3D.new();label.text="LOTUS 공용 FINCH" if fleet[id].get("company",false) else "FINCH  "+str(value.crew.members[id].profile.name);label.position.y=3.5;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.font_size=44;label.pixel_size=.006;ship.add_child(label)
 	_animate_shuttles(0)
 func _animate_shuttles(delta: float) -> void:
 	shuttle_clock_elapsed=minf(shuttle_clock_elapsed+delta,float(FrontierCrewSurface.config().snapshot_interval))

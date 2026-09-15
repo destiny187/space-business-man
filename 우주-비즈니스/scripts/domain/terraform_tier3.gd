@@ -25,6 +25,7 @@ static func initialize(site: Dictionary,body: Dictionary) -> void:
    site.tier3.initial_mass+=float(cell.pollution)
  FrontierRegionalTerraform.home(site)
 static func name(row: Dictionary) -> String:
+ if FrontierDiscoveryIndustry.building(str(row.get("type",""))):return FrontierDiscoveryIndustry.name(row)
  return config().upgrades.get(row.get("type",""),{}).get("name",FrontierCatalog.entry("buildings",row.get("type","")).get("name","시설")) if int(row.get("tier",1))==3 else FrontierCatalog.entry("buildings",row.get("type","")).get("name","시설")
 static func radius(row: Dictionary) -> float:
  return float(config().upgrades[row.type].support_radius) if int(row.get("tier",1))==3 and config().upgrades.has(row.get("type","")) else float(FrontierCatalog.entry("buildings",row.get("type","")).get("radius",1))
@@ -114,7 +115,7 @@ static func process(world: Dictionary,site: Dictionary,dt: float) -> void:
    for cell in covered:
     var scores:=FrontierEvaluator.scores(cell.environment)
     if float(cell.pollution)<=float(rules.pollution_limit) and float(cell.restoration2.soil)>=60 and minf(scores.atmosphere,minf(scores.temperature,scores.water))>=60 and float(cell.colonization)<100:viable.append(cell)
-   if viable.is_empty():b.status="정화·급수·온도·토양 조건 필요";continue
+   if viable.is_empty():b.status="정화  급수  온도  토양 조건 필요";continue
    used=fuel(site,b,"pioneer_culture",dt,float(rules.culture_pack_seconds))
    for cell in viable:cell.colonization=minf(100,float(cell.colonization)+used*float(rules.colonization_rate)/coefficient/viable.size())
    b.working=b.get("working",false) or used>0;b.status="선구종 정착 중" if used>=dt else "선구종 정착 팩 보급 필요"
@@ -137,7 +138,7 @@ static func detail(site: Dictionary,region: Dictionary) -> String:
  var record: Dictionary=site.tier3;var value:=0.0;var planted:=0.0
  for cell in region.cells:value+=float(cell.pollution);planted+=float(cell.colonization)
  var profile: Dictionary=record.rules.profiles[record.profile]
- return "%s · 잔류 %.1f / 목표 ≤%.0f · 정착 %.0f%%\n유입 억제 %.0f%% · 보급 %.0f초 · %s"%[profile.name,value/region.cells.size(),float(record.rules.pollution_limit),planted/region.cells.size(),float(record.suppression)*100,float(record.supply_seconds),record.source_status]
+ return "%s  잔류 %.1f / 목표 ≤%.0f  정착 %.0f%%\n유입 억제 %.0f%%  보급 %.0f초  %s"%[profile.name,value/region.cells.size(),float(record.rules.pollution_limit),planted/region.cells.size(),float(record.suppression)*100,float(record.supply_seconds),record.source_status]
 static func valid(site: Dictionary,body: Dictionary) -> bool:
  if not enabled(body):return not site.has("tier3")
  var r: Variant=site.get("tier3")

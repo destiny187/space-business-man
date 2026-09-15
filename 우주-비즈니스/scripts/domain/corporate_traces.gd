@@ -65,7 +65,7 @@ static func target(m: Dictionary,nav: Dictionary,aim: Vector3) -> Dictionary:
 		best=dot;result=row;result.distance=offset.length()
 	return result
 static func reason(m: Dictionary,nav: Dictionary,target: Dictionary,stage: int) -> String:
-	if stage>=2:return "활동 기록 확보 · J"
+	if stage>=2:return "활동 기록 확보  J"
 	var limit:=float(rules(m).identify_distance if stage==0 else rules(m).inspect_distance)
 	if float(target.distance)>limit:return "%.0fm 이내로 접근"%limit
 	if absf(float(nav.get("speed",0)))>float(rules(m).max_speed):return "속도를 %.0fm/s 이하로 낮추세요"%float(rules(m).max_speed)

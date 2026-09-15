@@ -195,11 +195,11 @@ func refresh(value: Dictionary) -> void:
 	departure_status.visible=not app.session.offline
 	app.roster.text=preload("res://scripts/ui/crew_status.gd").roster(value)
 	var blockers:=preload("res://scripts/ui/crew_status.gd").blockers(value,value.crew.get("landing",{}).is_empty())
-	departure_status.text="다음 항해 대기 · "+blockers if not blockers.is_empty() else "현재 선박의 승무원 준비 완료"
-	connection_status.text="호스트 위치·장비 수신 · 지표 준비 중" if app.preparing_first_snapshot else "호스트 확정 위치·장비 반영됨"
+	departure_status.text="다음 항해 대기  "+blockers if not blockers.is_empty() else "현재 선박의 승무원 준비 완료"
+	connection_status.text="호스트 위치  장비 수신  지표 준비 중" if app.preparing_first_snapshot else "호스트 확정 위치  장비 반영됨"
 	var recovery_items:=0
 	for crate in value.get("business",{}).get("crates",{}).values():recovery_items+=FrontierExpeditionBusiness.total(crate.get("inventory",{}))
-	if recovery_items>0:connection_status.text+=" · 회수 보관 화물 %d개"%recovery_items
+	if recovery_items>0:connection_status.text+="  회수 보관 화물 %d개"%recovery_items
 	var invite: Button=crew_frame.find_child("InviteCodeCopy",true,false)
 	invite.visible=not app.session.invite_code.is_empty()
 	invite.text="초대 코드  "+FrontierCrewConnectionOptions.display_code(app.session.invite_code)+"  복사"
@@ -231,7 +231,7 @@ func show_target(ordinal: int) -> void:
 	app.chart.target=ordinal;app.chart.system_index=int(body.system_ordinal);app.chart.queue_redraw();_map_mode()
 	target_name.text=body.name
 	target_kind.text=FrontierUniverse.kind_label(body)
-	if not app.session.latest.get("weather",{}).is_empty():target_kind.text+="\n기상  "+str(FrontierPlanetWeather.profile(body).name)+(" · 드문 위험 기상" if not str(FrontierPlanetWeather.profile(body).hazard).is_empty() else "")
+	if not app.session.latest.get("weather",{}).is_empty():target_kind.text+="\n기상  "+str(FrontierPlanetWeather.profile(body).name)+("  드문 위험 기상" if not str(FrontierPlanetWeather.profile(body).hazard).is_empty() else "")
 	if not FrontierUniverse.landable(body):target_kind.text+="\n"+FrontierUniverse.landing_restriction(body)
 	refresh_survey()
 	_update_preview(body)
@@ -463,7 +463,7 @@ func find_station_route() -> void:
 		target_name.text=FrontierSpaceStation.definition(app.session.manifest,int(item.index),excluded).name
 		target_kind.text="공개 교역 신호  /  전문 설비 설계도 6종 확정 판매"
 		return
-	_notice("현재 준비된 항로·항속거리 안에 교역 신호가 없습니다. 근처 항성으로 이동하거나 지도 준비 후 다시 확인하세요.")
+	_notice("현재 준비된 항로  항속거리 안에 교역 신호가 없습니다. 근처 항성으로 이동하거나 지도 준비 후 다시 확인하세요.")
 
 func access_world() -> Dictionary:
 	var value: Dictionary=app.session.latest

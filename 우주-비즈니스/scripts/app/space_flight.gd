@@ -126,7 +126,7 @@ func _load_system(index: int) -> void:
 	orbital_presentation.configure(self)
 	update_terraforming(terraform_states,true)
 	_refresh_candidates()
-	status.text = "%s · 항성계 %08d · 주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,FrontierUniverse.body_count(state.manifest,index)]
+	status.text = "%s  항성계 %08d  주변 천체 %d개" % [state.manifest.settings.band_names[int(s.band)],index+1,FrontierUniverse.body_count(state.manifest,index)]
 
 func _build_ui() -> void:
 	var layer := CanvasLayer.new()
@@ -158,7 +158,7 @@ func _build_ui() -> void:
 	ui_root.add_child(header)
 	_label(header,"L O C U S   /   K E S T R E L",23,Color("c8e3d4"))
 	status = _label(header,"항법 시스템 준비",15)
-	_label(header,"W/S 추진 · A/D 선회 · ↑/↓ 기수 · Shift 가속 · Space 제동",13,Color("a9bdbd"))
+	_label(header,"W/S 추진  A/D 선회  ↑/↓ 기수  Shift 가속  Space 제동",13,Color("a9bdbd"))
 	_label(header,"천체 클릭: 조준  /  F: 자동 접근  /  C: 시점  /  Tab: 항법 패널  /  F5: 저장",13,Color("a9bdbd"))
 	var panel := PanelContainer.new()
 	panel.name = "NavigationPanel"
@@ -181,7 +181,7 @@ func _build_ui() -> void:
 	column.add_theme_constant_override("separation",10)
 	scroll.add_child(column)
 	_label(column,"원정 항법",22,Color("a0dfc5"))
-	_label(column,"한 은하 · 시드 %d\n%s 개의 행성 주소" % [int(state.manifest.seed),FrontierUniverse.planet_count_label(int(state.manifest.settings.planet_count))],14)
+	_label(column,"한 은하  시드 %d\n%s 개의 행성 주소" % [int(state.manifest.seed),FrontierUniverse.planet_count_label(int(state.manifest.settings.planet_count))],14)
 	address = LineEdit.new()
 	address.placeholder_text = "행성 번호 1 ~ %d" % int(state.manifest.settings.planet_count)
 	address.max_length = str(int(state.manifest.settings.planet_count)).length()
@@ -199,7 +199,7 @@ func _build_ui() -> void:
 	cursor_label.add_theme_color_override("font_color",Color("c1eadc"))
 	ui_root.add_child(cursor_label)
 	var footer := Label.new()
-	footer.text = "3D 항해 실증  ·  천체 크기·거리는 플레이용 축약  ·  생성 지형과 생태는 가상"
+	footer.text = "3D 항해 실증  천체 크기  거리는 플레이용 축약  생성 지형과 생태는 가상"
 	footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	footer.position = Vector2(28,-35)
 	footer.add_theme_font_size_override("font_size",12)
@@ -239,9 +239,9 @@ func _select(ordinal: int) -> void:
 	autopilot = false
 	address.text = str(ordinal+1)
 	destination.text = "%s\n%s" % [body.name,FrontierUniverse.kind_label(body)]+"\n"+FrontierMineralWorld.summary(body)
-	if not FrontierUniverse.landable(body):destination.text+="\n착륙 불가 · 궤도 탐사 대상";return
+	if not FrontierUniverse.landable(body):destination.text+="\n착륙 불가  궤도 탐사 대상";return
 	var habitat: Dictionary=FrontierEcology.profile(body)
-	destination.text+="\n궤도 추정 %.1f°C · %.0f kPa\n%s"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.habitat(habitat).label]
+	destination.text+="\n궤도 추정 %.1f°C  %.0f kPa\n%s"%[habitat.temperature,habitat.pressure,FrontierEcologyCatalog.habitat(habitat).label]
 
 func _address_target() -> void:
 	if not address.text.is_valid_int() or int(address.text)<1 or int(address.text)>int(state.manifest.settings.planet_count):
@@ -263,7 +263,7 @@ func start_travel() -> void:
 				nearest=distance
 				jump_direction=(ship.position-entry.node.position).normalized()
 		autopilot = false
-		status.text = "도약 항로 진입 · 먼 항성계 이동을 압축합니다."
+		status.text = "도약 항로 진입  먼 항성계 이동을 압축합니다."
 	else:autopilot = true
 	get_viewport().gui_release_focus()
 
@@ -301,7 +301,7 @@ func step_flight(delta: float) -> void:
 			speed = 0
 			state.location = target.body.id
 			state.visited[target.body.id] = true
-			status.text = "궤도 접근 완료 · %s 조사 위치" % target.body.name
+			status.text = "궤도 접근 완료  %s 조사 위치" % target.body.name
 		else:
 			var direction: Vector3 = (center-ship.position).normalized()
 			ship.quaternion = ship.quaternion.slerp(_flight_basis(direction).get_rotation_quaternion(),minf(delta*2,1))
@@ -326,10 +326,10 @@ func step_flight(delta: float) -> void:
 			ship.position = center+(ship.position-center).normalized()*min_distance
 			speed = 0
 			autopilot = false
-			status.text = "지표 접근 한계 · 기수를 돌려 안전 거리를 확보하세요."
+			status.text = "지표 접근 한계  기수를 돌려 안전 거리를 확보하세요."
 	travel_distance += before.distance_to(ship.position)
 	if ship.position.length()>90000:
-		ship.position = before;speed = 0;status.text = "항성계 운항 경계 · 항법으로 다음 목적지를 선택하세요."
+		ship.position = before;speed = 0;status.text = "항성계 운항 경계  항법으로 다음 목적지를 선택하세요."
 	_update_target_marker()
 
 func _update_target_marker() -> void:
@@ -339,7 +339,7 @@ func _update_target_marker() -> void:
 	if camera.is_position_behind(entry.node.position):cursor_label.visible=false;return
 	var p: Vector2 = camera.unproject_position(entry.node.position)
 	cursor_label.position = p+Vector2(20,-25)
-	cursor_label.text = "◇ %s\n%.0f m · %.0f m/s" % [entry.body.name,maxf(0,ship.position.distance_to(entry.node.position)-entry.radius),speed]
+	cursor_label.text = "◇ %s\n%.0f m  %.0f m/s" % [entry.body.name,maxf(0,ship.position.distance_to(entry.node.position)-entry.radius),speed]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -372,7 +372,7 @@ func save_flight() -> void:
 func land() -> bool:
 	if jump_remaining>0 or not planets.has(target_ordinal):status.text="먼저 대상 행성의 궤도로 접근하세요.";return false
 	var entry: Dictionary=planets[target_ordinal]
-	if not FrontierUniverse.landable(entry.body):status.text="착륙 불가 · 가스/얼음 거대행성";return false
+	if not FrontierUniverse.landable(entry.body):status.text="착륙 불가  가스/얼음 거대행성";return false
 	if ship.position.distance_to(entry.node.position)-entry.radius>float(flight_config.arrival_clearance)+10:
 		status.text="자동 접근을 완료한 뒤 착륙할 수 있습니다.";return false
 	var next: Dictionary=state.duplicate(true)
@@ -395,7 +395,7 @@ func _observations() -> void:
 		var card:=popup.section(record.name)
 		popup.metric(card,"반지름",str(record.values.radius.value)+" 지구반지름")
 		popup.metric(card,"평형 온도",str(record.values.equilibrium_temperature.value)+" K")
-	popup.paragraph("평형 온도는 지표 실측값이 아닙니다. 출처와 오차는 동봉 카탈로그에 보존합니다.\n성도의 천체·지형·생명은 가상이며, 위 관측 천체와 구분합니다.")
+	popup.paragraph("평형 온도는 지표 실측값이 아닙니다. 출처와 오차는 동봉 카탈로그에 보존합니다.\n성도의 천체  지형  생명은 가상이며, 위 관측 천체와 구분합니다.")
 	popup.confirmed.connect(popup.queue_free);popup.canceled.connect(popup.queue_free);popup.present(Vector2i(760,600))
 
 func _build_system_art(system_value: Dictionary) -> void:
@@ -406,7 +406,7 @@ func _build_system_art(system_value: Dictionary) -> void:
 	var star:=FrontierStarVisual.new();star.name="StarVisual";system_art.add_child(star);star.configure(system_value,stellar_radius)
 	var label:=Label3D.new();label.text=system_value.star.name;label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=64;label.pixel_size=3;label.position=Vector3(0,stellar_radius*.8,0);label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;system_art.add_child(label)
 	for entry in planets.values():
-		var caption:=Label3D.new();caption.text=entry.body.name+("" if FrontierUniverse.landable(entry.body) else " · 착륙 불가");caption.font=label.font;caption.font_size=48;caption.pixel_size=2.0;caption.position.y=entry.radius+130;caption.billboard=BaseMaterial3D.BILLBOARD_ENABLED;entry.node.add_child(caption)
+		var caption:=Label3D.new();caption.text=entry.body.name+("" if FrontierUniverse.landable(entry.body) else "  착륙 불가");caption.font=label.font;caption.font_size=48;caption.pixel_size=2.0;caption.position.y=entry.radius+130;caption.billboard=BaseMaterial3D.BILLBOARD_ENABLED;entry.node.add_child(caption)
 
 	landmarks=FrontierSystemLandmarks.new();system_art.add_child(landmarks);landmarks.configure(state.manifest,current_system,planets)
 	var theme: String=FrontierUniverse.system_layout(state.manifest,current_system).theme

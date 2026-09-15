@@ -37,7 +37,7 @@ static func facade(site: Dictionary,id: String) -> Dictionary:
  for key in LOCAL_KEYS:
   if region.has(key):local[key]=region[key]
   else:local.erase(key)
- local.local_region=id;local.base_deployed=false
+ local.local_region=id;local.base_deployed=false;local.utility_neighbors=site.buildings
  if FrontierFreeTerraform.active(site):local.placement_neighbors=site.buildings
  for key in ["buildings","robots","jobs"]:
   local[key]={}
@@ -121,7 +121,7 @@ static func environment(world: Dictionary,site: Dictionary,dt: float) -> void:
    FrontierExpeditionIndustry._process_facility(world,target,b,dt*FrontierProgressionResearch.multiplier(FrontierProgressionResearch.shared(world))/cells.size())
    FrontierCoopWorkload.distribute(target,before,previous)
    b.working=b.working or before!=cell.environment or previous!=cell.restoration2 or work!=float(b.work) or treatment!=float(b.get("treatment_work",0))
-  if b.working:b.status="지역 처리 중" if "필요" not in str(b.status) else "부분 가동 · "+b.status
+  if b.working:b.status="지역 처리 중" if "필요" not in str(b.status) else "부분 가동  "+b.status
  FrontierTerraformTier3.process(world,site,dt)
  for cell in site.cells:
   var scores:=FrontierEvaluator.scores(cell.environment)
@@ -168,7 +168,7 @@ static func local_public(site: Dictionary,position: Vector3) -> Dictionary:
  var result:=facade(site,FrontierFreeTerraform.supply_at(site,position) if FrontierFreeTerraform.active(site) else region_id(site,position))
  result.slot_capacity=FrontierItemInventory.warehouse_capacity(result)
  result.buildings=site.buildings;result.robots=site.robots;result.jobs=site.jobs
- result.current_region=result.local_region;result.erase("local_region");result.erase("placement_neighbors")
+ result.current_region=result.local_region;result.erase("local_region");result.erase("placement_neighbors");result.erase("utility_neighbors")
  if FrontierFreeTerraform.active(site):
   var cell:=FrontierFreeTerraform.sample(site,Vector2(position.x,position.z));result.environment=cell.environment;result.restoration2=cell.restoration2
  return result

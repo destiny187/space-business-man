@@ -31,7 +31,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 	action.pressed.connect(func():
 		if pending<0:app.session.send_request("equipment_ammo_craft",{"ammunition":selected,"batches":int(batches.value)}))
 	status=FrontierInterfaceStyle.label(right,"",12);status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	FrontierInterfaceStyle.label(right,"권총은 약한 대신 예비탄 무한 · 탄창 재장전 필요",12,FrontierInterfaceStyle.MUTED)
+	FrontierInterfaceStyle.label(right,"권총은 약한 대신 예비탄 무한  탄창 재장전 필요",12,FrontierInterfaceStyle.MUTED)
 	app.session.request_started.connect(func(seq,kind,_args):
 		if kind=="equipment_ammo_craft":pending=seq;signature=[])
 	app.session.response_received.connect(func(seq,result):
@@ -50,7 +50,7 @@ func refresh() -> void:
 	signature=next
 	for id in cards:cards[id].selected=id==selected;cards[id].queue_redraw()
 	preview.show_model(recipe.model);heading.text=recipe.name
-	count.text="%s\n보유 %d발 · 한 칸 %d발"%[recipe.use,int(stock.get(selected,0)),int(recipe.stack)]
+	count.text="%s\n보유 %d발  한 칸 %d발"%[recipe.use,int(stock.get(selected,0)),int(recipe.stack)]
 	cost.show_cost(materials,stock,true)
 	action.text="제작 중…" if pending>=0 else "%d발 제작"%(int(recipe.amount)*int(batches.value))
 	action.disabled=pending>=0 or not FrontierExpeditionBusiness.affordable(stock,materials)

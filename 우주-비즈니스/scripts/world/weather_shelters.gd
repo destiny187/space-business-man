@@ -3,7 +3,13 @@ extends RefCounted
 static func box(root: Node3D,size: Vector3,point: Vector3) -> void:
 	var collision:=CollisionShape3D.new();var shape:=BoxShape3D.new();shape.size=size;collision.shape=shape;collision.position=point;root.add_child(collision)
 static func collision(root: Node3D,model: String) -> void:
-	if model=="field_canopy":
+	if model=="shell_refuge":
+		for i in 16:
+			var a:=Vector3(2.7*cos(i*PI/16),.25+2.8*sin(i*PI/16),0)
+			var b:=Vector3(2.7*cos((i+1)*PI/16),.25+2.8*sin((i+1)*PI/16),0)
+			box(root,Vector3(a.distance_to(b)+.03,.18,4.0),(a+b)*.5)
+			root.get_child(-1).rotation.z=atan2(b.y-a.y,b.x-a.x)
+	elif model=="field_canopy":
 		for x in [-2.65,2.65]:
 			for z in [-1.95,1.95]:
 				box(root,Vector3(.26,3.1,.26),Vector3(x,1.55,z));box(root,Vector3(.65,.20,.65),Vector3(x,.10,z))

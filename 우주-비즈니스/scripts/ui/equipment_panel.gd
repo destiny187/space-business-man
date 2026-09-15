@@ -1,6 +1,8 @@
 class_name FrontierEquipmentPanel
 extends PanelContainer
 var app: FrontierCrewExpedition
+var workbench_id: String=""
+var heading_text: Label
 var tabs: TabContainer
 var hotbar: HBoxContainer
 var hotbuttons: Array[FrontierItemTile]=[]
@@ -64,7 +66,7 @@ func configure(owner_app: FrontierCrewExpedition,parent: Node) -> void:
 	add_theme_stylebox_override("panel",FrontierInterfaceStyle.box(FrontierInterfaceStyle.INK,FrontierInterfaceStyle.LINE,18))
 	var column:=VBoxContainer.new();column.add_theme_constant_override("separation",12);add_child(column)
 	var heading:=HBoxContainer.new();column.add_child(heading)
-	var heading_text:=FrontierInterfaceStyle.label(heading,"아이템",12,FrontierInterfaceStyle.MUTED);heading_text.text="L O C U S   /   아이템";heading_text.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	heading_text=FrontierInterfaceStyle.label(heading,"아이템",12,FrontierInterfaceStyle.MUTED);heading_text.text="L O C U S   /   아이템";heading_text.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	heading.add_child(FrontierResourceIcons.view("credits",24));credit=FrontierInterfaceStyle.label(heading,"0",18)
 	var shared:=FrontierInterfaceStyle.label(heading,"공동 자금",12,FrontierInterfaceStyle.MUTED);shared.tooltip_text="호스트 세계의 공동 사업 자금"
 	var close:=Button.new();close.text="돌아가기  I / Esc";close.pressed.connect(hide);heading.add_child(close)
@@ -176,6 +178,9 @@ func _filter_items() -> void:
 		empty_labels[pair[1]].visible=count==0
 		empty_labels[pair[1]].text="검색 결과 없음" if browser.filtered() else ("보관한 물건 없음  이 영역에 끌어놓기" if pair[1] in ["내 배낭","공동 창고"] else "보유한 아이템 없음")
 func _visibility() -> void:
+	workbench_id=""
+	heading_text.text="L O C U S   /   아이템"
+	tabs.set_tab_hidden(1,true)
 	if visible:
 		last_key="";modulate.a=0;create_tween().tween_property(self,"modulate:a",1.0,.14)
 		tabs.current_tab=0
@@ -226,7 +231,8 @@ func _process(delta: float) -> void:
 	if tabs.current_tab>2:return
 	var available:=FrontierItemInventory.capacity(member)
 	var inventory_state:=data.duplicate();inventory_state.erase("weapon_states")
-	var view_state: Array=[inventory_state,bag,member.carried,available,tabs.current_tab,app.session.latest.get("biota_revision",0)]
+	var access:=FrontierFieldManufacturing.equipment_reason(member,ledger.get("sites",{}).get(app.session.latest.location,{})) if tabs.current_tab==1 else ""
+	var view_state: Array=[access,inventory_state,bag,member.carried,available,tabs.current_tab,app.session.latest.get("biota_revision",0)]
 	if tabs.current_tab==2:view_state.append_array([depot,storage_site.get("stored_equipment",{}),FrontierItemInventory.warehouse_capacity(storage_site),using_ship(),personal,storage_pending.size()])
 	var key:=JSON.stringify(view_state)
 	if key==last_key:return
@@ -387,7 +393,7 @@ func _refresh_details() -> void:
 		def.cost=FrontierWeaponLoot.cost(FrontierEquipment.config().items[selected_definition],weapon_element)
 	if tabs.current_tab==0 and not selected_item.is_empty():def=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],selected_item)
 	title.text=def.name;category.text={"miner":"EXTRACTION / 자원 채집","pulse":"DEFENCE / 공격 장비","terrain":"TERRAIN / 지형 변환","jetpack":"MOBILITY / 등 장착"}[def.kind]
-	if def.has("firearm"):category.text+=" · "+str(FrontierFirearms.config().rarities[def.get("rarity","standard")].name)
+	if def.has("firearm"):category.text+="  "+str(FrontierFirearms.config().rarities[def.get("rarity","standard")].name)
 	preview.show_model(def.model)
 	if not def.has("firearm"):_metric("장비 등급","%s"%["I","II","III","IV","V"][int(def.tier)-1],float(def.tier)/3,FrontierInterfaceStyle.WARNING)
 	if def.kind=="miner":_metric("채집량","%d개"%int(def.amount),float(def.amount)/5);_metric("작업 간격","%.2f초"%float(def.interval),.3/float(def.interval))
@@ -395,7 +401,7 @@ func _refresh_details() -> void:
 		if def.has("firearm"):_weapon_details(def)
 		else:_metric("단발 피해",str(int(def.damage)),float(def.damage)/80)
 	elif def.kind=="jetpack":
-		_metric("추진 시간","%.0f초"%float(FrontierCrewLocomotion.config().jetpack.capacity_seconds),1.0);FrontierInterfaceStyle.label(stats,"점프 후 Space 다시 길게 · 착지 충전",12)
+		_metric("추진 시간","%.0f초"%float(FrontierCrewLocomotion.config().jetpack.capacity_seconds),1.0);FrontierInterfaceStyle.label(stats,"점프 후 Space 다시 길게  착지 충전",12)
 	else:_metric("굴착 반경","%.1fm"%float(def.radius),float(def.radius)/1.7)
 	var current:=FrontierEquipment.active(app.session.latest.crew.members[app.session.latest.self_id])
 	if not current.is_empty() and current.kind==def.kind and current.tier!=def.tier:
@@ -405,16 +411,19 @@ func _refresh_details() -> void:
 			var cost:=VBoxContainer.new();materials.add_child(cost);cost.add_child(FrontierResourceIcons.view(id,30));var have:=int(bag.get(id,0));FrontierInterfaceStyle.label(cost,"%d/%d"%[have,int(def.cost[id])],12,FrontierInterfaceStyle.ACCENT if have>=int(def.cost[id]) else FrontierInterfaceStyle.DANGER)
 		if def.cost.is_empty():materials.add_child(FrontierResourceIcons.view("research_parts",30));FrontierInterfaceStyle.label(materials,"키트 %d / 1"%int(data.kit),13)
 		var research_reason:=FrontierExpeditionResearch.craft_reason(app.session.latest,selected_definition)
-		action.text="제작";action.disabled=not research_reason.is_empty() or app.surface_world==null or (selected_definition=="miner_1" and int(data.kit)<=0)
-		if response_left<=0:message.text="착륙 후 휴대 제작기를 사용할 수 있습니다." if app.surface_world==null else ("재료를 모으면 제작할 수 있습니다." if action.disabled else "내 배낭의 재료를 사용합니다.");message.modulate=Color.WHITE
+		var site: Dictionary=app.session.surface.get("business",{}).get("sites",{}).get(app.session.latest.location,{})
+		var station_reason:=FrontierFieldManufacturing.equipment_reason(app.session.latest.crew.members[app.session.latest.self_id],site)
+		action.text="장비 제작대에서 제작";action.disabled=not station_reason.is_empty() or not research_reason.is_empty() or app.surface_world==null or (selected_definition=="miner_1" and int(data.kit)<=0)
+		if response_left<=0:message.text="지상 장비 제작대에서 제작할 수 있습니다." if app.surface_world==null else ("재료를 모으면 제작할 수 있습니다." if action.disabled else "내 배낭의 재료를 사용합니다.");message.modulate=Color.WHITE
 		if not research_reason.is_empty():message.text=research_reason
+		if not station_reason.is_empty():message.text=station_reason
 	else:
 		upgrade_action.hide()
 		action.text="현재 슬롯 비우기";action.disabled=data.slots[int(data.selected)]==""
 		if response_left<=0:message.text="장비를 선택하고 아래 슬롯에 놓으세요.";message.modulate=Color.WHITE
 		if def.kind=="jetpack":
 			action.text="등 장비 해제" if data.get("back_slot","")==selected_item else "등에 장착";action.disabled=false
-			message.text="총기를 든 채 사용 · 점프 후 Space 다시 길게"
+			message.text="총기를 든 채 사용  점프 후 Space 다시 길게"
 func _slot(slot: int) -> void:
 	if visible and tabs.current_tab==0 and not selected_item.is_empty():_equip(selected_item,slot)
 	else:app.session.send_request("equipment_select",{"slot":slot})
@@ -527,7 +536,7 @@ func _show_uses(resource: String) -> void:
 		if definition.gem==resource:uses.append({"name":definition.name,"model":"crew/surveyor_suit","cost":FrontierCrewAugmentation.cost(field,FrontierCrewAugmentation.level(app.session.latest.crew.members[app.session.latest.self_id],field)),"where":"우주선 증강 장치  F","target":"body","id":field})
 	for id in FrontierEquipment.config().items:
 		var definition: Dictionary=FrontierEquipment.config().items[id]
-		if definition.cost.has(resource) and definition.get("craftable",true) and FrontierExpeditionResearch.craft_reason(app.session.latest,id).is_empty():uses.append({"name":definition.name,"model":definition.model,"cost":definition.cost,"where":"내 배낭  휴대 제작","target":"recipe","id":id})
+		if definition.cost.has(resource) and definition.get("craftable",true) and FrontierExpeditionResearch.craft_reason(app.session.latest,id).is_empty():uses.append({"name":definition.name,"model":definition.model,"cost":definition.cost,"where":"장비 제작대  내 배낭 재료","target":"recipe","id":id})
 	for id in FrontierProductionTier2.config().products:
 		var definition: Dictionary=FrontierProductionTier2.product(id)
 		if definition.cost.has(resource) and int(definition.tier)<=2:uses.append({"name":definition.name,"model":definition.model,"cost":definition.cost,"where":"현장 제작소  F  공동 창고 재료","target":"product","id":id})
@@ -565,8 +574,8 @@ func _open_use(use: Dictionary) -> void:
 func _navigate_use(use: Dictionary) -> void:
 	usage_dialog.hide();usage_dialog.queue_free()
 	match use.target:
-		"product":preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":"factory","product":use.id})
-		"recipe":tabs.current_tab=1;browsers["제작"].search.clear();selected_definition=use.id;last_key="";_filter_items();_refresh_details();_highlight()
+		"product":preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":FrontierFieldManufacturing.station(use.id),"product":use.id})
+		"recipe":preload("res://scripts/ui/work_guidance.gd").navigate(app,{"kind":"equipment_workbench"})
 		"body":tabs.current_tab=3
 		"research":app.close_menus();app.toggle_research();app.research_frame.tabs.current_tab=0
 		"building":
@@ -591,10 +600,10 @@ func _weapon_details(gun: Dictionary) -> void:
 	var neutral_dps:=FrontierWeaponLoot.dps(gun)*float(spec.get("health",1.0))
 	var limits:=FrontierWeaponLoot.damage_range(gun)*float(spec.get("health",1.0))
 	if tabs.current_tab==1:FrontierInterfaceStyle.label(stats,"제작 시 피해 품질 80~120%",12,FrontierInterfaceStyle.WARNING)
-	var numbers:=FrontierInterfaceStyle.label(stats,"%s %.1f~%.1f × %d\n평균 %.1f DPS  ·  탄창 %d발\n장전 %.2f초  ·  %dm"%["기준 피해" if tabs.current_tab==1 else "직접 피해",limits.x,limits.y,int(gun.pellets),neutral_dps,int(gun.magazine),float(gun.reload),int(gun.range)],12);numbers.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;numbers.tooltip_text="일반 체력 대상 · 장전 포함 지속 사격 · 약점, 지속 피해와 전설 효과 제외"
+	var numbers:=FrontierInterfaceStyle.label(stats,"%s %.1f~%.1f × %d\n평균 %.1f DPS  탄창 %d발\n장전 %.2f초  %dm"%["기준 피해" if tabs.current_tab==1 else "직접 피해",limits.x,limits.y,int(gun.pellets),neutral_dps,int(gun.magazine),float(gun.reload),int(gun.range)],12);numbers.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;numbers.tooltip_text="일반 체력 대상  장전 포함 지속 사격  약점, 지속 피해와 전설 효과 제외"
 	var family: Dictionary=FrontierFirearms.config().families[gun.firearm]
 	var ammo_name: String="무한 예비탄" if str(family.ammo_type).is_empty() else str(FrontierFirearms.config().ammunition[family.ammo_type].name)
-	var identity:=FrontierInterfaceStyle.label(stats,ammo_name+" · R 재장전\n"+str(family.identity),12,FrontierInterfaceStyle.MUTED);identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	var identity:=FrontierInterfaceStyle.label(stats,ammo_name+"  R 재장전\n"+str(family.identity),12,FrontierInterfaceStyle.MUTED);identity.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var current:=FrontierFirearms.item(app.session.latest.crew.members[app.session.latest.self_id],str(data.slots[int(data.selected)]))
 	if current.has("firearm") and current.get("item_id","")!=gun.get("item_id",""):
 		var current_dps:=FrontierWeaponLoot.dps(current)*float(FrontierWeaponLoot.config().elements[current.element_id].get("health",1.0))

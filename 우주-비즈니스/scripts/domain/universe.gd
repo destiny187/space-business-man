@@ -238,8 +238,8 @@ static func validate_world(value: Variant) -> String:
 		if corporate.has("coopertech_links") and (not corporate.has("traces") or not corporate.coopertech_links is Dictionary or corporate.coopertech_links.get("version")!=1):return "CooperTech 좌표 설정 오류"
 		if corporate.has("maintenance") and (not corporate.has("salvage") or not corporate.has("expansion") or not FrontierMineMaintenance.valid_rules(corporate.maintenance)):return "mine 정비 설정 오류"
 		if corporate.has("salvage") and (not corporate.has("traffic") or not FrontierFreightSalvage.valid_rules(corporate.salvage)):return "유실 화물 설정 오류"
-	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전·설정 오류"
-	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전·설정 오류"
+	if m.settings.has("ground_rules") and not FrontierGroundProgression.valid(m.settings.ground_rules):return "지상 분포 버전  설정 오류"
+	if m.settings.has("planetary_cycles") and not FrontierPlanetaryCycles.valid(m.settings.planetary_cycles):return "천체 시간 버전  설정 오류"
 	if m.settings.has("system_rules"):
 		var rules: Variant=m.settings.system_rules
 		if not rules is Dictionary or rules.get("version")!=1 or rules.get("pair_planets")!=16 or rules.get("minimum_planets")!=4 or rules.get("maximum_planets")!=12:return "항성계 배치 규칙이 올바르지 않습니다."
@@ -281,7 +281,7 @@ static func validate_world(value: Variant) -> String:
 		var station_error:=FrontierSpaceStation.validate(value)
 		if not station_error.is_empty():return station_error
 	if value.has("vessel"):
-		if not value.has("crew") or not value.has("business"):return "원정선 소유 세계·사업 장부 누락"
+		if not value.has("crew") or not value.has("business"):return "원정선 소유 세계  사업 장부 누락"
 		var vessel_error: String=FrontierVesselRefit.validate(value.vessel,int(m.seed),value.get("crew",{}).get("world_id",""))
 		if not vessel_error.is_empty():return vessel_error
 	if value.has("business"):
@@ -365,8 +365,8 @@ static func central_view(manifest: Dictionary,system_index: int,local_viewer: Ve
 	return {"id":core.id,"visible":distance/unit<=float(core.visible_within_galaxy_units),"direction":relative.normalized(),"distance_galaxy_units":distance/unit,"angular_scale":float(core.model_scale_galaxy_units)*unit/maxf(distance,1.0)}
 
 static func landing_restriction(body: Dictionary) -> String:
-	if body.get("management",{}).get("access","")=="orbital_only":return "Space Y 복원 완료 관리 구역입니다. 지표 착륙·채굴·건설은 제한됩니다."
-	if body.get("origin","")=="solar_reference":return "태양계 · 테라포밍 불가 행성입니다. 착륙할 수 없습니다."
+	if body.get("management",{}).get("access","")=="orbital_only":return "Space Y 복원 완료 관리 구역입니다. 지표 착륙  채굴  건설은 제한됩니다."
+	if body.get("origin","")=="solar_reference":return "태양계  테라포밍 불가 행성입니다. 착륙할 수 없습니다."
 	if not landable(body):return "착륙할 표면이 없습니다. 궤도 탐사만 가능합니다."
 	return ""
 
@@ -426,7 +426,7 @@ static func entry_position(m: Dictionary,ordinal: int,elapsed: float,extra: floa
 	var cfg: Dictionary=presentation().entry_overview
 	var outward:=target.normalized()
 	outward=(outward+Vector3.UP*float(cfg.elevation)+outward.cross(Vector3.UP)*float(cfg.side_offset)).normalized()
-	var clearance: float=maxf(float(cfg.minimum_clearance),navigation_radius(b)+float(m.settings.flight.arrival_clearance))
+	var clearance: float=maxf(maxf(float(cfg.minimum_clearance),radius(b)*float(cfg.planet_radius_multiple)),navigation_radius(b)+float(m.settings.flight.arrival_clearance))
 	if int(b.get("moons",0))>0 or b.get("rings",false):clearance=maxf(clearance,radius(b)*7.5)
 	return (target+outward*(clearance+extra)).limit_length(float(system_layout(m,system_index(m,ordinal)).boundary)*float(cfg.boundary_fraction))
 static func entry_focus(m: Dictionary,ordinal: int,elapsed: float) -> Vector3:

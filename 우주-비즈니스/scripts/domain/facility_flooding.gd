@@ -1,7 +1,7 @@
 class_name FrontierFacilityFlooding
 extends RefCounted
 ## Host rule; exported Blender model envelopes avoid loading meshes in simulation ticks.
-const STATUS: String="완전 침수 · 사용 불가"
+const STATUS: String="완전 침수  사용 불가"
 static var _config: Dictionary={}
 static func config() -> Dictionary:
  if _config.is_empty():_config=JSON.parse_string(FileAccess.get_file_as_string("res://data/facility_water_bounds.json"))
@@ -9,6 +9,7 @@ static func config() -> Dictionary:
 static func bounds(row: Dictionary) -> AABB:
  var tiers: Dictionary=config().bounds.get(row.get("type",""),{})
  var box: Dictionary=tiers.get(str(int(row.get("tier",1))),tiers.get("1",{}))
+ if FrontierDiscoveryUtilities.building(str(row.get("type",""))):box=FrontierDiscoveryUtilities.config().get("water_bounds",{}).get(row.type,{})
  if box.is_empty():return AABB()
  var low:=FrontierCrewWorld.vector(box.min);var high:=FrontierCrewWorld.vector(box.max)
  return AABB(low,high-low)
@@ -55,7 +56,7 @@ static func guard(world: Dictionary,actor: String,kind: String,args: Dictionary)
  var id:=str(args.get("building_id",args.get("facility_id",args.get("factory_id",args.get("access_facility_id","")))))
  if id.is_empty():return ""
  var row: Dictionary=FrontierExpeditionBusiness.site(local).get("buildings",{}).get(id,{})
- return STATUS+" · 수위가 내려간 뒤 이용하세요." if not row.is_empty() and submerged(local,row) else ""
+ return STATUS+"  수위가 내려간 뒤 이용하세요." if not row.is_empty() and submerged(local,row) else ""
 
 static func refresh_base(world: Dictionary,site: Dictionary) -> void:
  if site.is_empty():return

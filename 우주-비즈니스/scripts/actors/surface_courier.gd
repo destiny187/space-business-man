@@ -73,7 +73,7 @@ func _process(_delta: float) -> void:
 		var target: Array=record.robot.target;var packet: Dictionary={"result":{}}
 		var task:=WorkerThreadPool.add_task(_build_path.bind(packet,position-Vector3.UP*.75,Vector3(target[0],target[1],target[2]),_all_edits(),terrain.seed_number,terrain.span,terrain.field.traits.duplicate(true)),false,"courier navigation")
 		job={"task":task,"packet":packet,"version":request_version}
-	label.text="M–07  ·  %d/%d\n%s" % [int(record.robot.cargo),int(settings.cargo_capacity),reason]
+	label.text="M–07  %d/%d\n%s" % [int(record.robot.cargo),int(settings.cargo_capacity),reason]
 func _physics_process(delta: float) -> void:
 	if not terrain.ready_at(position):velocity=Vector3.ZERO;return
 	var close_to_carrier: bool=record.robot.phase=="pickup" and not pending_path and job.is_empty() and _can_transfer()
@@ -94,7 +94,7 @@ func _physics_process(delta: float) -> void:
 		stuck_time=stuck_time+delta if travelled<.005 else 0
 		for wheel in wheels:wheel.rotation.x-=travelled/(.63*.45)
 	if stuck_time>2:
-		points.clear();reason="경로가 막혔습니다 · 화물 보존";retry_time=3;stuck_time=0
+		points.clear();reason="경로가 막혔습니다  화물 보존";retry_time=3;stuck_time=0
 	if close_to_carrier:_transfer(delta)
 	elif not pending_path and job.is_empty() and waypoint>=points.size() and record.robot.phase!="idle":
 		var target: Array=record.robot.target
@@ -110,7 +110,7 @@ func _can_transfer() -> bool:
 	query.exclude=[get_rid(),player.get_rid()]
 	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
 func _transfer(delta: float) -> void:
-	if record.robot.phase=="pickup" and not _can_transfer():reason="운반 대상이 멀어졌습니다 · 호출 대기";return
+	if record.robot.phase=="pickup" and not _can_transfer():reason="운반 대상이 멀어졌습니다  호출 대기";return
 	transfer_time+=delta
 	reason="채집물 적재 중" if record.robot.phase=="pickup" else "착륙 창고에 하역 중"
 	if transfer_time<float(settings.transfer_seconds):return
@@ -120,7 +120,7 @@ func _transfer(delta: float) -> void:
 		status_changed.emit("로봇에 암석 %d개를 실었습니다." % loaded);request_return()
 	else:
 		var unloaded:=FrontierSurfaceLogistics.unload(record)
-		record.robot.phase="idle";points.clear();reason="하역 완료 · 대기"
+		record.robot.phase="idle";points.clear();reason="하역 완료  대기"
 		status_changed.emit("착륙 창고에 암석 %d개를 하역했습니다." % unloaded)
 func _exit_tree() -> void:
 	if not job.is_empty():WorkerThreadPool.wait_for_task_completion(job.task)

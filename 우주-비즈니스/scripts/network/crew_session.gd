@@ -165,7 +165,7 @@ func _process(delta: float) -> void:
 	var now:=Time.get_ticks_msec()/1000.0
 	for peer in authority.advance_time(now):_reject_peer(peer,"참가 준비 시간이 초과됐습니다.")
 	for peer in pending_connections.keys():
-		if pending_connections[peer]<=now:_reject_peer(peer,"호스트와 버전·프로필 확인을 완료하지 못했습니다.")
+		if pending_connections[peer]<=now:_reject_peer(peer,"호스트와 버전  프로필 확인을 완료하지 못했습니다.")
 	for peer in closing_connections.keys():
 		if closing_connections[peer]<=now:
 			enet.disconnect_peer(peer);closing_connections.erase(peer)

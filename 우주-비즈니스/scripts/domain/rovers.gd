@@ -67,7 +67,7 @@ static func craft_reason(world: Dictionary,actor: String,id: String) -> String:
 	if research(world.crew.members[actor])<1:return "착륙선에서 현장 물류 I을 연구하세요."
 	if not FrontierPlanetSupply.operating(s) or b.get("type")!="factory":return "가동 중인 로봇 제작소가 필요합니다."
 	if FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(b.position))>8:return "제작소 가까이 이동하세요."
-	if not b.get("active",false):return "제작소의 전력·가동 상태를 확인하세요."
+	if not b.get("active",false):return "제작소의 전력  가동 상태를 확인하세요."
 	if factory_busy(world,id) or not b.get("production",{}).is_empty():return "제작소가 다른 제품을 조립 중입니다."
 	for job in s.jobs.values():
 		if job.factory_id==id:return "로봇 조립이 끝나면 제작하세요."
@@ -105,7 +105,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 		if seat.get("id")!=id:return "탑승한 차량이 아닙니다."
 		# The request only starts safe braking; the authority completes exit after finding space.
 		runtime.exits[actor]=id;return ""
-	if busy(runtime,id):return "차량 정비·복구 작업이 진행 중입니다."
+	if busy(runtime,id):return "차량 정비  복구 작업이 진행 중입니다."
 	if kind=="rover_enter":
 		if not seat.is_empty():return "이미 차량에 탑승했습니다."
 		if r.overturned or not stopped(r):return "바로 선 차량이 정차하면 탑승하세요."
@@ -127,7 +127,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	if kind=="rover_transfer":return transfer(world,actor,r,args)
 	if kind=="rover_repair":
 		if float(r.health)>=float(stats(r).health):return "내구도가 최대입니다."
-		if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().repair_cost):return "가방에 철 5·구리 2가 필요합니다."
+		if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().repair_cost):return "가방에 철 5  구리 2가 필요합니다."
 		FrontierExpeditionBusiness.transfer(world.business.bags[actor],config().repair_cost,-1);r.health=minf(float(stats(r).health),float(r.health)+float(config().repair_amount));r.event="service";r.event_serial+=1;return ""
 	if kind=="rover_rescue":
 		if float(r.battery)>=20:return "배터리가 20 미만일 때 구조 충전할 수 있습니다."
@@ -191,16 +191,16 @@ static func valid(world: Dictionary) -> String:
 		if not id is String or not id.begins_with("rover:") or not id.trim_prefix("rover:").is_valid_int() or id!="rover:"+str(int(id.trim_prefix("rover:"))) or int(id.trim_prefix("rover:"))<1 or int(id.trim_prefix("rover:"))>int(f.counter):return "차량 고유 번호 오류"
 	for id in f.vehicles:
 		var r: Variant=f.vehicles[id]
-		if not r is Dictionary or r.get("id")!=id or r.get("definition")!=config().definition or r.get("owner_world_id")!=world.crew.world_id or r.get("location_kind") not in ["surface","ship"]:return "차량 소유·위치 오류"
+		if not r is Dictionary or r.get("id")!=id or r.get("definition")!=config().definition or r.get("owner_world_id")!=world.crew.world_id or r.get("location_kind") not in ["surface","ship"]:return "차량 소유  위치 오류"
 		if FrontierUniverse.ordinal_of(world.manifest,str(r.get("body_id","")))<0 or not FrontierUniverse._vector3_array(r.get("position")) or not FrontierUniverse._vector3_array(r.get("rotation")):return "차량 지표 위치 오류"
-		if not FrontierExpeditionBusiness.integer(r.get("upgrade_level"),0,1) or not FrontierUniverse._finite(r.get("battery"),0,float(stats(r).battery)) or not FrontierUniverse._finite(r.get("health"),0,float(stats(r).health)):return "차량 강화·내구·전력 오류"
+		if not FrontierExpeditionBusiness.integer(r.get("upgrade_level"),0,1) or not FrontierUniverse._finite(r.get("battery"),0,float(stats(r).battery)) or not FrontierUniverse._finite(r.get("health"),0,float(stats(r).health)):return "차량 강화  내구  전력 오류"
 		if not FrontierExpeditionBusiness.valid_inventory(r.get("cargo"),400) or not r.get("equipment") is Dictionary or FrontierItemInventory.used(r.cargo,r.equipment.size())>int(config().cargo_slots):return "차량 화물칸 오류"
 		for key in r.equipment:
 			var item: Variant=r.equipment[key]
 			if not item is Dictionary or key!=str(item.get("owner"))+"/"+str(item.get("item_id")) or not world.crew.members.has(item.get("owner")) or not FrontierEquipment.config().items.has(item.get("definition")):return "차량 장비 소유 기록 오류"
 			if stored_items.has(key) or world.crew.members[item.owner].get("loadout",{}).get("items",{}).has(item.item_id) or world.crew.get("cargo_equipment",{}).has(key):return "차량 장비 중복 위치 오류"
 			for site in world.get("business",{}).get("sites",{}).values():
-				if site.get("stored_equipment",{}).has(key):return "차량·창고 장비 중복 오류"
+				if site.get("stored_equipment",{}).has(key):return "차량  창고 장비 중복 오류"
 			stored_items[key]=true
 		if not FrontierUniverse._finite(r.get("speed"),-20,30) or not FrontierUniverse._finite(r.get("steering"),-1,1) or not r.get("overturned") is bool or not FrontierUniverse._finite(r.get("distance"),0,1000000000) or not r.get("event") is String or not FrontierExpeditionBusiness.integer(r.get("event_serial"),0,1000000000):return "차량 운동 기록 오류"
 	for id in f.jobs:

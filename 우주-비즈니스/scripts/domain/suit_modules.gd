@@ -75,7 +75,7 @@ static func apply(world: Dictionary,actor: String,args: Dictionary) -> String:
  if action=="starter":
   if rack.starter:return "기초 실드 발생기를 이미 조립했습니다."
   if rack.items.size()>=int(config().case_capacity):return "모듈 케이스가 가득 찼습니다."
-  if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().starter_cost):return "철 6개·구리 4개가 필요합니다."
+  if not FrontierExpeditionBusiness.affordable(FrontierExpeditionBusiness.bag(world,actor),config().starter_cost):return "철 6개  구리 4개가 필요합니다."
   FrontierItemInventory.merge_legacy(world,actor)
   FrontierExpeditionBusiness.transfer(world.business.bags[actor],config().starter_cost,-1)
   rack.items["module:starter"]={"slot":"defense","tier":1,"rarity":"common","affixes":{},"seed":0,"source":"starter"};rack.starter=true
@@ -139,7 +139,7 @@ static func has_effect(member: Dictionary,effect: String) -> bool:
  return false
 static func effect_text(item: Dictionary) -> String:
  var d: Dictionary=config().legendary.get(str(item.get("legendary","")),{})
- return "" if d.is_empty() else str(d.name)+" · "+str(d.description)
+ return "" if d.is_empty() else str(d.name)+"  "+str(d.description)
 static func shield_multiplier(member: Dictionary) -> float:return float(config().legendary.shield_breaker.factor) if has_effect(member,"shield_breaker") else 1.0
 static func enter_combat(member: Dictionary) -> void:
  FrontierCrewVitals.ensure(member).combat_wait=float(config().legendary.field_regeneration.delay)

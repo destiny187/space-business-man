@@ -36,7 +36,7 @@ static func reason(caps: Dictionary,tier: int) -> String:
 	if gaps.is_empty():return ""
 	var names:=PackedStringArray()
 	for row in gaps:names.append("%s %d/%d"%[row.name,row.current,row.required])
-	return "항해 내성 부족  %s. 선박 정비(K) 또는 정거장에서 개장·선체 교체하세요."%"  ".join(names)
+	return "항해 내성 부족  %s. 선박 정비(K) 또는 정거장에서 개장  선체 교체하세요."%"  ".join(names)
 static func world_capabilities(world: Dictionary) -> Dictionary:
 	return world.get("navigation_capabilities",capabilities(world.get("vessel",{})))
 static func system_tier(manifest: Dictionary,index: int) -> int:

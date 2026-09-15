@@ -155,7 +155,7 @@ static func targets(row: Dictionary) -> Array:
   if not row.open:result.append({"part":"hatch","point":point(row,Vector3(0,1.6,2.4)),"action":"도구로 해치 파괴"})
   if row.open:result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 회수"})
  elif mode=="robot":
-  if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,float(FrontierCooperTechSquads.spec(row).center) if FrontierCooperTechSquads.enabled(row) else 1.5,0)),"action":"공격무기로 교전"+(" · 실드 %.0f / %.0f"%[float(row.get("shield",0)),float(row.get("shield_max",0))] if float(row.get("shield_max",0))>0 else "")})
+  if row.hp>0:result.append({"part":"robot","point":point(row,Vector3(0,float(FrontierCooperTechSquads.spec(row).center) if FrontierCooperTechSquads.enabled(row) else 1.5,0)),"action":"공격무기로 교전"+("  실드 %.0f / %.0f"%[float(row.get("shield",0)),float(row.get("shield_max",0))] if float(row.get("shield_max",0))>0 else "")})
   else:result.append({"part":"cargo","point":cargo_point(row),"action":"F 쿠퍼테크 부품 회수"})
  elif mode=="ice":
   if not row.open:result.append({"part":"ice","point":point(row,Vector3(0,1.3,1.6)),"action":"지형 변환기로 얼음 굴착"})
@@ -164,7 +164,7 @@ static func targets(row: Dictionary) -> Array:
   if row.open and int(row.gems)<int(config().seismic.gems):result.append({"part":"gems","point":point(row,Vector3(0,-7.2,-1)),"action":"Mk.2 채집기로 보석 채굴"})
  elif mode=="drone" and not row.open:result.append({"part":"drone","point":moving_point(row),"action":"사격으로 드론 구동부 정지"})
  elif row.has("native"):
-  result.append({"part":"cargo","point":cargo_point(row),"action":"F 탈락물·은닉품 회수" if FrontierNativeIncidents.available(row) else ("E로 현지 개체 분석" if not row.native_observed else "생물의 이동을 기다리세요")})
+  result.append({"part":"cargo","point":cargo_point(row),"action":"F 탈락물  은닉품 회수" if FrontierNativeIncidents.available(row) else ("E로 현지 개체 분석" if not row.native_observed else "생물의 이동을 기다리세요")})
  else:
   if row.carrier=="":result.append({"part":"cargo","point":cargo_point(row),"action":"F 화물 들기" if mode in ["carry","drone"] else "F 은닉품 회수"})
  if preload("res://scripts/domain/storm_archive.gd").enabled(row):
@@ -374,11 +374,12 @@ static func reward(world: Dictionary,actor: String,value: Dictionary,equipment: 
  if not world.business.bags.has(actor):world.business.bags[actor]=FrontierExpeditionBusiness.inventory()
  FrontierExpeditionBusiness.transfer(world.business.bags[actor],value,1);return ""
 static func snapshot(world: Dictionary,actor: String) -> Dictionary:
- var result: Dictionary={"version":1,"records":{}}
+ var result: Dictionary={"version":1,"records":{},"research_evidence":{}}
  if not world.crew.members.has(actor):return result
  var local:=FrontierShuttles.context(world,actor)
  for id in records(world):
   var row: Dictionary=records(world)[id]
+  FrontierDiscoveryIndustry.collect_evidence(row,"incidents",result.research_evidence)
   if row.body_id==local.location and (row.carrier==actor or row.battery_carrier==actor or minf(FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(row.position)),FrontierCrewWorld.vector(world.crew.members[actor].position).distance_to(FrontierCrewWorld.vector(row.relay)))<float(config().view_distance)+80):result.records[id]=row.duplicate(true)
  return result
 static func validate(world: Dictionary) -> String:

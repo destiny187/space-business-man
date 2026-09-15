@@ -82,7 +82,7 @@ func begin() -> void:
  finch=not app.session.latest.get("local_shuttle","").is_empty()
  profile=FrontierLandingSurfaceEffects.profile(body);landing_audio.begin(profile,finch)
  for material in [cover,flow_material]:material.set_shader_parameter("atmosphere",profile.air)
- caption.text=body.name+"  ·  궤도 이탈"
+ caption.text=body.name+"  궤도 이탈"
  cover.set_shader_parameter("tint",Color(body.get("traits",{}).get("dust","a6afb8")))
  flow_material.set_shader_parameter("tint",Color(body.get("traits",{}).get("dust","a6afb8")))
  cover.set_shader_parameter("cover",0.0)
@@ -150,7 +150,7 @@ func tick(delta: float) -> void:
    vessel_overlay.camera.transform=entry_view.interpolate_with(target,smoothstep(0,1,clampf(age/1.5,0,1)))
    vessel_overlay.camera.fov=lerpf(entry_fov,landing_camera.fov,smoothstep(0,1,clampf(age/1.5,0,1)))
   if _surface_ready() and age>=1.5:phase="warming";age=0;warm_frames=0;caption.text="착륙 시야 준비 중"
-  elif age>15:caption.text="착륙 지형 준비 중 · 호스트 기록과 지형을 기다립니다"
+  elif age>15:caption.text="착륙 지형 준비 중  호스트 기록과 지형을 기다립니다"
  elif phase=="warming":
   # Draw the actual initial descent camera behind the opaque curtain.
   # Restart the barrier if a terrain edit or resource request arrives meanwhile.
@@ -177,7 +177,7 @@ func tick(delta: float) -> void:
   app.surface_world.landing_ship.visible=not in_cloud
   drive.set_thrust(.4+sin(t*PI)*.2+smoothstep(.7,.94,t)*.22,false)
   if t>=1:
-   phase="touchdown";age=0;caption.text=app.surface_world.body.name+"  ·  착륙"
+   phase="touchdown";age=0;caption.text=app.surface_world.body.name+"  착륙"
    drive.set_thrust(.5,false)
  elif phase=="touchdown":
   var t:=clampf(age/float(config.touchdown_seconds),0,1)
@@ -268,7 +268,7 @@ func _warm_camera() -> void:
   landing_camera.position=ship+app.surface_world.landing_ship.basis*Vector3(34,18,42)*(.38 if finch else 1.0);landing_camera.look_at(ship)
 
 func _begin_descent() -> void:
- phase="descent";age=0;caption.text=app.surface_world.body.name+"  ·  착륙 지점으로 하강"
+ phase="descent";age=0;caption.text=app.surface_world.body.name+"  착륙 지점으로 하강"
 
 func cancel() -> void:
  var leaving:=phase in ["launch_preparing","ascent","escape_loading","escape","exit_handover"]
@@ -318,7 +318,7 @@ func begin_launch() -> void:
  start=center+(exit_position-center).normalized()*(FrontierUniverse.navigation_radius(body)+12)
  finch=not app.session.latest.get("local_shuttle","").is_empty();profile=FrontierLandingSurfaceEffects.profile(body);landing_audio.begin(profile,finch)
  for material in [cover,flow_material]:material.set_shader_parameter("atmosphere",profile.air)
- caption.text=body.name+"  ·  이륙"
+ caption.text=body.name+"  이륙"
  for material in [cover,flow_material]:material.set_shader_parameter("tint",Color(body.traits.dust))
  cover.set_shader_parameter("cover",0.0)
  if is_instance_valid(landing_camera):landing_camera.queue_free()
@@ -330,7 +330,7 @@ func begin_launch() -> void:
   app.surface_world.prepare_landing_view([ship_home])
   landing_camera=Camera3D.new();app.add_child(landing_camera);landing_camera.far=app.camera.far;landing_camera.fov=65
   landing_camera.position=ship_home+Vector3(34,18,42);landing_camera.look_at(ship_home+Vector3(0,1,-4))
-  landing_camera.make_current();caption.text=body.name+"  ·  이륙 준비"
+  landing_camera.make_current();caption.text=body.name+"  이륙 준비"
   _prepare_ascent()
  else:
   phase="escape_loading";cover.set_shader_parameter("cover",1.0)
@@ -343,7 +343,7 @@ func _prepare_ascent() -> void:
  landing_camera=null
  if not _prepare_descent(true):return
  phase="ascent";age=0
- caption.text=app.surface_world.body.name+"  ·  이륙"
+ caption.text=app.surface_world.body.name+"  이륙"
  audio.play("sfx_vessel_boost");engine.pitch_scale=.7;engine.volume_db=-22;engine.play()
 
 func _prepare_escape() -> void:
@@ -371,7 +371,7 @@ func _tick_launch(delta: float) -> void:
    if member.get("connected",true):
     total+=1
     if member.aboard:boarded+=1
-  caption.text=("조종석 · " if app.session.latest.self_id==app.session.latest.crew.pilot_id else "탑승 완료 · ")+"승무원 %d/%d · 전원 탑승 시 자동 이륙"%[boarded,total]
+  caption.text=("조종석  " if app.session.latest.self_id==app.session.latest.crew.pilot_id else "탑승 완료  ")+"승무원 %d/%d  전원 탑승 시 자동 이륙"%[boarded,total]
  elif phase=="launch_preparing":
   _prepare_ascent()
  elif phase=="ascent":
@@ -390,7 +390,7 @@ func _tick_launch(delta: float) -> void:
   engine.pitch_scale=lerpf(.7,1.2,t);engine.volume_db=lerpf(-22,-17,t)
   if t>=1:
    entry_view=vessel_overlay.camera.transform;entry_fov=vessel_overlay.camera.fov
-   phase="escape_loading";age=0;warm_frames=0;caption.text="대기층 상승 · 우주 시야 준비 중"
+   phase="escape_loading";age=0;warm_frames=0;caption.text="대기층 상승  우주 시야 준비 중"
    cover.set_shader_parameter("cover",1.0)
    if profile.get("air",0.0)>.03:audio.play("sfx_atmosphere_entry")
    _prepare_escape()
@@ -416,7 +416,7 @@ func _tick_launch(delta: float) -> void:
   engine.pitch_scale=lerpf(1.2,.8,t);engine.volume_db=lerpf(-17,-25,t)
   if t>=1:
    phase="exit_handover";age=0;engine.stop()
-   caption.text="직접 조종  W/S 속도  Q/E 롤  마우스 방향" if app.session.latest.self_id==app.session.latest.crew.pilot_id else "우주 비행 · 호스트 조종"
+   caption.text="직접 조종  W/S 속도  Q/E 롤  마우스 방향" if app.session.latest.self_id==app.session.latest.crew.pilot_id else "우주 비행  호스트 조종"
  elif phase=="exit_handover":
   var t:=clampf(age/float(config.escape_handover_seconds),0,1)
   for bar in bars:bar.modulate.a=1-t

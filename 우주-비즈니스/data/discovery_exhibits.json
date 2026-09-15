@@ -1,0 +1,908 @@
+{
+  "version": 1,
+  "items": {
+    "exhibit_singing_stones": {
+      "name": "공명 돌기둥 정원",
+      "source": "discoveries",
+      "template": "singing_stones",
+      "source_name": "노래하는 돌기둥",
+      "source_model": "discoveries/singing_stones",
+      "model": "exhibits/singing_stones",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "노래하는 돌기둥 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현장의 공명 환경음을 감상할 수 있습니다. 전시품은 소리를 내지 않는 돌기둥 복제품입니다."
+    },
+    "exhibit_meteor_glass": {
+      "name": "운석 유리 조형물",
+      "source": "discoveries",
+      "template": "meteor_glass",
+      "source_name": "운석 유리",
+      "source_model": "discoveries/meteor_glass",
+      "model": "exhibits/meteor_glass",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "운석 유리 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현재 실용 연구 효과는 없습니다. 충격으로 생긴 유리의 형태를 전시합니다."
+    },
+    "exhibit_dew_basin": {
+      "name": "이슬 돌그릇 수반",
+      "source": "discoveries",
+      "template": "dew_basin",
+      "source_name": "이슬 돌그릇",
+      "source_model": "discoveries/dew_basin",
+      "model": "exhibits/dew_basin",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "이슬 돌그릇 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "응결 집수기 연구: 대기 15kPa 이상, 자연 수분 지표 18% 이상, 현장 온도 -10~55°C와 4kW 전력이 필요합니다. 얼음 1개를 12초마다 현장 창고에 공급하며 강화하면 8초입니다. 창고가 없거나 가득 차면 멈춥니다."
+    },
+    "exhibit_salt_bloom": {
+      "name": "소금꽃 결정 화분",
+      "source": "discoveries",
+      "template": "salt_bloom",
+      "source_name": "소금꽃",
+      "source_model": "discoveries/salt_bloom",
+      "model": "exhibits/salt_bloom",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "소금꽃 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현재 정화나 조명 효과는 없습니다. 꽃처럼 자란 결정의 형태를 전시합니다."
+    },
+    "exhibit_molting_trail": {
+      "name": "탈피 껍질 전시",
+      "source": "discoveries",
+      "template": "molting_trail",
+      "source_name": "탈피 흔적",
+      "source_model": "discoveries/molting_trail",
+      "model": "exhibits/molting_trail",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "탈피 흔적 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현장의 이동 흔적을 기록합니다. 전시품은 껍질 복제품이며 생물을 유인하지 않습니다."
+    },
+    "exhibit_fossil_ripples": {
+      "name": "물결 화석 전시판",
+      "source": "discoveries",
+      "template": "fossil_ripples",
+      "source_name": "화석 물결층",
+      "source_model": "discoveries/fossil_ripples",
+      "model": "exhibits/fossil_ripples",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "화석 물결층 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "굴착으로 과거의 물결층을 조사합니다. 전시품은 지층의 복제품이며 광물을 생산하지 않습니다."
+    },
+    "exhibit_seed_pockets": {
+      "name": "휴면 종자 모형 화분",
+      "source": "discoveries",
+      "template": "seed_pockets",
+      "source_name": "휴면 종자 주머니",
+      "source_model": "discoveries/seed_pockets",
+      "model": "exhibits/seed_pockets",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "휴면 종자 주머니 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현지에 유효한 식물 계통이 있으면 실제 표본을 확보해 기존 표본 연구와 이식에 사용할 수 있습니다. 장식 화분은 살아 있는 표본을 제공하지 않습니다."
+    },
+    "exhibit_iron_sand_ribbons": {
+      "name": "철모래 무늬 정원",
+      "source": "discoveries",
+      "template": "iron_sand_ribbons",
+      "source_name": "철모래 띠",
+      "source_model": "discoveries/iron_sand_ribbons",
+      "model": "exhibits/iron_sand_ribbons",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "철모래 띠 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "조사한 현장 주변의 실제 광맥 단서를 도감에 남깁니다. 전시품 자체는 광맥을 찾거나 자원을 만들지 않습니다."
+    },
+    "exhibit_shell_shelter": {
+      "name": "빈 껍질 조형 의자",
+      "source": "discoveries",
+      "template": "shell_shelter",
+      "source_name": "빈 껍질 피난처",
+      "source_model": "discoveries/shell_shelter",
+      "model": "exhibits/shell_shelter",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "빈 껍질 피난처 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "껍질 구조를 닮은 조형 의자입니다. 추가 기상 보호나 앉기 조작은 없습니다."
+    },
+    "exhibit_fallen_survey_pod": {
+      "name": "관측 캡슐 기념 모형",
+      "source": "discoveries",
+      "template": "fallen_survey_pod",
+      "source_name": "추락 관측 캡슐",
+      "source_model": "discoveries/fallen_survey_pod",
+      "model": "exhibits/fallen_survey_pod",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "추락 관측 캡슐 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현장 수리 후 유한한 회수 보상과 실제 광맥 단서를 얻습니다. 복제 캡슐에서는 보상을 다시 받지 않습니다."
+    },
+    "exhibit_hollow_geode": {
+      "name": "절개 수정암 전시",
+      "source": "discoveries",
+      "template": "hollow_geode",
+      "source_name": "속 빈 수정암",
+      "source_model": "discoveries/hollow_geode",
+      "model": "exhibits/hollow_geode",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "속 빈 수정암 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "굴착으로 수정 구조를 기록합니다. 현재 직접 보석 지급은 없으며 전시품도 보석을 생산하지 않습니다."
+    },
+    "exhibit_luminous_tidepool": {
+      "name": "발광 수역 모형",
+      "source": "discoveries",
+      "template": "luminous_tidepool",
+      "source_name": "발광 얕은 수역",
+      "source_model": "discoveries/luminous_tidepool",
+      "model": "exhibits/luminous_tidepool",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "발광 얕은 수역 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현지의 유효한 미생물 계통을 실제 표본으로 확보하면 기존 분석과 배양에 사용할 수 있습니다. 장식은 발광 색을 재현한 모형이며 살아 있는 표본이나 조명 범위 효과는 없습니다."
+    },
+    "exhibit_buried_aqueduct": {
+      "name": "돌 수로 정원",
+      "source": "discoveries",
+      "template": "buried_aqueduct",
+      "source_name": "매몰 수로",
+      "source_model": "discoveries/buried_aqueduct",
+      "model": "exhibits/buried_aqueduct",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "매몰 수로 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 현장에서 수로를 열면 유한한 물이 실제 지형에 방출됩니다. 장식 수로는 물을 공급하거나 지형을 바꾸지 않습니다."
+    },
+    "exhibit_thermal_chimneys": {
+      "name": "열수 굴뚝 정원",
+      "source": "discoveries",
+      "template": "thermal_chimneys",
+      "source_name": "열수 굴뚝 무리",
+      "source_model": "discoveries/thermal_chimneys",
+      "model": "exhibits/thermal_chimneys",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "열수 굴뚝 무리 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "열수 발전기 연구: 해당 행성에서 조사를 완료한 실제 열수 굴뚝 48m 이내에서 18kW를 공급합니다. 강화하면 27kW이며 열원 범위 밖에서는 발전하지 않습니다. 장식 굴뚝은 열원으로 인정하지 않습니다."
+    },
+    "exhibit_spore_sails": {
+      "name": "포자 돛 모빌",
+      "source": "discoveries",
+      "template": "spore_sails",
+      "source_name": "포자 돛",
+      "source_model": "discoveries/spore_sails",
+      "model": "exhibits/spore_sails",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "포자 돛 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현지의 유효한 식물 계통을 표본으로 확보하면 기존 표본 연구와 이식에 사용할 수 있습니다. 장식 모빌은 파종하거나 생태 수치를 바꾸지 않습니다."
+    },
+    "exhibit_magnetic_arch": {
+      "name": "자성 아치 조각상",
+      "source": "discoveries",
+      "template": "magnetic_arch",
+      "source_name": "자성 아치",
+      "source_model": "discoveries/magnetic_arch",
+      "model": "exhibits/magnetic_arch",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "자성 아치 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 현장 주변의 실제 광맥 단서를 기록합니다. 장식 아치에는 집진이나 자기 선별 효과가 없습니다."
+    },
+    "exhibit_submerged_recorder": {
+      "name": "수몰 기록기 전시",
+      "source": "discoveries",
+      "template": "submerged_recorder",
+      "source_name": "수몰 기록기",
+      "source_model": "discoveries/submerged_recorder",
+      "model": "exhibits/submerged_recorder",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "수몰 기록기 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현장에서 유한한 부품과 광맥 단서를 회수합니다. 전시품에는 침수 경보나 추가 회수 보상이 없습니다."
+    },
+    "exhibit_fossil_nest": {
+      "name": "화석 둥지 복제품",
+      "source": "discoveries",
+      "template": "fossil_nest",
+      "source_name": "화석 둥지",
+      "source_model": "discoveries/fossil_nest",
+      "model": "exhibits/fossil_nest",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "화석 둥지 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "굴착으로 과거 둥지의 구조를 기록합니다. 전시품은 번식이나 먹이망 효과가 없는 복제품입니다."
+    },
+    "exhibit_mirror_canyon": {
+      "name": "거울 협곡 조형물",
+      "source": "discoveries",
+      "template": "mirror_canyon",
+      "source_name": "거울 협곡",
+      "source_model": "discoveries/mirror_canyon",
+      "model": "exhibits/mirror_canyon",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "거울 협곡 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "반사 지형의 형태를 전시합니다. 전시품에는 집광 발전이나 배양 효율 효과가 없습니다."
+    },
+    "exhibit_abandoned_drill": {
+      "name": "시추기 기념 모형",
+      "source": "discoveries",
+      "template": "abandoned_drill",
+      "source_name": "버려진 시추기",
+      "source_model": "discoveries/abandoned_drill",
+      "model": "exhibits/abandoned_drill",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "버려진 시추기 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "현장 수리에서 유한한 가공품과 광맥 단서를 회수합니다. 모형 시추기는 채굴하거나 굴착 상한을 바꾸지 않습니다."
+    },
+    "exhibit_lost_technology_archive": {
+      "name": "복제 기록고",
+      "source": "discoveries",
+      "template": "lost_technology_archive",
+      "source_name": "로스트 테크놀로지 기록고",
+      "source_model": "discoveries/lost_technology_archive",
+      "model": "exhibits/lost_technology_archive",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "로스트 테크놀로지 기록고 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 기록고를 복원하면 공동 전문 설계도를 확보합니다. 이미 가진 설계는 기존 규칙의 유한 부품으로 회수합니다. 복제 기록고에서는 설계도나 부품을 지급하지 않습니다."
+    },
+    "exhibit_wreck_beacon_trail": {
+      "name": "구조 비콘 기념물",
+      "source": "incidents",
+      "template": "wreck_beacon_trail",
+      "source_name": "끊어진 구조 신호",
+      "source_model": "incidents/wreck",
+      "model": "exhibits/wreck_beacon_trail",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "끊어진 구조 신호 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_scavenger_cache": {
+      "name": "부품 둥지 모형",
+      "source": "incidents",
+      "template": "scavenger_cache",
+      "source_name": "부품 수집 생물의 은닉처",
+      "source_model": "incidents/nest",
+      "model": "exhibits/scavenger_cache",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "부품 수집 생물의 은닉처 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_cliff_cargo": {
+      "name": "화물 상자 기념물",
+      "source": "incidents",
+      "template": "cliff_cargo",
+      "source_name": "절벽 운송 화물",
+      "source_model": "incidents/cliff",
+      "model": "exhibits/cliff_cargo",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "절벽 운송 화물 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_illuti_dormant_combat_robot": {
+      "name": "폐기 로봇 전시 모형",
+      "source": "incidents",
+      "template": "illuti_dormant_combat_robot",
+      "source_name": "쿠퍼테크 폐기 전투로봇",
+      "source_model": "incidents/robot",
+      "model": "exhibits/illuti_dormant_combat_robot",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "쿠퍼테크 폐기 전투로봇 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_icebound_cargo": {
+      "name": "빙결 화물 전시",
+      "source": "incidents",
+      "template": "icebound_cargo",
+      "source_name": "빙결 운송함",
+      "source_model": "incidents/ice",
+      "model": "exhibits/icebound_cargo",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "빙결 운송함 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_buried_power_chain": {
+      "name": "복원 전력선 모형",
+      "source": "incidents",
+      "template": "buried_power_chain",
+      "source_name": "끊어진 매몰 전력선",
+      "source_model": "incidents/wreck",
+      "model": "exhibits/buried_power_chain",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "끊어진 매몰 전력선 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_roaming_cargo_drone": {
+      "name": "화물 드론 전시",
+      "source": "incidents",
+      "template": "roaming_cargo_drone",
+      "source_name": "표류 화물 드론",
+      "source_model": "incidents/drone",
+      "model": "exhibits/roaming_cargo_drone",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "표류 화물 드론 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_seismic_gem_chamber": {
+      "name": "균열 결정 전시",
+      "source": "incidents",
+      "template": "seismic_gem_chamber",
+      "source_name": "지진 결정 공동",
+      "source_model": "incidents/gems",
+      "model": "exhibits/seismic_gem_chamber",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "지진 결정 공동 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_native_giant_passage": {
+      "name": "거대 발자국 전시",
+      "source": "incidents",
+      "template": "native_giant_passage",
+      "source_name": "거대 성체의 이동로",
+      "source_model": "incidents/nest",
+      "model": "exhibits/native_giant_passage",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "거대 성체의 이동로 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_native_guarded_nest": {
+      "name": "번식 둥지 복제품",
+      "source": "incidents",
+      "template": "native_guarded_nest",
+      "source_name": "현지 생물의 번식 둥지",
+      "source_model": "incidents/nest",
+      "model": "exhibits/native_guarded_nest",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "현지 생물의 번식 둥지 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_native_cave_presence": {
+      "name": "지하 진동 기록석",
+      "source": "incidents",
+      "template": "native_cave_presence",
+      "source_name": "지하 진동의 주인",
+      "source_model": "incidents/nest",
+      "model": "exhibits/native_cave_presence",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "지하 진동의 주인 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_native_rare_sighting": {
+      "name": "희귀 색채 기념석",
+      "source": "incidents",
+      "template": "native_rare_sighting",
+      "source_name": "낯선 빛깔의 현지 개체",
+      "source_model": "incidents/nest",
+      "model": "exhibits/native_rare_sighting",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "낯선 빛깔의 현지 개체 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_storm_archive_wreck": {
+      "name": "폭풍 기록고 모형",
+      "source": "incidents",
+      "template": "storm_archive_wreck",
+      "source_name": "폭풍 속 연구선 기록고",
+      "source_model": "incidents/wreck",
+      "model": "exhibits/storm_archive_wreck",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "폭풍 속 연구선 기록고 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_coopertech_bastion": {
+      "name": "BASTION 전시 모형",
+      "source": "incidents",
+      "template": "coopertech_bastion",
+      "source_name": "쿠퍼테크 BASTION 중장갑 포격로봇",
+      "source_model": "incidents/coopertech_bastion",
+      "model": "exhibits/coopertech_bastion",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "쿠퍼테크 BASTION 중장갑 포격로봇 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_coopertech_raptor": {
+      "name": "RAPTOR 전시 모형",
+      "source": "incidents",
+      "template": "coopertech_raptor",
+      "source_name": "쿠퍼테크 RAPTOR 4족 추적로봇",
+      "source_model": "incidents/coopertech_raptor",
+      "model": "exhibits/coopertech_raptor",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "쿠퍼테크 RAPTOR 4족 추적로봇 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_cliff_relay_run": {
+      "name": "중계 안테나 기념물",
+      "source": "incidents",
+      "template": "cliff_relay_run",
+      "source_name": "절벽 중계망 복구",
+      "source_model": "incidents/mission_relay",
+      "model": "exhibits/cliff_relay_run",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "절벽 중계망 복구 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_runaway_convoy_intercept": {
+      "name": "수송대 기념 모형",
+      "source": "incidents",
+      "template": "runaway_convoy_intercept",
+      "source_name": "폭주 수송대 저지",
+      "source_model": "incidents/mission_convoy",
+      "model": "exhibits/runaway_convoy_intercept",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "폭주 수송대 저지 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_vent_field_extraction": {
+      "name": "분출 지대 조형물",
+      "source": "incidents",
+      "template": "vent_field_extraction",
+      "source_name": "분출 지대 이동 채굴",
+      "source_model": "incidents/mission_vent",
+      "model": "exhibits/vent_field_extraction",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "분출 지대 이동 채굴 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_coopertech_relay_raid": {
+      "name": "쿠퍼테크 시설 모형",
+      "source": "incidents",
+      "template": "coopertech_relay_raid",
+      "source_name": "쿠퍼테크 재가동 시설 침투",
+      "source_model": "incidents/mission_vault",
+      "model": "exhibits/coopertech_relay_raid",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "쿠퍼테크 재가동 시설 침투 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_aerial_sensor_recovery": {
+      "name": "회수 센서 기념물",
+      "source": "incidents",
+      "template": "aerial_sensor_recovery",
+      "source_name": "비행 생물 센서 회수",
+      "source_model": "incidents/mission_sensor",
+      "model": "exhibits/aerial_sensor_recovery",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "비행 생물 센서 회수 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_stranded_survey_rover": {
+      "name": "구난 로버 모형",
+      "source": "incidents",
+      "template": "stranded_survey_rover",
+      "source_name": "탐사 로버 구난",
+      "source_model": "incidents/mission_rover",
+      "model": "exhibits/stranded_survey_rover",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "탐사 로버 구난 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    },
+    "exhibit_freighter_rescue_chain": {
+      "name": "구조 착륙선 모형",
+      "source": "incidents",
+      "template": "freighter_rescue_chain",
+      "source_name": "수송선 구조와 지상 회수",
+      "source_model": "incidents/mission_lander",
+      "model": "exhibits/freighter_rescue_chain",
+      "price": 100,
+      "research_cost": {
+        "iron": 4,
+        "stone": 6
+      },
+      "cost": {
+        "stone": 12,
+        "iron": 4,
+        "copper": 2
+      },
+      "radius": 1.25,
+      "description": "수송선 구조와 지상 회수 조사 기록으로 제작한 전시용 복제품입니다. 전력과 소모품이 필요 없으며 생산이나 능력치 효과는 없습니다. 원래 장소와 실물 표본은 보존됩니다.",
+      "use": "원래 사건의 목표를 완료하면 기존 보상과 진행을 유지합니다. 기념 모형은 보상, 전투, 운반이나 사건 완료 조건을 대신하지 않습니다."
+    }
+  }
+}

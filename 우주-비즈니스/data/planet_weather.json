@@ -19,7 +19,7 @@
   "mast_radius": 18,
   "acid_profiles": ["ochre", "salt"],
   "buildings": {
-    "field_canopy": {"name":"현장 차양","description":"지붕 아래의 비·산성비를 막는 개방형 차양. 전력·소모품 없이 사용합니다.","cost":{"iron":8,"stone":4},"tech":"","power":0,"radius":3.7,"model":"field_canopy","minimum_planet_tier":2},
-    "grounding_mast": {"name":"접지봉","description":"18m 안의 자연 낙뢰를 접지합니다. 전력·소모품 없이 사용하며 사건 장치에는 영향을 주지 않습니다.","cost":{"iron":5,"copper":5,"stone":3},"tech":"","power":0,"radius":0.95,"model":"grounding_mast","minimum_planet_tier":2}
+    "field_canopy": {"name":"현장 차양","description":"지붕 아래의 비  산성비를 막는 개방형 차양. 전력  소모품 없이 사용합니다.","cost":{"iron":8,"stone":4},"tech":"","power":0,"radius":3.7,"model":"field_canopy","minimum_planet_tier":2},
+    "grounding_mast": {"name":"접지봉","description":"18m 안의 자연 낙뢰를 접지합니다. 전력  소모품 없이 사용하며 사건 장치에는 영향을 주지 않습니다.","cost":{"iron":5,"copper":5,"stone":3},"tech":"","power":0,"radius":0.95,"model":"grounding_mast","minimum_planet_tier":2}
   }
 }

@@ -75,6 +75,7 @@ static func apply(world: Dictionary,actor: String,kind: String,args: Dictionary,
 	var candidate:=find_drop(world,local.location,point,seed_value,"",clearance)
 	if not candidate.is_finite():return "근처에 안전한 투하 공간이 없습니다. 넓은 지표로 이동하세요."
 	world.lotus.counter=ordinal
+	FrontierSharedPlayGuide.merge(world.crew,["supply_requested"])
 	world.business.credits-=fee
 	if fee==0:world.lotus.free_remaining-=1
 	world.lotus.next_request=float(world.lotus.clock)+float(config().cooldown_seconds)
@@ -195,7 +196,7 @@ static func validate(world: Dictionary) -> String:
 		var row: Variant=state.crates[id]
 		if not row is Dictionary or row.get("id")!=id or not config().prices.has(row.get("resource","")):return "Lotus 화물 종류 오류"
 		if FrontierUniverse.ordinal_of(world.manifest,str(row.get("body_id","")))<0 or not world.crew.members.has(row.get("caller","")):return "Lotus 배송 주소 오류"
-		if not FrontierExpeditionBusiness.integer(row.get("remaining"),0,int(config().package_amount)) or not row.get("landed") is bool or not row.get("blocked") is bool:return "Lotus 화물 수량·상태 오류"
+		if not FrontierExpeditionBusiness.integer(row.get("remaining"),0,int(config().package_amount)) or not row.get("landed") is bool or not row.get("blocked") is bool:return "Lotus 화물 수량  상태 오류"
 		for key in ["origin","position"]:
 			if not FrontierUniverse._vector3_array(row.get(key)):return "Lotus 투하 좌표 오류"
 		if not FrontierUniverse._finite(row.get("elapsed"),0,duration()) or not FrontierUniverse._finite(row.get("heading"),0,TAU) or not FrontierExpeditionBusiness.integer(row.get("seed"),0,2147483647):return "Lotus 배송 진행 오류"

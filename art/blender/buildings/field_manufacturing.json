@@ -1,0 +1,18 @@
+[
+  {
+    "id": "metalworks",
+    "source": "art/blender/buildings/metalworks.blend",
+    "model": "우주-비즈니스/assets/models/metalworks.glb",
+    "editable_meshes": 41,
+    "generator": "tools/build_field_manufacturing.py",
+    "axis": "Blender Z up / -Y front to Godot Y up / +Z front"
+  },
+  {
+    "id": "equipment_workbench",
+    "source": "art/blender/buildings/equipment_workbench.blend",
+    "model": "우주-비즈니스/assets/models/equipment_workbench.glb",
+    "editable_meshes": 32,
+    "generator": "tools/build_field_manufacturing.py",
+    "axis": "Blender Z up / -Y front to Godot Y up / +Z front"
+  }
+]

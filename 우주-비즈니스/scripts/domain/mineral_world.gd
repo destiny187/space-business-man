@@ -31,12 +31,12 @@ static func profile(body: Dictionary,rules: Dictionary) -> Dictionary:
 	return p
 static func enabled(body: Dictionary) -> bool:return not body.get("mineral_profile",{}).is_empty()
 static func summary(body: Dictionary) -> String:
-	if not FrontierUniverse.landable(body):return "착륙 불가 · 지표 광맥 없음"
+	if not FrontierUniverse.landable(body):return "착륙 불가  지표 광맥 없음"
 	if not enabled(body):return "기존 자원 분포"
 	var p: Dictionary=body.mineral_profile
 	var labels: PackedStringArray=[]
 	for id in p.primary:labels.append(FrontierMinerals.entry(id).name)
-	return FrontierGroundExploration.summary(body)+p.name+" · 주력 "+" / ".join(labels)+"\n지하 보석 탐사 가능"+(" · 특이 소재 반응" if not p.exotic.is_empty() else "")
+	return FrontierGroundExploration.summary(body)+p.name+"  주력 "+" / ".join(labels)+"\n지하 보석 탐사 가능"+("  특이 소재 반응" if not p.exotic.is_empty() else "")
 static func region(body: Dictionary,x: int,z: int) -> Array:
 	if not enabled(body):return []
 	var profile: Dictionary=body.mineral_profile

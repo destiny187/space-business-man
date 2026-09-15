@@ -40,7 +40,7 @@ func _ready() -> void:
 	get_window().size = Vector2i(1440,900)
 	get_window().content_scale_size = Vector2i(1600,1000)
 	get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	DisplayServer.window_set_title("우주 비즈니스맨 · 리소섬 생물 관찰실")
+	DisplayServer.window_set_title("우주 비즈니스맨  리소섬 생물 관찰실")
 	get_viewport().msaa_3d = Viewport.MSAA_4X
 	get_viewport().screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
 	RenderingServer.directional_shadow_atlas_set_size(4096,true)
@@ -175,7 +175,7 @@ func build_ui() -> void:
 	label(ui,"LOCUS   /   FIELD NOTES                                      LIFEFORM 001",Vector2(58,32),17)
 	label(ui,"리소섬",Vector2(54,69),56)
 	label(ui,"LITHOTHERM   /   열을 품은 바위 생물",Vector2(58,146),22,"55655d")
-	label(ui,"광물 외피   ·   여섯 다리   ·   조건부 발열",Vector2(58,190),17,"62736c")
+	label(ui,"광물 외피  여섯 다리  조건부 발열",Vector2(58,190),17,"62736c")
 	var panel:=Panel.new()
 	panel.position=Vector2(1190,60)
 	panel.size=Vector2(354,858)
@@ -189,12 +189,12 @@ func build_ui() -> void:
 	note_label=label(panel,"",Vector2(24,435),16,"52665f")
 	label(panel,"연구의 쓰임",Vector2(24,590),20)
 	label(panel,"기질 공급 → 국소 가열 → 얼음 해빙\n\n먹이와 서식 조건을 먼저 맞춥니다.\n높은 체온만으로 냉각하지 않습니다.",Vector2(24,631),16,"52665f")
-	light_label=button(panel,"조명 · 주광",Vector2(24,756),Vector2(148,48),cycle_light)
+	light_label=button(panel,"조명  주광",Vector2(24,756),Vector2(148,48),cycle_light)
 	crowd_label=button(panel,"군집 보기",Vector2(182,756),Vector2(148,48),toggle_group)
 	label(ui,"BASALT SHELL / AMBER THERMAL SEAMS",Vector2(58,853),17)
 	status_label=label(ui,"",Vector2(58,887),20)
-	label(ui,"드래그 회전   ·   휠 확대   ·   1–4 상태   ·   Space 동작 정지   ·   R 자동 회전   ·   Esc 종료",Vector2(58,951),16)
-	label(ui,"생물 외형·동작 시연 / 생태·연구·운송은 연결 전",Vector2(1190,943),13,"61736e")
+	label(ui,"드래그 회전  휠 확대  1–4 상태  Space 동작 정지  R 자동 회전  Esc 종료",Vector2(58,951),16)
+	label(ui,"생물 외형  동작 시연 / 생태  연구  운송은 연결 전",Vector2(1190,943),13,"61736e")
 
 func select_state(index: int) -> void:
 	mode=index
@@ -210,7 +210,7 @@ func cycle_light() -> void:
 	light_mode=(light_mode+1)%3
 	key.rotation_degrees=[Vector3(-48,-32,0),Vector3(-25,145,0),Vector3(-65,-110,0)][light_mode]
 	key.light_energy=[1.3,1.1,.42][light_mode]
-	light_label.text="조명 · "+["주광","역광","그늘"][light_mode]
+	light_label.text="조명  "+["주광","역광","그늘"][light_mode]
 
 func toggle_group() -> void:
 	group.visible=not group.visible

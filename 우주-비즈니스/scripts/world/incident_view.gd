@@ -245,7 +245,7 @@ func _process(delta: float) -> void:
   var direction:=destination-camera.global_position;signal_bar.visible=false;signal_label.show()
   signal_label.text=("회수 신호기 " if delivery.carrier==actor_id else "전원 소켓 ")+("◀ " if direction.dot(camera.global_basis.x)<0 else "▶ ")+str(roundi(direction.length()))+"m"
  if FrontierExplorationIncidents.carriers(surface.session.latest,actor_id):
-  if hint.text.is_empty():hint.text="화물 운반 중 · 회수 신호기로 이동 · X 내려놓기"
+  if hint.text.is_empty():hint.text="화물 운반 중  회수 신호기로 이동  X 내려놓기"
 func action_args(id: String,part: String) -> Dictionary:
  var args: Dictionary={"id":id,"part":part,"aim":FrontierExplorationIncidents.array(-camera.global_basis.z)}
  if rows.has(id) and FrontierActiveMissions.enabled(rows[id]):args.expected_mission_revision=int(rows[id].mission.get("revision",0))

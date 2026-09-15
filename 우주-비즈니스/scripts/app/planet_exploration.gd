@@ -168,7 +168,7 @@ func _setup_ui() -> void:
 	hud=FrontierResourceReadout.new();hud.custom_minimum_size.x=720;hud.position=Vector2(24,22);root.add_child(hud)
 	message=FrontierResourceReadout.new();message.custom_minimum_size.x=720;message.position=Vector2(24,140);message.value="착륙 지점을 확인하고 있습니다.";root.add_child(message)
 	var cross:=Label.new();cross.text="+";cross.add_theme_font_size_override("font_size",26);cross.set_anchors_and_offsets_preset(Control.PRESET_CENTER);cross.position=Vector2(-8,-18);root.add_child(cross)
-	var footer:=Label.new();footer.text="WASD 이동 · Shift 달리기 · Space 점프 · 클릭 굴착 · R 로봇 · E 스캔 · Q 표본 · J 생태 · L 조명 · F5 저장 · Esc 메뉴";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
+	var footer:=Label.new();footer.text="WASD 이동  Shift 달리기  Space 점프  클릭 굴착  R 로봇  E 스캔  Q 표본  J 생태  L 조명  F5 저장  Esc 메뉴";footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT);footer.position=Vector2(24,-38);footer.add_theme_font_size_override("font_size",13);root.add_child(footer)
 	menu=PanelContainer.new();menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER);menu.position=Vector2(-180,-120);menu.custom_minimum_size=Vector2(360,220);root.add_child(menu)
 	var column:=VBoxContainer.new();menu.add_child(column)
 	for entry in [["현장 복귀",_resume],["탐사 기록 저장",save_surface],["우주선 출항",return_to_orbit],["착륙 지점으로 구조 요청",rescue]]:
@@ -199,13 +199,13 @@ func _process(delta: float) -> void:
 		save_surface()
 	headlamp.light_energy=lerpf(headlamp.light_energy,lamp_target,minf(1,delta*float(render_settings.lamp_response)))
 	_update_interest()
-	if not moving_enabled and terrain.ready_at(player.position):moving_enabled=true;message.value="착륙 완료 · 전방의 지하 신호를 조사하세요."
+	if not moving_enabled and terrain.ready_at(player.position):moving_enabled=true;message.value="착륙 완료  전방의 지하 신호를 조사하세요."
 	var underground: float=clampf(-player.position.y/10.0,0,1)
 	environment.ambient_light_energy=lerpf(.28,.035,underground)
 	environment.fog_density=lerpf(.0007,.002,underground)
-	hud.value="%s\n좌표 %.0f, %.0f  ·  깊이 %.1f m\n우주선까지 %.0f m" % [body.name,player.position.x,player.position.z,maxf(0,-player.position.y),player.position.distance_to(ship_position)]
-	if not logistics.is_empty():hud.value+="\n휴대 암석 %d · 운반 중 %d · 창고 %d" % [int(logistics.hand_rock),int(logistics.robot.cargo),int(logistics.depot_rock)]
-	if debug_visible:hud.value+="\n활성 청크 %d · 작업 %d · 최대 생성 %.1fms · 최근 설치 %.1fms" % [terrain.chunks.size(),terrain.jobs.size(),terrain.max_build_ms,terrain.last_install_ms]
+	hud.value="%s\n좌표 %.0f, %.0f  깊이 %.1f m\n우주선까지 %.0f m" % [body.name,player.position.x,player.position.z,maxf(0,-player.position.y),player.position.distance_to(ship_position)]
+	if not logistics.is_empty():hud.value+="\n휴대 암석 %d  운반 중 %d  창고 %d" % [int(logistics.hand_rock),int(logistics.robot.cargo),int(logistics.depot_rock)]
+	if debug_visible:hud.value+="\n활성 청크 %d  작업 %d  최대 생성 %.1fms  최근 설치 %.1fms" % [terrain.chunks.size(),terrain.jobs.size(),terrain.max_build_ms,terrain.last_install_ms]
 	message.position.y=maxf(140,hud.position.y+hud.get_minimum_size().y+10)
 
 func _physics_process(delta: float) -> void:
@@ -247,7 +247,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.physical_keycode==KEY_J:toggle_journal()
 		elif event.physical_keycode==KEY_L:
 			lamp_mode={"auto":"on","on":"off","off":"auto"}[lamp_mode]
-			message.value="손전등 · "+{"auto":"자동","on":"켜짐","off":"꺼짐"}[lamp_mode]
+			message.value="손전등  "+{"auto":"자동","on":"켜짐","off":"꺼짐"}[lamp_mode]
 		elif event.physical_keycode==KEY_Q:ecology_action("collect")
 		elif event.physical_keycode==KEY_R:courier.request_pickup()
 		elif event.physical_keycode==KEY_F5:save_surface()
@@ -275,7 +275,7 @@ func save_surface() -> bool:
 	state.mode="surface"
 	state.surface_positions[body_id]=[player.position.x,player.position.y,player.position.z]
 	var saved: bool=store.write(state)
-	message.value="지형·생태 기록과 탐사 위치를 저장했습니다." if saved else store.last_error
+	message.value="지형  생태 기록과 탐사 위치를 저장했습니다." if saved else store.last_error
 	return saved
 
 func rescue() -> void:
@@ -321,15 +321,15 @@ func _process_ecology(delta: float) -> void:
 	if not id.is_empty():
 		var form:=FrontierEcologyCatalog.form(current_encounter.form_id)
 		var known: bool=state.ecology.observations.has(body_id+":"+form.id)
-		ecology_hud.text="%s\n%s · %s\n%s"%[FrontierSpeciesNames.display(state.ecology,form.id) if known else "미등록 생물",form.environment_label,"휴면" if current_encounter.status=="dormant" else "활성","Q 표본 확보 · J 연구 기록" if known else "E 길게 누르기 · 생태 스캔"]
+		ecology_hud.text="%s\n%s  %s\n%s"%[FrontierSpeciesNames.display(state.ecology,form.id) if known else "미등록 생물",form.environment_label,"휴면" if current_encounter.status=="dormant" else "활성","Q 표본 확보  J 연구 기록" if known else "E 길게 누르기  생태 스캔"]
 		if scan_held and not known:
 			scan_progress+=minf(delta,.1)
-			ecology_hud.text+=" · %d%%"%mini(100,int(scan_progress/float(FrontierEcologyCatalog.config().scan_seconds)*100))
+			ecology_hud.text+="  %d%%"%mini(100,int(scan_progress/float(FrontierEcologyCatalog.config().scan_seconds)*100))
 			if scan_progress>=float(FrontierEcologyCatalog.config().scan_seconds):ecology_action("scan");scan_progress=0;scan_held=false
 	else:
 		var record: Dictionary=state.ecology.planets[body_id]
-		ecology_hud.text="생태 탐사 · J\n활성 신호 %d · 휴면 군체 %d"%[ecology_view.active_count,ecology_view.dormant_count]
-		if record.profile.origin=="sterile":ecology_hud.text+="\n고유 생명 신호 없음 · 외부 표본 도입 가능"
+		ecology_hud.text="생태 탐사  J\n활성 신호 %d  휴면 군체 %d"%[ecology_view.active_count,ecology_view.dormant_count]
+		if record.profile.origin=="sterile":ecology_hud.text+="\n고유 생명 신호 없음  외부 표본 도입 가능"
 	ecology_tick+=delta
 	if ecology_tick>=1.0:
 		FrontierEcology.advance(state.ecology,body_id,1.0)
@@ -347,7 +347,7 @@ func ecology_action(action: String,selection: String="") -> bool:
 	if action in ["scan","collect"]:
 		if encounter.is_empty():message.value="생명체가 시야 안에 보이도록 가까이 접근하세요.";return false
 		if action=="collect" and player.position.distance_to(encounter.point)>float(FrontierEcologyCatalog.config().sample_range):message.value="생체 표본 확보는 4m 이내에서 가능합니다.";return false
-	elif player.position.distance_to(ship_position)>float(FrontierEcologyCatalog.config().lab_range):message.value="우주선 가까이에서 연구·격리 시험을 진행하세요.";return false
+	elif player.position.distance_to(ship_position)>float(FrontierEcologyCatalog.config().lab_range):message.value="우주선 가까이에서 연구  격리 시험을 진행하세요.";return false
 	var draft: Dictionary=state.duplicate(true)
 	var result: String=""
 	var layer: String="cave" if terrain.field.height(player.position.x,player.position.z)-player.position.y>6 else "surface"

@@ -24,4 +24,4 @@ func _process(delta: float) -> void:
  if heading.length()>.1:vessel.look_at(vessel.position+heading)
  var size:=get_viewport().get_visible_rect().size
  label.position=Vector2(24,size.y*.30);label.size=Vector2(minf(470,size.x-48),65);label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
- label.text="수송선 구조 신호 · 추격 편대를 격퇴하세요" if e.phase in ["warning","combat"] else "수송선 구조 완료 · J 사건 기록에 착륙 현장을 전송했습니다" if e.phase=="victory" else "수송선 구조 중단"
+ label.text="수송선 구조 신호  추격 편대를 격퇴하세요" if e.phase in ["warning","combat"] else "수송선 구조 완료  J 사건 기록에 착륙 현장을 전송했습니다" if e.phase=="victory" else "수송선 구조 중단"

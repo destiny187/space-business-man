@@ -2,10 +2,10 @@ extends Node3D
 ## A four-asset studio for the bold contour art direction. No save or campaign.
 const INK := "res://assets/materials/ink/"
 const SAMPLES := [
-	{"id":"robot","title":"01   /   로봇","name":"M–07  ·  자율 채광 로봇","model":"res://assets/models/showcase/locus_m07.glb"},
-	{"id":"resource","title":"02   /   자원","name":"청록 광물  ·  구리맥을 품은 결정","model":"res://assets/models/ink-study/mineral_deposit.glb"},
-	{"id":"grass","foliage":true,"title":"03   /   풀","name":"개척지 풀  ·  굽은 잎과 잎맥","model":"res://assets/models/ink-study/frontier_grass.glb"},
-	{"id":"building","title":"04   /   건물","name":"LOCUS 정제소  ·  광물 가공 시설","model":"res://assets/models/ink-study/ore_refinery.glb"}
+	{"id":"robot","title":"01   /   로봇","name":"M–07  자율 채광 로봇","model":"res://assets/models/showcase/locus_m07.glb"},
+	{"id":"resource","title":"02   /   자원","name":"청록 광물  구리맥을 품은 결정","model":"res://assets/models/ink-study/mineral_deposit.glb"},
+	{"id":"grass","foliage":true,"title":"03   /   풀","name":"개척지 풀  굽은 잎과 잎맥","model":"res://assets/models/ink-study/frontier_grass.glb"},
+	{"id":"building","title":"04   /   건물","name":"LOCUS 정제소  광물 가공 시설","model":"res://assets/models/ink-study/ore_refinery.glb"}
 ]
 var samples: Array = SAMPLES.duplicate(true)
 var camera: Camera3D
@@ -155,7 +155,7 @@ func build_ui() -> void:
 	canvas.add_child(subtitle)
 	var rubric := Label.new()
 	rubric.position = Vector2(65,1132)
-	rubric.text = "LOCUS   /   INK STUDY      —      굵은 윤곽선 · 3단 명암 · 재질별 하이라이트"
+	rubric.text = "LOCUS   /   INK STUDY      —      굵은 윤곽선  3단 명암  재질별 하이라이트"
 	rubric.add_theme_font_override("font",font)
 	rubric.add_theme_font_size_override("font_size",20)
 	rubric.add_theme_color_override("font_color",Color("36474b"))

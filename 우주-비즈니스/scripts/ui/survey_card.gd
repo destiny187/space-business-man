@@ -1,7 +1,7 @@
 class_name FrontierSurveyCard
 extends PanelContainer
 ## Short visual result from the host. Displays no speculative trait as an implemented bonus.
-const RESULT_SECONDS:=4.0
+const RESULT_SECONDS:=6.0
 var app: FrontierCrewExpedition
 var content: VBoxContainer
 var title: Label
@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 	var scan: Dictionary=app.session.latest.get("scan",{})
 	var token: String=""
 	if scan.get("known",false) and scan.has("info"):
-		token=str(app.session.latest.get("session_id",""))+"/"+str(app.session.latest.get("location",""))+"/"+str(scan.info.kind)+"/"+str(scan.get("id",""))
+		token=str(app.session.latest.get("session_id",""))+"/"+str(app.session.latest.get("location",""))+"/"+str(scan.info.kind)+"/"+str(scan.get("id",""))+"/"+str(scan.get("receipt",0))
 	if app.surface_world==null or app.feedback==null or app.feedback.blocked():
 		# Consume a stale snapshot while blocked; reopening a menu is not a scan.
 		timer=0;previous=token;hide();return
@@ -62,12 +62,14 @@ func _process(delta: float) -> void:
 		previous=""
 		if float(scan.get("progress",0))>0:timer=0
 	visible=timer>0
-	if not target_point.is_finite() or app.camera.is_position_behind(target_point):hide();return
+	if not target_point.is_finite() or app.camera.is_position_behind(target_point):
+		position=Vector2(24,176);anchor=Vector2.ZERO;queue_redraw();return
 	if app.surface_world.ecology.actors.has(displayed.get("id","")):
 		target_point=app.surface_world.ecology.actors[displayed.id].global_position+Vector3.UP*.7
 	var screen:=get_viewport().get_visible_rect().size
 	var projected:=app.camera.unproject_position(target_point)
-	if not Rect2(Vector2.ZERO,screen).has_point(projected):hide();return
+	if not Rect2(Vector2.ZERO,screen).has_point(projected):
+		position=Vector2(24,176);anchor=Vector2.ZERO;queue_redraw();return
 	position=Vector2(clampf(projected.x+48,16,screen.x-size.x-16),clampf(projected.y-size.y*.5,72,maxf(72,screen.y-size.y-100)))
 	anchor=projected-position
 	queue_redraw()

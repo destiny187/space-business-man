@@ -1,7 +1,7 @@
 class_name FrontierSharedPlayGuide
 extends RefCounted
 ## Monotonic expedition milestones. No inventory, research or building ownership is granted.
-const KEYS=["solar_move","solar_boost","solar_scan","travel","inventory","field_scan","mined","materials_review","built","terraform_view","complete"]
+const KEYS=["solar_move","solar_boost","solar_scan","travel","inventory","field_scan","mined","materials_review","built","terraform_view","complete","supply_requested"]
 static func validate(value: Variant) -> String:
  if not value is Dictionary or value.size()>KEYS.size():return "공동 가이드 기록 오류"
  for key in value:
@@ -16,5 +16,5 @@ static func report(crew: Dictionary,args: Dictionary) -> String:
  var steps: Variant=args.get("steps")
  if not steps is Array or steps.is_empty() or steps.size()>KEYS.size():return "공동 가이드 보고 오류"
  for key in steps:
-  if not key is String or key not in KEYS:return "알 수 없는 공동 가이드 단계"
+  if not key is String or key not in KEYS or key=="supply_requested":return "알 수 없는 공동 가이드 단계"
  merge(crew,steps);return ""

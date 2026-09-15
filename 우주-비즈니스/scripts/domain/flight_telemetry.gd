@@ -38,5 +38,12 @@ static func eta_label(value: Dictionary) -> String:
 	return "예상 %d:%02d"%[int(ceil(value.eta))/60,int(ceil(value.eta))%60]
 
 static func speed_label(nav: Dictionary) -> String:
-	if nav.get("mode","")=="jump":return "항로 %.0f%% · %d초"%[float(nav.get("transit",{}).get("progress",0))*100,int(ceil(float(nav.get("jump_left",0))))]
+	if nav.get("mode","")=="jump":
+		var cfg: Dictionary=FrontierUniverse.presentation().stellar_transition
+		var p:=FrontierCrewNavigation.transit_progress(nav)
+		var ramp:=clampf((p-float(cfg.departure_start))/(float(cfg.swap_progress)-float(cfg.departure_start)),0,1) if p<float(cfg.swap_progress) else clampf((1-p)/(1-float(cfg.swap_progress)),0,1)
+		var speed:=float(cfg.estimated_peak_c)*ramp*ramp
+		if speed<1:return "추정 속도  %.0f km/s"%(speed*299792.458)
+		return "추정 속도  %.0f만 c"%(speed/10000.0) if speed>=10000 else "추정 속도  %.0f c"%speed
+
 	return "%.0f m/s"%float(nav.get("speed",0))

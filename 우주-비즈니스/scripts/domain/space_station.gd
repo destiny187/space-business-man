@@ -82,7 +82,7 @@ static func apply(world: Dictionary,actor: String,action: String,args: Dictionar
  if action=="station_approach":
   if actor!=world.crew.pilot_id or nav.mode!="idle":return "대기 중인 조종사만 정거장 접근을 시작할 수 있습니다."
   for id in active.values():
-   if not world.crew.members[id].aboard or not world.crew.members[id].ready:return "승무원 모두 승선·준비한 뒤 접근하세요."
+   if not world.crew.members[id].aboard or not world.crew.members[id].ready:return "승무원 모두 승선  준비한 뒤 접근하세요."
   nav.station_id=station.id;nav.erase("station_docked");nav.station_target=true;nav.mode="approach";nav.manual=false;nav.boosting=false
   return ""
  if actor!=world.crew.owner_id:return "공동 자금 거래와 선체 교체는 호스트가 확정합니다."

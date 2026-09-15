@@ -32,7 +32,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  modes=TabBar.new();modes.add_tab("행성지도");modes.add_tab("테라포밍");column.add_child(modes)
  var bar:=HBoxContainer.new();column.add_child(bar);map_bar=bar
  layers=OptionButton.new()
- for text in ["지역 지형","광물 산지","시설·공급","기상·대피"]:layers.add_item(text)
+ for text in ["지역 지형","광물 산지","시설  공급","기상  대피"]:layers.add_item(text)
  bar.add_child(layers);layers.item_selected.connect(func(_i):update_detail();canvas.queue_redraw())
  var home:=Button.new();home.text="내 위치";bar.add_child(home);home.pressed.connect(func():focus=Vector2(app.camera.position.x,app.camera.position.z);canvas.queue_redraw())
  for pair in [["−",1.4],["+",1.0/1.4]]:
@@ -40,7 +40,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
  FrontierInterfaceStyle.label(bar,"드래그 이동   휠 확대   클릭 목적지",12,FrontierInterfaceStyle.MUTED)
  canvas=Control.new();canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL;canvas.custom_minimum_size=Vector2(300,200);canvas.clip_contents=true;column.add_child(canvas)
  canvas.draw.connect(draw_map);canvas.gui_input.connect(input_map)
- detail=FrontierInterfaceStyle.label(column,"지도를 선택하면 공급·복원 정보를 확인합니다.",16);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.custom_minimum_size.y=78
+ detail=FrontierInterfaceStyle.label(column,"지도를 선택하면 공급  복원 정보를 확인합니다.",16);detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;detail.custom_minimum_size.y=78
  terraform=FrontierTerraformPanel.new();column.add_child(terraform);terraform.configure(app);terraform.hide()
  modes.tab_changed.connect(func(i):map_bar.visible=i==0;canvas.visible=i==0;detail.visible=i==0;terraform.visible=i==1;refresh())
  hide()
@@ -90,7 +90,7 @@ func draw_map() -> void:
  canvas.draw_rect(Rect2(Vector2.ZERO,canvas.size),Color("10191f"))
  tile_cache.draw(canvas,focus,meters_per_pixel)
  if tile_cache.completed<tile_cache.wanted.size():
-  text_at(Vector2(18,26),"궤도 지형 데이터 수신 중 · 지역 지질도 복원 %d%%"%int(100.0*tile_cache.completed/maxi(1,tile_cache.wanted.size())),Color("9ce9e5"),14)
+  text_at(Vector2(18,26),"궤도 지형 데이터 수신 중  지역 지질도 복원 %d%%"%int(100.0*tile_cache.completed/maxi(1,tile_cache.wanted.size())),Color("9ce9e5"),14)
  if layers.selected==1:draw_geology()
  for region in ([] if FrontierFreeTerraform.active(site) else site.get("regions",{}).values()):
   var center:=Vector2(region.center[0],region.center[2]);var pos:=at(center)
@@ -116,7 +116,7 @@ func draw_map() -> void:
   if not front.is_empty():
    var center:=at(Vector2(front.center[0],front.center[2]));var radius:=float(FrontierPlanetWeather.config().front_radius)/meters_per_pixel
    canvas.draw_circle(center,radius,Color(.7,.55,.25,.12));canvas.draw_arc(center,radius,0,TAU,64,Color("edbe81"),2,true)
-   text_at(center+Vector2(12,-14),{"rain":"雨 · 비","acid":"산성비","thunder":"뇌우"}.get(front.kind,"기상"),Color("edbe81"),14)
+   text_at(center+Vector2(12,-14),{"rain":"雨  비","acid":"산성비","thunder":"뇌우"}.get(front.kind,"기상"),Color("edbe81"),14)
   for row in site.get("buildings",{}).values():
    var point:=at(Vector2(row.position[0],row.position[2]))
    if row.type=="grounding_mast":canvas.draw_arc(point,float(FrontierPlanetWeather.config().mast_radius)/meters_per_pixel,0,TAU,32,Color("8ae0bb"),2,true);text_at(point+Vector2(8,-8),"접지",Color("8ae0bb"),13)
@@ -143,25 +143,25 @@ func show_clue(clue: Dictionary) -> void:
 func update_detail() -> void:
  if layers.selected==3:
   var weather: Dictionary=app.session.latest.get("weather",{});var front: Dictionary=weather.get("event",{})
-  detail.text="기상 관측이 없는 기존 세계" if weather.is_empty() else str(weather.profile.name)+" · 차양은 비, 접지봉은 18m 안 자연 낙뢰를 차단합니다."
-  if not front.is_empty():detail.text+="\n"+("도착까지 %.0f초"%maxf(0,float(front.start)-float(weather.clock)) if float(weather.clock)<float(front.start) else "소강까지 %.0f초"%maxf(0,float(front.end)-float(weather.clock)))+" · T로 하늘 관측 / J 발견 기록"
+  detail.text="기상 관측이 없는 기존 세계" if weather.is_empty() else str(weather.profile.name)+"  차양은 비, 접지봉은 18m 안 자연 낙뢰를 차단합니다."
+  if not front.is_empty():detail.text+="\n"+("도착까지 %.0f초"%maxf(0,float(front.start)-float(weather.clock)) if float(weather.clock)<float(front.start) else "소강까지 %.0f초"%maxf(0,float(front.end)-float(weather.clock)))+"  T로 하늘 관측 / J 발견 기록"
   return
  var clue: Dictionary=app.session.latest.get("coopertech_clues",{}).get(selected,{})
  if not clue.is_empty() and clue.body_id==body.id:
-  detail.text="CooperTech  ·  "+FrontierCooperTechClues.STATES[int(clue.stage)]+"\n좌표 %.0f, %.0f · 현장까지 %.0fm"%[clue.position[0],clue.position[2],Vector2(clue.position[0],clue.position[2]).distance_to(Vector2(app.camera.position.x,app.camera.position.z))];return
+  detail.text="CooperTech  "+FrontierCooperTechClues.STATES[int(clue.stage)]+"\n좌표 %.0f, %.0f  현장까지 %.0fm"%[clue.position[0],clue.position[2],Vector2(clue.position[0],clue.position[2]).distance_to(Vector2(app.camera.position.x,app.camera.position.z))];return
  if selected.is_empty() or not site.get("regions",{}).has(selected):
-  detail.text=("아이콘은 실제 지표 광맥 군집의 자원 위치입니다. 등고선·능선 음영과 함께 확인하세요.\n" if layers.selected==1 else "지형 높이와 등고선으로 주변 능선·저지대를 확인하세요.\n")+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "테라포밍 탭에서 복원 상태, 시설·공급에서 현장 설비를 확인합니다.")
+  detail.text=("아이콘은 실제 지표 광맥 군집의 자원 위치입니다. 등고선  능선 음영과 함께 확인하세요.\n" if layers.selected==1 else "지형 높이와 등고선으로 주변 능선  저지대를 확인하세요.\n")+("목적지 %.0fm  좌표 %.0f, %.0f"%[waypoint.distance_to(Vector2(app.camera.position.x,app.camera.position.z)),waypoint.x,waypoint.y] if waypoint.is_finite() else "테라포밍 탭에서 복원 상태, 시설  공급에서 현장 설비를 확인합니다.")
   return
  var region: Dictionary=site.regions[selected];var report:=FrontierEvaluator.environment_report(region)
  var names: Array=[]
  for key in region.inventory:
   if int(region.inventory[key])>0:names.append(FrontierCatalog.entry("resources",key).name+" "+str(int(region.inventory[key])))
- detail.text="%s  적합도 %.0f%%   %s\n현장 재고: %s\n%s"%[region.name,report.overall,"✓ 안정" if FrontierRegionalTerraform.ready(region) else ({"settlement":"정착 환경", "water":"급수·염류", "soil":"토양 기반"}.get(region.role,"환경")+" 구획 %d곳 · 30초 안정"%mini(3,region.cells.size())),", ".join(names) if not names.is_empty() else "비어 있음",("중간 대금 지급 완료 %d Cr"%int(site.regional_paid[selected])) if site.get("regional_paid",{}).has(selected) else "원료는 직접 운반하고 이 현장의 창고에 보관하세요."]
+ detail.text="%s  적합도 %.0f%%   %s\n현장 재고: %s\n%s"%[region.name,report.overall,"✓ 안정" if FrontierRegionalTerraform.ready(region) else ({"settlement":"정착 환경", "water":"급수  염류", "soil":"토양 기반"}.get(region.role,"환경")+" 구획 %d곳  30초 안정"%mini(3,region.cells.size())),", ".join(names) if not names.is_empty() else "비어 있음",("중간 대금 지급 완료 %d Cr"%int(site.regional_paid[selected])) if site.get("regional_paid",{}).has(selected) else "원료는 직접 운반하고 이 현장의 창고에 보관하세요."]
 
  if site.has("tier3"):
   var item: String=site.tier3.rules.profiles[site.tier3.profile].item
   var packs: int=5 if region.role=="source" else 10
-  detail.text="%s  %s\n%s\n%s · 10분 공급 참고 %s %d개%s"%[region.name,"✓ 안정" if FrontierRegionalTerraform.ready(region) else "목표 구획 3곳 · 45초 유지",FrontierTerraformTier3.detail(site,region),"현장 재고: "+", ".join(names.slice(0,4)) if not names.is_empty() else "현장 창고에 직접 공급",FrontierProductionTier2.product(item).name,packs," · 정착 팩 별도" if region.role=="recovery" else ""]
+  detail.text="%s  %s\n%s\n%s  10분 공급 참고 %s %d개%s"%[region.name,"✓ 안정" if FrontierRegionalTerraform.ready(region) else "목표 구획 3곳  45초 유지",FrontierTerraformTier3.detail(site,region),"현장 재고: "+", ".join(names.slice(0,4)) if not names.is_empty() else "현장 창고에 직접 공급",FrontierProductionTier2.product(item).name,packs,"  정착 팩 별도" if region.role=="recovery" else ""]
 
 func draw_geology() -> void:
  if not FrontierSurfaceRegions.enabled(body):return

@@ -76,7 +76,7 @@ func reset_case(mode: String) -> void:
 	projectiles.clear();fx.clear();state={"health":100.0,"shield":120.0 if mode=="shield" else 0.0}
 	actor.position=Vector3.ZERO;actor.rotation.y=0;actor.restart("idle_loop")
 	defender.position=target_base;defender.restart("idle_loop");shield.visible=mode=="shield"
-	caption.text={"hit":"명중 — 접촉 위치 · 피격 반응 · 반동과 회복","shield":"방어 — 실드 접촉과 튕김","miss":"회피 — 방향 확정 후 피하기 · 빗나간 공격 회복"}[mode]
+	caption.text={"hit":"명중 — 접촉 위치  피격 반응  반동과 회복","shield":"방어 — 실드 접촉과 튕김","miss":"회피 — 방향 확정 후 피하기  빗나간 공격 회복"}[mode]
 
 func targets() -> Array:
 	return [{"id":"defender","center":defender.position+Vector3.UP*1.13,"radii":Vector3(.94,.69,.51)+(Vector3.ONE*.13 if state.shield>0 else Vector3.ZERO),"shield":state.shield>0}]

@@ -26,7 +26,7 @@ func configure(owner_app: FrontierCrewExpedition) -> void:
 		if not pending_requests.has(sequence):return
 		var kind: String=pending_requests[sequence];pending_requests.erase(sequence)
 		if not result.get("ok",false):app.feedback.reject(result.get("error","차량 작업 실패"))
-		elif kind in ["rover_research","rover_research2","rover_transport_upgrade"]:app.feedback.audio.play("ui_discovery");app.feedback.show_cue("차량 연구·개조 완료"))
+		elif kind in ["rover_research","rover_research2","rover_transport_upgrade"]:app.feedback.audio.play("ui_discovery");app.feedback.show_cue("차량 연구  개조 완료"))
 	for key in FrontierInput.DEFAULTS:
 		if not InputMap.has_action("frontier_"+key):
 			InputMap.add_action("frontier_"+key);var event:=InputEventKey.new();event.physical_keycode=FrontierInput.DEFAULTS[key];InputMap.action_add_event("frontier_"+key,event)
@@ -92,7 +92,7 @@ func physics(delta: float) -> void:
 					riders[index]="";runtime().exits.erase(rider);runtime().status.erase(rider);member.position=FrontierExpeditionBusiness.array(p);r.event="door";r.event_serial+=1
 					if app.actors.has(rider):app.actors[rider].position=p;app.actors[rider].velocity=Vector3.ZERO
 					continue
-				runtime().status[rider]="하차 공간이 막혔습니다 · 자리를 확보하세요"
+				runtime().status[rider]="하차 공간이 막혔습니다  자리를 확보하세요"
 			member.position=FrontierExpeditionBusiness.array(FrontierRovers.point(r,FrontierRovers.config().eyes[index])-Vector3.UP*1.72)
 			if app.actors.has(rider):app.actors[rider].position=FrontierCrewWorld.vector(member.position);app.actors[rider].velocity=Vector3.ZERO
 	for id in runtime().tasks.keys():
@@ -120,7 +120,7 @@ func step_task(r: Dictionary,delta: float) -> void:
 		task["elapsed"]=float(task.get("elapsed",0))+delta
 		if float(task.progress)==0 and float(task.elapsed)<.35 and (control.size()!=4 or control[3]<.5):return
 		if float(input.get("expires",-1))<authority.now or control.size()!=4 or control[3]<.5 or not FrontierRovers.within(authority.world,task.actor,r,8) or FrontierCrewWorld.vector(authority.world.crew.members[task.actor].position).distance_to(FrontierCrewWorld.vector(task.origin))>1.5:
-			runtime().status[task.actor]="복구 취소 · 차량 가까이에서 F를 계속 눌러 주세요";runtime().tasks.erase(r.id);return
+			runtime().status[task.actor]="복구 취소  차량 가까이에서 F를 계속 눌러 주세요";runtime().tasks.erase(r.id);return
 		task.progress+=delta
 		if float(task.progress)<float(task.seconds):return
 		var center:=FrontierRovers.point(r)
@@ -170,13 +170,13 @@ func present(delta: float) -> void:
 	target=find_target()
 	hint.visible=app.surface_world!=null and not app.any_menu_open() and not app.arrival.active;gauge.visible=hint.visible and not own.is_empty()
 	if not own.is_empty() and rows.has(own.id):
-		var r: Dictionary=rows[own.id];hint.text=("%d km/h  ·  "%int(absf(r.speed)*3.6))+ ("운전" if own.seat==0 else "동승 · E 스캔 · %s 운전석"%FrontierInput.text("rover_seat"))+"  ·  %s 제동  ·  %s 하차  ·  %s 시점"%[FrontierInput.text("jump"),FrontierInput.text("rover_interact"),FrontierInput.text("camera")]
+		var r: Dictionary=rows[own.id];hint.text=("%d km/h  "%int(absf(r.speed)*3.6))+ ("운전" if own.seat==0 else "동승  E 스캔  %s 운전석"%FrontierInput.text("rover_seat"))+"  %s 제동  %s 하차  %s 시점"%[FrontierInput.text("jump"),FrontierInput.text("rover_interact"),FrontierInput.text("camera")]
 		gauge.max_value=float(FrontierRovers.stats(r).battery);gauge.value=r.battery
 		if runtime().get("exits",{}).has(app.session.latest.self_id):hint.text=runtime().get("status",{}).get(app.session.latest.self_id,"정차 후 안전한 쪽으로 하차 중")
 	else:hint.text=target.get("caption","")
 	for id in runtime().get("tasks",{}):
 		var task: Dictionary=runtime().tasks[id]
-		if task.actor==app.session.latest.self_id:gauge.visible=hint.visible;gauge.max_value=task.seconds;gauge.value=task.progress;hint.text=("%s 유지 · 차량 복구 중"%FrontierInput.text("rover_interact")) if task.kind=="recover" else {"load":"차량 적재 중","unload":"차량 하역 중","upgrade":"Mk.2 정비 중"}.get(task.kind,"차량 작업 중")
+		if task.actor==app.session.latest.self_id:gauge.visible=hint.visible;gauge.max_value=task.seconds;gauge.value=task.progress;hint.text=("%s 유지  차량 복구 중"%FrontierInput.text("rover_interact")) if task.kind=="recover" else {"load":"차량 적재 중","unload":"차량 하역 중","upgrade":"Mk.2 정비 중"}.get(task.kind,"차량 작업 중")
 	if panel.visible:panel.refresh()
 	transport_visuals(delta,audible)
 func find_target() -> Dictionary:
@@ -190,7 +190,7 @@ func find_target() -> Dictionary:
 			var p:=FrontierRovers.point(r,FrontierRovers.config().doors[index] if index<2 else FrontierRovers.config().cargo_point)
 			var distance:=origin.distance_to(p)
 			if distance>closest or (-app.camera.global_basis.z).dot((p+Vector3.UP*.5-app.camera.position).normalized())<.15:continue
-			closest=distance;result={"id":id,"seat":index,"caption":FrontierInput.text("rover_interact")+" · "+("길게 눌러 바로 세우기" if r.overturned else ["운전석 탑승","동승석 탑승","화물 · 정비"][index])}
+			closest=distance;result={"id":id,"seat":index,"caption":FrontierInput.text("rover_interact")+"  "+("길게 눌러 바로 세우기" if r.overturned else ["운전석 탑승","동승석 탑승","화물  정비"][index])}
 	return result
 func interact() -> bool:
 	var own:=seat()

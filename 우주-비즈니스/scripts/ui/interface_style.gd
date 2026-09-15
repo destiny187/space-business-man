@@ -49,9 +49,12 @@ static func interface_icon(id: String,pixels: int=ICON_SIZE) -> TextureRect:
 static func label(parent: Node,text: String,size: int=14,color: Color=TEXT) -> Label:
 	var l:=Label.new();l.text=text;l.add_theme_font_size_override("font_size",size);l.add_theme_color_override("font_color",color);l.mouse_filter=Control.MOUSE_FILTER_IGNORE;parent.add_child(l);return l
 static func icon(model: String) -> Texture2D:
+	var preview_path: String="res://assets/ui/previews/"+model+".png"
+	if model.begins_with("exhibits/") and ResourceLoader.exists(preview_path):return load(preview_path)
 	var path: String="res://assets/ui/equipment/"+model.get_file()+".png"
 	return load(path) if ResourceLoader.exists(path) else load("res://assets/ui/previews/"+model.get_file()+".png")
 
 static func player_text(value: String) -> String:
+	value=value.replace(String.chr(0xB7)," ").replace(String.chr(0x318D)," ").replace(String.chr(0x2219)," ")
 	for tier in range(1,6):value=value.replace("T%d "%tier,"")
 	return value

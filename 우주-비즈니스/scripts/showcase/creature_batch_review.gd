@@ -82,7 +82,7 @@ func capture_attack(actor: Node3D,form: Dictionary) -> Dictionary:
 	var positions: Dictionary={}
 	for sample in samples:
 		motion.wanted_clip="attack";motion.pose_clock=sample.time;motion.pose_step=0.;motion.pose_authored()
-		caption.text="공격 기관 · "+str(sample.name);center_camera(actor,form)
+		caption.text="공격 기관  "+str(sample.name);center_camera(actor,form)
 		positions[sample.name]={}
 		for key in motion.socket_nodes[0]:
 			var p: Vector3=motion.socket_nodes[0][key].global_position;assert(p.is_finite());positions[sample.name][key]=[p.x,p.y,p.z]
@@ -100,7 +100,7 @@ func refresh_poses(form: Dictionary,previous: Dictionary) -> void:
 	var updated:=previous.duplicate(true)
 	updated.socket_samples=await capture_attack(actor,form)
 	actor.state="move";actor.set_lod(true);motion.wanted_clip="run_loop";motion.pose_clock=.37;motion.pose_step=0.;motion.pose_authored(true)
-	caption.text="원거리 LOD · 현재 동작 동기화";center_camera(actor,form);await photograph(form.id,"far")
+	caption.text="원거리 LOD  현재 동작 동기화";center_camera(actor,form);await photograph(form.id,"far")
 	updated.authored_pose_capture_version=2;updated.pose_capture_origin=[at.x,at.y,at.z]
 	updated.contact_metadata_version=int(form.get("contact_metadata_version",0))
 	report.append(updated);print("REMODEL_POSE_REFRESH ",form.id,"; original locomotion evidence preserved");actor.free()
@@ -119,17 +119,17 @@ func review_batch(form: Dictionary) -> void:
 		assert(is_equal_approx(motion.limb_phase(limb.name),float(form.motion_profile.limb_phases[limb.name])));phase_checks+=1
 	title.text=form.name;var at:=Vector3(0,height(0,0),0)
 	actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.);center_camera(actor,form)
-	caption.text="형태 · %d개 지지 사지 · %d개 관절"%[form.locomotion_chains,form.bone_count]
+	caption.text="형태  %d개 지지 사지  %d개 관절"%[form.locomotion_chains,form.bone_count]
 	await photograph(form.id,"idle")
 	actor.set_state("move")
 	var yaw:=0.;var step:=0
 	for i in 240:
 		var t:=float(i)/30.;var speed: float=motion.natural(form.motion_profile)
-		caption.text="걷기 · 경사 지지"
-		if i>=45 and i<135:speed=lerpf(speed,fast_speed,smoothstep(45,65,i));caption.text="빠른 도주 · 기존 게임 속도의 보폭과 접지"
-		elif i>=135 and i<159:speed=fast_speed*(1.-smoothstep(135,159,i));caption.text="감속 · 발 재배치"
+		caption.text="걷기  경사 지지"
+		if i>=45 and i<135:speed=lerpf(speed,fast_speed,smoothstep(45,65,i));caption.text="빠른 도주  기존 게임 속도의 보폭과 접지"
+		elif i>=135 and i<159:speed=fast_speed*(1.-smoothstep(135,159,i));caption.text="감속  발 재배치"
 		elif i>=159 and i<189:speed=0.;yaw=(i-159)/30.*.75;caption.text="정지 선회"
-		elif i>=189:speed=0.;actor.set_state("feed");caption.text="섭식 · 관절 기관"
+		elif i>=189:speed=0.;actor.set_state("feed");caption.text="섭식  관절 기관"
 		at+=Vector3(sin(yaw),0,cos(yaw))*speed/30.;at.y=height(at.x,at.z)
 		actor.drive_ground(at,frame_at(at,yaw),1./30.,probe,false,0);actor._process(1./30.)
 		root_error=maxf(root_error,actor.global_position.distance_to(at))
@@ -152,12 +152,12 @@ func review_batch(form: Dictionary) -> void:
 	var socket_samples: Dictionary=await capture_attack(actor,form)
 	var pose_capture_origin: Array=[at.x,at.y,at.z]
 	if video:
-		caption.text="공격 기관 · 준비 → 방출·물기 → 회수"
+		caption.text="공격 기관  준비 → 방출  물기 → 회수"
 		for i in 84:
 			motion.wanted_clip="attack";motion.pose_clock=float(i)/30.;motion.pose_step=1./30.;motion.pose_authored()
 			await photograph(form.id,"motion_%03d"%step);step+=1
 	actor.state="idle";actor.combat_override=true;actor.combat_phase="down";actor.combat_clock=1.1;motion.tick(1./30.);motion.pose_authored()
-	assert(motion.wanted_clip=="down");caption.text="무력화 · 하중 내려놓기";await photograph(form.id,"down")
+	assert(motion.wanted_clip=="down");caption.text="무력화  하중 내려놓기";await photograph(form.id,"down")
 	if video:
 		for i in 36:
 			actor.combat_clock=float(i)/30.;motion.tick(1./30.);motion.pose_authored()
@@ -167,7 +167,7 @@ func review_batch(form: Dictionary) -> void:
 	actor.restored_down=false;actor.set_state("move");actor.lod_override=1
 	at.z+=.05;at.y=height(at.x,at.z);actor.drive_ground(at,frame_at(at,0),1./30.,probe,false,0);actor._process(1./30.);center_camera(actor,form)
 	assert(actor.visible_model==1 and actor.mouth_marker==motion.socket_nodes[1].Socket_Muzzle)
-	caption.text="원거리 LOD · 같은 골격과 발사 기관";await photograph(form.id,"far")
+	caption.text="원거리 LOD  같은 골격과 발사 기관";await photograph(form.id,"far")
 	report.append({"id":form.id,"family":form.family,"species_id":original.id,"bone_count":form.bone_count,"clip_count":form.clips.size(),"limb_phase_checks":phase_checks,"root_error":root_error,"max_foot_target_error":max_error,"max_error_at":max_error_at,"bone_motion":bone_motion,"lods":2,"host_attack":host_pattern,"tested_host_flee_speed":fast_speed,"socket_samples":socket_samples,"authored_pose_capture_version":2,"contact_metadata_version":int(form.get("contact_metadata_version",0)),"pose_capture_origin":pose_capture_origin,"asset_sha256":{"near":form.lods.near.sha256,"far":form.lods.far.sha256}})
 	report[-1].body_support_version=int(form.get("body_support_version",0));report[-1].max_body_contact_error=max_body_error
 	print("REMODEL_BATCH ",form.id," bones=",form.bone_count," feet=",phase_checks," error=",max_error," body=",max_body_error);actor.free()

@@ -3,7 +3,7 @@ extends RefCounted
 
 const STEPS := ["contract","move","mine","deposit","robotics","solar","charger","factory","robot","delivery","atmosphere","climate","ecology","discovery","sale"]
 const TITLES := ["당신의 첫 번째 행성","원격 장비에 익숙해지기","광물을 끌어당기세요","자원을 기지로 운반하세요","첫 자동화를 위한 설계도","전력부터 준비하세요","로봇이 돌아올 자리","당신의 첫 번째 공장","첫 동료를 제작하세요","이제 로봇에게 맡기세요","숨 쉴 수 있는 대기로","물과 온도를 맞추세요","황무지에 생명을","지도 밖의 이야기를 찾으세요","첫 번째 사업을 완성하세요"]
-const DESCRIPTIONS := ["입문용 모래빛 위성으로 시작합니다.","WASD로 5m 이동하고 마우스로 둘러보세요.","가까운 광맥에 조준하고 좌클릭을 유지하세요.","기지의 화물 단말기 근처에서 E를 누르세요.","T · 기술 상점에서 입문 로봇공학을 구매하세요.","B · 건설에서 태양광 발전기를 배치하세요.","B · 건설에서 로봇 충전 패드를 배치하세요.","B · 건설에서 자율장비 제작기를 배치하세요.","R · 자율장비에서 M-01 채광로봇을 주문하세요.","현장으로 돌아와 첫 자동 운반을 지켜보세요.","대기 공학을 연구하고 대기 처리기를 가동하세요.","열 제어·수자원을 연구해 온도와 물을 개선하세요.","생태 정착을 연구하고 생태 배양기를 가동하세요.","보라색 이상 신호로 이동해 E로 조사하세요.","P · 평가에서 회수 편성과 행성 판매를 검토하세요."]
+const DESCRIPTIONS := ["입문용 모래빛 위성으로 시작합니다.","WASD로 5m 이동하고 마우스로 둘러보세요.","가까운 광맥에 조준하고 좌클릭을 유지하세요.","기지의 화물 단말기 근처에서 E를 누르세요.","T  기술 상점에서 입문 로봇공학을 구매하세요.","B  건설에서 태양광 발전기를 배치하세요.","B  건설에서 로봇 충전 패드를 배치하세요.","B  건설에서 자율장비 제작기를 배치하세요.","R  자율장비에서 M-01 채광로봇을 주문하세요.","현장으로 돌아와 첫 자동 운반을 지켜보세요.","대기 공학을 연구하고 대기 처리기를 가동하세요.","열 제어  수자원을 연구해 온도와 물을 개선하세요.","생태 정착을 연구하고 생태 배양기를 가동하세요.","보라색 이상 신호로 이동해 E로 조사하세요.","P  평가에서 회수 편성과 행성 판매를 검토하세요."]
 
 static func fresh() -> Dictionary:
 	return {"enabled":true,"completed":[],"travel":0.0,"mined":0,"deposited":0,"delivered":0}
@@ -54,7 +54,7 @@ static func current(state: Dictionary) -> Dictionary:
 			want = FrontierCatalog.entry("robots","miner").cost
 			if not p.jobs.is_empty():
 				info.progress = float(p.jobs[0].progress)/float(p.jobs[0].seconds)
-				info.counter = "제작 중 · %.0f초 남음" % (float(p.jobs[0].seconds)-float(p.jobs[0].progress))
+				info.counter = "제작 중  %.0f초 남음" % (float(p.jobs[0].seconds)-float(p.jobs[0].progress))
 				info.detail = "메뉴를 닫으면 제작이 진행됩니다."
 				want = {}
 		"delivery": info.menu = "robots"; info.counter = "자동 채광 → 운반 → 하역"
@@ -78,10 +78,10 @@ static func current(state: Dictionary) -> Dictionary:
 			needed.append("%s %d/%d" % [FrontierCatalog.entry("resources",key).name,mini(count,want[key]),want[key]])
 			total += int(want[key]); ready += mini(count,want[key])
 			if missing.is_empty() and count < int(want[key]): missing = key
-		if id != "mine": info.counter = " · ".join(needed); info.progress = float(ready)/maxi(1,total)
+		if id != "mine": info.counter = "  ".join(needed); info.progress = float(ready)/maxi(1,total)
 		if not missing.is_empty():
 			if (id != "mine" and int(p.player.cargo.get(missing,0))+int(p.inventory.get(missing,0)) >= int(want[missing])) or FrontierCatalog.total(p.player.cargo) >= 140:
-				info.position = Vector2.ZERO; info.target_label = "착륙 기지 · 화물 반납"
+				info.position = Vector2.ZERO; info.target_label = "착륙 기지  화물 반납"
 			else:
 				var distance: float = INF
 				for ore in p.nodes:

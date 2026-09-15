@@ -29,20 +29,21 @@ var region_key:=Vector2i(99999,99999)
 func configure(stream: FrontierTerrainStreamer,planet: Dictionary) -> void:terrain=stream;body=planet;vein_regions.clear();vein_points.clear();point_revision=-1
 func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> Node3D:
 	var root:=StaticBody3D.new();root.set_meta("business_kind",kind);root.set_meta("business_id",id);root.position=p
+	var exhibit: bool=model.begins_with("exhibits/")
 	var visual: Node3D=prepared_models[model].instantiate();FrontierInkStyle.apply(visual,cache);root.add_child(visual)
 	if kind=="vein":
 		MineralBatch.apply(visual,mineral_meshes,model)
 		FrontierMinerals.apply_appearance(visual,_vein_appearance(id,model))
-	if kind in ["building","base"] and terrain.occlusion_enabled:
+	if kind in ["building","base"] and model!="shell_refuge" and terrain.occlusion_enabled:
 		if not occluder_shapes.has(model):occluder_shapes[model]=FrontierFieldVisibility.static_model_shape(visual)
 		if occluder_shapes[model]!=null:
 			var occluder:=OccluderInstance3D.new();occluder.occluder=occluder_shapes[model];root.add_child(occluder)
 	if FrontierCombatCover.config().buildings.has(model):FrontierCombatCover.collision(root,model)
-	elif model in ["field_canopy","grounding_mast"]:FrontierWeatherShelters.collision(root,model)
+	elif model in ["field_canopy","grounding_mast","shell_refuge"]:FrontierWeatherShelters.collision(root,model)
 	else:
-		var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=2.0;collision.shape=shape;collision.position.y=1;root.add_child(collision)
+		var collision:=CollisionShape3D.new();var shape:=CylinderShape3D.new();shape.radius=radius;shape.height=1.8 if exhibit else 2.0;collision.shape=shape;collision.position.y=shape.height*.5;root.add_child(collision)
 	var label:=Label3D.new();label.font=load("res://assets/fonts/NotoSansKR.ttf");label.font_size=40;label.pixel_size=.004;label.position.y=3.0;label.billboard=BaseMaterial3D.BILLBOARD_ENABLED;label.outline_size=8;label.render_priority=110;label.outline_render_priority=109;root.add_child(label)
-	root.set_meta("label",label);root.set_meta("visual",visual);root.set_meta("parts",visual.find_children("Anim_*","Node3D",true,false))
+	root.set_meta("label",label);root.set_meta("visual",visual);root.set_meta("parts",[] if exhibit or FrontierDiscoveryUtilities.building(model) else visual.find_children("Anim_*","Node3D",true,false))
 	if kind=="robot":
 		var rotor:=visual.find_child("ToolRotor",true,false)
 		if rotor!=null:root.get_meta("parts").append(rotor)
@@ -50,6 +51,8 @@ func _entity(id: String,model: String,p: Vector3,radius: float,kind: String) -> 
 	for part in root.get_meta("parts"):
 		part.set_meta("rest_position",part.position);part.set_meta("rest_transform",part.transform)
 	add_child(root)
+	if FrontierDiscoveryUtilities.building(model):
+		var utility:=FrontierDiscoveryUtilityView.new();utility.view=self;utility.facility=root;utility.kind=model;root.add_child(utility)
 	if kind=="building":
 		var top:=3.0
 		for mesh in visual.find_children("*","MeshInstance3D",true,false):
@@ -83,7 +86,7 @@ func accept(value: Dictionary) -> void:
 	var wanted: Dictionary={}
 	if registered and site.get("base_deployed",true):wanted["business-base"]=true
 	if registered and site.get("base_deployed",true) and not nodes.has("business-base"):_queue_entity("business-base","storage",FrontierExpeditionBusiness.point(site.center),1.5,"base")
-	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고 · 반납/인수"
+	if nodes.has("business-base"):nodes["business-base"].get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고  반납/인수"
 	var camera:=get_viewport().get_camera_3d()
 	var centers: Array[Vector3]=presentation_points.duplicate()
 	if centers.is_empty():centers.append(camera.global_position if camera!=null else Vector3.ZERO)
@@ -224,12 +227,12 @@ func _update_entity(id: String) -> void:
 	var site: Dictionary=ledger.get("sites",{}).get(body.id,{})
 	var kind: String=node.get_meta("business_kind")
 	if kind=="base":
-		node.get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고 · 반납/인수"
+		node.get_meta("label").text="⊘ 현장 창고\n"+FrontierFacilityFlooding.STATUS if site.get("base_submerged",false) else "현장 창고\nF 창고  반납/인수"
 	elif kind=="crate":
 		if ledger.get("crates",{}).has(id):
 			var crate: Dictionary=ledger.crates[id]
 			var gear: Dictionary=crate.get("equipment",{})
-			node.get_meta("label").text="내려놓은 아이템 · F 회수\n"+(FrontierEquipment.config().items[gear.definition].name if not gear.is_empty() else FrontierCatalog.stock_text(crate.inventory))
+			node.get_meta("label").text="내려놓은 아이템  F 회수\n"+(FrontierEquipment.config().items[gear.definition].name if not gear.is_empty() else FrontierCatalog.stock_text(crate.inventory))
 	elif kind=="vein":
 		if not vein_rows.has(id):return
 		var row: Dictionary=vein_rows[id]
@@ -240,19 +243,21 @@ func _update_entity(id: String) -> void:
 		if not site.get("buildings",{}).has(id):return
 		var row: Dictionary=site.get("buildings",{})[id]
 		node.rotation.y=float(row.get("yaw",0.0))
-		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active
+		var working: bool=row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control","dew_condenser","geothermal_generator"] else row.active
 		var symbol: String="⊘ " if row.get("submerged",false) else ("▶ " if working else ("✓ " if "목표" in str(row.status) else ("Ⅱ " if not row.enabled else "! ")))
+		if FrontierDiscoveryExhibits.is_exhibit(row.type):symbol=""
 		nodes[row.id].get_meta("label").text=symbol+FrontierTerraformTier3.name(row)+"\n"+str(row.status)
 		nodes[row.id].get_meta("label").modulate=Color("9bc7ef") if row.get("submerged",false) else (Color("82f5d2") if working else Color("f2c077"))
-		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+" · 개조"
+		if FrontierDiscoveryExhibits.is_exhibit(row.type):nodes[row.id].get_meta("label").modulate=Color("c2d7d5")
+		if not row.get("engineering","").is_empty():nodes[row.id].get_meta("label").text+="\n"+str(FrontierFieldEngineering.definition(row.engineering).name)+"  개조"
 		if FrontierCombatCover.is_cover(row):FrontierCombatCover.present(nodes[row.id],row);return
 		_upgrade_visual(nodes[row.id],row,false)
-		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control"] else row.active)
+		nodes[row.id].set_meta("working",row.get("working",false) if row.type in ["atmosphere","thermal","water","biolab","source_control","dew_condenser","geothermal_generator"] else row.active)
 	elif kind=="robot":
 		if not site.get("robots",{}).has(id):return
 		var row: Dictionary=site.get("robots",{})[id]
 		nodes[row.id].set_meta("destination",FrontierExpeditionBusiness.point(row.position))
-		nodes[row.id].get_meta("label").text="%s · %d%% · %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
+		nodes[row.id].get_meta("label").text="%s  %d%%  %d/%d\n%s"%[FrontierCatalog.entry("grades",row.grade).name,int(row.battery),FrontierExpeditionBusiness.total(row.cargo),FrontierProductionTier2.robot_capacity(row),row.status]
 		_upgrade_visual(nodes[row.id],row,true)
 		nodes[row.id].set_meta("working",row.status=="채광 중")
 		var vein: Dictionary=vein_rows.get(str(row.target),{})
@@ -286,6 +291,9 @@ func _upgrade_visual(node: Node3D,row: Dictionary,robot: bool) -> void:
 	pack.position=Vector3(0,1.1,.55) if robot else Vector3(.75,1.2,.7)
 	pack.rotation.y=PI
 	pack.scale=Vector3.ONE*(.8 if robot else 1.25)
+	if FrontierDiscoveryIndustry.building(str(row.get("type",""))):
+		pack.position=Vector3(-1.28,.58,.86) if row.type=="dew_condenser" else Vector3(1.3,.72,.58)
+		pack.scale=Vector3.ONE*.65
 	node.set_meta("tier2_visual",true)
 	FrontierFieldVisibility.fit(node,node.get_meta("visibility_notifier"))
 

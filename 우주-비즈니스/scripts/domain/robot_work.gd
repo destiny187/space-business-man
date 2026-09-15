@@ -32,7 +32,7 @@ static func reason(world: Dictionary,robot: Dictionary,vein: Dictionary) -> Stri
 	if int(site.remaining.get(vein.id,vein.capacity))<=0:return "광맥이 고갈됐습니다."
 	if vein.get("underground",false):return "지하 광맥은 수동 채집하세요."
 	if int(vein.required_tier)>tier(robot):return "채광 능력 Mk.%d 로봇이 필요합니다."%int(vein.required_tier)
-	if FrontierExpeditionBusiness.thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),site,vein):return "고온 광맥 · 구역 냉각 필요"
+	if FrontierExpeditionBusiness.thermal_locked(FrontierUniverse.body_from_id(world.manifest,world.location),site,vein):return "고온 광맥  구역 냉각 필요"
 	if not FrontierExpeditionBusiness.ground(FrontierCrewSurface.field(world),vein.position[0],vein.position[2]).is_finite():return "광맥 토대가 없어 접근할 수 없습니다."
 	return ""
 static func route(world: Dictionary,robot: Dictionary,vein: Dictionary) -> Dictionary:
@@ -76,7 +76,7 @@ static func search(world: Dictionary,robot: Dictionary) -> bool:
 		if Vector2(vein.position[0]-origin.x,vein.position[2]-origin.z).length()>=distance:break
 		var path:=route(world,robot,vein)
 		if not path.is_empty() and float(path.distance)<distance:best=vein;best_route=path;distance=path.distance
-	if best.is_empty():robot.status="자동 대기 · 범위 안 채광 가능한 광맥 없음";return false
+	if best.is_empty():robot.status="자동 대기  범위 안 채광 가능한 광맥 없음";return false
 	assign(site,robot,best,best_route.path);return true
 static func order(world: Dictionary,actor: String,args: Dictionary) -> String:
 	var site:=FrontierExpeditionBusiness.site(world)
@@ -110,7 +110,7 @@ static func order(world: Dictionary,actor: String,args: Dictionary) -> String:
 		var speed:=float(FrontierCatalog.entry("robots","miner").speed)*quality*(float(FrontierProductionTier2.config().robot_upgrade.speed_factor) if int(robot.get("tier",1))==2 else 1.0)
 		var amount:=float(FrontierProductionTier2.config().robot_upgrade.mine_amount) if int(robot.get("tier",1))==2 else float(FrontierExpeditionBusiness.config().robot_mine_amount)
 		candidates.append({"robot":robot,"path":path.path,"rank":[tier(robot),quality,amount*quality],"eta":float(path.distance)/speed})
-	if candidates.is_empty():return "범위 안에 작업 가능한 로봇이 없습니다. 충전·운반·등급·경로를 확인하세요."
+	if candidates.is_empty():return "범위 안에 작업 가능한 로봇이 없습니다. 충전  운반  등급  경로를 확인하세요."
 	candidates.sort_custom(func(a: Dictionary,b: Dictionary):
 		for i in 3:
 			if a.rank[i]!=b.rank[i]:return a.rank[i]>b.rank[i]

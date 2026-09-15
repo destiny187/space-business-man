@@ -4,7 +4,7 @@ extends RefCounted
 const THEMES := ["managed","frontier","industry","restricted","declining","wild"]
 const COMPANIES := {"managed":"space_y","frontier":"lotus","industry":"mine","restricted":"coopertech","declining":"","wild":""}
 const LABELS := {"managed":"운영 중심","frontier":"개척 전선","industry":"산업 공급권","restricted":"제한 연구권","declining":"쇠퇴 항로","wild":"미진출 탐사권"}
-const SITE_NAMES := {"lotus":"Lotus 개척 보급기지","mine":"mine 광물 집하·정비소","coopertech":"CooperTech 전투로봇 시험시설","space_y":"Space Y 환경 운영항","":"철수한 물류항"}
+const SITE_NAMES := {"lotus":"Lotus 개척 보급기지","mine":"mine 광물 집하  정비소","coopertech":"CooperTech 전투로봇 시험시설","space_y":"Space Y 환경 운영항","":"철수한 물류항"}
 static var cache: Dictionary={}
 static var manifest_keys: Array=[]
 static func cache_prefix(m: Dictionary) -> String:
@@ -67,7 +67,7 @@ static func profile(m: Dictionary,index: int) -> Dictionary:
 				var managed: bool=theme=="managed" and slot==0 and candidates.size()>=3
 				var state: String="restored" if managed else ("withdrawn" if theme=="declining" else ("developing" if theme=="frontier" and slot==0 else "operating"))
 				var id:=address(index,slot)
-				result.sites.append({"id":id,"system":index,"body":int(body.ordinal),"operator":company,"state":state,"managed":managed,"guarded":theme=="managed" and slot==0,"seed":FrontierUniverse.derive(seed_value,id),"name":SITE_NAMES[company] if slot==0 or company!="space_y" else "Space Y 물류 중계항","short_name":"%s-%d"%[{"space_y":"Y","lotus":"L","mine":"M","coopertech":"CT","":"OLD"}[company],body.ordinal],"model":"solar_mars_port" if company=="space_y" else "relay_"+(company if not company.is_empty() else "retired"),"cargo":{"managed":"환경 유지 모듈","frontier":"개척 보급품","industry":"광물·기계 부품","restricted":"봉인 장비","declining":"회수 중단"}[theme]})
+				result.sites.append({"id":id,"system":index,"body":int(body.ordinal),"operator":company,"state":state,"managed":managed,"guarded":theme=="managed" and slot==0,"seed":FrontierUniverse.derive(seed_value,id),"name":SITE_NAMES[company] if slot==0 or company!="space_y" else "Space Y 물류 중계항","short_name":"%s-%d"%[{"space_y":"Y","lotus":"L","mine":"M","coopertech":"CT","":"OLD"}[company],body.ordinal],"model":"solar_mars_port" if company=="space_y" else "relay_"+(company if not company.is_empty() else "retired"),"cargo":{"managed":"환경 유지 모듈","frontier":"개척 보급품","industry":"광물  기계 부품","restricted":"봉인 장비","declining":"회수 중단"}[theme]})
 			var ends: Array=[result.sites[0].id,result.sites[1].id];ends.sort()
 			result.routes.append({"id":"routes-v1:"+str(ends[0])+":"+str(ends[1]),"ends":ends,"operator":"space_y","cargo":result.sites[0].cargo,"active":theme!="declining","seed":FrontierUniverse.derive(seed_value,"routes-v1:"+":".join(ends))})
 		else:result.theme="wild";result.operator=""

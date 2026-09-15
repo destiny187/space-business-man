@@ -48,7 +48,7 @@ static func menu_texture(id: String) -> Texture2D:
 
 static func markup(value: String, pixels: int = 26) -> String:
 	# Only numeric resource tokens are replaced; prose and unknown resources survive.
-	var result := value.replace("[", "[lb]").replace(" · ","   ").replace("·"," ")
+	var result := value.replace("[", "[lb]").replace(String.chr(0xB7)," ")
 	var aliases: Dictionary = {"광물":"stone", "부품":"research_parts"}
 	for id in names(): aliases[names()[id]] = id
 	var ordered: Array=aliases.keys();ordered.sort_custom(func(a: String,b: String):return a.length()>b.length())

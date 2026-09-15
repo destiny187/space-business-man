@@ -61,7 +61,7 @@ static func sample(m: Dictionary,index: int,t: float,observers: Array=[]) -> Dic
 	var pods:=1.0
 	if row.stage=="unload":pods=1.0-smoothstep(.1,.85,float(row.u))
 	elif row.stage=="load":pods=smoothstep(.15,.9,float(row.u))
-	row.merge({"id":m.id+":space_y:carrier:"+str(index),"call_sign":"CARRIER Y-%02d"%(index+1),"operator":"space_y","kind":"freighter","index":index,"side":index*2-1,"position":point,"direction":direction,"speed":point.distance_to(next)*10,"pods":pods,"cargo":"환경 유지 부품" if row.from==PORTS[0] else "회수·재생 모듈","label":LABELS[row.stage],"model":"space_y_freighter"})
+	row.merge({"id":m.id+":space_y:carrier:"+str(index),"call_sign":"CARRIER Y-%02d"%(index+1),"operator":"space_y","kind":"freighter","index":index,"side":index*2-1,"position":point,"direction":direction,"speed":point.distance_to(next)*10,"pods":pods,"cargo":"환경 유지 부품" if row.from==PORTS[0] else "회수  재생 모듈","label":LABELS[row.stage],"model":"space_y_freighter"})
 	# Berths are reserved physical machinery space; their cargo may not detach from the crane.
 	if row.stage not in ["load","unload"]:row.position=avoid(point,observers,float(rules(m).avoidance_radius),sin(PI*clampf((float(row.p)-.1)/.9,0,1)))
 	return row

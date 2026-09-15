@@ -42,7 +42,7 @@ func capture_all() -> void:
 	var counts: Dictionary = {}
 	var totals: Dictionary = {}
 	var pages: Dictionary = {}
-	var board_ids := {"장비":"equipment","시설":"buildings","자원":"resources","발견·환경":"environment","승인 기준작":"references"}
+	var board_ids := {"장비":"equipment","시설":"buildings","자원":"resources","발견  환경":"environment","승인 기준작":"references"}
 	var records: Array = []
 	for sample in samples: counts[sample.group] = counts.get(sample.group,0)+1
 	for group in counts:

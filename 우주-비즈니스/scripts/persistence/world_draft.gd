@@ -13,6 +13,20 @@ static func request(source: Dictionary,actor: String,kind: String,args: Dictiona
 	if kind=="guide_progress":
 		var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()
 		d.crew.play_guide=source.crew.get("play_guide",{}).duplicate();return d
+	if (kind in ["business_produce","business_discovery_use"] or (kind=="business_facility_research" and FrontierDiscoveryIndustry.building(str(args.get("research",""))))) and source.has("business"):
+		var local:=FrontierShuttles.context(source,actor)
+		if source.business.sites.has(local.location):
+			# Regional production may merge its facade back into this site's districts.
+			# Retain that write set, while other planets and discovery records stay shared.
+			var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()
+			d.business=source.business.duplicate();d.business.sites=source.business.sites.duplicate()
+			d.business.sites[local.location]=source.business.sites[local.location].duplicate(true)
+			if kind=="business_facility_research":
+				d.business.facility_research=source.business.get("facility_research",[]).duplicate()
+			if kind in ["business_facility_research","business_discovery_use"]:
+				d.business.bags=source.business.bags.duplicate()
+				d.business.bags[actor]=FrontierExpeditionBusiness.bag(source,actor).duplicate()
+			return d
 	var mission: Dictionary=source.get("incidents",{}).get("records",{}).get(str(args.get("id","")),{})
 	if kind in ["surface_incident","surface_incident_tool"] and FrontierActiveMissions.enabled(mission):
 		var d:=_crew(source,[actor]);d.crew.receipts=source.crew.receipts.duplicate()

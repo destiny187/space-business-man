@@ -19,19 +19,19 @@ static func navigate(app: FrontierCrewExpedition,request: Dictionary) -> void:
 		for id in site.get("buildings",{}):
 			var row: Dictionary=site.buildings[id]
 			if row.get("submerged",false):continue
-			if (kind=="warehouse" and row.type=="storage") or (kind=="factory" and row.type=="factory") or (kind=="power" and row.type in ["solar","charger"]):
+			if (kind=="warehouse" and row.type=="storage") or (kind in ["factory","metalworks","equipment_workbench"] and row.type==kind) or (kind=="power" and row.type in ["solar","charger"]):
 				var candidate:=row.duplicate();candidate.id=id;candidates.append(candidate)
 	for row in candidates:
 		var distance:=position.distance_to(FrontierCrewWorld.vector(row.position))
 		if distance<nearest:nearest=distance;found=row
 	if found.is_empty():
-		if kind in ["factory","warehouse","power"]:
-			app.close_menus();app.toggle_business();app.business_panel.building_message.text="현장에 사용 가능한 "+{"factory":"제작소","warehouse":"창고","power":"발전 / 충전 시설"}[kind]+"가 없습니다. 건설 카드를 선택하세요."
+		if kind in ["factory","metalworks","equipment_workbench","warehouse","power"]:
+			app.close_menus();app.toggle_business();app.business_panel.building_message.text="현장에 사용 가능한 "+{"factory":"제작소","metalworks":"금속 가공 공장","equipment_workbench":"장비 제작대","warehouse":"창고","power":"발전 / 충전 시설"}[kind]+"가 없습니다. 건설 카드를 선택하세요."
 		else:app.feedback.show_cue("이 행성에서 확인한 산지가 없습니다. 스캔 기록을 더 모으세요.")
 		return
-	if nearest<=8 and kind in ["factory","warehouse"]:
+	if nearest<=8 and kind in ["factory","metalworks","equipment_workbench","warehouse"]:
 		app.open_station(found.type,str(found.get("id","")))
-		if kind=="factory":
+		if kind in ["factory","metalworks"]:
 			app.business_panel.production_panel.selected_product=request.get("product","refined_iron")
 			app.business_panel.production_panel.refresh()
 		return
@@ -43,7 +43,7 @@ static func navigate(app: FrontierCrewExpedition,request: Dictionary) -> void:
 static func robot_action(robot: Dictionary) -> Dictionary:
 	var status: String=robot.get("status","")
 	if "창고" in status:return {"kind":"warehouse","label":"창고 열기 / 위치 보기"}
-	if "충전기" in status:return {"kind":"power","label":"발전·충전 시설 위치"}
+	if "충전기" in status:return {"kind":"power","label":"발전  충전 시설 위치"}
 	return {"kind":"location","position":robot.get("position",[0,0,0]),"label":"로봇 작업 위치 보기"}
 
 static func asset_counts(site: Dictionary) -> Dictionary:
@@ -55,4 +55,4 @@ static func asset_counts(site: Dictionary) -> Dictionary:
 
 static func asset_summary(site: Dictionary) -> String:
 	var counts:=asset_counts(site)
-	return "시설 %d개 · 로봇 %d대 · 재고 %d개 · 보관 장비 %d개"%[counts.buildings,counts.robots,counts.inventory,counts.equipment]
+	return "시설 %d개  로봇 %d대  재고 %d개  보관 장비 %d개"%[counts.buildings,counts.robots,counts.inventory,counts.equipment]
